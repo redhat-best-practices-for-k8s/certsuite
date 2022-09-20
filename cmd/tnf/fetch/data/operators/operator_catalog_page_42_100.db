@@ -159,7 +159,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-16T13:21:24.770000+00:00",
+      "last_update_date": "2022-09-19T12:23:12.261000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -360,7 +360,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-16T13:22:30.060000+00:00",
+      "last_update_date": "2022-09-19T11:59:15.154000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -565,7 +565,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-16T13:17:22.561000+00:00",
+      "last_update_date": "2022-09-19T11:47:16.507000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -770,7 +770,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-16T13:25:39.565000+00:00",
+      "last_update_date": "2022-09-19T12:05:05.580000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -975,7 +975,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-16T13:29:40.143000+00:00",
+      "last_update_date": "2022-09-19T11:41:24.532000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -1160,7 +1160,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:59:34.129000+00:00",
+      "last_update_date": "2022-09-19T11:46:40.876000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -1417,7 +1417,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:59:38.913000+00:00",
+      "last_update_date": "2022-09-19T11:46:44.336000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -1674,7 +1674,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:30:14.530000+00:00",
+      "last_update_date": "2022-09-19T12:21:54.954000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -1930,7 +1930,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:30:46.486000+00:00",
+      "last_update_date": "2022-09-19T12:21:44.809000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -2186,7 +2186,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:56:46.216000+00:00",
+      "last_update_date": "2022-09-19T11:50:55.155000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -2443,7 +2443,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:56:56.475000+00:00",
+      "last_update_date": "2022-09-19T11:51:00.180000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -2941,7 +2941,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-05T20:19:51.351000+00:00",
+      "last_update_date": "2022-09-19T12:00:55.123000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -3044,7 +3044,7 @@
           "version": "v2"
         }
       ],
-      "provider": null,
+      "provider": "Couchbase",
       "related_images": [
         {
           "digest": "sha256:9ff13f4d8d8efc15f8c21f3ea2ddf6cd103731f02c1f26a1dd173dbf17d2afd0",
@@ -3484,7 +3484,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-05T20:20:52.365000+00:00",
+      "last_update_date": "2022-09-19T11:44:00.922000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -3565,7 +3565,6 @@
         {
           "group": "couchbase.com",
           "kind": "CouchbaseAutoscaler",
-          "plural": "couchbaseautoscalers",
           "version": "v2"
         },
         {
@@ -3587,7 +3586,7 @@
           "version": "v2"
         }
       ],
-      "provider": null,
+      "provider": "Couchbase",
       "related_images": [
         {
           "digest": "sha256:9ff13f4d8d8efc15f8c21f3ea2ddf6cd103731f02c1f26a1dd173dbf17d2afd0",
@@ -4027,7 +4026,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-05T20:21:32.852000+00:00",
+      "last_update_date": "2022-09-19T11:47:20.392000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -4130,7 +4129,7 @@
           "version": "v2"
         }
       ],
-      "provider": null,
+      "provider": "Couchbase",
       "related_images": [
         {
           "digest": "sha256:9ff13f4d8d8efc15f8c21f3ea2ddf6cd103731f02c1f26a1dd173dbf17d2afd0",
@@ -4276,7 +4275,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:18:08.521000+00:00",
+      "last_update_date": "2022-09-19T12:20:13.098000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -4404,7 +4403,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:00:35.541000+00:00",
+      "last_update_date": "2022-09-19T12:20:24.061000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -4413,13 +4412,11 @@
         {
           "group": "hxcsi.cisco.com",
           "kind": "HXCSIDriver",
-          "plural": "hxcsidrivers",
           "version": "v1"
         },
         {
           "group": "hxcsi.cisco.com",
           "kind": "HXCSIDriver",
-          "plural": "hxcsidrivers",
           "version": "v2"
         }
       ],
@@ -4534,7 +4531,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:51:34.605000+00:00",
+      "last_update_date": "2022-09-19T11:45:33.858000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -4543,13 +4540,11 @@
         {
           "group": "hxcsi.cisco.com",
           "kind": "HXCSIDriver",
-          "plural": "hxcsidrivers",
           "version": "v1"
         },
         {
           "group": "hxcsi.cisco.com",
           "kind": "HXCSIDriver",
-          "plural": "hxcsidrivers",
           "version": "v2"
         }
       ],
@@ -4664,7 +4659,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:55:16.318000+00:00",
+      "last_update_date": "2022-09-19T11:42:36.575000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -4673,13 +4668,11 @@
         {
           "group": "hxcsi.cisco.com",
           "kind": "HXCSIDriver",
-          "plural": "hxcsidrivers",
           "version": "v1"
         },
         {
           "group": "hxcsi.cisco.com",
           "kind": "HXCSIDriver",
-          "plural": "hxcsidrivers",
           "version": "v2"
         }
       ],
@@ -4811,7 +4804,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:13:31.147000+00:00",
+      "last_update_date": "2022-09-19T12:03:45.684000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -5017,7 +5010,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:13:58.220000+00:00",
+      "last_update_date": "2022-09-19T12:11:34.882000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -5026,7 +5019,6 @@
         {
           "group": "vfunction.com",
           "kind": "VfunctionServer",
-          "plural": "vfunctionservers",
           "version": "v1"
         }
       ],
@@ -5223,7 +5215,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:47:17.154000+00:00",
+      "last_update_date": "2022-09-19T11:40:19.399000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -5232,7 +5224,6 @@
         {
           "group": "vfunction.com",
           "kind": "VfunctionServer",
-          "plural": "vfunctionservers",
           "version": "v1"
         }
       ],
@@ -5429,7 +5420,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:30:03.739000+00:00",
+      "last_update_date": "2022-09-19T11:50:06.384000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -5438,7 +5429,6 @@
         {
           "group": "vfunction.com",
           "kind": "VfunctionServer",
-          "plural": "vfunctionservers",
           "version": "v1"
         }
       ],
@@ -5635,7 +5625,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:38:02.435000+00:00",
+      "last_update_date": "2022-09-19T11:50:59.693000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -5644,7 +5634,6 @@
         {
           "group": "vfunction.com",
           "kind": "VfunctionServer",
-          "plural": "vfunctionservers",
           "version": "v1"
         }
       ],
@@ -6553,7 +6542,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-30T16:27:19.599000+00:00",
+      "last_update_date": "2022-09-19T12:10:42.191000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -6650,7 +6639,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-30T16:31:12.517000+00:00",
+      "last_update_date": "2022-09-19T11:57:52.050000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -6749,7 +6738,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-30T16:26:43.723000+00:00",
+      "last_update_date": "2022-09-19T11:52:30.797000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -6848,7 +6837,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-31T20:00:49.270000+00:00",
+      "last_update_date": "2022-09-19T11:43:49.360000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -6947,7 +6936,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-30T16:34:36.237000+00:00",
+      "last_update_date": "2022-09-19T11:40:07.843000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -7046,7 +7035,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-30T16:41:51.670000+00:00",
+      "last_update_date": "2022-09-19T12:13:54.346000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -7089,599 +7078,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "8.6.1",
       "version_original": "8.6.1"
-    },
-    {
-      "_id": "62f18951ecdd7d25b435a68b",
-      "alm_examples": [
-        {
-          "api_version": "sysdig.com/v1",
-          "kind": "SysdigAgent",
-          "metadata": {
-            "name": "sysdigagent-sample"
-          },
-          "spec": {
-            "sysdig": {
-              "accessKey": "REPLACE ME",
-              "disableCaptures": false,
-              "existingAccessKeySecret": "",
-              "settings": {}
-            },
-            "tolerations": [
-              {
-                "effect": "NoSchedule",
-                "key": "node-role.kubernetes.io/master"
-              }
-            ]
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/sysdig/sysdig-operator-bundle@sha256:4ceef82e99ca7e5bf0f8d91a04852ee9315949c146a9ed5c819591e2f46fa550",
-      "bundle_path_digest": "sha256:4ceef82e99ca7e5bf0f8d91a04852ee9315949c146a9ed5c819591e2f46fa550",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-08T22:08:17.747000+00:00",
-      "csv_description": "[Sysdig](https://www.sysdig.com/) is a unified platform for container and\nmicroservices monitoring, troubleshooting, security and forensics. Sysdig\nplatform has been built on top of\n[Sysdig tool](https://sysdig.com/opensource/sysdig/) and\n[Sysdig Inspect](https://sysdig.com/blog/sysdig-inspect/) open-source\ntechnologies.\nThis operator installs the Sysdig Agent for\n[Sysdig Monitor](https://sysdig.com/product/monitor/) and\n[Sysdig Secure](https://sysdig.com/product/secure/) to all nodes in your\ncluster via a DaemonSet.\n## Settings\nThis operator, uses the same options than the\n[Helm Chart](https://hub.helm.sh/charts/stable/sysdig), please take a look\nto all the options in the following table:\n| Parameter                         | Description                                                            | Default                                     |\n| ---                               | ---                                                                    | ---                                         |\n| `image.registry`                  | Sysdig agent image registry                                            | `docker.io`                                 |\n| `image.repository`                | The image repository to pull from                                      | `sysdig/agent`                              |\n| `image.tag`                       | The image tag to pull                                                  | `REPLACE_AGENT_VERSION`                                     |\n| `image.pullPolicy`                | The Image pull policy                                                  | `IfNotPresent`                              |\n| `image.pullSecrets`               | Image pull secrets                                                     | `nil`                                       |\n| `resources.requests.cpu`          | CPU requested for being run in a node                                  | `600m`                                      |\n| `resources.requests.memory`       | Memory requested for being run in a node                               | `512Mi`                                     |\n| `resources.limits.cpu`            | CPU limit                                                              | `2000m`                                     |\n| `resources.limits.memory`         | Memory limit                                                           | `1536Mi`                                    |\n| `rbac.create`                     | If true, create & use RBAC resources                                   | `true`                                      |\n| `serviceAccount.create`           | Create serviceAccount                                                  | `true`                                      |\n| `serviceAccount.name`             | Use this value as serviceAccountName                                   | ` `                                         |\n| `daemonset.updateStrategy.type`   | The updateStrategy for updating the daemonset                          | `RollingUpdate`                             |\n| `daemonset.affinity`              | Node affinities                                                        | `nil`                                       |\n| `daemonset.annotations`           | Custom annotations for daemonset                                       | `{}`                                        |\n| `slim.enabled`                    | Use the slim based Sysdig Agent image                                  | `false`                                     |\n| `slim.kmoduleImage.repository`    | The kernel module image builder repository to pull from                | `sysdig/agent-kmodule`                      |\n| `slim.resources.requests.cpu`     | CPU requested for building the kernel module                           | `1000m`                                     |\n| `slim.resources.requests.memory`  | Memory requested for building the kernel module                        | `348Mi`                                     |\n| `slim.resources.limits.memory`    | Memory limit for building the kernel module                            | `512Mi`                                     |\n| `ebpf.enabled`                    | Enable eBPF support for Sysdig instead of `sysdig-probe` kernel module | `false`                                     |\n| `ebpf.settings.mountEtcVolume`    | Needed to detect which kernel version are running in Google COS        | `true`                                      |\n| `sysdig.accessKey`                | Your Sysdig Monitor Access Key                                         | `Nil` You must provide your own key         |\n| `sysdig.settings`                 | Settings for agent's configuration file                                | ` `                                         |\n| `secure.enabled`                  | Enable Sysdig Secure                                                   | `true`                                      |\n| `auditLog.enabled`                | Enable K8s audit log support for Sysdig Secure                         | `false`                                     |\n| `auditLog.auditServerUrl`         | The URL where Sysdig Agent listens for K8s audit log events            | `0.0.0.0`                                   |\n| `auditLog.auditServerPort`        | Port where Sysdig Agent listens for K8s audit log events               | `7765`                                      |\n| `auditLog.dynamicBackend.enabled` | Deploy the Audit Sink where Sysdig listens for K8s audit log events    | `false`                                     |\n| `customAppChecks`                 | The custom app checks deployed with your agent                         | `{}`                                        |\n| `tolerations`                     | The tolerations for scheduling                                         | `node-role.kubernetes.io/master:NoSchedule` |\n| `scc.create`                      | Create OpenShift's Security Context Constraint                         | `false`                                     |\nFor example, if you want to deploy a DaemonSet with eBPF and with Sysdig Secure\nenabled:\n```yaml\napiVersion: sysdig.com/v1\nkind: SysdigAgent\nmetadata:\n  name: agent-with-ebpf-and-secure\nspec:\n  ebpf:\n    enabled: true\n  daemonset:\n    annotations:\n      productID: SysdigSecureDevopsPlatform\n      productName: Sysdig Secure DevOps Platform\n      productVersion: REPLACE_VERSION\n  scc:\n    create: true\n  sysdig:\n    accessKey: XXX\n```\nPlease, notice that `sysdig.accessKey` is **mandatory**. Once you have provided\nthe accessKey, you can apply this file with `kubectl apply -f`\n## Getting your Access Key\nTo retrieve the key and use it in the agent:\n1. Log in to Sysdig Monitor or Sysdig Secure (maybe as administrator) and\n   select **Settings**.\n2. Choose Agent Installation.\n3. Use the Copy button to copy the access key at the top of the page.\nIf you need more help, you can read more about this process in the [Agent Installation: Overview and Key](\nhttps://sysdigdocs.atlassian.net/wiki/spaces/Platform/pages/213352719/Agent+Installation+Overview+and+Key)\ndocumentation page.\n## Verify Metrics in Sysdig Monitor UI\nOnce you have deployed the Sysdig Agent, it's time to verify that everything is\nworking as expected. So, we are going to log in Sysdig Monitor to do the check.\n1. Access Sysdig Monitor:\n   **SaaS**: https://app.sysdigcloud.com\n   Log in with your Sysdig user name and password.\n2. Select the **Explore** tab to see if metrics are displayed.\n3. To verify that kube state metrics and cluster name are working correctly:\n   Select the **Explore tab** and create a grouping by `kubernetes.cluster.name` and `kubernetes.pod.name`.\n4. Select an individual container or pod to see details.\nDon't rush about getting Kubernetes metadata. Pods, deployments ... appear a\nminute or two later than the nodes/containers themselves; if pod names do not\nappear immediately, wait and retry the Explore view.\nYou can read more about verification in the [Verify Metrics in Sysdig Monitor UI section](https://sysdigdocs.atlassian.net/wiki/spaces/Platform/pages/256475257/GKE+Installation+Steps#GKEInstallationSteps-VerifyMetricsinSysdigMonitorUI)\nin the documentation pages.",
-      "csv_display_name": "Sysdig Agent Operator",
-      "csv_metadata_description": "Sysdig is a unified platform for container and microservices monitoring, troubleshooting, security and forensics. Sysdig platform has been built on top of Sysdig tool and Sysdig Inspect open-source technologies.\n",
-      "csv_name": "sysdig-certified.v1.15.25",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:11:43.923000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "sysdig-certified",
-      "provided_apis": [
-        {
-          "group": "sysdig.com",
-          "kind": "SysdigAgent",
-          "plural": "sysdigagents",
-          "version": "v1"
-        }
-      ],
-      "provider": "Sysdig",
-      "related_images": [
-        {
-          "digest": "sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "image": "registry.connect.redhat.com/sysdig/sysdig-operator@sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "name": "sysdig-operator-be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b-annotation"
-        },
-        {
-          "digest": "sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "image": "registry.connect.redhat.com/sysdig/sysdig-operator@sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8b4f814c112d7b91dc5e7904d4f3c684f3d77227344d2b553a84d4a1bc2829d3",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:8b4f814c112d7b91dc5e7904d4f3c684f3d77227344d2b553a84d4a1bc2829d3",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.15.25",
-      "version_original": "1.15.25"
-    },
-    {
-      "_id": "62f18c27ecdd7d25b435a709",
-      "alm_examples": [
-        {
-          "api_version": "sysdig.com/v1",
-          "kind": "SysdigAgent",
-          "metadata": {
-            "name": "sysdigagent-sample"
-          },
-          "spec": {
-            "sysdig": {
-              "accessKey": "REPLACE ME",
-              "disableCaptures": false,
-              "existingAccessKeySecret": "",
-              "settings": {}
-            },
-            "tolerations": [
-              {
-                "effect": "NoSchedule",
-                "key": "node-role.kubernetes.io/master"
-              }
-            ]
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/sysdig/sysdig-operator-bundle@sha256:4ceef82e99ca7e5bf0f8d91a04852ee9315949c146a9ed5c819591e2f46fa550",
-      "bundle_path_digest": "sha256:4ceef82e99ca7e5bf0f8d91a04852ee9315949c146a9ed5c819591e2f46fa550",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-08T22:20:23.931000+00:00",
-      "csv_description": "[Sysdig](https://www.sysdig.com/) is a unified platform for container and\nmicroservices monitoring, troubleshooting, security and forensics. Sysdig\nplatform has been built on top of\n[Sysdig tool](https://sysdig.com/opensource/sysdig/) and\n[Sysdig Inspect](https://sysdig.com/blog/sysdig-inspect/) open-source\ntechnologies.\nThis operator installs the Sysdig Agent for\n[Sysdig Monitor](https://sysdig.com/product/monitor/) and\n[Sysdig Secure](https://sysdig.com/product/secure/) to all nodes in your\ncluster via a DaemonSet.\n## Settings\nThis operator, uses the same options than the\n[Helm Chart](https://hub.helm.sh/charts/stable/sysdig), please take a look\nto all the options in the following table:\n| Parameter                         | Description                                                            | Default                                     |\n| ---                               | ---                                                                    | ---                                         |\n| `image.registry`                  | Sysdig agent image registry                                            | `docker.io`                                 |\n| `image.repository`                | The image repository to pull from                                      | `sysdig/agent`                              |\n| `image.tag`                       | The image tag to pull                                                  | `REPLACE_AGENT_VERSION`                                     |\n| `image.pullPolicy`                | The Image pull policy                                                  | `IfNotPresent`                              |\n| `image.pullSecrets`               | Image pull secrets                                                     | `nil`                                       |\n| `resources.requests.cpu`          | CPU requested for being run in a node                                  | `600m`                                      |\n| `resources.requests.memory`       | Memory requested for being run in a node                               | `512Mi`                                     |\n| `resources.limits.cpu`            | CPU limit                                                              | `2000m`                                     |\n| `resources.limits.memory`         | Memory limit                                                           | `1536Mi`                                    |\n| `rbac.create`                     | If true, create & use RBAC resources                                   | `true`                                      |\n| `serviceAccount.create`           | Create serviceAccount                                                  | `true`                                      |\n| `serviceAccount.name`             | Use this value as serviceAccountName                                   | ` `                                         |\n| `daemonset.updateStrategy.type`   | The updateStrategy for updating the daemonset                          | `RollingUpdate`                             |\n| `daemonset.affinity`              | Node affinities                                                        | `nil`                                       |\n| `daemonset.annotations`           | Custom annotations for daemonset                                       | `{}`                                        |\n| `slim.enabled`                    | Use the slim based Sysdig Agent image                                  | `false`                                     |\n| `slim.kmoduleImage.repository`    | The kernel module image builder repository to pull from                | `sysdig/agent-kmodule`                      |\n| `slim.resources.requests.cpu`     | CPU requested for building the kernel module                           | `1000m`                                     |\n| `slim.resources.requests.memory`  | Memory requested for building the kernel module                        | `348Mi`                                     |\n| `slim.resources.limits.memory`    | Memory limit for building the kernel module                            | `512Mi`                                     |\n| `ebpf.enabled`                    | Enable eBPF support for Sysdig instead of `sysdig-probe` kernel module | `false`                                     |\n| `ebpf.settings.mountEtcVolume`    | Needed to detect which kernel version are running in Google COS        | `true`                                      |\n| `sysdig.accessKey`                | Your Sysdig Monitor Access Key                                         | `Nil` You must provide your own key         |\n| `sysdig.settings`                 | Settings for agent's configuration file                                | ` `                                         |\n| `secure.enabled`                  | Enable Sysdig Secure                                                   | `true`                                      |\n| `auditLog.enabled`                | Enable K8s audit log support for Sysdig Secure                         | `false`                                     |\n| `auditLog.auditServerUrl`         | The URL where Sysdig Agent listens for K8s audit log events            | `0.0.0.0`                                   |\n| `auditLog.auditServerPort`        | Port where Sysdig Agent listens for K8s audit log events               | `7765`                                      |\n| `auditLog.dynamicBackend.enabled` | Deploy the Audit Sink where Sysdig listens for K8s audit log events    | `false`                                     |\n| `customAppChecks`                 | The custom app checks deployed with your agent                         | `{}`                                        |\n| `tolerations`                     | The tolerations for scheduling                                         | `node-role.kubernetes.io/master:NoSchedule` |\n| `scc.create`                      | Create OpenShift's Security Context Constraint                         | `false`                                     |\nFor example, if you want to deploy a DaemonSet with eBPF and with Sysdig Secure\nenabled:\n```yaml\napiVersion: sysdig.com/v1\nkind: SysdigAgent\nmetadata:\n  name: agent-with-ebpf-and-secure\nspec:\n  ebpf:\n    enabled: true\n  daemonset:\n    annotations:\n      productID: SysdigSecureDevopsPlatform\n      productName: Sysdig Secure DevOps Platform\n      productVersion: REPLACE_VERSION\n  scc:\n    create: true\n  sysdig:\n    accessKey: XXX\n```\nPlease, notice that `sysdig.accessKey` is **mandatory**. Once you have provided\nthe accessKey, you can apply this file with `kubectl apply -f`\n## Getting your Access Key\nTo retrieve the key and use it in the agent:\n1. Log in to Sysdig Monitor or Sysdig Secure (maybe as administrator) and\n   select **Settings**.\n2. Choose Agent Installation.\n3. Use the Copy button to copy the access key at the top of the page.\nIf you need more help, you can read more about this process in the [Agent Installation: Overview and Key](\nhttps://sysdigdocs.atlassian.net/wiki/spaces/Platform/pages/213352719/Agent+Installation+Overview+and+Key)\ndocumentation page.\n## Verify Metrics in Sysdig Monitor UI\nOnce you have deployed the Sysdig Agent, it's time to verify that everything is\nworking as expected. So, we are going to log in Sysdig Monitor to do the check.\n1. Access Sysdig Monitor:\n   **SaaS**: https://app.sysdigcloud.com\n   Log in with your Sysdig user name and password.\n2. Select the **Explore** tab to see if metrics are displayed.\n3. To verify that kube state metrics and cluster name are working correctly:\n   Select the **Explore tab** and create a grouping by `kubernetes.cluster.name` and `kubernetes.pod.name`.\n4. Select an individual container or pod to see details.\nDon't rush about getting Kubernetes metadata. Pods, deployments ... appear a\nminute or two later than the nodes/containers themselves; if pod names do not\nappear immediately, wait and retry the Explore view.\nYou can read more about verification in the [Verify Metrics in Sysdig Monitor UI section](https://sysdigdocs.atlassian.net/wiki/spaces/Platform/pages/256475257/GKE+Installation+Steps#GKEInstallationSteps-VerifyMetricsinSysdigMonitorUI)\nin the documentation pages.",
-      "csv_display_name": "Sysdig Agent Operator",
-      "csv_metadata_description": "Sysdig is a unified platform for container and microservices monitoring, troubleshooting, security and forensics. Sysdig platform has been built on top of Sysdig tool and Sysdig Inspect open-source technologies.\n",
-      "csv_name": "sysdig-certified.v1.15.25",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:31:36.700000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "sysdig-certified",
-      "provided_apis": [
-        {
-          "group": "sysdig.com",
-          "kind": "SysdigAgent",
-          "version": "v1"
-        }
-      ],
-      "provider": "Sysdig",
-      "related_images": [
-        {
-          "digest": "sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "image": "registry.connect.redhat.com/sysdig/sysdig-operator@sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "name": "sysdig-operator-be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b-annotation"
-        },
-        {
-          "digest": "sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "image": "registry.connect.redhat.com/sysdig/sysdig-operator@sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8b4f814c112d7b91dc5e7904d4f3c684f3d77227344d2b553a84d4a1bc2829d3",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:8b4f814c112d7b91dc5e7904d4f3c684f3d77227344d2b553a84d4a1bc2829d3",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.15.25",
-      "version_original": "1.15.25"
-    },
-    {
-      "_id": "62f18d53ecdd7d25b435a73d",
-      "alm_examples": [
-        {
-          "api_version": "sysdig.com/v1",
-          "kind": "SysdigAgent",
-          "metadata": {
-            "name": "sysdigagent-sample"
-          },
-          "spec": {
-            "sysdig": {
-              "accessKey": "REPLACE ME",
-              "disableCaptures": false,
-              "existingAccessKeySecret": "",
-              "settings": {}
-            },
-            "tolerations": [
-              {
-                "effect": "NoSchedule",
-                "key": "node-role.kubernetes.io/master"
-              }
-            ]
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/sysdig/sysdig-operator-bundle@sha256:4ceef82e99ca7e5bf0f8d91a04852ee9315949c146a9ed5c819591e2f46fa550",
-      "bundle_path_digest": "sha256:4ceef82e99ca7e5bf0f8d91a04852ee9315949c146a9ed5c819591e2f46fa550",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-08T22:25:23.612000+00:00",
-      "csv_description": "[Sysdig](https://www.sysdig.com/) is a unified platform for container and\nmicroservices monitoring, troubleshooting, security and forensics. Sysdig\nplatform has been built on top of\n[Sysdig tool](https://sysdig.com/opensource/sysdig/) and\n[Sysdig Inspect](https://sysdig.com/blog/sysdig-inspect/) open-source\ntechnologies.\nThis operator installs the Sysdig Agent for\n[Sysdig Monitor](https://sysdig.com/product/monitor/) and\n[Sysdig Secure](https://sysdig.com/product/secure/) to all nodes in your\ncluster via a DaemonSet.\n## Settings\nThis operator, uses the same options than the\n[Helm Chart](https://hub.helm.sh/charts/stable/sysdig), please take a look\nto all the options in the following table:\n| Parameter                         | Description                                                            | Default                                     |\n| ---                               | ---                                                                    | ---                                         |\n| `image.registry`                  | Sysdig agent image registry                                            | `docker.io`                                 |\n| `image.repository`                | The image repository to pull from                                      | `sysdig/agent`                              |\n| `image.tag`                       | The image tag to pull                                                  | `REPLACE_AGENT_VERSION`                                     |\n| `image.pullPolicy`                | The Image pull policy                                                  | `IfNotPresent`                              |\n| `image.pullSecrets`               | Image pull secrets                                                     | `nil`                                       |\n| `resources.requests.cpu`          | CPU requested for being run in a node                                  | `600m`                                      |\n| `resources.requests.memory`       | Memory requested for being run in a node                               | `512Mi`                                     |\n| `resources.limits.cpu`            | CPU limit                                                              | `2000m`                                     |\n| `resources.limits.memory`         | Memory limit                                                           | `1536Mi`                                    |\n| `rbac.create`                     | If true, create & use RBAC resources                                   | `true`                                      |\n| `serviceAccount.create`           | Create serviceAccount                                                  | `true`                                      |\n| `serviceAccount.name`             | Use this value as serviceAccountName                                   | ` `                                         |\n| `daemonset.updateStrategy.type`   | The updateStrategy for updating the daemonset                          | `RollingUpdate`                             |\n| `daemonset.affinity`              | Node affinities                                                        | `nil`                                       |\n| `daemonset.annotations`           | Custom annotations for daemonset                                       | `{}`                                        |\n| `slim.enabled`                    | Use the slim based Sysdig Agent image                                  | `false`                                     |\n| `slim.kmoduleImage.repository`    | The kernel module image builder repository to pull from                | `sysdig/agent-kmodule`                      |\n| `slim.resources.requests.cpu`     | CPU requested for building the kernel module                           | `1000m`                                     |\n| `slim.resources.requests.memory`  | Memory requested for building the kernel module                        | `348Mi`                                     |\n| `slim.resources.limits.memory`    | Memory limit for building the kernel module                            | `512Mi`                                     |\n| `ebpf.enabled`                    | Enable eBPF support for Sysdig instead of `sysdig-probe` kernel module | `false`                                     |\n| `ebpf.settings.mountEtcVolume`    | Needed to detect which kernel version are running in Google COS        | `true`                                      |\n| `sysdig.accessKey`                | Your Sysdig Monitor Access Key                                         | `Nil` You must provide your own key         |\n| `sysdig.settings`                 | Settings for agent's configuration file                                | ` `                                         |\n| `secure.enabled`                  | Enable Sysdig Secure                                                   | `true`                                      |\n| `auditLog.enabled`                | Enable K8s audit log support for Sysdig Secure                         | `false`                                     |\n| `auditLog.auditServerUrl`         | The URL where Sysdig Agent listens for K8s audit log events            | `0.0.0.0`                                   |\n| `auditLog.auditServerPort`        | Port where Sysdig Agent listens for K8s audit log events               | `7765`                                      |\n| `auditLog.dynamicBackend.enabled` | Deploy the Audit Sink where Sysdig listens for K8s audit log events    | `false`                                     |\n| `customAppChecks`                 | The custom app checks deployed with your agent                         | `{}`                                        |\n| `tolerations`                     | The tolerations for scheduling                                         | `node-role.kubernetes.io/master:NoSchedule` |\n| `scc.create`                      | Create OpenShift's Security Context Constraint                         | `false`                                     |\nFor example, if you want to deploy a DaemonSet with eBPF and with Sysdig Secure\nenabled:\n```yaml\napiVersion: sysdig.com/v1\nkind: SysdigAgent\nmetadata:\n  name: agent-with-ebpf-and-secure\nspec:\n  ebpf:\n    enabled: true\n  daemonset:\n    annotations:\n      productID: SysdigSecureDevopsPlatform\n      productName: Sysdig Secure DevOps Platform\n      productVersion: REPLACE_VERSION\n  scc:\n    create: true\n  sysdig:\n    accessKey: XXX\n```\nPlease, notice that `sysdig.accessKey` is **mandatory**. Once you have provided\nthe accessKey, you can apply this file with `kubectl apply -f`\n## Getting your Access Key\nTo retrieve the key and use it in the agent:\n1. Log in to Sysdig Monitor or Sysdig Secure (maybe as administrator) and\n   select **Settings**.\n2. Choose Agent Installation.\n3. Use the Copy button to copy the access key at the top of the page.\nIf you need more help, you can read more about this process in the [Agent Installation: Overview and Key](\nhttps://sysdigdocs.atlassian.net/wiki/spaces/Platform/pages/213352719/Agent+Installation+Overview+and+Key)\ndocumentation page.\n## Verify Metrics in Sysdig Monitor UI\nOnce you have deployed the Sysdig Agent, it's time to verify that everything is\nworking as expected. So, we are going to log in Sysdig Monitor to do the check.\n1. Access Sysdig Monitor:\n   **SaaS**: https://app.sysdigcloud.com\n   Log in with your Sysdig user name and password.\n2. Select the **Explore** tab to see if metrics are displayed.\n3. To verify that kube state metrics and cluster name are working correctly:\n   Select the **Explore tab** and create a grouping by `kubernetes.cluster.name` and `kubernetes.pod.name`.\n4. Select an individual container or pod to see details.\nDon't rush about getting Kubernetes metadata. Pods, deployments ... appear a\nminute or two later than the nodes/containers themselves; if pod names do not\nappear immediately, wait and retry the Explore view.\nYou can read more about verification in the [Verify Metrics in Sysdig Monitor UI section](https://sysdigdocs.atlassian.net/wiki/spaces/Platform/pages/256475257/GKE+Installation+Steps#GKEInstallationSteps-VerifyMetricsinSysdigMonitorUI)\nin the documentation pages.",
-      "csv_display_name": "Sysdig Agent Operator",
-      "csv_metadata_description": "Sysdig is a unified platform for container and microservices monitoring, troubleshooting, security and forensics. Sysdig platform has been built on top of Sysdig tool and Sysdig Inspect open-source technologies.\n",
-      "csv_name": "sysdig-certified.v1.15.25",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:11:58.447000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "sysdig-certified",
-      "provided_apis": [
-        {
-          "group": "sysdig.com",
-          "kind": "SysdigAgent",
-          "plural": "sysdigagents",
-          "version": "v1"
-        }
-      ],
-      "provider": "Sysdig",
-      "related_images": [
-        {
-          "digest": "sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "image": "registry.connect.redhat.com/sysdig/sysdig-operator@sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "name": "sysdig-operator-be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b-annotation"
-        },
-        {
-          "digest": "sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "image": "registry.connect.redhat.com/sysdig/sysdig-operator@sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8b4f814c112d7b91dc5e7904d4f3c684f3d77227344d2b553a84d4a1bc2829d3",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:8b4f814c112d7b91dc5e7904d4f3c684f3d77227344d2b553a84d4a1bc2829d3",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.15.25",
-      "version_original": "1.15.25"
-    },
-    {
-      "_id": "62f18e748c2137a6fb6809db",
-      "alm_examples": [
-        {
-          "api_version": "sysdig.com/v1",
-          "kind": "SysdigAgent",
-          "metadata": {
-            "name": "sysdigagent-sample"
-          },
-          "spec": {
-            "sysdig": {
-              "accessKey": "REPLACE ME",
-              "disableCaptures": false,
-              "existingAccessKeySecret": "",
-              "settings": {}
-            },
-            "tolerations": [
-              {
-                "effect": "NoSchedule",
-                "key": "node-role.kubernetes.io/master"
-              }
-            ]
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/sysdig/sysdig-operator-bundle@sha256:4ceef82e99ca7e5bf0f8d91a04852ee9315949c146a9ed5c819591e2f46fa550",
-      "bundle_path_digest": "sha256:4ceef82e99ca7e5bf0f8d91a04852ee9315949c146a9ed5c819591e2f46fa550",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-08T22:30:12.905000+00:00",
-      "csv_description": "[Sysdig](https://www.sysdig.com/) is a unified platform for container and\nmicroservices monitoring, troubleshooting, security and forensics. Sysdig\nplatform has been built on top of\n[Sysdig tool](https://sysdig.com/opensource/sysdig/) and\n[Sysdig Inspect](https://sysdig.com/blog/sysdig-inspect/) open-source\ntechnologies.\nThis operator installs the Sysdig Agent for\n[Sysdig Monitor](https://sysdig.com/product/monitor/) and\n[Sysdig Secure](https://sysdig.com/product/secure/) to all nodes in your\ncluster via a DaemonSet.\n## Settings\nThis operator, uses the same options than the\n[Helm Chart](https://hub.helm.sh/charts/stable/sysdig), please take a look\nto all the options in the following table:\n| Parameter                         | Description                                                            | Default                                     |\n| ---                               | ---                                                                    | ---                                         |\n| `image.registry`                  | Sysdig agent image registry                                            | `docker.io`                                 |\n| `image.repository`                | The image repository to pull from                                      | `sysdig/agent`                              |\n| `image.tag`                       | The image tag to pull                                                  | `REPLACE_AGENT_VERSION`                                     |\n| `image.pullPolicy`                | The Image pull policy                                                  | `IfNotPresent`                              |\n| `image.pullSecrets`               | Image pull secrets                                                     | `nil`                                       |\n| `resources.requests.cpu`          | CPU requested for being run in a node                                  | `600m`                                      |\n| `resources.requests.memory`       | Memory requested for being run in a node                               | `512Mi`                                     |\n| `resources.limits.cpu`            | CPU limit                                                              | `2000m`                                     |\n| `resources.limits.memory`         | Memory limit                                                           | `1536Mi`                                    |\n| `rbac.create`                     | If true, create & use RBAC resources                                   | `true`                                      |\n| `serviceAccount.create`           | Create serviceAccount                                                  | `true`                                      |\n| `serviceAccount.name`             | Use this value as serviceAccountName                                   | ` `                                         |\n| `daemonset.updateStrategy.type`   | The updateStrategy for updating the daemonset                          | `RollingUpdate`                             |\n| `daemonset.affinity`              | Node affinities                                                        | `nil`                                       |\n| `daemonset.annotations`           | Custom annotations for daemonset                                       | `{}`                                        |\n| `slim.enabled`                    | Use the slim based Sysdig Agent image                                  | `false`                                     |\n| `slim.kmoduleImage.repository`    | The kernel module image builder repository to pull from                | `sysdig/agent-kmodule`                      |\n| `slim.resources.requests.cpu`     | CPU requested for building the kernel module                           | `1000m`                                     |\n| `slim.resources.requests.memory`  | Memory requested for building the kernel module                        | `348Mi`                                     |\n| `slim.resources.limits.memory`    | Memory limit for building the kernel module                            | `512Mi`                                     |\n| `ebpf.enabled`                    | Enable eBPF support for Sysdig instead of `sysdig-probe` kernel module | `false`                                     |\n| `ebpf.settings.mountEtcVolume`    | Needed to detect which kernel version are running in Google COS        | `true`                                      |\n| `sysdig.accessKey`                | Your Sysdig Monitor Access Key                                         | `Nil` You must provide your own key         |\n| `sysdig.settings`                 | Settings for agent's configuration file                                | ` `                                         |\n| `secure.enabled`                  | Enable Sysdig Secure                                                   | `true`                                      |\n| `auditLog.enabled`                | Enable K8s audit log support for Sysdig Secure                         | `false`                                     |\n| `auditLog.auditServerUrl`         | The URL where Sysdig Agent listens for K8s audit log events            | `0.0.0.0`                                   |\n| `auditLog.auditServerPort`        | Port where Sysdig Agent listens for K8s audit log events               | `7765`                                      |\n| `auditLog.dynamicBackend.enabled` | Deploy the Audit Sink where Sysdig listens for K8s audit log events    | `false`                                     |\n| `customAppChecks`                 | The custom app checks deployed with your agent                         | `{}`                                        |\n| `tolerations`                     | The tolerations for scheduling                                         | `node-role.kubernetes.io/master:NoSchedule` |\n| `scc.create`                      | Create OpenShift's Security Context Constraint                         | `false`                                     |\nFor example, if you want to deploy a DaemonSet with eBPF and with Sysdig Secure\nenabled:\n```yaml\napiVersion: sysdig.com/v1\nkind: SysdigAgent\nmetadata:\n  name: agent-with-ebpf-and-secure\nspec:\n  ebpf:\n    enabled: true\n  daemonset:\n    annotations:\n      productID: SysdigSecureDevopsPlatform\n      productName: Sysdig Secure DevOps Platform\n      productVersion: REPLACE_VERSION\n  scc:\n    create: true\n  sysdig:\n    accessKey: XXX\n```\nPlease, notice that `sysdig.accessKey` is **mandatory**. Once you have provided\nthe accessKey, you can apply this file with `kubectl apply -f`\n## Getting your Access Key\nTo retrieve the key and use it in the agent:\n1. Log in to Sysdig Monitor or Sysdig Secure (maybe as administrator) and\n   select **Settings**.\n2. Choose Agent Installation.\n3. Use the Copy button to copy the access key at the top of the page.\nIf you need more help, you can read more about this process in the [Agent Installation: Overview and Key](\nhttps://sysdigdocs.atlassian.net/wiki/spaces/Platform/pages/213352719/Agent+Installation+Overview+and+Key)\ndocumentation page.\n## Verify Metrics in Sysdig Monitor UI\nOnce you have deployed the Sysdig Agent, it's time to verify that everything is\nworking as expected. So, we are going to log in Sysdig Monitor to do the check.\n1. Access Sysdig Monitor:\n   **SaaS**: https://app.sysdigcloud.com\n   Log in with your Sysdig user name and password.\n2. Select the **Explore** tab to see if metrics are displayed.\n3. To verify that kube state metrics and cluster name are working correctly:\n   Select the **Explore tab** and create a grouping by `kubernetes.cluster.name` and `kubernetes.pod.name`.\n4. Select an individual container or pod to see details.\nDon't rush about getting Kubernetes metadata. Pods, deployments ... appear a\nminute or two later than the nodes/containers themselves; if pod names do not\nappear immediately, wait and retry the Explore view.\nYou can read more about verification in the [Verify Metrics in Sysdig Monitor UI section](https://sysdigdocs.atlassian.net/wiki/spaces/Platform/pages/256475257/GKE+Installation+Steps#GKEInstallationSteps-VerifyMetricsinSysdigMonitorUI)\nin the documentation pages.",
-      "csv_display_name": "Sysdig Agent Operator",
-      "csv_metadata_description": "Sysdig is a unified platform for container and microservices monitoring, troubleshooting, security and forensics. Sysdig platform has been built on top of Sysdig tool and Sysdig Inspect open-source technologies.\n",
-      "csv_name": "sysdig-certified.v1.15.25",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:55:46.276000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "sysdig-certified",
-      "provided_apis": [
-        {
-          "group": "sysdig.com",
-          "kind": "SysdigAgent",
-          "plural": "sysdigagents",
-          "version": "v1"
-        }
-      ],
-      "provider": "Sysdig",
-      "related_images": [
-        {
-          "digest": "sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "image": "registry.connect.redhat.com/sysdig/sysdig-operator@sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "name": "sysdig-operator-be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b-annotation"
-        },
-        {
-          "digest": "sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "image": "registry.connect.redhat.com/sysdig/sysdig-operator@sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8b4f814c112d7b91dc5e7904d4f3c684f3d77227344d2b553a84d4a1bc2829d3",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:8b4f814c112d7b91dc5e7904d4f3c684f3d77227344d2b553a84d4a1bc2829d3",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.15.25",
-      "version_original": "1.15.25"
-    },
-    {
-      "_id": "62f18f03e81a17217613fc32",
-      "alm_examples": [
-        {
-          "api_version": "sysdig.com/v1",
-          "kind": "SysdigAgent",
-          "metadata": {
-            "name": "sysdigagent-sample"
-          },
-          "spec": {
-            "sysdig": {
-              "accessKey": "REPLACE ME",
-              "disableCaptures": false,
-              "existingAccessKeySecret": "",
-              "settings": {}
-            },
-            "tolerations": [
-              {
-                "effect": "NoSchedule",
-                "key": "node-role.kubernetes.io/master"
-              }
-            ]
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/sysdig/sysdig-operator-bundle@sha256:4ceef82e99ca7e5bf0f8d91a04852ee9315949c146a9ed5c819591e2f46fa550",
-      "bundle_path_digest": "sha256:4ceef82e99ca7e5bf0f8d91a04852ee9315949c146a9ed5c819591e2f46fa550",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-08T22:32:35.364000+00:00",
-      "csv_description": "[Sysdig](https://www.sysdig.com/) is a unified platform for container and\nmicroservices monitoring, troubleshooting, security and forensics. Sysdig\nplatform has been built on top of\n[Sysdig tool](https://sysdig.com/opensource/sysdig/) and\n[Sysdig Inspect](https://sysdig.com/blog/sysdig-inspect/) open-source\ntechnologies.\nThis operator installs the Sysdig Agent for\n[Sysdig Monitor](https://sysdig.com/product/monitor/) and\n[Sysdig Secure](https://sysdig.com/product/secure/) to all nodes in your\ncluster via a DaemonSet.\n## Settings\nThis operator, uses the same options than the\n[Helm Chart](https://hub.helm.sh/charts/stable/sysdig), please take a look\nto all the options in the following table:\n| Parameter                         | Description                                                            | Default                                     |\n| ---                               | ---                                                                    | ---                                         |\n| `image.registry`                  | Sysdig agent image registry                                            | `docker.io`                                 |\n| `image.repository`                | The image repository to pull from                                      | `sysdig/agent`                              |\n| `image.tag`                       | The image tag to pull                                                  | `REPLACE_AGENT_VERSION`                                     |\n| `image.pullPolicy`                | The Image pull policy                                                  | `IfNotPresent`                              |\n| `image.pullSecrets`               | Image pull secrets                                                     | `nil`                                       |\n| `resources.requests.cpu`          | CPU requested for being run in a node                                  | `600m`                                      |\n| `resources.requests.memory`       | Memory requested for being run in a node                               | `512Mi`                                     |\n| `resources.limits.cpu`            | CPU limit                                                              | `2000m`                                     |\n| `resources.limits.memory`         | Memory limit                                                           | `1536Mi`                                    |\n| `rbac.create`                     | If true, create & use RBAC resources                                   | `true`                                      |\n| `serviceAccount.create`           | Create serviceAccount                                                  | `true`                                      |\n| `serviceAccount.name`             | Use this value as serviceAccountName                                   | ` `                                         |\n| `daemonset.updateStrategy.type`   | The updateStrategy for updating the daemonset                          | `RollingUpdate`                             |\n| `daemonset.affinity`              | Node affinities                                                        | `nil`                                       |\n| `daemonset.annotations`           | Custom annotations for daemonset                                       | `{}`                                        |\n| `slim.enabled`                    | Use the slim based Sysdig Agent image                                  | `false`                                     |\n| `slim.kmoduleImage.repository`    | The kernel module image builder repository to pull from                | `sysdig/agent-kmodule`                      |\n| `slim.resources.requests.cpu`     | CPU requested for building the kernel module                           | `1000m`                                     |\n| `slim.resources.requests.memory`  | Memory requested for building the kernel module                        | `348Mi`                                     |\n| `slim.resources.limits.memory`    | Memory limit for building the kernel module                            | `512Mi`                                     |\n| `ebpf.enabled`                    | Enable eBPF support for Sysdig instead of `sysdig-probe` kernel module | `false`                                     |\n| `ebpf.settings.mountEtcVolume`    | Needed to detect which kernel version are running in Google COS        | `true`                                      |\n| `sysdig.accessKey`                | Your Sysdig Monitor Access Key                                         | `Nil` You must provide your own key         |\n| `sysdig.settings`                 | Settings for agent's configuration file                                | ` `                                         |\n| `secure.enabled`                  | Enable Sysdig Secure                                                   | `true`                                      |\n| `auditLog.enabled`                | Enable K8s audit log support for Sysdig Secure                         | `false`                                     |\n| `auditLog.auditServerUrl`         | The URL where Sysdig Agent listens for K8s audit log events            | `0.0.0.0`                                   |\n| `auditLog.auditServerPort`        | Port where Sysdig Agent listens for K8s audit log events               | `7765`                                      |\n| `auditLog.dynamicBackend.enabled` | Deploy the Audit Sink where Sysdig listens for K8s audit log events    | `false`                                     |\n| `customAppChecks`                 | The custom app checks deployed with your agent                         | `{}`                                        |\n| `tolerations`                     | The tolerations for scheduling                                         | `node-role.kubernetes.io/master:NoSchedule` |\n| `scc.create`                      | Create OpenShift's Security Context Constraint                         | `false`                                     |\nFor example, if you want to deploy a DaemonSet with eBPF and with Sysdig Secure\nenabled:\n```yaml\napiVersion: sysdig.com/v1\nkind: SysdigAgent\nmetadata:\n  name: agent-with-ebpf-and-secure\nspec:\n  ebpf:\n    enabled: true\n  daemonset:\n    annotations:\n      productID: SysdigSecureDevopsPlatform\n      productName: Sysdig Secure DevOps Platform\n      productVersion: REPLACE_VERSION\n  scc:\n    create: true\n  sysdig:\n    accessKey: XXX\n```\nPlease, notice that `sysdig.accessKey` is **mandatory**. Once you have provided\nthe accessKey, you can apply this file with `kubectl apply -f`\n## Getting your Access Key\nTo retrieve the key and use it in the agent:\n1. Log in to Sysdig Monitor or Sysdig Secure (maybe as administrator) and\n   select **Settings**.\n2. Choose Agent Installation.\n3. Use the Copy button to copy the access key at the top of the page.\nIf you need more help, you can read more about this process in the [Agent Installation: Overview and Key](\nhttps://sysdigdocs.atlassian.net/wiki/spaces/Platform/pages/213352719/Agent+Installation+Overview+and+Key)\ndocumentation page.\n## Verify Metrics in Sysdig Monitor UI\nOnce you have deployed the Sysdig Agent, it's time to verify that everything is\nworking as expected. So, we are going to log in Sysdig Monitor to do the check.\n1. Access Sysdig Monitor:\n   **SaaS**: https://app.sysdigcloud.com\n   Log in with your Sysdig user name and password.\n2. Select the **Explore** tab to see if metrics are displayed.\n3. To verify that kube state metrics and cluster name are working correctly:\n   Select the **Explore tab** and create a grouping by `kubernetes.cluster.name` and `kubernetes.pod.name`.\n4. Select an individual container or pod to see details.\nDon't rush about getting Kubernetes metadata. Pods, deployments ... appear a\nminute or two later than the nodes/containers themselves; if pod names do not\nappear immediately, wait and retry the Explore view.\nYou can read more about verification in the [Verify Metrics in Sysdig Monitor UI section](https://sysdigdocs.atlassian.net/wiki/spaces/Platform/pages/256475257/GKE+Installation+Steps#GKEInstallationSteps-VerifyMetricsinSysdigMonitorUI)\nin the documentation pages.",
-      "csv_display_name": "Sysdig Agent Operator",
-      "csv_metadata_description": "Sysdig is a unified platform for container and microservices monitoring, troubleshooting, security and forensics. Sysdig platform has been built on top of Sysdig tool and Sysdig Inspect open-source technologies.\n",
-      "csv_name": "sysdig-certified.v1.15.25",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:38:47.184000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "sysdig-certified",
-      "provided_apis": [
-        {
-          "group": "sysdig.com",
-          "kind": "SysdigAgent",
-          "plural": "sysdigagents",
-          "version": "v1"
-        }
-      ],
-      "provider": "Sysdig",
-      "related_images": [
-        {
-          "digest": "sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "image": "registry.connect.redhat.com/sysdig/sysdig-operator@sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "name": "sysdig-operator-be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b-annotation"
-        },
-        {
-          "digest": "sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "image": "registry.connect.redhat.com/sysdig/sysdig-operator@sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8b4f814c112d7b91dc5e7904d4f3c684f3d77227344d2b553a84d4a1bc2829d3",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:8b4f814c112d7b91dc5e7904d4f3c684f3d77227344d2b553a84d4a1bc2829d3",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.15.25",
-      "version_original": "1.15.25"
-    },
-    {
-      "_id": "62f18f1fecdd7d25b435a7b1",
-      "alm_examples": [
-        {
-          "api_version": "sysdig.com/v1",
-          "kind": "SysdigAgent",
-          "metadata": {
-            "name": "sysdigagent-sample"
-          },
-          "spec": {
-            "sysdig": {
-              "accessKey": "REPLACE ME",
-              "disableCaptures": false,
-              "existingAccessKeySecret": "",
-              "settings": {}
-            },
-            "tolerations": [
-              {
-                "effect": "NoSchedule",
-                "key": "node-role.kubernetes.io/master"
-              }
-            ]
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/sysdig/sysdig-operator-bundle@sha256:4ceef82e99ca7e5bf0f8d91a04852ee9315949c146a9ed5c819591e2f46fa550",
-      "bundle_path_digest": "sha256:4ceef82e99ca7e5bf0f8d91a04852ee9315949c146a9ed5c819591e2f46fa550",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-08T22:33:03.319000+00:00",
-      "csv_description": "[Sysdig](https://www.sysdig.com/) is a unified platform for container and\nmicroservices monitoring, troubleshooting, security and forensics. Sysdig\nplatform has been built on top of\n[Sysdig tool](https://sysdig.com/opensource/sysdig/) and\n[Sysdig Inspect](https://sysdig.com/blog/sysdig-inspect/) open-source\ntechnologies.\nThis operator installs the Sysdig Agent for\n[Sysdig Monitor](https://sysdig.com/product/monitor/) and\n[Sysdig Secure](https://sysdig.com/product/secure/) to all nodes in your\ncluster via a DaemonSet.\n## Settings\nThis operator, uses the same options than the\n[Helm Chart](https://hub.helm.sh/charts/stable/sysdig), please take a look\nto all the options in the following table:\n| Parameter                         | Description                                                            | Default                                     |\n| ---                               | ---                                                                    | ---                                         |\n| `image.registry`                  | Sysdig agent image registry                                            | `docker.io`                                 |\n| `image.repository`                | The image repository to pull from                                      | `sysdig/agent`                              |\n| `image.tag`                       | The image tag to pull                                                  | `REPLACE_AGENT_VERSION`                                     |\n| `image.pullPolicy`                | The Image pull policy                                                  | `IfNotPresent`                              |\n| `image.pullSecrets`               | Image pull secrets                                                     | `nil`                                       |\n| `resources.requests.cpu`          | CPU requested for being run in a node                                  | `600m`                                      |\n| `resources.requests.memory`       | Memory requested for being run in a node                               | `512Mi`                                     |\n| `resources.limits.cpu`            | CPU limit                                                              | `2000m`                                     |\n| `resources.limits.memory`         | Memory limit                                                           | `1536Mi`                                    |\n| `rbac.create`                     | If true, create & use RBAC resources                                   | `true`                                      |\n| `serviceAccount.create`           | Create serviceAccount                                                  | `true`                                      |\n| `serviceAccount.name`             | Use this value as serviceAccountName                                   | ` `                                         |\n| `daemonset.updateStrategy.type`   | The updateStrategy for updating the daemonset                          | `RollingUpdate`                             |\n| `daemonset.affinity`              | Node affinities                                                        | `nil`                                       |\n| `daemonset.annotations`           | Custom annotations for daemonset                                       | `{}`                                        |\n| `slim.enabled`                    | Use the slim based Sysdig Agent image                                  | `false`                                     |\n| `slim.kmoduleImage.repository`    | The kernel module image builder repository to pull from                | `sysdig/agent-kmodule`                      |\n| `slim.resources.requests.cpu`     | CPU requested for building the kernel module                           | `1000m`                                     |\n| `slim.resources.requests.memory`  | Memory requested for building the kernel module                        | `348Mi`                                     |\n| `slim.resources.limits.memory`    | Memory limit for building the kernel module                            | `512Mi`                                     |\n| `ebpf.enabled`                    | Enable eBPF support for Sysdig instead of `sysdig-probe` kernel module | `false`                                     |\n| `ebpf.settings.mountEtcVolume`    | Needed to detect which kernel version are running in Google COS        | `true`                                      |\n| `sysdig.accessKey`                | Your Sysdig Monitor Access Key                                         | `Nil` You must provide your own key         |\n| `sysdig.settings`                 | Settings for agent's configuration file                                | ` `                                         |\n| `secure.enabled`                  | Enable Sysdig Secure                                                   | `true`                                      |\n| `auditLog.enabled`                | Enable K8s audit log support for Sysdig Secure                         | `false`                                     |\n| `auditLog.auditServerUrl`         | The URL where Sysdig Agent listens for K8s audit log events            | `0.0.0.0`                                   |\n| `auditLog.auditServerPort`        | Port where Sysdig Agent listens for K8s audit log events               | `7765`                                      |\n| `auditLog.dynamicBackend.enabled` | Deploy the Audit Sink where Sysdig listens for K8s audit log events    | `false`                                     |\n| `customAppChecks`                 | The custom app checks deployed with your agent                         | `{}`                                        |\n| `tolerations`                     | The tolerations for scheduling                                         | `node-role.kubernetes.io/master:NoSchedule` |\n| `scc.create`                      | Create OpenShift's Security Context Constraint                         | `false`                                     |\nFor example, if you want to deploy a DaemonSet with eBPF and with Sysdig Secure\nenabled:\n```yaml\napiVersion: sysdig.com/v1\nkind: SysdigAgent\nmetadata:\n  name: agent-with-ebpf-and-secure\nspec:\n  ebpf:\n    enabled: true\n  daemonset:\n    annotations:\n      productID: SysdigSecureDevopsPlatform\n      productName: Sysdig Secure DevOps Platform\n      productVersion: REPLACE_VERSION\n  scc:\n    create: true\n  sysdig:\n    accessKey: XXX\n```\nPlease, notice that `sysdig.accessKey` is **mandatory**. Once you have provided\nthe accessKey, you can apply this file with `kubectl apply -f`\n## Getting your Access Key\nTo retrieve the key and use it in the agent:\n1. Log in to Sysdig Monitor or Sysdig Secure (maybe as administrator) and\n   select **Settings**.\n2. Choose Agent Installation.\n3. Use the Copy button to copy the access key at the top of the page.\nIf you need more help, you can read more about this process in the [Agent Installation: Overview and Key](\nhttps://sysdigdocs.atlassian.net/wiki/spaces/Platform/pages/213352719/Agent+Installation+Overview+and+Key)\ndocumentation page.\n## Verify Metrics in Sysdig Monitor UI\nOnce you have deployed the Sysdig Agent, it's time to verify that everything is\nworking as expected. So, we are going to log in Sysdig Monitor to do the check.\n1. Access Sysdig Monitor:\n   **SaaS**: https://app.sysdigcloud.com\n   Log in with your Sysdig user name and password.\n2. Select the **Explore** tab to see if metrics are displayed.\n3. To verify that kube state metrics and cluster name are working correctly:\n   Select the **Explore tab** and create a grouping by `kubernetes.cluster.name` and `kubernetes.pod.name`.\n4. Select an individual container or pod to see details.\nDon't rush about getting Kubernetes metadata. Pods, deployments ... appear a\nminute or two later than the nodes/containers themselves; if pod names do not\nappear immediately, wait and retry the Explore view.\nYou can read more about verification in the [Verify Metrics in Sysdig Monitor UI section](https://sysdigdocs.atlassian.net/wiki/spaces/Platform/pages/256475257/GKE+Installation+Steps#GKEInstallationSteps-VerifyMetricsinSysdigMonitorUI)\nin the documentation pages.",
-      "csv_display_name": "Sysdig Agent Operator",
-      "csv_metadata_description": "Sysdig is a unified platform for container and microservices monitoring, troubleshooting, security and forensics. Sysdig platform has been built on top of Sysdig tool and Sysdig Inspect open-source technologies.\n",
-      "csv_name": "sysdig-certified.v1.15.25",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:55:17.733000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "sysdig-certified",
-      "provided_apis": [
-        {
-          "group": "sysdig.com",
-          "kind": "SysdigAgent",
-          "plural": "sysdigagents",
-          "version": "v1"
-        }
-      ],
-      "provider": "Sysdig",
-      "related_images": [
-        {
-          "digest": "sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "image": "registry.connect.redhat.com/sysdig/sysdig-operator@sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "name": "sysdig-operator-be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b-annotation"
-        },
-        {
-          "digest": "sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "image": "registry.connect.redhat.com/sysdig/sysdig-operator@sha256:be33c101498cb8a301851bab997ce6c18e352e11f7d0e8b54c1db8bd9ca6302b",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8b4f814c112d7b91dc5e7904d4f3c684f3d77227344d2b553a84d4a1bc2829d3",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:8b4f814c112d7b91dc5e7904d4f3c684f3d77227344d2b553a84d4a1bc2829d3",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.15.25",
-      "version_original": "1.15.25"
     },
     {
       "_id": "62f1a0c1ecdd7d25b435aa6b",
@@ -7735,7 +7131,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:27:27.053000+00:00",
+      "last_update_date": "2022-09-19T12:20:50.321000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -7834,7 +7230,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:09:24.084000+00:00",
+      "last_update_date": "2022-09-19T11:58:48.553000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -7935,7 +7331,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:08:03.759000+00:00",
+      "last_update_date": "2022-09-19T12:04:18.546000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -8036,7 +7432,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:16:00.460000+00:00",
+      "last_update_date": "2022-09-19T11:44:57.933000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -8137,7 +7533,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:18:37.261000+00:00",
+      "last_update_date": "2022-09-19T11:48:30.362000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -8238,7 +7634,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:41:04.527000+00:00",
+      "last_update_date": "2022-09-19T11:39:00.951000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -8336,7 +7732,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:00:06.786000+00:00",
+      "last_update_date": "2022-09-19T11:47:07.251000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -8518,7 +7914,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:58:02.185000+00:00",
+      "last_update_date": "2022-09-19T11:52:04.564000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -8527,7 +7923,6 @@
         {
           "group": "csi.hitachi.com",
           "kind": "HSPC",
-          "plural": "hspcs",
           "version": "v1"
         }
       ],
@@ -8700,7 +8095,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:34:59.775000+00:00",
+      "last_update_date": "2022-09-19T12:25:08.313000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -8709,7 +8104,6 @@
         {
           "group": "csi.hitachi.com",
           "kind": "HSPC",
-          "plural": "hspcs",
           "version": "v1"
         }
       ],
@@ -9059,7 +8453,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:53:29.637000+00:00",
+      "last_update_date": "2022-09-19T11:40:21.988000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -9402,7 +8796,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:49:39.114000+00:00",
+      "last_update_date": "2022-09-19T11:43:13.194000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -9745,7 +9139,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:40:49.301000+00:00",
+      "last_update_date": "2022-09-19T12:24:50.673000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -10088,7 +9482,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:39:46.460000+00:00",
+      "last_update_date": "2022-09-19T12:07:01.654000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -10431,7 +9825,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:19:21.762000+00:00",
+      "last_update_date": "2022-09-19T12:28:21.116000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -10611,7 +10005,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:31:31.686000+00:00",
+      "last_update_date": "2022-09-19T12:18:32.250000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -10711,7 +10105,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:00:32.558000+00:00",
+      "last_update_date": "2022-09-19T11:47:32.649000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -10801,7 +10195,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:27:32.733000+00:00",
+      "last_update_date": "2022-09-19T12:20:56.486000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -10900,7 +10294,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:09:30.900000+00:00",
+      "last_update_date": "2022-09-19T11:58:53.007000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -11001,7 +10395,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:08:08.995000+00:00",
+      "last_update_date": "2022-09-19T12:04:24.232000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -11102,7 +10496,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:32:54.261000+00:00",
+      "last_update_date": "2022-09-19T12:04:52.915000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -11203,7 +10597,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:25:57.925000+00:00",
+      "last_update_date": "2022-09-19T12:04:48.945000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -11304,7 +10698,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:50:51.696000+00:00",
+      "last_update_date": "2022-09-19T12:28:50.632000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -11691,7 +11085,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-11T16:52:09.558000+00:00",
+      "last_update_date": "2022-09-19T11:43:57.278000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -11754,7 +11148,6 @@
         {
           "group": "couchbase.com",
           "kind": "CouchbaseAutoscaler",
-          "plural": "couchbaseautoscalers",
           "version": "v2"
         },
         {
@@ -12162,7 +11555,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-11T16:52:36.206000+00:00",
+      "last_update_date": "2022-09-19T11:47:15.392000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -12633,7 +12026,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-11T16:54:30.756000+00:00",
+      "last_update_date": "2022-09-19T12:32:27.649000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -12818,7 +12211,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-14T14:32:43.654000+00:00",
+      "last_update_date": "2022-09-19T12:04:11.829000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -12919,7 +12312,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-14T14:34:04.920000+00:00",
+      "last_update_date": "2022-09-19T11:58:42.077000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -13020,7 +12413,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-14T14:28:29.498000+00:00",
+      "last_update_date": "2022-09-19T12:20:39.115000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -13119,7 +12512,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-14T14:42:44.586000+00:00",
+      "last_update_date": "2022-09-19T11:53:24.482000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -13220,7 +12613,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-14T14:35:18.927000+00:00",
+      "last_update_date": "2022-09-19T11:29:36.434000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -13321,7 +12714,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-14T14:36:44.113000+00:00",
+      "last_update_date": "2022-09-19T12:29:40.079000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -13449,7 +12842,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:11:02.986000+00:00",
+      "last_update_date": "2022-09-19T12:07:41.093000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -13611,7 +13004,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:59:57.308000+00:00",
+      "last_update_date": "2022-09-19T12:35:36.721000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -13746,7 +13139,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:56:19.184000+00:00",
+      "last_update_date": "2022-09-19T11:43:53.177000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -13851,7 +13244,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:53:34.419000+00:00",
+      "last_update_date": "2022-09-19T11:47:10.436000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -13860,7 +13253,6 @@
         {
           "group": "loggers.coralogix.com",
           "kind": "CoralogixLogger",
-          "plural": "coralogixloggers",
           "version": "v1"
         }
       ],
@@ -13956,7 +13348,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:28:55.575000+00:00",
+      "last_update_date": "2022-09-19T11:37:37.743000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -13965,7 +13357,6 @@
         {
           "group": "loggers.coralogix.com",
           "kind": "CoralogixLogger",
-          "plural": "coralogixloggers",
           "version": "v1"
         }
       ],
@@ -14061,7 +13452,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:27:09.654000+00:00",
+      "last_update_date": "2022-09-19T11:57:12.045000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -14070,7 +13461,6 @@
         {
           "group": "loggers.coralogix.com",
           "kind": "CoralogixLogger",
-          "plural": "coralogixloggers",
           "version": "v1"
         }
       ],
@@ -14166,7 +13556,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:11:34.935000+00:00",
+      "last_update_date": "2022-09-19T11:29:21.871000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -14175,7 +13565,6 @@
         {
           "group": "loggers.coralogix.com",
           "kind": "CoralogixLogger",
-          "plural": "coralogixloggers",
           "version": "v1"
         }
       ],
@@ -16916,6 +16305,637 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "6.2.8-15",
       "version_original": "6.2.8-15"
+    },
+    {
+      "_id": "62fa3fecb289bcc7af6701b8",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.20-69.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:6eba0d4cdc724698aa1d42dd74ae6b19e9446f601f337d5752531a14f10e41ef",
+      "bundle_path_digest": "sha256:6eba0d4cdc724698aa1d42dd74ae6b19e9446f601f337d5752531a14f10e41ef",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.4",
+      "creation_date": "2022-08-15T12:45:32.406000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.20-4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T12:45:32.406000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Redis Labs",
+      "related_images": [
+        {
+          "digest": "sha256:3a86275c1bebed1e756e0ddf44adf2892e3039104c9c0675e60be029faed3c9f",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:3a86275c1bebed1e756e0ddf44adf2892e3039104c9c0675e60be029faed3c9f",
+          "name": "redis-enterprise-operator-3a86275c1bebed1e756e0ddf44adf2892e3039104c9c0675e60be029faed3c9f-annotation"
+        },
+        {
+          "digest": "sha256:3a86275c1bebed1e756e0ddf44adf2892e3039104c9c0675e60be029faed3c9f",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:3a86275c1bebed1e756e0ddf44adf2892e3039104c9c0675e60be029faed3c9f",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "6.0.20-4",
+      "version_original": "6.0.20-4"
+    },
+    {
+      "_id": "62fa3ff5bb3b9bafa134a038",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.6-39.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
+      "bundle_path_digest": "sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2022-08-15T12:45:41.431000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-24",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T12:45:41.431000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Redis Labs",
+      "related_images": [
+        {
+          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
+          "image": "redislabs/operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
+          "name": "operator-998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b-annotation"
+        },
+        {
+          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "6.0.6-24",
+      "version_original": "6.0.6-24"
+    },
+    {
+      "_id": "62fa3ff84eed1a480412f42c",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.2.4-55.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        },
+        {
+          "api_version": "app.redislabs.com/v1alpha1",
+          "kind": "RedisEnterpriseDatabase",
+          "metadata": {
+            "name": "redb"
+          },
+          "spec": {
+            "redisEnterpriseCluster": {
+              "name": "rec"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
+      "bundle_path_digest": "sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.10",
+      "creation_date": "2022-08-15T12:45:44.672000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.2.4-1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T12:45:44.672000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseDatabase",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Redis Labs",
+      "related_images": [
+        {
+          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "name": "redis-enterprise-operator-8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9-annotation"
+        },
+        {
+          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "name": "redis-enterprise-operator"
+        },
+        {
+          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "name": "admission"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "6.2.4-1",
+      "version_original": "6.2.4-1"
+    },
+    {
+      "_id": "62fa403530a80ba5a208c1a3",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.2.10",
+      "creation_date": "2022-08-15T12:46:45.377000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-11",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T12:46:45.377000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "6.0.6-11",
+      "version_original": "6.0.6-11"
+    },
+    {
+      "_id": "62fa404abb3b9bafa134a097",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "5.4.14-31.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "size": 3,
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:16da0c69f0e2585be8e44abe6e269dd35176771f5a1ecda3111c8a2f52c790a0",
+      "bundle_path_digest": "sha256:16da0c69f0e2585be8e44abe6e269dd35176771f5a1ecda3111c8a2f52c790a0",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.10",
+      "creation_date": "2022-08-15T12:47:06.689000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v5.4.14-7",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T12:47:06.689000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Redis Labs",
+      "related_images": [
+        {
+          "digest": "sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
+          "image": "redislabs/operator@sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
+          "name": "operator-062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217-annotation"
+        },
+        {
+          "digest": "sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "5.4.14-7",
+      "version_original": "5.4.14-7"
+    },
+    {
+      "_id": "62fa406130a80ba5a208c1df",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.2.8-41.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        },
+        {
+          "api_version": "app.redislabs.com/v1alpha1",
+          "kind": "RedisEnterpriseDatabase",
+          "metadata": {
+            "name": "redb"
+          },
+          "spec": {
+            "redisEnterpriseCluster": {
+              "name": "rec"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:cf89cfbb1c39ac9a7fd925f1e8b5bec94535e4eb64dd6e2da102e9f7b44f9f5e",
+      "bundle_path_digest": "sha256:cf89cfbb1c39ac9a7fd925f1e8b5bec94535e4eb64dd6e2da102e9f7b44f9f5e",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2022-08-15T12:47:29.860000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\nReplace my-project with the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.2.8-2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-15T12:47:29.860000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseDatabase",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Redis",
+      "related_images": [
+        {
+          "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
+          "name": "redis-enterprise-operator-f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353-annotation"
+        },
+        {
+          "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
+          "name": "redis-enterprise-operator"
+        },
+        {
+          "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
+          "name": "admission"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "6.2.8-2",
+      "version_original": "6.2.8-2"
     }
   ]
 }

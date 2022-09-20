@@ -1,1133 +1,6 @@
 {
   "data": [
     {
-      "_id": "62fa45bd4eed1a480412fb9c",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.12-57.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
-      "bundle_path_digest": "sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.10",
-      "creation_date": "2022-08-15T13:10:21.325000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.12-5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:10:21.325000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis Labs",
-      "related_images": [
-        {
-          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "name": "redis-enterprise-operator-b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f-annotation"
-        },
-        {
-          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.0.12-5",
-      "version_original": "6.0.12-5"
-    },
-    {
-      "_id": "62fa45c1bb3b9bafa134a76c",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "bootstrapperImageSpec": {
-              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise-operator"
-            },
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "registry.connect.redhat.com/redislabs/redis-enterprise"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "redisEnterpriseServicesRiggerImageSpec": {
-              "repository": "registry.connect.redhat.com/redislabs/services-manager"
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:3e0fde49a8e8c5f780a76087bbc42507a42fea0e1fea572ae05ba66d27338365",
-      "bundle_path_digest": "sha256:3e0fde49a8e8c5f780a76087bbc42507a42fea0e1fea572ae05ba66d27338365",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.10",
-      "creation_date": "2022-08-15T13:10:25.334000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n*  Changing the name of the Redis Enterprise Cluster in the spec from the\n  default requires running commands to grant permissions to the pods:\n\n  Operator service account:\n    > *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\n    Redis Enterprise Cluster service account:\n    > *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\n    Replace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.\n\n* When creating a Redis Enterprise Cluster without specifying in its spec a `persistentSpec` with explicit `storageClassName`,\nthe default Storage Class of the Kubernetes cluster will be used to dynamically provision storage for the Redis Enterprise Cluster's nodes.\nHowever, if the Kubernetes cluster doesn't have a default Storage Class configured\nand no specific Storage Class was specified in the Redis Enterprise Cluster Spec, the installation of the cluster could fail.\nTo avoid such scenario in cases where a specific Storage Class isn't specified, make sure the Kubernetes Cluster has a default Storage Cluster configured.\nThis can be done by running a `kubectl get storageclass` command and see if one of the Storage Classes' names contains a `(default)` mark.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.10-45",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:10:25.334000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis",
-      "related_images": [
-        {
-          "digest": "sha256:b771ef87bf211c17c37df028c202aac97170fb6d7d5d49b3ccb3410deb8212f6",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b771ef87bf211c17c37df028c202aac97170fb6d7d5d49b3ccb3410deb8212f6",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:b771ef87bf211c17c37df028c202aac97170fb6d7d5d49b3ccb3410deb8212f6",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b771ef87bf211c17c37df028c202aac97170fb6d7d5d49b3ccb3410deb8212f6",
-          "name": "admission-image"
-        },
-        {
-          "digest": "sha256:b771ef87bf211c17c37df028c202aac97170fb6d7d5d49b3ccb3410deb8212f6",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b771ef87bf211c17c37df028c202aac97170fb6d7d5d49b3ccb3410deb8212f6",
-          "name": "bootstrapper-image"
-        },
-        {
-          "digest": "sha256:8b46f2aacfb3e1b243c0b64975accc55fd80b4de9c9ac4769c3c67a5676addc5",
-          "image": "registry.connect.redhat.com/redislabs/services-manager@sha256:8b46f2aacfb3e1b243c0b64975accc55fd80b4de9c9ac4769c3c67a5676addc5",
-          "name": "k8s-controller-image"
-        },
-        {
-          "digest": "sha256:ffdf10a1b08115fd4de06f1cd751d36644a9bc9a8c11034cd432e9b66a5d2f73",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise@sha256:ffdf10a1b08115fd4de06f1cd751d36644a9bc9a8c11034cd432e9b66a5d2f73",
-          "name": "rs-image"
-        },
-        {
-          "digest": "sha256:b771ef87bf211c17c37df028c202aac97170fb6d7d5d49b3ccb3410deb8212f6",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b771ef87bf211c17c37df028c202aac97170fb6d7d5d49b3ccb3410deb8212f6",
-          "name": "redis-enterprise-operator-b771ef87bf211c17c37df028c202aac97170fb6d7d5d49b3ccb3410deb8212f6-annotation"
-        },
-        {
-          "digest": "sha256:b771ef87bf211c17c37df028c202aac97170fb6d7d5d49b3ccb3410deb8212f6",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b771ef87bf211c17c37df028c202aac97170fb6d7d5d49b3ccb3410deb8212f6",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "6.2.10-45",
-      "version_original": "6.2.10-45"
-    },
-    {
-      "_id": "62fa45c64eed1a480412fba7",
-      "alm_examples": [
-        {
-          "api_version": "postgresql.k8s.enterprisedb.io/v1",
-          "kind": "Backup",
-          "metadata": {
-            "name": "backup-sample"
-          },
-          "spec": {
-            "cluster": {
-              "name": "cluster-sample"
-            }
-          }
-        },
-        {
-          "api_version": "postgresql.k8s.enterprisedb.io/v1",
-          "kind": "Cluster",
-          "metadata": {
-            "name": "cluster-sample"
-          },
-          "spec": {
-            "instances": 3,
-            "logLevel": "info",
-            "primaryUpdateStrategy": "unsupervised",
-            "storage": {
-              "size": "1Gi"
-            }
-          }
-        },
-        {
-          "api_version": "postgresql.k8s.enterprisedb.io/v1",
-          "kind": "Pooler",
-          "metadata": {
-            "name": "pooler-sample-rw"
-          },
-          "spec": {
-            "cluster": {
-              "name": "cluster-sample"
-            },
-            "instances": 1,
-            "pgbouncer": {
-              "poolMode": "session"
-            },
-            "type": "rw"
-          }
-        },
-        {
-          "api_version": "postgresql.k8s.enterprisedb.io/v1",
-          "kind": "ScheduledBackup",
-          "metadata": {
-            "name": "scheduledbackup-sample"
-          },
-          "spec": {
-            "cluster": {
-              "name": "cluster-sample"
-            },
-            "schedule": "0 0 0 * * *"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64",
-        "ppc64le",
-        "s390x"
-      ],
-      "bundle_path": "registry.connect.redhat.com/enterprisedb/cloud-native-postgresql@sha256:e0624abf48e3f643638e93a633a4017961b454f133830f6d369b238d58a6eb8b",
-      "bundle_path_digest": "sha256:e0624abf48e3f643638e93a633a4017961b454f133830f6d369b238d58a6eb8b",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "null",
-      "creation_date": "2022-08-15T13:10:30.621000+00:00",
-      "csv_description": "EDB Postgres for Kubernetes is an operator designed, developed, and supported by EDB that covers the full \nlifecycle of a highly available Postgres database clusters with a primary/standby architecture, using native\nstreaming replication. It is based on the open source CloudNativePG operator, and provides additional value\nsuch as compatibility with Oracle using EDB Postgres Advanced Server and additional supported platforms such\nas IBM Power and OpenShift.\n\nKey features available include:\n\n* Kubernetes API integration for high availability\n* Self-healing through failover and automated recreation of replicas\n* Capacity management with scale up/down capabilities\n* Planned switchovers for scheduled maintenance\n* Read-only and read-write Kubernetes services definitions\n* Rolling updates for Postgres minor versions and operator upgrades\n* Continuous backup and point-in-time recovery\n* Connection Pooling with PgBouncer\n* Integrated metrics exporter out of the box\n* PostgreSQL replication across multiple Kubernetes clusters\n* Red Hat certified operator for OpenShift\n\nThe operator has been renamed from Cloud Native PostgreSQL. Existing users of Cloud Native PostgreSQL will not\nexperience any change, as the underlying components and resources have not changed.\n",
-      "csv_display_name": "EDB Postgres for Kubernetes",
-      "csv_metadata_description": "Operator to manage Postgres high availability clusters with a primary/standby architecture.",
-      "csv_name": "cloud-native-postgresql.v1.15.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:10:30.621000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "cloud-native-postgresql",
-      "provided_apis": [
-        {
-          "group": "postgresql.k8s.enterprisedb.io",
-          "kind": "Cluster",
-          "plural": "clusters",
-          "version": "v1"
-        },
-        {
-          "group": "postgresql.k8s.enterprisedb.io",
-          "kind": "Pooler",
-          "plural": "poolers",
-          "version": "v1"
-        },
-        {
-          "group": "postgresql.k8s.enterprisedb.io",
-          "kind": "ScheduledBackup",
-          "plural": "scheduledbackups",
-          "version": "v1"
-        },
-        {
-          "group": "postgresql.k8s.enterprisedb.io",
-          "kind": "Backup",
-          "plural": "backups",
-          "version": "v1"
-        }
-      ],
-      "provider": "EnterpriseDB Corporation",
-      "related_images": [
-        {
-          "digest": "sha256:af4718fd40222fb3fc68fa1952baa69e61a35085429f10e6fcd5db46d60f0bfc",
-          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:af4718fd40222fb3fc68fa1952baa69e61a35085429f10e6fcd5db46d60f0bfc",
-          "name": "cloud-native-postgresql-af4718fd40222fb3fc68fa1952baa69e61a35085429f10e6fcd5db46d60f0bfc-annotation"
-        },
-        {
-          "digest": "sha256:af4718fd40222fb3fc68fa1952baa69e61a35085429f10e6fcd5db46d60f0bfc",
-          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:af4718fd40222fb3fc68fa1952baa69e61a35085429f10e6fcd5db46d60f0bfc",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=0.6.0 < 1.15.2",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.15.2",
-      "version_original": "1.15.2"
-    },
-    {
-      "_id": "62fa45d84eed1a480412fbbe",
-      "alm_examples": [
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseCluster",
-          "metadata": {
-            "name": "cb-example"
-          },
-          "spec": {
-            "backup": {
-              "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
-              "managed": false,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              },
-              "serviceAccountName": "couchbase-backup"
-            },
-            "buckets": {
-              "managed": true,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              }
-            },
-            "cluster": {
-              "analyticsServiceMemoryQuota": "1Gi",
-              "autoCompaction": {
-                "databaseFragmentationThreshold": {
-                  "percent": 30,
-                  "size": "1Gi"
-                },
-                "parallelCompaction": false,
-                "timeWindow": {
-                  "abortCompactionOutsideWindow": true,
-                  "end": "06:00",
-                  "start": "02:00"
-                },
-                "tombstonePurgeInterval": "72h",
-                "viewFragmentationThreshold": {
-                  "percent": 30,
-                  "size": "1Gi"
-                }
-              },
-              "autoFailoverMaxCount": 3,
-              "autoFailoverOnDataDiskIssues": true,
-              "autoFailoverOnDataDiskIssuesTimePeriod": "120s",
-              "autoFailoverServerGroup": false,
-              "autoFailoverTimeout": "120s",
-              "clusterName": "cb-example",
-              "dataServiceMemoryQuota": "256Mi",
-              "eventingServiceMemoryQuota": "256Mi",
-              "indexServiceMemoryQuota": "256Mi",
-              "indexStorageSetting": "memory_optimized",
-              "searchServiceMemoryQuota": "256Mi"
-            },
-            "enablePreviewScaling": false,
-            "hibernate": false,
-            "hibernationStrategy": "Immediate",
-            "image": "registry.connect.redhat.com/couchbase/server@sha256:76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603",
-            "logRetentionCount": 20,
-            "logRetentionTime": "604800s",
-            "monitoring": {
-              "prometheus": {
-                "enabled": false,
-                "image": "registry.connect.redhat.com/couchbase/exporter@sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6"
-              }
-            },
-            "networking": {
-              "adminConsoleServiceType": "NodePort",
-              "adminConsoleServices": [
-                "data"
-              ],
-              "exposeAdminConsole": true,
-              "exposedFeatureServiceType": "NodePort",
-              "exposedFeatures": [
-                "xdcr"
-              ]
-            },
-            "recoveryPolicy": "PrioritizeDataIntegrity",
-            "security": {
-              "adminSecret": "cb-example-auth",
-              "rbac": {
-                "managed": true,
-                "selector": {
-                  "matchLabels": {
-                    "cluster": "cb-example"
-                  }
-                }
-              }
-            },
-            "servers": [
-              {
-                "name": "all_services",
-                "services": [
-                  "data",
-                  "index",
-                  "query",
-                  "search",
-                  "eventing",
-                  "analytics"
-                ],
-                "size": 3
-              }
-            ],
-            "upgradeStrategy": "RollingUpgrade",
-            "xdcr": {
-              "managed": false,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              }
-            }
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "default"
-          },
-          "spec": {
-            "compressionMode": "passive",
-            "conflictResolution": "lww",
-            "enableFlush": false,
-            "enableIndexReplica": true,
-            "evictionPolicy": "valueOnly",
-            "ioPriority": "low",
-            "memoryQuota": "100Mi",
-            "replicas": 2
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseEphemeralBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "ephemeral-bucket"
-          },
-          "spec": {
-            "compressionMode": "passive",
-            "conflictResolution": "lww",
-            "enableFlush": false,
-            "evictionPolicy": "noEviction",
-            "ioPriority": "low",
-            "memoryQuota": "100Mi",
-            "replicas": 2
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseMemcachedBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "memcached-bucket"
-          },
-          "spec": {
-            "enableFlush": false,
-            "memoryQuota": "100Mi"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseUser",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-user"
-          },
-          "spec": {
-            "authDomain": "local",
-            "authSecret": "cb-example-auth",
-            "fullName": "My User"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseGroup",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-group"
-          },
-          "spec": {
-            "roles": [
-              {
-                "bucket": "default",
-                "name": "bucket_admin"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseRoleBinding",
-          "metadata": {
-            "name": "my-role-binding"
-          },
-          "spec": {
-            "roleRef": {
-              "kind": "CouchbaseGroup",
-              "name": "my-group"
-            },
-            "subjects": [
-              {
-                "kind": "CouchbaseUser",
-                "name": "my-user"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseReplication",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-replication"
-          },
-          "spec": {
-            "bucket": "default",
-            "compressionType": "Snappy",
-            "filterExpression": "",
-            "paused": false,
-            "remoteBucket": "default"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBackup",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "cb-backup"
-          },
-          "spec": {
-            "backOffLimit": 2,
-            "backupRetention": "24h",
-            "failedJobsHistoryLimit": 3,
-            "full": {
-              "schedule": "0 3 * * 6"
-            },
-            "incremental": {
-              "schedule": "0 3 * * 1-6"
-            },
-            "logRetention": "24h",
-            "size": "5Gi",
-            "strategy": "full_incremental",
-            "successfulJobsHistoryLimit": 1
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBackupRestore",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "cb-restore"
-          },
-          "spec": {
-            "backOffLimit": 2,
-            "backup": "cb-backup",
-            "end": {
-              "int": 1
-            },
-            "logRetention": "24h",
-            "repo": "cb-example-2020-10-29T19_00_03",
-            "start": {
-              "int": 1
-            }
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseAutoscaler",
-          "metadata": {
-            "name": "do.not.create.internal.only"
-          },
-          "spec": {
-            "servers": "internal",
-            "size": 2
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:34d5409a2ab6863d5dcf56dc40f83abc5ad8bcf41be06a6b0097ed0b858675bd",
-      "bundle_path_digest": "sha256:34d5409a2ab6863d5dcf56dc40f83abc5ad8bcf41be06a6b0097ed0b858675bd",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "2.2.4",
-      "creation_date": "2022-08-15T13:10:48.205000+00:00",
-      "csv_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments on OpenShift. By installing this integration you will be able to deply Couchbase Server clusters with a single command.\n\n## Supported Features\n\n* **Automated cluster provisioning** - Deploying a Couchbase Cluster has never been easier. Fill out a Couchbase specific configuration and let the Couchbase Operator take care of provisioning nodes and setting up cluster to your exact specification.\n\n* **On-demand scalability** - Automatically scale your cluster up or down by changing a simple configuration parameter and let the Couchbase Operator handle provisioning of new nodes and joining them into the cluster.\n\n* **Auto-recovery** - Detect Couchbase node failures, rebalance out bad nodes, and bring the cluster back up to the desired capacity. Auto-recovery is completely automated so you can sleep easy through the night knowing that the Couchbase Operator will handle any failures.\n\n* **Geo-distribution** - Replicate your data between datacenters to move data closer to the users who consume it and protect against disaster scenarios where an entire datacenter becomes unavailable.\n\n* **Persistent storage** - Define persistent network-attached storage for each node in your cluster to allow pods to be recovered even if the node they were running on is no longer available.\n\n* **Rack/zone awareness** - Tell the Couchbase Operator about availability zones in your datacenter and let the operator take care of ensuring that nodes in your cluster are deployed equally across each zone.\n\n* **Supportability** - When things go wrong, use the cbopinfo tool provided with the Couchbase Operator to collect relevant data about your Couchbase deployment so that you can quickly address issues.\n\n* **Centralized configuration management** - Manage your configuration centrally with OpenShift. Updates to the configuration are watched by the Couchbase Operator and actions are taken to make the target cluster match the desired configuration.\n## Required Parameters\n* `authSecret` - provide the name of a secret that contains two keys for the `username` and `password` of the super user ([documentation](https://docs.couchbase.com/operator/1.2/couchbase-cluster-config.html))\n\n## About Couchbase Server\n\nBuilt on the most powerful NoSQL technology, Couchbase Server delivers unparalleled performance at scale, in any cloud. With features like memory-first architecture, geo-distributed deployments, and workload isolation, Couchbase Server excels at supporting mission-critical applications at scale while maintaining submillisecond latencies and 99.999% availability. Plus, with the most comprehensive SQL-compatible query language (N1QL), migrating from RDBMS to Couchbase Server is easy with ANSI joins.\n",
-      "csv_display_name": "Couchbase Operator",
-      "csv_metadata_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments",
-      "csv_name": "couchbase-operator.v2.2.4-2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:10:48.205000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "couchbase-enterprise-certified",
-      "provided_apis": [
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseCluster",
-          "plural": "couchbaseclusters",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseUser",
-          "plural": "couchbaseusers",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackupRestore",
-          "plural": "couchbasebackuprestores",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseEphemeralBucket",
-          "plural": "couchbaseephemeralbuckets",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseMemcachedBucket",
-          "plural": "couchbasememcachedbuckets",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseReplication",
-          "plural": "couchbasereplications",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBucket",
-          "plural": "couchbasebuckets",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseRoleBinding",
-          "plural": "couchbaserolebindings",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseAutoscaler",
-          "plural": "couchbaseautoscalers",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackup",
-          "plural": "couchbasebackups",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseGroup",
-          "plural": "couchbasegroups",
-          "version": "v2"
-        }
-      ],
-      "provider": "Couchbase",
-      "related_images": [
-        {
-          "digest": "sha256:8e152e8e4ce5bedf22f893bf127f5f882e1d02b0b9509b9114e349eb0716bca2",
-          "image": "registry.connect.redhat.com/couchbase/operator@sha256:8e152e8e4ce5bedf22f893bf127f5f882e1d02b0b9509b9114e349eb0716bca2",
-          "name": "couchbase-operator"
-        },
-        {
-          "digest": "sha256:76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603",
-          "image": "registry.connect.redhat.com/couchbase/server@sha256:76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603",
-          "name": "couchbase-server"
-        },
-        {
-          "digest": "sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
-          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
-          "name": "couchbase-backup"
-        },
-        {
-          "digest": "sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
-          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
-          "name": "couchbase-metrics"
-        },
-        {
-          "digest": "sha256:76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603",
-          "image": "registry.connect.redhat.com/couchbase/server@sha256:76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603",
-          "name": "couchbase_server"
-        },
-        {
-          "digest": "sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
-          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
-          "name": "couchbase_backup"
-        },
-        {
-          "digest": "sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
-          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
-          "name": "couchbase_metrics"
-        },
-        {
-          "digest": "sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
-          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6",
-          "name": "exporter-fda5d8278acb72682ebc0151ab77f4c212ba3c7b850e3074b54408cd85cf0df6-annotation"
-        },
-        {
-          "digest": "sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
-          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935",
-          "name": "operator-backup-e46c4e32e645df4b9a6a2cfda04fbf8ecb66da1fdf47d073de9ec49796bd3935-annotation"
-        },
-        {
-          "digest": "sha256:76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603",
-          "image": "registry.connect.redhat.com/couchbase/server@sha256:76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603",
-          "name": "server-76f227833f929115adbbbc28988f721b2af9aa825219ee9429482a2287a91603-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "2.2.4-2",
-      "version_original": "2.2.4-2"
-    },
-    {
-      "_id": "62fa45efb289bcc7af670973",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.2.8-53.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:bd97c3efdbdf7c723bebef078153ba68d5ed1f47038146dd5c5bbf575592da9b",
-      "bundle_path_digest": "sha256:bd97c3efdbdf7c723bebef078153ba68d5ed1f47038146dd5c5bbf575592da9b",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.10",
-      "creation_date": "2022-08-15T13:11:11.127000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running commands to grant permissions to the pods:\n\nOperator service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\nRedis Enterprise Cluster service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\nReplace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.8-11",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:11:11.127000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        }
-      ],
-      "provider": "Redis",
-      "related_images": [
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "redis-enterprise-operator-5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59-annotation"
-        },
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.2.8-11",
-      "version_original": "6.2.8-11"
-    },
-    {
-      "_id": "62fa45fc4eed1a480412fbeb",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.6-39.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
-      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.4",
-      "creation_date": "2022-08-15T13:11:24.710000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.6-11",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:11:24.710000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis Labs",
-      "related_images": [
-        {
-          "digest": "sha256:fcdcfbf38860a41a5c4a635cf74d8f421fe48b4180b51c511e5eb3f309c7f6e2",
-          "image": "redislabs/operator@sha256:fcdcfbf38860a41a5c4a635cf74d8f421fe48b4180b51c511e5eb3f309c7f6e2",
-          "name": "operator-fcdcfbf38860a41a5c4a635cf74d8f421fe48b4180b51c511e5eb3f309c7f6e2-annotation"
-        },
-        {
-          "digest": "sha256:fcdcfbf38860a41a5c4a635cf74d8f421fe48b4180b51c511e5eb3f309c7f6e2",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:fcdcfbf38860a41a5c4a635cf74d8f421fe48b4180b51c511e5eb3f309c7f6e2",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "6.0.6-11",
-      "version_original": "6.0.6-11"
-    },
-    {
       "_id": "62fa460db289bcc7af670997",
       "alm_examples": [
         {
@@ -13204,7 +12077,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T17:42:41.572000+00:00",
+      "last_update_date": "2022-09-19T11:56:01.844000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -13349,7 +12222,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T17:44:59.283000+00:00",
+      "last_update_date": "2022-09-19T11:50:49.045000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -13494,7 +12367,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T17:59:54.728000+00:00",
+      "last_update_date": "2022-09-19T11:59:56.694000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -13639,7 +12512,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T18:04:54.239000+00:00",
+      "last_update_date": "2022-09-19T12:08:41.250000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -13870,7 +12743,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-16T12:58:42.680000+00:00",
+      "last_update_date": "2022-09-19T11:56:21.251000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -14189,7 +13062,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-16T13:11:32.679000+00:00",
+      "last_update_date": "2022-09-19T11:46:59.483000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -14198,31 +13071,26 @@
         {
           "group": "pg.percona.com",
           "kind": "Pgcluster",
-          "plural": "pgclusters",
           "version": "v1"
         },
         {
           "group": "pg.percona.com",
           "kind": "Pgpolicy",
-          "plural": "pgpolicies",
           "version": "v1"
         },
         {
           "group": "pg.percona.com",
           "kind": "Pgreplica",
-          "plural": "pgreplicas",
           "version": "v1"
         },
         {
           "group": "pg.percona.com",
           "kind": "Pgtask",
-          "plural": "pgtasks",
           "version": "v1"
         },
         {
           "group": "pg.percona.com",
           "kind": "PerconaPGCluster",
-          "plural": "perconapgclusters",
           "version": "v1"
         }
       ],
@@ -14508,7 +13376,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-16T13:13:36.080000+00:00",
+      "last_update_date": "2022-09-19T12:01:34.513000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -14535,7 +13403,6 @@
         {
           "group": "pg.percona.com",
           "kind": "Pgpolicy",
-          "plural": "pgpolicies",
           "version": "v1"
         },
         {
@@ -14827,7 +13694,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-16T13:15:54.549000+00:00",
+      "last_update_date": "2022-09-19T12:07:17.678000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -14836,31 +13703,26 @@
         {
           "group": "pg.percona.com",
           "kind": "Pgtask",
-          "plural": "pgtasks",
           "version": "v1"
         },
         {
           "group": "pg.percona.com",
           "kind": "PerconaPGCluster",
-          "plural": "perconapgclusters",
           "version": "v1"
         },
         {
           "group": "pg.percona.com",
           "kind": "Pgcluster",
-          "plural": "pgclusters",
           "version": "v1"
         },
         {
           "group": "pg.percona.com",
           "kind": "Pgpolicy",
-          "plural": "pgpolicies",
           "version": "v1"
         },
         {
           "group": "pg.percona.com",
           "kind": "Pgreplica",
-          "plural": "pgreplicas",
           "version": "v1"
         }
       ],
@@ -15063,7 +13925,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-16T17:35:32.307000+00:00",
+      "last_update_date": "2022-09-19T12:02:14.854000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -15224,7 +14086,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-16T17:36:00.553000+00:00",
+      "last_update_date": "2022-09-19T12:00:38.335000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -15233,7 +14095,6 @@
         {
           "group": "machinelearning.seldon.io",
           "kind": "SeldonDeployment",
-          "plural": "seldondeployments",
           "version": "v1"
         }
       ],
@@ -15361,7 +14222,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-16T18:05:35.214000+00:00",
+      "last_update_date": "2022-09-19T12:19:45.992000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -15452,7 +14313,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-16T18:21:53.218000+00:00",
+      "last_update_date": "2022-09-19T12:02:02.969000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -15545,7 +14406,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-16T18:22:14.484000+00:00",
+      "last_update_date": "2022-09-19T12:09:30.251000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -15583,6 +14444,1262 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "42.13.0",
       "version_original": "42.13.0"
+    },
+    {
+      "_id": "62fbe0ddbb3b9bafa1354bc3",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Xl",
+          "metadata": {
+            "name": "xl-release"
+          },
+          "spec": {
+            "global": {
+              "customImageNames": false,
+              "repository": "registry.connect.redhat.com/turbonomic",
+              "tag": "8.5.7"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:c5c898eff1a7189cd0e748bdcc08a40b5a05d23cd69d86a9716c0435b8719ec9",
+      "bundle_path_digest": "sha256:c5c898eff1a7189cd0e748bdcc08a40b5a05d23cd69d86a9716c0435b8719ec9",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-16T18:24:29.672000+00:00",
+      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
+      "csv_display_name": "Turbonomic Platform Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "t8c-operator.v42.13.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:55:49.811000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "t8c-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Xl",
+          "plural": "xls",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Xl",
+          "plural": "xls",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
+          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
+          "name": "t8c-operator-ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195-annotation"
+        },
+        {
+          "digest": "sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
+          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
+          "name": "t8c-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "42.13.0",
+      "version_original": "42.13.0"
+    },
+    {
+      "_id": "62fbe0f3b289bcc7af67ade5",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Xl",
+          "metadata": {
+            "name": "xl-release"
+          },
+          "spec": {
+            "global": {
+              "customImageNames": false,
+              "repository": "registry.connect.redhat.com/turbonomic",
+              "tag": "8.5.7"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:c5c898eff1a7189cd0e748bdcc08a40b5a05d23cd69d86a9716c0435b8719ec9",
+      "bundle_path_digest": "sha256:c5c898eff1a7189cd0e748bdcc08a40b5a05d23cd69d86a9716c0435b8719ec9",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-16T18:24:51.611000+00:00",
+      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
+      "csv_display_name": "Turbonomic Platform Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "t8c-operator.v42.13.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:47:08.873000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "t8c-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Xl",
+          "plural": "xls",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Xl",
+          "plural": "xls",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
+          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
+          "name": "t8c-operator-ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195-annotation"
+        },
+        {
+          "digest": "sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
+          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
+          "name": "t8c-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "42.13.0",
+      "version_original": "42.13.0"
+    },
+    {
+      "_id": "62fbe277bb3b9bafa1354c35",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Xl",
+          "metadata": {
+            "name": "xl-release"
+          },
+          "spec": {
+            "global": {
+              "customImageNames": false,
+              "repository": "registry.connect.redhat.com/turbonomic",
+              "tag": "8.5.7"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:c5c898eff1a7189cd0e748bdcc08a40b5a05d23cd69d86a9716c0435b8719ec9",
+      "bundle_path_digest": "sha256:c5c898eff1a7189cd0e748bdcc08a40b5a05d23cd69d86a9716c0435b8719ec9",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-16T18:31:19.789000+00:00",
+      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
+      "csv_display_name": "Turbonomic Platform Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "t8c-operator.v42.13.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:22:53.117000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "t8c-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Xl",
+          "plural": "xls",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Xl",
+          "plural": "xls",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
+          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
+          "name": "t8c-operator-ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195-annotation"
+        },
+        {
+          "digest": "sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
+          "image": "registry.connect.redhat.com/turbonomic/t8c-operator@sha256:ecf118a07bd533a95e93c67b48aaa0ba442be529c23af50e7a835ab710696195",
+          "name": "t8c-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "42.13.0",
+      "version_original": "42.13.0"
+    },
+    {
+      "_id": "62fce463bb3b9bafa13584d4",
+      "alm_examples": [
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "License",
+          "metadata": {
+            "name": "tvk-license-one",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
+          }
+        },
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "Target",
+          "metadata": {
+            "labels": {
+              "app": "triliovault"
+            },
+            "name": "triliovault-target",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "nfsCredentials": {
+              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
+              "nfsOptions": "nfsvers=4"
+            },
+            "type": "NFS",
+            "vendor": "Other"
+          }
+        },
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "BackupPlan",
+          "metadata": {
+            "name": "tvk-backupplan"
+          },
+          "spec": {
+            "backupConfig": {
+              "retentionPolicy": {
+                "name": "retention-policy",
+                "namespace": "openshift-marketplace"
+              },
+              "schedulePolicy": {
+                "fullBackupPolicy": {
+                  "name": "full-bp-policy",
+                  "namespace": "openshift-marketplace"
+                },
+                "incrementalBackupPolicy": {
+                  "name": "inc-bp-policy",
+                  "namespace": "openshift-marketplace"
+                }
+              },
+              "target": {
+                "name": "triliovault-target",
+                "namespace": "openshift-marketplace"
+              }
+            },
+            "backupPlanComponents": {
+              "custom": [
+                {
+                  "matchLabels": {
+                    "app": "nginx"
+                  }
+                }
+              ],
+              "helmReleases": [
+                "sample-release"
+              ],
+              "operators": [
+                {
+                  "applicationResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "app": "etcd"
+                      }
+                    }
+                  ],
+                  "customResources": [
+                    {
+                      "groupVersionKind": {
+                        "group": "etcd.database.coreos.com",
+                        "kind": "EtcdCluster",
+                        "version": "v1beta2"
+                      },
+                      "objects": [
+                        "demo-etcd-cluster"
+                      ]
+                    }
+                  ],
+                  "operatorId": "demo-etcd-cluster",
+                  "operatorResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "release": "demo-etcd-operator"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/trilio/r-3445381-bundle@sha256:b7ab313d7aa6a902ae023b7726c74c1a0f0d340716e7594558c0013cfaaf7f36",
+      "bundle_path_digest": "sha256:b7ab313d7aa6a902ae023b7726c74c1a0f0d340716e7594558c0013cfaaf7f36",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-17T12:51:47.385000+00:00",
+      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
+      "csv_display_name": "TrilioVault for Kubernetes",
+      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
+      "csv_name": "k8s-triliovault-stable.2.10.3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:00:50.443000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "k8s-triliovault",
+      "provided_apis": [
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Backup",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "BackupPlan",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackup",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackupPlan",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterRestore",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Hook",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "License",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Policy",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Restore",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Target",
+          "version": "v1"
+        }
+      ],
+      "provider": "Trilio",
+      "related_images": [
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "control-plane-49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5-annotation"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "k8s-triliovault-control-plane"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "k8s-triliovault-analyzer"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "triliovault-admission-webhook"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "triliovault-exporter"
+        },
+        {
+          "digest": "sha256:ffda02d6487b7f7a1f810363efc4613872919c28326f4806f0c921c07ddcded7",
+          "image": "registry.connect.redhat.com/trilio/web@sha256:ffda02d6487b7f7a1f810363efc4613872919c28326f4806f0c921c07ddcded7",
+          "name": "triliovault-web"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "triliovault-web-backend"
+        },
+        {
+          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "name": "triliovault-dex"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "webhook-init"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "dex-init"
+        },
+        {
+          "digest": "sha256:c1742bf2c723d49b936b055daa69df3a6834d62d357f8b6eb7d9a2064112787c",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:c1742bf2c723d49b936b055daa69df3a6834d62d357f8b6eb7d9a2064112787c",
+          "name": "metamover"
+        },
+        {
+          "digest": "sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
+          "name": "datamover"
+        },
+        {
+          "digest": "sha256:c1742bf2c723d49b936b055daa69df3a6834d62d357f8b6eb7d9a2064112787c",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:c1742bf2c723d49b936b055daa69df3a6834d62d357f8b6eb7d9a2064112787c",
+          "name": "datastore_attacher"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "backup_scheduler"
+        },
+        {
+          "digest": "sha256:c1742bf2c723d49b936b055daa69df3a6834d62d357f8b6eb7d9a2064112787c",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:c1742bf2c723d49b936b055daa69df3a6834d62d357f8b6eb7d9a2064112787c",
+          "name": "backup_cleaner"
+        },
+        {
+          "digest": "sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
+          "name": "backup_retention"
+        },
+        {
+          "digest": "sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
+          "name": "target_browser"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "hook"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "resource_cleaner"
+        },
+        {
+          "digest": "sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "image": "registry.connect.redhat.com/trilio/minio@sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "name": "minio"
+        },
+        {
+          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "name": "dex"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "tvk_init"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<2.10.3",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "2.10.3",
+      "version_original": "2.10.3"
+    },
+    {
+      "_id": "62fce467bb3b9bafa13584d6",
+      "alm_examples": [
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "License",
+          "metadata": {
+            "name": "tvk-license-one",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
+          }
+        },
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "Target",
+          "metadata": {
+            "labels": {
+              "app": "triliovault"
+            },
+            "name": "triliovault-target",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "nfsCredentials": {
+              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
+              "nfsOptions": "nfsvers=4"
+            },
+            "type": "NFS",
+            "vendor": "Other"
+          }
+        },
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "BackupPlan",
+          "metadata": {
+            "name": "tvk-backupplan"
+          },
+          "spec": {
+            "backupConfig": {
+              "retentionPolicy": {
+                "name": "retention-policy",
+                "namespace": "openshift-marketplace"
+              },
+              "schedulePolicy": {
+                "fullBackupPolicy": {
+                  "name": "full-bp-policy",
+                  "namespace": "openshift-marketplace"
+                },
+                "incrementalBackupPolicy": {
+                  "name": "inc-bp-policy",
+                  "namespace": "openshift-marketplace"
+                }
+              },
+              "target": {
+                "name": "triliovault-target",
+                "namespace": "openshift-marketplace"
+              }
+            },
+            "backupPlanComponents": {
+              "custom": [
+                {
+                  "matchLabels": {
+                    "app": "nginx"
+                  }
+                }
+              ],
+              "helmReleases": [
+                "sample-release"
+              ],
+              "operators": [
+                {
+                  "applicationResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "app": "etcd"
+                      }
+                    }
+                  ],
+                  "customResources": [
+                    {
+                      "groupVersionKind": {
+                        "group": "etcd.database.coreos.com",
+                        "kind": "EtcdCluster",
+                        "version": "v1beta2"
+                      },
+                      "objects": [
+                        "demo-etcd-cluster"
+                      ]
+                    }
+                  ],
+                  "operatorId": "demo-etcd-cluster",
+                  "operatorResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "release": "demo-etcd-operator"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/trilio/r-3445381-bundle@sha256:b7ab313d7aa6a902ae023b7726c74c1a0f0d340716e7594558c0013cfaaf7f36",
+      "bundle_path_digest": "sha256:b7ab313d7aa6a902ae023b7726c74c1a0f0d340716e7594558c0013cfaaf7f36",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-17T12:51:51.028000+00:00",
+      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
+      "csv_display_name": "TrilioVault for Kubernetes",
+      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
+      "csv_name": "k8s-triliovault-stable.2.10.3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:50:24.099000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "k8s-triliovault",
+      "provided_apis": [
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackupPlan",
+          "plural": "clusterbackupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackup",
+          "plural": "clusterbackups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterRestore",
+          "plural": "clusterrestores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Restore",
+          "plural": "restores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "BackupPlan",
+          "plural": "backupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Policy",
+          "plural": "policies",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "License",
+          "plural": "licenses",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Hook",
+          "plural": "hooks",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Target",
+          "plural": "targets",
+          "version": "v1"
+        }
+      ],
+      "provider": "Trilio",
+      "related_images": [
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "control-plane-49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5-annotation"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "k8s-triliovault-control-plane"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "k8s-triliovault-analyzer"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "triliovault-admission-webhook"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "triliovault-exporter"
+        },
+        {
+          "digest": "sha256:ffda02d6487b7f7a1f810363efc4613872919c28326f4806f0c921c07ddcded7",
+          "image": "registry.connect.redhat.com/trilio/web@sha256:ffda02d6487b7f7a1f810363efc4613872919c28326f4806f0c921c07ddcded7",
+          "name": "triliovault-web"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "triliovault-web-backend"
+        },
+        {
+          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "name": "triliovault-dex"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "webhook-init"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "dex-init"
+        },
+        {
+          "digest": "sha256:c1742bf2c723d49b936b055daa69df3a6834d62d357f8b6eb7d9a2064112787c",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:c1742bf2c723d49b936b055daa69df3a6834d62d357f8b6eb7d9a2064112787c",
+          "name": "metamover"
+        },
+        {
+          "digest": "sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
+          "name": "datamover"
+        },
+        {
+          "digest": "sha256:c1742bf2c723d49b936b055daa69df3a6834d62d357f8b6eb7d9a2064112787c",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:c1742bf2c723d49b936b055daa69df3a6834d62d357f8b6eb7d9a2064112787c",
+          "name": "datastore_attacher"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "backup_scheduler"
+        },
+        {
+          "digest": "sha256:c1742bf2c723d49b936b055daa69df3a6834d62d357f8b6eb7d9a2064112787c",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:c1742bf2c723d49b936b055daa69df3a6834d62d357f8b6eb7d9a2064112787c",
+          "name": "backup_cleaner"
+        },
+        {
+          "digest": "sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
+          "name": "backup_retention"
+        },
+        {
+          "digest": "sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
+          "name": "target_browser"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "hook"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "resource_cleaner"
+        },
+        {
+          "digest": "sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "image": "registry.connect.redhat.com/trilio/minio@sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "name": "minio"
+        },
+        {
+          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "name": "dex"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "tvk_init"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<2.10.3",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "2.10.3",
+      "version_original": "2.10.3"
+    },
+    {
+      "_id": "62fce486b289bcc7af67e726",
+      "alm_examples": [
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "License",
+          "metadata": {
+            "name": "tvk-license-one",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
+          }
+        },
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "Target",
+          "metadata": {
+            "labels": {
+              "app": "triliovault"
+            },
+            "name": "triliovault-target",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "nfsCredentials": {
+              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
+              "nfsOptions": "nfsvers=4"
+            },
+            "type": "NFS",
+            "vendor": "Other"
+          }
+        },
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "BackupPlan",
+          "metadata": {
+            "name": "tvk-backupplan"
+          },
+          "spec": {
+            "backupConfig": {
+              "retentionPolicy": {
+                "name": "retention-policy",
+                "namespace": "openshift-marketplace"
+              },
+              "schedulePolicy": {
+                "fullBackupPolicy": {
+                  "name": "full-bp-policy",
+                  "namespace": "openshift-marketplace"
+                },
+                "incrementalBackupPolicy": {
+                  "name": "inc-bp-policy",
+                  "namespace": "openshift-marketplace"
+                }
+              },
+              "target": {
+                "name": "triliovault-target",
+                "namespace": "openshift-marketplace"
+              }
+            },
+            "backupPlanComponents": {
+              "custom": [
+                {
+                  "matchLabels": {
+                    "app": "nginx"
+                  }
+                }
+              ],
+              "helmReleases": [
+                "sample-release"
+              ],
+              "operators": [
+                {
+                  "applicationResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "app": "etcd"
+                      }
+                    }
+                  ],
+                  "customResources": [
+                    {
+                      "groupVersionKind": {
+                        "group": "etcd.database.coreos.com",
+                        "kind": "EtcdCluster",
+                        "version": "v1beta2"
+                      },
+                      "objects": [
+                        "demo-etcd-cluster"
+                      ]
+                    }
+                  ],
+                  "operatorId": "demo-etcd-cluster",
+                  "operatorResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "release": "demo-etcd-operator"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/trilio/r-3445381-bundle@sha256:b7ab313d7aa6a902ae023b7726c74c1a0f0d340716e7594558c0013cfaaf7f36",
+      "bundle_path_digest": "sha256:b7ab313d7aa6a902ae023b7726c74c1a0f0d340716e7594558c0013cfaaf7f36",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-17T12:52:22.897000+00:00",
+      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
+      "csv_display_name": "TrilioVault for Kubernetes",
+      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
+      "csv_name": "k8s-triliovault-stable.2.10.3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:55:40.129000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "k8s-triliovault",
+      "provided_apis": [
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterRestore",
+          "plural": "clusterrestores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Hook",
+          "plural": "hooks",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Policy",
+          "plural": "policies",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "BackupPlan",
+          "plural": "backupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Restore",
+          "plural": "restores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackup",
+          "plural": "clusterbackups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "License",
+          "plural": "licenses",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackupPlan",
+          "plural": "clusterbackupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Target",
+          "plural": "targets",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        }
+      ],
+      "provider": "Trilio",
+      "related_images": [
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "control-plane-49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5-annotation"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "k8s-triliovault-control-plane"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "k8s-triliovault-analyzer"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "triliovault-admission-webhook"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "triliovault-exporter"
+        },
+        {
+          "digest": "sha256:ffda02d6487b7f7a1f810363efc4613872919c28326f4806f0c921c07ddcded7",
+          "image": "registry.connect.redhat.com/trilio/web@sha256:ffda02d6487b7f7a1f810363efc4613872919c28326f4806f0c921c07ddcded7",
+          "name": "triliovault-web"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "triliovault-web-backend"
+        },
+        {
+          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "name": "triliovault-dex"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "webhook-init"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "dex-init"
+        },
+        {
+          "digest": "sha256:c1742bf2c723d49b936b055daa69df3a6834d62d357f8b6eb7d9a2064112787c",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:c1742bf2c723d49b936b055daa69df3a6834d62d357f8b6eb7d9a2064112787c",
+          "name": "metamover"
+        },
+        {
+          "digest": "sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
+          "name": "datamover"
+        },
+        {
+          "digest": "sha256:c1742bf2c723d49b936b055daa69df3a6834d62d357f8b6eb7d9a2064112787c",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:c1742bf2c723d49b936b055daa69df3a6834d62d357f8b6eb7d9a2064112787c",
+          "name": "datastore_attacher"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "backup_scheduler"
+        },
+        {
+          "digest": "sha256:c1742bf2c723d49b936b055daa69df3a6834d62d357f8b6eb7d9a2064112787c",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:c1742bf2c723d49b936b055daa69df3a6834d62d357f8b6eb7d9a2064112787c",
+          "name": "backup_cleaner"
+        },
+        {
+          "digest": "sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
+          "name": "backup_retention"
+        },
+        {
+          "digest": "sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
+          "name": "target_browser"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "hook"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "resource_cleaner"
+        },
+        {
+          "digest": "sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "image": "registry.connect.redhat.com/trilio/minio@sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "name": "minio"
+        },
+        {
+          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "name": "dex"
+        },
+        {
+          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
+          "name": "tvk_init"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<2.10.3",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "2.10.3",
+      "version_original": "2.10.3"
     }
   ]
 }
