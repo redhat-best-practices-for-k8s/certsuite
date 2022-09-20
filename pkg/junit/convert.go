@@ -96,7 +96,7 @@ func determineFailureReason(failure interface{}) string {
 		if derivedFailureReason, ok := failureReasonObject[junitContentKey]; ok {
 			failureReason = "Failed due to line: " + derivedFailureReason.(string)
 		} else {
-			failureReason = "Failed due to line: No error line found in JUnit" //nolint:goconst // only instance
+			failureReason = "Failed due to line: No error line found in JUnit"
 		}
 		if derivedFailureReason, ok := failureReasonObject[junitMessageKey]; ok {
 			failureReason = failureReason + "\n" + "Error message: " + derivedFailureReason.(string)
