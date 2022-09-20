@@ -162,14 +162,13 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment) {
 		if c.ContainerImageIdentifier.Name == "" || c.ContainerImageIdentifier.Repository == "" {
 			tnf.ClaimFilePrintf("Container name = %q or repository = %q is missing, skipping this container to query", c.ContainerImageIdentifier.Name, c.ContainerImageIdentifier.Repository)
 			continue
-		} else if c.ContainerImageIdentifier.Digest == "" {
+		}
+		if c.ContainerImageIdentifier.Digest == "" {
 			tnf.ClaimFilePrintf("%s is missing digest field, failing validation (repo=%s image=%s)", c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Name)
 			failedContainers = append(failedContainers, c.ContainerImageIdentifier)
 		} else if !testContainerCertification(c.ContainerImageIdentifier) {
 			tnf.ClaimFilePrintf("%s digest not found in database, failing validation (repo=%s image=%s)", c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Name)
 			failedContainers = append(failedContainers, c.ContainerImageIdentifier)
-		} else {
-			logrus.Info(fmt.Sprintf("container %v is certified by digest.", c.ContainerImageIdentifier))
 		}
 	}
 	testhelper.AddTestResultLog("Non-compliant", failedContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
