@@ -97,9 +97,12 @@ func (checker OnlineValidator) getImageByDigest(digest string) (imageID string, 
 		log.Error("Cannot marshall binary data", err)
 		return
 	}
-	if containerEntries.Data[0].Certified {
-		return containerEntries.Data[0].ID, nil
+	if len(containerEntries.Data) > 0 {
+		if containerEntries.Data[0].Certified {
+			return containerEntries.Data[0].ID, nil
+		}
 	}
+
 	return imageID, errors.New("certified image not found")
 }
 

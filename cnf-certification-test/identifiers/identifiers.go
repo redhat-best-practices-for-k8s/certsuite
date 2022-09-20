@@ -133,22 +133,22 @@ The label value is not important, only its presence.`,
 		UID1337Remediation,
 		InformativeResult,
 		NoDocumentedProcess,
-    VersionOne,
+		VersionOne,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		TagExtended)
-    
+
 	// TestContainerIsCertifiedDigestIdentifier tests whether the container has passed Container Certification.
 	TestContainerIsCertifiedDigestIdentifier = AddCatalogEntry(
 		"container-is-certified-digest",
 		common.AffiliatedCertTestKey,
 		`Tests whether container images that are autodiscovered have passed the Red Hat Container Certification Program by their digest(CCP).`,
 		ContainerIsCertifiedRemediation,
-		normativeResult,
+		NormativeResult,
 		NoDocumentedProcess,
-		versionOne,
+		VersionOne,
 		bestPracticeDocV1dot4URL+" Section 5.3.7",
-		tagExtended)
-    
+		TagExtended)
+
 	return Catalog
 }
 
