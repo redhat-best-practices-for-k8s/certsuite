@@ -39,7 +39,7 @@ const apiCatalogByRepositoriesBaseEndPoint = "https://catalog.redhat.com/api/con
 const filterCertifiedOperatorsOrg = "organization==certified-operators"
 const certifiedOperatorsCatalogURL = "https://catalog.redhat.com/api/containers/v1/operators/bundles?page_size=100&page=0&filter=csv_name==%s;%s"
 const certifiedContainerCatalogURL = "https://catalog.redhat.com/api/containers/v1/repositories/registry/%s/repository/%s/images?"
-const certifiedContainerCatalogDigestURL = "https://catalog.redhat.com/api/containers/v1/images/registry/%s/repository/%s/manifest_digest/%s"
+const certifiedContainerCatalogDigestURL = "https://catalog.redhat.com/api/containers/v1/images?filter=docker_image_digest==%s"
 const certifiedContainerCatalogTagURL = "https://catalog.redhat.com/api/containers/v1/repositories/registry/%s/repository/%s/tag/%s"
 const redhatCatalogPingURL = "https://catalog.redhat.com/api/containers/v1/ping"
 const redhatCatalogPingMongoDBURL = "https://catalog.redhat.com/api/containers/v1/status/mongo"
@@ -84,21 +84,21 @@ func (checker OnlineValidator) IsServiceReachable() bool {
 // GetImageByID get container image Id using the digest.
 // return imageID if entry exists,
 // return empty string if entry does not exist
-func (checker OnlineValidator) getImageByDigest(registry, repository, digest string) (imageID string, err error) {
+func (checker OnlineValidator) getImageByDigest(digest string) (imageID string, err error) {
 	var responseData []byte
-	url := fmt.Sprintf(certifiedContainerCatalogDigestURL, registry, repository, digest)
+	url := fmt.Sprintf(certifiedContainerCatalogDigestURL, digest)
 	log.Trace(url)
 	if responseData, err = checker.GetRequest(url); err != nil || len(responseData) == 0 {
 		return imageID, nil
 	}
-	containerEntry := offlinecheck.ContainerCatalogEntry{}
-	err = json.Unmarshal(responseData, &containerEntry)
+	containerEntries := offlinecheck.ContainerPageCatalog{}
+	err = json.Unmarshal(responseData, &containerEntries)
 	if err != nil {
 		log.Error("Cannot marshall binary data", err)
 		return
 	}
-	if containerEntry.Certified {
-		return containerEntry.ID, nil
+	if containerEntries.Data[0].Certified {
+		return containerEntries.Data[0].ID, nil
 	}
 	return imageID, errors.New("certified image not found")
 }
@@ -163,7 +163,7 @@ func (checker OnlineValidator) getImageByRepository(registry, repository string)
 // returns false otherwise
 func (checker OnlineValidator) IsContainerCertified(registry, repository, tag, digest string) bool {
 	if digest != "" {
-		if imageID, err := checker.getImageByDigest(registry, repository, digest); err != nil || imageID == "" {
+		if imageID, err := checker.getImageByDigest(digest); err != nil || imageID == "" {
 			return false
 		}
 		return true

@@ -51,18 +51,18 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	// Query API for certification status of listed containers
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testContainerCertificationStatus(&env)
+		//testContainerCertificationStatus(&env)
 	})
 
 	// Query API for certification status of listed operators
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOperatorIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testAllOperatorCertified(&env)
+		//testAllOperatorCertified(&env)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHelmIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testHelmCertified(&env)
+		//	testHelmCertified(&env)
 	})
 	// Query API for certification status by digest of listed containers
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedDigestIdentifier)
@@ -169,6 +169,8 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment) {
 		} else if !testContainerCertification(c.ContainerImageIdentifier) {
 			tnf.ClaimFilePrintf("%s digest not found in database, failing validation (repo=%s image=%s)", c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Name)
 			failedContainers = append(failedContainers, c.ContainerImageIdentifier)
+		} else {
+			logrus.Info(fmt.Sprintf("container %v is certified by digest.", c.ContainerImageIdentifier))
 		}
 	}
 	testhelper.AddTestResultLog("Non-compliant", failedContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
