@@ -88,7 +88,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:09:13.276000+00:00",
+      "last_update_date": "2022-09-19T12:05:34.663000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -142,6 +142,7 @@
       "_id": "6221191810f4fb3122143e09",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -171,6 +172,7 @@
           }
         },
         {
+          "api_version": "app.redislabs.com/v1alpha1",
           "kind": "RedisEnterpriseDatabase",
           "metadata": {
             "name": "redb"
@@ -218,7 +220,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:00:57.310000+00:00",
+      "last_update_date": "2022-09-19T12:05:58.476000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -243,7 +245,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis",
       "related_images": [
         {
           "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
@@ -272,6 +274,7 @@
       "_id": "6221191a5c46c6464085fd13",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -301,6 +304,7 @@
           }
         },
         {
+          "api_version": "app.redislabs.com/v1alpha1",
           "kind": "RedisEnterpriseDatabase",
           "metadata": {
             "name": "redb"
@@ -348,7 +352,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:01:03.312000+00:00",
+      "last_update_date": "2022-09-19T12:06:23.647000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -373,7 +377,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis",
       "related_images": [
         {
           "digest": "sha256:0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37",
@@ -402,6 +406,7 @@
       "_id": "62211ab61a79457bc0d51231",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -431,6 +436,7 @@
           }
         },
         {
+          "api_version": "app.redislabs.com/v1alpha1",
           "kind": "RedisEnterpriseDatabase",
           "metadata": {
             "name": "redb"
@@ -478,7 +484,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:17:17.553000+00:00",
+      "last_update_date": "2022-09-19T11:46:41.884000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -487,23 +493,20 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
@@ -532,6 +535,7 @@
       "_id": "62211ab79206cd6accd15a62",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -561,6 +565,7 @@
           }
         },
         {
+          "api_version": "app.redislabs.com/v1alpha1",
           "kind": "RedisEnterpriseDatabase",
           "metadata": {
             "name": "redb"
@@ -608,7 +613,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:21:31.952000+00:00",
+      "last_update_date": "2022-09-19T12:35:58.823000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -617,23 +622,20 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
@@ -662,6 +664,7 @@
       "_id": "62211ab81a79457bc0d51232",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -697,6 +700,7 @@
           }
         },
         {
+          "api_version": "app.redislabs.com/v1alpha1",
           "kind": "RedisEnterpriseDatabase",
           "metadata": {
             "name": "redb"
@@ -744,7 +748,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-31T08:48:22.162000+00:00",
+      "last_update_date": "2022-09-19T12:15:31.577000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -753,23 +757,20 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis",
       "related_images": [
         {
           "digest": "sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
@@ -798,6 +799,7 @@
       "_id": "62211aba1a79457bc0d51233",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -863,7 +865,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:16:27.841000+00:00",
+      "last_update_date": "2022-09-19T12:36:01.500000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -872,17 +874,15 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
@@ -906,6 +906,7 @@
       "_id": "62211abb5c46c6464085fd14",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -971,7 +972,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:15:48.016000+00:00",
+      "last_update_date": "2022-09-19T12:36:16.571000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -980,17 +981,15 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:6b2879ece978e1a8e6a09be7b5f67dd3c9b25f9efbf92852af55ddabc0328c67",
@@ -1014,6 +1013,7 @@
       "_id": "62211abc1a79457bc0d51234",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -1043,6 +1043,7 @@
           }
         },
         {
+          "api_version": "app.redislabs.com/v1alpha1",
           "kind": "RedisEnterpriseDatabase",
           "metadata": {
             "name": "redb"
@@ -1090,7 +1091,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:18:36.894000+00:00",
+      "last_update_date": "2022-09-19T12:19:38.438000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -1099,23 +1100,20 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis",
       "related_images": [
         {
           "digest": "sha256:0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37",
@@ -1228,7 +1226,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:59:24.240000+00:00",
+      "last_update_date": "2022-09-19T12:13:00.590000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -1279,6 +1277,7 @@
       "_id": "62211abf5c46c6464085fd15",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -1308,6 +1307,7 @@
           }
         },
         {
+          "api_version": "app.redislabs.com/v1alpha1",
           "kind": "RedisEnterpriseDatabase",
           "metadata": {
             "name": "redb"
@@ -1355,7 +1355,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:21:20.971000+00:00",
+      "last_update_date": "2022-09-19T11:57:40.249000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -1364,23 +1364,20 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
           "version": "v1alpha1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis",
       "related_images": [
         {
           "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
@@ -1409,6 +1406,7 @@
       "_id": "62211ac09206cd6accd15a63",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -1474,7 +1472,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:20:39.620000+00:00",
+      "last_update_date": "2022-09-19T12:15:23.639000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -1483,17 +1481,15 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:29c2dec83137378b59946f98c36446241cdf06e083216232ab80e8b667f837ca",
@@ -1517,6 +1513,7 @@
       "_id": "62211ac15c46c6464085fd16",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -1582,7 +1579,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:20:01.061000+00:00",
+      "last_update_date": "2022-09-19T12:13:59.507000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -1591,17 +1588,15 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:fcdcfbf38860a41a5c4a635cf74d8f421fe48b4180b51c511e5eb3f309c7f6e2",
@@ -1625,6 +1620,7 @@
       "_id": "62211ac35c46c6464085fd17",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -1690,7 +1686,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:16:10.338000+00:00",
+      "last_update_date": "2022-09-19T12:04:03.196000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -1699,17 +1695,15 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
@@ -1733,6 +1727,7 @@
       "_id": "62211ac410f4fb3122143e0b",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -1798,7 +1793,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:18:09.948000+00:00",
+      "last_update_date": "2022-09-19T11:47:56.382000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -1807,17 +1802,15 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
@@ -1841,6 +1834,7 @@
       "_id": "62211ac61a79457bc0d51236",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -1906,7 +1900,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:15:17.272000+00:00",
+      "last_update_date": "2022-09-19T12:08:42.357000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -1915,17 +1909,15 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
@@ -1949,6 +1941,7 @@
       "_id": "62211ac71a79457bc0d51237",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -1978,6 +1971,7 @@
           }
         },
         {
+          "api_version": "app.redislabs.com/v1alpha1",
           "kind": "RedisEnterpriseDatabase",
           "metadata": {
             "name": "redb"
@@ -2025,7 +2019,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:21:53.597000+00:00",
+      "last_update_date": "2022-09-19T12:14:06.903000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -2034,23 +2028,20 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis",
       "related_images": [
         {
           "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
@@ -2079,6 +2070,7 @@
       "_id": "62211db69206cd6accd15a66",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -2144,7 +2136,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-04T14:47:58.751000+00:00",
+      "last_update_date": "2022-09-19T11:37:10.485000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -2163,7 +2155,7 @@
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
@@ -2205,7 +2197,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-04-16T17:25:36.406000+00:00",
+      "last_update_date": "2022-09-19T12:06:19.623000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -2224,7 +2216,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "",
       "related_images": [],
       "replaces": null,
       "skip_range": null,
@@ -2237,6 +2229,7 @@
       "_id": "62211dbd5c46c6464085fd1a",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -2266,6 +2259,7 @@
           }
         },
         {
+          "api_version": "app.redislabs.com/v1alpha1",
           "kind": "RedisEnterpriseDatabase",
           "metadata": {
             "name": "redb"
@@ -2313,7 +2307,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-04T15:07:07.445000+00:00",
+      "last_update_date": "2022-09-19T12:28:32.437000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -2338,7 +2332,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis",
       "related_images": [
         {
           "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
@@ -2367,6 +2361,7 @@
       "_id": "62211dc19206cd6accd15a67",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -2402,6 +2397,7 @@
           }
         },
         {
+          "api_version": "app.redislabs.com/v1alpha1",
           "kind": "RedisEnterpriseDatabase",
           "metadata": {
             "name": "redb"
@@ -2449,7 +2445,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-31T08:55:45.940000+00:00",
+      "last_update_date": "2022-09-19T12:31:06.753000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -2474,7 +2470,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis",
       "related_images": [
         {
           "digest": "sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
@@ -2503,6 +2499,7 @@
       "_id": "62211dc41a79457bc0d5123a",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -2532,6 +2529,7 @@
           }
         },
         {
+          "api_version": "app.redislabs.com/v1alpha1",
           "kind": "RedisEnterpriseDatabase",
           "metadata": {
             "name": "redb"
@@ -2579,7 +2577,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-04T15:13:15.104000+00:00",
+      "last_update_date": "2022-09-19T11:44:22.999000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -2604,7 +2602,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
@@ -2633,6 +2631,7 @@
       "_id": "62211dc81a79457bc0d5123b",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -2662,6 +2661,7 @@
           }
         },
         {
+          "api_version": "app.redislabs.com/v1alpha1",
           "kind": "RedisEnterpriseDatabase",
           "metadata": {
             "name": "redb"
@@ -2709,7 +2709,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-04T14:57:32.569000+00:00",
+      "last_update_date": "2022-09-19T12:21:46.344000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -2734,7 +2734,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis",
       "related_images": [
         {
           "digest": "sha256:0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37",
@@ -2763,6 +2763,7 @@
       "_id": "62211dcb5c46c6464085fd1b",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -2792,6 +2793,7 @@
           }
         },
         {
+          "api_version": "app.redislabs.com/v1alpha1",
           "kind": "RedisEnterpriseDatabase",
           "metadata": {
             "name": "redb"
@@ -2839,7 +2841,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-04T15:11:37.234000+00:00",
+      "last_update_date": "2022-09-19T12:31:52.987000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -2864,7 +2866,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
@@ -2911,7 +2913,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-04-16T17:23:45.107000+00:00",
+      "last_update_date": "2022-09-19T11:44:27.897000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -2930,7 +2932,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "",
       "related_images": [],
       "replaces": null,
       "skip_range": null,
@@ -2943,6 +2945,7 @@
       "_id": "62211dd110f4fb3122143e10",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -3008,7 +3011,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-04T14:58:13.167000+00:00",
+      "last_update_date": "2022-09-19T11:39:02.094000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -3027,7 +3030,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
@@ -3069,7 +3072,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-04-16T17:16:33.155000+00:00",
+      "last_update_date": "2022-09-19T11:45:18.049000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -3088,7 +3091,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "",
       "related_images": [],
       "replaces": null,
       "skip_range": null,
@@ -3101,6 +3104,7 @@
       "_id": "62211dd51a79457bc0d5123d",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -3166,7 +3170,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-04T15:05:32.416000+00:00",
+      "last_update_date": "2022-09-19T11:46:27.401000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -3185,7 +3189,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
@@ -3293,7 +3297,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:13:11.548000+00:00",
+      "last_update_date": "2022-09-19T11:46:05.305000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -3347,6 +3351,7 @@
       "_id": "62211dda9206cd6accd15a6b",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -3412,7 +3417,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-04T15:10:37.561000+00:00",
+      "last_update_date": "2022-09-19T11:33:44.212000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -3431,7 +3436,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
@@ -3455,6 +3460,7 @@
       "_id": "62211ddc5c46c6464085fd1e",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -3484,6 +3490,7 @@
           }
         },
         {
+          "api_version": "app.redislabs.com/v1alpha1",
           "kind": "RedisEnterpriseDatabase",
           "metadata": {
             "name": "redb"
@@ -3531,7 +3538,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-04T14:50:47.549000+00:00",
+      "last_update_date": "2022-09-19T12:31:56.304000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -3556,7 +3563,7 @@
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis",
       "related_images": [
         {
           "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
@@ -3585,6 +3592,7 @@
       "_id": "62211f4b9206cd6accd15a6c",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -3614,6 +3622,7 @@
           }
         },
         {
+          "api_version": "app.redislabs.com/v1alpha1",
           "kind": "RedisEnterpriseDatabase",
           "metadata": {
             "name": "redb"
@@ -3661,7 +3670,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:21:19.011000+00:00",
+      "last_update_date": "2022-09-19T12:08:51.246000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -3670,23 +3679,20 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
@@ -3715,6 +3721,7 @@
       "_id": "62211f4d10f4fb3122143e15",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -3780,7 +3787,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:14:01.860000+00:00",
+      "last_update_date": "2022-09-19T12:02:40.015000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -3789,17 +3796,15 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
@@ -3823,6 +3828,7 @@
       "_id": "62211f4e5c46c6464085fd21",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -3852,6 +3858,7 @@
           }
         },
         {
+          "api_version": "app.redislabs.com/v1alpha1",
           "kind": "RedisEnterpriseDatabase",
           "metadata": {
             "name": "redb"
@@ -3899,7 +3906,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:17:21.181000+00:00",
+      "last_update_date": "2022-09-19T11:46:59.086000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -3908,23 +3915,20 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
           "version": "v1alpha1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "Redis",
       "related_images": [
         {
           "digest": "sha256:0f144922ea1e2d4ea72affb36238258c9f21c39d6ba9ad73da79278dde1eed37",
@@ -3971,7 +3975,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-04-16T17:11:27.736000+00:00",
+      "last_update_date": "2022-09-19T11:38:10.004000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -3980,17 +3984,15 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "",
       "related_images": [],
       "replaces": null,
       "skip_range": null,
@@ -4003,6 +4005,7 @@
       "_id": "62211f519206cd6accd15a6e",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -4032,6 +4035,7 @@
           }
         },
         {
+          "api_version": "app.redislabs.com/v1alpha1",
           "kind": "RedisEnterpriseDatabase",
           "metadata": {
             "name": "redb"
@@ -4079,7 +4083,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:17:21.676000+00:00",
+      "last_update_date": "2022-09-19T11:59:37.758000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -4088,23 +4092,20 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
@@ -4151,7 +4152,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-04-16T17:08:05.467000+00:00",
+      "last_update_date": "2022-09-19T11:52:50.495000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -4160,17 +4161,15 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "",
       "related_images": [],
       "replaces": null,
       "skip_range": null,
@@ -4267,7 +4266,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:50:59.518000+00:00",
+      "last_update_date": "2022-09-19T11:39:13.912000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -4318,6 +4317,7 @@
       "_id": "62211f561a79457bc0d51241",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -4383,7 +4383,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:19:29.782000+00:00",
+      "last_update_date": "2022-09-19T12:25:15.383000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -4392,17 +4392,15 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
@@ -4444,7 +4442,7 @@
       "in_index_img": true,
       "install_modes": [],
       "is_default_channel": false,
-      "last_update_date": "2022-04-16T17:36:29.354000+00:00",
+      "last_update_date": "2022-09-19T11:44:08.387000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -4453,17 +4451,15 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "",
       "related_images": [],
       "replaces": null,
       "skip_range": null,
@@ -4476,6 +4472,7 @@
       "_id": "62211f591a79457bc0d51242",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -4541,7 +4538,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:17:15.982000+00:00",
+      "last_update_date": "2022-09-19T11:37:13.240000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -4550,17 +4547,15 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:3a86275c1bebed1e756e0ddf44adf2892e3039104c9c0675e60be029faed3c9f",
@@ -4584,6 +4579,7 @@
       "_id": "62211f5b1a79457bc0d51243",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -4613,6 +4609,7 @@
           }
         },
         {
+          "api_version": "app.redislabs.com/v1alpha1",
           "kind": "RedisEnterpriseDatabase",
           "metadata": {
             "name": "redb"
@@ -4660,7 +4657,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:19:41.561000+00:00",
+      "last_update_date": "2022-09-19T11:35:37.005000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -4669,23 +4666,20 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis",
       "related_images": [
         {
           "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
@@ -4714,6 +4708,7 @@
       "_id": "62211f5c1a79457bc0d51244",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -4743,6 +4738,7 @@
           }
         },
         {
+          "api_version": "app.redislabs.com/v1alpha1",
           "kind": "RedisEnterpriseDatabase",
           "metadata": {
             "name": "redb"
@@ -4790,7 +4786,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:17:58.315000+00:00",
+      "last_update_date": "2022-09-19T12:10:58.207000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -4799,23 +4795,20 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
           "version": "v1alpha1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         }
       ],
-      "provider": null,
+      "provider": "Redis",
       "related_images": [
         {
           "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
@@ -4844,6 +4837,7 @@
       "_id": "62211f5e10f4fb3122143e17",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -4879,6 +4873,7 @@
           }
         },
         {
+          "api_version": "app.redislabs.com/v1alpha1",
           "kind": "RedisEnterpriseDatabase",
           "metadata": {
             "name": "redb"
@@ -4926,7 +4921,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-05-31T09:00:35.148000+00:00",
+      "last_update_date": "2022-09-19T12:20:29.582000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -4935,23 +4930,20 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis",
       "related_images": [
         {
           "digest": "sha256:97ffbde86f27810b1a5e6fee7ec53683f49b650cc33c327696be66d04e10bf31",
@@ -4980,6 +4972,7 @@
       "_id": "62211f5f5c46c6464085fd23",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -5045,7 +5038,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:18:42.936000+00:00",
+      "last_update_date": "2022-09-19T12:24:56.435000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -5054,17 +5047,15 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
@@ -5088,6 +5079,7 @@
       "_id": "62211f619206cd6accd15a6f",
       "alm_examples": [
         {
+          "api_version": "app.redislabs.com/v1",
           "kind": "RedisEnterpriseCluster",
           "metadata": {
             "name": "rec"
@@ -5153,7 +5145,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-04-05T11:15:34.151000+00:00",
+      "last_update_date": "2022-09-19T12:05:00.088000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -5162,17 +5154,15 @@
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1"
         },
         {
           "group": "app.redislabs.com",
           "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
           "version": "v1alpha1"
         }
       ],
-      "provider": null,
+      "provider": "Redis Labs",
       "related_images": [
         {
           "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
@@ -5294,7 +5284,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:54:12.350000+00:00",
+      "last_update_date": "2022-09-19T11:41:12.253000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -5403,7 +5393,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:07:38.691000+00:00",
+      "last_update_date": "2022-09-19T12:13:07.638000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -5532,7 +5522,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:00:30.915000+00:00",
+      "last_update_date": "2022-09-19T12:09:11.508000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -5641,7 +5631,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:48:47.586000+00:00",
+      "last_update_date": "2022-09-19T11:42:15.244000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -5770,7 +5760,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:50:30.680000+00:00",
+      "last_update_date": "2022-09-19T11:44:11.781000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -5927,7 +5917,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:54:01.782000+00:00",
+      "last_update_date": "2022-09-19T11:47:53.546000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -6126,7 +6116,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:54:05.567000+00:00",
+      "last_update_date": "2022-09-19T11:47:57.940000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -6325,7 +6315,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:47:15.636000+00:00",
+      "last_update_date": "2022-09-19T12:10:05.830000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -6476,7 +6466,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:49:48.207000+00:00",
+      "last_update_date": "2022-09-19T12:25:31.172000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -6613,7 +6603,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:03:21.639000+00:00",
+      "last_update_date": "2022-09-19T12:23:32.938000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -6804,7 +6794,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:08:10.987000+00:00",
+      "last_update_date": "2022-09-19T11:54:03.212000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -6962,7 +6952,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:12:52.304000+00:00",
+      "last_update_date": "2022-09-19T11:48:00.413000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -7161,7 +7151,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:38:52.898000+00:00",
+      "last_update_date": "2022-09-19T11:50:29.579000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -7360,7 +7350,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:19:30.063000+00:00",
+      "last_update_date": "2022-09-19T12:25:03.467000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -7559,7 +7549,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:10:11.335000+00:00",
+      "last_update_date": "2022-09-19T11:50:32.930000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -7732,7 +7722,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:01:37.378000+00:00",
+      "last_update_date": "2022-09-19T11:48:35.980000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -7834,7 +7824,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:59:44.779000+00:00",
+      "last_update_date": "2022-09-19T11:46:48.978000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -7999,7 +7989,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:26:09.839000+00:00",
+      "last_update_date": "2022-09-19T12:23:28.636000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -8154,7 +8144,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:52:37.469000+00:00",
+      "last_update_date": "2022-09-19T11:39:29.594000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -8309,7 +8299,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:48:51.441000+00:00",
+      "last_update_date": "2022-09-19T11:42:21.397000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -8395,7 +8385,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:57:30.331000+00:00",
+      "last_update_date": "2022-09-19T11:51:32.924000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -8695,7 +8685,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:54:52.732000+00:00",
+      "last_update_date": "2022-09-19T11:36:24.392000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -8929,7 +8919,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T12:59:52.725000+00:00",
+      "last_update_date": "2022-09-19T11:47:22.685000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -9219,7 +9209,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:43:07.715000+00:00",
+      "last_update_date": "2022-09-19T11:43:44.634000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -9680,7 +9670,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:54:17.091000+00:00",
+      "last_update_date": "2022-09-19T11:48:13.470000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -10006,7 +9996,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:54:46.998000+00:00",
+      "last_update_date": "2022-09-19T11:48:49.394000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -10201,7 +10191,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:39:03.997000+00:00",
+      "last_update_date": "2022-09-19T12:20:05.156000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -10508,7 +10498,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:07:13.737000+00:00",
+      "last_update_date": "2022-09-19T11:58:23.186000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -10742,7 +10732,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:31:17.888000+00:00",
+      "last_update_date": "2022-09-19T11:44:48.382000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -10853,7 +10843,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:10:57.288000+00:00",
+      "last_update_date": "2022-09-19T12:07:35.309000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -11010,7 +11000,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:26:09.596000+00:00",
+      "last_update_date": "2022-09-19T12:07:51.540000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -11346,7 +11336,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:57:38.298000+00:00",
+      "last_update_date": "2022-09-19T11:44:53.716000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -11522,7 +11512,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:07:21.519000+00:00",
+      "last_update_date": "2022-09-19T12:03:21.201000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -11675,7 +11665,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:27:24.924000+00:00",
+      "last_update_date": "2022-09-19T12:25:39.910000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -11828,7 +11818,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:37:20.407000+00:00",
+      "last_update_date": "2022-09-19T11:59:41.647000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -12266,7 +12256,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T12:54:20.600000+00:00",
+      "last_update_date": "2022-09-19T11:48:18.621000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -12719,7 +12709,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:17:39.504000+00:00",
+      "last_update_date": "2022-09-19T12:14:37.653000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -12871,7 +12861,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:14:24.799000+00:00",
+      "last_update_date": "2022-09-19T12:18:30.459000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -13074,7 +13064,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:14:18.487000+00:00",
+      "last_update_date": "2022-09-19T11:45:42.894000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -13183,7 +13173,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:22:46.719000+00:00",
+      "last_update_date": "2022-09-19T12:03:11.001000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -13335,7 +13325,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:00:01.044000+00:00",
+      "last_update_date": "2022-09-19T11:47:02.026000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -13530,7 +13520,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:22:01.296000+00:00",
+      "last_update_date": "2022-09-19T11:59:09.162000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -13619,7 +13609,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:22:34.285000+00:00",
+      "last_update_date": "2022-09-19T11:59:15.444000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -13718,7 +13708,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:22:39.982000+00:00",
+      "last_update_date": "2022-09-19T11:59:20.861000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -13932,7 +13922,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:22:04.586000+00:00",
+      "last_update_date": "2022-09-19T11:59:26.972000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -14061,7 +14051,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:29:29.081000+00:00",
+      "last_update_date": "2022-09-19T12:24:41.678000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -14150,7 +14140,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:29:35.824000+00:00",
+      "last_update_date": "2022-09-19T12:24:46.150000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -14239,7 +14229,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:29:40.858000+00:00",
+      "last_update_date": "2022-09-19T12:24:26.952000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -14328,7 +14318,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:29:46.417000+00:00",
+      "last_update_date": "2022-09-19T12:24:31.772000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -14417,7 +14407,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:29:52.119000+00:00",
+      "last_update_date": "2022-09-19T12:24:37.156000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -14519,7 +14509,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:16:45.289000+00:00",
+      "last_update_date": "2022-09-19T12:01:21.778000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -16310,7 +16300,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:26:36.479000+00:00",
+      "last_update_date": "2022-09-19T12:02:41.261000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -16551,7 +16541,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:28:25.042000+00:00",
+      "last_update_date": "2022-09-19T12:19:01.935000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -16687,7 +16677,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-08-15T13:15:52.663000+00:00",
+      "last_update_date": "2022-09-19T12:07:00.389000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
