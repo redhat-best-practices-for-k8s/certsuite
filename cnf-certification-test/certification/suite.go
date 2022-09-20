@@ -164,10 +164,10 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment) {
 			continue
 		}
 		if c.ContainerImageIdentifier.Digest == "" {
-			tnf.ClaimFilePrintf("%s is missing digest field, failing validation (repo=%s image=%s)", c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Name)
+			tnf.ClaimFilePrintf("%+v is missing digest field, failing validation (repo=%s image=%s)", c, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Name)
 			failedContainers = append(failedContainers, c.ContainerImageIdentifier)
 		} else if !testContainerCertification(c.ContainerImageIdentifier) {
-			tnf.ClaimFilePrintf("%s digest not found in database, failing validation (repo=%s image=%s)", c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Name)
+			tnf.ClaimFilePrintf("%+v digest not found in database, failing validation (repo=%s image=%s)", c, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Name)
 			failedContainers = append(failedContainers, c.ContainerImageIdentifier)
 		}
 	}
