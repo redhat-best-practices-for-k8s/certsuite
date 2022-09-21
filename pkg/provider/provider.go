@@ -72,6 +72,7 @@ type TestEnvironment struct { // rename this with testTarget
 	DebugPods            map[string]*corev1.Pod // map from nodename to debugPod
 	GuaranteedPods       []*Pod
 	NonGuaranteedPods    []*Pod
+	HugepagesPods        []*Pod
 	Config               configuration.TestConfiguration
 	variables            configuration.TestParameters
 	Crds                 []*apiextv1.CustomResourceDefinition          `json:"testCrds"`
@@ -162,6 +163,9 @@ func buildTestEnvironment() { //nolint:funlen
 			env.GuaranteedPods = append(env.GuaranteedPods, &aNewPod)
 		} else {
 			env.NonGuaranteedPods = append(env.NonGuaranteedPods, &aNewPod)
+		}
+		if aNewPod.HasHugepages() {
+			env.HugepagesPods = append(env.HugepagesPods, &aNewPod)
 		}
 		env.Containers = append(env.Containers, getPodContainers(&pods[i])...)
 	}

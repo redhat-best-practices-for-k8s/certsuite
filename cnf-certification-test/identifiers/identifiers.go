@@ -97,8 +97,10 @@ var (
 	TestNetworkPolicyDenyAllIdentifier       claim.Identifier
 	Test1337UIDIdentifier                    claim.Identifier
 	TestContainerIsCertifiedDigestIdentifier claim.Identifier
+	TestPodHugePages2M                       claim.Identifier
 )
 
+//nolint:funlen
 func InitCatalog() map[claim.Identifier]TestCaseDescription {
 	TestICMPv4ConnectivityIdentifier = AddCatalogEntry(
 		"icmpv4-connectivity",
@@ -147,6 +149,16 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		VersionOne,
 		bestPracticeDocV1dot4URL+" Section 5.3.7",
+		TagExtended)
+	TestPodHugePages2M = AddCatalogEntry(
+		"hugepages-2m-only",
+		common.PlatformAlterationTestKey,
+		`Check that pods using hugepages only use 2Mi size`,
+		"Modify pod to consume 2Mi hugepages only",
+		NormativeResult,
+		NoDocumentedProcess,
+		VersionOne,
+		bestPracticeDocV1dot4URL+" Section 3.5.4",
 		TagExtended)
 
 	return Catalog
