@@ -22,7 +22,7 @@ usage_error() {
 	usage
 	exit 1
 }
-
+TIMEOUT="24h0m0s"
 FOCUS=""
 SKIP=""
 LABEL=""
@@ -71,13 +71,13 @@ fi
 if [ "$LIST" = true ] ; then
 	FOCUS=${FOCUS%?}  # strip the trailing "|" from the concatenation
 	cd $BASEDIR/cnf-certification-test
-	./cnf-certification-test.test --ginkgo.dry-run --ginkgo.v --ginkgo.focus="$FOCUS"
+	./cnf-certification-test.test --ginkgo.dry-run --ginkgo.timeout=$TIMEOUT --ginkgo.v --ginkgo.label-filter="$LABEL"
 	cd ..
 	exit 0;
 fi
 
 # specify Junit report file name.
-GINKGO_ARGS="-junit $OUTPUT_LOC -claimloc $OUTPUT_LOC --ginkgo.junit-report $OUTPUT_LOC/cnf-certification-tests_junit.xml -ginkgo.v -test.v"
+GINKGO_ARGS="--ginkgo.timeout=$TIMEOUT -junit $OUTPUT_LOC -claimloc $OUTPUT_LOC --ginkgo.junit-report $OUTPUT_LOC/cnf-certification-tests_junit.xml -ginkgo.v -test.v"
 
 # Make sure the HTML output is copied to the output directory,
 # even in case of a test failure
