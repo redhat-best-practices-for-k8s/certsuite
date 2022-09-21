@@ -427,6 +427,11 @@ func testPodPersistentVolumeReclaimPolicy(env *provider.TestEnvironment) {
 	for _, put := range env.Pods {
 		// Loop through all of the volumes attached to the pod.
 		for pvIndex := range put.Spec.Volumes {
+			// Skip any volumes that do not have a PVC.  No need to test them.
+			if put.Spec.Volumes[pvIndex].PersistentVolumeClaim == nil {
+				continue
+			}
+
 			// If the Pod Volume is not tied back to a PVC and corresponding PV that has a reclaim policy of DELETE.
 			if !volumes.IsPodVolumeReclaimPolicyDelete(&put.Spec.Volumes[pvIndex], env.PersistentVolumes, env.PersistentVolumeClaims) {
 				persistentVolumesBadReclaim = append(persistentVolumesBadReclaim, put.String())

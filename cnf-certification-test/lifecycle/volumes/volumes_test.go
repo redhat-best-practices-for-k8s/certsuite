@@ -116,17 +116,6 @@ func TestIsPodVolumeReclaimPolicyDelete(t *testing.T) {
 			},
 			expectedResult: false,
 		},
-		{ // Test Case #4 - Nil check short circuit
-			testVolume: corev1.Volume{
-				Name: "test1-volume",
-				VolumeSource: corev1.VolumeSource{
-					PersistentVolumeClaim: nil, // set to nil
-				},
-			},
-			testPVs:        []corev1.PersistentVolume{},
-			testPVCs:       []corev1.PersistentVolumeClaim{},
-			expectedResult: false,
-		},
 	}
 
 	for _, tc := range testCases {
