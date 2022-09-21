@@ -93,9 +93,10 @@ func AddCatalogEntry(testID, suiteName, description, remediation, testType, exce
 }
 
 var (
-	TestICMPv4ConnectivityIdentifier   claim.Identifier
-	TestNetworkPolicyDenyAllIdentifier claim.Identifier
-	Test1337UIDIdentifier              claim.Identifier
+	TestICMPv4ConnectivityIdentifier         claim.Identifier
+	TestNetworkPolicyDenyAllIdentifier       claim.Identifier
+	Test1337UIDIdentifier                    claim.Identifier
+	TestContainerIsCertifiedDigestIdentifier claim.Identifier
 )
 
 func InitCatalog() map[claim.Identifier]TestCaseDescription {
@@ -134,6 +135,18 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		VersionOne,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
+		TagExtended)
+
+	// TestContainerIsCertifiedDigestIdentifier tests whether the container has passed Container Certification.
+	TestContainerIsCertifiedDigestIdentifier = AddCatalogEntry(
+		"container-is-certified-digest",
+		common.AffiliatedCertTestKey,
+		`Tests whether container images that are autodiscovered have passed the Red Hat Container Certification Program by their digest(CCP).`,
+		ContainerIsCertifiedRemediation,
+		NormativeResult,
+		NoDocumentedProcess,
+		VersionOne,
+		bestPracticeDocV1dot4URL+" Section 5.3.7",
 		TagExtended)
 
 	return Catalog

@@ -64,6 +64,11 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testHelmCertified(&env)
 	})
+	// Query API for certification status by digest of listed containers
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedDigestIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testContainerCertificationStatusByDigest(&env)
+	})
 })
 
 func testContainerCertification(c configuration.ContainerImageIdentifier) bool {
@@ -149,4 +154,22 @@ func testHelmCertified(env *provider.TestEnvironment) {
 		tnf.ClaimFilePrintf("Helms that are not certified: %+v", failedHelmCharts)
 		ginkgo.Fail(fmt.Sprintf("%d helms chart are not certified.", len(failedHelmCharts)))
 	}
+}
+
+func testContainerCertificationStatusByDigest(env *provider.TestEnvironment) {
+	failedContainers := []configuration.ContainerImageIdentifier{}
+	for _, c := range env.Containers {
+		if c.ContainerImageIdentifier.Name == "" || c.ContainerImageIdentifier.Repository == "" {
+			tnf.ClaimFilePrintf("Container name = %q or repository = %q is missing, skipping this container to query", c.ContainerImageIdentifier.Name, c.ContainerImageIdentifier.Repository)
+			continue
+		}
+		if c.ContainerImageIdentifier.Digest == "" {
+			tnf.ClaimFilePrintf("%s is missing digest field, failing validation (repo=%s image=%s)", c, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Name)
+			failedContainers = append(failedContainers, c.ContainerImageIdentifier)
+		} else if !testContainerCertification(c.ContainerImageIdentifier) {
+			tnf.ClaimFilePrintf("%s digest not found in database, failing validation (repo=%s image=%s)", c, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Name)
+			failedContainers = append(failedContainers, c.ContainerImageIdentifier)
+		}
+	}
+	testhelper.AddTestResultLog("Non-compliant", failedContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
