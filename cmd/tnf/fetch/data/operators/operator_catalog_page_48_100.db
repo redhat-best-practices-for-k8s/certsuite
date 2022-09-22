@@ -1,446 +1,6 @@
 {
   "data": [
     {
-      "_id": "631a1dd698244e6fcd9876ed",
-      "alm_examples": [
-        {
-          "api_version": "bookkeeper.streamnative.io/v1alpha1",
-          "kind": "BookKeeperCluster",
-          "metadata": {
-            "name": "bookkeepercluster-sample"
-          },
-          "spec": {
-            "foo": "bar"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-09-08T16:52:38.429000+00:00",
-      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
-      "csv_display_name": "BookKeeper Operator",
-      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
-      "csv_name": "bookkeeper-operator.v0.12.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:46:16.024000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "bookkeeper-operator",
-      "provided_apis": [
-        {
-          "group": "bookkeeper.streamnative.io",
-          "kind": "BookKeeperCluster",
-          "plural": "bookkeeperclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "StreamNative",
-      "related_images": [
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
-        },
-        {
-          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.12.2",
-      "version_original": "0.12.2"
-    },
-    {
-      "_id": "631a1dd698244e6fcd9876ef",
-      "alm_examples": [
-        {
-          "api_version": "bookkeeper.streamnative.io/v1alpha1",
-          "kind": "BookKeeperCluster",
-          "metadata": {
-            "name": "bookkeepercluster-sample"
-          },
-          "spec": {
-            "foo": "bar"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-09-08T16:52:38.879000+00:00",
-      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
-      "csv_display_name": "BookKeeper Operator",
-      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
-      "csv_name": "bookkeeper-operator.v0.12.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:52:22.046000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "bookkeeper-operator",
-      "provided_apis": [
-        {
-          "group": "bookkeeper.streamnative.io",
-          "kind": "BookKeeperCluster",
-          "plural": "bookkeeperclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "StreamNative",
-      "related_images": [
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
-        },
-        {
-          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.12.2",
-      "version_original": "0.12.2"
-    },
-    {
-      "_id": "631a1dd7e0886f15d82b1d96",
-      "alm_examples": [
-        {
-          "api_version": "bookkeeper.streamnative.io/v1alpha1",
-          "kind": "BookKeeperCluster",
-          "metadata": {
-            "name": "bookkeepercluster-sample"
-          },
-          "spec": {
-            "foo": "bar"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-09-08T16:52:39.313000+00:00",
-      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
-      "csv_display_name": "BookKeeper Operator",
-      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
-      "csv_name": "bookkeeper-operator.v0.12.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:32:40.598000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "bookkeeper-operator",
-      "provided_apis": [
-        {
-          "group": "bookkeeper.streamnative.io",
-          "kind": "BookKeeperCluster",
-          "plural": "bookkeeperclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "StreamNative",
-      "related_images": [
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
-        },
-        {
-          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.12.2",
-      "version_original": "0.12.2"
-    },
-    {
-      "_id": "631a1ed7cc56faa0a4996404",
-      "alm_examples": [
-        {
-          "api_version": "bookkeeper.streamnative.io/v1alpha1",
-          "kind": "BookKeeperCluster",
-          "metadata": {
-            "name": "bookkeepercluster-sample"
-          },
-          "spec": {
-            "foo": "bar"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-09-08T16:56:55.369000+00:00",
-      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
-      "csv_display_name": "BookKeeper Operator",
-      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
-      "csv_name": "bookkeeper-operator.v0.12.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:02:02.140000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "bookkeeper-operator",
-      "provided_apis": [
-        {
-          "group": "bookkeeper.streamnative.io",
-          "kind": "BookKeeperCluster",
-          "plural": "bookkeeperclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "StreamNative",
-      "related_images": [
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
-        },
-        {
-          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.12.2",
-      "version_original": "0.12.2"
-    },
-    {
-      "_id": "631a1ed88fb97f44736f9c8b",
-      "alm_examples": [
-        {
-          "api_version": "bookkeeper.streamnative.io/v1alpha1",
-          "kind": "BookKeeperCluster",
-          "metadata": {
-            "name": "bookkeepercluster-sample"
-          },
-          "spec": {
-            "foo": "bar"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-09-08T16:56:56.013000+00:00",
-      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
-      "csv_display_name": "BookKeeper Operator",
-      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
-      "csv_name": "bookkeeper-operator.v0.12.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:05:23.936000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "bookkeeper-operator",
-      "provided_apis": [
-        {
-          "group": "bookkeeper.streamnative.io",
-          "kind": "BookKeeperCluster",
-          "plural": "bookkeeperclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "StreamNative",
-      "related_images": [
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
-        },
-        {
-          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.12.2",
-      "version_original": "0.12.2"
-    },
-    {
       "_id": "631a1ee2cc56faa0a4996409",
       "alm_examples": [
         {
@@ -13879,6 +13439,1566 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
       "version": "6.5.22251",
       "version_original": "6.5.22251"
+    },
+    {
+      "_id": "6322f529a1826a2016e69a32",
+      "alm_examples": [
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaCsp",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "db-password",
+                "name": "aqua-database-password"
+              },
+              "dbDiskSize": 10
+            },
+            "database": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "gateway": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "infra": {
+              "namespace": "aqua",
+              "requirements": true,
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            },
+            "route": true,
+            "runAsNonRoot": false,
+            "server": {
+              "replicas": 1,
+              "service": "LoadBalancer"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaDatabase",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "diskSize": 10,
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            },
+            "runAsNonRoot": false
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaEnforcer",
+          "metadata": {
+            "name": "aqua"
+          },
+          "spec": {
+            "gateway": {
+              "host": "aqua-gateway",
+              "port": 8443
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            },
+            "runAsNonRoot": false,
+            "token": "<<your-token>>"
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaKubeEnforcer",
+          "metadata": {
+            "name": "aqua"
+          },
+          "spec": {
+            "config": {
+              "cluster_name": "aqua-secure",
+              "gateway_address": "aqua-gateway:8443",
+              "imagePullSecret": "aqua-registry"
+            },
+            "deploy": {
+              "service": "ClusterIP"
+            },
+            "infra": {
+              "serviceAccount": "aqua-kube-enforcer-sa",
+              "version": "6.5"
+            },
+            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaGateway",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
+                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
+              },
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "externalDb": {
+              "host": "<<EXTERNAL DB IP OR DNS>>",
+              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
+              "port": "<<EXTERNAL DB PORT>>",
+              "username": "<<EXTERNAL DB USERNAME>>"
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaScanner",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "deploy": {
+              "replicas": 1
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            },
+            "login": {
+              "host": "http://aqua-server:8080",
+              "password": "<<YOUR AQUA USER PASSWORD>>",
+              "username": "<<YOUR AQUA USER NAME>>"
+            },
+            "runAsNonRoot": false
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaServer",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
+                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
+              },
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "LoadBalancer"
+            },
+            "externalDb": {
+              "host": "<<EXTERNAL DB IP OR DNS>>",
+              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
+              "port": "<<EXTERNAL DB PORT>>",
+              "username": "<<EXTERNAL DB USERNAME>>"
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:b955fe0164a84b0db58408fc28fe67ca23549d387df917ebeb5346cc259a30a0",
+      "bundle_path_digest": "sha256:b955fe0164a84b0db58408fc28fe67ca23549d387df917ebeb5346cc259a30a0",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "6.5",
+      "creation_date": "2022-09-15T09:49:29.478000+00:00",
+      "csv_description": "The Aqua Security Operator runs within an OpenShift cluster and provides a means to deploy and manage the Aqua Security cluster and components :\n* Server (aka \u201cconsole\u201d)\n* Database (for production environments we recommend to use an external database and not the Aqua default database)\n* Gateway\n* Enforcer (aka \u201cagent\u201d)\n* KubeEnforcer\n* Scanner\n* CSP (package that contains the Server, Database, and Gateway)\n\nUse the Aqua-Operator to\n* Deploy Aqua Security components on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua Security components\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n\n3. Create the secret for Aqua Database password. If you are using an External Database, make sure you use those credentials.\nNOTE: This step is optional and you can specify the Database password when creating the CRs.\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua```\n\nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* 4.6: This maps to the older version of Aqua 4.6.0\n* 5.0: This maps to the Aqua version 5.0.0\n* 5.3: This maps to the Aqua version 5.3.0\n* 6.0: This maps to the Aqua version 6.0.0\n* 6.2: This maps to the Aqua version 6.2.0\n* 6.5: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/6.5.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/6.2.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
+      "csv_display_name": "Aqua Security Operator",
+      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
+      "csv_name": "aqua-operator.v6.5.22251",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:48:56.366000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "aqua-operator-certified",
+      "provided_apis": [
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaCsp",
+          "plural": "aquacsps",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaEnforcer",
+          "plural": "aquaenforcers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaServer",
+          "plural": "aquaservers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "aquasecurity.github.io",
+          "kind": "ConfigAuditReport",
+          "plural": "configauditreports",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaDatabase",
+          "plural": "aquadatabases",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaKubeEnforcer",
+          "plural": "aquakubeenforcers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaScanner",
+          "plural": "aquascanners",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "aquasecurity.github.io",
+          "kind": "AquaStarboard",
+          "plural": "aquastarboards",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaGateway",
+          "plural": "aquagateways",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "aquasecurity.github.io",
+          "kind": "ClusterConfigAuditReport",
+          "plural": "clusterconfigauditreports",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Aqua Security, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
+          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
+          "name": "aquasec-afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b-annotation"
+        },
+        {
+          "digest": "sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
+          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
+          "name": "aqua-operator"
+        },
+        {
+          "digest": "sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
+          "image": "registry.connect.redhat.com/aquasec/database@sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
+          "name": "database"
+        },
+        {
+          "digest": "sha256:80fae039eb5505152e8018e24e1e79ef3a17bf4f714234b7d66c465e1ac89d1a",
+          "image": "registry.connect.redhat.com/aquasec/gateway@sha256:80fae039eb5505152e8018e24e1e79ef3a17bf4f714234b7d66c465e1ac89d1a",
+          "name": "gateway"
+        },
+        {
+          "digest": "sha256:88875ff623607965b777c0c6ea443a4c182d53d2cf930e404c50cde53d065c3f",
+          "image": "registry.connect.redhat.com/aquasec/console@sha256:88875ff623607965b777c0c6ea443a4c182d53d2cf930e404c50cde53d065c3f",
+          "name": "server"
+        },
+        {
+          "digest": "sha256:0eed65d8f5d8e9f6cb0121859164b077aaef1f911753527ec41d7f8aaf61f39a",
+          "image": "registry.connect.redhat.com/aquasec/scanner@sha256:0eed65d8f5d8e9f6cb0121859164b077aaef1f911753527ec41d7f8aaf61f39a",
+          "name": "scanner"
+        },
+        {
+          "digest": "sha256:5a8312c8f978c0ed95e951d51ddda1dcdb92e162711f1cb69e3c9134f719648e",
+          "image": "registry.connect.redhat.com/aquasec/enforcer@sha256:5a8312c8f978c0ed95e951d51ddda1dcdb92e162711f1cb69e3c9134f719648e",
+          "name": "enforcer"
+        },
+        {
+          "digest": "sha256:9b98a3d32bf5a9126417df4f6e466af0ef957acb645c9bf3da7c06e7ecbecfa8",
+          "image": "registry.connect.redhat.com/aquasec/kube-enforcer@sha256:9b98a3d32bf5a9126417df4f6e466af0ef957acb645c9bf3da7c06e7ecbecfa8",
+          "name": "kube_enforcer"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=1.0.2 <6.5.22251",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.5.22251",
+      "version_original": "6.5.22251"
+    },
+    {
+      "_id": "6322f585a9c6e63893adee8e",
+      "alm_examples": [
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaCsp",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "db-password",
+                "name": "aqua-database-password"
+              },
+              "dbDiskSize": 10
+            },
+            "database": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "gateway": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "infra": {
+              "namespace": "aqua",
+              "requirements": true,
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            },
+            "route": true,
+            "runAsNonRoot": false,
+            "server": {
+              "replicas": 1,
+              "service": "LoadBalancer"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaDatabase",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "diskSize": 10,
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            },
+            "runAsNonRoot": false
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaEnforcer",
+          "metadata": {
+            "name": "aqua"
+          },
+          "spec": {
+            "gateway": {
+              "host": "aqua-gateway",
+              "port": 8443
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            },
+            "runAsNonRoot": false,
+            "token": "<<your-token>>"
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaKubeEnforcer",
+          "metadata": {
+            "name": "aqua"
+          },
+          "spec": {
+            "config": {
+              "cluster_name": "aqua-secure",
+              "gateway_address": "aqua-gateway:8443",
+              "imagePullSecret": "aqua-registry"
+            },
+            "deploy": {
+              "service": "ClusterIP"
+            },
+            "infra": {
+              "serviceAccount": "aqua-kube-enforcer-sa",
+              "version": "6.5"
+            },
+            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaGateway",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
+                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
+              },
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "externalDb": {
+              "host": "<<EXTERNAL DB IP OR DNS>>",
+              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
+              "port": "<<EXTERNAL DB PORT>>",
+              "username": "<<EXTERNAL DB USERNAME>>"
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaScanner",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "deploy": {
+              "replicas": 1
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            },
+            "login": {
+              "host": "http://aqua-server:8080",
+              "password": "<<YOUR AQUA USER PASSWORD>>",
+              "username": "<<YOUR AQUA USER NAME>>"
+            },
+            "runAsNonRoot": false
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaServer",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
+                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
+              },
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "LoadBalancer"
+            },
+            "externalDb": {
+              "host": "<<EXTERNAL DB IP OR DNS>>",
+              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
+              "port": "<<EXTERNAL DB PORT>>",
+              "username": "<<EXTERNAL DB USERNAME>>"
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:b955fe0164a84b0db58408fc28fe67ca23549d387df917ebeb5346cc259a30a0",
+      "bundle_path_digest": "sha256:b955fe0164a84b0db58408fc28fe67ca23549d387df917ebeb5346cc259a30a0",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "6.5",
+      "creation_date": "2022-09-15T09:51:01.599000+00:00",
+      "csv_description": "The Aqua Security Operator runs within an OpenShift cluster and provides a means to deploy and manage the Aqua Security cluster and components :\n* Server (aka \u201cconsole\u201d)\n* Database (for production environments we recommend to use an external database and not the Aqua default database)\n* Gateway\n* Enforcer (aka \u201cagent\u201d)\n* KubeEnforcer\n* Scanner\n* CSP (package that contains the Server, Database, and Gateway)\n\nUse the Aqua-Operator to\n* Deploy Aqua Security components on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua Security components\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n\n3. Create the secret for Aqua Database password. If you are using an External Database, make sure you use those credentials.\nNOTE: This step is optional and you can specify the Database password when creating the CRs.\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua```\n\nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* 4.6: This maps to the older version of Aqua 4.6.0\n* 5.0: This maps to the Aqua version 5.0.0\n* 5.3: This maps to the Aqua version 5.3.0\n* 6.0: This maps to the Aqua version 6.0.0\n* 6.2: This maps to the Aqua version 6.2.0\n* 6.5: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/6.5.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/6.2.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
+      "csv_display_name": "Aqua Security Operator",
+      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
+      "csv_name": "aqua-operator.v6.5.22251",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:43:22.887000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "aqua-operator-certified",
+      "provided_apis": [
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaCsp",
+          "plural": "aquacsps",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaDatabase",
+          "plural": "aquadatabases",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaKubeEnforcer",
+          "plural": "aquakubeenforcers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaServer",
+          "plural": "aquaservers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaScanner",
+          "plural": "aquascanners",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaEnforcer",
+          "plural": "aquaenforcers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaGateway",
+          "plural": "aquagateways",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "aquasecurity.github.io",
+          "kind": "AquaStarboard",
+          "plural": "aquastarboards",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "aquasecurity.github.io",
+          "kind": "ClusterConfigAuditReport",
+          "plural": "clusterconfigauditreports",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "aquasecurity.github.io",
+          "kind": "ConfigAuditReport",
+          "plural": "configauditreports",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Aqua Security, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
+          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
+          "name": "aquasec-afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b-annotation"
+        },
+        {
+          "digest": "sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
+          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
+          "name": "aqua-operator"
+        },
+        {
+          "digest": "sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
+          "image": "registry.connect.redhat.com/aquasec/database@sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
+          "name": "database"
+        },
+        {
+          "digest": "sha256:80fae039eb5505152e8018e24e1e79ef3a17bf4f714234b7d66c465e1ac89d1a",
+          "image": "registry.connect.redhat.com/aquasec/gateway@sha256:80fae039eb5505152e8018e24e1e79ef3a17bf4f714234b7d66c465e1ac89d1a",
+          "name": "gateway"
+        },
+        {
+          "digest": "sha256:88875ff623607965b777c0c6ea443a4c182d53d2cf930e404c50cde53d065c3f",
+          "image": "registry.connect.redhat.com/aquasec/console@sha256:88875ff623607965b777c0c6ea443a4c182d53d2cf930e404c50cde53d065c3f",
+          "name": "server"
+        },
+        {
+          "digest": "sha256:0eed65d8f5d8e9f6cb0121859164b077aaef1f911753527ec41d7f8aaf61f39a",
+          "image": "registry.connect.redhat.com/aquasec/scanner@sha256:0eed65d8f5d8e9f6cb0121859164b077aaef1f911753527ec41d7f8aaf61f39a",
+          "name": "scanner"
+        },
+        {
+          "digest": "sha256:5a8312c8f978c0ed95e951d51ddda1dcdb92e162711f1cb69e3c9134f719648e",
+          "image": "registry.connect.redhat.com/aquasec/enforcer@sha256:5a8312c8f978c0ed95e951d51ddda1dcdb92e162711f1cb69e3c9134f719648e",
+          "name": "enforcer"
+        },
+        {
+          "digest": "sha256:9b98a3d32bf5a9126417df4f6e466af0ef957acb645c9bf3da7c06e7ecbecfa8",
+          "image": "registry.connect.redhat.com/aquasec/kube-enforcer@sha256:9b98a3d32bf5a9126417df4f6e466af0ef957acb645c9bf3da7c06e7ecbecfa8",
+          "name": "kube_enforcer"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=1.0.2 <6.5.22251",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "6.5.22251",
+      "version_original": "6.5.22251"
+    },
+    {
+      "_id": "6322f5cb316b8eb377f01238",
+      "alm_examples": [
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaCsp",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "db-password",
+                "name": "aqua-database-password"
+              },
+              "dbDiskSize": 10
+            },
+            "database": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "gateway": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "infra": {
+              "namespace": "aqua",
+              "requirements": true,
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            },
+            "route": true,
+            "runAsNonRoot": false,
+            "server": {
+              "replicas": 1,
+              "service": "LoadBalancer"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaDatabase",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "diskSize": 10,
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            },
+            "runAsNonRoot": false
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaEnforcer",
+          "metadata": {
+            "name": "aqua"
+          },
+          "spec": {
+            "gateway": {
+              "host": "aqua-gateway",
+              "port": 8443
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            },
+            "runAsNonRoot": false,
+            "token": "<<your-token>>"
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaKubeEnforcer",
+          "metadata": {
+            "name": "aqua"
+          },
+          "spec": {
+            "config": {
+              "cluster_name": "aqua-secure",
+              "gateway_address": "aqua-gateway:8443",
+              "imagePullSecret": "aqua-registry"
+            },
+            "deploy": {
+              "service": "ClusterIP"
+            },
+            "infra": {
+              "serviceAccount": "aqua-kube-enforcer-sa",
+              "version": "6.5"
+            },
+            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaGateway",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
+                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
+              },
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "externalDb": {
+              "host": "<<EXTERNAL DB IP OR DNS>>",
+              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
+              "port": "<<EXTERNAL DB PORT>>",
+              "username": "<<EXTERNAL DB USERNAME>>"
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaScanner",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "deploy": {
+              "replicas": 1
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            },
+            "login": {
+              "host": "http://aqua-server:8080",
+              "password": "<<YOUR AQUA USER PASSWORD>>",
+              "username": "<<YOUR AQUA USER NAME>>"
+            },
+            "runAsNonRoot": false
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaServer",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
+                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
+              },
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "LoadBalancer"
+            },
+            "externalDb": {
+              "host": "<<EXTERNAL DB IP OR DNS>>",
+              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
+              "port": "<<EXTERNAL DB PORT>>",
+              "username": "<<EXTERNAL DB USERNAME>>"
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:b955fe0164a84b0db58408fc28fe67ca23549d387df917ebeb5346cc259a30a0",
+      "bundle_path_digest": "sha256:b955fe0164a84b0db58408fc28fe67ca23549d387df917ebeb5346cc259a30a0",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "6.5",
+      "creation_date": "2022-09-15T09:52:11.567000+00:00",
+      "csv_description": "The Aqua Security Operator runs within an OpenShift cluster and provides a means to deploy and manage the Aqua Security cluster and components :\n* Server (aka \u201cconsole\u201d)\n* Database (for production environments we recommend to use an external database and not the Aqua default database)\n* Gateway\n* Enforcer (aka \u201cagent\u201d)\n* KubeEnforcer\n* Scanner\n* CSP (package that contains the Server, Database, and Gateway)\n\nUse the Aqua-Operator to\n* Deploy Aqua Security components on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua Security components\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n\n3. Create the secret for Aqua Database password. If you are using an External Database, make sure you use those credentials.\nNOTE: This step is optional and you can specify the Database password when creating the CRs.\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua```\n\nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* 4.6: This maps to the older version of Aqua 4.6.0\n* 5.0: This maps to the Aqua version 5.0.0\n* 5.3: This maps to the Aqua version 5.3.0\n* 6.0: This maps to the Aqua version 6.0.0\n* 6.2: This maps to the Aqua version 6.2.0\n* 6.5: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/6.5.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/6.2.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
+      "csv_display_name": "Aqua Security Operator",
+      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
+      "csv_name": "aqua-operator.v6.5.22251",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:24:13.572000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "aqua-operator-certified",
+      "provided_apis": [
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaEnforcer",
+          "plural": "aquaenforcers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaGateway",
+          "plural": "aquagateways",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaKubeEnforcer",
+          "plural": "aquakubeenforcers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaDatabase",
+          "plural": "aquadatabases",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaScanner",
+          "plural": "aquascanners",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaServer",
+          "plural": "aquaservers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "aquasecurity.github.io",
+          "kind": "AquaStarboard",
+          "plural": "aquastarboards",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "aquasecurity.github.io",
+          "kind": "ConfigAuditReport",
+          "plural": "configauditreports",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaCsp",
+          "plural": "aquacsps",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "aquasecurity.github.io",
+          "kind": "ClusterConfigAuditReport",
+          "plural": "clusterconfigauditreports",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Aqua Security, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
+          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
+          "name": "aquasec-afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b-annotation"
+        },
+        {
+          "digest": "sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
+          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
+          "name": "aqua-operator"
+        },
+        {
+          "digest": "sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
+          "image": "registry.connect.redhat.com/aquasec/database@sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
+          "name": "database"
+        },
+        {
+          "digest": "sha256:80fae039eb5505152e8018e24e1e79ef3a17bf4f714234b7d66c465e1ac89d1a",
+          "image": "registry.connect.redhat.com/aquasec/gateway@sha256:80fae039eb5505152e8018e24e1e79ef3a17bf4f714234b7d66c465e1ac89d1a",
+          "name": "gateway"
+        },
+        {
+          "digest": "sha256:88875ff623607965b777c0c6ea443a4c182d53d2cf930e404c50cde53d065c3f",
+          "image": "registry.connect.redhat.com/aquasec/console@sha256:88875ff623607965b777c0c6ea443a4c182d53d2cf930e404c50cde53d065c3f",
+          "name": "server"
+        },
+        {
+          "digest": "sha256:0eed65d8f5d8e9f6cb0121859164b077aaef1f911753527ec41d7f8aaf61f39a",
+          "image": "registry.connect.redhat.com/aquasec/scanner@sha256:0eed65d8f5d8e9f6cb0121859164b077aaef1f911753527ec41d7f8aaf61f39a",
+          "name": "scanner"
+        },
+        {
+          "digest": "sha256:5a8312c8f978c0ed95e951d51ddda1dcdb92e162711f1cb69e3c9134f719648e",
+          "image": "registry.connect.redhat.com/aquasec/enforcer@sha256:5a8312c8f978c0ed95e951d51ddda1dcdb92e162711f1cb69e3c9134f719648e",
+          "name": "enforcer"
+        },
+        {
+          "digest": "sha256:9b98a3d32bf5a9126417df4f6e466af0ef957acb645c9bf3da7c06e7ecbecfa8",
+          "image": "registry.connect.redhat.com/aquasec/kube-enforcer@sha256:9b98a3d32bf5a9126417df4f6e466af0ef957acb645c9bf3da7c06e7ecbecfa8",
+          "name": "kube_enforcer"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=1.0.2 <6.5.22251",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "6.5.22251",
+      "version_original": "6.5.22251"
+    },
+    {
+      "_id": "6322f72b2dd1cd9660af55d1",
+      "alm_examples": [
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaCsp",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "db-password",
+                "name": "aqua-database-password"
+              },
+              "dbDiskSize": 10
+            },
+            "database": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "gateway": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "infra": {
+              "namespace": "aqua",
+              "requirements": true,
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            },
+            "route": true,
+            "runAsNonRoot": false,
+            "server": {
+              "replicas": 1,
+              "service": "LoadBalancer"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaDatabase",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "diskSize": 10,
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            },
+            "runAsNonRoot": false
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaEnforcer",
+          "metadata": {
+            "name": "aqua"
+          },
+          "spec": {
+            "gateway": {
+              "host": "aqua-gateway",
+              "port": 8443
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            },
+            "runAsNonRoot": false,
+            "token": "<<your-token>>"
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaKubeEnforcer",
+          "metadata": {
+            "name": "aqua"
+          },
+          "spec": {
+            "config": {
+              "cluster_name": "aqua-secure",
+              "gateway_address": "aqua-gateway:8443",
+              "imagePullSecret": "aqua-registry"
+            },
+            "deploy": {
+              "service": "ClusterIP"
+            },
+            "infra": {
+              "serviceAccount": "aqua-kube-enforcer-sa",
+              "version": "6.5"
+            },
+            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaGateway",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
+                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
+              },
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "ClusterIP"
+            },
+            "externalDb": {
+              "host": "<<EXTERNAL DB IP OR DNS>>",
+              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
+              "port": "<<EXTERNAL DB PORT>>",
+              "username": "<<EXTERNAL DB USERNAME>>"
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            }
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaScanner",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "deploy": {
+              "replicas": 1
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            },
+            "login": {
+              "host": "http://aqua-server:8080",
+              "password": "<<YOUR AQUA USER PASSWORD>>",
+              "username": "<<YOUR AQUA USER NAME>>"
+            },
+            "runAsNonRoot": false
+          }
+        },
+        {
+          "api_version": "operator.aquasec.com/v1alpha1",
+          "kind": "AquaServer",
+          "metadata": {
+            "name": "aqua",
+            "namespace": "aqua"
+          },
+          "spec": {
+            "common": {
+              "databaseSecret": {
+                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
+                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
+              },
+              "splitDB": false
+            },
+            "deploy": {
+              "replicas": 1,
+              "service": "LoadBalancer"
+            },
+            "externalDb": {
+              "host": "<<EXTERNAL DB IP OR DNS>>",
+              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
+              "port": "<<EXTERNAL DB PORT>>",
+              "username": "<<EXTERNAL DB USERNAME>>"
+            },
+            "infra": {
+              "serviceAccount": "aqua-sa",
+              "version": "6.5"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:b955fe0164a84b0db58408fc28fe67ca23549d387df917ebeb5346cc259a30a0",
+      "bundle_path_digest": "sha256:b955fe0164a84b0db58408fc28fe67ca23549d387df917ebeb5346cc259a30a0",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "6.5",
+      "creation_date": "2022-09-15T09:58:03.514000+00:00",
+      "csv_description": "The Aqua Security Operator runs within an OpenShift cluster and provides a means to deploy and manage the Aqua Security cluster and components :\n* Server (aka \u201cconsole\u201d)\n* Database (for production environments we recommend to use an external database and not the Aqua default database)\n* Gateway\n* Enforcer (aka \u201cagent\u201d)\n* KubeEnforcer\n* Scanner\n* CSP (package that contains the Server, Database, and Gateway)\n\nUse the Aqua-Operator to\n* Deploy Aqua Security components on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua Security components\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n\n3. Create the secret for Aqua Database password. If you are using an External Database, make sure you use those credentials.\nNOTE: This step is optional and you can specify the Database password when creating the CRs.\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua```\n\nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* 4.6: This maps to the older version of Aqua 4.6.0\n* 5.0: This maps to the Aqua version 5.0.0\n* 5.3: This maps to the Aqua version 5.3.0\n* 6.0: This maps to the Aqua version 6.0.0\n* 6.2: This maps to the Aqua version 6.2.0\n* 6.5: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/6.5.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/6.2.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
+      "csv_display_name": "Aqua Security Operator",
+      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
+      "csv_name": "aqua-operator.v6.5.22251",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:48:50.385000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "aqua-operator-certified",
+      "provided_apis": [
+        {
+          "group": "aquasecurity.github.io",
+          "kind": "AquaStarboard",
+          "plural": "aquastarboards",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaCsp",
+          "plural": "aquacsps",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaEnforcer",
+          "plural": "aquaenforcers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaDatabase",
+          "plural": "aquadatabases",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaScanner",
+          "plural": "aquascanners",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaServer",
+          "plural": "aquaservers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaKubeEnforcer",
+          "plural": "aquakubeenforcers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "aquasecurity.github.io",
+          "kind": "ClusterConfigAuditReport",
+          "plural": "clusterconfigauditreports",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "aquasecurity.github.io",
+          "kind": "ConfigAuditReport",
+          "plural": "configauditreports",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "operator.aquasec.com",
+          "kind": "AquaGateway",
+          "plural": "aquagateways",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Aqua Security, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
+          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
+          "name": "aquasec-afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b-annotation"
+        },
+        {
+          "digest": "sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
+          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
+          "name": "aqua-operator"
+        },
+        {
+          "digest": "sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
+          "image": "registry.connect.redhat.com/aquasec/database@sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
+          "name": "database"
+        },
+        {
+          "digest": "sha256:80fae039eb5505152e8018e24e1e79ef3a17bf4f714234b7d66c465e1ac89d1a",
+          "image": "registry.connect.redhat.com/aquasec/gateway@sha256:80fae039eb5505152e8018e24e1e79ef3a17bf4f714234b7d66c465e1ac89d1a",
+          "name": "gateway"
+        },
+        {
+          "digest": "sha256:88875ff623607965b777c0c6ea443a4c182d53d2cf930e404c50cde53d065c3f",
+          "image": "registry.connect.redhat.com/aquasec/console@sha256:88875ff623607965b777c0c6ea443a4c182d53d2cf930e404c50cde53d065c3f",
+          "name": "server"
+        },
+        {
+          "digest": "sha256:0eed65d8f5d8e9f6cb0121859164b077aaef1f911753527ec41d7f8aaf61f39a",
+          "image": "registry.connect.redhat.com/aquasec/scanner@sha256:0eed65d8f5d8e9f6cb0121859164b077aaef1f911753527ec41d7f8aaf61f39a",
+          "name": "scanner"
+        },
+        {
+          "digest": "sha256:5a8312c8f978c0ed95e951d51ddda1dcdb92e162711f1cb69e3c9134f719648e",
+          "image": "registry.connect.redhat.com/aquasec/enforcer@sha256:5a8312c8f978c0ed95e951d51ddda1dcdb92e162711f1cb69e3c9134f719648e",
+          "name": "enforcer"
+        },
+        {
+          "digest": "sha256:9b98a3d32bf5a9126417df4f6e466af0ef957acb645c9bf3da7c06e7ecbecfa8",
+          "image": "registry.connect.redhat.com/aquasec/kube-enforcer@sha256:9b98a3d32bf5a9126417df4f6e466af0ef957acb645c9bf3da7c06e7ecbecfa8",
+          "name": "kube_enforcer"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=1.0.2 <6.5.22251",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "6.5.22251",
+      "version_original": "6.5.22251"
+    },
+    {
+      "_id": "63235c3a1fe6c3c921e65e3b",
+      "alm_examples": [
+        {
+          "api_version": "aiml.pachyderm.com/v1beta1",
+          "kind": "Pachyderm",
+          "metadata": {
+            "name": "pachyderm-sample"
+          },
+          "spec": {
+            "console": {
+              "disable": true
+            },
+            "pachd": {
+              "metrics": {
+                "disable": false
+              },
+              "storage": {
+                "amazon": {
+                  "credentialSecretName": "pachyderm-aws-secret"
+                },
+                "backend": "AMAZON"
+              }
+            },
+            "version": "v2.1.6"
+          }
+        },
+        {
+          "api_version": "aiml.pachyderm.com/v1beta1",
+          "kind": "PachydermExport",
+          "metadata": {
+            "name": "pachydermexport-sample"
+          },
+          "spec": {
+            "backup": {
+              "target": "pachyderm-sample"
+            }
+          }
+        },
+        {
+          "api_version": "aiml.pachyderm.com/v1beta1",
+          "kind": "PachydermImport",
+          "metadata": {
+            "name": "pachydermimport-sample"
+          },
+          "spec": {
+            "backup": "backups/pachyderm-backup-20220610.tar.gz",
+            "destination": {
+              "name": "pachyderm-restore",
+              "namespace": "pachyderm-workloads"
+            },
+            "storageSecret": "s3-credentials-secret"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/pachyderm/pachyderm-bundle@sha256:47ad4efd37ad85bccf915a6d9448d404b7ce3164d7afb4c944648eeba9f0b04b",
+      "bundle_path_digest": "sha256:47ad4efd37ad85bccf915a6d9448d404b7ce3164d7afb4c944648eeba9f0b04b",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-15T17:09:14.446000+00:00",
+      "csv_description": "The Pachyderm operator aims to make deploying and managing Pachyderm instances on Openshift container platform easier.\n\nPachyderm is the data foundation for machine learning.  Pachyderm provides industry leading data versioning, pipelines and lineage that allow data science teams to automate the machine learning lifecycle and optimize their machine learning operations (MLOps). \n\n## Getting started\n\n1. Pachyderm uses an object store to store your data. Set the pachd storage backend at `pachyderm.spec.pachd.storage.backend` to `AMAZON`, `MICROSOFT`, `GOOGLE` or `MINIO` depending on your storage provider. Additionally, create a user with read/write access to the object store.\n\n2. Setup the user credentials in the section, `pachyderm.spec.pachd.storage`. Required fields depend on the backend type set in step 1 above.\n\n3. Finally, deploy the pachyderm cluster in its own namespace.\n\nFor more information on getting started, reference the documentation.\n",
+      "csv_display_name": "Pachyderm",
+      "csv_metadata_description": "Pachyderm provides the data layer that allows data science teams to productionize and scale their machine learning lifecycle with data driven automation, petabyte scalability and end-to-end reproducibility.",
+      "csv_name": "pachyderm-operator.v0.1.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:18:21.979000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "pachyderm-operator",
+      "provided_apis": [
+        {
+          "group": "aiml.pachyderm.com",
+          "kind": "Pachyderm",
+          "version": "v1beta1"
+        },
+        {
+          "group": "aiml.pachyderm.com",
+          "kind": "PachydermExport",
+          "version": "v1beta1"
+        },
+        {
+          "group": "aiml.pachyderm.com",
+          "kind": "PachydermImport",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "Pachyderm, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:4bb562f98edc2d94299f25080dc3dd8290e5f8db2710fe8f76a5cd71442bb4c7",
+          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:4bb562f98edc2d94299f25080dc3dd8290e5f8db2710fe8f76a5cd71442bb4c7",
+          "name": "pachyderm-operator"
+        },
+        {
+          "digest": "sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
+          "name": "ose-kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:116477fefdf413ea02c6ac3d013f1f91d3f6e4b16aed2408c9890832cdb41430",
+          "image": "registry.connect.redhat.com/pachyderm/pachd@sha256:116477fefdf413ea02c6ac3d013f1f91d3f6e4b16aed2408c9890832cdb41430",
+          "name": "pachd"
+        },
+        {
+          "digest": "sha256:374f83d92899707bc87b0318fda6bffa78d2e9e523b827bb3d40693a2d1bdecd",
+          "image": "registry.connect.redhat.com/pachyderm/worker@sha256:374f83d92899707bc87b0318fda6bffa78d2e9e523b827bb3d40693a2d1bdecd",
+          "name": "worker"
+        },
+        {
+          "digest": "sha256:7f330b51874379b1d4b71d94e37e0ecfa52b86d628296136970688cf204f53b5",
+          "image": "registry.connect.redhat.com/pachyderm/etcd@sha256:7f330b51874379b1d4b71d94e37e0ecfa52b86d628296136970688cf204f53b5",
+          "name": "etcd"
+        },
+        {
+          "digest": "sha256:4bb562f98edc2d94299f25080dc3dd8290e5f8db2710fe8f76a5cd71442bb4c7",
+          "image": "registry.redhat.io/rhel8/postgresql-13@sha256:4bb562f98edc2d94299f25080dc3dd8290e5f8db2710fe8f76a5cd71442bb4c7",
+          "name": "postgresql"
+        },
+        {
+          "digest": "sha256:c3b6949227df24abb8934d111a34b44e87fb16194ac34a5d0fe284cff02e9ac0",
+          "image": "registry.connect.redhat.com/pachyderm/pgbouncer@sha256:c3b6949227df24abb8934d111a34b44e87fb16194ac34a5d0fe284cff02e9ac0",
+          "name": "pgbouncer"
+        },
+        {
+          "digest": "sha256:5c0258bfa0203079925648c0a7dda6d05a29b6f461854821a1eec541777ff359",
+          "image": "registry.connect.redhat.com/pachyderm/init-utils@sha256:5c0258bfa0203079925648c0a7dda6d05a29b6f461854821a1eec541777ff359",
+          "name": "init-utils"
+        },
+        {
+          "digest": "sha256:e2ef6bd8191e8ad58c765c0db8f5bb21ea7123caed0c0f58fe681a024201306d",
+          "image": "registry.connect.redhat.com/pachyderm/backup-handler@sha256:e2ef6bd8191e8ad58c765c0db8f5bb21ea7123caed0c0f58fe681a024201306d",
+          "name": "backup-handler"
+        },
+        {
+          "digest": "sha256:ecfab15a6b7bcf7cbdc71dda8ba8f408ee1e6c8f2c240779e56d0f006b439ce7",
+          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:ecfab15a6b7bcf7cbdc71dda8ba8f408ee1e6c8f2c240779e56d0f006b439ce7",
+          "name": "pachyderm-operator-ecfab15a6b7bcf7cbdc71dda8ba8f408ee1e6c8f2c240779e56d0f006b439ce7-annotation"
+        },
+        {
+          "digest": "sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:ecfab15a6b7bcf7cbdc71dda8ba8f408ee1e6c8f2c240779e56d0f006b439ce7",
+          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:ecfab15a6b7bcf7cbdc71dda8ba8f408ee1e6c8f2c240779e56d0f006b439ce7",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e2ef6bd8191e8ad58c765c0db8f5bb21ea7123caed0c0f58fe681a024201306d",
+          "image": "registry.connect.redhat.com/pachyderm/backup-handler@sha256:e2ef6bd8191e8ad58c765c0db8f5bb21ea7123caed0c0f58fe681a024201306d",
+          "name": "backup"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "0.1.4",
+      "version_original": "0.1.4"
     }
   ]
 }

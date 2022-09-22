@@ -1,1566 +1,6 @@
 {
   "data": [
     {
-      "_id": "6322f529a1826a2016e69a32",
-      "alm_examples": [
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaCsp",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "db-password",
-                "name": "aqua-database-password"
-              },
-              "dbDiskSize": 10
-            },
-            "database": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "gateway": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "namespace": "aqua",
-              "requirements": true,
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "route": true,
-            "runAsNonRoot": false,
-            "server": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaDatabase",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "diskSize": 10,
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "gateway": {
-              "host": "aqua-gateway",
-              "port": 8443
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "runAsNonRoot": false,
-            "token": "<<your-token>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaKubeEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "config": {
-              "cluster_name": "aqua-secure",
-              "gateway_address": "aqua-gateway:8443",
-              "imagePullSecret": "aqua-registry"
-            },
-            "deploy": {
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "serviceAccount": "aqua-kube-enforcer-sa",
-              "version": "6.5"
-            },
-            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaGateway",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaScanner",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "deploy": {
-              "replicas": 1
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "login": {
-              "host": "http://aqua-server:8080",
-              "password": "<<YOUR AQUA USER PASSWORD>>",
-              "username": "<<YOUR AQUA USER NAME>>"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaServer",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:b955fe0164a84b0db58408fc28fe67ca23549d387df917ebeb5346cc259a30a0",
-      "bundle_path_digest": "sha256:b955fe0164a84b0db58408fc28fe67ca23549d387df917ebeb5346cc259a30a0",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "6.5",
-      "creation_date": "2022-09-15T09:49:29.478000+00:00",
-      "csv_description": "The Aqua Security Operator runs within an OpenShift cluster and provides a means to deploy and manage the Aqua Security cluster and components :\n* Server (aka \u201cconsole\u201d)\n* Database (for production environments we recommend to use an external database and not the Aqua default database)\n* Gateway\n* Enforcer (aka \u201cagent\u201d)\n* KubeEnforcer\n* Scanner\n* CSP (package that contains the Server, Database, and Gateway)\n\nUse the Aqua-Operator to\n* Deploy Aqua Security components on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua Security components\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n\n3. Create the secret for Aqua Database password. If you are using an External Database, make sure you use those credentials.\nNOTE: This step is optional and you can specify the Database password when creating the CRs.\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua```\n\nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* 4.6: This maps to the older version of Aqua 4.6.0\n* 5.0: This maps to the Aqua version 5.0.0\n* 5.3: This maps to the Aqua version 5.3.0\n* 6.0: This maps to the Aqua version 6.0.0\n* 6.2: This maps to the Aqua version 6.2.0\n* 6.5: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/6.5.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/6.2.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
-      "csv_display_name": "Aqua Security Operator",
-      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
-      "csv_name": "aqua-operator.v6.5.22251",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:48:56.366000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "aqua-operator-certified",
-      "provided_apis": [
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaCsp",
-          "plural": "aquacsps",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaEnforcer",
-          "plural": "aquaenforcers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaServer",
-          "plural": "aquaservers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ConfigAuditReport",
-          "plural": "configauditreports",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaDatabase",
-          "plural": "aquadatabases",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaKubeEnforcer",
-          "plural": "aquakubeenforcers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaScanner",
-          "plural": "aquascanners",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "AquaStarboard",
-          "plural": "aquastarboards",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaGateway",
-          "plural": "aquagateways",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ClusterConfigAuditReport",
-          "plural": "clusterconfigauditreports",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Aqua Security, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
-          "name": "aquasec-afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b-annotation"
-        },
-        {
-          "digest": "sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
-          "name": "aqua-operator"
-        },
-        {
-          "digest": "sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "image": "registry.connect.redhat.com/aquasec/database@sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "name": "database"
-        },
-        {
-          "digest": "sha256:80fae039eb5505152e8018e24e1e79ef3a17bf4f714234b7d66c465e1ac89d1a",
-          "image": "registry.connect.redhat.com/aquasec/gateway@sha256:80fae039eb5505152e8018e24e1e79ef3a17bf4f714234b7d66c465e1ac89d1a",
-          "name": "gateway"
-        },
-        {
-          "digest": "sha256:88875ff623607965b777c0c6ea443a4c182d53d2cf930e404c50cde53d065c3f",
-          "image": "registry.connect.redhat.com/aquasec/console@sha256:88875ff623607965b777c0c6ea443a4c182d53d2cf930e404c50cde53d065c3f",
-          "name": "server"
-        },
-        {
-          "digest": "sha256:0eed65d8f5d8e9f6cb0121859164b077aaef1f911753527ec41d7f8aaf61f39a",
-          "image": "registry.connect.redhat.com/aquasec/scanner@sha256:0eed65d8f5d8e9f6cb0121859164b077aaef1f911753527ec41d7f8aaf61f39a",
-          "name": "scanner"
-        },
-        {
-          "digest": "sha256:5a8312c8f978c0ed95e951d51ddda1dcdb92e162711f1cb69e3c9134f719648e",
-          "image": "registry.connect.redhat.com/aquasec/enforcer@sha256:5a8312c8f978c0ed95e951d51ddda1dcdb92e162711f1cb69e3c9134f719648e",
-          "name": "enforcer"
-        },
-        {
-          "digest": "sha256:9b98a3d32bf5a9126417df4f6e466af0ef957acb645c9bf3da7c06e7ecbecfa8",
-          "image": "registry.connect.redhat.com/aquasec/kube-enforcer@sha256:9b98a3d32bf5a9126417df4f6e466af0ef957acb645c9bf3da7c06e7ecbecfa8",
-          "name": "kube_enforcer"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.0.2 <6.5.22251",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.5.22251",
-      "version_original": "6.5.22251"
-    },
-    {
-      "_id": "6322f585a9c6e63893adee8e",
-      "alm_examples": [
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaCsp",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "db-password",
-                "name": "aqua-database-password"
-              },
-              "dbDiskSize": 10
-            },
-            "database": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "gateway": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "namespace": "aqua",
-              "requirements": true,
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "route": true,
-            "runAsNonRoot": false,
-            "server": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaDatabase",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "diskSize": 10,
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "gateway": {
-              "host": "aqua-gateway",
-              "port": 8443
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "runAsNonRoot": false,
-            "token": "<<your-token>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaKubeEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "config": {
-              "cluster_name": "aqua-secure",
-              "gateway_address": "aqua-gateway:8443",
-              "imagePullSecret": "aqua-registry"
-            },
-            "deploy": {
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "serviceAccount": "aqua-kube-enforcer-sa",
-              "version": "6.5"
-            },
-            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaGateway",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaScanner",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "deploy": {
-              "replicas": 1
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "login": {
-              "host": "http://aqua-server:8080",
-              "password": "<<YOUR AQUA USER PASSWORD>>",
-              "username": "<<YOUR AQUA USER NAME>>"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaServer",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:b955fe0164a84b0db58408fc28fe67ca23549d387df917ebeb5346cc259a30a0",
-      "bundle_path_digest": "sha256:b955fe0164a84b0db58408fc28fe67ca23549d387df917ebeb5346cc259a30a0",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "6.5",
-      "creation_date": "2022-09-15T09:51:01.599000+00:00",
-      "csv_description": "The Aqua Security Operator runs within an OpenShift cluster and provides a means to deploy and manage the Aqua Security cluster and components :\n* Server (aka \u201cconsole\u201d)\n* Database (for production environments we recommend to use an external database and not the Aqua default database)\n* Gateway\n* Enforcer (aka \u201cagent\u201d)\n* KubeEnforcer\n* Scanner\n* CSP (package that contains the Server, Database, and Gateway)\n\nUse the Aqua-Operator to\n* Deploy Aqua Security components on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua Security components\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n\n3. Create the secret for Aqua Database password. If you are using an External Database, make sure you use those credentials.\nNOTE: This step is optional and you can specify the Database password when creating the CRs.\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua```\n\nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* 4.6: This maps to the older version of Aqua 4.6.0\n* 5.0: This maps to the Aqua version 5.0.0\n* 5.3: This maps to the Aqua version 5.3.0\n* 6.0: This maps to the Aqua version 6.0.0\n* 6.2: This maps to the Aqua version 6.2.0\n* 6.5: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/6.5.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/6.2.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
-      "csv_display_name": "Aqua Security Operator",
-      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
-      "csv_name": "aqua-operator.v6.5.22251",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:43:22.887000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "aqua-operator-certified",
-      "provided_apis": [
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaCsp",
-          "plural": "aquacsps",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaDatabase",
-          "plural": "aquadatabases",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaKubeEnforcer",
-          "plural": "aquakubeenforcers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaServer",
-          "plural": "aquaservers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaScanner",
-          "plural": "aquascanners",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaEnforcer",
-          "plural": "aquaenforcers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaGateway",
-          "plural": "aquagateways",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "AquaStarboard",
-          "plural": "aquastarboards",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ClusterConfigAuditReport",
-          "plural": "clusterconfigauditreports",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ConfigAuditReport",
-          "plural": "configauditreports",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Aqua Security, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
-          "name": "aquasec-afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b-annotation"
-        },
-        {
-          "digest": "sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
-          "name": "aqua-operator"
-        },
-        {
-          "digest": "sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "image": "registry.connect.redhat.com/aquasec/database@sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "name": "database"
-        },
-        {
-          "digest": "sha256:80fae039eb5505152e8018e24e1e79ef3a17bf4f714234b7d66c465e1ac89d1a",
-          "image": "registry.connect.redhat.com/aquasec/gateway@sha256:80fae039eb5505152e8018e24e1e79ef3a17bf4f714234b7d66c465e1ac89d1a",
-          "name": "gateway"
-        },
-        {
-          "digest": "sha256:88875ff623607965b777c0c6ea443a4c182d53d2cf930e404c50cde53d065c3f",
-          "image": "registry.connect.redhat.com/aquasec/console@sha256:88875ff623607965b777c0c6ea443a4c182d53d2cf930e404c50cde53d065c3f",
-          "name": "server"
-        },
-        {
-          "digest": "sha256:0eed65d8f5d8e9f6cb0121859164b077aaef1f911753527ec41d7f8aaf61f39a",
-          "image": "registry.connect.redhat.com/aquasec/scanner@sha256:0eed65d8f5d8e9f6cb0121859164b077aaef1f911753527ec41d7f8aaf61f39a",
-          "name": "scanner"
-        },
-        {
-          "digest": "sha256:5a8312c8f978c0ed95e951d51ddda1dcdb92e162711f1cb69e3c9134f719648e",
-          "image": "registry.connect.redhat.com/aquasec/enforcer@sha256:5a8312c8f978c0ed95e951d51ddda1dcdb92e162711f1cb69e3c9134f719648e",
-          "name": "enforcer"
-        },
-        {
-          "digest": "sha256:9b98a3d32bf5a9126417df4f6e466af0ef957acb645c9bf3da7c06e7ecbecfa8",
-          "image": "registry.connect.redhat.com/aquasec/kube-enforcer@sha256:9b98a3d32bf5a9126417df4f6e466af0ef957acb645c9bf3da7c06e7ecbecfa8",
-          "name": "kube_enforcer"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.0.2 <6.5.22251",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "6.5.22251",
-      "version_original": "6.5.22251"
-    },
-    {
-      "_id": "6322f5cb316b8eb377f01238",
-      "alm_examples": [
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaCsp",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "db-password",
-                "name": "aqua-database-password"
-              },
-              "dbDiskSize": 10
-            },
-            "database": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "gateway": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "namespace": "aqua",
-              "requirements": true,
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "route": true,
-            "runAsNonRoot": false,
-            "server": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaDatabase",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "diskSize": 10,
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "gateway": {
-              "host": "aqua-gateway",
-              "port": 8443
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "runAsNonRoot": false,
-            "token": "<<your-token>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaKubeEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "config": {
-              "cluster_name": "aqua-secure",
-              "gateway_address": "aqua-gateway:8443",
-              "imagePullSecret": "aqua-registry"
-            },
-            "deploy": {
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "serviceAccount": "aqua-kube-enforcer-sa",
-              "version": "6.5"
-            },
-            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaGateway",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaScanner",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "deploy": {
-              "replicas": 1
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "login": {
-              "host": "http://aqua-server:8080",
-              "password": "<<YOUR AQUA USER PASSWORD>>",
-              "username": "<<YOUR AQUA USER NAME>>"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaServer",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:b955fe0164a84b0db58408fc28fe67ca23549d387df917ebeb5346cc259a30a0",
-      "bundle_path_digest": "sha256:b955fe0164a84b0db58408fc28fe67ca23549d387df917ebeb5346cc259a30a0",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "6.5",
-      "creation_date": "2022-09-15T09:52:11.567000+00:00",
-      "csv_description": "The Aqua Security Operator runs within an OpenShift cluster and provides a means to deploy and manage the Aqua Security cluster and components :\n* Server (aka \u201cconsole\u201d)\n* Database (for production environments we recommend to use an external database and not the Aqua default database)\n* Gateway\n* Enforcer (aka \u201cagent\u201d)\n* KubeEnforcer\n* Scanner\n* CSP (package that contains the Server, Database, and Gateway)\n\nUse the Aqua-Operator to\n* Deploy Aqua Security components on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua Security components\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n\n3. Create the secret for Aqua Database password. If you are using an External Database, make sure you use those credentials.\nNOTE: This step is optional and you can specify the Database password when creating the CRs.\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua```\n\nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* 4.6: This maps to the older version of Aqua 4.6.0\n* 5.0: This maps to the Aqua version 5.0.0\n* 5.3: This maps to the Aqua version 5.3.0\n* 6.0: This maps to the Aqua version 6.0.0\n* 6.2: This maps to the Aqua version 6.2.0\n* 6.5: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/6.5.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/6.2.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
-      "csv_display_name": "Aqua Security Operator",
-      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
-      "csv_name": "aqua-operator.v6.5.22251",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:24:13.572000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "aqua-operator-certified",
-      "provided_apis": [
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaEnforcer",
-          "plural": "aquaenforcers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaGateway",
-          "plural": "aquagateways",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaKubeEnforcer",
-          "plural": "aquakubeenforcers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaDatabase",
-          "plural": "aquadatabases",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaScanner",
-          "plural": "aquascanners",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaServer",
-          "plural": "aquaservers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "AquaStarboard",
-          "plural": "aquastarboards",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ConfigAuditReport",
-          "plural": "configauditreports",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaCsp",
-          "plural": "aquacsps",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ClusterConfigAuditReport",
-          "plural": "clusterconfigauditreports",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Aqua Security, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
-          "name": "aquasec-afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b-annotation"
-        },
-        {
-          "digest": "sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
-          "name": "aqua-operator"
-        },
-        {
-          "digest": "sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "image": "registry.connect.redhat.com/aquasec/database@sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "name": "database"
-        },
-        {
-          "digest": "sha256:80fae039eb5505152e8018e24e1e79ef3a17bf4f714234b7d66c465e1ac89d1a",
-          "image": "registry.connect.redhat.com/aquasec/gateway@sha256:80fae039eb5505152e8018e24e1e79ef3a17bf4f714234b7d66c465e1ac89d1a",
-          "name": "gateway"
-        },
-        {
-          "digest": "sha256:88875ff623607965b777c0c6ea443a4c182d53d2cf930e404c50cde53d065c3f",
-          "image": "registry.connect.redhat.com/aquasec/console@sha256:88875ff623607965b777c0c6ea443a4c182d53d2cf930e404c50cde53d065c3f",
-          "name": "server"
-        },
-        {
-          "digest": "sha256:0eed65d8f5d8e9f6cb0121859164b077aaef1f911753527ec41d7f8aaf61f39a",
-          "image": "registry.connect.redhat.com/aquasec/scanner@sha256:0eed65d8f5d8e9f6cb0121859164b077aaef1f911753527ec41d7f8aaf61f39a",
-          "name": "scanner"
-        },
-        {
-          "digest": "sha256:5a8312c8f978c0ed95e951d51ddda1dcdb92e162711f1cb69e3c9134f719648e",
-          "image": "registry.connect.redhat.com/aquasec/enforcer@sha256:5a8312c8f978c0ed95e951d51ddda1dcdb92e162711f1cb69e3c9134f719648e",
-          "name": "enforcer"
-        },
-        {
-          "digest": "sha256:9b98a3d32bf5a9126417df4f6e466af0ef957acb645c9bf3da7c06e7ecbecfa8",
-          "image": "registry.connect.redhat.com/aquasec/kube-enforcer@sha256:9b98a3d32bf5a9126417df4f6e466af0ef957acb645c9bf3da7c06e7ecbecfa8",
-          "name": "kube_enforcer"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.0.2 <6.5.22251",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.5.22251",
-      "version_original": "6.5.22251"
-    },
-    {
-      "_id": "6322f72b2dd1cd9660af55d1",
-      "alm_examples": [
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaCsp",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "db-password",
-                "name": "aqua-database-password"
-              },
-              "dbDiskSize": 10
-            },
-            "database": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "gateway": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "namespace": "aqua",
-              "requirements": true,
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "route": true,
-            "runAsNonRoot": false,
-            "server": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaDatabase",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "diskSize": 10,
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "gateway": {
-              "host": "aqua-gateway",
-              "port": 8443
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "runAsNonRoot": false,
-            "token": "<<your-token>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaKubeEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "config": {
-              "cluster_name": "aqua-secure",
-              "gateway_address": "aqua-gateway:8443",
-              "imagePullSecret": "aqua-registry"
-            },
-            "deploy": {
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "serviceAccount": "aqua-kube-enforcer-sa",
-              "version": "6.5"
-            },
-            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaGateway",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaScanner",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "deploy": {
-              "replicas": 1
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            },
-            "login": {
-              "host": "http://aqua-server:8080",
-              "password": "<<YOUR AQUA USER PASSWORD>>",
-              "username": "<<YOUR AQUA USER NAME>>"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaServer",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "6.5"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:b955fe0164a84b0db58408fc28fe67ca23549d387df917ebeb5346cc259a30a0",
-      "bundle_path_digest": "sha256:b955fe0164a84b0db58408fc28fe67ca23549d387df917ebeb5346cc259a30a0",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "6.5",
-      "creation_date": "2022-09-15T09:58:03.514000+00:00",
-      "csv_description": "The Aqua Security Operator runs within an OpenShift cluster and provides a means to deploy and manage the Aqua Security cluster and components :\n* Server (aka \u201cconsole\u201d)\n* Database (for production environments we recommend to use an external database and not the Aqua default database)\n* Gateway\n* Enforcer (aka \u201cagent\u201d)\n* KubeEnforcer\n* Scanner\n* CSP (package that contains the Server, Database, and Gateway)\n\nUse the Aqua-Operator to\n* Deploy Aqua Security components on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua Security components\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n\n3. Create the secret for Aqua Database password. If you are using an External Database, make sure you use those credentials.\nNOTE: This step is optional and you can specify the Database password when creating the CRs.\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua```\n\nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* 4.6: This maps to the older version of Aqua 4.6.0\n* 5.0: This maps to the Aqua version 5.0.0\n* 5.3: This maps to the Aqua version 5.3.0\n* 6.0: This maps to the Aqua version 6.0.0\n* 6.2: This maps to the Aqua version 6.2.0\n* 6.5: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/6.5.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/6.2.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
-      "csv_display_name": "Aqua Security Operator",
-      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
-      "csv_name": "aqua-operator.v6.5.22251",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:48:50.385000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "aqua-operator-certified",
-      "provided_apis": [
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "AquaStarboard",
-          "plural": "aquastarboards",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaCsp",
-          "plural": "aquacsps",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaEnforcer",
-          "plural": "aquaenforcers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaDatabase",
-          "plural": "aquadatabases",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaScanner",
-          "plural": "aquascanners",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaServer",
-          "plural": "aquaservers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaKubeEnforcer",
-          "plural": "aquakubeenforcers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ClusterConfigAuditReport",
-          "plural": "clusterconfigauditreports",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ConfigAuditReport",
-          "plural": "configauditreports",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaGateway",
-          "plural": "aquagateways",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Aqua Security, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
-          "name": "aquasec-afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b-annotation"
-        },
-        {
-          "digest": "sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:afc2b89f5ee5cd6cbb1df46c93cf95834b9ca2da70dd8d5fa45e5ec0343fda4b",
-          "name": "aqua-operator"
-        },
-        {
-          "digest": "sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "image": "registry.connect.redhat.com/aquasec/database@sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "name": "database"
-        },
-        {
-          "digest": "sha256:80fae039eb5505152e8018e24e1e79ef3a17bf4f714234b7d66c465e1ac89d1a",
-          "image": "registry.connect.redhat.com/aquasec/gateway@sha256:80fae039eb5505152e8018e24e1e79ef3a17bf4f714234b7d66c465e1ac89d1a",
-          "name": "gateway"
-        },
-        {
-          "digest": "sha256:88875ff623607965b777c0c6ea443a4c182d53d2cf930e404c50cde53d065c3f",
-          "image": "registry.connect.redhat.com/aquasec/console@sha256:88875ff623607965b777c0c6ea443a4c182d53d2cf930e404c50cde53d065c3f",
-          "name": "server"
-        },
-        {
-          "digest": "sha256:0eed65d8f5d8e9f6cb0121859164b077aaef1f911753527ec41d7f8aaf61f39a",
-          "image": "registry.connect.redhat.com/aquasec/scanner@sha256:0eed65d8f5d8e9f6cb0121859164b077aaef1f911753527ec41d7f8aaf61f39a",
-          "name": "scanner"
-        },
-        {
-          "digest": "sha256:5a8312c8f978c0ed95e951d51ddda1dcdb92e162711f1cb69e3c9134f719648e",
-          "image": "registry.connect.redhat.com/aquasec/enforcer@sha256:5a8312c8f978c0ed95e951d51ddda1dcdb92e162711f1cb69e3c9134f719648e",
-          "name": "enforcer"
-        },
-        {
-          "digest": "sha256:9b98a3d32bf5a9126417df4f6e466af0ef957acb645c9bf3da7c06e7ecbecfa8",
-          "image": "registry.connect.redhat.com/aquasec/kube-enforcer@sha256:9b98a3d32bf5a9126417df4f6e466af0ef957acb645c9bf3da7c06e7ecbecfa8",
-          "name": "kube_enforcer"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.0.2 <6.5.22251",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "6.5.22251",
-      "version_original": "6.5.22251"
-    },
-    {
-      "_id": "63235c3a1fe6c3c921e65e3b",
-      "alm_examples": [
-        {
-          "api_version": "aiml.pachyderm.com/v1beta1",
-          "kind": "Pachyderm",
-          "metadata": {
-            "name": "pachyderm-sample"
-          },
-          "spec": {
-            "console": {
-              "disable": true
-            },
-            "pachd": {
-              "metrics": {
-                "disable": false
-              },
-              "storage": {
-                "amazon": {
-                  "credentialSecretName": "pachyderm-aws-secret"
-                },
-                "backend": "AMAZON"
-              }
-            },
-            "version": "v2.1.6"
-          }
-        },
-        {
-          "api_version": "aiml.pachyderm.com/v1beta1",
-          "kind": "PachydermExport",
-          "metadata": {
-            "name": "pachydermexport-sample"
-          },
-          "spec": {
-            "backup": {
-              "target": "pachyderm-sample"
-            }
-          }
-        },
-        {
-          "api_version": "aiml.pachyderm.com/v1beta1",
-          "kind": "PachydermImport",
-          "metadata": {
-            "name": "pachydermimport-sample"
-          },
-          "spec": {
-            "backup": "backups/pachyderm-backup-20220610.tar.gz",
-            "destination": {
-              "name": "pachyderm-restore",
-              "namespace": "pachyderm-workloads"
-            },
-            "storageSecret": "s3-credentials-secret"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/pachyderm/pachyderm-bundle@sha256:47ad4efd37ad85bccf915a6d9448d404b7ce3164d7afb4c944648eeba9f0b04b",
-      "bundle_path_digest": "sha256:47ad4efd37ad85bccf915a6d9448d404b7ce3164d7afb4c944648eeba9f0b04b",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-09-15T17:09:14.446000+00:00",
-      "csv_description": "The Pachyderm operator aims to make deploying and managing Pachyderm instances on Openshift container platform easier.\n\nPachyderm is the data foundation for machine learning.  Pachyderm provides industry leading data versioning, pipelines and lineage that allow data science teams to automate the machine learning lifecycle and optimize their machine learning operations (MLOps). \n\n## Getting started\n\n1. Pachyderm uses an object store to store your data. Set the pachd storage backend at `pachyderm.spec.pachd.storage.backend` to `AMAZON`, `MICROSOFT`, `GOOGLE` or `MINIO` depending on your storage provider. Additionally, create a user with read/write access to the object store.\n\n2. Setup the user credentials in the section, `pachyderm.spec.pachd.storage`. Required fields depend on the backend type set in step 1 above.\n\n3. Finally, deploy the pachyderm cluster in its own namespace.\n\nFor more information on getting started, reference the documentation.\n",
-      "csv_display_name": "Pachyderm",
-      "csv_metadata_description": "Pachyderm provides the data layer that allows data science teams to productionize and scale their machine learning lifecycle with data driven automation, petabyte scalability and end-to-end reproducibility.",
-      "csv_name": "pachyderm-operator.v0.1.4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:18:21.979000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "pachyderm-operator",
-      "provided_apis": [
-        {
-          "group": "aiml.pachyderm.com",
-          "kind": "Pachyderm",
-          "version": "v1beta1"
-        },
-        {
-          "group": "aiml.pachyderm.com",
-          "kind": "PachydermExport",
-          "version": "v1beta1"
-        },
-        {
-          "group": "aiml.pachyderm.com",
-          "kind": "PachydermImport",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "Pachyderm, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:4bb562f98edc2d94299f25080dc3dd8290e5f8db2710fe8f76a5cd71442bb4c7",
-          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:4bb562f98edc2d94299f25080dc3dd8290e5f8db2710fe8f76a5cd71442bb4c7",
-          "name": "pachyderm-operator"
-        },
-        {
-          "digest": "sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
-          "name": "ose-kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:116477fefdf413ea02c6ac3d013f1f91d3f6e4b16aed2408c9890832cdb41430",
-          "image": "registry.connect.redhat.com/pachyderm/pachd@sha256:116477fefdf413ea02c6ac3d013f1f91d3f6e4b16aed2408c9890832cdb41430",
-          "name": "pachd"
-        },
-        {
-          "digest": "sha256:374f83d92899707bc87b0318fda6bffa78d2e9e523b827bb3d40693a2d1bdecd",
-          "image": "registry.connect.redhat.com/pachyderm/worker@sha256:374f83d92899707bc87b0318fda6bffa78d2e9e523b827bb3d40693a2d1bdecd",
-          "name": "worker"
-        },
-        {
-          "digest": "sha256:7f330b51874379b1d4b71d94e37e0ecfa52b86d628296136970688cf204f53b5",
-          "image": "registry.connect.redhat.com/pachyderm/etcd@sha256:7f330b51874379b1d4b71d94e37e0ecfa52b86d628296136970688cf204f53b5",
-          "name": "etcd"
-        },
-        {
-          "digest": "sha256:4bb562f98edc2d94299f25080dc3dd8290e5f8db2710fe8f76a5cd71442bb4c7",
-          "image": "registry.redhat.io/rhel8/postgresql-13@sha256:4bb562f98edc2d94299f25080dc3dd8290e5f8db2710fe8f76a5cd71442bb4c7",
-          "name": "postgresql"
-        },
-        {
-          "digest": "sha256:c3b6949227df24abb8934d111a34b44e87fb16194ac34a5d0fe284cff02e9ac0",
-          "image": "registry.connect.redhat.com/pachyderm/pgbouncer@sha256:c3b6949227df24abb8934d111a34b44e87fb16194ac34a5d0fe284cff02e9ac0",
-          "name": "pgbouncer"
-        },
-        {
-          "digest": "sha256:5c0258bfa0203079925648c0a7dda6d05a29b6f461854821a1eec541777ff359",
-          "image": "registry.connect.redhat.com/pachyderm/init-utils@sha256:5c0258bfa0203079925648c0a7dda6d05a29b6f461854821a1eec541777ff359",
-          "name": "init-utils"
-        },
-        {
-          "digest": "sha256:e2ef6bd8191e8ad58c765c0db8f5bb21ea7123caed0c0f58fe681a024201306d",
-          "image": "registry.connect.redhat.com/pachyderm/backup-handler@sha256:e2ef6bd8191e8ad58c765c0db8f5bb21ea7123caed0c0f58fe681a024201306d",
-          "name": "backup-handler"
-        },
-        {
-          "digest": "sha256:ecfab15a6b7bcf7cbdc71dda8ba8f408ee1e6c8f2c240779e56d0f006b439ce7",
-          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:ecfab15a6b7bcf7cbdc71dda8ba8f408ee1e6c8f2c240779e56d0f006b439ce7",
-          "name": "pachyderm-operator-ecfab15a6b7bcf7cbdc71dda8ba8f408ee1e6c8f2c240779e56d0f006b439ce7-annotation"
-        },
-        {
-          "digest": "sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:5e33f9d095952866b9743cc8268fb740cce6d93439f00ce333a2de1e5974837e",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:ecfab15a6b7bcf7cbdc71dda8ba8f408ee1e6c8f2c240779e56d0f006b439ce7",
-          "image": "registry.connect.redhat.com/pachyderm/pachyderm-operator@sha256:ecfab15a6b7bcf7cbdc71dda8ba8f408ee1e6c8f2c240779e56d0f006b439ce7",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:e2ef6bd8191e8ad58c765c0db8f5bb21ea7123caed0c0f58fe681a024201306d",
-          "image": "registry.connect.redhat.com/pachyderm/backup-handler@sha256:e2ef6bd8191e8ad58c765c0db8f5bb21ea7123caed0c0f58fe681a024201306d",
-          "name": "backup"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "0.1.4",
-      "version_original": "0.1.4"
-    },
-    {
       "_id": "63235e862dd1cd9660af648d",
       "alm_examples": [
         {
@@ -21409,6 +19849,1536 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.12",
       "version": "0.0.2",
       "version_original": "0.0.2"
+    },
+    {
+      "_id": "632841521fe6c3c921e6b180",
+      "alm_examples": [
+        {
+          "api_version": "xcrypt.zettaset.com/v1alpha1",
+          "kind": "XCrypt",
+          "metadata": {
+            "name": "zts-masterset"
+          },
+          "spec": {
+            "status": {
+              "podNames": "zts-ca",
+              "replicas": "1,"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/zts/xcrypt-operator-1-bundle@sha256:c3913778f986ae4f3a7d94da2a9d0157233dbb676e3c1eecacbdbc02a864685a",
+      "bundle_path_digest": "sha256:c3913778f986ae4f3a7d94da2a9d0157233dbb676e3c1eecacbdbc02a864685a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-09-19T10:15:46.987000+00:00",
+      "csv_description": "Zettaset\u2019s RedHat Certified XCrypt Operator allows users to deploy multiple XCrypt components on OpenShift with just a few simple commands. The XCrypt Operator deployment provides software-defined encryption that transparently protects container data throughout your OpenShift environment.\n\n## Core Features\n* **Automated XCrypt provisioning** - Deploying a Zettaset XCrypt has never been easier. Adjust cluster specific configuration and let the Zettaset Operator take care of provisioning XCrypt services and setting up the XCrypt encryption to your exact specification. \n* **CSI Driver deployment**: Zettaset XCrypt Operator automatically deploys Zettaset XCrypt CSI Driver in order to provide automated and transparent data-at-rest  encryption functionality compatible with Openshift and any other container orchestrator. Once the Operator is provisioned, the driver runs fine tuned and ready to work with other XCrypt components.\n* **Multi-node topology**: Encrypt as many nodes and volumes as you need to. XCrypt components can be installed on multiple nodes across the cluster. This is defined by two labels: zts-master and zts-worker. Normally zts-master node is a single node that runs Zettaset XCrypt major services required for the product operation. Multiple nodes can be marked as zts-worker and those are the nodes that can have encrypted volumes.\n* **Seamless Encrypted Volume mount**: Volumes are not only being encrypted, but also are mounted/unmounted to containers with Persistent Volume Claims. This happens as seamlessly as regular volumes provision and mount/unmount.\n* **Robust failover**: A node failure doesn\u2019t affect XCrypt operations on other nodes of the cluster. Encryption on a restarted/recovered node gets back to normal functioning if the node stays healthy and data hasn\u2019t been corrupted during the restart\n\n## About Zettaset XCrypt Kubernetes Encryption for OpenShift\nXCrypt Kubernetes Encryption for OpenShift is a software-only solution that enables encryption of data at rest stored in Red Hat OpenShift container environments without slowing down the DevSecOps process. In addition to providing a transparent and high-performance layer of security that flexibly protects container data across on-premise, in hybrid, and multi-cloud environments, it also helps your organization efficiently transition from DevOps to DevSecOps.  \n\nMore information about Zettaset XCrypt Kubernetes Encryption for OpenShift can be found in the [Deployment and Administration Guide](https://1f2aca073706bb52f501-133f3466c38fdb0417539cdf095d8336.ssl.cf1.rackcdn.com/ZettasetXCryptContainerEncryption.8.5.0.Final.pdf)\n\n## RedHat OpenShift + Zettaset: The next generation of secure enterprise infrastructure for DevSecOps  \nBy combining RedHat\u2019s Container Platform with Zettaset\u2019s certified software-defined encryption, you can create the next generation of secure enterprise infrastructure that DevSecOps requires. Together they create the stable, consistent, and supported base that your organization needs to develop applications faster, simplify updates, drive innovation, and reduce the risk of potential security breaches and data theft.\n### Core Features\n* Software-only for simple and scalable deployments \n* Negligible performance impact\n* Transparent to developers and administrators \n* Works with AWS, Google, and Azure \n* Unique encryption key per container volume \n* Encrypted volumes are only available when in use\n* Direct integration with OpenShift \n* Automated encryption policy management Secure erase of volumes\n* Ability to securely decommission a node\n\n## How does XCrypt Kubernetes Encryption fit into OpenShift? \nXCrypt XCrypt Kubernetes Encryption for OpenShift Encryption makes it incredibly easy to protect container data in your OpenShift environment. \n### Use cases include:\n* Transitioning from DevOps to DevSecOps \n* Ensuring data protection in OpenShift container environments with negligible performance impact \n* Achieving compliance in regulated industries like healthcare and finance\n\n## Other Information\nRole-based access control needs to be configured prior to the Operator installation. Please find details in the [Deployment and Administration Guide](https://1f2aca073706bb52f501-133f3466c38fdb0417539cdf095d8336.ssl.cf1.rackcdn.com/ZettasetXCryptContainerEncryption.8.5.0.Final.pdf)    ",
+      "csv_display_name": "Zettaset XCrypt Operator",
+      "csv_metadata_description": "XCrypt Operator deploys Zettaset XCrypt Container Encryption  - the only software-defined solution that offers transparent high performance data-at-rest encryption of critical data in container environments.",
+      "csv_name": "zts-xcrypt-operator.v0.0.17",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:28:15.968000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.12",
+      "organization": "certified-operators",
+      "package": "xcrypt-operator",
+      "provided_apis": [
+        {
+          "group": "xcrypt.zettaset.com",
+          "kind": "XCrypt",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Zettaset",
+      "related_images": [
+        {
+          "digest": "sha256:7e6316a6c41dd71c4d9025bd958a475929369284eee1a02d9e870e883acfd9ac",
+          "image": "registry.connect.redhat.com/zts/xcrypt-operator-1@sha256:7e6316a6c41dd71c4d9025bd958a475929369284eee1a02d9e870e883acfd9ac",
+          "name": "xcrypt-operator-1-7e6316a6c41dd71c4d9025bd958a475929369284eee1a02d9e870e883acfd9ac-annotation"
+        },
+        {
+          "digest": "sha256:7e6316a6c41dd71c4d9025bd958a475929369284eee1a02d9e870e883acfd9ac",
+          "image": "registry.connect.redhat.com/zts/xcrypt-operator-1@sha256:7e6316a6c41dd71c4d9025bd958a475929369284eee1a02d9e870e883acfd9ac",
+          "name": "zts-xcrypt-operator"
+        },
+        {
+          "digest": "sha256:9f1015dfb459b69f5dbf449efa0517452095a6cf4f20826ebae278f9f800ffe7",
+          "image": "registry.connect.redhat.com/zts/xcrypt-ca-1@sha256:9f1015dfb459b69f5dbf449efa0517452095a6cf4f20826ebae278f9f800ffe7",
+          "name": "ca"
+        },
+        {
+          "digest": "sha256:9af5d21dd748dfbf4e107f27a5f10fa3c0ba928ade9b989a744b620ce34ec757",
+          "image": "registry.connect.redhat.com/zts/xcrypt-kmip-server-1@sha256:9af5d21dd748dfbf4e107f27a5f10fa3c0ba928ade9b989a744b620ce34ec757",
+          "name": "kmip"
+        },
+        {
+          "digest": "sha256:bc5486892a41e70f5dc4c4e1d82fca8db2149598fb8b5950ba5da1ee2d9d245d",
+          "image": "registry.connect.redhat.com/zts/xcrypt-license-server-1@sha256:bc5486892a41e70f5dc4c4e1d82fca8db2149598fb8b5950ba5da1ee2d9d245d",
+          "name": "ls"
+        },
+        {
+          "digest": "sha256:9faa4b597eb74df412761dffa057b64fb69dbf9fa016414962eb2099a343e734",
+          "image": "registry.connect.redhat.com/zts/xcrypt-host-manager-1@sha256:9faa4b597eb74df412761dffa057b64fb69dbf9fa016414962eb2099a343e734",
+          "name": "hm"
+        },
+        {
+          "digest": "sha256:c15fa9a7cc40891103f426206663dcebe1210c8ee3ab6037cbf64e1f86b9c7e5",
+          "image": "registry.connect.redhat.com/zts/zts-csi-driver-1@sha256:c15fa9a7cc40891103f426206663dcebe1210c8ee3ab6037cbf64e1f86b9c7e5",
+          "name": "csi_driver"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.12",
+      "version": "0.0.17",
+      "version_original": "0.0.17"
+    },
+    {
+      "_id": "632841561fe6c3c921e6b186",
+      "alm_examples": [
+        {
+          "api_version": "elasticsearch.k8s.elastic.co/v1",
+          "kind": "Elasticsearch",
+          "metadata": {
+            "name": "elasticsearch-sample"
+          },
+          "spec": {
+            "nodeSets": [
+              {
+                "config": {
+                  "node.attr.attr_name": "attr_value",
+                  "node.roles": [
+                    "master",
+                    "data"
+                  ],
+                  "node.store.allow_mmap": false
+                },
+                "count": 3,
+                "name": "default",
+                "podTemplate": {
+                  "metadata": {
+                    "labels": {
+                      "foo": "bar"
+                    }
+                  },
+                  "spec": {
+                    "containers": [
+                      {
+                        "name": "elasticsearch",
+                        "resources": {
+                          "limits": {
+                            "cpu": 2,
+                            "memory": "4Gi"
+                          },
+                          "requests": {
+                            "cpu": 1,
+                            "memory": "4Gi"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "version": "8.3.1"
+          }
+        },
+        {
+          "api_version": "kibana.k8s.elastic.co/v1",
+          "kind": "Kibana",
+          "metadata": {
+            "name": "kibana-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "podTemplate": {
+              "metadata": {
+                "labels": {
+                  "foo": "bar"
+                }
+              },
+              "spec": {
+                "containers": [
+                  {
+                    "name": "kibana",
+                    "resources": {
+                      "limits": {
+                        "cpu": 2,
+                        "memory": "2Gi"
+                      },
+                      "requests": {
+                        "cpu": 0.5,
+                        "memory": "1Gi"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "version": "8.3.1"
+          }
+        },
+        {
+          "api_version": "apm.k8s.elastic.co/v1",
+          "kind": "ApmServer",
+          "metadata": {
+            "name": "apmserver-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.3.1"
+          }
+        },
+        {
+          "api_version": "enterprisesearch.k8s.elastic.co/v1",
+          "kind": "EnterpriseSearch",
+          "metadata": {
+            "name": "ent-sample"
+          },
+          "spec": {
+            "config": {
+              "ent_search.external_url": "https://localhost:3002"
+            },
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.3.1"
+          }
+        },
+        {
+          "api_version": "beat.k8s.elastic.co/v1beta1",
+          "kind": "Beat",
+          "metadata": {
+            "name": "heartbeat-sample"
+          },
+          "spec": {
+            "config": {
+              "heartbeat.monitors": [
+                {
+                  "hosts": [
+                    "elasticsearch-sample-es-http.default.svc:9200"
+                  ],
+                  "schedule": "@every 5s",
+                  "type": "tcp"
+                }
+              ]
+            },
+            "deployment": {
+              "podTemplate": {
+                "spec": {
+                  "securityContext": {
+                    "runAsUser": 0
+                  }
+                }
+              },
+              "replicas": 1
+            },
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "type": "heartbeat",
+            "version": "8.3.1"
+          }
+        },
+        {
+          "api_version": "agent.k8s.elastic.co/v1alpha1",
+          "kind": "Agent",
+          "metadata": {
+            "name": "agent-sample"
+          },
+          "spec": {
+            "config": {
+              "inputs": [
+                {
+                  "data_stream": {
+                    "namespace": "default"
+                  },
+                  "meta": {
+                    "package": {
+                      "name": "system",
+                      "version": "0.9.1"
+                    }
+                  },
+                  "name": "system-1",
+                  "revision": 1,
+                  "streams": [
+                    {
+                      "cpu.metrics": [
+                        "percentages",
+                        "normalized_percentages"
+                      ],
+                      "data_stream": {
+                        "dataset": "system.cpu",
+                        "type": "metrics"
+                      },
+                      "id": "system/metrics-system.cpu",
+                      "metricsets": [
+                        "cpu"
+                      ],
+                      "period": "10s"
+                    }
+                  ],
+                  "type": "system/metrics",
+                  "use_output": "default"
+                }
+              ]
+            },
+            "daemonSet": {},
+            "elasticsearchRefs": [
+              {
+                "name": "elasticsearch-sample"
+              }
+            ],
+            "version": "8.3.1"
+          }
+        },
+        {
+          "api_version": "maps.k8s.elastic.co/v1alpha1",
+          "kind": "ElasticMapsServer",
+          "metadata": {
+            "name": "ems-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.3.1"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/elastic/eck@sha256:9c3de68be969ea622539c2f7dfa643016154fa4a0a5ce9d33dae3bc855ea03bd",
+      "bundle_path_digest": "sha256:9c3de68be969ea622539c2f7dfa643016154fa4a0a5ce9d33dae3bc855ea03bd",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-19T10:15:50.279000+00:00",
+      "csv_description": "Elastic Cloud on Kubernetes (ECK) is the official operator by Elastic for automating the deployment, provisioning, management, and orchestration of Elasticsearch, Kibana, APM Server, Beats, Enterprise Search, Elastic Agent and Elastic Maps Server on Kubernetes.\n\nCurrent features:\n\n*  Elasticsearch, Kibana, APM Server, Enterprise Search, Beats, Elastic Agent and Elastic Maps Server deployments\n*  TLS Certificates management\n*  Safe Elasticsearch cluster configuration and topology changes\n*  Persistent volumes usage\n*  Custom node configuration and attributes\n*  Secure settings keystore updates\n\nSupported versions:\n\n* Kubernetes 1.20-1.24\n* OpenShift 4.6-4.10\n* Google Kubernetes Engine (GKE), Azure Kubernetes Service (AKS), and Amazon Elastic Kubernetes Service (EKS)\n* Elasticsearch, Kibana, APM Server: 7.10+, 8+\n* Enterprise Search: 7.10+, 8+\n* Beats: 7.10+, 8+\n* Elastic Agent: 7.10+, 8+\n* Elastic Maps Server: 7.11+, 8+\n\nECK should work with all conformant installers as listed in these [FAQs](https://github.com/cncf/k8s-conformance/blob/master/faq.md#what-is-a-distribution-hosted-platform-and-an-installer). Distributions include source patches and so may not work as-is with ECK.\nAlpha, beta, and stable API versions follow the same [conventions used by Kubernetes](https://kubernetes.io/docs/concepts/overview/kubernetes-api/#api-versioning).\nSee the full [Elastic support matrix](https://www.elastic.co/support/matrix#matrix_kubernetes) for more information.\nSee the [Quickstart](https://www.elastic.co/guide/en/cloud-on-k8s/2.3/k8s-quickstart.html) to get started with ECK.",
+      "csv_display_name": "Elasticsearch (ECK) Operator",
+      "csv_metadata_description": "Run Elasticsearch, Kibana, APM Server, Beats, Enterprise Search, Elastic Agent and Elastic Maps Server on Kubernetes and OpenShift",
+      "csv_name": "elasticsearch-eck-operator-certified.v2.3.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:32:27.885000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.12",
+      "organization": "certified-operators",
+      "package": "elasticsearch-eck-operator-certified",
+      "provided_apis": [
+        {
+          "group": "agent.k8s.elastic.co",
+          "kind": "Agent",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "version": "v1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "version": "v1beta1"
+        },
+        {
+          "group": "beat.k8s.elastic.co",
+          "kind": "Beat",
+          "version": "v1beta1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "version": "v1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "version": "v1beta1"
+        },
+        {
+          "group": "enterprisesearch.k8s.elastic.co",
+          "kind": "EnterpriseSearch",
+          "version": "v1"
+        },
+        {
+          "group": "enterprisesearch.k8s.elastic.co",
+          "kind": "EnterpriseSearch",
+          "version": "v1beta1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "version": "v1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "version": "v1beta1"
+        },
+        {
+          "group": "maps.k8s.elastic.co",
+          "kind": "ElasticMapsServer",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Elastic",
+      "related_images": [
+        {
+          "digest": "sha256:3ed9323e46ccbdd932a259bb0dd9f04010ec842b4cc7b4c4e7ee889760a90c1d",
+          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:3ed9323e46ccbdd932a259bb0dd9f04010ec842b4cc7b4c4e7ee889760a90c1d",
+          "name": "eck-operator-3ed9323e46ccbdd932a259bb0dd9f04010ec842b4cc7b4c4e7ee889760a90c1d-annotation"
+        },
+        {
+          "digest": "sha256:3ed9323e46ccbdd932a259bb0dd9f04010ec842b4cc7b4c4e7ee889760a90c1d",
+          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:3ed9323e46ccbdd932a259bb0dd9f04010ec842b4cc7b4c4e7ee889760a90c1d",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.12",
+      "version": "2.3.0",
+      "version_original": "2.3.0"
+    },
+    {
+      "_id": "632841598454bee1cb72397e",
+      "alm_examples": [
+        {
+          "api_version": "elasticsearch.k8s.elastic.co/v1",
+          "kind": "Elasticsearch",
+          "metadata": {
+            "name": "elasticsearch-sample"
+          },
+          "spec": {
+            "nodeSets": [
+              {
+                "config": {
+                  "node.attr.attr_name": "attr_value",
+                  "node.roles": [
+                    "master",
+                    "data"
+                  ],
+                  "node.store.allow_mmap": false
+                },
+                "count": 3,
+                "name": "default",
+                "podTemplate": {
+                  "metadata": {
+                    "labels": {
+                      "foo": "bar"
+                    }
+                  },
+                  "spec": {
+                    "containers": [
+                      {
+                        "name": "elasticsearch",
+                        "resources": {
+                          "limits": {
+                            "cpu": 2,
+                            "memory": "4Gi"
+                          },
+                          "requests": {
+                            "cpu": 1,
+                            "memory": "4Gi"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "version": "8.4.0"
+          }
+        },
+        {
+          "api_version": "kibana.k8s.elastic.co/v1",
+          "kind": "Kibana",
+          "metadata": {
+            "name": "kibana-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "podTemplate": {
+              "metadata": {
+                "labels": {
+                  "foo": "bar"
+                }
+              },
+              "spec": {
+                "containers": [
+                  {
+                    "name": "kibana",
+                    "resources": {
+                      "limits": {
+                        "cpu": 2,
+                        "memory": "2Gi"
+                      },
+                      "requests": {
+                        "cpu": 0.5,
+                        "memory": "1Gi"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "version": "8.4.0"
+          }
+        },
+        {
+          "api_version": "apm.k8s.elastic.co/v1",
+          "kind": "ApmServer",
+          "metadata": {
+            "name": "apmserver-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.4.0"
+          }
+        },
+        {
+          "api_version": "enterprisesearch.k8s.elastic.co/v1",
+          "kind": "EnterpriseSearch",
+          "metadata": {
+            "name": "ent-sample"
+          },
+          "spec": {
+            "config": {
+              "ent_search.external_url": "https://localhost:3002"
+            },
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.4.0"
+          }
+        },
+        {
+          "api_version": "beat.k8s.elastic.co/v1beta1",
+          "kind": "Beat",
+          "metadata": {
+            "name": "heartbeat-sample"
+          },
+          "spec": {
+            "config": {
+              "heartbeat.monitors": [
+                {
+                  "hosts": [
+                    "elasticsearch-sample-es-http.default.svc:9200"
+                  ],
+                  "schedule": "@every 5s",
+                  "type": "tcp"
+                }
+              ]
+            },
+            "deployment": {
+              "podTemplate": {
+                "spec": {
+                  "securityContext": {
+                    "runAsUser": 0
+                  }
+                }
+              },
+              "replicas": 1
+            },
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "type": "heartbeat",
+            "version": "8.4.0"
+          }
+        },
+        {
+          "api_version": "agent.k8s.elastic.co/v1alpha1",
+          "kind": "Agent",
+          "metadata": {
+            "name": "agent-sample"
+          },
+          "spec": {
+            "config": {
+              "inputs": [
+                {
+                  "data_stream": {
+                    "namespace": "default"
+                  },
+                  "meta": {
+                    "package": {
+                      "name": "system",
+                      "version": "0.9.1"
+                    }
+                  },
+                  "name": "system-1",
+                  "revision": 1,
+                  "streams": [
+                    {
+                      "cpu.metrics": [
+                        "percentages",
+                        "normalized_percentages"
+                      ],
+                      "data_stream": {
+                        "dataset": "system.cpu",
+                        "type": "metrics"
+                      },
+                      "id": "system/metrics-system.cpu",
+                      "metricsets": [
+                        "cpu"
+                      ],
+                      "period": "10s"
+                    }
+                  ],
+                  "type": "system/metrics",
+                  "use_output": "default"
+                }
+              ]
+            },
+            "daemonSet": {},
+            "elasticsearchRefs": [
+              {
+                "name": "elasticsearch-sample"
+              }
+            ],
+            "version": "8.4.0"
+          }
+        },
+        {
+          "api_version": "maps.k8s.elastic.co/v1alpha1",
+          "kind": "ElasticMapsServer",
+          "metadata": {
+            "name": "ems-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.4.0"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/elastic/eck@sha256:3a8b4475afc5535dd0527e0d06d3f3e5616873a3a449d798e58b315b0c8744b7",
+      "bundle_path_digest": "sha256:3a8b4475afc5535dd0527e0d06d3f3e5616873a3a449d798e58b315b0c8744b7",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-19T10:15:53.016000+00:00",
+      "csv_description": "Elastic Cloud on Kubernetes (ECK) is the official operator by Elastic for automating the deployment, provisioning, management, and orchestration of Elasticsearch, Kibana, APM Server, Beats, Enterprise Search, Elastic Agent and Elastic Maps Server on Kubernetes.\n\nCurrent features:\n\n*  Elasticsearch, Kibana, APM Server, Enterprise Search, Beats, Elastic Agent and Elastic Maps Server deployments\n*  TLS Certificates management\n*  Safe Elasticsearch cluster configuration and topology changes\n*  Persistent volumes usage\n*  Custom node configuration and attributes\n*  Secure settings keystore updates\n\nSupported versions:\n\n* Kubernetes 1.20-1.24\n* OpenShift 4.6-4.10\n* Google Kubernetes Engine (GKE), Azure Kubernetes Service (AKS), and Amazon Elastic Kubernetes Service (EKS)\n* Elasticsearch, Kibana, APM Server: 7.10+, 8+\n* Enterprise Search: 7.10+, 8+\n* Beats: 7.10+, 8+\n* Elastic Agent: 7.10+, 8+\n* Elastic Maps Server: 7.11+, 8+\n\nECK should work with all conformant installers as listed in these [FAQs](https://github.com/cncf/k8s-conformance/blob/master/faq.md#what-is-a-distribution-hosted-platform-and-an-installer). Distributions include source patches and so may not work as-is with ECK.\nAlpha, beta, and stable API versions follow the same [conventions used by Kubernetes](https://kubernetes.io/docs/concepts/overview/kubernetes-api/#api-versioning).\nSee the full [Elastic support matrix](https://www.elastic.co/support/matrix#matrix_kubernetes) for more information.\nSee the [Quickstart](https://www.elastic.co/guide/en/cloud-on-k8s/2.4/k8s-quickstart.html) to get started with ECK.",
+      "csv_display_name": "Elasticsearch (ECK) Operator",
+      "csv_metadata_description": "Run Elasticsearch, Kibana, APM Server, Beats, Enterprise Search, Elastic Agent and Elastic Maps Server on Kubernetes and OpenShift",
+      "csv_name": "elasticsearch-eck-operator-certified.v2.4.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:32:29.958000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.12",
+      "organization": "certified-operators",
+      "package": "elasticsearch-eck-operator-certified",
+      "provided_apis": [
+        {
+          "group": "agent.k8s.elastic.co",
+          "kind": "Agent",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "version": "v1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "version": "v1beta1"
+        },
+        {
+          "group": "beat.k8s.elastic.co",
+          "kind": "Beat",
+          "version": "v1beta1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "version": "v1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "version": "v1beta1"
+        },
+        {
+          "group": "enterprisesearch.k8s.elastic.co",
+          "kind": "EnterpriseSearch",
+          "version": "v1"
+        },
+        {
+          "group": "enterprisesearch.k8s.elastic.co",
+          "kind": "EnterpriseSearch",
+          "version": "v1beta1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "version": "v1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "version": "v1beta1"
+        },
+        {
+          "group": "maps.k8s.elastic.co",
+          "kind": "ElasticMapsServer",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Elastic",
+      "related_images": [
+        {
+          "digest": "sha256:83bb4de859b40f61053642536d07f2d4340fdf63b8aa43173f981dd07acb9801",
+          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:83bb4de859b40f61053642536d07f2d4340fdf63b8aa43173f981dd07acb9801",
+          "name": "eck-operator-83bb4de859b40f61053642536d07f2d4340fdf63b8aa43173f981dd07acb9801-annotation"
+        },
+        {
+          "digest": "sha256:83bb4de859b40f61053642536d07f2d4340fdf63b8aa43173f981dd07acb9801",
+          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:83bb4de859b40f61053642536d07f2d4340fdf63b8aa43173f981dd07acb9801",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.12",
+      "version": "2.4.0",
+      "version_original": "2.4.0"
+    },
+    {
+      "_id": "6328415ba9c6e63893ae519d",
+      "alm_examples": [
+        {
+          "api_version": "elasticsearch.k8s.elastic.co/v1",
+          "kind": "Elasticsearch",
+          "metadata": {
+            "name": "elasticsearch-sample"
+          },
+          "spec": {
+            "nodeSets": [
+              {
+                "config": {
+                  "node.attr.attr_name": "attr_value",
+                  "node.roles": [
+                    "master",
+                    "data"
+                  ],
+                  "node.store.allow_mmap": false
+                },
+                "count": 3,
+                "name": "default",
+                "podTemplate": {
+                  "metadata": {
+                    "labels": {
+                      "foo": "bar"
+                    }
+                  },
+                  "spec": {
+                    "containers": [
+                      {
+                        "name": "elasticsearch",
+                        "resources": {
+                          "limits": {
+                            "cpu": 2,
+                            "memory": "4Gi"
+                          },
+                          "requests": {
+                            "cpu": 1,
+                            "memory": "4Gi"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "version": "8.0.0"
+          }
+        },
+        {
+          "api_version": "kibana.k8s.elastic.co/v1",
+          "kind": "Kibana",
+          "metadata": {
+            "name": "kibana-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "podTemplate": {
+              "metadata": {
+                "labels": {
+                  "foo": "bar"
+                }
+              },
+              "spec": {
+                "containers": [
+                  {
+                    "name": "kibana",
+                    "resources": {
+                      "limits": {
+                        "cpu": 2,
+                        "memory": "2Gi"
+                      },
+                      "requests": {
+                        "cpu": 0.5,
+                        "memory": "1Gi"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "version": "8.0.0"
+          }
+        },
+        {
+          "api_version": "apm.k8s.elastic.co/v1",
+          "kind": "ApmServer",
+          "metadata": {
+            "name": "apmserver-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.0.0"
+          }
+        },
+        {
+          "api_version": "enterprisesearch.k8s.elastic.co/v1",
+          "kind": "EnterpriseSearch",
+          "metadata": {
+            "name": "ent-sample"
+          },
+          "spec": {
+            "config": {
+              "ent_search.external_url": "https://localhost:3002"
+            },
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.0.0"
+          }
+        },
+        {
+          "api_version": "beat.k8s.elastic.co/v1beta1",
+          "kind": "Beat",
+          "metadata": {
+            "name": "heartbeat-sample"
+          },
+          "spec": {
+            "config": {
+              "heartbeat.monitors": [
+                {
+                  "hosts": [
+                    "elasticsearch-sample-es-http.default.svc:9200"
+                  ],
+                  "schedule": "@every 5s",
+                  "type": "tcp"
+                }
+              ]
+            },
+            "deployment": {
+              "podTemplate": {
+                "spec": {
+                  "securityContext": {
+                    "runAsUser": 0
+                  }
+                }
+              },
+              "replicas": 1
+            },
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "type": "heartbeat",
+            "version": "8.0.0"
+          }
+        },
+        {
+          "api_version": "agent.k8s.elastic.co/v1alpha1",
+          "kind": "Agent",
+          "metadata": {
+            "name": "agent-sample"
+          },
+          "spec": {
+            "config": {
+              "inputs": [
+                {
+                  "data_stream": {
+                    "namespace": "default"
+                  },
+                  "meta": {
+                    "package": {
+                      "name": "system",
+                      "version": "0.9.1"
+                    }
+                  },
+                  "name": "system-1",
+                  "revision": 1,
+                  "streams": [
+                    {
+                      "cpu.metrics": [
+                        "percentages",
+                        "normalized_percentages"
+                      ],
+                      "data_stream": {
+                        "dataset": "system.cpu",
+                        "type": "metrics"
+                      },
+                      "id": "system/metrics-system.cpu",
+                      "metricsets": [
+                        "cpu"
+                      ],
+                      "period": "10s"
+                    }
+                  ],
+                  "type": "system/metrics",
+                  "use_output": "default"
+                }
+              ]
+            },
+            "daemonSet": {},
+            "elasticsearchRefs": [
+              {
+                "name": "elasticsearch-sample"
+              }
+            ],
+            "version": "8.0.0"
+          }
+        },
+        {
+          "api_version": "maps.k8s.elastic.co/v1alpha1",
+          "kind": "ElasticMapsServer",
+          "metadata": {
+            "name": "ems-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.0.0"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/elastic/eck@sha256:4bb009507010225a10589c29d79ae970e53aa1c501c31879b8a6bd80418e6605",
+      "bundle_path_digest": "sha256:4bb009507010225a10589c29d79ae970e53aa1c501c31879b8a6bd80418e6605",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-19T10:15:55.280000+00:00",
+      "csv_description": "Elastic Cloud on Kubernetes (ECK) is the official operator by Elastic for automating the deployment, provisioning, management, and orchestration of Elasticsearch, Kibana, APM Server, Beats, Enterprise Search, Elastic Agent and Elastic Maps Server on Kubernetes.\n\nCurrent features:\n\n*  Elasticsearch, Kibana, APM Server, Enterprise Search, Beats, Elastic Agent and Elastic Maps Server deployments\n*  TLS Certificates management\n*  Safe Elasticsearch cluster configuration and topology changes\n*  Persistent volumes usage\n*  Custom node configuration and attributes\n*  Secure settings keystore updates\n\nSupported versions:\n\n* Kubernetes 1.19-1.23\n* OpenShift 4.6-4.10\n* Google Kubernetes Engine (GKE), Azure Kubernetes Service (AKS), and Amazon Elastic Kubernetes Service (EKS)\n* Elasticsearch, Kibana, APM Server: 7.10+\n* Enterprise Search: 7.10+\n* Beats: 7.10+\n* Elastic Agent: 7.10+\n* Elastic Maps Server: 7.11+\n\nECK should work with all conformant installers as listed in these [FAQs](https://github.com/cncf/k8s-conformance/blob/master/faq.md#what-is-a-distribution-hosted-platform-and-an-installer). Distributions include source patches and so may not work as-is with ECK.\nAlpha, beta, and stable API versions follow the same [conventions used by Kubernetes](https://kubernetes.io/docs/concepts/overview/kubernetes-api/#api-versioning).\nSee the full [Elastic support matrix](https://www.elastic.co/support/matrix#matrix_kubernetes) for more information.\nSee the [Quickstart](https://www.elastic.co/guide/en/cloud-on-k8s/2.0/k8s-quickstart.html) to get started with ECK.",
+      "csv_display_name": "Elasticsearch (ECK) Operator",
+      "csv_metadata_description": "Run Elasticsearch, Kibana, APM Server, Beats, Enterprise Search, Elastic Agent and Elastic Maps Server on Kubernetes and OpenShift",
+      "csv_name": "elasticsearch-eck-operator-certified.v2.0.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:32:32.268000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.12",
+      "organization": "certified-operators",
+      "package": "elasticsearch-eck-operator-certified",
+      "provided_apis": [
+        {
+          "group": "agent.k8s.elastic.co",
+          "kind": "Agent",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "version": "v1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "version": "v1beta1"
+        },
+        {
+          "group": "beat.k8s.elastic.co",
+          "kind": "Beat",
+          "version": "v1beta1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "version": "v1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "version": "v1beta1"
+        },
+        {
+          "group": "enterprisesearch.k8s.elastic.co",
+          "kind": "EnterpriseSearch",
+          "version": "v1"
+        },
+        {
+          "group": "enterprisesearch.k8s.elastic.co",
+          "kind": "EnterpriseSearch",
+          "version": "v1beta1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "version": "v1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "version": "v1beta1"
+        },
+        {
+          "group": "maps.k8s.elastic.co",
+          "kind": "ElasticMapsServer",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Elastic",
+      "related_images": [
+        {
+          "digest": "sha256:dc2ace972ad6dbf30caa920d092b9358ea93c4290173f501d80ba486cccae64f",
+          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:dc2ace972ad6dbf30caa920d092b9358ea93c4290173f501d80ba486cccae64f",
+          "name": "eck-operator-dc2ace972ad6dbf30caa920d092b9358ea93c4290173f501d80ba486cccae64f-annotation"
+        },
+        {
+          "digest": "sha256:dc2ace972ad6dbf30caa920d092b9358ea93c4290173f501d80ba486cccae64f",
+          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:dc2ace972ad6dbf30caa920d092b9358ea93c4290173f501d80ba486cccae64f",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.12",
+      "version": "2.0.0",
+      "version_original": "2.0.0"
+    },
+    {
+      "_id": "6328415d2dd1cd9660afb90b",
+      "alm_examples": [
+        {
+          "api_version": "elasticsearch.k8s.elastic.co/v1",
+          "kind": "Elasticsearch",
+          "metadata": {
+            "name": "elasticsearch-sample"
+          },
+          "spec": {
+            "nodeSets": [
+              {
+                "config": {
+                  "node.attr.attr_name": "attr_value",
+                  "node.roles": [
+                    "master",
+                    "data"
+                  ],
+                  "node.store.allow_mmap": false
+                },
+                "count": 3,
+                "name": "default",
+                "podTemplate": {
+                  "metadata": {
+                    "labels": {
+                      "foo": "bar"
+                    }
+                  },
+                  "spec": {
+                    "containers": [
+                      {
+                        "name": "elasticsearch",
+                        "resources": {
+                          "limits": {
+                            "cpu": 2,
+                            "memory": "4Gi"
+                          },
+                          "requests": {
+                            "cpu": 1,
+                            "memory": "4Gi"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "version": "8.1.0"
+          }
+        },
+        {
+          "api_version": "kibana.k8s.elastic.co/v1",
+          "kind": "Kibana",
+          "metadata": {
+            "name": "kibana-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "podTemplate": {
+              "metadata": {
+                "labels": {
+                  "foo": "bar"
+                }
+              },
+              "spec": {
+                "containers": [
+                  {
+                    "name": "kibana",
+                    "resources": {
+                      "limits": {
+                        "cpu": 2,
+                        "memory": "2Gi"
+                      },
+                      "requests": {
+                        "cpu": 0.5,
+                        "memory": "1Gi"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "version": "8.1.0"
+          }
+        },
+        {
+          "api_version": "apm.k8s.elastic.co/v1",
+          "kind": "ApmServer",
+          "metadata": {
+            "name": "apmserver-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.1.0"
+          }
+        },
+        {
+          "api_version": "enterprisesearch.k8s.elastic.co/v1",
+          "kind": "EnterpriseSearch",
+          "metadata": {
+            "name": "ent-sample"
+          },
+          "spec": {
+            "config": {
+              "ent_search.external_url": "https://localhost:3002"
+            },
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.1.0"
+          }
+        },
+        {
+          "api_version": "beat.k8s.elastic.co/v1beta1",
+          "kind": "Beat",
+          "metadata": {
+            "name": "heartbeat-sample"
+          },
+          "spec": {
+            "config": {
+              "heartbeat.monitors": [
+                {
+                  "hosts": [
+                    "elasticsearch-sample-es-http.default.svc:9200"
+                  ],
+                  "schedule": "@every 5s",
+                  "type": "tcp"
+                }
+              ]
+            },
+            "deployment": {
+              "podTemplate": {
+                "spec": {
+                  "securityContext": {
+                    "runAsUser": 0
+                  }
+                }
+              },
+              "replicas": 1
+            },
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "type": "heartbeat",
+            "version": "8.1.0"
+          }
+        },
+        {
+          "api_version": "agent.k8s.elastic.co/v1alpha1",
+          "kind": "Agent",
+          "metadata": {
+            "name": "agent-sample"
+          },
+          "spec": {
+            "config": {
+              "inputs": [
+                {
+                  "data_stream": {
+                    "namespace": "default"
+                  },
+                  "meta": {
+                    "package": {
+                      "name": "system",
+                      "version": "0.9.1"
+                    }
+                  },
+                  "name": "system-1",
+                  "revision": 1,
+                  "streams": [
+                    {
+                      "cpu.metrics": [
+                        "percentages",
+                        "normalized_percentages"
+                      ],
+                      "data_stream": {
+                        "dataset": "system.cpu",
+                        "type": "metrics"
+                      },
+                      "id": "system/metrics-system.cpu",
+                      "metricsets": [
+                        "cpu"
+                      ],
+                      "period": "10s"
+                    }
+                  ],
+                  "type": "system/metrics",
+                  "use_output": "default"
+                }
+              ]
+            },
+            "daemonSet": {},
+            "elasticsearchRefs": [
+              {
+                "name": "elasticsearch-sample"
+              }
+            ],
+            "version": "8.1.0"
+          }
+        },
+        {
+          "api_version": "maps.k8s.elastic.co/v1alpha1",
+          "kind": "ElasticMapsServer",
+          "metadata": {
+            "name": "ems-sample"
+          },
+          "spec": {
+            "count": 1,
+            "elasticsearchRef": {
+              "name": "elasticsearch-sample"
+            },
+            "version": "8.1.0"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/elastic/eck@sha256:a386d9aefcfd7cfb9f7b2b5fd30733efac2e4ce8c265fcddaff9252398bfe821",
+      "bundle_path_digest": "sha256:a386d9aefcfd7cfb9f7b2b5fd30733efac2e4ce8c265fcddaff9252398bfe821",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-19T10:15:57.493000+00:00",
+      "csv_description": "Elastic Cloud on Kubernetes (ECK) is the official operator by Elastic for automating the deployment, provisioning, management, and orchestration of Elasticsearch, Kibana, APM Server, Beats, Enterprise Search, Elastic Agent and Elastic Maps Server on Kubernetes.\n\nCurrent features:\n\n*  Elasticsearch, Kibana, APM Server, Enterprise Search, Beats, Elastic Agent and Elastic Maps Server deployments\n*  TLS Certificates management\n*  Safe Elasticsearch cluster configuration and topology changes\n*  Persistent volumes usage\n*  Custom node configuration and attributes\n*  Secure settings keystore updates\n\nSupported versions:\n\n* Kubernetes 1.19-1.23\n* OpenShift 4.6-4.10\n* Google Kubernetes Engine (GKE), Azure Kubernetes Service (AKS), and Amazon Elastic Kubernetes Service (EKS)\n* Elasticsearch, Kibana, APM Server: 7.10+\n* Enterprise Search: 7.10+\n* Beats: 7.10+\n* Elastic Agent: 7.10+\n* Elastic Maps Server: 7.11+\n\nECK should work with all conformant installers as listed in these [FAQs](https://github.com/cncf/k8s-conformance/blob/master/faq.md#what-is-a-distribution-hosted-platform-and-an-installer). Distributions include source patches and so may not work as-is with ECK.\nAlpha, beta, and stable API versions follow the same [conventions used by Kubernetes](https://kubernetes.io/docs/concepts/overview/kubernetes-api/#api-versioning).\nSee the full [Elastic support matrix](https://www.elastic.co/support/matrix#matrix_kubernetes) for more information.\nSee the [Quickstart](https://www.elastic.co/guide/en/cloud-on-k8s/2.1/k8s-quickstart.html) to get started with ECK.",
+      "csv_display_name": "Elasticsearch (ECK) Operator",
+      "csv_metadata_description": "Run Elasticsearch, Kibana, APM Server, Beats, Enterprise Search, Elastic Agent and Elastic Maps Server on Kubernetes and OpenShift",
+      "csv_name": "elasticsearch-eck-operator-certified.v2.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:32:22.806000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.12",
+      "organization": "certified-operators",
+      "package": "elasticsearch-eck-operator-certified",
+      "provided_apis": [
+        {
+          "group": "agent.k8s.elastic.co",
+          "kind": "Agent",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "version": "v1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "version": "v1beta1"
+        },
+        {
+          "group": "beat.k8s.elastic.co",
+          "kind": "Beat",
+          "version": "v1beta1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "version": "v1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "version": "v1beta1"
+        },
+        {
+          "group": "enterprisesearch.k8s.elastic.co",
+          "kind": "EnterpriseSearch",
+          "version": "v1"
+        },
+        {
+          "group": "enterprisesearch.k8s.elastic.co",
+          "kind": "EnterpriseSearch",
+          "version": "v1beta1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "version": "v1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "version": "v1beta1"
+        },
+        {
+          "group": "maps.k8s.elastic.co",
+          "kind": "ElasticMapsServer",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Elastic",
+      "related_images": [
+        {
+          "digest": "sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
+          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
+          "name": "eck-operator-465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb-annotation"
+        },
+        {
+          "digest": "sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
+          "image": "registry.connect.redhat.com/elastic/eck-operator@sha256:465a4e646a5cf9c2ede1c3d9a02c4c3b55371115fde1c4864f429a8141a685bb",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.12",
+      "version": "2.1.0",
+      "version_original": "2.1.0"
     }
   ]
 }
