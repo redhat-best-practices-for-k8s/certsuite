@@ -442,9 +442,7 @@ func testPodPersistentVolumeReclaimPolicy(env *provider.TestEnvironment) {
 	}
 
 	if n := len(persistentVolumesBadReclaim); n > 0 {
-		errMsg := fmt.Sprintf("Pods found that are using mounted volumes that are missing a reclaim policy of DELETE: %d. See logs for more detail.", n)
-		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
+		testhelper.AddTestResultLog("Non-compliant", persistentVolumesBadReclaim, tnf.ClaimFilePrintf, ginkgo.Fail)
 	}
 }
 

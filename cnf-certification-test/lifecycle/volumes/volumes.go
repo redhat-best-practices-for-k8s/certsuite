@@ -30,7 +30,7 @@ func getPVCFromSlice(pvcs []corev1.PersistentVolumeClaim, pvcName string) *corev
 }
 
 func IsPodVolumeReclaimPolicyDelete(vol *corev1.Volume, pvs []corev1.PersistentVolume, pvcs []corev1.PersistentVolumeClaim) bool {
-	// Check if the Volume has a PVC that actually exists.
+	// Check if the Volume is bound to a PVC.
 	if putPVC := getPVCFromSlice(pvcs, vol.PersistentVolumeClaim.ClaimName); putPVC != nil {
 		// Loop through the PersistentVolumes in the cluster, looking for bound PV/PVCs.
 		for pvIndex := range pvs {
