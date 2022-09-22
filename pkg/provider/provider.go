@@ -66,6 +66,7 @@ var (
 type TestEnvironment struct { // rename this with testTarget
 	Namespaces           []string     `json:"testNamespaces"`
 	Pods                 []*Pod       `json:"testPods"`
+	AllPods              []*Pod       `json:"AllPods"`
 	Containers           []*Container `json:"testContainers"`
 	Operators            []Operator   `json:"testOperators"`
 	PersistentVolumes    []corev1.PersistentVolume
@@ -73,6 +74,7 @@ type TestEnvironment struct { // rename this with testTarget
 	GuaranteedPods       []*Pod
 	NonGuaranteedPods    []*Pod
 	HugepagesPods        []*Pod
+	AbnormalEvents       []*Event
 	Config               configuration.TestConfiguration
 	variables            configuration.TestParameters
 	Crds                 []*apiextv1.CustomResourceDefinition          `json:"testCrds"`
@@ -152,8 +154,11 @@ func buildTestEnvironment() { //nolint:funlen
 	env.variables = data.Env
 	env.Nodes = createNodes(data.Nodes.Items)
 	env.IstioServiceMesh = data.Istio
+	for i := range data.AbnormalEvents {
+		aEvent := NewEvent(&data.AbnormalEvents[i])
+		env.AbnormalEvents = append(env.AbnormalEvents, &aEvent)
+	}
 	pods := data.Pods
-
 	for i := 0; i < len(pods); i++ {
 		aNewPod := NewPod(&pods[i])
 		env.Pods = append(env.Pods, &aNewPod)
@@ -169,7 +174,11 @@ func buildTestEnvironment() { //nolint:funlen
 		}
 		env.Containers = append(env.Containers, getPodContainers(&pods[i])...)
 	}
-
+	pods = data.AllPods
+	for i := 0; i < len(pods); i++ {
+		aNewPod := NewPod(&pods[i])
+		env.AllPods = append(env.AllPods, &aNewPod)
+	}
 	env.DebugPods = make(map[string]*corev1.Pod)
 	for i := 0; i < len(data.DebugPods); i++ {
 		nodeName := data.DebugPods[i].Spec.NodeName

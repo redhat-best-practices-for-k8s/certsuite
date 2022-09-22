@@ -184,11 +184,11 @@ func GetVersionK8s() (out string) {
 func GetVersionOcp() (out string) {
 	env := provider.GetTestEnvironment()
 	if env.OpenshiftVersion == "" {
-		return "n/a, (non-OpenShift cluster)" //nolint:goconst
+		return "n/a, (non-OpenShift cluster)"
 	}
 	return env.OpenshiftVersion
 }
 
 func GetVersionOcClient() (out string) {
-	return "n/a, (not using oc or kubectl client)" //nolint:goconst
+	return "n/a, (not using oc or kubectl client)"
 }

@@ -29,6 +29,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/podsets"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/scaling"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
+	"github.com/test-network-function/cnf-certification-test/pkg/postmortem"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
@@ -367,6 +368,12 @@ func testHighAvailability(env *provider.TestEnvironment) {
 
 // testPodsRecreation tests that pods belonging to deployments and statefulsets are re-created and ready in case a node is lost
 func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
+	needsPostMortemInfo := true
+	defer func() {
+		if needsPostMortemInfo {
+			tnf.ClaimFilePrintf(postmortem.Log())
+		}
+	}()
 	ginkgo.By("Testing node draining effect of deployment")
 	ginkgo.By("Testing initial state for deployments")
 	defer env.SetNeedsRefresh()
@@ -405,6 +412,9 @@ func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 		if err != nil {
 			logrus.Fatalf("error uncordoning the node: %s", n)
 		}
+
+		// Reached end of TC, which means no ginkgo.Fail() was called.
+		needsPostMortemInfo = false
 	}
 }
 

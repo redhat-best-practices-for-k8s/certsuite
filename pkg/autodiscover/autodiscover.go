@@ -53,12 +53,14 @@ type DiscoveredTestData struct {
 	Env                  configuration.TestParameters
 	TestData             configuration.TestConfiguration
 	Pods                 []corev1.Pod
+	AllPods              []corev1.Pod
 	DebugPods            []corev1.Pod
 	ResourceQuotaItems   []corev1.ResourceQuota
 	PodDisruptionBudgets []policyv1.PodDisruptionBudget
 	NetworkPolicies      []networkingv1.NetworkPolicy
 	Crds                 []*apiextv1.CustomResourceDefinition
 	Namespaces           []string
+	AbnormalEvents       []corev1.Event
 	Csvs                 []olmv1Alpha.ClusterServiceVersion
 	Deployments          []appsv1.Deployment
 	StatefulSet          []appsv1.StatefulSet
@@ -109,12 +111,12 @@ func DoAutoDiscover() DiscoveredTestData {
 	}
 	oc := clientsholder.GetClientsHolder()
 	data.Namespaces = namespacesListToStringList(data.TestData.TargetNameSpaces)
-	data.Pods = findPodsByLabel(oc.K8sClient.CoreV1(), data.TestData.TargetPodLabels, data.Namespaces)
-
+	data.Pods, data.AllPods = findPodsByLabel(oc.K8sClient.CoreV1(), data.TestData.TargetPodLabels, data.Namespaces)
+	data.AbnormalEvents = findAbnormalEvents(oc.K8sClient.CoreV1(), data.Namespaces)
 	debugLabel := configuration.Label{Prefix: debugLabelPrefix, Name: debugLabelName, Value: debugLabelValue}
 	debugLabels := []configuration.Label{debugLabel}
 	debugNS := []string{defaultNamespace}
-	data.DebugPods = findPodsByLabel(oc.K8sClient.CoreV1(), debugLabels, debugNS)
+	data.DebugPods, _ = findPodsByLabel(oc.K8sClient.CoreV1(), debugLabels, debugNS)
 	data.ResourceQuotaItems, err = getResourceQuotas(oc.K8sClient.CoreV1())
 	if err != nil {
 		logrus.Fatalf("Cannot get resource quotas, error: %s", err)

@@ -26,18 +26,15 @@ import (
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 )
 
-// Filter out any pod that is not in a running state
-const filterStatusRunning = "status.phase=Running"
-
-func findPodsByLabel(oc corev1client.CoreV1Interface, labels []configuration.Label, namespaces []string) []corev1.Pod {
-	Pods := []corev1.Pod{}
+func findPodsByLabel(oc corev1client.CoreV1Interface, labels []configuration.Label, namespaces []string) (runningPods, allPods []corev1.Pod) {
+	runningPods = []corev1.Pod{}
+	allPods = []corev1.Pod{}
 	for _, ns := range namespaces {
 		for _, l := range labels {
 			label := buildLabelQuery(l)
 			logrus.Trace("find pods in ", ns, " using label= ", label)
 			pods, err := oc.Pods(ns).List(context.TODO(), metav1.ListOptions{
 				LabelSelector: label,
-				FieldSelector: filterStatusRunning,
 			})
 			if err != nil {
 				logrus.Errorln("error when listing pods in ns=", ns, " label=", label, "err: ", err)
@@ -46,11 +43,13 @@ func findPodsByLabel(oc corev1client.CoreV1Interface, labels []configuration.Lab
 
 			// Filter out any pod set to be deleted
 			for i := 0; i < len(pods.Items); i++ {
-				if pods.Items[i].ObjectMeta.DeletionTimestamp == nil {
-					Pods = append(Pods, pods.Items[i])
+				if pods.Items[i].ObjectMeta.DeletionTimestamp == nil &&
+					pods.Items[i].Status.Phase == corev1.PodRunning {
+					runningPods = append(runningPods, pods.Items[i])
 				}
+				allPods = append(allPods, pods.Items[i])
 			}
 		}
 	}
-	return Pods
+	return runningPods, allPods
 }

@@ -30,11 +30,11 @@ const (
 func ResultToString(result int) (str string) {
 	switch result {
 	case SUCCESS:
-		return "SUCCESS" //nolint:goconst
+		return "SUCCESS"
 	case FAILURE:
-		return "FAILURE" //nolint:goconst
+		return "FAILURE"
 	case ERROR:
-		return "ERROR" //nolint:goconst
+		return "ERROR"
 	}
 	return ""
 }
