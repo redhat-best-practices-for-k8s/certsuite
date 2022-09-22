@@ -134,10 +134,7 @@ func testCrds(env *provider.TestEnvironment) {
 		}
 	}
 
-	if n := len(failedCrds); n > 0 {
-		logrus.Debugf("CRD.version without status subresource: %+v", failedCrds)
-		ginkgo.Fail(fmt.Sprintf("%d CRDs do not have status subresource", n))
-	}
+	testhelper.AddTestResultLog("Non-compliant", failedCrds, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // testTerminationMessagePolicy tests to make sure that pods
@@ -150,9 +147,7 @@ func testTerminationMessagePolicy(env *provider.TestEnvironment) {
 			failedContainers = append(failedContainers, cut.Name)
 		}
 	}
-	if n := len(failedContainers); n > 0 {
-		ginkgo.Fail("Containers were found to not have a termination message policy set to FallbackToLogsOnError")
-	}
+	testhelper.AddTestResultLog("Non-compliant", failedContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func checkPDBIsValid(pdb *policyv1.PodDisruptionBudget, replicas *int32) (bool, error) {
@@ -199,9 +194,5 @@ func testPodDisruptionBudgets(env *provider.TestEnvironment) {
 		}
 	}
 
-	if n := len(failedPDBs); n > 0 {
-		errMsg := fmt.Sprintf("Number of PDBs with invalid configuration: %d", n)
-		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
-	}
+	testhelper.AddTestResultLog("Non-compliant", failedPDBs, tnf.ClaimFilePrintf, ginkgo.Fail)
 }

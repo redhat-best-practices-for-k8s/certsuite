@@ -74,9 +74,7 @@ func testOperatorInstallationPhaseSucceeded(env *provider.TestEnvironment) {
 		}
 	}
 
-	if n := len(badOperators); n > 0 {
-		ginkgo.Fail(fmt.Sprintf("Found %d operators whose CSV's phase is not %s.", n, v1alpha1.CSVPhaseSucceeded))
-	}
+	testhelper.AddTestResultLog("Non-compliant", badOperators, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
@@ -108,9 +106,7 @@ func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
 		}
 	}
 
-	if n := len(badOperators); n > 0 {
-		ginkgo.Fail(fmt.Sprintf("Found %d operators with privileges on some resource names.", n))
-	}
+	testhelper.AddTestResultLog("Non-compliant", badOperators, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testOperatorOlmSubscription(env *provider.TestEnvironment) {
@@ -139,7 +135,5 @@ func testOperatorOlmSubscription(env *provider.TestEnvironment) {
 		}
 	}
 
-	if n := len(badCsvs); n > 0 {
-		ginkgo.Fail(fmt.Sprintf("Found %d CSVs not installed by OLM", n))
-	}
+	testhelper.AddTestResultLog("Non-compliant", badCsvs, tnf.ClaimFilePrintf, ginkgo.Fail)
 }

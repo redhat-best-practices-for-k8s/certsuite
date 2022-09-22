@@ -44,16 +44,13 @@ var _ = ginkgo.Describe(common.ManageabilityTestKey, func() {
 })
 
 func testContainersImageTag(env *provider.TestEnvironment) {
-	badcontainers := []string{}
+	badContainers := []string{}
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " image should be tagged ")
 		if cut.ContainerImageIdentifier.Tag == "" {
-			badcontainers = append(badcontainers, cut.String())
-			logrus.Debugf("Container %s is missing image tag(s)", cut.Name)
+			badContainers = append(badContainers, cut.String())
+			tnf.ClaimFilePrintf("Container %s is missing image tag(s)", cut.String())
 		}
 	}
-	if len(badcontainers) > 0 {
-		tnf.ClaimFilePrintf("Containers have been found that are missing tag(s) on image: %v", badcontainers)
-		ginkgo.Fail("Containers have been found that are missing tag(s) on image.")
-	}
+	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
