@@ -23,7 +23,7 @@ import (
 	v1 "k8s.io/api/core/v1"
 )
 
-func PrintPostMortemInfo() (out string) {
+func Log() (out string) {
 	// Get current environment
 	env := provider.GetTestEnvironment()
 

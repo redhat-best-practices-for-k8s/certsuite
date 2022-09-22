@@ -368,13 +368,18 @@ func testHighAvailability(env *provider.TestEnvironment) {
 
 // testPodsRecreation tests that pods belonging to deployments and statefulsets are re-created and ready in case a node is lost
 func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
+	needsPostMortemInfo := true
+	defer func() {
+		if needsPostMortemInfo {
+			tnf.ClaimFilePrintf(postmortem.Log())
+		}
+	}()
 	ginkgo.By("Testing node draining effect of deployment")
 	ginkgo.By("Testing initial state for deployments")
 	defer env.SetNeedsRefresh()
 	claimsLog, atLeastOnePodsetNotReady := podsets.WaitForAllPodSetReady(env, timeoutPodSetReady)
 	if atLeastOnePodsetNotReady {
 		tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
-		tnf.ClaimFilePrintf(postmortem.PrintPostMortemInfo())
 		ginkgo.Fail("Some deployments or stateful sets are not in a good initial state. Cannot perform test.")
 	}
 	for n := range podsets.GetAllNodesForAllPodSets(env.Pods) {
@@ -382,36 +387,34 @@ func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 		err := podrecreation.CordonHelper(n, podrecreation.Cordon)
 		if err != nil {
 			logrus.Errorf("error cordoning the node: %s", n)
-			tnf.ClaimFilePrintf(postmortem.PrintPostMortemInfo())
 			ginkgo.Fail(fmt.Sprintf("Cordoning node %s failed with err: %s. Test inconclusive, skipping", n, err))
 		}
 		ginkgo.By(fmt.Sprintf("Draining and Cordoning node %s: ", n))
 		logrus.Debugf("node: %s cordoned", n)
 		count, err := podrecreation.CountPodsWithDelete(n, podrecreation.NoDelete)
 		if err != nil {
-			tnf.ClaimFilePrintf(postmortem.PrintPostMortemInfo())
 			ginkgo.Fail(fmt.Sprintf("Getting pods list to drain in node %s failed with err: %s. Test inconclusive.", n, err))
 		}
 		nodeTimeout := timeoutPodSetReady + timeoutPodRecreationPerPod*time.Duration(count)
 		logrus.Debugf("draining node: %s with timeout: %s", n, nodeTimeout.String())
 		_, err = podrecreation.CountPodsWithDelete(n, podrecreation.DeleteForeground)
 		if err != nil {
-			tnf.ClaimFilePrintf(postmortem.PrintPostMortemInfo())
 			ginkgo.Fail(fmt.Sprintf("Draining node %s failed with err: %s. Test inconclusive", n, err))
 		}
 
 		claimsLog, podsNotReady := podsets.WaitForAllPodSetReady(env, nodeTimeout)
 		if podsNotReady {
 			tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
-			tnf.ClaimFilePrintf(postmortem.PrintPostMortemInfo())
 			ginkgo.Fail(fmt.Sprintf("Some pods are not ready after draining the node %s", n))
 		}
 
 		err = podrecreation.CordonHelper(n, podrecreation.Uncordon)
 		if err != nil {
-			tnf.ClaimFilePrintf(postmortem.PrintPostMortemInfo())
 			logrus.Fatalf("error uncordoning the node: %s", n)
 		}
+
+		// Reached end of TC, which means no ginkgo.Fail() was called.
+		needsPostMortemInfo = false
 	}
 }
 
