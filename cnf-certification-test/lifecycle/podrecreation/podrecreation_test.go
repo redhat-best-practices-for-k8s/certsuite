@@ -22,17 +22,18 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
-func generatePod(name, ownerKind string) corev1.Pod {
+func generatePod(name, ownerKind string) *provider.Pod {
 	getIntPointer := func(val int64) *int64 {
 		return &val
 	}
 
-	return corev1.Pod{
+	aPod := provider.NewPod(&corev1.Pod{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: name,
 			OwnerReferences: []metav1.OwnerReference{
@@ -48,42 +49,36 @@ func generatePod(name, ownerKind string) corev1.Pod {
 			NodeName:                      "node1",
 			TerminationGracePeriodSeconds: getIntPointer(30),
 		},
-	}
+	})
+	return &aPod
 }
 
 func TestCountPodsWithDelete(t *testing.T) {
 	testCases := []struct {
-		testPods      []corev1.Pod
+		testPods      []*provider.Pod
 		expectedCount int
 	}{
 		{ // Test Case #1 - One deleted pod because one is a daemonset.
 			expectedCount: 1,
-			testPods: []corev1.Pod{
+			testPods: []*provider.Pod{
 				generatePod("testpod1", DeploymentString),
 				generatePod("testpod2", DaemonSetString),
 			},
 		},
 		{ // Test Case #2 - Two pods deleted, both deployments
 			expectedCount: 2,
-			testPods: []corev1.Pod{
+			testPods: []*provider.Pod{
 				generatePod("testpod1", DeploymentString),
 				generatePod("testpod2", DeploymentString),
 			},
 		},
 	}
-
+	// Build a test clientsHolder (just for the call to delete to succeed)
+	var testRuntimeObjects []runtime.Object
+	// create the clientsHolder
+	_ = clientsholder.GetTestClientsHolder(testRuntimeObjects)
 	for _, tc := range testCases {
-		// Build a test clientsHolder
-		var testRuntimeObjects []runtime.Object
-		for i := range tc.testPods {
-			x := tc.testPods[i]
-			testRuntimeObjects = append(testRuntimeObjects, &x)
-		}
-		// Clean and recreate the clientsHolder
-		clientsholder.ClearTestClientsHolder()
-		_ = clientsholder.GetTestClientsHolder(testRuntimeObjects)
-
-		result, err := CountPodsWithDelete("node1", DeleteBackground)
+		result, err := CountPodsWithDelete(tc.testPods, "node1", DeleteBackground)
 		assert.Nil(t, err)
 		assert.Equal(t, tc.expectedCount, result)
 	}

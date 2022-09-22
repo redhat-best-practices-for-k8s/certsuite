@@ -25,6 +25,7 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/watch"
@@ -71,34 +72,32 @@ func CordonHelper(name, operation string) error {
 	return retryErr
 }
 
-func CountPodsWithDelete(nodeName, mode string) (count int, err error) {
-	clients := clientsholder.GetClientsHolder()
-	pods, err := clients.K8sClient.CoreV1().Pods("").List(context.TODO(), metav1.ListOptions{
-		FieldSelector: "spec.nodeName=" + nodeName, LabelSelector: "pod-template-hash",
-	})
-	if err != nil {
-		logrus.Errorf("error getting list of pods err: %s", err)
-		return 0, err
-	}
+func CountPodsWithDelete(pods []*provider.Pod, nodeName, mode string) (count int, err error) {
 	count = 0
 	var wg sync.WaitGroup
-	for idx := range pods.Items {
-		if skipDaemonPod(&pods.Items[idx]) {
-			continue
-		}
-		count++
-		if mode == NoDelete {
-			continue
-		}
-		err := deletePod(&pods.Items[idx], mode, &wg)
-		if err != nil {
-			logrus.Errorf("error deleting %s", &pods.Items[idx])
+	for _, put := range pods {
+		_, isDeployment := put.Labels["pod-template-hash"]
+		_, isStatefulset := put.Labels["controller-revision-hash"]
+		if put.Spec.NodeName == nodeName &&
+			(isDeployment || isStatefulset) {
+			if skipDaemonPod(put.Pod) {
+				continue
+			}
+			count++
+			if mode == NoDelete {
+				continue
+			}
+			err := deletePod(put.Pod, mode, &wg)
+			if err != nil {
+				logrus.Errorf("error deleting %s", put)
+			}
 		}
 	}
 
 	wg.Wait()
 	return count, nil
 }
+
 func skipDaemonPod(pod *corev1.Pod) bool {
 	for _, or := range pod.OwnerReferences {
 		if or.Kind == DaemonSetString {
