@@ -64,33 +64,34 @@ var (
 )
 
 type TestEnvironment struct { // rename this with testTarget
-	Namespaces           []string     `json:"testNamespaces"`
-	Pods                 []*Pod       `json:"testPods"`
-	AllPods              []*Pod       `json:"AllPods"`
-	Containers           []*Container `json:"testContainers"`
-	Operators            []Operator   `json:"testOperators"`
-	PersistentVolumes    []corev1.PersistentVolume
-	DebugPods            map[string]*corev1.Pod // map from nodename to debugPod
-	GuaranteedPods       []*Pod
-	NonGuaranteedPods    []*Pod
-	HugepagesPods        []*Pod
-	AbnormalEvents       []*Event
-	Config               configuration.TestConfiguration
-	variables            configuration.TestParameters
-	Crds                 []*apiextv1.CustomResourceDefinition          `json:"testCrds"`
-	Deployments          []*Deployment                                 `json:"testDeployments"`
-	StatetfulSets        []*StatefulSet                                `json:"testStatetfulSets"`
-	HorizontalScaler     map[string]*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
-	Services             []*corev1.Service                             `json:"testServices"`
-	Nodes                map[string]Node                               `json:"-"`
-	K8sVersion           string                                        `json:"-"`
-	OpenshiftVersion     string                                        `json:"-"`
-	OCPStatus            string                                        `json:"-"`
-	HelmChartReleases    []*release.Release                            `json:"testHelmChartReleases"`
-	ResourceQuotas       []corev1.ResourceQuota
-	PodDisruptionBudgets []policyv1.PodDisruptionBudget
-	NetworkPolicies      []networkingv1.NetworkPolicy
-	IstioServiceMesh     bool
+	Namespaces             []string     `json:"testNamespaces"`
+	Pods                   []*Pod       `json:"testPods"`
+	AllPods                []*Pod       `json:"AllPods"`
+	Containers             []*Container `json:"testContainers"`
+	Operators              []Operator   `json:"testOperators"`
+	PersistentVolumes      []corev1.PersistentVolume
+	PersistentVolumeClaims []corev1.PersistentVolumeClaim
+	DebugPods              map[string]*corev1.Pod // map from nodename to debugPod
+	GuaranteedPods         []*Pod
+	NonGuaranteedPods      []*Pod
+	HugepagesPods          []*Pod
+	AbnormalEvents         []*Event
+	Config                 configuration.TestConfiguration
+	variables              configuration.TestParameters
+	Crds                   []*apiextv1.CustomResourceDefinition          `json:"testCrds"`
+	Deployments            []*Deployment                                 `json:"testDeployments"`
+	StatetfulSets          []*StatefulSet                                `json:"testStatetfulSets"`
+	HorizontalScaler       map[string]*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
+	Services               []*corev1.Service                             `json:"testServices"`
+	Nodes                  map[string]Node                               `json:"-"`
+	K8sVersion             string                                        `json:"-"`
+	OpenshiftVersion       string                                        `json:"-"`
+	OCPStatus              string                                        `json:"-"`
+	HelmChartReleases      []*release.Release                            `json:"testHelmChartReleases"`
+	ResourceQuotas         []corev1.ResourceQuota
+	PodDisruptionBudgets   []policyv1.PodDisruptionBudget
+	NetworkPolicies        []networkingv1.NetworkPolicy
+	IstioServiceMesh       bool
 }
 
 type CsvInstallPlan struct {
@@ -191,6 +192,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.ResourceQuotas = data.ResourceQuotaItems
 	env.PodDisruptionBudgets = data.PodDisruptionBudgets
 	env.PersistentVolumes = data.PersistentVolumes
+	env.PersistentVolumeClaims = data.PersistentVolumeClaims
 	env.Services = data.Services
 	env.NetworkPolicies = data.NetworkPolicies
 	for _, nsHelmChartReleases := range data.HelmChartReleases {

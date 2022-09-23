@@ -28,6 +28,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/podrecreation"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/podsets"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/scaling"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/volumes"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/postmortem"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
@@ -424,20 +425,24 @@ func testPodPersistentVolumeReclaimPolicy(env *provider.TestEnvironment) {
 
 	// Look through all of the pods, matching their persistent volumes to the list of overall cluster PVs and checking their reclaim status.
 	for _, put := range env.Pods {
-		for index := range env.PersistentVolumes {
-			for pvIndex := range put.Spec.Volumes {
-				if put.Spec.Volumes[pvIndex].Name == env.PersistentVolumes[index].Name && env.PersistentVolumes[index].Spec.PersistentVolumeReclaimPolicy != corev1.PersistentVolumeReclaimDelete {
-					persistentVolumesBadReclaim = append(persistentVolumesBadReclaim, env.PersistentVolumes[index].Name)
-					tnf.ClaimFilePrintf("Persistent Volume: %s has been found without a reclaim policy of DELETE.", env.PersistentVolumes[index].Name)
-				}
+		// Loop through all of the volumes attached to the pod.
+		for pvIndex := range put.Spec.Volumes {
+			// Skip any volumes that do not have a PVC.  No need to test them.
+			if put.Spec.Volumes[pvIndex].PersistentVolumeClaim == nil {
+				continue
+			}
+
+			// If the Pod Volume is not tied back to a PVC and corresponding PV that has a reclaim policy of DELETE.
+			if !volumes.IsPodVolumeReclaimPolicyDelete(&put.Spec.Volumes[pvIndex], env.PersistentVolumes, env.PersistentVolumeClaims) {
+				persistentVolumesBadReclaim = append(persistentVolumesBadReclaim, put.String())
+				tnf.ClaimFilePrintf("%s contains volume: %s has been found without a reclaim policy of DELETE.", put.String(), &put.Spec.Volumes[pvIndex].Name)
+				break
 			}
 		}
 	}
 
 	if n := len(persistentVolumesBadReclaim); n > 0 {
-		errMsg := fmt.Sprintf("Persistent Volumes found that are missing a reclaim policy of DELETE: %d. See logs for more detail.", n)
-		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
+		testhelper.AddTestResultLog("Non-compliant", persistentVolumesBadReclaim, tnf.ClaimFilePrintf, ginkgo.Fail)
 	}
 }
 
