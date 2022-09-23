@@ -17,7 +17,7 @@ import (
 const (
 	timeout                            = 5 * time.Minute
 	daemonsetDeletionCheckRetryInteval = 5 * time.Second
-	nodeExporter                       = "node-exporter"
+	privilegedSCC                      = "privileged"
 	containerName                      = "container-00"
 	debug                              = "debug"
 	tnfPartnerRepoDef                  = "quay.io/testnetworkfunction"
@@ -70,7 +70,7 @@ func doesDaemonSetExist(daemonSetName, namespace string) bool {
 func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion string) *v1.DaemonSet {
 	dsAnnotations := make(map[string]string)
 	dsAnnotations["debug.openshift.io/source-container"] = containerName
-	dsAnnotations["openshift.io/scc"] = nodeExporter
+	dsAnnotations["openshift.io/scc"] = privilegedSCC
 	matchLabels := make(map[string]string)
 	matchLabels["name"] = dsName
 	matchLabels["test-network-function.com/app"] = debug
@@ -87,6 +87,7 @@ func CreateDaemonSetsTemplate(dsName, namespace, containerName, imageWithVersion
 		Image:           imageWithVersion,
 		ImagePullPolicy: corev1.PullIfNotPresent,
 		SecurityContext: &corev1.SecurityContext{
+			// AllowPrivilegeEscalation: &runAsPrivileged,
 			Privileged: &runAsPrivileged,
 			RunAsUser:  &zeroInt,
 		},
