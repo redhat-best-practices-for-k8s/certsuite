@@ -98,6 +98,7 @@ var (
 	Test1337UIDIdentifier                    claim.Identifier
 	TestContainerIsCertifiedDigestIdentifier claim.Identifier
 	TestPodHugePages2M                       claim.Identifier
+	TestReservedExtendedPartnerPorts         claim.Identifier
 )
 
 //nolint:funlen
@@ -159,6 +160,17 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		VersionOne,
 		bestPracticeDocV1dot4URL+" Section 3.5.4",
+		TagExtended)
+
+	TestReservedExtendedPartnerPorts = AddCatalogEntry(
+		"reserved-partner-ports",
+		common.NetworkingTestKey,
+		`Checks that pods and containers are not consuming ports designated as reserved by partner`,
+		ReservedPartnerPortsRemediation,
+		InformativeResult,
+		NoDocumentedProcess,
+		VersionOne,
+		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		TagExtended)
 
 	return Catalog
