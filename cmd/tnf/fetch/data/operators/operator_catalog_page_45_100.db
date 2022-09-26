@@ -10673,1182 +10673,6 @@
       "version_original": "2.0.202"
     },
     {
-      "_id": "6304490c7892413c5250640c",
-      "alm_examples": [
-        {
-          "api_version": "compute.functionmesh.io/v1alpha1",
-          "kind": "Function",
-          "metadata": {
-            "name": "java-function-sample",
-            "namespace": "default"
-          },
-          "spec": {
-            "autoAck": true,
-            "className": "org.apache.pulsar.functions.api.examples.ExclamationFunction",
-            "clusterName": "test-pulsar",
-            "forwardSourceMessageProperty": true,
-            "input": {
-              "topics": [
-                "persistent://public/default/java-function-input-topic"
-              ],
-              "typeClassName": "java.lang.String"
-            },
-            "java": {
-              "extraDependenciesDir": "random-dir/",
-              "jar": "pulsar-functions-api-examples.jar",
-              "jarLocation": "public/default/nlu-test-java-function"
-            },
-            "logTopic": "persistent://public/default/logging-function-logs",
-            "maxPendingAsyncRequests": 1000,
-            "maxReplicas": 5,
-            "output": {
-              "topic": "persistent://public/default/java-function-output-topic",
-              "typeClassName": "java.lang.String"
-            },
-            "pod": {
-              "annotations": {
-                "managed-function": "true"
-              },
-              "env": [
-                {
-                  "name": "EXAMPLE_VARIABLE",
-                  "value": "exampleValue"
-                }
-              ],
-              "imagePullSecrets": [
-                {
-                  "name": "regcred"
-                }
-              ],
-              "initContainers": [
-                {
-                  "command": [
-                    "sh",
-                    "-c",
-                    "echo The app is running! && sleep 30"
-                  ],
-                  "image": "busybox:1.28",
-                  "name": "init-function"
-                }
-              ],
-              "labels": {
-                "locaction": "mtv"
-              },
-              "sidecars": [
-                {
-                  "command": [
-                    "sh",
-                    "-c",
-                    "echo The app is running! && sleep 30000"
-                  ],
-                  "image": "busybox:1.28",
-                  "name": "sidecar-function"
-                }
-              ],
-              "volumes": [
-                {
-                  "emptyDir": {},
-                  "name": "cache-volume"
-                }
-              ]
-            },
-            "pulsar": {
-              "authSecret": "test-auth",
-              "pulsarConfig": "test-pulsar",
-              "tlsSecret": "test-tls"
-            },
-            "replicas": 1,
-            "resources": {
-              "limits": {
-                "cpu": "0.2",
-                "memory": "1.1G"
-              },
-              "requests": {
-                "cpu": "0.1",
-                "memory": "1G"
-              }
-            },
-            "secretsMap": {
-              "name": {
-                "key": "username",
-                "path": "test-secret"
-              },
-              "pwd": {
-                "key": "password",
-                "path": "test-secret"
-              }
-            },
-            "volumeMounts": [
-              {
-                "mountPath": "/cache",
-                "name": "cache-volume"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "compute.functionmesh.io/v1alpha1",
-          "kind": "FunctionMesh",
-          "metadata": {
-            "name": "functionmesh-sample"
-          },
-          "spec": {
-            "functions": [
-              {
-                "autoAck": true,
-                "className": "org.apache.pulsar.functions.api.examples.ExclamationFunction",
-                "clusterName": "test-pulsar",
-                "forwardSourceMessageProperty": true,
-                "input": {
-                  "topics": [
-                    "persistent://public/default/functionmesh-input-topic"
-                  ],
-                  "typeClassName": "java.lang.String"
-                },
-                "java": {
-                  "jar": "pulsar-functions-api-examples.jar",
-                  "jarLocation": "public/default/nlu-test-functionmesh-ex1"
-                },
-                "logTopic": "persistent://public/default/logging-function-log",
-                "maxReplicas": 1,
-                "name": "ex1",
-                "output": {
-                  "topic": "persistent://public/default/mid-topic",
-                  "typeClassName": "java.lang.String"
-                },
-                "pulsar": {
-                  "pulsarConfig": "mesh-test-pulsar"
-                },
-                "replicas": 1,
-                "resources": {
-                  "limits": {
-                    "cpu": "0.2",
-                    "memory": "1.1G"
-                  },
-                  "requests": {
-                    "cpu": "0.1",
-                    "memory": "1G"
-                  }
-                }
-              },
-              {
-                "autoAck": true,
-                "className": "org.apache.pulsar.functions.api.examples.ExclamationFunction",
-                "clusterName": "test-pulsar",
-                "forwardSourceMessageProperty": true,
-                "input": {
-                  "topics": [
-                    "persistent://public/default/mid-topic"
-                  ],
-                  "typeClassName": "java.lang.String"
-                },
-                "java": {
-                  "jar": "pulsar-functions-api-examples.jar",
-                  "jarLocation": "public/default/nlu-test-functionmesh-ex2"
-                },
-                "logTopic": "persistent://public/default/logging-function-logs",
-                "maxReplicas": 1,
-                "name": "ex2",
-                "output": {
-                  "topic": "persistent://public/default/functionmesh-output-topic",
-                  "typeClassName": "java.lang.String"
-                },
-                "pulsar": {
-                  "pulsarConfig": "mesh-test-pulsar"
-                },
-                "replicas": 1,
-                "resources": {
-                  "limits": {
-                    "cpu": "0.2",
-                    "memory": "1.1G"
-                  },
-                  "requests": {
-                    "cpu": "0.1",
-                    "memory": "1G"
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "compute.functionmesh.io/v1alpha1",
-          "kind": "Sink",
-          "metadata": {
-            "name": "sink-sample"
-          },
-          "spec": {
-            "autoAck": true,
-            "className": "org.apache.pulsar.io.elasticsearch.ElasticSearchSink",
-            "clusterName": "test-pulsar",
-            "image": "streamnative/pulsar-io-elastic-search:2.10.0.0-rc10",
-            "input": {
-              "topics": [
-                "persistent://public/default/input"
-              ],
-              "typeClassName": "[B"
-            },
-            "java": {
-              "jar": "connectors/pulsar-io-elastic-search-2.10.0.0-rc10.nar",
-              "jarLocation": ""
-            },
-            "maxReplicas": 1,
-            "pulsar": {
-              "pulsarConfig": "test-sink"
-            },
-            "replicas": 1,
-            "resources": {
-              "limits": {
-                "cpu": "0.2",
-                "memory": "1.1G"
-              },
-              "requests": {
-                "cpu": "0.1",
-                "memory": "1G"
-              }
-            },
-            "sinkConfig": {
-              "elasticSearchUrl": "http://quickstart-es-http.default.svc.cluster.local:9200",
-              "indexName": "my_index",
-              "password": "wJ757TmoXEd941kXm07Z2GW3",
-              "typeName": "doc",
-              "username": "elastic"
-            }
-          }
-        },
-        {
-          "api_version": "compute.functionmesh.io/v1alpha1",
-          "kind": "Source",
-          "metadata": {
-            "name": "source-sample"
-          },
-          "spec": {
-            "className": "org.apache.pulsar.io.debezium.mongodb.DebeziumMongoDbSource",
-            "clusterName": "test-pulsar",
-            "forwardSourceMessageProperty": true,
-            "image": "streamnative/pulsar-io-debezium-mongodb:2.10.0.0-rc10",
-            "java": {
-              "jar": "connectors/pulsar-io-debezium-mongodb-2.10.0.0-rc10.nar",
-              "jarLocation": ""
-            },
-            "maxReplicas": 1,
-            "output": {
-              "producerConf": {
-                "maxPendingMessages": 1000,
-                "maxPendingMessagesAcrossPartitions": 50000,
-                "useThreadLocalProducers": true
-              },
-              "topic": "persistent://public/default/destination",
-              "typeClassName": "org.apache.pulsar.common.schema.KeyValue"
-            },
-            "pulsar": {
-              "pulsarConfig": "test-source"
-            },
-            "replicas": 1,
-            "resources": {
-              "limits": {
-                "cpu": "0.2",
-                "memory": "1.1G"
-              },
-              "requests": {
-                "cpu": "0.1",
-                "memory": "1G"
-              }
-            },
-            "sourceConfig": {
-              "database.whitelist": "inventory",
-              "mongodb.hosts": "rs0/mongo-dbz-0.mongo.default.svc.cluster.local:27017,rs0/mongo-dbz-1.mongo.default.svc.cluster.local:27017,rs0/mongo-dbz-2.mongo.default.svc.cluster.local:27017",
-              "mongodb.name": "dbserver1",
-              "mongodb.password": "dbz",
-              "mongodb.task.id": "1",
-              "mongodb.user": "debezium",
-              "pulsar.service.url": "pulsar://test-pulsar-broker.default.svc.cluster.local:6650"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/streamnative/function-mesh-bundle@sha256:adfb22039841a31a2f87ef0ee9bbefd4530b993fde6e299db18e6ac51308e092",
-      "bundle_path_digest": "sha256:adfb22039841a31a2f87ef0ee9bbefd4530b993fde6e299db18e6ac51308e092",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-08-23T03:27:08.698000+00:00",
-      "csv_description": "[Function Mesh](https://functionmesh.io/) is a serverless framework purpose-built for stream processing applications. It brings powerful event-streaming capabilities to your applications by orchestrating multiple [Pulsar Functions](http://pulsar.apache.org/docs/en/next/functions-overview/) and [Pulsar IO connectors](http://pulsar.apache.org/docs/en/next/io-overview/) for complex stream processing jobs on Kubernetes.\nPrerequisites:\n- Install cert-manager operator first.\n",
-      "csv_display_name": "Function Mesh Operator",
-      "csv_metadata_description": "The Function Mesh Operator manages the Pulsar Functions and Connectors deployed on a Kubernetes cluster.",
-      "csv_name": "function-mesh.v0.5.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:50:39.543000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "function-mesh",
-      "provided_apis": [
-        {
-          "group": "compute.functionmesh.io",
-          "kind": "FunctionMesh",
-          "plural": "functionmeshes",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "compute.functionmesh.io",
-          "kind": "Function",
-          "plural": "functions",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "compute.functionmesh.io",
-          "kind": "Sink",
-          "plural": "sinks",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "compute.functionmesh.io",
-          "kind": "Source",
-          "plural": "sources",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "StreamNative",
-      "related_images": [
-        {
-          "digest": "sha256:330421e60071811ec4d2ca2b309f50356f3c19c7c855b716cde61110dada9092",
-          "image": "quay.io/streamnativeio/function-mesh@sha256:330421e60071811ec4d2ca2b309f50356f3c19c7c855b716cde61110dada9092",
-          "name": "function-mesh"
-        },
-        {
-          "digest": "sha256:67ecb332573384515406ebd71816781366b70adb0eb66345e5980e92603373e1",
-          "image": "docker.cloudsmith.io/streamnative/mirrors/gcr.io/kubebuilder/kube-rbac-proxy@sha256:67ecb332573384515406ebd71816781366b70adb0eb66345e5980e92603373e1",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:330421e60071811ec4d2ca2b309f50356f3c19c7c855b716cde61110dada9092",
-          "image": "quay.io/streamnativeio/function-mesh@sha256:330421e60071811ec4d2ca2b309f50356f3c19c7c855b716cde61110dada9092",
-          "name": "function-mesh-330421e60071811ec4d2ca2b309f50356f3c19c7c855b716cde61110dada9092-annotation"
-        },
-        {
-          "digest": "sha256:330421e60071811ec4d2ca2b309f50356f3c19c7c855b716cde61110dada9092",
-          "image": "quay.io/streamnativeio/function-mesh@sha256:330421e60071811ec4d2ca2b309f50356f3c19c7c855b716cde61110dada9092",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<0.5.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.5.0",
-      "version_original": "0.5.0"
-    },
-    {
-      "_id": "63044915051dd1e2227f9f52",
-      "alm_examples": [
-        {
-          "api_version": "compute.functionmesh.io/v1alpha1",
-          "kind": "Function",
-          "metadata": {
-            "name": "java-function-sample",
-            "namespace": "default"
-          },
-          "spec": {
-            "autoAck": true,
-            "className": "org.apache.pulsar.functions.api.examples.ExclamationFunction",
-            "clusterName": "test-pulsar",
-            "forwardSourceMessageProperty": true,
-            "input": {
-              "topics": [
-                "persistent://public/default/java-function-input-topic"
-              ],
-              "typeClassName": "java.lang.String"
-            },
-            "java": {
-              "extraDependenciesDir": "random-dir/",
-              "jar": "pulsar-functions-api-examples.jar",
-              "jarLocation": "public/default/nlu-test-java-function"
-            },
-            "logTopic": "persistent://public/default/logging-function-logs",
-            "maxPendingAsyncRequests": 1000,
-            "maxReplicas": 5,
-            "output": {
-              "topic": "persistent://public/default/java-function-output-topic",
-              "typeClassName": "java.lang.String"
-            },
-            "pod": {
-              "annotations": {
-                "managed-function": "true"
-              },
-              "env": [
-                {
-                  "name": "EXAMPLE_VARIABLE",
-                  "value": "exampleValue"
-                }
-              ],
-              "imagePullSecrets": [
-                {
-                  "name": "regcred"
-                }
-              ],
-              "initContainers": [
-                {
-                  "command": [
-                    "sh",
-                    "-c",
-                    "echo The app is running! && sleep 30"
-                  ],
-                  "image": "busybox:1.28",
-                  "name": "init-function"
-                }
-              ],
-              "labels": {
-                "locaction": "mtv"
-              },
-              "sidecars": [
-                {
-                  "command": [
-                    "sh",
-                    "-c",
-                    "echo The app is running! && sleep 30000"
-                  ],
-                  "image": "busybox:1.28",
-                  "name": "sidecar-function"
-                }
-              ],
-              "volumes": [
-                {
-                  "emptyDir": {},
-                  "name": "cache-volume"
-                }
-              ]
-            },
-            "pulsar": {
-              "authSecret": "test-auth",
-              "pulsarConfig": "test-pulsar",
-              "tlsSecret": "test-tls"
-            },
-            "replicas": 1,
-            "resources": {
-              "limits": {
-                "cpu": "0.2",
-                "memory": "1.1G"
-              },
-              "requests": {
-                "cpu": "0.1",
-                "memory": "1G"
-              }
-            },
-            "secretsMap": {
-              "name": {
-                "key": "username",
-                "path": "test-secret"
-              },
-              "pwd": {
-                "key": "password",
-                "path": "test-secret"
-              }
-            },
-            "volumeMounts": [
-              {
-                "mountPath": "/cache",
-                "name": "cache-volume"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "compute.functionmesh.io/v1alpha1",
-          "kind": "FunctionMesh",
-          "metadata": {
-            "name": "functionmesh-sample"
-          },
-          "spec": {
-            "functions": [
-              {
-                "autoAck": true,
-                "className": "org.apache.pulsar.functions.api.examples.ExclamationFunction",
-                "clusterName": "test-pulsar",
-                "forwardSourceMessageProperty": true,
-                "input": {
-                  "topics": [
-                    "persistent://public/default/functionmesh-input-topic"
-                  ],
-                  "typeClassName": "java.lang.String"
-                },
-                "java": {
-                  "jar": "pulsar-functions-api-examples.jar",
-                  "jarLocation": "public/default/nlu-test-functionmesh-ex1"
-                },
-                "logTopic": "persistent://public/default/logging-function-log",
-                "maxReplicas": 1,
-                "name": "ex1",
-                "output": {
-                  "topic": "persistent://public/default/mid-topic",
-                  "typeClassName": "java.lang.String"
-                },
-                "pulsar": {
-                  "pulsarConfig": "mesh-test-pulsar"
-                },
-                "replicas": 1,
-                "resources": {
-                  "limits": {
-                    "cpu": "0.2",
-                    "memory": "1.1G"
-                  },
-                  "requests": {
-                    "cpu": "0.1",
-                    "memory": "1G"
-                  }
-                }
-              },
-              {
-                "autoAck": true,
-                "className": "org.apache.pulsar.functions.api.examples.ExclamationFunction",
-                "clusterName": "test-pulsar",
-                "forwardSourceMessageProperty": true,
-                "input": {
-                  "topics": [
-                    "persistent://public/default/mid-topic"
-                  ],
-                  "typeClassName": "java.lang.String"
-                },
-                "java": {
-                  "jar": "pulsar-functions-api-examples.jar",
-                  "jarLocation": "public/default/nlu-test-functionmesh-ex2"
-                },
-                "logTopic": "persistent://public/default/logging-function-logs",
-                "maxReplicas": 1,
-                "name": "ex2",
-                "output": {
-                  "topic": "persistent://public/default/functionmesh-output-topic",
-                  "typeClassName": "java.lang.String"
-                },
-                "pulsar": {
-                  "pulsarConfig": "mesh-test-pulsar"
-                },
-                "replicas": 1,
-                "resources": {
-                  "limits": {
-                    "cpu": "0.2",
-                    "memory": "1.1G"
-                  },
-                  "requests": {
-                    "cpu": "0.1",
-                    "memory": "1G"
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "compute.functionmesh.io/v1alpha1",
-          "kind": "Sink",
-          "metadata": {
-            "name": "sink-sample"
-          },
-          "spec": {
-            "autoAck": true,
-            "className": "org.apache.pulsar.io.elasticsearch.ElasticSearchSink",
-            "clusterName": "test-pulsar",
-            "image": "streamnative/pulsar-io-elastic-search:2.10.0.0-rc10",
-            "input": {
-              "topics": [
-                "persistent://public/default/input"
-              ],
-              "typeClassName": "[B"
-            },
-            "java": {
-              "jar": "connectors/pulsar-io-elastic-search-2.10.0.0-rc10.nar",
-              "jarLocation": ""
-            },
-            "maxReplicas": 1,
-            "pulsar": {
-              "pulsarConfig": "test-sink"
-            },
-            "replicas": 1,
-            "resources": {
-              "limits": {
-                "cpu": "0.2",
-                "memory": "1.1G"
-              },
-              "requests": {
-                "cpu": "0.1",
-                "memory": "1G"
-              }
-            },
-            "sinkConfig": {
-              "elasticSearchUrl": "http://quickstart-es-http.default.svc.cluster.local:9200",
-              "indexName": "my_index",
-              "password": "wJ757TmoXEd941kXm07Z2GW3",
-              "typeName": "doc",
-              "username": "elastic"
-            }
-          }
-        },
-        {
-          "api_version": "compute.functionmesh.io/v1alpha1",
-          "kind": "Source",
-          "metadata": {
-            "name": "source-sample"
-          },
-          "spec": {
-            "className": "org.apache.pulsar.io.debezium.mongodb.DebeziumMongoDbSource",
-            "clusterName": "test-pulsar",
-            "forwardSourceMessageProperty": true,
-            "image": "streamnative/pulsar-io-debezium-mongodb:2.10.0.0-rc10",
-            "java": {
-              "jar": "connectors/pulsar-io-debezium-mongodb-2.10.0.0-rc10.nar",
-              "jarLocation": ""
-            },
-            "maxReplicas": 1,
-            "output": {
-              "producerConf": {
-                "maxPendingMessages": 1000,
-                "maxPendingMessagesAcrossPartitions": 50000,
-                "useThreadLocalProducers": true
-              },
-              "topic": "persistent://public/default/destination",
-              "typeClassName": "org.apache.pulsar.common.schema.KeyValue"
-            },
-            "pulsar": {
-              "pulsarConfig": "test-source"
-            },
-            "replicas": 1,
-            "resources": {
-              "limits": {
-                "cpu": "0.2",
-                "memory": "1.1G"
-              },
-              "requests": {
-                "cpu": "0.1",
-                "memory": "1G"
-              }
-            },
-            "sourceConfig": {
-              "database.whitelist": "inventory",
-              "mongodb.hosts": "rs0/mongo-dbz-0.mongo.default.svc.cluster.local:27017,rs0/mongo-dbz-1.mongo.default.svc.cluster.local:27017,rs0/mongo-dbz-2.mongo.default.svc.cluster.local:27017",
-              "mongodb.name": "dbserver1",
-              "mongodb.password": "dbz",
-              "mongodb.task.id": "1",
-              "mongodb.user": "debezium",
-              "pulsar.service.url": "pulsar://test-pulsar-broker.default.svc.cluster.local:6650"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/streamnative/function-mesh-bundle@sha256:adfb22039841a31a2f87ef0ee9bbefd4530b993fde6e299db18e6ac51308e092",
-      "bundle_path_digest": "sha256:adfb22039841a31a2f87ef0ee9bbefd4530b993fde6e299db18e6ac51308e092",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-08-23T03:27:17.297000+00:00",
-      "csv_description": "[Function Mesh](https://functionmesh.io/) is a serverless framework purpose-built for stream processing applications. It brings powerful event-streaming capabilities to your applications by orchestrating multiple [Pulsar Functions](http://pulsar.apache.org/docs/en/next/functions-overview/) and [Pulsar IO connectors](http://pulsar.apache.org/docs/en/next/io-overview/) for complex stream processing jobs on Kubernetes.\nPrerequisites:\n- Install cert-manager operator first.\n",
-      "csv_display_name": "Function Mesh Operator",
-      "csv_metadata_description": "The Function Mesh Operator manages the Pulsar Functions and Connectors deployed on a Kubernetes cluster.",
-      "csv_name": "function-mesh.v0.5.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:52:14.971000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "function-mesh",
-      "provided_apis": [
-        {
-          "group": "compute.functionmesh.io",
-          "kind": "Function",
-          "plural": "functions",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "compute.functionmesh.io",
-          "kind": "Sink",
-          "plural": "sinks",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "compute.functionmesh.io",
-          "kind": "Source",
-          "plural": "sources",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "compute.functionmesh.io",
-          "kind": "FunctionMesh",
-          "plural": "functionmeshes",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "StreamNative",
-      "related_images": [
-        {
-          "digest": "sha256:330421e60071811ec4d2ca2b309f50356f3c19c7c855b716cde61110dada9092",
-          "image": "quay.io/streamnativeio/function-mesh@sha256:330421e60071811ec4d2ca2b309f50356f3c19c7c855b716cde61110dada9092",
-          "name": "function-mesh"
-        },
-        {
-          "digest": "sha256:67ecb332573384515406ebd71816781366b70adb0eb66345e5980e92603373e1",
-          "image": "docker.cloudsmith.io/streamnative/mirrors/gcr.io/kubebuilder/kube-rbac-proxy@sha256:67ecb332573384515406ebd71816781366b70adb0eb66345e5980e92603373e1",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:330421e60071811ec4d2ca2b309f50356f3c19c7c855b716cde61110dada9092",
-          "image": "quay.io/streamnativeio/function-mesh@sha256:330421e60071811ec4d2ca2b309f50356f3c19c7c855b716cde61110dada9092",
-          "name": "function-mesh-330421e60071811ec4d2ca2b309f50356f3c19c7c855b716cde61110dada9092-annotation"
-        },
-        {
-          "digest": "sha256:330421e60071811ec4d2ca2b309f50356f3c19c7c855b716cde61110dada9092",
-          "image": "quay.io/streamnativeio/function-mesh@sha256:330421e60071811ec4d2ca2b309f50356f3c19c7c855b716cde61110dada9092",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<0.5.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.5.0",
-      "version_original": "0.5.0"
-    },
-    {
-      "_id": "63044917051dd1e2227f9f56",
-      "alm_examples": [
-        {
-          "api_version": "compute.functionmesh.io/v1alpha1",
-          "kind": "Function",
-          "metadata": {
-            "name": "java-function-sample",
-            "namespace": "default"
-          },
-          "spec": {
-            "autoAck": true,
-            "className": "org.apache.pulsar.functions.api.examples.ExclamationFunction",
-            "clusterName": "test-pulsar",
-            "forwardSourceMessageProperty": true,
-            "input": {
-              "topics": [
-                "persistent://public/default/java-function-input-topic"
-              ],
-              "typeClassName": "java.lang.String"
-            },
-            "java": {
-              "extraDependenciesDir": "random-dir/",
-              "jar": "pulsar-functions-api-examples.jar",
-              "jarLocation": "public/default/nlu-test-java-function"
-            },
-            "logTopic": "persistent://public/default/logging-function-logs",
-            "maxPendingAsyncRequests": 1000,
-            "maxReplicas": 5,
-            "output": {
-              "topic": "persistent://public/default/java-function-output-topic",
-              "typeClassName": "java.lang.String"
-            },
-            "pod": {
-              "annotations": {
-                "managed-function": "true"
-              },
-              "env": [
-                {
-                  "name": "EXAMPLE_VARIABLE",
-                  "value": "exampleValue"
-                }
-              ],
-              "imagePullSecrets": [
-                {
-                  "name": "regcred"
-                }
-              ],
-              "initContainers": [
-                {
-                  "command": [
-                    "sh",
-                    "-c",
-                    "echo The app is running! && sleep 30"
-                  ],
-                  "image": "busybox:1.28",
-                  "name": "init-function"
-                }
-              ],
-              "labels": {
-                "locaction": "mtv"
-              },
-              "sidecars": [
-                {
-                  "command": [
-                    "sh",
-                    "-c",
-                    "echo The app is running! && sleep 30000"
-                  ],
-                  "image": "busybox:1.28",
-                  "name": "sidecar-function"
-                }
-              ],
-              "volumes": [
-                {
-                  "emptyDir": {},
-                  "name": "cache-volume"
-                }
-              ]
-            },
-            "pulsar": {
-              "authSecret": "test-auth",
-              "pulsarConfig": "test-pulsar",
-              "tlsSecret": "test-tls"
-            },
-            "replicas": 1,
-            "resources": {
-              "limits": {
-                "cpu": "0.2",
-                "memory": "1.1G"
-              },
-              "requests": {
-                "cpu": "0.1",
-                "memory": "1G"
-              }
-            },
-            "secretsMap": {
-              "name": {
-                "key": "username",
-                "path": "test-secret"
-              },
-              "pwd": {
-                "key": "password",
-                "path": "test-secret"
-              }
-            },
-            "volumeMounts": [
-              {
-                "mountPath": "/cache",
-                "name": "cache-volume"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "compute.functionmesh.io/v1alpha1",
-          "kind": "FunctionMesh",
-          "metadata": {
-            "name": "functionmesh-sample"
-          },
-          "spec": {
-            "functions": [
-              {
-                "autoAck": true,
-                "className": "org.apache.pulsar.functions.api.examples.ExclamationFunction",
-                "clusterName": "test-pulsar",
-                "forwardSourceMessageProperty": true,
-                "input": {
-                  "topics": [
-                    "persistent://public/default/functionmesh-input-topic"
-                  ],
-                  "typeClassName": "java.lang.String"
-                },
-                "java": {
-                  "jar": "pulsar-functions-api-examples.jar",
-                  "jarLocation": "public/default/nlu-test-functionmesh-ex1"
-                },
-                "logTopic": "persistent://public/default/logging-function-log",
-                "maxReplicas": 1,
-                "name": "ex1",
-                "output": {
-                  "topic": "persistent://public/default/mid-topic",
-                  "typeClassName": "java.lang.String"
-                },
-                "pulsar": {
-                  "pulsarConfig": "mesh-test-pulsar"
-                },
-                "replicas": 1,
-                "resources": {
-                  "limits": {
-                    "cpu": "0.2",
-                    "memory": "1.1G"
-                  },
-                  "requests": {
-                    "cpu": "0.1",
-                    "memory": "1G"
-                  }
-                }
-              },
-              {
-                "autoAck": true,
-                "className": "org.apache.pulsar.functions.api.examples.ExclamationFunction",
-                "clusterName": "test-pulsar",
-                "forwardSourceMessageProperty": true,
-                "input": {
-                  "topics": [
-                    "persistent://public/default/mid-topic"
-                  ],
-                  "typeClassName": "java.lang.String"
-                },
-                "java": {
-                  "jar": "pulsar-functions-api-examples.jar",
-                  "jarLocation": "public/default/nlu-test-functionmesh-ex2"
-                },
-                "logTopic": "persistent://public/default/logging-function-logs",
-                "maxReplicas": 1,
-                "name": "ex2",
-                "output": {
-                  "topic": "persistent://public/default/functionmesh-output-topic",
-                  "typeClassName": "java.lang.String"
-                },
-                "pulsar": {
-                  "pulsarConfig": "mesh-test-pulsar"
-                },
-                "replicas": 1,
-                "resources": {
-                  "limits": {
-                    "cpu": "0.2",
-                    "memory": "1.1G"
-                  },
-                  "requests": {
-                    "cpu": "0.1",
-                    "memory": "1G"
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "compute.functionmesh.io/v1alpha1",
-          "kind": "Sink",
-          "metadata": {
-            "name": "sink-sample"
-          },
-          "spec": {
-            "autoAck": true,
-            "className": "org.apache.pulsar.io.elasticsearch.ElasticSearchSink",
-            "clusterName": "test-pulsar",
-            "image": "streamnative/pulsar-io-elastic-search:2.10.0.0-rc10",
-            "input": {
-              "topics": [
-                "persistent://public/default/input"
-              ],
-              "typeClassName": "[B"
-            },
-            "java": {
-              "jar": "connectors/pulsar-io-elastic-search-2.10.0.0-rc10.nar",
-              "jarLocation": ""
-            },
-            "maxReplicas": 1,
-            "pulsar": {
-              "pulsarConfig": "test-sink"
-            },
-            "replicas": 1,
-            "resources": {
-              "limits": {
-                "cpu": "0.2",
-                "memory": "1.1G"
-              },
-              "requests": {
-                "cpu": "0.1",
-                "memory": "1G"
-              }
-            },
-            "sinkConfig": {
-              "elasticSearchUrl": "http://quickstart-es-http.default.svc.cluster.local:9200",
-              "indexName": "my_index",
-              "password": "wJ757TmoXEd941kXm07Z2GW3",
-              "typeName": "doc",
-              "username": "elastic"
-            }
-          }
-        },
-        {
-          "api_version": "compute.functionmesh.io/v1alpha1",
-          "kind": "Source",
-          "metadata": {
-            "name": "source-sample"
-          },
-          "spec": {
-            "className": "org.apache.pulsar.io.debezium.mongodb.DebeziumMongoDbSource",
-            "clusterName": "test-pulsar",
-            "forwardSourceMessageProperty": true,
-            "image": "streamnative/pulsar-io-debezium-mongodb:2.10.0.0-rc10",
-            "java": {
-              "jar": "connectors/pulsar-io-debezium-mongodb-2.10.0.0-rc10.nar",
-              "jarLocation": ""
-            },
-            "maxReplicas": 1,
-            "output": {
-              "producerConf": {
-                "maxPendingMessages": 1000,
-                "maxPendingMessagesAcrossPartitions": 50000,
-                "useThreadLocalProducers": true
-              },
-              "topic": "persistent://public/default/destination",
-              "typeClassName": "org.apache.pulsar.common.schema.KeyValue"
-            },
-            "pulsar": {
-              "pulsarConfig": "test-source"
-            },
-            "replicas": 1,
-            "resources": {
-              "limits": {
-                "cpu": "0.2",
-                "memory": "1.1G"
-              },
-              "requests": {
-                "cpu": "0.1",
-                "memory": "1G"
-              }
-            },
-            "sourceConfig": {
-              "database.whitelist": "inventory",
-              "mongodb.hosts": "rs0/mongo-dbz-0.mongo.default.svc.cluster.local:27017,rs0/mongo-dbz-1.mongo.default.svc.cluster.local:27017,rs0/mongo-dbz-2.mongo.default.svc.cluster.local:27017",
-              "mongodb.name": "dbserver1",
-              "mongodb.password": "dbz",
-              "mongodb.task.id": "1",
-              "mongodb.user": "debezium",
-              "pulsar.service.url": "pulsar://test-pulsar-broker.default.svc.cluster.local:6650"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/streamnative/function-mesh-bundle@sha256:adfb22039841a31a2f87ef0ee9bbefd4530b993fde6e299db18e6ac51308e092",
-      "bundle_path_digest": "sha256:adfb22039841a31a2f87ef0ee9bbefd4530b993fde6e299db18e6ac51308e092",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-08-23T03:27:19.799000+00:00",
-      "csv_description": "[Function Mesh](https://functionmesh.io/) is a serverless framework purpose-built for stream processing applications. It brings powerful event-streaming capabilities to your applications by orchestrating multiple [Pulsar Functions](http://pulsar.apache.org/docs/en/next/functions-overview/) and [Pulsar IO connectors](http://pulsar.apache.org/docs/en/next/io-overview/) for complex stream processing jobs on Kubernetes.\nPrerequisites:\n- Install cert-manager operator first.\n",
-      "csv_display_name": "Function Mesh Operator",
-      "csv_metadata_description": "The Function Mesh Operator manages the Pulsar Functions and Connectors deployed on a Kubernetes cluster.",
-      "csv_name": "function-mesh.v0.5.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:58:57.210000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "function-mesh",
-      "provided_apis": [
-        {
-          "group": "compute.functionmesh.io",
-          "kind": "Function",
-          "plural": "functions",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "compute.functionmesh.io",
-          "kind": "Sink",
-          "plural": "sinks",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "compute.functionmesh.io",
-          "kind": "Source",
-          "plural": "sources",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "compute.functionmesh.io",
-          "kind": "FunctionMesh",
-          "plural": "functionmeshes",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "StreamNative",
-      "related_images": [
-        {
-          "digest": "sha256:330421e60071811ec4d2ca2b309f50356f3c19c7c855b716cde61110dada9092",
-          "image": "quay.io/streamnativeio/function-mesh@sha256:330421e60071811ec4d2ca2b309f50356f3c19c7c855b716cde61110dada9092",
-          "name": "function-mesh"
-        },
-        {
-          "digest": "sha256:67ecb332573384515406ebd71816781366b70adb0eb66345e5980e92603373e1",
-          "image": "docker.cloudsmith.io/streamnative/mirrors/gcr.io/kubebuilder/kube-rbac-proxy@sha256:67ecb332573384515406ebd71816781366b70adb0eb66345e5980e92603373e1",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:330421e60071811ec4d2ca2b309f50356f3c19c7c855b716cde61110dada9092",
-          "image": "quay.io/streamnativeio/function-mesh@sha256:330421e60071811ec4d2ca2b309f50356f3c19c7c855b716cde61110dada9092",
-          "name": "function-mesh-330421e60071811ec4d2ca2b309f50356f3c19c7c855b716cde61110dada9092-annotation"
-        },
-        {
-          "digest": "sha256:330421e60071811ec4d2ca2b309f50356f3c19c7c855b716cde61110dada9092",
-          "image": "quay.io/streamnativeio/function-mesh@sha256:330421e60071811ec4d2ca2b309f50356f3c19c7c855b716cde61110dada9092",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<0.5.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.5.0",
-      "version_original": "0.5.0"
-    },
-    {
       "_id": "6305213b720db70dae94b09a",
       "alm_examples": [
         {
@@ -21560,6 +20384,303 @@
       "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "8.5.2",
+      "version_original": "8.5.2"
+    },
+    {
+      "_id": "6308d40007bb65fa2c2ab225",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:d01e9da1a9897bb6f12ad4034bea571b53ea08d53d0fd7eebe30298a44ea4f65",
+      "bundle_path_digest": "sha256:d01e9da1a9897bb6f12ad4034bea571b53ea08d53d0fd7eebe30298a44ea4f65",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-26T14:09:04.843000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:56:12.936000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:fc69790f6713bd3f2f4d1cefd9eadac7ebe776cd0f83ae1ec523d80f2c276f59",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:fc69790f6713bd3f2f4d1cefd9eadac7ebe776cd0f83ae1ec523d80f2c276f59",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "8.5.0",
+      "version_original": "8.5.0"
+    },
+    {
+      "_id": "6308d40138a6fe67b681f019",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:e5bf556da7ffdcd3e2e9c6e543d8ef7f1844216774e703dfec53e466e609d854",
+      "bundle_path_digest": "sha256:e5bf556da7ffdcd3e2e9c6e543d8ef7f1844216774e703dfec53e466e609d854",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-26T14:09:05.314000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:56:24.311000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:f78525afc39849d143c7fbe8992b95a26cb0d3443bc6a8fe7fbe49145887c8d7",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:f78525afc39849d143c7fbe8992b95a26cb0d3443bc6a8fe7fbe49145887c8d7",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "8.5.1",
+      "version_original": "8.5.1"
+    },
+    {
+      "_id": "6308d4011d920575dc1461f1",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:b5e9c7c6ef879adb58154bfa52ec7c657e4bd0cdc643031037d9395051abdb79",
+      "bundle_path_digest": "sha256:b5e9c7c6ef879adb58154bfa52ec7c657e4bd0cdc643031037d9395051abdb79",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-26T14:09:05.738000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:56:35.215000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:7f72251c432f107e4102f91abb17469eedcf02f9a7860d7ec7c9bd0ad77746ae",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:7f72251c432f107e4102f91abb17469eedcf02f9a7860d7ec7c9bd0ad77746ae",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "8.5.2",
       "version_original": "8.5.2"
     }
