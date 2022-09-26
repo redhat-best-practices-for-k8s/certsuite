@@ -9,7 +9,7 @@ on:
 env:
   REGISTRY: quay.io
   REGISTRY_LOCAL: localhost
-  RELEASE_LEVEL: '4.10'
+  RELEASE_LEVEL: '4.11'
   IMAGE_NAME: testnetworkfunction/cnf-certification-test
   IMAGE_TAG: unstable
   TNF_CONTAINER_CLIENT: docker
