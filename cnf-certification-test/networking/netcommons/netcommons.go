@@ -147,14 +147,13 @@ func FilterIPListByIPVersion(ipList []string, aIPVersion IPVersion) []string {
 	return filteredIPList
 }
 
-func FindRogueContainersDeclaredListeningToPorts(containers []*provider.Container, portsToTest map[int32]bool) []string {
+func FindRogueContainersDeclaringPorts(containers []*provider.Container, portsToTest map[int32]bool) []string {
 	var rogueContainers []string
 	for _, cut := range containers {
 		for _, port := range cut.Ports {
 			if portsToTest[port.ContainerPort] {
 				tnf.ClaimFilePrintf("%s has declared a port (%d) that has been reserved", cut, port.ContainerPort)
 				rogueContainers = append(rogueContainers, cut.String())
-				break
 			}
 		}
 	}
@@ -175,7 +174,6 @@ func FindRoguePodsListeningToPorts(pods []*provider.Pod, portsToTest map[int32]b
 			if portsToTest[int32(port.PortNumber)] {
 				tnf.ClaimFilePrintf("%s has one container listening on port %d that has been reserved", put, port.PortNumber)
 				roguePods = append(roguePods, put.String())
-				break
 			}
 		}
 	}
