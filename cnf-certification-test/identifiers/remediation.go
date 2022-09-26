@@ -197,4 +197,6 @@ const (
 	UID1337Remediation = `Use another process UID that is not 1337`
 
 	ReservedPartnerPortsRemediation = `Ensure ports are not being used that are reserved by our partner`
+
+	AffinityRequiredRemediation = `If a pod/statefulset/deployment is required to use affinity rules, please add AffinityRequired: 'true' as a label`
 )

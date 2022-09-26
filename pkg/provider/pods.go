@@ -98,10 +98,11 @@ func (p *Pod) String() string {
 	)
 }
 
-func (p *Pod) ColocationEnabled() bool {
-	if val, ok := p.Labels[AffinityAllowedKey]; ok {
+func (p *Pod) AffinityRequired() bool {
+	if val, ok := p.Labels[AffinityRequiredKey]; ok {
 		result, err := strconv.ParseBool(val)
 		if err != nil {
+			logrus.Warnf("failure to parse bool %v", val)
 			return false
 		}
 		return result
@@ -145,4 +146,17 @@ func (p *Pod) CheckResourceOnly2MiHugePages() bool {
 		}
 	}
 	return true
+}
+
+func (p *Pod) IsAffinityCompliant() (bool, error) {
+	if p.Spec.Affinity == nil {
+		return false, fmt.Errorf("%s has been found with an AffinityRequired flag but is missing corresponding affinity rules", p.String())
+	}
+	if p.Spec.Affinity.PodAntiAffinity != nil {
+		return false, fmt.Errorf("%s has been found with an AffinityRequired flag but has anti-affinity rules", p.String())
+	}
+	if p.Spec.Affinity.PodAffinity == nil && p.Spec.Affinity.NodeAffinity == nil {
+		return false, fmt.Errorf("%s has been found with an AffinityRequired flag but is missing corresponding pod/node affinity rules", p.String())
+	}
+	return true, nil
 }

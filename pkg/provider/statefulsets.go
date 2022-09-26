@@ -18,7 +18,9 @@ package provider
 
 import (
 	"fmt"
+	"strconv"
 
+	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	appsv1 "k8s.io/api/apps/v1"
 	appv1client "k8s.io/client-go/kubernetes/typed/apps/v1"
@@ -48,6 +50,31 @@ func (ss *StatefulSet) ToString() string {
 		ss.Name,
 		ss.Namespace,
 	)
+}
+
+func (ss *StatefulSet) AffinityRequired() bool {
+	if val, ok := ss.Labels[AffinityRequiredKey]; ok {
+		result, err := strconv.ParseBool(val)
+		if err != nil {
+			logrus.Warnf("failure to parse bool %v", val)
+			return false
+		}
+		return result
+	}
+	return false
+}
+
+func (ss *StatefulSet) IsAffinityCompliant() (bool, error) {
+	if ss.Spec.Template.Spec.Affinity == nil {
+		return false, fmt.Errorf("%s has been found with an AffinityRequired flag but is missing corresponding affinity rules", ss.String())
+	}
+	if ss.Spec.Template.Spec.Affinity.PodAntiAffinity != nil {
+		return false, fmt.Errorf("%s has been found with an AffinityRequired flag but has anti-affinity rules", ss.String())
+	}
+	if ss.Spec.Template.Spec.Affinity.PodAffinity == nil && ss.Spec.Template.Spec.Affinity.NodeAffinity == nil {
+		return false, fmt.Errorf("%s has been found with an AffinityRequired flag but is missing corresponding pod/node affinity rules", ss.String())
+	}
+	return true, nil
 }
 
 func GetUpdatedStatefulset(ac appv1client.AppsV1Interface, namespace, podName string) (*StatefulSet, error) {
