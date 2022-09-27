@@ -169,7 +169,7 @@ func buildTestEnvironment() { //nolint:funlen
 	for i := 0; i < len(pods); i++ {
 		aNewPod := NewPod(&pods[i])
 		env.Pods = append(env.Pods, &aNewPod)
-		env.Containers = append(env.Containers, getPodContainers(&pods[i])...)
+		env.Containers = append(env.Containers, getPodContainers(&pods[i], true)...)
 	}
 	pods = data.AllPods
 	for i := 0; i < len(pods); i++ {
@@ -220,7 +220,7 @@ func buildTestEnvironment() { //nolint:funlen
 	logrus.Infof("Operators found: %d", len(env.Operators))
 }
 
-func getPodContainers(aPod *corev1.Pod) (containerList []*Container) {
+func getPodContainers(aPod *corev1.Pod, ignoreContainers bool) (containerList []*Container) {
 	for j := 0; j < len(aPod.Spec.Containers); j++ {
 		cut := &(aPod.Spec.Containers[j])
 		var state corev1.ContainerStatus
@@ -233,7 +233,13 @@ func getPodContainers(aPod *corev1.Pod) (containerList []*Container) {
 		container := Container{Podname: aPod.Name, Namespace: aPod.Namespace,
 			NodeName: aPod.Spec.NodeName, Container: cut, Status: state, Runtime: aRuntime, UID: uid,
 			ContainerImageIdentifier: buildContainerImageSource(aPod.Spec.Containers[j].Image)}
-		containerList = append(containerList, &container)
+
+		// Build slices of containers based on whether or not we are "ignoring" them or not.
+		if ignoreContainers && container.HasIgnoredContainerName() {
+			continue
+		} else {
+			containerList = append(containerList, &container)
+		}
 	}
 	return containerList
 }
