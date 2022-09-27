@@ -15,3 +15,42 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 package manageability
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
+
+func TestContainerPortNameFormatCheck(t *testing.T) {
+	testCases := []struct {
+		portName       string
+		expectedOutput bool
+	}{
+		{
+			portName:       "http",
+			expectedOutput: true,
+		},
+		{
+			portName:       "tcp-probe",
+			expectedOutput: true,
+		},
+		{
+			portName:       "grpc-web-app1",
+			expectedOutput: true,
+		},
+		{
+			portName:       "sftp",
+			expectedOutput: false,
+		},
+		{
+			portName:       "sctp-endpoint",
+			expectedOutput: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		res := containerPortNameFormatCheck(tc.portName)
+		assert.Equal(t, tc.expectedOutput, res)
+	}
+}

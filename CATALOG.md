@@ -562,6 +562,19 @@ Exception Process|There is no documented exception process for this.
 
 ### manageability
 
+#### container-port-name-format
+
+Property|Description
+---|---
+Test Case Name|container-port-name-format
+Test Case Label|manageability-container-port-name-format
+Unique ID|http://test-network-function.com/testcases/manageability/container-port-name-format
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/manageability/container-port-name-format Check that the container's ports name follow the naming conventions.
+Result Type|normative
+Suggested Remediation|Ensure that the container's ports name follow our partner naming conventions
+Best Practice Reference|https://TODO Section 4.6.20
+Exception Process|There is no documented exception process for this.
 #### containers-image-tag
 
 Property|Description

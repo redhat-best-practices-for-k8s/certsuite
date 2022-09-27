@@ -17,6 +17,8 @@
 package manageability
 
 import (
+	"strings"
+
 	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
@@ -41,6 +43,12 @@ var _ = ginkgo.Describe(common.ManageabilityTestKey, func() {
 		testContainersImageTag(&env)
 	})
 
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerPortNameFormat)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
+		testContainerPortNameFormat(&env)
+	})
+
 })
 
 func testContainersImageTag(env *provider.TestEnvironment) {
@@ -53,4 +61,30 @@ func testContainersImageTag(env *provider.TestEnvironment) {
 		}
 	}
 	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+}
+
+// The name field in the ContainerPort section must be of the form <protocol>[-<suffix>] where <protocol> is one of the following,
+// and the optional <suffix> can be chosen by the application. Allowed protocol names: grpc, grpc-web, http, http2, tcp, udp.
+var allowedProtocolNames = map[string]bool{"grpc": true, "http": true, "http2": true, "tcp": true, "udp": true}
+
+func containerPortNameFormatCheck(portName string) bool {
+	res := strings.Split(portName, "-")
+	return allowedProtocolNames[res[0]]
+}
+
+func testContainerPortNameFormat(env *provider.TestEnvironment) {
+	badContainers := []string{}
+	for _, cut := range env.Containers {
+		for _, port := range cut.Ports {
+			if !containerPortNameFormatCheck(port.Name) {
+				badContainers = append(badContainers, cut.String())
+				tnf.ClaimFilePrintf("%s: ContainerPort %s does not follow the partner naming conventions", cut, port.Name)
+			}
+		}
+	}
+
+	if len(badContainers) > 0 {
+		tnf.ClaimFilePrintf("Containers declaring ports whose names do not follow the partner naming conventions: %v", badContainers)
+		ginkgo.Fail("Number of containers with port names that do not follow the partner naming conventions: %d", len(badContainers))
+	}
 }
