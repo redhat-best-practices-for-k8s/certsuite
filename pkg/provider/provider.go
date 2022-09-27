@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021 Red Hat, Inc.
+// Copyright (C) 2020-2022 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@ package provider
 
 import (
 	"context"
-	"os"
 	"time"
 
 	"errors"
@@ -30,12 +29,9 @@ import (
 	mcv1 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/operatingsystem"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
-	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	"helm.sh/helm/v3/pkg/release"
 	appsv1 "k8s.io/api/apps/v1"
 	scalingv1 "k8s.io/api/autoscaling/v1"
@@ -44,11 +40,10 @@ import (
 	policyv1 "k8s.io/api/policy/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	appv1client "k8s.io/client-go/kubernetes/typed/apps/v1"
 )
 
 const (
-	colocationEnabledKey             = "colocation"
+	AffinityRequiredKey              = "AffinityRequired"
 	DaemonSetNamespace               = "default"
 	DaemonSetName                    = "debug"
 	debugPodsTimeout                 = 5 * time.Minute
@@ -68,63 +63,39 @@ var (
 	rhcosRelativePath = "%s/platform/operatingsystem/files/rhcos_version_map"
 )
 
-type Pod struct {
-	*corev1.Pod
-	Containers         []*Container
-	MultusIPs          map[string][]string
-	SkipNetTests       bool
-	SkipMultusNetTests bool
-}
-
-type Deployment struct {
-	*appsv1.Deployment
-}
-
-type StatefulSet struct {
-	*appsv1.StatefulSet
-}
-
-func NewPod(aPod *corev1.Pod) (out Pod) {
-	var err error
-	out.Pod = aPod
-	out.MultusIPs = make(map[string][]string)
-	out.MultusIPs, err = GetPodIPsPerNet(aPod.GetAnnotations()[CniNetworksStatusKey])
-	if err != nil {
-		logrus.Errorf("Could not decode networks-status annotation, error: %s", err)
-	}
-
-	if _, ok := aPod.GetLabels()[skipConnectivityTestsLabel]; ok {
-		out.SkipNetTests = true
-	}
-	if _, ok := aPod.GetLabels()[skipMultusConnectivityTestsLabel]; ok {
-		out.SkipMultusNetTests = true
-	}
-	out.Containers = append(out.Containers, getPodContainers(aPod)...)
-	return out
-}
-
-func ConvertArrayPods(pods []*corev1.Pod) (out []*Pod) {
-	for i := range pods {
-		aPodWrapper := NewPod(pods[i])
-		out = append(out, &aPodWrapper)
-	}
-	return out
-}
-
 type TestEnvironment struct { // rename this with testTarget
-	Namespaces           []string     `json:"testNamespaces"`
-	Pods                 []*Pod       `json:"testPods"`
-	Containers           []*Container `json:"testContainers"`
-	Operators            []Operator   `json:"testOperators"`
-	PersistentVolumes    []corev1.PersistentVolume
-	DebugPods            map[string]*corev1.Pod // map from nodename to debugPod
-	GuaranteedPods       []*Pod
-	NonGuaranteedPods    []*Pod
-	Config               configuration.TestConfiguration
-	variables            configuration.TestParameters
-	Crds                 []*apiextv1.CustomResourceDefinition          `json:"testCrds"`
-	Deployments          []*Deployment                                 `json:"testDeployments"`
-	StatetfulSets        []*StatefulSet                                `json:"testStatetfulSets"`
+	Namespaces     []string `json:"testNamespaces"`
+	AbnormalEvents []*Event
+
+	// Pod Groupings
+	Pods                     []*Pod                 `json:"testPods"`
+	DebugPods                map[string]*corev1.Pod // map from nodename to debugPod
+	GuaranteedPods           []*Pod
+	NonGuaranteedPods        []*Pod
+	AffinityRequiredPods     []*Pod
+	AntiAffinityRequiredPods []*Pod
+	HugepagesPods            []*Pod
+	AllPods                  []*Pod `json:"AllPods"`
+
+	// Deployment Groupings
+	Deployments                     []*Deployment `json:"testDeployments"`
+	AffinityRequiredDeployments     []*Deployment
+	AntiAffinityRequiredDeployments []*Deployment
+
+	// StatefulSet Groupings
+	StatetfulSets                    []*StatefulSet `json:"testStatetfulSets"`
+	AffinityRequiredStatefulSets     []*StatefulSet
+	AntiAffinityRequiredStatefulSets []*StatefulSet
+
+	Containers             []*Container `json:"testContainers"`
+	Operators              []Operator   `json:"testOperators"`
+	PersistentVolumes      []corev1.PersistentVolume
+	PersistentVolumeClaims []corev1.PersistentVolumeClaim
+
+	Config    configuration.TestConfiguration
+	variables configuration.TestParameters
+	Crds      []*apiextv1.CustomResourceDefinition `json:"testCrds"`
+
 	HorizontalScaler     map[string]*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
 	Services             []*corev1.Service                             `json:"testServices"`
 	Nodes                map[string]Node                               `json:"-"`
@@ -158,16 +129,6 @@ type Operator struct {
 	Version          string                            `yaml:"version" json:"version"`
 	Channel          string                            `yaml:"channel" json:"channel"`
 }
-type Container struct {
-	*corev1.Container
-	Status                   corev1.ContainerStatus
-	Namespace                string
-	Podname                  string
-	NodeName                 string
-	Runtime                  string
-	UID                      string
-	ContainerImageIdentifier configuration.ContainerImageIdentifier
-}
 
 type MachineConfig struct {
 	*mcv1.MachineConfig
@@ -179,85 +140,6 @@ type MachineConfig struct {
 			} `json:"units"`
 		} `json:"systemd"`
 	} `json:"config"`
-}
-
-type Node struct {
-	Data *corev1.Node
-	Mc   MachineConfig `json:"-"`
-}
-
-func (node Node) MarshalJSON() ([]byte, error) {
-	return json.Marshal(&node.Data)
-}
-
-func (node *Node) IsWorkerNode() bool {
-	for nodeLabel := range node.Data.Labels {
-		if stringhelper.StringInSlice(WorkerLabels, nodeLabel, true) {
-			return true
-		}
-	}
-	return false
-}
-
-func (node *Node) IsMasterNode() bool {
-	for nodeLabel := range node.Data.Labels {
-		if stringhelper.StringInSlice(MasterLabels, nodeLabel, true) {
-			return true
-		}
-	}
-	return false
-}
-
-func (node *Node) IsRHCOS() bool {
-	return strings.Contains(strings.TrimSpace(node.Data.Status.NodeInfo.OSImage), rhcosName)
-}
-
-func (node *Node) IsRHEL() bool {
-	return strings.Contains(strings.TrimSpace(node.Data.Status.NodeInfo.OSImage), rhelName)
-}
-
-func (node *Node) IsRTKernel() bool {
-	// More information: https://www.redhat.com/sysadmin/real-time-kernel
-	return strings.Contains(strings.TrimSpace(node.Data.Status.NodeInfo.KernelVersion), "rt")
-}
-
-func (node *Node) GetRHCOSVersion() (string, error) {
-	// Check if the node is running CoreOS or not
-	if !node.IsRHCOS() {
-		return "", fmt.Errorf("invalid OS type: %s", node.Data.Status.NodeInfo.OSImage)
-	}
-
-	path, err := os.Getwd()
-	if err != nil {
-		return "", err
-	}
-
-	filePath := fmt.Sprintf(rhcosRelativePath, path)
-
-	// Red Hat Enterprise Linux CoreOS 410.84.202205031645-0 (Ootpa) --> 410.84.202205031645-0
-	splitStr := strings.Split(node.Data.Status.NodeInfo.OSImage, rhcosName)
-	longVersionSplit := strings.Split(strings.TrimSpace(splitStr[1]), " ")
-
-	// Get the short version string from the long version string
-	shortVersion, err := operatingsystem.GetShortVersionFromLong(longVersionSplit[0], filePath)
-	if err != nil {
-		return "", err
-	}
-
-	return shortVersion, nil
-}
-
-func (node *Node) GetRHELVersion() (string, error) {
-	// Check if the node is running RHEL or not
-	if !node.IsRHEL() {
-		return "", fmt.Errorf("invalid OS type: %s", node.Data.Status.NodeInfo.OSImage)
-	}
-
-	// Red Hat Enterprise Linux 8.5 (Ootpa) --> 8.5
-	splitStr := strings.Split(node.Data.Status.NodeInfo.OSImage, rhelName)
-	longVersionSplit := strings.Split(strings.TrimSpace(splitStr[1]), " ")
-
-	return longVersionSplit[0], nil
 }
 
 type cniNetworkInterface struct {
@@ -273,63 +155,7 @@ var (
 	loaded = false
 )
 
-func GetContainer() *Container {
-	return &Container{}
-}
-
-func (d *Deployment) IsDeploymentReady() bool {
-	notReady := true
-	for _, condition := range d.Status.Conditions {
-		if condition.Type == appsv1.DeploymentAvailable {
-			notReady = false
-			break
-		}
-	}
-	var replicas int32
-	if d.Spec.Replicas != nil {
-		replicas = *(d.Spec.Replicas)
-	} else {
-		replicas = 1
-	}
-	if notReady ||
-		d.Status.UnavailableReplicas != 0 ||
-		d.Status.ReadyReplicas != replicas ||
-		d.Status.AvailableReplicas != replicas ||
-		d.Status.UpdatedReplicas != replicas {
-		return false
-	}
-	return true
-}
-
-func (ss *StatefulSet) IsStatefulSetReady() bool {
-	var replicas int32
-	if ss.Spec.Replicas != nil {
-		replicas = *(ss.Spec.Replicas)
-	} else {
-		replicas = 1
-	}
-	if ss.Status.ReadyReplicas != replicas ||
-		ss.Status.CurrentReplicas != replicas ||
-		ss.Status.UpdatedReplicas != replicas {
-		return false
-	}
-	return true
-}
-
-func GetUpdatedDeployment(ac appv1client.AppsV1Interface, namespace, podName string) (*Deployment, error) {
-	result, err := autodiscover.FindDeploymentByNameByNamespace(ac, namespace, podName)
-	return &Deployment{
-		result,
-	}, err
-}
-func GetUpdatedStatefulset(ac appv1client.AppsV1Interface, namespace, podName string) (*StatefulSet, error) {
-	result, err := autodiscover.FindStatefulsetByNameByNamespace(ac, namespace, podName)
-	return &StatefulSet{
-		result,
-	}, err
-}
-
-func buildTestEnvironment() { //nolint:funlen
+func buildTestEnvironment() { //nolint:funlen,gocyclo
 	// Wait for the debug pods to be ready before the autodiscovery starts.
 	err := WaitDebugPodsReady()
 	if err != nil {
@@ -344,8 +170,11 @@ func buildTestEnvironment() { //nolint:funlen
 	env.variables = data.Env
 	env.Nodes = createNodes(data.Nodes.Items)
 	env.IstioServiceMesh = data.Istio
+	for i := range data.AbnormalEvents {
+		aEvent := NewEvent(&data.AbnormalEvents[i])
+		env.AbnormalEvents = append(env.AbnormalEvents, &aEvent)
+	}
 	pods := data.Pods
-
 	for i := 0; i < len(pods); i++ {
 		aNewPod := NewPod(&pods[i])
 		env.Pods = append(env.Pods, &aNewPod)
@@ -356,9 +185,23 @@ func buildTestEnvironment() { //nolint:funlen
 		} else {
 			env.NonGuaranteedPods = append(env.NonGuaranteedPods, &aNewPod)
 		}
+		if aNewPod.HasHugepages() {
+			env.HugepagesPods = append(env.HugepagesPods, &aNewPod)
+		}
+
+		// Build slices of AffinityRequired and non AffinityRequired pods
+		if aNewPod.AffinityRequired() {
+			env.AffinityRequiredPods = append(env.AffinityRequiredPods, &aNewPod)
+		} else {
+			env.AntiAffinityRequiredPods = append(env.AntiAffinityRequiredPods, &aNewPod)
+		}
 		env.Containers = append(env.Containers, getPodContainers(&pods[i])...)
 	}
-
+	pods = data.AllPods
+	for i := 0; i < len(pods); i++ {
+		aNewPod := NewPod(&pods[i])
+		env.AllPods = append(env.AllPods, &aNewPod)
+	}
 	env.DebugPods = make(map[string]*corev1.Pod)
 	for i := 0; i < len(data.DebugPods); i++ {
 		nodeName := data.DebugPods[i].Spec.NodeName
@@ -371,6 +214,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.ResourceQuotas = data.ResourceQuotaItems
 	env.PodDisruptionBudgets = data.PodDisruptionBudgets
 	env.PersistentVolumes = data.PersistentVolumes
+	env.PersistentVolumeClaims = data.PersistentVolumeClaims
 	env.Services = data.Services
 	env.NetworkPolicies = data.NetworkPolicies
 	for _, nsHelmChartReleases := range data.HelmChartReleases {
@@ -381,16 +225,30 @@ func buildTestEnvironment() { //nolint:funlen
 		}
 	}
 	for i := range data.Deployments {
-		env.Deployments = append(env.Deployments,
-			&Deployment{
-				&data.Deployments[i],
-			})
+		aNewDeployment := &Deployment{
+			&data.Deployments[i],
+		}
+		env.Deployments = append(env.Deployments, aNewDeployment)
+
+		// Create slices of affinity required and affinity not required deployments
+		if aNewDeployment.AffinityRequired() {
+			env.AffinityRequiredDeployments = append(env.AffinityRequiredDeployments, aNewDeployment)
+		} else {
+			env.AntiAffinityRequiredDeployments = append(env.AntiAffinityRequiredDeployments, aNewDeployment)
+		}
 	}
 	for i := range data.StatefulSet {
-		env.StatetfulSets = append(env.StatetfulSets,
-			&StatefulSet{
-				&data.StatefulSet[i],
-			})
+		aNewStatefulSet := &StatefulSet{
+			&data.StatefulSet[i],
+		}
+		env.StatetfulSets = append(env.StatetfulSets, aNewStatefulSet)
+
+		// Create slices of affinity required and affinity not required statefulsets
+		if aNewStatefulSet.AffinityRequired() {
+			env.AffinityRequiredStatefulSets = append(env.AffinityRequiredStatefulSets, aNewStatefulSet)
+		} else {
+			env.AntiAffinityRequiredStatefulSets = append(env.AntiAffinityRequiredStatefulSets, aNewStatefulSet)
+		}
 	}
 	env.HorizontalScaler = data.Hpas
 
@@ -499,20 +357,6 @@ func isDaemonSetReady(status *appsv1.DaemonSetStatus) bool {
 		status.NumberMisscheduled == 0
 }
 
-func (c *Container) GetUID() (string, error) {
-	split := strings.Split(c.Status.ContainerID, "://")
-	uid := ""
-	if len(split) > 0 {
-		uid = split[len(split)-1]
-	}
-	if uid == "" {
-		logrus.Debugln(fmt.Sprintf("could not find uid of %s/%s/%s\n", c.Namespace, c.Podname, c.Name))
-		return "", errors.New("cannot determine container UID")
-	}
-	logrus.Debugln(fmt.Sprintf("uid of %s/%s/%s=%s\n", c.Namespace, c.Podname, c.Name, uid))
-	return uid, nil
-}
-
 func buildContainerImageSource(url string) configuration.ContainerImageIdentifier {
 	source := configuration.ContainerImageIdentifier{}
 	urlSegments := strings.Split(url, "/")
@@ -535,6 +379,7 @@ func buildContainerImageSource(url string) configuration.ContainerImageIdentifie
 	}
 	return source
 }
+
 func GetRuntimeUID(cs *corev1.ContainerStatus) (runtime, uid string) {
 	split := strings.Split(cs.ContainerID, "://")
 	if len(split) > 0 {
@@ -542,69 +387,6 @@ func GetRuntimeUID(cs *corev1.ContainerStatus) (runtime, uid string) {
 		runtime = split[0]
 	}
 	return runtime, uid
-}
-
-func (c *Container) StringLong() string {
-	return fmt.Sprintf("node: %s ns: %s podName: %s containerName: %s containerUID: %s containerRuntime: %s",
-		c.NodeName,
-		c.Namespace,
-		c.Podname,
-		c.Name,
-		c.Status.ContainerID,
-		c.Runtime,
-	)
-}
-func (c *Container) String() string {
-	return fmt.Sprintf("container: %s pod: %s ns: %s",
-		c.Name,
-		c.Podname,
-		c.Namespace,
-	)
-}
-
-func (p *Pod) String() string {
-	return fmt.Sprintf("pod: %s ns: %s",
-		p.Name,
-		p.Namespace,
-	)
-}
-
-func (p *Pod) IsPodGuaranteed() bool {
-	return AreCPUResourcesWholeUnits(p) && AreResourcesIdentical(p)
-}
-
-func (p *Pod) IsCPUIsolationCompliant() bool {
-	isCPUIsolated := true
-
-	if !LoadBalancingDisabled(p) {
-		errMsg := fmt.Sprintf("%s has been found to not have annotations set correctly for CPU isolation.", p.String())
-		logrus.Debugf(errMsg)
-		tnf.ClaimFilePrintf(errMsg)
-		isCPUIsolated = false
-	}
-
-	if !IsRuntimeClassNameSpecified(p) {
-		errMsg := fmt.Sprintf("%s has been found to not have runtimeClassName specified.", p.String())
-		logrus.Debugf(errMsg)
-		tnf.ClaimFilePrintf(errMsg)
-		isCPUIsolated = false
-	}
-
-	return isCPUIsolated
-}
-
-func (d *Deployment) ToString() string {
-	return fmt.Sprintf("deployment: %s ns: %s",
-		d.Name,
-		d.Namespace,
-	)
-}
-
-func (ss *StatefulSet) ToString() string {
-	return fmt.Sprintf("statefulset: %s ns: %s",
-		ss.Name,
-		ss.Namespace,
-	)
 }
 
 func CsvToString(csv *olmv1Alpha.ClusterServiceVersion) string {

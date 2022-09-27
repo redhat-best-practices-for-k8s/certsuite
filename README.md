@@ -75,7 +75,8 @@ For Network Interfaces:
 The label test-network-function.com/skip_connectivity_tests excludes pods from all connectivity tests. The label value is not important, only its presence.
 The label test-network-function.com/skip_multus_connectivity_tests excludes pods from multus connectivity tests. Tests on default interface are still done. The label value is not important, only its presence.
 
-
+### AffinityRequired
+For CNF workloads that require pods to use Pod or Node Affinity rules, the label `AffinityRequired: true` must be included on either the Deployment, StatefulSet, or Pod YAML.  This will prevent any tests for anti-affinity to fail as well as test your workloads for affinity rules that support your CNF's use-case.
 
 ### certifiedcontainerinfo
 
@@ -499,6 +500,11 @@ You will need an [OpenShift 4.10 installation](https://docs.openshift.com/contai
 running your CNF, and at least one other machine available to host the test suite.  The
 [cnf-certification-test-partner](https://github.com/test-network-function/cnf-certification-test-partner) repository has a very
 simple example of this you can model your setup on.
+
+### Adding private test cases
+
+To add private test cases follow the instructions at:
+https://github.com/test-network-function/cnfextensions 
 
 ## Exception Process
 

@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021 Red Hat, Inc.
+// Copyright (C) 2020-2022 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -99,6 +99,8 @@ func GetTestClientsHolder(k8sMockObjects []runtime.Object, filenames ...string) 
 		case *corev1.ResourceQuota:
 			k8sClientObjects = append(k8sClientObjects, v)
 		case *corev1.PersistentVolume:
+			k8sClientObjects = append(k8sClientObjects, v)
+		case *corev1.PersistentVolumeClaim:
 			k8sClientObjects = append(k8sClientObjects, v)
 
 		// K8s Extension Client Objects

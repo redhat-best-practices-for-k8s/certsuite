@@ -1,4 +1,4 @@
-// Copyright (C) 2021 Red Hat, Inc.
+// Copyright (C) 2021-2022 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -74,7 +74,6 @@ func (nt *NodeTainted) GetKernelTaintInfo(ctx clientsholder.Context) (string, er
 func (nt *NodeTainted) GetModulesFromNode(ctx clientsholder.Context) []string {
 	// Get the 1st column list of the modules running on the node.
 	// Split on the return/newline and get the list of the modules back.
-	//nolint:goconst // used only once
 	command := `chroot /host lsmod | awk '{ print $1 }' | grep -v Module`
 	output, _ := nt.runCommand(ctx, command)
 	output = strings.ReplaceAll(output, "\t", "")

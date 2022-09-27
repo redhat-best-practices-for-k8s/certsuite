@@ -296,6 +296,19 @@ Result Type|normative
 Suggested Remediation|Ensure that your container has passed the Red Hat Container Certification Program (CCP).
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.7
 Exception Process|There is no documented exception process for this.
+#### container-is-certified-digest
+
+Property|Description
+---|---
+Test Case Name|container-is-certified-digest
+Test Case Label|affiliated-certification-container-is-certified-digest
+Unique ID|http://test-network-function.com/testcases/affiliated-certification/container-is-certified-digest
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/affiliated-certification/container-is-certified-digest Tests whether container images that are autodiscovered have passed the Red Hat Container Certification Program by their digest(CCP).
+Result Type|normative
+Suggested Remediation|Ensure that your container has passed the Red Hat Container Certification Program (CCP).
+Best Practice Reference|https://TODO Section 5.3.7
+Exception Process|There is no documented exception process for this.
 #### helmchart-is-certified
 
 Property|Description
@@ -325,6 +338,45 @@ Exception Process|There is no documented exception process for this.
 
 ### lifecycle
 
+#### affinity-required-deployments
+
+Property|Description
+---|---
+Test Case Name|affinity-required-deployments
+Test Case Label|lifecycle-affinity-required-deployments
+Unique ID|http://test-network-function.com/testcases/lifecycle/affinity-required-deployments
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/lifecycle/affinity-required-deployments Checks that affinity rules are in place if AffinityRequired: 'true' labels are set on Deployments.
+Result Type|informative
+Suggested Remediation|If a pod/statefulset/deployment is required to use affinity rules, please add AffinityRequired: 'true' as a label
+Best Practice Reference|https://TODO Section 4.6.24
+Exception Process|There is no documented exception process for this.
+#### affinity-required-pods
+
+Property|Description
+---|---
+Test Case Name|affinity-required-pods
+Test Case Label|lifecycle-affinity-required-pods
+Unique ID|http://test-network-function.com/testcases/lifecycle/affinity-required-pods
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/lifecycle/affinity-required-pods Checks that affinity rules are in place if AffinityRequired: 'true' labels are set on Pods.
+Result Type|informative
+Suggested Remediation|If a pod/statefulset/deployment is required to use affinity rules, please add AffinityRequired: 'true' as a label
+Best Practice Reference|https://TODO Section 4.6.24
+Exception Process|There is no documented exception process for this.
+#### affinity-required-statefulsets
+
+Property|Description
+---|---
+Test Case Name|affinity-required-statefulsets
+Test Case Label|lifecycle-affinity-required-statefulsets
+Unique ID|http://test-network-function.com/testcases/lifecycle/affinity-required-statefulsets
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/lifecycle/affinity-required-statefulsets Checks that affinity rules are in place if AffinityRequired: 'true' labels are set on StatefulSets.
+Result Type|informative
+Suggested Remediation|If a pod/statefulset/deployment is required to use affinity rules, please add AffinityRequired: 'true' as a label
+Best Practice Reference|https://TODO Section 4.6.24
+Exception Process|There is no documented exception process for this.
 #### container-shutdown
 
 Property|Description
@@ -656,6 +708,19 @@ Result Type|normative
 Suggested Remediation|Ensure that CNF apps do not listen on ports that are reserved by OpenShift
 Best Practice Reference|https://TODO Section 3.5.9
 Exception Process|There is no documented exception process for this.
+#### reserved-partner-ports
+
+Property|Description
+---|---
+Test Case Name|reserved-partner-ports
+Test Case Label|networking-reserved-partner-ports
+Unique ID|http://test-network-function.com/testcases/networking/reserved-partner-ports
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/networking/reserved-partner-ports Checks that pods and containers are not consuming ports designated as reserved by partner
+Result Type|informative
+Suggested Remediation|Ensure ports are not being used that are reserved by our partner
+Best Practice Reference|https://TODO Section 4.6.24
+Exception Process|There is no documented exception process for this.
 #### service-type
 
 Property|Description
@@ -807,6 +872,19 @@ Description|http://test-network-function.com/testcases/platform-alteration/boot-
 Result Type|normative
 Suggested Remediation|Ensure that boot parameters are set directly through the MachineConfigOperator, or indirectly through the PerformanceAddonOperator.   	Boot parameters should not be changed directly through the Node, as OpenShift should manage the changes for you.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.13 and 5.2.14
+Exception Process|There is no documented exception process for this.
+#### hugepages-2m-only
+
+Property|Description
+---|---
+Test Case Name|hugepages-2m-only
+Test Case Label|platform-alteration-hugepages-2m-only
+Unique ID|http://test-network-function.com/testcases/platform-alteration/hugepages-2m-only
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/platform-alteration/hugepages-2m-only Check that pods using hugepages only use 2Mi size
+Result Type|normative
+Suggested Remediation|Modify pod to consume 2Mi hugepages only
+Best Practice Reference|https://TODO Section 3.5.4
 Exception Process|There is no documented exception process for this.
 #### hugepages-config
 

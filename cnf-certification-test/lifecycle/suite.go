@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021 Red Hat, Inc.
+// Copyright (C) 2020-2022 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,7 +28,9 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/podrecreation"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/podsets"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/scaling"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/volumes"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
+	"github.com/test-network-function/cnf-certification-test/pkg/postmortem"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
@@ -91,7 +93,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		if env.GetWorkerCount() < minWorkerNodesForLifecycle {
 			ginkgo.Skip("Skipping pod high availability test because invalid number of available workers.")
 		}
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Deployments, env.StatetfulSets)
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.AntiAffinityRequiredDeployments, env.AntiAffinityRequiredStatefulSets)
 		testHighAvailability(&env)
 	})
 
@@ -147,6 +149,21 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GuaranteedPods)
 		testCPUIsolation(&env)
+	})
+
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestAffinityRequiredPods)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testAffinityRequiredPods(&env)
+	})
+
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestAffinityRequiredStatefulSets)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testAffinityRequiredStatefulSets(&env)
+	})
+
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestAffinityRequiredDeployments)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testAffinityRequiredDeployments(&env)
 	})
 })
 
@@ -251,7 +268,8 @@ func testPodNodeSelectorAndAffinityBestPractices(env *provider.TestEnvironment) 
 			tnf.ClaimFilePrintf("ERROR: %s has a node selector clause. Node selector: %v", put, &put.Spec.NodeSelector)
 			badPods = append(badPods, put.Pod)
 		}
-		if put.Spec.Affinity != nil && put.Spec.Affinity.NodeAffinity != nil {
+		// Skip any affinity required pods.  Not applicable for this test.
+		if !put.AffinityRequired() && put.Spec.Affinity != nil && put.Spec.Affinity.NodeAffinity != nil {
 			tnf.ClaimFilePrintf("ERROR: %s has a node affinity clause. Node affinity: %v", put, put.Spec.Affinity.NodeAffinity)
 			badPods = append(badPods, put.Pod)
 		}
@@ -332,7 +350,7 @@ func testHighAvailability(env *provider.TestEnvironment) {
 
 	badDeployments := []string{}
 	badStatefulSet := []string{}
-	for _, dp := range env.Deployments {
+	for _, dp := range env.AntiAffinityRequiredDeployments {
 		if dp.Spec.Replicas == nil || *(dp.Spec.Replicas) <= 1 {
 			badDeployments = append(badDeployments, dp.ToString())
 			continue
@@ -342,7 +360,7 @@ func testHighAvailability(env *provider.TestEnvironment) {
 			badDeployments = append(badDeployments, dp.ToString())
 		}
 	}
-	for _, st := range env.StatetfulSets {
+	for _, st := range env.AntiAffinityRequiredStatefulSets {
 		if st.Spec.Replicas == nil || *(st.Spec.Replicas) <= 1 {
 			badStatefulSet = append(badStatefulSet, st.ToString())
 			continue
@@ -367,6 +385,12 @@ func testHighAvailability(env *provider.TestEnvironment) {
 
 // testPodsRecreation tests that pods belonging to deployments and statefulsets are re-created and ready in case a node is lost
 func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
+	needsPostMortemInfo := true
+	defer func() {
+		if needsPostMortemInfo {
+			tnf.ClaimFilePrintf(postmortem.Log())
+		}
+	}()
 	ginkgo.By("Testing node draining effect of deployment")
 	ginkgo.By("Testing initial state for deployments")
 	defer env.SetNeedsRefresh()
@@ -384,13 +408,13 @@ func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 		}
 		ginkgo.By(fmt.Sprintf("Draining and Cordoning node %s: ", n))
 		logrus.Debugf("node: %s cordoned", n)
-		count, err := podrecreation.CountPodsWithDelete(n, podrecreation.NoDelete)
+		count, err := podrecreation.CountPodsWithDelete(env.Pods, n, podrecreation.NoDelete)
 		if err != nil {
 			ginkgo.Fail(fmt.Sprintf("Getting pods list to drain in node %s failed with err: %s. Test inconclusive.", n, err))
 		}
 		nodeTimeout := timeoutPodSetReady + timeoutPodRecreationPerPod*time.Duration(count)
 		logrus.Debugf("draining node: %s with timeout: %s", n, nodeTimeout.String())
-		_, err = podrecreation.CountPodsWithDelete(n, podrecreation.DeleteForeground)
+		_, err = podrecreation.CountPodsWithDelete(env.Pods, n, podrecreation.DeleteForeground)
 		if err != nil {
 			ginkgo.Fail(fmt.Sprintf("Draining node %s failed with err: %s. Test inconclusive", n, err))
 		}
@@ -405,6 +429,9 @@ func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 		if err != nil {
 			logrus.Fatalf("error uncordoning the node: %s", n)
 		}
+
+		// Reached end of TC, which means no ginkgo.Fail() was called.
+		needsPostMortemInfo = false
 	}
 }
 
@@ -414,20 +441,24 @@ func testPodPersistentVolumeReclaimPolicy(env *provider.TestEnvironment) {
 
 	// Look through all of the pods, matching their persistent volumes to the list of overall cluster PVs and checking their reclaim status.
 	for _, put := range env.Pods {
-		for index := range env.PersistentVolumes {
-			for pvIndex := range put.Spec.Volumes {
-				if put.Spec.Volumes[pvIndex].Name == env.PersistentVolumes[index].Name && env.PersistentVolumes[index].Spec.PersistentVolumeReclaimPolicy != corev1.PersistentVolumeReclaimDelete {
-					persistentVolumesBadReclaim = append(persistentVolumesBadReclaim, env.PersistentVolumes[index].Name)
-					tnf.ClaimFilePrintf("Persistent Volume: %s has been found without a reclaim policy of DELETE.", env.PersistentVolumes[index].Name)
-				}
+		// Loop through all of the volumes attached to the pod.
+		for pvIndex := range put.Spec.Volumes {
+			// Skip any volumes that do not have a PVC.  No need to test them.
+			if put.Spec.Volumes[pvIndex].PersistentVolumeClaim == nil {
+				continue
+			}
+
+			// If the Pod Volume is not tied back to a PVC and corresponding PV that has a reclaim policy of DELETE.
+			if !volumes.IsPodVolumeReclaimPolicyDelete(&put.Spec.Volumes[pvIndex], env.PersistentVolumes, env.PersistentVolumeClaims) {
+				persistentVolumesBadReclaim = append(persistentVolumesBadReclaim, put.String())
+				tnf.ClaimFilePrintf("%s contains volume: %s has been found without a reclaim policy of DELETE.", put.String(), &put.Spec.Volumes[pvIndex].Name)
+				break
 			}
 		}
 	}
 
 	if n := len(persistentVolumesBadReclaim); n > 0 {
-		errMsg := fmt.Sprintf("Persistent Volumes found that are missing a reclaim policy of DELETE: %d. See logs for more detail.", n)
-		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
+		testhelper.AddTestResultLog("Non-compliant", persistentVolumesBadReclaim, tnf.ClaimFilePrintf, ginkgo.Fail)
 	}
 }
 
@@ -455,4 +486,52 @@ func testCPUIsolation(env *provider.TestEnvironment) {
 		tnf.ClaimFilePrintf(errMsg)
 		ginkgo.Fail(errMsg)
 	}
+}
+
+func testAffinityRequiredPods(env *provider.TestEnvironment) {
+	testhelper.SkipIfEmptyAny(ginkgo.Skip, env.AffinityRequiredPods)
+
+	var podsDesiringAffinityRequiredMissingLabel []*provider.Pod
+	for _, put := range env.AffinityRequiredPods {
+		// Check if the pod is Affinity compliant.
+		result, err := put.IsAffinityCompliant()
+		if !result {
+			tnf.ClaimFilePrintf(err.Error())
+			podsDesiringAffinityRequiredMissingLabel = append(podsDesiringAffinityRequiredMissingLabel, put)
+		}
+	}
+
+	testhelper.AddTestResultLog("Non-compliant", podsDesiringAffinityRequiredMissingLabel, tnf.ClaimFilePrintf, ginkgo.Fail)
+}
+
+func testAffinityRequiredDeployments(env *provider.TestEnvironment) {
+	testhelper.SkipIfEmptyAny(ginkgo.Skip, env.AffinityRequiredDeployments)
+
+	var deploymentsDesiringAffinityRequiredMissingLabel []*provider.Deployment
+	for _, dep := range env.AffinityRequiredDeployments {
+		// Check if the deployment is Affinity compliant.
+		result, err := dep.IsAffinityCompliant()
+		if !result {
+			tnf.ClaimFilePrintf(err.Error())
+			deploymentsDesiringAffinityRequiredMissingLabel = append(deploymentsDesiringAffinityRequiredMissingLabel, dep)
+		}
+	}
+
+	testhelper.AddTestResultLog("Non-compliant", deploymentsDesiringAffinityRequiredMissingLabel, tnf.ClaimFilePrintf, ginkgo.Fail)
+}
+
+func testAffinityRequiredStatefulSets(env *provider.TestEnvironment) {
+	testhelper.SkipIfEmptyAny(ginkgo.Skip, env.AffinityRequiredStatefulSets)
+
+	var ssDesiringAffinityRequiredMissingLabel []*provider.StatefulSet
+	for _, ss := range env.AffinityRequiredStatefulSets {
+		// Check if the statefulset is Affinity compliant.
+		result, err := ss.IsAffinityCompliant()
+		if !result {
+			tnf.ClaimFilePrintf(err.Error())
+			ssDesiringAffinityRequiredMissingLabel = append(ssDesiringAffinityRequiredMissingLabel, ss)
+		}
+	}
+
+	testhelper.AddTestResultLog("Non-compliant", ssDesiringAffinityRequiredMissingLabel, tnf.ClaimFilePrintf, ginkgo.Fail)
 }

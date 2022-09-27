@@ -74,19 +74,20 @@ func loadContainersCatalog(pathToRoot string) {
 	}
 }
 
-func LoadBinary(bytes []byte, db map[string]*ContainerCatalogEntry) error {
+func LoadBinary(bytes []byte, db map[string]*ContainerCatalogEntry) (entries int, err error) {
 	aCatalog := ContainerPageCatalog{}
-	err := json.Unmarshal(bytes, &aCatalog)
+	err = json.Unmarshal(bytes, &aCatalog)
 	if err != nil {
-		return fmt.Errorf("failed to unmarshall binary data: %w, data: %s", err, string(bytes))
+		return 0, fmt.Errorf("failed to unmarshall binary data: %w, data: %s", err, string(bytes))
 	}
 
-	for i := 0; i < len(aCatalog.Data); i++ {
+	entries = len(aCatalog.Data)
+	for i := 0; i < entries; i++ {
 		c := aCatalog.Data[i]
 		db[c.DockerImageDigest] = &c
 	}
 
-	return nil
+	return entries, nil
 }
 
 func (checker OfflineChecker) IsContainerCertified(registry, repository, tag, digest string) bool {

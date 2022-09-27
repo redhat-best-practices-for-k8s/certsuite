@@ -21,7 +21,9 @@ import (
 	"net"
 	"strings"
 
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netutil"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	corev1 "k8s.io/api/core/v1"
 )
 
@@ -143,4 +145,37 @@ func FilterIPListByIPVersion(ipList []string, aIPVersion IPVersion) []string {
 		}
 	}
 	return filteredIPList
+}
+
+func FindRogueContainersDeclaringPorts(containers []*provider.Container, portsToTest map[int32]bool) []string {
+	var rogueContainers []string
+	for _, cut := range containers {
+		for _, port := range cut.Ports {
+			if portsToTest[port.ContainerPort] {
+				tnf.ClaimFilePrintf("%s has declared a port (%d) that has been reserved", cut, port.ContainerPort)
+				rogueContainers = append(rogueContainers, cut.String())
+			}
+		}
+	}
+	return rogueContainers
+}
+
+func FindRoguePodsListeningToPorts(pods []*provider.Pod, portsToTest map[int32]bool) (roguePods []string, failedContainers int) {
+	for _, put := range pods {
+		cut := put.Containers[0]
+
+		listeningPorts, err := netutil.GetListeningPorts(cut)
+		if err != nil {
+			tnf.ClaimFilePrintf("Failed to get the listening ports on %s, err: %s", cut, err)
+			failedContainers++
+			continue
+		}
+		for port := range listeningPorts {
+			if portsToTest[int32(port.PortNumber)] {
+				tnf.ClaimFilePrintf("%s has one container listening on port %d that has been reserved", put, port.PortNumber)
+				roguePods = append(roguePods, put.String())
+			}
+		}
+	}
+	return roguePods, failedContainers
 }

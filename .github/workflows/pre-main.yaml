@@ -9,7 +9,7 @@ on:
 env:
   REGISTRY: quay.io
   REGISTRY_LOCAL: localhost
-  RELEASE_LEVEL: '4.10'
+  RELEASE_LEVEL: '4.11'
   IMAGE_NAME: testnetworkfunction/cnf-certification-test
   IMAGE_TAG: unstable
   TNF_CONTAINER_CLIENT: docker
@@ -29,10 +29,10 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Set up Go 1.18
+      - name: Set up Go 1.19
         uses: actions/setup-go@v3
         with:
-          go-version: 1.18.6
+          go-version: 1.19.1
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -89,10 +89,10 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Set up Go 1.18
+      - name: Set up Go 1.19
         uses: actions/setup-go@v3
         with:
-          go-version: 1.18.6
+          go-version: 1.19.1
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -131,10 +131,10 @@ jobs:
       KUBECONFIG: '/home/runner/.kube/config'
 
     steps:
-      - name: Set up Go 1.18.6
+      - name: Set up Go 1.19.1
         uses: actions/setup-go@v3
         with:
-          go-version: 1.18.6
+          go-version: 1.19.1
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -145,7 +145,7 @@ jobs:
           ref: ${{ github.sha }}
 
       - name: Install ginkgo
-        run: go install github.com/onsi/ginkgo/v2/ginkgo@v2.1.6
+        run: go install github.com/onsi/ginkgo/v2/ginkgo@v2.2.0
 
       - name: Execute `make build`
         run: make build
@@ -171,7 +171,7 @@ jobs:
       # Perform smoke tests.
 
       - name: 'Test: Run test suites'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "access-control,lifecycle,platform,observability,networking,affiliated-certification,operator"
+        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "common,cnfextensions"
 
       - name: Upload smoke test results as an artifact
         uses: actions/upload-artifact@v3
@@ -209,7 +209,7 @@ jobs:
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }}
           
       - name: 'Test: Run Smoke Tests in a TNF container'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "access-control,lifecycle,platform,observability,networking,affiliated-certification,operator"
+        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "common,cnfextensions"
 
       - name: Upload container test results as an artifact
         uses: actions/upload-artifact@v3

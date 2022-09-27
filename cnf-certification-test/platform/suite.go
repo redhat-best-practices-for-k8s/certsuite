@@ -138,6 +138,14 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		}
 	})
 
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHugePages2M)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		if provider.IsOCPCluster() {
+			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.HugepagesPods)
+			testPodHugePages2M(&env)
+		}
+	})
+
 })
 
 func TestServiceMesh(env *provider.TestEnvironment) {
@@ -564,4 +572,15 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 	if len(failedControlPlaneNodes) > 0 || len(failedWorkerNodes) > 0 {
 		ginkgo.Fail(b.String())
 	}
+}
+
+func testPodHugePages2M(env *provider.TestEnvironment) {
+	var badPods []*provider.Pod
+	for _, put := range env.HugepagesPods {
+		result := put.CheckResourceOnly2MiHugePages()
+		if !result {
+			badPods = append(badPods, put)
+		}
+	}
+	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }

@@ -31,3 +31,11 @@ func getPersistentVolumes(oc corev1client.CoreV1Interface) ([]corev1.PersistentV
 	}
 	return pvs.Items, nil
 }
+
+func getPersistentVolumeClaims(oc corev1client.CoreV1Interface) ([]corev1.PersistentVolumeClaim, error) {
+	pvcs, err := oc.PersistentVolumeClaims("").List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		return nil, err
+	}
+	return pvcs.Items, nil
+}

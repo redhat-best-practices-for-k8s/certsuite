@@ -22,7 +22,7 @@ usage_error() {
 	usage
 	exit 1
 }
-
+TIMEOUT="24h0m0s"
 FOCUS=""
 SKIP=""
 LABEL=""
@@ -71,13 +71,13 @@ fi
 if [ "$LIST" = true ] ; then
 	LABEL="$(echo -e "${LABEL}" | sed -e 's/^[[:space:]]*//')" # strip the leading whitespace
 	cd $BASEDIR/cnf-certification-test
-	./cnf-certification-test.test --ginkgo.dry-run --ginkgo.v --ginkgo.label-filter="$LABEL"
+	./cnf-certification-test.test --ginkgo.dry-run --ginkgo.timeout=$TIMEOUT --ginkgo.v --ginkgo.label-filter="$LABEL"
 	cd ..
 	exit 0;
 fi
 
 # specify Junit report file name.
-GINKGO_ARGS="-junit $OUTPUT_LOC -claimloc $OUTPUT_LOC --ginkgo.junit-report $OUTPUT_LOC/cnf-certification-tests_junit.xml -ginkgo.v -test.v"
+GINKGO_ARGS="--ginkgo.timeout=$TIMEOUT -junit $OUTPUT_LOC -claimloc $OUTPUT_LOC --ginkgo.junit-report $OUTPUT_LOC/cnf-certification-tests_junit.xml -ginkgo.v -test.v"
 
 # Make sure the HTML output is copied to the output directory,
 # even in case of a test failure
@@ -118,17 +118,20 @@ if [ -n "$FOCUS" ]; then
 	fi
 fi
 
-if [ -n "$LABEL" ]; then
-    LABEL_STRING="-ginkgo.label-filter=${LABEL}"
-fi
-
-if [ -z "$FOCUS_STRING" ] && [ -z "$LABEL_STRING" ]; then
+if [ -z "$FOCUS_STRING" ] && [ -z "$LABEL" ]; then
 	echo "No test focus (-f) or label (-l) was set, so only diagnostic functions will run.".
+else
+  # Add the label "common" in case no labels have been provided. This will allow to filter out
+  # some either non-official TCs or TCs not intended to run in CI (yet).
+  # ToDo: remove when "-f" and "-s" flags have been deprecated.
+  if [ -n "$LABEL" ]; then
+    LABEL_STRING="-ginkgo.label-filter=${LABEL}"
+  else
+    LABEL_STRING="-ginkgo.label-filter=common"
+  fi
 fi
 
-
-
-cd ./cnf-certification-test && ./cnf-certification-test.test ${FOCUS_STRING} ${SKIP_STRING} ${LABEL_STRING:+"${LABEL_STRING}"} ${GINKGO_ARGS}
+cd ./cnf-certification-test && ./cnf-certification-test.test ${FOCUS_STRING} ${SKIP_STRING} "${LABEL_STRING}" ${GINKGO_ARGS}
 
 # if [[ ! -z "${TNF_PARTNER_SRC_DIR}" ]]; then
 # 	echo "attempting to delete litmus"

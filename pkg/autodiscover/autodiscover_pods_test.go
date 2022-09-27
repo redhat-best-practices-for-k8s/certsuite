@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2021 Red Hat, Inc.
+// Copyright (C) 2020-2022 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -39,6 +39,9 @@ func TestFindPodsByLabel(t *testing.T) {
 					"testLabel": label,
 				},
 			},
+			Status: corev1.PodStatus{
+				Phase: corev1.PodRunning,
+			},
 		}
 	}
 
@@ -64,6 +67,9 @@ func TestFindPodsByLabel(t *testing.T) {
 						Labels: map[string]string{
 							"testLabel": "mylabel",
 						},
+					},
+					Status: corev1.PodStatus{
+						Phase: corev1.PodRunning,
 					},
 				},
 			},
@@ -92,7 +98,7 @@ func TestFindPodsByLabel(t *testing.T) {
 		testRuntimeObjects = append(testRuntimeObjects, generatePod(tc.testPodName, tc.testPodNamespace, tc.queryLabel))
 		oc := clientsholder.GetTestClientsHolder(testRuntimeObjects)
 
-		podResult := findPodsByLabel(oc.K8sClient.CoreV1(), testLabel, testNamespaces)
+		podResult, _ := findPodsByLabel(oc.K8sClient.CoreV1(), testLabel, testNamespaces)
 		assert.Equal(t, tc.expectedResults, podResult)
 	}
 }

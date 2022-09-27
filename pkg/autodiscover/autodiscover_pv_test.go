@@ -61,3 +61,39 @@ func TestGetPersistentVolumes(t *testing.T) {
 		assert.Equal(t, tc.expectedRQs[0].Name, PersistentVolumes[0].Name)
 	}
 }
+
+func TestGetPersistentVolumeClaims(t *testing.T) {
+	generatePersistentVolumeClaims := func(name string) *corev1.PersistentVolumeClaim {
+		return &corev1.PersistentVolumeClaim{
+			ObjectMeta: metav1.ObjectMeta{
+				Name: name,
+			},
+			Spec: corev1.PersistentVolumeClaimSpec{},
+		}
+	}
+
+	testCases := []struct {
+		rqName      string
+		expectedRQs []corev1.PersistentVolumeClaim
+	}{
+		{
+			rqName: "test1",
+			expectedRQs: []corev1.PersistentVolumeClaim{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name: "test1",
+					},
+				},
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		var testRuntimeObjects []runtime.Object
+		testRuntimeObjects = append(testRuntimeObjects, generatePersistentVolumeClaims(tc.rqName))
+		oc := clientsholder.GetTestClientsHolder(testRuntimeObjects)
+		PersistentVolumesClaims, err := getPersistentVolumeClaims(oc.K8sClient.CoreV1())
+		assert.Nil(t, err)
+		assert.Equal(t, tc.expectedRQs[0].Name, PersistentVolumesClaims[0].Name)
+	}
+}

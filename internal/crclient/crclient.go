@@ -30,11 +30,11 @@ func GetPidFromContainer(cut *provider.Container, ctx clientsholder.Context) (in
 	var pidCmd string
 
 	switch cut.Runtime {
-	case "docker": //nolint:goconst // used only once
+	case "docker":
 		pidCmd = "chroot /host docker inspect -f '{{.State.Pid}}' " + cut.UID + " 2>/dev/null"
-	case "docker-pullable": //nolint:goconst // used only once
+	case "docker-pullable":
 		pidCmd = "chroot /host docker inspect -f '{{.State.Pid}}' " + cut.UID + " 2>/dev/null"
-	case "cri-o", "containerd": //nolint:goconst // used only once
+	case "cri-o", "containerd":
 		pidCmd = "chroot /host crictl inspect --output go-template --template '{{.info.pid}}' " + cut.UID + " 2>/dev/null"
 	default:
 		logrus.Debugf("Container runtime %s not supported yet for this test, skipping", cut.Runtime)
