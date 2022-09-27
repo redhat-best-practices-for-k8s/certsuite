@@ -145,6 +145,7 @@ func testHelmCertified(env *provider.TestEnvironment) {
 	for _, helm := range helmchartsReleases {
 		if !api.IsReleaseCertified(helm, env.K8sVersion) {
 			failedHelmCharts = append(failedHelmCharts, []string{helm.Chart.Metadata.Version, helm.Name})
+			tnf.ClaimFilePrintf("Helm chart %s found to be not certified")
 		} else {
 			logrus.Info(fmt.Sprintf("Helm %s with version %s is certified", helm.Name, helm.Chart.Metadata.Version))
 		}

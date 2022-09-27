@@ -190,7 +190,8 @@ func testContainersImagePolicy(env *provider.TestEnvironment) {
 		logrus.Debugln("check container ", cut.String(), " pull policy, should be ", corev1.PullIfNotPresent)
 		if cut.ImagePullPolicy != corev1.PullIfNotPresent {
 			badContainers = append(badContainers, "{"+cut.String()+": is using"+string(cut.ImagePullPolicy)+"}")
-			logrus.Errorln("container ", cut.Name, " is using ", cut.ImagePullPolicy, " as image policy")
+			logrus.Errorln("container ", cut.Name, " is using ", cut.ImagePullPolicy, " as image pull policy")
+			tnf.ClaimFilePrintf("%s is using %s as ImagePullPolicy", cut.String(), cut.ImagePullPolicy)
 		}
 	}
 	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
@@ -203,6 +204,7 @@ func testContainersReadinessProbe(env *provider.TestEnvironment) {
 		if cut.ReadinessProbe == nil {
 			badContainers = append(badContainers, cut.String())
 			logrus.Errorln("container ", cut.Name, " does not have ReadinessProbe defined")
+			tnf.ClaimFilePrintf("%s does not have ReadinessProbe defined", cut.String())
 		}
 	}
 	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
@@ -214,7 +216,8 @@ func testContainersLivenessProbe(env *provider.TestEnvironment) {
 		logrus.Debugln("check container ", cut.String(), " liveness probe ")
 		if cut.LivenessProbe == nil {
 			badContainers = append(badContainers, cut.String())
-			logrus.Errorln("container ", cut.Name, " does not have livenessProbe defined")
+			logrus.Errorln("container ", cut.Name, " does not have LivenessProbe defined")
+			tnf.ClaimFilePrintf("%s does not have LivenessProbe defined", cut.String())
 		}
 	}
 	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
@@ -227,6 +230,7 @@ func testContainersStartupProbe(env *provider.TestEnvironment) {
 		if cut.StartupProbe == nil {
 			badContainers = append(badContainers, cut.String())
 			logrus.Errorln("container ", cut.Name, " does not have startupProbe defined")
+			tnf.ClaimFilePrintf("%s does not have StartupProbe defined", cut.String())
 		}
 	}
 	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
@@ -241,6 +245,7 @@ func testPodsOwnerReference(env *provider.TestEnvironment) {
 		o.RunTest()
 		if o.GetResults() != testhelper.SUCCESS {
 			badPods = append(badPods, put.String())
+			tnf.ClaimFilePrintf("%s found with non-compliant owner reference", put.String())
 		}
 	}
 	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
