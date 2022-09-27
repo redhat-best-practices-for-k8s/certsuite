@@ -163,9 +163,7 @@ func testUndeclaredContainerPortsUsage(env *provider.TestEnvironment) {
 			failedPods = append(failedPods, put)
 		}
 	}
-	if nf := len(failedPods); nf > 0 {
-		ginkgo.Fail(fmt.Sprintf("Found %d pods with listening ports not declared", nf))
-	}
+	testhelper.AddTestResultLog("Non-compliant", failedPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testNodePort(env *provider.TestEnvironment) {
@@ -178,9 +176,7 @@ func testNodePort(env *provider.TestEnvironment) {
 			badServices = append(badServices, fmt.Sprintf("ns: %s, name: %s", s.Namespace, s.Name))
 		}
 	}
-	if bs := len(badServices); bs > 0 {
-		ginkgo.Fail(fmt.Sprintf("%d services found of type nodePort.", bs))
-	}
+	testhelper.AddTestResultLog("Non-compliant", badServices, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // testDefaultNetworkConnectivity test the connectivity between the default interfaces of containers under test
@@ -373,9 +369,5 @@ func testNetworkPolicyDenyAll(env *provider.TestEnvironment) {
 		}
 	}
 
-	if n := len(podsMissingDenyAllDefaultPolicies); n > 0 {
-		errMsg := fmt.Sprintf("Number of pods running CNF pods that do not have default deny-all network policies: %d", n)
-		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
-	}
+	testhelper.AddTestResultLog("Non-compliant", podsMissingDenyAllDefaultPolicies, tnf.ClaimFilePrintf, ginkgo.Fail)
 }

@@ -168,12 +168,10 @@ func TestServiceMesh(env *provider.TestEnvironment) {
 		}
 		if !istioProxyFound {
 			badPods = append(badPods, put.String())
+			tnf.ClaimFilePrintf("Pod found without service mesh: %s", put.String())
 		}
 	}
-	if n := len(badPods); n > 0 {
-		tnf.ClaimFilePrintf("Pods not using service mesh: %v", badPods)
-		ginkgo.Fail(fmt.Sprintf("Found %d pods that do not use service mesh.", n))
-	}
+	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // testContainersFsDiff test that all CUT didn't install new packages are starting
@@ -457,11 +455,7 @@ func testSysctlConfigs(env *provider.TestEnvironment) {
 		}
 	}
 
-	if n := len(badContainers); n > 0 {
-		errMsg := fmt.Sprintf("Number of containers running of faulty nodes: %d", n)
-		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
-	}
+	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testOCPStatus(env *provider.TestEnvironment) {

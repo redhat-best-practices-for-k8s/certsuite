@@ -145,15 +145,12 @@ func testHelmCertified(env *provider.TestEnvironment) {
 	for _, helm := range helmchartsReleases {
 		if !api.IsReleaseCertified(helm, env.K8sVersion) {
 			failedHelmCharts = append(failedHelmCharts, []string{helm.Chart.Metadata.Version, helm.Name})
+			tnf.ClaimFilePrintf("Helm chart %s found to be not certified")
 		} else {
 			logrus.Info(fmt.Sprintf("Helm %s with version %s is certified", helm.Name, helm.Chart.Metadata.Version))
 		}
 	}
-	if len(failedHelmCharts) > 0 {
-		logrus.Errorf("Helms that are not certified: %+v", failedHelmCharts)
-		tnf.ClaimFilePrintf("Helms that are not certified: %+v", failedHelmCharts)
-		ginkgo.Fail(fmt.Sprintf("%d helms chart are not certified.", len(failedHelmCharts)))
-	}
+	testhelper.AddTestResultLog("Non-compliant", failedHelmCharts, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testContainerCertificationStatusByDigest(env *provider.TestEnvironment) {

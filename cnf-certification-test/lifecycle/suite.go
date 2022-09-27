@@ -168,80 +168,72 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 })
 
 func testContainersPreStop(env *provider.TestEnvironment) {
-	badcontainers := []string{}
+	badContainers := []string{}
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " pre stop lifecycle ")
 
 		if cut.Lifecycle == nil || (cut.Lifecycle != nil && cut.Lifecycle.PreStop == nil) {
-			badcontainers = append(badcontainers, cut.Name)
+			badContainers = append(badContainers, cut.Name)
 			tnf.ClaimFilePrintf("%s does not have preStop defined", cut)
 		}
 	}
-	if len(badcontainers) > 0 {
-		tnf.ClaimFilePrintf("Containers have been found missing lifecycle preStop definitions: %v", badcontainers)
+	if len(badContainers) > 0 {
+		tnf.ClaimFilePrintf("Containers have been found missing lifecycle preStop definitions: %v", badContainers)
 		ginkgo.Fail("Containers have been found missing lifecycle preStop definitions.")
 	}
 }
 
 func testContainersImagePolicy(env *provider.TestEnvironment) {
 	testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
-	badcontainers := []string{}
+	badContainers := []string{}
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " pull policy, should be ", corev1.PullIfNotPresent)
 		if cut.ImagePullPolicy != corev1.PullIfNotPresent {
-			badcontainers = append(badcontainers, "{"+cut.String()+": is using"+string(cut.ImagePullPolicy)+"}")
-			logrus.Errorln("container ", cut.Name, " is using ", cut.ImagePullPolicy, " as image policy")
+			badContainers = append(badContainers, "{"+cut.String()+": is using"+string(cut.ImagePullPolicy)+"}")
+			logrus.Errorln("container ", cut.Name, " is using ", cut.ImagePullPolicy, " as image pull policy")
+			tnf.ClaimFilePrintf("%s is using %s as ImagePullPolicy", cut.String(), cut.ImagePullPolicy)
 		}
 	}
-	if len(badcontainers) > 0 {
-		tnf.ClaimFilePrintf("Containers have been found with IfNotPresent missing from image pull policy: %v", badcontainers)
-		ginkgo.Fail("Containers have been found with IfNotPresent missing from image pull policy.")
-	}
+	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testContainersReadinessProbe(env *provider.TestEnvironment) {
-	badcontainers := []string{}
+	badContainers := []string{}
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " readiness probe ")
 		if cut.ReadinessProbe == nil {
-			badcontainers = append(badcontainers, cut.String())
+			badContainers = append(badContainers, cut.String())
 			logrus.Errorln("container ", cut.Name, " does not have ReadinessProbe defined")
+			tnf.ClaimFilePrintf("%s does not have ReadinessProbe defined", cut.String())
 		}
 	}
-	if len(badcontainers) > 0 {
-		tnf.ClaimFilePrintf("Containers have been found without readiness probes defined: %v", badcontainers)
-		ginkgo.Fail("Containers have been found without readiness probes defined.")
-	}
+	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testContainersLivenessProbe(env *provider.TestEnvironment) {
-	badcontainers := []string{}
+	badContainers := []string{}
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " liveness probe ")
 		if cut.LivenessProbe == nil {
-			badcontainers = append(badcontainers, cut.String())
-			logrus.Errorln("container ", cut.Name, " does not have livenessProbe defined")
+			badContainers = append(badContainers, cut.String())
+			logrus.Errorln("container ", cut.Name, " does not have LivenessProbe defined")
+			tnf.ClaimFilePrintf("%s does not have LivenessProbe defined", cut.String())
 		}
 	}
-	if len(badcontainers) > 0 {
-		tnf.ClaimFilePrintf("Containers have been found without livenessProbe defined: %v", badcontainers)
-		ginkgo.Fail("Containers have been found without livenessProbe defined.")
-	}
+	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testContainersStartupProbe(env *provider.TestEnvironment) {
-	badcontainers := []string{}
+	badContainers := []string{}
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " startup probe ")
 		if cut.StartupProbe == nil {
-			badcontainers = append(badcontainers, cut.String())
+			badContainers = append(badContainers, cut.String())
 			logrus.Errorln("container ", cut.Name, " does not have startupProbe defined")
+			tnf.ClaimFilePrintf("%s does not have StartupProbe defined", cut.String())
 		}
 	}
-	if len(badcontainers) > 0 {
-		tnf.ClaimFilePrintf("Containers have been found without startupProbe defined: %v", badcontainers)
-		ginkgo.Fail("Containers have been found without startupProbe defined.")
-	}
+	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testPodsOwnerReference(env *provider.TestEnvironment) {
@@ -253,12 +245,10 @@ func testPodsOwnerReference(env *provider.TestEnvironment) {
 		o.RunTest()
 		if o.GetResults() != testhelper.SUCCESS {
 			badPods = append(badPods, put.String())
+			tnf.ClaimFilePrintf("%s found with non-compliant owner reference", put.String())
 		}
 	}
-	if len(badPods) > 0 {
-		tnf.ClaimFilePrintf("Containers were found with incorrect owner reference: %v", badPods)
-		ginkgo.Fail("Containers were found with incorrect owner reference.")
-	}
+	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testPodNodeSelectorAndAffinityBestPractices(env *provider.TestEnvironment) {
@@ -274,10 +264,7 @@ func testPodNodeSelectorAndAffinityBestPractices(env *provider.TestEnvironment) 
 			badPods = append(badPods, put.Pod)
 		}
 	}
-	if n := len(badPods); n > 0 {
-		logrus.Debugf("Pods with nodeSelector/nodeAffinity: %+v", badPods)
-		ginkgo.Fail(fmt.Sprintf("%d pods found with nodeSelector/nodeAffinity rules", n))
-	}
+	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 //nolint:dupl
@@ -306,10 +293,7 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration)
 		}
 	}
 
-	if len(failedDeployments) > 0 {
-		tnf.ClaimFilePrintf("Deployments were found to have failed the scaling test: %v", failedDeployments)
-		ginkgo.Fail("Deployments were found to have failed the scaling test.")
-	}
+	testhelper.AddTestResultLog("Non-compliant", failedDeployments, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 //nolint:dupl
@@ -327,6 +311,7 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 			// horizontal scaler, then test that scaler
 			// can scale the statefulset
 			if !scaling.TestScaleHpaStatefulSet(env.StatetfulSets[i].StatefulSet, hpa, timeout) {
+				tnf.ClaimFilePrintf("StatefulSet found to have failed the scaling test: %s", env.StatetfulSets[i].ToString())
 				failedStatetfulSets = append(failedStatetfulSets, env.StatetfulSets[i].ToString())
 			}
 			continue
@@ -334,14 +319,12 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 		// if the statefulset is not controller by HPA
 		// scale it directly
 		if !scaling.TestScaleStatefulSet(env.StatetfulSets[i].StatefulSet, timeout) {
+			tnf.ClaimFilePrintf("StatefulSet found to have failed the scaling test: %s", env.StatetfulSets[i].ToString())
 			failedStatetfulSets = append(failedStatetfulSets, env.StatetfulSets[i].ToString())
 		}
 	}
 
-	if len(failedStatetfulSets) > 0 {
-		tnf.ClaimFilePrintf("Statefulsets were found to have failed the scaling test: %v", failedStatetfulSets)
-		ginkgo.Fail("Statefulsets were found to have failed the scaling test.")
-	}
+	testhelper.AddTestResultLog("Non-compliant", failedStatetfulSets, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // testHighAvailability
@@ -353,34 +336,30 @@ func testHighAvailability(env *provider.TestEnvironment) {
 	for _, dp := range env.AntiAffinityRequiredDeployments {
 		if dp.Spec.Replicas == nil || *(dp.Spec.Replicas) <= 1 {
 			badDeployments = append(badDeployments, dp.ToString())
+			tnf.ClaimFilePrintf("Deployment found without valid high availability: %s", dp.ToString())
 			continue
 		}
 		if dp.Spec.Template.Spec.Affinity == nil ||
 			dp.Spec.Template.Spec.Affinity.PodAntiAffinity == nil {
 			badDeployments = append(badDeployments, dp.ToString())
+			tnf.ClaimFilePrintf("Deployment found without valid high availability: %s", dp.ToString())
 		}
 	}
 	for _, st := range env.AntiAffinityRequiredStatefulSets {
 		if st.Spec.Replicas == nil || *(st.Spec.Replicas) <= 1 {
 			badStatefulSet = append(badStatefulSet, st.ToString())
+			tnf.ClaimFilePrintf("StatefulSet found without valid high availability: %s", st.ToString())
 			continue
 		}
 		if st.Spec.Template.Spec.Affinity == nil ||
 			st.Spec.Template.Spec.Affinity.PodAntiAffinity == nil {
 			badDeployments = append(badDeployments, st.ToString())
+			tnf.ClaimFilePrintf("StatefulSet found without valid high availability: %s", st.ToString())
 		}
 	}
 
-	if n := len(badDeployments); n > 0 {
-		logrus.Errorf("Deployments without a valid high availability : %+v", badDeployments)
-		tnf.ClaimFilePrintf("Deployments without a valid high availability : %+v", badDeployments)
-		ginkgo.Fail("Deployments were found without a valid high availability.")
-	}
-	if n := len(badStatefulSet); n > 0 {
-		logrus.Errorf("Statefulset without a valid podAntiAffinity rule: %+v", badStatefulSet)
-		tnf.ClaimFilePrintf("Statefulset without a valid podAntiAffinity rule: %+v", badStatefulSet)
-		ginkgo.Fail("Statefulsets were found without a valid high availability.")
-	}
+	testhelper.AddTestResultLog("Non-compliant", badDeployments, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultLog("Non-compliant", badStatefulSet, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // testPodsRecreation tests that pods belonging to deployments and statefulsets are re-created and ready in case a node is lost
@@ -481,11 +460,7 @@ func testCPUIsolation(env *provider.TestEnvironment) {
 		}
 	}
 
-	if n := len(podsMissingIsolationRequirements); n > 0 {
-		errMsg := fmt.Sprintf("Number of guaranteed pods found that are not compliant with CPU isolation requirements: %d. See logs for more detail.", n)
-		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
-	}
+	testhelper.AddTestResultLog("Non-compliant", podsMissingIsolationRequirements, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testAffinityRequiredPods(env *provider.TestEnvironment) {

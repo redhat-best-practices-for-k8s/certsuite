@@ -195,10 +195,7 @@ func TestSecConCapabilities(env *provider.TestEnvironment) {
 		}
 	}
 
-	if len(badContainers) > 0 {
-		tnf.ClaimFilePrintf("Containers found with incorrect security context capabilities: %v", badContainers)
-		ginkgo.Fail("Containers were found with incorrect security context capabilities.")
-	}
+	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // TestSecConRootUser verifies that the container is not running as root
@@ -224,15 +221,8 @@ func TestSecConRootUser(env *provider.TestEnvironment) {
 		}
 	}
 
-	if len(badPods) > 0 {
-		tnf.ClaimFilePrintf("Non compliant root user pods found: %v", badPods)
-		ginkgo.Fail("Non compliant root user pods found")
-	}
-
-	if len(badContainers) > 0 {
-		tnf.ClaimFilePrintf("Non compliant root user containers found: %v", badContainers)
-		ginkgo.Fail("Non compliant root user containers found")
-	}
+	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // TestSecConPrivilegeEscalation verifies that the container is not allowed privilege escalation
@@ -247,10 +237,7 @@ func TestSecConPrivilegeEscalation(env *provider.TestEnvironment) {
 		}
 	}
 
-	if len(badContainers) > 0 {
-		tnf.ClaimFilePrintf("Containers found with incorrect security context privilege escalation settings: %v", badContainers)
-		ginkgo.Fail("Containers found with incorrect security context privilege escalation settings.")
-	}
+	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // TestContainerHostPort tests that containers are not configured with host port privileges
@@ -265,10 +252,7 @@ func TestContainerHostPort(env *provider.TestEnvironment) {
 		}
 	}
 
-	if len(badContainers) > 0 {
-		tnf.ClaimFilePrintf("Containers were found with configured host ports: %v", badContainers)
-		ginkgo.Fail("Containers were found with configured host ports.")
-	}
+	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // TestPodHostNetwork verifies that the pod hostNetwork parameter is not set to true
@@ -281,10 +265,7 @@ func TestPodHostNetwork(env *provider.TestEnvironment) {
 		}
 	}
 
-	if len(badPods) > 0 {
-		tnf.ClaimFilePrintf("Pods have been found with host network set to true: %v", badPods)
-		ginkgo.Fail("Pods have been found with host network set to true.")
-	}
+	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // TestPodHostPath verifies that the pod hostpath parameter is not set to true
@@ -300,10 +281,7 @@ func TestPodHostPath(env *provider.TestEnvironment) {
 		}
 	}
 
-	if len(badPods) > 0 {
-		tnf.ClaimFilePrintf("Pods have been found with hostpath set: %v", badPods)
-		ginkgo.Fail("Pods have been found with hostpath set.")
-	}
+	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // TestPodHostIPC verifies that the pod hostIpc parameter is not set to true
@@ -316,10 +294,7 @@ func TestPodHostIPC(env *provider.TestEnvironment) {
 		}
 	}
 
-	if len(badPods) > 0 {
-		tnf.ClaimFilePrintf("Pods have been found with HostIpc set: %v", badPods)
-		ginkgo.Fail("Pods have been found with HostIpc set.")
-	}
+	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // TestPodHostPID verifies that the pod hostPid parameter is not set to true
@@ -332,10 +307,7 @@ func TestPodHostPID(env *provider.TestEnvironment) {
 		}
 	}
 
-	if len(badPods) > 0 {
-		tnf.ClaimFilePrintf("Pods have been found with HostPid set: %v", badPods)
-		ginkgo.Fail("Pods have been found with HostPid set.")
-	}
+	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // Tests namespaces for invalid prefixed and CRs are not defined in namespaces not under test with CRDs under test
@@ -379,10 +351,7 @@ func TestPodServiceAccount(env *provider.TestEnvironment) {
 			failedPods = append(failedPods, put.Name)
 		}
 	}
-	if n := len(failedPods); n > 0 {
-		logrus.Debugf("Pods without service account: %+v", failedPods)
-		ginkgo.Fail(fmt.Sprintf("%d pods do not have a service account name.", n))
-	}
+	testhelper.AddTestResultLog("Non-compliant", failedPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // TestPodRoleBindings verifies that the pod utilizes a valid role binding that does not cross namespaces
@@ -410,10 +379,7 @@ func TestPodRoleBindings(env *provider.TestEnvironment) {
 			failedPods = append(failedPods, put.Name)
 		}
 	}
-	if n := len(failedPods); n > 0 {
-		logrus.Debugf("Pods with role bindings: %+v", failedPods)
-		ginkgo.Fail(fmt.Sprintf("%d pods have role bindings in other namespaces.", n))
-	}
+	testhelper.AddTestResultLog("Non-compliant", failedPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // TestPodClusterRoleBindings verifies that the pod utilizes a valid cluster role binding that does not cross namespaces
@@ -441,10 +407,7 @@ func TestPodClusterRoleBindings(env *provider.TestEnvironment) {
 			failedPods = append(failedPods, put.Name)
 		}
 	}
-	if n := len(failedPods); n > 0 {
-		logrus.Debugf("Pods with cluster role bindings: %+v", failedPods)
-		ginkgo.Fail(fmt.Sprintf("%d pods have cluster role bindings in other namespaces.", n))
-	}
+	testhelper.AddTestResultLog("Non-compliant", failedPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func TestAutomountServiceToken(env *provider.TestEnvironment) {
@@ -471,11 +434,7 @@ func TestAutomountServiceToken(env *provider.TestEnvironment) {
 		tnf.ClaimFilePrintf(strings.Join(msg, ""))
 	}
 
-	if n := len(failedPods); n > 0 {
-		logrus.Debugf("Pods that failed automount test: %+v", failedPods)
-		tnf.ClaimFilePrintf("Pods that failed automount test: %+v", failedPods)
-		ginkgo.Fail(fmt.Sprintf("% d pods that failed automount test", n))
-	}
+	testhelper.AddTestResultLog("Non-compliant", failedPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func TestOneProcessPerContainer(env *provider.TestEnvironment) {
@@ -511,11 +470,7 @@ func TestOneProcessPerContainer(env *provider.TestEnvironment) {
 		}
 	}
 
-	if n := len(badContainers); n > 0 {
-		errMsg := fmt.Sprintf("Number of faulty containers found: %d", n)
-		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
-	}
+	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func TestSYSNiceRealtimeCapability(env *provider.TestEnvironment) {
@@ -531,11 +486,7 @@ func TestSYSNiceRealtimeCapability(env *provider.TestEnvironment) {
 		}
 	}
 
-	if n := len(containersWithoutSysNice); n > 0 {
-		errMsg := fmt.Sprintf("Number of containers running on realtime kernels without SYS_NICE: %d", n)
-		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
-	}
+	testhelper.AddTestResultLog("Non-compliant", containersWithoutSysNice, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func TestSysPtraceCapability(env *provider.TestEnvironment) {
@@ -557,11 +508,7 @@ func TestSysPtraceCapability(env *provider.TestEnvironment) {
 		}
 	}
 
-	if n := len(podsWithoutSysPtrace); n > 0 {
-		errMsg := fmt.Sprintf("Number of pods with process namespace sharing enabled for which none of their containers allows the SYS_PTRACE capability: %d", n)
-		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
-	}
+	testhelper.AddTestResultLog("Non-compliant", podsWithoutSysPtrace, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func TestNamespaceResourceQuota(env *provider.TestEnvironment) {
@@ -588,11 +535,7 @@ func TestNamespaceResourceQuota(env *provider.TestEnvironment) {
 		}
 	}
 
-	if n := len(namespacesMissingQuotas); n > 0 {
-		errMsg := fmt.Sprintf("Number of pods running in namespaces that do not have a ResourceQuota applied: %d", n)
-		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
-	}
+	testhelper.AddTestResultLog("Non-compliant", namespacesMissingQuotas, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func TestPodTolerationBypass(env *provider.TestEnvironment) {
@@ -609,11 +552,7 @@ func TestPodTolerationBypass(env *provider.TestEnvironment) {
 		}
 	}
 
-	if n := len(podsWithRestrictedTolerationsNotDefault); n > 0 {
-		errMsg := fmt.Sprintf("Number of pods found with non-compliant tolerations: %d", n)
-		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
-	}
+	testhelper.AddTestResultLog("Non-compliant", podsWithRestrictedTolerationsNotDefault, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 const (
@@ -643,17 +582,8 @@ func TestNoSSHDaemonsAllowed(env *provider.TestEnvironment) {
 		}
 	}
 
-	if n := len(badContainers); n > 0 {
-		errMsg := fmt.Sprintf("Number of containers running an SSH daemon: %d", n)
-		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
-	}
-
-	if n := len(errorContainers); n > 0 {
-		errMsg := fmt.Sprintf("Number of containers where the test could not be performed due to an error: %d", n)
-		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
-	}
+	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultLog("Error", errorContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testPodRequestsAndLimits(env *provider.TestEnvironment) {
@@ -701,11 +631,7 @@ func testPodRequestsAndLimits(env *provider.TestEnvironment) {
 		}
 	}
 
-	if n := len(containersMissingRequestsOrLimits); n > 0 {
-		errMsg := fmt.Sprintf("Containers found that are missing either resource requests or limits: %d. See logs for more detail.", n)
-		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
-	}
+	testhelper.AddTestResultLog("Non-compliant", containersMissingRequestsOrLimits, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func Test1337UIDs(env *provider.TestEnvironment) {
@@ -721,9 +647,5 @@ func Test1337UIDs(env *provider.TestEnvironment) {
 		}
 	}
 
-	if n := len(badPods); n > 0 {
-		errMsg := fmt.Sprintf("Number of pods found using UID 1337: %d", n)
-		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
-	}
+	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
