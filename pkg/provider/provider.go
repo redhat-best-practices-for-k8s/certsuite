@@ -83,7 +83,7 @@ type TestEnvironment struct { // rename this with testTarget
 	AntiAffinityRequiredDeployments []*Deployment
 
 	// StatefulSet Groupings
-	StatetfulSets                    []*StatefulSet `json:"testStatetfulSets"`
+	StatefulSets                     []*StatefulSet `json:"testStatefulSets"`
 	AffinityRequiredStatefulSets     []*StatefulSet
 	AntiAffinityRequiredStatefulSets []*StatefulSet
 
@@ -241,7 +241,7 @@ func buildTestEnvironment() { //nolint:funlen,gocyclo
 		aNewStatefulSet := &StatefulSet{
 			&data.StatefulSet[i],
 		}
-		env.StatetfulSets = append(env.StatetfulSets, aNewStatefulSet)
+		env.StatefulSets = append(env.StatefulSets, aNewStatefulSet)
 
 		// Create slices of affinity required and affinity not required statefulsets
 		if aNewStatefulSet.AffinityRequired() {
