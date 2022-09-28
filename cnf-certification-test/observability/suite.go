@@ -183,7 +183,7 @@ func testPodDisruptionBudgets(env *provider.TestEnvironment) {
 					}
 				}
 			}
-			for _, statefulSet := range env.StatetfulSets {
+			for _, statefulSet := range env.StatefulSets {
 				if statefulSet.Spec.Template.Labels[pdbLabelKey] == pdbLabelValue {
 					if ok, err := checkPDBIsValid(pdb, statefulSet.Spec.Replicas); !ok {
 						failedPDBs = append(failedPDBs, pdb.Name)

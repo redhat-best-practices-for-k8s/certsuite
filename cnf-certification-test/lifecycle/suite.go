@@ -108,7 +108,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodRecreationIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Deployments, env.StatetfulSets)
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Deployments, env.StatefulSets)
 		if env.GetWorkerCount() < minWorkerNodesForLifecycle {
 			ginkgo.Skip("Skipping pod recreation scaling test because invalid number of available workers.")
 		}
@@ -129,7 +129,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		})
 		testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStateFulSetScalingIdentifier)
 		ginkgo.It(testID, ginkgo.Label(tags...), func() {
-			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.StatetfulSets)
+			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.StatefulSets)
 			if env.GetWorkerCount() < minWorkerNodesForLifecycle {
 				// Note: We skip this test because 'testHighAvailability' in the lifecycle suite is already
 				// testing the replicas and antiaffinity rules that should already be in place for statefulset.
@@ -300,31 +300,31 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration)
 func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration) {
 	ginkgo.By("Testing statefulset scaling")
 	defer env.SetNeedsRefresh()
-	failedStatetfulSets := []string{}
-	for i := range env.StatetfulSets {
+	failedStatefulSets := []string{}
+	for i := range env.StatefulSets {
 		// TeststatefulsetScaling test scaling of statefulset
 		// This is the entry point for statefulset scaling tests
-		ns, name := env.StatetfulSets[i].Namespace, env.StatetfulSets[i].Name
+		ns, name := env.StatefulSets[i].Namespace, env.StatefulSets[i].Name
 		key := ns + name
 		if hpa, ok := env.HorizontalScaler[key]; ok {
 			// if the statefulset is controller by
 			// horizontal scaler, then test that scaler
 			// can scale the statefulset
-			if !scaling.TestScaleHpaStatefulSet(env.StatetfulSets[i].StatefulSet, hpa, timeout) {
-				tnf.ClaimFilePrintf("StatefulSet found to have failed the scaling test: %s", env.StatetfulSets[i].ToString())
-				failedStatetfulSets = append(failedStatetfulSets, env.StatetfulSets[i].ToString())
+			if !scaling.TestScaleHpaStatefulSet(env.StatefulSets[i].StatefulSet, hpa, timeout) {
+				tnf.ClaimFilePrintf("StatefulSet found to have failed the scaling test: %s", env.StatefulSets[i].ToString())
+				failedStatefulSets = append(failedStatefulSets, env.StatefulSets[i].ToString())
 			}
 			continue
 		}
 		// if the statefulset is not controller by HPA
 		// scale it directly
-		if !scaling.TestScaleStatefulSet(env.StatetfulSets[i].StatefulSet, timeout) {
-			tnf.ClaimFilePrintf("StatefulSet found to have failed the scaling test: %s", env.StatetfulSets[i].ToString())
-			failedStatetfulSets = append(failedStatetfulSets, env.StatetfulSets[i].ToString())
+		if !scaling.TestScaleStatefulSet(env.StatefulSets[i].StatefulSet, timeout) {
+			tnf.ClaimFilePrintf("StatefulSet found to have failed the scaling test: %s", env.StatefulSets[i].ToString())
+			failedStatefulSets = append(failedStatefulSets, env.StatefulSets[i].ToString())
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", failedStatetfulSets, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultLog("Non-compliant", failedStatefulSets, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // testHighAvailability
