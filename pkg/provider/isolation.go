@@ -96,7 +96,7 @@ func LoadBalancingDisabled(p *Pod) bool {
 		if v == disableVar {
 			cpuLoadBalancingDisabled = true
 		} else {
-			logrus.Debugf("Annotation cpu-load-balancing.crio.io has a invalid value for CPU isolation.  Must be 'disable'.")
+			logrus.Debugf("Annotation cpu-load-balancing.crio.io has an invalid value for CPU isolation.  Must be 'disable'.")
 		}
 	} else {
 		logrus.Debugf("Annotation cpu-load-balancing.crio.io is missing.")
@@ -106,7 +106,7 @@ func LoadBalancingDisabled(p *Pod) bool {
 		if v == disableVar {
 			irqLoadBalancingDisabled = true
 		} else {
-			logrus.Debugf("Annotation irq-load-balancing.crio.io has a invalid value for CPU isolation.  Must be 'disable'.")
+			logrus.Debugf("Annotation irq-load-balancing.crio.io has an invalid value for CPU isolation.  Must be 'disable'.")
 		}
 	} else {
 		logrus.Debugf("Annotation irq-load-balancing.crio.io is missing.")
