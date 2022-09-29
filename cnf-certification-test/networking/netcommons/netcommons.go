@@ -134,6 +134,15 @@ func GetIPVersion(aIP string) (IPVersion, error) {
 	return IPv6, nil
 }
 
+func ExistsInPortInfoSlice(lp netutil.PortInfo, lps []netutil.PortInfo) bool {
+	for _, i := range lps {
+		if lp.PortNumber == i.PortNumber && lp.Protocol == i.Protocol {
+			return true
+		}
+	}
+	return false
+}
+
 // FilterIPListByIPVersion filters a list of ip strings by the provided version
 // e.g. a list of mixed ipv4 and ipv6 when filtered with ipv6 version will return a list with
 // the ipv6 addresses
@@ -170,8 +179,10 @@ func FindRoguePodsListeningToPorts(pods []*provider.Pod, portsToTest map[int32]b
 			failedContainers++
 			continue
 		}
+		var portsAlreadyReportedRogue []netutil.PortInfo
 		for port := range listeningPorts {
-			if portsToTest[int32(port.PortNumber)] {
+			if portsToTest[int32(port.PortNumber)] && !ExistsInPortInfoSlice(port, portsAlreadyReportedRogue) {
+				portsAlreadyReportedRogue = append(portsAlreadyReportedRogue, port)
 				tnf.ClaimFilePrintf("%s has one container listening on port %d that has been reserved", put, port.PortNumber)
 				roguePods = append(roguePods, put.String())
 			}

@@ -153,9 +153,11 @@ func testUndeclaredContainerPortsUsage(env *provider.TestEnvironment) {
 
 		// Verify that all the listening ports have been declared in the container spec
 		failedPod := false
+		var listeningPortsAlreadyReported []netutil.PortInfo // short circuit to not report the same port more than once
 		for listeningPort := range listeningPorts {
-			if !declaredPorts[listeningPort] {
-				tnf.ClaimFilePrintf("%s is listening on port %d protocol %d, but that port was not declared in any container spec.", put, portInfo.PortNumber, portInfo.Protocol)
+			if !declaredPorts[listeningPort] && !netcommons.ExistsInPortInfoSlice(listeningPort, listeningPortsAlreadyReported) {
+				listeningPortsAlreadyReported = append(listeningPortsAlreadyReported, listeningPort)
+				tnf.ClaimFilePrintf("%s is listening on port %d protocol %s, but that port was not declared in any container spec.", put, portInfo.PortNumber, portInfo.Protocol)
 				failedPod = true
 			}
 		}

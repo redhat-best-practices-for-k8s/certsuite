@@ -465,7 +465,7 @@ func TestOneProcessPerContainer(env *provider.TestEnvironment) {
 			continue
 		}
 		if nbProcesses > 1 {
-			tnf.ClaimFilePrintf("Container %s has more than one process running", cut.String())
+			tnf.ClaimFilePrintf("%s has more than one process running", cut.String())
 			badContainers = append(badContainers, cut.String())
 		}
 	}
@@ -481,7 +481,7 @@ func TestSYSNiceRealtimeCapability(env *provider.TestEnvironment) {
 	for _, cut := range env.Containers {
 		n := env.Nodes[cut.NodeName]
 		if n.IsRTKernel() && !strings.Contains(cut.SecurityContext.Capabilities.String(), "SYS_NICE") {
-			tnf.ClaimFilePrintf("Container: %s has been found running on a realtime kernel enabled node without SYS_NICE capability.", cut.String())
+			tnf.ClaimFilePrintf("%s has been found running on a realtime kernel enabled node without SYS_NICE capability.", cut.String())
 			containersWithoutSysNice = append(containersWithoutSysNice, cut.String())
 		}
 	}
