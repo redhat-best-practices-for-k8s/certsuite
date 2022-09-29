@@ -1,640 +1,6 @@
 {
   "data": [
     {
-      "_id": "609ab0a4e2b160d361d251d2",
-      "alm_examples": [
-        {
-          "api_version": "kubernetes.zabbix.com/v1alpha1",
-          "kind": "ZabbixAgent",
-          "metadata": {
-            "labels": {
-              "app": "agent",
-              "vendor": "zabbix"
-            },
-            "name": "zabbix-agent"
-          },
-          "spec": {
-            "agent_env": {
-              "active_allow": "true",
-              "activeservers": "",
-              "alias": "",
-              "allow_privileged": true,
-              "debug_level": 3,
-              "enable_remote_commands": 0,
-              "hostname": "",
-              "hostname_item": "system.hostname",
-              "log_remote_commands": 1,
-              "metadata": "",
-              "metadata_item": "",
-              "passive_allow": "true",
-              "passive_servers": "",
-              "server_host": "zabbix-server",
-              "start_agents": 3,
-              "timeout": 3
-            }
-          }
-        },
-        {
-          "api_version": "kubernetes.zabbix.com/v1alpha1",
-          "kind": "ZabbixAppliance",
-          "metadata": {
-            "labels": {
-              "app": "appliance",
-              "vendor": "zabbix"
-            },
-            "name": "zabbix-appliance"
-          },
-          "spec": {
-            "server_env": {
-              "general": {
-                "zabbix_mysql_volumeclaim": "zabbix-mysql-data",
-                "zabbix_mysqlsecret": "zabbix-mysqlsecret"
-              },
-              "java_gateway": {
-                "debug_level": "info",
-                "start_pollers": 5,
-                "timeout": 3
-              },
-              "server": {
-                "cache#": "8M",
-                "cache_update_frequency": 60,
-                "debug_level": 3,
-                "history_cache#": "16M",
-                "history_index_cache#": "4M",
-                "housekeeping_frequency": 1,
-                "log_slow_queries": 0,
-                "max_housekeeper_delete": 5000,
-                "proxy_config_frequency": 3600,
-                "proxy_data_frequency": 1,
-                "start_alerters": 3,
-                "start_db_syncers": 4,
-                "start_discoverers": 1,
-                "start_escalators": 1,
-                "start_http_pollers": 1,
-                "start_ipmi_pollers": 0,
-                "start_java_pollers": 5,
-                "start_lld_preprocessors": 2,
-                "start_pingers": 1,
-                "start_pollers": 5,
-                "start_pollers_unreachable": 1,
-                "start_preprocessors": 3,
-                "start_proxy_pollers": 0,
-                "start_timers": 1,
-                "start_trappers": 5,
-                "start_vmaware_collectors": 0,
-                "timeout": 4,
-                "trapper_timeout": 300,
-                "trend_cache#": "4M",
-                "unavailable_delay": 60,
-                "unreachable_delay": 15,
-                "unreachable_period": 45,
-                "value_cache#": "8M",
-                "vmaware_cache#": "8M",
-                "vmware_frequency": 60,
-                "vmware_perf_frequency": 60,
-                "vmware_timeout": 10
-              },
-              "web": {
-                "history_storage_types": "",
-                "max_execution_time": 300,
-                "max_input_time": 300,
-                "memory_limit": "128M",
-                "post_max#": "16M",
-                "server_name": "Kubernetes installation",
-                "session_name": "zbx_sessionid",
-                "timezone": "Europe/Riga",
-                "upload_max_filesize": "2M"
-              }
-            }
-          }
-        },
-        {
-          "api_version": "kubernetes.zabbix.com/v1alpha1",
-          "kind": "ZabbixFull",
-          "metadata": {
-            "labels": {
-              "app": "server",
-              "vendor": "zabbix"
-            },
-            "name": "zabbix-full"
-          },
-          "spec": {
-            "java_gateway#": 1,
-            "server_env": {
-              "general": {
-                "history_storage_url": "",
-                "zabbix_mysql_volumeclaim": "zabbix-mysql-data",
-                "zabbix_mysqlsecret": "zabbix-mysqlsecret"
-              },
-              "java_gateway": {
-                "debug_level": "info",
-                "start_pollers": 5,
-                "timeout": 3
-              },
-              "server": {
-                "cache#": "8M",
-                "cache_update_frequency": 60,
-                "debug_level": 3,
-                "history_cache#": "16M",
-                "history_index_cache#": "4M",
-                "history_storage_types": "",
-                "housekeeping_frequency": 1,
-                "log_slow_queries": 0,
-                "max_housekeeper_delete": 5000,
-                "proxy_config_frequency": 3600,
-                "proxy_data_frequency": 1,
-                "start_alerters": 3,
-                "start_db_syncers": 4,
-                "start_discoverers": 1,
-                "start_escalators": 1,
-                "start_http_pollers": 1,
-                "start_ipmi_pollers": 0,
-                "start_java_pollers": 5,
-                "start_lld_preprocessors": 2,
-                "start_pingers": 1,
-                "start_pollers": 5,
-                "start_pollers_unreachable": 1,
-                "start_preprocessors": 3,
-                "start_proxy_pollers": 0,
-                "start_timers": 1,
-                "start_trappers": 5,
-                "start_vmaware_collectors": 0,
-                "timeout": 4,
-                "trapper_timeout": 300,
-                "trend_cache#": "4M",
-                "unavailable_delay": 60,
-                "unreachable_delay": 15,
-                "unreachable_period": 45,
-                "value_cache#": "8M",
-                "vmaware_cache#": "8M",
-                "vmware_frequency": 60,
-                "vmware_perf_frequency": 60,
-                "vmware_timeout": 10
-              },
-              "web": {
-                "history_storage_types": "",
-                "max_execution_time": 300,
-                "max_input_time": 300,
-                "memory_limit": "128M",
-                "post_max#": "16M",
-                "server_name": "Kubernetes installation",
-                "session_name": "zbx_sessionid",
-                "timezone": "Europe/Riga",
-                "upload_max_filesize": "2M"
-              }
-            },
-            "web#": 2
-          }
-        },
-        {
-          "api_version": "kubernetes.zabbix.com/v1alpha1",
-          "kind": "ZabbixProxyMysql",
-          "metadata": {
-            "labels": {
-              "app": "proxy",
-              "vendor": "zabbix"
-            },
-            "name": "zabbix-proxy-mysql"
-          },
-          "spec": {
-            "java_gateway#": 1,
-            "proxy#": 1,
-            "proxy_env": {
-              "general": {
-                "zabbix_mysql_volumeclaim": "zabbix-mysql-data",
-                "zabbix_mysqlsecret": "zabbix-mysqlsecret"
-              },
-              "java_gateway": {
-                "debug_level": "info",
-                "start_pollers": 5,
-                "timeout": 3
-              },
-              "proxy": {
-                "cache#": "8M",
-                "config_frequency": 3600,
-                "data_sender_frequency": 1,
-                "debug_level": 3,
-                "enable_remote_commands": 0,
-                "history_cache#": "16M",
-                "history_index_cache#": "4M",
-                "hostname": "",
-                "hostname_item": "system.hostname",
-                "housekeeping_frequency": 1,
-                "log_remote_commands": 0,
-                "log_slow_queries": 0,
-                "proxy_heartbeat_frequency": 60,
-                "proxy_local_buffer": 0,
-                "proxy_mode": "0",
-                "proxy_offline_buffer": 1,
-                "server_host": "zabbix-server",
-                "server_port": 10051,
-                "start_db_syncers": 4,
-                "start_discoverers": 1,
-                "start_http_pollers": 1,
-                "start_ipmi_pollers": 0,
-                "start_java_pollers": 5,
-                "start_pingers": 1,
-                "start_pollers": 5,
-                "start_pollers_unreachable": 1,
-                "start_preprocessors": 3,
-                "start_trappers": 5,
-                "start_vmaware_collectors": 0,
-                "timeout": 4,
-                "trapper_timeout": 300,
-                "unavailable_delay": 60,
-                "unreachable_delay": 15,
-                "unreachable_period": 45,
-                "vmaware_cache#": "8M",
-                "vmware_frequency": 60,
-                "vmware_perf_frequency": 60,
-                "vmware_timeout": 10
-              }
-            }
-          }
-        },
-        {
-          "api_version": "kubernetes.zabbix.com/v1alpha1",
-          "kind": "ZabbixProxySqlite",
-          "metadata": {
-            "labels": {
-              "app": "proxy",
-              "vendor": "zabbix"
-            },
-            "name": "zabbix-proxy-sqlite"
-          },
-          "spec": {
-            "java_gateway#": 1,
-            "proxy#": 1,
-            "proxy_env": {
-              "general": {},
-              "java_gateway": {
-                "debug_level": "info",
-                "start_pollers": 5,
-                "timeout": 3
-              },
-              "proxy": {
-                "cache#": "8M",
-                "config_frequency": 3600,
-                "data_sender_frequency": 1,
-                "debug_level": 3,
-                "enable_remote_commands": 0,
-                "history_cache#": "16M",
-                "history_index_cache#": "4M",
-                "hostname": "",
-                "hostname_item": "system.hostname",
-                "housekeeping_frequency": 1,
-                "log_remote_commands": 0,
-                "log_slow_queries": 0,
-                "proxy_heartbeat_frequency": 60,
-                "proxy_local_buffer": 0,
-                "proxy_mode": "0",
-                "proxy_offline_buffer": 1,
-                "server_host": "zabbix-server",
-                "server_port": 10051,
-                "start_db_syncers": 4,
-                "start_discoverers": 1,
-                "start_http_pollers": 1,
-                "start_ipmi_pollers": 0,
-                "start_java_pollers": 5,
-                "start_pingers": 1,
-                "start_pollers": 5,
-                "start_pollers_unreachable": 1,
-                "start_preprocessors": 3,
-                "start_trappers": 5,
-                "start_vmaware_collectors": 0,
-                "timeout": 4,
-                "trapper_timeout": 300,
-                "unavailable_delay": 60,
-                "unreachable_delay": 15,
-                "unreachable_period": 45,
-                "vmaware_cache#": "8M",
-                "vmware_frequency": 60,
-                "vmware_perf_frequency": 60,
-                "vmware_timeout": 10
-              }
-            }
-          }
-        },
-        {
-          "api_version": "kubernetes.zabbix.com/v1alpha1",
-          "kind": "ZabbixServer",
-          "metadata": {
-            "labels": {
-              "app": "server",
-              "vendor": "zabbix"
-            },
-            "name": "zabbix-server"
-          },
-          "spec": {
-            "java_gateway#": 1,
-            "server_env": {
-              "general": {
-                "db_server_host": "mysql-server",
-                "db_server_port": 3306,
-                "history_storage_url": "",
-                "mysql_database": "zabbix",
-                "zabbix_mysqlsecret": "zabbix-mysqlsecret"
-              },
-              "java_gateway": {
-                "debug_level": "info",
-                "start_pollers": 5,
-                "timeout": 3
-              },
-              "server": {
-                "cache#": "8M",
-                "cache_update_frequency": 60,
-                "debug_level": 3,
-                "history_cache#": "16M",
-                "history_index_cache#": "4M",
-                "history_storage_types": "",
-                "housekeeping_frequency": 1,
-                "log_slow_queries": 0,
-                "max_housekeeper_delete": 5000,
-                "proxy_config_frequency": 3600,
-                "proxy_data_frequency": 1,
-                "start_alerters": 3,
-                "start_db_syncers": 4,
-                "start_discoverers": 1,
-                "start_escalators": 1,
-                "start_http_pollers": 1,
-                "start_ipmi_pollers": 0,
-                "start_java_pollers": 5,
-                "start_lld_preprocessors": 2,
-                "start_pingers": 1,
-                "start_pollers": 5,
-                "start_pollers_unreachable": 1,
-                "start_preprocessors": 3,
-                "start_proxy_pollers": 0,
-                "start_timers": 1,
-                "start_trappers": 5,
-                "start_vmaware_collectors": 0,
-                "timeout": 4,
-                "trapper_timeout": 300,
-                "trend_cache#": "4M",
-                "unavailable_delay": 60,
-                "unreachable_delay": 15,
-                "unreachable_period": 45,
-                "value_cache#": "8M",
-                "vmaware_cache#": "8M",
-                "vmware_frequency": 60,
-                "vmware_perf_frequency": 60,
-                "vmware_timeout": 10
-              },
-              "web": {
-                "history_storage_types": "",
-                "max_execution_time": 300,
-                "max_input_time": 300,
-                "memory_limit": "128M",
-                "post_max#": "16M",
-                "server_name": "Kubernetes installation",
-                "session_name": "zbx_sessionid",
-                "timezone": "Europe/Riga",
-                "upload_max_filesize": "2M"
-              }
-            },
-            "web#": 2
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/zabbix/zabbixoperator-certified-bundle@sha256:7d7874dc07cdf9fa61a6377e87e836e63629e404415fd8bc98ce3fe88d3932ca",
-      "bundle_path_digest": "sha256:7d7874dc07cdf9fa61a6377e87e836e63629e404415fd8bc98ce3fe88d3932ca",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "lts",
-      "creation_date": "2021-05-11T16:28:20.774000+00:00",
-      "csv_description": "## About this Operator\n\nZabbix helps you to real-time monitoring of millions of metrics collected from tens of thousands of servers, virtual machines and network devices.\nThe Zabbix Operator allows users to easily deploy, manage, and maintain Zabbix deployments on OpenShift. By installing this integration you will be able to deploy Zabbix server / proxies and other components with a single command.\n## Supported Features\n* **Zabbix Server** - Simple Zabbix installation with included Zabbix server, Zabbix web-interface and Zabbix Java Gateway with MySQL database support. The feature does not provide MySQL service and requires an external MySQL database. \n* **Zabbix Server (Full)** - Zabbix installation with included Zabbix server, Zabbix web-interface, Zabbix Java Gateway and MySQL server instance.\n* **Zabbix proxy (SQLite3)** - Very simple way to gain power of Zabbix proxy. The feature has  SQLite3 support for Zabbix proxies and allow to specify amount of proxies. \n* **Zabbix proxy (MySQL)** - Another option of Zabbix proxy. The option support and deliver MySQL database.\n* **Zabbix agent** - Zabbix agent can be deployed on each available node for stability and performance monitoring on remote nodes. It allows to gather metrics with full automation!\n* **Zabbix Appliance** - Zabbix appliance very simple way to test and check Zabbix features. The option provides all core components in one solution. It includes Zabbix server, Zabbix Java Gateway, Zabbix web-interface and MySQL server in deployment. It is very useful for testing Zabbix features!\n## Prerequisites\nAll deployment options are require additional information during deployment. Please, check the following instructions and provide required configuration:\n* **Zabbix Server** - MySQL database host information and MySQL database credentials in specially formatted *Secret*. Additionally it is possible to specify SSL certificates for HTTPS support in *Secret*.\n* **Zabbix Server (Full)** - MySQL database credentials in specially formatted *Secret*. MySQL database volume name information. Additionally it is possible to specify SSL certificates for HTTPS support in *Secret*.\n* **Zabbix proxy (SQLite3)** - Zabbix server host information only.\n* **Zabbix proxy (MySQL)** - MySQL database credentials in specially formatted *Secrets* and Zabbix server host information.\n* **Zabbix agent** - Zabbix server host information only for outgoing and incoming connections. Zabbix agent uses \"privileged\" mode to monitor node resources! For example, running processes.\n* **Zabbix Appliance** - MySQL database credentials in specially formatted *Secret*. MySQL database volume name information. Additionally it is possible to specify SSL certificates for HTTPS support in *Secret*.\n### MySQL credentials\n```\nkind: Secret\napiVersion: v1\nmetadata:\n  name: zabbix-full-secrets\ndata:\n  mysql_root_password: emFiYml4X3N1cGVyX3Jvb3Q= [1]\n  mysql_zabbix_password: emFiYml4X3VzZXJfcGFzc3dvcmQ= [2]\n  mysql_zabbix_username: emFiYml4 [3]\ntype: Opaque\n```\nUsing MySQL root password (*mysqlrootpassword* [1]) Zabbix server / proxy will try to create MySQL database schema with grant permissions to *mysqlzabbixusername* [2] and *mysqlzabbixpassword* [3].\n### SSL certificates for HTTPS\n```\nkind: Secret\napiVersion: v1\nmetadata:\n  name: zabbix-web-sslsecret\ndata:\n  ssl.crt: >-\n   < ssl.crt data>\n  ssl.key: >-\n\t < ssl.key data >\n  dhparam.pem: >-\n   <  dhparam.pem data >\n```\nFiles *ssl.crt*, *ssl.key* and *dhparam.perm* are required for Zabbix web-interface for SSL support.\n",
-      "csv_display_name": "Zabbix Operator",
-      "csv_metadata_description": "Zabbix operator with multiple deployment variants and different components",
-      "csv_name": "zabbix-operator-certified.v0.0.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:24:10.038000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "zabbix-operator-certified",
-      "provided_apis": [
-        {
-          "group": "kubernetes.zabbix.com",
-          "kind": "ZabbixProxyMysql",
-          "plural": "zabbixproxymysqls",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "kubernetes.zabbix.com",
-          "kind": "ZabbixProxySqlite",
-          "plural": "zabbixproxysqlites",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "kubernetes.zabbix.com",
-          "kind": "ZabbixServer",
-          "plural": "zabbixservers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "kubernetes.zabbix.com",
-          "kind": "ZabbixAgent",
-          "plural": "zabbixagents",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "kubernetes.zabbix.com",
-          "kind": "ZabbixAppliance",
-          "plural": "zabbixappliances",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "kubernetes.zabbix.com",
-          "kind": "ZabbixFull",
-          "plural": "zabbixfulls",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Zabbix LLC",
-      "related_images": [
-        {
-          "digest": "sha256:dc8134da93182b25df75d7a4faef4dd89daaf7aa2ed123e823288ba6c20024a8",
-          "image": "registry.connect.redhat.com/zabbix/zabbixoperator-certified@sha256:dc8134da93182b25df75d7a4faef4dd89daaf7aa2ed123e823288ba6c20024a8",
-          "name": "zabbixoperator-certified-dc8134da93182b25df75d7a4faef4dd89daaf7aa2ed123e823288ba6c20024a8-annotation"
-        },
-        {
-          "digest": "sha256:dc8134da93182b25df75d7a4faef4dd89daaf7aa2ed123e823288ba6c20024a8",
-          "image": "registry.connect.redhat.com/zabbix/zabbixoperator-certified@sha256:dc8134da93182b25df75d7a4faef4dd89daaf7aa2ed123e823288ba6c20024a8",
-          "name": "ansible"
-        },
-        {
-          "digest": "sha256:dc8134da93182b25df75d7a4faef4dd89daaf7aa2ed123e823288ba6c20024a8",
-          "image": "registry.connect.redhat.com/zabbix/zabbixoperator-certified@sha256:dc8134da93182b25df75d7a4faef4dd89daaf7aa2ed123e823288ba6c20024a8",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:de59da362dde4f403eb15dade8495b2a8b549a6afd569c075a2f312c9567cc75",
-          "image": "registry.connect.redhat.com/zabbix/zabbix-server-mysql-44@sha256:de59da362dde4f403eb15dade8495b2a8b549a6afd569c075a2f312c9567cc75",
-          "name": "zbx_server_mysql"
-        },
-        {
-          "digest": "sha256:bbf3b2dc5b24837006de1dbc79df4f94173eb5945afed496ea26b860335cb883",
-          "image": "registry.connect.redhat.com/zabbix/zabbix-web-mysql-44@sha256:bbf3b2dc5b24837006de1dbc79df4f94173eb5945afed496ea26b860335cb883",
-          "name": "zbx_web_mysql"
-        },
-        {
-          "digest": "sha256:d28e52b7cfa127d35a0096083a902c29cb3b684f94c0e3032b1921cd2ebece70",
-          "image": "registry.connect.redhat.com/zabbix/zabbix-java-gateway-44@sha256:d28e52b7cfa127d35a0096083a902c29cb3b684f94c0e3032b1921cd2ebece70",
-          "name": "zbx_java_gateway"
-        },
-        {
-          "digest": "sha256:8c738d2a29f6377cca80407bafa15b1973aa91841c36b7611e042bf026b3c51b",
-          "image": "registry.connect.redhat.com/zabbix/zabbix-proxy-mysql-44@sha256:8c738d2a29f6377cca80407bafa15b1973aa91841c36b7611e042bf026b3c51b",
-          "name": "zbx_proxy_mysql"
-        },
-        {
-          "digest": "sha256:207f6c7c2082bb9c3a8e8992ef491ba6a1377cc7774729a9ec21cfbc6df1a140",
-          "image": "registry.connect.redhat.com/zabbix/zabbix-proxy-sqlite-44@sha256:207f6c7c2082bb9c3a8e8992ef491ba6a1377cc7774729a9ec21cfbc6df1a140",
-          "name": "zbx_proxy_sqlite"
-        },
-        {
-          "digest": "sha256:2365eb7528fc1202c9b4b8215bc2373876707b809d57070c01b4bbca0072f536",
-          "image": "registry.connect.redhat.com/zabbix/zabbix-agent-44@sha256:2365eb7528fc1202c9b4b8215bc2373876707b809d57070c01b4bbca0072f536",
-          "name": "zbx_agent"
-        },
-        {
-          "digest": "sha256:6d02d263e07c627cd74a19162283fbe787d2fdcf4d461b7c0f57d3df903022cf",
-          "image": "registry.connect.redhat.com/zabbix/zabbix-appliance-44@sha256:6d02d263e07c627cd74a19162283fbe787d2fdcf4d461b7c0f57d3df903022cf",
-          "name": "zbx_appliance"
-        },
-        {
-          "digest": "sha256:d32eebc9ffdd6bf98efa264117667343b6cd1fab6fe69f261919542a6700ff71",
-          "image": "registry.redhat.io/rhel8/mariadb-103@sha256:d32eebc9ffdd6bf98efa264117667343b6cd1fab6fe69f261919542a6700ff71",
-          "name": "db_mysql"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.0.1",
-      "version_original": "0.0.1"
-    },
-    {
-      "_id": "609ab0a5e2b160d361d251d3",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/memsql/operator-bundle@sha256:1a400322ed8279e6ded73c7fd89c3cc5df2f74ebede9d192017268166a2bb97e",
-      "bundle_path_digest": "sha256:1a400322ed8279e6ded73c7fd89c3cc5df2f74ebede9d192017268166a2bb97e",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-05-11T16:28:21.027000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "memsql-operator.v0.0.2",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:36:59.606000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "memql-certified",
-      "provided_apis": [
-        {
-          "group": "memsql.com",
-          "kind": "MemsqlCluster",
-          "plural": "memsqlclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "",
-      "related_images": [],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.0.2",
-      "version_original": "0.0.2"
-    },
-    {
-      "_id": "609ab0a5e2b160d361d251d4",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/kubemq/kubemq-operator-bundle@sha256:fce2e20216b3adcb191be3b55f9a5e4505e021a0ffd495a89ef00466f4ada722",
-      "bundle_path_digest": "sha256:fce2e20216b3adcb191be3b55f9a5e4505e021a0ffd495a89ef00466f4ada722",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-05-11T16:28:21.152000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "kubemq-operator.v0.5.3",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:35:15.535000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "kubemq-operator-marketplace",
-      "provided_apis": [
-        {
-          "group": "core.k8s.kubemq.io",
-          "kind": "KubemqCluster",
-          "plural": "kubemqclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "core.k8s.kubemq.io",
-          "kind": "KubemqDashboard",
-          "plural": "kubemqdashboards",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "",
-      "related_images": [],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "0.5.3",
-      "version_original": "0.5.3"
-    },
-    {
       "_id": "609ab0a63048c1ac9a6feb56",
       "alm_examples": [],
       "annotations": {
@@ -8058,6 +7424,135 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.0.0",
       "version_original": "1.0.0"
+    },
+    {
+      "_id": "609ab1453048c1ac9a6feb9d",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.0.6",
+      "creation_date": "2021-05-11T16:31:01.354000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-6",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:33:22.448000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "6.0.6-6",
+      "version_original": "6.0.6-6"
+    },
+    {
+      "_id": "609ab147d04af0e74bb0591a",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:b77778d5cf77fc1ab9a72814118af5dc43d44c7d0d802c16a7862c09370b0e13",
+      "bundle_path_digest": "sha256:b77778d5cf77fc1ab9a72814118af5dc43d44c7d0d802c16a7862c09370b0e13",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-05-11T16:31:03.108000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "mongodb-enterprise.v1.2.3",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:27:42.534000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "mongodb-enterprise",
+      "provided_apis": [],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.2.3",
+      "version_original": "1.2.3"
+    },
+    {
+      "_id": "609ab14b56933b164fe212ab",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:f1fc06ee96cc7509e5dc94ef6cd87921fbbe4b4112d9561c14ee06a426c59f91",
+      "bundle_path_digest": "sha256:f1fc06ee96cc7509e5dc94ef6cd87921fbbe4b4112d9561c14ee06a426c59f91",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "beta",
+      "creation_date": "2021-05-11T16:31:07.233000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "neuvector-operator.v0.9.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:52:28.378000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "neuvector-certified-operator",
+      "provided_apis": [
+        {
+          "group": "apm.neuvector.com",
+          "kind": "Neuvector",
+          "plural": "neuvectors",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.9.0",
+      "version_original": "0.9.0"
     }
   ]
 }

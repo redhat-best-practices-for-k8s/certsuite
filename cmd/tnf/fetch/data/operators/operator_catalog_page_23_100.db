@@ -1,1285 +1,6 @@
 {
   "data": [
     {
-      "_id": "623e60ee37f345462469f654",
-      "alm_examples": [
-        {
-          "api_version": "rc.app.stacks/v1beta2",
-          "kind": "RuntimeComponent",
-          "metadata": {
-            "name": "runtimecomponent-sample"
-          },
-          "spec": {
-            "applicationImage": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-            "expose": true,
-            "replicas": 1,
-            "service": {
-              "port": 9080
-            }
-          }
-        },
-        {
-          "api_version": "rc.app.stacks/v1beta2",
-          "kind": "RuntimeOperation",
-          "metadata": {
-            "name": "runtimeoperation-sample"
-          },
-          "spec": {
-            "command": [
-              "./your_script.sh"
-            ],
-            "containerName": "app",
-            "podName": "Specify_Pod_Name_Here"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/runtime-component-operator-bundle@sha256:4603bf04e53ce948bbf0ee5d239d5e265b40598044ef9e1f4539f4e466e59cb2",
-      "bundle_path_digest": "sha256:4603bf04e53ce948bbf0ee5d239d5e265b40598044ef9e1f4539f4e466e59cb2",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "beta2",
-      "creation_date": "2022-03-26T00:40:14.909000+00:00",
-      "csv_description": "This advanced Operator is capable of deploying any runtime component image with consistent, production-grade QoS. It enables enterprise architects to govern the way their applications get deployed & managed in the cluster, while dramatically reducing the learning curve for developers to deploy into Kubernetes - allowing them to focus on writing the code!\nHere are some key features:\n\n#### Application Lifecyle\nYou can deploy your runtime component container by either pointing to a container image, or an OpenShift ImageStream. When using an ImageStream the Operator will watch for any updates and will re-deploy the modified image.\n\n#### Custom RBAC\nThis Operator is capable of using a custom ServiceAccount from the caller, allowing it to follow RBAC restrictions. By default it creates a ServiceAccount if one is not specified, which can also be bound with specific roles.\n\n#### Environment Configuration\nYou can configure a variety of artifacts with your deployment, such as: labels, annotations, and environment variables from a ConfigMap, a Secret or a value.\n\n#### Routing\nExpose your application to external users via a single toggle to create a Route on OpenShift or an Ingress on other Kubernetes environments. Advanced configuration, such as TLS settings, are also easily enabled.\n\n#### High Availability via Horizontal Pod Autoscaling\nRun multiple instances of your application for high availability. Either specify a static number of replicas or easily configure horizontal auto scaling to create (and delete) instances based on resource consumption.\n\n#### Persistence and advanced storage\nEnable persistence for your application by specifying simple requirements: just tell us the size of the storage and where you would like it to be mounted and we will create and manage that storage for you.\nThis toggles a StatefulSet resource instead of a Deployment resource, so your container can recover transactions and state upon a pod restart.\nWe offer an advanced mode where you can specify a built-in PersistentVolumeClaim, allowing you to configure many details of the persistent volume, such as its storage class and access mode.\n\n#### Service Binding\nYour runtime components can expose services by a simple toggle. We take care of the heavy lifting such as creating kubernetes Secrets with information other services can use to bind. We also keep the bindable information synchronized, so your applications can dynamically reconnect to its required services without any intervention or interruption.\n\n#### Exposing metrics to Prometheus\nThe Runtime Component Operator exposes the runtime container's metrics via the Prometheus Operator.\nYou can pick between a basic mode, where you simply specify the label that Prometheus is watching to scrape the metrics from the container, or you can specify the full `ServiceMonitor` spec embedded into the RuntimeComponent's `spec.monitoring` field to control configurations such as the poll interval and security credentials.\n\n#### Easily mount logs and transaction directories\nIf you need to mount the logs and transaction data from your runtime component to an external volume such as NFS (or any storage supported in your cluster), simply add the following (to specify the volume size and the location to persist) to your RuntimeComponent CR:\n``` storage: size: 2Gi mountPath: \"/logs\" ```\n\n#### Integration with OpenShift Serverless\nDeploy your serverless runtime component using a single toggle.  The Operator will convert all of its generated resources into [Knative](https://knative.dev) resources, allowing your pod to automatically scale to 0 when it is idle.\n\n#### Integration with OpenShift's Topology UI\nWe set the corresponding labels to support OpenShift's Developer Topology UI, which allows you to visualize your entire set of deployments and how they are connected.\n\nSee our [**documentation**](https://github.com/application-stacks/runtime-component-operator/tree/main/doc/) for more information.\n",
-      "csv_display_name": "Runtime Component",
-      "csv_metadata_description": "Deploys any runtime component with dynamic and auto-tuning configuration",
-      "csv_name": "runtime-component.v0.8.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:07:59.409000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "runtime-component-operator-certified",
-      "provided_apis": [
-        {
-          "group": "rc.app.stacks",
-          "kind": "RuntimeOperation",
-          "plural": "runtimeoperations",
-          "version": "v1beta2"
-        },
-        {
-          "group": "rc.app.stacks",
-          "kind": "RuntimeComponent",
-          "plural": "runtimecomponents",
-          "version": "v1beta2"
-        }
-      ],
-      "provider": "Community",
-      "related_images": [
-        {
-          "digest": "sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "image": "registry.connect.redhat.com/ibm/runtime-component-operator@sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "name": "runtime-component-operator-d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d-annotation"
-        },
-        {
-          "digest": "sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "image": "registry.connect.redhat.com/ibm/runtime-component-operator@sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "name": "open-liberty-samples-8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<0.8.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.8.1",
-      "version_original": "0.8.1"
-    },
-    {
-      "_id": "623e610a37f345462469f655",
-      "alm_examples": [
-        {
-          "api_version": "rc.app.stacks/v1beta2",
-          "kind": "RuntimeComponent",
-          "metadata": {
-            "name": "runtimecomponent-sample"
-          },
-          "spec": {
-            "applicationImage": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-            "expose": true,
-            "replicas": 1,
-            "service": {
-              "port": 9080
-            }
-          }
-        },
-        {
-          "api_version": "rc.app.stacks/v1beta2",
-          "kind": "RuntimeOperation",
-          "metadata": {
-            "name": "runtimeoperation-sample"
-          },
-          "spec": {
-            "command": [
-              "./your_script.sh"
-            ],
-            "containerName": "app",
-            "podName": "Specify_Pod_Name_Here"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/runtime-component-operator-bundle@sha256:4603bf04e53ce948bbf0ee5d239d5e265b40598044ef9e1f4539f4e466e59cb2",
-      "bundle_path_digest": "sha256:4603bf04e53ce948bbf0ee5d239d5e265b40598044ef9e1f4539f4e466e59cb2",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "beta2",
-      "creation_date": "2022-03-26T00:40:42.064000+00:00",
-      "csv_description": "This advanced Operator is capable of deploying any runtime component image with consistent, production-grade QoS. It enables enterprise architects to govern the way their applications get deployed & managed in the cluster, while dramatically reducing the learning curve for developers to deploy into Kubernetes - allowing them to focus on writing the code!\nHere are some key features:\n\n#### Application Lifecyle\nYou can deploy your runtime component container by either pointing to a container image, or an OpenShift ImageStream. When using an ImageStream the Operator will watch for any updates and will re-deploy the modified image.\n\n#### Custom RBAC\nThis Operator is capable of using a custom ServiceAccount from the caller, allowing it to follow RBAC restrictions. By default it creates a ServiceAccount if one is not specified, which can also be bound with specific roles.\n\n#### Environment Configuration\nYou can configure a variety of artifacts with your deployment, such as: labels, annotations, and environment variables from a ConfigMap, a Secret or a value.\n\n#### Routing\nExpose your application to external users via a single toggle to create a Route on OpenShift or an Ingress on other Kubernetes environments. Advanced configuration, such as TLS settings, are also easily enabled.\n\n#### High Availability via Horizontal Pod Autoscaling\nRun multiple instances of your application for high availability. Either specify a static number of replicas or easily configure horizontal auto scaling to create (and delete) instances based on resource consumption.\n\n#### Persistence and advanced storage\nEnable persistence for your application by specifying simple requirements: just tell us the size of the storage and where you would like it to be mounted and we will create and manage that storage for you.\nThis toggles a StatefulSet resource instead of a Deployment resource, so your container can recover transactions and state upon a pod restart.\nWe offer an advanced mode where you can specify a built-in PersistentVolumeClaim, allowing you to configure many details of the persistent volume, such as its storage class and access mode.\n\n#### Service Binding\nYour runtime components can expose services by a simple toggle. We take care of the heavy lifting such as creating kubernetes Secrets with information other services can use to bind. We also keep the bindable information synchronized, so your applications can dynamically reconnect to its required services without any intervention or interruption.\n\n#### Exposing metrics to Prometheus\nThe Runtime Component Operator exposes the runtime container's metrics via the Prometheus Operator.\nYou can pick between a basic mode, where you simply specify the label that Prometheus is watching to scrape the metrics from the container, or you can specify the full `ServiceMonitor` spec embedded into the RuntimeComponent's `spec.monitoring` field to control configurations such as the poll interval and security credentials.\n\n#### Easily mount logs and transaction directories\nIf you need to mount the logs and transaction data from your runtime component to an external volume such as NFS (or any storage supported in your cluster), simply add the following (to specify the volume size and the location to persist) to your RuntimeComponent CR:\n``` storage: size: 2Gi mountPath: \"/logs\" ```\n\n#### Integration with OpenShift Serverless\nDeploy your serverless runtime component using a single toggle.  The Operator will convert all of its generated resources into [Knative](https://knative.dev) resources, allowing your pod to automatically scale to 0 when it is idle.\n\n#### Integration with OpenShift's Topology UI\nWe set the corresponding labels to support OpenShift's Developer Topology UI, which allows you to visualize your entire set of deployments and how they are connected.\n\nSee our [**documentation**](https://github.com/application-stacks/runtime-component-operator/tree/main/doc/) for more information.\n",
-      "csv_display_name": "Runtime Component",
-      "csv_metadata_description": "Deploys any runtime component with dynamic and auto-tuning configuration",
-      "csv_name": "runtime-component.v0.8.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:02:23.327000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "runtime-component-operator-certified",
-      "provided_apis": [
-        {
-          "group": "rc.app.stacks",
-          "kind": "RuntimeComponent",
-          "plural": "runtimecomponents",
-          "version": "v1beta2"
-        },
-        {
-          "group": "rc.app.stacks",
-          "kind": "RuntimeOperation",
-          "plural": "runtimeoperations",
-          "version": "v1beta2"
-        }
-      ],
-      "provider": "Community",
-      "related_images": [
-        {
-          "digest": "sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "image": "registry.connect.redhat.com/ibm/runtime-component-operator@sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "name": "runtime-component-operator-d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d-annotation"
-        },
-        {
-          "digest": "sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "image": "registry.connect.redhat.com/ibm/runtime-component-operator@sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "name": "open-liberty-samples-8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<0.8.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.8.1",
-      "version_original": "0.8.1"
-    },
-    {
-      "_id": "623e6161ad5091e14e579fae",
-      "alm_examples": [
-        {
-          "api_version": "rc.app.stacks/v1beta2",
-          "kind": "RuntimeComponent",
-          "metadata": {
-            "name": "runtimecomponent-sample"
-          },
-          "spec": {
-            "applicationImage": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-            "expose": true,
-            "replicas": 1,
-            "service": {
-              "port": 9080
-            }
-          }
-        },
-        {
-          "api_version": "rc.app.stacks/v1beta2",
-          "kind": "RuntimeOperation",
-          "metadata": {
-            "name": "runtimeoperation-sample"
-          },
-          "spec": {
-            "command": [
-              "./your_script.sh"
-            ],
-            "containerName": "app",
-            "podName": "Specify_Pod_Name_Here"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/runtime-component-operator-bundle@sha256:4603bf04e53ce948bbf0ee5d239d5e265b40598044ef9e1f4539f4e466e59cb2",
-      "bundle_path_digest": "sha256:4603bf04e53ce948bbf0ee5d239d5e265b40598044ef9e1f4539f4e466e59cb2",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "beta2",
-      "creation_date": "2022-03-26T00:42:09.882000+00:00",
-      "csv_description": "This advanced Operator is capable of deploying any runtime component image with consistent, production-grade QoS. It enables enterprise architects to govern the way their applications get deployed & managed in the cluster, while dramatically reducing the learning curve for developers to deploy into Kubernetes - allowing them to focus on writing the code!\nHere are some key features:\n\n#### Application Lifecyle\nYou can deploy your runtime component container by either pointing to a container image, or an OpenShift ImageStream. When using an ImageStream the Operator will watch for any updates and will re-deploy the modified image.\n\n#### Custom RBAC\nThis Operator is capable of using a custom ServiceAccount from the caller, allowing it to follow RBAC restrictions. By default it creates a ServiceAccount if one is not specified, which can also be bound with specific roles.\n\n#### Environment Configuration\nYou can configure a variety of artifacts with your deployment, such as: labels, annotations, and environment variables from a ConfigMap, a Secret or a value.\n\n#### Routing\nExpose your application to external users via a single toggle to create a Route on OpenShift or an Ingress on other Kubernetes environments. Advanced configuration, such as TLS settings, are also easily enabled.\n\n#### High Availability via Horizontal Pod Autoscaling\nRun multiple instances of your application for high availability. Either specify a static number of replicas or easily configure horizontal auto scaling to create (and delete) instances based on resource consumption.\n\n#### Persistence and advanced storage\nEnable persistence for your application by specifying simple requirements: just tell us the size of the storage and where you would like it to be mounted and we will create and manage that storage for you.\nThis toggles a StatefulSet resource instead of a Deployment resource, so your container can recover transactions and state upon a pod restart.\nWe offer an advanced mode where you can specify a built-in PersistentVolumeClaim, allowing you to configure many details of the persistent volume, such as its storage class and access mode.\n\n#### Service Binding\nYour runtime components can expose services by a simple toggle. We take care of the heavy lifting such as creating kubernetes Secrets with information other services can use to bind. We also keep the bindable information synchronized, so your applications can dynamically reconnect to its required services without any intervention or interruption.\n\n#### Exposing metrics to Prometheus\nThe Runtime Component Operator exposes the runtime container's metrics via the Prometheus Operator.\nYou can pick between a basic mode, where you simply specify the label that Prometheus is watching to scrape the metrics from the container, or you can specify the full `ServiceMonitor` spec embedded into the RuntimeComponent's `spec.monitoring` field to control configurations such as the poll interval and security credentials.\n\n#### Easily mount logs and transaction directories\nIf you need to mount the logs and transaction data from your runtime component to an external volume such as NFS (or any storage supported in your cluster), simply add the following (to specify the volume size and the location to persist) to your RuntimeComponent CR:\n``` storage: size: 2Gi mountPath: \"/logs\" ```\n\n#### Integration with OpenShift Serverless\nDeploy your serverless runtime component using a single toggle.  The Operator will convert all of its generated resources into [Knative](https://knative.dev) resources, allowing your pod to automatically scale to 0 when it is idle.\n\n#### Integration with OpenShift's Topology UI\nWe set the corresponding labels to support OpenShift's Developer Topology UI, which allows you to visualize your entire set of deployments and how they are connected.\n\nSee our [**documentation**](https://github.com/application-stacks/runtime-component-operator/tree/main/doc/) for more information.\n",
-      "csv_display_name": "Runtime Component",
-      "csv_metadata_description": "Deploys any runtime component with dynamic and auto-tuning configuration",
-      "csv_name": "runtime-component.v0.8.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:49:19.146000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "runtime-component-operator-certified",
-      "provided_apis": [
-        {
-          "group": "rc.app.stacks",
-          "kind": "RuntimeComponent",
-          "plural": "runtimecomponents",
-          "version": "v1beta2"
-        },
-        {
-          "group": "rc.app.stacks",
-          "kind": "RuntimeOperation",
-          "plural": "runtimeoperations",
-          "version": "v1beta2"
-        }
-      ],
-      "provider": "Community",
-      "related_images": [
-        {
-          "digest": "sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "image": "registry.connect.redhat.com/ibm/runtime-component-operator@sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "name": "runtime-component-operator-d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d-annotation"
-        },
-        {
-          "digest": "sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "image": "registry.connect.redhat.com/ibm/runtime-component-operator@sha256:d37b3f62575c9ad1ffcb22c89e2c3886275c326bf27aa49fb1808acba475853d",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "name": "open-liberty-samples-8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<0.8.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.8.1",
-      "version_original": "0.8.1"
-    },
-    {
-      "_id": "623e983d6d7cc84677b2e8f4",
-      "alm_examples": [
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyApplication",
-          "metadata": {
-            "name": "openliberty-app-sample"
-          },
-          "spec": {
-            "applicationImage": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-            "expose": true,
-            "replicas": 1
-          }
-        },
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyDump",
-          "metadata": {
-            "name": "openliberty-dump-sample"
-          },
-          "spec": {
-            "include": [
-              "thread",
-              "heap"
-            ],
-            "podName": "Specify_Pod_Name_Here"
-          }
-        },
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyTrace",
-          "metadata": {
-            "name": "openliberty-trace-sample"
-          },
-          "spec": {
-            "maxFileSize": 20,
-            "maxFiles": 5,
-            "podName": "Specify_Pod_Name_Here",
-            "traceSpecification": "*=info:com.ibm.ws.webcontainer*=all"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/open-liberty-operator-bundle@sha256:591fc4b5867dff26df1952653423b33889c0f56ba3f756057694d4c0e396eeb0",
-      "bundle_path_digest": "sha256:591fc4b5867dff26df1952653423b33889c0f56ba3f756057694d4c0e396eeb0",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "beta2",
-      "creation_date": "2022-03-26T04:36:13.663000+00:00",
-      "csv_description": "This advanced Operator can be used to deploy and manage Open Liberty applications with consistent, production-grade QoS. This operator is based on the [Runtime Component Operator](https://github.com/application-stacks/runtime-component-operator) and provides all of its capabilities in addition to Open Liberty specific features such as gathering traces and dumps (Day-2 operations) and easily configuring and managing the single sign-on information for your Open Liberty applications.\n\nOpen Liberty Operator enables enterprise architects to govern the way their applications get deployed & managed in the cluster, while dramatically reducing the learning curve for developers to deploy into Kubernetes - allowing them to focus on writing the code!\n\nHere are some key features:\n\n#### Application Lifecyle\nYou can deploy your Open Liberty application container by either pointing to a container image, or an OpenShift ImageStream. When using an ImageStream the Operator will watch for any updates and will re-deploy the modified image.\n\n#### Custom RBAC\nThis Operator is capable of using a custom ServiceAccount from the caller, allowing it to follow RBAC restrictions. By default it creates a ServiceAccount if one is not specified, which can also be bound with specific roles.\n\n#### Environment Configuration\nYou can configure a variety of artifacts with your deployment, such as: labels, annotations, and environment variables from a ConfigMap, a Secret or a value.\n\n#### Routing\nExpose your application to external users via a single toggle to create a Route on OpenShift or an Ingress on other Kubernetes environments. Advanced configuration, such as TLS settings, are also easily enabled.\n\n#### High Availability via Horizontal Pod Autoscaling\nRun multiple instances of your application for high availability. Either specify a static number of replicas or easily configure horizontal auto scaling to create (and delete) instances based on resource consumption.\n\n#### Persistence and advanced storage\nEnable persistence for your application by specifying simple requirements: just tell us the size of the storage and where you would like it to be mounted and we will create and manage that storage for you.\nThis toggles a StatefulSet resource instead of a Deployment resource, so your container can recover transactions and state upon a pod restart.\nWe offer an advanced mode where you can specify a built-in PersistentVolumeClaim, allowing you to configure many details of the persistent volume, such as its storage class and access mode.\nYou can also easily configure and use a single storage for serviceability related Day-2 operations, such as gatherig server traces and dumps.\n\n#### Service Binding\nYour runtime components can expose services by a simple toggle. We take care of the heavy lifting such as creating kubernetes Secrets with information other services can use to bind. We also keep the bindable information synchronized, so your applications can dynamically reconnect to its required services without any intervention or interruption.\n\n#### Single Sign-On (SSO)\nOpen Liberty provides capabilities to delegate authentication to external providers. Your application users can log in using their existing social media credentials from providers such as Google, Facebook, LinkedIn, Twitter, GitHub, and any OpenID Connect (OIDC) or OAuth 2.0 clients. Open Liberty Operator allows to easily configure and manage the single sign-on information for your applications.\n\n#### Exposing metrics to Prometheus\nExpose the Open Liberty application's metrics via the Prometheus Operator.\nYou can pick between a basic mode, where you simply specify the label that Prometheus is watching to scrape the metrics from the container, or you can specify the full `ServiceMonitor` spec embedded into the OpenLibertyApplication's `spec.monitoring` field to control configurations such as poll interval and security credentials.\n\n#### Easily mount logs and transaction directories\nDo you need to mount the logs and transaction data from your application to an external volume such as NFS (or any storage supported in your cluster)? Simply add the following configuration (to specify the volume size and the location to persist) to your OpenLibertyApplication CR:\n``` storage: size: 2Gi mountPath: \"/logs\" ```\n\n#### Integration with OpenShift Serverless\nDeploy your serverless runtime component using a single toggle.  The Operator will convert all of its generated resources into [Knative](https://knative.dev) resources, allowing your pod to automatically scale to 0 when it is idle.\n\n#### Integration with OpenShift's Topology UI\nWe set the corresponding labels to support OpenShift's Developer Topology UI, which allows you to visualize your entire set of deployments and how they are connected.\n\nSee our [**documentation**](https://github.com/OpenLiberty/open-liberty-operator/tree/main/doc/) for more information.\n",
-      "csv_display_name": "Open Liberty",
-      "csv_metadata_description": "Deploy and manage applications running on Liberty",
-      "csv_name": "open-liberty-operator.v0.8.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:55:47.498000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "open-liberty-certified",
-      "provided_apis": [
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyApplication",
-          "plural": "openlibertyapplications",
-          "version": "v1beta2"
-        },
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyDump",
-          "plural": "openlibertydumps",
-          "version": "v1beta2"
-        },
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyTrace",
-          "plural": "openlibertytraces",
-          "version": "v1beta2"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-operator-controller@sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "name": "open-liberty-operator-controller-18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db-annotation"
-        },
-        {
-          "digest": "sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-operator-controller@sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "name": "open-liberty-samples-8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<0.8.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "0.8.1",
-      "version_original": "0.8.1"
-    },
-    {
-      "_id": "623e9869ad5091e14e579fbc",
-      "alm_examples": [
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyApplication",
-          "metadata": {
-            "name": "openliberty-app-sample"
-          },
-          "spec": {
-            "applicationImage": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-            "expose": true,
-            "replicas": 1
-          }
-        },
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyDump",
-          "metadata": {
-            "name": "openliberty-dump-sample"
-          },
-          "spec": {
-            "include": [
-              "thread",
-              "heap"
-            ],
-            "podName": "Specify_Pod_Name_Here"
-          }
-        },
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyTrace",
-          "metadata": {
-            "name": "openliberty-trace-sample"
-          },
-          "spec": {
-            "maxFileSize": 20,
-            "maxFiles": 5,
-            "podName": "Specify_Pod_Name_Here",
-            "traceSpecification": "*=info:com.ibm.ws.webcontainer*=all"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/open-liberty-operator-bundle@sha256:591fc4b5867dff26df1952653423b33889c0f56ba3f756057694d4c0e396eeb0",
-      "bundle_path_digest": "sha256:591fc4b5867dff26df1952653423b33889c0f56ba3f756057694d4c0e396eeb0",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "beta2",
-      "creation_date": "2022-03-26T04:36:57.541000+00:00",
-      "csv_description": "This advanced Operator can be used to deploy and manage Open Liberty applications with consistent, production-grade QoS. This operator is based on the [Runtime Component Operator](https://github.com/application-stacks/runtime-component-operator) and provides all of its capabilities in addition to Open Liberty specific features such as gathering traces and dumps (Day-2 operations) and easily configuring and managing the single sign-on information for your Open Liberty applications.\n\nOpen Liberty Operator enables enterprise architects to govern the way their applications get deployed & managed in the cluster, while dramatically reducing the learning curve for developers to deploy into Kubernetes - allowing them to focus on writing the code!\n\nHere are some key features:\n\n#### Application Lifecyle\nYou can deploy your Open Liberty application container by either pointing to a container image, or an OpenShift ImageStream. When using an ImageStream the Operator will watch for any updates and will re-deploy the modified image.\n\n#### Custom RBAC\nThis Operator is capable of using a custom ServiceAccount from the caller, allowing it to follow RBAC restrictions. By default it creates a ServiceAccount if one is not specified, which can also be bound with specific roles.\n\n#### Environment Configuration\nYou can configure a variety of artifacts with your deployment, such as: labels, annotations, and environment variables from a ConfigMap, a Secret or a value.\n\n#### Routing\nExpose your application to external users via a single toggle to create a Route on OpenShift or an Ingress on other Kubernetes environments. Advanced configuration, such as TLS settings, are also easily enabled.\n\n#### High Availability via Horizontal Pod Autoscaling\nRun multiple instances of your application for high availability. Either specify a static number of replicas or easily configure horizontal auto scaling to create (and delete) instances based on resource consumption.\n\n#### Persistence and advanced storage\nEnable persistence for your application by specifying simple requirements: just tell us the size of the storage and where you would like it to be mounted and we will create and manage that storage for you.\nThis toggles a StatefulSet resource instead of a Deployment resource, so your container can recover transactions and state upon a pod restart.\nWe offer an advanced mode where you can specify a built-in PersistentVolumeClaim, allowing you to configure many details of the persistent volume, such as its storage class and access mode.\nYou can also easily configure and use a single storage for serviceability related Day-2 operations, such as gatherig server traces and dumps.\n\n#### Service Binding\nYour runtime components can expose services by a simple toggle. We take care of the heavy lifting such as creating kubernetes Secrets with information other services can use to bind. We also keep the bindable information synchronized, so your applications can dynamically reconnect to its required services without any intervention or interruption.\n\n#### Single Sign-On (SSO)\nOpen Liberty provides capabilities to delegate authentication to external providers. Your application users can log in using their existing social media credentials from providers such as Google, Facebook, LinkedIn, Twitter, GitHub, and any OpenID Connect (OIDC) or OAuth 2.0 clients. Open Liberty Operator allows to easily configure and manage the single sign-on information for your applications.\n\n#### Exposing metrics to Prometheus\nExpose the Open Liberty application's metrics via the Prometheus Operator.\nYou can pick between a basic mode, where you simply specify the label that Prometheus is watching to scrape the metrics from the container, or you can specify the full `ServiceMonitor` spec embedded into the OpenLibertyApplication's `spec.monitoring` field to control configurations such as poll interval and security credentials.\n\n#### Easily mount logs and transaction directories\nDo you need to mount the logs and transaction data from your application to an external volume such as NFS (or any storage supported in your cluster)? Simply add the following configuration (to specify the volume size and the location to persist) to your OpenLibertyApplication CR:\n``` storage: size: 2Gi mountPath: \"/logs\" ```\n\n#### Integration with OpenShift Serverless\nDeploy your serverless runtime component using a single toggle.  The Operator will convert all of its generated resources into [Knative](https://knative.dev) resources, allowing your pod to automatically scale to 0 when it is idle.\n\n#### Integration with OpenShift's Topology UI\nWe set the corresponding labels to support OpenShift's Developer Topology UI, which allows you to visualize your entire set of deployments and how they are connected.\n\nSee our [**documentation**](https://github.com/OpenLiberty/open-liberty-operator/tree/main/doc/) for more information.\n",
-      "csv_display_name": "Open Liberty",
-      "csv_metadata_description": "Deploy and manage applications running on Liberty",
-      "csv_name": "open-liberty-operator.v0.8.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:00:52.800000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "open-liberty-certified",
-      "provided_apis": [
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyApplication",
-          "plural": "openlibertyapplications",
-          "version": "v1beta2"
-        },
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyDump",
-          "plural": "openlibertydumps",
-          "version": "v1beta2"
-        },
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyTrace",
-          "plural": "openlibertytraces",
-          "version": "v1beta2"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-operator-controller@sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "name": "open-liberty-operator-controller-18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db-annotation"
-        },
-        {
-          "digest": "sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-operator-controller@sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "name": "open-liberty-samples-8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<0.8.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.8.1",
-      "version_original": "0.8.1"
-    },
-    {
-      "_id": "623e98758dcbcc3f5ae1633b",
-      "alm_examples": [
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyApplication",
-          "metadata": {
-            "name": "openliberty-app-sample"
-          },
-          "spec": {
-            "applicationImage": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-            "expose": true,
-            "replicas": 1
-          }
-        },
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyDump",
-          "metadata": {
-            "name": "openliberty-dump-sample"
-          },
-          "spec": {
-            "include": [
-              "thread",
-              "heap"
-            ],
-            "podName": "Specify_Pod_Name_Here"
-          }
-        },
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyTrace",
-          "metadata": {
-            "name": "openliberty-trace-sample"
-          },
-          "spec": {
-            "maxFileSize": 20,
-            "maxFiles": 5,
-            "podName": "Specify_Pod_Name_Here",
-            "traceSpecification": "*=info:com.ibm.ws.webcontainer*=all"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/open-liberty-operator-bundle@sha256:591fc4b5867dff26df1952653423b33889c0f56ba3f756057694d4c0e396eeb0",
-      "bundle_path_digest": "sha256:591fc4b5867dff26df1952653423b33889c0f56ba3f756057694d4c0e396eeb0",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "beta2",
-      "creation_date": "2022-03-26T04:37:09.494000+00:00",
-      "csv_description": "This advanced Operator can be used to deploy and manage Open Liberty applications with consistent, production-grade QoS. This operator is based on the [Runtime Component Operator](https://github.com/application-stacks/runtime-component-operator) and provides all of its capabilities in addition to Open Liberty specific features such as gathering traces and dumps (Day-2 operations) and easily configuring and managing the single sign-on information for your Open Liberty applications.\n\nOpen Liberty Operator enables enterprise architects to govern the way their applications get deployed & managed in the cluster, while dramatically reducing the learning curve for developers to deploy into Kubernetes - allowing them to focus on writing the code!\n\nHere are some key features:\n\n#### Application Lifecyle\nYou can deploy your Open Liberty application container by either pointing to a container image, or an OpenShift ImageStream. When using an ImageStream the Operator will watch for any updates and will re-deploy the modified image.\n\n#### Custom RBAC\nThis Operator is capable of using a custom ServiceAccount from the caller, allowing it to follow RBAC restrictions. By default it creates a ServiceAccount if one is not specified, which can also be bound with specific roles.\n\n#### Environment Configuration\nYou can configure a variety of artifacts with your deployment, such as: labels, annotations, and environment variables from a ConfigMap, a Secret or a value.\n\n#### Routing\nExpose your application to external users via a single toggle to create a Route on OpenShift or an Ingress on other Kubernetes environments. Advanced configuration, such as TLS settings, are also easily enabled.\n\n#### High Availability via Horizontal Pod Autoscaling\nRun multiple instances of your application for high availability. Either specify a static number of replicas or easily configure horizontal auto scaling to create (and delete) instances based on resource consumption.\n\n#### Persistence and advanced storage\nEnable persistence for your application by specifying simple requirements: just tell us the size of the storage and where you would like it to be mounted and we will create and manage that storage for you.\nThis toggles a StatefulSet resource instead of a Deployment resource, so your container can recover transactions and state upon a pod restart.\nWe offer an advanced mode where you can specify a built-in PersistentVolumeClaim, allowing you to configure many details of the persistent volume, such as its storage class and access mode.\nYou can also easily configure and use a single storage for serviceability related Day-2 operations, such as gatherig server traces and dumps.\n\n#### Service Binding\nYour runtime components can expose services by a simple toggle. We take care of the heavy lifting such as creating kubernetes Secrets with information other services can use to bind. We also keep the bindable information synchronized, so your applications can dynamically reconnect to its required services without any intervention or interruption.\n\n#### Single Sign-On (SSO)\nOpen Liberty provides capabilities to delegate authentication to external providers. Your application users can log in using their existing social media credentials from providers such as Google, Facebook, LinkedIn, Twitter, GitHub, and any OpenID Connect (OIDC) or OAuth 2.0 clients. Open Liberty Operator allows to easily configure and manage the single sign-on information for your applications.\n\n#### Exposing metrics to Prometheus\nExpose the Open Liberty application's metrics via the Prometheus Operator.\nYou can pick between a basic mode, where you simply specify the label that Prometheus is watching to scrape the metrics from the container, or you can specify the full `ServiceMonitor` spec embedded into the OpenLibertyApplication's `spec.monitoring` field to control configurations such as poll interval and security credentials.\n\n#### Easily mount logs and transaction directories\nDo you need to mount the logs and transaction data from your application to an external volume such as NFS (or any storage supported in your cluster)? Simply add the following configuration (to specify the volume size and the location to persist) to your OpenLibertyApplication CR:\n``` storage: size: 2Gi mountPath: \"/logs\" ```\n\n#### Integration with OpenShift Serverless\nDeploy your serverless runtime component using a single toggle.  The Operator will convert all of its generated resources into [Knative](https://knative.dev) resources, allowing your pod to automatically scale to 0 when it is idle.\n\n#### Integration with OpenShift's Topology UI\nWe set the corresponding labels to support OpenShift's Developer Topology UI, which allows you to visualize your entire set of deployments and how they are connected.\n\nSee our [**documentation**](https://github.com/OpenLiberty/open-liberty-operator/tree/main/doc/) for more information.\n",
-      "csv_display_name": "Open Liberty",
-      "csv_metadata_description": "Deploy and manage applications running on Liberty",
-      "csv_name": "open-liberty-operator.v0.8.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:00:27.766000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "open-liberty-certified",
-      "provided_apis": [
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyApplication",
-          "version": "v1beta2"
-        },
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyDump",
-          "version": "v1beta2"
-        },
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyTrace",
-          "version": "v1beta2"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-operator-controller@sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "name": "open-liberty-operator-controller-18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db-annotation"
-        },
-        {
-          "digest": "sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-operator-controller@sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "name": "open-liberty-samples-8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<0.8.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "0.8.1",
-      "version_original": "0.8.1"
-    },
-    {
-      "_id": "623e9933ad5091e14e579fbd",
-      "alm_examples": [
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyApplication",
-          "metadata": {
-            "name": "openliberty-app-sample"
-          },
-          "spec": {
-            "applicationImage": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-            "expose": true,
-            "replicas": 1
-          }
-        },
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyDump",
-          "metadata": {
-            "name": "openliberty-dump-sample"
-          },
-          "spec": {
-            "include": [
-              "thread",
-              "heap"
-            ],
-            "podName": "Specify_Pod_Name_Here"
-          }
-        },
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyTrace",
-          "metadata": {
-            "name": "openliberty-trace-sample"
-          },
-          "spec": {
-            "maxFileSize": 20,
-            "maxFiles": 5,
-            "podName": "Specify_Pod_Name_Here",
-            "traceSpecification": "*=info:com.ibm.ws.webcontainer*=all"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/open-liberty-operator-bundle@sha256:591fc4b5867dff26df1952653423b33889c0f56ba3f756057694d4c0e396eeb0",
-      "bundle_path_digest": "sha256:591fc4b5867dff26df1952653423b33889c0f56ba3f756057694d4c0e396eeb0",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "beta2",
-      "creation_date": "2022-03-26T04:40:19.106000+00:00",
-      "csv_description": "This advanced Operator can be used to deploy and manage Open Liberty applications with consistent, production-grade QoS. This operator is based on the [Runtime Component Operator](https://github.com/application-stacks/runtime-component-operator) and provides all of its capabilities in addition to Open Liberty specific features such as gathering traces and dumps (Day-2 operations) and easily configuring and managing the single sign-on information for your Open Liberty applications.\n\nOpen Liberty Operator enables enterprise architects to govern the way their applications get deployed & managed in the cluster, while dramatically reducing the learning curve for developers to deploy into Kubernetes - allowing them to focus on writing the code!\n\nHere are some key features:\n\n#### Application Lifecyle\nYou can deploy your Open Liberty application container by either pointing to a container image, or an OpenShift ImageStream. When using an ImageStream the Operator will watch for any updates and will re-deploy the modified image.\n\n#### Custom RBAC\nThis Operator is capable of using a custom ServiceAccount from the caller, allowing it to follow RBAC restrictions. By default it creates a ServiceAccount if one is not specified, which can also be bound with specific roles.\n\n#### Environment Configuration\nYou can configure a variety of artifacts with your deployment, such as: labels, annotations, and environment variables from a ConfigMap, a Secret or a value.\n\n#### Routing\nExpose your application to external users via a single toggle to create a Route on OpenShift or an Ingress on other Kubernetes environments. Advanced configuration, such as TLS settings, are also easily enabled.\n\n#### High Availability via Horizontal Pod Autoscaling\nRun multiple instances of your application for high availability. Either specify a static number of replicas or easily configure horizontal auto scaling to create (and delete) instances based on resource consumption.\n\n#### Persistence and advanced storage\nEnable persistence for your application by specifying simple requirements: just tell us the size of the storage and where you would like it to be mounted and we will create and manage that storage for you.\nThis toggles a StatefulSet resource instead of a Deployment resource, so your container can recover transactions and state upon a pod restart.\nWe offer an advanced mode where you can specify a built-in PersistentVolumeClaim, allowing you to configure many details of the persistent volume, such as its storage class and access mode.\nYou can also easily configure and use a single storage for serviceability related Day-2 operations, such as gatherig server traces and dumps.\n\n#### Service Binding\nYour runtime components can expose services by a simple toggle. We take care of the heavy lifting such as creating kubernetes Secrets with information other services can use to bind. We also keep the bindable information synchronized, so your applications can dynamically reconnect to its required services without any intervention or interruption.\n\n#### Single Sign-On (SSO)\nOpen Liberty provides capabilities to delegate authentication to external providers. Your application users can log in using their existing social media credentials from providers such as Google, Facebook, LinkedIn, Twitter, GitHub, and any OpenID Connect (OIDC) or OAuth 2.0 clients. Open Liberty Operator allows to easily configure and manage the single sign-on information for your applications.\n\n#### Exposing metrics to Prometheus\nExpose the Open Liberty application's metrics via the Prometheus Operator.\nYou can pick between a basic mode, where you simply specify the label that Prometheus is watching to scrape the metrics from the container, or you can specify the full `ServiceMonitor` spec embedded into the OpenLibertyApplication's `spec.monitoring` field to control configurations such as poll interval and security credentials.\n\n#### Easily mount logs and transaction directories\nDo you need to mount the logs and transaction data from your application to an external volume such as NFS (or any storage supported in your cluster)? Simply add the following configuration (to specify the volume size and the location to persist) to your OpenLibertyApplication CR:\n``` storage: size: 2Gi mountPath: \"/logs\" ```\n\n#### Integration with OpenShift Serverless\nDeploy your serverless runtime component using a single toggle.  The Operator will convert all of its generated resources into [Knative](https://knative.dev) resources, allowing your pod to automatically scale to 0 when it is idle.\n\n#### Integration with OpenShift's Topology UI\nWe set the corresponding labels to support OpenShift's Developer Topology UI, which allows you to visualize your entire set of deployments and how they are connected.\n\nSee our [**documentation**](https://github.com/OpenLiberty/open-liberty-operator/tree/main/doc/) for more information.\n",
-      "csv_display_name": "Open Liberty",
-      "csv_metadata_description": "Deploy and manage applications running on Liberty",
-      "csv_name": "open-liberty-operator.v0.8.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:35:45.291000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "open-liberty-certified",
-      "provided_apis": [
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyDump",
-          "plural": "openlibertydumps",
-          "version": "v1beta2"
-        },
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyTrace",
-          "plural": "openlibertytraces",
-          "version": "v1beta2"
-        },
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyApplication",
-          "plural": "openlibertyapplications",
-          "version": "v1beta2"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-operator-controller@sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "name": "open-liberty-operator-controller-18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db-annotation"
-        },
-        {
-          "digest": "sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-operator-controller@sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "name": "open-liberty-samples-8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<0.8.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.8.1",
-      "version_original": "0.8.1"
-    },
-    {
-      "_id": "623e99828dcbcc3f5ae1633c",
-      "alm_examples": [
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyApplication",
-          "metadata": {
-            "name": "openliberty-app-sample"
-          },
-          "spec": {
-            "applicationImage": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-            "expose": true,
-            "replicas": 1
-          }
-        },
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyDump",
-          "metadata": {
-            "name": "openliberty-dump-sample"
-          },
-          "spec": {
-            "include": [
-              "thread",
-              "heap"
-            ],
-            "podName": "Specify_Pod_Name_Here"
-          }
-        },
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyTrace",
-          "metadata": {
-            "name": "openliberty-trace-sample"
-          },
-          "spec": {
-            "maxFileSize": 20,
-            "maxFiles": 5,
-            "podName": "Specify_Pod_Name_Here",
-            "traceSpecification": "*=info:com.ibm.ws.webcontainer*=all"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/open-liberty-operator-bundle@sha256:591fc4b5867dff26df1952653423b33889c0f56ba3f756057694d4c0e396eeb0",
-      "bundle_path_digest": "sha256:591fc4b5867dff26df1952653423b33889c0f56ba3f756057694d4c0e396eeb0",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "beta2",
-      "creation_date": "2022-03-26T04:41:38.562000+00:00",
-      "csv_description": "This advanced Operator can be used to deploy and manage Open Liberty applications with consistent, production-grade QoS. This operator is based on the [Runtime Component Operator](https://github.com/application-stacks/runtime-component-operator) and provides all of its capabilities in addition to Open Liberty specific features such as gathering traces and dumps (Day-2 operations) and easily configuring and managing the single sign-on information for your Open Liberty applications.\n\nOpen Liberty Operator enables enterprise architects to govern the way their applications get deployed & managed in the cluster, while dramatically reducing the learning curve for developers to deploy into Kubernetes - allowing them to focus on writing the code!\n\nHere are some key features:\n\n#### Application Lifecyle\nYou can deploy your Open Liberty application container by either pointing to a container image, or an OpenShift ImageStream. When using an ImageStream the Operator will watch for any updates and will re-deploy the modified image.\n\n#### Custom RBAC\nThis Operator is capable of using a custom ServiceAccount from the caller, allowing it to follow RBAC restrictions. By default it creates a ServiceAccount if one is not specified, which can also be bound with specific roles.\n\n#### Environment Configuration\nYou can configure a variety of artifacts with your deployment, such as: labels, annotations, and environment variables from a ConfigMap, a Secret or a value.\n\n#### Routing\nExpose your application to external users via a single toggle to create a Route on OpenShift or an Ingress on other Kubernetes environments. Advanced configuration, such as TLS settings, are also easily enabled.\n\n#### High Availability via Horizontal Pod Autoscaling\nRun multiple instances of your application for high availability. Either specify a static number of replicas or easily configure horizontal auto scaling to create (and delete) instances based on resource consumption.\n\n#### Persistence and advanced storage\nEnable persistence for your application by specifying simple requirements: just tell us the size of the storage and where you would like it to be mounted and we will create and manage that storage for you.\nThis toggles a StatefulSet resource instead of a Deployment resource, so your container can recover transactions and state upon a pod restart.\nWe offer an advanced mode where you can specify a built-in PersistentVolumeClaim, allowing you to configure many details of the persistent volume, such as its storage class and access mode.\nYou can also easily configure and use a single storage for serviceability related Day-2 operations, such as gatherig server traces and dumps.\n\n#### Service Binding\nYour runtime components can expose services by a simple toggle. We take care of the heavy lifting such as creating kubernetes Secrets with information other services can use to bind. We also keep the bindable information synchronized, so your applications can dynamically reconnect to its required services without any intervention or interruption.\n\n#### Single Sign-On (SSO)\nOpen Liberty provides capabilities to delegate authentication to external providers. Your application users can log in using their existing social media credentials from providers such as Google, Facebook, LinkedIn, Twitter, GitHub, and any OpenID Connect (OIDC) or OAuth 2.0 clients. Open Liberty Operator allows to easily configure and manage the single sign-on information for your applications.\n\n#### Exposing metrics to Prometheus\nExpose the Open Liberty application's metrics via the Prometheus Operator.\nYou can pick between a basic mode, where you simply specify the label that Prometheus is watching to scrape the metrics from the container, or you can specify the full `ServiceMonitor` spec embedded into the OpenLibertyApplication's `spec.monitoring` field to control configurations such as poll interval and security credentials.\n\n#### Easily mount logs and transaction directories\nDo you need to mount the logs and transaction data from your application to an external volume such as NFS (or any storage supported in your cluster)? Simply add the following configuration (to specify the volume size and the location to persist) to your OpenLibertyApplication CR:\n``` storage: size: 2Gi mountPath: \"/logs\" ```\n\n#### Integration with OpenShift Serverless\nDeploy your serverless runtime component using a single toggle.  The Operator will convert all of its generated resources into [Knative](https://knative.dev) resources, allowing your pod to automatically scale to 0 when it is idle.\n\n#### Integration with OpenShift's Topology UI\nWe set the corresponding labels to support OpenShift's Developer Topology UI, which allows you to visualize your entire set of deployments and how they are connected.\n\nSee our [**documentation**](https://github.com/OpenLiberty/open-liberty-operator/tree/main/doc/) for more information.\n",
-      "csv_display_name": "Open Liberty",
-      "csv_metadata_description": "Deploy and manage applications running on Liberty",
-      "csv_name": "open-liberty-operator.v0.8.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:36:01.208000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "open-liberty-certified",
-      "provided_apis": [
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyApplication",
-          "plural": "openlibertyapplications",
-          "version": "v1beta2"
-        },
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyDump",
-          "plural": "openlibertydumps",
-          "version": "v1beta2"
-        },
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyTrace",
-          "plural": "openlibertytraces",
-          "version": "v1beta2"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-operator-controller@sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "name": "open-liberty-operator-controller-18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db-annotation"
-        },
-        {
-          "digest": "sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-operator-controller@sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "name": "open-liberty-samples-8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<0.8.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.8.1",
-      "version_original": "0.8.1"
-    },
-    {
-      "_id": "623e9c8737f345462469f66a",
-      "alm_examples": [
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyApplication",
-          "metadata": {
-            "name": "openliberty-app-sample"
-          },
-          "spec": {
-            "applicationImage": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-            "expose": true,
-            "replicas": 1
-          }
-        },
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyDump",
-          "metadata": {
-            "name": "openliberty-dump-sample"
-          },
-          "spec": {
-            "include": [
-              "thread",
-              "heap"
-            ],
-            "podName": "Specify_Pod_Name_Here"
-          }
-        },
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyTrace",
-          "metadata": {
-            "name": "openliberty-trace-sample"
-          },
-          "spec": {
-            "maxFileSize": 20,
-            "maxFiles": 5,
-            "podName": "Specify_Pod_Name_Here",
-            "traceSpecification": "*=info:com.ibm.ws.webcontainer*=all"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/open-liberty-operator-bundle@sha256:591fc4b5867dff26df1952653423b33889c0f56ba3f756057694d4c0e396eeb0",
-      "bundle_path_digest": "sha256:591fc4b5867dff26df1952653423b33889c0f56ba3f756057694d4c0e396eeb0",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "beta2",
-      "creation_date": "2022-03-26T04:54:31.335000+00:00",
-      "csv_description": "This advanced Operator can be used to deploy and manage Open Liberty applications with consistent, production-grade QoS. This operator is based on the [Runtime Component Operator](https://github.com/application-stacks/runtime-component-operator) and provides all of its capabilities in addition to Open Liberty specific features such as gathering traces and dumps (Day-2 operations) and easily configuring and managing the single sign-on information for your Open Liberty applications.\n\nOpen Liberty Operator enables enterprise architects to govern the way their applications get deployed & managed in the cluster, while dramatically reducing the learning curve for developers to deploy into Kubernetes - allowing them to focus on writing the code!\n\nHere are some key features:\n\n#### Application Lifecyle\nYou can deploy your Open Liberty application container by either pointing to a container image, or an OpenShift ImageStream. When using an ImageStream the Operator will watch for any updates and will re-deploy the modified image.\n\n#### Custom RBAC\nThis Operator is capable of using a custom ServiceAccount from the caller, allowing it to follow RBAC restrictions. By default it creates a ServiceAccount if one is not specified, which can also be bound with specific roles.\n\n#### Environment Configuration\nYou can configure a variety of artifacts with your deployment, such as: labels, annotations, and environment variables from a ConfigMap, a Secret or a value.\n\n#### Routing\nExpose your application to external users via a single toggle to create a Route on OpenShift or an Ingress on other Kubernetes environments. Advanced configuration, such as TLS settings, are also easily enabled.\n\n#### High Availability via Horizontal Pod Autoscaling\nRun multiple instances of your application for high availability. Either specify a static number of replicas or easily configure horizontal auto scaling to create (and delete) instances based on resource consumption.\n\n#### Persistence and advanced storage\nEnable persistence for your application by specifying simple requirements: just tell us the size of the storage and where you would like it to be mounted and we will create and manage that storage for you.\nThis toggles a StatefulSet resource instead of a Deployment resource, so your container can recover transactions and state upon a pod restart.\nWe offer an advanced mode where you can specify a built-in PersistentVolumeClaim, allowing you to configure many details of the persistent volume, such as its storage class and access mode.\nYou can also easily configure and use a single storage for serviceability related Day-2 operations, such as gatherig server traces and dumps.\n\n#### Service Binding\nYour runtime components can expose services by a simple toggle. We take care of the heavy lifting such as creating kubernetes Secrets with information other services can use to bind. We also keep the bindable information synchronized, so your applications can dynamically reconnect to its required services without any intervention or interruption.\n\n#### Single Sign-On (SSO)\nOpen Liberty provides capabilities to delegate authentication to external providers. Your application users can log in using their existing social media credentials from providers such as Google, Facebook, LinkedIn, Twitter, GitHub, and any OpenID Connect (OIDC) or OAuth 2.0 clients. Open Liberty Operator allows to easily configure and manage the single sign-on information for your applications.\n\n#### Exposing metrics to Prometheus\nExpose the Open Liberty application's metrics via the Prometheus Operator.\nYou can pick between a basic mode, where you simply specify the label that Prometheus is watching to scrape the metrics from the container, or you can specify the full `ServiceMonitor` spec embedded into the OpenLibertyApplication's `spec.monitoring` field to control configurations such as poll interval and security credentials.\n\n#### Easily mount logs and transaction directories\nDo you need to mount the logs and transaction data from your application to an external volume such as NFS (or any storage supported in your cluster)? Simply add the following configuration (to specify the volume size and the location to persist) to your OpenLibertyApplication CR:\n``` storage: size: 2Gi mountPath: \"/logs\" ```\n\n#### Integration with OpenShift Serverless\nDeploy your serverless runtime component using a single toggle.  The Operator will convert all of its generated resources into [Knative](https://knative.dev) resources, allowing your pod to automatically scale to 0 when it is idle.\n\n#### Integration with OpenShift's Topology UI\nWe set the corresponding labels to support OpenShift's Developer Topology UI, which allows you to visualize your entire set of deployments and how they are connected.\n\nSee our [**documentation**](https://github.com/OpenLiberty/open-liberty-operator/tree/main/doc/) for more information.\n",
-      "csv_display_name": "Open Liberty",
-      "csv_metadata_description": "Deploy and manage applications running on Liberty",
-      "csv_name": "open-liberty-operator.v0.8.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:50:57.323000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "open-liberty-certified",
-      "provided_apis": [
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyApplication",
-          "plural": "openlibertyapplications",
-          "version": "v1beta2"
-        },
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyDump",
-          "plural": "openlibertydumps",
-          "version": "v1beta2"
-        },
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyTrace",
-          "plural": "openlibertytraces",
-          "version": "v1beta2"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-operator-controller@sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "name": "open-liberty-operator-controller-18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db-annotation"
-        },
-        {
-          "digest": "sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-operator-controller@sha256:18f188e48725c785557c8edea46f69c464d6f81ab47860a3bb0ec978c20a26db",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "name": "open-liberty-samples-8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<0.8.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.8.1",
-      "version_original": "0.8.1"
-    },
-    {
-      "_id": "62475306a44a9962be01bd2f",
-      "alm_examples": [
-        {
-          "api_version": "ibm.com/v1",
-          "kind": "IBMApplicationGateway",
-          "metadata": {
-            "name": "iag-instance"
-          },
-          "spec": {
-            "configuration": [
-              {
-                "dataKey": "config",
-                "name": "test-config",
-                "type": "configmap"
-              },
-              {
-                "discoveryEndpoint": "https://isam.mmfa.ibm.com/mga/sps/oauth/oauth20/metadata/test",
-                "postData": [
-                  {
-                    "name": "redirect_uris",
-                    "values": [
-                      "https://isam.mmfa.ibm.com/pkmsoidc"
-                    ]
-                  },
-                  {
-                    "name": "client_name",
-                    "value": "OperatorTest"
-                  },
-                  {
-                    "name": "enforce_pkce",
-                    "value": "false"
-                  },
-                  {
-                    "name": "all_users_entitled",
-                    "value": "true"
-                  },
-                  {
-                    "name": "consent_action",
-                    "value": "never_prompt"
-                  }
-                ],
-                "secret": "oidc-client",
-                "type": "oidc_registration"
-              },
-              {
-                "headers": [
-                  {
-                    "name": "Authorization",
-                    "secretKey": "value",
-                    "type": "secret",
-                    "value": "githubsecret"
-                  }
-                ],
-                "type": "web",
-                "url": "https://raw.github.com/ibm-security/iag-config/master/test/sample1.yaml"
-              },
-              {
-                "type": "literal",
-                "value": "version: \"21.12\"\n\nserver:\n  local_applications:\n    cred_viewer:\n      path_segment: creds\n      enable_html: true\n\nidentity:\n  oidc:\n    discovery_endpoint: \"https://iag-dev.ibmcloudsecurity.com/oidc/endpoint/default/.well-known/openid-configuration\"\n    client_id: 1cbfe647-9e5f-4d99-8e05-8ed1c862eb47\n    client_secret: uPP8rM7N0e\n"
-              }
-            ],
-            "deployment": {
-              "image": "ibmcom/ibm-application-gateway@sha256:410fc5d3bc187c01e5ea699ce5023a24a9eb8309902fe513900286ecce5af99f",
-              "imagePullPolicy": "Always",
-              "imagePullSecrets": [
-                {
-                  "name": "regcred"
-                }
-              ],
-              "lang": "C",
-              "livenessProbe": {
-                "failureThreshold": 6,
-                "initialDelaySeconds": 8,
-                "periodSeconds": 9,
-                "successThreshold": 7,
-                "timeoutSeconds": 1
-              },
-              "readinessProbe": {
-                "failureThreshold": 2,
-                "initialDelaySeconds": 7,
-                "periodSeconds": 8,
-                "successThreshold": 4,
-                "timeoutSeconds": 5
-              },
-              "serviceAccountName": "iag"
-            },
-            "replicas": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/ibm-application-gateway-operator-bundle@sha256:7737a7c6d8eaf495367265c6b482f5ac9f5cc2dfe6320e1a0ed2f9eed15ce03a",
-      "bundle_path_digest": "sha256:7737a7c6d8eaf495367265c6b482f5ac9f5cc2dfe6320e1a0ed2f9eed15ce03a",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-01T19:31:18.879000+00:00",
-      "csv_description": "The [IBM Application Gateway (IAG)](https://ibm.biz/ibm-app-gateway) image provides a containerized secure Web Reverse proxy which is designed to sit in front of your application, seamlessly adding authentication and authorization protection to your application.\n\nAn IAG instance deployed on Kubernetes can be a complex deployment.  In particular the configuration can be defined externally in one or more locations, and changes to this configuration may require all instances to be reloaded for the changes to take effect. \n\nThe internal Kubernetes deployment controller does not have any knowledge of how an IBM Application Gateway instance should behave when the configuration changes. As such this IBM Application Gateway specific Kubernetes operator is available to be deployed. Once deployed the operator can manage the lifecycle of the IBM Application Gateway instances.\n\nSee the project [Readme](https://github.com/IBM-Security/ibm-application-gateway-operator/blob/master/README.md) for further information and details.\n\n",
-      "csv_display_name": "IBM Application Gateway Operator",
-      "csv_metadata_description": "The IBM Application Gateway operator manages the lifecycle of IBM Application Gateway containers.",
-      "csv_name": "ibm-application-gateway-operator.v22.3.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:52:10.740000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "ibm-application-gateway-operator",
-      "provided_apis": [
-        {
-          "group": "ibm.com",
-          "kind": "IBMApplicationGateway",
-          "version": "v1"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "name": "ibm-application-gateway-operator"
-        },
-        {
-          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "name": "ibm-application-gateway-operator-2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf-annotation"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "22.3.0",
-      "version_original": "22.3.0"
-    },
-    {
       "_id": "624756844a140551e01d26f2",
       "alm_examples": [
         {
@@ -6278,6 +4999,468 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.2.1",
       "version_original": "1.2.1"
+    },
+    {
+      "_id": "6262a71fcde83e2b177c20e3",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm-edge/data-explorer-operator-bundle@sha256:403219f0791689e2f3484f33be08e243dc2bd9e22ca962c430ddd7eee2caf0ee",
+      "bundle_path_digest": "sha256:403219f0791689e2f3484f33be08e243dc2bd9e22ca962c430ddd7eee2caf0ee",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T13:01:19.111000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "data-explorer-operator.v0.0.4",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:09:39.650000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "data-explorer-operator-certified",
+      "provided_apis": [
+        {
+          "group": "data-explorer.com",
+          "kind": "DashboardWithJupyterHub",
+          "plural": "dashboardwithjupyterhubs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.0.4",
+      "version_original": "0.0.4"
+    },
+    {
+      "_id": "6262a720cde83e2b177c20e4",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
+      "bundle_path_digest": "sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.2.4",
+      "creation_date": "2022-04-22T13:01:20.196000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.8-1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-04-22T13:01:20.196000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.8-1",
+      "version_original": "6.0.8-1"
+    },
+    {
+      "_id": "6262a726cde83e2b177c20e5",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/sonatype/nxrm-operator-bundle@sha256:3e51c8fb0633e5766a160adbd387e066216a43eb6d134c28be8943fa26df87c3",
+      "bundle_path_digest": "sha256:3e51c8fb0633e5766a160adbd387e066216a43eb6d134c28be8943fa26df87c3",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:01:26.376000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "nxrm-operator-certified.v3.25.1-1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:21:58.814000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "nxrm-operator-certified",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "3.25.1-1",
+      "version_original": "3.25.1-1"
+    },
+    {
+      "_id": "6262a72d173a0d36cf5d6987",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:f1fc06ee96cc7509e5dc94ef6cd87921fbbe4b4112d9561c14ee06a426c59f91",
+      "bundle_path_digest": "sha256:f1fc06ee96cc7509e5dc94ef6cd87921fbbe4b4112d9561c14ee06a426c59f91",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-04-22T13:01:33.226000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "neuvector-operator.v0.9.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:54:55.554000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "neuvector-certified-operator",
+      "provided_apis": [
+        {
+          "group": "apm.neuvector.com",
+          "kind": "Neuvector",
+          "plural": "neuvectors",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.9.0",
+      "version_original": "0.9.0"
+    },
+    {
+      "_id": "6262a733834f257293b60f9f",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:92f5f489e8ad0cc7e7b10bd474a86810b352b5cc95db7347ce46a676cc4dbb7e",
+      "bundle_path_digest": "sha256:92f5f489e8ad0cc7e7b10bd474a86810b352b5cc95db7347ce46a676cc4dbb7e",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:01:39.911000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "mongodb-enterprise.v1.4.4",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:19:20.555000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "mongodb-enterprise",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.4.4",
+      "version_original": "1.4.4"
+    },
+    {
+      "_id": "6262a744cde83e2b177c20e8",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:e426e5dad74e713683d535e97a4e586cb898da891e9e61177eefb2db5742398d",
+      "bundle_path_digest": "sha256:e426e5dad74e713683d535e97a4e586cb898da891e9e61177eefb2db5742398d",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:01:56.061000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "mongodb-enterprise.v1.5.5",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:24:41.307000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "mongodb-enterprise",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.5.5",
+      "version_original": "1.5.5"
+    },
+    {
+      "_id": "6262a746834f257293b60fa0",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm-edge/growth-stack-operator-bundle@sha256:04327840791db3cd6e2ffa48084a515dc763f2119ca678f9d63cf7a11b2f4c82",
+      "bundle_path_digest": "sha256:04327840791db3cd6e2ffa48084a515dc763f2119ca678f9d63cf7a11b2f4c82",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T13:01:58.907000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "growth-stack-operator.v1.0.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:46:26.261000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "growth-stack-operator-certified",
+      "provided_apis": [
+        {
+          "group": "growth-stack.operator.com",
+          "kind": "GenerateKey",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "growth-stack.operator.com",
+          "kind": "GrowthStackSuite",
+          "plural": "growthstacksuites",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "growth-stack.operator.com",
+          "kind": "StoreForwardMetric",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "growth-stack.operator.com",
+          "kind": "AirgappedDeployment",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "growth-stack.operator.com",
+          "kind": "AnalyticsProxy",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "growth-stack.operator.com",
+          "kind": "DeleteCluster",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.0.0",
+      "version_original": "1.0.0"
+    },
+    {
+      "_id": "6262a74a84481d5f52299966",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/datastax/cass-operator-bundle@sha256:a6c9ef929606377c808e05ee132f837ae9168a78859412fc5334c74980a43eab",
+      "bundle_path_digest": "sha256:a6c9ef929606377c808e05ee132f837ae9168a78859412fc5334c74980a43eab",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:02:02.142000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "cass-operator.v1.0.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:07:21.099000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "cass-operator",
+      "provided_apis": [
+        {
+          "group": "cassandra.datastax.com",
+          "kind": "CassandraDatacenter",
+          "plural": "cassandradatacenters",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.0.0",
+      "version_original": "1.0.0"
+    },
+    {
+      "_id": "6262a74c173a0d36cf5d698a",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:7e0a5c64a34ebad4b0b156b07e1b53b7fa6cc9ed9c456ff0a33523d6e4313e18",
+      "bundle_path_digest": "sha256:7e0a5c64a34ebad4b0b156b07e1b53b7fa6cc9ed9c456ff0a33523d6e4313e18",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-04-22T13:02:04.751000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "neuvector-operator.v1.0.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:06:54.360000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "neuvector-certified-operator",
+      "provided_apis": [
+        {
+          "group": "apm.neuvector.com",
+          "kind": "Neuvector",
+          "plural": "neuvectors",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.0.0",
+      "version_original": "1.0.0"
+    },
+    {
+      "_id": "6262a754173a0d36cf5d698c",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/kubemq/kubemq-operator-bundle@sha256:a488e8afd4b82f128edf45f36f1c75c9ca6beb37855bb1d5009fc6dd8c9f3434",
+      "bundle_path_digest": "sha256:a488e8afd4b82f128edf45f36f1c75c9ca6beb37855bb1d5009fc6dd8c9f3434",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T13:02:12.196000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "kubemq-operator.v1.1.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:19:55.105000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "kubemq-operator-marketplace",
+      "provided_apis": [
+        {
+          "group": "core.k8s.kubemq.io",
+          "kind": "KubemqCluster",
+          "plural": "kubemqclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "core.k8s.kubemq.io",
+          "kind": "KubemqConnector",
+          "plural": "kubemqconnectors",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "core.k8s.kubemq.io",
+          "kind": "KubemqDashboard",
+          "plural": "kubemqdashboards",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.1.0",
+      "version_original": "1.1.0"
     }
   ]
 }

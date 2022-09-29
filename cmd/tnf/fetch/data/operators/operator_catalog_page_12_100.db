@@ -1,452 +1,6 @@
 {
   "data": [
     {
-      "_id": "60c24659ba99c76846ab4ade",
-      "alm_examples": [
-        {
-          "api_version": "operator.tigera.io/v1",
-          "kind": "Installation",
-          "metadata": {
-            "name": "default"
-          },
-          "spec": {
-            "variant": "Calico"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:a6556aa2775319e5518f8aed255bdec24f7cb1ed9ab93748d3e5b59c9d5ed306",
-      "bundle_path_digest": "sha256:a6556aa2775319e5518f8aed255bdec24f7cb1ed9ab93748d3e5b59c9d5ed306",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "release-v1.15",
-      "creation_date": "2021-06-10T17:05:29.951000+00:00",
-      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
-      "csv_display_name": "Tigera Operator",
-      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
-      "csv_name": "tigera-operator.v1.15.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:26:06.609000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "tigera-operator",
-      "provided_apis": [],
-      "provider": "Tigera",
-      "related_images": [
-        {
-          "digest": "sha256:030d34878eef62b94a1e7da50237d1a1630a5140205deb49c24f803d29f18847",
-          "image": "quay.io/tigera/operator@sha256:030d34878eef62b94a1e7da50237d1a1630a5140205deb49c24f803d29f18847",
-          "name": "operator-030d34878eef62b94a1e7da50237d1a1630a5140205deb49c24f803d29f18847-annotation"
-        },
-        {
-          "digest": "sha256:030d34878eef62b94a1e7da50237d1a1630a5140205deb49c24f803d29f18847",
-          "image": "quay.io/tigera/operator@sha256:030d34878eef62b94a1e7da50237d1a1630a5140205deb49c24f803d29f18847",
-          "name": "tigera-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<1.15.3",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.15.3",
-      "version_original": "1.15.3"
-    },
-    {
-      "_id": "60c246cf233d5ea79c308518",
-      "alm_examples": [
-        {
-          "api_version": "operator.tigera.io/v1",
-          "kind": "Installation",
-          "metadata": {
-            "name": "default"
-          },
-          "spec": {
-            "variant": "Calico"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:a6556aa2775319e5518f8aed255bdec24f7cb1ed9ab93748d3e5b59c9d5ed306",
-      "bundle_path_digest": "sha256:a6556aa2775319e5518f8aed255bdec24f7cb1ed9ab93748d3e5b59c9d5ed306",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "release-v1.15",
-      "creation_date": "2021-06-10T17:07:27.530000+00:00",
-      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
-      "csv_display_name": "Tigera Operator",
-      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
-      "csv_name": "tigera-operator.v1.15.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:34:07.606000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "tigera-operator",
-      "provided_apis": [
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMConfig",
-          "plural": "ipamconfigs",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "ImageSet",
-          "plural": "imagesets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPPool",
-          "plural": "ippools",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMBlock",
-          "plural": "ipamblocks",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkSet",
-          "plural": "networksets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPPeer",
-          "plural": "bgppeers",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkPolicy",
-          "plural": "networkpolicies",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "KubeControllersConfiguration",
-          "plural": "kubecontrollersconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "TigeraStatus",
-          "plural": "tigerastatuses",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "ClusterInformation",
-          "plural": "clusterinformations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkPolicy",
-          "plural": "globalnetworkpolicies",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BlockAffinity",
-          "plural": "blockaffinities",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkSet",
-          "plural": "globalnetworksets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "FelixConfiguration",
-          "plural": "felixconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "HostEndpoint",
-          "plural": "hostendpoints",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPConfiguration",
-          "plural": "bgpconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "Installation",
-          "plural": "installations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMHandle",
-          "plural": "ipamhandles",
-          "version": "v1"
-        }
-      ],
-      "provider": "Tigera",
-      "related_images": [
-        {
-          "digest": "sha256:030d34878eef62b94a1e7da50237d1a1630a5140205deb49c24f803d29f18847",
-          "image": "quay.io/tigera/operator@sha256:030d34878eef62b94a1e7da50237d1a1630a5140205deb49c24f803d29f18847",
-          "name": "operator-030d34878eef62b94a1e7da50237d1a1630a5140205deb49c24f803d29f18847-annotation"
-        },
-        {
-          "digest": "sha256:030d34878eef62b94a1e7da50237d1a1630a5140205deb49c24f803d29f18847",
-          "image": "quay.io/tigera/operator@sha256:030d34878eef62b94a1e7da50237d1a1630a5140205deb49c24f803d29f18847",
-          "name": "tigera-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<1.15.3",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.15.3",
-      "version_original": "1.15.3"
-    },
-    {
-      "_id": "60c24797e1f052817b72bd2d",
-      "alm_examples": [
-        {
-          "api_version": "operator.tigera.io/v1",
-          "kind": "Installation",
-          "metadata": {
-            "name": "default"
-          },
-          "spec": {
-            "variant": "Calico"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:a6556aa2775319e5518f8aed255bdec24f7cb1ed9ab93748d3e5b59c9d5ed306",
-      "bundle_path_digest": "sha256:a6556aa2775319e5518f8aed255bdec24f7cb1ed9ab93748d3e5b59c9d5ed306",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "release-v1.15",
-      "creation_date": "2021-06-10T17:10:47.536000+00:00",
-      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
-      "csv_display_name": "Tigera Operator",
-      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
-      "csv_name": "tigera-operator.v1.15.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:39:33.079000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "tigera-operator",
-      "provided_apis": [
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "FelixConfiguration",
-          "plural": "felixconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "KubeControllersConfiguration",
-          "plural": "kubecontrollersconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "ImageSet",
-          "plural": "imagesets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "ClusterInformation",
-          "plural": "clusterinformations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMBlock",
-          "plural": "ipamblocks",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "TigeraStatus",
-          "plural": "tigerastatuses",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "HostEndpoint",
-          "plural": "hostendpoints",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkPolicy",
-          "plural": "globalnetworkpolicies",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMConfig",
-          "plural": "ipamconfigs",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMHandle",
-          "plural": "ipamhandles",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkPolicy",
-          "plural": "networkpolicies",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BlockAffinity",
-          "plural": "blockaffinities",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPPeer",
-          "plural": "bgppeers",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkSet",
-          "plural": "networksets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPConfiguration",
-          "plural": "bgpconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkSet",
-          "plural": "globalnetworksets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPPool",
-          "plural": "ippools",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "Installation",
-          "plural": "installations",
-          "version": "v1"
-        }
-      ],
-      "provider": "Tigera",
-      "related_images": [
-        {
-          "digest": "sha256:030d34878eef62b94a1e7da50237d1a1630a5140205deb49c24f803d29f18847",
-          "image": "quay.io/tigera/operator@sha256:030d34878eef62b94a1e7da50237d1a1630a5140205deb49c24f803d29f18847",
-          "name": "operator-030d34878eef62b94a1e7da50237d1a1630a5140205deb49c24f803d29f18847-annotation"
-        },
-        {
-          "digest": "sha256:030d34878eef62b94a1e7da50237d1a1630a5140205deb49c24f803d29f18847",
-          "image": "quay.io/tigera/operator@sha256:030d34878eef62b94a1e7da50237d1a1630a5140205deb49c24f803d29f18847",
-          "name": "tigera-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<1.15.3",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.15.3",
-      "version_original": "1.15.3"
-    },
-    {
       "_id": "60c24de3ba99c76846ab4b4b",
       "alm_examples": [
         {
@@ -16847,6 +16401,1183 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.2.0",
       "version_original": "1.2.0"
+    },
+    {
+      "_id": "60e88b058ce8053fa514bdc5",
+      "alm_examples": [
+        {
+          "api_version": "bas.ibm.com/v1",
+          "kind": "AirgappedDeployment",
+          "metadata": {
+            "name": "airgappeddeployment"
+          },
+          "spec": {
+            "airgapped": {
+              "backup_deletion_frequency": "@daily",
+              "backup_retention_period": 7
+            },
+            "allowed_domains": "*",
+            "db_archive": {
+              "frequency": "@monthly",
+              "persistent_storage": {
+                "storage#": "10G",
+                "storage_class": "ibmc-file-bronze-gid"
+              },
+              "retention_age": 6
+            },
+            "env_type": "lite",
+            "event_scheduler_frequency": "@hourly",
+            "image_pull_secret": "bas-images-pull-secret",
+            "kafka": {
+              "storage#": "5G",
+              "storage_class": "ibmc-block-bronze",
+              "zookeeper_storage#": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze"
+            },
+            "postgres": {
+              "storage#": "10G",
+              "storage_class": "ibmc-block-bronze"
+            }
+          }
+        },
+        {
+          "api_version": "bas.ibm.com/v1",
+          "kind": "AnalyticsProxy",
+          "metadata": {
+            "name": "analyticsproxy"
+          },
+          "spec": {
+            "airgapped": {
+              "backup_deletion_frequency": "@daily",
+              "backup_retention_period": 7,
+              "enabled": false
+            },
+            "allowed_domains": "*",
+            "db_archive": {
+              "frequency": "@monthly",
+              "persistent_storage": {
+                "storage#": "10G",
+                "storage_class": "ibmc-file-bronze-gid"
+              },
+              "retention_age": 6
+            },
+            "env_type": "lite",
+            "event_scheduler_frequency": "@hourly",
+            "ibmproxyurl": "https://iaps.ibm.com",
+            "image_pull_secret": "bas-images-pull-secret",
+            "kafka": {
+              "storage#": "5G",
+              "storage_class": "ibmc-block-bronze",
+              "zookeeper_storage#": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze"
+            },
+            "postgres": {
+              "storage#": "10G",
+              "storage_class": "ibmc-block-bronze"
+            }
+          }
+        },
+        {
+          "api_version": "bas.ibm.com/v1",
+          "kind": "DeleteCluster",
+          "metadata": {
+            "name": "deletecluster"
+          },
+          "spec": {
+            "image_pull_secret": "bas-images-pull-secret"
+          }
+        },
+        {
+          "api_version": "bas.ibm.com/v1",
+          "kind": "FullDeployment",
+          "metadata": {
+            "name": "fulldeployment"
+          },
+          "spec": {
+            "airgapped": {
+              "backup_deletion_frequency": "@daily",
+              "backup_retention_period": 7,
+              "enabled": false
+            },
+            "allowed_domains": "*",
+            "db_archive": {
+              "frequency": "@monthly",
+              "persistent_storage": {
+                "storage#": "10G",
+                "storage_class": "ibmc-file-bronze-gid"
+              },
+              "retention_age": 6
+            },
+            "env_type": "lite",
+            "event_scheduler_frequency": "@hourly",
+            "ibmproxyurl": "https://iaps.ibm.com",
+            "image_pull_secret": "bas-images-pull-secret",
+            "kafka": {
+              "storage#": "5G",
+              "storage_class": "ibmc-block-bronze",
+              "zookeeper_storage#": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze"
+            },
+            "postgres": {
+              "storage#": "10G",
+              "storage_class": "ibmc-block-bronze"
+            },
+            "prometheus_metrics": [],
+            "prometheus_scheduler_frequency": "@daily"
+          }
+        },
+        {
+          "api_version": "bas.ibm.com/v1",
+          "kind": "GenerateKey",
+          "metadata": {
+            "name": "bas-api-key"
+          },
+          "spec": {
+            "image_pull_secret": "bas-images-pull-secret"
+          }
+        },
+        {
+          "api_version": "bas.ibm.com/v1",
+          "kind": "StoreForwardMetric",
+          "metadata": {
+            "name": "storeforwardmetric"
+          },
+          "spec": {
+            "db_archive": {
+              "frequency": "@monthly",
+              "persistent_storage": {
+                "storage#": "10G",
+                "storage_class": "ibmc-file-bronze-gid"
+              },
+              "retention_age": 6
+            },
+            "env_type": "lite",
+            "event_scheduler_frequency": "@hourly",
+            "ibmproxyurl": "https://iaps.ibm.com",
+            "image_pull_secret": "bas-images-pull-secret",
+            "postgres": {
+              "storage#": "10G",
+              "storage_class": "ibmc-block-bronze"
+            },
+            "prometheus_metrics": [],
+            "prometheus_scheduler_frequency": "@daily"
+          }
+        },
+        {
+          "api_version": "bas.ibm.com/v1",
+          "kind": "Dashboard",
+          "metadata": {
+            "name": "dashboard"
+          },
+          "spec": {
+            "enable_test_api": true,
+            "image_pull_secret": "bas-images-pull-secret"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm-edge/behavior-analytics-services-operator-bundle@sha256:c73665a97beb2f5def36868ecd42cf870d7a92a0f2f728099ec05dd3abf584d8",
+      "bundle_path_digest": "sha256:c73665a97beb2f5def36868ecd42cf870d7a92a0f2f728099ec05dd3abf584d8",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-07-09T17:44:37.554000+00:00",
+      "csv_description": "Behavior Analytics Services Operator is a service that collects, transforms and transmits product usage data.\nThe Operator supports deployments using-\nA. Dashboard\nB. Openshift portal or CLI\n\n**A. Dashboard**\n----\nWhen the Operator is installed, the Dashboard is installed too. Goto the Dashboard Custom Resource to get the URL to the Dashboard.\n\n\n**B. Openshift portal or CLI**\n----\n----\nFor manual installation using Openshift portal or CLI, follow the steps below\n\n\n**Pre-requisites**\n----\nStep 1: Create a new Project\n```sh\noc new-project <project-name>\n```\n\nStep 2: Create a secret named \"database-credentials\" for PostgreSQL DB\n```sh\n oc create secret generic database-credentials --from-literal=db_username=<DB Username> --from-literal=db_password=<DB Password> -n <project-name>\n```\n\nStep 3: [Optional] If the images require a secret to pull the container images, create a secret of type dockerconfigjson. Pass this secret name in the CR spec image\\_pull\\_secret\n```sh\noc create secret generic bas-images-pull-secret --from-file=.dockerconfigjson=<path/to/.docker/config.json>  --type=kubernetes.io/dockerconfigjson\n```\n\nStep 4: Create a secret named \"mtls-proxy-secret\" which has the client key and certificate to connect to IBM Proxy service. If you don't have certificates then refer link https://developers.cloudflare.com/access/service-auth/mtls-testing#generating-the-root-ca to create root and client certificates. Please ensure to share root certificate with edge@us.ibm.com to allow access to IBM proxy service using client certificate.\n```sh\noc create secret tls mtls-proxy-secret --key client-key.pem --cert client.pem\n```\n\n**Installing the Behavior Analytics Services**\n----\n\nSelect any one of the deployments to setup the Behavior Analytics Services\n1. Full Deployment\n2. Analytics Proxy Deployment\n3. Store and Forward metrics Deployment\n4. Airgapped Analytics Proxy Deployment\n\n| Spec                                                      | Description                                                      | Default Value          |\n| --------------------------------------------------------- | ------------------------------------------------------------ | ---------------------- |\n| `ibmproxyurl`                                               | URL of IBM Proxy Service                                     | `https://iaps.ibm.com`   |\n| `postgres.storage_class`                                    | Storage class of type ReadWriteOnce                          | Required user input        |\n| `postgres.size`                                             | Size (in G) of the storage to be attached to Database        | `10G`                    |\n| `kafka.storage_class`                                       | Storage class of type ReadWriteOnce                          | Required user input        |\n| `kafka.storage_size`                                        | Size (in G) of the storage to be attached to Kafka  | `5G`                     |\n| `kafka.zookeeper_storage_class`                                 | Storage class of type ReadWriteOnce                          | Required user input        |\n| `kafka.zookeeper_storage_size`                                 | Size (in G) of the storage to be attached to Zookeeper | `5G`                     |\n| `airgapped.enabled`                                         | Set value to \"true\" if airgapped setup is to be enabled otherwise keep the default value \"false\" | `false`                  |\n| `airgapped.backup_retention_period`   | Number of days to keep the backup files in the storage       | `7`                     |\n| `airgapped.backup_deletion_frequency` | Frequency of job to delete files from the storage. It accepts values in Cron format (https://en.wikipedia.org/wiki/Cron) | `@daily`                 |\n| `event_scheduler_frequency`                               | Frequency at which events will be forwarded to proxy in Cron format. In case if internet connection available on the cluster only during a certain time frame, specify time in UTC equivalent Cron format. | `@hourly`                |\n| `prometheus_scheduler_frequency`                          | Frequency in Cronjob format to pull metrics from Prometheus  | `@daily`                |\n| `image_pull_secret`                                       | Secret to pull container images from registry                | `bas-images-pull-secret` |\n| `db_archive.frequency`                                    | Frequency in Cronjob format to run archive job                                                           | `@monthly`             |\n| `db_archive.retention_age`                                | Number of months to retain the data in Database              | `6`                    |\n| `db_archive.persistent_storage.storage_class`             |Storage class of type ReadWriteMany         | Required user input    |\n| `db_archive.persistent_storage.storage_size`              | Size (in G) of the storage to be attached for saving airgapped files | `10G`                  |\n| `prometheus_metrics`                                      | Array of metrics information to be send to destination at desired frequency | []\n| `env_type`              | Type of environment. Can be **prod** (HA) or **lite** (non HA)   | `lite`                  |\n| `allowed_domains`                                         | Comma separated values of domains allowed by BAS. By default all domains are allowed | '*'\n\n\n**Generating the API Key**\n----\nOnce the deployment is complete, to use the Behavior Analytics Services Endpoints, generate an API key using the CR GenerateKey. This API key to be used to authenticate Behavior Analytics Services Endpoints.\n\nNote- Key can be retrieved from the secret with same name used while creating Generate Key CR's instance.\nOnce you get key from the secret, decode it using below command:\n```sh\necho -n <secret key> | base64 -d\n```\n\n**Deleting the API Key**\n----\nTo revoke the Key, delete the corresponding GenerateKey instance.\n\n**Using Behavior Analytics Services Endpoints**\n---\nFor all BAS APIs, use the Generated API Key for Authentication. Pass it as the Header- X-API-KEY and the key while using the APIs.",
+      "csv_display_name": "Behavior Analytics Services",
+      "csv_metadata_description": "Behavior Analytics Services is a service that collects, transforms and transmits product usage data.",
+      "csv_name": "behavior-analytics-services-operator.v1.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:42:24.609000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "behavior-analytics-services-operator-certified",
+      "provided_apis": [
+        {
+          "group": "bas.ibm.com",
+          "kind": "GenerateKey",
+          "plural": "generatekeys",
+          "version": "v1"
+        },
+        {
+          "group": "bas.ibm.com",
+          "kind": "StoreForwardMetric",
+          "plural": "storeforwardmetrics",
+          "version": "v1"
+        },
+        {
+          "group": "bas.ibm.com",
+          "kind": "AirgappedDeployment",
+          "plural": "airgappeddeployments",
+          "version": "v1"
+        },
+        {
+          "group": "bas.ibm.com",
+          "kind": "AnalyticsProxy",
+          "plural": "analyticsproxies",
+          "version": "v1"
+        },
+        {
+          "group": "bas.ibm.com",
+          "kind": "Dashboard",
+          "plural": "dashboards",
+          "version": "v1"
+        },
+        {
+          "group": "bas.ibm.com",
+          "kind": "DeleteCluster",
+          "plural": "deleteclusters",
+          "version": "v1"
+        },
+        {
+          "group": "bas.ibm.com",
+          "kind": "FullDeployment",
+          "plural": "fulldeployments",
+          "version": "v1"
+        }
+      ],
+      "provider": "IBM Digital Growth and Commerce",
+      "related_images": [
+        {
+          "digest": "sha256:8d56736a7de882786e0568659ffbf18879f3dc3125aee141072e9dfcd6e9579a",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:8d56736a7de882786e0568659ffbf18879f3dc3125aee141072e9dfcd6e9579a",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:52e3c8d530e2a0e3d7c37206579037e8354cf76bb880605a09d623a5754c0bca",
+          "image": "registry.connect.redhat.com/ibm-edge/behavior-analytics-services-operator@sha256:52e3c8d530e2a0e3d7c37206579037e8354cf76bb880605a09d623a5754c0bca",
+          "name": "behavior-analytics-services-operator"
+        },
+        {
+          "digest": "sha256:5bc5f622a05b8993785c996890b7e8b19ca680788e525ae9e7833e365c1774f9",
+          "image": "registry.redhat.io/openshift4/ose-cli@sha256:5bc5f622a05b8993785c996890b7e8b19ca680788e525ae9e7833e365c1774f9",
+          "name": "dashboardinstaller"
+        },
+        {
+          "digest": "sha256:13902a13f7bca0d346e1af4719ac0be4b92d8d283c2c35068ecc1f1dedd676ab",
+          "image": "registry.connect.redhat.com/ibm-edge/event-api@sha256:13902a13f7bca0d346e1af4719ac0be4b92d8d283c2c35068ecc1f1dedd676ab",
+          "name": "event_api"
+        },
+        {
+          "digest": "sha256:e5dc124a4e9c9b1a85fc421c557bdd071b25330a093c61ba7430d69d477fcd4b",
+          "image": "registry.connect.redhat.com/ibm-edge/store-api@sha256:e5dc124a4e9c9b1a85fc421c557bdd071b25330a093c61ba7430d69d477fcd4b",
+          "name": "store_api"
+        },
+        {
+          "digest": "sha256:819ffaf71e72b744cd9d8ce8fb40a60f1a2ada42c27bdfd160e6678b4538c38b",
+          "image": "registry.connect.redhat.com/ibm-edge/event-reader@sha256:819ffaf71e72b744cd9d8ce8fb40a60f1a2ada42c27bdfd160e6678b4538c38b",
+          "name": "reader"
+        },
+        {
+          "digest": "sha256:93dd46f5a4e7cf5ff2b9c440fb75147bd7dffb426ba261355f39adcf91d86117",
+          "image": "registry.connect.redhat.com/ibm-edge/event-scheduler@sha256:93dd46f5a4e7cf5ff2b9c440fb75147bd7dffb426ba261355f39adcf91d86117",
+          "name": "event_scheduler"
+        },
+        {
+          "digest": "sha256:b7feb7e1ab0faa1fe2ec0fc0ce7d823e5476e9f5c13d7ed6a4c1eff013bf07bc",
+          "image": "registry.connect.redhat.com/ibm-edge/prometheus-scheduler@sha256:b7feb7e1ab0faa1fe2ec0fc0ce7d823e5476e9f5c13d7ed6a4c1eff013bf07bc",
+          "name": "prometheus_scheduler"
+        },
+        {
+          "digest": "sha256:5af6f4603b6c5a173f75a408aabf806e660ce60ced5d3dbe76a0ccfcb01c78da",
+          "image": "registry.connect.redhat.com/ibm-edge/pgo-client@sha256:5af6f4603b6c5a173f75a408aabf806e660ce60ced5d3dbe76a0ccfcb01c78da",
+          "name": "pgo_client"
+        },
+        {
+          "digest": "sha256:865d9288eb8a2ab50c1e75bf7849b0a8e4b33d0f72a984eed22639a20aeb8c7d",
+          "image": "registry.connect.redhat.com/ibm-edge/reverse-proxy@sha256:865d9288eb8a2ab50c1e75bf7849b0a8e4b33d0f72a984eed22639a20aeb8c7d",
+          "name": "nginx"
+        },
+        {
+          "digest": "sha256:a2e20cac50352c1ad13cd03185f326484ee20202c8a60313ba116920d6d6da88",
+          "image": "registry.redhat.io/openshift4/ose-grafana@sha256:a2e20cac50352c1ad13cd03185f326484ee20202c8a60313ba116920d6d6da88",
+          "name": "grafana"
+        },
+        {
+          "digest": "sha256:4fc96dc7a835c37dd3441a2c78e094cbfff8ea7fc8432e99f979c00965184260",
+          "image": "registry.redhat.io/openshift3/ose-kube-state-metrics@sha256:4fc96dc7a835c37dd3441a2c78e094cbfff8ea7fc8432e99f979c00965184260",
+          "name": "ksm"
+        },
+        {
+          "digest": "sha256:e42df9b4eac95f43d4abafa1cdfe4ea471941cb884d454a58533f3650d667064",
+          "image": "registry.connect.redhat.com/ibm-edge/growth-stack-base@sha256:e42df9b4eac95f43d4abafa1cdfe4ea471941cb884d454a58533f3650d667064",
+          "name": "init_container"
+        },
+        {
+          "digest": "sha256:d748c21a55796827da82c61f162b505c59451cba24f1874e5185f21275b6bddc",
+          "image": "registry.access.redhat.com/ubi8/ubi@sha256:d748c21a55796827da82c61f162b505c59451cba24f1874e5185f21275b6bddc",
+          "name": "ubi"
+        },
+        {
+          "digest": "sha256:a05b0b82ca02f4cf731f0d18c1196084d8f3c1d4c78e5d4e6a2b593efe274bc7",
+          "image": "registry.connect.redhat.com/ibm-edge/airgap-download-ui@sha256:a05b0b82ca02f4cf731f0d18c1196084d8f3c1d4c78e5d4e6a2b593efe274bc7",
+          "name": "download_ui"
+        },
+        {
+          "digest": "sha256:0151e5dbe0a25e30a0f22b788329f35a918ab8649c59ebd3fa1e0d1dd0c3bb3f",
+          "image": "registry.connect.redhat.com/ibm-edge/bas-operator-dashboard@sha256:0151e5dbe0a25e30a0f22b788329f35a918ab8649c59ebd3fa1e0d1dd0c3bb3f",
+          "name": "dashboard_ui"
+        },
+        {
+          "digest": "sha256:5e31ce8745926e0116827b1b658800dd3e8b91cd1800be4f9943a84a1c023f78",
+          "image": "registry.redhat.io/openshift4/ose-oauth-proxy@sha256:5e31ce8745926e0116827b1b658800dd3e8b91cd1800be4f9943a84a1c023f78",
+          "name": "oauth_proxy"
+        },
+        {
+          "digest": "sha256:4c5f605669edc2125a6aea31c66c89cef524b57284eac302f35bbfa4680d1467",
+          "image": "registry.connect.redhat.com/crunchydata/pgo-deployer@sha256:4c5f605669edc2125a6aea31c66c89cef524b57284eac302f35bbfa4680d1467",
+          "name": "pgo_deployer"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.1.0",
+      "version_original": "1.1.0"
+    },
+    {
+      "_id": "60e8979e146e762beb225da2",
+      "alm_examples": [
+        {
+          "api_version": "bas.ibm.com/v1",
+          "kind": "AirgappedDeployment",
+          "metadata": {
+            "name": "airgappeddeployment"
+          },
+          "spec": {
+            "airgapped": {
+              "backup_deletion_frequency": "@daily",
+              "backup_retention_period": 7
+            },
+            "allowed_domains": "*",
+            "db_archive": {
+              "frequency": "@monthly",
+              "persistent_storage": {
+                "storage#": "10G",
+                "storage_class": "ibmc-file-bronze-gid"
+              },
+              "retention_age": 6
+            },
+            "env_type": "lite",
+            "event_scheduler_frequency": "@hourly",
+            "image_pull_secret": "bas-images-pull-secret",
+            "kafka": {
+              "storage#": "5G",
+              "storage_class": "ibmc-block-bronze",
+              "zookeeper_storage#": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze"
+            },
+            "postgres": {
+              "storage#": "10G",
+              "storage_class": "ibmc-block-bronze"
+            }
+          }
+        },
+        {
+          "api_version": "bas.ibm.com/v1",
+          "kind": "AnalyticsProxy",
+          "metadata": {
+            "name": "analyticsproxy"
+          },
+          "spec": {
+            "airgapped": {
+              "backup_deletion_frequency": "@daily",
+              "backup_retention_period": 7,
+              "enabled": false
+            },
+            "allowed_domains": "*",
+            "db_archive": {
+              "frequency": "@monthly",
+              "persistent_storage": {
+                "storage#": "10G",
+                "storage_class": "ibmc-file-bronze-gid"
+              },
+              "retention_age": 6
+            },
+            "env_type": "lite",
+            "event_scheduler_frequency": "@hourly",
+            "ibmproxyurl": "https://iaps.ibm.com",
+            "image_pull_secret": "bas-images-pull-secret",
+            "kafka": {
+              "storage#": "5G",
+              "storage_class": "ibmc-block-bronze",
+              "zookeeper_storage#": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze"
+            },
+            "postgres": {
+              "storage#": "10G",
+              "storage_class": "ibmc-block-bronze"
+            }
+          }
+        },
+        {
+          "api_version": "bas.ibm.com/v1",
+          "kind": "DeleteCluster",
+          "metadata": {
+            "name": "deletecluster"
+          },
+          "spec": {
+            "image_pull_secret": "bas-images-pull-secret"
+          }
+        },
+        {
+          "api_version": "bas.ibm.com/v1",
+          "kind": "FullDeployment",
+          "metadata": {
+            "name": "fulldeployment"
+          },
+          "spec": {
+            "airgapped": {
+              "backup_deletion_frequency": "@daily",
+              "backup_retention_period": 7,
+              "enabled": false
+            },
+            "allowed_domains": "*",
+            "db_archive": {
+              "frequency": "@monthly",
+              "persistent_storage": {
+                "storage#": "10G",
+                "storage_class": "ibmc-file-bronze-gid"
+              },
+              "retention_age": 6
+            },
+            "env_type": "lite",
+            "event_scheduler_frequency": "@hourly",
+            "ibmproxyurl": "https://iaps.ibm.com",
+            "image_pull_secret": "bas-images-pull-secret",
+            "kafka": {
+              "storage#": "5G",
+              "storage_class": "ibmc-block-bronze",
+              "zookeeper_storage#": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze"
+            },
+            "postgres": {
+              "storage#": "10G",
+              "storage_class": "ibmc-block-bronze"
+            },
+            "prometheus_metrics": [],
+            "prometheus_scheduler_frequency": "@daily"
+          }
+        },
+        {
+          "api_version": "bas.ibm.com/v1",
+          "kind": "GenerateKey",
+          "metadata": {
+            "name": "bas-api-key"
+          },
+          "spec": {
+            "image_pull_secret": "bas-images-pull-secret"
+          }
+        },
+        {
+          "api_version": "bas.ibm.com/v1",
+          "kind": "StoreForwardMetric",
+          "metadata": {
+            "name": "storeforwardmetric"
+          },
+          "spec": {
+            "db_archive": {
+              "frequency": "@monthly",
+              "persistent_storage": {
+                "storage#": "10G",
+                "storage_class": "ibmc-file-bronze-gid"
+              },
+              "retention_age": 6
+            },
+            "env_type": "lite",
+            "event_scheduler_frequency": "@hourly",
+            "ibmproxyurl": "https://iaps.ibm.com",
+            "image_pull_secret": "bas-images-pull-secret",
+            "postgres": {
+              "storage#": "10G",
+              "storage_class": "ibmc-block-bronze"
+            },
+            "prometheus_metrics": [],
+            "prometheus_scheduler_frequency": "@daily"
+          }
+        },
+        {
+          "api_version": "bas.ibm.com/v1",
+          "kind": "Dashboard",
+          "metadata": {
+            "name": "dashboard"
+          },
+          "spec": {
+            "enable_test_api": true,
+            "image_pull_secret": "bas-images-pull-secret"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm-edge/behavior-analytics-services-operator-bundle@sha256:c73665a97beb2f5def36868ecd42cf870d7a92a0f2f728099ec05dd3abf584d8",
+      "bundle_path_digest": "sha256:c73665a97beb2f5def36868ecd42cf870d7a92a0f2f728099ec05dd3abf584d8",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-07-09T18:38:22.939000+00:00",
+      "csv_description": "Behavior Analytics Services Operator is a service that collects, transforms and transmits product usage data.\nThe Operator supports deployments using-\nA. Dashboard\nB. Openshift portal or CLI\n\n**A. Dashboard**\n----\nWhen the Operator is installed, the Dashboard is installed too. Goto the Dashboard Custom Resource to get the URL to the Dashboard.\n\n\n**B. Openshift portal or CLI**\n----\n----\nFor manual installation using Openshift portal or CLI, follow the steps below\n\n\n**Pre-requisites**\n----\nStep 1: Create a new Project\n```sh\noc new-project <project-name>\n```\n\nStep 2: Create a secret named \"database-credentials\" for PostgreSQL DB\n```sh\n oc create secret generic database-credentials --from-literal=db_username=<DB Username> --from-literal=db_password=<DB Password> -n <project-name>\n```\n\nStep 3: [Optional] If the images require a secret to pull the container images, create a secret of type dockerconfigjson. Pass this secret name in the CR spec image\\_pull\\_secret\n```sh\noc create secret generic bas-images-pull-secret --from-file=.dockerconfigjson=<path/to/.docker/config.json>  --type=kubernetes.io/dockerconfigjson\n```\n\nStep 4: Create a secret named \"mtls-proxy-secret\" which has the client key and certificate to connect to IBM Proxy service. If you don't have certificates then refer link https://developers.cloudflare.com/access/service-auth/mtls-testing#generating-the-root-ca to create root and client certificates. Please ensure to share root certificate with edge@us.ibm.com to allow access to IBM proxy service using client certificate.\n```sh\noc create secret tls mtls-proxy-secret --key client-key.pem --cert client.pem\n```\n\n**Installing the Behavior Analytics Services**\n----\n\nSelect any one of the deployments to setup the Behavior Analytics Services\n1. Full Deployment\n2. Analytics Proxy Deployment\n3. Store and Forward metrics Deployment\n4. Airgapped Analytics Proxy Deployment\n\n| Spec                                                      | Description                                                      | Default Value          |\n| --------------------------------------------------------- | ------------------------------------------------------------ | ---------------------- |\n| `ibmproxyurl`                                               | URL of IBM Proxy Service                                     | `https://iaps.ibm.com`   |\n| `postgres.storage_class`                                    | Storage class of type ReadWriteOnce                          | Required user input        |\n| `postgres.size`                                             | Size (in G) of the storage to be attached to Database        | `10G`                    |\n| `kafka.storage_class`                                       | Storage class of type ReadWriteOnce                          | Required user input        |\n| `kafka.storage_size`                                        | Size (in G) of the storage to be attached to Kafka  | `5G`                     |\n| `kafka.zookeeper_storage_class`                                 | Storage class of type ReadWriteOnce                          | Required user input        |\n| `kafka.zookeeper_storage_size`                                 | Size (in G) of the storage to be attached to Zookeeper | `5G`                     |\n| `airgapped.enabled`                                         | Set value to \"true\" if airgapped setup is to be enabled otherwise keep the default value \"false\" | `false`                  |\n| `airgapped.backup_retention_period`   | Number of days to keep the backup files in the storage       | `7`                     |\n| `airgapped.backup_deletion_frequency` | Frequency of job to delete files from the storage. It accepts values in Cron format (https://en.wikipedia.org/wiki/Cron) | `@daily`                 |\n| `event_scheduler_frequency`                               | Frequency at which events will be forwarded to proxy in Cron format. In case if internet connection available on the cluster only during a certain time frame, specify time in UTC equivalent Cron format. | `@hourly`                |\n| `prometheus_scheduler_frequency`                          | Frequency in Cronjob format to pull metrics from Prometheus  | `@daily`                |\n| `image_pull_secret`                                       | Secret to pull container images from registry                | `bas-images-pull-secret` |\n| `db_archive.frequency`                                    | Frequency in Cronjob format to run archive job                                                           | `@monthly`             |\n| `db_archive.retention_age`                                | Number of months to retain the data in Database              | `6`                    |\n| `db_archive.persistent_storage.storage_class`             |Storage class of type ReadWriteMany         | Required user input    |\n| `db_archive.persistent_storage.storage_size`              | Size (in G) of the storage to be attached for saving airgapped files | `10G`                  |\n| `prometheus_metrics`                                      | Array of metrics information to be send to destination at desired frequency | []\n| `env_type`              | Type of environment. Can be **prod** (HA) or **lite** (non HA)   | `lite`                  |\n| `allowed_domains`                                         | Comma separated values of domains allowed by BAS. By default all domains are allowed | '*'\n\n\n**Generating the API Key**\n----\nOnce the deployment is complete, to use the Behavior Analytics Services Endpoints, generate an API key using the CR GenerateKey. This API key to be used to authenticate Behavior Analytics Services Endpoints.\n\nNote- Key can be retrieved from the secret with same name used while creating Generate Key CR's instance.\nOnce you get key from the secret, decode it using below command:\n```sh\necho -n <secret key> | base64 -d\n```\n\n**Deleting the API Key**\n----\nTo revoke the Key, delete the corresponding GenerateKey instance.\n\n**Using Behavior Analytics Services Endpoints**\n---\nFor all BAS APIs, use the Generated API Key for Authentication. Pass it as the Header- X-API-KEY and the key while using the APIs.",
+      "csv_display_name": "Behavior Analytics Services",
+      "csv_metadata_description": "Behavior Analytics Services is a service that collects, transforms and transmits product usage data.",
+      "csv_name": "behavior-analytics-services-operator.v1.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:31:26.374000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "behavior-analytics-services-operator-certified",
+      "provided_apis": [
+        {
+          "group": "bas.ibm.com",
+          "kind": "AirgappedDeployment",
+          "plural": "airgappeddeployments",
+          "version": "v1"
+        },
+        {
+          "group": "bas.ibm.com",
+          "kind": "AnalyticsProxy",
+          "plural": "analyticsproxies",
+          "version": "v1"
+        },
+        {
+          "group": "bas.ibm.com",
+          "kind": "Dashboard",
+          "plural": "dashboards",
+          "version": "v1"
+        },
+        {
+          "group": "bas.ibm.com",
+          "kind": "DeleteCluster",
+          "plural": "deleteclusters",
+          "version": "v1"
+        },
+        {
+          "group": "bas.ibm.com",
+          "kind": "FullDeployment",
+          "plural": "fulldeployments",
+          "version": "v1"
+        },
+        {
+          "group": "bas.ibm.com",
+          "kind": "GenerateKey",
+          "plural": "generatekeys",
+          "version": "v1"
+        },
+        {
+          "group": "bas.ibm.com",
+          "kind": "StoreForwardMetric",
+          "plural": "storeforwardmetrics",
+          "version": "v1"
+        }
+      ],
+      "provider": "IBM Digital Growth and Commerce",
+      "related_images": [
+        {
+          "digest": "sha256:8d56736a7de882786e0568659ffbf18879f3dc3125aee141072e9dfcd6e9579a",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:8d56736a7de882786e0568659ffbf18879f3dc3125aee141072e9dfcd6e9579a",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:52e3c8d530e2a0e3d7c37206579037e8354cf76bb880605a09d623a5754c0bca",
+          "image": "registry.connect.redhat.com/ibm-edge/behavior-analytics-services-operator@sha256:52e3c8d530e2a0e3d7c37206579037e8354cf76bb880605a09d623a5754c0bca",
+          "name": "behavior-analytics-services-operator"
+        },
+        {
+          "digest": "sha256:5bc5f622a05b8993785c996890b7e8b19ca680788e525ae9e7833e365c1774f9",
+          "image": "registry.redhat.io/openshift4/ose-cli@sha256:5bc5f622a05b8993785c996890b7e8b19ca680788e525ae9e7833e365c1774f9",
+          "name": "dashboardinstaller"
+        },
+        {
+          "digest": "sha256:13902a13f7bca0d346e1af4719ac0be4b92d8d283c2c35068ecc1f1dedd676ab",
+          "image": "registry.connect.redhat.com/ibm-edge/event-api@sha256:13902a13f7bca0d346e1af4719ac0be4b92d8d283c2c35068ecc1f1dedd676ab",
+          "name": "event_api"
+        },
+        {
+          "digest": "sha256:e5dc124a4e9c9b1a85fc421c557bdd071b25330a093c61ba7430d69d477fcd4b",
+          "image": "registry.connect.redhat.com/ibm-edge/store-api@sha256:e5dc124a4e9c9b1a85fc421c557bdd071b25330a093c61ba7430d69d477fcd4b",
+          "name": "store_api"
+        },
+        {
+          "digest": "sha256:819ffaf71e72b744cd9d8ce8fb40a60f1a2ada42c27bdfd160e6678b4538c38b",
+          "image": "registry.connect.redhat.com/ibm-edge/event-reader@sha256:819ffaf71e72b744cd9d8ce8fb40a60f1a2ada42c27bdfd160e6678b4538c38b",
+          "name": "reader"
+        },
+        {
+          "digest": "sha256:93dd46f5a4e7cf5ff2b9c440fb75147bd7dffb426ba261355f39adcf91d86117",
+          "image": "registry.connect.redhat.com/ibm-edge/event-scheduler@sha256:93dd46f5a4e7cf5ff2b9c440fb75147bd7dffb426ba261355f39adcf91d86117",
+          "name": "event_scheduler"
+        },
+        {
+          "digest": "sha256:b7feb7e1ab0faa1fe2ec0fc0ce7d823e5476e9f5c13d7ed6a4c1eff013bf07bc",
+          "image": "registry.connect.redhat.com/ibm-edge/prometheus-scheduler@sha256:b7feb7e1ab0faa1fe2ec0fc0ce7d823e5476e9f5c13d7ed6a4c1eff013bf07bc",
+          "name": "prometheus_scheduler"
+        },
+        {
+          "digest": "sha256:5af6f4603b6c5a173f75a408aabf806e660ce60ced5d3dbe76a0ccfcb01c78da",
+          "image": "registry.connect.redhat.com/ibm-edge/pgo-client@sha256:5af6f4603b6c5a173f75a408aabf806e660ce60ced5d3dbe76a0ccfcb01c78da",
+          "name": "pgo_client"
+        },
+        {
+          "digest": "sha256:865d9288eb8a2ab50c1e75bf7849b0a8e4b33d0f72a984eed22639a20aeb8c7d",
+          "image": "registry.connect.redhat.com/ibm-edge/reverse-proxy@sha256:865d9288eb8a2ab50c1e75bf7849b0a8e4b33d0f72a984eed22639a20aeb8c7d",
+          "name": "nginx"
+        },
+        {
+          "digest": "sha256:a2e20cac50352c1ad13cd03185f326484ee20202c8a60313ba116920d6d6da88",
+          "image": "registry.redhat.io/openshift4/ose-grafana@sha256:a2e20cac50352c1ad13cd03185f326484ee20202c8a60313ba116920d6d6da88",
+          "name": "grafana"
+        },
+        {
+          "digest": "sha256:4fc96dc7a835c37dd3441a2c78e094cbfff8ea7fc8432e99f979c00965184260",
+          "image": "registry.redhat.io/openshift3/ose-kube-state-metrics@sha256:4fc96dc7a835c37dd3441a2c78e094cbfff8ea7fc8432e99f979c00965184260",
+          "name": "ksm"
+        },
+        {
+          "digest": "sha256:e42df9b4eac95f43d4abafa1cdfe4ea471941cb884d454a58533f3650d667064",
+          "image": "registry.connect.redhat.com/ibm-edge/growth-stack-base@sha256:e42df9b4eac95f43d4abafa1cdfe4ea471941cb884d454a58533f3650d667064",
+          "name": "init_container"
+        },
+        {
+          "digest": "sha256:d748c21a55796827da82c61f162b505c59451cba24f1874e5185f21275b6bddc",
+          "image": "registry.access.redhat.com/ubi8/ubi@sha256:d748c21a55796827da82c61f162b505c59451cba24f1874e5185f21275b6bddc",
+          "name": "ubi"
+        },
+        {
+          "digest": "sha256:a05b0b82ca02f4cf731f0d18c1196084d8f3c1d4c78e5d4e6a2b593efe274bc7",
+          "image": "registry.connect.redhat.com/ibm-edge/airgap-download-ui@sha256:a05b0b82ca02f4cf731f0d18c1196084d8f3c1d4c78e5d4e6a2b593efe274bc7",
+          "name": "download_ui"
+        },
+        {
+          "digest": "sha256:0151e5dbe0a25e30a0f22b788329f35a918ab8649c59ebd3fa1e0d1dd0c3bb3f",
+          "image": "registry.connect.redhat.com/ibm-edge/bas-operator-dashboard@sha256:0151e5dbe0a25e30a0f22b788329f35a918ab8649c59ebd3fa1e0d1dd0c3bb3f",
+          "name": "dashboard_ui"
+        },
+        {
+          "digest": "sha256:5e31ce8745926e0116827b1b658800dd3e8b91cd1800be4f9943a84a1c023f78",
+          "image": "registry.redhat.io/openshift4/ose-oauth-proxy@sha256:5e31ce8745926e0116827b1b658800dd3e8b91cd1800be4f9943a84a1c023f78",
+          "name": "oauth_proxy"
+        },
+        {
+          "digest": "sha256:4c5f605669edc2125a6aea31c66c89cef524b57284eac302f35bbfa4680d1467",
+          "image": "registry.connect.redhat.com/crunchydata/pgo-deployer@sha256:4c5f605669edc2125a6aea31c66c89cef524b57284eac302f35bbfa4680d1467",
+          "name": "pgo_deployer"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.1.0",
+      "version_original": "1.1.0"
+    },
+    {
+      "_id": "60e8c0d8ba43af88444a3fe1",
+      "alm_examples": [
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCluster",
+          "metadata": {
+            "name": "cb-example"
+          },
+          "spec": {
+            "backup": {
+              "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+              "managed": false,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              },
+              "serviceAccountName": "couchbase-backup"
+            },
+            "buckets": {
+              "managed": true,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              }
+            },
+            "cluster": {
+              "analyticsServiceMemoryQuota": "1Gi",
+              "autoCompaction": {
+                "databaseFragmentationThreshold": {
+                  "percent": 30,
+                  "size": "1Gi"
+                },
+                "parallelCompaction": false,
+                "timeWindow": {
+                  "abortCompactionOutsideWindow": true,
+                  "end": "06:00",
+                  "start": "02:00"
+                },
+                "tombstonePurgeInterval": "72h",
+                "viewFragmentationThreshold": {
+                  "percent": 30,
+                  "size": "1Gi"
+                }
+              },
+              "autoFailoverMaxCount": 3,
+              "autoFailoverOnDataDiskIssues": true,
+              "autoFailoverOnDataDiskIssuesTimePeriod": "120s",
+              "autoFailoverServerGroup": false,
+              "autoFailoverTimeout": "120s",
+              "clusterName": "cb-example",
+              "dataServiceMemoryQuota": "256Mi",
+              "eventingServiceMemoryQuota": "256Mi",
+              "indexServiceMemoryQuota": "256Mi",
+              "indexStorageSetting": "memory_optimized",
+              "searchServiceMemoryQuota": "256Mi"
+            },
+            "enablePreviewScaling": false,
+            "hibernate": false,
+            "hibernationStrategy": "Immediate",
+            "image": "registry.connect.redhat.com/couchbase/server@sha256:c94326da3435265666a4e332c6c5e78ddf74777cb64e1e8728d237c6b5008c15",
+            "logRetentionCount": 20,
+            "logRetentionTime": "604800s",
+            "monitoring": {
+              "prometheus": {
+                "enabled": false,
+                "image": "registry.connect.redhat.com/couchbase/exporter@sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784"
+              }
+            },
+            "networking": {
+              "adminConsoleServiceType": "NodePort",
+              "adminConsoleServices": [
+                "data"
+              ],
+              "exposeAdminConsole": true,
+              "exposedFeatureServiceType": "NodePort",
+              "exposedFeatures": [
+                "xdcr"
+              ]
+            },
+            "recoveryPolicy": "PrioritizeDataIntegrity",
+            "security": {
+              "adminSecret": "cb-example-auth",
+              "rbac": {
+                "managed": true,
+                "selector": {
+                  "matchLabels": {
+                    "cluster": "cb-example"
+                  }
+                }
+              }
+            },
+            "servers": [
+              {
+                "name": "all_services",
+                "services": [
+                  "data",
+                  "index",
+                  "query",
+                  "search",
+                  "eventing",
+                  "analytics"
+                ],
+                "size": 3
+              }
+            ],
+            "upgradeStrategy": "RollingUpgrade",
+            "xdcr": {
+              "managed": false,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              }
+            }
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "default"
+          },
+          "spec": {
+            "compressionMode": "passive",
+            "conflictResolution": "lww",
+            "enableFlush": false,
+            "enableIndexReplica": true,
+            "evictionPolicy": "valueOnly",
+            "ioPriority": "low",
+            "memoryQuota": "100Mi",
+            "replicas": 2
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseEphemeralBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "ephemeral-bucket"
+          },
+          "spec": {
+            "compressionMode": "passive",
+            "conflictResolution": "lww",
+            "enableFlush": false,
+            "evictionPolicy": "noEviction",
+            "ioPriority": "low",
+            "memoryQuota": "100Mi",
+            "replicas": 2
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseMemcachedBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "memcached-bucket"
+          },
+          "spec": {
+            "enableFlush": false,
+            "memoryQuota": "100Mi"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseUser",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-user"
+          },
+          "spec": {
+            "authDomain": "local",
+            "authSecret": "cb-example-auth",
+            "fullName": "My User"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseGroup",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-group"
+          },
+          "spec": {
+            "roles": [
+              {
+                "bucket": "default",
+                "name": "bucket_admin"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseRoleBinding",
+          "metadata": {
+            "name": "my-role-binding"
+          },
+          "spec": {
+            "roleRef": {
+              "kind": "CouchbaseGroup",
+              "name": "my-group"
+            },
+            "subjects": [
+              {
+                "kind": "CouchbaseUser",
+                "name": "my-user"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseReplication",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-replication"
+          },
+          "spec": {
+            "bucket": "default",
+            "compressionType": "Snappy",
+            "filterExpression": "",
+            "paused": false,
+            "remoteBucket": "default"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBackup",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "cb-backup"
+          },
+          "spec": {
+            "backOffLimit": 2,
+            "backupRetention": "24h",
+            "failedJobsHistoryLimit": 3,
+            "full": {
+              "schedule": "0 3 * * 6"
+            },
+            "incremental": {
+              "schedule": "0 3 * * 1-6"
+            },
+            "logRetention": "24h",
+            "size": "5Gi",
+            "strategy": "full_incremental",
+            "successfulJobsHistoryLimit": 1
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBackupRestore",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "cb-restore"
+          },
+          "spec": {
+            "backOffLimit": 2,
+            "backup": "cb-backup",
+            "end": {
+              "int": 1
+            },
+            "logRetention": "24h",
+            "repo": "cb-example-2020-10-29T19_00_03",
+            "start": {
+              "int": 1
+            }
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseAutoscaler",
+          "metadata": {
+            "name": "do.not.create.internal.only"
+          },
+          "spec": {
+            "servers": "internal",
+            "size": 2
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:69c9d29a8a5ba4eac037051a256a458d5772fca8b813c764ddbe02f80d89b76f",
+      "bundle_path_digest": "sha256:69c9d29a8a5ba4eac037051a256a458d5772fca8b813c764ddbe02f80d89b76f",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-07-09T21:34:16.912000+00:00",
+      "csv_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments on OpenShift. By installing this integration you will be able to deply Couchbase Server clusters with a single command.\n\n## Supported Features\n\n* **Automated cluster provisioning** - Deploying a Couchbase Cluster has never been easier. Fill out a Couchbase specific configuration and let the Couchbase Operator take care of provisioning nodes and setting up cluster to your exact specification.\n\n* **On-demand scalability** - Automatically scale your cluster up or down by changing a simple configuration parameter and let the Couchbase Operator handle provisioning of new nodes and joining them into the cluster.\n\n* **Auto-recovery** - Detect Couchbase node failures, rebalance out bad nodes, and bring the cluster back up to the desired capacity. Auto-recovery is completely automated so you can sleep easy through the night knowing that the Couchbase Operator will handle any failures.\n\n* **Geo-distribution** - Replicate your data between datacenters to move data closer to the users who consume it and protect against disaster scenarios where an entire datacenter becomes unavailable.\n\n* **Persistent storage** - Define persistent network-attached storage for each node in your cluster to allow pods to be recovered even if the node they were running on is no longer available.\n\n* **Rack/zone awareness** - Tell the Couchbase Operator about availability zones in your datacenter and let the operator take care of ensuring that nodes in your cluster are deployed equally across each zone.\n\n* **Supportability** - When things go wrong, use the cbopinfo tool provided with the Couchbase Operator to collect relevant data about your Couchbase deployment so that you can quickly address issues.\n\n* **Centralized configuration management** - Manage your configuration centrally with OpenShift. Updates to the configuration are watched by the Couchbase Operator and actions are taken to make the target cluster match the desired configuration.\n## Required Parameters\n* `authSecret` - provide the name of a secret that contains two keys for the `username` and `password` of the super user ([documentation](https://docs.couchbase.com/operator/1.2/couchbase-cluster-config.html))\n\n## About Couchbase Server\n\nBuilt on the most powerful NoSQL technology, Couchbase Server delivers unparalleled performance at scale, in any cloud. With features like memory-first architecture, geo-distributed deployments, and workload isolation, Couchbase Server excels at supporting mission-critical applications at scale while maintaining submillisecond latencies and 99.999% availability. Plus, with the most comprehensive SQL-compatible query language (N1QL), migrating from RDBMS to Couchbase Server is easy with ANSI joins.\n",
+      "csv_display_name": "Couchbase Operator",
+      "csv_metadata_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments",
+      "csv_name": "couchbase-operator.v2.2.0-1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:30:42.539000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "couchbase-enterprise-certified",
+      "provided_apis": [
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBucket",
+          "plural": "couchbasebuckets",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCluster",
+          "plural": "couchbaseclusters",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseGroup",
+          "plural": "couchbasegroups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseMemcachedBucket",
+          "plural": "couchbasememcachedbuckets",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseUser",
+          "plural": "couchbaseusers",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseAutoscaler",
+          "plural": "couchbaseautoscalers",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackupRestore",
+          "plural": "couchbasebackuprestores",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseReplication",
+          "plural": "couchbasereplications",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseRoleBinding",
+          "plural": "couchbaserolebindings",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackup",
+          "plural": "couchbasebackups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseEphemeralBucket",
+          "plural": "couchbaseephemeralbuckets",
+          "version": "v2"
+        }
+      ],
+      "provider": "Couchbase",
+      "related_images": [
+        {
+          "digest": "sha256:59c872ac4b19b5086a47ce95675f11df2925aa0c5d3dc0afda8df4599a8b0649",
+          "image": "registry.connect.redhat.com/couchbase/operator@sha256:59c872ac4b19b5086a47ce95675f11df2925aa0c5d3dc0afda8df4599a8b0649",
+          "name": "operator-59c872ac4b19b5086a47ce95675f11df2925aa0c5d3dc0afda8df4599a8b0649-annotation"
+        },
+        {
+          "digest": "sha256:59c872ac4b19b5086a47ce95675f11df2925aa0c5d3dc0afda8df4599a8b0649",
+          "image": "registry.connect.redhat.com/couchbase/operator@sha256:59c872ac4b19b5086a47ce95675f11df2925aa0c5d3dc0afda8df4599a8b0649",
+          "name": "couchbase-operator"
+        },
+        {
+          "digest": "sha256:187046a848f32233e7e92705c57fa864b1d373c2078a92b51c9706bec6e372e5",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:187046a848f32233e7e92705c57fa864b1d373c2078a92b51c9706bec6e372e5",
+          "name": "couchbase_server"
+        },
+        {
+          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "name": "couchbase_backup"
+        },
+        {
+          "digest": "sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784",
+          "name": "couchbase_metrics"
+        },
+        {
+          "digest": "sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784",
+          "name": "exporter-b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784-annotation"
+        },
+        {
+          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "name": "operator-backup-c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76-annotation"
+        },
+        {
+          "digest": "sha256:c94326da3435265666a4e332c6c5e78ddf74777cb64e1e8728d237c6b5008c15",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:c94326da3435265666a4e332c6c5e78ddf74777cb64e1e8728d237c6b5008c15",
+          "name": "server-c94326da3435265666a4e332c6c5e78ddf74777cb64e1e8728d237c6b5008c15-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "2.2.0-1",
+      "version_original": "2.2.0-1"
     }
   ]
 }

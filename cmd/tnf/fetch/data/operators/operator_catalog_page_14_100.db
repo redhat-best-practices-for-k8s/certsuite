@@ -1,897 +1,6 @@
 {
   "data": [
     {
-      "_id": "611fbdd5bd674341b5c5f132",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1alpha1",
-          "kind": "OpenshiftArtifactoryHa",
-          "metadata": {
-            "name": "openshiftartifactoryha"
-          },
-          "spec": {
-            "artifactory-ha": {
-              "artifactory": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/artifactory-pro",
-                  "tag": "7.9.0"
-                },
-                "joinKey": "OVERRIDE",
-                "masterKey": "OVERRIDE",
-                "node": {
-                  "replicaCount": 2,
-                  "waitForPrimaryStartup": {
-                    "enabled": false
-                  }
-                },
-                "uid": "1000721030"
-              },
-              "database": {
-                "driver": "OVERRIDE",
-                "password": "OVERRIDE",
-                "type": "OVERRIDE",
-                "url": "OVERRIDE",
-                "user": "OVERRIDE"
-              },
-              "initContainerImage": "registry.connect.redhat.com/jfrog/init@sha256:197f5a1e7a3dd934e72a03a106f0de83e992e6926a774e26483c06fa46faeee5",
-              "nginx": {
-                "gid": "1000720107",
-                "http": {
-                  "externalPort": 80,
-                  "internalPort": 8080
-                },
-                "https": {
-                  "externalPort": 443,
-                  "internalPort": 8443
-                },
-                "image": {
-                  "registry": "registry.redhat.io",
-                  "repository": "rhel8/nginx-116",
-                  "tag": "latest"
-                },
-                "service": {
-                  "ssloffload": false
-                },
-                "tlsSecretName": "OVERRIDE",
-                "uid": "1000720104"
-              },
-              "postgresql": {
-                "enabled": false
-              },
-              "waitForDatabase": true
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "quay.io/rhc4tp/artifactory-operator-bundle@sha256:95fd797214f4a3f2580d108287f225c1982af2741e4a96ffa787e29692073d20",
-      "bundle_path_digest": "sha256:95fd797214f4a3f2580d108287f225c1982af2741e4a96ffa787e29692073d20",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-08-20T14:36:05.878000+00:00",
-      "csv_description": "## Overview\nOpenshift Operator to deploy JFrog Artifactory Enterprise into your Openshift cluster.\n\n## Usage\n\nAn external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it.\n\nSearch for JFrog and click JFrog Artifactory Enterprise Operator to install.\n\nGo to the Installed Operators.\n\nWait for the JFrog Artifactory Enterprise Operator to complete the installation.\n\nOpen the Operator and click on the provided API: Artifactory HA.\n\nClick Create New Instance and provide the following parameters for your DB configuration:\n\n```\nDATABASE_TYPE\nDATABASE_DRIVER\nDATABASE_URL\nDATABASE_USER\nDATABASE_PASSWORD\n```\nMaster key and Join key must be supplied. To generate a new key for each run the command below:\n``` # Create a key export JOIN_KEY=$(openssl rand -hex 32) echo ${JOIN_KEY} ```\nTo use TLS you will need to first create a k8s tls secret to store your .crt and .key file into.\nThen supply the value of this k8s secret into the TLS_SECRET field.\nClick Create for Artifactory Enterprise to deploy into OpenShift and connect to it on the external IP exposed by the load balancer.\n",
-      "csv_display_name": "JFrog Artifactory Enterprise Operator",
-      "csv_metadata_description": "JFrog Artifactory Enterprise deploys Artifactory in a high availability environment across multiple pods",
-      "csv_name": "artifactory-ha-operator.v1.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:43:31.966000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "openshiftartifactoryha-operator",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "OpenshiftArtifactoryHa",
-          "plural": "openshiftartifactoryhas",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "JFrog",
-      "related_images": [
-        {
-          "digest": "sha256:376f2922911113a0e217614e1f0d26672d62258170b7ae1dcad0fdd596e035a6",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:376f2922911113a0e217614e1f0d26672d62258170b7ae1dcad0fdd596e035a6",
-          "name": "artifactory-operator-376f2922911113a0e217614e1f0d26672d62258170b7ae1dcad0fdd596e035a6-annotation"
-        },
-        {
-          "digest": "sha256:376f2922911113a0e217614e1f0d26672d62258170b7ae1dcad0fdd596e035a6",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:376f2922911113a0e217614e1f0d26672d62258170b7ae1dcad0fdd596e035a6",
-          "name": "artifactory-ha-operator"
-        },
-        {
-          "digest": "sha256:f0b061c4126f58b70ddaf39a3c5cc009be21b75ac4530ec5088a40d1e6f50e3e",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-pro@sha256:f0b061c4126f58b70ddaf39a3c5cc009be21b75ac4530ec5088a40d1e6f50e3e",
-          "name": "artifactory_image_repository"
-        },
-        {
-          "digest": "sha256:0ba76a7b26e5ffb95b4354243337ac2b3ff84ae8637c0782631084d1b2f99a33",
-          "image": "registry.redhat.io/rhel8/nginx-116@sha256:0ba76a7b26e5ffb95b4354243337ac2b3ff84ae8637c0782631084d1b2f99a33",
-          "name": "nginx_image_repository"
-        },
-        {
-          "digest": "sha256:197f5a1e7a3dd934e72a03a106f0de83e992e6926a774e26483c06fa46faeee5",
-          "image": "registry.connect.redhat.com/jfrog/init@sha256:197f5a1e7a3dd934e72a03a106f0de83e992e6926a774e26483c06fa46faeee5",
-          "name": "init-197f5a1e7a3dd934e72a03a106f0de83e992e6926a774e26483c06fa46faeee5-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.1.0",
-      "version_original": "1.1.0"
-    },
-    {
-      "_id": "611fbdf6bd674341b5c5f140",
-      "alm_examples": [
-        {
-          "api_version": "entando.org/v1",
-          "kind": "EntandoDeBundle",
-          "metadata": {
-            "name": "my-bundle",
-            "namespace": "my-namespace"
-          },
-          "spec": {
-            "details": {
-              "name": "my-bundle"
-            }
-          }
-        },
-        {
-          "api_version": "entando.org/v1",
-          "kind": "EntandoDatabaseService",
-          "metadata": {
-            "name": "my-entando-database-service",
-            "namespace": "my-namespace"
-          },
-          "spec": {
-            "createDeployment": true,
-            "databaseName": "my_database",
-            "dbms": "postgresql"
-          }
-        },
-        {
-          "api_version": "entando.org/v1",
-          "kind": "EntandoKeycloakServer",
-          "metadata": {
-            "name": "my-keycloak",
-            "namespace": "my-namespace"
-          },
-          "spec": {
-            "dbms": "postgresql",
-            "environmentVariables": [],
-            "replicas": 1,
-            "standardImage": "redhat-sso"
-          }
-        },
-        {
-          "api_version": "entando.org/v1",
-          "kind": "EntandoClusterInfrastructure",
-          "metadata": {
-            "name": "my-entando-cluster-infrastructure",
-            "namespace": "my-namespace"
-          },
-          "spec": {
-            "environmentVariables": [],
-            "replicas": 1
-          }
-        },
-        {
-          "api_version": "entando.org/v1",
-          "kind": "EntandoPlugin",
-          "metadata": {
-            "name": "my-entando-plugin",
-            "namespace": "my-namespace"
-          },
-          "spec": {
-            "dbms": "postgresql",
-            "healthCheckPath": "/management/health",
-            "image": "entando/entando-avatar-plugin:6.0.5",
-            "ingressHostName": "my-plugin.apps-crc.testing",
-            "ingressPath": "/avatarPlugin",
-            "replicas": 1,
-            "roles": [
-              {
-                "code": "admin",
-                "name": "user"
-              },
-              {
-                "code": "user",
-                "name": "user"
-              }
-            ],
-            "securityLevel": "strict"
-          }
-        },
-        {
-          "api_version": "entando.org/v1",
-          "kind": "EntandoApp",
-          "metadata": {
-            "name": "my-app",
-            "namespace": "my-namespace"
-          },
-          "spec": {
-            "dbms": "postgresql",
-            "environmentVariables": [],
-            "ingressHostName": "my-app.apps-crc.testing",
-            "replicas": 1,
-            "standardServerImage": "eap"
-          }
-        },
-        {
-          "api_version": "entando.org/v1",
-          "kind": "EntandoAppPluginLink",
-          "metadata": {
-            "name": "my-link",
-            "namespace": "my-namespace"
-          },
-          "spec": {
-            "entandoAppName": "my-app",
-            "entandoPluginName": "my-plugin"
-          }
-        },
-        {
-          "api_version": "entando.org/v1",
-          "kind": "EntandoCompositeApp",
-          "metadata": {
-            "name": "my-entando-composite-app",
-            "namespace": "my-namespace"
-          },
-          "spec": {
-            "components": [
-              {
-                "kind": "EntandoDatabaseService",
-                "metadata": {
-                  "name": "inline-entando-database-service"
-                },
-                "spec": {
-                  "createDeployment": true
-                }
-              },
-              {
-                "kind": "EntandoKeycloakServer",
-                "metadata": {
-                  "name": "inline-keycloak"
-                },
-                "spec": {
-                  "standardImage": "redhat-sso"
-                }
-              },
-              {
-                "kind": "EntandoClusterInfrastructure",
-                "metadata": {
-                  "name": "inline-entando-cluster-infrastructure"
-                },
-                "spec": {}
-              },
-              {
-                "kind": "EntandoApp",
-                "metadata": {
-                  "name": "inline-app"
-                },
-                "spec": {
-                  "standardServerImage": "eap"
-                }
-              },
-              {
-                "kind": "EntandoPlugin",
-                "metadata": {
-                  "name": "inline-plugin"
-                },
-                "spec": {
-                  "healthCheckPath": "/management/health",
-                  "image": "entando/entando-avatar-plugin:6.0.5",
-                  "ingressPath": "/avatarPlugin",
-                  "roles": [
-                    {
-                      "code": "admin",
-                      "name": "admin"
-                    },
-                    {
-                      "code": "user",
-                      "name": "user"
-                    }
-                  ]
-                }
-              },
-              {
-                "kind": "EntandoAppPluginLink",
-                "metadata": {
-                  "name": "inline-link"
-                },
-                "spec": {
-                  "entandoAppName": "inline-app",
-                  "entandoPluginName": "inline-plugin"
-                }
-              }
-            ],
-            "dbmsOverride": "postgresql",
-            "ingressHostNameOverride": "entando.apps-crc.testing"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/entando/entando-operator@sha256:66f8db604ac4d104cd88d786c4a9437dd1a22b3d7f8fd856c1251191f7d4856a",
-      "bundle_path_digest": "sha256:66f8db604ac4d104cd88d786c4a9437dd1a22b3d7f8fd856c1251191f7d4856a",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2021-08-20T14:36:38.242000+00:00",
-      "csv_description": "## Entando\n\nThe Entando platform accelerates the development and lifecycle  management of fully modularized applications on Kubernetes. It  provides tools to help developers create and manage applications  using modular frontend and backend components.\nThe Entando Operator automates the installation, provisioning, and  configuration management of the components that make up an Entando  application. Specifically, the operator manages the following custom  resources:\n**EntandoKeycloakServers** for centralized authentication of frontend  and backend components. The operator can deploy Keycloak, or in certified  environments, Red Hat SSO servers that can then be used by subsequent  deployments as an OpenID Connect provider.\n**EntandoApps** for hosting an Entando application. EntandoApps are hosted on Wildfly or JBoss EAP containers, and can also be used to deploy custom  EntandoApp containers.\n**EntandoPlugins** for deploying microservices to customize or enhance your EntandoApp. Entando microservice plugins are deployed to your cluster, and  then linked to one or more EntandoApps.\n## Using the Operator\nThe Entando Operator can be deployed using the default settings without any  configuration. Once deployed, the operator can be customized by editing  the *configmap* and secrets.\n### ConfigMap: entando-operator-config\nThe 'entando-operator-config' ConfigMap can be added after deployment and any changes to it will be picked up by the operator on subsequent event processing. It supports the following keys:\n\n    entando.k8s.operator.gc.controller.pods: set this to \"false\" to keep controller pods after completion.\n    entando.k8s.operator.compliance.mode: set this to \"community\" if there is no requirement for Red Hat compliance.\n    entando.k8s.operator.image.pull.secrets: a comma separated list containing the names of pull secrets that will be linked to all service accounts.\n    entando.k8s.operator.disable.pvc.garbage.collection: set this to \"false\" if you want Persistent Volume Claims to be deleted with the custom resources they are associated with.\n    entando.k8s.operator.impose.default.limits: set this to \"false\" if there is no need to limit the resource consumption of pods on your cluster.\n    entando.k8s.operator.request.to.limit.ratio: a decimal number that default limits will be multiplied by to calculate default requests for resources.\n    entando.k8s.operator.force.db.password.reset: set this to \"true\" if you plan to delete Secrets from your namespace but you want to retain the Database they point to.\n    entando.k8s.operator.pull.policy.override: specify your preferred pullPolicy for images. The default is Always.\n    entando.tls.secret.name: The name of a standard TLS secret to use for HTTPS Ingresses. See the section entando-tls-secret.\n    entando.ca.secret.name: The name of a secret containing CA certificates. See the section entando-ca-cert-secret.\n    entando.assume.external.https.provider: Set this to \"true\" if your cloud provider handles HTTPS for you.\n    entando.use.auto.cert.generation: Set this to \"true\" to have Openshift use its internal CA to generate certificates for your Routes.\n    entando.default.routing.suffix: The domain name that can be suffixed to deployment names when the ingressHostName is omitted. Needs to be preconfigured on your DNS provider.\n    entando.pod.completion.timeout.seconds: The time it will take before Entando fails a run-to-completion Pod.\n    entando.pod.readiness.timeout.seconds: The time it will take before Entando fails a Service Pod.\n    entando.pod.shutdown.timeout.seconds: The time Entando will give a Pod to shutdown gracefully.\n\n\n### entando-pull-secret\nThe secret to be used to pull Entando images from the Red Hat container registry. The name of this secret is hard coded as it is required for the ClusterServiceVersion of this Operator\n### entando-tls-secret\nA standard Kubernetes TLS secret that will be used on all deployments where no custom TLS secret name is specified.\n### entando-ca-cert-secret\nThis is an opaque secret in the Entando Operator's namespace that contains the certificates of all trusted certificate authorities in your environment. This is generally used mainly for self signed certificates. As is generally the case for opaque secrets, there are no constraints on the keys in this secret. However, limit the files inside the secret to X509 certificates or certificate chains. The Entando Operator will load all of these files into a Java keystore that it then configures as the trust store for each container that uses Java.\n",
-      "csv_display_name": "Entando Operator",
-      "csv_metadata_description": "Processes EntandoKeycloakServer, EntandoApp and EntandoPlugin custom resources and deploys the relevant containers in the Kubernetes cluster.",
-      "csv_name": "entando-k8s-operator.v6.3.2-pr4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:49:19.191000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "entando-k8s-operator",
-      "provided_apis": [
-        {
-          "group": "entando.org",
-          "kind": "EntandoCompositeApp",
-          "plural": "entandocompositeapps",
-          "version": "v1"
-        },
-        {
-          "group": "entando.org",
-          "kind": "EntandoDatabaseService",
-          "plural": "entandodatabaseservices",
-          "version": "v1"
-        },
-        {
-          "group": "entando.org",
-          "kind": "EntandoDeBundle",
-          "plural": "entandodebundles",
-          "version": "v1"
-        },
-        {
-          "group": "entando.org",
-          "kind": "EntandoKeycloakServer",
-          "plural": "entandokeycloakservers",
-          "version": "v1"
-        },
-        {
-          "group": "entando.org",
-          "kind": "EntandoPlugin",
-          "plural": "entandoplugins",
-          "version": "v1"
-        },
-        {
-          "group": "entando.org",
-          "kind": "EntandoAppPluginLink",
-          "plural": "entandoapppluginlinks",
-          "version": "v1"
-        },
-        {
-          "group": "entando.org",
-          "kind": "EntandoApp",
-          "plural": "entandoapps",
-          "version": "v1"
-        },
-        {
-          "group": "entando.org",
-          "kind": "EntandoClusterInfrastructure",
-          "plural": "entandoclusterinfrastructures",
-          "version": "v1"
-        }
-      ],
-      "provider": "Entando, Inc",
-      "related_images": [
-        {
-          "digest": "sha256:c8a93ebd69af3cf822dd7d4fcce5d4241cd8dca229c4e25c771bcfecca916839",
-          "image": "entando/entando-k8s-controller-coordinator@sha256:c8a93ebd69af3cf822dd7d4fcce5d4241cd8dca229c4e25c771bcfecca916839",
-          "name": "entando-k8s-controller-coordinator-c8a93ebd69af3cf822dd7d4fcce5d4241cd8dca229c4e25c771bcfecca916839-annotation"
-        },
-        {
-          "digest": "sha256:c8a93ebd69af3cf822dd7d4fcce5d4241cd8dca229c4e25c771bcfecca916839",
-          "image": "entando/entando-k8s-controller-coordinator@sha256:c8a93ebd69af3cf822dd7d4fcce5d4241cd8dca229c4e25c771bcfecca916839",
-          "name": "entando-operator"
-        },
-        {
-          "digest": "sha256:570bce7dc649ac7ac85e7ecb196aabc281c77a94590aa7df7d9746869ce757ea",
-          "image": "registry.redhat.io/rhel8/mysql-80@sha256:570bce7dc649ac7ac85e7ecb196aabc281c77a94590aa7df7d9746869ce757ea",
-          "name": "rhel8_mysql_80"
-        },
-        {
-          "digest": "sha256:f4e5c728b644bf1888ec8086424852ed74b5596a511be29e636fb10218fc9b6f",
-          "image": "registry.redhat.io/rhel8/postgresql-12@sha256:f4e5c728b644bf1888ec8086424852ed74b5596a511be29e636fb10218fc9b6f",
-          "name": "rhel8_postgresql_12"
-        },
-        {
-          "digest": "sha256:1ca90c09302b9cadf8950278d92ad4d7f3a14f02dea8704320794aa77ada8631",
-          "image": "docker.io/entando/app-builder@sha256:1ca90c09302b9cadf8950278d92ad4d7f3a14f02dea8704320794aa77ada8631",
-          "name": "app_builder"
-        },
-        {
-          "digest": "sha256:668191fc86b090452baaba18ec7bbc3d07df5a99750e0c5b98759599d565cfbe",
-          "image": "docker.io/entando/entando-component-manager@sha256:668191fc86b090452baaba18ec7bbc3d07df5a99750e0c5b98759599d565cfbe",
-          "name": "entando_component_manager"
-        },
-        {
-          "digest": "sha256:1f0e35d7f7ee8123721cf8e80ac96ac2f594f21a2b68cf9e720917d090c8095e",
-          "image": "docker.io/entando/entando-de-app-eap@sha256:1f0e35d7f7ee8123721cf8e80ac96ac2f594f21a2b68cf9e720917d090c8095e",
-          "name": "entando_de_app_eap"
-        },
-        {
-          "digest": "sha256:c68d3b129fc625f5d1ee10ed2a107e28c145049d4b513dcdb2c736555025e339",
-          "image": "docker.io/entando/entando-k8s-app-controller@sha256:c68d3b129fc625f5d1ee10ed2a107e28c145049d4b513dcdb2c736555025e339",
-          "name": "entando_k8s_app_controller"
-        },
-        {
-          "digest": "sha256:aa7ba0861705213434e610530c5bf5da1bdb33f1834d3c346174f5a28145c0bd",
-          "image": "docker.io/entando/entando-k8s-app-plugin-link-controller@sha256:aa7ba0861705213434e610530c5bf5da1bdb33f1834d3c346174f5a28145c0bd",
-          "name": "entando_k8s_app_plugin_link_controller"
-        },
-        {
-          "digest": "sha256:86dbea6696349d7b2393e12bacef4d1acec2dd3f8551e397fa26c92706a18dd3",
-          "image": "docker.io/entando/entando-k8s-cluster-infrastructure-controller@sha256:86dbea6696349d7b2393e12bacef4d1acec2dd3f8551e397fa26c92706a18dd3",
-          "name": "entando_k8s_cluster_infrastructure_controller"
-        },
-        {
-          "digest": "sha256:4bc6797bb41b3e407b64530c3cff7a78f3fc2c22863caad9c606ccd650310b61",
-          "image": "docker.io/entando/entando-k8s-composite-app-controller@sha256:4bc6797bb41b3e407b64530c3cff7a78f3fc2c22863caad9c606ccd650310b61",
-          "name": "entando_k8s_composite_app_controller"
-        },
-        {
-          "digest": "sha256:58ca4ad2fca83a715aba9b68609f9056f633d556eb9845b3aff5c05769369539",
-          "image": "docker.io/entando/entando-k8s-database-service-controller@sha256:58ca4ad2fca83a715aba9b68609f9056f633d556eb9845b3aff5c05769369539",
-          "name": "entando_k8s_database_service_controller"
-        },
-        {
-          "digest": "sha256:8ae47dbf93201965106663299f06daad544982fa244d4a0f365a1b717727e5ed",
-          "image": "docker.io/entando/entando-k8s-dbjob@sha256:8ae47dbf93201965106663299f06daad544982fa244d4a0f365a1b717727e5ed",
-          "name": "entando_k8s_dbjob"
-        },
-        {
-          "digest": "sha256:f1ed42001260802353197433cea7df4c2d0e5fd9bcd926bb5ae7c654dfad2ffe",
-          "image": "docker.io/entando/entando-k8s-keycloak-controller@sha256:f1ed42001260802353197433cea7df4c2d0e5fd9bcd926bb5ae7c654dfad2ffe",
-          "name": "entando_k8s_keycloak_controller"
-        },
-        {
-          "digest": "sha256:a20c753dda86e0f54f210e446b404733045ba426fc7186dc3936daed8224fbcb",
-          "image": "docker.io/entando/entando-k8s-plugin-controller@sha256:a20c753dda86e0f54f210e446b404733045ba426fc7186dc3936daed8224fbcb",
-          "name": "entando_k8s_plugin_controller"
-        },
-        {
-          "digest": "sha256:775391f0005e64764288bfe007d9ea576f13618c02ea400d030a7502cfb551bd",
-          "image": "docker.io/entando/entando-k8s-service@sha256:775391f0005e64764288bfe007d9ea576f13618c02ea400d030a7502cfb551bd",
-          "name": "entando_k8s_service"
-        },
-        {
-          "digest": "sha256:3692adb3694b3bf278bed7a678c9d0eaa0aba8e3e3ed4117ca04156525bcac72",
-          "image": "docker.io/entando/entando-redhat-sso@sha256:3692adb3694b3bf278bed7a678c9d0eaa0aba8e3e3ed4117ca04156525bcac72",
-          "name": "entando_redhat_sso"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "6.3.2-pr4",
-      "version_original": "6.3.2-pr4"
-    },
-    {
-      "_id": "611fbe2adece23122b7a78cb",
-      "alm_examples": [
-        {
-          "api_version": "csi.nec.com/v1",
-          "kind": "SANStorageCSI",
-          "metadata": {
-            "name": "sanstoragecsi"
-          },
-          "spec": {
-            "driverName": "san.csi.nec.com",
-            "images": {
-              "csiDriver": "",
-              "externalAttacher": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:92cb1a244497e71cfc27437f07b95645753f64f7f994db20bf9e5cbfb89ae083",
-              "externalProvisioner": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:faefca15575552112c8463ade19ebf5f6ce27a65b9e7286ea74fd6a31a2f2715",
-              "livenessProbe": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:241e288cf83443304834af837f9f71a6216c038dd27196748184aa95790b75fe",
-              "nodeRegistrar": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar@sha256:dcba3ce367bd546c84d412f57589cd6d2fcde6a882791048ed13f1438b6453c0"
-            },
-            "parameters": {
-              "controller": {
-                "logLevel": 5
-              },
-              "node": {
-                "livenessProbePort": 9808,
-                "logLevel": 5,
-                "maxVolumesPerNode": 1024
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nec/sanstoragecsi-operator-bundle@sha256:a547f2b1018aebda3dadf2599d082dd7cfebc3e255571634d97b3b3f6161436e",
-      "bundle_path_digest": "sha256:a547f2b1018aebda3dadf2599d082dd7cfebc3e255571634d97b3b3f6161436e",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-08-20T14:37:30.777000+00:00",
-      "csv_description": "This operator deploys the NEC Storage M Series CSI Driver on OpenShift Container Platform.\n\nNEC Storage M Series CSI Driver provides persistent storage for stateful applications using NEC Storage M Series.\nPlease refer to the documentation of the NEC Storage M Series CSI Driver for detail information about supported NEC Storage Platforms and supported CSI features.\n",
-      "csv_display_name": "NEC Storage M Series CSI Operator",
-      "csv_metadata_description": "An operator for managing the NEC Storage M Series CSI Driver",
-      "csv_name": "sanstoragecsi-operator-bundle.v1.0.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:07:15.594000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "sanstoragecsi-operator-bundle",
-      "provided_apis": [
-        {
-          "group": "csi.nec.com",
-          "kind": "SANStorageCSI",
-          "plural": "sanstoragecsis",
-          "version": "v1"
-        }
-      ],
-      "provider": "NEC",
-      "related_images": [
-        {
-          "digest": "sha256:1e385777c7ce4bfd48902fbbb8023a6eba3f5dff4dc08e200450bc6f0bcb595c",
-          "image": "registry.connect.redhat.com/nec/sanstoragecsi-operator@sha256:1e385777c7ce4bfd48902fbbb8023a6eba3f5dff4dc08e200450bc6f0bcb595c",
-          "name": "sanstoragecsi-operator-bundle"
-        },
-        {
-          "digest": "sha256:dcba3ce367bd546c84d412f57589cd6d2fcde6a882791048ed13f1438b6453c0",
-          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar@sha256:dcba3ce367bd546c84d412f57589cd6d2fcde6a882791048ed13f1438b6453c0",
-          "name": "ose-csi-node-driver-registrar-dcba3ce367bd546c84d412f57589cd6d2fcde6a882791048ed13f1438b6453c0-annotation"
-        },
-        {
-          "digest": "sha256:241e288cf83443304834af837f9f71a6216c038dd27196748184aa95790b75fe",
-          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:241e288cf83443304834af837f9f71a6216c038dd27196748184aa95790b75fe",
-          "name": "ose-csi-livenessprobe-241e288cf83443304834af837f9f71a6216c038dd27196748184aa95790b75fe-annotation"
-        },
-        {
-          "digest": "sha256:faefca15575552112c8463ade19ebf5f6ce27a65b9e7286ea74fd6a31a2f2715",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:faefca15575552112c8463ade19ebf5f6ce27a65b9e7286ea74fd6a31a2f2715",
-          "name": "ose-csi-external-provisioner-faefca15575552112c8463ade19ebf5f6ce27a65b9e7286ea74fd6a31a2f2715-annotation"
-        },
-        {
-          "digest": "sha256:92cb1a244497e71cfc27437f07b95645753f64f7f994db20bf9e5cbfb89ae083",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:92cb1a244497e71cfc27437f07b95645753f64f7f994db20bf9e5cbfb89ae083",
-          "name": "ose-csi-external-attacher-92cb1a244497e71cfc27437f07b95645753f64f7f994db20bf9e5cbfb89ae083-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.0.0",
-      "version_original": "1.0.0"
-    },
-    {
-      "_id": "611fbe5dbd674341b5c5f16e",
-      "alm_examples": [
-        {
-          "api_version": "citrix.com/v1alpha1",
-          "kind": "CitrixCpxWithIngressController",
-          "metadata": {
-            "name": "cpx-cic"
-          },
-          "spec": {
-            "ADMSettings": {
-              "ADMFingerPrint": "",
-              "ADMIP": "",
-              "bandWidth": "",
-              "bandWidthLicense": false,
-              "cpxCores": "",
-              "licenseServerIP": "",
-              "licenseServerPort": 27000,
-              "loginSecret": "",
-              "vCPULicense": false
-            },
-            "aws": false,
-            "azure": false,
-            "bgpSettings": {
-              "bgpConfig": [
-                {
-                  "bgpRouter": {
-                    "localAS": 100,
-                    "neighbor": [
-                      {
-                        "ASOriginationInterval": 10,
-                        "address": "",
-                        "advertisementInterval": 10,
-                        "remoteAS": 100
-                      }
-                    ]
-                  }
-                }
-              ],
-              "required": false
-            },
-            "cic": {
-              "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-              "pullPolicy": "Always",
-              "required": true
-            },
-            "coeConfig": {
-              "distributedTracing": {
-                "enable": false,
-                "samplingrate": 100
-              },
-              "endpoint": {
-                "server": ""
-              },
-              "required": false,
-              "timeseries": {
-                "auditlogs": {
-                  "enable": false
-                },
-                "events": {
-                  "enable": false
-                },
-                "metrics": {
-                  "enable": false,
-                  "mode": "avro"
-                },
-                "port": 5563
-              },
-              "transactions": {
-                "enable": false,
-                "port": 5557
-              }
-            },
-            "cpxBgpRouter": false,
-            "crds": {
-              "install": true,
-              "retainOnDelete": false
-            },
-            "defaultSSLCertSecret": "",
-            "entityPrefix": "",
-            "exporter": {
-              "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-              "ports": {
-                "containerPort": 8888
-              },
-              "pullPolicy": "Always",
-              "required": false
-            },
-            "image": "registry.connect.redhat.com/citrix/cpx-13-0@sha256:54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d",
-            "ingressClass": "",
-            "ingressIP": "",
-            "ipam": false,
-            "kubernetesURL": "",
-            "license": {
-              "accept": false
-            },
-            "logLevel": "INFO",
-            "logProxy": "",
-            "mgmtHttpPort": 9080,
-            "mgmtHttpsPort": 9443,
-            "namespaceLabels": "",
-            "nodeSelector": {
-              "key": "",
-              "value": ""
-            },
-            "nsCookieVersion": "0",
-            "nsGateway": "192.168.1.1",
-            "nsHTTP2ServerSide": "OFF",
-            "nsIP": "192.168.1.2",
-            "nsProtocol": "http",
-            "openshift": true,
-            "pullPolicy": "Always",
-            "routeLabels": "",
-            "serviceAccount": {
-              "create": true
-            },
-            "serviceAnnotations": {
-              "aws": {
-                "backendProtocol": "",
-                "negotiationPolicy": "",
-                "proxyProtocol": false,
-                "resourcesTags": "",
-                "sslCert": "",
-                "sslPorts": ""
-              },
-              "azure": {
-                "internalLoadBalancer": false
-              }
-            },
-            "serviceType": {
-              "loadBalancer": {
-                "enabled": false,
-                "externalTrafficPolicy": "Local"
-              },
-              "nodePort": {
-                "enabled": false,
-                "httpPort": "",
-                "httpsPort": ""
-              }
-            },
-            "setAsDefaultIngressClass": false,
-            "sslCertManagedByAWS": false,
-            "tolerations": [],
-            "updateIngressStatus": false
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-bundle@sha256:58f15e99628043753fefa5c8df190cc90e82a6bd3b00aed3c52f0fbf69d81039",
-      "bundle_path_digest": "sha256:58f15e99628043753fefa5c8df190cc90e82a6bd3b00aed3c52f0fbf69d81039",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-08-20T14:38:21.727000+00:00",
-      "csv_description": "Citrix ADC CPX is a container-based application delivery controller that can be provisioned on a Docker host. Citrix ADC CPX enables customers to leverage Docker engine capabilities and use NetScaler load balancing and traffic management features for container-based applications. Citrix Ingress Controller which will be running in side-car mode with Citrix ADC CPX will automatically configures Citrix ADC CPX based on the Ingress resource configuration. This operator can be used deploy Citrix ADC CPX with Citrix ingress controller in an OpenShift environment.",
-      "csv_display_name": "Citrix ADC CPX with Ingress Controller",
-      "csv_metadata_description": "Citrix ADC CPX is a container-based application delivery controller that can be provisioned on a Docker host. Citrix ADC CPX enables customers to leverage Docker engine capabilities and use NetScaler load balancing and traffic management features for container-based applications. Citrix Ingress Controller which will be running in side-car mode with Citrix ADC CPX will automatically configures Citrix ADC CPX based on the Ingress resource configuration. This operator can be used deploy Citrix ADC CPX with Citrix ingress controller in an Openshift environment.",
-      "csv_name": "citrix-cpx-with-ingress-controller-operator.v1.13.20",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:45:46.577000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "citrix-cpx-with-ingress-controller-operator",
-      "provided_apis": [
-        {
-          "group": "citrix.com",
-          "kind": "CitrixCpxWithIngressController",
-          "plural": "citrixcpxwithingresscontrollers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "citrix",
-      "related_images": [
-        {
-          "digest": "sha256:4ca00f777a37e3070cfa2651685ba284623a78b55e2f81143ec8b58e967f163a",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-controller@sha256:4ca00f777a37e3070cfa2651685ba284623a78b55e2f81143ec8b58e967f163a",
-          "name": "citrix-k8s-cpx-ingress-controller-4ca00f777a37e3070cfa2651685ba284623a78b55e2f81143ec8b58e967f163a-annotation"
-        },
-        {
-          "digest": "sha256:10252238f921d720b8af7e2ca8e90be6e8516efefc1633697aa048a74041f1c3",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:10252238f921d720b8af7e2ca8e90be6e8516efefc1633697aa048a74041f1c3",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:4ca00f777a37e3070cfa2651685ba284623a78b55e2f81143ec8b58e967f163a",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-controller@sha256:4ca00f777a37e3070cfa2651685ba284623a78b55e2f81143ec8b58e967f163a",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d",
-          "image": "registry.connect.redhat.com/citrix/cpx-13-0@sha256:54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d",
-          "name": "cpx"
-        },
-        {
-          "digest": "sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "name": "cic"
-        },
-        {
-          "digest": "sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "name": "exporter"
-        },
-        {
-          "digest": "sha256:54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d",
-          "image": "registry.connect.redhat.com/citrix/cpx-13-0@sha256:54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d",
-          "name": "cpx-13-0-54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d-annotation"
-        },
-        {
-          "digest": "sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "name": "citrix-adc-metrics-exporter-c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe-annotation"
-        },
-        {
-          "digest": "sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "name": "citrix-ingress-controller-f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.13.20",
-      "version_original": "1.13.20"
-    },
-    {
       "_id": "611fbe6e9f14588c41ebe990",
       "alm_examples": [
         {
@@ -14600,6 +13709,412 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.124.0-1",
       "version_original": "1.124.0-1"
+    },
+    {
+      "_id": "6154cfe569cb9f1af5ba7475",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.2.4-55.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        },
+        {
+          "api_version": "app.redislabs.com/v1alpha1",
+          "kind": "RedisEnterpriseDatabase",
+          "metadata": {
+            "name": "redb"
+          },
+          "spec": {
+            "redisEnterpriseCluster": {
+              "name": "rec"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
+      "bundle_path_digest": "sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "production",
+      "creation_date": "2021-09-29T20:43:17.155000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.2.4-1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:27:07.312000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseDatabase",
+          "plural": "redisenterprisedatabases",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Redis Labs",
+      "related_images": [
+        {
+          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "name": "redis-enterprise-operator-8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9-annotation"
+        },
+        {
+          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "name": "redis-enterprise-operator"
+        },
+        {
+          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
+          "name": "admission"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "6.2.4-1",
+      "version_original": "6.2.4-1"
+    },
+    {
+      "_id": "6154cffed2c7f84a4d2edca2",
+      "alm_examples": [
+        {
+          "api_version": "core.libopenstorage.org/v1",
+          "kind": "StorageCluster",
+          "metadata": {
+            "annotations": {
+              "portworx.io/is-openshift": "true"
+            },
+            "name": "portworx",
+            "namespace": "test-operator"
+          },
+          "spec": {
+            "autopilot": {
+              "enabled": false
+            }
+          }
+        },
+        {
+          "api_version": "core.libopenstorage.org/v1",
+          "kind": "StorageNode",
+          "metadata": {
+            "name": "example",
+            "namespace": "test-operator"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/portworx/portworx-certified-bundle@sha256:b768b8641735bcad65f3763ebe87f41daafdeb3ce35a0a8af0ac20a336f6db28",
+      "bundle_path_digest": "sha256:b768b8641735bcad65f3763ebe87f41daafdeb3ce35a0a8af0ac20a336f6db28",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-09-29T20:43:42.319000+00:00",
+      "csv_description": "Portworx-Enterprise is the most widely-used and reliable cloud-native\nstorage solution for production workloads and provides high-availability,\ndata protection and security for containerized applications.\n\nPortworx Enterprise enables you to migrate entire applications, including\ndata, between clusters in a single data center or cloud, or between clouds,\nwith a single kubectl command.\n\nThe cloud native storage and data management platform that enterprises trust\nto manage data in containers now has an operator which simplifies the install,\nconfiguration, upgrades and manages the Portworx Enterprise cluster lifecycle.\n\nLearn more about the Portworx Enterprise\n[the data platform for Kubernetes](https://portworx.com/products/introduction)\n\nTo learn more about the platform features, please visit our\n[product features page](https://portworx.com/products/features)\n\n### About Portworx\n\nPortworx is the solution for running stateful containers in production,\ndesigned with DevOps in mind. With Portworx, users can manage any database\nor stateful service on any infrastructure using any container scheduler,\nincluding Kubernetes, Mesosphere DC/OS, and Docker Swarm. Portworx solves\nthe five most common problems DevOps teams encounter when running stateful\nservices in production: persistence, high availability, data automation,\nsecurity, and support for multiple data stores and infrastructure.\n\n### How to install StorageCluster\n\nTo customize your cluster's configuration (specification), use the\n[Spec Generator](https://central.portworx.com/) from PX-Central.\n\n### Prerequisite\n\nEnsure ports 17001-17020 on worker nodes are reachable from master and other worker nodes.\n\n### Tutorials\n\n* [Portworx Enterprise on Openshift](https://portworx.com/openshift)\n\n* [Stateful applications on Kubernetes](https://docs.portworx.com/portworx-install-with-kubernetes/application-install-with-kubernetes)\n\n* [Portworx Enterprise on Kubernetes](https://docs.portworx.com/portworx-install-with-kubernetes)\n\n* [Kafka on Kubernetes](https://portworx.com/kafka-kubernetes)\n\n* [Elastisearch on Kubernetes](https://portworx.com/elasticsearch-kubernetes)\n\n* [PostgreSQL on Kubernetes](https://portworx.com/postgres-kubernetes/)\n\n* [MongoDB on Kubernetes](https://portworx.com/mongodb-kubernetes/)\n\n* [Cassandra on Kubernetes](https://portworx.com/cassandra-kubernetes/)\n\n* [Kubernetes backup and recovery](https://portworx.com/kubernetes-backup/)\n\n* [Disaster Recovery for Kubernetes](https://portworx.com/kubernetes-disaster-recovery/)\n\n### Uninstall\n\nDeleting the StorageCluster object for Portworx cluster does not stop Portworx\nservice running on the nodes, to avoid application downtime.\n\nTo uninstall Portworx completely without wiping the data, you should add the\nfollowing delete strategy to the StorageCluster spec:\n```\nspec:\n  deleteStrategy:\n    type: Uninstall\n```\n**Caution:** To uninstall Portworx and **wipe all the data**, you should use the following\ndelete strategy:\n```\nspec:\n  deleteStrategy:\n    type: UninstallAndWipe\n```\n",
+      "csv_display_name": "Portworx Enterprise",
+      "csv_metadata_description": "Cloud native storage solution for production workloads",
+      "csv_name": "portworx-operator.v1.5.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:26:24.642000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "portworx-certified",
+      "provided_apis": [
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageCluster",
+          "plural": "storageclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageNode",
+          "plural": "storagenodes",
+          "version": "v1"
+        },
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageNode",
+          "plural": "storagenodes",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageCluster",
+          "plural": "storageclusters",
+          "version": "v1"
+        }
+      ],
+      "provider": "Portworx",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.5.2",
+      "version_original": "1.5.2"
+    },
+    {
+      "_id": "6154d02ed2c7f84a4d2edca3",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.2.4",
+      "creation_date": "2021-09-29T20:44:30.447000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-6",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:33:19.954000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "6.0.6-6",
+      "version_original": "6.0.6-6"
+    },
+    {
+      "_id": "6154d059d2c7f84a4d2edca4",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.20-97.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        },
+        {
+          "api_version": "app.redislabs.com/v1alpha1",
+          "kind": "RedisEnterpriseDatabase",
+          "metadata": {
+            "name": "redb"
+          },
+          "spec": {
+            "redisEnterpriseCluster": {
+              "name": "rec"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:5666acf5598f96dfbfac5704bb70e6578522979ef63b418ed2d1438a32d2440f",
+      "bundle_path_digest": "sha256:5666acf5598f96dfbfac5704bb70e6578522979ef63b418ed2d1438a32d2440f",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.4",
+      "creation_date": "2021-09-29T20:45:13.838000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.20-12a",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:28:13.525000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseDatabase",
+          "plural": "redisenterprisedatabases",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Redis Labs",
+      "related_images": [
+        {
+          "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "name": "redis-enterprise-operator-f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730-annotation"
+        },
+        {
+          "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "name": "redis-enterprise-operator"
+        },
+        {
+          "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "name": "admission"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "6.0.20-12a",
+      "version_original": "6.0.20-12a"
     }
   ]
 }

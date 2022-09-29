@@ -10912,555 +10912,6 @@
       "version_original": "1.4.3"
     },
     {
-      "_id": "6087a93db6f68e29bbcc6ccb",
-      "alm_examples": [
-        {
-          "api_version": "citrix.com/v1alpha1",
-          "kind": "CitrixIngressController",
-          "metadata": {
-            "name": "cic"
-          },
-          "spec": {
-            "adcCredentialSecret": "",
-            "coeConfig": {
-              "distributedTracing": {
-                "enable": false,
-                "samplingrate": 100
-              },
-              "endpoint": {
-                "server": ""
-              },
-              "required": false,
-              "timeseries": {
-                "auditlogs": {
-                  "enable": false
-                },
-                "events": {
-                  "enable": false
-                },
-                "metrics": {
-                  "enable": false,
-                  "mode": "avro"
-                },
-                "port": 30002
-              },
-              "transactions": {
-                "enable": false,
-                "port": 30001
-              }
-            },
-            "crds": {
-              "install": true,
-              "retainOnDelete": false
-            },
-            "defaultSSLCertSecret": "",
-            "entityPrefix": "",
-            "exporter": {
-              "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-              "ports": {
-                "containerPort": 8888
-              },
-              "pullPolicy": "IfNotPresent",
-              "required": false
-            },
-            "ignoreNodeExternalIP": false,
-            "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-            "ingressClass": "",
-            "ipam": false,
-            "kubernetesURL": "",
-            "license": {
-              "accept": false
-            },
-            "logLevel": "INFO",
-            "logProxy": "",
-            "namespaceLabels": "",
-            "nodeSelector": {
-              "key": "",
-              "value": ""
-            },
-            "nodeWatch": false,
-            "nsCookieVersion": "0",
-            "nsHTTP2ServerSide": "OFF",
-            "nsIP": "x.x.x.x",
-            "nsPort": 443,
-            "nsProtocol": "HTTPS",
-            "nsSNIPS": "",
-            "nsVIP": "",
-            "openshift": true,
-            "podIPsforServiceGroupMembers": false,
-            "pullPolicy": "IfNotPresent",
-            "routeLabels": "",
-            "serviceAccount": {
-              "create": true
-            },
-            "serviceClass": "",
-            "setAsDefaultIngressClass": false,
-            "tolerations": [],
-            "updateIngressStatus": false
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/citrix/citrix-k8s-ingress-bundle@sha256:1cf84c905b444c613f67f5b2a7b80015226b6a99c5723503e87c795a719e6347",
-      "bundle_path_digest": "sha256:1cf84c905b444c613f67f5b2a7b80015226b6a99c5723503e87c795a719e6347",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-04-27T06:03:41.920000+00:00",
-      "csv_description": "Citrix provides an ingress controller for Citrix ADC MPX (hardware), Citrix ADC VPX (virtualized), and Citrix ADC CPX (containerized) for on-prem and cloud deployments. It automatically configures one or more Citrix ADC based on the Ingress resource configuration. This operator can be used deploy Citrix Ingress Controller in an OpenShift environment.",
-      "csv_display_name": "Citrix Ingress Controller",
-      "csv_metadata_description": "Citrix provides an ingress controller for Citrix ADC MPX (hardware), Citrix ADC VPX (virtualized), and Citrix ADC CPX (containerized) for on-prem and cloud deployments. It automatically configures one or more Citrix ADC based on the Ingress resource configuration. This operator can be used deploy Citrix Ingress Controller in an Openshift environment.",
-      "csv_name": "citrix-ingress-controller-operator.v1.13.20",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:10:20.950000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "citrix-ingress-controller-operator",
-      "provided_apis": [
-        {
-          "group": "citrix.com",
-          "kind": "CitrixIngressController",
-          "plural": "citrixingresscontrollers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "citrix",
-      "related_images": [
-        {
-          "digest": "sha256:a41bf2a59a5678d757c18c2d995e10f035676128726ded4b84d61522c3fca4fa",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-ingress-controller@sha256:a41bf2a59a5678d757c18c2d995e10f035676128726ded4b84d61522c3fca4fa",
-          "name": "citrix-k8s-ingress-controller-a41bf2a59a5678d757c18c2d995e10f035676128726ded4b84d61522c3fca4fa-annotation"
-        },
-        {
-          "digest": "sha256:1fee9f7563afd0878288d60dce2c263a6333b18b40d88898ed0fca92e6e7048f",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:1fee9f7563afd0878288d60dce2c263a6333b18b40d88898ed0fca92e6e7048f",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:a41bf2a59a5678d757c18c2d995e10f035676128726ded4b84d61522c3fca4fa",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-ingress-controller@sha256:a41bf2a59a5678d757c18c2d995e10f035676128726ded4b84d61522c3fca4fa",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "name": "cic"
-        },
-        {
-          "digest": "sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "name": "exporter"
-        },
-        {
-          "digest": "sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "name": "citrix-ingress-controller-f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0-annotation"
-        },
-        {
-          "digest": "sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "name": "citrix-adc-metrics-exporter-c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.13.20",
-      "version_original": "1.13.20"
-    },
-    {
-      "_id": "6087a948ebd9cca472b09404",
-      "alm_examples": [
-        {
-          "api_version": "citrix.com/v1alpha1",
-          "kind": "CitrixIngressController",
-          "metadata": {
-            "name": "cic"
-          },
-          "spec": {
-            "adcCredentialSecret": "",
-            "coeConfig": {
-              "distributedTracing": {
-                "enable": false,
-                "samplingrate": 100
-              },
-              "endpoint": {
-                "server": ""
-              },
-              "required": false,
-              "timeseries": {
-                "auditlogs": {
-                  "enable": false
-                },
-                "events": {
-                  "enable": false
-                },
-                "metrics": {
-                  "enable": false,
-                  "mode": "avro"
-                },
-                "port": 30002
-              },
-              "transactions": {
-                "enable": false,
-                "port": 30001
-              }
-            },
-            "crds": {
-              "install": true,
-              "retainOnDelete": false
-            },
-            "defaultSSLCertSecret": "",
-            "entityPrefix": "",
-            "exporter": {
-              "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-              "ports": {
-                "containerPort": 8888
-              },
-              "pullPolicy": "IfNotPresent",
-              "required": false
-            },
-            "ignoreNodeExternalIP": false,
-            "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-            "ingressClass": "",
-            "ipam": false,
-            "kubernetesURL": "",
-            "license": {
-              "accept": false
-            },
-            "logLevel": "INFO",
-            "logProxy": "",
-            "namespaceLabels": "",
-            "nodeSelector": {
-              "key": "",
-              "value": ""
-            },
-            "nodeWatch": false,
-            "nsCookieVersion": "0",
-            "nsHTTP2ServerSide": "OFF",
-            "nsIP": "x.x.x.x",
-            "nsPort": 443,
-            "nsProtocol": "HTTPS",
-            "nsSNIPS": "",
-            "nsVIP": "",
-            "openshift": true,
-            "podIPsforServiceGroupMembers": false,
-            "pullPolicy": "IfNotPresent",
-            "routeLabels": "",
-            "serviceAccount": {
-              "create": true
-            },
-            "serviceClass": "",
-            "setAsDefaultIngressClass": false,
-            "tolerations": [],
-            "updateIngressStatus": false
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/citrix/citrix-k8s-ingress-bundle@sha256:1cf84c905b444c613f67f5b2a7b80015226b6a99c5723503e87c795a719e6347",
-      "bundle_path_digest": "sha256:1cf84c905b444c613f67f5b2a7b80015226b6a99c5723503e87c795a719e6347",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-04-27T06:03:52.318000+00:00",
-      "csv_description": "Citrix provides an ingress controller for Citrix ADC MPX (hardware), Citrix ADC VPX (virtualized), and Citrix ADC CPX (containerized) for on-prem and cloud deployments. It automatically configures one or more Citrix ADC based on the Ingress resource configuration. This operator can be used deploy Citrix Ingress Controller in an OpenShift environment.",
-      "csv_display_name": "Citrix Ingress Controller",
-      "csv_metadata_description": "Citrix provides an ingress controller for Citrix ADC MPX (hardware), Citrix ADC VPX (virtualized), and Citrix ADC CPX (containerized) for on-prem and cloud deployments. It automatically configures one or more Citrix ADC based on the Ingress resource configuration. This operator can be used deploy Citrix Ingress Controller in an Openshift environment.",
-      "csv_name": "citrix-ingress-controller-operator.v1.13.20",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:14:41.359000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "citrix-ingress-controller-operator",
-      "provided_apis": [
-        {
-          "group": "citrix.com",
-          "kind": "CitrixIngressController",
-          "plural": "citrixingresscontrollers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "citrix",
-      "related_images": [
-        {
-          "digest": "sha256:a41bf2a59a5678d757c18c2d995e10f035676128726ded4b84d61522c3fca4fa",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-ingress-controller@sha256:a41bf2a59a5678d757c18c2d995e10f035676128726ded4b84d61522c3fca4fa",
-          "name": "citrix-k8s-ingress-controller-a41bf2a59a5678d757c18c2d995e10f035676128726ded4b84d61522c3fca4fa-annotation"
-        },
-        {
-          "digest": "sha256:1fee9f7563afd0878288d60dce2c263a6333b18b40d88898ed0fca92e6e7048f",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:1fee9f7563afd0878288d60dce2c263a6333b18b40d88898ed0fca92e6e7048f",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:a41bf2a59a5678d757c18c2d995e10f035676128726ded4b84d61522c3fca4fa",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-ingress-controller@sha256:a41bf2a59a5678d757c18c2d995e10f035676128726ded4b84d61522c3fca4fa",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "name": "cic"
-        },
-        {
-          "digest": "sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "name": "exporter"
-        },
-        {
-          "digest": "sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "name": "citrix-ingress-controller-f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0-annotation"
-        },
-        {
-          "digest": "sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "name": "citrix-adc-metrics-exporter-c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.13.20",
-      "version_original": "1.13.20"
-    },
-    {
-      "_id": "6087acb6b6f68e29bbcc6ccc",
-      "alm_examples": [
-        {
-          "api_version": "citrix.com/v1alpha1",
-          "kind": "CitrixIngressController",
-          "metadata": {
-            "name": "cic"
-          },
-          "spec": {
-            "adcCredentialSecret": "",
-            "coeConfig": {
-              "distributedTracing": {
-                "enable": false,
-                "samplingrate": 100
-              },
-              "endpoint": {
-                "server": ""
-              },
-              "required": false,
-              "timeseries": {
-                "auditlogs": {
-                  "enable": false
-                },
-                "events": {
-                  "enable": false
-                },
-                "metrics": {
-                  "enable": false,
-                  "mode": "avro"
-                },
-                "port": 30002
-              },
-              "transactions": {
-                "enable": false,
-                "port": 30001
-              }
-            },
-            "crds": {
-              "install": true,
-              "retainOnDelete": false
-            },
-            "defaultSSLCertSecret": "",
-            "entityPrefix": "",
-            "exporter": {
-              "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-              "ports": {
-                "containerPort": 8888
-              },
-              "pullPolicy": "IfNotPresent",
-              "required": false
-            },
-            "ignoreNodeExternalIP": false,
-            "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-            "ingressClass": "",
-            "ipam": false,
-            "kubernetesURL": "",
-            "license": {
-              "accept": false
-            },
-            "logLevel": "INFO",
-            "logProxy": "",
-            "namespaceLabels": "",
-            "nodeSelector": {
-              "key": "",
-              "value": ""
-            },
-            "nodeWatch": false,
-            "nsCookieVersion": "0",
-            "nsHTTP2ServerSide": "OFF",
-            "nsIP": "x.x.x.x",
-            "nsPort": 443,
-            "nsProtocol": "HTTPS",
-            "nsSNIPS": "",
-            "nsVIP": "",
-            "openshift": true,
-            "podIPsforServiceGroupMembers": false,
-            "pullPolicy": "IfNotPresent",
-            "routeLabels": "",
-            "serviceAccount": {
-              "create": true
-            },
-            "serviceClass": "",
-            "setAsDefaultIngressClass": false,
-            "tolerations": [],
-            "updateIngressStatus": false
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/citrix/citrix-k8s-ingress-bundle@sha256:1cf84c905b444c613f67f5b2a7b80015226b6a99c5723503e87c795a719e6347",
-      "bundle_path_digest": "sha256:1cf84c905b444c613f67f5b2a7b80015226b6a99c5723503e87c795a719e6347",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-04-27T06:18:30.088000+00:00",
-      "csv_description": "Citrix provides an ingress controller for Citrix ADC MPX (hardware), Citrix ADC VPX (virtualized), and Citrix ADC CPX (containerized) for on-prem and cloud deployments. It automatically configures one or more Citrix ADC based on the Ingress resource configuration. This operator can be used deploy Citrix Ingress Controller in an OpenShift environment.",
-      "csv_display_name": "Citrix Ingress Controller",
-      "csv_metadata_description": "Citrix provides an ingress controller for Citrix ADC MPX (hardware), Citrix ADC VPX (virtualized), and Citrix ADC CPX (containerized) for on-prem and cloud deployments. It automatically configures one or more Citrix ADC based on the Ingress resource configuration. This operator can be used deploy Citrix Ingress Controller in an Openshift environment.",
-      "csv_name": "citrix-ingress-controller-operator.v1.13.20",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:10:49.493000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "citrix-ingress-controller-operator",
-      "provided_apis": [
-        {
-          "group": "citrix.com",
-          "kind": "CitrixIngressController",
-          "plural": "citrixingresscontrollers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "citrix",
-      "related_images": [
-        {
-          "digest": "sha256:a41bf2a59a5678d757c18c2d995e10f035676128726ded4b84d61522c3fca4fa",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-ingress-controller@sha256:a41bf2a59a5678d757c18c2d995e10f035676128726ded4b84d61522c3fca4fa",
-          "name": "citrix-k8s-ingress-controller-a41bf2a59a5678d757c18c2d995e10f035676128726ded4b84d61522c3fca4fa-annotation"
-        },
-        {
-          "digest": "sha256:1fee9f7563afd0878288d60dce2c263a6333b18b40d88898ed0fca92e6e7048f",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:1fee9f7563afd0878288d60dce2c263a6333b18b40d88898ed0fca92e6e7048f",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:a41bf2a59a5678d757c18c2d995e10f035676128726ded4b84d61522c3fca4fa",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-ingress-controller@sha256:a41bf2a59a5678d757c18c2d995e10f035676128726ded4b84d61522c3fca4fa",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "name": "cic"
-        },
-        {
-          "digest": "sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "name": "exporter"
-        },
-        {
-          "digest": "sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "name": "citrix-ingress-controller-f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0-annotation"
-        },
-        {
-          "digest": "sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "name": "citrix-adc-metrics-exporter-c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.13.20",
-      "version_original": "1.13.20"
-    },
-    {
       "_id": "6087c68b149bd2956e31e0b7",
       "alm_examples": [
         {
@@ -18123,6 +17574,150 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.2.1",
       "version_original": "1.2.1"
+    },
+    {
+      "_id": "609aae7bd04af0e74bb0579f",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/instana/instana-agent-operator-bundle@sha256:30cc380829d5185e535c6ce2862fdfbe725694e638edade24d1d2ead76f063ca",
+      "bundle_path_digest": "sha256:30cc380829d5185e535c6ce2862fdfbe725694e638edade24d1d2ead76f063ca",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "beta",
+      "creation_date": "2021-05-11T16:19:07.972000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "instana-agent-operator.v0.3.4",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:54:06.780000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "instana-agent",
+      "provided_apis": [
+        {
+          "group": "instana.io",
+          "kind": "InstanaAgent",
+          "plural": "agents",
+          "version": "v1beta1"
+        },
+        {
+          "group": "instana.io",
+          "kind": "InstanaAgent",
+          "plural": "agents",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.3.4",
+      "version_original": "0.3.4"
+    },
+    {
+      "_id": "609aae7dd04af0e74bb057a3",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:3ef303a68ac1ec0f5b6b8fcb4be8471180ee24e69ddb6e454ec00cac806fdfe6",
+      "bundle_path_digest": "sha256:3ef303a68ac1ec0f5b6b8fcb4be8471180ee24e69ddb6e454ec00cac806fdfe6",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "beta",
+      "creation_date": "2021-05-11T16:19:09.232000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "neuvector-operator.v0.0.1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:38:17.629000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "neuvector-certified-operator",
+      "provided_apis": [
+        {
+          "group": "apm.neuvector.com",
+          "kind": "Neuvector",
+          "plural": "neuvectors",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.0.1",
+      "version_original": "0.0.1"
+    },
+    {
+      "_id": "609aae7ee2b160d361d2507d",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tufin/orca-operator-bundle@sha256:95250ad63b44b9c3c4cca17514d4fa0396c7a8f1d0c5394383c70f4cee653cfa",
+      "bundle_path_digest": "sha256:95250ad63b44b9c3c4cca17514d4fa0396c7a8f1d0c5394383c70f4cee653cfa",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "beta",
+      "creation_date": "2021-05-11T16:19:10.444000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "orca-operator.v1.0.193",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:29:23.899000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "orca",
+      "provided_apis": [
+        {
+          "group": "tufin.io",
+          "kind": "Orca",
+          "plural": "orcas",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "networking.tufin.io",
+          "kind": "Policy",
+          "plural": "policies",
+          "version": "v1"
+        }
+      ],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.0.193",
+      "version_original": "1.0.193"
     }
   ]
 }
