@@ -78,6 +78,7 @@ type TestEnvironment struct { // rename this with testTarget
 	// StatefulSet Groupings
 	StatefulSets []*StatefulSet `json:"testStatefulSets"`
 
+	// Note: Containers is a filtered list of objects based on a block list of disallowed container names.
 	Containers             []*Container `json:"testContainers"`
 	Operators              []Operator   `json:"testOperators"`
 	PersistentVolumes      []corev1.PersistentVolume
@@ -169,6 +170,7 @@ func buildTestEnvironment() { //nolint:funlen
 	for i := 0; i < len(pods); i++ {
 		aNewPod := NewPod(&pods[i])
 		env.Pods = append(env.Pods, &aNewPod)
+		// Note: 'getPodContainers' is returning a filtered list of Container objects.
 		env.Containers = append(env.Containers, getPodContainers(&pods[i], true)...)
 	}
 	pods = data.AllPods
@@ -220,7 +222,7 @@ func buildTestEnvironment() { //nolint:funlen
 	logrus.Infof("Operators found: %d", len(env.Operators))
 }
 
-func getPodContainers(aPod *corev1.Pod, ignoreContainers bool) (containerList []*Container) {
+func getPodContainers(aPod *corev1.Pod, useIgnoreList bool) (containerList []*Container) {
 	for j := 0; j < len(aPod.Spec.Containers); j++ {
 		cut := &(aPod.Spec.Containers[j])
 		var state corev1.ContainerStatus
@@ -235,7 +237,7 @@ func getPodContainers(aPod *corev1.Pod, ignoreContainers bool) (containerList []
 			ContainerImageIdentifier: buildContainerImageSource(aPod.Spec.Containers[j].Image)}
 
 		// Build slices of containers based on whether or not we are "ignoring" them or not.
-		if ignoreContainers && container.HasIgnoredContainerName() {
+		if useIgnoreList && container.HasIgnoredContainerName() {
 			continue
 		} else {
 			containerList = append(containerList, &container)
