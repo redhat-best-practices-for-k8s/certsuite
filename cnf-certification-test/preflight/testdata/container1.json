@@ -1,0 +1,68 @@
+{
+    "image": "quay.io/testnetworkfunction/cnf-test-partner:latest",
+    "passed": false,
+    "test_library": {
+        "name": "github.com/sebrandon1/openshift-preflight",
+        "version": "unknown",
+        "commit": "unknown"
+    },
+    "results": {
+        "passed": [
+            {
+                "name": "LayerCountAcceptable",
+                "elapsed_time": 0,
+                "description": "Checking if container has less than 40 layers.  Too many layers within the container images can degrade container performance."
+            },
+            {
+                "name": "HasNoProhibitedPackages",
+                "elapsed_time": 84,
+                "description": "Checks to ensure that the image in use does not include prohibited packages, such as Red Hat Enterprise Linux (RHEL) kernel packages."
+            },
+            {
+                "name": "HasRequiredLabel",
+                "elapsed_time": 0,
+                "description": "Checking if the required labels (name, vendor, version, release, summary, description) are present in the container metadata."
+            },
+            {
+                "name": "HasModifiedFiles",
+                "elapsed_time": 13270,
+                "description": "Checks that no files installed via RPM in the base Red Hat layer have been modified"
+            },
+            {
+                "name": "BasedOnUbi",
+                "elapsed_time": 384,
+                "description": "Checking if the container's base image is based upon the Red Hat Universal Base Image (UBI)"
+            }
+        ],
+        "failed": [
+            {
+                "name": "HasLicense",
+                "elapsed_time": 0,
+                "description": "Checking if terms and conditions applicable to the software including open source licensing information are present. The license must be at /licenses",
+                "help": "Check HasLicense encountered an error. Please review the preflight.log file for more information.",
+                "suggestion": "Create a directory named /licenses and include all relevant licensing and/or terms and conditions as text file(s) in that directory.",
+                "knowledgebase_url": "https://access.redhat.com/documentation/en-us/red_hat_software_certification/8.45/html/red_hat_openshift_software_certification_policy_guide/assembly-requirements-for-container-images_openshift-sw-cert-policy-introduction",
+                "check_url": "https://access.redhat.com/documentation/en-us/red_hat_software_certification/8.45/html/red_hat_openshift_software_certification_policy_guide/assembly-requirements-for-container-images_openshift-sw-cert-policy-introduction"
+            },
+            {
+                "name": "HasUniqueTag",
+                "elapsed_time": 164,
+                "description": "Checking if container has a tag other than 'latest', so that the image can be uniquely identified.",
+                "help": "Check HasUniqueTag encountered an error. Please review the preflight.log file for more information.",
+                "suggestion": "Add a tag to your image. Consider using Semantic Versioning. https://semver.org/",
+                "knowledgebase_url": "https://access.redhat.com/documentation/en-us/red_hat_software_certification/8.45/html/red_hat_openshift_software_certification_policy_guide/assembly-requirements-for-container-images_openshift-sw-cert-policy-introduction",
+                "check_url": "https://access.redhat.com/documentation/en-us/red_hat_software_certification/8.45/html/red_hat_openshift_software_certification_policy_guide/assembly-requirements-for-container-images_openshift-sw-cert-policy-introduction"
+            },
+            {
+                "name": "RunAsNonRoot",
+                "elapsed_time": 0,
+                "description": "Checking if container runs as the root user because a container that does not specify a non-root user will fail the automatic certification, and will be subject to a manual review before the container can be approved for publication",
+                "help": "Check RunAsNonRoot encountered an error. Please review the preflight.log file for more information.",
+                "suggestion": "Indicate a specific USER in the dockerfile or containerfile",
+                "knowledgebase_url": "https://access.redhat.com/documentation/en-us/red_hat_software_certification/8.45/html/red_hat_openshift_software_certification_policy_guide/assembly-requirements-for-container-images_openshift-sw-cert-policy-introduction",
+                "check_url": "https://access.redhat.com/documentation/en-us/red_hat_software_certification/8.45/html/red_hat_openshift_software_certification_policy_guide/assembly-requirements-for-container-images_openshift-sw-cert-policy-introduction"
+            }
+        ],
+        "errors": []
+    }
+}

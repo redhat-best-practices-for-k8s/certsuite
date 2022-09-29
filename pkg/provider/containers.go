@@ -17,19 +17,58 @@
 package provider
 
 import (
+	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	corev1 "k8s.io/api/core/v1"
+
+	plibRuntime "github.com/sebrandon1/openshift-preflight/certification/runtime"
+	plib "github.com/sebrandon1/openshift-preflight/lib"
 )
 
 var (
 	// Certain tests that have been known to fail because of injected containers (such as Istio) that fail certain tests.
 	ignoredContainerNames = []string{"istio-proxy"}
 )
+
+// PreflightContainerResults holds information pertaining to the container image results from openshift-preflight
+type PreflightContainerResults struct {
+	Image       string `json:"image"`
+	Passed      bool   `json:"passed"`
+	TestLibrary struct {
+		Name    string `json:"name"`
+		Version string `json:"version"`
+		Commit  string `json:"commit"`
+	} `json:"test_library"`
+	Results struct {
+		Passed []struct {
+			Name        string `json:"name"`
+			ElapsedTime int    `json:"elapsed_time"`
+			Description string `json:"description"`
+		} `json:"passed"`
+		Failed []struct {
+			Name             string `json:"name"`
+			ElapsedTime      int    `json:"elapsed_time"`
+			Description      string `json:"description"`
+			Help             string `json:"help"`
+			Suggestion       string `json:"suggestion"`
+			KnowledgebaseURL string `json:"knowledgebase_url"`
+			CheckURL         string `json:"check_url"`
+		} `json:"failed"`
+		Errors []struct {
+			Name        string `json:"name"`
+			ElapsedTime int    `json:"elapsed_time"`
+			Description string `json:"description"`
+			Help        string `json:"help"`
+		} `json:"errors"`
+	} `json:"results"`
+}
 
 type Container struct {
 	*corev1.Container
@@ -40,6 +79,7 @@ type Container struct {
 	Runtime                  string
 	UID                      string
 	ContainerImageIdentifier configuration.ContainerImageIdentifier
+	PreflightResults         PreflightContainerResults
 }
 
 func GetContainer() *Container {
@@ -58,6 +98,41 @@ func (c *Container) GetUID() (string, error) {
 	}
 	logrus.Debugln(fmt.Sprintf("uid of %s/%s/%s=%s\n", c.Namespace, c.Podname, c.Name, uid))
 	return uid, nil
+}
+
+func (c *Container) SetPreflightResults() error {
+	if _, err := os.Stat(fmt.Sprintf("artifacts/containers/%s", c.Image)); os.IsNotExist(err) {
+		logrus.Infof("Directory artifacts/%s does not exist. Running preflight.", c.Image)
+
+		preflightConfig := plibRuntime.NewManualContainerConfig(c.Image, "json", fmt.Sprintf("artifacts/containers/%s", c.Image), false, true)
+
+		runner, err := plib.NewCheckContainerRunner(context.TODO(), preflightConfig, false)
+		if err != nil {
+			return err
+		}
+
+		err = plib.PreflightCheck(context.TODO(), runner.Cfg, runner.Pc, runner.Eng, runner.Formatter, runner.Rw, runner.Rs)
+		if err != nil {
+			return err
+		}
+	}
+
+	// Read the JSON file
+	f, err := os.ReadFile(fmt.Sprintf("artifacts/containers/%s/results.json", c.Image))
+	if err != nil {
+		return err
+	}
+
+	// Unmarshal the JSON blob into the preflight results struct
+	var tempPreflightResults PreflightContainerResults
+	err = json.Unmarshal(f, &tempPreflightResults)
+	if err != nil {
+		panic(err)
+	}
+
+	logrus.Infof("Storing container preflight results into object for %s", c.Image)
+	c.PreflightResults = tempPreflightResults
+	return nil
 }
 
 func (c *Container) StringLong() string {

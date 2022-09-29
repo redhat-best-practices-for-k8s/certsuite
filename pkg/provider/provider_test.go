@@ -789,24 +789,6 @@ func TestContainerStringFuncs(t *testing.T) {
 	}
 }
 
-func TestCsvToString(t *testing.T) {
-	assert.Equal(t, "operator csv: test1 ns: testNS", CsvToString(&olmv1Alpha.ClusterServiceVersion{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "test1",
-			Namespace: "testNS",
-		},
-	}))
-}
-
-func TestOperatorString(t *testing.T) {
-	o := Operator{
-		Name:             "test1",
-		Namespace:        "testNS",
-		SubscriptionName: "sub1",
-	}
-	assert.Equal(t, "csv: test1 ns:testNS subscription:sub1", o.String())
-}
-
 //nolint:funlen
 func TestIsWorkerNode(t *testing.T) {
 	testCases := []struct {

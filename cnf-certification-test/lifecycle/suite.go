@@ -46,6 +46,7 @@ const (
 
 // All actual test code belongs below here.  Utilities belong above.
 var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
+	logrus.Debugf("Entering %s suite", common.LifecycleTestKey)
 	var env provider.TestEnvironment
 	ginkgo.BeforeEach(func() {
 		env = provider.GetTestEnvironment()

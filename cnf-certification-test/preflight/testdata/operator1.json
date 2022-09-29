@@ -1,0 +1,39 @@
+{
+    "image": "quay.io/operatorhubio/hazelcast-platform-operator@sha256:618db7c27fbea9cb455df12af56c3a28c373fd8dd7548692c9a2e60c6cf1c73c",
+    "passed": false,
+    "test_library": {
+        "name": "github.com/sebrandon1/openshift-preflight",
+        "version": "unknown",
+        "commit": "unknown"
+    },
+    "results": {
+        "passed": [
+            {
+                "name": "ValidateOperatorBundle",
+                "elapsed_time": 40,
+                "description": "Validating Bundle image that checks if it can validate the content and format of the operator bundle"
+            }
+        ],
+        "failed": [],
+        "errors": [
+            {
+                "name": "ScorecardBasicSpecCheck",
+                "elapsed_time": 273,
+                "description": "Check to make sure that all CRs have a spec block.",
+                "help": "There was a fatal error while running operator-sdk scorecard tests. Please see the preflight log for details. If necessary, set logging to be more verbose."
+            },
+            {
+                "name": "ScorecardOlmSuiteCheck",
+                "elapsed_time": 71,
+                "description": "Operator-sdk scorecard OLM Test Suite Check",
+                "help": "There was a fatal error while running operator-sdk scorecard tests. Please see the preflight log for details. If necessary, set logging to be more verbose."
+            },
+            {
+                "name": "DeployableByOLM",
+                "elapsed_time": 3003,
+                "description": "Checking if the operator could be deployed by OLM",
+                "help": "It is required that your operator could be deployed by OLM"
+            }
+        ]
+    }
+}

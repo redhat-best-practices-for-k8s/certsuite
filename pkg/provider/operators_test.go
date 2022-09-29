@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022 Red Hat, Inc.
+// Copyright (C) 2022 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,19 +14,30 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package common
+package provider
 
-// Constants shared by multiple test suite packages
-const (
-	defaultTimeoutSeconds     = 10
-	AccessControlTestKey      = "access-control"
-	LifecycleTestKey          = "lifecycle"
-	ManageabilityTestKey      = "manageability"
-	ChaosTesting              = "chaostesting"
-	AffiliatedCertTestKey     = "affiliated-certification"
-	NetworkingTestKey         = "networking"
-	ObservabilityTestKey      = "observability"
-	OperatorTestKey           = "operator"
-	PlatformAlterationTestKey = "platform-alteration"
-	PreflightTestKey          = "preflight"
+import (
+	"testing"
+
+	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
+	"github.com/stretchr/testify/assert"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
+
+func TestCsvToString(t *testing.T) {
+	assert.Equal(t, "operator csv: test1 ns: testNS", CsvToString(&olmv1Alpha.ClusterServiceVersion{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "test1",
+			Namespace: "testNS",
+		},
+	}))
+}
+
+func TestOperatorString(t *testing.T) {
+	o := Operator{
+		Name:             "test1",
+		Namespace:        "testNS",
+		SubscriptionName: "sub1",
+	}
+	assert.Equal(t, "csv: test1 ns:testNS subscription:sub1", o.String())
+}
