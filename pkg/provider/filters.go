@@ -105,3 +105,13 @@ func (env *TestEnvironment) GetAntiAffinityRequiredStatefulSets() []*StatefulSet
 	}
 	return filteredStatefulSets
 }
+
+func (env *TestEnvironment) GetHugepagesPods() []*Pod {
+	var filteredPods []*Pod
+	for _, p := range env.Pods {
+		if p.HasHugepages() {
+			filteredPods = append(filteredPods, p)
+		}
+	}
+	return filteredPods
+}

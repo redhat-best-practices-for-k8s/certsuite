@@ -68,10 +68,9 @@ type TestEnvironment struct { // rename this with testTarget
 	AbnormalEvents []*Event
 
 	// Pod Groupings
-	Pods          []*Pod                 `json:"testPods"`
-	DebugPods     map[string]*corev1.Pod // map from nodename to debugPod
-	HugepagesPods []*Pod
-	AllPods       []*Pod `json:"AllPods"`
+	Pods      []*Pod                 `json:"testPods"`
+	DebugPods map[string]*corev1.Pod // map from nodename to debugPod
+	AllPods   []*Pod                 `json:"AllPods"`
 
 	// Deployment Groupings
 	Deployments []*Deployment `json:"testDeployments"`
@@ -170,11 +169,6 @@ func buildTestEnvironment() { //nolint:funlen
 	for i := 0; i < len(pods); i++ {
 		aNewPod := NewPod(&pods[i])
 		env.Pods = append(env.Pods, &aNewPod)
-
-		// Build slices of guaranteed and non guaranteed pods
-		if aNewPod.HasHugepages() {
-			env.HugepagesPods = append(env.HugepagesPods, &aNewPod)
-		}
 		env.Containers = append(env.Containers, getPodContainers(&pods[i])...)
 	}
 	pods = data.AllPods
