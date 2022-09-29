@@ -24,6 +24,7 @@ env:
   IMAGE_TAG: latest
   TNF_CONTAINER_CLIENT: docker
   TNF_NON_INTRUSIVE_ONLY: false
+  TNF_ALLOW_PREFLIGHT_INSECURE: false
   TNF_DISABLE_CONFIG_AUTODISCOVER: false
   TNF_CONFIG_DIR: /tmp/tnf/config
   TNF_OUTPUT_DIR: /tmp/tnf/output
@@ -45,6 +46,12 @@ jobs:
       TNF_VERSION: ""
       PARTNER_VERSION: ""
     steps:
+
+      - name: Write temporary docker file
+        run: |
+          mkdir -p /home/runner/.docker
+          touch ${PFLT_DOCKERCONFIG}
+          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
 
       - name: Checkout generic working branch of the current version
         uses: actions/checkout@v3

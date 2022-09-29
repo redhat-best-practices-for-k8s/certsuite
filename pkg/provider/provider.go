@@ -429,6 +429,10 @@ func (env *TestEnvironment) IsIntrusive() bool {
 	return !env.variables.NonIntrusiveOnly
 }
 
+func (env *TestEnvironment) IsPreflightInsecureAllowed() bool {
+	return env.variables.AllowPreflightInsecure
+}
+
 func (env *TestEnvironment) GetOfflineDBPath() string {
 	return env.variables.OfflineDB
 }

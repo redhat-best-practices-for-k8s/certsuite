@@ -17,12 +17,18 @@
 package provider
 
 import (
+	"context"
 	"fmt"
+	"os"
 	"sort"
 	"strings"
 
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
+	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
+	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
+	plibOperator "github.com/redhat-openshift-ecosystem/openshift-preflight/operator"
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 )
 
 const (
@@ -42,6 +48,7 @@ type Operator struct {
 	Version            string                                `yaml:"version" json:"version"`
 	Channel            string                                `yaml:"channel" json:"channel"`
 	PackageFromCsvName string                                `yaml:"packagefromcsvname" json:"packagefromcsvname"`
+	PreflightResults   plibRuntime.Results
 }
 
 type CsvInstallPlan struct {
@@ -55,6 +62,48 @@ type CsvInstallPlan struct {
 
 func (op *Operator) String() string {
 	return fmt.Sprintf("csv: %s ns:%s subscription:%s targetNamespace=%s", op.Name, op.Namespace, op.SubscriptionName, op.TargetNamespace)
+}
+
+func (op *Operator) SetPreflightResults(allowInsecure bool) error {
+	bundleImage := op.InstallPlans[0].BundleImage
+	indexImage := op.InstallPlans[0].IndexImage
+	oc := clientsholder.GetClientsHolder()
+
+	// Create artifacts handler
+	artifactsWriter, err := artifacts.NewMapWriter()
+	if err != nil {
+		return err
+	}
+	ctx := artifacts.ContextWithWriter(context.Background(), artifactsWriter)
+
+	opts := []plibOperator.Option{}
+
+	// Check to make sure that the environment variable is set
+	if val := os.Getenv("PFLT_DOCKERCONFIG"); len(val) > 0 {
+		opts = append(opts, plibOperator.WithDockerConfigJSONFromFile(val))
+	} else {
+		logrus.Errorf("Operator func SetPreflightResults has failed due to missing PFLT_DOCKERCONFIG environment variable")
+		return nil
+	}
+	if allowInsecure {
+		logrus.Info("Insecure connections are being allowed to preflight")
+		opts = append(opts, plibOperator.WithInsecureConnection())
+	}
+
+	check := plibOperator.NewCheck(bundleImage, indexImage, oc.KubeConfig, opts...)
+	results, err := check.Run(ctx)
+	if err != nil {
+		return err
+	}
+
+	e := os.RemoveAll("artifacts/")
+	if e != nil {
+		logrus.Fatal(e)
+	}
+
+	logrus.Infof("Storing operator preflight results into object for %s", bundleImage)
+	op.PreflightResults = results
+	return nil
 }
 
 //nolint:funlen // adding 1 log 26 > 25

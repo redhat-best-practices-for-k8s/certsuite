@@ -17,13 +17,19 @@
 package provider
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	corev1 "k8s.io/api/core/v1"
+
+	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
+	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
+	plibContainer "github.com/redhat-openshift-ecosystem/openshift-preflight/container"
 )
 
 var (
@@ -40,6 +46,7 @@ type Container struct {
 	Runtime                  string
 	UID                      string
 	ContainerImageIdentifier configuration.ContainerImageIdentifier
+	PreflightResults         plibRuntime.Results
 }
 
 func NewContainer() *Container {
@@ -60,6 +67,47 @@ func (c *Container) GetUID() (string, error) {
 	}
 	logrus.Debugln(fmt.Sprintf("uid of %s/%s/%s=%s\n", c.Namespace, c.Podname, c.Name, uid))
 	return uid, nil
+}
+
+func (c *Container) SetPreflightResults(preflightImageCache map[string]plibRuntime.Results, allowInsecure bool) error {
+	var results plibRuntime.Results
+	if _, exists := preflightImageCache[c.Image]; !exists {
+		opts := []plibContainer.Option{}
+
+		// Check to make sure that the environment variable is set
+		if val := os.Getenv("PFLT_DOCKERCONFIG"); len(val) > 0 {
+			opts = append(opts, plibContainer.WithDockerConfigJSONFromFile(val))
+		} else {
+			logrus.Errorf("Container func SetPreflightResults has failed due to missing PFLT_DOCKERCONFIG environment variable")
+			return nil
+		}
+		if allowInsecure {
+			logrus.Info("Insecure connections are being allowed to preflight")
+			opts = append(opts, plibContainer.WithInsecureConnection())
+		}
+
+		check := plibContainer.NewCheck(c.Image, opts...)
+
+		// Create artifacts handler
+		artifactsWriter, err := artifacts.NewMapWriter()
+		if err != nil {
+			return err
+		}
+		ctx := artifacts.ContextWithWriter(context.Background(), artifactsWriter)
+		var runtimeErr error
+		results, runtimeErr = check.Run(ctx)
+		logrus.StandardLogger().Out = os.Stderr
+
+		if runtimeErr != nil {
+			logrus.Error(runtimeErr)
+			return runtimeErr
+		}
+		preflightImageCache[c.Image] = results
+	}
+
+	// Store the result into the cache
+	c.PreflightResults = preflightImageCache[c.Image]
+	return nil
 }
 
 func (c *Container) StringLong() string {
