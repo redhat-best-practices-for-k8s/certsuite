@@ -1,280 +1,6 @@
 {
   "data": [
     {
-      "_id": "609aaf4ed04af0e74bb05827",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/jfrog/artifactory-operator-bundle@sha256:ee798802b03e93ccc74762d5da175a0e6f00692ca7f2c94c16c2048862bee7ba",
-      "bundle_path_digest": "sha256:ee798802b03e93ccc74762d5da175a0e6f00692ca7f2c94c16c2048862bee7ba",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-05-11T16:22:38.389000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "artifactory-ha-operator.v1.0.3",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:27:20.817000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "openshiftartifactoryha-operator",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "OpenshiftArtifactoryHa",
-          "plural": "openshiftartifactoryhas",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "",
-      "related_images": [],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.0.3",
-      "version_original": "1.0.3"
-    },
-    {
-      "_id": "609aaf4fe2b160d361d250ff",
-      "alm_examples": [
-        {
-          "api_version": "dynatrace.com/v1alpha1",
-          "kind": "OneAgent",
-          "metadata": {
-            "name": "oneagent",
-            "namespace": "dynatrace"
-          },
-          "spec": {
-            "apiUrl": "https://ENVIRONMENTID.live.dynatrace.com/api",
-            "args": [
-              "--set-app-log-content-access=true"
-            ],
-            "tolerations": [
-              {
-                "effect": "NoSchedule",
-                "key": "node-role.kubernetes.io/master",
-                "operator": "Exists"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "dynatrace.com/v1alpha1",
-          "kind": "OneAgentAPM",
-          "metadata": {
-            "name": "oneagentapm",
-            "namespace": "dynatrace"
-          },
-          "spec": {
-            "apiUrl": "https://ENVIRONMENTID.live.dynatrace.com/api"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/dynatrace/dynatrace-oneagent-operator-bundle@sha256:8c4b0a6f8e465f5b969ea88d78cb3883a308b1c8c19f68e3c9cef2f6a0b40584",
-      "bundle_path_digest": "sha256:8c4b0a6f8e465f5b969ea88d78cb3883a308b1c8c19f68e3c9cef2f6a0b40584",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-05-11T16:22:39.054000+00:00",
-      "csv_description": "The Dynatrace OneAgent Operator allows users to easily deploy full-stack monitoring for [OpenShift clusters](https://www.dynatrace.com/technologies/openshift-monitoring/). The Dynatrace OneAgent automatically monitors the workload running in containers down to the code and request level.\n\n### Installing the OneAgent\nOnce you've installed the Operator, you can create OneAgent custom resources to monitor your environment.\n\nFirst, please add a Secret within the Project you've deployed the Dynatrace Operator to, which would contain your API and PaaS tokens. Create tokens of type *Dynatrace API* (`API_TOKEN`) and *Platform as a Service* (`PAAS_TOKEN`) and use their values in the following commands respectively.\n\nFor assistance please refer to [Create user-generated access tokens](https://www.dynatrace.com/support/help/shortlink/token#create-user-generated-access-tokens).\n\n``` $ oc -n <project> create secret generic oneagent --from-literal=\"apiToken=API_TOKEN\" --from-literal=\"paasToken=PAAS_TOKEN\" ```\n\nYou may update this Secret at any time to rotate the tokens.\n\nThen please add an OneAgent object in the Project where the Operator has been deployed, configured to your needs.\n\n### Required Parameters\n* `apiUrl` - provide the URL to the API of your Dynatrace environment. In Dynatrace SaaS it will look like `https://<ENVIRONMENTID>.live.dynatrace.com/api` . In Dynatrace Managed like `https://<YourDynatraceServerURL>/e/<ENVIRONMENTID>/api` .\n\n### Advanced Options\n* **Image Override** - use a copy of the OneAgent container image from a registry other than Docker's or Red Hat's\n* **NodeSelectors** - select a subset of your cluster's nodes to run the Dynatrace OneAgent on, based on labels\n* **Tolerations** - add specific tolerations to the agent so that it can monitor all of the nodes in your cluster; we include the default toleration so that Dynatrace OneAgent also monitors the master nodes\n* **Priority Class Name** - define the priorityClassName for OneAgent pods\n* **Environment variables** - define environment variables for the OneAgent container\n* **Disable Certificate Checking** - disable any certificate validation that may interact poorly with proxies with in your cluster\n* **Disable OneAgent Update** - disable the Operator's auto-update feature for OneAgent pods\n* **Enable Istio Auto-config** - automatically create Istio objects for egress communication to the Dynatrace environment from the OneAgent\n\nFor a complete list of supported parameters please consult the [Operator Deploy Guide](https://www.dynatrace.com/support/help/shortlink/openshift-deploy).\n\n### Help\nYou can find more about our instructions in our [documentation](https://www.dynatrace.com/support/help/shortlink/openshift-deploy#install-oneagent-operator).\n",
-      "csv_display_name": "Dynatrace OneAgent",
-      "csv_metadata_description": "Install full-stack monitoring of OpenShift clusters with the Dynatrace OneAgent.",
-      "csv_name": "dynatrace-monitoring.v0.9.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:15:59.331000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "oneagent-certified",
-      "provided_apis": [
-        {
-          "group": "dynatrace.com",
-          "kind": "OneAgentAPM",
-          "plural": "oneagentapms",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "dynatrace.com",
-          "kind": "OneAgent",
-          "plural": "oneagents",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Dynatrace LLC",
-      "related_images": [
-        {
-          "digest": "sha256:874eb4d800e765126c6ffe31319cfc66bbfa332f28983e0444af9ad9abb8fcd9",
-          "image": "registry.connect.redhat.com/dynatrace/dynatrace-oneagent-operator@sha256:874eb4d800e765126c6ffe31319cfc66bbfa332f28983e0444af9ad9abb8fcd9",
-          "name": "dynatrace-oneagent-operator-874eb4d800e765126c6ffe31319cfc66bbfa332f28983e0444af9ad9abb8fcd9-annotation"
-        },
-        {
-          "digest": "sha256:874eb4d800e765126c6ffe31319cfc66bbfa332f28983e0444af9ad9abb8fcd9",
-          "image": "registry.connect.redhat.com/dynatrace/dynatrace-oneagent-operator@sha256:874eb4d800e765126c6ffe31319cfc66bbfa332f28983e0444af9ad9abb8fcd9",
-          "name": "dynatrace-oneagent-operator"
-        },
-        {
-          "digest": "sha256:874eb4d800e765126c6ffe31319cfc66bbfa332f28983e0444af9ad9abb8fcd9",
-          "image": "registry.connect.redhat.com/dynatrace/dynatrace-oneagent-operator@sha256:874eb4d800e765126c6ffe31319cfc66bbfa332f28983e0444af9ad9abb8fcd9",
-          "name": "webhook"
-        },
-        {
-          "digest": "sha256:874eb4d800e765126c6ffe31319cfc66bbfa332f28983e0444af9ad9abb8fcd9",
-          "image": "registry.connect.redhat.com/dynatrace/dynatrace-oneagent-operator@sha256:874eb4d800e765126c6ffe31319cfc66bbfa332f28983e0444af9ad9abb8fcd9",
-          "name": "bootstrapper"
-        },
-        {
-          "digest": "sha256:84b493fe700018e64eee329d25c1e4c8f395a46932ccc8ed6be2f65581bb2cb0",
-          "image": "registry.connect.redhat.com/dynatrace/oneagent@sha256:84b493fe700018e64eee329d25c1e4c8f395a46932ccc8ed6be2f65581bb2cb0",
-          "name": "dynatrace_oneagent"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.9.0",
-      "version_original": "0.9.0"
-    },
-    {
-      "_id": "609aaf52d04af0e74bb05829",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/elastic/eck@sha256:9587db325f9cc13519f16e9fd675e8d74c80603ea6173ed0c25f74e72a2744a2",
-      "bundle_path_digest": "sha256:9587db325f9cc13519f16e9fd675e8d74c80603ea6173ed0c25f74e72a2744a2",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-05-11T16:22:42.288000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "elasticsearch-eck-operator-certified.v1.3.0",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:31:42.107000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "elasticsearch-eck-operator-certified",
-      "provided_apis": [
-        {
-          "group": "elasticsearch.k8s.elastic.co",
-          "kind": "Elasticsearch",
-          "plural": "elasticsearches",
-          "version": "v1"
-        },
-        {
-          "group": "kibana.k8s.elastic.co",
-          "kind": "Kibana",
-          "plural": "kibanas",
-          "version": "v1"
-        },
-        {
-          "group": "apm.k8s.elastic.co",
-          "kind": "ApmServer",
-          "plural": "apmservers",
-          "version": "v1"
-        },
-        {
-          "group": "apm.k8s.elastic.co",
-          "kind": "ApmServer",
-          "plural": "apmservers",
-          "version": "v1beta1"
-        },
-        {
-          "group": "elasticsearch.k8s.elastic.co",
-          "kind": "Elasticsearch",
-          "plural": "elasticsearches",
-          "version": "v1beta1"
-        },
-        {
-          "group": "elasticsearch.k8s.elastic.co",
-          "kind": "Elasticsearch",
-          "plural": "elasticsearches",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "enterprisesearch.k8s.elastic.co",
-          "kind": "EnterpriseSearch",
-          "plural": "enterprisesearches",
-          "version": "v1beta1"
-        },
-        {
-          "group": "kibana.k8s.elastic.co",
-          "kind": "Kibana",
-          "plural": "kibanas",
-          "version": "v1beta1"
-        },
-        {
-          "group": "kibana.k8s.elastic.co",
-          "kind": "Kibana",
-          "plural": "kibanas",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "apm.k8s.elastic.co",
-          "kind": "ApmServer",
-          "plural": "apmservers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "beat.k8s.elastic.co",
-          "kind": "Beat",
-          "plural": "beats",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "",
-      "related_images": [],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.3.0",
-      "version_original": "1.3.0"
-    },
-    {
       "_id": "609aaf523048c1ac9a6fea9d",
       "alm_examples": [
         {
@@ -8873,6 +8599,333 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.3.1",
       "version_original": "1.3.1"
+    },
+    {
+      "_id": "609ab00fd04af0e74bb05888",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.0.20",
+      "creation_date": "2021-05-11T16:25:51.266000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-6",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:27:39.328000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "6.0.6-6",
+      "version_original": "6.0.6-6"
+    },
+    {
+      "_id": "609ab01356933b164fe2124d",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/c12e/cortex-certifai-operator-bundle@sha256:2ff2df4e61105cb9cc1905f504ed0e74907fcd43f85d200f729e464e824e928f",
+      "bundle_path_digest": "sha256:2ff2df4e61105cb9cc1905f504ed0e74907fcd43f85d200f729e464e824e928f",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-05-11T16:25:55.278000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "cortex-certifai-operator.v1.3.2",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:45:50.306000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "cortex-certifai-operator",
+      "provided_apis": [
+        {
+          "group": "cortex.cognitivescale.com",
+          "kind": "Certifai",
+          "version": "v1"
+        },
+        {
+          "group": "cortex.cognitivescale.com",
+          "kind": "CertifaiScan",
+          "version": "v1"
+        }
+      ],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.3.2",
+      "version_original": "1.3.2"
+    },
+    {
+      "_id": "609ab014e2b160d361d25174",
+      "alm_examples": [
+        {
+          "api_version": "apm.neuvector.com/v1alpha1",
+          "kind": "Neuvector",
+          "metadata": {
+            "name": "example-neuvector"
+          },
+          "spec": {
+            "admissionwebhook": {
+              "type": "ClusterIP"
+            },
+            "containerd": {
+              "enabled": false,
+              "path": "/var/run/containerd/containerd.sock"
+            },
+            "controller": {
+              "apisvc": {},
+              "azureFileShare": {
+                "enabled": false
+              },
+              "configmap": {
+                "enabled": false
+              },
+              "enabled": true,
+              "federation": {
+                "managedsvc": {},
+                "mastersvc": {}
+              },
+              "image": "registry.connect.redhat.com/neuvector/controller@sha256:c8d36c69c8e740d6cc9c1adc630d10b9b67639d45d5c103fdf8961151407af30",
+              "ingress": {
+                "annotations": {
+                  "ingress.kubernetes.io/protocol": "https"
+                },
+                "enabled": false,
+                "path": "/",
+                "tls": false
+              },
+              "pvc": {
+                "accessModes": [
+                  "ReadWriteMany"
+                ],
+                "enabled": false
+              },
+              "replicas": 3,
+              "strategy": {
+                "rollingUpdate": {
+                  "maxSurge": 1,
+                  "maxUnavailable": 0
+                },
+                "type": "RollingUpdate"
+              }
+            },
+            "crdwebhook": {
+              "type": "ClusterIP"
+            },
+            "crio": {
+              "enabled": true,
+              "path": "/var/run/crio/crio.sock"
+            },
+            "cve": {
+              "scanner": {
+                "dockerPath": "",
+                "enabled": true,
+                "image": "registry.connect.redhat.com/neuvector/scanner@sha256:ef5b441635be35e03a31c392363d6c7fb5a82aa8450e0f197d8b7769599877f7",
+                "replicas": 3,
+                "strategy": {
+                  "rollingUpdate": {
+                    "maxSurge": 1,
+                    "maxUnavailable": 0
+                  },
+                  "type": "RollingUpdate"
+                }
+              },
+              "updater": {
+                "enabled": true,
+                "image": "registry.access.redhat.com/ubi8@sha256:b58ead4c21ba774d3209956c761c354e906ad4ad9fb40b153240725b14aae458",
+                "schedule": "0 0 * * *"
+              }
+            },
+            "docker": {
+              "enabled": false,
+              "path": "/var/run/docker.sock"
+            },
+            "enforcer": {
+              "enabled": true,
+              "image": "registry.connect.redhat.com/neuvector/enforcer@sha256:7d4788e2853ba23296bd06bdab92ba90c4d06f3a8a6de6e17d5becdec4c5f0a0",
+              "tolerations": [
+                {
+                  "effect": "NoSchedule",
+                  "key": "node-role.kubernetes.io/master"
+                }
+              ]
+            },
+            "exporter": {
+              "CTRL_PASSWORD": "admin",
+              "CTRL_USERNAME": "admin",
+              "enabled": false,
+              "scrapping": true
+            },
+            "imagePullSecrets": "regsecret",
+            "manager": {
+              "enabled": true,
+              "env": {
+                "ssl": true
+              },
+              "image": "registry.connect.redhat.com/neuvector/manager@sha256:33588d66bd7a778bc65af23864256fb683625a1a08f6c814762f7fffbca7c1bc",
+              "ingress": {
+                "annotations": {},
+                "enabled": false,
+                "path": "/",
+                "tls": false
+              },
+              "svc": {
+                "type": "NodePort"
+              }
+            },
+            "openshift": true,
+            "resources": {}
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:863e2cbbd481dfe2c70fdfcf866c161c250b95e5e9a320fe211a805c456c7e9e",
+      "bundle_path_digest": "sha256:863e2cbbd481dfe2c70fdfcf866c161c250b95e5e9a320fe211a805c456c7e9e",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2021-05-11T16:25:56.201000+00:00",
+      "csv_description": "NeuVector delivers the only cloud-native Kubernetes security platform with uncompromising end-to-end protection from DevOps vulnerability protection to automated run-time security, and featuring a true Layer 7 container firewall.\n\nThe NeuVector Operator runs  in the openshift container platform to deploy and manage the NeuVector Security cluster components. The NeuVector operator contains all necessary information to deploy NeuVector using helm charts. You simply need to install the NeuVector operator from the OpenShift embeded operator hub and create NeuVector instance. You can modify the NeuVector installation configuration by modifying yaml while creating the NeuVector instance such as imagePullSecrets, tag version, etc. Please refer to [NeuVector Helm Chart](https://github.com/neuvector/neuvector-helm) for the values that can be modifed during installation. To upgrade to a newer version of NeuVector, just reapply the NeuVector instance with desired tag , which in turn pulls the specified NeuVector image tags and upgrades as per upgrade plan configured on the helm chart. \n\n**Complete below steps to create secret for accessing Docker or similar registry and Grant Service Account Access to the Privileged SCC before installation.**\n\nCreate the NeuVector namespace\n\n         oc new-project  neuvector\nConfigure OpenShift to pull images from the private NeuVector registry on Docker Hub\n\n         oc create secret docker-registry regsecret -n neuvector --docker-server=https://index.docker.io/v1/ --docker-username=your-name --docker-password=your-pword --docker-email=your-email\n\t\t\t\t \n\nWhere \u2019your-name\u2019 is your Docker username, \u2019your-pword\u2019 is your Docker password, \u2019your-email\u2019 is your Docker email.\n\nLogin as system:admin account\n\n         oc login -u system:admin\n\nGrant Service Account Access to the Privileged SCC\n\n         oc -n neuvector adm policy add-scc-to-user privileged -z default\n\nThe following info will be added in the Privileged SCC users:\n\n         - system:serviceaccount:neuvector:default\n\n\n#Deploying the NeuVector Operator#\n\n\nPlease refer to the instructions [here](https://github.com/neuvector/neuvector-operator/blob/master/README.md)\n\n\n",
+      "csv_display_name": "Neuvector Operator",
+      "csv_metadata_description": "NeuVector delivers the only cloud-native Kubernetes security platform with uncompromising end-to-end protection from DevOps vulnerability protection to automated run-time security, and featuring a true Layer 7 container firewall.",
+      "csv_name": "neuvector-operator.v1.2.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:10:01.625000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "neuvector-certified-operator",
+      "provided_apis": [
+        {
+          "group": "apm.neuvector.com",
+          "kind": "Neuvector",
+          "plural": "neuvectors",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "NeuVector",
+      "related_images": [
+        {
+          "digest": "sha256:a326d03787f5f5099f62e75549b4245e084ca9c6d5c68d07c339a47bde6d82a3",
+          "image": "registry.connect.redhat.com/neuvector/neuvector-operator@sha256:a326d03787f5f5099f62e75549b4245e084ca9c6d5c68d07c339a47bde6d82a3",
+          "name": "neuvector-operator-a326d03787f5f5099f62e75549b4245e084ca9c6d5c68d07c339a47bde6d82a3-annotation"
+        },
+        {
+          "digest": "sha256:a326d03787f5f5099f62e75549b4245e084ca9c6d5c68d07c339a47bde6d82a3",
+          "image": "registry.connect.redhat.com/neuvector/neuvector-operator@sha256:a326d03787f5f5099f62e75549b4245e084ca9c6d5c68d07c339a47bde6d82a3",
+          "name": "neuvector-operator"
+        },
+        {
+          "digest": "sha256:c8d36c69c8e740d6cc9c1adc630d10b9b67639d45d5c103fdf8961151407af30",
+          "image": "registry.connect.redhat.com/neuvector/controller@sha256:c8d36c69c8e740d6cc9c1adc630d10b9b67639d45d5c103fdf8961151407af30",
+          "name": "controller"
+        },
+        {
+          "digest": "sha256:7d4788e2853ba23296bd06bdab92ba90c4d06f3a8a6de6e17d5becdec4c5f0a0",
+          "image": "registry.connect.redhat.com/neuvector/enforcer@sha256:7d4788e2853ba23296bd06bdab92ba90c4d06f3a8a6de6e17d5becdec4c5f0a0",
+          "name": "enforcer"
+        },
+        {
+          "digest": "sha256:33588d66bd7a778bc65af23864256fb683625a1a08f6c814762f7fffbca7c1bc",
+          "image": "registry.connect.redhat.com/neuvector/manager@sha256:33588d66bd7a778bc65af23864256fb683625a1a08f6c814762f7fffbca7c1bc",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:ef5b441635be35e03a31c392363d6c7fb5a82aa8450e0f197d8b7769599877f7",
+          "image": "registry.connect.redhat.com/neuvector/scanner@sha256:ef5b441635be35e03a31c392363d6c7fb5a82aa8450e0f197d8b7769599877f7",
+          "name": "scanner"
+        },
+        {
+          "digest": "sha256:b58ead4c21ba774d3209956c761c354e906ad4ad9fb40b153240725b14aae458",
+          "image": "registry.access.redhat.com/ubi8@sha256:b58ead4c21ba774d3209956c761c354e906ad4ad9fb40b153240725b14aae458",
+          "name": "updater"
+        },
+        {
+          "digest": "sha256:33588d66bd7a778bc65af23864256fb683625a1a08f6c814762f7fffbca7c1bc",
+          "image": "registry.connect.redhat.com/neuvector/manager@sha256:33588d66bd7a778bc65af23864256fb683625a1a08f6c814762f7fffbca7c1bc",
+          "name": "manager-33588d66bd7a778bc65af23864256fb683625a1a08f6c814762f7fffbca7c1bc-annotation"
+        },
+        {
+          "digest": "sha256:7d4788e2853ba23296bd06bdab92ba90c4d06f3a8a6de6e17d5becdec4c5f0a0",
+          "image": "registry.connect.redhat.com/neuvector/enforcer@sha256:7d4788e2853ba23296bd06bdab92ba90c4d06f3a8a6de6e17d5becdec4c5f0a0",
+          "name": "enforcer-7d4788e2853ba23296bd06bdab92ba90c4d06f3a8a6de6e17d5becdec4c5f0a0-annotation"
+        },
+        {
+          "digest": "sha256:ef5b441635be35e03a31c392363d6c7fb5a82aa8450e0f197d8b7769599877f7",
+          "image": "registry.connect.redhat.com/neuvector/scanner@sha256:ef5b441635be35e03a31c392363d6c7fb5a82aa8450e0f197d8b7769599877f7",
+          "name": "scanner-ef5b441635be35e03a31c392363d6c7fb5a82aa8450e0f197d8b7769599877f7-annotation"
+        },
+        {
+          "digest": "sha256:b58ead4c21ba774d3209956c761c354e906ad4ad9fb40b153240725b14aae458",
+          "image": "registry.access.redhat.com/ubi8@sha256:b58ead4c21ba774d3209956c761c354e906ad4ad9fb40b153240725b14aae458",
+          "name": "ubi8-b58ead4c21ba774d3209956c761c354e906ad4ad9fb40b153240725b14aae458-annotation"
+        },
+        {
+          "digest": "sha256:c8d36c69c8e740d6cc9c1adc630d10b9b67639d45d5c103fdf8961151407af30",
+          "image": "registry.connect.redhat.com/neuvector/controller@sha256:c8d36c69c8e740d6cc9c1adc630d10b9b67639d45d5c103fdf8961151407af30",
+          "name": "controller-c8d36c69c8e740d6cc9c1adc630d10b9b67639d45d5c103fdf8961151407af30-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.2.0",
+      "version_original": "1.2.0"
     }
   ]
 }
