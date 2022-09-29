@@ -68,24 +68,15 @@ type TestEnvironment struct { // rename this with testTarget
 	AbnormalEvents []*Event
 
 	// Pod Groupings
-	Pods                     []*Pod                 `json:"testPods"`
-	DebugPods                map[string]*corev1.Pod // map from nodename to debugPod
-	GuaranteedPods           []*Pod
-	NonGuaranteedPods        []*Pod
-	AffinityRequiredPods     []*Pod
-	AntiAffinityRequiredPods []*Pod
-	HugepagesPods            []*Pod
-	AllPods                  []*Pod `json:"AllPods"`
+	Pods      []*Pod                 `json:"testPods"`
+	DebugPods map[string]*corev1.Pod // map from nodename to debugPod
+	AllPods   []*Pod                 `json:"AllPods"`
 
 	// Deployment Groupings
-	Deployments                     []*Deployment `json:"testDeployments"`
-	AffinityRequiredDeployments     []*Deployment
-	AntiAffinityRequiredDeployments []*Deployment
+	Deployments []*Deployment `json:"testDeployments"`
 
 	// StatefulSet Groupings
-	StatefulSets                     []*StatefulSet `json:"testStatefulSets"`
-	AffinityRequiredStatefulSets     []*StatefulSet
-	AntiAffinityRequiredStatefulSets []*StatefulSet
+	StatefulSets []*StatefulSet `json:"testStatefulSets"`
 
 	Containers             []*Container `json:"testContainers"`
 	Operators              []Operator   `json:"testOperators"`
@@ -155,7 +146,7 @@ var (
 	loaded = false
 )
 
-func buildTestEnvironment() { //nolint:funlen,gocyclo
+func buildTestEnvironment() { //nolint:funlen
 	// Wait for the debug pods to be ready before the autodiscovery starts.
 	err := WaitDebugPodsReady()
 	if err != nil {
@@ -178,23 +169,6 @@ func buildTestEnvironment() { //nolint:funlen,gocyclo
 	for i := 0; i < len(pods); i++ {
 		aNewPod := NewPod(&pods[i])
 		env.Pods = append(env.Pods, &aNewPod)
-
-		// Build slices of guaranteed and non guaranteed pods
-		if aNewPod.IsPodGuaranteed() {
-			env.GuaranteedPods = append(env.GuaranteedPods, &aNewPod)
-		} else {
-			env.NonGuaranteedPods = append(env.NonGuaranteedPods, &aNewPod)
-		}
-		if aNewPod.HasHugepages() {
-			env.HugepagesPods = append(env.HugepagesPods, &aNewPod)
-		}
-
-		// Build slices of AffinityRequired and non AffinityRequired pods
-		if aNewPod.AffinityRequired() {
-			env.AffinityRequiredPods = append(env.AffinityRequiredPods, &aNewPod)
-		} else {
-			env.AntiAffinityRequiredPods = append(env.AntiAffinityRequiredPods, &aNewPod)
-		}
 		env.Containers = append(env.Containers, getPodContainers(&pods[i])...)
 	}
 	pods = data.AllPods
@@ -229,26 +203,12 @@ func buildTestEnvironment() { //nolint:funlen,gocyclo
 			&data.Deployments[i],
 		}
 		env.Deployments = append(env.Deployments, aNewDeployment)
-
-		// Create slices of affinity required and affinity not required deployments
-		if aNewDeployment.AffinityRequired() {
-			env.AffinityRequiredDeployments = append(env.AffinityRequiredDeployments, aNewDeployment)
-		} else {
-			env.AntiAffinityRequiredDeployments = append(env.AntiAffinityRequiredDeployments, aNewDeployment)
-		}
 	}
 	for i := range data.StatefulSet {
 		aNewStatefulSet := &StatefulSet{
 			&data.StatefulSet[i],
 		}
 		env.StatefulSets = append(env.StatefulSets, aNewStatefulSet)
-
-		// Create slices of affinity required and affinity not required statefulsets
-		if aNewStatefulSet.AffinityRequired() {
-			env.AffinityRequiredStatefulSets = append(env.AffinityRequiredStatefulSets, aNewStatefulSet)
-		} else {
-			env.AntiAffinityRequiredStatefulSets = append(env.AntiAffinityRequiredStatefulSets, aNewStatefulSet)
-		}
 	}
 	env.HorizontalScaler = data.Hpas
 

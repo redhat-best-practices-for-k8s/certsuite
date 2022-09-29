@@ -93,7 +93,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		if env.GetWorkerCount() < minWorkerNodesForLifecycle {
 			ginkgo.Skip("Skipping pod high availability test because invalid number of available workers.")
 		}
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.AntiAffinityRequiredDeployments, env.AntiAffinityRequiredStatefulSets)
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.GetAntiAffinityRequiredDeployments(), env.GetAntiAffinityRequiredStatefulSets())
 		testHighAvailability(&env)
 	})
 
@@ -102,7 +102,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		if env.GetWorkerCount() < minWorkerNodesForLifecycle {
 			ginkgo.Skip("Skipping pod scheduling test because invalid number of available workers.")
 		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.NonGuaranteedPods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetNonGuaranteedPodsWithAntiAffinity())
 		testPodNodeSelectorAndAffinityBestPractices(&env)
 	})
 
@@ -147,7 +147,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCPUIsolationIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GuaranteedPods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetGuaranteedPods())
 		testCPUIsolation(&env)
 	})
 
@@ -253,13 +253,12 @@ func testPodsOwnerReference(env *provider.TestEnvironment) {
 
 func testPodNodeSelectorAndAffinityBestPractices(env *provider.TestEnvironment) {
 	var badPods []*corev1.Pod
-	for _, put := range env.NonGuaranteedPods {
+	for _, put := range env.GetNonGuaranteedPodsWithAntiAffinity() {
 		if len(put.Spec.NodeSelector) != 0 {
 			tnf.ClaimFilePrintf("ERROR: %s has a node selector clause. Node selector: %v", put, &put.Spec.NodeSelector)
 			badPods = append(badPods, put.Pod)
 		}
-		// Skip any affinity required pods.  Not applicable for this test.
-		if !put.AffinityRequired() && put.Spec.Affinity != nil && put.Spec.Affinity.NodeAffinity != nil {
+		if put.Spec.Affinity != nil && put.Spec.Affinity.NodeAffinity != nil {
 			tnf.ClaimFilePrintf("ERROR: %s has a node affinity clause. Node affinity: %v", put, put.Spec.Affinity.NodeAffinity)
 			badPods = append(badPods, put.Pod)
 		}
@@ -333,7 +332,7 @@ func testHighAvailability(env *provider.TestEnvironment) {
 
 	badDeployments := []string{}
 	badStatefulSet := []string{}
-	for _, dp := range env.AntiAffinityRequiredDeployments {
+	for _, dp := range env.GetAntiAffinityRequiredDeployments() {
 		if dp.Spec.Replicas == nil || *(dp.Spec.Replicas) <= 1 {
 			badDeployments = append(badDeployments, dp.ToString())
 			tnf.ClaimFilePrintf("Deployment found without valid high availability: %s", dp.ToString())
@@ -345,7 +344,7 @@ func testHighAvailability(env *provider.TestEnvironment) {
 			tnf.ClaimFilePrintf("Deployment found without valid high availability: %s", dp.ToString())
 		}
 	}
-	for _, st := range env.AntiAffinityRequiredStatefulSets {
+	for _, st := range env.GetAntiAffinityRequiredStatefulSets() {
 		if st.Spec.Replicas == nil || *(st.Spec.Replicas) <= 1 {
 			badStatefulSet = append(badStatefulSet, st.ToString())
 			tnf.ClaimFilePrintf("StatefulSet found without valid high availability: %s", st.ToString())
@@ -454,7 +453,7 @@ func testCPUIsolation(env *provider.TestEnvironment) {
 
 	podsMissingIsolationRequirements := make(map[string]bool)
 
-	for _, put := range env.GuaranteedPods {
+	for _, put := range env.GetGuaranteedPods() {
 		if !put.IsCPUIsolationCompliant() {
 			podsMissingIsolationRequirements[put.Name] = true
 		}
@@ -464,10 +463,10 @@ func testCPUIsolation(env *provider.TestEnvironment) {
 }
 
 func testAffinityRequiredPods(env *provider.TestEnvironment) {
-	testhelper.SkipIfEmptyAny(ginkgo.Skip, env.AffinityRequiredPods)
+	testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetAffinityRequiredPods())
 
 	var podsDesiringAffinityRequiredMissingLabel []*provider.Pod
-	for _, put := range env.AffinityRequiredPods {
+	for _, put := range env.GetAffinityRequiredPods() {
 		// Check if the pod is Affinity compliant.
 		result, err := put.IsAffinityCompliant()
 		if !result {
@@ -480,10 +479,10 @@ func testAffinityRequiredPods(env *provider.TestEnvironment) {
 }
 
 func testAffinityRequiredDeployments(env *provider.TestEnvironment) {
-	testhelper.SkipIfEmptyAny(ginkgo.Skip, env.AffinityRequiredDeployments)
+	testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetAffinityRequiredDeployments())
 
 	var deploymentsDesiringAffinityRequiredMissingLabel []*provider.Deployment
-	for _, dep := range env.AffinityRequiredDeployments {
+	for _, dep := range env.GetAffinityRequiredDeployments() {
 		// Check if the deployment is Affinity compliant.
 		result, err := dep.IsAffinityCompliant()
 		if !result {
@@ -496,10 +495,10 @@ func testAffinityRequiredDeployments(env *provider.TestEnvironment) {
 }
 
 func testAffinityRequiredStatefulSets(env *provider.TestEnvironment) {
-	testhelper.SkipIfEmptyAny(ginkgo.Skip, env.AffinityRequiredStatefulSets)
+	testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetAffinityRequiredStatefulSets())
 
 	var ssDesiringAffinityRequiredMissingLabel []*provider.StatefulSet
-	for _, ss := range env.AffinityRequiredStatefulSets {
+	for _, ss := range env.GetAffinityRequiredStatefulSets() {
 		// Check if the statefulset is Affinity compliant.
 		result, err := ss.IsAffinityCompliant()
 		if !result {
