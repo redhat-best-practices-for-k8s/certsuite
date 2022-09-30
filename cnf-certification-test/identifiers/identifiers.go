@@ -58,6 +58,9 @@ type TestCaseDescription struct {
 
 	// ExceptionProcess will show any possible exception processes documented for partners to follow.
 	ExceptionProcess string `json:"exceptionProcess,omitempty" yaml:"exceptionProcess,omitempty"`
+
+	// Tags will show all of the ginkgo tags that the test case applies to
+	Tags string `json:"tags,omitempty" yaml:"tags,omitempty"`
 }
 
 func init() {
@@ -86,6 +89,7 @@ func AddCatalogEntry(testID, suiteName, description, remediation, testType, exce
 	aTCDescription.Remediation = remediation
 	aTCDescription.ExceptionProcess = exception
 	aTCDescription.BestPracticeReference = reference
+	aTCDescription.Tags = strings.Join(tags, ",")
 
 	Catalog[aID] = aTCDescription
 
