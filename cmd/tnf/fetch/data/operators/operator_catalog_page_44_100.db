@@ -1,830 +1,6 @@
 {
   "data": [
     {
-      "_id": "62fa48bf30a80ba5a208cba8",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.2.8-41.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:cf89cfbb1c39ac9a7fd925f1e8b5bec94535e4eb64dd6e2da102e9f7b44f9f5e",
-      "bundle_path_digest": "sha256:cf89cfbb1c39ac9a7fd925f1e8b5bec94535e4eb64dd6e2da102e9f7b44f9f5e",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.10",
-      "creation_date": "2022-08-15T13:23:11.661000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.8-2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:23:11.661000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis",
-      "related_images": [
-        {
-          "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "name": "redis-enterprise-operator-f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353-annotation"
-        },
-        {
-          "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.2.8-2",
-      "version_original": "6.2.8-2"
-    },
-    {
-      "_id": "62fa48ebe07d71e4beb6b00c",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.12-57.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
-      "bundle_path_digest": "sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.10",
-      "creation_date": "2022-08-15T13:23:55.301000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.12-5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:23:55.301000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis Labs",
-      "related_images": [
-        {
-          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "name": "redis-enterprise-operator-b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f-annotation"
-        },
-        {
-          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "6.0.12-5",
-      "version_original": "6.0.12-5"
-    },
-    {
-      "_id": "62fa48f3e07d71e4beb6b019",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.8-30.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
-      "bundle_path_digest": "sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.10",
-      "creation_date": "2022-08-15T13:24:03.360000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.8-20",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:24:03.360000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        }
-      ],
-      "provider": "Redis Labs",
-      "related_images": [
-        {
-          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "name": "redis-enterprise-operator-0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1-annotation"
-        },
-        {
-          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.0.8-20",
-      "version_original": "6.0.8-20"
-    },
-    {
-      "_id": "62fa49524eed1a480412ff40",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.2.8-53.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:bd97c3efdbdf7c723bebef078153ba68d5ed1f47038146dd5c5bbf575592da9b",
-      "bundle_path_digest": "sha256:bd97c3efdbdf7c723bebef078153ba68d5ed1f47038146dd5c5bbf575592da9b",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.8",
-      "creation_date": "2022-08-15T13:25:38.822000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running commands to grant permissions to the pods:\n\nOperator service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:redis-enterprise-operator*<br>\n\nRedis Enterprise Cluster service account:\n> *oc adm policy add-scc-to-user redis-enterprise-scc system:serviceaccount:my-project:<name of Redis Enterprise Cluster>*\n\nReplace my-project with the actual name of the project/namespace. Replace <name of Redis Enterprise Cluster> with the name of the Redis Enterprise Cluster.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.8-11",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:25:38.822000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        }
-      ],
-      "provider": "Redis",
-      "related_images": [
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "redis-enterprise-operator-5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59-annotation"
-        },
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:5a9eabfc36dc8cab8a69383fa91bc4adb5058a9db2622d1a85070ff29ba52d59",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.2.8-11",
-      "version_original": "6.2.8-11"
-    },
-    {
-      "_id": "62fa499b4eed1a480412ff8e",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.2.4-55.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
-      "bundle_path_digest": "sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.4",
-      "creation_date": "2022-08-15T13:26:51.319000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.4-1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:26:51.319000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis Labs",
-      "related_images": [
-        {
-          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "name": "redis-enterprise-operator-8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9-annotation"
-        },
-        {
-          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.2.4-1",
-      "version_original": "6.2.4-1"
-    },
-    {
-      "_id": "62fa49ad4eed1a480412ffa6",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.6-39.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
-      "bundle_path_digest": "sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.10",
-      "creation_date": "2022-08-15T13:27:09.257000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.6-24",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:27:09.257000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis Labs",
-      "related_images": [
-        {
-          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "image": "redislabs/operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "name": "operator-998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b-annotation"
-        },
-        {
-          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.0.6-24",
-      "version_original": "6.0.6-24"
-    },
-    {
-      "_id": "62fa49c6e07d71e4beb6b0dc",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.12-57.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
-      "bundle_path_digest": "sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.8",
-      "creation_date": "2022-08-15T13:27:34.210000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.12-5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-15T13:27:34.210000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis Labs",
-      "related_images": [
-        {
-          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "name": "redis-enterprise-operator-b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f-annotation"
-        },
-        {
-          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.0.12-5",
-      "version_original": "6.0.12-5"
-    },
-    {
       "_id": "62fa49cde07d71e4beb6b0e4",
       "alm_examples": [
         {
@@ -18226,6 +17402,3318 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "1.0.3",
       "version_original": "1.0.3"
+    },
+    {
+      "_id": "62fffd47720db70dae937347",
+      "alm_examples": [
+        {
+          "api_version": "certification.redhat.com/v1alpha1",
+          "kind": "OperatorPipeline",
+          "metadata": {
+            "name": "operatorpipeline-sample"
+          },
+          "spec": {
+            "applyCIPipeline": true,
+            "applyHostedPipeline": false,
+            "applyReleasePipeline": false,
+            "gitHubSecretName": "github-api-token",
+            "kubeconfigSecretName": "kubeconfig",
+            "operatorPipelinesRelease": "main",
+            "pyxisSecretName": "pyxis-api-secret"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/opdev/operator-certification-operator-bundle@sha256:5434186d5c4dcd3d6a664fb469c17d336b9ef58836f89446ea5130a335ae214d",
+      "bundle_path_digest": "sha256:5434186d5c4dcd3d6a664fb469c17d336b9ef58836f89446ea5130a335ae214d",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-08-19T21:14:47.339000+00:00",
+      "csv_description": "A Kubernetes operator to provision resources for the operator certification pipeline. This operator is installed in all namespaces which can support multi-tenant scenarios. **Note:** This operator should only be used by Red Hat partners attempting to certify their operator(s).\n\n\n**Requirements**\n\n\nThe certification operator requires that you have the following tools installed, functional, and in your path.\n- [Install](https://docs.openshift.com/container-platform/4.8/cli_reference/openshift_cli/getting-started-cli.html#installing-openshift-cli) oc, the OpenShift CLI tool (tested with version 4.7.13)\n- [Install](https://tekton.dev/docs/cli/) tkn, the Tekton CLI tool (tested with version 0.19.1)\n- [Install](https://git-scm.com/downloads) git, the Git CLI tool (tested with 2.32.0)\n- The certification pipeline expects you to have the source files of your Operator bundle\n\n\n**Pre - Installation**\n\n\nThe below steps exist for simplicity and to make the installation clearer. The operator watches all namespaces, so if secrets/configs/etc already exist in another namespace, feel free to use the existing namespace when following the operator installation steps.\n\n\n**Create a new namespace where the following secrets will be applied.**\n```\noc new-project oco\n```\n\n\n**Add the kubeconfig secret which will be used to deploy the operator under test and run the certification checks.**\n* Open a terminal window\n* Set the `KUBECONFIG` environment variable\n```\nexport KUBECONFIG=/path/to/your/cluster/kubeconfig\n```\n> *This kubeconfig will be used to deploy the Operator under test and run the certification checks.*\n```\noc create secret generic kubeconfig --from-file=kubeconfig=$KUBECONFIG\n```\n\n\n**Configuring steps for submitting the results**\n- Add the github API token to the repo where the PR will be created\n```\noc create secret generic github-api-token --from-literal GITHUB_TOKEN=<github token>\n```\n- Add RedHat Container API access key\n\n  This API access key is specifically related to your unique partner account for Red Hat Connect portal. Instructions to obtain your API key can be found: [here](https://github.com/redhat-openshift-ecosystem/certification-releases/blob/main/4.9/ga/operator-cert-workflow.md#step-b---get-api-key)\n```\noc create secret generic pyxis-api-secret --from-literal pyxis_api_key=< API KEY >\n```\n\n- Optional pipeline configurations can be found [here](https://github.com/redhat-openshift-ecosystem/certification-releases/blob/main/4.9/ga/ci-pipeline.md#optional-configuration)\n\n\n**Execute the Pipeline (Development Iterations)**\n\n\nA pre-requisite to running a pipeline is that a `workspace-template.yaml` exists in the directory you want to execute the `tkn` commands from.\n\nTo create a workspace-template.yaml\n```\ncat <<EOF > workspace-template.yaml\nspec:\n  accessModes:\n    - ReadWriteOnce\n  resources:\n    requests:\n      storage: 5Gi\nEOF\n```\n\nThere are multiple ways to execute the Pipeline which can be found [here](https://github.com/redhat-openshift-ecosystem/certification-releases/blob/main/4.9/ga/ci-pipeline.md#execute-the-pipeline-development-iterations)",
+      "csv_display_name": "Operator Certification Operator",
+      "csv_metadata_description": "",
+      "csv_name": "operator-certification-operator.v1.0.3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:59:25.056000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "operator-certification-operator",
+      "provided_apis": [
+        {
+          "group": "certification.redhat.com",
+          "kind": "OperatorPipeline",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Red Hat",
+      "related_images": [
+        {
+          "digest": "sha256:b5786bbbef725badf3dfcc2c2c7a86ead5ebb584c978c47aae8b9a62e241b80d",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:b5786bbbef725badf3dfcc2c2c7a86ead5ebb584c978c47aae8b9a62e241b80d",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:9ed39145a27b56c2465f5076f2cb40fe7d84c8914908e4610ee5b5f9dbf90a58",
+          "image": "quay.io/opdev/operator-certification-operator@sha256:9ed39145a27b56c2465f5076f2cb40fe7d84c8914908e4610ee5b5f9dbf90a58",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.0.3",
+      "version_original": "1.0.3"
+    },
+    {
+      "_id": "63003082dca7d12fdf8e15c3",
+      "alm_examples": [
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCluster",
+          "metadata": {
+            "name": "cb-example"
+          },
+          "spec": {
+            "backup": {
+              "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+              "managed": false,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              },
+              "serviceAccountName": "couchbase-backup"
+            },
+            "buckets": {
+              "managed": true,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              }
+            },
+            "cluster": {
+              "analyticsServiceMemoryQuota": "1Gi",
+              "autoFailoverMaxCount": 3,
+              "autoFailoverOnDataDiskIssues": true,
+              "autoFailoverOnDataDiskIssuesTimePeriod": "120s",
+              "autoFailoverServerGroup": false,
+              "autoFailoverTimeout": "120s",
+              "clusterName": "cb-example",
+              "dataServiceMemoryQuota": "256Mi",
+              "eventingServiceMemoryQuota": "256Mi",
+              "indexServiceMemoryQuota": "256Mi",
+              "indexStorageSetting": "memory_optimized",
+              "searchServiceMemoryQuota": "256Mi"
+            },
+            "enablePreviewScaling": false,
+            "hibernate": false,
+            "hibernationStrategy": "Immediate",
+            "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+            "logRetentionCount": 20,
+            "logRetentionTime": "604800s",
+            "monitoring": {
+              "prometheus": {
+                "enabled": false,
+                "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4"
+              }
+            },
+            "networking": {
+              "adminConsoleServiceType": "NodePort",
+              "adminConsoleServices": [
+                "data"
+              ],
+              "exposeAdminConsole": true,
+              "exposedFeatureServiceType": "NodePort",
+              "exposedFeatures": [
+                "xdcr"
+              ]
+            },
+            "recoveryPolicy": "PrioritizeDataIntegrity",
+            "security": {
+              "adminSecret": "cb-example-auth",
+              "rbac": {
+                "managed": true,
+                "selector": {
+                  "matchLabels": {
+                    "cluster": "cb-example"
+                  }
+                }
+              }
+            },
+            "servers": [
+              {
+                "name": "all_services",
+                "services": [
+                  "data",
+                  "index",
+                  "query",
+                  "search",
+                  "eventing",
+                  "analytics"
+                ],
+                "size": 3
+              }
+            ],
+            "upgradeStrategy": "RollingUpgrade",
+            "xdcr": {
+              "managed": false,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              }
+            }
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "default"
+          },
+          "spec": {
+            "compressionMode": "passive",
+            "conflictResolution": "lww",
+            "enableFlush": false,
+            "enableIndexReplica": true,
+            "evictionPolicy": "valueOnly",
+            "ioPriority": "low",
+            "memoryQuota": "100Mi",
+            "replicas": 2
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseEphemeralBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "ephemeral-bucket"
+          },
+          "spec": {
+            "compressionMode": "passive",
+            "conflictResolution": "lww",
+            "enableFlush": false,
+            "evictionPolicy": "noEviction",
+            "ioPriority": "low",
+            "memoryQuota": "100Mi",
+            "replicas": 2
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseMemcachedBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "memcached-bucket"
+          },
+          "spec": {
+            "enableFlush": false,
+            "memoryQuota": "100Mi"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseUser",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-user"
+          },
+          "spec": {
+            "authDomain": "local",
+            "authSecret": "cb-example-auth",
+            "fullName": "My User"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseGroup",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-group"
+          },
+          "spec": {
+            "roles": [
+              {
+                "bucket": "default",
+                "name": "bucket_admin"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseRoleBinding",
+          "metadata": {
+            "name": "my-role-binding"
+          },
+          "spec": {
+            "roleRef": {
+              "kind": "CouchbaseGroup",
+              "name": "my-group"
+            },
+            "subjects": [
+              {
+                "kind": "CouchbaseUser",
+                "name": "my-user"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseReplication",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-replication"
+          },
+          "spec": {
+            "bucket": "default",
+            "compressionType": "Snappy",
+            "filterExpression": "",
+            "paused": false,
+            "remoteBucket": "default"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBackup",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "cb-backup"
+          },
+          "spec": {
+            "backOffLimit": 2,
+            "backupRetention": "24h",
+            "failedJobsHistoryLimit": 3,
+            "full": {
+              "schedule": "0 3 * * 6"
+            },
+            "incremental": {
+              "schedule": "0 3 * * 1-6"
+            },
+            "logRetention": "24h",
+            "size": "5Gi",
+            "strategy": "full_incremental",
+            "successfulJobsHistoryLimit": 1
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBackupRestore",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "cb-restore"
+          },
+          "spec": {
+            "backOffLimit": 2,
+            "backup": "cb-backup",
+            "end": {
+              "int": 1
+            },
+            "logRetention": "24h",
+            "repo": "cb-example-2020-10-29T19_00_03",
+            "start": {
+              "int": 1
+            }
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCollectionGroup",
+          "metadata": {
+            "name": "my-collection-group"
+          },
+          "spec": {
+            "maxTTL": "",
+            "names": [
+              "my-collection"
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCollection",
+          "metadata": {
+            "name": "my-collection"
+          },
+          "spec": {
+            "maxTTL": "",
+            "name": "my-collection"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseScopeGroup",
+          "metadata": {
+            "name": "my-scope-group"
+          },
+          "spec": {
+            "collections": {},
+            "names": [
+              "my-scope"
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseScope",
+          "metadata": {
+            "name": "my-scope"
+          },
+          "spec": {
+            "collections": {},
+            "name": "my-scope"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseMigrationReplication",
+          "metadata": {
+            "name": "default-migration"
+          },
+          "spec": {
+            "bucket": "default",
+            "remoteBucket": "default"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseAutoscaler",
+          "metadata": {
+            "name": "do.not.create.internal.only"
+          },
+          "spec": {
+            "servers": "internal",
+            "size": 2
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:5ef27c3e167ef5e6bee05125364a0021780eca77c8ffdad587bed251b838585e",
+      "bundle_path_digest": "sha256:5ef27c3e167ef5e6bee05125364a0021780eca77c8ffdad587bed251b838585e",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "2.3.2",
+      "creation_date": "2022-08-20T00:53:22.866000+00:00",
+      "csv_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments on OpenShift. By installing this integration you will be able to deply Couchbase Server clusters with a single command.\n\n## Supported Features\n\n* **Automated cluster provisioning** - Deploying a Couchbase Cluster has never been easier. Fill out a Couchbase specific configuration and let the Couchbase Operator take care of provisioning nodes and setting up cluster to your exact specification.\n\n* **On-demand scalability** - Automatically scale your cluster up or down by changing a simple configuration parameter and let the Couchbase Operator handle provisioning of new nodes and joining them into the cluster.\n\n* **Auto-recovery** - Detect Couchbase node failures, rebalance out bad nodes, and bring the cluster back up to the desired capacity. Auto-recovery is completely automated so you can sleep easy through the night knowing that the Couchbase Operator will handle any failures.\n\n* **Geo-distribution** - Replicate your data between datacenters to move data closer to the users who consume it and protect against disaster scenarios where an entire datacenter becomes unavailable.\n\n* **Persistent storage** - Define persistent network-attached storage for each node in your cluster to allow pods to be recovered even if the node they were running on is no longer available.\n\n* **Rack/zone awareness** - Tell the Couchbase Operator about availability zones in your datacenter and let the operator take care of ensuring that nodes in your cluster are deployed equally across each zone.\n\n* **Supportability** - When things go wrong, use the cbopinfo tool provided with the Couchbase Operator to collect relevant data about your Couchbase deployment so that you can quickly address issues.\n\n* **Centralized configuration management** - Manage your configuration centrally with OpenShift. Updates to the configuration are watched by the Couchbase Operator and actions are taken to make the target cluster match the desired configuration.\n## Required Parameters\n* `authSecret` - provide the name of a secret that contains two keys for the `username` and `password` of the super user ([documentation](https://docs.couchbase.com/operator/1.2/couchbase-cluster-config.html))\n\n## About Couchbase Server\n\nBuilt on the most powerful NoSQL technology, Couchbase Server delivers unparalleled performance at scale, in any cloud. With features like memory-first architecture, geo-distributed deployments, and workload isolation, Couchbase Server excels at supporting mission-critical applications at scale while maintaining submillisecond latencies and 99.999% availability. Plus, with the most comprehensive SQL-compatible query language (N1QL), migrating from RDBMS to Couchbase Server is easy with ANSI joins.\n",
+      "csv_display_name": "Couchbase Operator",
+      "csv_metadata_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments",
+      "csv_name": "couchbase-operator.v2.3.2-1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:17:57.001000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "couchbase-enterprise-certified",
+      "provided_apis": [
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseAutoscaler",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackup",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackupRestore",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBucket",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCluster",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCollection",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCollectionGroup",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseEphemeralBucket",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseGroup",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseMemcachedBucket",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseMigrationReplication",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseReplication",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseRoleBinding",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseScope",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseScopeGroup",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseUser",
+          "version": "v2"
+        }
+      ],
+      "provider": "Couchbase",
+      "related_images": [
+        {
+          "digest": "sha256:3480123a4c056115b8fe7205fd62e25676045ea3248f8cdf3ec20bfff9168ee2",
+          "image": "registry.connect.redhat.com/couchbase/operator@sha256:3480123a4c056115b8fe7205fd62e25676045ea3248f8cdf3ec20bfff9168ee2",
+          "name": "couchbase-operator"
+        },
+        {
+          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "name": "couchbase-server"
+        },
+        {
+          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "name": "couchbase-backup"
+        },
+        {
+          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "name": "couchbase-metrics"
+        },
+        {
+          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "name": "couchbase_server"
+        },
+        {
+          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "name": "couchbase_backup"
+        },
+        {
+          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "name": "couchbase_metrics"
+        },
+        {
+          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "name": "exporter-d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4-annotation"
+        },
+        {
+          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "name": "operator-backup-c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76-annotation"
+        },
+        {
+          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "name": "server-05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "2.3.2-1",
+      "version_original": "2.3.2-1"
+    },
+    {
+      "_id": "63003087720db70dae937c9b",
+      "alm_examples": [
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCluster",
+          "metadata": {
+            "name": "cb-example"
+          },
+          "spec": {
+            "backup": {
+              "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+              "managed": false,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              },
+              "serviceAccountName": "couchbase-backup"
+            },
+            "buckets": {
+              "managed": true,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              }
+            },
+            "cluster": {
+              "analyticsServiceMemoryQuota": "1Gi",
+              "autoFailoverMaxCount": 3,
+              "autoFailoverOnDataDiskIssues": true,
+              "autoFailoverOnDataDiskIssuesTimePeriod": "120s",
+              "autoFailoverServerGroup": false,
+              "autoFailoverTimeout": "120s",
+              "clusterName": "cb-example",
+              "dataServiceMemoryQuota": "256Mi",
+              "eventingServiceMemoryQuota": "256Mi",
+              "indexServiceMemoryQuota": "256Mi",
+              "indexStorageSetting": "memory_optimized",
+              "searchServiceMemoryQuota": "256Mi"
+            },
+            "enablePreviewScaling": false,
+            "hibernate": false,
+            "hibernationStrategy": "Immediate",
+            "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+            "logRetentionCount": 20,
+            "logRetentionTime": "604800s",
+            "monitoring": {
+              "prometheus": {
+                "enabled": false,
+                "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4"
+              }
+            },
+            "networking": {
+              "adminConsoleServiceType": "NodePort",
+              "adminConsoleServices": [
+                "data"
+              ],
+              "exposeAdminConsole": true,
+              "exposedFeatureServiceType": "NodePort",
+              "exposedFeatures": [
+                "xdcr"
+              ]
+            },
+            "recoveryPolicy": "PrioritizeDataIntegrity",
+            "security": {
+              "adminSecret": "cb-example-auth",
+              "rbac": {
+                "managed": true,
+                "selector": {
+                  "matchLabels": {
+                    "cluster": "cb-example"
+                  }
+                }
+              }
+            },
+            "servers": [
+              {
+                "name": "all_services",
+                "services": [
+                  "data",
+                  "index",
+                  "query",
+                  "search",
+                  "eventing",
+                  "analytics"
+                ],
+                "size": 3
+              }
+            ],
+            "upgradeStrategy": "RollingUpgrade",
+            "xdcr": {
+              "managed": false,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              }
+            }
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "default"
+          },
+          "spec": {
+            "compressionMode": "passive",
+            "conflictResolution": "lww",
+            "enableFlush": false,
+            "enableIndexReplica": true,
+            "evictionPolicy": "valueOnly",
+            "ioPriority": "low",
+            "memoryQuota": "100Mi",
+            "replicas": 2
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseEphemeralBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "ephemeral-bucket"
+          },
+          "spec": {
+            "compressionMode": "passive",
+            "conflictResolution": "lww",
+            "enableFlush": false,
+            "evictionPolicy": "noEviction",
+            "ioPriority": "low",
+            "memoryQuota": "100Mi",
+            "replicas": 2
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseMemcachedBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "memcached-bucket"
+          },
+          "spec": {
+            "enableFlush": false,
+            "memoryQuota": "100Mi"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseUser",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-user"
+          },
+          "spec": {
+            "authDomain": "local",
+            "authSecret": "cb-example-auth",
+            "fullName": "My User"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseGroup",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-group"
+          },
+          "spec": {
+            "roles": [
+              {
+                "bucket": "default",
+                "name": "bucket_admin"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseRoleBinding",
+          "metadata": {
+            "name": "my-role-binding"
+          },
+          "spec": {
+            "roleRef": {
+              "kind": "CouchbaseGroup",
+              "name": "my-group"
+            },
+            "subjects": [
+              {
+                "kind": "CouchbaseUser",
+                "name": "my-user"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseReplication",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-replication"
+          },
+          "spec": {
+            "bucket": "default",
+            "compressionType": "Snappy",
+            "filterExpression": "",
+            "paused": false,
+            "remoteBucket": "default"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBackup",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "cb-backup"
+          },
+          "spec": {
+            "backOffLimit": 2,
+            "backupRetention": "24h",
+            "failedJobsHistoryLimit": 3,
+            "full": {
+              "schedule": "0 3 * * 6"
+            },
+            "incremental": {
+              "schedule": "0 3 * * 1-6"
+            },
+            "logRetention": "24h",
+            "size": "5Gi",
+            "strategy": "full_incremental",
+            "successfulJobsHistoryLimit": 1
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBackupRestore",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "cb-restore"
+          },
+          "spec": {
+            "backOffLimit": 2,
+            "backup": "cb-backup",
+            "end": {
+              "int": 1
+            },
+            "logRetention": "24h",
+            "repo": "cb-example-2020-10-29T19_00_03",
+            "start": {
+              "int": 1
+            }
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCollectionGroup",
+          "metadata": {
+            "name": "my-collection-group"
+          },
+          "spec": {
+            "maxTTL": "",
+            "names": [
+              "my-collection"
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCollection",
+          "metadata": {
+            "name": "my-collection"
+          },
+          "spec": {
+            "maxTTL": "",
+            "name": "my-collection"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseScopeGroup",
+          "metadata": {
+            "name": "my-scope-group"
+          },
+          "spec": {
+            "collections": {},
+            "names": [
+              "my-scope"
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseScope",
+          "metadata": {
+            "name": "my-scope"
+          },
+          "spec": {
+            "collections": {},
+            "name": "my-scope"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseMigrationReplication",
+          "metadata": {
+            "name": "default-migration"
+          },
+          "spec": {
+            "bucket": "default",
+            "remoteBucket": "default"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseAutoscaler",
+          "metadata": {
+            "name": "do.not.create.internal.only"
+          },
+          "spec": {
+            "servers": "internal",
+            "size": 2
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:5ef27c3e167ef5e6bee05125364a0021780eca77c8ffdad587bed251b838585e",
+      "bundle_path_digest": "sha256:5ef27c3e167ef5e6bee05125364a0021780eca77c8ffdad587bed251b838585e",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-20T00:53:27.648000+00:00",
+      "csv_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments on OpenShift. By installing this integration you will be able to deply Couchbase Server clusters with a single command.\n\n## Supported Features\n\n* **Automated cluster provisioning** - Deploying a Couchbase Cluster has never been easier. Fill out a Couchbase specific configuration and let the Couchbase Operator take care of provisioning nodes and setting up cluster to your exact specification.\n\n* **On-demand scalability** - Automatically scale your cluster up or down by changing a simple configuration parameter and let the Couchbase Operator handle provisioning of new nodes and joining them into the cluster.\n\n* **Auto-recovery** - Detect Couchbase node failures, rebalance out bad nodes, and bring the cluster back up to the desired capacity. Auto-recovery is completely automated so you can sleep easy through the night knowing that the Couchbase Operator will handle any failures.\n\n* **Geo-distribution** - Replicate your data between datacenters to move data closer to the users who consume it and protect against disaster scenarios where an entire datacenter becomes unavailable.\n\n* **Persistent storage** - Define persistent network-attached storage for each node in your cluster to allow pods to be recovered even if the node they were running on is no longer available.\n\n* **Rack/zone awareness** - Tell the Couchbase Operator about availability zones in your datacenter and let the operator take care of ensuring that nodes in your cluster are deployed equally across each zone.\n\n* **Supportability** - When things go wrong, use the cbopinfo tool provided with the Couchbase Operator to collect relevant data about your Couchbase deployment so that you can quickly address issues.\n\n* **Centralized configuration management** - Manage your configuration centrally with OpenShift. Updates to the configuration are watched by the Couchbase Operator and actions are taken to make the target cluster match the desired configuration.\n## Required Parameters\n* `authSecret` - provide the name of a secret that contains two keys for the `username` and `password` of the super user ([documentation](https://docs.couchbase.com/operator/1.2/couchbase-cluster-config.html))\n\n## About Couchbase Server\n\nBuilt on the most powerful NoSQL technology, Couchbase Server delivers unparalleled performance at scale, in any cloud. With features like memory-first architecture, geo-distributed deployments, and workload isolation, Couchbase Server excels at supporting mission-critical applications at scale while maintaining submillisecond latencies and 99.999% availability. Plus, with the most comprehensive SQL-compatible query language (N1QL), migrating from RDBMS to Couchbase Server is easy with ANSI joins.\n",
+      "csv_display_name": "Couchbase Operator",
+      "csv_metadata_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments",
+      "csv_name": "couchbase-operator.v2.3.2-1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:17:51.381000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "couchbase-enterprise-certified",
+      "provided_apis": [
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseAutoscaler",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackup",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackupRestore",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBucket",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCluster",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCollection",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCollectionGroup",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseEphemeralBucket",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseGroup",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseMemcachedBucket",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseMigrationReplication",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseReplication",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseRoleBinding",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseScope",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseScopeGroup",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseUser",
+          "version": "v2"
+        }
+      ],
+      "provider": "Couchbase",
+      "related_images": [
+        {
+          "digest": "sha256:3480123a4c056115b8fe7205fd62e25676045ea3248f8cdf3ec20bfff9168ee2",
+          "image": "registry.connect.redhat.com/couchbase/operator@sha256:3480123a4c056115b8fe7205fd62e25676045ea3248f8cdf3ec20bfff9168ee2",
+          "name": "couchbase-operator"
+        },
+        {
+          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "name": "couchbase-server"
+        },
+        {
+          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "name": "couchbase-backup"
+        },
+        {
+          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "name": "couchbase-metrics"
+        },
+        {
+          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "name": "couchbase_server"
+        },
+        {
+          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "name": "couchbase_backup"
+        },
+        {
+          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "name": "couchbase_metrics"
+        },
+        {
+          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "name": "exporter-d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4-annotation"
+        },
+        {
+          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "name": "operator-backup-c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76-annotation"
+        },
+        {
+          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "name": "server-05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "2.3.2-1",
+      "version_original": "2.3.2-1"
+    },
+    {
+      "_id": "630030e353cb8f6da4555894",
+      "alm_examples": [
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCluster",
+          "metadata": {
+            "name": "cb-example"
+          },
+          "spec": {
+            "backup": {
+              "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+              "managed": false,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              },
+              "serviceAccountName": "couchbase-backup"
+            },
+            "buckets": {
+              "managed": true,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              }
+            },
+            "cluster": {
+              "analyticsServiceMemoryQuota": "1Gi",
+              "autoFailoverMaxCount": 3,
+              "autoFailoverOnDataDiskIssues": true,
+              "autoFailoverOnDataDiskIssuesTimePeriod": "120s",
+              "autoFailoverServerGroup": false,
+              "autoFailoverTimeout": "120s",
+              "clusterName": "cb-example",
+              "dataServiceMemoryQuota": "256Mi",
+              "eventingServiceMemoryQuota": "256Mi",
+              "indexServiceMemoryQuota": "256Mi",
+              "indexStorageSetting": "memory_optimized",
+              "searchServiceMemoryQuota": "256Mi"
+            },
+            "enablePreviewScaling": false,
+            "hibernate": false,
+            "hibernationStrategy": "Immediate",
+            "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+            "logRetentionCount": 20,
+            "logRetentionTime": "604800s",
+            "monitoring": {
+              "prometheus": {
+                "enabled": false,
+                "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4"
+              }
+            },
+            "networking": {
+              "adminConsoleServiceType": "NodePort",
+              "adminConsoleServices": [
+                "data"
+              ],
+              "exposeAdminConsole": true,
+              "exposedFeatureServiceType": "NodePort",
+              "exposedFeatures": [
+                "xdcr"
+              ]
+            },
+            "recoveryPolicy": "PrioritizeDataIntegrity",
+            "security": {
+              "adminSecret": "cb-example-auth",
+              "rbac": {
+                "managed": true,
+                "selector": {
+                  "matchLabels": {
+                    "cluster": "cb-example"
+                  }
+                }
+              }
+            },
+            "servers": [
+              {
+                "name": "all_services",
+                "services": [
+                  "data",
+                  "index",
+                  "query",
+                  "search",
+                  "eventing",
+                  "analytics"
+                ],
+                "size": 3
+              }
+            ],
+            "upgradeStrategy": "RollingUpgrade",
+            "xdcr": {
+              "managed": false,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              }
+            }
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "default"
+          },
+          "spec": {
+            "compressionMode": "passive",
+            "conflictResolution": "lww",
+            "enableFlush": false,
+            "enableIndexReplica": true,
+            "evictionPolicy": "valueOnly",
+            "ioPriority": "low",
+            "memoryQuota": "100Mi",
+            "replicas": 2
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseEphemeralBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "ephemeral-bucket"
+          },
+          "spec": {
+            "compressionMode": "passive",
+            "conflictResolution": "lww",
+            "enableFlush": false,
+            "evictionPolicy": "noEviction",
+            "ioPriority": "low",
+            "memoryQuota": "100Mi",
+            "replicas": 2
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseMemcachedBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "memcached-bucket"
+          },
+          "spec": {
+            "enableFlush": false,
+            "memoryQuota": "100Mi"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseUser",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-user"
+          },
+          "spec": {
+            "authDomain": "local",
+            "authSecret": "cb-example-auth",
+            "fullName": "My User"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseGroup",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-group"
+          },
+          "spec": {
+            "roles": [
+              {
+                "bucket": "default",
+                "name": "bucket_admin"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseRoleBinding",
+          "metadata": {
+            "name": "my-role-binding"
+          },
+          "spec": {
+            "roleRef": {
+              "kind": "CouchbaseGroup",
+              "name": "my-group"
+            },
+            "subjects": [
+              {
+                "kind": "CouchbaseUser",
+                "name": "my-user"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseReplication",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-replication"
+          },
+          "spec": {
+            "bucket": "default",
+            "compressionType": "Snappy",
+            "filterExpression": "",
+            "paused": false,
+            "remoteBucket": "default"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBackup",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "cb-backup"
+          },
+          "spec": {
+            "backOffLimit": 2,
+            "backupRetention": "24h",
+            "failedJobsHistoryLimit": 3,
+            "full": {
+              "schedule": "0 3 * * 6"
+            },
+            "incremental": {
+              "schedule": "0 3 * * 1-6"
+            },
+            "logRetention": "24h",
+            "size": "5Gi",
+            "strategy": "full_incremental",
+            "successfulJobsHistoryLimit": 1
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBackupRestore",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "cb-restore"
+          },
+          "spec": {
+            "backOffLimit": 2,
+            "backup": "cb-backup",
+            "end": {
+              "int": 1
+            },
+            "logRetention": "24h",
+            "repo": "cb-example-2020-10-29T19_00_03",
+            "start": {
+              "int": 1
+            }
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCollectionGroup",
+          "metadata": {
+            "name": "my-collection-group"
+          },
+          "spec": {
+            "maxTTL": "",
+            "names": [
+              "my-collection"
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCollection",
+          "metadata": {
+            "name": "my-collection"
+          },
+          "spec": {
+            "maxTTL": "",
+            "name": "my-collection"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseScopeGroup",
+          "metadata": {
+            "name": "my-scope-group"
+          },
+          "spec": {
+            "collections": {},
+            "names": [
+              "my-scope"
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseScope",
+          "metadata": {
+            "name": "my-scope"
+          },
+          "spec": {
+            "collections": {},
+            "name": "my-scope"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseMigrationReplication",
+          "metadata": {
+            "name": "default-migration"
+          },
+          "spec": {
+            "bucket": "default",
+            "remoteBucket": "default"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseAutoscaler",
+          "metadata": {
+            "name": "do.not.create.internal.only"
+          },
+          "spec": {
+            "servers": "internal",
+            "size": 2
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:5ef27c3e167ef5e6bee05125364a0021780eca77c8ffdad587bed251b838585e",
+      "bundle_path_digest": "sha256:5ef27c3e167ef5e6bee05125364a0021780eca77c8ffdad587bed251b838585e",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "2.3.2",
+      "creation_date": "2022-08-20T00:54:59.678000+00:00",
+      "csv_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments on OpenShift. By installing this integration you will be able to deply Couchbase Server clusters with a single command.\n\n## Supported Features\n\n* **Automated cluster provisioning** - Deploying a Couchbase Cluster has never been easier. Fill out a Couchbase specific configuration and let the Couchbase Operator take care of provisioning nodes and setting up cluster to your exact specification.\n\n* **On-demand scalability** - Automatically scale your cluster up or down by changing a simple configuration parameter and let the Couchbase Operator handle provisioning of new nodes and joining them into the cluster.\n\n* **Auto-recovery** - Detect Couchbase node failures, rebalance out bad nodes, and bring the cluster back up to the desired capacity. Auto-recovery is completely automated so you can sleep easy through the night knowing that the Couchbase Operator will handle any failures.\n\n* **Geo-distribution** - Replicate your data between datacenters to move data closer to the users who consume it and protect against disaster scenarios where an entire datacenter becomes unavailable.\n\n* **Persistent storage** - Define persistent network-attached storage for each node in your cluster to allow pods to be recovered even if the node they were running on is no longer available.\n\n* **Rack/zone awareness** - Tell the Couchbase Operator about availability zones in your datacenter and let the operator take care of ensuring that nodes in your cluster are deployed equally across each zone.\n\n* **Supportability** - When things go wrong, use the cbopinfo tool provided with the Couchbase Operator to collect relevant data about your Couchbase deployment so that you can quickly address issues.\n\n* **Centralized configuration management** - Manage your configuration centrally with OpenShift. Updates to the configuration are watched by the Couchbase Operator and actions are taken to make the target cluster match the desired configuration.\n## Required Parameters\n* `authSecret` - provide the name of a secret that contains two keys for the `username` and `password` of the super user ([documentation](https://docs.couchbase.com/operator/1.2/couchbase-cluster-config.html))\n\n## About Couchbase Server\n\nBuilt on the most powerful NoSQL technology, Couchbase Server delivers unparalleled performance at scale, in any cloud. With features like memory-first architecture, geo-distributed deployments, and workload isolation, Couchbase Server excels at supporting mission-critical applications at scale while maintaining submillisecond latencies and 99.999% availability. Plus, with the most comprehensive SQL-compatible query language (N1QL), migrating from RDBMS to Couchbase Server is easy with ANSI joins.\n",
+      "csv_display_name": "Couchbase Operator",
+      "csv_metadata_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments",
+      "csv_name": "couchbase-operator.v2.3.2-1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:47:26.394000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "couchbase-enterprise-certified",
+      "provided_apis": [
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseRoleBinding",
+          "plural": "couchbaserolebindings",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseMemcachedBucket",
+          "plural": "couchbasememcachedbuckets",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseMigrationReplication",
+          "plural": "couchbasemigrationreplications",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseUser",
+          "plural": "couchbaseusers",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseScope",
+          "plural": "couchbasescopes",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseScopeGroup",
+          "plural": "couchbasescopegroups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCluster",
+          "plural": "couchbaseclusters",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCollection",
+          "plural": "couchbasecollections",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseReplication",
+          "plural": "couchbasereplications",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseAutoscaler",
+          "plural": "couchbaseautoscalers",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBucket",
+          "plural": "couchbasebuckets",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackup",
+          "plural": "couchbasebackups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCollectionGroup",
+          "plural": "couchbasecollectiongroups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackupRestore",
+          "plural": "couchbasebackuprestores",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseGroup",
+          "plural": "couchbasegroups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseEphemeralBucket",
+          "plural": "couchbaseephemeralbuckets",
+          "version": "v2"
+        }
+      ],
+      "provider": "Couchbase",
+      "related_images": [
+        {
+          "digest": "sha256:3480123a4c056115b8fe7205fd62e25676045ea3248f8cdf3ec20bfff9168ee2",
+          "image": "registry.connect.redhat.com/couchbase/operator@sha256:3480123a4c056115b8fe7205fd62e25676045ea3248f8cdf3ec20bfff9168ee2",
+          "name": "couchbase-operator"
+        },
+        {
+          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "name": "couchbase-server"
+        },
+        {
+          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "name": "couchbase-backup"
+        },
+        {
+          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "name": "couchbase-metrics"
+        },
+        {
+          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "name": "couchbase_server"
+        },
+        {
+          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "name": "couchbase_backup"
+        },
+        {
+          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "name": "couchbase_metrics"
+        },
+        {
+          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "name": "exporter-d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4-annotation"
+        },
+        {
+          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "name": "operator-backup-c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76-annotation"
+        },
+        {
+          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "name": "server-05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "2.3.2-1",
+      "version_original": "2.3.2-1"
+    },
+    {
+      "_id": "630030e4dca7d12fdf8e15cb",
+      "alm_examples": [
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCluster",
+          "metadata": {
+            "name": "cb-example"
+          },
+          "spec": {
+            "backup": {
+              "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+              "managed": false,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              },
+              "serviceAccountName": "couchbase-backup"
+            },
+            "buckets": {
+              "managed": true,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              }
+            },
+            "cluster": {
+              "analyticsServiceMemoryQuota": "1Gi",
+              "autoFailoverMaxCount": 3,
+              "autoFailoverOnDataDiskIssues": true,
+              "autoFailoverOnDataDiskIssuesTimePeriod": "120s",
+              "autoFailoverServerGroup": false,
+              "autoFailoverTimeout": "120s",
+              "clusterName": "cb-example",
+              "dataServiceMemoryQuota": "256Mi",
+              "eventingServiceMemoryQuota": "256Mi",
+              "indexServiceMemoryQuota": "256Mi",
+              "indexStorageSetting": "memory_optimized",
+              "searchServiceMemoryQuota": "256Mi"
+            },
+            "enablePreviewScaling": false,
+            "hibernate": false,
+            "hibernationStrategy": "Immediate",
+            "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+            "logRetentionCount": 20,
+            "logRetentionTime": "604800s",
+            "monitoring": {
+              "prometheus": {
+                "enabled": false,
+                "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4"
+              }
+            },
+            "networking": {
+              "adminConsoleServiceType": "NodePort",
+              "adminConsoleServices": [
+                "data"
+              ],
+              "exposeAdminConsole": true,
+              "exposedFeatureServiceType": "NodePort",
+              "exposedFeatures": [
+                "xdcr"
+              ]
+            },
+            "recoveryPolicy": "PrioritizeDataIntegrity",
+            "security": {
+              "adminSecret": "cb-example-auth",
+              "rbac": {
+                "managed": true,
+                "selector": {
+                  "matchLabels": {
+                    "cluster": "cb-example"
+                  }
+                }
+              }
+            },
+            "servers": [
+              {
+                "name": "all_services",
+                "services": [
+                  "data",
+                  "index",
+                  "query",
+                  "search",
+                  "eventing",
+                  "analytics"
+                ],
+                "size": 3
+              }
+            ],
+            "upgradeStrategy": "RollingUpgrade",
+            "xdcr": {
+              "managed": false,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              }
+            }
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "default"
+          },
+          "spec": {
+            "compressionMode": "passive",
+            "conflictResolution": "lww",
+            "enableFlush": false,
+            "enableIndexReplica": true,
+            "evictionPolicy": "valueOnly",
+            "ioPriority": "low",
+            "memoryQuota": "100Mi",
+            "replicas": 2
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseEphemeralBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "ephemeral-bucket"
+          },
+          "spec": {
+            "compressionMode": "passive",
+            "conflictResolution": "lww",
+            "enableFlush": false,
+            "evictionPolicy": "noEviction",
+            "ioPriority": "low",
+            "memoryQuota": "100Mi",
+            "replicas": 2
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseMemcachedBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "memcached-bucket"
+          },
+          "spec": {
+            "enableFlush": false,
+            "memoryQuota": "100Mi"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseUser",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-user"
+          },
+          "spec": {
+            "authDomain": "local",
+            "authSecret": "cb-example-auth",
+            "fullName": "My User"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseGroup",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-group"
+          },
+          "spec": {
+            "roles": [
+              {
+                "bucket": "default",
+                "name": "bucket_admin"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseRoleBinding",
+          "metadata": {
+            "name": "my-role-binding"
+          },
+          "spec": {
+            "roleRef": {
+              "kind": "CouchbaseGroup",
+              "name": "my-group"
+            },
+            "subjects": [
+              {
+                "kind": "CouchbaseUser",
+                "name": "my-user"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseReplication",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-replication"
+          },
+          "spec": {
+            "bucket": "default",
+            "compressionType": "Snappy",
+            "filterExpression": "",
+            "paused": false,
+            "remoteBucket": "default"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBackup",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "cb-backup"
+          },
+          "spec": {
+            "backOffLimit": 2,
+            "backupRetention": "24h",
+            "failedJobsHistoryLimit": 3,
+            "full": {
+              "schedule": "0 3 * * 6"
+            },
+            "incremental": {
+              "schedule": "0 3 * * 1-6"
+            },
+            "logRetention": "24h",
+            "size": "5Gi",
+            "strategy": "full_incremental",
+            "successfulJobsHistoryLimit": 1
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBackupRestore",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "cb-restore"
+          },
+          "spec": {
+            "backOffLimit": 2,
+            "backup": "cb-backup",
+            "end": {
+              "int": 1
+            },
+            "logRetention": "24h",
+            "repo": "cb-example-2020-10-29T19_00_03",
+            "start": {
+              "int": 1
+            }
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCollectionGroup",
+          "metadata": {
+            "name": "my-collection-group"
+          },
+          "spec": {
+            "maxTTL": "",
+            "names": [
+              "my-collection"
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCollection",
+          "metadata": {
+            "name": "my-collection"
+          },
+          "spec": {
+            "maxTTL": "",
+            "name": "my-collection"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseScopeGroup",
+          "metadata": {
+            "name": "my-scope-group"
+          },
+          "spec": {
+            "collections": {},
+            "names": [
+              "my-scope"
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseScope",
+          "metadata": {
+            "name": "my-scope"
+          },
+          "spec": {
+            "collections": {},
+            "name": "my-scope"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseMigrationReplication",
+          "metadata": {
+            "name": "default-migration"
+          },
+          "spec": {
+            "bucket": "default",
+            "remoteBucket": "default"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseAutoscaler",
+          "metadata": {
+            "name": "do.not.create.internal.only"
+          },
+          "spec": {
+            "servers": "internal",
+            "size": 2
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:5ef27c3e167ef5e6bee05125364a0021780eca77c8ffdad587bed251b838585e",
+      "bundle_path_digest": "sha256:5ef27c3e167ef5e6bee05125364a0021780eca77c8ffdad587bed251b838585e",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-20T00:55:00.791000+00:00",
+      "csv_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments on OpenShift. By installing this integration you will be able to deply Couchbase Server clusters with a single command.\n\n## Supported Features\n\n* **Automated cluster provisioning** - Deploying a Couchbase Cluster has never been easier. Fill out a Couchbase specific configuration and let the Couchbase Operator take care of provisioning nodes and setting up cluster to your exact specification.\n\n* **On-demand scalability** - Automatically scale your cluster up or down by changing a simple configuration parameter and let the Couchbase Operator handle provisioning of new nodes and joining them into the cluster.\n\n* **Auto-recovery** - Detect Couchbase node failures, rebalance out bad nodes, and bring the cluster back up to the desired capacity. Auto-recovery is completely automated so you can sleep easy through the night knowing that the Couchbase Operator will handle any failures.\n\n* **Geo-distribution** - Replicate your data between datacenters to move data closer to the users who consume it and protect against disaster scenarios where an entire datacenter becomes unavailable.\n\n* **Persistent storage** - Define persistent network-attached storage for each node in your cluster to allow pods to be recovered even if the node they were running on is no longer available.\n\n* **Rack/zone awareness** - Tell the Couchbase Operator about availability zones in your datacenter and let the operator take care of ensuring that nodes in your cluster are deployed equally across each zone.\n\n* **Supportability** - When things go wrong, use the cbopinfo tool provided with the Couchbase Operator to collect relevant data about your Couchbase deployment so that you can quickly address issues.\n\n* **Centralized configuration management** - Manage your configuration centrally with OpenShift. Updates to the configuration are watched by the Couchbase Operator and actions are taken to make the target cluster match the desired configuration.\n## Required Parameters\n* `authSecret` - provide the name of a secret that contains two keys for the `username` and `password` of the super user ([documentation](https://docs.couchbase.com/operator/1.2/couchbase-cluster-config.html))\n\n## About Couchbase Server\n\nBuilt on the most powerful NoSQL technology, Couchbase Server delivers unparalleled performance at scale, in any cloud. With features like memory-first architecture, geo-distributed deployments, and workload isolation, Couchbase Server excels at supporting mission-critical applications at scale while maintaining submillisecond latencies and 99.999% availability. Plus, with the most comprehensive SQL-compatible query language (N1QL), migrating from RDBMS to Couchbase Server is easy with ANSI joins.\n",
+      "csv_display_name": "Couchbase Operator",
+      "csv_metadata_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments",
+      "csv_name": "couchbase-operator.v2.3.2-1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:47:31.042000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "couchbase-enterprise-certified",
+      "provided_apis": [
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseRoleBinding",
+          "plural": "couchbaserolebindings",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseMemcachedBucket",
+          "plural": "couchbasememcachedbuckets",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseMigrationReplication",
+          "plural": "couchbasemigrationreplications",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseUser",
+          "plural": "couchbaseusers",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseScope",
+          "plural": "couchbasescopes",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseScopeGroup",
+          "plural": "couchbasescopegroups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCluster",
+          "plural": "couchbaseclusters",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCollection",
+          "plural": "couchbasecollections",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseReplication",
+          "plural": "couchbasereplications",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseAutoscaler",
+          "plural": "couchbaseautoscalers",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBucket",
+          "plural": "couchbasebuckets",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackup",
+          "plural": "couchbasebackups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCollectionGroup",
+          "plural": "couchbasecollectiongroups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackupRestore",
+          "plural": "couchbasebackuprestores",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseGroup",
+          "plural": "couchbasegroups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseEphemeralBucket",
+          "plural": "couchbaseephemeralbuckets",
+          "version": "v2"
+        }
+      ],
+      "provider": "Couchbase",
+      "related_images": [
+        {
+          "digest": "sha256:3480123a4c056115b8fe7205fd62e25676045ea3248f8cdf3ec20bfff9168ee2",
+          "image": "registry.connect.redhat.com/couchbase/operator@sha256:3480123a4c056115b8fe7205fd62e25676045ea3248f8cdf3ec20bfff9168ee2",
+          "name": "couchbase-operator"
+        },
+        {
+          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "name": "couchbase-server"
+        },
+        {
+          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "name": "couchbase-backup"
+        },
+        {
+          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "name": "couchbase-metrics"
+        },
+        {
+          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "name": "couchbase_server"
+        },
+        {
+          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "name": "couchbase_backup"
+        },
+        {
+          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "name": "couchbase_metrics"
+        },
+        {
+          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "name": "exporter-d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4-annotation"
+        },
+        {
+          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "name": "operator-backup-c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76-annotation"
+        },
+        {
+          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "name": "server-05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "2.3.2-1",
+      "version_original": "2.3.2-1"
+    },
+    {
+      "_id": "6300311b720db70dae937ca6",
+      "alm_examples": [
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCluster",
+          "metadata": {
+            "name": "cb-example"
+          },
+          "spec": {
+            "backup": {
+              "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+              "managed": false,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              },
+              "serviceAccountName": "couchbase-backup"
+            },
+            "buckets": {
+              "managed": true,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              }
+            },
+            "cluster": {
+              "analyticsServiceMemoryQuota": "1Gi",
+              "autoFailoverMaxCount": 3,
+              "autoFailoverOnDataDiskIssues": true,
+              "autoFailoverOnDataDiskIssuesTimePeriod": "120s",
+              "autoFailoverServerGroup": false,
+              "autoFailoverTimeout": "120s",
+              "clusterName": "cb-example",
+              "dataServiceMemoryQuota": "256Mi",
+              "eventingServiceMemoryQuota": "256Mi",
+              "indexServiceMemoryQuota": "256Mi",
+              "indexStorageSetting": "memory_optimized",
+              "searchServiceMemoryQuota": "256Mi"
+            },
+            "enablePreviewScaling": false,
+            "hibernate": false,
+            "hibernationStrategy": "Immediate",
+            "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+            "logRetentionCount": 20,
+            "logRetentionTime": "604800s",
+            "monitoring": {
+              "prometheus": {
+                "enabled": false,
+                "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4"
+              }
+            },
+            "networking": {
+              "adminConsoleServiceType": "NodePort",
+              "adminConsoleServices": [
+                "data"
+              ],
+              "exposeAdminConsole": true,
+              "exposedFeatureServiceType": "NodePort",
+              "exposedFeatures": [
+                "xdcr"
+              ]
+            },
+            "recoveryPolicy": "PrioritizeDataIntegrity",
+            "security": {
+              "adminSecret": "cb-example-auth",
+              "rbac": {
+                "managed": true,
+                "selector": {
+                  "matchLabels": {
+                    "cluster": "cb-example"
+                  }
+                }
+              }
+            },
+            "servers": [
+              {
+                "name": "all_services",
+                "services": [
+                  "data",
+                  "index",
+                  "query",
+                  "search",
+                  "eventing",
+                  "analytics"
+                ],
+                "size": 3
+              }
+            ],
+            "upgradeStrategy": "RollingUpgrade",
+            "xdcr": {
+              "managed": false,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              }
+            }
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "default"
+          },
+          "spec": {
+            "compressionMode": "passive",
+            "conflictResolution": "lww",
+            "enableFlush": false,
+            "enableIndexReplica": true,
+            "evictionPolicy": "valueOnly",
+            "ioPriority": "low",
+            "memoryQuota": "100Mi",
+            "replicas": 2
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseEphemeralBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "ephemeral-bucket"
+          },
+          "spec": {
+            "compressionMode": "passive",
+            "conflictResolution": "lww",
+            "enableFlush": false,
+            "evictionPolicy": "noEviction",
+            "ioPriority": "low",
+            "memoryQuota": "100Mi",
+            "replicas": 2
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseMemcachedBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "memcached-bucket"
+          },
+          "spec": {
+            "enableFlush": false,
+            "memoryQuota": "100Mi"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseUser",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-user"
+          },
+          "spec": {
+            "authDomain": "local",
+            "authSecret": "cb-example-auth",
+            "fullName": "My User"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseGroup",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-group"
+          },
+          "spec": {
+            "roles": [
+              {
+                "bucket": "default",
+                "name": "bucket_admin"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseRoleBinding",
+          "metadata": {
+            "name": "my-role-binding"
+          },
+          "spec": {
+            "roleRef": {
+              "kind": "CouchbaseGroup",
+              "name": "my-group"
+            },
+            "subjects": [
+              {
+                "kind": "CouchbaseUser",
+                "name": "my-user"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseReplication",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-replication"
+          },
+          "spec": {
+            "bucket": "default",
+            "compressionType": "Snappy",
+            "filterExpression": "",
+            "paused": false,
+            "remoteBucket": "default"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBackup",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "cb-backup"
+          },
+          "spec": {
+            "backOffLimit": 2,
+            "backupRetention": "24h",
+            "failedJobsHistoryLimit": 3,
+            "full": {
+              "schedule": "0 3 * * 6"
+            },
+            "incremental": {
+              "schedule": "0 3 * * 1-6"
+            },
+            "logRetention": "24h",
+            "size": "5Gi",
+            "strategy": "full_incremental",
+            "successfulJobsHistoryLimit": 1
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBackupRestore",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "cb-restore"
+          },
+          "spec": {
+            "backOffLimit": 2,
+            "backup": "cb-backup",
+            "end": {
+              "int": 1
+            },
+            "logRetention": "24h",
+            "repo": "cb-example-2020-10-29T19_00_03",
+            "start": {
+              "int": 1
+            }
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCollectionGroup",
+          "metadata": {
+            "name": "my-collection-group"
+          },
+          "spec": {
+            "maxTTL": "",
+            "names": [
+              "my-collection"
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCollection",
+          "metadata": {
+            "name": "my-collection"
+          },
+          "spec": {
+            "maxTTL": "",
+            "name": "my-collection"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseScopeGroup",
+          "metadata": {
+            "name": "my-scope-group"
+          },
+          "spec": {
+            "collections": {},
+            "names": [
+              "my-scope"
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseScope",
+          "metadata": {
+            "name": "my-scope"
+          },
+          "spec": {
+            "collections": {},
+            "name": "my-scope"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseMigrationReplication",
+          "metadata": {
+            "name": "default-migration"
+          },
+          "spec": {
+            "bucket": "default",
+            "remoteBucket": "default"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseAutoscaler",
+          "metadata": {
+            "name": "do.not.create.internal.only"
+          },
+          "spec": {
+            "servers": "internal",
+            "size": 2
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:5ef27c3e167ef5e6bee05125364a0021780eca77c8ffdad587bed251b838585e",
+      "bundle_path_digest": "sha256:5ef27c3e167ef5e6bee05125364a0021780eca77c8ffdad587bed251b838585e",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "2.3.2",
+      "creation_date": "2022-08-20T00:55:55.417000+00:00",
+      "csv_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments on OpenShift. By installing this integration you will be able to deply Couchbase Server clusters with a single command.\n\n## Supported Features\n\n* **Automated cluster provisioning** - Deploying a Couchbase Cluster has never been easier. Fill out a Couchbase specific configuration and let the Couchbase Operator take care of provisioning nodes and setting up cluster to your exact specification.\n\n* **On-demand scalability** - Automatically scale your cluster up or down by changing a simple configuration parameter and let the Couchbase Operator handle provisioning of new nodes and joining them into the cluster.\n\n* **Auto-recovery** - Detect Couchbase node failures, rebalance out bad nodes, and bring the cluster back up to the desired capacity. Auto-recovery is completely automated so you can sleep easy through the night knowing that the Couchbase Operator will handle any failures.\n\n* **Geo-distribution** - Replicate your data between datacenters to move data closer to the users who consume it and protect against disaster scenarios where an entire datacenter becomes unavailable.\n\n* **Persistent storage** - Define persistent network-attached storage for each node in your cluster to allow pods to be recovered even if the node they were running on is no longer available.\n\n* **Rack/zone awareness** - Tell the Couchbase Operator about availability zones in your datacenter and let the operator take care of ensuring that nodes in your cluster are deployed equally across each zone.\n\n* **Supportability** - When things go wrong, use the cbopinfo tool provided with the Couchbase Operator to collect relevant data about your Couchbase deployment so that you can quickly address issues.\n\n* **Centralized configuration management** - Manage your configuration centrally with OpenShift. Updates to the configuration are watched by the Couchbase Operator and actions are taken to make the target cluster match the desired configuration.\n## Required Parameters\n* `authSecret` - provide the name of a secret that contains two keys for the `username` and `password` of the super user ([documentation](https://docs.couchbase.com/operator/1.2/couchbase-cluster-config.html))\n\n## About Couchbase Server\n\nBuilt on the most powerful NoSQL technology, Couchbase Server delivers unparalleled performance at scale, in any cloud. With features like memory-first architecture, geo-distributed deployments, and workload isolation, Couchbase Server excels at supporting mission-critical applications at scale while maintaining submillisecond latencies and 99.999% availability. Plus, with the most comprehensive SQL-compatible query language (N1QL), migrating from RDBMS to Couchbase Server is easy with ANSI joins.\n",
+      "csv_display_name": "Couchbase Operator",
+      "csv_metadata_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments",
+      "csv_name": "couchbase-operator.v2.3.2-1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:44:04.726000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "couchbase-enterprise-certified",
+      "provided_apis": [
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackupRestore",
+          "plural": "couchbasebackuprestores",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseUser",
+          "plural": "couchbaseusers",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseAutoscaler",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseScope",
+          "plural": "couchbasescopes",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseMigrationReplication",
+          "plural": "couchbasemigrationreplications",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseReplication",
+          "plural": "couchbasereplications",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseRoleBinding",
+          "plural": "couchbaserolebindings",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCluster",
+          "plural": "couchbaseclusters",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseMemcachedBucket",
+          "plural": "couchbasememcachedbuckets",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseScopeGroup",
+          "plural": "couchbasescopegroups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseGroup",
+          "plural": "couchbasegroups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseEphemeralBucket",
+          "plural": "couchbaseephemeralbuckets",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackup",
+          "plural": "couchbasebackups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBucket",
+          "plural": "couchbasebuckets",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCollectionGroup",
+          "plural": "couchbasecollectiongroups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCollection",
+          "plural": "couchbasecollections",
+          "version": "v2"
+        }
+      ],
+      "provider": "Couchbase",
+      "related_images": [
+        {
+          "digest": "sha256:3480123a4c056115b8fe7205fd62e25676045ea3248f8cdf3ec20bfff9168ee2",
+          "image": "registry.connect.redhat.com/couchbase/operator@sha256:3480123a4c056115b8fe7205fd62e25676045ea3248f8cdf3ec20bfff9168ee2",
+          "name": "couchbase-operator"
+        },
+        {
+          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "name": "couchbase-server"
+        },
+        {
+          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "name": "couchbase-backup"
+        },
+        {
+          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "name": "couchbase-metrics"
+        },
+        {
+          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "name": "couchbase_server"
+        },
+        {
+          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "name": "couchbase_backup"
+        },
+        {
+          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "name": "couchbase_metrics"
+        },
+        {
+          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "name": "exporter-d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4-annotation"
+        },
+        {
+          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "name": "operator-backup-c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76-annotation"
+        },
+        {
+          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "name": "server-05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "2.3.2-1",
+      "version_original": "2.3.2-1"
+    },
+    {
+      "_id": "6300311cdca7d12fdf8e15ce",
+      "alm_examples": [
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCluster",
+          "metadata": {
+            "name": "cb-example"
+          },
+          "spec": {
+            "backup": {
+              "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+              "managed": false,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              },
+              "serviceAccountName": "couchbase-backup"
+            },
+            "buckets": {
+              "managed": true,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              }
+            },
+            "cluster": {
+              "analyticsServiceMemoryQuota": "1Gi",
+              "autoFailoverMaxCount": 3,
+              "autoFailoverOnDataDiskIssues": true,
+              "autoFailoverOnDataDiskIssuesTimePeriod": "120s",
+              "autoFailoverServerGroup": false,
+              "autoFailoverTimeout": "120s",
+              "clusterName": "cb-example",
+              "dataServiceMemoryQuota": "256Mi",
+              "eventingServiceMemoryQuota": "256Mi",
+              "indexServiceMemoryQuota": "256Mi",
+              "indexStorageSetting": "memory_optimized",
+              "searchServiceMemoryQuota": "256Mi"
+            },
+            "enablePreviewScaling": false,
+            "hibernate": false,
+            "hibernationStrategy": "Immediate",
+            "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+            "logRetentionCount": 20,
+            "logRetentionTime": "604800s",
+            "monitoring": {
+              "prometheus": {
+                "enabled": false,
+                "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4"
+              }
+            },
+            "networking": {
+              "adminConsoleServiceType": "NodePort",
+              "adminConsoleServices": [
+                "data"
+              ],
+              "exposeAdminConsole": true,
+              "exposedFeatureServiceType": "NodePort",
+              "exposedFeatures": [
+                "xdcr"
+              ]
+            },
+            "recoveryPolicy": "PrioritizeDataIntegrity",
+            "security": {
+              "adminSecret": "cb-example-auth",
+              "rbac": {
+                "managed": true,
+                "selector": {
+                  "matchLabels": {
+                    "cluster": "cb-example"
+                  }
+                }
+              }
+            },
+            "servers": [
+              {
+                "name": "all_services",
+                "services": [
+                  "data",
+                  "index",
+                  "query",
+                  "search",
+                  "eventing",
+                  "analytics"
+                ],
+                "size": 3
+              }
+            ],
+            "upgradeStrategy": "RollingUpgrade",
+            "xdcr": {
+              "managed": false,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              }
+            }
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "default"
+          },
+          "spec": {
+            "compressionMode": "passive",
+            "conflictResolution": "lww",
+            "enableFlush": false,
+            "enableIndexReplica": true,
+            "evictionPolicy": "valueOnly",
+            "ioPriority": "low",
+            "memoryQuota": "100Mi",
+            "replicas": 2
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseEphemeralBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "ephemeral-bucket"
+          },
+          "spec": {
+            "compressionMode": "passive",
+            "conflictResolution": "lww",
+            "enableFlush": false,
+            "evictionPolicy": "noEviction",
+            "ioPriority": "low",
+            "memoryQuota": "100Mi",
+            "replicas": 2
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseMemcachedBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "memcached-bucket"
+          },
+          "spec": {
+            "enableFlush": false,
+            "memoryQuota": "100Mi"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseUser",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-user"
+          },
+          "spec": {
+            "authDomain": "local",
+            "authSecret": "cb-example-auth",
+            "fullName": "My User"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseGroup",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-group"
+          },
+          "spec": {
+            "roles": [
+              {
+                "bucket": "default",
+                "name": "bucket_admin"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseRoleBinding",
+          "metadata": {
+            "name": "my-role-binding"
+          },
+          "spec": {
+            "roleRef": {
+              "kind": "CouchbaseGroup",
+              "name": "my-group"
+            },
+            "subjects": [
+              {
+                "kind": "CouchbaseUser",
+                "name": "my-user"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseReplication",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-replication"
+          },
+          "spec": {
+            "bucket": "default",
+            "compressionType": "Snappy",
+            "filterExpression": "",
+            "paused": false,
+            "remoteBucket": "default"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBackup",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "cb-backup"
+          },
+          "spec": {
+            "backOffLimit": 2,
+            "backupRetention": "24h",
+            "failedJobsHistoryLimit": 3,
+            "full": {
+              "schedule": "0 3 * * 6"
+            },
+            "incremental": {
+              "schedule": "0 3 * * 1-6"
+            },
+            "logRetention": "24h",
+            "size": "5Gi",
+            "strategy": "full_incremental",
+            "successfulJobsHistoryLimit": 1
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBackupRestore",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "cb-restore"
+          },
+          "spec": {
+            "backOffLimit": 2,
+            "backup": "cb-backup",
+            "end": {
+              "int": 1
+            },
+            "logRetention": "24h",
+            "repo": "cb-example-2020-10-29T19_00_03",
+            "start": {
+              "int": 1
+            }
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCollectionGroup",
+          "metadata": {
+            "name": "my-collection-group"
+          },
+          "spec": {
+            "maxTTL": "",
+            "names": [
+              "my-collection"
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCollection",
+          "metadata": {
+            "name": "my-collection"
+          },
+          "spec": {
+            "maxTTL": "",
+            "name": "my-collection"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseScopeGroup",
+          "metadata": {
+            "name": "my-scope-group"
+          },
+          "spec": {
+            "collections": {},
+            "names": [
+              "my-scope"
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseScope",
+          "metadata": {
+            "name": "my-scope"
+          },
+          "spec": {
+            "collections": {},
+            "name": "my-scope"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseMigrationReplication",
+          "metadata": {
+            "name": "default-migration"
+          },
+          "spec": {
+            "bucket": "default",
+            "remoteBucket": "default"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseAutoscaler",
+          "metadata": {
+            "name": "do.not.create.internal.only"
+          },
+          "spec": {
+            "servers": "internal",
+            "size": 2
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:5ef27c3e167ef5e6bee05125364a0021780eca77c8ffdad587bed251b838585e",
+      "bundle_path_digest": "sha256:5ef27c3e167ef5e6bee05125364a0021780eca77c8ffdad587bed251b838585e",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-20T00:55:55.998000+00:00",
+      "csv_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments on OpenShift. By installing this integration you will be able to deply Couchbase Server clusters with a single command.\n\n## Supported Features\n\n* **Automated cluster provisioning** - Deploying a Couchbase Cluster has never been easier. Fill out a Couchbase specific configuration and let the Couchbase Operator take care of provisioning nodes and setting up cluster to your exact specification.\n\n* **On-demand scalability** - Automatically scale your cluster up or down by changing a simple configuration parameter and let the Couchbase Operator handle provisioning of new nodes and joining them into the cluster.\n\n* **Auto-recovery** - Detect Couchbase node failures, rebalance out bad nodes, and bring the cluster back up to the desired capacity. Auto-recovery is completely automated so you can sleep easy through the night knowing that the Couchbase Operator will handle any failures.\n\n* **Geo-distribution** - Replicate your data between datacenters to move data closer to the users who consume it and protect against disaster scenarios where an entire datacenter becomes unavailable.\n\n* **Persistent storage** - Define persistent network-attached storage for each node in your cluster to allow pods to be recovered even if the node they were running on is no longer available.\n\n* **Rack/zone awareness** - Tell the Couchbase Operator about availability zones in your datacenter and let the operator take care of ensuring that nodes in your cluster are deployed equally across each zone.\n\n* **Supportability** - When things go wrong, use the cbopinfo tool provided with the Couchbase Operator to collect relevant data about your Couchbase deployment so that you can quickly address issues.\n\n* **Centralized configuration management** - Manage your configuration centrally with OpenShift. Updates to the configuration are watched by the Couchbase Operator and actions are taken to make the target cluster match the desired configuration.\n## Required Parameters\n* `authSecret` - provide the name of a secret that contains two keys for the `username` and `password` of the super user ([documentation](https://docs.couchbase.com/operator/1.2/couchbase-cluster-config.html))\n\n## About Couchbase Server\n\nBuilt on the most powerful NoSQL technology, Couchbase Server delivers unparalleled performance at scale, in any cloud. With features like memory-first architecture, geo-distributed deployments, and workload isolation, Couchbase Server excels at supporting mission-critical applications at scale while maintaining submillisecond latencies and 99.999% availability. Plus, with the most comprehensive SQL-compatible query language (N1QL), migrating from RDBMS to Couchbase Server is easy with ANSI joins.\n",
+      "csv_display_name": "Couchbase Operator",
+      "csv_metadata_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments",
+      "csv_name": "couchbase-operator.v2.3.2-1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:44:08.548000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "couchbase-enterprise-certified",
+      "provided_apis": [
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackupRestore",
+          "plural": "couchbasebackuprestores",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseUser",
+          "plural": "couchbaseusers",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseAutoscaler",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseScope",
+          "plural": "couchbasescopes",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseMigrationReplication",
+          "plural": "couchbasemigrationreplications",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseReplication",
+          "plural": "couchbasereplications",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseRoleBinding",
+          "plural": "couchbaserolebindings",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCluster",
+          "plural": "couchbaseclusters",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseMemcachedBucket",
+          "plural": "couchbasememcachedbuckets",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseScopeGroup",
+          "plural": "couchbasescopegroups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseGroup",
+          "plural": "couchbasegroups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseEphemeralBucket",
+          "plural": "couchbaseephemeralbuckets",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackup",
+          "plural": "couchbasebackups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBucket",
+          "plural": "couchbasebuckets",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCollectionGroup",
+          "plural": "couchbasecollectiongroups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCollection",
+          "plural": "couchbasecollections",
+          "version": "v2"
+        }
+      ],
+      "provider": "Couchbase",
+      "related_images": [
+        {
+          "digest": "sha256:3480123a4c056115b8fe7205fd62e25676045ea3248f8cdf3ec20bfff9168ee2",
+          "image": "registry.connect.redhat.com/couchbase/operator@sha256:3480123a4c056115b8fe7205fd62e25676045ea3248f8cdf3ec20bfff9168ee2",
+          "name": "couchbase-operator"
+        },
+        {
+          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "name": "couchbase-server"
+        },
+        {
+          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "name": "couchbase-backup"
+        },
+        {
+          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "name": "couchbase-metrics"
+        },
+        {
+          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "name": "couchbase_server"
+        },
+        {
+          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "name": "couchbase_backup"
+        },
+        {
+          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "name": "couchbase_metrics"
+        },
+        {
+          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
+          "name": "exporter-d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4-annotation"
+        },
+        {
+          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "name": "operator-backup-c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76-annotation"
+        },
+        {
+          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
+          "name": "server-05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "2.3.2-1",
+      "version_original": "2.3.2-1"
     }
   ]
 }

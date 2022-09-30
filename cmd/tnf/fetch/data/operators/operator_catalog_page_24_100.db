@@ -1,372 +1,6 @@
 {
   "data": [
     {
-      "_id": "6262a75b173a0d36cf5d698e",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:863e2cbbd481dfe2c70fdfcf866c161c250b95e5e9a320fe211a805c456c7e9e",
-      "bundle_path_digest": "sha256:863e2cbbd481dfe2c70fdfcf866c161c250b95e5e9a320fe211a805c456c7e9e",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-04-22T13:02:19.778000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "neuvector-operator.v1.2.0",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:08:08.850000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "neuvector-certified-operator",
-      "provided_apis": [
-        {
-          "group": "apm.neuvector.com",
-          "kind": "Neuvector",
-          "plural": "neuvectors",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.2.0",
-      "version_original": "1.2.0"
-    },
-    {
-      "_id": "6262a762173a0d36cf5d698f",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/instana/instana-agent-operator-bundle@sha256:a01cf756a40c09923a1f00a7516d83a46087731265dcc5ed10a7bbcd8bebd8e8",
-      "bundle_path_digest": "sha256:a01cf756a40c09923a1f00a7516d83a46087731265dcc5ed10a7bbcd8bebd8e8",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-04-22T13:02:26.574000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "instana-agent-operator.v0.3.7",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T02:11:12.700000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "instana-agent",
-      "provided_apis": [
-        {
-          "group": "instana.io",
-          "kind": "InstanaAgent",
-          "plural": "agents",
-          "version": "v1beta1"
-        },
-        {
-          "group": "instana.io",
-          "kind": "InstanaAgent",
-          "plural": "agents",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.3.7",
-      "version_original": "0.3.7"
-    },
-    {
-      "_id": "6262a766cde83e2b177c20ee",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:1c09b241712469ae34e4017e9481e3124cb6ce7037b61a44b62f2f7e0c10df46",
-      "bundle_path_digest": "sha256:1c09b241712469ae34e4017e9481e3124cb6ce7037b61a44b62f2f7e0c10df46",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T13:02:30.740000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "kubeturbo-operator.v7.22.9",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:18:55.731000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "7.22.9",
-      "version_original": "7.22.9"
-    },
-    {
-      "_id": "6262a76acde83e2b177c20ef",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:770c0b5a41cc3103582daeb44a0d897d578e03fdd8597a3a385f8ef78d5b6f38",
-      "bundle_path_digest": "sha256:770c0b5a41cc3103582daeb44a0d897d578e03fdd8597a3a385f8ef78d5b6f38",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T13:02:34.646000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "kubeturbo-operator.v8.0.4",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:18:11.072000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "8.0.4",
-      "version_original": "8.0.4"
-    },
-    {
-      "_id": "6262a76fcde83e2b177c20f0",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/sonatype/nxiq-operator-bundle@sha256:48d5a2acbdb1516738ee4eeff15a1085de92a8d0ded3f317317d64df8103ba6e",
-      "bundle_path_digest": "sha256:48d5a2acbdb1516738ee4eeff15a1085de92a8d0ded3f317317d64df8103ba6e",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T13:02:39.381000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "nxiq-operator-certified.v1.97.0-4",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:56:26.488000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "nxiq-operator-certified",
-      "provided_apis": [
-        {
-          "group": "sonatype.com",
-          "kind": "NexusIQ",
-          "plural": "nexusiqs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.97.0-4",
-      "version_original": "1.97.0-4"
-    },
-    {
-      "_id": "6262a774834f257293b60fa7",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:9462f3735254b047f4b80b539797b83c31faa0ad923fe4a351dba693e51cadef",
-      "bundle_path_digest": "sha256:9462f3735254b047f4b80b539797b83c31faa0ad923fe4a351dba693e51cadef",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T13:02:44.036000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "couchbase-operator.v2.0.0",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:28:19.300000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "couchbase-enterprise-certified",
-      "provided_apis": [
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBucket",
-          "plural": "couchbasebuckets",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseCluster",
-          "plural": "couchbaseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseGroup",
-          "plural": "couchbasegroups",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseRoleBinding",
-          "plural": "couchbaserolebindings",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseUser",
-          "plural": "couchbaseusers",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseUser",
-          "plural": "couchbaseusers",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackup",
-          "plural": "couchbasebackups",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBucket",
-          "plural": "couchbasebuckets",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseCluster",
-          "plural": "couchbaseclusters",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseGroup",
-          "plural": "couchbasegroups",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseRoleBinding",
-          "plural": "couchbaserolebindings",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackup",
-          "plural": "couchbasebackups",
-          "version": "v2"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "2.0.0",
-      "version_original": "2.0.0"
-    },
-    {
-      "_id": "6262a775cde83e2b177c20f1",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/c12e/cortex-fabric-operator-bundle@sha256:de8cf8423ab8ea22f2090947fb51c3091407fcca623d5a83137b266c43e00f6d",
-      "bundle_path_digest": "sha256:de8cf8423ab8ea22f2090947fb51c3091407fcca623d5a83137b266c43e00f6d",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-04-22T13:02:45.495000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "cortex-fabric-operator.v0.0.1",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T02:04:49.418000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "cortex-fabric-operator",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Cortex5",
-          "plural": "cortex5s",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.0.1",
-      "version_original": "0.0.1"
-    },
-    {
       "_id": "6262a77a834f257293b60faa",
       "alm_examples": [],
       "annotations": {
@@ -4900,6 +4534,385 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.1.5",
       "version_original": "0.1.5"
+    },
+    {
+      "_id": "6262a9d3173a0d36cf5d69dc",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/instana/instana-agent-operator-bundle@sha256:e3bbdf42b6d8e4d5d41793209ebc8c883efee6be03273bc3fef3ce3fe0dc171a",
+      "bundle_path_digest": "sha256:e3bbdf42b6d8e4d5d41793209ebc8c883efee6be03273bc3fef3ce3fe0dc171a",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-04-22T13:12:51.877000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "instana-agent-operator.v0.2.6",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:46:13.800000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "instana-agent",
+      "provided_apis": [
+        {
+          "group": "instana.io",
+          "kind": "InstanaAgent",
+          "plural": "agents",
+          "version": "v1beta1"
+        },
+        {
+          "group": "instana.io",
+          "kind": "InstanaAgent",
+          "plural": "agents",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.2.6",
+      "version_original": "0.2.6"
+    },
+    {
+      "_id": "6262a9d8173a0d36cf5d69dd",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/c12e/cortex-certifai-operator-bundle@sha256:2ff2df4e61105cb9cc1905f504ed0e74907fcd43f85d200f729e464e824e928f",
+      "bundle_path_digest": "sha256:2ff2df4e61105cb9cc1905f504ed0e74907fcd43f85d200f729e464e824e928f",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-04-22T13:12:56.010000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "cortex-certifai-operator.v1.3.2",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:57:38.705000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "cortex-certifai-operator",
+      "provided_apis": [
+        {
+          "group": "cortex.cognitivescale.com",
+          "kind": "Certifai",
+          "plural": "certifais",
+          "version": "v1"
+        },
+        {
+          "group": "cortex.cognitivescale.com",
+          "kind": "CertifaiScan",
+          "plural": "certifaiscans",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.3.2",
+      "version_original": "1.3.2"
+    },
+    {
+      "_id": "6262a9dc84481d5f522999b3",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nastel/navigator-operator-bundle@sha256:c7fa6441efdf970ef645bcd0e390329b27497a920ff18c5c62baef26d06846af",
+      "bundle_path_digest": "sha256:c7fa6441efdf970ef645bcd0e390329b27497a920ff18c5c62baef26d06846af",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T13:13:00.661000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "nastel-navigator-operator.v0.0.15",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:25:15.743000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "nastel-navigator-operator-certified",
+      "provided_apis": [
+        {
+          "group": "navigator.nastel.com",
+          "kind": "NastelNavigator",
+          "plural": "nastelnavigators",
+          "version": "v1alpha6"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.0.15",
+      "version_original": "0.0.15"
+    },
+    {
+      "_id": "6262a9e484481d5f522999b5",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm-edge/data-explorer-operator-bundle@sha256:29de0c8f38adb379957ec2564eea036e4f839980377e52c49f8b462e3033c7aa",
+      "bundle_path_digest": "sha256:29de0c8f38adb379957ec2564eea036e4f839980377e52c49f8b462e3033c7aa",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T13:13:08.412000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "data-explorer-operator.v0.1.2",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:12:06.079000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "data-explorer-operator-certified",
+      "provided_apis": [
+        {
+          "group": "data-explorer.com",
+          "kind": "DashboardWithJupyterHub",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.1.2",
+      "version_original": "0.1.2"
+    },
+    {
+      "_id": "6262a9e984481d5f522999b6",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm-edge/data-explorer-operator-bundle@sha256:bf21e966e38761ab59e74271d1ca154f75e2a1c85d6f4eab418fb6d5261c9d1c",
+      "bundle_path_digest": "sha256:bf21e966e38761ab59e74271d1ca154f75e2a1c85d6f4eab418fb6d5261c9d1c",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T13:13:13.970000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "data-explorer-operator.v0.0.8",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:09:35.682000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "data-explorer-operator-certified",
+      "provided_apis": [
+        {
+          "group": "data-explorer.com",
+          "kind": "DashboardWithJupyterHub",
+          "plural": "dashboardwithjupyterhubs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.0.8",
+      "version_original": "0.0.8"
+    },
+    {
+      "_id": "6262a9eb84481d5f522999b7",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/datastax/cass-operator-bundle@sha256:45ef903adc91f47b687fe67cd1e9dcce8e24b49ee958da146a7ad38491e48503",
+      "bundle_path_digest": "sha256:45ef903adc91f47b687fe67cd1e9dcce8e24b49ee958da146a7ad38491e48503",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:13:15.015000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "cass-operator.v1.3.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:26:45.258000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "cass-operator",
+      "provided_apis": [
+        {
+          "group": "cassandra.datastax.com",
+          "kind": "CassandraDatacenter",
+          "plural": "cassandradatacenters",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.3.0",
+      "version_original": "1.3.0"
+    },
+    {
+      "_id": "6262a9f084481d5f522999b8",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:1ec6fc8724eed1b9260eb3765a6280c0f1781bf6d51e998903cb65f1e20b5d73",
+      "bundle_path_digest": "sha256:1ec6fc8724eed1b9260eb3765a6280c0f1781bf6d51e998903cb65f1e20b5d73",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:13:20.134000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "couchbase-operator.v2.0.1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:29:19.218000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "couchbase-enterprise-certified",
+      "provided_apis": [
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseRoleBinding",
+          "version": "v1"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackup",
+          "plural": "couchbasebackups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackup",
+          "version": "v1"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBucket",
+          "plural": "couchbasebuckets",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBucket",
+          "version": "v1"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseGroup",
+          "plural": "couchbasegroups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseGroup",
+          "version": "v1"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseRoleBinding",
+          "plural": "couchbaserolebindings",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseUser",
+          "plural": "couchbaseusers",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCluster",
+          "plural": "couchbaseclusters",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCluster",
+          "version": "v1"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseUser",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "2.0.1",
+      "version_original": "2.0.1"
     }
   ]
 }

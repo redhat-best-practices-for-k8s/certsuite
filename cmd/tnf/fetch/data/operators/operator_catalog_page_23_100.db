@@ -1,995 +1,6 @@
 {
   "data": [
     {
-      "_id": "624756844a140551e01d26f2",
-      "alm_examples": [
-        {
-          "api_version": "ibm.com/v1",
-          "kind": "IBMApplicationGateway",
-          "metadata": {
-            "name": "iag-instance"
-          },
-          "spec": {
-            "configuration": [
-              {
-                "dataKey": "config",
-                "name": "test-config",
-                "type": "configmap"
-              },
-              {
-                "discoveryEndpoint": "https://isam.mmfa.ibm.com/mga/sps/oauth/oauth20/metadata/test",
-                "postData": [
-                  {
-                    "name": "redirect_uris",
-                    "values": [
-                      "https://isam.mmfa.ibm.com/pkmsoidc"
-                    ]
-                  },
-                  {
-                    "name": "client_name",
-                    "value": "OperatorTest"
-                  },
-                  {
-                    "name": "enforce_pkce",
-                    "value": "false"
-                  },
-                  {
-                    "name": "all_users_entitled",
-                    "value": "true"
-                  },
-                  {
-                    "name": "consent_action",
-                    "value": "never_prompt"
-                  }
-                ],
-                "secret": "oidc-client",
-                "type": "oidc_registration"
-              },
-              {
-                "headers": [
-                  {
-                    "name": "Authorization",
-                    "secretKey": "value",
-                    "type": "secret",
-                    "value": "githubsecret"
-                  }
-                ],
-                "type": "web",
-                "url": "https://raw.github.com/ibm-security/iag-config/master/test/sample1.yaml"
-              },
-              {
-                "type": "literal",
-                "value": "version: \"21.12\"\n\nserver:\n  local_applications:\n    cred_viewer:\n      path_segment: creds\n      enable_html: true\n\nidentity:\n  oidc:\n    discovery_endpoint: \"https://iag-dev.ibmcloudsecurity.com/oidc/endpoint/default/.well-known/openid-configuration\"\n    client_id: 1cbfe647-9e5f-4d99-8e05-8ed1c862eb47\n    client_secret: uPP8rM7N0e\n"
-              }
-            ],
-            "deployment": {
-              "image": "ibmcom/ibm-application-gateway@sha256:410fc5d3bc187c01e5ea699ce5023a24a9eb8309902fe513900286ecce5af99f",
-              "imagePullPolicy": "Always",
-              "imagePullSecrets": [
-                {
-                  "name": "regcred"
-                }
-              ],
-              "lang": "C",
-              "livenessProbe": {
-                "failureThreshold": 6,
-                "initialDelaySeconds": 8,
-                "periodSeconds": 9,
-                "successThreshold": 7,
-                "timeoutSeconds": 1
-              },
-              "readinessProbe": {
-                "failureThreshold": 2,
-                "initialDelaySeconds": 7,
-                "periodSeconds": 8,
-                "successThreshold": 4,
-                "timeoutSeconds": 5
-              },
-              "serviceAccountName": "iag"
-            },
-            "replicas": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/ibm-application-gateway-operator-bundle@sha256:7737a7c6d8eaf495367265c6b482f5ac9f5cc2dfe6320e1a0ed2f9eed15ce03a",
-      "bundle_path_digest": "sha256:7737a7c6d8eaf495367265c6b482f5ac9f5cc2dfe6320e1a0ed2f9eed15ce03a",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-01T19:46:12.782000+00:00",
-      "csv_description": "The [IBM Application Gateway (IAG)](https://ibm.biz/ibm-app-gateway) image provides a containerized secure Web Reverse proxy which is designed to sit in front of your application, seamlessly adding authentication and authorization protection to your application.\n\nAn IAG instance deployed on Kubernetes can be a complex deployment.  In particular the configuration can be defined externally in one or more locations, and changes to this configuration may require all instances to be reloaded for the changes to take effect. \n\nThe internal Kubernetes deployment controller does not have any knowledge of how an IBM Application Gateway instance should behave when the configuration changes. As such this IBM Application Gateway specific Kubernetes operator is available to be deployed. Once deployed the operator can manage the lifecycle of the IBM Application Gateway instances.\n\nSee the project [Readme](https://github.com/IBM-Security/ibm-application-gateway-operator/blob/master/README.md) for further information and details.\n\n",
-      "csv_display_name": "IBM Application Gateway Operator",
-      "csv_metadata_description": "The IBM Application Gateway operator manages the lifecycle of IBM Application Gateway containers.",
-      "csv_name": "ibm-application-gateway-operator.v22.3.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:48:55.567000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "ibm-application-gateway-operator",
-      "provided_apis": [
-        {
-          "group": "ibm.com",
-          "kind": "IBMApplicationGateway",
-          "version": "v1"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "name": "ibm-application-gateway-operator"
-        },
-        {
-          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "name": "ibm-application-gateway-operator-2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf-annotation"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "22.3.0",
-      "version_original": "22.3.0"
-    },
-    {
-      "_id": "6247575c485b927808ef1403",
-      "alm_examples": [
-        {
-          "api_version": "ibm.com/v1",
-          "kind": "IBMApplicationGateway",
-          "metadata": {
-            "name": "iag-instance"
-          },
-          "spec": {
-            "configuration": [
-              {
-                "dataKey": "config",
-                "name": "test-config",
-                "type": "configmap"
-              },
-              {
-                "discoveryEndpoint": "https://isam.mmfa.ibm.com/mga/sps/oauth/oauth20/metadata/test",
-                "postData": [
-                  {
-                    "name": "redirect_uris",
-                    "values": [
-                      "https://isam.mmfa.ibm.com/pkmsoidc"
-                    ]
-                  },
-                  {
-                    "name": "client_name",
-                    "value": "OperatorTest"
-                  },
-                  {
-                    "name": "enforce_pkce",
-                    "value": "false"
-                  },
-                  {
-                    "name": "all_users_entitled",
-                    "value": "true"
-                  },
-                  {
-                    "name": "consent_action",
-                    "value": "never_prompt"
-                  }
-                ],
-                "secret": "oidc-client",
-                "type": "oidc_registration"
-              },
-              {
-                "headers": [
-                  {
-                    "name": "Authorization",
-                    "secretKey": "value",
-                    "type": "secret",
-                    "value": "githubsecret"
-                  }
-                ],
-                "type": "web",
-                "url": "https://raw.github.com/ibm-security/iag-config/master/test/sample1.yaml"
-              },
-              {
-                "type": "literal",
-                "value": "version: \"21.12\"\n\nserver:\n  local_applications:\n    cred_viewer:\n      path_segment: creds\n      enable_html: true\n\nidentity:\n  oidc:\n    discovery_endpoint: \"https://iag-dev.ibmcloudsecurity.com/oidc/endpoint/default/.well-known/openid-configuration\"\n    client_id: 1cbfe647-9e5f-4d99-8e05-8ed1c862eb47\n    client_secret: uPP8rM7N0e\n"
-              }
-            ],
-            "deployment": {
-              "image": "ibmcom/ibm-application-gateway@sha256:410fc5d3bc187c01e5ea699ce5023a24a9eb8309902fe513900286ecce5af99f",
-              "imagePullPolicy": "Always",
-              "imagePullSecrets": [
-                {
-                  "name": "regcred"
-                }
-              ],
-              "lang": "C",
-              "livenessProbe": {
-                "failureThreshold": 6,
-                "initialDelaySeconds": 8,
-                "periodSeconds": 9,
-                "successThreshold": 7,
-                "timeoutSeconds": 1
-              },
-              "readinessProbe": {
-                "failureThreshold": 2,
-                "initialDelaySeconds": 7,
-                "periodSeconds": 8,
-                "successThreshold": 4,
-                "timeoutSeconds": 5
-              },
-              "serviceAccountName": "iag"
-            },
-            "replicas": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/ibm-application-gateway-operator-bundle@sha256:7737a7c6d8eaf495367265c6b482f5ac9f5cc2dfe6320e1a0ed2f9eed15ce03a",
-      "bundle_path_digest": "sha256:7737a7c6d8eaf495367265c6b482f5ac9f5cc2dfe6320e1a0ed2f9eed15ce03a",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-01T19:49:48.817000+00:00",
-      "csv_description": "The [IBM Application Gateway (IAG)](https://ibm.biz/ibm-app-gateway) image provides a containerized secure Web Reverse proxy which is designed to sit in front of your application, seamlessly adding authentication and authorization protection to your application.\n\nAn IAG instance deployed on Kubernetes can be a complex deployment.  In particular the configuration can be defined externally in one or more locations, and changes to this configuration may require all instances to be reloaded for the changes to take effect. \n\nThe internal Kubernetes deployment controller does not have any knowledge of how an IBM Application Gateway instance should behave when the configuration changes. As such this IBM Application Gateway specific Kubernetes operator is available to be deployed. Once deployed the operator can manage the lifecycle of the IBM Application Gateway instances.\n\nSee the project [Readme](https://github.com/IBM-Security/ibm-application-gateway-operator/blob/master/README.md) for further information and details.\n\n",
-      "csv_display_name": "IBM Application Gateway Operator",
-      "csv_metadata_description": "The IBM Application Gateway operator manages the lifecycle of IBM Application Gateway containers.",
-      "csv_name": "ibm-application-gateway-operator.v22.3.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:41:37.423000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "ibm-application-gateway-operator",
-      "provided_apis": [
-        {
-          "group": "ibm.com",
-          "kind": "IBMApplicationGateway",
-          "version": "v1"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "name": "ibm-application-gateway-operator"
-        },
-        {
-          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "name": "ibm-application-gateway-operator-2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf-annotation"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "22.3.0",
-      "version_original": "22.3.0"
-    },
-    {
-      "_id": "62476622485b927808ef1404",
-      "alm_examples": [
-        {
-          "api_version": "ibm.com/v1",
-          "kind": "IBMApplicationGateway",
-          "metadata": {
-            "name": "iag-instance"
-          },
-          "spec": {
-            "configuration": [
-              {
-                "dataKey": "config",
-                "name": "test-config",
-                "type": "configmap"
-              },
-              {
-                "discoveryEndpoint": "https://isam.mmfa.ibm.com/mga/sps/oauth/oauth20/metadata/test",
-                "postData": [
-                  {
-                    "name": "redirect_uris",
-                    "values": [
-                      "https://isam.mmfa.ibm.com/pkmsoidc"
-                    ]
-                  },
-                  {
-                    "name": "client_name",
-                    "value": "OperatorTest"
-                  },
-                  {
-                    "name": "enforce_pkce",
-                    "value": "false"
-                  },
-                  {
-                    "name": "all_users_entitled",
-                    "value": "true"
-                  },
-                  {
-                    "name": "consent_action",
-                    "value": "never_prompt"
-                  }
-                ],
-                "secret": "oidc-client",
-                "type": "oidc_registration"
-              },
-              {
-                "headers": [
-                  {
-                    "name": "Authorization",
-                    "secretKey": "value",
-                    "type": "secret",
-                    "value": "githubsecret"
-                  }
-                ],
-                "type": "web",
-                "url": "https://raw.github.com/ibm-security/iag-config/master/test/sample1.yaml"
-              },
-              {
-                "type": "literal",
-                "value": "version: \"21.12\"\n\nserver:\n  local_applications:\n    cred_viewer:\n      path_segment: creds\n      enable_html: true\n\nidentity:\n  oidc:\n    discovery_endpoint: \"https://iag-dev.ibmcloudsecurity.com/oidc/endpoint/default/.well-known/openid-configuration\"\n    client_id: 1cbfe647-9e5f-4d99-8e05-8ed1c862eb47\n    client_secret: uPP8rM7N0e\n"
-              }
-            ],
-            "deployment": {
-              "image": "ibmcom/ibm-application-gateway@sha256:410fc5d3bc187c01e5ea699ce5023a24a9eb8309902fe513900286ecce5af99f",
-              "imagePullPolicy": "Always",
-              "imagePullSecrets": [
-                {
-                  "name": "regcred"
-                }
-              ],
-              "lang": "C",
-              "livenessProbe": {
-                "failureThreshold": 6,
-                "initialDelaySeconds": 8,
-                "periodSeconds": 9,
-                "successThreshold": 7,
-                "timeoutSeconds": 1
-              },
-              "readinessProbe": {
-                "failureThreshold": 2,
-                "initialDelaySeconds": 7,
-                "periodSeconds": 8,
-                "successThreshold": 4,
-                "timeoutSeconds": 5
-              },
-              "serviceAccountName": "iag"
-            },
-            "replicas": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/ibm-application-gateway-operator-bundle@sha256:7737a7c6d8eaf495367265c6b482f5ac9f5cc2dfe6320e1a0ed2f9eed15ce03a",
-      "bundle_path_digest": "sha256:7737a7c6d8eaf495367265c6b482f5ac9f5cc2dfe6320e1a0ed2f9eed15ce03a",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-01T20:52:50.747000+00:00",
-      "csv_description": "The [IBM Application Gateway (IAG)](https://ibm.biz/ibm-app-gateway) image provides a containerized secure Web Reverse proxy which is designed to sit in front of your application, seamlessly adding authentication and authorization protection to your application.\n\nAn IAG instance deployed on Kubernetes can be a complex deployment.  In particular the configuration can be defined externally in one or more locations, and changes to this configuration may require all instances to be reloaded for the changes to take effect. \n\nThe internal Kubernetes deployment controller does not have any knowledge of how an IBM Application Gateway instance should behave when the configuration changes. As such this IBM Application Gateway specific Kubernetes operator is available to be deployed. Once deployed the operator can manage the lifecycle of the IBM Application Gateway instances.\n\nSee the project [Readme](https://github.com/IBM-Security/ibm-application-gateway-operator/blob/master/README.md) for further information and details.\n\n",
-      "csv_display_name": "IBM Application Gateway Operator",
-      "csv_metadata_description": "The IBM Application Gateway operator manages the lifecycle of IBM Application Gateway containers.",
-      "csv_name": "ibm-application-gateway-operator.v22.3.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:47:12.015000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "ibm-application-gateway-operator",
-      "provided_apis": [
-        {
-          "group": "ibm.com",
-          "kind": "IBMApplicationGateway",
-          "plural": "ibmapplicationgateways",
-          "version": "v1"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "name": "ibm-application-gateway-operator"
-        },
-        {
-          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "name": "ibm-application-gateway-operator-2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf-annotation"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "22.3.0",
-      "version_original": "22.3.0"
-    },
-    {
-      "_id": "624c2ae61bf4f81c51bc8953",
-      "alm_examples": [
-        {
-          "api_version": "ibm.com/v1",
-          "kind": "IBMApplicationGateway",
-          "metadata": {
-            "name": "iag-instance"
-          },
-          "spec": {
-            "configuration": [
-              {
-                "dataKey": "config",
-                "name": "test-config",
-                "type": "configmap"
-              },
-              {
-                "discoveryEndpoint": "https://isam.mmfa.ibm.com/mga/sps/oauth/oauth20/metadata/test",
-                "postData": [
-                  {
-                    "name": "redirect_uris",
-                    "values": [
-                      "https://isam.mmfa.ibm.com/pkmsoidc"
-                    ]
-                  },
-                  {
-                    "name": "client_name",
-                    "value": "OperatorTest"
-                  },
-                  {
-                    "name": "enforce_pkce",
-                    "value": "false"
-                  },
-                  {
-                    "name": "all_users_entitled",
-                    "value": "true"
-                  },
-                  {
-                    "name": "consent_action",
-                    "value": "never_prompt"
-                  }
-                ],
-                "secret": "oidc-client",
-                "type": "oidc_registration"
-              },
-              {
-                "headers": [
-                  {
-                    "name": "Authorization",
-                    "secretKey": "value",
-                    "type": "secret",
-                    "value": "githubsecret"
-                  }
-                ],
-                "type": "web",
-                "url": "https://raw.github.com/ibm-security/iag-config/master/test/sample1.yaml"
-              },
-              {
-                "type": "literal",
-                "value": "version: \"21.12\"\n\nserver:\n  local_applications:\n    cred_viewer:\n      path_segment: creds\n      enable_html: true\n\nidentity:\n  oidc:\n    discovery_endpoint: \"https://iag-dev.ibmcloudsecurity.com/oidc/endpoint/default/.well-known/openid-configuration\"\n    client_id: 1cbfe647-9e5f-4d99-8e05-8ed1c862eb47\n    client_secret: uPP8rM7N0e\n"
-              }
-            ],
-            "deployment": {
-              "image": "ibmcom/ibm-application-gateway@sha256:410fc5d3bc187c01e5ea699ce5023a24a9eb8309902fe513900286ecce5af99f",
-              "imagePullPolicy": "Always",
-              "imagePullSecrets": [
-                {
-                  "name": "regcred"
-                }
-              ],
-              "lang": "C",
-              "livenessProbe": {
-                "failureThreshold": 6,
-                "initialDelaySeconds": 8,
-                "periodSeconds": 9,
-                "successThreshold": 7,
-                "timeoutSeconds": 1
-              },
-              "readinessProbe": {
-                "failureThreshold": 2,
-                "initialDelaySeconds": 7,
-                "periodSeconds": 8,
-                "successThreshold": 4,
-                "timeoutSeconds": 5
-              },
-              "serviceAccountName": "iag"
-            },
-            "replicas": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/ibm-application-gateway-operator-bundle@sha256:7737a7c6d8eaf495367265c6b482f5ac9f5cc2dfe6320e1a0ed2f9eed15ce03a",
-      "bundle_path_digest": "sha256:7737a7c6d8eaf495367265c6b482f5ac9f5cc2dfe6320e1a0ed2f9eed15ce03a",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-05T11:41:26.281000+00:00",
-      "csv_description": "The [IBM Application Gateway (IAG)](https://ibm.biz/ibm-app-gateway) image provides a containerized secure Web Reverse proxy which is designed to sit in front of your application, seamlessly adding authentication and authorization protection to your application.\n\nAn IAG instance deployed on Kubernetes can be a complex deployment.  In particular the configuration can be defined externally in one or more locations, and changes to this configuration may require all instances to be reloaded for the changes to take effect. \n\nThe internal Kubernetes deployment controller does not have any knowledge of how an IBM Application Gateway instance should behave when the configuration changes. As such this IBM Application Gateway specific Kubernetes operator is available to be deployed. Once deployed the operator can manage the lifecycle of the IBM Application Gateway instances.\n\nSee the project [Readme](https://github.com/IBM-Security/ibm-application-gateway-operator/blob/master/README.md) for further information and details.\n\n",
-      "csv_display_name": "IBM Application Gateway Operator",
-      "csv_metadata_description": "The IBM Application Gateway operator manages the lifecycle of IBM Application Gateway containers.",
-      "csv_name": "ibm-application-gateway-operator.v22.3.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:00:01.538000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "ibm-application-gateway-operator",
-      "provided_apis": [
-        {
-          "group": "ibm.com",
-          "kind": "IBMApplicationGateway",
-          "version": "v1"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "name": "ibm-application-gateway-operator"
-        },
-        {
-          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "name": "ibm-application-gateway-operator-2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf-annotation"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "image": "ibmcom/ibm-application-gateway-operator@sha256:2c7bf8032867f6e401a8a83c0cab14a61a3a3191ece9c9bf5b16426c97e37ebf",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "22.3.0",
-      "version_original": "22.3.0"
-    },
-    {
-      "_id": "624cf3332793d604991edf9d",
-      "alm_examples": [
-        {
-          "api_version": "csi.hpe.com/v1",
-          "kind": "XSPC",
-          "metadata": {
-            "name": "xspc",
-            "namespace": "kube-system"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hpestorage/xspc-csi-operator-bundle@sha256:ca3b0ac75d8cd0b9ec35b0cdacd53c063548951420239f92de3a8014f71b9270",
-      "bundle_path_digest": "sha256:ca3b0ac75d8cd0b9ec35b0cdacd53c063548951420239f92de3a8014f71b9270",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-06T01:56:03.575000+00:00",
-      "csv_description": "## About\nHPE XP Storage Plug-in for Containers (XSPC) is a plugin that integrates HPE XP storage into Kubernetes based clusters.\nXSPC provides dynamic persistent volume provisioning capabilities from HPE's block storage arrays.",
-      "csv_display_name": "HPE XP Storage CSI Driver Operator for Kubernetes",
-      "csv_metadata_description": "An operator for managing HPE XP Storage Plug-in for Containers CSI driver",
-      "csv_name": "xspc-csi-driver-operator.1.9.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:47:09.913000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "xspc-operator",
-      "provided_apis": [
-        {
-          "group": "csi.hpe.com",
-          "kind": "XSPC",
-          "version": "v1"
-        }
-      ],
-      "provider": "HPE",
-      "related_images": [
-        {
-          "digest": "sha256:c431ec11e680aa246032326ba5a9695648d1c7d87eb275a6d6219e9102a3cc1b",
-          "image": "registry.connect.redhat.com/hpestorage/xspc-csi-driver@sha256:c431ec11e680aa246032326ba5a9695648d1c7d87eb275a6d6219e9102a3cc1b",
-          "name": "xspc-csi-driver"
-        },
-        {
-          "digest": "sha256:52ff7b2f2f36bf712d396c41d3f1bd3b15511eace9c877915263120d101669a2",
-          "image": "registry.connect.redhat.com/hpestorage/xspc-csi-driver-operator@sha256:52ff7b2f2f36bf712d396c41d3f1bd3b15511eace9c877915263120d101669a2",
-          "name": "xspc-csi-driver-operator"
-        },
-        {
-          "digest": "sha256:e4ce5adf0abe5add640b166bc9f658d069ca4783ed37fcd8774f20da89a7cad1",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:e4ce5adf0abe5add640b166bc9f658d069ca4783ed37fcd8774f20da89a7cad1",
-          "name": "ose-csi-external-attacher-v4.7"
-        },
-        {
-          "digest": "sha256:d99597158ef4baf204e0fe7ed24c1dbc7b0218305077cdaf22c3899a1b3988c7",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:d99597158ef4baf204e0fe7ed24c1dbc7b0218305077cdaf22c3899a1b3988c7",
-          "name": "ose-csi-external-provisioner-v4.7"
-        },
-        {
-          "digest": "sha256:2c7bb13d648a5048584530fddc62deb4b2e47bb7d389b77992e1077b920867e8",
-          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar-rhel8@sha256:2c7bb13d648a5048584530fddc62deb4b2e47bb7d389b77992e1077b920867e8",
-          "name": "ose-csi-node-driver-registrar-v4.7"
-        },
-        {
-          "digest": "sha256:221cda173d5ad2be44655dd8ab697a80bd94149358183b3375b09280ba025f92",
-          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:221cda173d5ad2be44655dd8ab697a80bd94149358183b3375b09280ba025f92",
-          "name": "ose-csi-livenessprobe-v4.7"
-        },
-        {
-          "digest": "sha256:890729e261e87ad12bf7c523f9c2c39a20fb07e18aa269cd015f86ed23ac22b7",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:890729e261e87ad12bf7c523f9c2c39a20fb07e18aa269cd015f86ed23ac22b7",
-          "name": "ose-csi-external-resizer-rhel8-v4.7"
-        },
-        {
-          "digest": "sha256:727b6317ef2575c905cd87c9d6d14b7c45886c4f20f0d75904641c55bb1e1814",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:727b6317ef2575c905cd87c9d6d14b7c45886c4f20f0d75904641c55bb1e1814",
-          "name": "ose-csi-external-snapshotter-rhel8-v4.7"
-        },
-        {
-          "digest": "sha256:89e05898626e7689113d46ffb98c98e95a2a49b71c6a8b32409699eab8f32ea4",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:89e05898626e7689113d46ffb98c98e95a2a49b71c6a8b32409699eab8f32ea4",
-          "name": "ose-csi-external-attacher-v4.8"
-        },
-        {
-          "digest": "sha256:f91ba2c92c97f9b4c4afe789040250c9a6cb675fbe24cbae3ad381e58bc3b83a",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:f91ba2c92c97f9b4c4afe789040250c9a6cb675fbe24cbae3ad381e58bc3b83a",
-          "name": "ose-csi-external-provisioner-v4.8"
-        },
-        {
-          "digest": "sha256:2e01a77235d1b692b87ec7e3e842dab52762032fbf3988f258960e2cece04225",
-          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar-rhel8@sha256:2e01a77235d1b692b87ec7e3e842dab52762032fbf3988f258960e2cece04225",
-          "name": "ose-csi-node-driver-registrar-v4.8"
-        },
-        {
-          "digest": "sha256:2f0c069bd085951f864c268ebbb28d5044e912327cf1de13cb40e082a2aaf4db",
-          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:2f0c069bd085951f864c268ebbb28d5044e912327cf1de13cb40e082a2aaf4db",
-          "name": "ose-csi-livenessprobe-v4.8"
-        },
-        {
-          "digest": "sha256:e55efd04b15565bfcfcb8bd64b4da3a58461d8a6e2cfbbf1b1ac4bc537cf307b",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:e55efd04b15565bfcfcb8bd64b4da3a58461d8a6e2cfbbf1b1ac4bc537cf307b",
-          "name": "ose-csi-external-resizer-rhel8-v4.8"
-        },
-        {
-          "digest": "sha256:bca38e3c695cf2bbb338b4933982f6892782b7fec14a1c835cb5a08c1cc7a14c",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:bca38e3c695cf2bbb338b4933982f6892782b7fec14a1c835cb5a08c1cc7a14c",
-          "name": "ose-csi-external-snapshotter-rhel8-v4.8"
-        },
-        {
-          "digest": "sha256:9ffed943cdc9597803faedfac8891b963e08ec86f4cb21a59ae7c37adc5ce349",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:9ffed943cdc9597803faedfac8891b963e08ec86f4cb21a59ae7c37adc5ce349",
-          "name": "ose-csi-external-attacher-v4.9"
-        },
-        {
-          "digest": "sha256:ea0797b04595d1bf46ca5d3b205cead25c70e8c252e844551944079000a3fbe1",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:ea0797b04595d1bf46ca5d3b205cead25c70e8c252e844551944079000a3fbe1",
-          "name": "ose-csi-external-provisioner-v4.9"
-        },
-        {
-          "digest": "sha256:4ca6d4d2f88eb0435084e1e0703330181e69e9c5c205ce21071d30fce864efde",
-          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar-rhel8@sha256:4ca6d4d2f88eb0435084e1e0703330181e69e9c5c205ce21071d30fce864efde",
-          "name": "ose-csi-node-driver-registrar-v4.9"
-        },
-        {
-          "digest": "sha256:7c9816e9265dcc83af534a61175814e174ec10c1b411e71baf5d379ceeca1ecd",
-          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:7c9816e9265dcc83af534a61175814e174ec10c1b411e71baf5d379ceeca1ecd",
-          "name": "ose-csi-livenessprobe-v4.9"
-        },
-        {
-          "digest": "sha256:49ed3001a156015c3acbe5ef058f9acbb471b456535e7d56f6baec742527de74",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:49ed3001a156015c3acbe5ef058f9acbb471b456535e7d56f6baec742527de74",
-          "name": "ose-csi-external-resizer-rhel8-v4.9"
-        },
-        {
-          "digest": "sha256:3ce747b7e19c5d0fa095fdeb29db3c9133575d24d941bad8ef6e71130c3f3883",
-          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:3ce747b7e19c5d0fa095fdeb29db3c9133575d24d941bad8ef6e71130c3f3883",
-          "name": "ose-csi-external-snapshotter-rhel8-v4.9"
-        },
-        {
-          "digest": "sha256:52ff7b2f2f36bf712d396c41d3f1bd3b15511eace9c877915263120d101669a2",
-          "image": "registry.connect.redhat.com/hpestorage/xspc-csi-driver-operator@sha256:52ff7b2f2f36bf712d396c41d3f1bd3b15511eace9c877915263120d101669a2",
-          "name": "xspc-csi-driver-operator-52ff7b2f2f36bf712d396c41d3f1bd3b15511eace9c877915263120d101669a2-annotation"
-        },
-        {
-          "digest": "sha256:52ff7b2f2f36bf712d396c41d3f1bd3b15511eace9c877915263120d101669a2",
-          "image": "registry.connect.redhat.com/hpestorage/xspc-csi-driver-operator@sha256:52ff7b2f2f36bf712d396c41d3f1bd3b15511eace9c877915263120d101669a2",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.9.0",
-      "version_original": "1.9.0"
-    },
-    {
-      "_id": "6262a266834f257293b60f44",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T12:41:10.999000+00:00",
-      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
-      "csv_display_name": "Run:AI",
-      "csv_metadata_description": "",
-      "csv_name": "installkit-customer.v2.0.15",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-04-22T12:41:10.999000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "installkit-customer",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
-          "name": "operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "2.1.5",
-      "version_original": "2.1.5"
-    },
-    {
-      "_id": "6262a38984481d5f5229990f",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/iomesh/iomesh@sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
-      "bundle_path_digest": "sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T12:46:01.981000+00:00",
-      "csv_description": "IOMesh (https://www.iomesh.com/) is a cloud-native storage product specifically designed and developed for Kubernetes. It takes ZBS as its core, a \u201cproduction-ready\u201d distributed storage system developed independently by SmartX, to provide production-level high performance and reliable persistent storage for business-critical applications such as MySQL, Cassandra, MongoDB, etc., contributing to the containerized transformation of stateful applications.      \n## Pre-Requisites\n* According to https://docs.iomesh.com/deploy/prerequisites, make sure that your openshift cluster meets the \"Installation Requirements\" and set up the worker nodes correctly according to the \"Setup Worker Node\" chapter.\n* Run IOMesh Operator pre-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install the dependencies of IOMesh Operator and specific IOMesh settings for the openshift cluster:\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-pre-install-openshift.sh | sh -\n```\n## Install IOMesh Operator and IOMesh Cluster\n* Click install button on the current web page to install IOMesh Operator\n* On the **Installed Operators** -> **IOMesh Operator** -> **Create instance** -> **YAML view**, fill in an IOMesh Custom Resources according https://iomesh.run/iomesh.yaml, change the `spec.*.dataCIDR` to your own data network CIDR:\n## Post Install\n* Run IOMesh Operator post-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install IOMesh CSI Driver\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-post-install-openshift.sh | sh -\n```\n## Getting Started\n* Try to quickstart setup and use IOMesh: https://docs.iomesh.com/deploy/setup-iomesh\n",
-      "csv_display_name": "IOMesh Operator",
-      "csv_metadata_description": "",
-      "csv_name": "iomesh-operator.0.10.1-rc4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:46:03.113000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "iomesh-operator",
-      "provided_apis": [
-        {
-          "group": "iomesh.com",
-          "kind": "IOMeshCluster",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
-          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
-          "name": "operator-52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3-annotation"
-        },
-        {
-          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
-          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
-          "name": "operator"
-        }
-      ],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "0.10.1-rc4",
-      "version_original": "0.10.1-rc4"
-    },
-    {
       "_id": "6262a3e5173a0d36cf5d6923",
       "alm_examples": [],
       "annotations": {
@@ -5461,6 +4472,372 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.1.0",
       "version_original": "1.1.0"
+    },
+    {
+      "_id": "6262a75b173a0d36cf5d698e",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:863e2cbbd481dfe2c70fdfcf866c161c250b95e5e9a320fe211a805c456c7e9e",
+      "bundle_path_digest": "sha256:863e2cbbd481dfe2c70fdfcf866c161c250b95e5e9a320fe211a805c456c7e9e",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-04-22T13:02:19.778000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "neuvector-operator.v1.2.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:08:08.850000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "neuvector-certified-operator",
+      "provided_apis": [
+        {
+          "group": "apm.neuvector.com",
+          "kind": "Neuvector",
+          "plural": "neuvectors",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.2.0",
+      "version_original": "1.2.0"
+    },
+    {
+      "_id": "6262a762173a0d36cf5d698f",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/instana/instana-agent-operator-bundle@sha256:a01cf756a40c09923a1f00a7516d83a46087731265dcc5ed10a7bbcd8bebd8e8",
+      "bundle_path_digest": "sha256:a01cf756a40c09923a1f00a7516d83a46087731265dcc5ed10a7bbcd8bebd8e8",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-04-22T13:02:26.574000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "instana-agent-operator.v0.3.7",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:11:12.700000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "instana-agent",
+      "provided_apis": [
+        {
+          "group": "instana.io",
+          "kind": "InstanaAgent",
+          "plural": "agents",
+          "version": "v1beta1"
+        },
+        {
+          "group": "instana.io",
+          "kind": "InstanaAgent",
+          "plural": "agents",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.3.7",
+      "version_original": "0.3.7"
+    },
+    {
+      "_id": "6262a766cde83e2b177c20ee",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:1c09b241712469ae34e4017e9481e3124cb6ce7037b61a44b62f2f7e0c10df46",
+      "bundle_path_digest": "sha256:1c09b241712469ae34e4017e9481e3124cb6ce7037b61a44b62f2f7e0c10df46",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:02:30.740000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "kubeturbo-operator.v7.22.9",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:18:55.731000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "7.22.9",
+      "version_original": "7.22.9"
+    },
+    {
+      "_id": "6262a76acde83e2b177c20ef",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:770c0b5a41cc3103582daeb44a0d897d578e03fdd8597a3a385f8ef78d5b6f38",
+      "bundle_path_digest": "sha256:770c0b5a41cc3103582daeb44a0d897d578e03fdd8597a3a385f8ef78d5b6f38",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:02:34.646000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "kubeturbo-operator.v8.0.4",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:18:11.072000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "8.0.4",
+      "version_original": "8.0.4"
+    },
+    {
+      "_id": "6262a76fcde83e2b177c20f0",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/sonatype/nxiq-operator-bundle@sha256:48d5a2acbdb1516738ee4eeff15a1085de92a8d0ded3f317317d64df8103ba6e",
+      "bundle_path_digest": "sha256:48d5a2acbdb1516738ee4eeff15a1085de92a8d0ded3f317317d64df8103ba6e",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:02:39.381000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "nxiq-operator-certified.v1.97.0-4",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:56:26.488000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "nxiq-operator-certified",
+      "provided_apis": [
+        {
+          "group": "sonatype.com",
+          "kind": "NexusIQ",
+          "plural": "nexusiqs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.97.0-4",
+      "version_original": "1.97.0-4"
+    },
+    {
+      "_id": "6262a774834f257293b60fa7",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:9462f3735254b047f4b80b539797b83c31faa0ad923fe4a351dba693e51cadef",
+      "bundle_path_digest": "sha256:9462f3735254b047f4b80b539797b83c31faa0ad923fe4a351dba693e51cadef",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:02:44.036000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "couchbase-operator.v2.0.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:28:19.300000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "couchbase-enterprise-certified",
+      "provided_apis": [
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBucket",
+          "plural": "couchbasebuckets",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCluster",
+          "plural": "couchbaseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseGroup",
+          "plural": "couchbasegroups",
+          "version": "v1"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseRoleBinding",
+          "plural": "couchbaserolebindings",
+          "version": "v1"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseUser",
+          "plural": "couchbaseusers",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseUser",
+          "plural": "couchbaseusers",
+          "version": "v1"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackup",
+          "plural": "couchbasebackups",
+          "version": "v1"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBucket",
+          "plural": "couchbasebuckets",
+          "version": "v1"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCluster",
+          "plural": "couchbaseclusters",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseGroup",
+          "plural": "couchbasegroups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseRoleBinding",
+          "plural": "couchbaserolebindings",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackup",
+          "plural": "couchbasebackups",
+          "version": "v2"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "2.0.0",
+      "version_original": "2.0.0"
+    },
+    {
+      "_id": "6262a775cde83e2b177c20f1",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/c12e/cortex-fabric-operator-bundle@sha256:de8cf8423ab8ea22f2090947fb51c3091407fcca623d5a83137b266c43e00f6d",
+      "bundle_path_digest": "sha256:de8cf8423ab8ea22f2090947fb51c3091407fcca623d5a83137b266c43e00f6d",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T13:02:45.495000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "cortex-fabric-operator.v0.0.1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:04:49.418000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "cortex-fabric-operator",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Cortex5",
+          "plural": "cortex5s",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.1",
+      "version_original": "0.0.1"
     }
   ]
 }
