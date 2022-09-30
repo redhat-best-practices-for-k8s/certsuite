@@ -12484,28 +12484,41 @@
       "version_original": "4.7.2-1"
     },
     {
-      "_id": "61a57ae13e9240fca360f54a",
+      "_id": "61a57b0c27e166330707d95f",
       "alm_examples": [
         {
-          "api_version": "aikit.intel/v1alpha1",
-          "kind": "AIKitContainer",
+          "api_version": "charts.anchore.io/v1alpha1",
+          "kind": "AnchoreEngine",
           "metadata": {
-            "name": "intel-aikit-container",
-            "namespace": "redhat-ods-applications"
+            "name": "anchoreengine-sample"
           },
           "spec": {
-            "fullnameOverride": "",
-            "imagestream": {
-              "name": "oneapi-aikit",
-              "namespace": "redhat-ods-applications",
-              "registry": {
-                "name": "oneapi-aikit",
-                "repo": "intel",
-                "root": "registry.connect.redhat.com",
-                "version": "latest"
-              }
+            "anchoreGlobal": {
+              "defaultAdminEmail": "example@email.com"
             },
-            "nameOverride": ""
+            "postgresql": {
+              "extraEnv": [
+                {
+                  "name": "POSTGRESQL_USER",
+                  "value": "anchoreengine"
+                },
+                {
+                  "name": "POSTGRESQL_PASSWORD",
+                  "value": "anchore-postgres,123"
+                },
+                {
+                  "name": "POSTGRESQL_DATABASE",
+                  "value": "anchore"
+                },
+                {
+                  "name": "PGUSER",
+                  "value": "postgres"
+                }
+              ],
+              "postgresDatabase": "anchore",
+              "postgresPassword": "anchore-postgres,123",
+              "postgresUser": "anchoreengine"
+            }
           }
         }
       ],
@@ -12514,29 +12527,29 @@
         "valid_subscription": []
       },
       "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/intel/aikit-operator-bundle@sha256:2861cb69274ed1313bc97d870f9a52f361d5fc003b2d66752d38c9577bf1cf7c",
-      "bundle_path_digest": "sha256:2861cb69274ed1313bc97d870f9a52f361d5fc003b2d66752d38c9577bf1cf7c",
+      "bundle_path": "registry.connect.redhat.com/anchore/engine-operator-bundle@sha256:fbbe7e6c1d75c4de2f47e2c825c930568e85f1134545e9d890a0c9f3d9187a4d",
+      "bundle_path_digest": "sha256:fbbe7e6c1d75c4de2f47e2c825c930568e85f1134545e9d890a0c9f3d9187a4d",
       "capabilities": [
         "Basic Install"
       ],
       "channel_name": "alpha",
-      "creation_date": "2021-11-30T01:14:09.244000+00:00",
-      "csv_description": "The Intel\u00ae oneAPI AI Analytics Toolkit gives data scientists, AI developers, and researchers familiar Python* tools and frameworks to accelerate end-to-end data science and machine learning pipelines on Intel\u00ae architectures. The components are built using oneAPI libraries for low-level compute optimizations. This toolkit maximizes performance from preprocessing through machine and deep learning phases and provides interoperability for efficient model development and deployment across single and multinodes.\n",
-      "csv_display_name": "Intel\u00ae oneAPI AI Analytics Toolkit Operator",
-      "csv_metadata_description": "",
-      "csv_name": "aikit-operator.v2021.2.100410",
+      "creation_date": "2021-11-30T01:14:52.340000+00:00",
+      "csv_description": "Anchore Engine is an open source software system that provides a centralized service for analyzing container images, \n scanning for security vulnerabilities, and enforcing deployment policies. Anchore Engine is provided as a Docker \n container image that can be run standalone or with an orchestration platform such as Kubernetes. Anchore Engine allows \n users to perform detailed analysis on their container images, run queries, produce reports, and define policies that \n can be used in CI/CD pipelines. Users can extend Anchore Engine with plugins that add new queries, image analysis, and \n policies. Anchore Engine can be accessed directly through a RESTful API or via the Anchore CLI.\n\n The Anchore Engine Operator is based on the official stable [Helm Chart](https://github.com/anchore/anchore-charts/tree/master/stable/anchore-engine).",
+      "csv_display_name": "Anchore Engine Operator",
+      "csv_metadata_description": "Anchore Engine - container image scanning service for policy-based security, best-practice and compliance enforcement.",
+      "csv_name": "anchore-engine.v1.0.1",
       "in_index_img": true,
       "install_modes": [
         {
-          "supported": false,
+          "supported": true,
           "type": "OwnNamespace"
         },
         {
-          "supported": false,
+          "supported": true,
           "type": "SingleNamespace"
         },
         {
-          "supported": false,
+          "supported": true,
           "type": "MultiNamespace"
         },
         {
@@ -12545,147 +12558,96 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:39:08.104000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "aikit-operator",
-      "provided_apis": [
-        {
-          "group": "aikit.intel",
-          "kind": "AIKitContainer",
-          "plural": "aikitcontainers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Intel",
-      "related_images": [
-        {
-          "digest": "sha256:1f232b2c9ecc3219835cd98b1e0ea96485d5630856fe611c5fb9f2a5219160e8",
-          "image": "registry.connect.redhat.com/intel/aikit-operator@sha256:1f232b2c9ecc3219835cd98b1e0ea96485d5630856fe611c5fb9f2a5219160e8",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "2021.2.100410",
-      "version_original": "2021.2.100410"
-    },
-    {
-      "_id": "61a57ae9c17162a20c1c687d",
-      "alm_examples": [
-        {
-          "api_version": "aikit.intel/v1alpha1",
-          "kind": "AIKitContainer",
-          "metadata": {
-            "name": "intel-aikit-container",
-            "namespace": "redhat-ods-applications"
-          },
-          "spec": {
-            "fullnameOverride": "",
-            "imagestream": {
-              "name": "oneapi-aikit",
-              "namespace": "redhat-ods-applications",
-              "registry": {
-                "name": "oneapi-aikit",
-                "repo": "intel",
-                "root": "registry.connect.redhat.com",
-                "version": "latest"
-              }
-            },
-            "nameOverride": ""
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/intel/aikit-operator-bundle@sha256:504672b2db7fd25d1c85c9614f8242f98b4d2d04184a947dbaaada41ec205b45",
-      "bundle_path_digest": "sha256:504672b2db7fd25d1c85c9614f8242f98b4d2d04184a947dbaaada41ec205b45",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-11-30T01:14:17.696000+00:00",
-      "csv_description": "The Intel\u00ae oneAPI AI Analytics Toolkit gives data scientists, AI developers, and researchers familiar Python* tools and frameworks to accelerate end-to-end data science and machine learning pipelines on Intel\u00ae architectures. The components are built using oneAPI libraries for low-level compute optimizations. This toolkit maximizes performance from preprocessing through machine and deep learning phases and provides interoperability for efficient model development and deployment across single and multinodes.\n",
-      "csv_display_name": "Intel\u00ae oneAPI AI Analytics Toolkit Operator",
-      "csv_metadata_description": "",
-      "csv_name": "aikit-operator.v2021.2.102120",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:39:12.708000+00:00",
+      "last_update_date": "2022-09-19T11:39:42.073000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
-      "package": "aikit-operator",
+      "package": "anchore-engine",
       "provided_apis": [
         {
-          "group": "aikit.intel",
-          "kind": "AIKitContainer",
-          "plural": "aikitcontainers",
+          "group": "charts.anchore.io",
+          "kind": "AnchoreEngine",
           "version": "v1alpha1"
         }
       ],
-      "provider": "Intel",
+      "provider": "Anchore Inc.",
       "related_images": [
         {
-          "digest": "sha256:7abb5e6164ffb3e4b87c39061f45d09848218fcfb74b48bf5e1035d56b41ee0c",
-          "image": "registry.connect.redhat.com/intel/aikit-operator@sha256:7abb5e6164ffb3e4b87c39061f45d09848218fcfb74b48bf5e1035d56b41ee0c",
+          "digest": "sha256:baf0f5acd319bc4d0132c88922ee3f357fdcdc278d931f243d0cbec3f6d416c6",
+          "image": "registry.connect.redhat.com/anchore/engine-operator@sha256:baf0f5acd319bc4d0132c88922ee3f357fdcdc278d931f243d0cbec3f6d416c6",
+          "name": "engine-operator-baf0f5acd319bc4d0132c88922ee3f357fdcdc278d931f243d0cbec3f6d416c6-annotation"
+        },
+        {
+          "digest": "sha256:baf0f5acd319bc4d0132c88922ee3f357fdcdc278d931f243d0cbec3f6d416c6",
+          "image": "registry.connect.redhat.com/anchore/engine-operator@sha256:baf0f5acd319bc4d0132c88922ee3f357fdcdc278d931f243d0cbec3f6d416c6",
           "name": "manager"
+        },
+        {
+          "digest": "sha256:68e09d5ff695b46f24de3d7610f88dfc14b77b38758bbd68d03350dbae3deb0f",
+          "image": "registry.connect.redhat.com/anchore/engine0@sha256:68e09d5ff695b46f24de3d7610f88dfc14b77b38758bbd68d03350dbae3deb0f",
+          "name": "anchore_engine"
+        },
+        {
+          "digest": "sha256:e8177c5de05ccdd6d12e360b65c63c889b2de725d573ffdedd8914230b118639",
+          "image": "registry.redhat.io/rhel8/postgresql-96@sha256:e8177c5de05ccdd6d12e360b65c63c889b2de725d573ffdedd8914230b118639",
+          "name": "anchore_postgresql"
         }
       ],
       "replaces": null,
       "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "2021.2.102120",
-      "version_original": "2021.2.102120"
+      "version": "1.0.1",
+      "version_original": "1.0.1"
     },
     {
-      "_id": "61a57af2bfd4a5234d5960cc",
+      "_id": "61a57b153e9240fca360f54d",
       "alm_examples": [
         {
-          "api_version": "aikit.intel/v1alpha1",
-          "kind": "AIKitContainer",
+          "api_version": "anzo.cambridgesemantics.com/v1",
+          "kind": "Anzo",
           "metadata": {
-            "name": "intel-aikit-container",
-            "namespace": "redhat-ods-applications"
+            "name": "agent01"
           },
           "spec": {
-            "fullnameOverride": "",
-            "imagestream": {
-              "name": "oneapi-aikit",
-              "namespace": "redhat-ods-applications",
-              "registry": {
-                "name": "oneapi-aikit",
-                "repo": "intel",
-                "root": "registry.connect.redhat.com",
-                "version": "latest"
+            "nodeConfig": {
+              "spec": {
+                "replicas": 1,
+                "selector": {
+                  "matchLabels": {
+                    "app": "anzo"
+                  }
+                },
+                "serviceName": "anzo-agent01",
+                "template": {
+                  "metadata": {
+                    "labels": {
+                      "app": "anzo"
+                    }
+                  },
+                  "spec": {
+                    "containers": [
+                      {
+                        "image": "registry.connect.redhat.com/cambridgesemantics/anzo@sha256:d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8",
+                        "name": "anzo",
+                        "resources": {
+                          "limits": {
+                            "cpu": "4000m",
+                            "memory": "12Gi"
+                          },
+                          "requests": {
+                            "cpu": "4000m",
+                            "memory": "12Gi"
+                          }
+                        }
+                      }
+                    ],
+                    "serviceAccountName": "anzo-operator"
+                  }
+                }
               }
             },
-            "nameOverride": ""
+            "role": "AnzoAgent"
           }
         }
       ],
@@ -12694,25 +12656,536 @@
         "valid_subscription": []
       },
       "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/intel/aikit-operator-bundle@sha256:044fe556abd0194f7e44a9b20875caa3ded4b2e479b45d9cf5acfa097ef6c6c1",
-      "bundle_path_digest": "sha256:044fe556abd0194f7e44a9b20875caa3ded4b2e479b45d9cf5acfa097ef6c6c1",
+      "bundle_path": "registry.connect.redhat.com/cambridgesemantics/anzo-operator-bundle@sha256:28703523a1c160570fc23fb1236d2a02108b97e4423d42b0d3cde98c94d351cb",
+      "bundle_path_digest": "sha256:28703523a1c160570fc23fb1236d2a02108b97e4423d42b0d3cde98c94d351cb",
       "capabilities": [
         "Basic Install"
       ],
-      "channel_name": "alpha",
-      "creation_date": "2021-11-30T01:14:26.534000+00:00",
-      "csv_description": "The Intel\u00ae oneAPI AI Analytics Toolkit gives data scientists, AI developers, and researchers familiar Python* tools and frameworks to accelerate end-to-end data science and machine learning pipelines on Intel\u00ae architectures. The components are built using oneAPI libraries for low-level compute optimizations. This toolkit maximizes performance from preprocessing through machine and deep learning phases and provides interoperability for efficient model development and deployment across single and multinodes.\n",
-      "csv_display_name": "Intel\u00ae oneAPI AI Analytics Toolkit Operator",
-      "csv_metadata_description": "",
-      "csv_name": "aikit-operator.v2021.2.92808-dev-a60e5ba",
+      "channel_name": "stable",
+      "creation_date": "2021-11-30T01:15:01.229000+00:00",
+      "csv_description": "The Anzo Operator provides the way to install and configure an anzo agent setup on Red Hat K8S environment.\nCurrently, this is supported only through when deployed as an Anzo Agent as part of an Anzo Unstructured deployment.\n\n### Installation\n Refer [installation instructions]( https://github.com/cambridgesemantics/csi-k8s-operator-anzo/blob/v2.0.0/README.md )\n\n### Documentation\n\nYou can find our documentation [here.]( https://docs.cambridgesemantics.com/anzo/userdoc/cloud-deployments.htm )\n\n### Support\n\nWe offer Support to our customers through [ Cambridge Semantics Customer Center ]( https://customercenter.cambridgesemantics.com/ ).",
+      "csv_display_name": "Anzo Operator",
+      "csv_metadata_description": "kubernetes operator for Anzo",
+      "csv_name": "anzo-operator.v2.0.101",
       "in_index_img": true,
       "install_modes": [
         {
-          "supported": false,
+          "supported": true,
           "type": "OwnNamespace"
         },
         {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
           "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:39:52.130000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "anzo-operator",
+      "provided_apis": [
+        {
+          "group": "anzo.cambridgesemantics.com",
+          "kind": "Anzo",
+          "plural": "anzos",
+          "version": "v1"
+        }
+      ],
+      "provider": "Cambridge Semantics Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:563e964f5771b9bfd860ea993b6e0936a54504908f5b2d1dff6f99ade74bb7a0",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-operator@sha256:563e964f5771b9bfd860ea993b6e0936a54504908f5b2d1dff6f99ade74bb7a0",
+          "name": "anzo-operator-563e964f5771b9bfd860ea993b6e0936a54504908f5b2d1dff6f99ade74bb7a0-annotation"
+        },
+        {
+          "digest": "sha256:563e964f5771b9bfd860ea993b6e0936a54504908f5b2d1dff6f99ade74bb7a0",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-operator@sha256:563e964f5771b9bfd860ea993b6e0936a54504908f5b2d1dff6f99ade74bb7a0",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzo@sha256:d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8",
+          "name": "anzo"
+        },
+        {
+          "digest": "sha256:d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzo@sha256:d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8",
+          "name": "anzo-d1c2d54ca205d669c5ea1bb6aae105afe2385cc5695cecd78423ffa1d98929f8-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "2.0.0",
+      "version_original": "2.0.0"
+    },
+    {
+      "_id": "61a57b1ebfd4a5234d5960cd",
+      "alm_examples": [
+        {
+          "api_version": "anzograph.clusters.cambridgesemantics.com/v2",
+          "kind": "AnzoGraph",
+          "metadata": {
+            "name": "azg01"
+          },
+          "spec": {
+            "db": {
+              "nodeConfig": {
+                "spec": {
+                  "replicas": 1,
+                  "selector": {
+                    "matchLabels": {
+                      "app_data": "anzograph-data-grpc",
+                      "app_mgmt": "anzograph-mgmt-grpc"
+                    }
+                  },
+                  "serviceName": "anzograph-azg01",
+                  "template": {
+                    "metadata": {
+                      "labels": {
+                        "app_data": "anzograph-data-grpc",
+                        "app_mgmt": "anzograph-mgmt-grpc"
+                      }
+                    },
+                    "spec": {
+                      "containers": [
+                        {
+                          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-db@sha256:8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5",
+                          "name": "db",
+                          "resources": {
+                            "limits": {
+                              "cpu": "8000m",
+                              "memory": "8Gi"
+                            },
+                            "requests": {
+                              "cpu": "8000m",
+                              "memory": "8Gi"
+                            }
+                          }
+                        }
+                      ],
+                      "serviceAccountName": "anzograph-operator"
+                    }
+                  }
+                }
+              }
+            },
+            "deployFrontend": false,
+            "frontend": {
+              "nodeConfig": {
+                "spec": {
+                  "replicas": 1,
+                  "selector": {
+                    "matchLabels": {
+                      "app_mgmt": "anzograph-frontend"
+                    }
+                  },
+                  "serviceName": "anzograph-azg01",
+                  "template": {
+                    "metadata": {
+                      "labels": {
+                        "app_mgmt": "anzograph-frontend"
+                      }
+                    },
+                    "spec": {
+                      "containers": [
+                        {
+                          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-frontend@sha256:c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3",
+                          "name": "frontend",
+                          "resources": {
+                            "limits": {
+                              "cpu": "2000m",
+                              "memory": "4Gi"
+                            },
+                            "requests": {
+                              "cpu": "2000m",
+                              "memory": "4Gi"
+                            }
+                          }
+                        }
+                      ],
+                      "serviceAccountName": "anzograph-operator"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/cambridgesemantics/anzograph-operator-bundle@sha256:9418a3505873ac387f2b5455ec7e696739a2bb6f03232f8c0f59489c605b96f2",
+      "bundle_path_digest": "sha256:9418a3505873ac387f2b5455ec7e696739a2bb6f03232f8c0f59489c605b96f2",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-11-30T01:15:10.124000+00:00",
+      "csv_description": "The AnzoGraph Operator provides the way to install and configure an AnzoGraph\ncluster on Red Hat K8S environment.\n\n### Installation\n Refer [installation instructions]( https://github.com/cambridgesemantics/csi-k8s-operator-anzograph/blob/v2.0.1/README_openshift_marketplace.md )\n\n### Documentation\n\nYou can find our documentation [here.]( https://docs.cambridgesemantics.com/anzograph/userdoc/ )\n\n### Support\n\nWe offer Support to our customers with the AnzoGraph db Enterprise Edition License [here]( https://customercenter.cambridgesemantics.com/ ). For AnzoGraph db Free Edition questions, get help from our Anzograph User Community at Stack Overflow. When submitting a question, include the tag 'anzograph'.",
+      "csv_display_name": "AnzoGraph Operator",
+      "csv_metadata_description": "kubernetes operator for AnzoGraph DB",
+      "csv_name": "anzograph-operator.v2.0.102",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:39:55.699000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "anzograph-operator",
+      "provided_apis": [
+        {
+          "group": "anzograph.clusters.cambridgesemantics.com",
+          "kind": "AnzoGraph",
+          "version": "v2"
+        }
+      ],
+      "provider": "Cambridge Semantics Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:a5b212558f748ddc8156541b546290320b656506e039a18903ad9fa6e638e732",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-operator@sha256:a5b212558f748ddc8156541b546290320b656506e039a18903ad9fa6e638e732",
+          "name": "anzograph-operator-a5b212558f748ddc8156541b546290320b656506e039a18903ad9fa6e638e732-annotation"
+        },
+        {
+          "digest": "sha256:a5b212558f748ddc8156541b546290320b656506e039a18903ad9fa6e638e732",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-operator@sha256:a5b212558f748ddc8156541b546290320b656506e039a18903ad9fa6e638e732",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:e3bdddf811b5ba69f388d023aea1ba538edd00e9f415c33ec555321d39129a36",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph@sha256:e3bdddf811b5ba69f388d023aea1ba538edd00e9f415c33ec555321d39129a36",
+          "name": "anzograph_allinone"
+        },
+        {
+          "digest": "sha256:8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-db@sha256:8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5",
+          "name": "anzograph_db"
+        },
+        {
+          "digest": "sha256:c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-frontend@sha256:c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3",
+          "name": "anzograph_frontend"
+        },
+        {
+          "digest": "sha256:c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-frontend@sha256:c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3",
+          "name": "anzograph-frontend-c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3-annotation"
+        },
+        {
+          "digest": "sha256:8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-db@sha256:8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5",
+          "name": "anzograph-db-8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "2.0.1",
+      "version_original": "2.0.1"
+    },
+    {
+      "_id": "61a57b26c17162a20c1c687f",
+      "alm_examples": [
+        {
+          "api_version": "anzounstructured.clusters.cambridgesemantics.com/v1",
+          "kind": "AnzoUnstructured",
+          "metadata": {
+            "name": "au01"
+          },
+          "spec": {
+            "auWorker": {
+              "nodeConfig": {
+                "spec": {
+                  "replicas": 1,
+                  "selector": {
+                    "matchLabels": {
+                      "app": "anzounstructured"
+                    }
+                  },
+                  "serviceName": "au-au01-w",
+                  "template": {
+                    "metadata": {
+                      "labels": {
+                        "app": "anzounstructured"
+                      }
+                    },
+                    "spec": {
+                      "containers": [
+                        {
+                          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker@sha256:4db61bdf6dc8b42824a06d2f8d8aeecddde765d123b40a63a7bbf87845719fb2",
+                          "name": "w",
+                          "resources": {
+                            "limits": {
+                              "cpu": "2",
+                              "memory": "4Gi"
+                            },
+                            "requests": {
+                              "cpu": "2",
+                              "memory": "4Gi"
+                            }
+                          }
+                        }
+                      ],
+                      "serviceAccountName": "unstructured-operator"
+                    }
+                  }
+                }
+              }
+            },
+            "msLeader": {
+              "nodeConfig": {
+                "spec": {
+                  "replicas": 1,
+                  "selector": {
+                    "matchLabels": {
+                      "app": "anzounstructured"
+                    }
+                  },
+                  "serviceName": "au-au01-ms",
+                  "template": {
+                    "metadata": {
+                      "labels": {
+                        "app": "anzounstructured"
+                      }
+                    },
+                    "spec": {
+                      "containers": [
+                        {
+                          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-microservices-leader@sha256:0579fd97e81e436eaff3b58c5395f13aa924940a3d51f0bdea5163d327620286",
+                          "name": "ms",
+                          "resources": {
+                            "limits": {
+                              "cpu": "2",
+                              "memory": "4Gi"
+                            },
+                            "requests": {
+                              "cpu": "2",
+                              "memory": "4Gi"
+                            }
+                          }
+                        }
+                      ],
+                      "serviceAccountName": "unstructured-operator"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-operator-bundle@sha256:800c686058a8b80d2c082741019db9d35535b2ba2b59007cbde0c2dffa143e82",
+      "bundle_path_digest": "sha256:800c686058a8b80d2c082741019db9d35535b2ba2b59007cbde0c2dffa143e82",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-11-30T01:15:18.637000+00:00",
+      "csv_description": "The Anzo Unstructured Operator provides the way to install and configure an anzo unstructured setup on Red Hat K8S environment.\nCurrently, this is possible only through existing Anzo installation.\n\n### Installation\n Refer [installation instructions]( https://github.com/cambridgesemantics/csi-k8s-operator-anzo-unstructured/blob/v2.0.0/README.md )\n\n### Documentation\n\nYou can find our documentation [here.]( https://docs.cambridgesemantics.com/anzo/userdoc/cloud-deployments.htm )\n\n### Support\n\nWe offer Support to our customers through [ Cambridge Semantics Customer Center ]( https://customercenter.cambridgesemantics.com/ ).",
+      "csv_display_name": "Anzo Unstructured Operator",
+      "csv_metadata_description": "Kubernetes Operator for Anzo Unstructured",
+      "csv_name": "anzounstructured-operator.v2.0.101",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:39:59.409000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "anzounstructured-operator",
+      "provided_apis": [
+        {
+          "group": "anzounstructured.clusters.cambridgesemantics.com",
+          "kind": "AnzoUnstructured",
+          "plural": "anzounstructureds",
+          "version": "v1"
+        }
+      ],
+      "provider": "Cambridge Semantics Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:a47af068a7aa55c12be84c80d263feeed5597ecc434986b4f2fff782b568bb04",
+          "image": "registry.connect.redhat.com/cambridgesemantics/unstructured-operator@sha256:a47af068a7aa55c12be84c80d263feeed5597ecc434986b4f2fff782b568bb04",
+          "name": "unstructured-operator-a47af068a7aa55c12be84c80d263feeed5597ecc434986b4f2fff782b568bb04-annotation"
+        },
+        {
+          "digest": "sha256:a47af068a7aa55c12be84c80d263feeed5597ecc434986b4f2fff782b568bb04",
+          "image": "registry.connect.redhat.com/cambridgesemantics/unstructured-operator@sha256:a47af068a7aa55c12be84c80d263feeed5597ecc434986b4f2fff782b568bb04",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:0579fd97e81e436eaff3b58c5395f13aa924940a3d51f0bdea5163d327620286",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-microservices-leader@sha256:0579fd97e81e436eaff3b58c5395f13aa924940a3d51f0bdea5163d327620286",
+          "name": "anzo_microservices_leader"
+        },
+        {
+          "digest": "sha256:4db61bdf6dc8b42824a06d2f8d8aeecddde765d123b40a63a7bbf87845719fb2",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker@sha256:4db61bdf6dc8b42824a06d2f8d8aeecddde765d123b40a63a7bbf87845719fb2",
+          "name": "anzo_unstructured_worker"
+        },
+        {
+          "digest": "sha256:0579fd97e81e436eaff3b58c5395f13aa924940a3d51f0bdea5163d327620286",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-microservices-leader@sha256:0579fd97e81e436eaff3b58c5395f13aa924940a3d51f0bdea5163d327620286",
+          "name": "anzo-microservices-leader-0579fd97e81e436eaff3b58c5395f13aa924940a3d51f0bdea5163d327620286-annotation"
+        },
+        {
+          "digest": "sha256:4db61bdf6dc8b42824a06d2f8d8aeecddde765d123b40a63a7bbf87845719fb2",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker@sha256:4db61bdf6dc8b42824a06d2f8d8aeecddde765d123b40a63a7bbf87845719fb2",
+          "name": "anzo-unstructured-worker-4db61bdf6dc8b42824a06d2f8d8aeecddde765d123b40a63a7bbf87845719fb2-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "2.0.0",
+      "version_original": "2.0.0"
+    },
+    {
+      "_id": "61a57b2ec17162a20c1c6880",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1alpha1",
+          "kind": "OpenshiftArtifactoryHa",
+          "metadata": {
+            "name": "openshiftartifactoryha"
+          },
+          "spec": {
+            "artifactory-ha": {
+              "artifactory": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/artifactory-pro",
+                  "tag": "7.25.7-2"
+                },
+                "joinKey": "OVERRIDE",
+                "masterKey": "OVERRIDE",
+                "node": {
+                  "replicaCount": 2,
+                  "waitForPrimaryStartup": {
+                    "enabled": false
+                  }
+                },
+                "uid": "1000721030"
+              },
+              "database": {
+                "driver": "OVERRIDE",
+                "password": "OVERRIDE",
+                "type": "OVERRIDE",
+                "url": "OVERRIDE",
+                "user": "OVERRIDE"
+              },
+              "databaseUpgradeReady": true,
+              "initContainerImage": "registry.connect.redhat.com/jfrog/init@sha256:175efbb8c51f0c50c4d32e876b20083b92ec5a04bab94e93cb3cb92d86164d03",
+              "nginx": {
+                "gid": "1000720107",
+                "http": {
+                  "externalPort": 80,
+                  "internalPort": 8080
+                },
+                "https": {
+                  "externalPort": 443,
+                  "internalPort": 8443
+                },
+                "image": {
+                  "registry": "registry.redhat.io",
+                  "repository": "rhel8/nginx-116",
+                  "tag": "latest"
+                },
+                "service": {
+                  "ssloffload": false
+                },
+                "tlsSecretName": "OVERRIDE",
+                "uid": "1000720104"
+              },
+              "postgresql": {
+                "enabled": false
+              },
+              "waitForDatabase": true
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/jfrog/artifactory-operator-bundle@sha256:49229329083f8836be365b25beda86290cf8c6985dbeb1c46991c2121b54dda9",
+      "bundle_path_digest": "sha256:49229329083f8836be365b25beda86290cf8c6985dbeb1c46991c2121b54dda9",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-11-30T01:15:26.440000+00:00",
+      "csv_description": " ## Breaking change\nPlease update to version 1.1.10 of the operator.\nVersion 1.1.8 and 1.1.9 have issues. Please skip these versions.\n\n## Overview\nOpenshift Operator to deploy JFrog Artifactory Enterprise into your Openshift cluster.\n## Security Context Constraints\nTo deploy this helm chart you will need to be a cluster admin w/ access to the anyuid scc and add the operator service account to the anyuid scc.\n```\noc adm policy add-scc-to-user anyuid -z artifactory-ha-operator -n openshift-operators\n```\nAdd the service account for the Artifactory chart to deploy successfully:\n``` oc adm policy add-scc-to-user anyuid -z openshiftartifactoryha-artifactory-ha -n artifactory ```\n### Usage\n\nAn external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it.\n\nSearch for JFrog and click JFrog Artifactory Enterprise Operator to install.\n\nGo to the Installed Operators.\n\nWait for the JFrog Artifactory Enterprise Operator to complete the installation.\n\nOpen the Operator and click on the provided API: Artifactory HA.\n\nClick Create New Instance and provide the following parameters for your DB configuration:\n\n```\nDATABASE_TYPE\nDATABASE_DRIVER\nDATABASE_URL\nDATABASE_USER\nDATABASE_PASSWORD\n```\nMaster key and Join key must be supplied. To generate a new key for each run the command below:\n\n```\n# Create a key\nexport JOIN_KEY=$(openssl rand -hex 32)\necho ${JOIN_KEY}\n```\n\nTo use TLS you will need to first create a k8s tls secret to store your .crt and .key file into.\nThen supply the value of this k8s secret into the TLS_SECRET field.\n``` oc create secret tls my_tls_secret --cert=tls.crt --key=tls.key --namespace=my_namespace ```\nClick Create for Artifactory Enterprise to deploy into OpenShift and connect to it on the external IP exposed by the load balancer.\n### Create a route\nTo expose Artifactory from Openshift we recommend you create a new route in Openshift.\nYou can either use the oc command line tool or the Openshift web console to generate a new route.\nDepending upon where you terminate TLS you will need to either specify pass through or edge.\nCommand Line (Edge):\n``` oc create route edge --service=openshiftartifactory-ha --cert=tls.crt --key=tls.key --ca-cert=ca.crt --hostname=www.example.com ```\nOr for more information visit the official Openshift documentation on routes here:\nhttps://docs.openshift.com/container-platform/4.6/networking/routes/route-configuration.html\n\n",
+      "csv_display_name": "JFrog Artifactory Enterprise Operator",
+      "csv_metadata_description": "JFrog Artifactory Enterprise deploys Artifactory in a high availability environment across multiple pods",
+      "csv_name": "artifactory-ha-operator.v1.1.14",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
           "type": "SingleNamespace"
         },
         {
@@ -12725,213 +13198,52 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:39:17.294000+00:00",
+      "last_update_date": "2022-09-19T11:40:34.922000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
-      "package": "aikit-operator",
+      "package": "openshiftartifactoryha-operator",
       "provided_apis": [
         {
-          "group": "aikit.intel",
-          "kind": "AIKitContainer",
-          "plural": "aikitcontainers",
+          "group": "charts.helm.k8s.io",
+          "kind": "OpenshiftArtifactoryHa",
           "version": "v1alpha1"
         }
       ],
-      "provider": "Intel",
+      "provider": "JFrog",
       "related_images": [
         {
-          "digest": "sha256:34516d6df20aa91b4fcd691aafed3260c8a43aaaded64fdbe8078fc45c1357f0",
-          "image": "registry.connect.redhat.com/intel/aikit-operator@sha256:34516d6df20aa91b4fcd691aafed3260c8a43aaaded64fdbe8078fc45c1357f0",
-          "name": "manager"
+          "digest": "sha256:9b0b59194a052c63fa0d54d47220b7d2154ac38272694e54492cf2c029043cc4",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:9b0b59194a052c63fa0d54d47220b7d2154ac38272694e54492cf2c029043cc4",
+          "name": "artifactory-operator-9b0b59194a052c63fa0d54d47220b7d2154ac38272694e54492cf2c029043cc4-annotation"
+        },
+        {
+          "digest": "sha256:9b0b59194a052c63fa0d54d47220b7d2154ac38272694e54492cf2c029043cc4",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:9b0b59194a052c63fa0d54d47220b7d2154ac38272694e54492cf2c029043cc4",
+          "name": "artifactory-ha-operator"
+        },
+        {
+          "digest": "sha256:abd96a07bbeffcdcdf69b5998b9256b684e72bcecb9b94b9a623a0c02b276322",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-pro@sha256:abd96a07bbeffcdcdf69b5998b9256b684e72bcecb9b94b9a623a0c02b276322",
+          "name": "artifactory_image_repository"
+        },
+        {
+          "digest": "sha256:225b9d8cac2b4d3a1d193782f4bba749194048b87bf31dcd12ea88422e6350c8",
+          "image": "registry.redhat.io/rhel8/nginx-116@sha256:225b9d8cac2b4d3a1d193782f4bba749194048b87bf31dcd12ea88422e6350c8",
+          "name": "nginx_image_repository"
+        },
+        {
+          "digest": "sha256:175efbb8c51f0c50c4d32e876b20083b92ec5a04bab94e93cb3cb92d86164d03",
+          "image": "registry.connect.redhat.com/jfrog/init@sha256:175efbb8c51f0c50c4d32e876b20083b92ec5a04bab94e93cb3cb92d86164d03",
+          "name": "init-175efbb8c51f0c50c4d32e876b20083b92ec5a04bab94e93cb3cb92d86164d03-annotation"
         }
       ],
       "replaces": null,
       "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "2021.2.92808-dev-a60e5ba",
-      "version_original": "2021.2.92808-dev-a60e5ba"
-    },
-    {
-      "_id": "61a57afb3e9240fca360f54b",
-      "alm_examples": [
-        {
-          "api_version": "aikit.intel/v1alpha1",
-          "kind": "AIKitContainer",
-          "metadata": {
-            "name": "intel-aikit-container",
-            "namespace": "redhat-ods-applications"
-          },
-          "spec": {
-            "fullnameOverride": "",
-            "imagestream": {
-              "name": "oneapi-aikit",
-              "namespace": "redhat-ods-applications",
-              "registry": {
-                "name": "oneapi-aikit",
-                "repo": "intel",
-                "root": "registry.connect.redhat.com",
-                "version": "latest"
-              }
-            },
-            "nameOverride": ""
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/intel/aikit-operator-bundle@sha256:951e1dc1384a046270a6d5f540b1883aa47fa0c04895b5845635327c80281976",
-      "bundle_path_digest": "sha256:951e1dc1384a046270a6d5f540b1883aa47fa0c04895b5845635327c80281976",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-11-30T01:14:35.233000+00:00",
-      "csv_description": "The Intel\u00ae oneAPI AI Analytics Toolkit gives data scientists, AI developers, and researchers familiar Python* tools and frameworks to accelerate end-to-end data science and machine learning pipelines on Intel\u00ae architectures. The components are built using oneAPI libraries for low-level compute optimizations. This toolkit maximizes performance from preprocessing through machine and deep learning phases and provides interoperability for efficient model development and deployment across single and multinodes.\n",
-      "csv_display_name": "Intel\u00ae oneAPI AI Analytics Toolkit Operator",
-      "csv_metadata_description": "",
-      "csv_name": "aikit-operator.v2021.2.92814",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:39:21.609000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "aikit-operator",
-      "provided_apis": [
-        {
-          "group": "aikit.intel",
-          "kind": "AIKitContainer",
-          "plural": "aikitcontainers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Intel",
-      "related_images": [
-        {
-          "digest": "sha256:5448635df26ff738f5dd39256c961ad2a5756ca8ee0cb66370b261a242ef6f7b",
-          "image": "registry.connect.redhat.com/intel/aikit-operator@sha256:5448635df26ff738f5dd39256c961ad2a5756ca8ee0cb66370b261a242ef6f7b",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "2021.2.92814",
-      "version_original": "2021.2.92814"
-    },
-    {
-      "_id": "61a57b033e9240fca360f54c",
-      "alm_examples": [
-        {
-          "api_version": "aikit.intel/v1alpha1",
-          "kind": "AIKitContainer",
-          "metadata": {
-            "name": "intel-aikit-container",
-            "namespace": "redhat-ods-applications"
-          },
-          "spec": {
-            "fullnameOverride": "",
-            "imagestream": {
-              "name": "oneapi-aikit",
-              "namespace": "redhat-ods-applications",
-              "registry": {
-                "name": "oneapi-aikit",
-                "repo": "intel",
-                "root": "registry.connect.redhat.com",
-                "version": "latest"
-              }
-            },
-            "nameOverride": ""
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/intel/aikit-operator-bundle@sha256:db2074b8ef12a3037a7aaa515c9055f080e546706f769404d6f9005a28f57e61",
-      "bundle_path_digest": "sha256:db2074b8ef12a3037a7aaa515c9055f080e546706f769404d6f9005a28f57e61",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-11-30T01:14:43.525000+00:00",
-      "csv_description": "The Intel\u00ae oneAPI AI Analytics Toolkit gives data scientists, AI developers, and researchers familiar Python* tools and frameworks to accelerate end-to-end data science and machine learning pipelines on Intel\u00ae architectures. The components are built using oneAPI libraries for low-level compute optimizations. This toolkit maximizes performance from preprocessing through machine and deep learning phases and provides interoperability for efficient model development and deployment across single and multinodes.\n",
-      "csv_display_name": "Intel\u00ae oneAPI AI Analytics Toolkit Operator",
-      "csv_metadata_description": "",
-      "csv_name": "aikit-operator.v2021.2.92911",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:39:25.743000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "aikit-operator",
-      "provided_apis": [
-        {
-          "group": "aikit.intel",
-          "kind": "AIKitContainer",
-          "plural": "aikitcontainers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Intel",
-      "related_images": [
-        {
-          "digest": "sha256:6c55351004f5b04f901a2a3ad3ffab01c7b7d237dde9943dda3116e354d3cfe7",
-          "image": "registry.connect.redhat.com/intel/aikit-operator@sha256:6c55351004f5b04f901a2a3ad3ffab01c7b7d237dde9943dda3116e354d3cfe7",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "2021.2.92911",
-      "version_original": "2021.2.92911"
+      "version": "1.1.14",
+      "version_original": "1.1.14"
     }
   ]
 }
