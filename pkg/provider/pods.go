@@ -55,7 +55,7 @@ func NewPod(aPod *corev1.Pod) (out Pod) {
 	if _, ok := aPod.GetLabels()[skipMultusConnectivityTestsLabel]; ok {
 		out.SkipMultusNetTests = true
 	}
-	out.Containers = append(out.Containers, getPodContainers(aPod)...)
+	out.Containers = append(out.Containers, getPodContainers(aPod, false)...)
 	return out
 }
 

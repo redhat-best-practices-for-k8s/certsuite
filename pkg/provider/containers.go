@@ -26,6 +26,11 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
+var (
+	// Certain tests that have been known to fail because of injected containers (such as Istio) that fail certain tests.
+	ignoredContainerNames = []string{"istio-proxy"}
+)
+
 type Container struct {
 	*corev1.Container
 	Status                   corev1.ContainerStatus
@@ -71,4 +76,13 @@ func (c *Container) String() string {
 		c.Podname,
 		c.Namespace,
 	)
+}
+
+func (c *Container) HasIgnoredContainerName() bool {
+	for _, ign := range ignoredContainerNames {
+		if strings.Contains(c.Name, ign) {
+			return true
+		}
+	}
+	return false
 }
