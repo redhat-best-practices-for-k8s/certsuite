@@ -1,1080 +1,6 @@
 {
   "data": [
     {
-      "_id": "630d1debc80f4473fcad8c6e",
-      "alm_examples": [
-        {
-          "api_version": "astra.netapp.io/v1",
-          "kind": "AstraControlCenter",
-          "metadata": {
-            "name": "astra"
-          },
-          "spec": {
-            "accountName": "Example",
-            "additionalValues": {},
-            "astraAddress": "astra.example.com",
-            "astraResourcesScaler": "Default",
-            "astraVersion": "22.08.0-20",
-            "autoSupport": {
-              "enrolled": true
-            },
-            "crds": {
-              "externalCertManager": false,
-              "externalTraefik": false
-            },
-            "email": "admin@example.com",
-            "firstName": "SRE",
-            "imageRegistry": {
-              "name": "example.registry/astra",
-              "secret": "astra-registry-cred"
-            },
-            "ingressType": "Generic",
-            "lastName": "Admin",
-            "storageClass": "ontap-gold",
-            "volumeReclaimPolicy": "Retain"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/netapp/acc-operator-bundle@sha256:ec0f8bba052288b2ecfe2aa357438112dc973ff4af5898ab871f89ad6941c2dd",
-      "bundle_path_digest": "sha256:ec0f8bba052288b2ecfe2aa357438112dc973ff4af5898ab871f89ad6941c2dd",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-29T20:13:31.656000+00:00",
-      "csv_description": "Astra Control is an application-aware data management solution that manages, protects and moves data-rich Kubernetes workloads in both public clouds and on-premises.\n\nAstra Control enables data protection, disaster recovery, and migration for your Kubernetes workloads, leveraging NetApp's industry-leading data management technology\nfor snapshots, backups, replication and cloning.\n\n### How to deploy Astra Control\n\nRefer to [Installation Procedure](https://docs.netapp.com/us-en/astra-control-center/get-started/acc_operatorhub_install.html) to deploy Astra Control Center using\nthe Operator.\n\n### Documentation\n\nRefer to [Astra Control Center Documentation](https://docs.netapp.com/us-en/astra-control-center/index.html) to complete the setup and start managing applications.\n\nNOTE: The version listed under *Latest version* on this page might not reflect the actual version of NetApp Astra Control Center you are installing. The version in the file name of the Astra Control Center bundle that you download from the NetApp Support Site is the version of Astra Control Center that will be installed.\n",
-      "csv_display_name": "netapp-acc-operator",
-      "csv_metadata_description": "Install, configure and monitor Astra Control Center",
-      "csv_name": "acc-operator.v22.8.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:39:03.264000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "acc-operator",
-      "provided_apis": [
-        {
-          "group": "astra.netapp.io",
-          "kind": "AstraControlCenter",
-          "plural": "astracontrolcenters",
-          "version": "v1"
-        }
-      ],
-      "provider": "NetApp",
-      "related_images": [
-        {
-          "digest": "sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
-          "name": "ose-kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
-          "image": "registry.connect.redhat.com/netapp/acc-operator-22-8-0@sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
-          "name": "acc-operator"
-        },
-        {
-          "digest": "sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
-          "image": "registry.connect.redhat.com/netapp/acc-operator-22-8-0@sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "22.8.1",
-      "version_original": "22.8.1"
-    },
-    {
-      "_id": "630d2151467c0e9e0e23f0ba",
-      "alm_examples": [
-        {
-          "api_version": "astra.netapp.io/v1",
-          "kind": "AstraControlCenter",
-          "metadata": {
-            "name": "astra"
-          },
-          "spec": {
-            "accountName": "Example",
-            "additionalValues": {},
-            "astraAddress": "astra.example.com",
-            "astraResourcesScaler": "Default",
-            "astraVersion": "22.08.0-20",
-            "autoSupport": {
-              "enrolled": true
-            },
-            "crds": {
-              "externalCertManager": false,
-              "externalTraefik": false
-            },
-            "email": "admin@example.com",
-            "firstName": "SRE",
-            "imageRegistry": {
-              "name": "example.registry/astra",
-              "secret": "astra-registry-cred"
-            },
-            "ingressType": "Generic",
-            "lastName": "Admin",
-            "storageClass": "ontap-gold",
-            "volumeReclaimPolicy": "Retain"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/netapp/acc-operator-bundle@sha256:ec0f8bba052288b2ecfe2aa357438112dc973ff4af5898ab871f89ad6941c2dd",
-      "bundle_path_digest": "sha256:ec0f8bba052288b2ecfe2aa357438112dc973ff4af5898ab871f89ad6941c2dd",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-29T20:28:01.718000+00:00",
-      "csv_description": "Astra Control is an application-aware data management solution that manages, protects and moves data-rich Kubernetes workloads in both public clouds and on-premises.\n\nAstra Control enables data protection, disaster recovery, and migration for your Kubernetes workloads, leveraging NetApp's industry-leading data management technology\nfor snapshots, backups, replication and cloning.\n\n### How to deploy Astra Control\n\nRefer to [Installation Procedure](https://docs.netapp.com/us-en/astra-control-center/get-started/acc_operatorhub_install.html) to deploy Astra Control Center using\nthe Operator.\n\n### Documentation\n\nRefer to [Astra Control Center Documentation](https://docs.netapp.com/us-en/astra-control-center/index.html) to complete the setup and start managing applications.\n\nNOTE: The version listed under *Latest version* on this page might not reflect the actual version of NetApp Astra Control Center you are installing. The version in the file name of the Astra Control Center bundle that you download from the NetApp Support Site is the version of Astra Control Center that will be installed.\n",
-      "csv_display_name": "netapp-acc-operator",
-      "csv_metadata_description": "Install, configure and monitor Astra Control Center",
-      "csv_name": "acc-operator.v22.8.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:41:54.438000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "acc-operator",
-      "provided_apis": [
-        {
-          "group": "astra.netapp.io",
-          "kind": "AstraControlCenter",
-          "plural": "astracontrolcenters",
-          "version": "v1"
-        }
-      ],
-      "provider": "NetApp",
-      "related_images": [
-        {
-          "digest": "sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
-          "name": "ose-kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
-          "image": "registry.connect.redhat.com/netapp/acc-operator-22-8-0@sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
-          "name": "acc-operator"
-        },
-        {
-          "digest": "sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
-          "image": "registry.connect.redhat.com/netapp/acc-operator-22-8-0@sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "22.8.1",
-      "version_original": "22.8.1"
-    },
-    {
-      "_id": "630d21f443252be8abb82cf3",
-      "alm_examples": [
-        {
-          "api_version": "astra.netapp.io/v1",
-          "kind": "AstraControlCenter",
-          "metadata": {
-            "name": "astra"
-          },
-          "spec": {
-            "accountName": "Example",
-            "additionalValues": {},
-            "astraAddress": "astra.example.com",
-            "astraResourcesScaler": "Default",
-            "astraVersion": "22.08.0-20",
-            "autoSupport": {
-              "enrolled": true
-            },
-            "crds": {
-              "externalCertManager": false,
-              "externalTraefik": false
-            },
-            "email": "admin@example.com",
-            "firstName": "SRE",
-            "imageRegistry": {
-              "name": "example.registry/astra",
-              "secret": "astra-registry-cred"
-            },
-            "ingressType": "Generic",
-            "lastName": "Admin",
-            "storageClass": "ontap-gold",
-            "volumeReclaimPolicy": "Retain"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/netapp/acc-operator-bundle@sha256:ec0f8bba052288b2ecfe2aa357438112dc973ff4af5898ab871f89ad6941c2dd",
-      "bundle_path_digest": "sha256:ec0f8bba052288b2ecfe2aa357438112dc973ff4af5898ab871f89ad6941c2dd",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-29T20:30:44.859000+00:00",
-      "csv_description": "Astra Control is an application-aware data management solution that manages, protects and moves data-rich Kubernetes workloads in both public clouds and on-premises.\n\nAstra Control enables data protection, disaster recovery, and migration for your Kubernetes workloads, leveraging NetApp's industry-leading data management technology\nfor snapshots, backups, replication and cloning.\n\n### How to deploy Astra Control\n\nRefer to [Installation Procedure](https://docs.netapp.com/us-en/astra-control-center/get-started/acc_operatorhub_install.html) to deploy Astra Control Center using\nthe Operator.\n\n### Documentation\n\nRefer to [Astra Control Center Documentation](https://docs.netapp.com/us-en/astra-control-center/index.html) to complete the setup and start managing applications.\n\nNOTE: The version listed under *Latest version* on this page might not reflect the actual version of NetApp Astra Control Center you are installing. The version in the file name of the Astra Control Center bundle that you download from the NetApp Support Site is the version of Astra Control Center that will be installed.\n",
-      "csv_display_name": "netapp-acc-operator",
-      "csv_metadata_description": "Install, configure and monitor Astra Control Center",
-      "csv_name": "acc-operator.v22.8.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:17:51.665000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "acc-operator",
-      "provided_apis": [
-        {
-          "group": "astra.netapp.io",
-          "kind": "AstraControlCenter",
-          "plural": "astracontrolcenters",
-          "version": "v1"
-        }
-      ],
-      "provider": "NetApp",
-      "related_images": [
-        {
-          "digest": "sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
-          "name": "ose-kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
-          "image": "registry.connect.redhat.com/netapp/acc-operator-22-8-0@sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
-          "name": "acc-operator"
-        },
-        {
-          "digest": "sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
-          "image": "registry.connect.redhat.com/netapp/acc-operator-22-8-0@sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "22.8.1",
-      "version_original": "22.8.1"
-    },
-    {
-      "_id": "630d72594acb68ac7d135eed",
-      "alm_examples": [
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "MarketplaceConfig",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "marketplaceconfig",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "clusterUUID": "",
-            "features": {
-              "deployment": true,
-              "meterDefinitionCatalogServer": false,
-              "registration": true
-            },
-            "installIBMCatalogSource": true,
-            "isDisconnected": false,
-            "rhmAccountID": ""
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "MeterBase",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "meterbase",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "enabled": true,
-            "prometheus": {
-              "resources": {
-                "limits": {
-                  "cpu": "2",
-                  "memory": "2Gi"
-                },
-                "requests": {
-                  "cpu": "1",
-                  "memory": "1G"
-                }
-              },
-              "storage": {
-                "size": "20Gi"
-              }
-            }
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "MeterReport",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "example-meterreport",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "endTime": "2020-08-05T00:00:00Z",
-            "prometheusService": {
-              "name": "rhm-prometheus-meterbase",
-              "namespace": "openshift-redhat-marketplace",
-              "targetPort": "rbac"
-            },
-            "startTime": "2020-08-04T00:00:00Z"
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "RazeeDeployment",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "razeedeployment-example",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "clusterUUID": "example-cluster-uuid",
-            "enabled": true
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "RemoteResourceS3",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "example-remoteresources3",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "auth": {
-              "iam": {
-                "apiKeyRef": {
-                  "valueFrom": {
-                    "secretKeyRef": {
-                      "key": "accesskey",
-                      "name": "rhm-cos-reader-key"
-                    }
-                  }
-                },
-                "grantType": "urn:ibm:params:oauth:grant-type:apikey",
-                "responseType": "cloud_iam",
-                "url": "https://iam.cloud.ibm.com/identity/token"
-              }
-            },
-            "requests": [
-              {
-                "options": {
-                  "url": "https://s3.us-east.cloud-object-storage.appdomain.cloud/your-accountId/your-cluster-uuid/name-of-child.yaml"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1beta1",
-          "kind": "MeterDefinition",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "example-meterdefinition-4",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "group": "partner.metering.com",
-            "kind": "App",
-            "meters": [
-              {
-                "aggregation": "sum",
-                "metricId": "container_cpu_usage_core_avg",
-                "period": "1h",
-                "query": "rate(container_cpu_usage_seconds_total{cpu=\"total\",container=\"db\"}[5m])*100",
-                "workloadType": "Pod"
-              }
-            ],
-            "resourceFilters": [
-              {
-                "namespace": {
-                  "useOperatorGroup": true
-                },
-                "ownerCRD": {
-                  "apiVersion": "marketplace.redhat.com/v1alpha1",
-                  "kind": "RazeeDeployment"
-                },
-                "workloadType": "Pod"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1beta1",
-          "kind": "MeterDefinition",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "meterdefinition-sample",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "group": "partner.metering.com",
-            "kind": "App",
-            "meters": [
-              {
-                "aggregation": "sum",
-                "metricId": "container_cpu_usage_core_avg",
-                "period": "1h",
-                "query": "rate(container_cpu_usage_seconds_total{cpu=\"total\",container=\"db\"}[5m])*100",
-                "workloadType": "Pod"
-              }
-            ],
-            "resourceFilters": [
-              {
-                "namespace": {
-                  "useOperatorGroup": true
-                },
-                "ownerCRD": {
-                  "apiVersion": "marketplace.redhat.com/v1alpha1",
-                  "kind": "RazeeDeployment"
-                },
-                "workloadType": "Pod"
-              }
-            ]
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64",
-        "ppc64le",
-        "s390x"
-      ],
-      "bundle_path": "registry.connect.redhat.com/rh-marketplace/rh-marketplace-bundle@sha256:e5f9209dd630354fed2f4e21a0c503262dc059af8e52a3d1aba2bac0fa09fdf5",
-      "bundle_path_digest": "sha256:e5f9209dd630354fed2f4e21a0c503262dc059af8e52a3d1aba2bac0fa09fdf5",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-08-30T02:13:45.582000+00:00",
-      "csv_description": "The Red Hat Marketplace Operator provides cluster management, metering and\noperator installation for Red Hat Marketplace customers.\n### **Important Note**\nA set of instructions for onboarding is provided here. For more detailed onboarding instructions or information about what is installed please visit [marketplace.redhat.com](https://marketplace.redhat.com).\nTo access images from Red Hat Marketplace and the Marketplace container catalog you will need to make the pull secret attained in installation available to the workloads running on the cluster.\n### Prerequisites\n1. It is recommended to [enable monitoring for user-defined projects](https://docs.openshift.com/container-platform/4.10/monitoring/enabling-monitoring-for-user-defined-projects.html) as the Prometheus provider.\n2. Edit the cluster-monitoring-config ConfigMap object:\n  \n   ```sh\n   $ oc -n openshift-monitoring edit configmap cluster-monitoring-config\n   ```\n\n3. Add enableUserWorkload: true under data/config.yaml:\n  \n    ```sh\n    apiVersion: v1\n    kind: ConfigMap\n    metadata:\n      name: cluster-monitoring-config\n      namespace: openshift-monitoring\n    data:\n      config.yaml: |\n        enableUserWorkload: true\n    ```\n\n4. Configure the user-workload-monitoring-config ConfigMap object:\n  \n    ```sh\n    $ oc -n openshift-user-workload-monitoring edit configmap user-workload-monitoring-config\n    ```\n\n5. Configure a minimum retention time of 168h and minimum storage capacity of 40Gi\n  \n    ```sh\n    apiVersion: v1\n    kind: ConfigMap\n    metadata:\n      name: user-workload-monitoring-config\n      namespace: openshift-user-workload-monitoring\n    data:\n      config.yaml: |\n        prometheus:\n          retention: 168h\n          volumeClaimTemplate:\n            spec:\n              resources:\n                requests:\n                  storage: 40Gi\n    ```\n\n### Installation\n1. Create or get your pull secret from [Red Hat Marketplace](https://marketplace.redhat.com/en-us/documentation/clusters#get-pull-secret).\n2. Install the Red Hat Marketplace Operator in the openshift-redhat-marketplace namespace.\n3. Create a Kubernetes secret in the openshift-redhat-marketplace namespace with the name `redhat-marketplace-pull-secret` and key `PULL_SECRET` with the value of the Red hat Marketplace Pull Secret.\n\n   ```sh\n   # Replace ${PULL_SECRET} with your secret from Red Hat Marketplace\n   oc create secret generic redhat-marketplace-pull-secret -n  openshift-redhat-marketplace --from-literal=PULL_SECRET=${PULL_SECRET}\n   ```\n\n4. Install the Red Hat Marketplace pull secret as a global pull secret on the cluster.\n   **Warning:** This step will make your cluster perform a rolling restart.\n   These steps require `oc`, `jq`, and `base64` to be available on your machine.\n\n   ```sh\n   # Create the docker pull secret file using your PULL_SECRET from Red Hat Marketplace.\n   # Store it in a file called entitledregistryconfigjson.\n   oc create secret docker-registry entitled-registry --docker-server=registry.marketplace.redhat.com --docker-username \"cp\" --docker-password \"${PULL_SECRET}\" --dry-run=true --output=\"jsonpath={.data.\\.dockerconfigjson}\" | base64 --decode > entitledregistryconfigjson\n   # Get the current global secrets on the cluster and store it as a file named dockerconfigjson\n   oc get secret pull-secret -n openshift-config --output=\"jsonpath={.data.\\.dockerconfigjson}\" | base64 --decode > dockerconfigjson\n   # Merge the two dockerconfigs together into a file called dockerconfigjson-merged.\n   jq -s '.[0] * .[1]' dockerconfigjson entitledregistryconfigjson > dockerconfigjson-merged\n   # Set the cluster's dockerconfig file to the new merged version.\n   oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=dockerconfigjson-merged\n   # Cluster will now restart.\n   ```\n\n### Why is a global pull secret required?\nIn order to successfully install the Red Hat Marketplace products, you will need to make the pull secret available across the cluster. This can be achieved by applying the Red Hat Marketplace Pull Secret as a [global pull secret](https://docs.openshift.com/container-platform/4.6/openshift_images/managing_images/using-image-pull-secrets.html#images-update-global-pull-secret_using-image-pull-secrets).\nFor alternative approachs, please see the official OpenShift [documentation](https://docs.openshift.com/container-platform/4.6/openshift_images/managing_images/using-image-pull-secrets.html).\n### Documentation\nYou can find our documentation [here.](https://marketplace.redhat.com/en-us/documentation/)\n### Getting help\nIf you encounter any issues while using Red Hat Marketplace operator, you\ncan create an issue on our [Github\nrepo](https://github.com/redhat-marketplace/redhat-marketplace-operator) for\nbugs, enhancements, or other requests. You can also visit our main page and\nreview our [support](https://marketplace.redhat.com/en-us/support) and [documentation](https://marketplace.redhat.com/en-us/documentation/).\n### Readme\nYou can find our readme [here.](https://github.com/redhat-marketplace/redhat-marketplace-operator/blob/develop/README.md)\n### License information\nYou can find our license information [here.](https://github.com/redhat-marketplace/redhat-marketplace-operator/blob/develop/LICENSE)\n",
-      "csv_display_name": "Red Hat Marketplace",
-      "csv_metadata_description": "The Red Hat Marketplace Operator provides cluster management, metering and operator installation for Red Hat Marketplace customers.",
-      "csv_name": "redhat-marketplace-operator.v2.8.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:23:38.569000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redhat-marketplace-operator",
-      "provided_apis": [
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MeterDefinition",
-          "plural": "meterdefinitions",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MeterDefinition",
-          "plural": "meterdefinitions",
-          "version": "v1beta1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MeterReport",
-          "plural": "meterreports",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "RazeeDeployment",
-          "plural": "razeedeployments",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "RemoteResourceS3",
-          "plural": "remoteresources3s",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MarketplaceConfig",
-          "plural": "marketplaceconfigs",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MeterBase",
-          "plural": "meterbases",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Red Hat Marketplace",
-      "related_images": [
-        {
-          "digest": "sha256:5da2b67402519d4498695097728b7ad4c1dfe69cd1ddf87cc0c74e7043212574",
-          "image": "registry.redhat.io/openshift4/ose-prometheus@sha256:5da2b67402519d4498695097728b7ad4c1dfe69cd1ddf87cc0c74e7043212574",
-          "name": "prometheus"
-        },
-        {
-          "digest": "sha256:9a15dca79b88a6e1e37617a5817ccac5df74b7ddef8fbae7da66685d90108c55",
-          "image": "registry.redhat.io/openshift4/ose-configmap-reloader@sha256:9a15dca79b88a6e1e37617a5817ccac5df74b7ddef8fbae7da66685d90108c55",
-          "name": "configmap_reloader"
-        },
-        {
-          "digest": "sha256:7bbeb563c25a511e15aecb5ff8c4905120906092277e299b281170371f0e1281",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-reporter@sha256:7bbeb563c25a511e15aecb5ff8c4905120906092277e299b281170371f0e1281",
-          "name": "reporter"
-        },
-        {
-          "digest": "sha256:810c57d62498d8612d154dea0c94b6dba46f84308ec48f03d324359a38cccf33",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-authcheck@sha256:810c57d62498d8612d154dea0c94b6dba46f84308ec48f03d324359a38cccf33",
-          "name": "authcheck"
-        },
-        {
-          "digest": "sha256:db6024317d54bc811ffa3c6b3a5423a36f02e5a31586c88ef0f996424c76cb2b",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-operator@sha256:db6024317d54bc811ffa3c6b3a5423a36f02e5a31586c88ef0f996424c76cb2b",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:c74b64a0d0d63e585a9115535a310b9993d55f62924039102bb079d2d5c10697",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-data-service@sha256:c74b64a0d0d63e585a9115535a310b9993d55f62924039102bb079d2d5c10697",
-          "name": "dqlite"
-        },
-        {
-          "digest": "sha256:260ebab52c1e825e354bfa60827e314388fb7878bfa16d1dc061707962e95bea",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:260ebab52c1e825e354bfa60827e314388fb7878bfa16d1dc061707962e95bea",
-          "name": "kube_rbac_proxy"
-        },
-        {
-          "digest": "sha256:a4bb67ace1dd2992029ebfee6b08c439b1a363b2bf4059a10803d82f1bd089b6",
-          "image": "registry.redhat.io/openshift4/ose-prometheus-config-reloader@sha256:a4bb67ace1dd2992029ebfee6b08c439b1a363b2bf4059a10803d82f1bd089b6",
-          "name": "prometheus_configmap_reloader"
-        },
-        {
-          "digest": "sha256:db6024317d54bc811ffa3c6b3a5423a36f02e5a31586c88ef0f996424c76cb2b",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-operator@sha256:db6024317d54bc811ffa3c6b3a5423a36f02e5a31586c88ef0f996424c76cb2b",
-          "name": "redhat-marketplace-operator-db6024317d54bc811ffa3c6b3a5423a36f02e5a31586c88ef0f996424c76cb2b-annotation"
-        },
-        {
-          "digest": "sha256:9dd6a3999077d1830a6d0b3a7dfb7e744fc29ac9858df674472ee82c2e5b8ff4",
-          "image": "us.icr.io/armada-master/watch-keeper@sha256:9dd6a3999077d1830a6d0b3a7dfb7e744fc29ac9858df674472ee82c2e5b8ff4",
-          "name": "rhm_watch_keeper_deployment"
-        },
-        {
-          "digest": "sha256:5ca572cb31f15534ee8b6fd20a026452870fb8be756f5fa9de9813bdb80969f4",
-          "image": "registry.redhat.io/openshift4/ose-oauth-proxy@sha256:5ca572cb31f15534ee8b6fd20a026452870fb8be756f5fa9de9813bdb80969f4",
-          "name": "oauth_proxy"
-        },
-        {
-          "digest": "sha256:6e7a075b9ff8d3e2459dad46445758a2a3f6fc4887392645b4ca86fe5b1d0fb0",
-          "image": "us.icr.io/armada-master/remoteresources3@sha256:6e7a075b9ff8d3e2459dad46445758a2a3f6fc4887392645b4ca86fe5b1d0fb0",
-          "name": "rhm_rrs3_deployment"
-        },
-        {
-          "digest": "sha256:5638452bb8b4728c6afa33b081a32244603fba25304e24976e990ba78aee60f6",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-metric-state@sha256:5638452bb8b4728c6afa33b081a32244603fba25304e24976e990ba78aee60f6",
-          "name": "metric_state"
-        },
-        {
-          "digest": "sha256:18688ecd113373abff11958237d84983a624cd2cc763842ea1c01dd701a98656",
-          "image": "registry.redhat.io/openshift4/ose-prometheus-operator@sha256:18688ecd113373abff11958237d84983a624cd2cc763842ea1c01dd701a98656",
-          "name": "prometheus_operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.0.0 <2.8.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.8.1",
-      "version_original": "2.8.1"
-    },
-    {
-      "_id": "630d725a4acb68ac7d135eef",
-      "alm_examples": [
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "MarketplaceConfig",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "marketplaceconfig",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "clusterUUID": "",
-            "features": {
-              "deployment": true,
-              "meterDefinitionCatalogServer": false,
-              "registration": true
-            },
-            "installIBMCatalogSource": true,
-            "isDisconnected": false,
-            "rhmAccountID": ""
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "MeterBase",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "meterbase",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "enabled": true,
-            "prometheus": {
-              "resources": {
-                "limits": {
-                  "cpu": "2",
-                  "memory": "2Gi"
-                },
-                "requests": {
-                  "cpu": "1",
-                  "memory": "1G"
-                }
-              },
-              "storage": {
-                "size": "20Gi"
-              }
-            }
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "MeterReport",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "example-meterreport",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "endTime": "2020-08-05T00:00:00Z",
-            "prometheusService": {
-              "name": "rhm-prometheus-meterbase",
-              "namespace": "openshift-redhat-marketplace",
-              "targetPort": "rbac"
-            },
-            "startTime": "2020-08-04T00:00:00Z"
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "RazeeDeployment",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "razeedeployment-example",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "clusterUUID": "example-cluster-uuid",
-            "enabled": true
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "RemoteResourceS3",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "example-remoteresources3",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "auth": {
-              "iam": {
-                "apiKeyRef": {
-                  "valueFrom": {
-                    "secretKeyRef": {
-                      "key": "accesskey",
-                      "name": "rhm-cos-reader-key"
-                    }
-                  }
-                },
-                "grantType": "urn:ibm:params:oauth:grant-type:apikey",
-                "responseType": "cloud_iam",
-                "url": "https://iam.cloud.ibm.com/identity/token"
-              }
-            },
-            "requests": [
-              {
-                "options": {
-                  "url": "https://s3.us-east.cloud-object-storage.appdomain.cloud/your-accountId/your-cluster-uuid/name-of-child.yaml"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1beta1",
-          "kind": "MeterDefinition",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "example-meterdefinition-4",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "group": "partner.metering.com",
-            "kind": "App",
-            "meters": [
-              {
-                "aggregation": "sum",
-                "metricId": "container_cpu_usage_core_avg",
-                "period": "1h",
-                "query": "rate(container_cpu_usage_seconds_total{cpu=\"total\",container=\"db\"}[5m])*100",
-                "workloadType": "Pod"
-              }
-            ],
-            "resourceFilters": [
-              {
-                "namespace": {
-                  "useOperatorGroup": true
-                },
-                "ownerCRD": {
-                  "apiVersion": "marketplace.redhat.com/v1alpha1",
-                  "kind": "RazeeDeployment"
-                },
-                "workloadType": "Pod"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1beta1",
-          "kind": "MeterDefinition",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "meterdefinition-sample",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "group": "partner.metering.com",
-            "kind": "App",
-            "meters": [
-              {
-                "aggregation": "sum",
-                "metricId": "container_cpu_usage_core_avg",
-                "period": "1h",
-                "query": "rate(container_cpu_usage_seconds_total{cpu=\"total\",container=\"db\"}[5m])*100",
-                "workloadType": "Pod"
-              }
-            ],
-            "resourceFilters": [
-              {
-                "namespace": {
-                  "useOperatorGroup": true
-                },
-                "ownerCRD": {
-                  "apiVersion": "marketplace.redhat.com/v1alpha1",
-                  "kind": "RazeeDeployment"
-                },
-                "workloadType": "Pod"
-              }
-            ]
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64",
-        "ppc64le",
-        "s390x"
-      ],
-      "bundle_path": "registry.connect.redhat.com/rh-marketplace/rh-marketplace-bundle@sha256:e5f9209dd630354fed2f4e21a0c503262dc059af8e52a3d1aba2bac0fa09fdf5",
-      "bundle_path_digest": "sha256:e5f9209dd630354fed2f4e21a0c503262dc059af8e52a3d1aba2bac0fa09fdf5",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-30T02:13:46.650000+00:00",
-      "csv_description": "The Red Hat Marketplace Operator provides cluster management, metering and\noperator installation for Red Hat Marketplace customers.\n### **Important Note**\nA set of instructions for onboarding is provided here. For more detailed onboarding instructions or information about what is installed please visit [marketplace.redhat.com](https://marketplace.redhat.com).\nTo access images from Red Hat Marketplace and the Marketplace container catalog you will need to make the pull secret attained in installation available to the workloads running on the cluster.\n### Prerequisites\n1. It is recommended to [enable monitoring for user-defined projects](https://docs.openshift.com/container-platform/4.10/monitoring/enabling-monitoring-for-user-defined-projects.html) as the Prometheus provider.\n2. Edit the cluster-monitoring-config ConfigMap object:\n  \n   ```sh\n   $ oc -n openshift-monitoring edit configmap cluster-monitoring-config\n   ```\n\n3. Add enableUserWorkload: true under data/config.yaml:\n  \n    ```sh\n    apiVersion: v1\n    kind: ConfigMap\n    metadata:\n      name: cluster-monitoring-config\n      namespace: openshift-monitoring\n    data:\n      config.yaml: |\n        enableUserWorkload: true\n    ```\n\n4. Configure the user-workload-monitoring-config ConfigMap object:\n  \n    ```sh\n    $ oc -n openshift-user-workload-monitoring edit configmap user-workload-monitoring-config\n    ```\n\n5. Configure a minimum retention time of 168h and minimum storage capacity of 40Gi\n  \n    ```sh\n    apiVersion: v1\n    kind: ConfigMap\n    metadata:\n      name: user-workload-monitoring-config\n      namespace: openshift-user-workload-monitoring\n    data:\n      config.yaml: |\n        prometheus:\n          retention: 168h\n          volumeClaimTemplate:\n            spec:\n              resources:\n                requests:\n                  storage: 40Gi\n    ```\n\n### Installation\n1. Create or get your pull secret from [Red Hat Marketplace](https://marketplace.redhat.com/en-us/documentation/clusters#get-pull-secret).\n2. Install the Red Hat Marketplace Operator in the openshift-redhat-marketplace namespace.\n3. Create a Kubernetes secret in the openshift-redhat-marketplace namespace with the name `redhat-marketplace-pull-secret` and key `PULL_SECRET` with the value of the Red hat Marketplace Pull Secret.\n\n   ```sh\n   # Replace ${PULL_SECRET} with your secret from Red Hat Marketplace\n   oc create secret generic redhat-marketplace-pull-secret -n  openshift-redhat-marketplace --from-literal=PULL_SECRET=${PULL_SECRET}\n   ```\n\n4. Install the Red Hat Marketplace pull secret as a global pull secret on the cluster.\n   **Warning:** This step will make your cluster perform a rolling restart.\n   These steps require `oc`, `jq`, and `base64` to be available on your machine.\n\n   ```sh\n   # Create the docker pull secret file using your PULL_SECRET from Red Hat Marketplace.\n   # Store it in a file called entitledregistryconfigjson.\n   oc create secret docker-registry entitled-registry --docker-server=registry.marketplace.redhat.com --docker-username \"cp\" --docker-password \"${PULL_SECRET}\" --dry-run=true --output=\"jsonpath={.data.\\.dockerconfigjson}\" | base64 --decode > entitledregistryconfigjson\n   # Get the current global secrets on the cluster and store it as a file named dockerconfigjson\n   oc get secret pull-secret -n openshift-config --output=\"jsonpath={.data.\\.dockerconfigjson}\" | base64 --decode > dockerconfigjson\n   # Merge the two dockerconfigs together into a file called dockerconfigjson-merged.\n   jq -s '.[0] * .[1]' dockerconfigjson entitledregistryconfigjson > dockerconfigjson-merged\n   # Set the cluster's dockerconfig file to the new merged version.\n   oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=dockerconfigjson-merged\n   # Cluster will now restart.\n   ```\n\n### Why is a global pull secret required?\nIn order to successfully install the Red Hat Marketplace products, you will need to make the pull secret available across the cluster. This can be achieved by applying the Red Hat Marketplace Pull Secret as a [global pull secret](https://docs.openshift.com/container-platform/4.6/openshift_images/managing_images/using-image-pull-secrets.html#images-update-global-pull-secret_using-image-pull-secrets).\nFor alternative approachs, please see the official OpenShift [documentation](https://docs.openshift.com/container-platform/4.6/openshift_images/managing_images/using-image-pull-secrets.html).\n### Documentation\nYou can find our documentation [here.](https://marketplace.redhat.com/en-us/documentation/)\n### Getting help\nIf you encounter any issues while using Red Hat Marketplace operator, you\ncan create an issue on our [Github\nrepo](https://github.com/redhat-marketplace/redhat-marketplace-operator) for\nbugs, enhancements, or other requests. You can also visit our main page and\nreview our [support](https://marketplace.redhat.com/en-us/support) and [documentation](https://marketplace.redhat.com/en-us/documentation/).\n### Readme\nYou can find our readme [here.](https://github.com/redhat-marketplace/redhat-marketplace-operator/blob/develop/README.md)\n### License information\nYou can find our license information [here.](https://github.com/redhat-marketplace/redhat-marketplace-operator/blob/develop/LICENSE)\n",
-      "csv_display_name": "Red Hat Marketplace",
-      "csv_metadata_description": "The Red Hat Marketplace Operator provides cluster management, metering and operator installation for Red Hat Marketplace customers.",
-      "csv_name": "redhat-marketplace-operator.v2.8.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:51:03.108000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redhat-marketplace-operator",
-      "provided_apis": [
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MeterDefinition",
-          "plural": "meterdefinitions",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MeterDefinition",
-          "plural": "meterdefinitions",
-          "version": "v1beta1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MeterReport",
-          "plural": "meterreports",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "RazeeDeployment",
-          "plural": "razeedeployments",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "RemoteResourceS3",
-          "plural": "remoteresources3s",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MarketplaceConfig",
-          "plural": "marketplaceconfigs",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MeterBase",
-          "plural": "meterbases",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Red Hat Marketplace",
-      "related_images": [
-        {
-          "digest": "sha256:5da2b67402519d4498695097728b7ad4c1dfe69cd1ddf87cc0c74e7043212574",
-          "image": "registry.redhat.io/openshift4/ose-prometheus@sha256:5da2b67402519d4498695097728b7ad4c1dfe69cd1ddf87cc0c74e7043212574",
-          "name": "prometheus"
-        },
-        {
-          "digest": "sha256:9a15dca79b88a6e1e37617a5817ccac5df74b7ddef8fbae7da66685d90108c55",
-          "image": "registry.redhat.io/openshift4/ose-configmap-reloader@sha256:9a15dca79b88a6e1e37617a5817ccac5df74b7ddef8fbae7da66685d90108c55",
-          "name": "configmap_reloader"
-        },
-        {
-          "digest": "sha256:7bbeb563c25a511e15aecb5ff8c4905120906092277e299b281170371f0e1281",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-reporter@sha256:7bbeb563c25a511e15aecb5ff8c4905120906092277e299b281170371f0e1281",
-          "name": "reporter"
-        },
-        {
-          "digest": "sha256:810c57d62498d8612d154dea0c94b6dba46f84308ec48f03d324359a38cccf33",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-authcheck@sha256:810c57d62498d8612d154dea0c94b6dba46f84308ec48f03d324359a38cccf33",
-          "name": "authcheck"
-        },
-        {
-          "digest": "sha256:db6024317d54bc811ffa3c6b3a5423a36f02e5a31586c88ef0f996424c76cb2b",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-operator@sha256:db6024317d54bc811ffa3c6b3a5423a36f02e5a31586c88ef0f996424c76cb2b",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:c74b64a0d0d63e585a9115535a310b9993d55f62924039102bb079d2d5c10697",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-data-service@sha256:c74b64a0d0d63e585a9115535a310b9993d55f62924039102bb079d2d5c10697",
-          "name": "dqlite"
-        },
-        {
-          "digest": "sha256:260ebab52c1e825e354bfa60827e314388fb7878bfa16d1dc061707962e95bea",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:260ebab52c1e825e354bfa60827e314388fb7878bfa16d1dc061707962e95bea",
-          "name": "kube_rbac_proxy"
-        },
-        {
-          "digest": "sha256:a4bb67ace1dd2992029ebfee6b08c439b1a363b2bf4059a10803d82f1bd089b6",
-          "image": "registry.redhat.io/openshift4/ose-prometheus-config-reloader@sha256:a4bb67ace1dd2992029ebfee6b08c439b1a363b2bf4059a10803d82f1bd089b6",
-          "name": "prometheus_configmap_reloader"
-        },
-        {
-          "digest": "sha256:db6024317d54bc811ffa3c6b3a5423a36f02e5a31586c88ef0f996424c76cb2b",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-operator@sha256:db6024317d54bc811ffa3c6b3a5423a36f02e5a31586c88ef0f996424c76cb2b",
-          "name": "redhat-marketplace-operator-db6024317d54bc811ffa3c6b3a5423a36f02e5a31586c88ef0f996424c76cb2b-annotation"
-        },
-        {
-          "digest": "sha256:9dd6a3999077d1830a6d0b3a7dfb7e744fc29ac9858df674472ee82c2e5b8ff4",
-          "image": "us.icr.io/armada-master/watch-keeper@sha256:9dd6a3999077d1830a6d0b3a7dfb7e744fc29ac9858df674472ee82c2e5b8ff4",
-          "name": "rhm_watch_keeper_deployment"
-        },
-        {
-          "digest": "sha256:5ca572cb31f15534ee8b6fd20a026452870fb8be756f5fa9de9813bdb80969f4",
-          "image": "registry.redhat.io/openshift4/ose-oauth-proxy@sha256:5ca572cb31f15534ee8b6fd20a026452870fb8be756f5fa9de9813bdb80969f4",
-          "name": "oauth_proxy"
-        },
-        {
-          "digest": "sha256:6e7a075b9ff8d3e2459dad46445758a2a3f6fc4887392645b4ca86fe5b1d0fb0",
-          "image": "us.icr.io/armada-master/remoteresources3@sha256:6e7a075b9ff8d3e2459dad46445758a2a3f6fc4887392645b4ca86fe5b1d0fb0",
-          "name": "rhm_rrs3_deployment"
-        },
-        {
-          "digest": "sha256:5638452bb8b4728c6afa33b081a32244603fba25304e24976e990ba78aee60f6",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-metric-state@sha256:5638452bb8b4728c6afa33b081a32244603fba25304e24976e990ba78aee60f6",
-          "name": "metric_state"
-        },
-        {
-          "digest": "sha256:18688ecd113373abff11958237d84983a624cd2cc763842ea1c01dd701a98656",
-          "image": "registry.redhat.io/openshift4/ose-prometheus-operator@sha256:18688ecd113373abff11958237d84983a624cd2cc763842ea1c01dd701a98656",
-          "name": "prometheus_operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.0.0 <2.8.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.8.1",
-      "version_original": "2.8.1"
-    },
-    {
       "_id": "630de99e3568859acecc8c33",
       "alm_examples": [
         {
@@ -18169,6 +17095,766 @@
       "skip_range": ">=1.15.3 < 1.16.2",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.16.2",
+      "version_original": "1.16.2"
+    },
+    {
+      "_id": "6319fb8cec6f9987c2997350",
+      "alm_examples": [
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "backup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Cluster",
+          "metadata": {
+            "name": "cluster-sample"
+          },
+          "spec": {
+            "instances": 3,
+            "logLevel": "info",
+            "primaryUpdateStrategy": "unsupervised",
+            "storage": {
+              "size": "1Gi"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Pooler",
+          "metadata": {
+            "name": "pooler-sample-rw"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "instances": 1,
+            "pgbouncer": {
+              "poolMode": "session"
+            },
+            "type": "rw"
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "ScheduledBackup",
+          "metadata": {
+            "name": "scheduledbackup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "schedule": "0 0 0 * * *"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "ppc64le",
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/enterprisedb/cloud-native-postgresql@sha256:29d2bdf940600526db9e348680f4b0c6a441b159d5c7601480a93d840862e405",
+      "bundle_path_digest": "sha256:29d2bdf940600526db9e348680f4b0c6a441b159d5c7601480a93d840862e405",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-08T14:26:20.824000+00:00",
+      "csv_description": "EDB Postgres for Kubernetes is an operator designed, developed, and supported by EDB that covers the full \nlifecycle of a highly available Postgres database clusters with a primary/standby architecture, using native\nstreaming replication. It is based on the open source CloudNativePG operator, and provides additional value\nsuch as compatibility with Oracle using EDB Postgres Advanced Server and additional supported platforms such\nas IBM Power and OpenShift.\n\nKey features available include:\n\n* Kubernetes API integration for high availability\n* Self-healing through failover and automated recreation of replicas\n* Capacity management with scale up/down capabilities\n* Planned switchovers for scheduled maintenance\n* Read-only and read-write Kubernetes services definitions\n* Rolling updates for Postgres minor versions and operator upgrades\n* Continuous backup and point-in-time recovery\n* Connection Pooling with PgBouncer\n* Integrated metrics exporter out of the box\n* PostgreSQL replication across multiple Kubernetes clusters\n* Red Hat certified operator for OpenShift\n\nThe operator has been renamed from Cloud Native PostgreSQL. Existing users of Cloud Native PostgreSQL will not\nexperience any change, as the underlying components and resources have not changed.\n",
+      "csv_display_name": "EDB Postgres for Kubernetes",
+      "csv_metadata_description": "Operator to manage Postgres high availability clusters with a primary/standby architecture.",
+      "csv_name": "cloud-native-postgresql.v1.16.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:02:23.317000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "cloud-native-postgresql",
+      "provided_apis": [
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Cluster",
+          "plural": "clusters",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Pooler",
+          "plural": "poolers",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "ScheduledBackup",
+          "plural": "scheduledbackups",
+          "version": "v1"
+        }
+      ],
+      "provider": "EnterpriseDB Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f",
+          "name": "cloud-native-postgresql-fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f-annotation"
+        },
+        {
+          "digest": "sha256:fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=1.15.3 < 1.16.2",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.16.2",
+      "version_original": "1.16.2"
+    },
+    {
+      "_id": "6319fb8de5ee24344c978ff4",
+      "alm_examples": [
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "backup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Cluster",
+          "metadata": {
+            "name": "cluster-sample"
+          },
+          "spec": {
+            "instances": 3,
+            "logLevel": "info",
+            "primaryUpdateStrategy": "unsupervised",
+            "storage": {
+              "size": "1Gi"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Pooler",
+          "metadata": {
+            "name": "pooler-sample-rw"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "instances": 1,
+            "pgbouncer": {
+              "poolMode": "session"
+            },
+            "type": "rw"
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "ScheduledBackup",
+          "metadata": {
+            "name": "scheduledbackup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "schedule": "0 0 0 * * *"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "ppc64le",
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/enterprisedb/cloud-native-postgresql@sha256:29d2bdf940600526db9e348680f4b0c6a441b159d5c7601480a93d840862e405",
+      "bundle_path_digest": "sha256:29d2bdf940600526db9e348680f4b0c6a441b159d5c7601480a93d840862e405",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "stable-v1.16",
+      "creation_date": "2022-09-08T14:26:21.504000+00:00",
+      "csv_description": "EDB Postgres for Kubernetes is an operator designed, developed, and supported by EDB that covers the full \nlifecycle of a highly available Postgres database clusters with a primary/standby architecture, using native\nstreaming replication. It is based on the open source CloudNativePG operator, and provides additional value\nsuch as compatibility with Oracle using EDB Postgres Advanced Server and additional supported platforms such\nas IBM Power and OpenShift.\n\nKey features available include:\n\n* Kubernetes API integration for high availability\n* Self-healing through failover and automated recreation of replicas\n* Capacity management with scale up/down capabilities\n* Planned switchovers for scheduled maintenance\n* Read-only and read-write Kubernetes services definitions\n* Rolling updates for Postgres minor versions and operator upgrades\n* Continuous backup and point-in-time recovery\n* Connection Pooling with PgBouncer\n* Integrated metrics exporter out of the box\n* PostgreSQL replication across multiple Kubernetes clusters\n* Red Hat certified operator for OpenShift\n\nThe operator has been renamed from Cloud Native PostgreSQL. Existing users of Cloud Native PostgreSQL will not\nexperience any change, as the underlying components and resources have not changed.\n",
+      "csv_display_name": "EDB Postgres for Kubernetes",
+      "csv_metadata_description": "Operator to manage Postgres high availability clusters with a primary/standby architecture.",
+      "csv_name": "cloud-native-postgresql.v1.16.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:51:45.652000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "cloud-native-postgresql",
+      "provided_apis": [
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Cluster",
+          "plural": "clusters",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Pooler",
+          "plural": "poolers",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "ScheduledBackup",
+          "plural": "scheduledbackups",
+          "version": "v1"
+        }
+      ],
+      "provider": "EnterpriseDB Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f",
+          "name": "cloud-native-postgresql-fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f-annotation"
+        },
+        {
+          "digest": "sha256:fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=1.15.3 < 1.16.2",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.16.2",
+      "version_original": "1.16.2"
+    },
+    {
+      "_id": "6319fcbe69a273f0af2b1ea5",
+      "alm_examples": [
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "backup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Cluster",
+          "metadata": {
+            "name": "cluster-sample"
+          },
+          "spec": {
+            "instances": 3,
+            "logLevel": "info",
+            "primaryUpdateStrategy": "unsupervised",
+            "storage": {
+              "size": "1Gi"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Pooler",
+          "metadata": {
+            "name": "pooler-sample-rw"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "instances": 1,
+            "pgbouncer": {
+              "poolMode": "session"
+            },
+            "type": "rw"
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "ScheduledBackup",
+          "metadata": {
+            "name": "scheduledbackup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "schedule": "0 0 0 * * *"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "ppc64le",
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/enterprisedb/cloud-native-postgresql@sha256:29d2bdf940600526db9e348680f4b0c6a441b159d5c7601480a93d840862e405",
+      "bundle_path_digest": "sha256:29d2bdf940600526db9e348680f4b0c6a441b159d5c7601480a93d840862e405",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-08T14:31:26.422000+00:00",
+      "csv_description": "EDB Postgres for Kubernetes is an operator designed, developed, and supported by EDB that covers the full \nlifecycle of a highly available Postgres database clusters with a primary/standby architecture, using native\nstreaming replication. It is based on the open source CloudNativePG operator, and provides additional value\nsuch as compatibility with Oracle using EDB Postgres Advanced Server and additional supported platforms such\nas IBM Power and OpenShift.\n\nKey features available include:\n\n* Kubernetes API integration for high availability\n* Self-healing through failover and automated recreation of replicas\n* Capacity management with scale up/down capabilities\n* Planned switchovers for scheduled maintenance\n* Read-only and read-write Kubernetes services definitions\n* Rolling updates for Postgres minor versions and operator upgrades\n* Continuous backup and point-in-time recovery\n* Connection Pooling with PgBouncer\n* Integrated metrics exporter out of the box\n* PostgreSQL replication across multiple Kubernetes clusters\n* Red Hat certified operator for OpenShift\n\nThe operator has been renamed from Cloud Native PostgreSQL. Existing users of Cloud Native PostgreSQL will not\nexperience any change, as the underlying components and resources have not changed.\n",
+      "csv_display_name": "EDB Postgres for Kubernetes",
+      "csv_metadata_description": "Operator to manage Postgres high availability clusters with a primary/standby architecture.",
+      "csv_name": "cloud-native-postgresql.v1.16.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:45:39.323000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "cloud-native-postgresql",
+      "provided_apis": [
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Pooler",
+          "plural": "poolers",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "ScheduledBackup",
+          "plural": "scheduledbackups",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Cluster",
+          "plural": "clusters",
+          "version": "v1"
+        }
+      ],
+      "provider": "EnterpriseDB Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f",
+          "name": "cloud-native-postgresql-fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f-annotation"
+        },
+        {
+          "digest": "sha256:fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=1.15.3 < 1.16.2",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.16.2",
+      "version_original": "1.16.2"
+    },
+    {
+      "_id": "6319fcbf7122993c713a76fb",
+      "alm_examples": [
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "backup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Cluster",
+          "metadata": {
+            "name": "cluster-sample"
+          },
+          "spec": {
+            "instances": 3,
+            "logLevel": "info",
+            "primaryUpdateStrategy": "unsupervised",
+            "storage": {
+              "size": "1Gi"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Pooler",
+          "metadata": {
+            "name": "pooler-sample-rw"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "instances": 1,
+            "pgbouncer": {
+              "poolMode": "session"
+            },
+            "type": "rw"
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "ScheduledBackup",
+          "metadata": {
+            "name": "scheduledbackup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "schedule": "0 0 0 * * *"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "ppc64le",
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/enterprisedb/cloud-native-postgresql@sha256:29d2bdf940600526db9e348680f4b0c6a441b159d5c7601480a93d840862e405",
+      "bundle_path_digest": "sha256:29d2bdf940600526db9e348680f4b0c6a441b159d5c7601480a93d840862e405",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "stable-v1.16",
+      "creation_date": "2022-09-08T14:31:27.292000+00:00",
+      "csv_description": "EDB Postgres for Kubernetes is an operator designed, developed, and supported by EDB that covers the full \nlifecycle of a highly available Postgres database clusters with a primary/standby architecture, using native\nstreaming replication. It is based on the open source CloudNativePG operator, and provides additional value\nsuch as compatibility with Oracle using EDB Postgres Advanced Server and additional supported platforms such\nas IBM Power and OpenShift.\n\nKey features available include:\n\n* Kubernetes API integration for high availability\n* Self-healing through failover and automated recreation of replicas\n* Capacity management with scale up/down capabilities\n* Planned switchovers for scheduled maintenance\n* Read-only and read-write Kubernetes services definitions\n* Rolling updates for Postgres minor versions and operator upgrades\n* Continuous backup and point-in-time recovery\n* Connection Pooling with PgBouncer\n* Integrated metrics exporter out of the box\n* PostgreSQL replication across multiple Kubernetes clusters\n* Red Hat certified operator for OpenShift\n\nThe operator has been renamed from Cloud Native PostgreSQL. Existing users of Cloud Native PostgreSQL will not\nexperience any change, as the underlying components and resources have not changed.\n",
+      "csv_display_name": "EDB Postgres for Kubernetes",
+      "csv_metadata_description": "Operator to manage Postgres high availability clusters with a primary/standby architecture.",
+      "csv_name": "cloud-native-postgresql.v1.16.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:40:03.812000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "cloud-native-postgresql",
+      "provided_apis": [
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Pooler",
+          "plural": "poolers",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "ScheduledBackup",
+          "plural": "scheduledbackups",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Cluster",
+          "plural": "clusters",
+          "version": "v1"
+        }
+      ],
+      "provider": "EnterpriseDB Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f",
+          "name": "cloud-native-postgresql-fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f-annotation"
+        },
+        {
+          "digest": "sha256:fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=1.15.3 < 1.16.2",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.16.2",
+      "version_original": "1.16.2"
+    },
+    {
+      "_id": "6319fdfb69a273f0af2b1f36",
+      "alm_examples": [
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "backup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Cluster",
+          "metadata": {
+            "name": "cluster-sample"
+          },
+          "spec": {
+            "instances": 3,
+            "logLevel": "info",
+            "primaryUpdateStrategy": "unsupervised",
+            "storage": {
+              "size": "1Gi"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Pooler",
+          "metadata": {
+            "name": "pooler-sample-rw"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "instances": 1,
+            "pgbouncer": {
+              "poolMode": "session"
+            },
+            "type": "rw"
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "ScheduledBackup",
+          "metadata": {
+            "name": "scheduledbackup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "schedule": "0 0 0 * * *"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "ppc64le",
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/enterprisedb/cloud-native-postgresql@sha256:29d2bdf940600526db9e348680f4b0c6a441b159d5c7601480a93d840862e405",
+      "bundle_path_digest": "sha256:29d2bdf940600526db9e348680f4b0c6a441b159d5c7601480a93d840862e405",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "stable-v1.16",
+      "creation_date": "2022-09-08T14:36:43.754000+00:00",
+      "csv_description": "EDB Postgres for Kubernetes is an operator designed, developed, and supported by EDB that covers the full \nlifecycle of a highly available Postgres database clusters with a primary/standby architecture, using native\nstreaming replication. It is based on the open source CloudNativePG operator, and provides additional value\nsuch as compatibility with Oracle using EDB Postgres Advanced Server and additional supported platforms such\nas IBM Power and OpenShift.\n\nKey features available include:\n\n* Kubernetes API integration for high availability\n* Self-healing through failover and automated recreation of replicas\n* Capacity management with scale up/down capabilities\n* Planned switchovers for scheduled maintenance\n* Read-only and read-write Kubernetes services definitions\n* Rolling updates for Postgres minor versions and operator upgrades\n* Continuous backup and point-in-time recovery\n* Connection Pooling with PgBouncer\n* Integrated metrics exporter out of the box\n* PostgreSQL replication across multiple Kubernetes clusters\n* Red Hat certified operator for OpenShift\n\nThe operator has been renamed from Cloud Native PostgreSQL. Existing users of Cloud Native PostgreSQL will not\nexperience any change, as the underlying components and resources have not changed.\n",
+      "csv_display_name": "EDB Postgres for Kubernetes",
+      "csv_metadata_description": "Operator to manage Postgres high availability clusters with a primary/standby architecture.",
+      "csv_name": "cloud-native-postgresql.v1.16.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:20:04.436000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "cloud-native-postgresql",
+      "provided_apis": [
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "ScheduledBackup",
+          "plural": "scheduledbackups",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Cluster",
+          "plural": "clusters",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Pooler",
+          "plural": "poolers",
+          "version": "v1"
+        }
+      ],
+      "provider": "EnterpriseDB Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f",
+          "name": "cloud-native-postgresql-fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f-annotation"
+        },
+        {
+          "digest": "sha256:fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:fc031fc001d857f5ba22c2bf776521318c1bfee07f9928f8767829c7d0877b2f",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=1.15.3 < 1.16.2",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.16.2",
       "version_original": "1.16.2"
     }

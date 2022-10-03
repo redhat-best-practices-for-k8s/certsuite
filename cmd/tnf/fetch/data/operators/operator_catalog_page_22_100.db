@@ -1,340 +1,6 @@
 {
   "data": [
     {
-      "_id": "62345f9f5593ce895a7b5353",
-      "alm_examples": [
-        {
-          "api_version": "operator.tigera.io/v1",
-          "kind": "Installation",
-          "metadata": {
-            "name": "default"
-          },
-          "spec": {
-            "variant": "Calico"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:b1a8b56ff5e1bb5326e1bde4931303358410da9768f0ebf9c08e2c2d8661d742",
-      "bundle_path_digest": "sha256:b1a8b56ff5e1bb5326e1bde4931303358410da9768f0ebf9c08e2c2d8661d742",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "release-v1.23",
-      "creation_date": "2022-03-18T10:31:59.530000+00:00",
-      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
-      "csv_display_name": "Tigera Operator",
-      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
-      "csv_name": "tigera-operator.v1.23.4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:08:13.431000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "tigera-operator",
-      "provided_apis": [
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPConfiguration",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPPeer",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BlockAffinity",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "ClusterInformation",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "FelixConfiguration",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkPolicy",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkSet",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "HostEndpoint",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMBlock",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMConfig",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMHandle",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPPool",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "KubeControllersConfiguration",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkPolicy",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkSet",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "ImageSet",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "Installation",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "TigeraStatus",
-          "version": "v1"
-        }
-      ],
-      "provider": "Tigera",
-      "related_images": [
-        {
-          "digest": "sha256:f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1",
-          "image": "quay.io/tigera/operator@sha256:f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1",
-          "name": "tigera-operator"
-        },
-        {
-          "digest": "sha256:f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1",
-          "image": "quay.io/tigera/operator@sha256:f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1",
-          "name": "operator-f258275fe3d48c2ae16346a57f628523a6f2fb7b854b6d43b169056e158537f1-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<1.23.4",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.23.4",
-      "version_original": "1.23.4"
-    },
-    {
-      "_id": "62345fa35593ce895a7b5354",
-      "alm_examples": [
-        {
-          "api_version": "operator.tigera.io/v1",
-          "kind": "Installation",
-          "metadata": {
-            "name": "default"
-          },
-          "spec": {
-            "variant": "Calico"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:cb7f3367ff064cd01dc636a43fd89d5f6c4e6a7004cb7c94b1758b2398e36d71",
-      "bundle_path_digest": "sha256:cb7f3367ff064cd01dc636a43fd89d5f6c4e6a7004cb7c94b1758b2398e36d71",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "release-v1.25",
-      "creation_date": "2022-03-18T10:32:03.387000+00:00",
-      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
-      "csv_display_name": "Tigera Operator",
-      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
-      "csv_name": "tigera-operator.v1.25.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:08:20.725000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "tigera-operator",
-      "provided_apis": [
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPConfiguration",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPPeer",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BlockAffinity",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "ClusterInformation",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "FelixConfiguration",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkPolicy",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkSet",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "HostEndpoint",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMBlock",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMConfig",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMHandle",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPPool",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "KubeControllersConfiguration",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkPolicy",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkSet",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "ImageSet",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "Installation",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "TigeraStatus",
-          "version": "v1"
-        }
-      ],
-      "provider": "Tigera",
-      "related_images": [
-        {
-          "digest": "sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
-          "image": "quay.io/tigera/operator@sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
-          "name": "tigera-operator"
-        },
-        {
-          "digest": "sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
-          "image": "quay.io/tigera/operator@sha256:e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94",
-          "name": "operator-e862708c700df55f99a9c9bb3c453e31f22aef1993d6079d80433eb8da831c94-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<1.25.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.25.1",
-      "version_original": "1.25.1"
-    },
-    {
       "_id": "62345fa7314381d2b0756b31",
       "alm_examples": [
         {
@@ -7083,155 +6749,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "1.0.0",
       "version_original": "1.0.0"
-    },
-    {
-      "_id": "6234600c670f4cadbafad2ae",
-      "alm_examples": [
-        {
-          "api_version": "cassandra.datastax.com/v1beta1",
-          "kind": "CassandraDatacenter",
-          "metadata": {
-            "name": "dc1"
-          },
-          "spec": {
-            "clusterName": "development",
-            "config": {
-              "cassandra-yaml": {
-                "authenticator": "PasswordAuthenticator",
-                "authorizer": "CassandraAuthorizer",
-                "num_tokens": 16,
-                "role_manager": "CassandraRoleManager"
-              },
-              "jvm-server-options": {
-                "initial_heap#": "1G",
-                "max_heap#": "1G"
-              }
-            },
-            "dockerImageRunsAsCassandra": false,
-            "managementApiAuth": {
-              "insecure": {}
-            },
-            "podTemplateSpec": {
-              "containers": [
-                {
-                  "name": "cassandra",
-                  "securityContext": {}
-                }
-              ],
-              "securityContext": {}
-            },
-            "racks": [
-              {
-                "name": "rack1"
-              }
-            ],
-            "resources": {
-              "requests": {
-                "cpu": "1000m",
-                "memory": "2Gi"
-              }
-            },
-            "serverType": "cassandra",
-            "serverVersion": "4.0.1",
-            "size": 3,
-            "storageConfig": {
-              "cassandraDataVolumeClaimSpec": {
-                "accessModes": [
-                  "ReadWriteOnce"
-                ],
-                "resources": {
-                  "requests": {
-                    "storage": "10Gi"
-                  }
-                },
-                "storageClassName": "server-storage"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/datastax/cass-operator-bundle@sha256:ab3fdcc6fab45909f7824bf3c794b27a166c3faa920f5bf3326c4623b02c27d2",
-      "bundle_path_digest": "sha256:ab3fdcc6fab45909f7824bf3c794b27a166c3faa920f5bf3326c4623b02c27d2",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-18T10:33:48.513000+00:00",
-      "csv_description": "## Apache Cassandra\n\nThe Apache Cassandra database is the right choice when you need scalability and\nhigh availability without compromising performance. Linear scalability and\nproven fault-tolerance on commodity hardware or cloud infrastructure make it the\nperfect platform for mission-critical data. Cassandra's support for replicating\nacross multiple datacenters is best-in-class, providing lower latency for your\nusers and the peace of mind of knowing that you can survive regional outages.\n\n## DataStax Enterprise\n\nThe most advanced distribution of Apache Cassandra\u2122 on the market, with the\nenterprise functionality needed for serious production systems and backed up and\nsupported by the best distributed-experts in the world. It's one platform for\nall types of applications anywhere, any cloud, any model: key-value, graph,\ntabular, JSON.\n\nDataStax Enterprise is a fully integrated and optimized database, with graph,\nanalytics, and search included, all with a unified security model. Simply put,\nit's the only database capable of meeting today's demanding requirements\n\n## Operator Details\n\n`cass-operator` is designed as a modular operator for Apache Cassandra and\nderived  distributions. Apache Cassandra is a distributed database consisting of\nmultiple nodes working in concert to store data and process queries along a\nnumber of fault domains. `cass-operator` has the deployment of a Cassandra\ncluster around the logical domain of a datacenter with the `CassandraDatacenter`\ncustom resource.\n    \nUpon submission of one of these resources it handles provisioning the underlying\nstateful sets (analogous to C\\* logical racks), services, and configuration.\nAdditionally through monitoring pod state via Kubernetes callbacks it handles day to day\noperations such as restarting failed processes, scaling clusters up, and deploying\nconfiguration changes in a rolling, non-disruptive, fashion.\n    \nThis operator is designed to be `Namespace` scoped. A single Kubernetes cluster may\nbe running multiple instances of this operator, in separate namespaces, to support\na number of C\\* clusters and environments. Configuration is simple with the usage of\nYAML based overrides in the Custom Resource paired with an `init` container.\n    \nIn C\\* clusters ordering and timing of certain operations are important to keep the system\nevenly distributed. `cass-operator` takes advantage of a sidecar process within the\nmain container to handle the orchestration of starting our main C* process.",
-      "csv_display_name": "DataStax Kubernetes Operator for Apache Cassandra",
-      "csv_metadata_description": "Simple provisioning, turn-key operations, and automated remediation of Apache Cassandra clusters\n",
-      "csv_name": "cass-operator.v1.10.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:19:21.175000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "cass-operator",
-      "provided_apis": [
-        {
-          "group": "cassandra.datastax.com",
-          "kind": "CassandraDatacenter",
-          "version": "v1beta1"
-        },
-        {
-          "group": "control.k8ssandra.io",
-          "kind": "CassandraTask",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "DataStax",
-      "related_images": [
-        {
-          "digest": "sha256:ae709b680dde2aa43c92d6b331af0554c9af92aa9fad673454892ca2b40bd3f7",
-          "image": "registry.connect.redhat.com/datastax/cass-operator@sha256:ae709b680dde2aa43c92d6b331af0554c9af92aa9fad673454892ca2b40bd3f7",
-          "name": "cass-operator"
-        },
-        {
-          "digest": "sha256:33e75d0c78a277cdc37be24f2b116cade0d9b7dc7249610cdf9bf0705c8a040e",
-          "image": "registry.connect.redhat.com/datastax/system-logger@sha256:33e75d0c78a277cdc37be24f2b116cade0d9b7dc7249610cdf9bf0705c8a040e",
-          "name": "system-logger"
-        },
-        {
-          "digest": "sha256:ae709b680dde2aa43c92d6b331af0554c9af92aa9fad673454892ca2b40bd3f7",
-          "image": "registry.connect.redhat.com/datastax/cass-operator@sha256:ae709b680dde2aa43c92d6b331af0554c9af92aa9fad673454892ca2b40bd3f7",
-          "name": "cass-operator-ae709b680dde2aa43c92d6b331af0554c9af92aa9fad673454892ca2b40bd3f7-annotation"
-        },
-        {
-          "digest": "sha256:ae709b680dde2aa43c92d6b331af0554c9af92aa9fad673454892ca2b40bd3f7",
-          "image": "registry.connect.redhat.com/datastax/cass-operator@sha256:ae709b680dde2aa43c92d6b331af0554c9af92aa9fad673454892ca2b40bd3f7",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.10.1",
-      "version_original": "1.10.1"
     },
     {
       "_id": "6234600f670f4cadbafad2af",
@@ -18060,6 +17577,186 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "0.10.1-rc4",
       "version_original": "0.10.1-rc4"
+    },
+    {
+      "_id": "6262a3e5173a0d36cf5d6923",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "fast",
+      "creation_date": "2022-04-22T12:47:33.211000+00:00",
+      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
+      "csv_display_name": "Run:AI",
+      "csv_metadata_description": "",
+      "csv_name": "installkit-customer.v2.0.15",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:44:03.318000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "installkit-customer",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "name": "operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "2.1.5",
+      "version_original": "2.1.5"
+    },
+    {
+      "_id": "6262a3e784481d5f52299910",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "preview",
+      "creation_date": "2022-04-22T12:47:35.910000+00:00",
+      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
+      "csv_display_name": "Run:AI",
+      "csv_metadata_description": "",
+      "csv_name": "installkit-customer.v2.0.15",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:44:07.944000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "installkit-customer",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "name": "operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "2.1.5",
+      "version_original": "2.1.5"
+    },
+    {
+      "_id": "6262a3ea173a0d36cf5d6924",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:47:38.264000+00:00",
+      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
+      "csv_display_name": "Run:AI",
+      "csv_metadata_description": "",
+      "csv_name": "installkit-customer.v2.0.15",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:43:59.721000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "installkit-customer",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "name": "operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "2.1.5",
+      "version_original": "2.1.5"
     }
   ]
 }

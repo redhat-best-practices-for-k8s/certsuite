@@ -1,524 +1,6 @@
 {
   "data": [
     {
-      "_id": "62e0b6a567e405bb17fa70c3",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {
-            "cni": {
-              "binPath": "/var/lib/cni/bin",
-              "confPath": "/var/run/multus/cni/net.d"
-            },
-            "endpointRoutes": {
-              "enabled": true
-            },
-            "hubble": {
-              "tls": {
-                "enabled": false
-              }
-            },
-            "ipam": {
-              "mode": "cluster-pool",
-              "operator": {
-                "clusterPoolIPv4MaskSize": "23",
-                "clusterPoolIPv4PodCIDR": "10.128.0.0/14"
-              }
-            },
-            "kubeProxyReplacement": "probe",
-            "nativeRoutingCIDR": "10.128.0.0/14",
-            "prometheus": {
-              "serviceMonitor": {
-                "enabled": false
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-olm-metadata@sha256:ef98d9445079d28b6fa9f585b669324d1460a2ac9009cd0a0b0cf3532b0d4355",
-      "bundle_path_digest": "sha256:ef98d9445079d28b6fa9f585b669324d1460a2ac9009cd0a0b0cf3532b0d4355",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.11",
-      "creation_date": "2022-07-27T03:53:09.748000+00:00",
-      "csv_description": "Cilium - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.11.7-x4537d91",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:45:14.983000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "cilium",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "plural": "ciliumconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Isovalent",
-      "related_images": [
-        {
-          "digest": "sha256:66a6f72a49e55e21278d07a99ff2cffa7565ed07f2578d54b5a92c1a492a6597",
-          "image": "quay.io/cilium/cilium@sha256:66a6f72a49e55e21278d07a99ff2cffa7565ed07f2578d54b5a92c1a492a6597",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:df6248b57528eadcf2fac6a27b47bad629ce1c868457a9a2e4835a47e0f18bd3",
-          "image": "quay.io/cilium/hubble-relay@sha256:df6248b57528eadcf2fac6a27b47bad629ce1c868457a9a2e4835a47e0f18bd3",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:0f8ed5d815873d20848a360df3f2ebbd4116481ff817d3f295557801e0b45900",
-          "image": "quay.io/cilium/operator-generic@sha256:0f8ed5d815873d20848a360df3f2ebbd4116481ff817d3f295557801e0b45900",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:66a6f72a49e55e21278d07a99ff2cffa7565ed07f2578d54b5a92c1a492a6597",
-          "image": "quay.io/cilium/cilium@sha256:66a6f72a49e55e21278d07a99ff2cffa7565ed07f2578d54b5a92c1a492a6597",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:faffaadeeed55779af31479a8b4663df4b5de2515018127a919409e3281e1b6f",
-          "image": "quay.io/cilium/clustermesh-apiserver@sha256:faffaadeeed55779af31479a8b4663df4b5de2515018127a919409e3281e1b6f",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "image": "quay.io/cilium/hubble-ui@sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:911e0642bc1166a8922eb14f025ebd0eb6cffab5f73466c2e96ca368fe4ef085",
-          "image": "registry.connect.redhat.com/isovalent/cilium-olm@sha256:911e0642bc1166a8922eb14f025ebd0eb6cffab5f73466c2e96ca368fe4ef085",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:df6248b57528eadcf2fac6a27b47bad629ce1c868457a9a2e4835a47e0f18bd3",
-          "image": "quay.io/cilium/hubble-relay@sha256:df6248b57528eadcf2fac6a27b47bad629ce1c868457a9a2e4835a47e0f18bd3",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:0f8ed5d815873d20848a360df3f2ebbd4116481ff817d3f295557801e0b45900",
-          "image": "quay.io/cilium/operator-generic@sha256:0f8ed5d815873d20848a360df3f2ebbd4116481ff817d3f295557801e0b45900",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "image": "quay.io/cilium/hubble-ui@sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.11.7+x4537d91",
-      "version_original": "1.11.7+x4537d91"
-    },
-    {
-      "_id": "62e0dbf2297aa53ad8d37c90",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-olm-metadata@sha256:e9703f5b1b45d66a459a73298712021720c5827703f2c038759b871b6619b85c",
-      "bundle_path_digest": "sha256:e9703f5b1b45d66a459a73298712021720c5827703f2c038759b871b6619b85c",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.12",
-      "creation_date": "2022-07-27T06:32:18.089000+00:00",
-      "csv_description": "Cilium - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.12.0-xb42b669",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:42:25.096000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "cilium",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "plural": "ciliumconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Isovalent",
-      "related_images": [
-        {
-          "digest": "sha256:079baa4fa1b9fe638f96084f4e0297c84dd4fb215d29d2321dcbe54273f63ade",
-          "image": "quay.io/cilium/cilium@sha256:079baa4fa1b9fe638f96084f4e0297c84dd4fb215d29d2321dcbe54273f63ade",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:ca8033ea8a3112d838f958862fa76c8d895e3c8d0f5590de849b91745af5ac4d",
-          "image": "quay.io/cilium/hubble-relay@sha256:ca8033ea8a3112d838f958862fa76c8d895e3c8d0f5590de849b91745af5ac4d",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:bb2a42eda766e5d4a87ee8a5433f089db81b72dd04acf6b59fcbb445a95f9410",
-          "image": "quay.io/cilium/operator-generic@sha256:bb2a42eda766e5d4a87ee8a5433f089db81b72dd04acf6b59fcbb445a95f9410",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:079baa4fa1b9fe638f96084f4e0297c84dd4fb215d29d2321dcbe54273f63ade",
-          "image": "quay.io/cilium/cilium@sha256:079baa4fa1b9fe638f96084f4e0297c84dd4fb215d29d2321dcbe54273f63ade",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:3f5a6298bd70a2b555c88e291eec1583a6478c3e2272e3fc721aa03b3300d299",
-          "image": "quay.io/cilium/clustermesh-apiserver@sha256:3f5a6298bd70a2b555c88e291eec1583a6478c3e2272e3fc721aa03b3300d299",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:2e0fc99ace29bbe5837718684920112a026bffc46f70efb38ea596c524e68819",
-          "image": "quay.io/cilium/certgen@sha256:2e0fc99ace29bbe5837718684920112a026bffc46f70efb38ea596c524e68819",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "image": "quay.io/cilium/hubble-ui@sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:c263d1678fb426842c0836358c1da7628d771126211694a3776c4b8500cbb215",
-          "image": "quay.io/cilium/startup-script@sha256:c263d1678fb426842c0836358c1da7628d771126211694a3776c4b8500cbb215",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:a67fb152d4c53223e96e818420c37f11d05c2d92cf62c05ca5604066c37295e9",
-          "image": "quay.io/coreos/etcd@sha256:a67fb152d4c53223e96e818420c37f11d05c2d92cf62c05ca5604066c37295e9",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:a8c4993ce81c623fefdf9336eccebb8572e7adea5aa909d7e5efc5ba2951c3b6",
-          "image": "registry.connect.redhat.com/isovalent/cilium-olm@sha256:a8c4993ce81c623fefdf9336eccebb8572e7adea5aa909d7e5efc5ba2951c3b6",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:ca8033ea8a3112d838f958862fa76c8d895e3c8d0f5590de849b91745af5ac4d",
-          "image": "quay.io/cilium/hubble-relay@sha256:ca8033ea8a3112d838f958862fa76c8d895e3c8d0f5590de849b91745af5ac4d",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:bb2a42eda766e5d4a87ee8a5433f089db81b72dd04acf6b59fcbb445a95f9410",
-          "image": "quay.io/cilium/operator-generic@sha256:bb2a42eda766e5d4a87ee8a5433f089db81b72dd04acf6b59fcbb445a95f9410",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "image": "quay.io/cilium/hubble-ui@sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:a67fb152d4c53223e96e818420c37f11d05c2d92cf62c05ca5604066c37295e9",
-          "image": "quay.io/coreos/etcd@sha256:a67fb152d4c53223e96e818420c37f11d05c2d92cf62c05ca5604066c37295e9",
-          "name": "clustermesh_etcd"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.12.0+xb42b669",
-      "version_original": "1.12.0+xb42b669"
-    },
-    {
-      "_id": "62e0dcd3600c1c54025c24f4",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-olm-metadata@sha256:e9703f5b1b45d66a459a73298712021720c5827703f2c038759b871b6619b85c",
-      "bundle_path_digest": "sha256:e9703f5b1b45d66a459a73298712021720c5827703f2c038759b871b6619b85c",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.12",
-      "creation_date": "2022-07-27T06:36:03.001000+00:00",
-      "csv_description": "Cilium - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.12.0-xb42b669",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:16:55.560000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "cilium",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Isovalent",
-      "related_images": [
-        {
-          "digest": "sha256:079baa4fa1b9fe638f96084f4e0297c84dd4fb215d29d2321dcbe54273f63ade",
-          "image": "quay.io/cilium/cilium@sha256:079baa4fa1b9fe638f96084f4e0297c84dd4fb215d29d2321dcbe54273f63ade",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:ca8033ea8a3112d838f958862fa76c8d895e3c8d0f5590de849b91745af5ac4d",
-          "image": "quay.io/cilium/hubble-relay@sha256:ca8033ea8a3112d838f958862fa76c8d895e3c8d0f5590de849b91745af5ac4d",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:bb2a42eda766e5d4a87ee8a5433f089db81b72dd04acf6b59fcbb445a95f9410",
-          "image": "quay.io/cilium/operator-generic@sha256:bb2a42eda766e5d4a87ee8a5433f089db81b72dd04acf6b59fcbb445a95f9410",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:079baa4fa1b9fe638f96084f4e0297c84dd4fb215d29d2321dcbe54273f63ade",
-          "image": "quay.io/cilium/cilium@sha256:079baa4fa1b9fe638f96084f4e0297c84dd4fb215d29d2321dcbe54273f63ade",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:3f5a6298bd70a2b555c88e291eec1583a6478c3e2272e3fc721aa03b3300d299",
-          "image": "quay.io/cilium/clustermesh-apiserver@sha256:3f5a6298bd70a2b555c88e291eec1583a6478c3e2272e3fc721aa03b3300d299",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:2e0fc99ace29bbe5837718684920112a026bffc46f70efb38ea596c524e68819",
-          "image": "quay.io/cilium/certgen@sha256:2e0fc99ace29bbe5837718684920112a026bffc46f70efb38ea596c524e68819",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "image": "quay.io/cilium/hubble-ui@sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:c263d1678fb426842c0836358c1da7628d771126211694a3776c4b8500cbb215",
-          "image": "quay.io/cilium/startup-script@sha256:c263d1678fb426842c0836358c1da7628d771126211694a3776c4b8500cbb215",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:a67fb152d4c53223e96e818420c37f11d05c2d92cf62c05ca5604066c37295e9",
-          "image": "quay.io/coreos/etcd@sha256:a67fb152d4c53223e96e818420c37f11d05c2d92cf62c05ca5604066c37295e9",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:a8c4993ce81c623fefdf9336eccebb8572e7adea5aa909d7e5efc5ba2951c3b6",
-          "image": "registry.connect.redhat.com/isovalent/cilium-olm@sha256:a8c4993ce81c623fefdf9336eccebb8572e7adea5aa909d7e5efc5ba2951c3b6",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:ca8033ea8a3112d838f958862fa76c8d895e3c8d0f5590de849b91745af5ac4d",
-          "image": "quay.io/cilium/hubble-relay@sha256:ca8033ea8a3112d838f958862fa76c8d895e3c8d0f5590de849b91745af5ac4d",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:bb2a42eda766e5d4a87ee8a5433f089db81b72dd04acf6b59fcbb445a95f9410",
-          "image": "quay.io/cilium/operator-generic@sha256:bb2a42eda766e5d4a87ee8a5433f089db81b72dd04acf6b59fcbb445a95f9410",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "image": "quay.io/cilium/hubble-ui-backend@sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "image": "quay.io/cilium/hubble-ui@sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:a67fb152d4c53223e96e818420c37f11d05c2d92cf62c05ca5604066c37295e9",
-          "image": "quay.io/coreos/etcd@sha256:a67fb152d4c53223e96e818420c37f11d05c2d92cf62c05ca5604066c37295e9",
-          "name": "clustermesh_etcd"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.12.0+xb42b669",
-      "version_original": "1.12.0+xb42b669"
-    },
-    {
       "_id": "62e0dd0915b1275ee34b6113",
       "alm_examples": [
         {
@@ -8852,170 +8334,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "1.11.0",
       "version_original": "1.11.0"
-    },
-    {
-      "_id": "62e9384f1c1f32c818c67082",
-      "alm_examples": [
-        {
-          "api_version": "operator.antrea.vmware.com/v1",
-          "kind": "AntreaInstall",
-          "metadata": {
-            "name": "antrea-install",
-            "namespace": "antrea-operator"
-          },
-          "spec": {
-            "antreaAgentConfig": "# FeatureGates is a map of feature names to bools that enable or disable experimental features.\nfeatureGates:\n# Enable AntreaProxy which provides ServiceLB for in-cluster Services in antrea-agent.\n# It should be enabled on Windows, otherwise NetworkPolicy will not take effect on\n# Service traffic.\n#  AntreaProxy: true\n\n# Enable EndpointSlice support in AntreaProxy. Don't enable this feature unless that EndpointSlice\n# API version v1beta1 is supported and set as enabled in Kubernetes. If AntreaProxy is not enabled,\n# this flag will not take effect.\n#  EndpointSlice: false\n\n# Enable traceflow which provides packet tracing feature to diagnose network issue.\n#  Traceflow: true\n\n# Enable NodePortLocal feature to make the Pods reachable externally through NodePort\n#  NodePortLocal: true\n\n# Enable Antrea ClusterNetworkPolicy feature to complement K8s NetworkPolicy for cluster admins\n# to define security policies which apply to the entire cluster, and Antrea NetworkPolicy\n# feature that supports priorities, rule actions and externalEntities in the future.\n#  AntreaPolicy: true\n\n# Enable flowexporter which exports polled conntrack connections as IPFIX flow records from each\n# agent to a configured collector.\n#  FlowExporter: false\n\n# Enable collecting and exposing NetworkPolicy statistics.\n#  NetworkPolicyStats: true\n\n# Enable controlling SNAT IPs of Pod egress traffic.\n#  Egress: false\n\n# Enable AntreaIPAM, which can allocate IP addresses from IPPools. AntreaIPAM is required by the\n# bridging mode and allocates IPs to Pods in bridging mode.\n#  AntreaIPAM: false\n\n# Enable multicast traffic. This feature is supported only with noEncap mode.\n#  Multicast: false\n\n# Enable support for provisioning secondary network interfaces for Pods (using\n# Pod annotations). At the moment, Antrea can only create secondary network\n# interfaces using SR-IOV VFs on baremetal Nodes.\n#  SecondaryNetwork: false\n\n# Enable managing external IPs of Services of LoadBalancer type.\n#  ServiceExternalIP: false\n\n# Name of the OpenVSwitch bridge antrea-agent will create and use.\n# Make sure it doesn't conflict with your existing OpenVSwitch bridges.\n#ovsBridge: br-int\n\n# Datapath type to use for the OpenVSwitch bridge created by Antrea. Supported values are:\n# - system\n# - netdev\n# 'system' is the default value and corresponds to the kernel datapath. Use 'netdev' to run\n# OVS in userspace mode. Userspace mode requires the tun device driver to be available.\n#ovsDatapathType: system\n\n# Name of the interface antrea-agent will create and use for host <--> pod communication.\n# Make sure it doesn't conflict with your existing interfaces.\n#hostGateway: antrea-gw0\n\n# Determines how traffic is encapsulated. It has the following options:\n# encap(default):    Inter-node Pod traffic is always encapsulated and Pod to external network\n#                    traffic is SNAT'd.\n# noEncap:           Inter-node Pod traffic is not encapsulated; Pod to external network traffic is\n#                    SNAT'd if noSNAT is not set to true. Underlying network must be capable of\n#                    supporting Pod traffic across IP subnets.\n# hybrid:            noEncap if source and destination Nodes are on the same subnet, otherwise encap.\n# networkPolicyOnly: Antrea enforces NetworkPolicy only, and utilizes CNI chaining and delegates Pod\n#                    IPAM and connectivity to the primary CNI.\n#\n#trafficEncapMode: encap\n\n# Whether or not to SNAT (using the Node IP) the egress traffic from a Pod to the external network.\n# This option is for the noEncap traffic mode only, and the default value is false. In the noEncap\n# mode, if the cluster's Pod CIDR is reachable from the external network, then the Pod traffic to\n# the external network needs not be SNAT'd. In the networkPolicyOnly mode, antrea-agent never\n# performs SNAT and this option will be ignored; for other modes it must be set to false.\n#noSNAT: false\n\n# Tunnel protocols used for encapsulating traffic across Nodes. If WireGuard is enabled in trafficEncryptionMode,\n# this option will not take effect. Supported values:\n# - geneve (default)\n# - vxlan\n# - gre\n# - stt\n#tunnelType: geneve\n\n# Determines how tunnel traffic is encrypted. Currently encryption only works with encap mode.\n# It has the following options:\n# - none (default):  Inter-node Pod traffic will not be encrypted.\n# - ipsec:           Enable IPsec (ESP) encryption for Pod traffic across Nodes. Antrea uses\n#                    Preshared Key (PSK) for IKE authentication. When IPsec tunnel is enabled,\n#                    the PSK value must be passed to Antrea Agent through an environment\n#                    variable: ANTREA_IPSEC_PSK.\n# - wireGuard:       Enable WireGuard for tunnel traffic encryption.\n#trafficEncryptionMode: none\n\n# Enable bridging mode of Pod network on Nodes, in which the Node's transport interface is connected\n# to the OVS bridge, and cross-Node/VLAN traffic from AntreaIPAM Pods (Pods whose IP addresses are\n# allocated by AntreaIPAM from IPPools) is sent to the underlay network via the uplink, and\n# forwarded/routed by the underlay network.\n# This option requires the `AntreaIPAM` feature gate to be enabled. At this moment, it supports only\n# IPv4 and Linux Nodes, and can be enabled only when `ovsDatapathType` is `system`,\n# `trafficEncapMode` is `noEncap`, and `noSNAT` is true.\n#enableBridgingMode: false\n\n# Default MTU to use for the host gateway interface and the network interface of each Pod.\n# If omitted, antrea-agent will discover the MTU of the Node's primary interface and\n# also adjust MTU to accommodate for tunnel encapsulation overhead (if applicable).\n#defaultMTU: 0\n\n# wireGuard specifies WireGuard related configurations.\nwireGuard:\n#  The port for WireGuard to receive traffic.\n#  port: 51820\n\negress:\n#  exceptCIDRs is the CIDR ranges to which outbound Pod traffic will not be SNAT'd by Egresses.\n#  exceptCIDRs: []\n\n# ClusterIP CIDR range for Services. It's required when AntreaProxy is not enabled, and should be\n# set to the same value as the one specified by --service-cluster-ip-range for kube-apiserver. When\n# AntreaProxy is enabled, this parameter is not needed and will be ignored if provided.\n#serviceCIDR: 10.96.0.0/12\n\n# ClusterIP CIDR range for IPv6 Services. It's required when using kube-proxy to provide IPv6 Service in a Dual-Stack\n# cluster or an IPv6 only cluster. The value should be the same as the configuration for kube-apiserver specified by\n# --service-cluster-ip-range. When AntreaProxy is enabled, this parameter is not needed.\n# No default value for this field.\n#serviceCIDRv6:\n\n# The port for the antrea-agent APIServer to serve on.\n# Note that if it's set to another value, the `containerPort` of the `api` port of the\n# `antrea-agent` container must be set to the same value.\n#apiPort: 10350\n\n# Enable metrics exposure via Prometheus. Initializes Prometheus metrics listener.\n#enablePrometheusMetrics: true\n\n# Provide the IPFIX collector address as a string with format <HOST>:[<PORT>][:<PROTO>].\n# HOST can either be the DNS name or the IP of the Flow Collector. For example,\n# \"flow-aggregator.flow-aggregator.svc\" can be provided as DNS name to connect\n# to the Antrea Flow Aggregator service. If IP, it can be either IPv4 or IPv6.\n# However, IPv6 address should be wrapped with [].\n# If PORT is empty, we default to 4739, the standard IPFIX port.\n# If no PROTO is given, we consider \"tls\" as default. We support \"tls\", \"tcp\" and\n# \"udp\" protocols. \"tls\" is used for securing communication between flow exporter and\n# flow aggregator.\n#flowCollectorAddr: \"flow-aggregator.flow-aggregator.svc:4739:tls\"\n\n# Provide flow poll interval as a duration string. This determines how often the\n# flow exporter dumps connections from the conntrack module. Flow poll interval\n# should be greater than or equal to 1s (one second).\n# Valid time units are \"ns\", \"us\" (or \"\u00b5s\"), \"ms\", \"s\", \"m\", \"h\".\n#flowPollInterval: \"5s\"\n\n# Provide the active flow export timeout, which is the timeout after which a flow\n# record is sent to the collector for active flows. Thus, for flows with a continuous\n# stream of packets, a flow record will be exported to the collector once the elapsed\n# time since the last export event is equal to the value of this timeout.\n# Valid time units are \"ns\", \"us\" (or \"\u00b5s\"), \"ms\", \"s\", \"m\", \"h\".\n#activeFlowExportTimeout: \"30s\"\n\n# Provide the idle flow export timeout, which is the timeout after which a flow\n# record is sent to the collector for idle flows. A flow is considered idle if no\n# packet matching this flow has been observed since the last export event.\n# Valid time units are \"ns\", \"us\" (or \"\u00b5s\"), \"ms\", \"s\", \"m\", \"h\".\n#idleFlowExportTimeout: \"15s\"\n\nnodePortLocal:\n# Enable NodePortLocal, a feature used to make Pods reachable using port forwarding on the host. To\n# enable this feature, you need to set \"enable\" to true, and ensure that the NodePortLocal feature\n# gate is also enabled (which is the default).\n#  enable: false\n# Provide the port range used by NodePortLocal. When the NodePortLocal feature is enabled, a port\n# from that range will be assigned whenever a Pod's container defines a specific port to be exposed\n# (each container can define a list of ports as pod.spec.containers[].ports), and all Node traffic\n# directed to that port will be forwarded to the Pod.\n#  portRange: 61000-62000\n\n# Provide the address of Kubernetes apiserver, to override any value provided in kubeconfig or InClusterConfig.\n# Defaults to \"\". It must be a host string, a host:port pair, or a URL to the base of the apiserver.\n#kubeAPIServerOverride: \"\"\n\n# Comma-separated list of Cipher Suites. If omitted, the default Go Cipher Suites will be used.\n# https://golang.org/pkg/crypto/tls/#pkg-constants\n# Note that TLS1.3 Cipher Suites cannot be added to the list. But the apiserver will always\n# prefer TLS1.3 Cipher Suites whenever possible.\n#tlsCipherSuites:\n\n# TLS min version from: VersionTLS10, VersionTLS11, VersionTLS12, VersionTLS13.\n#tlsMinVersion:\n\n# The name of the interface on Node which is used for tunneling or routing the traffic across Nodes.\n# If there are multiple IP addresses configured on the interface, the first one is used. The IP\n# address used for tunneling or routing traffic to remote Nodes is decided in the following order of\n# preference (from highest to lowest):\n# 1. transportInterface\n# 2. transportInterfaceCIDRs\n# 3. The Node IP\n#transportInterface:\n\n# The names of the interfaces on Nodes that are used to forward multicast traffic.\n# Defaults to transport interface if not set.\n#multicastInterfaces: []\n\n# The network CIDRs of the interface on Node which is used for tunneling or routing the traffic across\n# Nodes. If there are multiple interfaces configured the same network CIDR, the first one is used. The\n# IP address used for tunneling or routing traffic to remote Nodes is decided in the following order of\n# preference (from highest to lowest):\n# 1. transportInterface\n# 2. transportInterfaceCIDRs\n# 3. The Node IP\n#transportInterfaceCIDRs: [<IPv4 CIDR>,<IPv6 CIDR>]\n\n# Option antreaProxy contains AntreaProxy related configuration options.\nantreaProxy:\n# ProxyAll tells antrea-agent to proxy all Service traffic, including NodePort, LoadBalancer, and ClusterIP traffic,\n# regardless of where they come from. Therefore, running kube-proxy is no longer required. This requires the AntreaProxy\n# feature to be enabled.\n# Note that this option is experimental. If kube-proxy is removed, option kubeAPIServerOverride must be used to access\n# apiserver directly.\n#proxyAll: false\n# A string array of values which specifies the host IPv4/IPv6 addresses for NodePort. Values can be valid IP blocks.\n# (e.g. 1.2.3.0/24, 1.2.3.4/32). An empty string slice is meant to select all host IPv4/IPv6 addresses.\n# Note that the option is only valid when proxyAll is true.\n#nodePortAddresses: []\n# An array of string values to specify a list of Services which should be ignored by AntreaProxy (traffic to these\n# Services will not be load-balanced). Values can be a valid ClusterIP (e.g. 10.11.1.2) or a Service name\n# with Namespace (e.g. kube-system/kube-dns)\n#skipServices: []\n# When ProxyLoadBalancerIPs is set to false, AntreaProxy no longer load-balances traffic destined to the\n# External IPs of LoadBalancer Services. This is useful when the external LoadBalancer provides additional\n# capabilities (e.g. TLS termination) and it is desirable for Pod-to-ExternalIP traffic to be sent to the\n# external LoadBalancer instead of being load-balanced to an Endpoint directly by AntreaProxy.\n# Note that setting ProxyLoadBalancerIPs to false usually only makes sense when ProxyAll is set to true and\n# kube-proxy is removed from the cluser, otherwise kube-proxy will still load-balance this traffic.\n#proxyLoadBalancerIPs: true\n",
-            "antreaCNIConfig": "{\n    \"cniVersion\":\"0.3.0\",\n    \"name\": \"antrea\",\n    \"plugins\": [\n        {\n            \"type\": \"antrea\",\n            \"ipam\": {\n                \"type\": \"host-local\"\n            }\n        },\n        {\n            \"type\": \"portmap\",\n            \"capabilities\": {\"portMappings\": true}\n        },\n        {\n            \"type\": \"bandwidth\",\n            \"capabilities\": {\"bandwidth\": true}\n        }\n    ]\n}\n",
-            "antreaControllerConfig": "# FeatureGates is a map of feature names to bools that enable or disable experimental features.\nfeatureGates:\n# Enable traceflow which provides packet tracing feature to diagnose network issue.\n#  Traceflow: true\n\n# Enable Antrea ClusterNetworkPolicy feature to complement K8s NetworkPolicy for cluster admins\n# to define security policies which apply to the entire cluster, and Antrea NetworkPolicy\n# feature that supports priorities, rule actions and externalEntities in the future.\n#  AntreaPolicy: true\n\n# Enable collecting and exposing NetworkPolicy statistics.\n#  NetworkPolicyStats: true\n\n# Enable controlling SNAT IPs of Pod egress traffic.\n#  Egress: false\n\n# Run Kubernetes NodeIPAMController with Antrea.\n#  NodeIPAM: false\n\n# Enable flexible IPAM mode for Antrea. This mode allows to assign IP Ranges to Namespaces,\n# Deployments and StatefulSets via IP Pool annotation.\n#  AntreaIPAM: false\n\n# Enable managing external IPs of Services of LoadBalancer type.\n#  ServiceExternalIP: false\n\n# The port for the antrea-controller APIServer to serve on.\n# Note that if it's set to another value, the `containerPort` of the `api` port of the\n# `antrea-controller` container must be set to the same value.\n#apiPort: 10349\n\n# Enable metrics exposure via Prometheus. Initializes Prometheus metrics listener.\n#enablePrometheusMetrics: true\n\n# Indicates whether to use auto-generated self-signed TLS certificate.\n# If false, A Secret named \"antrea-controller-tls\" must be provided with the following keys:\n#   ca.crt: <CA certificate>\n#   tls.crt: <TLS certificate>\n#   tls.key: <TLS private key>\n# And the Secret must be mounted to directory \"/var/run/antrea/antrea-controller-tls\" of the\n# antrea-controller container.\n#selfSignedCert: true\n\n# Comma-separated list of Cipher Suites. If omitted, the default Go Cipher Suites will be used.\n# https://golang.org/pkg/crypto/tls/#pkg-constants\n# Note that TLS1.3 Cipher Suites cannot be added to the list. But the apiserver will always\n# prefer TLS1.3 Cipher Suites whenever possible.\n#tlsCipherSuites:\n\n# TLS min version from: VersionTLS10, VersionTLS11, VersionTLS12, VersionTLS13.\n#tlsMinVersion:\n\nnodeIPAM:\n# Enable the integrated Node IPAM controller within the Antrea controller.\n#  enableNodeIPAM: false\n\n# CIDR ranges for Pods in cluster. String array containing single CIDR range, or multiple ranges.\n# The CIDRs could be either IPv4 or IPv6. At most one CIDR may be specified for each IP family.\n# Value ignored when enableNodeIPAM is false.\n#  clusterCIDRs: []\n\n# CIDR ranges for Services in cluster. It is not necessary to specify it when there is no overlap with clusterCIDRs.\n# Value ignored when enableNodeIPAM is false.\n#  serviceCIDR:\n#  serviceCIDRv6:\n\n# Mask size for IPv4 Node CIDR in IPv4 or dual-stack cluster. Value ignored when enableNodeIPAM is false\n# or when IPv4 Pod CIDR is not configured. Valid range is 16 to 30.\n#  nodeCIDRMaskSizeIPv4: 24\n\n# Mask size for IPv6 Node CIDR in IPv6 or dual-stack cluster. Value ignored when enableNodeIPAM is false\n# or when IPv6 Pod CIDR is not configured. Valid range is 64 to 126.\n#  nodeCIDRMaskSizeIPv6: 64\n",
-            "antreaImage": "antrea/antrea-ubi:v1.7.0"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/wavefronthq/antrea-openshift-operator@sha256:8d01228af9c1292672297ddef337a9854fd37a9736028009937376ab6f97c22f",
-      "bundle_path_digest": "sha256:8d01228af9c1292672297ddef337a9854fd37a9736028009937376ab6f97c22f",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-08-02T14:44:31.460000+00:00",
-      "csv_description": "An operator which installs Antrea network CNI plugin on the Kubernetes cluster.",
-      "csv_display_name": "Antrea Operator",
-      "csv_metadata_description": "An operator which installs Antrea network CNI plugin on the Kubernetes cluster.",
-      "csv_name": "antrea-operator-for-kubernetes.v1.7.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:39:46.974000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "antrea-operator-for-kubernetes",
-      "provided_apis": [
-        {
-          "group": "operator.antrea.vmware.com",
-          "kind": "AntreaInstall",
-          "plural": "antreainstalls",
-          "version": "v1"
-        }
-      ],
-      "provider": "antrea.io",
-      "related_images": [
-        {
-          "digest": "sha256:8737f208421d295be92cc42daf369f2cef88ebc6098e8ee474b352a1075bbe39",
-          "image": "antrea/antrea-operator@sha256:8737f208421d295be92cc42daf369f2cef88ebc6098e8ee474b352a1075bbe39",
-          "name": "antrea-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.7.0",
-      "version_original": "1.7.0"
-    },
-    {
-      "_id": "62e93c3adec4939bdee17e95",
-      "alm_examples": [
-        {
-          "api_version": "operator.antrea.vmware.com/v1",
-          "kind": "AntreaInstall",
-          "metadata": {
-            "name": "antrea-install",
-            "namespace": "antrea-operator"
-          },
-          "spec": {
-            "antreaAgentConfig": "# FeatureGates is a map of feature names to bools that enable or disable experimental features.\nfeatureGates:\n# Enable AntreaProxy which provides ServiceLB for in-cluster Services in antrea-agent.\n# It should be enabled on Windows, otherwise NetworkPolicy will not take effect on\n# Service traffic.\n#  AntreaProxy: true\n\n# Enable EndpointSlice support in AntreaProxy. Don't enable this feature unless that EndpointSlice\n# API version v1beta1 is supported and set as enabled in Kubernetes. If AntreaProxy is not enabled,\n# this flag will not take effect.\n#  EndpointSlice: false\n\n# Enable traceflow which provides packet tracing feature to diagnose network issue.\n#  Traceflow: true\n\n# Enable NodePortLocal feature to make the Pods reachable externally through NodePort\n#  NodePortLocal: true\n\n# Enable Antrea ClusterNetworkPolicy feature to complement K8s NetworkPolicy for cluster admins\n# to define security policies which apply to the entire cluster, and Antrea NetworkPolicy\n# feature that supports priorities, rule actions and externalEntities in the future.\n#  AntreaPolicy: true\n\n# Enable flowexporter which exports polled conntrack connections as IPFIX flow records from each\n# agent to a configured collector.\n#  FlowExporter: false\n\n# Enable collecting and exposing NetworkPolicy statistics.\n#  NetworkPolicyStats: true\n\n# Enable controlling SNAT IPs of Pod egress traffic.\n#  Egress: false\n\n# Enable AntreaIPAM, which can allocate IP addresses from IPPools. AntreaIPAM is required by the\n# bridging mode and allocates IPs to Pods in bridging mode.\n#  AntreaIPAM: false\n\n# Enable multicast traffic. This feature is supported only with noEncap mode.\n#  Multicast: false\n\n# Enable support for provisioning secondary network interfaces for Pods (using\n# Pod annotations). At the moment, Antrea can only create secondary network\n# interfaces using SR-IOV VFs on baremetal Nodes.\n#  SecondaryNetwork: false\n\n# Enable managing external IPs of Services of LoadBalancer type.\n#  ServiceExternalIP: false\n\n# Name of the OpenVSwitch bridge antrea-agent will create and use.\n# Make sure it doesn't conflict with your existing OpenVSwitch bridges.\n#ovsBridge: br-int\n\n# Datapath type to use for the OpenVSwitch bridge created by Antrea. Supported values are:\n# - system\n# - netdev\n# 'system' is the default value and corresponds to the kernel datapath. Use 'netdev' to run\n# OVS in userspace mode. Userspace mode requires the tun device driver to be available.\n#ovsDatapathType: system\n\n# Name of the interface antrea-agent will create and use for host <--> pod communication.\n# Make sure it doesn't conflict with your existing interfaces.\n#hostGateway: antrea-gw0\n\n# Determines how traffic is encapsulated. It has the following options:\n# encap(default):    Inter-node Pod traffic is always encapsulated and Pod to external network\n#                    traffic is SNAT'd.\n# noEncap:           Inter-node Pod traffic is not encapsulated; Pod to external network traffic is\n#                    SNAT'd if noSNAT is not set to true. Underlying network must be capable of\n#                    supporting Pod traffic across IP subnets.\n# hybrid:            noEncap if source and destination Nodes are on the same subnet, otherwise encap.\n# networkPolicyOnly: Antrea enforces NetworkPolicy only, and utilizes CNI chaining and delegates Pod\n#                    IPAM and connectivity to the primary CNI.\n#\n#trafficEncapMode: encap\n\n# Whether or not to SNAT (using the Node IP) the egress traffic from a Pod to the external network.\n# This option is for the noEncap traffic mode only, and the default value is false. In the noEncap\n# mode, if the cluster's Pod CIDR is reachable from the external network, then the Pod traffic to\n# the external network needs not be SNAT'd. In the networkPolicyOnly mode, antrea-agent never\n# performs SNAT and this option will be ignored; for other modes it must be set to false.\n#noSNAT: false\n\n# Tunnel protocols used for encapsulating traffic across Nodes. If WireGuard is enabled in trafficEncryptionMode,\n# this option will not take effect. Supported values:\n# - geneve (default)\n# - vxlan\n# - gre\n# - stt\n#tunnelType: geneve\n\n# Determines how tunnel traffic is encrypted. Currently encryption only works with encap mode.\n# It has the following options:\n# - none (default):  Inter-node Pod traffic will not be encrypted.\n# - ipsec:           Enable IPsec (ESP) encryption for Pod traffic across Nodes. Antrea uses\n#                    Preshared Key (PSK) for IKE authentication. When IPsec tunnel is enabled,\n#                    the PSK value must be passed to Antrea Agent through an environment\n#                    variable: ANTREA_IPSEC_PSK.\n# - wireGuard:       Enable WireGuard for tunnel traffic encryption.\n#trafficEncryptionMode: none\n\n# Enable bridging mode of Pod network on Nodes, in which the Node's transport interface is connected\n# to the OVS bridge, and cross-Node/VLAN traffic from AntreaIPAM Pods (Pods whose IP addresses are\n# allocated by AntreaIPAM from IPPools) is sent to the underlay network via the uplink, and\n# forwarded/routed by the underlay network.\n# This option requires the `AntreaIPAM` feature gate to be enabled. At this moment, it supports only\n# IPv4 and Linux Nodes, and can be enabled only when `ovsDatapathType` is `system`,\n# `trafficEncapMode` is `noEncap`, and `noSNAT` is true.\n#enableBridgingMode: false\n\n# Default MTU to use for the host gateway interface and the network interface of each Pod.\n# If omitted, antrea-agent will discover the MTU of the Node's primary interface and\n# also adjust MTU to accommodate for tunnel encapsulation overhead (if applicable).\n#defaultMTU: 0\n\n# wireGuard specifies WireGuard related configurations.\nwireGuard:\n#  The port for WireGuard to receive traffic.\n#  port: 51820\n\negress:\n#  exceptCIDRs is the CIDR ranges to which outbound Pod traffic will not be SNAT'd by Egresses.\n#  exceptCIDRs: []\n\n# ClusterIP CIDR range for Services. It's required when AntreaProxy is not enabled, and should be\n# set to the same value as the one specified by --service-cluster-ip-range for kube-apiserver. When\n# AntreaProxy is enabled, this parameter is not needed and will be ignored if provided.\n#serviceCIDR: 10.96.0.0/12\n\n# ClusterIP CIDR range for IPv6 Services. It's required when using kube-proxy to provide IPv6 Service in a Dual-Stack\n# cluster or an IPv6 only cluster. The value should be the same as the configuration for kube-apiserver specified by\n# --service-cluster-ip-range. When AntreaProxy is enabled, this parameter is not needed.\n# No default value for this field.\n#serviceCIDRv6:\n\n# The port for the antrea-agent APIServer to serve on.\n# Note that if it's set to another value, the `containerPort` of the `api` port of the\n# `antrea-agent` container must be set to the same value.\n#apiPort: 10350\n\n# Enable metrics exposure via Prometheus. Initializes Prometheus metrics listener.\n#enablePrometheusMetrics: true\n\n# Provide the IPFIX collector address as a string with format <HOST>:[<PORT>][:<PROTO>].\n# HOST can either be the DNS name or the IP of the Flow Collector. For example,\n# \"flow-aggregator.flow-aggregator.svc\" can be provided as DNS name to connect\n# to the Antrea Flow Aggregator service. If IP, it can be either IPv4 or IPv6.\n# However, IPv6 address should be wrapped with [].\n# If PORT is empty, we default to 4739, the standard IPFIX port.\n# If no PROTO is given, we consider \"tls\" as default. We support \"tls\", \"tcp\" and\n# \"udp\" protocols. \"tls\" is used for securing communication between flow exporter and\n# flow aggregator.\n#flowCollectorAddr: \"flow-aggregator.flow-aggregator.svc:4739:tls\"\n\n# Provide flow poll interval as a duration string. This determines how often the\n# flow exporter dumps connections from the conntrack module. Flow poll interval\n# should be greater than or equal to 1s (one second).\n# Valid time units are \"ns\", \"us\" (or \"\u00b5s\"), \"ms\", \"s\", \"m\", \"h\".\n#flowPollInterval: \"5s\"\n\n# Provide the active flow export timeout, which is the timeout after which a flow\n# record is sent to the collector for active flows. Thus, for flows with a continuous\n# stream of packets, a flow record will be exported to the collector once the elapsed\n# time since the last export event is equal to the value of this timeout.\n# Valid time units are \"ns\", \"us\" (or \"\u00b5s\"), \"ms\", \"s\", \"m\", \"h\".\n#activeFlowExportTimeout: \"30s\"\n\n# Provide the idle flow export timeout, which is the timeout after which a flow\n# record is sent to the collector for idle flows. A flow is considered idle if no\n# packet matching this flow has been observed since the last export event.\n# Valid time units are \"ns\", \"us\" (or \"\u00b5s\"), \"ms\", \"s\", \"m\", \"h\".\n#idleFlowExportTimeout: \"15s\"\n\nnodePortLocal:\n# Enable NodePortLocal, a feature used to make Pods reachable using port forwarding on the host. To\n# enable this feature, you need to set \"enable\" to true, and ensure that the NodePortLocal feature\n# gate is also enabled (which is the default).\n#  enable: false\n# Provide the port range used by NodePortLocal. When the NodePortLocal feature is enabled, a port\n# from that range will be assigned whenever a Pod's container defines a specific port to be exposed\n# (each container can define a list of ports as pod.spec.containers[].ports), and all Node traffic\n# directed to that port will be forwarded to the Pod.\n#  portRange: 61000-62000\n\n# Provide the address of Kubernetes apiserver, to override any value provided in kubeconfig or InClusterConfig.\n# Defaults to \"\". It must be a host string, a host:port pair, or a URL to the base of the apiserver.\n#kubeAPIServerOverride: \"\"\n\n# Comma-separated list of Cipher Suites. If omitted, the default Go Cipher Suites will be used.\n# https://golang.org/pkg/crypto/tls/#pkg-constants\n# Note that TLS1.3 Cipher Suites cannot be added to the list. But the apiserver will always\n# prefer TLS1.3 Cipher Suites whenever possible.\n#tlsCipherSuites:\n\n# TLS min version from: VersionTLS10, VersionTLS11, VersionTLS12, VersionTLS13.\n#tlsMinVersion:\n\n# The name of the interface on Node which is used for tunneling or routing the traffic across Nodes.\n# If there are multiple IP addresses configured on the interface, the first one is used. The IP\n# address used for tunneling or routing traffic to remote Nodes is decided in the following order of\n# preference (from highest to lowest):\n# 1. transportInterface\n# 2. transportInterfaceCIDRs\n# 3. The Node IP\n#transportInterface:\n\n# The names of the interfaces on Nodes that are used to forward multicast traffic.\n# Defaults to transport interface if not set.\n#multicastInterfaces: []\n\n# The network CIDRs of the interface on Node which is used for tunneling or routing the traffic across\n# Nodes. If there are multiple interfaces configured the same network CIDR, the first one is used. The\n# IP address used for tunneling or routing traffic to remote Nodes is decided in the following order of\n# preference (from highest to lowest):\n# 1. transportInterface\n# 2. transportInterfaceCIDRs\n# 3. The Node IP\n#transportInterfaceCIDRs: [<IPv4 CIDR>,<IPv6 CIDR>]\n\n# Option antreaProxy contains AntreaProxy related configuration options.\nantreaProxy:\n# ProxyAll tells antrea-agent to proxy all Service traffic, including NodePort, LoadBalancer, and ClusterIP traffic,\n# regardless of where they come from. Therefore, running kube-proxy is no longer required. This requires the AntreaProxy\n# feature to be enabled.\n# Note that this option is experimental. If kube-proxy is removed, option kubeAPIServerOverride must be used to access\n# apiserver directly.\n#proxyAll: false\n# A string array of values which specifies the host IPv4/IPv6 addresses for NodePort. Values can be valid IP blocks.\n# (e.g. 1.2.3.0/24, 1.2.3.4/32). An empty string slice is meant to select all host IPv4/IPv6 addresses.\n# Note that the option is only valid when proxyAll is true.\n#nodePortAddresses: []\n# An array of string values to specify a list of Services which should be ignored by AntreaProxy (traffic to these\n# Services will not be load-balanced). Values can be a valid ClusterIP (e.g. 10.11.1.2) or a Service name\n# with Namespace (e.g. kube-system/kube-dns)\n#skipServices: []\n# When ProxyLoadBalancerIPs is set to false, AntreaProxy no longer load-balances traffic destined to the\n# External IPs of LoadBalancer Services. This is useful when the external LoadBalancer provides additional\n# capabilities (e.g. TLS termination) and it is desirable for Pod-to-ExternalIP traffic to be sent to the\n# external LoadBalancer instead of being load-balanced to an Endpoint directly by AntreaProxy.\n# Note that setting ProxyLoadBalancerIPs to false usually only makes sense when ProxyAll is set to true and\n# kube-proxy is removed from the cluser, otherwise kube-proxy will still load-balance this traffic.\n#proxyLoadBalancerIPs: true\n",
-            "antreaCNIConfig": "{\n    \"cniVersion\":\"0.3.0\",\n    \"name\": \"antrea\",\n    \"plugins\": [\n        {\n            \"type\": \"antrea\",\n            \"ipam\": {\n                \"type\": \"host-local\"\n            }\n        },\n        {\n            \"type\": \"portmap\",\n            \"capabilities\": {\"portMappings\": true}\n        },\n        {\n            \"type\": \"bandwidth\",\n            \"capabilities\": {\"bandwidth\": true}\n        }\n    ]\n}\n",
-            "antreaControllerConfig": "# FeatureGates is a map of feature names to bools that enable or disable experimental features.\nfeatureGates:\n# Enable traceflow which provides packet tracing feature to diagnose network issue.\n#  Traceflow: true\n\n# Enable Antrea ClusterNetworkPolicy feature to complement K8s NetworkPolicy for cluster admins\n# to define security policies which apply to the entire cluster, and Antrea NetworkPolicy\n# feature that supports priorities, rule actions and externalEntities in the future.\n#  AntreaPolicy: true\n\n# Enable collecting and exposing NetworkPolicy statistics.\n#  NetworkPolicyStats: true\n\n# Enable controlling SNAT IPs of Pod egress traffic.\n#  Egress: false\n\n# Run Kubernetes NodeIPAMController with Antrea.\n#  NodeIPAM: false\n\n# Enable flexible IPAM mode for Antrea. This mode allows to assign IP Ranges to Namespaces,\n# Deployments and StatefulSets via IP Pool annotation.\n#  AntreaIPAM: false\n\n# Enable managing external IPs of Services of LoadBalancer type.\n#  ServiceExternalIP: false\n\n# The port for the antrea-controller APIServer to serve on.\n# Note that if it's set to another value, the `containerPort` of the `api` port of the\n# `antrea-controller` container must be set to the same value.\n#apiPort: 10349\n\n# Enable metrics exposure via Prometheus. Initializes Prometheus metrics listener.\n#enablePrometheusMetrics: true\n\n# Indicates whether to use auto-generated self-signed TLS certificate.\n# If false, A Secret named \"antrea-controller-tls\" must be provided with the following keys:\n#   ca.crt: <CA certificate>\n#   tls.crt: <TLS certificate>\n#   tls.key: <TLS private key>\n# And the Secret must be mounted to directory \"/var/run/antrea/antrea-controller-tls\" of the\n# antrea-controller container.\n#selfSignedCert: true\n\n# Comma-separated list of Cipher Suites. If omitted, the default Go Cipher Suites will be used.\n# https://golang.org/pkg/crypto/tls/#pkg-constants\n# Note that TLS1.3 Cipher Suites cannot be added to the list. But the apiserver will always\n# prefer TLS1.3 Cipher Suites whenever possible.\n#tlsCipherSuites:\n\n# TLS min version from: VersionTLS10, VersionTLS11, VersionTLS12, VersionTLS13.\n#tlsMinVersion:\n\nnodeIPAM:\n# Enable the integrated Node IPAM controller within the Antrea controller.\n#  enableNodeIPAM: false\n\n# CIDR ranges for Pods in cluster. String array containing single CIDR range, or multiple ranges.\n# The CIDRs could be either IPv4 or IPv6. At most one CIDR may be specified for each IP family.\n# Value ignored when enableNodeIPAM is false.\n#  clusterCIDRs: []\n\n# CIDR ranges for Services in cluster. It is not necessary to specify it when there is no overlap with clusterCIDRs.\n# Value ignored when enableNodeIPAM is false.\n#  serviceCIDR:\n#  serviceCIDRv6:\n\n# Mask size for IPv4 Node CIDR in IPv4 or dual-stack cluster. Value ignored when enableNodeIPAM is false\n# or when IPv4 Pod CIDR is not configured. Valid range is 16 to 30.\n#  nodeCIDRMaskSizeIPv4: 24\n\n# Mask size for IPv6 Node CIDR in IPv6 or dual-stack cluster. Value ignored when enableNodeIPAM is false\n# or when IPv6 Pod CIDR is not configured. Valid range is 64 to 126.\n#  nodeCIDRMaskSizeIPv6: 64\n",
-            "antreaImage": "antrea/antrea-ubi:v1.7.0"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/wavefronthq/antrea-openshift-operator@sha256:8d01228af9c1292672297ddef337a9854fd37a9736028009937376ab6f97c22f",
-      "bundle_path_digest": "sha256:8d01228af9c1292672297ddef337a9854fd37a9736028009937376ab6f97c22f",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-08-02T15:01:14.300000+00:00",
-      "csv_description": "An operator which installs Antrea network CNI plugin on the Kubernetes cluster.",
-      "csv_display_name": "Antrea Operator",
-      "csv_metadata_description": "An operator which installs Antrea network CNI plugin on the Kubernetes cluster.",
-      "csv_name": "antrea-operator-for-kubernetes.v1.7.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:42:38.824000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "antrea-operator-for-kubernetes",
-      "provided_apis": [
-        {
-          "group": "operator.antrea.vmware.com",
-          "kind": "AntreaInstall",
-          "plural": "antreainstalls",
-          "version": "v1"
-        }
-      ],
-      "provider": "antrea.io",
-      "related_images": [
-        {
-          "digest": "sha256:8737f208421d295be92cc42daf369f2cef88ebc6098e8ee474b352a1075bbe39",
-          "image": "antrea/antrea-operator@sha256:8737f208421d295be92cc42daf369f2cef88ebc6098e8ee474b352a1075bbe39",
-          "name": "antrea-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.7.0",
-      "version_original": "1.7.0"
     },
     {
       "_id": "62e97928926c4db0ae4daec7",
@@ -18060,6 +17378,1217 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "1.10.13+xa8bb1e5",
       "version_original": "1.10.13+xa8bb1e5"
+    },
+    {
+      "_id": "62e991b2fa788ab42156034c",
+      "alm_examples": [
+        {
+          "api_version": "cilium.io/v1alpha1",
+          "kind": "CiliumConfig",
+          "metadata": {
+            "name": "cilium-openshift-default",
+            "namespace": "placeholder"
+          },
+          "spec": {
+            "cni": {
+              "binPath": "/var/lib/cni/bin",
+              "confPath": "/var/run/multus/cni/net.d"
+            },
+            "endpointRoutes": {
+              "enabled": true
+            },
+            "hubble": {
+              "tls": {
+                "enabled": false
+              }
+            },
+            "ipam": {
+              "mode": "cluster-pool",
+              "operator": {
+                "clusterPoolIPv4MaskSize": "23",
+                "clusterPoolIPv4PodCIDR": "10.128.0.0/14"
+              }
+            },
+            "kubeProxyReplacement": "probe",
+            "nativeRoutingCIDR": "10.128.0.0/14",
+            "prometheus": {
+              "serviceMonitor": {
+                "enabled": false
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-olm-metadata@sha256:6d4fd1df43f33a594f3db98b2340cb6caa72d953ba4bf435339290485a6a6478",
+      "bundle_path_digest": "sha256:6d4fd1df43f33a594f3db98b2340cb6caa72d953ba4bf435339290485a6a6478",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "1.10",
+      "creation_date": "2022-08-02T21:05:54.879000+00:00",
+      "csv_description": "Cilium - eBPF-based Networking, Security, and Observability",
+      "csv_display_name": "Cilium",
+      "csv_metadata_description": "",
+      "csv_name": "cilium.v1.10.13-xa8bb1e5",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-02T21:05:54.879000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "cilium",
+      "provided_apis": [
+        {
+          "group": "cilium.io",
+          "kind": "CiliumConfig",
+          "plural": "ciliumconfigs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:6b9b2688d39841c862bb3ca8a45af18a1f9305054e9add833d91a1b187f7f16e",
+          "image": "quay.io/cilium/cilium@sha256:6b9b2688d39841c862bb3ca8a45af18a1f9305054e9add833d91a1b187f7f16e",
+          "name": "cilium"
+        },
+        {
+          "digest": "sha256:9110780d4220816500f8a1e6cb82434c6051d7d444069b2f065d7d5d89fa7010",
+          "image": "quay.io/cilium/hubble-relay@sha256:9110780d4220816500f8a1e6cb82434c6051d7d444069b2f065d7d5d89fa7010",
+          "name": "hubble-relay"
+        },
+        {
+          "digest": "sha256:4b65009815b835e79b4a9bce97d8da4ff81c59da7a514f60244e6dab9ac8548e",
+          "image": "quay.io/cilium/operator-generic@sha256:4b65009815b835e79b4a9bce97d8da4ff81c59da7a514f60244e6dab9ac8548e",
+          "name": "cilium-operator"
+        },
+        {
+          "digest": "sha256:6b9b2688d39841c862bb3ca8a45af18a1f9305054e9add833d91a1b187f7f16e",
+          "image": "quay.io/cilium/cilium@sha256:6b9b2688d39841c862bb3ca8a45af18a1f9305054e9add833d91a1b187f7f16e",
+          "name": "preflight"
+        },
+        {
+          "digest": "sha256:fe1f583b096563aa6106119bfafda771a2e4e2edd29db0055e28f18c71d81d97",
+          "image": "quay.io/cilium/clustermesh-apiserver@sha256:fe1f583b096563aa6106119bfafda771a2e4e2edd29db0055e28f18c71d81d97",
+          "name": "clustermesh"
+        },
+        {
+          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "name": "certgen"
+        },
+        {
+          "digest": "sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
+          "image": "quay.io/cilium/hubble-ui-backend@sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
+          "name": "hubble-ui-backend"
+        },
+        {
+          "digest": "sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
+          "image": "quay.io/cilium/hubble-ui@sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
+          "name": "hubble-ui-frontend"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd-operator"
+        },
+        {
+          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "name": "nodeinit"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh-etcd"
+        },
+        {
+          "digest": "sha256:e7d0981f7ee488c9f18b0d21a1f227fbf3dfe806e3d5822d40e12efa8478889e",
+          "image": "registry.connect.redhat.com/isovalent/cilium-olm@sha256:e7d0981f7ee488c9f18b0d21a1f227fbf3dfe806e3d5822d40e12efa8478889e",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:9110780d4220816500f8a1e6cb82434c6051d7d444069b2f065d7d5d89fa7010",
+          "image": "quay.io/cilium/hubble-relay@sha256:9110780d4220816500f8a1e6cb82434c6051d7d444069b2f065d7d5d89fa7010",
+          "name": "hubble_relay"
+        },
+        {
+          "digest": "sha256:4b65009815b835e79b4a9bce97d8da4ff81c59da7a514f60244e6dab9ac8548e",
+          "image": "quay.io/cilium/operator-generic@sha256:4b65009815b835e79b4a9bce97d8da4ff81c59da7a514f60244e6dab9ac8548e",
+          "name": "cilium_operator"
+        },
+        {
+          "digest": "sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
+          "image": "quay.io/cilium/hubble-ui-backend@sha256:fac239d7b0498f4e3389a06824916963ff7904cac6bdb51eec7f4bbd2a27f8ec",
+          "name": "hubble_ui_be"
+        },
+        {
+          "digest": "sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
+          "image": "quay.io/cilium/hubble-ui@sha256:e032b146d2f27b53167246dbb15ddc91bf5ba2b0562d4d9a4c86dd7e72862670",
+          "name": "hubble_ui_fe"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd_operator"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh_etcd"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.10.13+xa8bb1e5",
+      "version_original": "1.10.13+xa8bb1e5"
+    },
+    {
+      "_id": "62e991b7fa788ab421560351",
+      "alm_examples": [
+        {
+          "api_version": "cilium.io/v1alpha1",
+          "kind": "CiliumConfig",
+          "metadata": {
+            "name": "cilium-openshift-default",
+            "namespace": "placeholder"
+          },
+          "spec": {
+            "cni": {
+              "binPath": "/var/lib/cni/bin",
+              "confPath": "/var/run/multus/cni/net.d"
+            },
+            "endpointRoutes": {
+              "enabled": true
+            },
+            "hubble": {
+              "tls": {
+                "enabled": false
+              }
+            },
+            "ipam": {
+              "mode": "cluster-pool",
+              "prometheus": {
+                "serviceMonitor": {
+                  "enabled": false
+                }
+              }
+            },
+            "kubeProxyReplacement": "probe"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:3dbb71004362a70683a5ee9f0916bca75c0d1c351d144677fd9d85bcb2ca8bf7",
+      "bundle_path_digest": "sha256:3dbb71004362a70683a5ee9f0916bca75c0d1c351d144677fd9d85bcb2ca8bf7",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "1.10",
+      "creation_date": "2022-08-02T21:05:59.152000+00:00",
+      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
+      "csv_display_name": "Cilium Enterprise",
+      "csv_metadata_description": "",
+      "csv_name": "cilium.v1.10.13-xed86eae",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-02T21:05:59.152000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "cilium-enterprise",
+      "provided_apis": [
+        {
+          "group": "cilium.io",
+          "kind": "CiliumConfig",
+          "plural": "ciliumconfigs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
+          "image": "quay.io/isovalent/cilium@sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
+          "name": "cilium"
+        },
+        {
+          "digest": "sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
+          "image": "quay.io/isovalent/hubble-relay@sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
+          "name": "hubble-relay"
+        },
+        {
+          "digest": "sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
+          "image": "quay.io/isovalent/operator-generic@sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
+          "name": "cilium-operator"
+        },
+        {
+          "digest": "sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
+          "image": "quay.io/isovalent/cilium@sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
+          "name": "preflight"
+        },
+        {
+          "digest": "sha256:eb3ee3d2cb07e6c5966e4bc2e50615949303be5d5128e156d5c0dbe8404dc093",
+          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:eb3ee3d2cb07e6c5966e4bc2e50615949303be5d5128e156d5c0dbe8404dc093",
+          "name": "clustermesh"
+        },
+        {
+          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "name": "certgen"
+        },
+        {
+          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "name": "hubble-ui-backend"
+        },
+        {
+          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "name": "hubble-ui-frontend"
+        },
+        {
+          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "name": "hubble-ui-oauth"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd-operator"
+        },
+        {
+          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "name": "nodeinit"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh-etcd"
+        },
+        {
+          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "name": "hubble-enterprise"
+        },
+        {
+          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
+          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
+          "name": "hubble-enterprise-metadata"
+        },
+        {
+          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "name": "hubble-enterprise-operator"
+        },
+        {
+          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "name": "hubble-export"
+        },
+        {
+          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "name": "hubble-export-fluentd"
+        },
+        {
+          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "name": "hubble-export-s3"
+        },
+        {
+          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "name": "hubble-rbac"
+        },
+        {
+          "digest": "sha256:cc1f0e6b27ccda8a843dfb7fa4a8fef052ba29716646557815677c5d1bea2a1a",
+          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:cc1f0e6b27ccda8a843dfb7fa4a8fef052ba29716646557815677c5d1bea2a1a",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
+          "image": "quay.io/isovalent/hubble-relay@sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
+          "name": "hubble_relay"
+        },
+        {
+          "digest": "sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
+          "image": "quay.io/isovalent/operator-generic@sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
+          "name": "cilium_operator"
+        },
+        {
+          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "name": "hubble_ui_be"
+        },
+        {
+          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "name": "hubble_ui_fe"
+        },
+        {
+          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "name": "hubble_ui_oauth"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd_operator"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh_etcd"
+        },
+        {
+          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "name": "hubble_enterprise"
+        },
+        {
+          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
+          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
+          "name": "hubble_enterprise_metadata"
+        },
+        {
+          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "name": "hubble_enterprise_operator"
+        },
+        {
+          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "name": "hubble_export"
+        },
+        {
+          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "name": "hubble_export_fluentd"
+        },
+        {
+          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "name": "hubble_export_s3"
+        },
+        {
+          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "name": "hubble_rbac"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.10.13+xed86eae",
+      "version_original": "1.10.13+xed86eae"
+    },
+    {
+      "_id": "62e991bbab98585d16af55c0",
+      "alm_examples": [
+        {
+          "api_version": "cilium.io/v1alpha1",
+          "kind": "CiliumConfig",
+          "metadata": {
+            "name": "cilium-openshift-default",
+            "namespace": "placeholder"
+          },
+          "spec": {
+            "cni": {
+              "binPath": "/var/lib/cni/bin",
+              "confPath": "/var/run/multus/cni/net.d"
+            },
+            "endpointRoutes": {
+              "enabled": true
+            },
+            "hubble": {
+              "tls": {
+                "enabled": false
+              }
+            },
+            "ipam": {
+              "mode": "cluster-pool",
+              "prometheus": {
+                "serviceMonitor": {
+                  "enabled": false
+                }
+              }
+            },
+            "kubeProxyReplacement": "probe"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:3dbb71004362a70683a5ee9f0916bca75c0d1c351d144677fd9d85bcb2ca8bf7",
+      "bundle_path_digest": "sha256:3dbb71004362a70683a5ee9f0916bca75c0d1c351d144677fd9d85bcb2ca8bf7",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "1.10",
+      "creation_date": "2022-08-02T21:06:03.058000+00:00",
+      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
+      "csv_display_name": "Cilium Enterprise",
+      "csv_metadata_description": "",
+      "csv_name": "cilium.v1.10.13-xed86eae",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-02T21:06:03.058000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "cilium-enterprise",
+      "provided_apis": [
+        {
+          "group": "cilium.io",
+          "kind": "CiliumConfig",
+          "plural": "ciliumconfigs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
+          "image": "quay.io/isovalent/cilium@sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
+          "name": "cilium"
+        },
+        {
+          "digest": "sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
+          "image": "quay.io/isovalent/hubble-relay@sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
+          "name": "hubble-relay"
+        },
+        {
+          "digest": "sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
+          "image": "quay.io/isovalent/operator-generic@sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
+          "name": "cilium-operator"
+        },
+        {
+          "digest": "sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
+          "image": "quay.io/isovalent/cilium@sha256:6887537789603946543aaa370a3ec592287a235231bf16aa386e091823285515",
+          "name": "preflight"
+        },
+        {
+          "digest": "sha256:eb3ee3d2cb07e6c5966e4bc2e50615949303be5d5128e156d5c0dbe8404dc093",
+          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:eb3ee3d2cb07e6c5966e4bc2e50615949303be5d5128e156d5c0dbe8404dc093",
+          "name": "clustermesh"
+        },
+        {
+          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "name": "certgen"
+        },
+        {
+          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "name": "hubble-ui-backend"
+        },
+        {
+          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "name": "hubble-ui-frontend"
+        },
+        {
+          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "name": "hubble-ui-oauth"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd-operator"
+        },
+        {
+          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "name": "nodeinit"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh-etcd"
+        },
+        {
+          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "name": "hubble-enterprise"
+        },
+        {
+          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
+          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
+          "name": "hubble-enterprise-metadata"
+        },
+        {
+          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "name": "hubble-enterprise-operator"
+        },
+        {
+          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "name": "hubble-export"
+        },
+        {
+          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "name": "hubble-export-fluentd"
+        },
+        {
+          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "name": "hubble-export-s3"
+        },
+        {
+          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "name": "hubble-rbac"
+        },
+        {
+          "digest": "sha256:cc1f0e6b27ccda8a843dfb7fa4a8fef052ba29716646557815677c5d1bea2a1a",
+          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:cc1f0e6b27ccda8a843dfb7fa4a8fef052ba29716646557815677c5d1bea2a1a",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
+          "image": "quay.io/isovalent/hubble-relay@sha256:9145b03acc954efde54e1ab9da878462526c5e820b83a92e32cc24291f784d33",
+          "name": "hubble_relay"
+        },
+        {
+          "digest": "sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
+          "image": "quay.io/isovalent/operator-generic@sha256:1cc0b0d2e71564ad8759be326c66ea13b4955b9441fb67e906da534e1b38aefa",
+          "name": "cilium_operator"
+        },
+        {
+          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "name": "hubble_ui_be"
+        },
+        {
+          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "name": "hubble_ui_fe"
+        },
+        {
+          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "name": "hubble_ui_oauth"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd_operator"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh_etcd"
+        },
+        {
+          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "name": "hubble_enterprise"
+        },
+        {
+          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
+          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
+          "name": "hubble_enterprise_metadata"
+        },
+        {
+          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "name": "hubble_enterprise_operator"
+        },
+        {
+          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "name": "hubble_export"
+        },
+        {
+          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "name": "hubble_export_fluentd"
+        },
+        {
+          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "name": "hubble_export_s3"
+        },
+        {
+          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "name": "hubble_rbac"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.10.13+xed86eae",
+      "version_original": "1.10.13+xed86eae"
+    },
+    {
+      "_id": "62e991c9a9a2233d923f7591",
+      "alm_examples": [
+        {
+          "api_version": "cilium.io/v1alpha1",
+          "kind": "CiliumConfig",
+          "metadata": {
+            "name": "cilium-openshift-default",
+            "namespace": "placeholder"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:2c5164ec8369a7aff720ffd3d43d2f698adec22ea4b69a7df7833d5714e79db3",
+      "bundle_path_digest": "sha256:2c5164ec8369a7aff720ffd3d43d2f698adec22ea4b69a7df7833d5714e79db3",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "1.11",
+      "creation_date": "2022-08-02T21:06:17.798000+00:00",
+      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
+      "csv_display_name": "Cilium Enterprise",
+      "csv_metadata_description": "",
+      "csv_name": "cilium.v1.11.5-xeb3a68e",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-02T21:06:17.798000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "cilium-enterprise",
+      "provided_apis": [
+        {
+          "group": "cilium.io",
+          "kind": "CiliumConfig",
+          "plural": "ciliumconfigs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:b357efdc6b328f607aaeac4ea629fc8d8b0e70c3734548b0f14855303c99dee5",
+          "image": "quay.io/isovalent/cilium@sha256:b357efdc6b328f607aaeac4ea629fc8d8b0e70c3734548b0f14855303c99dee5",
+          "name": "cilium"
+        },
+        {
+          "digest": "sha256:77feb78e0a0d1d072ff13dc4d7e1f784a0f51fa6ab88ff78bc7954ebb4f59b7a",
+          "image": "quay.io/isovalent/hubble-relay@sha256:77feb78e0a0d1d072ff13dc4d7e1f784a0f51fa6ab88ff78bc7954ebb4f59b7a",
+          "name": "hubble-relay"
+        },
+        {
+          "digest": "sha256:464a67c1a04a2df8bd529783f1a0169df9a8f313af9c9e12bd61a3b5c482460e",
+          "image": "quay.io/isovalent/operator-generic@sha256:464a67c1a04a2df8bd529783f1a0169df9a8f313af9c9e12bd61a3b5c482460e",
+          "name": "cilium-operator"
+        },
+        {
+          "digest": "sha256:b357efdc6b328f607aaeac4ea629fc8d8b0e70c3734548b0f14855303c99dee5",
+          "image": "quay.io/isovalent/cilium@sha256:b357efdc6b328f607aaeac4ea629fc8d8b0e70c3734548b0f14855303c99dee5",
+          "name": "preflight"
+        },
+        {
+          "digest": "sha256:97b10d36bc9903c74c66a5ab95960184258999b6510b413cc5dde7d4168cfb7e",
+          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:97b10d36bc9903c74c66a5ab95960184258999b6510b413cc5dde7d4168cfb7e",
+          "name": "clustermesh"
+        },
+        {
+          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "name": "certgen"
+        },
+        {
+          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "name": "hubble-ui-backend"
+        },
+        {
+          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "name": "hubble-ui-frontend"
+        },
+        {
+          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "name": "hubble-ui-oauth"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd-operator"
+        },
+        {
+          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "name": "nodeinit"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh-etcd"
+        },
+        {
+          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "name": "hubble-enterprise"
+        },
+        {
+          "digest": "sha256:7d6865502729b67f12a3a734f1e9db14775c2a1867910e60922a194767e3b25b",
+          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:7d6865502729b67f12a3a734f1e9db14775c2a1867910e60922a194767e3b25b",
+          "name": "hubble-enterprise-metadata"
+        },
+        {
+          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "name": "hubble-enterprise-operator"
+        },
+        {
+          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "name": "hubble-export"
+        },
+        {
+          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "name": "hubble-export-fluentd"
+        },
+        {
+          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "name": "hubble-export-s3"
+        },
+        {
+          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "name": "hubble-rbac"
+        },
+        {
+          "digest": "sha256:e867d348af25d628982adac2c6ed195632418ee2dc687312dceb7133594efd12",
+          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:e867d348af25d628982adac2c6ed195632418ee2dc687312dceb7133594efd12",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:77feb78e0a0d1d072ff13dc4d7e1f784a0f51fa6ab88ff78bc7954ebb4f59b7a",
+          "image": "quay.io/isovalent/hubble-relay@sha256:77feb78e0a0d1d072ff13dc4d7e1f784a0f51fa6ab88ff78bc7954ebb4f59b7a",
+          "name": "hubble_relay"
+        },
+        {
+          "digest": "sha256:464a67c1a04a2df8bd529783f1a0169df9a8f313af9c9e12bd61a3b5c482460e",
+          "image": "quay.io/isovalent/operator-generic@sha256:464a67c1a04a2df8bd529783f1a0169df9a8f313af9c9e12bd61a3b5c482460e",
+          "name": "cilium_operator"
+        },
+        {
+          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "name": "hubble_ui_be"
+        },
+        {
+          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "name": "hubble_ui_fe"
+        },
+        {
+          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "name": "hubble_ui_oauth"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd_operator"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh_etcd"
+        },
+        {
+          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "name": "hubble_enterprise"
+        },
+        {
+          "digest": "sha256:7d6865502729b67f12a3a734f1e9db14775c2a1867910e60922a194767e3b25b",
+          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:7d6865502729b67f12a3a734f1e9db14775c2a1867910e60922a194767e3b25b",
+          "name": "hubble_enterprise_metadata"
+        },
+        {
+          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "name": "hubble_enterprise_operator"
+        },
+        {
+          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "name": "hubble_export"
+        },
+        {
+          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "name": "hubble_export_fluentd"
+        },
+        {
+          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "name": "hubble_export_s3"
+        },
+        {
+          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "name": "hubble_rbac"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.11.5+xeb3a68e",
+      "version_original": "1.11.5+xeb3a68e"
+    },
+    {
+      "_id": "62e991ceab98585d16af55c9",
+      "alm_examples": [
+        {
+          "api_version": "cilium.io/v1alpha1",
+          "kind": "CiliumConfig",
+          "metadata": {
+            "name": "cilium-openshift-default",
+            "namespace": "placeholder"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:2c5164ec8369a7aff720ffd3d43d2f698adec22ea4b69a7df7833d5714e79db3",
+      "bundle_path_digest": "sha256:2c5164ec8369a7aff720ffd3d43d2f698adec22ea4b69a7df7833d5714e79db3",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "1.11",
+      "creation_date": "2022-08-02T21:06:22.938000+00:00",
+      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
+      "csv_display_name": "Cilium Enterprise",
+      "csv_metadata_description": "",
+      "csv_name": "cilium.v1.11.5-xeb3a68e",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-08-02T21:06:22.938000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "cilium-enterprise",
+      "provided_apis": [
+        {
+          "group": "cilium.io",
+          "kind": "CiliumConfig",
+          "plural": "ciliumconfigs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:b357efdc6b328f607aaeac4ea629fc8d8b0e70c3734548b0f14855303c99dee5",
+          "image": "quay.io/isovalent/cilium@sha256:b357efdc6b328f607aaeac4ea629fc8d8b0e70c3734548b0f14855303c99dee5",
+          "name": "cilium"
+        },
+        {
+          "digest": "sha256:77feb78e0a0d1d072ff13dc4d7e1f784a0f51fa6ab88ff78bc7954ebb4f59b7a",
+          "image": "quay.io/isovalent/hubble-relay@sha256:77feb78e0a0d1d072ff13dc4d7e1f784a0f51fa6ab88ff78bc7954ebb4f59b7a",
+          "name": "hubble-relay"
+        },
+        {
+          "digest": "sha256:464a67c1a04a2df8bd529783f1a0169df9a8f313af9c9e12bd61a3b5c482460e",
+          "image": "quay.io/isovalent/operator-generic@sha256:464a67c1a04a2df8bd529783f1a0169df9a8f313af9c9e12bd61a3b5c482460e",
+          "name": "cilium-operator"
+        },
+        {
+          "digest": "sha256:b357efdc6b328f607aaeac4ea629fc8d8b0e70c3734548b0f14855303c99dee5",
+          "image": "quay.io/isovalent/cilium@sha256:b357efdc6b328f607aaeac4ea629fc8d8b0e70c3734548b0f14855303c99dee5",
+          "name": "preflight"
+        },
+        {
+          "digest": "sha256:97b10d36bc9903c74c66a5ab95960184258999b6510b413cc5dde7d4168cfb7e",
+          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:97b10d36bc9903c74c66a5ab95960184258999b6510b413cc5dde7d4168cfb7e",
+          "name": "clustermesh"
+        },
+        {
+          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
+          "name": "certgen"
+        },
+        {
+          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "name": "hubble-ui-backend"
+        },
+        {
+          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "name": "hubble-ui-frontend"
+        },
+        {
+          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "name": "hubble-ui-oauth"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd-operator"
+        },
+        {
+          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
+          "name": "nodeinit"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh-etcd"
+        },
+        {
+          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "name": "hubble-enterprise"
+        },
+        {
+          "digest": "sha256:7d6865502729b67f12a3a734f1e9db14775c2a1867910e60922a194767e3b25b",
+          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:7d6865502729b67f12a3a734f1e9db14775c2a1867910e60922a194767e3b25b",
+          "name": "hubble-enterprise-metadata"
+        },
+        {
+          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "name": "hubble-enterprise-operator"
+        },
+        {
+          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "name": "hubble-export"
+        },
+        {
+          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "name": "hubble-export-fluentd"
+        },
+        {
+          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "name": "hubble-export-s3"
+        },
+        {
+          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "name": "hubble-rbac"
+        },
+        {
+          "digest": "sha256:e867d348af25d628982adac2c6ed195632418ee2dc687312dceb7133594efd12",
+          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:e867d348af25d628982adac2c6ed195632418ee2dc687312dceb7133594efd12",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:77feb78e0a0d1d072ff13dc4d7e1f784a0f51fa6ab88ff78bc7954ebb4f59b7a",
+          "image": "quay.io/isovalent/hubble-relay@sha256:77feb78e0a0d1d072ff13dc4d7e1f784a0f51fa6ab88ff78bc7954ebb4f59b7a",
+          "name": "hubble_relay"
+        },
+        {
+          "digest": "sha256:464a67c1a04a2df8bd529783f1a0169df9a8f313af9c9e12bd61a3b5c482460e",
+          "image": "quay.io/isovalent/operator-generic@sha256:464a67c1a04a2df8bd529783f1a0169df9a8f313af9c9e12bd61a3b5c482460e",
+          "name": "cilium_operator"
+        },
+        {
+          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
+          "name": "hubble_ui_be"
+        },
+        {
+          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
+          "name": "hubble_ui_fe"
+        },
+        {
+          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
+          "name": "hubble_ui_oauth"
+        },
+        {
+          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
+          "name": "etcd_operator"
+        },
+        {
+          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
+          "name": "clustermesh_etcd"
+        },
+        {
+          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
+          "name": "hubble_enterprise"
+        },
+        {
+          "digest": "sha256:7d6865502729b67f12a3a734f1e9db14775c2a1867910e60922a194767e3b25b",
+          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:7d6865502729b67f12a3a734f1e9db14775c2a1867910e60922a194767e3b25b",
+          "name": "hubble_enterprise_metadata"
+        },
+        {
+          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
+          "name": "hubble_enterprise_operator"
+        },
+        {
+          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
+          "name": "hubble_export"
+        },
+        {
+          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
+          "name": "hubble_export_fluentd"
+        },
+        {
+          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
+          "name": "hubble_export_s3"
+        },
+        {
+          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
+          "name": "hubble_rbac"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.11.5+xeb3a68e",
+      "version_original": "1.11.5+xeb3a68e"
     }
   ]
 }
