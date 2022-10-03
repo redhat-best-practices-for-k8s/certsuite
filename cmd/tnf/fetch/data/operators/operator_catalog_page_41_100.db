@@ -1,717 +1,6 @@
 {
   "data": [
     {
-      "_id": "62e9f2154a2b9e2714aba356",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.2.4-55.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
-      "bundle_path_digest": "sha256:c50c8d2b5c62f60b96314c3fe64cf073727ab699b85992443f96b8743269b8a4",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.10",
-      "creation_date": "2022-08-03T03:57:09.414000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.4-1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T03:57:09.414000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "name": "redis-enterprise-operator-8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9-annotation"
-        },
-        {
-          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:8e536825e5062bdda268ed1f0a88824b863ff7945a2f97b7ffc29422569c4bb9",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "6.2.4-1",
-      "version_original": "6.2.4-1"
-    },
-    {
-      "_id": "62e9f23eeb76270c10f3313b",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
-      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "6.2.4",
-      "creation_date": "2022-08-03T03:57:50.850000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.6-6",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T03:57:50.850000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.0.6-6",
-      "version_original": "6.0.6-6"
-    },
-    {
-      "_id": "62e9f257926c4db0ae4dddc4",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.6-39.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
-      "bundle_path_digest": "sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.4",
-      "creation_date": "2022-08-03T03:58:15.354000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.6-24",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T03:58:15.354000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "image": "redislabs/operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "name": "operator-998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b-annotation"
-        },
-        {
-          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "6.0.6-24",
-      "version_original": "6.0.6-24"
-    },
-    {
-      "_id": "62e9f27e4a2b9e2714aba392",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.20-69.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:6eba0d4cdc724698aa1d42dd74ae6b19e9446f601f337d5752531a14f10e41ef",
-      "bundle_path_digest": "sha256:6eba0d4cdc724698aa1d42dd74ae6b19e9446f601f337d5752531a14f10e41ef",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.8",
-      "creation_date": "2022-08-03T03:58:54.354000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.20-4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T03:58:54.354000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:3a86275c1bebed1e756e0ddf44adf2892e3039104c9c0675e60be029faed3c9f",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:3a86275c1bebed1e756e0ddf44adf2892e3039104c9c0675e60be029faed3c9f",
-          "name": "redis-enterprise-operator-3a86275c1bebed1e756e0ddf44adf2892e3039104c9c0675e60be029faed3c9f-annotation"
-        },
-        {
-          "digest": "sha256:3a86275c1bebed1e756e0ddf44adf2892e3039104c9c0675e60be029faed3c9f",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:3a86275c1bebed1e756e0ddf44adf2892e3039104c9c0675e60be029faed3c9f",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "6.0.20-4",
-      "version_original": "6.0.20-4"
-    },
-    {
-      "_id": "62e9f283075733edba6a893e",
-      "alm_examples": [
-        {
-          "api_version": "platform.confluent.io/v1beta1",
-          "kind": "Zookeeper",
-          "metadata": {
-            "name": "zookeeper"
-          },
-          "spec": {
-            "dataVolumeCapacity": "10Gi",
-            "image": {
-              "application": "confluentinc/cp-zookeeper@sha256:254266ab0730cdacc49a57b7e98b23865942aa251c676c15297d70a3003b45e1",
-              "init": "confluentinc/confluent-init-container@sha256:a7978b1796f4b7f01ea6ccc56615a2195190de6eaf41a4e538e325dd2406f26d"
-            },
-            "logVolumeCapacity": "10Gi",
-            "replicas": 3
-          }
-        },
-        {
-          "api_version": "platform.confluent.io/v1beta1",
-          "kind": "Kafka",
-          "metadata": {
-            "name": "kafka"
-          },
-          "spec": {
-            "dataVolumeCapacity": "10Gi",
-            "image": {
-              "application": "confluentinc/cp-server@sha256:a590245bf3269c05a88e99d56a1e869c07f7d3fb76fa76370b8faaa673b0c8b1",
-              "init": "confluentinc/confluent-init-container@sha256:a7978b1796f4b7f01ea6ccc56615a2195190de6eaf41a4e538e325dd2406f26d"
-            },
-            "metricReporter": {
-              "enabled": true
-            },
-            "replicas": 3
-          }
-        },
-        {
-          "api_version": "platform.confluent.io/v1beta1",
-          "kind": "KafkaRestProxy",
-          "metadata": {
-            "name": "kafkarestproxy"
-          },
-          "spec": {
-            "image": {
-              "application": "confluentinc/cp-kafka-rest@sha256:80a3d41cc8a6989e556a0283e4ae31f7c80880f97bd235db4929f4df40dabb8f",
-              "init": "confluentinc/confluent-init-container@sha256:a7978b1796f4b7f01ea6ccc56615a2195190de6eaf41a4e538e325dd2406f26d"
-            },
-            "metricReporter": {
-              "enabled": true
-            },
-            "replicas": 3
-          }
-        },
-        {
-          "api_version": "platform.confluent.io/v1beta1",
-          "kind": "Connect",
-          "metadata": {
-            "name": "connect"
-          },
-          "spec": {
-            "dependencies": {
-              "kafka": {
-                "bootstrapEndpoint": "kafka:9071"
-              }
-            },
-            "image": {
-              "application": "confluentinc/cp-server-connect@sha256:bb847350302c636fb499509c29f355f77a6299c2b1d31a445882a74e0292463c",
-              "init": "confluentinc/confluent-init-container@sha256:a7978b1796f4b7f01ea6ccc56615a2195190de6eaf41a4e538e325dd2406f26d"
-            },
-            "replicas": 1
-          }
-        },
-        {
-          "api_version": "platform.confluent.io/v1beta1",
-          "kind": "KsqlDB",
-          "metadata": {
-            "name": "ksqldb"
-          },
-          "spec": {
-            "dataVolumeCapacity": "10Gi",
-            "image": {
-              "application": "confluentinc/cp-ksqldb-server@sha256:20b6ac87de3b00ff77f590118cbc9877d97c54d270a4846b60d165cdde2b0427",
-              "init": "confluentinc/confluent-init-container@sha256:a7978b1796f4b7f01ea6ccc56615a2195190de6eaf41a4e538e325dd2406f26d"
-            },
-            "replicas": 1
-          }
-        },
-        {
-          "api_version": "platform.confluent.io/v1beta1",
-          "kind": "ControlCenter",
-          "metadata": {
-            "name": "controlcenter"
-          },
-          "spec": {
-            "dataVolumeCapacity": "10Gi",
-            "dependencies": {
-              "connect": [
-                {
-                  "name": "connect",
-                  "url": "http://connect.confluent.svc.cluster.local:8083"
-                }
-              ],
-              "ksqldb": [
-                {
-                  "name": "ksqldb",
-                  "url": "http://ksqldb.confluent.svc.cluster.local:8088"
-                }
-              ],
-              "schemaRegistry": {
-                "url": "http://schemaregistry.confluent.svc.cluster.local:8081"
-              }
-            },
-            "image": {
-              "application": "confluentinc/cp-enterprise-control-center@sha256:eb2e977d41585dc3c6474d71af2bfb76fe885b4a6eb5a02cb3a18a5485db8d6a",
-              "init": "confluentinc/confluent-init-container@sha256:a7978b1796f4b7f01ea6ccc56615a2195190de6eaf41a4e538e325dd2406f26d"
-            },
-            "replicas": 1
-          }
-        },
-        {
-          "api_version": "platform.confluent.io/v1beta1",
-          "kind": "SchemaRegistry",
-          "metadata": {
-            "name": "schemaregistry"
-          },
-          "spec": {
-            "image": {
-              "application": "confluentinc/cp-schema-registry@sha256:c9c2528585d192f68e268521074964d37c14fca16f3bab568c57c68aca01b978",
-              "init": "confluentinc/confluent-init-container@sha256:a7978b1796f4b7f01ea6ccc56615a2195190de6eaf41a4e538e325dd2406f26d"
-            },
-            "replicas": 1
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": [
-          "Confluent Platform License"
-        ]
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/confluentinc/confluent-for-kubernetes-v2@sha256:6fe6c0d639e1b0c2a6c701bedecb3cef0b30702fb9bc38544338bb73a287c5d2",
-      "bundle_path_digest": "sha256:6fe6c0d639e1b0c2a6c701bedecb3cef0b30702fb9bc38544338bb73a287c5d2",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "2.1",
-      "creation_date": "2022-08-03T03:58:59.209000+00:00",
-      "csv_description": "Confluent for Kubernetes (CFK) is a cloud-native control plane for deploying and managing Confluent in your private cloud environment. It provides standard and simple interface to customize, deploy, and manage Confluent Platform through declarative API.\nConfluent for Kubernetes runs on Kubernetes, the runtime for private cloud architectures.",
-      "csv_display_name": "Confluent for Kubernetes",
-      "csv_metadata_description": "",
-      "csv_name": "confluent-for-kubernetes.v2.1.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-03T03:58:59.209000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "confluent-for-kubernetes",
-      "provided_apis": [
-        {
-          "group": "platform.confluent.io",
-          "kind": "KafkaRestProxy",
-          "plural": "kafkarestproxies",
-          "version": "v1beta1"
-        },
-        {
-          "group": "platform.confluent.io",
-          "kind": "Kafka",
-          "plural": "kafkas",
-          "version": "v1beta1"
-        },
-        {
-          "group": "platform.confluent.io",
-          "kind": "Zookeeper",
-          "plural": "zookeepers",
-          "version": "v1beta1"
-        },
-        {
-          "group": "platform.confluent.io",
-          "kind": "Connector",
-          "plural": "connectors",
-          "version": "v1beta1"
-        },
-        {
-          "group": "platform.confluent.io",
-          "kind": "Connect",
-          "plural": "connects",
-          "version": "v1beta1"
-        },
-        {
-          "group": "platform.confluent.io",
-          "kind": "KafkaTopic",
-          "plural": "kafkatopics",
-          "version": "v1beta1"
-        },
-        {
-          "group": "platform.confluent.io",
-          "kind": "Schema",
-          "plural": "schemas",
-          "version": "v1beta1"
-        },
-        {
-          "group": "platform.confluent.io",
-          "kind": "ControlCenter",
-          "plural": "controlcenters",
-          "version": "v1beta1"
-        },
-        {
-          "group": "platform.confluent.io",
-          "kind": "KsqlDB",
-          "plural": "ksqldbs",
-          "version": "v1beta1"
-        },
-        {
-          "group": "platform.confluent.io",
-          "kind": "ConfluentRolebinding",
-          "plural": "confluentrolebindings",
-          "version": "v1beta1"
-        },
-        {
-          "group": "platform.confluent.io",
-          "kind": "MigrationJob",
-          "plural": "migrationjobs",
-          "version": "v1beta1"
-        },
-        {
-          "group": "platform.confluent.io",
-          "kind": "KafkaRestClass",
-          "plural": "kafkarestclasses",
-          "version": "v1beta1"
-        },
-        {
-          "group": "platform.confluent.io",
-          "kind": "SchemaRegistry",
-          "plural": "schemaregistries",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:633dc1b217c2cfbb216781f5fa9b40a4170145273e89df85a27a7f0206090f5f",
-          "image": "docker.io/confluentinc/confluent-operator@sha256:633dc1b217c2cfbb216781f5fa9b40a4170145273e89df85a27a7f0206090f5f",
-          "name": "confluent-operator"
-        },
-        {
-          "digest": "sha256:a7978b1796f4b7f01ea6ccc56615a2195190de6eaf41a4e538e325dd2406f26d",
-          "image": "docker.io/confluentinc/confluent-init-container@sha256:a7978b1796f4b7f01ea6ccc56615a2195190de6eaf41a4e538e325dd2406f26d",
-          "name": "confluent-init-container"
-        },
-        {
-          "digest": "sha256:254266ab0730cdacc49a57b7e98b23865942aa251c676c15297d70a3003b45e1",
-          "image": "docker.io/confluentinc/cp-zookeeper@sha256:254266ab0730cdacc49a57b7e98b23865942aa251c676c15297d70a3003b45e1",
-          "name": "cp-zookeeper"
-        },
-        {
-          "digest": "sha256:a590245bf3269c05a88e99d56a1e869c07f7d3fb76fa76370b8faaa673b0c8b1",
-          "image": "docker.io/confluentinc/cp-server@sha256:a590245bf3269c05a88e99d56a1e869c07f7d3fb76fa76370b8faaa673b0c8b1",
-          "name": "cp-server"
-        },
-        {
-          "digest": "sha256:80a3d41cc8a6989e556a0283e4ae31f7c80880f97bd235db4929f4df40dabb8f",
-          "image": "docker.io/confluentinc/cp-kafka-rest@sha256:80a3d41cc8a6989e556a0283e4ae31f7c80880f97bd235db4929f4df40dabb8f",
-          "name": "cp-kafka-rest"
-        },
-        {
-          "digest": "sha256:20b6ac87de3b00ff77f590118cbc9877d97c54d270a4846b60d165cdde2b0427",
-          "image": "docker.io/confluentinc/cp-ksqldb-server@sha256:20b6ac87de3b00ff77f590118cbc9877d97c54d270a4846b60d165cdde2b0427",
-          "name": "cp-ksqldb-server"
-        },
-        {
-          "digest": "sha256:c9c2528585d192f68e268521074964d37c14fca16f3bab568c57c68aca01b978",
-          "image": "docker.io/confluentinc/cp-schema-registry@sha256:c9c2528585d192f68e268521074964d37c14fca16f3bab568c57c68aca01b978",
-          "name": "cp-schema-registry"
-        },
-        {
-          "digest": "sha256:bb847350302c636fb499509c29f355f77a6299c2b1d31a445882a74e0292463c",
-          "image": "docker.io/confluentinc/cp-server-connect@sha256:bb847350302c636fb499509c29f355f77a6299c2b1d31a445882a74e0292463c",
-          "name": "cp-server-connect"
-        },
-        {
-          "digest": "sha256:eb2e977d41585dc3c6474d71af2bfb76fe885b4a6eb5a02cb3a18a5485db8d6a",
-          "image": "docker.io/confluentinc/cp-enterprise-control-center@sha256:eb2e977d41585dc3c6474d71af2bfb76fe885b4a6eb5a02cb3a18a5485db8d6a",
-          "name": "cp-enterprise-control-center"
-        },
-        {
-          "digest": "sha256:633dc1b217c2cfbb216781f5fa9b40a4170145273e89df85a27a7f0206090f5f",
-          "image": "docker.io/confluentinc/confluent-operator@sha256:633dc1b217c2cfbb216781f5fa9b40a4170145273e89df85a27a7f0206090f5f",
-          "name": "confluent-operator-633dc1b217c2cfbb216781f5fa9b40a4170145273e89df85a27a7f0206090f5f-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=2.0.3 <2.1.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "2.1.1",
-      "version_original": "2.1.1"
-    },
-    {
       "_id": "62e9f284926c4db0ae4ddde2",
       "alm_examples": [
         {
@@ -15370,6 +14659,748 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "8.6.1",
       "version_original": "8.6.1"
+    },
+    {
+      "_id": "62f1439dc7996e54ea09b6b9",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:c6559cc748028d2098791b277d6316570b1985c616a7e3182fc6dde64296aa11",
+      "bundle_path_digest": "sha256:c6559cc748028d2098791b277d6316570b1985c616a7e3182fc6dde64296aa11",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-08T17:10:53.946000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.6.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:40:07.843000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
+          "name": "kubeturbo-operator-352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec-annotation"
+        },
+        {
+          "digest": "sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:acbf1a49c061d80c76468137991816401b1c43f4921179013c682d6dfcf814fe",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:acbf1a49c061d80c76468137991816401b1c43f4921179013c682d6dfcf814fe",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "8.6.1",
+      "version_original": "8.6.1"
+    },
+    {
+      "_id": "62f144e996f50062ffb7a1d3",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:c6559cc748028d2098791b277d6316570b1985c616a7e3182fc6dde64296aa11",
+      "bundle_path_digest": "sha256:c6559cc748028d2098791b277d6316570b1985c616a7e3182fc6dde64296aa11",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-08T17:16:25.018000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.6.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:13:54.346000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
+          "name": "kubeturbo-operator-352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec-annotation"
+        },
+        {
+          "digest": "sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:acbf1a49c061d80c76468137991816401b1c43f4921179013c682d6dfcf814fe",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:acbf1a49c061d80c76468137991816401b1c43f4921179013c682d6dfcf814fe",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "8.6.1",
+      "version_original": "8.6.1"
+    },
+    {
+      "_id": "62f2e93ce81a172176146112",
+      "alm_examples": [
+        {
+          "api_version": "csi.hitachi.com/v1",
+          "kind": "HSPC",
+          "metadata": {
+            "name": "hspc",
+            "namespace": "kube-system"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/hitachi/hspc-operator-bundle@sha256:1fad515e245a132a30d185a68d487518c7b980ac63131569a3cf5d48e871de72",
+      "bundle_path_digest": "sha256:1fad515e245a132a30d185a68d487518c7b980ac63131569a3cf5d48e871de72",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-09T23:09:48.824000+00:00",
+      "csv_description": "## About\nHitachi Storage Plug-in for Containers (HSPC) is a plugin that integrates Hitachi VSP storage into Kubernetes based clusters.\nHSPC provides dynamic persistent volume provisioning capabilities from Hitachi's block storage arrays.\n\nFor full documentation, go to our [Knowledge Base](https://knowledge.hitachivantara.com/Documents/Adapters_and_Drivers/Storage_Adapters_and_Drivers/Containers) and refer to the reference guide for HSPC v3.10.0.\n\n## Requirements\n\n### Supported Driver Version\n\n* HSPC v3.10.0\n\n### Supported Platforms\n\n* OpenShift v4.8, v4.9, v4.10\n\n### Supported Operating Systems\n\n* RHEL 7.x\n* RHEL 8.x",
+      "csv_display_name": "Hitachi Storage Plug-in for Containers",
+      "csv_metadata_description": "An operator for managing Hitachi Storage Plug-in for Containers CSI driver",
+      "csv_name": "hspc-operator.v1.10.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:47:07.251000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "hspc-operator",
+      "provided_apis": [
+        {
+          "group": "csi.hitachi.com",
+          "kind": "HSPC",
+          "plural": "hspcs",
+          "version": "v1"
+        }
+      ],
+      "provider": "Hitachi",
+      "related_images": [
+        {
+          "digest": "sha256:7bac0aafe3b6ccaab0b0ee66648a6d4f31f2a989f10d67f97f3c50c211e8512f",
+          "image": "registry.connect.redhat.com/hitachi/hspc-csi-driver@sha256:7bac0aafe3b6ccaab0b0ee66648a6d4f31f2a989f10d67f97f3c50c211e8512f",
+          "name": "hspc-csi-driver"
+        },
+        {
+          "digest": "sha256:ca8fe419be1ac73c9930b12c68ccd78a7955a3bf22d7e0c6b499065a5eb6dda5",
+          "image": "registry.connect.redhat.com/hitachi/hspc-operator@sha256:ca8fe419be1ac73c9930b12c68ccd78a7955a3bf22d7e0c6b499065a5eb6dda5",
+          "name": "hspc-operator"
+        },
+        {
+          "digest": "sha256:e29462051266aa293115b4056d0b211fc35e8dfdcd716dd5480cbf2b4411f1c8",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:e29462051266aa293115b4056d0b211fc35e8dfdcd716dd5480cbf2b4411f1c8",
+          "name": "ose-csi-external-attacher-v4.8"
+        },
+        {
+          "digest": "sha256:ee5eb1f4f81d03798824a04f14d59dbdc2dbcd29f8b0784f9b43ab38d3032fc1",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:ee5eb1f4f81d03798824a04f14d59dbdc2dbcd29f8b0784f9b43ab38d3032fc1",
+          "name": "ose-csi-external-provisioner-v4.8"
+        },
+        {
+          "digest": "sha256:1eb45a961aadc52f46a3d3084da6f667a9da4692e29672ed49d42a95d4c0597d",
+          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar@sha256:1eb45a961aadc52f46a3d3084da6f667a9da4692e29672ed49d42a95d4c0597d",
+          "name": "ose-csi-node-driver-registrar-v4.8"
+        },
+        {
+          "digest": "sha256:e8c4b045477241f14bb59fe2625b3bb6a010c2f205de8719ecbaabe62b6963ca",
+          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:e8c4b045477241f14bb59fe2625b3bb6a010c2f205de8719ecbaabe62b6963ca",
+          "name": "ose-csi-livenessprobe-v4.8"
+        },
+        {
+          "digest": "sha256:eaf9d026d37644d16782cb3d4a9d74f7c969f073d3ba9aa45a83400670251499",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:eaf9d026d37644d16782cb3d4a9d74f7c969f073d3ba9aa45a83400670251499",
+          "name": "ose-csi-external-resizer-rhel8-v4.8"
+        },
+        {
+          "digest": "sha256:b51e2413c4dd58a9073ddfe9bd48303c13ae5662ccbb1a56c75c75acd0fb1381",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:b51e2413c4dd58a9073ddfe9bd48303c13ae5662ccbb1a56c75c75acd0fb1381",
+          "name": "ose-csi-external-snapshotter-rhel8-v4.8"
+        },
+        {
+          "digest": "sha256:1cdd882b2257fff3198cfc8e8dad47e4e2e067966b6c56633daf62c6e12964d4",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:1cdd882b2257fff3198cfc8e8dad47e4e2e067966b6c56633daf62c6e12964d4",
+          "name": "ose-csi-external-attacher-v4.9"
+        },
+        {
+          "digest": "sha256:448ad197f941249247a9672b38cdf2c91b33fd588c4c7c54eda83df1f3e9bc7e",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:448ad197f941249247a9672b38cdf2c91b33fd588c4c7c54eda83df1f3e9bc7e",
+          "name": "ose-csi-external-provisioner-v4.9"
+        },
+        {
+          "digest": "sha256:09be9f710932bc2f4f73eefaca2aa24e5da48ac178fa3f55a972d2a2e3e9c3bc",
+          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar@sha256:09be9f710932bc2f4f73eefaca2aa24e5da48ac178fa3f55a972d2a2e3e9c3bc",
+          "name": "ose-csi-node-driver-registrar-v4.9"
+        },
+        {
+          "digest": "sha256:c61a887f2135c82fb4409cdaaba1c4e81f93c20ca335a40c228242f3329e0547",
+          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:c61a887f2135c82fb4409cdaaba1c4e81f93c20ca335a40c228242f3329e0547",
+          "name": "ose-csi-livenessprobe-v4.9"
+        },
+        {
+          "digest": "sha256:10c2e6528ac30691aa9f42d6b53f5b65c41321be51d2a6a93991959829db004f",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:10c2e6528ac30691aa9f42d6b53f5b65c41321be51d2a6a93991959829db004f",
+          "name": "ose-csi-external-resizer-rhel8-v4.9"
+        },
+        {
+          "digest": "sha256:0c37ebb246653199b76ad6114f584b1b4db1ff1048d6b0f228ed843fa2e2eb16",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:0c37ebb246653199b76ad6114f584b1b4db1ff1048d6b0f228ed843fa2e2eb16",
+          "name": "ose-csi-external-snapshotter-rhel8-v4.9"
+        },
+        {
+          "digest": "sha256:cdaf874ffaff5e3e4cae473c40372ef45f7d9e3bb35a93c7a715bcc30ff03a4f",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:cdaf874ffaff5e3e4cae473c40372ef45f7d9e3bb35a93c7a715bcc30ff03a4f",
+          "name": "ose-csi-external-attacher-v4.10"
+        },
+        {
+          "digest": "sha256:95010584242f9705ffad17632bd11cf1299955b986d1e5b4b8892f9fda75bb00",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:95010584242f9705ffad17632bd11cf1299955b986d1e5b4b8892f9fda75bb00",
+          "name": "ose-csi-external-provisioner-v4.10"
+        },
+        {
+          "digest": "sha256:90792483c531bfa2c51e5be45efdc0e52e3e2461a4c9a6921428d719415dc8b0",
+          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar@sha256:90792483c531bfa2c51e5be45efdc0e52e3e2461a4c9a6921428d719415dc8b0",
+          "name": "ose-csi-node-driver-registrar-v4.10"
+        },
+        {
+          "digest": "sha256:b9db5f0eb8a4d145b6f5a89e12d3361a04616e27b8b8d4bcdfd2c1545f6dc407",
+          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:b9db5f0eb8a4d145b6f5a89e12d3361a04616e27b8b8d4bcdfd2c1545f6dc407",
+          "name": "ose-csi-livenessprobe-v4.10"
+        },
+        {
+          "digest": "sha256:34386f8c0227015c1abd9d7dfd8e9b687cba7047ec021d393ab39133e67178b9",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:34386f8c0227015c1abd9d7dfd8e9b687cba7047ec021d393ab39133e67178b9",
+          "name": "ose-csi-external-resizer-rhel8-v4.10"
+        },
+        {
+          "digest": "sha256:cb781aff7b4ead2e0535274186b5e97274d734e19e9ef404e187bc39d11bb2cc",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:cb781aff7b4ead2e0535274186b5e97274d734e19e9ef404e187bc39d11bb2cc",
+          "name": "ose-csi-external-snapshotter-rhel8-v4.10"
+        },
+        {
+          "digest": "sha256:ca8fe419be1ac73c9930b12c68ccd78a7955a3bf22d7e0c6b499065a5eb6dda5",
+          "image": "registry.connect.redhat.com/hitachi/hspc-operator@sha256:ca8fe419be1ac73c9930b12c68ccd78a7955a3bf22d7e0c6b499065a5eb6dda5",
+          "name": "hspc-operator-ca8fe419be1ac73c9930b12c68ccd78a7955a3bf22d7e0c6b499065a5eb6dda5-annotation"
+        },
+        {
+          "digest": "sha256:ca8fe419be1ac73c9930b12c68ccd78a7955a3bf22d7e0c6b499065a5eb6dda5",
+          "image": "registry.connect.redhat.com/hitachi/hspc-operator@sha256:ca8fe419be1ac73c9930b12c68ccd78a7955a3bf22d7e0c6b499065a5eb6dda5",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.10.0",
+      "version_original": "1.10.0"
+    },
+    {
+      "_id": "62f2e95bc7996e54ea0a2e91",
+      "alm_examples": [
+        {
+          "api_version": "csi.hitachi.com/v1",
+          "kind": "HSPC",
+          "metadata": {
+            "name": "hspc",
+            "namespace": "kube-system"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/hitachi/hspc-operator-bundle@sha256:1fad515e245a132a30d185a68d487518c7b980ac63131569a3cf5d48e871de72",
+      "bundle_path_digest": "sha256:1fad515e245a132a30d185a68d487518c7b980ac63131569a3cf5d48e871de72",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-09T23:10:19.368000+00:00",
+      "csv_description": "## About\nHitachi Storage Plug-in for Containers (HSPC) is a plugin that integrates Hitachi VSP storage into Kubernetes based clusters.\nHSPC provides dynamic persistent volume provisioning capabilities from Hitachi's block storage arrays.\n\nFor full documentation, go to our [Knowledge Base](https://knowledge.hitachivantara.com/Documents/Adapters_and_Drivers/Storage_Adapters_and_Drivers/Containers) and refer to the reference guide for HSPC v3.10.0.\n\n## Requirements\n\n### Supported Driver Version\n\n* HSPC v3.10.0\n\n### Supported Platforms\n\n* OpenShift v4.8, v4.9, v4.10\n\n### Supported Operating Systems\n\n* RHEL 7.x\n* RHEL 8.x",
+      "csv_display_name": "Hitachi Storage Plug-in for Containers",
+      "csv_metadata_description": "An operator for managing Hitachi Storage Plug-in for Containers CSI driver",
+      "csv_name": "hspc-operator.v1.10.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:52:04.564000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "hspc-operator",
+      "provided_apis": [
+        {
+          "group": "csi.hitachi.com",
+          "kind": "HSPC",
+          "version": "v1"
+        }
+      ],
+      "provider": "Hitachi",
+      "related_images": [
+        {
+          "digest": "sha256:7bac0aafe3b6ccaab0b0ee66648a6d4f31f2a989f10d67f97f3c50c211e8512f",
+          "image": "registry.connect.redhat.com/hitachi/hspc-csi-driver@sha256:7bac0aafe3b6ccaab0b0ee66648a6d4f31f2a989f10d67f97f3c50c211e8512f",
+          "name": "hspc-csi-driver"
+        },
+        {
+          "digest": "sha256:ca8fe419be1ac73c9930b12c68ccd78a7955a3bf22d7e0c6b499065a5eb6dda5",
+          "image": "registry.connect.redhat.com/hitachi/hspc-operator@sha256:ca8fe419be1ac73c9930b12c68ccd78a7955a3bf22d7e0c6b499065a5eb6dda5",
+          "name": "hspc-operator"
+        },
+        {
+          "digest": "sha256:e29462051266aa293115b4056d0b211fc35e8dfdcd716dd5480cbf2b4411f1c8",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:e29462051266aa293115b4056d0b211fc35e8dfdcd716dd5480cbf2b4411f1c8",
+          "name": "ose-csi-external-attacher-v4.8"
+        },
+        {
+          "digest": "sha256:ee5eb1f4f81d03798824a04f14d59dbdc2dbcd29f8b0784f9b43ab38d3032fc1",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:ee5eb1f4f81d03798824a04f14d59dbdc2dbcd29f8b0784f9b43ab38d3032fc1",
+          "name": "ose-csi-external-provisioner-v4.8"
+        },
+        {
+          "digest": "sha256:1eb45a961aadc52f46a3d3084da6f667a9da4692e29672ed49d42a95d4c0597d",
+          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar@sha256:1eb45a961aadc52f46a3d3084da6f667a9da4692e29672ed49d42a95d4c0597d",
+          "name": "ose-csi-node-driver-registrar-v4.8"
+        },
+        {
+          "digest": "sha256:e8c4b045477241f14bb59fe2625b3bb6a010c2f205de8719ecbaabe62b6963ca",
+          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:e8c4b045477241f14bb59fe2625b3bb6a010c2f205de8719ecbaabe62b6963ca",
+          "name": "ose-csi-livenessprobe-v4.8"
+        },
+        {
+          "digest": "sha256:eaf9d026d37644d16782cb3d4a9d74f7c969f073d3ba9aa45a83400670251499",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:eaf9d026d37644d16782cb3d4a9d74f7c969f073d3ba9aa45a83400670251499",
+          "name": "ose-csi-external-resizer-rhel8-v4.8"
+        },
+        {
+          "digest": "sha256:b51e2413c4dd58a9073ddfe9bd48303c13ae5662ccbb1a56c75c75acd0fb1381",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:b51e2413c4dd58a9073ddfe9bd48303c13ae5662ccbb1a56c75c75acd0fb1381",
+          "name": "ose-csi-external-snapshotter-rhel8-v4.8"
+        },
+        {
+          "digest": "sha256:1cdd882b2257fff3198cfc8e8dad47e4e2e067966b6c56633daf62c6e12964d4",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:1cdd882b2257fff3198cfc8e8dad47e4e2e067966b6c56633daf62c6e12964d4",
+          "name": "ose-csi-external-attacher-v4.9"
+        },
+        {
+          "digest": "sha256:448ad197f941249247a9672b38cdf2c91b33fd588c4c7c54eda83df1f3e9bc7e",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:448ad197f941249247a9672b38cdf2c91b33fd588c4c7c54eda83df1f3e9bc7e",
+          "name": "ose-csi-external-provisioner-v4.9"
+        },
+        {
+          "digest": "sha256:09be9f710932bc2f4f73eefaca2aa24e5da48ac178fa3f55a972d2a2e3e9c3bc",
+          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar@sha256:09be9f710932bc2f4f73eefaca2aa24e5da48ac178fa3f55a972d2a2e3e9c3bc",
+          "name": "ose-csi-node-driver-registrar-v4.9"
+        },
+        {
+          "digest": "sha256:c61a887f2135c82fb4409cdaaba1c4e81f93c20ca335a40c228242f3329e0547",
+          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:c61a887f2135c82fb4409cdaaba1c4e81f93c20ca335a40c228242f3329e0547",
+          "name": "ose-csi-livenessprobe-v4.9"
+        },
+        {
+          "digest": "sha256:10c2e6528ac30691aa9f42d6b53f5b65c41321be51d2a6a93991959829db004f",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:10c2e6528ac30691aa9f42d6b53f5b65c41321be51d2a6a93991959829db004f",
+          "name": "ose-csi-external-resizer-rhel8-v4.9"
+        },
+        {
+          "digest": "sha256:0c37ebb246653199b76ad6114f584b1b4db1ff1048d6b0f228ed843fa2e2eb16",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:0c37ebb246653199b76ad6114f584b1b4db1ff1048d6b0f228ed843fa2e2eb16",
+          "name": "ose-csi-external-snapshotter-rhel8-v4.9"
+        },
+        {
+          "digest": "sha256:cdaf874ffaff5e3e4cae473c40372ef45f7d9e3bb35a93c7a715bcc30ff03a4f",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:cdaf874ffaff5e3e4cae473c40372ef45f7d9e3bb35a93c7a715bcc30ff03a4f",
+          "name": "ose-csi-external-attacher-v4.10"
+        },
+        {
+          "digest": "sha256:95010584242f9705ffad17632bd11cf1299955b986d1e5b4b8892f9fda75bb00",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:95010584242f9705ffad17632bd11cf1299955b986d1e5b4b8892f9fda75bb00",
+          "name": "ose-csi-external-provisioner-v4.10"
+        },
+        {
+          "digest": "sha256:90792483c531bfa2c51e5be45efdc0e52e3e2461a4c9a6921428d719415dc8b0",
+          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar@sha256:90792483c531bfa2c51e5be45efdc0e52e3e2461a4c9a6921428d719415dc8b0",
+          "name": "ose-csi-node-driver-registrar-v4.10"
+        },
+        {
+          "digest": "sha256:b9db5f0eb8a4d145b6f5a89e12d3361a04616e27b8b8d4bcdfd2c1545f6dc407",
+          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:b9db5f0eb8a4d145b6f5a89e12d3361a04616e27b8b8d4bcdfd2c1545f6dc407",
+          "name": "ose-csi-livenessprobe-v4.10"
+        },
+        {
+          "digest": "sha256:34386f8c0227015c1abd9d7dfd8e9b687cba7047ec021d393ab39133e67178b9",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:34386f8c0227015c1abd9d7dfd8e9b687cba7047ec021d393ab39133e67178b9",
+          "name": "ose-csi-external-resizer-rhel8-v4.10"
+        },
+        {
+          "digest": "sha256:cb781aff7b4ead2e0535274186b5e97274d734e19e9ef404e187bc39d11bb2cc",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:cb781aff7b4ead2e0535274186b5e97274d734e19e9ef404e187bc39d11bb2cc",
+          "name": "ose-csi-external-snapshotter-rhel8-v4.10"
+        },
+        {
+          "digest": "sha256:ca8fe419be1ac73c9930b12c68ccd78a7955a3bf22d7e0c6b499065a5eb6dda5",
+          "image": "registry.connect.redhat.com/hitachi/hspc-operator@sha256:ca8fe419be1ac73c9930b12c68ccd78a7955a3bf22d7e0c6b499065a5eb6dda5",
+          "name": "hspc-operator-ca8fe419be1ac73c9930b12c68ccd78a7955a3bf22d7e0c6b499065a5eb6dda5-annotation"
+        },
+        {
+          "digest": "sha256:ca8fe419be1ac73c9930b12c68ccd78a7955a3bf22d7e0c6b499065a5eb6dda5",
+          "image": "registry.connect.redhat.com/hitachi/hspc-operator@sha256:ca8fe419be1ac73c9930b12c68ccd78a7955a3bf22d7e0c6b499065a5eb6dda5",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.10.0",
+      "version_original": "1.10.0"
+    },
+    {
+      "_id": "62f2ea31ecdd7d25b4360c70",
+      "alm_examples": [
+        {
+          "api_version": "csi.hitachi.com/v1",
+          "kind": "HSPC",
+          "metadata": {
+            "name": "hspc",
+            "namespace": "kube-system"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/hitachi/hspc-operator-bundle@sha256:1fad515e245a132a30d185a68d487518c7b980ac63131569a3cf5d48e871de72",
+      "bundle_path_digest": "sha256:1fad515e245a132a30d185a68d487518c7b980ac63131569a3cf5d48e871de72",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-09T23:13:53.793000+00:00",
+      "csv_description": "## About\nHitachi Storage Plug-in for Containers (HSPC) is a plugin that integrates Hitachi VSP storage into Kubernetes based clusters.\nHSPC provides dynamic persistent volume provisioning capabilities from Hitachi's block storage arrays.\n\nFor full documentation, go to our [Knowledge Base](https://knowledge.hitachivantara.com/Documents/Adapters_and_Drivers/Storage_Adapters_and_Drivers/Containers) and refer to the reference guide for HSPC v3.10.0.\n\n## Requirements\n\n### Supported Driver Version\n\n* HSPC v3.10.0\n\n### Supported Platforms\n\n* OpenShift v4.8, v4.9, v4.10\n\n### Supported Operating Systems\n\n* RHEL 7.x\n* RHEL 8.x",
+      "csv_display_name": "Hitachi Storage Plug-in for Containers",
+      "csv_metadata_description": "An operator for managing Hitachi Storage Plug-in for Containers CSI driver",
+      "csv_name": "hspc-operator.v1.10.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:25:08.313000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "hspc-operator",
+      "provided_apis": [
+        {
+          "group": "csi.hitachi.com",
+          "kind": "HSPC",
+          "version": "v1"
+        }
+      ],
+      "provider": "Hitachi",
+      "related_images": [
+        {
+          "digest": "sha256:7bac0aafe3b6ccaab0b0ee66648a6d4f31f2a989f10d67f97f3c50c211e8512f",
+          "image": "registry.connect.redhat.com/hitachi/hspc-csi-driver@sha256:7bac0aafe3b6ccaab0b0ee66648a6d4f31f2a989f10d67f97f3c50c211e8512f",
+          "name": "hspc-csi-driver"
+        },
+        {
+          "digest": "sha256:ca8fe419be1ac73c9930b12c68ccd78a7955a3bf22d7e0c6b499065a5eb6dda5",
+          "image": "registry.connect.redhat.com/hitachi/hspc-operator@sha256:ca8fe419be1ac73c9930b12c68ccd78a7955a3bf22d7e0c6b499065a5eb6dda5",
+          "name": "hspc-operator"
+        },
+        {
+          "digest": "sha256:e29462051266aa293115b4056d0b211fc35e8dfdcd716dd5480cbf2b4411f1c8",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:e29462051266aa293115b4056d0b211fc35e8dfdcd716dd5480cbf2b4411f1c8",
+          "name": "ose-csi-external-attacher-v4.8"
+        },
+        {
+          "digest": "sha256:ee5eb1f4f81d03798824a04f14d59dbdc2dbcd29f8b0784f9b43ab38d3032fc1",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:ee5eb1f4f81d03798824a04f14d59dbdc2dbcd29f8b0784f9b43ab38d3032fc1",
+          "name": "ose-csi-external-provisioner-v4.8"
+        },
+        {
+          "digest": "sha256:1eb45a961aadc52f46a3d3084da6f667a9da4692e29672ed49d42a95d4c0597d",
+          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar@sha256:1eb45a961aadc52f46a3d3084da6f667a9da4692e29672ed49d42a95d4c0597d",
+          "name": "ose-csi-node-driver-registrar-v4.8"
+        },
+        {
+          "digest": "sha256:e8c4b045477241f14bb59fe2625b3bb6a010c2f205de8719ecbaabe62b6963ca",
+          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:e8c4b045477241f14bb59fe2625b3bb6a010c2f205de8719ecbaabe62b6963ca",
+          "name": "ose-csi-livenessprobe-v4.8"
+        },
+        {
+          "digest": "sha256:eaf9d026d37644d16782cb3d4a9d74f7c969f073d3ba9aa45a83400670251499",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:eaf9d026d37644d16782cb3d4a9d74f7c969f073d3ba9aa45a83400670251499",
+          "name": "ose-csi-external-resizer-rhel8-v4.8"
+        },
+        {
+          "digest": "sha256:b51e2413c4dd58a9073ddfe9bd48303c13ae5662ccbb1a56c75c75acd0fb1381",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:b51e2413c4dd58a9073ddfe9bd48303c13ae5662ccbb1a56c75c75acd0fb1381",
+          "name": "ose-csi-external-snapshotter-rhel8-v4.8"
+        },
+        {
+          "digest": "sha256:1cdd882b2257fff3198cfc8e8dad47e4e2e067966b6c56633daf62c6e12964d4",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:1cdd882b2257fff3198cfc8e8dad47e4e2e067966b6c56633daf62c6e12964d4",
+          "name": "ose-csi-external-attacher-v4.9"
+        },
+        {
+          "digest": "sha256:448ad197f941249247a9672b38cdf2c91b33fd588c4c7c54eda83df1f3e9bc7e",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:448ad197f941249247a9672b38cdf2c91b33fd588c4c7c54eda83df1f3e9bc7e",
+          "name": "ose-csi-external-provisioner-v4.9"
+        },
+        {
+          "digest": "sha256:09be9f710932bc2f4f73eefaca2aa24e5da48ac178fa3f55a972d2a2e3e9c3bc",
+          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar@sha256:09be9f710932bc2f4f73eefaca2aa24e5da48ac178fa3f55a972d2a2e3e9c3bc",
+          "name": "ose-csi-node-driver-registrar-v4.9"
+        },
+        {
+          "digest": "sha256:c61a887f2135c82fb4409cdaaba1c4e81f93c20ca335a40c228242f3329e0547",
+          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:c61a887f2135c82fb4409cdaaba1c4e81f93c20ca335a40c228242f3329e0547",
+          "name": "ose-csi-livenessprobe-v4.9"
+        },
+        {
+          "digest": "sha256:10c2e6528ac30691aa9f42d6b53f5b65c41321be51d2a6a93991959829db004f",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:10c2e6528ac30691aa9f42d6b53f5b65c41321be51d2a6a93991959829db004f",
+          "name": "ose-csi-external-resizer-rhel8-v4.9"
+        },
+        {
+          "digest": "sha256:0c37ebb246653199b76ad6114f584b1b4db1ff1048d6b0f228ed843fa2e2eb16",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:0c37ebb246653199b76ad6114f584b1b4db1ff1048d6b0f228ed843fa2e2eb16",
+          "name": "ose-csi-external-snapshotter-rhel8-v4.9"
+        },
+        {
+          "digest": "sha256:cdaf874ffaff5e3e4cae473c40372ef45f7d9e3bb35a93c7a715bcc30ff03a4f",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-attacher@sha256:cdaf874ffaff5e3e4cae473c40372ef45f7d9e3bb35a93c7a715bcc30ff03a4f",
+          "name": "ose-csi-external-attacher-v4.10"
+        },
+        {
+          "digest": "sha256:95010584242f9705ffad17632bd11cf1299955b986d1e5b4b8892f9fda75bb00",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-provisioner@sha256:95010584242f9705ffad17632bd11cf1299955b986d1e5b4b8892f9fda75bb00",
+          "name": "ose-csi-external-provisioner-v4.10"
+        },
+        {
+          "digest": "sha256:90792483c531bfa2c51e5be45efdc0e52e3e2461a4c9a6921428d719415dc8b0",
+          "image": "registry.redhat.io/openshift4/ose-csi-node-driver-registrar@sha256:90792483c531bfa2c51e5be45efdc0e52e3e2461a4c9a6921428d719415dc8b0",
+          "name": "ose-csi-node-driver-registrar-v4.10"
+        },
+        {
+          "digest": "sha256:b9db5f0eb8a4d145b6f5a89e12d3361a04616e27b8b8d4bcdfd2c1545f6dc407",
+          "image": "registry.redhat.io/openshift4/ose-csi-livenessprobe@sha256:b9db5f0eb8a4d145b6f5a89e12d3361a04616e27b8b8d4bcdfd2c1545f6dc407",
+          "name": "ose-csi-livenessprobe-v4.10"
+        },
+        {
+          "digest": "sha256:34386f8c0227015c1abd9d7dfd8e9b687cba7047ec021d393ab39133e67178b9",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-resizer-rhel8@sha256:34386f8c0227015c1abd9d7dfd8e9b687cba7047ec021d393ab39133e67178b9",
+          "name": "ose-csi-external-resizer-rhel8-v4.10"
+        },
+        {
+          "digest": "sha256:cb781aff7b4ead2e0535274186b5e97274d734e19e9ef404e187bc39d11bb2cc",
+          "image": "registry.redhat.io/openshift4/ose-csi-external-snapshotter-rhel8@sha256:cb781aff7b4ead2e0535274186b5e97274d734e19e9ef404e187bc39d11bb2cc",
+          "name": "ose-csi-external-snapshotter-rhel8-v4.10"
+        },
+        {
+          "digest": "sha256:ca8fe419be1ac73c9930b12c68ccd78a7955a3bf22d7e0c6b499065a5eb6dda5",
+          "image": "registry.connect.redhat.com/hitachi/hspc-operator@sha256:ca8fe419be1ac73c9930b12c68ccd78a7955a3bf22d7e0c6b499065a5eb6dda5",
+          "name": "hspc-operator-ca8fe419be1ac73c9930b12c68ccd78a7955a3bf22d7e0c6b499065a5eb6dda5-annotation"
+        },
+        {
+          "digest": "sha256:ca8fe419be1ac73c9930b12c68ccd78a7955a3bf22d7e0c6b499065a5eb6dda5",
+          "image": "registry.connect.redhat.com/hitachi/hspc-operator@sha256:ca8fe419be1ac73c9930b12c68ccd78a7955a3bf22d7e0c6b499065a5eb6dda5",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.10.0",
+      "version_original": "1.10.0"
     }
   ]
 }

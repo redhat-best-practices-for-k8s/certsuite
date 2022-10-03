@@ -1,2069 +1,6 @@
 {
   "data": [
     {
-      "_id": "6300317c53cb8f6da455589b",
-      "alm_examples": [
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseCluster",
-          "metadata": {
-            "name": "cb-example"
-          },
-          "spec": {
-            "backup": {
-              "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-              "managed": false,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              },
-              "serviceAccountName": "couchbase-backup"
-            },
-            "buckets": {
-              "managed": true,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              }
-            },
-            "cluster": {
-              "analyticsServiceMemoryQuota": "1Gi",
-              "autoFailoverMaxCount": 3,
-              "autoFailoverOnDataDiskIssues": true,
-              "autoFailoverOnDataDiskIssuesTimePeriod": "120s",
-              "autoFailoverServerGroup": false,
-              "autoFailoverTimeout": "120s",
-              "clusterName": "cb-example",
-              "dataServiceMemoryQuota": "256Mi",
-              "eventingServiceMemoryQuota": "256Mi",
-              "indexServiceMemoryQuota": "256Mi",
-              "indexStorageSetting": "memory_optimized",
-              "searchServiceMemoryQuota": "256Mi"
-            },
-            "enablePreviewScaling": false,
-            "hibernate": false,
-            "hibernationStrategy": "Immediate",
-            "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
-            "logRetentionCount": 20,
-            "logRetentionTime": "604800s",
-            "monitoring": {
-              "prometheus": {
-                "enabled": false,
-                "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4"
-              }
-            },
-            "networking": {
-              "adminConsoleServiceType": "NodePort",
-              "adminConsoleServices": [
-                "data"
-              ],
-              "exposeAdminConsole": true,
-              "exposedFeatureServiceType": "NodePort",
-              "exposedFeatures": [
-                "xdcr"
-              ]
-            },
-            "recoveryPolicy": "PrioritizeDataIntegrity",
-            "security": {
-              "adminSecret": "cb-example-auth",
-              "rbac": {
-                "managed": true,
-                "selector": {
-                  "matchLabels": {
-                    "cluster": "cb-example"
-                  }
-                }
-              }
-            },
-            "servers": [
-              {
-                "name": "all_services",
-                "services": [
-                  "data",
-                  "index",
-                  "query",
-                  "search",
-                  "eventing",
-                  "analytics"
-                ],
-                "size": 3
-              }
-            ],
-            "upgradeStrategy": "RollingUpgrade",
-            "xdcr": {
-              "managed": false,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              }
-            }
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "default"
-          },
-          "spec": {
-            "compressionMode": "passive",
-            "conflictResolution": "lww",
-            "enableFlush": false,
-            "enableIndexReplica": true,
-            "evictionPolicy": "valueOnly",
-            "ioPriority": "low",
-            "memoryQuota": "100Mi",
-            "replicas": 2
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseEphemeralBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "ephemeral-bucket"
-          },
-          "spec": {
-            "compressionMode": "passive",
-            "conflictResolution": "lww",
-            "enableFlush": false,
-            "evictionPolicy": "noEviction",
-            "ioPriority": "low",
-            "memoryQuota": "100Mi",
-            "replicas": 2
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseMemcachedBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "memcached-bucket"
-          },
-          "spec": {
-            "enableFlush": false,
-            "memoryQuota": "100Mi"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseUser",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-user"
-          },
-          "spec": {
-            "authDomain": "local",
-            "authSecret": "cb-example-auth",
-            "fullName": "My User"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseGroup",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-group"
-          },
-          "spec": {
-            "roles": [
-              {
-                "bucket": "default",
-                "name": "bucket_admin"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseRoleBinding",
-          "metadata": {
-            "name": "my-role-binding"
-          },
-          "spec": {
-            "roleRef": {
-              "kind": "CouchbaseGroup",
-              "name": "my-group"
-            },
-            "subjects": [
-              {
-                "kind": "CouchbaseUser",
-                "name": "my-user"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseReplication",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-replication"
-          },
-          "spec": {
-            "bucket": "default",
-            "compressionType": "Snappy",
-            "filterExpression": "",
-            "paused": false,
-            "remoteBucket": "default"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBackup",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "cb-backup"
-          },
-          "spec": {
-            "backOffLimit": 2,
-            "backupRetention": "24h",
-            "failedJobsHistoryLimit": 3,
-            "full": {
-              "schedule": "0 3 * * 6"
-            },
-            "incremental": {
-              "schedule": "0 3 * * 1-6"
-            },
-            "logRetention": "24h",
-            "size": "5Gi",
-            "strategy": "full_incremental",
-            "successfulJobsHistoryLimit": 1
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBackupRestore",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "cb-restore"
-          },
-          "spec": {
-            "backOffLimit": 2,
-            "backup": "cb-backup",
-            "end": {
-              "int": 1
-            },
-            "logRetention": "24h",
-            "repo": "cb-example-2020-10-29T19_00_03",
-            "start": {
-              "int": 1
-            }
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseCollectionGroup",
-          "metadata": {
-            "name": "my-collection-group"
-          },
-          "spec": {
-            "maxTTL": "",
-            "names": [
-              "my-collection"
-            ]
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseCollection",
-          "metadata": {
-            "name": "my-collection"
-          },
-          "spec": {
-            "maxTTL": "",
-            "name": "my-collection"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseScopeGroup",
-          "metadata": {
-            "name": "my-scope-group"
-          },
-          "spec": {
-            "collections": {},
-            "names": [
-              "my-scope"
-            ]
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseScope",
-          "metadata": {
-            "name": "my-scope"
-          },
-          "spec": {
-            "collections": {},
-            "name": "my-scope"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseMigrationReplication",
-          "metadata": {
-            "name": "default-migration"
-          },
-          "spec": {
-            "bucket": "default",
-            "remoteBucket": "default"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseAutoscaler",
-          "metadata": {
-            "name": "do.not.create.internal.only"
-          },
-          "spec": {
-            "servers": "internal",
-            "size": 2
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:5ef27c3e167ef5e6bee05125364a0021780eca77c8ffdad587bed251b838585e",
-      "bundle_path_digest": "sha256:5ef27c3e167ef5e6bee05125364a0021780eca77c8ffdad587bed251b838585e",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-20T00:57:32.177000+00:00",
-      "csv_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments on OpenShift. By installing this integration you will be able to deply Couchbase Server clusters with a single command.\n\n## Supported Features\n\n* **Automated cluster provisioning** - Deploying a Couchbase Cluster has never been easier. Fill out a Couchbase specific configuration and let the Couchbase Operator take care of provisioning nodes and setting up cluster to your exact specification.\n\n* **On-demand scalability** - Automatically scale your cluster up or down by changing a simple configuration parameter and let the Couchbase Operator handle provisioning of new nodes and joining them into the cluster.\n\n* **Auto-recovery** - Detect Couchbase node failures, rebalance out bad nodes, and bring the cluster back up to the desired capacity. Auto-recovery is completely automated so you can sleep easy through the night knowing that the Couchbase Operator will handle any failures.\n\n* **Geo-distribution** - Replicate your data between datacenters to move data closer to the users who consume it and protect against disaster scenarios where an entire datacenter becomes unavailable.\n\n* **Persistent storage** - Define persistent network-attached storage for each node in your cluster to allow pods to be recovered even if the node they were running on is no longer available.\n\n* **Rack/zone awareness** - Tell the Couchbase Operator about availability zones in your datacenter and let the operator take care of ensuring that nodes in your cluster are deployed equally across each zone.\n\n* **Supportability** - When things go wrong, use the cbopinfo tool provided with the Couchbase Operator to collect relevant data about your Couchbase deployment so that you can quickly address issues.\n\n* **Centralized configuration management** - Manage your configuration centrally with OpenShift. Updates to the configuration are watched by the Couchbase Operator and actions are taken to make the target cluster match the desired configuration.\n## Required Parameters\n* `authSecret` - provide the name of a secret that contains two keys for the `username` and `password` of the super user ([documentation](https://docs.couchbase.com/operator/1.2/couchbase-cluster-config.html))\n\n## About Couchbase Server\n\nBuilt on the most powerful NoSQL technology, Couchbase Server delivers unparalleled performance at scale, in any cloud. With features like memory-first architecture, geo-distributed deployments, and workload isolation, Couchbase Server excels at supporting mission-critical applications at scale while maintaining submillisecond latencies and 99.999% availability. Plus, with the most comprehensive SQL-compatible query language (N1QL), migrating from RDBMS to Couchbase Server is easy with ANSI joins.\n",
-      "csv_display_name": "Couchbase Operator",
-      "csv_metadata_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments",
-      "csv_name": "couchbase-operator.v2.3.2-1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:21:43.855000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "couchbase-enterprise-certified",
-      "provided_apis": [
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseReplication",
-          "plural": "couchbasereplications",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseCluster",
-          "plural": "couchbaseclusters",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseRoleBinding",
-          "plural": "couchbaserolebindings",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseGroup",
-          "plural": "couchbasegroups",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseCollectionGroup",
-          "plural": "couchbasecollectiongroups",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseCollection",
-          "plural": "couchbasecollections",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseMemcachedBucket",
-          "plural": "couchbasememcachedbuckets",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseEphemeralBucket",
-          "plural": "couchbaseephemeralbuckets",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackupRestore",
-          "plural": "couchbasebackuprestores",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackup",
-          "plural": "couchbasebackups",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBucket",
-          "plural": "couchbasebuckets",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseUser",
-          "plural": "couchbaseusers",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseMigrationReplication",
-          "plural": "couchbasemigrationreplications",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseScopeGroup",
-          "plural": "couchbasescopegroups",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseAutoscaler",
-          "plural": "couchbaseautoscalers",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseScope",
-          "plural": "couchbasescopes",
-          "version": "v2"
-        }
-      ],
-      "provider": "Couchbase",
-      "related_images": [
-        {
-          "digest": "sha256:3480123a4c056115b8fe7205fd62e25676045ea3248f8cdf3ec20bfff9168ee2",
-          "image": "registry.connect.redhat.com/couchbase/operator@sha256:3480123a4c056115b8fe7205fd62e25676045ea3248f8cdf3ec20bfff9168ee2",
-          "name": "couchbase-operator"
-        },
-        {
-          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
-          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
-          "name": "couchbase-server"
-        },
-        {
-          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "name": "couchbase-backup"
-        },
-        {
-          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
-          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
-          "name": "couchbase-metrics"
-        },
-        {
-          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
-          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
-          "name": "couchbase_server"
-        },
-        {
-          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "name": "couchbase_backup"
-        },
-        {
-          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
-          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
-          "name": "couchbase_metrics"
-        },
-        {
-          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
-          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
-          "name": "exporter-d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4-annotation"
-        },
-        {
-          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "name": "operator-backup-c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76-annotation"
-        },
-        {
-          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
-          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
-          "name": "server-05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "2.3.2-1",
-      "version_original": "2.3.2-1"
-    },
-    {
-      "_id": "6300317cdca7d12fdf8e15d1",
-      "alm_examples": [
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseCluster",
-          "metadata": {
-            "name": "cb-example"
-          },
-          "spec": {
-            "backup": {
-              "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-              "managed": false,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              },
-              "serviceAccountName": "couchbase-backup"
-            },
-            "buckets": {
-              "managed": true,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              }
-            },
-            "cluster": {
-              "analyticsServiceMemoryQuota": "1Gi",
-              "autoFailoverMaxCount": 3,
-              "autoFailoverOnDataDiskIssues": true,
-              "autoFailoverOnDataDiskIssuesTimePeriod": "120s",
-              "autoFailoverServerGroup": false,
-              "autoFailoverTimeout": "120s",
-              "clusterName": "cb-example",
-              "dataServiceMemoryQuota": "256Mi",
-              "eventingServiceMemoryQuota": "256Mi",
-              "indexServiceMemoryQuota": "256Mi",
-              "indexStorageSetting": "memory_optimized",
-              "searchServiceMemoryQuota": "256Mi"
-            },
-            "enablePreviewScaling": false,
-            "hibernate": false,
-            "hibernationStrategy": "Immediate",
-            "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
-            "logRetentionCount": 20,
-            "logRetentionTime": "604800s",
-            "monitoring": {
-              "prometheus": {
-                "enabled": false,
-                "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4"
-              }
-            },
-            "networking": {
-              "adminConsoleServiceType": "NodePort",
-              "adminConsoleServices": [
-                "data"
-              ],
-              "exposeAdminConsole": true,
-              "exposedFeatureServiceType": "NodePort",
-              "exposedFeatures": [
-                "xdcr"
-              ]
-            },
-            "recoveryPolicy": "PrioritizeDataIntegrity",
-            "security": {
-              "adminSecret": "cb-example-auth",
-              "rbac": {
-                "managed": true,
-                "selector": {
-                  "matchLabels": {
-                    "cluster": "cb-example"
-                  }
-                }
-              }
-            },
-            "servers": [
-              {
-                "name": "all_services",
-                "services": [
-                  "data",
-                  "index",
-                  "query",
-                  "search",
-                  "eventing",
-                  "analytics"
-                ],
-                "size": 3
-              }
-            ],
-            "upgradeStrategy": "RollingUpgrade",
-            "xdcr": {
-              "managed": false,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              }
-            }
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "default"
-          },
-          "spec": {
-            "compressionMode": "passive",
-            "conflictResolution": "lww",
-            "enableFlush": false,
-            "enableIndexReplica": true,
-            "evictionPolicy": "valueOnly",
-            "ioPriority": "low",
-            "memoryQuota": "100Mi",
-            "replicas": 2
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseEphemeralBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "ephemeral-bucket"
-          },
-          "spec": {
-            "compressionMode": "passive",
-            "conflictResolution": "lww",
-            "enableFlush": false,
-            "evictionPolicy": "noEviction",
-            "ioPriority": "low",
-            "memoryQuota": "100Mi",
-            "replicas": 2
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseMemcachedBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "memcached-bucket"
-          },
-          "spec": {
-            "enableFlush": false,
-            "memoryQuota": "100Mi"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseUser",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-user"
-          },
-          "spec": {
-            "authDomain": "local",
-            "authSecret": "cb-example-auth",
-            "fullName": "My User"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseGroup",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-group"
-          },
-          "spec": {
-            "roles": [
-              {
-                "bucket": "default",
-                "name": "bucket_admin"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseRoleBinding",
-          "metadata": {
-            "name": "my-role-binding"
-          },
-          "spec": {
-            "roleRef": {
-              "kind": "CouchbaseGroup",
-              "name": "my-group"
-            },
-            "subjects": [
-              {
-                "kind": "CouchbaseUser",
-                "name": "my-user"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseReplication",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-replication"
-          },
-          "spec": {
-            "bucket": "default",
-            "compressionType": "Snappy",
-            "filterExpression": "",
-            "paused": false,
-            "remoteBucket": "default"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBackup",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "cb-backup"
-          },
-          "spec": {
-            "backOffLimit": 2,
-            "backupRetention": "24h",
-            "failedJobsHistoryLimit": 3,
-            "full": {
-              "schedule": "0 3 * * 6"
-            },
-            "incremental": {
-              "schedule": "0 3 * * 1-6"
-            },
-            "logRetention": "24h",
-            "size": "5Gi",
-            "strategy": "full_incremental",
-            "successfulJobsHistoryLimit": 1
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBackupRestore",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "cb-restore"
-          },
-          "spec": {
-            "backOffLimit": 2,
-            "backup": "cb-backup",
-            "end": {
-              "int": 1
-            },
-            "logRetention": "24h",
-            "repo": "cb-example-2020-10-29T19_00_03",
-            "start": {
-              "int": 1
-            }
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseCollectionGroup",
-          "metadata": {
-            "name": "my-collection-group"
-          },
-          "spec": {
-            "maxTTL": "",
-            "names": [
-              "my-collection"
-            ]
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseCollection",
-          "metadata": {
-            "name": "my-collection"
-          },
-          "spec": {
-            "maxTTL": "",
-            "name": "my-collection"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseScopeGroup",
-          "metadata": {
-            "name": "my-scope-group"
-          },
-          "spec": {
-            "collections": {},
-            "names": [
-              "my-scope"
-            ]
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseScope",
-          "metadata": {
-            "name": "my-scope"
-          },
-          "spec": {
-            "collections": {},
-            "name": "my-scope"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseMigrationReplication",
-          "metadata": {
-            "name": "default-migration"
-          },
-          "spec": {
-            "bucket": "default",
-            "remoteBucket": "default"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseAutoscaler",
-          "metadata": {
-            "name": "do.not.create.internal.only"
-          },
-          "spec": {
-            "servers": "internal",
-            "size": 2
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:5ef27c3e167ef5e6bee05125364a0021780eca77c8ffdad587bed251b838585e",
-      "bundle_path_digest": "sha256:5ef27c3e167ef5e6bee05125364a0021780eca77c8ffdad587bed251b838585e",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "2.3.2",
-      "creation_date": "2022-08-20T00:57:32.703000+00:00",
-      "csv_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments on OpenShift. By installing this integration you will be able to deply Couchbase Server clusters with a single command.\n\n## Supported Features\n\n* **Automated cluster provisioning** - Deploying a Couchbase Cluster has never been easier. Fill out a Couchbase specific configuration and let the Couchbase Operator take care of provisioning nodes and setting up cluster to your exact specification.\n\n* **On-demand scalability** - Automatically scale your cluster up or down by changing a simple configuration parameter and let the Couchbase Operator handle provisioning of new nodes and joining them into the cluster.\n\n* **Auto-recovery** - Detect Couchbase node failures, rebalance out bad nodes, and bring the cluster back up to the desired capacity. Auto-recovery is completely automated so you can sleep easy through the night knowing that the Couchbase Operator will handle any failures.\n\n* **Geo-distribution** - Replicate your data between datacenters to move data closer to the users who consume it and protect against disaster scenarios where an entire datacenter becomes unavailable.\n\n* **Persistent storage** - Define persistent network-attached storage for each node in your cluster to allow pods to be recovered even if the node they were running on is no longer available.\n\n* **Rack/zone awareness** - Tell the Couchbase Operator about availability zones in your datacenter and let the operator take care of ensuring that nodes in your cluster are deployed equally across each zone.\n\n* **Supportability** - When things go wrong, use the cbopinfo tool provided with the Couchbase Operator to collect relevant data about your Couchbase deployment so that you can quickly address issues.\n\n* **Centralized configuration management** - Manage your configuration centrally with OpenShift. Updates to the configuration are watched by the Couchbase Operator and actions are taken to make the target cluster match the desired configuration.\n## Required Parameters\n* `authSecret` - provide the name of a secret that contains two keys for the `username` and `password` of the super user ([documentation](https://docs.couchbase.com/operator/1.2/couchbase-cluster-config.html))\n\n## About Couchbase Server\n\nBuilt on the most powerful NoSQL technology, Couchbase Server delivers unparalleled performance at scale, in any cloud. With features like memory-first architecture, geo-distributed deployments, and workload isolation, Couchbase Server excels at supporting mission-critical applications at scale while maintaining submillisecond latencies and 99.999% availability. Plus, with the most comprehensive SQL-compatible query language (N1QL), migrating from RDBMS to Couchbase Server is easy with ANSI joins.\n",
-      "csv_display_name": "Couchbase Operator",
-      "csv_metadata_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments",
-      "csv_name": "couchbase-operator.v2.3.2-1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:18:35.389000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "couchbase-enterprise-certified",
-      "provided_apis": [
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseReplication",
-          "plural": "couchbasereplications",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseCluster",
-          "plural": "couchbaseclusters",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseRoleBinding",
-          "plural": "couchbaserolebindings",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseGroup",
-          "plural": "couchbasegroups",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseCollectionGroup",
-          "plural": "couchbasecollectiongroups",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseCollection",
-          "plural": "couchbasecollections",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseMemcachedBucket",
-          "plural": "couchbasememcachedbuckets",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseEphemeralBucket",
-          "plural": "couchbaseephemeralbuckets",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackupRestore",
-          "plural": "couchbasebackuprestores",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackup",
-          "plural": "couchbasebackups",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBucket",
-          "plural": "couchbasebuckets",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseUser",
-          "plural": "couchbaseusers",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseMigrationReplication",
-          "plural": "couchbasemigrationreplications",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseScopeGroup",
-          "plural": "couchbasescopegroups",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseAutoscaler",
-          "plural": "couchbaseautoscalers",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseScope",
-          "plural": "couchbasescopes",
-          "version": "v2"
-        }
-      ],
-      "provider": "Couchbase",
-      "related_images": [
-        {
-          "digest": "sha256:3480123a4c056115b8fe7205fd62e25676045ea3248f8cdf3ec20bfff9168ee2",
-          "image": "registry.connect.redhat.com/couchbase/operator@sha256:3480123a4c056115b8fe7205fd62e25676045ea3248f8cdf3ec20bfff9168ee2",
-          "name": "couchbase-operator"
-        },
-        {
-          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
-          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
-          "name": "couchbase-server"
-        },
-        {
-          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "name": "couchbase-backup"
-        },
-        {
-          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
-          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
-          "name": "couchbase-metrics"
-        },
-        {
-          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
-          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
-          "name": "couchbase_server"
-        },
-        {
-          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "name": "couchbase_backup"
-        },
-        {
-          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
-          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
-          "name": "couchbase_metrics"
-        },
-        {
-          "digest": "sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
-          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4",
-          "name": "exporter-d392e6c902f784abfc083c9bf5ce11895d0183347b6c21b259678fd85f312cd4-annotation"
-        },
-        {
-          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "name": "operator-backup-c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76-annotation"
-        },
-        {
-          "digest": "sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
-          "image": "registry.connect.redhat.com/couchbase/server@sha256:05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af",
-          "name": "server-05aad0f1d3a373b60dece893a9c185dcb0e0630aa6f0c0f310ad8767918fd2af-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "2.3.2-1",
-      "version_original": "2.3.2-1"
-    },
-    {
-      "_id": "6300a45353cb8f6da4556edb",
-      "alm_examples": [
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "License",
-          "metadata": {
-            "name": "tvk-license-one",
-            "namespace": "openshift-marketplace"
-          },
-          "spec": {
-            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
-          }
-        },
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "Target",
-          "metadata": {
-            "labels": {
-              "app": "triliovault"
-            },
-            "name": "triliovault-target",
-            "namespace": "openshift-marketplace"
-          },
-          "spec": {
-            "nfsCredentials": {
-              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
-              "nfsOptions": "nfsvers=4"
-            },
-            "type": "NFS",
-            "vendor": "Other"
-          }
-        },
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "BackupPlan",
-          "metadata": {
-            "name": "tvk-backupplan"
-          },
-          "spec": {
-            "backupConfig": {
-              "retentionPolicy": {
-                "name": "retention-policy",
-                "namespace": "openshift-marketplace"
-              },
-              "schedulePolicy": {
-                "fullBackupPolicy": {
-                  "name": "full-bp-policy",
-                  "namespace": "openshift-marketplace"
-                },
-                "incrementalBackupPolicy": {
-                  "name": "inc-bp-policy",
-                  "namespace": "openshift-marketplace"
-                }
-              },
-              "target": {
-                "name": "triliovault-target",
-                "namespace": "openshift-marketplace"
-              }
-            },
-            "backupPlanComponents": {
-              "custom": [
-                {
-                  "matchLabels": {
-                    "app": "nginx"
-                  }
-                }
-              ],
-              "helmReleases": [
-                "sample-release"
-              ],
-              "operators": [
-                {
-                  "applicationResourceSelector": [
-                    {
-                      "matchLabels": {
-                        "app": "etcd"
-                      }
-                    }
-                  ],
-                  "customResources": [
-                    {
-                      "groupVersionKind": {
-                        "group": "etcd.database.coreos.com",
-                        "kind": "EtcdCluster",
-                        "version": "v1beta2"
-                      },
-                      "objects": [
-                        "demo-etcd-cluster"
-                      ]
-                    }
-                  ],
-                  "operatorId": "demo-etcd-cluster",
-                  "operatorResourceSelector": [
-                    {
-                      "matchLabels": {
-                        "release": "demo-etcd-operator"
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/trilio/r-3445381-bundle@sha256:8b622d7d5bf01e64c5c3acec0c9c6d18a1cfd0ded1e3a419e47f0616c86354d6",
-      "bundle_path_digest": "sha256:8b622d7d5bf01e64c5c3acec0c9c6d18a1cfd0ded1e3a419e47f0616c86354d6",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-20T09:07:31.988000+00:00",
-      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
-      "csv_display_name": "TrilioVault for Kubernetes",
-      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
-      "csv_name": "k8s-triliovault-stable.2.10.4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:00:55.502000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "k8s-triliovault",
-      "provided_apis": [
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Backup",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "BackupPlan",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterBackup",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterBackupPlan",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterRestore",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Hook",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "License",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Policy",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Restore",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Target",
-          "version": "v1"
-        }
-      ],
-      "provider": "Trilio",
-      "related_images": [
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "control-plane-49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5-annotation"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "k8s-triliovault-control-plane"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "k8s-triliovault-analyzer"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "triliovault-admission-webhook"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "triliovault-exporter"
-        },
-        {
-          "digest": "sha256:23967fd87017b5bd0ce317adbb6e3e473d2b396f54f8d47823088ddadaaeab3e",
-          "image": "registry.connect.redhat.com/trilio/web@sha256:23967fd87017b5bd0ce317adbb6e3e473d2b396f54f8d47823088ddadaaeab3e",
-          "name": "triliovault-web"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "triliovault-web-backend"
-        },
-        {
-          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "name": "triliovault-dex"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "webhook-init"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "dex-init"
-        },
-        {
-          "digest": "sha256:3a0e1fa34791ae52a1b8123be1aab75b7948fbe08b9f42b06f14ebe887207d07",
-          "image": "registry.connect.redhat.com/trilio/metamover@sha256:3a0e1fa34791ae52a1b8123be1aab75b7948fbe08b9f42b06f14ebe887207d07",
-          "name": "metamover"
-        },
-        {
-          "digest": "sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
-          "image": "registry.connect.redhat.com/trilio/datamover@sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
-          "name": "datamover"
-        },
-        {
-          "digest": "sha256:3a0e1fa34791ae52a1b8123be1aab75b7948fbe08b9f42b06f14ebe887207d07",
-          "image": "registry.connect.redhat.com/trilio/metamover@sha256:3a0e1fa34791ae52a1b8123be1aab75b7948fbe08b9f42b06f14ebe887207d07",
-          "name": "datastore_attacher"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "backup_scheduler"
-        },
-        {
-          "digest": "sha256:3a0e1fa34791ae52a1b8123be1aab75b7948fbe08b9f42b06f14ebe887207d07",
-          "image": "registry.connect.redhat.com/trilio/metamover@sha256:3a0e1fa34791ae52a1b8123be1aab75b7948fbe08b9f42b06f14ebe887207d07",
-          "name": "backup_cleaner"
-        },
-        {
-          "digest": "sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
-          "image": "registry.connect.redhat.com/trilio/datamover@sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
-          "name": "backup_retention"
-        },
-        {
-          "digest": "sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
-          "image": "registry.connect.redhat.com/trilio/datamover@sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
-          "name": "target_browser"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "hook"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "resource_cleaner"
-        },
-        {
-          "digest": "sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
-          "image": "registry.connect.redhat.com/trilio/minio@sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
-          "name": "minio"
-        },
-        {
-          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "name": "dex"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "tvk_init"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<2.10.4",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "2.10.4",
-      "version_original": "2.10.4"
-    },
-    {
-      "_id": "6300a5367892413c524fa99f",
-      "alm_examples": [
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "License",
-          "metadata": {
-            "name": "tvk-license-one",
-            "namespace": "openshift-marketplace"
-          },
-          "spec": {
-            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
-          }
-        },
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "Target",
-          "metadata": {
-            "labels": {
-              "app": "triliovault"
-            },
-            "name": "triliovault-target",
-            "namespace": "openshift-marketplace"
-          },
-          "spec": {
-            "nfsCredentials": {
-              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
-              "nfsOptions": "nfsvers=4"
-            },
-            "type": "NFS",
-            "vendor": "Other"
-          }
-        },
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "BackupPlan",
-          "metadata": {
-            "name": "tvk-backupplan"
-          },
-          "spec": {
-            "backupConfig": {
-              "retentionPolicy": {
-                "name": "retention-policy",
-                "namespace": "openshift-marketplace"
-              },
-              "schedulePolicy": {
-                "fullBackupPolicy": {
-                  "name": "full-bp-policy",
-                  "namespace": "openshift-marketplace"
-                },
-                "incrementalBackupPolicy": {
-                  "name": "inc-bp-policy",
-                  "namespace": "openshift-marketplace"
-                }
-              },
-              "target": {
-                "name": "triliovault-target",
-                "namespace": "openshift-marketplace"
-              }
-            },
-            "backupPlanComponents": {
-              "custom": [
-                {
-                  "matchLabels": {
-                    "app": "nginx"
-                  }
-                }
-              ],
-              "helmReleases": [
-                "sample-release"
-              ],
-              "operators": [
-                {
-                  "applicationResourceSelector": [
-                    {
-                      "matchLabels": {
-                        "app": "etcd"
-                      }
-                    }
-                  ],
-                  "customResources": [
-                    {
-                      "groupVersionKind": {
-                        "group": "etcd.database.coreos.com",
-                        "kind": "EtcdCluster",
-                        "version": "v1beta2"
-                      },
-                      "objects": [
-                        "demo-etcd-cluster"
-                      ]
-                    }
-                  ],
-                  "operatorId": "demo-etcd-cluster",
-                  "operatorResourceSelector": [
-                    {
-                      "matchLabels": {
-                        "release": "demo-etcd-operator"
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/trilio/r-3445381-bundle@sha256:8b622d7d5bf01e64c5c3acec0c9c6d18a1cfd0ded1e3a419e47f0616c86354d6",
-      "bundle_path_digest": "sha256:8b622d7d5bf01e64c5c3acec0c9c6d18a1cfd0ded1e3a419e47f0616c86354d6",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-20T09:11:18.086000+00:00",
-      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
-      "csv_display_name": "TrilioVault for Kubernetes",
-      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
-      "csv_name": "k8s-triliovault-stable.2.10.4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:34:58.356000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "k8s-triliovault",
-      "provided_apis": [
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Target",
-          "plural": "targets",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Backup",
-          "plural": "backups",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Hook",
-          "plural": "hooks",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "License",
-          "plural": "licenses",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "BackupPlan",
-          "plural": "backupplans",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterRestore",
-          "plural": "clusterrestores",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterBackupPlan",
-          "plural": "clusterbackupplans",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterBackup",
-          "plural": "clusterbackups",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Policy",
-          "plural": "policies",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Restore",
-          "plural": "restores",
-          "version": "v1"
-        }
-      ],
-      "provider": "Trilio",
-      "related_images": [
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "control-plane-49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5-annotation"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "k8s-triliovault-control-plane"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "k8s-triliovault-analyzer"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "triliovault-admission-webhook"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "triliovault-exporter"
-        },
-        {
-          "digest": "sha256:23967fd87017b5bd0ce317adbb6e3e473d2b396f54f8d47823088ddadaaeab3e",
-          "image": "registry.connect.redhat.com/trilio/web@sha256:23967fd87017b5bd0ce317adbb6e3e473d2b396f54f8d47823088ddadaaeab3e",
-          "name": "triliovault-web"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "triliovault-web-backend"
-        },
-        {
-          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "name": "triliovault-dex"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "webhook-init"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "dex-init"
-        },
-        {
-          "digest": "sha256:3a0e1fa34791ae52a1b8123be1aab75b7948fbe08b9f42b06f14ebe887207d07",
-          "image": "registry.connect.redhat.com/trilio/metamover@sha256:3a0e1fa34791ae52a1b8123be1aab75b7948fbe08b9f42b06f14ebe887207d07",
-          "name": "metamover"
-        },
-        {
-          "digest": "sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
-          "image": "registry.connect.redhat.com/trilio/datamover@sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
-          "name": "datamover"
-        },
-        {
-          "digest": "sha256:3a0e1fa34791ae52a1b8123be1aab75b7948fbe08b9f42b06f14ebe887207d07",
-          "image": "registry.connect.redhat.com/trilio/metamover@sha256:3a0e1fa34791ae52a1b8123be1aab75b7948fbe08b9f42b06f14ebe887207d07",
-          "name": "datastore_attacher"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "backup_scheduler"
-        },
-        {
-          "digest": "sha256:3a0e1fa34791ae52a1b8123be1aab75b7948fbe08b9f42b06f14ebe887207d07",
-          "image": "registry.connect.redhat.com/trilio/metamover@sha256:3a0e1fa34791ae52a1b8123be1aab75b7948fbe08b9f42b06f14ebe887207d07",
-          "name": "backup_cleaner"
-        },
-        {
-          "digest": "sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
-          "image": "registry.connect.redhat.com/trilio/datamover@sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
-          "name": "backup_retention"
-        },
-        {
-          "digest": "sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
-          "image": "registry.connect.redhat.com/trilio/datamover@sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
-          "name": "target_browser"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "hook"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "resource_cleaner"
-        },
-        {
-          "digest": "sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
-          "image": "registry.connect.redhat.com/trilio/minio@sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
-          "name": "minio"
-        },
-        {
-          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "name": "dex"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "tvk_init"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<2.10.4",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "2.10.4",
-      "version_original": "2.10.4"
-    },
-    {
-      "_id": "6300a5d253cb8f6da4556efd",
-      "alm_examples": [
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "License",
-          "metadata": {
-            "name": "tvk-license-one",
-            "namespace": "openshift-marketplace"
-          },
-          "spec": {
-            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
-          }
-        },
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "Target",
-          "metadata": {
-            "labels": {
-              "app": "triliovault"
-            },
-            "name": "triliovault-target",
-            "namespace": "openshift-marketplace"
-          },
-          "spec": {
-            "nfsCredentials": {
-              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
-              "nfsOptions": "nfsvers=4"
-            },
-            "type": "NFS",
-            "vendor": "Other"
-          }
-        },
-        {
-          "api_version": "triliovault.trilio.io/v1",
-          "kind": "BackupPlan",
-          "metadata": {
-            "name": "tvk-backupplan"
-          },
-          "spec": {
-            "backupConfig": {
-              "retentionPolicy": {
-                "name": "retention-policy",
-                "namespace": "openshift-marketplace"
-              },
-              "schedulePolicy": {
-                "fullBackupPolicy": {
-                  "name": "full-bp-policy",
-                  "namespace": "openshift-marketplace"
-                },
-                "incrementalBackupPolicy": {
-                  "name": "inc-bp-policy",
-                  "namespace": "openshift-marketplace"
-                }
-              },
-              "target": {
-                "name": "triliovault-target",
-                "namespace": "openshift-marketplace"
-              }
-            },
-            "backupPlanComponents": {
-              "custom": [
-                {
-                  "matchLabels": {
-                    "app": "nginx"
-                  }
-                }
-              ],
-              "helmReleases": [
-                "sample-release"
-              ],
-              "operators": [
-                {
-                  "applicationResourceSelector": [
-                    {
-                      "matchLabels": {
-                        "app": "etcd"
-                      }
-                    }
-                  ],
-                  "customResources": [
-                    {
-                      "groupVersionKind": {
-                        "group": "etcd.database.coreos.com",
-                        "kind": "EtcdCluster",
-                        "version": "v1beta2"
-                      },
-                      "objects": [
-                        "demo-etcd-cluster"
-                      ]
-                    }
-                  ],
-                  "operatorId": "demo-etcd-cluster",
-                  "operatorResourceSelector": [
-                    {
-                      "matchLabels": {
-                        "release": "demo-etcd-operator"
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/trilio/r-3445381-bundle@sha256:8b622d7d5bf01e64c5c3acec0c9c6d18a1cfd0ded1e3a419e47f0616c86354d6",
-      "bundle_path_digest": "sha256:8b622d7d5bf01e64c5c3acec0c9c6d18a1cfd0ded1e3a419e47f0616c86354d6",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-20T09:13:54.170000+00:00",
-      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
-      "csv_display_name": "TrilioVault for Kubernetes",
-      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
-      "csv_name": "k8s-triliovault-stable.2.10.4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:50:29.893000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "k8s-triliovault",
-      "provided_apis": [
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Target",
-          "plural": "targets",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Restore",
-          "plural": "restores",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterRestore",
-          "plural": "clusterrestores",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Hook",
-          "plural": "hooks",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "License",
-          "plural": "licenses",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterBackupPlan",
-          "plural": "clusterbackupplans",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "ClusterBackup",
-          "plural": "clusterbackups",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "BackupPlan",
-          "plural": "backupplans",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Backup",
-          "plural": "backups",
-          "version": "v1"
-        },
-        {
-          "group": "triliovault.trilio.io",
-          "kind": "Policy",
-          "plural": "policies",
-          "version": "v1"
-        }
-      ],
-      "provider": "Trilio",
-      "related_images": [
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "control-plane-49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5-annotation"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "k8s-triliovault-control-plane"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "k8s-triliovault-analyzer"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "triliovault-admission-webhook"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "triliovault-exporter"
-        },
-        {
-          "digest": "sha256:23967fd87017b5bd0ce317adbb6e3e473d2b396f54f8d47823088ddadaaeab3e",
-          "image": "registry.connect.redhat.com/trilio/web@sha256:23967fd87017b5bd0ce317adbb6e3e473d2b396f54f8d47823088ddadaaeab3e",
-          "name": "triliovault-web"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "triliovault-web-backend"
-        },
-        {
-          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "name": "triliovault-dex"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "webhook-init"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "dex-init"
-        },
-        {
-          "digest": "sha256:3a0e1fa34791ae52a1b8123be1aab75b7948fbe08b9f42b06f14ebe887207d07",
-          "image": "registry.connect.redhat.com/trilio/metamover@sha256:3a0e1fa34791ae52a1b8123be1aab75b7948fbe08b9f42b06f14ebe887207d07",
-          "name": "metamover"
-        },
-        {
-          "digest": "sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
-          "image": "registry.connect.redhat.com/trilio/datamover@sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
-          "name": "datamover"
-        },
-        {
-          "digest": "sha256:3a0e1fa34791ae52a1b8123be1aab75b7948fbe08b9f42b06f14ebe887207d07",
-          "image": "registry.connect.redhat.com/trilio/metamover@sha256:3a0e1fa34791ae52a1b8123be1aab75b7948fbe08b9f42b06f14ebe887207d07",
-          "name": "datastore_attacher"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "backup_scheduler"
-        },
-        {
-          "digest": "sha256:3a0e1fa34791ae52a1b8123be1aab75b7948fbe08b9f42b06f14ebe887207d07",
-          "image": "registry.connect.redhat.com/trilio/metamover@sha256:3a0e1fa34791ae52a1b8123be1aab75b7948fbe08b9f42b06f14ebe887207d07",
-          "name": "backup_cleaner"
-        },
-        {
-          "digest": "sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
-          "image": "registry.connect.redhat.com/trilio/datamover@sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
-          "name": "backup_retention"
-        },
-        {
-          "digest": "sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
-          "image": "registry.connect.redhat.com/trilio/datamover@sha256:eaf32c8a791ceb1fea70deb1173d2a6e7bff7a85bc66935676dc0743b07635d0",
-          "name": "target_browser"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "hook"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "resource_cleaner"
-        },
-        {
-          "digest": "sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
-          "image": "registry.connect.redhat.com/trilio/minio@sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
-          "name": "minio"
-        },
-        {
-          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
-          "name": "dex"
-        },
-        {
-          "digest": "sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:49d57245a12a01fc0a1e35effe503143fc2ed68abdf91851a3ca6059292789e5",
-          "name": "tvk_init"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<2.10.4",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "2.10.4",
-      "version_original": "2.10.4"
-    },
-    {
       "_id": "6300a6d17892413c524fa9b5",
       "alm_examples": [
         {
@@ -15873,6 +13810,1080 @@
       "skip_range": ">=1.0.0 <2.8.1",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "2.8.1",
+      "version_original": "2.8.1"
+    },
+    {
+      "_id": "630d1debc80f4473fcad8c6e",
+      "alm_examples": [
+        {
+          "api_version": "astra.netapp.io/v1",
+          "kind": "AstraControlCenter",
+          "metadata": {
+            "name": "astra"
+          },
+          "spec": {
+            "accountName": "Example",
+            "additionalValues": {},
+            "astraAddress": "astra.example.com",
+            "astraResourcesScaler": "Default",
+            "astraVersion": "22.08.0-20",
+            "autoSupport": {
+              "enrolled": true
+            },
+            "crds": {
+              "externalCertManager": false,
+              "externalTraefik": false
+            },
+            "email": "admin@example.com",
+            "firstName": "SRE",
+            "imageRegistry": {
+              "name": "example.registry/astra",
+              "secret": "astra-registry-cred"
+            },
+            "ingressType": "Generic",
+            "lastName": "Admin",
+            "storageClass": "ontap-gold",
+            "volumeReclaimPolicy": "Retain"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/netapp/acc-operator-bundle@sha256:ec0f8bba052288b2ecfe2aa357438112dc973ff4af5898ab871f89ad6941c2dd",
+      "bundle_path_digest": "sha256:ec0f8bba052288b2ecfe2aa357438112dc973ff4af5898ab871f89ad6941c2dd",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-29T20:13:31.656000+00:00",
+      "csv_description": "Astra Control is an application-aware data management solution that manages, protects and moves data-rich Kubernetes workloads in both public clouds and on-premises.\n\nAstra Control enables data protection, disaster recovery, and migration for your Kubernetes workloads, leveraging NetApp's industry-leading data management technology\nfor snapshots, backups, replication and cloning.\n\n### How to deploy Astra Control\n\nRefer to [Installation Procedure](https://docs.netapp.com/us-en/astra-control-center/get-started/acc_operatorhub_install.html) to deploy Astra Control Center using\nthe Operator.\n\n### Documentation\n\nRefer to [Astra Control Center Documentation](https://docs.netapp.com/us-en/astra-control-center/index.html) to complete the setup and start managing applications.\n\nNOTE: The version listed under *Latest version* on this page might not reflect the actual version of NetApp Astra Control Center you are installing. The version in the file name of the Astra Control Center bundle that you download from the NetApp Support Site is the version of Astra Control Center that will be installed.\n",
+      "csv_display_name": "netapp-acc-operator",
+      "csv_metadata_description": "Install, configure and monitor Astra Control Center",
+      "csv_name": "acc-operator.v22.8.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:39:03.264000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "acc-operator",
+      "provided_apis": [
+        {
+          "group": "astra.netapp.io",
+          "kind": "AstraControlCenter",
+          "plural": "astracontrolcenters",
+          "version": "v1"
+        }
+      ],
+      "provider": "NetApp",
+      "related_images": [
+        {
+          "digest": "sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
+          "name": "ose-kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
+          "image": "registry.connect.redhat.com/netapp/acc-operator-22-8-0@sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
+          "name": "acc-operator"
+        },
+        {
+          "digest": "sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
+          "image": "registry.connect.redhat.com/netapp/acc-operator-22-8-0@sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "22.8.1",
+      "version_original": "22.8.1"
+    },
+    {
+      "_id": "630d2151467c0e9e0e23f0ba",
+      "alm_examples": [
+        {
+          "api_version": "astra.netapp.io/v1",
+          "kind": "AstraControlCenter",
+          "metadata": {
+            "name": "astra"
+          },
+          "spec": {
+            "accountName": "Example",
+            "additionalValues": {},
+            "astraAddress": "astra.example.com",
+            "astraResourcesScaler": "Default",
+            "astraVersion": "22.08.0-20",
+            "autoSupport": {
+              "enrolled": true
+            },
+            "crds": {
+              "externalCertManager": false,
+              "externalTraefik": false
+            },
+            "email": "admin@example.com",
+            "firstName": "SRE",
+            "imageRegistry": {
+              "name": "example.registry/astra",
+              "secret": "astra-registry-cred"
+            },
+            "ingressType": "Generic",
+            "lastName": "Admin",
+            "storageClass": "ontap-gold",
+            "volumeReclaimPolicy": "Retain"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/netapp/acc-operator-bundle@sha256:ec0f8bba052288b2ecfe2aa357438112dc973ff4af5898ab871f89ad6941c2dd",
+      "bundle_path_digest": "sha256:ec0f8bba052288b2ecfe2aa357438112dc973ff4af5898ab871f89ad6941c2dd",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-29T20:28:01.718000+00:00",
+      "csv_description": "Astra Control is an application-aware data management solution that manages, protects and moves data-rich Kubernetes workloads in both public clouds and on-premises.\n\nAstra Control enables data protection, disaster recovery, and migration for your Kubernetes workloads, leveraging NetApp's industry-leading data management technology\nfor snapshots, backups, replication and cloning.\n\n### How to deploy Astra Control\n\nRefer to [Installation Procedure](https://docs.netapp.com/us-en/astra-control-center/get-started/acc_operatorhub_install.html) to deploy Astra Control Center using\nthe Operator.\n\n### Documentation\n\nRefer to [Astra Control Center Documentation](https://docs.netapp.com/us-en/astra-control-center/index.html) to complete the setup and start managing applications.\n\nNOTE: The version listed under *Latest version* on this page might not reflect the actual version of NetApp Astra Control Center you are installing. The version in the file name of the Astra Control Center bundle that you download from the NetApp Support Site is the version of Astra Control Center that will be installed.\n",
+      "csv_display_name": "netapp-acc-operator",
+      "csv_metadata_description": "Install, configure and monitor Astra Control Center",
+      "csv_name": "acc-operator.v22.8.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:41:54.438000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "acc-operator",
+      "provided_apis": [
+        {
+          "group": "astra.netapp.io",
+          "kind": "AstraControlCenter",
+          "plural": "astracontrolcenters",
+          "version": "v1"
+        }
+      ],
+      "provider": "NetApp",
+      "related_images": [
+        {
+          "digest": "sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
+          "name": "ose-kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
+          "image": "registry.connect.redhat.com/netapp/acc-operator-22-8-0@sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
+          "name": "acc-operator"
+        },
+        {
+          "digest": "sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
+          "image": "registry.connect.redhat.com/netapp/acc-operator-22-8-0@sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "22.8.1",
+      "version_original": "22.8.1"
+    },
+    {
+      "_id": "630d21f443252be8abb82cf3",
+      "alm_examples": [
+        {
+          "api_version": "astra.netapp.io/v1",
+          "kind": "AstraControlCenter",
+          "metadata": {
+            "name": "astra"
+          },
+          "spec": {
+            "accountName": "Example",
+            "additionalValues": {},
+            "astraAddress": "astra.example.com",
+            "astraResourcesScaler": "Default",
+            "astraVersion": "22.08.0-20",
+            "autoSupport": {
+              "enrolled": true
+            },
+            "crds": {
+              "externalCertManager": false,
+              "externalTraefik": false
+            },
+            "email": "admin@example.com",
+            "firstName": "SRE",
+            "imageRegistry": {
+              "name": "example.registry/astra",
+              "secret": "astra-registry-cred"
+            },
+            "ingressType": "Generic",
+            "lastName": "Admin",
+            "storageClass": "ontap-gold",
+            "volumeReclaimPolicy": "Retain"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/netapp/acc-operator-bundle@sha256:ec0f8bba052288b2ecfe2aa357438112dc973ff4af5898ab871f89ad6941c2dd",
+      "bundle_path_digest": "sha256:ec0f8bba052288b2ecfe2aa357438112dc973ff4af5898ab871f89ad6941c2dd",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-29T20:30:44.859000+00:00",
+      "csv_description": "Astra Control is an application-aware data management solution that manages, protects and moves data-rich Kubernetes workloads in both public clouds and on-premises.\n\nAstra Control enables data protection, disaster recovery, and migration for your Kubernetes workloads, leveraging NetApp's industry-leading data management technology\nfor snapshots, backups, replication and cloning.\n\n### How to deploy Astra Control\n\nRefer to [Installation Procedure](https://docs.netapp.com/us-en/astra-control-center/get-started/acc_operatorhub_install.html) to deploy Astra Control Center using\nthe Operator.\n\n### Documentation\n\nRefer to [Astra Control Center Documentation](https://docs.netapp.com/us-en/astra-control-center/index.html) to complete the setup and start managing applications.\n\nNOTE: The version listed under *Latest version* on this page might not reflect the actual version of NetApp Astra Control Center you are installing. The version in the file name of the Astra Control Center bundle that you download from the NetApp Support Site is the version of Astra Control Center that will be installed.\n",
+      "csv_display_name": "netapp-acc-operator",
+      "csv_metadata_description": "Install, configure and monitor Astra Control Center",
+      "csv_name": "acc-operator.v22.8.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:17:51.665000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "acc-operator",
+      "provided_apis": [
+        {
+          "group": "astra.netapp.io",
+          "kind": "AstraControlCenter",
+          "plural": "astracontrolcenters",
+          "version": "v1"
+        }
+      ],
+      "provider": "NetApp",
+      "related_images": [
+        {
+          "digest": "sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
+          "name": "ose-kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
+          "image": "registry.connect.redhat.com/netapp/acc-operator-22-8-0@sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
+          "name": "acc-operator"
+        },
+        {
+          "digest": "sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:7a8b4b60345cff84089835a561b4b65c5eccb4585283314c90ce2108c063c87d",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
+          "image": "registry.connect.redhat.com/netapp/acc-operator-22-8-0@sha256:05efc8b68000e1176dcc8cc6b57c5f7eb8172dc16626595356b7e4e5befd5093",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "22.8.1",
+      "version_original": "22.8.1"
+    },
+    {
+      "_id": "630d72594acb68ac7d135eed",
+      "alm_examples": [
+        {
+          "api_version": "marketplace.redhat.com/v1alpha1",
+          "kind": "MarketplaceConfig",
+          "metadata": {
+            "labels": {
+              "redhat.marketplace.com/name": "redhat-marketplace-operator"
+            },
+            "name": "marketplaceconfig",
+            "namespace": "openshift-redhat-marketplace"
+          },
+          "spec": {
+            "clusterUUID": "",
+            "features": {
+              "deployment": true,
+              "meterDefinitionCatalogServer": false,
+              "registration": true
+            },
+            "installIBMCatalogSource": true,
+            "isDisconnected": false,
+            "rhmAccountID": ""
+          }
+        },
+        {
+          "api_version": "marketplace.redhat.com/v1alpha1",
+          "kind": "MeterBase",
+          "metadata": {
+            "labels": {
+              "redhat.marketplace.com/name": "redhat-marketplace-operator"
+            },
+            "name": "meterbase",
+            "namespace": "openshift-redhat-marketplace"
+          },
+          "spec": {
+            "enabled": true,
+            "prometheus": {
+              "resources": {
+                "limits": {
+                  "cpu": "2",
+                  "memory": "2Gi"
+                },
+                "requests": {
+                  "cpu": "1",
+                  "memory": "1G"
+                }
+              },
+              "storage": {
+                "size": "20Gi"
+              }
+            }
+          }
+        },
+        {
+          "api_version": "marketplace.redhat.com/v1alpha1",
+          "kind": "MeterReport",
+          "metadata": {
+            "labels": {
+              "redhat.marketplace.com/name": "redhat-marketplace-operator"
+            },
+            "name": "example-meterreport",
+            "namespace": "openshift-redhat-marketplace"
+          },
+          "spec": {
+            "endTime": "2020-08-05T00:00:00Z",
+            "prometheusService": {
+              "name": "rhm-prometheus-meterbase",
+              "namespace": "openshift-redhat-marketplace",
+              "targetPort": "rbac"
+            },
+            "startTime": "2020-08-04T00:00:00Z"
+          }
+        },
+        {
+          "api_version": "marketplace.redhat.com/v1alpha1",
+          "kind": "RazeeDeployment",
+          "metadata": {
+            "labels": {
+              "redhat.marketplace.com/name": "redhat-marketplace-operator"
+            },
+            "name": "razeedeployment-example",
+            "namespace": "openshift-redhat-marketplace"
+          },
+          "spec": {
+            "clusterUUID": "example-cluster-uuid",
+            "enabled": true
+          }
+        },
+        {
+          "api_version": "marketplace.redhat.com/v1alpha1",
+          "kind": "RemoteResourceS3",
+          "metadata": {
+            "labels": {
+              "redhat.marketplace.com/name": "redhat-marketplace-operator"
+            },
+            "name": "example-remoteresources3",
+            "namespace": "openshift-redhat-marketplace"
+          },
+          "spec": {
+            "auth": {
+              "iam": {
+                "apiKeyRef": {
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "accesskey",
+                      "name": "rhm-cos-reader-key"
+                    }
+                  }
+                },
+                "grantType": "urn:ibm:params:oauth:grant-type:apikey",
+                "responseType": "cloud_iam",
+                "url": "https://iam.cloud.ibm.com/identity/token"
+              }
+            },
+            "requests": [
+              {
+                "options": {
+                  "url": "https://s3.us-east.cloud-object-storage.appdomain.cloud/your-accountId/your-cluster-uuid/name-of-child.yaml"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "marketplace.redhat.com/v1beta1",
+          "kind": "MeterDefinition",
+          "metadata": {
+            "labels": {
+              "redhat.marketplace.com/name": "redhat-marketplace-operator"
+            },
+            "name": "example-meterdefinition-4",
+            "namespace": "openshift-redhat-marketplace"
+          },
+          "spec": {
+            "group": "partner.metering.com",
+            "kind": "App",
+            "meters": [
+              {
+                "aggregation": "sum",
+                "metricId": "container_cpu_usage_core_avg",
+                "period": "1h",
+                "query": "rate(container_cpu_usage_seconds_total{cpu=\"total\",container=\"db\"}[5m])*100",
+                "workloadType": "Pod"
+              }
+            ],
+            "resourceFilters": [
+              {
+                "namespace": {
+                  "useOperatorGroup": true
+                },
+                "ownerCRD": {
+                  "apiVersion": "marketplace.redhat.com/v1alpha1",
+                  "kind": "RazeeDeployment"
+                },
+                "workloadType": "Pod"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "marketplace.redhat.com/v1beta1",
+          "kind": "MeterDefinition",
+          "metadata": {
+            "labels": {
+              "redhat.marketplace.com/name": "redhat-marketplace-operator"
+            },
+            "name": "meterdefinition-sample",
+            "namespace": "openshift-redhat-marketplace"
+          },
+          "spec": {
+            "group": "partner.metering.com",
+            "kind": "App",
+            "meters": [
+              {
+                "aggregation": "sum",
+                "metricId": "container_cpu_usage_core_avg",
+                "period": "1h",
+                "query": "rate(container_cpu_usage_seconds_total{cpu=\"total\",container=\"db\"}[5m])*100",
+                "workloadType": "Pod"
+              }
+            ],
+            "resourceFilters": [
+              {
+                "namespace": {
+                  "useOperatorGroup": true
+                },
+                "ownerCRD": {
+                  "apiVersion": "marketplace.redhat.com/v1alpha1",
+                  "kind": "RazeeDeployment"
+                },
+                "workloadType": "Pod"
+              }
+            ]
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "ppc64le",
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/rh-marketplace/rh-marketplace-bundle@sha256:e5f9209dd630354fed2f4e21a0c503262dc059af8e52a3d1aba2bac0fa09fdf5",
+      "bundle_path_digest": "sha256:e5f9209dd630354fed2f4e21a0c503262dc059af8e52a3d1aba2bac0fa09fdf5",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-30T02:13:45.582000+00:00",
+      "csv_description": "The Red Hat Marketplace Operator provides cluster management, metering and\noperator installation for Red Hat Marketplace customers.\n### **Important Note**\nA set of instructions for onboarding is provided here. For more detailed onboarding instructions or information about what is installed please visit [marketplace.redhat.com](https://marketplace.redhat.com).\nTo access images from Red Hat Marketplace and the Marketplace container catalog you will need to make the pull secret attained in installation available to the workloads running on the cluster.\n### Prerequisites\n1. It is recommended to [enable monitoring for user-defined projects](https://docs.openshift.com/container-platform/4.10/monitoring/enabling-monitoring-for-user-defined-projects.html) as the Prometheus provider.\n2. Edit the cluster-monitoring-config ConfigMap object:\n  \n   ```sh\n   $ oc -n openshift-monitoring edit configmap cluster-monitoring-config\n   ```\n\n3. Add enableUserWorkload: true under data/config.yaml:\n  \n    ```sh\n    apiVersion: v1\n    kind: ConfigMap\n    metadata:\n      name: cluster-monitoring-config\n      namespace: openshift-monitoring\n    data:\n      config.yaml: |\n        enableUserWorkload: true\n    ```\n\n4. Configure the user-workload-monitoring-config ConfigMap object:\n  \n    ```sh\n    $ oc -n openshift-user-workload-monitoring edit configmap user-workload-monitoring-config\n    ```\n\n5. Configure a minimum retention time of 168h and minimum storage capacity of 40Gi\n  \n    ```sh\n    apiVersion: v1\n    kind: ConfigMap\n    metadata:\n      name: user-workload-monitoring-config\n      namespace: openshift-user-workload-monitoring\n    data:\n      config.yaml: |\n        prometheus:\n          retention: 168h\n          volumeClaimTemplate:\n            spec:\n              resources:\n                requests:\n                  storage: 40Gi\n    ```\n\n### Installation\n1. Create or get your pull secret from [Red Hat Marketplace](https://marketplace.redhat.com/en-us/documentation/clusters#get-pull-secret).\n2. Install the Red Hat Marketplace Operator in the openshift-redhat-marketplace namespace.\n3. Create a Kubernetes secret in the openshift-redhat-marketplace namespace with the name `redhat-marketplace-pull-secret` and key `PULL_SECRET` with the value of the Red hat Marketplace Pull Secret.\n\n   ```sh\n   # Replace ${PULL_SECRET} with your secret from Red Hat Marketplace\n   oc create secret generic redhat-marketplace-pull-secret -n  openshift-redhat-marketplace --from-literal=PULL_SECRET=${PULL_SECRET}\n   ```\n\n4. Install the Red Hat Marketplace pull secret as a global pull secret on the cluster.\n   **Warning:** This step will make your cluster perform a rolling restart.\n   These steps require `oc`, `jq`, and `base64` to be available on your machine.\n\n   ```sh\n   # Create the docker pull secret file using your PULL_SECRET from Red Hat Marketplace.\n   # Store it in a file called entitledregistryconfigjson.\n   oc create secret docker-registry entitled-registry --docker-server=registry.marketplace.redhat.com --docker-username \"cp\" --docker-password \"${PULL_SECRET}\" --dry-run=true --output=\"jsonpath={.data.\\.dockerconfigjson}\" | base64 --decode > entitledregistryconfigjson\n   # Get the current global secrets on the cluster and store it as a file named dockerconfigjson\n   oc get secret pull-secret -n openshift-config --output=\"jsonpath={.data.\\.dockerconfigjson}\" | base64 --decode > dockerconfigjson\n   # Merge the two dockerconfigs together into a file called dockerconfigjson-merged.\n   jq -s '.[0] * .[1]' dockerconfigjson entitledregistryconfigjson > dockerconfigjson-merged\n   # Set the cluster's dockerconfig file to the new merged version.\n   oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=dockerconfigjson-merged\n   # Cluster will now restart.\n   ```\n\n### Why is a global pull secret required?\nIn order to successfully install the Red Hat Marketplace products, you will need to make the pull secret available across the cluster. This can be achieved by applying the Red Hat Marketplace Pull Secret as a [global pull secret](https://docs.openshift.com/container-platform/4.6/openshift_images/managing_images/using-image-pull-secrets.html#images-update-global-pull-secret_using-image-pull-secrets).\nFor alternative approachs, please see the official OpenShift [documentation](https://docs.openshift.com/container-platform/4.6/openshift_images/managing_images/using-image-pull-secrets.html).\n### Documentation\nYou can find our documentation [here.](https://marketplace.redhat.com/en-us/documentation/)\n### Getting help\nIf you encounter any issues while using Red Hat Marketplace operator, you\ncan create an issue on our [Github\nrepo](https://github.com/redhat-marketplace/redhat-marketplace-operator) for\nbugs, enhancements, or other requests. You can also visit our main page and\nreview our [support](https://marketplace.redhat.com/en-us/support) and [documentation](https://marketplace.redhat.com/en-us/documentation/).\n### Readme\nYou can find our readme [here.](https://github.com/redhat-marketplace/redhat-marketplace-operator/blob/develop/README.md)\n### License information\nYou can find our license information [here.](https://github.com/redhat-marketplace/redhat-marketplace-operator/blob/develop/LICENSE)\n",
+      "csv_display_name": "Red Hat Marketplace",
+      "csv_metadata_description": "The Red Hat Marketplace Operator provides cluster management, metering and operator installation for Red Hat Marketplace customers.",
+      "csv_name": "redhat-marketplace-operator.v2.8.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:23:38.569000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "redhat-marketplace-operator",
+      "provided_apis": [
+        {
+          "group": "marketplace.redhat.com",
+          "kind": "MeterDefinition",
+          "plural": "meterdefinitions",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "marketplace.redhat.com",
+          "kind": "MeterDefinition",
+          "plural": "meterdefinitions",
+          "version": "v1beta1"
+        },
+        {
+          "group": "marketplace.redhat.com",
+          "kind": "MeterReport",
+          "plural": "meterreports",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "marketplace.redhat.com",
+          "kind": "RazeeDeployment",
+          "plural": "razeedeployments",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "marketplace.redhat.com",
+          "kind": "RemoteResourceS3",
+          "plural": "remoteresources3s",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "marketplace.redhat.com",
+          "kind": "MarketplaceConfig",
+          "plural": "marketplaceconfigs",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "marketplace.redhat.com",
+          "kind": "MeterBase",
+          "plural": "meterbases",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Red Hat Marketplace",
+      "related_images": [
+        {
+          "digest": "sha256:5da2b67402519d4498695097728b7ad4c1dfe69cd1ddf87cc0c74e7043212574",
+          "image": "registry.redhat.io/openshift4/ose-prometheus@sha256:5da2b67402519d4498695097728b7ad4c1dfe69cd1ddf87cc0c74e7043212574",
+          "name": "prometheus"
+        },
+        {
+          "digest": "sha256:9a15dca79b88a6e1e37617a5817ccac5df74b7ddef8fbae7da66685d90108c55",
+          "image": "registry.redhat.io/openshift4/ose-configmap-reloader@sha256:9a15dca79b88a6e1e37617a5817ccac5df74b7ddef8fbae7da66685d90108c55",
+          "name": "configmap_reloader"
+        },
+        {
+          "digest": "sha256:7bbeb563c25a511e15aecb5ff8c4905120906092277e299b281170371f0e1281",
+          "image": "quay.io/rh-marketplace/redhat-marketplace-reporter@sha256:7bbeb563c25a511e15aecb5ff8c4905120906092277e299b281170371f0e1281",
+          "name": "reporter"
+        },
+        {
+          "digest": "sha256:810c57d62498d8612d154dea0c94b6dba46f84308ec48f03d324359a38cccf33",
+          "image": "quay.io/rh-marketplace/redhat-marketplace-authcheck@sha256:810c57d62498d8612d154dea0c94b6dba46f84308ec48f03d324359a38cccf33",
+          "name": "authcheck"
+        },
+        {
+          "digest": "sha256:db6024317d54bc811ffa3c6b3a5423a36f02e5a31586c88ef0f996424c76cb2b",
+          "image": "quay.io/rh-marketplace/redhat-marketplace-operator@sha256:db6024317d54bc811ffa3c6b3a5423a36f02e5a31586c88ef0f996424c76cb2b",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:c74b64a0d0d63e585a9115535a310b9993d55f62924039102bb079d2d5c10697",
+          "image": "quay.io/rh-marketplace/redhat-marketplace-data-service@sha256:c74b64a0d0d63e585a9115535a310b9993d55f62924039102bb079d2d5c10697",
+          "name": "dqlite"
+        },
+        {
+          "digest": "sha256:260ebab52c1e825e354bfa60827e314388fb7878bfa16d1dc061707962e95bea",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:260ebab52c1e825e354bfa60827e314388fb7878bfa16d1dc061707962e95bea",
+          "name": "kube_rbac_proxy"
+        },
+        {
+          "digest": "sha256:a4bb67ace1dd2992029ebfee6b08c439b1a363b2bf4059a10803d82f1bd089b6",
+          "image": "registry.redhat.io/openshift4/ose-prometheus-config-reloader@sha256:a4bb67ace1dd2992029ebfee6b08c439b1a363b2bf4059a10803d82f1bd089b6",
+          "name": "prometheus_configmap_reloader"
+        },
+        {
+          "digest": "sha256:db6024317d54bc811ffa3c6b3a5423a36f02e5a31586c88ef0f996424c76cb2b",
+          "image": "quay.io/rh-marketplace/redhat-marketplace-operator@sha256:db6024317d54bc811ffa3c6b3a5423a36f02e5a31586c88ef0f996424c76cb2b",
+          "name": "redhat-marketplace-operator-db6024317d54bc811ffa3c6b3a5423a36f02e5a31586c88ef0f996424c76cb2b-annotation"
+        },
+        {
+          "digest": "sha256:9dd6a3999077d1830a6d0b3a7dfb7e744fc29ac9858df674472ee82c2e5b8ff4",
+          "image": "us.icr.io/armada-master/watch-keeper@sha256:9dd6a3999077d1830a6d0b3a7dfb7e744fc29ac9858df674472ee82c2e5b8ff4",
+          "name": "rhm_watch_keeper_deployment"
+        },
+        {
+          "digest": "sha256:5ca572cb31f15534ee8b6fd20a026452870fb8be756f5fa9de9813bdb80969f4",
+          "image": "registry.redhat.io/openshift4/ose-oauth-proxy@sha256:5ca572cb31f15534ee8b6fd20a026452870fb8be756f5fa9de9813bdb80969f4",
+          "name": "oauth_proxy"
+        },
+        {
+          "digest": "sha256:6e7a075b9ff8d3e2459dad46445758a2a3f6fc4887392645b4ca86fe5b1d0fb0",
+          "image": "us.icr.io/armada-master/remoteresources3@sha256:6e7a075b9ff8d3e2459dad46445758a2a3f6fc4887392645b4ca86fe5b1d0fb0",
+          "name": "rhm_rrs3_deployment"
+        },
+        {
+          "digest": "sha256:5638452bb8b4728c6afa33b081a32244603fba25304e24976e990ba78aee60f6",
+          "image": "quay.io/rh-marketplace/redhat-marketplace-metric-state@sha256:5638452bb8b4728c6afa33b081a32244603fba25304e24976e990ba78aee60f6",
+          "name": "metric_state"
+        },
+        {
+          "digest": "sha256:18688ecd113373abff11958237d84983a624cd2cc763842ea1c01dd701a98656",
+          "image": "registry.redhat.io/openshift4/ose-prometheus-operator@sha256:18688ecd113373abff11958237d84983a624cd2cc763842ea1c01dd701a98656",
+          "name": "prometheus_operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=1.0.0 <2.8.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "2.8.1",
+      "version_original": "2.8.1"
+    },
+    {
+      "_id": "630d725a4acb68ac7d135eef",
+      "alm_examples": [
+        {
+          "api_version": "marketplace.redhat.com/v1alpha1",
+          "kind": "MarketplaceConfig",
+          "metadata": {
+            "labels": {
+              "redhat.marketplace.com/name": "redhat-marketplace-operator"
+            },
+            "name": "marketplaceconfig",
+            "namespace": "openshift-redhat-marketplace"
+          },
+          "spec": {
+            "clusterUUID": "",
+            "features": {
+              "deployment": true,
+              "meterDefinitionCatalogServer": false,
+              "registration": true
+            },
+            "installIBMCatalogSource": true,
+            "isDisconnected": false,
+            "rhmAccountID": ""
+          }
+        },
+        {
+          "api_version": "marketplace.redhat.com/v1alpha1",
+          "kind": "MeterBase",
+          "metadata": {
+            "labels": {
+              "redhat.marketplace.com/name": "redhat-marketplace-operator"
+            },
+            "name": "meterbase",
+            "namespace": "openshift-redhat-marketplace"
+          },
+          "spec": {
+            "enabled": true,
+            "prometheus": {
+              "resources": {
+                "limits": {
+                  "cpu": "2",
+                  "memory": "2Gi"
+                },
+                "requests": {
+                  "cpu": "1",
+                  "memory": "1G"
+                }
+              },
+              "storage": {
+                "size": "20Gi"
+              }
+            }
+          }
+        },
+        {
+          "api_version": "marketplace.redhat.com/v1alpha1",
+          "kind": "MeterReport",
+          "metadata": {
+            "labels": {
+              "redhat.marketplace.com/name": "redhat-marketplace-operator"
+            },
+            "name": "example-meterreport",
+            "namespace": "openshift-redhat-marketplace"
+          },
+          "spec": {
+            "endTime": "2020-08-05T00:00:00Z",
+            "prometheusService": {
+              "name": "rhm-prometheus-meterbase",
+              "namespace": "openshift-redhat-marketplace",
+              "targetPort": "rbac"
+            },
+            "startTime": "2020-08-04T00:00:00Z"
+          }
+        },
+        {
+          "api_version": "marketplace.redhat.com/v1alpha1",
+          "kind": "RazeeDeployment",
+          "metadata": {
+            "labels": {
+              "redhat.marketplace.com/name": "redhat-marketplace-operator"
+            },
+            "name": "razeedeployment-example",
+            "namespace": "openshift-redhat-marketplace"
+          },
+          "spec": {
+            "clusterUUID": "example-cluster-uuid",
+            "enabled": true
+          }
+        },
+        {
+          "api_version": "marketplace.redhat.com/v1alpha1",
+          "kind": "RemoteResourceS3",
+          "metadata": {
+            "labels": {
+              "redhat.marketplace.com/name": "redhat-marketplace-operator"
+            },
+            "name": "example-remoteresources3",
+            "namespace": "openshift-redhat-marketplace"
+          },
+          "spec": {
+            "auth": {
+              "iam": {
+                "apiKeyRef": {
+                  "valueFrom": {
+                    "secretKeyRef": {
+                      "key": "accesskey",
+                      "name": "rhm-cos-reader-key"
+                    }
+                  }
+                },
+                "grantType": "urn:ibm:params:oauth:grant-type:apikey",
+                "responseType": "cloud_iam",
+                "url": "https://iam.cloud.ibm.com/identity/token"
+              }
+            },
+            "requests": [
+              {
+                "options": {
+                  "url": "https://s3.us-east.cloud-object-storage.appdomain.cloud/your-accountId/your-cluster-uuid/name-of-child.yaml"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "marketplace.redhat.com/v1beta1",
+          "kind": "MeterDefinition",
+          "metadata": {
+            "labels": {
+              "redhat.marketplace.com/name": "redhat-marketplace-operator"
+            },
+            "name": "example-meterdefinition-4",
+            "namespace": "openshift-redhat-marketplace"
+          },
+          "spec": {
+            "group": "partner.metering.com",
+            "kind": "App",
+            "meters": [
+              {
+                "aggregation": "sum",
+                "metricId": "container_cpu_usage_core_avg",
+                "period": "1h",
+                "query": "rate(container_cpu_usage_seconds_total{cpu=\"total\",container=\"db\"}[5m])*100",
+                "workloadType": "Pod"
+              }
+            ],
+            "resourceFilters": [
+              {
+                "namespace": {
+                  "useOperatorGroup": true
+                },
+                "ownerCRD": {
+                  "apiVersion": "marketplace.redhat.com/v1alpha1",
+                  "kind": "RazeeDeployment"
+                },
+                "workloadType": "Pod"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "marketplace.redhat.com/v1beta1",
+          "kind": "MeterDefinition",
+          "metadata": {
+            "labels": {
+              "redhat.marketplace.com/name": "redhat-marketplace-operator"
+            },
+            "name": "meterdefinition-sample",
+            "namespace": "openshift-redhat-marketplace"
+          },
+          "spec": {
+            "group": "partner.metering.com",
+            "kind": "App",
+            "meters": [
+              {
+                "aggregation": "sum",
+                "metricId": "container_cpu_usage_core_avg",
+                "period": "1h",
+                "query": "rate(container_cpu_usage_seconds_total{cpu=\"total\",container=\"db\"}[5m])*100",
+                "workloadType": "Pod"
+              }
+            ],
+            "resourceFilters": [
+              {
+                "namespace": {
+                  "useOperatorGroup": true
+                },
+                "ownerCRD": {
+                  "apiVersion": "marketplace.redhat.com/v1alpha1",
+                  "kind": "RazeeDeployment"
+                },
+                "workloadType": "Pod"
+              }
+            ]
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "ppc64le",
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/rh-marketplace/rh-marketplace-bundle@sha256:e5f9209dd630354fed2f4e21a0c503262dc059af8e52a3d1aba2bac0fa09fdf5",
+      "bundle_path_digest": "sha256:e5f9209dd630354fed2f4e21a0c503262dc059af8e52a3d1aba2bac0fa09fdf5",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-08-30T02:13:46.650000+00:00",
+      "csv_description": "The Red Hat Marketplace Operator provides cluster management, metering and\noperator installation for Red Hat Marketplace customers.\n### **Important Note**\nA set of instructions for onboarding is provided here. For more detailed onboarding instructions or information about what is installed please visit [marketplace.redhat.com](https://marketplace.redhat.com).\nTo access images from Red Hat Marketplace and the Marketplace container catalog you will need to make the pull secret attained in installation available to the workloads running on the cluster.\n### Prerequisites\n1. It is recommended to [enable monitoring for user-defined projects](https://docs.openshift.com/container-platform/4.10/monitoring/enabling-monitoring-for-user-defined-projects.html) as the Prometheus provider.\n2. Edit the cluster-monitoring-config ConfigMap object:\n  \n   ```sh\n   $ oc -n openshift-monitoring edit configmap cluster-monitoring-config\n   ```\n\n3. Add enableUserWorkload: true under data/config.yaml:\n  \n    ```sh\n    apiVersion: v1\n    kind: ConfigMap\n    metadata:\n      name: cluster-monitoring-config\n      namespace: openshift-monitoring\n    data:\n      config.yaml: |\n        enableUserWorkload: true\n    ```\n\n4. Configure the user-workload-monitoring-config ConfigMap object:\n  \n    ```sh\n    $ oc -n openshift-user-workload-monitoring edit configmap user-workload-monitoring-config\n    ```\n\n5. Configure a minimum retention time of 168h and minimum storage capacity of 40Gi\n  \n    ```sh\n    apiVersion: v1\n    kind: ConfigMap\n    metadata:\n      name: user-workload-monitoring-config\n      namespace: openshift-user-workload-monitoring\n    data:\n      config.yaml: |\n        prometheus:\n          retention: 168h\n          volumeClaimTemplate:\n            spec:\n              resources:\n                requests:\n                  storage: 40Gi\n    ```\n\n### Installation\n1. Create or get your pull secret from [Red Hat Marketplace](https://marketplace.redhat.com/en-us/documentation/clusters#get-pull-secret).\n2. Install the Red Hat Marketplace Operator in the openshift-redhat-marketplace namespace.\n3. Create a Kubernetes secret in the openshift-redhat-marketplace namespace with the name `redhat-marketplace-pull-secret` and key `PULL_SECRET` with the value of the Red hat Marketplace Pull Secret.\n\n   ```sh\n   # Replace ${PULL_SECRET} with your secret from Red Hat Marketplace\n   oc create secret generic redhat-marketplace-pull-secret -n  openshift-redhat-marketplace --from-literal=PULL_SECRET=${PULL_SECRET}\n   ```\n\n4. Install the Red Hat Marketplace pull secret as a global pull secret on the cluster.\n   **Warning:** This step will make your cluster perform a rolling restart.\n   These steps require `oc`, `jq`, and `base64` to be available on your machine.\n\n   ```sh\n   # Create the docker pull secret file using your PULL_SECRET from Red Hat Marketplace.\n   # Store it in a file called entitledregistryconfigjson.\n   oc create secret docker-registry entitled-registry --docker-server=registry.marketplace.redhat.com --docker-username \"cp\" --docker-password \"${PULL_SECRET}\" --dry-run=true --output=\"jsonpath={.data.\\.dockerconfigjson}\" | base64 --decode > entitledregistryconfigjson\n   # Get the current global secrets on the cluster and store it as a file named dockerconfigjson\n   oc get secret pull-secret -n openshift-config --output=\"jsonpath={.data.\\.dockerconfigjson}\" | base64 --decode > dockerconfigjson\n   # Merge the two dockerconfigs together into a file called dockerconfigjson-merged.\n   jq -s '.[0] * .[1]' dockerconfigjson entitledregistryconfigjson > dockerconfigjson-merged\n   # Set the cluster's dockerconfig file to the new merged version.\n   oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=dockerconfigjson-merged\n   # Cluster will now restart.\n   ```\n\n### Why is a global pull secret required?\nIn order to successfully install the Red Hat Marketplace products, you will need to make the pull secret available across the cluster. This can be achieved by applying the Red Hat Marketplace Pull Secret as a [global pull secret](https://docs.openshift.com/container-platform/4.6/openshift_images/managing_images/using-image-pull-secrets.html#images-update-global-pull-secret_using-image-pull-secrets).\nFor alternative approachs, please see the official OpenShift [documentation](https://docs.openshift.com/container-platform/4.6/openshift_images/managing_images/using-image-pull-secrets.html).\n### Documentation\nYou can find our documentation [here.](https://marketplace.redhat.com/en-us/documentation/)\n### Getting help\nIf you encounter any issues while using Red Hat Marketplace operator, you\ncan create an issue on our [Github\nrepo](https://github.com/redhat-marketplace/redhat-marketplace-operator) for\nbugs, enhancements, or other requests. You can also visit our main page and\nreview our [support](https://marketplace.redhat.com/en-us/support) and [documentation](https://marketplace.redhat.com/en-us/documentation/).\n### Readme\nYou can find our readme [here.](https://github.com/redhat-marketplace/redhat-marketplace-operator/blob/develop/README.md)\n### License information\nYou can find our license information [here.](https://github.com/redhat-marketplace/redhat-marketplace-operator/blob/develop/LICENSE)\n",
+      "csv_display_name": "Red Hat Marketplace",
+      "csv_metadata_description": "The Red Hat Marketplace Operator provides cluster management, metering and operator installation for Red Hat Marketplace customers.",
+      "csv_name": "redhat-marketplace-operator.v2.8.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:51:03.108000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "redhat-marketplace-operator",
+      "provided_apis": [
+        {
+          "group": "marketplace.redhat.com",
+          "kind": "MeterDefinition",
+          "plural": "meterdefinitions",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "marketplace.redhat.com",
+          "kind": "MeterDefinition",
+          "plural": "meterdefinitions",
+          "version": "v1beta1"
+        },
+        {
+          "group": "marketplace.redhat.com",
+          "kind": "MeterReport",
+          "plural": "meterreports",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "marketplace.redhat.com",
+          "kind": "RazeeDeployment",
+          "plural": "razeedeployments",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "marketplace.redhat.com",
+          "kind": "RemoteResourceS3",
+          "plural": "remoteresources3s",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "marketplace.redhat.com",
+          "kind": "MarketplaceConfig",
+          "plural": "marketplaceconfigs",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "marketplace.redhat.com",
+          "kind": "MeterBase",
+          "plural": "meterbases",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Red Hat Marketplace",
+      "related_images": [
+        {
+          "digest": "sha256:5da2b67402519d4498695097728b7ad4c1dfe69cd1ddf87cc0c74e7043212574",
+          "image": "registry.redhat.io/openshift4/ose-prometheus@sha256:5da2b67402519d4498695097728b7ad4c1dfe69cd1ddf87cc0c74e7043212574",
+          "name": "prometheus"
+        },
+        {
+          "digest": "sha256:9a15dca79b88a6e1e37617a5817ccac5df74b7ddef8fbae7da66685d90108c55",
+          "image": "registry.redhat.io/openshift4/ose-configmap-reloader@sha256:9a15dca79b88a6e1e37617a5817ccac5df74b7ddef8fbae7da66685d90108c55",
+          "name": "configmap_reloader"
+        },
+        {
+          "digest": "sha256:7bbeb563c25a511e15aecb5ff8c4905120906092277e299b281170371f0e1281",
+          "image": "quay.io/rh-marketplace/redhat-marketplace-reporter@sha256:7bbeb563c25a511e15aecb5ff8c4905120906092277e299b281170371f0e1281",
+          "name": "reporter"
+        },
+        {
+          "digest": "sha256:810c57d62498d8612d154dea0c94b6dba46f84308ec48f03d324359a38cccf33",
+          "image": "quay.io/rh-marketplace/redhat-marketplace-authcheck@sha256:810c57d62498d8612d154dea0c94b6dba46f84308ec48f03d324359a38cccf33",
+          "name": "authcheck"
+        },
+        {
+          "digest": "sha256:db6024317d54bc811ffa3c6b3a5423a36f02e5a31586c88ef0f996424c76cb2b",
+          "image": "quay.io/rh-marketplace/redhat-marketplace-operator@sha256:db6024317d54bc811ffa3c6b3a5423a36f02e5a31586c88ef0f996424c76cb2b",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:c74b64a0d0d63e585a9115535a310b9993d55f62924039102bb079d2d5c10697",
+          "image": "quay.io/rh-marketplace/redhat-marketplace-data-service@sha256:c74b64a0d0d63e585a9115535a310b9993d55f62924039102bb079d2d5c10697",
+          "name": "dqlite"
+        },
+        {
+          "digest": "sha256:260ebab52c1e825e354bfa60827e314388fb7878bfa16d1dc061707962e95bea",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:260ebab52c1e825e354bfa60827e314388fb7878bfa16d1dc061707962e95bea",
+          "name": "kube_rbac_proxy"
+        },
+        {
+          "digest": "sha256:a4bb67ace1dd2992029ebfee6b08c439b1a363b2bf4059a10803d82f1bd089b6",
+          "image": "registry.redhat.io/openshift4/ose-prometheus-config-reloader@sha256:a4bb67ace1dd2992029ebfee6b08c439b1a363b2bf4059a10803d82f1bd089b6",
+          "name": "prometheus_configmap_reloader"
+        },
+        {
+          "digest": "sha256:db6024317d54bc811ffa3c6b3a5423a36f02e5a31586c88ef0f996424c76cb2b",
+          "image": "quay.io/rh-marketplace/redhat-marketplace-operator@sha256:db6024317d54bc811ffa3c6b3a5423a36f02e5a31586c88ef0f996424c76cb2b",
+          "name": "redhat-marketplace-operator-db6024317d54bc811ffa3c6b3a5423a36f02e5a31586c88ef0f996424c76cb2b-annotation"
+        },
+        {
+          "digest": "sha256:9dd6a3999077d1830a6d0b3a7dfb7e744fc29ac9858df674472ee82c2e5b8ff4",
+          "image": "us.icr.io/armada-master/watch-keeper@sha256:9dd6a3999077d1830a6d0b3a7dfb7e744fc29ac9858df674472ee82c2e5b8ff4",
+          "name": "rhm_watch_keeper_deployment"
+        },
+        {
+          "digest": "sha256:5ca572cb31f15534ee8b6fd20a026452870fb8be756f5fa9de9813bdb80969f4",
+          "image": "registry.redhat.io/openshift4/ose-oauth-proxy@sha256:5ca572cb31f15534ee8b6fd20a026452870fb8be756f5fa9de9813bdb80969f4",
+          "name": "oauth_proxy"
+        },
+        {
+          "digest": "sha256:6e7a075b9ff8d3e2459dad46445758a2a3f6fc4887392645b4ca86fe5b1d0fb0",
+          "image": "us.icr.io/armada-master/remoteresources3@sha256:6e7a075b9ff8d3e2459dad46445758a2a3f6fc4887392645b4ca86fe5b1d0fb0",
+          "name": "rhm_rrs3_deployment"
+        },
+        {
+          "digest": "sha256:5638452bb8b4728c6afa33b081a32244603fba25304e24976e990ba78aee60f6",
+          "image": "quay.io/rh-marketplace/redhat-marketplace-metric-state@sha256:5638452bb8b4728c6afa33b081a32244603fba25304e24976e990ba78aee60f6",
+          "name": "metric_state"
+        },
+        {
+          "digest": "sha256:18688ecd113373abff11958237d84983a624cd2cc763842ea1c01dd701a98656",
+          "image": "registry.redhat.io/openshift4/ose-prometheus-operator@sha256:18688ecd113373abff11958237d84983a624cd2cc763842ea1c01dd701a98656",
+          "name": "prometheus_operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=1.0.0 <2.8.1",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "2.8.1",
       "version_original": "2.8.1"
     }
