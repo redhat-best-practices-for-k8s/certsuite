@@ -20,7 +20,7 @@ Result Type|normative
 Suggested Remediation|In most cases, Pod's should not have ClusterRoleBindings.  The suggested remediation is to remove the need for 	ClusterRoleBindings, if possible.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.10 and 5.3.6
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### container-host-port
 
 Property|Description
@@ -34,7 +34,7 @@ Result Type|informative
 Suggested Remediation|Remove hostPort configuration from the container
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.6
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### namespace
 
 Property|Description
@@ -48,7 +48,7 @@ Result Type|normative
 Suggested Remediation|Ensure that your CNF utilizes namespaces declared in the yaml config file. Additionally, 	the namespaces should not start with "default, openshift-, istio- or aspenmesh-", except in rare cases.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2, 16.3.8 and 16.3.9
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### namespace-resource-quota
 
 Property|Description
@@ -62,7 +62,7 @@ Result Type|informative
 Suggested Remediation|Apply a ResourceQuota to the namespace your CNF is running in
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.8
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### no-1337-uid
 
 Property|Description
@@ -90,7 +90,7 @@ Result Type|informative
 Suggested Remediation|Launch only one process per container
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 10.8.3
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### pod-automount-service-account-token
 
 Property|Description
@@ -104,7 +104,7 @@ Result Type|normative
 Suggested Remediation|Check that pod has automountServiceAccountToken set to false or pod is attached to service account which has automountServiceAccountToken set to false
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 12.7
 Exception Process|Identify which Kubernetes APIs are required if you need to utilize automount service tokens.  Depending on 												which APIs are utilized, Red Hat possibly might make those APIs available to use via OpenShift.
-Tags|
+Tags|common
 #### pod-host-ipc
 
 Property|Description
@@ -118,7 +118,7 @@ Result Type|informative
 Suggested Remediation|Set the spec.HostIpc parameter to false in the pod configuration
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.6
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### pod-host-network
 
 Property|Description
@@ -132,7 +132,7 @@ Result Type|informative
 Suggested Remediation|Set the spec.HostNetwork parameter to false in the pod configuration
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.6
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### pod-host-path
 
 Property|Description
@@ -146,7 +146,7 @@ Result Type|informative
 Suggested Remediation|Set the spec.HostNetwork parameter to false in the pod configuration
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.6
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### pod-host-pid
 
 Property|Description
@@ -160,7 +160,7 @@ Result Type|informative
 Suggested Remediation|Set the spec.HostPid parameter to false in the pod configuration
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.6
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### pod-role-bindings
 
 Property|Description
@@ -174,7 +174,7 @@ Result Type|normative
 Suggested Remediation|Ensure the CNF is not configured to use RoleBinding(s) in a non-CNF Namespace.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.3 and 5.3.5
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### pod-service-account
 
 Property|Description
@@ -188,7 +188,7 @@ Result Type|normative
 Suggested Remediation|Ensure that the each CNF Pod is configured to use a valid Service Account
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.3 and 5.2.7
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### pod-toleration-bypass
 
 Property|Description
@@ -202,7 +202,7 @@ Result Type|informative
 Suggested Remediation|Do not allow pods to bypass the NoExecute, PreferNoSchedule, or NoSchedule tolerations that are default applied by Kubernetes.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 10.6
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### requests-and-limits
 
 Property|Description
@@ -216,7 +216,7 @@ Result Type|informative
 Suggested Remediation|Add requests and limits to your container spec.  See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#requests-and-limits
 Best Practice Reference|https://TODO Section 4.6.11
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### security-context-capabilities-check
 
 Property|Description
@@ -230,7 +230,7 @@ Result Type|normative
 Suggested Remediation|Remove the following capabilities from the container/pod definitions: NET_ADMIN SCC, SYS_ADMIN SCC, NET_RAW SCC, IPC_LOCK SCC
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|Identify the pod that is needing special capabilities and document why  
-Tags|
+Tags|common
 #### security-context-non-root-user-check
 
 Property|Description
@@ -244,7 +244,7 @@ Result Type|normative
 Suggested Remediation|Change the pod and containers "runAsUser" uid to something other than root(0)
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|If your application needs root user access, please document why your application cannot be ran as 											non-root and supply the reasoning for exception.
-Tags|
+Tags|common
 #### security-context-privilege-escalation
 
 Property|Description
@@ -258,7 +258,7 @@ Result Type|normative
 Suggested Remediation|Configure privilege escalation to false
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### ssh-daemons
 
 Property|Description
@@ -272,7 +272,7 @@ Result Type|normative
 Suggested Remediation|Ensure that no SSH daemons are running inside a pod
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.12
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### sys-nice-realtime-capability
 
 Property|Description
@@ -286,7 +286,7 @@ Result Type|informative
 Suggested Remediation|If pods are scheduled to realtime kernel nodes, they must add SYS_NICE capability to their spec.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 2.7.4
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### sys-ptrace-capability
 
 Property|Description
@@ -300,7 +300,7 @@ Result Type|informative
 Suggested Remediation|Allow the SYS_PTRACE capability when enabling process namespace sharing for a Pod
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 2.7.5
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 
 ### affiliated-certification
 
@@ -345,7 +345,7 @@ Result Type|normative
 Suggested Remediation|Ensure that the helm charts under test passed the Red Hat's helm Certification Program (e.g. listed in https://charts.openshift.io/index.yaml).
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.12 and 5.3.3
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common,online
 #### operator-is-certified
 
 Property|Description
@@ -359,7 +359,7 @@ Result Type|normative
 Suggested Remediation|Ensure that your Operator has passed Red Hat's Operator Certification Program (OCP).
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.12 and 5.3.3
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common,online
 
 ### lifecycle
 
@@ -418,7 +418,7 @@ Result Type|normative
 Suggested Remediation| 	It's considered best-practices to define prestop for proper management of container lifecycle. 	The prestop can be used to gracefully stop the container and clean resources (e.g., DB connection). 	 	The prestop can be configured using : 	 1) Exec : executes the supplied command inside the container 	 2) HTTP : executes HTTP request against the specified endpoint. 	 	When defined. K8s will handle shutdown of the container using the following: 	1) K8s first execute the preStop hook inside the container. 	2) K8s will wait for a grace period. 	3) K8s will clean the remaining processes using KILL signal.		 		
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.1.3, 12.2 and 12.5
 Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot  									use a prestop shutdown specification.
-Tags|
+Tags|common
 #### cpu-isolation
 
 Property|Description
@@ -432,7 +432,7 @@ Result Type|informative
 Suggested Remediation|CPU isolation testing is enabled.  Please ensure that all pods adhere to the CPU isolation requirements
 Best Practice Reference|https://TODO Section 3.5.5
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### deployment-scaling
 
 Property|Description
@@ -446,7 +446,7 @@ Result Type|normative
 Suggested Remediation|Ensure CNF deployments/replica sets can scale in/out successfully.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### image-pull-policy
 
 Property|Description
@@ -460,7 +460,7 @@ Result Type|normative
 Suggested Remediation|Ensure that the containers under test are using IfNotPresent as Image Pull Policy.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf  Section 12.6
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### liveness-probe
 
 Property|Description
@@ -474,7 +474,7 @@ Result Type|normative
 Suggested Remediation|Add a liveness probe to deployed containers
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.16, 12.1 and 12.5
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### persistent-volume-reclaim-policy
 
 Property|Description
@@ -488,7 +488,7 @@ Result Type|informative
 Suggested Remediation|Ensure that all persistent volumes are using the reclaim policy: delete
 Best Practice Reference|https://TODO Section 3.3.4
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### pod-high-availability
 
 Property|Description
@@ -502,7 +502,7 @@ Result Type|informative
 Suggested Remediation|In high availability cases, Pod podAntiAffinity rule should be specified for pod scheduling and pod replica value is set to more than 1 .
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### pod-owner-type
 
 Property|Description
@@ -516,7 +516,7 @@ Result Type|normative
 Suggested Remediation|Deploy the CNF using ReplicaSet/StatefulSet.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.3 and 5.3.8
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### pod-recreation
 
 Property|Description
@@ -530,7 +530,7 @@ Result Type|normative
 Suggested Remediation|Ensure that CNF Pod(s) utilize a configuration that supports High Availability.   	Additionally, ensure that there are available Nodes in the OpenShift cluster that can be utilized in the event that a host Node fails.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### pod-scheduling
 
 Property|Description
@@ -544,7 +544,7 @@ Result Type|informative
 Suggested Remediation|In most cases, Pod's should not specify their host Nodes through nodeSelector or nodeAffinity.  However, there are 	cases in which CNFs require specialized hardware specific to a particular class of Node.  As such, this test is purely 	informative, and will not prevent a CNF from being certified. However, one should have an appropriate justification as 	to why nodeSelector and/or nodeAffinity is utilized by a CNF.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### readiness-probe
 
 Property|Description
@@ -558,7 +558,7 @@ Result Type|normative
 Suggested Remediation|Add a readiness probe to deployed containers
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.16, 12.1 and 12.5
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### scaling
 
 Property|Description
@@ -572,7 +572,7 @@ Result Type|normative
 Suggested Remediation|Ensure CNF deployments/replica sets can scale in/out successfully.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### startup-probe
 
 Property|Description
@@ -586,7 +586,7 @@ Result Type|normative
 Suggested Remediation|Add a startup probe to deployed containers
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.12
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### statefulset-scaling
 
 Property|Description
@@ -600,7 +600,7 @@ Result Type|normative
 Suggested Remediation|Ensure CNF statefulsets/replica sets can scale in/out successfully.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 
 ### manageability
 
@@ -617,7 +617,7 @@ Result Type|normative
 Suggested Remediation|Ensure that the container's ports name follow our partner naming conventions
 Best Practice Reference|https://TODO Section 4.6.20
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|extended
 #### containers-image-tag
 
 Property|Description
@@ -631,7 +631,7 @@ Result Type|informative
 Suggested Remediation|Ensure that all the container images are tagged
 Best Practice Reference|https://TODO Section 4.6.12
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|extended
 
 ### networking
 
@@ -648,7 +648,7 @@ Result Type|normative
 Suggested Remediation|Configure every CNF services with either a single stack ipv6 or dual stack (ipv4/ipv6) load balancer
 Best Practice Reference|https://TODO Section 3.5.7
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### icmpv4-connectivity
 
 Property|Description
@@ -690,7 +690,7 @@ Result Type|normative
 Suggested Remediation|Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, 	CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod 	from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is not important, only its presence.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### icmpv6-connectivity-multus
 
 Property|Description
@@ -704,7 +704,7 @@ Result Type|normative
 Suggested Remediation|Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, 	CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod 	from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it.The label value is not important, only its presence.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### iptables
 
 Property|Description
@@ -718,7 +718,7 @@ Result Type|normative
 Suggested Remediation|Do not configure iptables on any CNF container.
 Best Practice Reference|https://TODO Section 4.6.23
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### network-policy-deny-all
 
 Property|Description
@@ -746,7 +746,7 @@ Result Type|normative
 Suggested Remediation|Do not configure nftables on any CNF container.
 Best Practice Reference|https://TODO Section 4.6.23
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### ocp-reserved-ports-usage
 
 Property|Description
@@ -760,7 +760,7 @@ Result Type|normative
 Suggested Remediation|Ensure that CNF apps do not listen on ports that are reserved by OpenShift
 Best Practice Reference|https://TODO Section 3.5.9
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### reserved-partner-ports
 
 Property|Description
@@ -788,7 +788,7 @@ Result Type|normative
 Suggested Remediation|Ensure Services are not configured to use NodePort(s).
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.1
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### undeclared-container-ports-usage
 
 Property|Description
@@ -802,7 +802,7 @@ Result Type|normative
 Suggested Remediation|Ensure the CNF apps do not listen on undeclared containers' ports
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 16.3.1.1
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 
 ### observability
 
@@ -819,7 +819,7 @@ Result Type|informative
 Suggested Remediation|Ensure containers are not redirecting stdout/stderr
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 10.1
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### crd-status
 
 Property|Description
@@ -833,7 +833,7 @@ Result Type|informative
 Suggested Remediation|Ensure that all the CRDs have a meaningful status specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties["status"]).
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### pod-disruption-budget
 
 Property|Description
@@ -847,7 +847,7 @@ Result Type|normative
 Suggested Remediation|Ensure minAvailable is not zero and maxUnavailable does not equal the number of pods in the replica
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.20
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### termination-policy
 
 Property|Description
@@ -861,7 +861,7 @@ Result Type|informative
 Suggested Remediation|Ensure containers are all using FallbackToLogsOnError in terminationMessagePolicy
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 12.1
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 
 ### operator
 
@@ -878,7 +878,7 @@ Result Type|normative
 Suggested Remediation|Ensure that your Operator is installed via OLM.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.12 and 5.3.3
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### install-status-no-privileges
 
 Property|Description
@@ -892,7 +892,7 @@ Result Type|normative
 Suggested Remediation|Ensure all the CNF operators have no privileges on cluster resources.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.12 and 5.3.3
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### install-status-succeeded
 
 Property|Description
@@ -906,7 +906,7 @@ Result Type|normative
 Suggested Remediation|Ensure all the CNF operators have been successfully installed by OLM.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.12 and 5.3.3
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 
 ### platform-alteration
 
@@ -923,7 +923,7 @@ Result Type|normative
 Suggested Remediation|Ensure that Container applications do not modify the Container Base Image.  In particular, ensure that the following 	directories are not modified: 	1) /var/lib/rpm 	2) /var/lib/dpkg 	3) /bin 	4) /sbin 	5) /lib 	6) /lib64 	7) /usr/bin 	8) /usr/sbin 	9) /usr/lib 	10) /usr/lib64 	Ensure that all required binaries are built directly into the container image, and are not installed post startup.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.1.4
 Exception Process|Images should not be changed during runtime.  There is no exception process for this.
-Tags|
+Tags|common
 #### boot-params
 
 Property|Description
@@ -937,7 +937,7 @@ Result Type|normative
 Suggested Remediation|Ensure that boot parameters are set directly through the MachineConfigOperator, or indirectly through the PerformanceAddonOperator.   	Boot parameters should not be changed directly through the Node, as OpenShift should manage the changes for you.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.13 and 5.2.14
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### hugepages-2m-only
 
 Property|Description
@@ -965,7 +965,7 @@ Result Type|normative
 Suggested Remediation|HugePage settings should be configured either directly through the MachineConfigOperator or indirectly using the 	PerformanceAddonOperator.  This ensures that OpenShift is aware of the special MachineConfig requirements, and can 	provision your CNF on a Node that is part of the corresponding MachineConfigSet.  Avoid making changes directly to an 	underlying Node, and let OpenShift handle the heavy lifting of configuring advanced settings.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### is-selinux-enforcing
 
 Property|Description
@@ -979,7 +979,7 @@ Result Type|normative
 Suggested Remediation|Configure selinux and enable enforcing mode.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 10.3 Pod Security
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### isredhat-release
 
 Property|Description
@@ -993,7 +993,7 @@ Result Type|normative
 Suggested Remediation|Build a new container image that is based on UBI (Red Hat Universal Base Image).
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|Document which containers are not able to meet the RHEL-based container  											requirement and if/when the base image can be updated.
-Tags|
+Tags|common
 #### ocp-lifecycle
 
 Property|Description
@@ -1007,7 +1007,7 @@ Result Type|normative
 Suggested Remediation|Please update your cluster to a version that is generally available.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 7.9
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### ocp-node-os-lifecycle
 
 Property|Description
@@ -1021,7 +1021,7 @@ Result Type|normative
 Suggested Remediation|Please update your workers to a version that is supported by your version of OpenShift
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 7.9
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### service-mesh-usage
 
 Property|Description
@@ -1035,7 +1035,7 @@ Result Type|normative
 Suggested Remediation|Ensure all the CNF pods are using service mesh if the cluster provides it.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### sysctl-config
 
 Property|Description
@@ -1049,7 +1049,7 @@ Result Type|normative
 Suggested Remediation|You should recreate the node or change the sysctls, recreating is recommended because there might be other unknown changes
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### tainted-node-kernel
 
 Property|Description
@@ -1063,5 +1063,5 @@ Result Type|normative
 Suggested Remediation|Test failure indicates that the underlying Node's kernel is tainted.  Ensure that you have not altered underlying 	Node(s) kernels in order to run the CNF.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.14
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 

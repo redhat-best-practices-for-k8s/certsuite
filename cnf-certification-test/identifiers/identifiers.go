@@ -659,6 +659,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Remediation:           NodeOperatingSystemRemediation,
 		ExceptionProcess:      NoDocumentedProcess,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 7.9",
+		Tags:                  TestNodeOperatingSystemIdentifier.Tags,
 	},
 
 	TestOCPLifecycleIdentifier: {
@@ -668,6 +669,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Remediation:           OCPLifecycleRemediation,
 		ExceptionProcess:      NoDocumentedProcess,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 7.9",
+		Tags:                  TestOCPLifecycleIdentifier.Tags,
 	},
 
 	TestDeploymentScalingIdentifier: {
@@ -682,6 +684,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Remediation:           DeploymentScalingRemediation,
 		ExceptionProcess:      NoDocumentedProcess,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
+		Tags:                  TestDeploymentScalingIdentifier.Tags,
 	},
 	TestStateFulSetScalingIdentifier: {
 		Identifier: TestStateFulSetScalingIdentifier,
@@ -695,6 +698,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Remediation:           StatefulSetScalingRemediation,
 		ExceptionProcess:      NoDocumentedProcess,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
+		Tags:                  TestStateFulSetScalingIdentifier.Tags,
 	},
 	TestSecConCapabilitiesIdentifier: {
 		Identifier:       TestSecConCapabilitiesIdentifier,
@@ -709,6 +713,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 			- IPC_LOCK
 `),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
+		Tags:                  TestSecConCapabilitiesIdentifier.Tags,
 	},
 	// TestPodDeleteIdentifier: {
 	// 	Identifier:  TestPodDeleteIdentifier,
@@ -726,6 +731,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Description: formDescription(TestSecConNonRootUserIdentifier,
 			`Checks the security context runAsUser parameter in pods and containers to make sure it is not set to uid root(0)`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
+		Tags:                  TestSecConNonRootUserIdentifier.Tags,
 	},
 	TestSecConPrivilegeEscalation: {
 		Identifier:       TestSecConPrivilegeEscalation,
@@ -735,6 +741,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Description: formDescription(TestSecConPrivilegeEscalation,
 			`Checks if privileged escalation is enabled (AllowPrivilegeEscalation=true)`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
+		Tags:                  TestSecConPrivilegeEscalation.Tags,
 	},
 	TestContainerIsCertifiedIdentifier: {
 		Identifier:  TestContainerIsCertifiedIdentifier,
@@ -744,6 +751,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 			`Tests whether container images listed in the configuration file have passed the Red Hat Container Certification Program (CCP).`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.7",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestContainerIsCertifiedDigestIdentifier.Tags,
 	},
 	TestContainerHostPort: {
 		Identifier:  TestContainerHostPort,
@@ -753,6 +761,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 			`Verifies if containers define a hostPort.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.6",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestContainerHostPort.Tags,
 	},
 	TestPodHostNetwork: {
 		Identifier:  TestPodHostNetwork,
@@ -762,6 +771,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 			`Verifies that the spec.HostNetwork parameter is set to false`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.6",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestPodHostNetwork.Tags,
 	},
 	TestPodHostPath: {
 		Identifier:  TestPodHostPath,
@@ -771,6 +781,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 			`Verifies that the spec.HostPath parameter is not set (not present)`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.6",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestPodHostPath.Tags,
 	},
 	TestPodHostIPC: {
 		Identifier:  TestPodHostIPC,
@@ -780,6 +791,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 			`Verifies that the spec.HostIpc parameter is set to false`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.6",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestPodHostIPC.Tags,
 	},
 	TestPodHostPID: {
 		Identifier:  TestPodHostPID,
@@ -789,6 +801,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 			`Verifies that the spec.HostPid parameter is set to false`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.6",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestPodHostIPC.Tags,
 	},
 	TestHugepagesNotManuallyManipulated: {
 		Identifier:  TestHugepagesNotManuallyManipulated,
@@ -802,6 +815,7 @@ for configured HugePages through inspection of /proc/meminfo.  The results are c
 they are the same.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestHugepagesNotManuallyManipulated.Tags,
 	},
 	TestICMPv6ConnectivityIdentifier: {
 		Identifier:  TestICMPv6ConnectivityIdentifier,
@@ -812,6 +826,7 @@ they are the same.`),
 test case requires the Deployment of the debug daemonset.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestICMPv6ConnectivityIdentifier.Tags,
 	},
 
 	TestICMPv4ConnectivityMultusIdentifier: {
@@ -823,6 +838,7 @@ test case requires the Deployment of the debug daemonset.`),
 test case requires the Deployment of the debug daemonset.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestICMPv4ConnectivityIdentifier.Tags,
 	},
 
 	TestICMPv6ConnectivityMultusIdentifier: {
@@ -834,6 +850,7 @@ test case requires the Deployment of the debug daemonset.`),
 test case requires the Deployment of the debug daemonset.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestICMPv6ConnectivityIdentifier.Tags,
 	},
 
 	TestServiceDualStackIdentifier: {
@@ -845,6 +862,7 @@ test case requires the Deployment of the debug daemonset.`),
 test case requires the deployment of the debug daemonset.`),
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 3.5.7",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestServiceDualStackIdentifier.Tags,
 	},
 
 	TestNFTablesIdentifier: {
@@ -855,6 +873,7 @@ test case requires the deployment of the debug daemonset.`),
 			`Checks that the output of "nft list ruleset" is empty, e.g. there is no nftables configuration on any CNF containers.`),
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 4.6.23",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestNFTablesIdentifier.Tags,
 	},
 
 	TestIPTablesIdentifier: {
@@ -865,6 +884,7 @@ test case requires the deployment of the debug daemonset.`),
 			`Checks that the output of "iptables-save" is empty, e.g. there is no iptables configuration on any CNF containers.`),
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 4.6.23",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestIPTablesIdentifier.Tags,
 	},
 
 	TestNamespaceBestPracticesIdentifier: {
@@ -877,6 +897,7 @@ the following conditions: (1) It was declared in the yaml config file under the 
 tag. (2) It doesn't have any of the following prefixes: default, openshift-, istio- and aspenmesh-`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2, 16.3.8 and 16.3.9",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestNamespaceBestPracticesIdentifier.Tags,
 	},
 
 	TestNonTaintedNodeKernelsIdentifier: {
@@ -889,6 +910,7 @@ to support Highly Available CNFs, since when a CNF is re-instantiated on a backu
 the same hacks.'`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.14",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestNonTaintedNodeKernelsIdentifier.Tags,
 	},
 
 	TestOperatorInstallStatusSucceededIdentifier: {
@@ -899,6 +921,7 @@ the same hacks.'`),
 			`Ensures that the target CNF operators report "Succeeded" as their installation status.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.12 and 5.3.3",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestOperatorInstallStatusSucceededIdentifier.Tags,
 	},
 
 	TestOperatorNoPrivileges: {
@@ -910,6 +933,7 @@ the same hacks.'`),
 with no resourceNames under its rules.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.12 and 5.3.3",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestOperatorNoPrivileges.Tags,
 	},
 
 	TestOperatorIsCertifiedIdentifier: {
@@ -920,6 +944,7 @@ with no resourceNames under its rules.`),
 			`Tests whether CNF Operators listed in the configuration file have passed the Red Hat Operator Certification Program (OCP).`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.12 and 5.3.3",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestOperatorIsCertifiedIdentifier.Tags,
 	},
 
 	TestHelmIsCertifiedIdentifier: {
@@ -930,6 +955,7 @@ with no resourceNames under its rules.`),
 			`Tests whether helm charts listed in the cluster passed the Red Hat Helm Certification Program.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.12 and 5.3.3",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestHelmIsCertifiedIdentifier.Tags,
 	},
 
 	TestOperatorIsInstalledViaOLMIdentifier: {
@@ -940,6 +966,7 @@ with no resourceNames under its rules.`),
 			`Tests whether a CNF Operator is installed via OLM.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.12 and 5.3.3",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestOperatorIsInstalledViaOLMIdentifier.Tags,
 	},
 
 	TestPodNodeSelectorAndAffinityBestPractices: {
@@ -951,6 +978,7 @@ with no resourceNames under its rules.`),
 instantiation on any underlying Node.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestPodNodeSelectorAndAffinityBestPractices.Tags,
 	},
 
 	TestPodHighAvailabilityBestPractices: {
@@ -961,6 +989,7 @@ instantiation on any underlying Node.`),
 			`Ensures that CNF Pods specify podAntiAffinity rules and replica value is set to more than 1.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestPodHighAvailabilityBestPractices.Tags,
 	},
 
 	TestPodClusterRoleBindingsBestPracticesIdentifier: {
@@ -971,6 +1000,7 @@ instantiation on any underlying Node.`),
 			`Tests that a Pod does not specify ClusterRoleBindings.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.10 and 5.3.6",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestPodClusterRoleBindingsBestPracticesIdentifier.Tags,
 	},
 
 	TestPodDeploymentBestPracticesIdentifier: {
@@ -981,6 +1011,7 @@ instantiation on any underlying Node.`),
 			`Tests that CNF Pod(s) are deployed as part of a ReplicaSet(s)/StatefulSet(s).`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.3 and 5.3.8",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestPodDeploymentBestPracticesIdentifier.Tags,
 	},
 	TestImagePullPolicyIdentifier: {
 		Identifier:  TestImagePullPolicyIdentifier,
@@ -990,6 +1021,7 @@ instantiation on any underlying Node.`),
 			`Ensure that the containers under test are using IfNotPresent as Image Pull Policy..`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + "  Section 12.6",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestImagePullPolicyIdentifier.Tags,
 	},
 
 	TestPodRoleBindingsBestPracticesIdentifier: {
@@ -1000,6 +1032,7 @@ instantiation on any underlying Node.`),
 			`Ensures that a CNF does not utilize RoleBinding(s) in a non-CNF Namespace.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.3 and 5.3.5",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestPodRoleBindingsBestPracticesIdentifier.Tags,
 	},
 
 	TestPodServiceAccountBestPracticesIdentifier: {
@@ -1010,6 +1043,7 @@ instantiation on any underlying Node.`),
 			`Tests that each CNF Pod utilizes a valid Service Account.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.3 and 5.2.7",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestPodServiceAccountBestPracticesIdentifier.Tags,
 	},
 
 	TestServicesDoNotUseNodeportsIdentifier: {
@@ -1020,6 +1054,7 @@ instantiation on any underlying Node.`),
 			`Tests that each CNF Service does not utilize NodePort(s).`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.1",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestServicesDoNotUseNodeportsIdentifier.Tags,
 	},
 
 	TestUnalteredBaseImageIdentifier: {
@@ -1041,6 +1076,7 @@ that there are no changes to the following directories:
 10) /usr/lib64`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.1.4",
 		ExceptionProcess:      UnalteredBaseImageExceptionProcess,
+		Tags:                  TestUnalteredBaseImageIdentifier.Tags,
 	},
 
 	TestUnalteredStartupBootParamsIdentifier: {
@@ -1051,6 +1087,7 @@ that there are no changes to the following directories:
 			`Tests that boot parameters are set through the MachineConfigOperator, and not set manually on the Node.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.13 and 5.2.14",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestUnalteredStartupBootParamsIdentifier.Tags,
 	},
 	TestShutdownIdentifier: {
 		Identifier: TestShutdownIdentifier,
@@ -1060,6 +1097,7 @@ that there are no changes to the following directories:
 		Remediation:           ShutdownRemediation,
 		ExceptionProcess:      ShutdownExceptionProcess,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.1.3, 12.2 and 12.5",
+		Tags:                  TestShutdownIdentifier.Tags,
 	},
 	TestPodRecreationIdentifier: {
 		Identifier: TestPodRecreationIdentifier,
@@ -1072,6 +1110,7 @@ that there are no changes to the following directories:
 		Remediation:           PodRecreationRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestPodRecreationIdentifier.Tags,
 	},
 	TestSysctlConfigsIdentifier: {
 		Identifier: TestSysctlConfigsIdentifier,
@@ -1083,6 +1122,7 @@ that there are no changes to the following directories:
 		Remediation:           SysctlConfigsRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestSysctlConfigsIdentifier.Tags,
 	},
 	TestServiceMeshIdentifier: {
 		Identifier: TestServiceMeshIdentifier,
@@ -1092,6 +1132,7 @@ that there are no changes to the following directories:
 		Remediation:           ServiceMeshRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestServiceMeshIdentifier.Tags,
 	},
 	TestScalingIdentifier: {
 		Identifier: TestScalingIdentifier,
@@ -1103,6 +1144,7 @@ that there are no changes to the following directories:
 		Remediation:           ScalingRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestScalingIdentifier.Tags,
 	},
 	TestIsRedHatReleaseIdentifier: {
 		Identifier: TestIsRedHatReleaseIdentifier,
@@ -1112,6 +1154,7 @@ that there are no changes to the following directories:
 		Remediation:           IsRedHatReleaseRemediation,
 		ExceptionProcess:      IsRedHatReleaseExceptionProcess,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
+		Tags:                  TestIsRedHatReleaseIdentifier.Tags,
 	},
 	TestIsSELinuxEnforcingIdentifier: {
 		Identifier: TestIsSELinuxEnforcingIdentifier,
@@ -1121,6 +1164,7 @@ that there are no changes to the following directories:
 		Remediation:           IsSELinuxEnforcingRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 10.3 Pod Security",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestIsSELinuxEnforcingIdentifier.Tags,
 	},
 	TestUndeclaredContainerPortsUsage: {
 		Identifier: TestUndeclaredContainerPortsUsage,
@@ -1130,6 +1174,7 @@ that there are no changes to the following directories:
 		Remediation:           UndeclaredContainerPortsRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 16.3.1.1",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestUndeclaredContainerPortsUsage.Tags,
 	},
 	TestOCPReservedPortsUsage: {
 		Identifier: TestOCPReservedPortsUsage,
@@ -1139,6 +1184,7 @@ that there are no changes to the following directories:
 		Remediation:           OCPReservedPortsUsageRemediation,
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 3.5.9",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestOCPReservedPortsUsage.Tags,
 	},
 	TestCrdsStatusSubresourceIdentifier: {
 		Identifier: TestCrdsStatusSubresourceIdentifier,
@@ -1148,6 +1194,7 @@ that there are no changes to the following directories:
 		Remediation:           CrdsStatusSubresourceRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestCrdsStatusSubresourceIdentifier.Tags,
 	},
 	TestLoggingIdentifier: {
 		Identifier: TestLoggingIdentifier,
@@ -1157,6 +1204,7 @@ that there are no changes to the following directories:
 		Remediation:           LoggingRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 10.1",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestLoggingIdentifier.Tags,
 	},
 	TestTerminationMessagePolicyIdentifier: {
 		Identifier: TestTerminationMessagePolicyIdentifier,
@@ -1166,6 +1214,7 @@ that there are no changes to the following directories:
 		Remediation:           TerminationMessagePolicyRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 12.1",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestTerminationMessagePolicyIdentifier.Tags,
 	},
 	TestPodAutomountServiceAccountIdentifier: {
 		Identifier: TestPodAutomountServiceAccountIdentifier,
@@ -1175,6 +1224,7 @@ that there are no changes to the following directories:
 		Remediation:           AutomountServiceTokenRemediation,
 		ExceptionProcess:      AutomountServiceTokenExceptionProcess,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 12.7",
+		Tags:                  TestPodAutomountServiceAccountIdentifier.Tags,
 	},
 	TestLivenessProbeIdentifier: {
 		Identifier:            TestLivenessProbeIdentifier,
@@ -1183,6 +1233,7 @@ that there are no changes to the following directories:
 		Remediation:           LivenessProbeRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.16, 12.1 and 12.5",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestLivenessProbeIdentifier.Tags,
 	},
 	TestReadinessProbeIdentifier: {
 		Identifier:            TestReadinessProbeIdentifier,
@@ -1191,6 +1242,7 @@ that there are no changes to the following directories:
 		Remediation:           ReadinessProbeRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.16, 12.1 and 12.5",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestReadinessProbeIdentifier.Tags,
 	},
 	TestStartupProbeIdentifier: {
 		Identifier:            TestStartupProbeIdentifier,
@@ -1199,6 +1251,7 @@ that there are no changes to the following directories:
 		Remediation:           StartupProbeRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.12", // TODO Change this to v1.4 when available
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestStartupProbeIdentifier.Tags,
 	},
 	TestOneProcessPerContainerIdentifier: {
 		Identifier:            TestOneProcessPerContainerIdentifier,
@@ -1207,6 +1260,7 @@ that there are no changes to the following directories:
 		Remediation:           OneProcessPerContainerRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 10.8.3",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestOneProcessPerContainerIdentifier.Tags,
 	},
 	TestSYSNiceRealtimeCapabilityIdentifier: {
 		Identifier:            TestSYSNiceRealtimeCapabilityIdentifier,
@@ -1215,6 +1269,7 @@ that there are no changes to the following directories:
 		Remediation:           SYSNiceRealtimeCapabilityRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 2.7.4",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestSYSNiceRealtimeCapabilityIdentifier.Tags,
 	},
 	TestSysPtraceCapabilityIdentifier: {
 		Identifier:            TestSysPtraceCapabilityIdentifier,
@@ -1223,6 +1278,7 @@ that there are no changes to the following directories:
 		Remediation:           SysPtraceCapabilityRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 2.7.5",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestSysPtraceCapabilityIdentifier.Tags,
 	},
 	TestPodRequestsAndLimitsIdentifier: {
 		Identifier:            TestPodRequestsAndLimitsIdentifier,
@@ -1231,6 +1287,7 @@ that there are no changes to the following directories:
 		Remediation:           RequestsAndLimitsRemediation,
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 4.6.11",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestPodRequestsAndLimitsIdentifier.Tags,
 	},
 	TestPersistentVolumeReclaimPolicyIdentifier: {
 		Identifier:            TestPersistentVolumeReclaimPolicyIdentifier,
@@ -1239,6 +1296,7 @@ that there are no changes to the following directories:
 		Remediation:           PersistentVolumeReclaimPolicyRemediation,
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 3.3.4",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestPersistentVolumeReclaimPolicyIdentifier.Tags,
 	},
 	TestContainersImageTag: {
 		Identifier:            TestContainersImageTag,
@@ -1247,6 +1305,7 @@ that there are no changes to the following directories:
 		Remediation:           ContainersImageTag,
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 4.6.12",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestContainersImageTag.Tags,
 	},
 	TestNamespaceResourceQuotaIdentifier: {
 		Identifier:            TestNamespaceResourceQuotaIdentifier,
@@ -1255,6 +1314,7 @@ that there are no changes to the following directories:
 		Remediation:           NamespaceResourceQuotaRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.8", // TODO Change this to v1.4 when available
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestNamespaceResourceQuotaIdentifier.Tags,
 	},
 	TestPodDisruptionBudgetIdentifier: {
 		Identifier:            TestPodDisruptionBudgetIdentifier,
@@ -1263,6 +1323,7 @@ that there are no changes to the following directories:
 		Remediation:           PodDisruptionBudgetRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.20", // TODO Change this to v1.4 when available
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestPodDisruptionBudgetIdentifier.Tags,
 	},
 	TestPodTolerationBypassIdentifier: {
 		Identifier:            TestPodTolerationBypassIdentifier,
@@ -1271,6 +1332,7 @@ that there are no changes to the following directories:
 		Remediation:           PodTolerationBypassRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 10.6",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestPodTolerationBypassIdentifier.Tags,
 	},
 	TestNoSSHDaemonsAllowedIdentifier: {
 		Identifier:            TestNoSSHDaemonsAllowedIdentifier,
@@ -1279,6 +1341,7 @@ that there are no changes to the following directories:
 		Remediation:           NoSSHDaemonsAllowedRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.12", // TODO Change this to v1.4 when available
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestNoSSHDaemonsAllowedIdentifier.Tags,
 	},
 	TestCPUIsolationIdentifier: {
 		Identifier: TestCPUIsolationIdentifier,
@@ -1288,6 +1351,7 @@ that there are no changes to the following directories:
 		Remediation:           CPUIsolationRemediation,
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 3.5.5",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestCPUIsolationIdentifier.Tags,
 	},
 	TestContainerPortNameFormat: {
 		Identifier:            TestContainerPortNameFormat,
@@ -1296,5 +1360,6 @@ that there are no changes to the following directories:
 		Remediation:           ContainerPortNameFormatRemediation,
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 4.6.20",
 		ExceptionProcess:      NoDocumentedProcess,
+		Tags:                  TestContainerPortNameFormat.Tags,
 	},
 }
