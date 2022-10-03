@@ -282,6 +282,7 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration)
 			// can scale the deployment
 			if !scaling.TestScaleHpaDeployment(env.Deployments[i], hpa, timeout) {
 				failedDeployments = append(failedDeployments, env.Deployments[i].ToString())
+				tnf.ClaimFilePrintf("Deployment has failed the HPA scale test: %s", env.Deployments[i].ToString())
 			}
 			continue
 		}
@@ -289,6 +290,7 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration)
 		// scale it directly
 		if !scaling.TestScaleDeployment(env.Deployments[i].Deployment, timeout) {
 			failedDeployments = append(failedDeployments, env.Deployments[i].ToString())
+			tnf.ClaimFilePrintf("Deployment has failed the non-HPA scale test: %s", env.Deployments[i].ToString())
 		}
 	}
 
