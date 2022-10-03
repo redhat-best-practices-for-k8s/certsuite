@@ -135,6 +135,8 @@ func Unique(slice []string) []string {
 }
 
 // outputTestCases outputs the Markdown representation for test cases from the catalog to stdout.
+//
+//nolint:funlen
 func outputTestCases() {
 	// Building a separate data structure to store the key order for the map
 	keys := make([]claim.Identifier, 0, len(identifiers.Catalog))
@@ -173,6 +175,7 @@ func outputTestCases() {
 			fmt.Fprintf(os.Stdout, "Suggested Remediation|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].Remediation, "\n", " "))
 			fmt.Fprintf(os.Stdout, "Best Practice Reference|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].BestPracticeReference, "\n", " "))
 			fmt.Fprintf(os.Stdout, "Exception Process|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].ExceptionProcess, "\n", " "))
+			fmt.Fprintf(os.Stdout, "Tags|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].Tags, "\n", " "))
 		}
 	}
 	fmt.Println()
