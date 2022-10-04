@@ -185,11 +185,7 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 			ginkgo.Fail(fmt.Sprintf("Debug pod not found on Node: %s", cut.NodeName))
 		}
 		fsDiffTester := cnffsdiff.NewFsDiffTester(clientsholder.GetClientsHolder())
-		fsDiffTester.RunTest(clientsholder.Context{
-			Namespace:     debugPod.Namespace,
-			Podname:       debugPod.Name,
-			Containername: debugPod.Spec.Containers[0].Name,
-		}, cut.UID)
+		fsDiffTester.RunTest(clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name), cut.UID)
 		switch fsDiffTester.GetResults() {
 		case testhelper.SUCCESS:
 			continue
@@ -221,11 +217,7 @@ func testTainted(env *provider.TestEnvironment, testerFuncs nodetainted.TaintedF
 	// Loop through the debug pods that are tied to each node.
 	for _, dp := range env.DebugPods {
 		// Create OCP context to pass around
-		ocpContext := clientsholder.Context{
-			Namespace:     dp.Namespace,
-			Podname:       dp.Name,
-			Containername: dp.Spec.Containers[0].Name,
-		}
+		ocpContext := clientsholder.NewContext(dp.Namespace, dp.Name, dp.Spec.Containers[0].Name)
 
 		// Get the taint information from the node kernel
 		taintInfo, err := testerFuncs.GetKernelTaintInfo(ocpContext)
@@ -320,11 +312,7 @@ func testIsRedHatRelease(env *provider.TestEnvironment) {
 	failedContainers := []string{}
 	for _, cut := range env.Containers {
 		ginkgo.By(fmt.Sprintf("%s is checked for Red Hat version", cut))
-		baseImageTester := isredhat.NewBaseImageTester(clientsholder.GetClientsHolder(), clientsholder.Context{
-			Namespace:     cut.Namespace,
-			Podname:       cut.Podname,
-			Containername: cut.Name,
-		})
+		baseImageTester := isredhat.NewBaseImageTester(clientsholder.GetClientsHolder(), clientsholder.NewContext(cut.Namespace, cut.Podname, cut.Name))
 
 		result, err := baseImageTester.TestContainerIsRedHatRelease()
 		if err != nil {
@@ -351,7 +339,7 @@ func testIsSELinuxEnforcing(env *provider.TestEnvironment) {
 	nodesFailed := 0
 	nodesError := 0
 	for _, debugPod := range env.DebugPods {
-		ctx := clientsholder.Context{Namespace: debugPod.Namespace, Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name}
+		ctx := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
 		outStr, errStr, err := o.ExecCommandContainer(ctx, getenforceCommand)
 		if err != nil || errStr != "" {
 			logrus.Errorf("Failed to execute command %s in debug %s, errStr: %s, err: %s", getenforceCommand, debugPod.String(), errStr, err)

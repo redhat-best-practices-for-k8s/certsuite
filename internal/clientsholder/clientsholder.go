@@ -193,3 +193,29 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	clientsHolder.ready = true
 	return &clientsHolder, nil
 }
+
+type Context struct {
+	namespace     string
+	podName       string
+	containerName string
+}
+
+func NewContext(namespace, podName, containerName string) Context {
+	return Context{
+		namespace:     namespace,
+		podName:       podName,
+		containerName: containerName,
+	}
+}
+
+func (c *Context) GetNamespace() string {
+	return c.namespace
+}
+
+func (c *Context) GetPodName() string {
+	return c.podName
+}
+
+func (c *Context) GetContainerName() string {
+	return c.containerName
+}
