@@ -155,7 +155,7 @@ func testUndeclaredContainerPortsUsage(env *provider.TestEnvironment) {
 		failedPod := false
 		for listeningPort := range listeningPorts {
 			if !declaredPorts[listeningPort] {
-				tnf.ClaimFilePrintf("%s is listening on port %d protocol %s, but that port was not declared in any container spec.", put, portInfo.PortNumber, portInfo.Protocol)
+				tnf.ClaimFilePrintf("%s is listening on port %d protocol %s, but that port was not declared in any container spec.", put, listeningPort.PortNumber, listeningPort.Protocol)
 				failedPod = true
 			}
 		}
