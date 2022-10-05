@@ -1,1956 +1,6 @@
 {
   "data": [
     {
-      "_id": "630e3dce1e0b69b276b81df5",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:b26e8e4586fb89ce91a82f4de871b1a75ebe53ccb745a1a69e2509390b98742e",
-      "bundle_path_digest": "sha256:b26e8e4586fb89ce91a82f4de871b1a75ebe53ccb745a1a69e2509390b98742e",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-30T16:41:50.725000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.6.2-beta.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:11:58.825000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "name": "kubeturbo-operator-ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2-annotation"
-        },
-        {
-          "digest": "sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:5837627733a3ca7b2df5272b2cb9e3ae1751c28b08d956674304c7b2424fb94c",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:5837627733a3ca7b2df5272b2cb9e3ae1751c28b08d956674304c7b2424fb94c",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "8.6.2-beta.1",
-      "version_original": "8.6.2-beta.1"
-    },
-    {
-      "_id": "630f60aac6b54492b46e1474",
-      "alm_examples": [
-        {
-          "api_version": "csi.hpe.com/v1",
-          "kind": "XSPC",
-          "metadata": {
-            "name": "xspc",
-            "namespace": "kube-system"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hpestorage/xspc-csi-operator-bundle@sha256:b54e3b8f7018ac1c40d0891e9be3aa37f7c80a9dce00f94415211a25300ab46c",
-      "bundle_path_digest": "sha256:b54e3b8f7018ac1c40d0891e9be3aa37f7c80a9dce00f94415211a25300ab46c",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-31T13:22:50.240000+00:00",
-      "csv_description": "## About\nHPE XP Storage Plug-in for Containers (XSPC) is a plugin that integrates HPE XP storage into Kubernetes based clusters.\nXSPC provides dynamic persistent volume provisioning capabilities from HPE's block storage arrays.",
-      "csv_display_name": "HPE XP Storage Plug-in for Containers",
-      "csv_metadata_description": "",
-      "csv_name": "xspc-operator.1.10.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:12:09.159000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "xspc-operator",
-      "provided_apis": [
-        {
-          "group": "csi.hpe.com",
-          "kind": "XSPC",
-          "plural": "xspcs",
-          "version": "v1"
-        }
-      ],
-      "provider": "Provider Name",
-      "related_images": [
-        {
-          "digest": "sha256:8e2af23a2cbecf0fedb952649b9b899eb2c7559a45841a357e5d7fbbb35836a5",
-          "image": "registry.connect.redhat.com/hpestorage/xspc-csi-driver-operator@sha256:8e2af23a2cbecf0fedb952649b9b899eb2c7559a45841a357e5d7fbbb35836a5",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.10.0",
-      "version_original": "1.10.0"
-    },
-    {
-      "_id": "630f60b4c71dfa0ec2daf8bc",
-      "alm_examples": [
-        {
-          "api_version": "csi.hpe.com/v1",
-          "kind": "XSPC",
-          "metadata": {
-            "name": "xspc",
-            "namespace": "kube-system"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hpestorage/xspc-csi-operator-bundle@sha256:b54e3b8f7018ac1c40d0891e9be3aa37f7c80a9dce00f94415211a25300ab46c",
-      "bundle_path_digest": "sha256:b54e3b8f7018ac1c40d0891e9be3aa37f7c80a9dce00f94415211a25300ab46c",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-31T13:23:00.334000+00:00",
-      "csv_description": "## About\nHPE XP Storage Plug-in for Containers (XSPC) is a plugin that integrates HPE XP storage into Kubernetes based clusters.\nXSPC provides dynamic persistent volume provisioning capabilities from HPE's block storage arrays.",
-      "csv_display_name": "HPE XP Storage Plug-in for Containers",
-      "csv_metadata_description": "",
-      "csv_name": "xspc-operator.1.10.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:03:58.403000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "xspc-operator",
-      "provided_apis": [
-        {
-          "group": "csi.hpe.com",
-          "kind": "XSPC",
-          "plural": "xspcs",
-          "version": "v1"
-        }
-      ],
-      "provider": "Provider Name",
-      "related_images": [
-        {
-          "digest": "sha256:8e2af23a2cbecf0fedb952649b9b899eb2c7559a45841a357e5d7fbbb35836a5",
-          "image": "registry.connect.redhat.com/hpestorage/xspc-csi-driver-operator@sha256:8e2af23a2cbecf0fedb952649b9b899eb2c7559a45841a357e5d7fbbb35836a5",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.10.0",
-      "version_original": "1.10.0"
-    },
-    {
-      "_id": "630f648f11e1edadf38ff1be",
-      "alm_examples": [
-        {
-          "api_version": "csi.hpe.com/v1",
-          "kind": "XSPC",
-          "metadata": {
-            "name": "xspc",
-            "namespace": "kube-system"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/hpestorage/xspc-csi-operator-bundle@sha256:b54e3b8f7018ac1c40d0891e9be3aa37f7c80a9dce00f94415211a25300ab46c",
-      "bundle_path_digest": "sha256:b54e3b8f7018ac1c40d0891e9be3aa37f7c80a9dce00f94415211a25300ab46c",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-31T13:39:27.542000+00:00",
-      "csv_description": "## About\nHPE XP Storage Plug-in for Containers (XSPC) is a plugin that integrates HPE XP storage into Kubernetes based clusters.\nXSPC provides dynamic persistent volume provisioning capabilities from HPE's block storage arrays.",
-      "csv_display_name": "HPE XP Storage Plug-in for Containers",
-      "csv_metadata_description": "",
-      "csv_name": "xspc-operator.1.10.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:20:18.047000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "xspc-operator",
-      "provided_apis": [
-        {
-          "group": "csi.hpe.com",
-          "kind": "XSPC",
-          "plural": "xspcs",
-          "version": "v1"
-        }
-      ],
-      "provider": "Provider Name",
-      "related_images": [
-        {
-          "digest": "sha256:8e2af23a2cbecf0fedb952649b9b899eb2c7559a45841a357e5d7fbbb35836a5",
-          "image": "registry.connect.redhat.com/hpestorage/xspc-csi-driver-operator@sha256:8e2af23a2cbecf0fedb952649b9b899eb2c7559a45841a357e5d7fbbb35836a5",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.10.0",
-      "version_original": "1.10.0"
-    },
-    {
-      "_id": "630fb7080b9d887c9a3be6a2",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:c6559cc748028d2098791b277d6316570b1985c616a7e3182fc6dde64296aa11",
-      "bundle_path_digest": "sha256:c6559cc748028d2098791b277d6316570b1985c616a7e3182fc6dde64296aa11",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-08-31T19:31:20.472000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.6.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:36:55.288000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
-          "name": "kubeturbo-operator-352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec-annotation"
-        },
-        {
-          "digest": "sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:acbf1a49c061d80c76468137991816401b1c43f4921179013c682d6dfcf814fe",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:acbf1a49c061d80c76468137991816401b1c43f4921179013c682d6dfcf814fe",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "8.6.1",
-      "version_original": "8.6.1"
-    },
-    {
-      "_id": "630fb7090b9d887c9a3be6a4",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:5884d075419f55d2df891c5efaf1613daf29a7998838deb916c5b599af4170c2",
-      "bundle_path_digest": "sha256:5884d075419f55d2df891c5efaf1613daf29a7998838deb916c5b599af4170c2",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-08-31T19:31:21.063000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.5.4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:35:43.390000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
-        },
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:ef6e5f17c31eb5828b29751591778650c397d89b8de1960b215b34cd2e41810a",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:ef6e5f17c31eb5828b29751591778650c397d89b8de1960b215b34cd2e41810a",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "8.5.4",
-      "version_original": "8.5.4"
-    },
-    {
-      "_id": "630fb70924cf667a608ff319",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:b5e9c7c6ef879adb58154bfa52ec7c657e4bd0cdc643031037d9395051abdb79",
-      "bundle_path_digest": "sha256:b5e9c7c6ef879adb58154bfa52ec7c657e4bd0cdc643031037d9395051abdb79",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-08-31T19:31:21.846000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.5.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:43:24.585000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
-        },
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:7f72251c432f107e4102f91abb17469eedcf02f9a7860d7ec7c9bd0ad77746ae",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:7f72251c432f107e4102f91abb17469eedcf02f9a7860d7ec7c9bd0ad77746ae",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "8.5.2",
-      "version_original": "8.5.2"
-    },
-    {
-      "_id": "630fb70a0ea28cf6b4440c84",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:bea7192e07456b6f23901e623137f7bde8c3a2313d80c3c6a8007f04e1fb3687",
-      "bundle_path_digest": "sha256:bea7192e07456b6f23901e623137f7bde8c3a2313d80c3c6a8007f04e1fb3687",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-08-31T19:31:22.388000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.6.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:00:38.130000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:08821c5d0be33de5170acf94ffd7a6cd92b9d2a26922af1f3869b502087f7f62",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:08821c5d0be33de5170acf94ffd7a6cd92b9d2a26922af1f3869b502087f7f62",
-          "name": "kubeturbo-operator-08821c5d0be33de5170acf94ffd7a6cd92b9d2a26922af1f3869b502087f7f62-annotation"
-        },
-        {
-          "digest": "sha256:08821c5d0be33de5170acf94ffd7a6cd92b9d2a26922af1f3869b502087f7f62",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:08821c5d0be33de5170acf94ffd7a6cd92b9d2a26922af1f3869b502087f7f62",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:1af800b95cb2a80edb0359b46ab10d609acb3ebe062e019f9dfc7c4b40ae58c2",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:1af800b95cb2a80edb0359b46ab10d609acb3ebe062e019f9dfc7c4b40ae58c2",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "8.6.0",
-      "version_original": "8.6.0"
-    },
-    {
-      "_id": "630fb70a0b9d887c9a3be6a7",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:e5bf556da7ffdcd3e2e9c6e543d8ef7f1844216774e703dfec53e466e609d854",
-      "bundle_path_digest": "sha256:e5bf556da7ffdcd3e2e9c6e543d8ef7f1844216774e703dfec53e466e609d854",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-08-31T19:31:22.898000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.5.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:12:47.871000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
-        },
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:f78525afc39849d143c7fbe8992b95a26cb0d3443bc6a8fe7fbe49145887c8d7",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:f78525afc39849d143c7fbe8992b95a26cb0d3443bc6a8fe7fbe49145887c8d7",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "8.5.1",
-      "version_original": "8.5.1"
-    },
-    {
-      "_id": "630fb70b8feab48c84dafad2",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:23f06fa446df0253aeacaf9f063d959c91e56f8a210ac493dc47bc238bb84bfe",
-      "bundle_path_digest": "sha256:23f06fa446df0253aeacaf9f063d959c91e56f8a210ac493dc47bc238bb84bfe",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-08-31T19:31:23.599000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.5.5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:23:44.094000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
-        },
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:e08debe4fcac4b377e86ed57c9587057e8f99d37c5bd8acfe94dfa17605d0759",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:e08debe4fcac4b377e86ed57c9587057e8f99d37c5bd8acfe94dfa17605d0759",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "8.5.5",
-      "version_original": "8.5.5"
-    },
-    {
-      "_id": "630fb70c24cf667a608ff31c",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:9c5c820d7d1200e7e66d6edc352ce8582c75d4545ae096e59ce51cc01afef550",
-      "bundle_path_digest": "sha256:9c5c820d7d1200e7e66d6edc352ce8582c75d4545ae096e59ce51cc01afef550",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-08-31T19:31:24.343000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.5.7",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:12:54.128000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
-        },
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:0d92a7ff9b33c188d47974f97199551f743e04b23d98663e95f1d239f1754b08",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:0d92a7ff9b33c188d47974f97199551f743e04b23d98663e95f1d239f1754b08",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "8.5.7",
-      "version_original": "8.5.7"
-    },
-    {
-      "_id": "630fb70c0b9d887c9a3be6ab",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:d01e9da1a9897bb6f12ad4034bea571b53ea08d53d0fd7eebe30298a44ea4f65",
-      "bundle_path_digest": "sha256:d01e9da1a9897bb6f12ad4034bea571b53ea08d53d0fd7eebe30298a44ea4f65",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-08-31T19:31:24.811000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.5.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:07:24.452000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
-        },
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:fc69790f6713bd3f2f4d1cefd9eadac7ebe776cd0f83ae1ec523d80f2c276f59",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:fc69790f6713bd3f2f4d1cefd9eadac7ebe776cd0f83ae1ec523d80f2c276f59",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "8.5.0",
-      "version_original": "8.5.0"
-    },
-    {
-      "_id": "630fb70d0b9d887c9a3be6af",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:c4611b427d4fcc9b7ae59ff170cb2336c162cd3a1672d19f41305aa4fa7aaa6b",
-      "bundle_path_digest": "sha256:c4611b427d4fcc9b7ae59ff170cb2336c162cd3a1672d19f41305aa4fa7aaa6b",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-08-31T19:31:25.699000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.5.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:03:06.019000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
-        },
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:c766014cd4f4ba08c4daec2486866e89428c35f121661d40ab7f9876db639dd4",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:c766014cd4f4ba08c4daec2486866e89428c35f121661d40ab7f9876db639dd4",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "8.5.3",
-      "version_original": "8.5.3"
-    },
-    {
-      "_id": "630fb70e0ea28cf6b4440c89",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:65fd30b6c03b1f3eb44d8efb1407a7e0ba9e861adf3b9196640371482ced1df4",
-      "bundle_path_digest": "sha256:65fd30b6c03b1f3eb44d8efb1407a7e0ba9e861adf3b9196640371482ced1df4",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-08-31T19:31:26.317000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.5.6",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:56:45.450000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
-        },
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:8aa3d62bb82b65ba95daf3170c316485486e7ca8052b5b525566b7a15b6f08e5",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:8aa3d62bb82b65ba95daf3170c316485486e7ca8052b5b525566b7a15b6f08e5",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "8.5.6",
-      "version_original": "8.5.6"
-    },
-    {
-      "_id": "630fb70e06be083b4b6e1449",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:b26e8e4586fb89ce91a82f4de871b1a75ebe53ccb745a1a69e2509390b98742e",
-      "bundle_path_digest": "sha256:b26e8e4586fb89ce91a82f4de871b1a75ebe53ccb745a1a69e2509390b98742e",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-08-31T19:31:26.862000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.6.2-beta.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:52:46.011000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "name": "kubeturbo-operator-ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2-annotation"
-        },
-        {
-          "digest": "sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:5837627733a3ca7b2df5272b2cb9e3ae1751c28b08d956674304c7b2424fb94c",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:5837627733a3ca7b2df5272b2cb9e3ae1751c28b08d956674304c7b2424fb94c",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "8.6.2-beta.1",
-      "version_original": "8.6.2-beta.1"
-    },
-    {
-      "_id": "630fbded8800d672b06e1590",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:b26e8e4586fb89ce91a82f4de871b1a75ebe53ccb745a1a69e2509390b98742e",
-      "bundle_path_digest": "sha256:b26e8e4586fb89ce91a82f4de871b1a75ebe53ccb745a1a69e2509390b98742e",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-31T20:00:45.390000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.6.2-beta.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:32:37.019000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "name": "kubeturbo-operator-ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2-annotation"
-        },
-        {
-          "digest": "sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:5837627733a3ca7b2df5272b2cb9e3ae1751c28b08d956674304c7b2424fb94c",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:5837627733a3ca7b2df5272b2cb9e3ae1751c28b08d956674304c7b2424fb94c",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "8.6.2-beta.1",
-      "version_original": "8.6.2-beta.1"
-    },
-    {
-      "_id": "630fbdf00b9d887c9a3be9b6",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:59c0362ab55e0789db2c9e55164256ccba6fccab8127822eab1a979c93992fc2",
-      "bundle_path_digest": "sha256:59c0362ab55e0789db2c9e55164256ccba6fccab8127822eab1a979c93992fc2",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-31T20:00:48.693000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.6.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-21T20:31:33.759000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "name": "kubeturbo-operator-ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2-annotation"
-        },
-        {
-          "digest": "sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:bc828351c81b6efba7a3f6ebcf33489a09bdba3905e33e1fa9bf2af2e4ad180d",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:bc828351c81b6efba7a3f6ebcf33489a09bdba3905e33e1fa9bf2af2e4ad180d",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "8.6.2",
-      "version_original": "8.6.2"
-    },
-    {
-      "_id": "6310128848201531b96e13ee",
-      "alm_examples": [
-        {
-          "api_version": "appdirector.randoli.ca/v1beta1",
-          "kind": "ClusterWideAppDirectorAgent",
-          "metadata": {
-            "name": "guvnor"
-          },
-          "spec": {
-            "agentCertsSecretName": "guvnor-certs",
-            "agentConfigSecretName": "guvnor-secret",
-            "namespace": "app-director"
-          }
-        },
-        {
-          "api_version": "appdirector.randoli.ca/v1beta1",
-          "kind": "AppDirectorAgent",
-          "metadata": {
-            "name": "guvnor",
-            "namespace": "app-director"
-          },
-          "spec": {
-            "agentCertsSecretName": "guvnor-certs",
-            "agentConfigSecretName": "guvnor-secret",
-            "managedNamespaces": [
-              "dev"
-            ]
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/randoli/app-director-operator@sha256:d469f76f82764a406530fd086447b9228bfb4eb17204c1f3c8e7d6995b4f2261",
-      "bundle_path_digest": "sha256:d469f76f82764a406530fd086447b9228bfb4eb17204c1f3c8e7d6995b4f2261",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "0.8.0",
-      "creation_date": "2022-09-01T02:01:44.778000+00:00",
-      "csv_description": "App Director\u00ae Platform enables developers to Containerize, Deploy, Scale and Manage Applications Across Multiple OpenShift Clusters. The App Director Agent (Guvnor) connects with the App Director\u00ae Platform to receive commands and send back events. The agent can be scoped to one or more namespaces or cluster-wide. More information can be found at https://www.randoli.ca/app-director-overview. Tekton Pipelines are a pre-requisite for this operator to work. If not already installed, the operator will install the correct version on initial start-up.",
-      "csv_display_name": "App Director",
-      "csv_metadata_description": "Containerize, Deploy, Scale and Manage Applications Across Multiple OpenShift Clusters",
-      "csv_name": "app-director-operator.v0.8.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:40:17.703000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "app-director-operator",
-      "provided_apis": [
-        {
-          "group": "appdirector.randoli.ca",
-          "kind": "AppDirectorAgent",
-          "plural": "appdirectoragents",
-          "version": "v1beta1"
-        },
-        {
-          "group": "appdirector.randoli.ca",
-          "kind": "ClusterWideAppDirectorAgent",
-          "plural": "clusterwideappdirectoragents",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "Randoli",
-      "related_images": [
-        {
-          "digest": "sha256:891e7c163d5fe10ceb8d60781a3694c7c134f70bbb4094af0b43352a141a8cfe",
-          "image": "docker.io/randoli/app-director-operator:0.8.0@sha256:891e7c163d5fe10ceb8d60781a3694c7c134f70bbb4094af0b43352a141a8cfe",
-          "name": "app-director-operator:0.8.0-891e7c163d5fe10ceb8d60781a3694c7c134f70bbb4094af0b43352a141a8cfe-annotation"
-        },
-        {
-          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy:v0.5.0@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:891e7c163d5fe10ceb8d60781a3694c7c134f70bbb4094af0b43352a141a8cfe",
-          "image": "docker.io/randoli/app-director-operator:0.8.0@sha256:891e7c163d5fe10ceb8d60781a3694c7c134f70bbb4094af0b43352a141a8cfe",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "0.8.0",
-      "version_original": "0.8.0"
-    },
-    {
-      "_id": "6310136f279a8cd9593be840",
-      "alm_examples": [
-        {
-          "api_version": "appdirector.randoli.ca/v1beta1",
-          "kind": "ClusterWideAppDirectorAgent",
-          "metadata": {
-            "name": "guvnor"
-          },
-          "spec": {
-            "agentCertsSecretName": "guvnor-certs",
-            "agentConfigSecretName": "guvnor-secret",
-            "namespace": "app-director"
-          }
-        },
-        {
-          "api_version": "appdirector.randoli.ca/v1beta1",
-          "kind": "AppDirectorAgent",
-          "metadata": {
-            "name": "guvnor",
-            "namespace": "app-director"
-          },
-          "spec": {
-            "agentCertsSecretName": "guvnor-certs",
-            "agentConfigSecretName": "guvnor-secret",
-            "managedNamespaces": [
-              "dev"
-            ]
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/randoli/app-director-operator@sha256:d469f76f82764a406530fd086447b9228bfb4eb17204c1f3c8e7d6995b4f2261",
-      "bundle_path_digest": "sha256:d469f76f82764a406530fd086447b9228bfb4eb17204c1f3c8e7d6995b4f2261",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "0.8.0",
-      "creation_date": "2022-09-01T02:05:35.313000+00:00",
-      "csv_description": "App Director\u00ae Platform enables developers to Containerize, Deploy, Scale and Manage Applications Across Multiple OpenShift Clusters. The App Director Agent (Guvnor) connects with the App Director\u00ae Platform to receive commands and send back events. The agent can be scoped to one or more namespaces or cluster-wide. More information can be found at https://www.randoli.ca/app-director-overview. Tekton Pipelines are a pre-requisite for this operator to work. If not already installed, the operator will install the correct version on initial start-up.",
-      "csv_display_name": "App Director",
-      "csv_metadata_description": "Containerize, Deploy, Scale and Manage Applications Across Multiple OpenShift Clusters",
-      "csv_name": "app-director-operator.v0.8.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:43:09.644000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "app-director-operator",
-      "provided_apis": [
-        {
-          "group": "appdirector.randoli.ca",
-          "kind": "AppDirectorAgent",
-          "plural": "appdirectoragents",
-          "version": "v1beta1"
-        },
-        {
-          "group": "appdirector.randoli.ca",
-          "kind": "ClusterWideAppDirectorAgent",
-          "plural": "clusterwideappdirectoragents",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "Randoli",
-      "related_images": [
-        {
-          "digest": "sha256:891e7c163d5fe10ceb8d60781a3694c7c134f70bbb4094af0b43352a141a8cfe",
-          "image": "docker.io/randoli/app-director-operator:0.8.0@sha256:891e7c163d5fe10ceb8d60781a3694c7c134f70bbb4094af0b43352a141a8cfe",
-          "name": "app-director-operator:0.8.0-891e7c163d5fe10ceb8d60781a3694c7c134f70bbb4094af0b43352a141a8cfe-annotation"
-        },
-        {
-          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy:v0.5.0@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:891e7c163d5fe10ceb8d60781a3694c7c134f70bbb4094af0b43352a141a8cfe",
-          "image": "docker.io/randoli/app-director-operator:0.8.0@sha256:891e7c163d5fe10ceb8d60781a3694c7c134f70bbb4094af0b43352a141a8cfe",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.8.0",
-      "version_original": "0.8.0"
-    },
-    {
-      "_id": "6310155e985940d2bc3be55d",
-      "alm_examples": [
-        {
-          "api_version": "appdirector.randoli.ca/v1beta1",
-          "kind": "ClusterWideAppDirectorAgent",
-          "metadata": {
-            "name": "guvnor"
-          },
-          "spec": {
-            "agentCertsSecretName": "guvnor-certs",
-            "agentConfigSecretName": "guvnor-secret",
-            "namespace": "app-director"
-          }
-        },
-        {
-          "api_version": "appdirector.randoli.ca/v1beta1",
-          "kind": "AppDirectorAgent",
-          "metadata": {
-            "name": "guvnor",
-            "namespace": "app-director"
-          },
-          "spec": {
-            "agentCertsSecretName": "guvnor-certs",
-            "agentConfigSecretName": "guvnor-secret",
-            "managedNamespaces": [
-              "dev"
-            ]
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/randoli/app-director-operator@sha256:d469f76f82764a406530fd086447b9228bfb4eb17204c1f3c8e7d6995b4f2261",
-      "bundle_path_digest": "sha256:d469f76f82764a406530fd086447b9228bfb4eb17204c1f3c8e7d6995b4f2261",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "0.8.0",
-      "creation_date": "2022-09-01T02:13:50.103000+00:00",
-      "csv_description": "App Director\u00ae Platform enables developers to Containerize, Deploy, Scale and Manage Applications Across Multiple OpenShift Clusters. The App Director Agent (Guvnor) connects with the App Director\u00ae Platform to receive commands and send back events. The agent can be scoped to one or more namespaces or cluster-wide. More information can be found at https://www.randoli.ca/app-director-overview. Tekton Pipelines are a pre-requisite for this operator to work. If not already installed, the operator will install the correct version on initial start-up.",
-      "csv_display_name": "App Director",
-      "csv_metadata_description": "Containerize, Deploy, Scale and Manage Applications Across Multiple OpenShift Clusters",
-      "csv_name": "app-director-operator.v0.8.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:33:13.870000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "app-director-operator",
-      "provided_apis": [
-        {
-          "group": "appdirector.randoli.ca",
-          "kind": "AppDirectorAgent",
-          "plural": "appdirectoragents",
-          "version": "v1beta1"
-        },
-        {
-          "group": "appdirector.randoli.ca",
-          "kind": "ClusterWideAppDirectorAgent",
-          "plural": "clusterwideappdirectoragents",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "Randoli",
-      "related_images": [
-        {
-          "digest": "sha256:891e7c163d5fe10ceb8d60781a3694c7c134f70bbb4094af0b43352a141a8cfe",
-          "image": "docker.io/randoli/app-director-operator:0.8.0@sha256:891e7c163d5fe10ceb8d60781a3694c7c134f70bbb4094af0b43352a141a8cfe",
-          "name": "app-director-operator:0.8.0-891e7c163d5fe10ceb8d60781a3694c7c134f70bbb4094af0b43352a141a8cfe-annotation"
-        },
-        {
-          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy:v0.5.0@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:891e7c163d5fe10ceb8d60781a3694c7c134f70bbb4094af0b43352a141a8cfe",
-          "image": "docker.io/randoli/app-director-operator:0.8.0@sha256:891e7c163d5fe10ceb8d60781a3694c7c134f70bbb4094af0b43352a141a8cfe",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.8.0",
-      "version_original": "0.8.0"
-    },
-    {
       "_id": "63101cf7499018a313daf936",
       "alm_examples": [
         {
@@ -15898,6 +13948,2294 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.12.2",
       "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a23811038925a7e3a74a7",
+      "alm_examples": [
+        {
+          "api_version": "zookeeper.streamnative.io/v1alpha1",
+          "kind": "ZooKeeperCluster",
+          "metadata": {
+            "name": "zookeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/zookeeper-operator-bundle@sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "bundle_path_digest": "sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-09-08T17:16:49.153000+00:00",
+      "csv_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes and automates tasks related to operating a ZooKeeper cluster. It provides a full management life-cycle for ZooKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage ZooKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n",
+      "csv_display_name": "ZooKeeper Operator",
+      "csv_metadata_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes.",
+      "csv_name": "zookeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:12:27.700000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "zookeeper-operator",
+      "provided_apis": [
+        {
+          "group": "zookeeper.streamnative.io",
+          "kind": "ZooKeeperCluster",
+          "plural": "zookeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "zookeeper-operator-ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a2381778c198f6e6862d2",
+      "alm_examples": [
+        {
+          "api_version": "zookeeper.streamnative.io/v1alpha1",
+          "kind": "ZooKeeperCluster",
+          "metadata": {
+            "name": "zookeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/zookeeper-operator-bundle@sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "bundle_path_digest": "sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-09-08T17:16:49.580000+00:00",
+      "csv_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes and automates tasks related to operating a ZooKeeper cluster. It provides a full management life-cycle for ZooKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage ZooKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n",
+      "csv_display_name": "ZooKeeper Operator",
+      "csv_metadata_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes.",
+      "csv_name": "zookeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:12:33.925000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "zookeeper-operator",
+      "provided_apis": [
+        {
+          "group": "zookeeper.streamnative.io",
+          "kind": "ZooKeeperCluster",
+          "plural": "zookeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "zookeeper-operator-ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a238122883e0adad10d11",
+      "alm_examples": [
+        {
+          "api_version": "zookeeper.streamnative.io/v1alpha1",
+          "kind": "ZooKeeperCluster",
+          "metadata": {
+            "name": "zookeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/zookeeper-operator-bundle@sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "bundle_path_digest": "sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-08T17:16:49.967000+00:00",
+      "csv_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes and automates tasks related to operating a ZooKeeper cluster. It provides a full management life-cycle for ZooKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage ZooKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n",
+      "csv_display_name": "ZooKeeper Operator",
+      "csv_metadata_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes.",
+      "csv_name": "zookeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:12:40.403000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "zookeeper-operator",
+      "provided_apis": [
+        {
+          "group": "zookeeper.streamnative.io",
+          "kind": "ZooKeeperCluster",
+          "plural": "zookeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "zookeeper-operator-ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a250377e4229ab498782d",
+      "alm_examples": [
+        {
+          "api_version": "zookeeper.streamnative.io/v1alpha1",
+          "kind": "ZooKeeperCluster",
+          "metadata": {
+            "name": "zookeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/zookeeper-operator-bundle@sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "bundle_path_digest": "sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-09-08T17:23:15.933000+00:00",
+      "csv_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes and automates tasks related to operating a ZooKeeper cluster. It provides a full management life-cycle for ZooKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage ZooKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n",
+      "csv_display_name": "ZooKeeper Operator",
+      "csv_metadata_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes.",
+      "csv_name": "zookeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:14:22.253000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "zookeeper-operator",
+      "provided_apis": [
+        {
+          "group": "zookeeper.streamnative.io",
+          "kind": "ZooKeeperCluster",
+          "plural": "zookeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "zookeeper-operator-ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a250ccc56faa0a4996608",
+      "alm_examples": [
+        {
+          "api_version": "zookeeper.streamnative.io/v1alpha1",
+          "kind": "ZooKeeperCluster",
+          "metadata": {
+            "name": "zookeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/zookeeper-operator-bundle@sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "bundle_path_digest": "sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-09-08T17:23:24.370000+00:00",
+      "csv_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes and automates tasks related to operating a ZooKeeper cluster. It provides a full management life-cycle for ZooKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage ZooKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n",
+      "csv_display_name": "ZooKeeper Operator",
+      "csv_metadata_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes.",
+      "csv_name": "zookeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:06:55.070000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "zookeeper-operator",
+      "provided_apis": [
+        {
+          "group": "zookeeper.streamnative.io",
+          "kind": "ZooKeeperCluster",
+          "plural": "zookeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "zookeeper-operator-ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a2510cc56faa0a499660b",
+      "alm_examples": [
+        {
+          "api_version": "zookeeper.streamnative.io/v1alpha1",
+          "kind": "ZooKeeperCluster",
+          "metadata": {
+            "name": "zookeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/zookeeper-operator-bundle@sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "bundle_path_digest": "sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-08T17:23:28.087000+00:00",
+      "csv_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes and automates tasks related to operating a ZooKeeper cluster. It provides a full management life-cycle for ZooKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage ZooKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n",
+      "csv_display_name": "ZooKeeper Operator",
+      "csv_metadata_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes.",
+      "csv_name": "zookeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:35:22.034000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "zookeeper-operator",
+      "provided_apis": [
+        {
+          "group": "zookeeper.streamnative.io",
+          "kind": "ZooKeeperCluster",
+          "plural": "zookeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "zookeeper-operator-ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a2617cc56faa0a4996673",
+      "alm_examples": [
+        {
+          "api_version": "zookeeper.streamnative.io/v1alpha1",
+          "kind": "ZooKeeperCluster",
+          "metadata": {
+            "name": "zookeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/zookeeper-operator-bundle@sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "bundle_path_digest": "sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-09-08T17:27:51.852000+00:00",
+      "csv_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes and automates tasks related to operating a ZooKeeper cluster. It provides a full management life-cycle for ZooKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage ZooKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n",
+      "csv_display_name": "ZooKeeper Operator",
+      "csv_metadata_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes.",
+      "csv_name": "zookeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:43:59.387000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "zookeeper-operator",
+      "provided_apis": [
+        {
+          "group": "zookeeper.streamnative.io",
+          "kind": "ZooKeeperCluster",
+          "plural": "zookeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "zookeeper-operator-ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a26193c54e817ac978f86",
+      "alm_examples": [
+        {
+          "api_version": "zookeeper.streamnative.io/v1alpha1",
+          "kind": "ZooKeeperCluster",
+          "metadata": {
+            "name": "zookeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/zookeeper-operator-bundle@sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "bundle_path_digest": "sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-08T17:27:53.572000+00:00",
+      "csv_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes and automates tasks related to operating a ZooKeeper cluster. It provides a full management life-cycle for ZooKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage ZooKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n",
+      "csv_display_name": "ZooKeeper Operator",
+      "csv_metadata_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes.",
+      "csv_name": "zookeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:40:47.291000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "zookeeper-operator",
+      "provided_apis": [
+        {
+          "group": "zookeeper.streamnative.io",
+          "kind": "ZooKeeperCluster",
+          "plural": "zookeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "zookeeper-operator-ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a261a541dec4e752b1e05",
+      "alm_examples": [
+        {
+          "api_version": "zookeeper.streamnative.io/v1alpha1",
+          "kind": "ZooKeeperCluster",
+          "metadata": {
+            "name": "zookeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/zookeeper-operator-bundle@sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "bundle_path_digest": "sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-09-08T17:27:54.140000+00:00",
+      "csv_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes and automates tasks related to operating a ZooKeeper cluster. It provides a full management life-cycle for ZooKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage ZooKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n",
+      "csv_display_name": "ZooKeeper Operator",
+      "csv_metadata_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes.",
+      "csv_name": "zookeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:54:57.606000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "zookeeper-operator",
+      "provided_apis": [
+        {
+          "group": "zookeeper.streamnative.io",
+          "kind": "ZooKeeperCluster",
+          "plural": "zookeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "zookeeper-operator-ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a27cd77e4229ab4987956",
+      "alm_examples": [
+        {
+          "api_version": "zookeeper.streamnative.io/v1alpha1",
+          "kind": "ZooKeeperCluster",
+          "metadata": {
+            "name": "zookeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/zookeeper-operator-bundle@sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "bundle_path_digest": "sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-09-08T17:35:09.165000+00:00",
+      "csv_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes and automates tasks related to operating a ZooKeeper cluster. It provides a full management life-cycle for ZooKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage ZooKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n",
+      "csv_display_name": "ZooKeeper Operator",
+      "csv_metadata_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes.",
+      "csv_name": "zookeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:56:53.041000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "zookeeper-operator",
+      "provided_apis": [
+        {
+          "group": "zookeeper.streamnative.io",
+          "kind": "ZooKeeperCluster",
+          "plural": "zookeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "zookeeper-operator-ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a27cdcc56faa0a4996733",
+      "alm_examples": [
+        {
+          "api_version": "zookeeper.streamnative.io/v1alpha1",
+          "kind": "ZooKeeperCluster",
+          "metadata": {
+            "name": "zookeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/zookeeper-operator-bundle@sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "bundle_path_digest": "sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-08T17:35:09.754000+00:00",
+      "csv_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes and automates tasks related to operating a ZooKeeper cluster. It provides a full management life-cycle for ZooKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage ZooKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n",
+      "csv_display_name": "ZooKeeper Operator",
+      "csv_metadata_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes.",
+      "csv_name": "zookeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:41:33.715000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "zookeeper-operator",
+      "provided_apis": [
+        {
+          "group": "zookeeper.streamnative.io",
+          "kind": "ZooKeeperCluster",
+          "plural": "zookeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "zookeeper-operator-ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a27ceb75cf9b446d10c5c",
+      "alm_examples": [
+        {
+          "api_version": "zookeeper.streamnative.io/v1alpha1",
+          "kind": "ZooKeeperCluster",
+          "metadata": {
+            "name": "zookeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/zookeeper-operator-bundle@sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "bundle_path_digest": "sha256:3df1296c086435b79b12630787873333654ec83b914d7b0fa90f84dd4660a035",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-09-08T17:35:10.251000+00:00",
+      "csv_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes and automates tasks related to operating a ZooKeeper cluster. It provides a full management life-cycle for ZooKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage ZooKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool.\n",
+      "csv_display_name": "ZooKeeper Operator",
+      "csv_metadata_description": "The ZooKeeper Operator manages ZooKeeper clusters deployed to Kubernetes.",
+      "csv_name": "zookeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:05:11.684000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "zookeeper-operator",
+      "provided_apis": [
+        {
+          "group": "zookeeper.streamnative.io",
+          "kind": "ZooKeeperCluster",
+          "plural": "zookeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "zookeeper-operator-ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "image": "quay.io/streamnativeio/zookeeper-operator@sha256:ea7b0e36452ba80e7020af4c2b86f95bc26d28821c73e3e845eba4c0cf2cabc2",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a328bc86406c6383a79f4",
+      "alm_examples": [
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "backup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Cluster",
+          "metadata": {
+            "name": "cluster-sample"
+          },
+          "spec": {
+            "instances": 3,
+            "logLevel": "info",
+            "primaryUpdateStrategy": "unsupervised",
+            "storage": {
+              "size": "1Gi"
+            },
+            "walStorage": {
+              "size": "1Gi"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Pooler",
+          "metadata": {
+            "name": "pooler-sample-rw"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "instances": 1,
+            "pgbouncer": {
+              "poolMode": "session"
+            },
+            "type": "rw"
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "ScheduledBackup",
+          "metadata": {
+            "name": "scheduledbackup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "schedule": "0 0 0 * * *"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "ppc64le",
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/enterprisedb/cloud-native-postgresql@sha256:eba0402d712148e5a428834e3048b0a33a8675387a264155a1f47970c7c76a79",
+      "bundle_path_digest": "sha256:eba0402d712148e5a428834e3048b0a33a8675387a264155a1f47970c7c76a79",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "fast",
+      "creation_date": "2022-09-08T18:20:59.102000+00:00",
+      "csv_description": "EDB Postgres for Kubernetes is an operator designed, developed, and supported by EDB that covers the full \nlifecycle of a highly available Postgres database clusters with a primary/standby architecture, using native\nstreaming replication. It is based on the open source CloudNativePG operator, and provides additional value\nsuch as compatibility with Oracle using EDB Postgres Advanced Server and additional supported platforms such\nas IBM Power and OpenShift.\n\nKey features available include:\n\n* Kubernetes API integration for high availability\n* Self-healing through failover and automated recreation of replicas\n* Capacity management with scale up/down capabilities\n* Planned switchovers for scheduled maintenance\n* Read-only and read-write Kubernetes services definitions\n* Rolling updates for Postgres minor versions and operator upgrades\n* Continuous backup and point-in-time recovery\n* Connection Pooling with PgBouncer\n* Integrated metrics exporter out of the box\n* PostgreSQL replication across multiple Kubernetes clusters\n* Red Hat certified operator for OpenShift\n\nThe operator has been renamed from Cloud Native PostgreSQL. Existing users of Cloud Native PostgreSQL will not\nexperience any change, as the underlying components and resources have not changed.\n",
+      "csv_display_name": "EDB Postgres for Kubernetes",
+      "csv_metadata_description": "Operator to manage Postgres high availability clusters with a primary/standby architecture.",
+      "csv_name": "cloud-native-postgresql.v1.17.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:43:14.499000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "cloud-native-postgresql",
+      "provided_apis": [
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Cluster",
+          "plural": "clusters",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Pooler",
+          "plural": "poolers",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "ScheduledBackup",
+          "plural": "scheduledbackups",
+          "version": "v1"
+        }
+      ],
+      "provider": "EnterpriseDB Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "name": "cloud-native-postgresql-625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd-annotation"
+        },
+        {
+          "digest": "sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=1.15.3 < 1.17.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.17.0",
+      "version_original": "1.17.0"
+    },
+    {
+      "_id": "631a328bcc56faa0a4996c5d",
+      "alm_examples": [
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "backup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Cluster",
+          "metadata": {
+            "name": "cluster-sample"
+          },
+          "spec": {
+            "instances": 3,
+            "logLevel": "info",
+            "primaryUpdateStrategy": "unsupervised",
+            "storage": {
+              "size": "1Gi"
+            },
+            "walStorage": {
+              "size": "1Gi"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Pooler",
+          "metadata": {
+            "name": "pooler-sample-rw"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "instances": 1,
+            "pgbouncer": {
+              "poolMode": "session"
+            },
+            "type": "rw"
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "ScheduledBackup",
+          "metadata": {
+            "name": "scheduledbackup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "schedule": "0 0 0 * * *"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "ppc64le",
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/enterprisedb/cloud-native-postgresql@sha256:eba0402d712148e5a428834e3048b0a33a8675387a264155a1f47970c7c76a79",
+      "bundle_path_digest": "sha256:eba0402d712148e5a428834e3048b0a33a8675387a264155a1f47970c7c76a79",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "fast",
+      "creation_date": "2022-09-08T18:20:59.697000+00:00",
+      "csv_description": "EDB Postgres for Kubernetes is an operator designed, developed, and supported by EDB that covers the full \nlifecycle of a highly available Postgres database clusters with a primary/standby architecture, using native\nstreaming replication. It is based on the open source CloudNativePG operator, and provides additional value\nsuch as compatibility with Oracle using EDB Postgres Advanced Server and additional supported platforms such\nas IBM Power and OpenShift.\n\nKey features available include:\n\n* Kubernetes API integration for high availability\n* Self-healing through failover and automated recreation of replicas\n* Capacity management with scale up/down capabilities\n* Planned switchovers for scheduled maintenance\n* Read-only and read-write Kubernetes services definitions\n* Rolling updates for Postgres minor versions and operator upgrades\n* Continuous backup and point-in-time recovery\n* Connection Pooling with PgBouncer\n* Integrated metrics exporter out of the box\n* PostgreSQL replication across multiple Kubernetes clusters\n* Red Hat certified operator for OpenShift\n\nThe operator has been renamed from Cloud Native PostgreSQL. Existing users of Cloud Native PostgreSQL will not\nexperience any change, as the underlying components and resources have not changed.\n",
+      "csv_display_name": "EDB Postgres for Kubernetes",
+      "csv_metadata_description": "Operator to manage Postgres high availability clusters with a primary/standby architecture.",
+      "csv_name": "cloud-native-postgresql.v1.17.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:03:24.796000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "cloud-native-postgresql",
+      "provided_apis": [
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Backup",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Cluster",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Pooler",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "ScheduledBackup",
+          "version": "v1"
+        }
+      ],
+      "provider": "EnterpriseDB Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "name": "cloud-native-postgresql-625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd-annotation"
+        },
+        {
+          "digest": "sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=1.15.3 < 1.17.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "1.17.0",
+      "version_original": "1.17.0"
+    },
+    {
+      "_id": "631a328fb75cf9b446d11154",
+      "alm_examples": [
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "backup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Cluster",
+          "metadata": {
+            "name": "cluster-sample"
+          },
+          "spec": {
+            "instances": 3,
+            "logLevel": "info",
+            "primaryUpdateStrategy": "unsupervised",
+            "storage": {
+              "size": "1Gi"
+            },
+            "walStorage": {
+              "size": "1Gi"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Pooler",
+          "metadata": {
+            "name": "pooler-sample-rw"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "instances": 1,
+            "pgbouncer": {
+              "poolMode": "session"
+            },
+            "type": "rw"
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "ScheduledBackup",
+          "metadata": {
+            "name": "scheduledbackup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "schedule": "0 0 0 * * *"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "ppc64le",
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/enterprisedb/cloud-native-postgresql@sha256:eba0402d712148e5a428834e3048b0a33a8675387a264155a1f47970c7c76a79",
+      "bundle_path_digest": "sha256:eba0402d712148e5a428834e3048b0a33a8675387a264155a1f47970c7c76a79",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "stable-v1.17",
+      "creation_date": "2022-09-08T18:21:03.577000+00:00",
+      "csv_description": "EDB Postgres for Kubernetes is an operator designed, developed, and supported by EDB that covers the full \nlifecycle of a highly available Postgres database clusters with a primary/standby architecture, using native\nstreaming replication. It is based on the open source CloudNativePG operator, and provides additional value\nsuch as compatibility with Oracle using EDB Postgres Advanced Server and additional supported platforms such\nas IBM Power and OpenShift.\n\nKey features available include:\n\n* Kubernetes API integration for high availability\n* Self-healing through failover and automated recreation of replicas\n* Capacity management with scale up/down capabilities\n* Planned switchovers for scheduled maintenance\n* Read-only and read-write Kubernetes services definitions\n* Rolling updates for Postgres minor versions and operator upgrades\n* Continuous backup and point-in-time recovery\n* Connection Pooling with PgBouncer\n* Integrated metrics exporter out of the box\n* PostgreSQL replication across multiple Kubernetes clusters\n* Red Hat certified operator for OpenShift\n\nThe operator has been renamed from Cloud Native PostgreSQL. Existing users of Cloud Native PostgreSQL will not\nexperience any change, as the underlying components and resources have not changed.\n",
+      "csv_display_name": "EDB Postgres for Kubernetes",
+      "csv_metadata_description": "Operator to manage Postgres high availability clusters with a primary/standby architecture.",
+      "csv_name": "cloud-native-postgresql.v1.17.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:43:19.349000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "cloud-native-postgresql",
+      "provided_apis": [
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Cluster",
+          "plural": "clusters",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Pooler",
+          "plural": "poolers",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "ScheduledBackup",
+          "plural": "scheduledbackups",
+          "version": "v1"
+        }
+      ],
+      "provider": "EnterpriseDB Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "name": "cloud-native-postgresql-625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd-annotation"
+        },
+        {
+          "digest": "sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=1.15.3 < 1.17.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.17.0",
+      "version_original": "1.17.0"
+    },
+    {
+      "_id": "631a328fabc40596b8979186",
+      "alm_examples": [
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "backup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Cluster",
+          "metadata": {
+            "name": "cluster-sample"
+          },
+          "spec": {
+            "instances": 3,
+            "logLevel": "info",
+            "primaryUpdateStrategy": "unsupervised",
+            "storage": {
+              "size": "1Gi"
+            },
+            "walStorage": {
+              "size": "1Gi"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Pooler",
+          "metadata": {
+            "name": "pooler-sample-rw"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "instances": 1,
+            "pgbouncer": {
+              "poolMode": "session"
+            },
+            "type": "rw"
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "ScheduledBackup",
+          "metadata": {
+            "name": "scheduledbackup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "schedule": "0 0 0 * * *"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "ppc64le",
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/enterprisedb/cloud-native-postgresql@sha256:eba0402d712148e5a428834e3048b0a33a8675387a264155a1f47970c7c76a79",
+      "bundle_path_digest": "sha256:eba0402d712148e5a428834e3048b0a33a8675387a264155a1f47970c7c76a79",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "stable-v1.17",
+      "creation_date": "2022-09-08T18:21:03.665000+00:00",
+      "csv_description": "EDB Postgres for Kubernetes is an operator designed, developed, and supported by EDB that covers the full \nlifecycle of a highly available Postgres database clusters with a primary/standby architecture, using native\nstreaming replication. It is based on the open source CloudNativePG operator, and provides additional value\nsuch as compatibility with Oracle using EDB Postgres Advanced Server and additional supported platforms such\nas IBM Power and OpenShift.\n\nKey features available include:\n\n* Kubernetes API integration for high availability\n* Self-healing through failover and automated recreation of replicas\n* Capacity management with scale up/down capabilities\n* Planned switchovers for scheduled maintenance\n* Read-only and read-write Kubernetes services definitions\n* Rolling updates for Postgres minor versions and operator upgrades\n* Continuous backup and point-in-time recovery\n* Connection Pooling with PgBouncer\n* Integrated metrics exporter out of the box\n* PostgreSQL replication across multiple Kubernetes clusters\n* Red Hat certified operator for OpenShift\n\nThe operator has been renamed from Cloud Native PostgreSQL. Existing users of Cloud Native PostgreSQL will not\nexperience any change, as the underlying components and resources have not changed.\n",
+      "csv_display_name": "EDB Postgres for Kubernetes",
+      "csv_metadata_description": "Operator to manage Postgres high availability clusters with a primary/standby architecture.",
+      "csv_name": "cloud-native-postgresql.v1.17.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:03:49.349000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "cloud-native-postgresql",
+      "provided_apis": [
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Backup",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Cluster",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Pooler",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "ScheduledBackup",
+          "version": "v1"
+        }
+      ],
+      "provider": "EnterpriseDB Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "name": "cloud-native-postgresql-625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd-annotation"
+        },
+        {
+          "digest": "sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=1.15.3 < 1.17.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "1.17.0",
+      "version_original": "1.17.0"
+    },
+    {
+      "_id": "631a35338c030dcb362b2421",
+      "alm_examples": [
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "backup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Cluster",
+          "metadata": {
+            "name": "cluster-sample"
+          },
+          "spec": {
+            "instances": 3,
+            "logLevel": "info",
+            "primaryUpdateStrategy": "unsupervised",
+            "storage": {
+              "size": "1Gi"
+            },
+            "walStorage": {
+              "size": "1Gi"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Pooler",
+          "metadata": {
+            "name": "pooler-sample-rw"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "instances": 1,
+            "pgbouncer": {
+              "poolMode": "session"
+            },
+            "type": "rw"
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "ScheduledBackup",
+          "metadata": {
+            "name": "scheduledbackup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "schedule": "0 0 0 * * *"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "ppc64le",
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/enterprisedb/cloud-native-postgresql@sha256:eba0402d712148e5a428834e3048b0a33a8675387a264155a1f47970c7c76a79",
+      "bundle_path_digest": "sha256:eba0402d712148e5a428834e3048b0a33a8675387a264155a1f47970c7c76a79",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "fast",
+      "creation_date": "2022-09-08T18:32:19.305000+00:00",
+      "csv_description": "EDB Postgres for Kubernetes is an operator designed, developed, and supported by EDB that covers the full \nlifecycle of a highly available Postgres database clusters with a primary/standby architecture, using native\nstreaming replication. It is based on the open source CloudNativePG operator, and provides additional value\nsuch as compatibility with Oracle using EDB Postgres Advanced Server and additional supported platforms such\nas IBM Power and OpenShift.\n\nKey features available include:\n\n* Kubernetes API integration for high availability\n* Self-healing through failover and automated recreation of replicas\n* Capacity management with scale up/down capabilities\n* Planned switchovers for scheduled maintenance\n* Read-only and read-write Kubernetes services definitions\n* Rolling updates for Postgres minor versions and operator upgrades\n* Continuous backup and point-in-time recovery\n* Connection Pooling with PgBouncer\n* Integrated metrics exporter out of the box\n* PostgreSQL replication across multiple Kubernetes clusters\n* Red Hat certified operator for OpenShift\n\nThe operator has been renamed from Cloud Native PostgreSQL. Existing users of Cloud Native PostgreSQL will not\nexperience any change, as the underlying components and resources have not changed.\n",
+      "csv_display_name": "EDB Postgres for Kubernetes",
+      "csv_metadata_description": "Operator to manage Postgres high availability clusters with a primary/standby architecture.",
+      "csv_name": "cloud-native-postgresql.v1.17.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:46:18.641000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "cloud-native-postgresql",
+      "provided_apis": [
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Cluster",
+          "plural": "clusters",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Pooler",
+          "plural": "poolers",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "ScheduledBackup",
+          "plural": "scheduledbackups",
+          "version": "v1"
+        }
+      ],
+      "provider": "EnterpriseDB Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "name": "cloud-native-postgresql-625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd-annotation"
+        },
+        {
+          "digest": "sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=1.15.3 < 1.17.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.17.0",
+      "version_original": "1.17.0"
+    },
+    {
+      "_id": "631a35342b57faf5f66fa286",
+      "alm_examples": [
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "backup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Cluster",
+          "metadata": {
+            "name": "cluster-sample"
+          },
+          "spec": {
+            "instances": 3,
+            "logLevel": "info",
+            "primaryUpdateStrategy": "unsupervised",
+            "storage": {
+              "size": "1Gi"
+            },
+            "walStorage": {
+              "size": "1Gi"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Pooler",
+          "metadata": {
+            "name": "pooler-sample-rw"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "instances": 1,
+            "pgbouncer": {
+              "poolMode": "session"
+            },
+            "type": "rw"
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "ScheduledBackup",
+          "metadata": {
+            "name": "scheduledbackup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "schedule": "0 0 0 * * *"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "ppc64le",
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/enterprisedb/cloud-native-postgresql@sha256:eba0402d712148e5a428834e3048b0a33a8675387a264155a1f47970c7c76a79",
+      "bundle_path_digest": "sha256:eba0402d712148e5a428834e3048b0a33a8675387a264155a1f47970c7c76a79",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "stable-v1.17",
+      "creation_date": "2022-09-08T18:32:20.050000+00:00",
+      "csv_description": "EDB Postgres for Kubernetes is an operator designed, developed, and supported by EDB that covers the full \nlifecycle of a highly available Postgres database clusters with a primary/standby architecture, using native\nstreaming replication. It is based on the open source CloudNativePG operator, and provides additional value\nsuch as compatibility with Oracle using EDB Postgres Advanced Server and additional supported platforms such\nas IBM Power and OpenShift.\n\nKey features available include:\n\n* Kubernetes API integration for high availability\n* Self-healing through failover and automated recreation of replicas\n* Capacity management with scale up/down capabilities\n* Planned switchovers for scheduled maintenance\n* Read-only and read-write Kubernetes services definitions\n* Rolling updates for Postgres minor versions and operator upgrades\n* Continuous backup and point-in-time recovery\n* Connection Pooling with PgBouncer\n* Integrated metrics exporter out of the box\n* PostgreSQL replication across multiple Kubernetes clusters\n* Red Hat certified operator for OpenShift\n\nThe operator has been renamed from Cloud Native PostgreSQL. Existing users of Cloud Native PostgreSQL will not\nexperience any change, as the underlying components and resources have not changed.\n",
+      "csv_display_name": "EDB Postgres for Kubernetes",
+      "csv_metadata_description": "Operator to manage Postgres high availability clusters with a primary/standby architecture.",
+      "csv_name": "cloud-native-postgresql.v1.17.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:46:22.368000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "cloud-native-postgresql",
+      "provided_apis": [
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Cluster",
+          "plural": "clusters",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Pooler",
+          "plural": "poolers",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "ScheduledBackup",
+          "plural": "scheduledbackups",
+          "version": "v1"
+        }
+      ],
+      "provider": "EnterpriseDB Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "name": "cloud-native-postgresql-625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd-annotation"
+        },
+        {
+          "digest": "sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=1.15.3 < 1.17.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.17.0",
+      "version_original": "1.17.0"
+    },
+    {
+      "_id": "631a369277e4229ab4988184",
+      "alm_examples": [
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "backup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Cluster",
+          "metadata": {
+            "name": "cluster-sample"
+          },
+          "spec": {
+            "instances": 3,
+            "logLevel": "info",
+            "primaryUpdateStrategy": "unsupervised",
+            "storage": {
+              "size": "1Gi"
+            },
+            "walStorage": {
+              "size": "1Gi"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Pooler",
+          "metadata": {
+            "name": "pooler-sample-rw"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "instances": 1,
+            "pgbouncer": {
+              "poolMode": "session"
+            },
+            "type": "rw"
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "ScheduledBackup",
+          "metadata": {
+            "name": "scheduledbackup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "schedule": "0 0 0 * * *"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "ppc64le",
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/enterprisedb/cloud-native-postgresql@sha256:eba0402d712148e5a428834e3048b0a33a8675387a264155a1f47970c7c76a79",
+      "bundle_path_digest": "sha256:eba0402d712148e5a428834e3048b0a33a8675387a264155a1f47970c7c76a79",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "fast",
+      "creation_date": "2022-09-08T18:38:09.976000+00:00",
+      "csv_description": "EDB Postgres for Kubernetes is an operator designed, developed, and supported by EDB that covers the full \nlifecycle of a highly available Postgres database clusters with a primary/standby architecture, using native\nstreaming replication. It is based on the open source CloudNativePG operator, and provides additional value\nsuch as compatibility with Oracle using EDB Postgres Advanced Server and additional supported platforms such\nas IBM Power and OpenShift.\n\nKey features available include:\n\n* Kubernetes API integration for high availability\n* Self-healing through failover and automated recreation of replicas\n* Capacity management with scale up/down capabilities\n* Planned switchovers for scheduled maintenance\n* Read-only and read-write Kubernetes services definitions\n* Rolling updates for Postgres minor versions and operator upgrades\n* Continuous backup and point-in-time recovery\n* Connection Pooling with PgBouncer\n* Integrated metrics exporter out of the box\n* PostgreSQL replication across multiple Kubernetes clusters\n* Red Hat certified operator for OpenShift\n\nThe operator has been renamed from Cloud Native PostgreSQL. Existing users of Cloud Native PostgreSQL will not\nexperience any change, as the underlying components and resources have not changed.\n",
+      "csv_display_name": "EDB Postgres for Kubernetes",
+      "csv_metadata_description": "Operator to manage Postgres high availability clusters with a primary/standby architecture.",
+      "csv_name": "cloud-native-postgresql.v1.17.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:34:42.039000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "cloud-native-postgresql",
+      "provided_apis": [
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Cluster",
+          "plural": "clusters",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Pooler",
+          "plural": "poolers",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "ScheduledBackup",
+          "plural": "scheduledbackups",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        }
+      ],
+      "provider": "EnterpriseDB Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "name": "cloud-native-postgresql-625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd-annotation"
+        },
+        {
+          "digest": "sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=1.15.3 < 1.17.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.17.0",
+      "version_original": "1.17.0"
+    },
+    {
+      "_id": "631a369277e4229ab4988186",
+      "alm_examples": [
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "backup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Cluster",
+          "metadata": {
+            "name": "cluster-sample"
+          },
+          "spec": {
+            "instances": 3,
+            "logLevel": "info",
+            "primaryUpdateStrategy": "unsupervised",
+            "storage": {
+              "size": "1Gi"
+            },
+            "walStorage": {
+              "size": "1Gi"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Pooler",
+          "metadata": {
+            "name": "pooler-sample-rw"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "instances": 1,
+            "pgbouncer": {
+              "poolMode": "session"
+            },
+            "type": "rw"
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "ScheduledBackup",
+          "metadata": {
+            "name": "scheduledbackup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "schedule": "0 0 0 * * *"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "ppc64le",
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/enterprisedb/cloud-native-postgresql@sha256:eba0402d712148e5a428834e3048b0a33a8675387a264155a1f47970c7c76a79",
+      "bundle_path_digest": "sha256:eba0402d712148e5a428834e3048b0a33a8675387a264155a1f47970c7c76a79",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "stable-v1.17",
+      "creation_date": "2022-09-08T18:38:10.550000+00:00",
+      "csv_description": "EDB Postgres for Kubernetes is an operator designed, developed, and supported by EDB that covers the full \nlifecycle of a highly available Postgres database clusters with a primary/standby architecture, using native\nstreaming replication. It is based on the open source CloudNativePG operator, and provides additional value\nsuch as compatibility with Oracle using EDB Postgres Advanced Server and additional supported platforms such\nas IBM Power and OpenShift.\n\nKey features available include:\n\n* Kubernetes API integration for high availability\n* Self-healing through failover and automated recreation of replicas\n* Capacity management with scale up/down capabilities\n* Planned switchovers for scheduled maintenance\n* Read-only and read-write Kubernetes services definitions\n* Rolling updates for Postgres minor versions and operator upgrades\n* Continuous backup and point-in-time recovery\n* Connection Pooling with PgBouncer\n* Integrated metrics exporter out of the box\n* PostgreSQL replication across multiple Kubernetes clusters\n* Red Hat certified operator for OpenShift\n\nThe operator has been renamed from Cloud Native PostgreSQL. Existing users of Cloud Native PostgreSQL will not\nexperience any change, as the underlying components and resources have not changed.\n",
+      "csv_display_name": "EDB Postgres for Kubernetes",
+      "csv_metadata_description": "Operator to manage Postgres high availability clusters with a primary/standby architecture.",
+      "csv_name": "cloud-native-postgresql.v1.17.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:50:16.775000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "cloud-native-postgresql",
+      "provided_apis": [
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Cluster",
+          "plural": "clusters",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Pooler",
+          "plural": "poolers",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "ScheduledBackup",
+          "plural": "scheduledbackups",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        }
+      ],
+      "provider": "EnterpriseDB Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "name": "cloud-native-postgresql-625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd-annotation"
+        },
+        {
+          "digest": "sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:625d127b7692639a05a6961817692c6eb1008a5b90b57023845eafd7c9cbc2bd",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=1.15.3 < 1.17.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.17.0",
+      "version_original": "1.17.0"
     }
   ]
 }
