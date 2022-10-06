@@ -86,11 +86,8 @@ func TestGetNbOfProcessesInPidNamespace(t *testing.T) {
 				return tc.execOutStr, tc.execErrStr, tc.execErr
 			},
 		}
-		result, err := getNbOfProcessesInPidNamespace(clientsholder.Context{
-			Namespace:     "testNamespace",
-			Podname:       "testPod",
-			Containername: "containerName",
-		}, tc.testPID, ch)
+
+		result, err := getNbOfProcessesInPidNamespace(clientsholder.NewContext("testNamespace", "testPod", "containerName"), tc.testPID, ch)
 
 		// assertions
 		assert.Equal(t, tc.expectedResult, result)

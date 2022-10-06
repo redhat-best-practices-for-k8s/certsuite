@@ -451,12 +451,7 @@ func TestOneProcessPerContainer(env *provider.TestEnvironment) {
 		if debugPod == nil {
 			ginkgo.Fail(fmt.Sprintf("Debug pod not found on Node: %s", cut.NodeName))
 		}
-		ocpContext := clientsholder.Context{
-			Namespace:     debugPod.Namespace,
-			Podname:       debugPod.Name,
-			Containername: debugPod.Spec.Containers[0].Name,
-		}
-
+		ocpContext := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
 		pid, err := crclient.GetPidFromContainer(cut, ocpContext)
 		if err != nil {
 			tnf.ClaimFilePrintf("Could not get PID for: %s, error: %s", cut, err)
@@ -574,8 +569,7 @@ func TestNoSSHDaemonsAllowed(env *provider.TestEnvironment) {
 	r := regexp.MustCompile(sshDaemonProcessName)
 
 	for _, cut := range env.Containers {
-		ctx := clientsholder.Context{Namespace: cut.Namespace, Podname: cut.Podname, Containername: cut.Name}
-		stdout, stderr, err := o.ExecCommandContainer(ctx, listProcessesCmd)
+		stdout, stderr, err := o.ExecCommandContainer(clientsholder.NewContext(cut.Namespace, cut.Podname, cut.Name), listProcessesCmd)
 		if err != nil || stderr != "" {
 			tnf.ClaimFilePrintf("Could not list processes on: %s, error: %s", cut, err)
 			errorContainers = append(errorContainers, cut.String())

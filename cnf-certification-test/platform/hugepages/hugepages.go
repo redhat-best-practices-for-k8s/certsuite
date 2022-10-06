@@ -80,11 +80,7 @@ func NewTester(node *provider.Node, debugPod *corev1.Pod, commander clientsholde
 	tester := &Tester{
 		node:      node,
 		commander: commander,
-		context: clientsholder.Context{
-			Namespace:     debugPod.Namespace,
-			Podname:       debugPod.Name,
-			Containername: debugPod.Spec.Containers[0].Name,
-		},
+		context:   clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name),
 	}
 
 	logrus.Infof("Getting node %s numa's hugepages values.", node.Data.Name)

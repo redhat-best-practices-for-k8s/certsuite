@@ -23,15 +23,9 @@ import (
 
 	"github.com/sirupsen/logrus"
 	corev1 "k8s.io/api/core/v1"
-	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/tools/remotecommand"
+	"k8s.io/kubectl/pkg/scheme"
 )
-
-type Context struct {
-	Namespace     string
-	Podname       string
-	Containername string
-}
 
 //go:generate moq -out command_moq.go . Command
 type Command interface {
@@ -44,15 +38,15 @@ func (clientsholder *ClientsHolder) ExecCommandContainer(
 	commandStr := []string{"sh", "-c", command}
 	var buffOut bytes.Buffer
 	var buffErr bytes.Buffer
-	logrus.Trace(fmt.Sprintf("execute command on ns=%s, pod=%s container=%s, cmd: %s", ctx.Namespace, ctx.Podname, ctx.Containername, strings.Join(commandStr, " ")))
+	logrus.Trace(fmt.Sprintf("execute command on ns=%s, pod=%s container=%s, cmd: %s", ctx.GetNamespace(), ctx.GetPodName(), ctx.GetContainerName(), strings.Join(commandStr, " ")))
 	req := clientsholder.K8sClient.CoreV1().RESTClient().
 		Post().
-		Namespace(ctx.Namespace).
+		Namespace(ctx.GetNamespace()).
 		Resource("pods").
-		Name(ctx.Podname).
+		Name(ctx.GetPodName()).
 		SubResource("exec").
 		VersionedParams(&corev1.PodExecOptions{
-			Container: ctx.Containername,
+			Container: ctx.GetContainerName(),
 			Command:   commandStr,
 			Stdin:     false,
 			Stdout:    true,

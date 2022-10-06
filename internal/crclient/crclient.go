@@ -65,7 +65,7 @@ func ExecCommandContainerNSEnter(command string,
 		return "", "", err
 	}
 	o := clientsholder.GetClientsHolder()
-	ctx := clientsholder.Context{Namespace: debugPod.Namespace, Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name}
+	ctx := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
 
 	// Get the container PID to build the nsenter command
 	containerPid, err := GetPidFromContainer(aContainer, ctx)
