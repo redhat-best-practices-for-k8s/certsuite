@@ -59,7 +59,7 @@ func GetCniPlugins() (out map[string][]interface{}) {
 	o := clientsholder.GetClientsHolder()
 	out = make(map[string][]interface{})
 	for _, debugPod := range env.DebugPods {
-		ctx := clientsholder.Context{Namespace: debugPod.Namespace, Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name}
+		ctx := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
 		outStr, errStr, err := o.ExecCommandContainer(ctx, cniPluginsCommand)
 		if err != nil || errStr != "" {
 			logrus.Errorf("Failed to execute command %s in debug pod %s", cniPluginsCommand, debugPod.String())
@@ -107,7 +107,7 @@ func GetHwInfoAllNodes() (out map[string]NodeHwInfo) {
 
 // getHWJsonOutput performs a query via debug pod and returns the JSON blob
 func getHWJsonOutput(debugPod *corev1.Pod, o clientsholder.Command, cmd string) (out interface{}, err error) {
-	ctx := clientsholder.Context{Namespace: debugPod.Namespace, Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name}
+	ctx := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
 	outStr, errStr, err := o.ExecCommandContainer(ctx, cmd)
 	if err != nil || errStr != "" {
 		return out, fmt.Errorf("command %s failed with error err: %s , stderr: %s", cmd, err, errStr)
@@ -121,7 +121,7 @@ func getHWJsonOutput(debugPod *corev1.Pod, o clientsholder.Command, cmd string) 
 
 // getHWTextOutput performs a query via debug and returns plaintext lines
 func getHWTextOutput(debugPod *corev1.Pod, o clientsholder.Command, cmd string) (out []string, err error) {
-	ctx := clientsholder.Context{Namespace: debugPod.Namespace, Podname: debugPod.Name, Containername: debugPod.Spec.Containers[0].Name}
+	ctx := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
 	outStr, errStr, err := o.ExecCommandContainer(ctx, cmd)
 	if err != nil || errStr != "" {
 		return out, fmt.Errorf("command %s failed with error err: %s , stderr: %s", lspciCommand, err, errStr)

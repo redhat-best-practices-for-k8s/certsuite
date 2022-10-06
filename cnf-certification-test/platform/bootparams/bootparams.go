@@ -75,9 +75,7 @@ func GetMcKernelArguments(env *provider.TestEnvironment, nodeName string) (aMap 
 
 func getGrubKernelArgs(env *provider.TestEnvironment, nodeName string) (aMap map[string]string, er error) {
 	o := clientsholder.GetClientsHolder()
-	ctx := clientsholder.Context{Namespace: env.DebugPods[nodeName].Namespace,
-		Podname:       env.DebugPods[nodeName].Name,
-		Containername: env.DebugPods[nodeName].Spec.Containers[0].Name}
+	ctx := clientsholder.NewContext(env.DebugPods[nodeName].Namespace, env.DebugPods[nodeName].Name, env.DebugPods[nodeName].Spec.Containers[0].Name)
 	bootConfig, errStr, err := o.ExecCommandContainer(ctx, grubKernelArgsCommand)
 	if err != nil || errStr != "" {
 		return aMap, fmt.Errorf("cannot exucute %s on debug pod %s, err=%s, stderr=%s", grubKernelArgsCommand, env.DebugPods[nodeName], err, errStr)
@@ -98,9 +96,7 @@ func getGrubKernelArgs(env *provider.TestEnvironment, nodeName string) (aMap map
 
 func getCurrentKernelCmdlineArgs(cut *provider.Container) (aMap map[string]string, err error) {
 	o := clientsholder.GetClientsHolder()
-	ctx := clientsholder.Context{Namespace: cut.Namespace,
-		Podname:       cut.Podname,
-		Containername: cut.Name}
+	ctx := clientsholder.NewContext(cut.Namespace, cut.Podname, cut.Name)
 	currnetKernelCmdlineArgs, errStr, err := o.ExecCommandContainer(ctx, kernelArgscommand)
 	if err != nil || errStr != "" {
 		return aMap, fmt.Errorf("cannot execute %s on container %s, err=%s, stderr=%s", grubKernelArgsCommand, cut, err, errStr)
