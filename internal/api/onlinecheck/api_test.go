@@ -23,6 +23,13 @@ import (
 )
 
 func TestIsContainerCertified(t *testing.T) {
+	/*
+		Notes for this unit test:
+		See: https://catalog.redhat.com/api/containers/v1/repositories/registry/registry.connect.redhat.com/repository/rocketchat/rocketchat/tag/0.56.0-1
+		We have found that there may be a mismatch between the docker_image_digest and the parsed.docker_image_digest.
+		If this test fails, double check these values.
+	*/
+
 	client := onlinecheck.NewOnlineValidator()
 	var v bool
 	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "", "")
@@ -30,11 +37,11 @@ func TestIsContainerCertified(t *testing.T) {
 	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "0.56.0-1", "")
 	assert.Equal(t, true, v) // true
 
-	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "0.56.0-1", "sha256:c358eee360a1e7754c2d555ec5fba4e6a42f1ede2bc9dd9e59068dd287113b33")
+	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "0.56.0-1", "sha256:b1d5b80d4c119c4316d9fa38a6a21383f30b07b67d8efc762530283a8d070070")
 	assert.Equal(t, true, v) // true
 
 	// wrong tag, valid digest, should be true
-	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "0.56.0-100", "sha256:c358eee360a1e7754c2d555ec5fba4e6a42f1ede2bc9dd9e59068dd287113b33")
+	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "0.56.0-100", "sha256:b1d5b80d4c119c4316d9fa38a6a21383f30b07b67d8efc762530283a8d070070")
 	assert.Equal(t, true, v) // true
 
 	// wrong tag, everything else is valid

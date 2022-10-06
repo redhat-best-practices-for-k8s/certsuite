@@ -70,7 +70,7 @@ func TestIsCertified(t *testing.T) {
 			registry:                    "registry.connect.redhat.com",
 			repository:                  "rocketchat/rocketchat",
 			tag:                         "",
-			digest:                      "sha256:c358eee360a1e7754c2d555ec5fba4e6a42f1ede2bc9dd9e59068dd287113b33",
+			digest:                      "sha256:b1d5b80d4c119c4316d9fa38a6a21383f30b07b67d8efc762530283a8d070070",
 			expectedCertificationStatus: true,
 		},
 		// Not existing image.
