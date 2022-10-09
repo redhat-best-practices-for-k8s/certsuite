@@ -1,469 +1,6 @@
 {
   "data": [
     {
-      "_id": "6262aa3bcde83e2b177c2138",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:b723279ffbfd735a83afd8db3424f8d8b2806906e483a6b64f9fe12f9e9615a5",
-      "bundle_path_digest": "sha256:b723279ffbfd735a83afd8db3424f8d8b2806906e483a6b64f9fe12f9e9615a5",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T13:14:35.482000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "mongodb-enterprise.v1.2.2",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:28:33.414000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "mongodb-enterprise",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.2.2",
-      "version_original": "1.2.2"
-    },
-    {
-      "_id": "6262aa40834f257293b60ffa",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
-      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "6.0.6",
-      "creation_date": "2022-04-22T13:14:40.153000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.6-6",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T02:08:40.748000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.0.6-6",
-      "version_original": "6.0.6-6"
-    },
-    {
-      "_id": "6262aa40173a0d36cf5d69e1",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/rh-marketplace/rh-marketplace-bundle@sha256:2c1cfca71bdbfc3bc58ff026e2e661d2f8a517880b496ab7b781489f5ffe73ab",
-      "bundle_path_digest": "sha256:2c1cfca71bdbfc3bc58ff026e2e661d2f8a517880b496ab7b781489f5ffe73ab",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-04-22T13:14:40.500000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "redhat-marketplace-operator.v0.2.0",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:18:20.610000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "redhat-marketplace-operator",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "0.2.0",
-      "version_original": "0.2.0"
-    },
-    {
-      "_id": "6262aa4184481d5f522999bd",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:14aa8a718a050baa0fef250d3385d18f408c572f38ee53528ce4293f4db30757",
-      "bundle_path_digest": "sha256:14aa8a718a050baa0fef250d3385d18f408c572f38ee53528ce4293f4db30757",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "v1.4",
-      "creation_date": "2022-04-22T13:14:41.582000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "couchdb-operator.v1.4.1",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:29:41.056000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "couchdb-operator-certified",
-      "provided_apis": [
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Backup",
-          "plural": "backups",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Bucket",
-          "plural": "buckets",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "CouchDBCluster",
-          "plural": "couchdbclusters",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "FormationLock",
-          "plural": "formationlocks",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Formation",
-          "plural": "formations",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "Recipe",
-          "plural": "recipes",
-          "version": "v1"
-        },
-        {
-          "group": "couchdb.databases.cloud.ibm.com",
-          "kind": "RecipeTemplate",
-          "plural": "recipetemplates",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": ">=1.0.0 <1.4.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.4.1",
-      "version_original": "1.4.1"
-    },
-    {
-      "_id": "6262aa45834f257293b60ffb",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/portworx/portworx-certified-bundle@sha256:e7981e3a197cf2519d442d180353b489df5f7b180534b064e2f63f5ebf115fe6",
-      "bundle_path_digest": "sha256:e7981e3a197cf2519d442d180353b489df5f7b180534b064e2f63f5ebf115fe6",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-04-22T13:14:45.739000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "portworx-operator.v1.4.0",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:13:10.674000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "portworx-certified",
-      "provided_apis": [
-        {
-          "group": "core.libopenstorage.org",
-          "kind": "StorageNode",
-          "plural": "storagenodes",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "core.libopenstorage.org",
-          "kind": "StorageCluster",
-          "plural": "storageclusters",
-          "version": "v1"
-        },
-        {
-          "group": "core.libopenstorage.org",
-          "kind": "StorageCluster",
-          "plural": "storageclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "core.libopenstorage.org",
-          "kind": "StorageNode",
-          "plural": "storagenodes",
-          "version": "v1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.4.0",
-      "version_original": "1.4.0"
-    },
-    {
-      "_id": "6262aa55cde83e2b177c213a",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:14aa8a718a050baa0fef250d3385d18f408c572f38ee53528ce4293f4db30757",
-      "bundle_path_digest": "sha256:14aa8a718a050baa0fef250d3385d18f408c572f38ee53528ce4293f4db30757",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T13:15:01.112000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "couchdb-operator.v1.4.1",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:19:05.261000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "couchdb-operator-certified",
-      "provided_apis": [],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": ">=1.0.0 <1.4.1",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.4.1",
-      "version_original": "1.4.1"
-    },
-    {
-      "_id": "6262aa5684481d5f522999be",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:9462f3735254b047f4b80b539797b83c31faa0ad923fe4a351dba693e51cadef",
-      "bundle_path_digest": "sha256:9462f3735254b047f4b80b539797b83c31faa0ad923fe4a351dba693e51cadef",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-04-22T13:15:02.964000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "couchbase-operator.v2.0.0",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T02:09:28.907000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "couchbase-enterprise-certified",
-      "provided_apis": [
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseRoleBinding",
-          "plural": "couchbaserolebindings",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseUser",
-          "plural": "couchbaseusers",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseUser",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackup",
-          "plural": "couchbasebackups",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackup",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBucket",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseGroup",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseRoleBinding",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBucket",
-          "plural": "couchbasebuckets",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseCluster",
-          "plural": "couchbaseclusters",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseCluster",
-          "version": "v1"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseGroup",
-          "plural": "couchbasegroups",
-          "version": "v2"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2.0.0",
-      "version_original": "2.0.0"
-    },
-    {
-      "_id": "6262aa60173a0d36cf5d69e5",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/seldonio/seldon-core-operator-bundle@sha256:cb77b47b96bbdc309b17468b8f644bac7206be94125d43a1609f20637937876f",
-      "bundle_path_digest": "sha256:cb77b47b96bbdc309b17468b8f644bac7206be94125d43a1609f20637937876f",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-04-22T13:15:12.995000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "seldon-operator.v1.2.0",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T01:28:13.049000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "seldon-operator-certified",
-      "provided_apis": [
-        {
-          "group": "machinelearning.seldon.io",
-          "kind": "SeldonDeployment",
-          "plural": "seldondeployments",
-          "version": "v1"
-        },
-        {
-          "group": "machinelearning.seldon.io",
-          "kind": "SeldonDeployment",
-          "plural": "seldondeployments",
-          "version": "v1alpha2"
-        },
-        {
-          "group": "machinelearning.seldon.io",
-          "kind": "SeldonDeployment",
-          "plural": "seldondeployments",
-          "version": "v1alpha3"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.2.0",
-      "version_original": "1.2.0"
-    },
-    {
       "_id": "6262aa62cde83e2b177c213c",
       "alm_examples": [],
       "annotations": {
@@ -4942,6 +4479,368 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "6.0.8-1",
       "version_original": "6.0.8-1"
+    },
+    {
+      "_id": "6262ac77173a0d36cf5d6a42",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/hitachi/hspc-operator-bundle@sha256:a118d271feb18cdb6f919e2f4ce56a6abe4787195c3676c1dffe1b2f241328a0",
+      "bundle_path_digest": "sha256:a118d271feb18cdb6f919e2f4ce56a6abe4787195c3676c1dffe1b2f241328a0",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:24:07.665000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "hspc-operator.v1.1.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:54:40.009000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "hspc-operator",
+      "provided_apis": [
+        {
+          "group": "csi.hitachi.com",
+          "kind": "HSPC",
+          "plural": "hspcs",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.1.0",
+      "version_original": "1.1.0"
+    },
+    {
+      "_id": "6262ac7acde83e2b177c219d",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "fast",
+      "creation_date": "2022-04-22T13:24:10.262000+00:00",
+      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
+      "csv_display_name": "Run:AI",
+      "csv_metadata_description": "",
+      "csv_name": "installkit-customer.v2.0.15",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T02:17:11.869000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "installkit-customer",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "name": "operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "2.1.5",
+      "version_original": "2.1.5"
+    },
+    {
+      "_id": "6262ac7b84481d5f52299a14",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:f8bc2060cc0e1ec4bbae7fed0ff0013c4ed936b85413db3011f701bdce2b6367",
+      "bundle_path_digest": "sha256:f8bc2060cc0e1ec4bbae7fed0ff0013c4ed936b85413db3011f701bdce2b6367",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:24:11.929000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "kubeturbo-operator.v7.22.6",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:24:49.579000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "7.22.6",
+      "version_original": "7.22.6"
+    },
+    {
+      "_id": "6262ac7e834f257293b6105f",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:24:14.780000+00:00",
+      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
+      "csv_display_name": "Run:AI",
+      "csv_metadata_description": "",
+      "csv_name": "installkit-customer.v2.0.15",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:04:12.617000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "installkit-customer",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "name": "operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "2.1.5",
+      "version_original": "2.1.5"
+    },
+    {
+      "_id": "6262ac7e84481d5f52299a15",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:3e658321d10716e0163b5538c0f9390d309717618bc782c7d95f3bf58e92c8fd",
+      "bundle_path_digest": "sha256:3e658321d10716e0163b5538c0f9390d309717618bc782c7d95f3bf58e92c8fd",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:24:14.964000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "mongodb-enterprise.v1.6.1",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:07:07.781000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "mongodb-enterprise",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.6.1",
+      "version_original": "1.6.1"
+    },
+    {
+      "_id": "6262ac8384481d5f52299a16",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nastel/navigator-operator-bundle@sha256:8742dab8b0f0fb06c3bbed65d27baddff3df29575f57c50a4e44fc11365929a3",
+      "bundle_path_digest": "sha256:8742dab8b0f0fb06c3bbed65d27baddff3df29575f57c50a4e44fc11365929a3",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T13:24:19.271000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "nastel-navigator-operator.v0.0.14",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:15:57.299000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "nastel-navigator-operator-certified",
+      "provided_apis": [
+        {
+          "group": "navigator.nastel.com",
+          "kind": "NastelNavigator",
+          "plural": "nastelnavigators",
+          "version": "v1alpha6"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.0.14",
+      "version_original": "0.0.14"
+    },
+    {
+      "_id": "6262ac85834f257293b61061",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm-edge/data-explorer-operator-bundle@sha256:2f9440148f9741bc7ebf6d59d02b42ab4e8969ead1eac58251578e2ef1524400",
+      "bundle_path_digest": "sha256:2f9440148f9741bc7ebf6d59d02b42ab4e8969ead1eac58251578e2ef1524400",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T13:24:21.611000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "data-explorer-operator.v0.0.10",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T02:12:32.495000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "data-explorer-operator-certified",
+      "provided_apis": [
+        {
+          "group": "data-explorer.com",
+          "kind": "DashboardWithJupyterHub",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.10",
+      "version_original": "0.0.10"
+    },
+    {
+      "_id": "6262ac89834f257293b61062",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:ec4bd24750f0805bac6826127cf7831a7dc3e3a5a9a598d0bfa05fc0db11f705",
+      "bundle_path_digest": "sha256:ec4bd24750f0805bac6826127cf7831a7dc3e3a5a9a598d0bfa05fc0db11f705",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:24:25.791000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "tigera-operator.v1.5.3",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T01:03:40.113000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.5.3",
+      "version_original": "1.5.3"
     }
   ]
 }

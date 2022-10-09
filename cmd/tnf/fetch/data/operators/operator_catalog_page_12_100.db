@@ -1,158 +1,6 @@
 {
   "data": [
     {
-      "_id": "60c24de3ba99c76846ab4b4b",
-      "alm_examples": [
-        {
-          "api_version": "operator.tigera.io/v1",
-          "kind": "Installation",
-          "metadata": {
-            "name": "default"
-          },
-          "spec": {
-            "variant": "Calico"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:9ee5b5d0929502d609cc8fb5267293432f6b8963ce1187810d84979be2cb5edd",
-      "bundle_path_digest": "sha256:9ee5b5d0929502d609cc8fb5267293432f6b8963ce1187810d84979be2cb5edd",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "release-v1.17",
-      "creation_date": "2021-06-10T17:37:39.680000+00:00",
-      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
-      "csv_display_name": "Tigera Operator",
-      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
-      "csv_name": "tigera-operator.v1.17.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:38:05.124000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "tigera-operator",
-      "provided_apis": [],
-      "provider": "Tigera",
-      "related_images": [
-        {
-          "digest": "sha256:4b247cdd26bf4887dcddef5bea67283d9e19ac601588e7755aff41fce96d7d1d",
-          "image": "quay.io/tigera/operator@sha256:4b247cdd26bf4887dcddef5bea67283d9e19ac601588e7755aff41fce96d7d1d",
-          "name": "operator-4b247cdd26bf4887dcddef5bea67283d9e19ac601588e7755aff41fce96d7d1d-annotation"
-        },
-        {
-          "digest": "sha256:4b247cdd26bf4887dcddef5bea67283d9e19ac601588e7755aff41fce96d7d1d",
-          "image": "quay.io/tigera/operator@sha256:4b247cdd26bf4887dcddef5bea67283d9e19ac601588e7755aff41fce96d7d1d",
-          "name": "tigera-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<1.17.3",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.17.3",
-      "version_original": "1.17.3"
-    },
-    {
-      "_id": "60c24e02adf15566a5a97d5c",
-      "alm_examples": [
-        {
-          "api_version": "operator.tigera.io/v1",
-          "kind": "Installation",
-          "metadata": {
-            "name": "default"
-          },
-          "spec": {
-            "variant": "Calico"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:27b53a6972c5accc17d20770828d782bcf6a76432b2231fd8fd4aef41919c8de",
-      "bundle_path_digest": "sha256:27b53a6972c5accc17d20770828d782bcf6a76432b2231fd8fd4aef41919c8de",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "release-v1.13",
-      "creation_date": "2021-06-10T17:38:10.380000+00:00",
-      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
-      "csv_display_name": "Tigera Operator",
-      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
-      "csv_name": "tigera-operator.v1.13.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:36:36.309000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "tigera-operator",
-      "provided_apis": [],
-      "provider": "Tigera",
-      "related_images": [
-        {
-          "digest": "sha256:6ab4d69c6d88c90392f3366764bc59e3ae57f5da6271ab5e8ed92540707041d8",
-          "image": "quay.io/tigera/operator@sha256:6ab4d69c6d88c90392f3366764bc59e3ae57f5da6271ab5e8ed92540707041d8",
-          "name": "operator-6ab4d69c6d88c90392f3366764bc59e3ae57f5da6271ab5e8ed92540707041d8-annotation"
-        },
-        {
-          "digest": "sha256:6ab4d69c6d88c90392f3366764bc59e3ae57f5da6271ab5e8ed92540707041d8",
-          "image": "quay.io/tigera/operator@sha256:6ab4d69c6d88c90392f3366764bc59e3ae57f5da6271ab5e8ed92540707041d8",
-          "name": "tigera-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<1.13.3",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.13.3",
-      "version_original": "1.13.3"
-    },
-    {
       "_id": "60c24e32ba99c76846ab4b52",
       "alm_examples": [
         {
@@ -17578,6 +17426,198 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "2.2.0-1",
       "version_original": "2.2.0-1"
+    },
+    {
+      "_id": "60e8c9826814ca1184699835",
+      "alm_examples": [
+        {
+          "api_version": "aps.appranix.com/v1",
+          "kind": "BackupStorageLocation",
+          "metadata": {
+            "labels": {
+              "component": "appranix"
+            },
+            "name": "default",
+            "namespace": "appranix"
+          },
+          "spec": {
+            "objectStorage": {
+              "bucket": "aps-bucket-store"
+            },
+            "provider": "gcp"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/appranix/apx-operator-bundle@sha256:126965743834b9d3fa15f354f41fe47618cea51c6f2ab88d3401b62b0362b1b6",
+      "bundle_path_digest": "sha256:126965743834b9d3fa15f354f41fe47618cea51c6f2ab88d3401b62b0362b1b6",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-07-09T22:11:14.157000+00:00",
+      "csv_description": "## About this Operator\n\nAppranix helps you to securely backup and restore, perform a disaster\nrecovery and migrate OpenShift cluster resources and persistent\nvolumes.\n\nThe operator works with Appranix to:\n\n- Install and initiate Appranix controller on your cluster\n\n- Take backups of your cluster and restore it in case of loss.\n\n- Migrate cluster resources to other clusters.\n\n- Replicate your production cluster to development and testing clusters.\n\n## Prerequisites\n\n- A storage bucket in GCP or AWS & credentials to access it\n- Appranix token generated for your cluster obtained from the Appranix console\n- A Configmap and Secret in your cluster for the bucket config and credentials\n\n#### Step 1: Creating a storage bucket\n\nNote: Currently only Google Storage bucket is supported, support for AWS S3 Bucket will be available in a future release.\n\n- You can create a bucket through the GCP console or by running the following command in [Google Cloud Shell](https://cloud.google.com/shell/)\n\n```shell\nAX_APS_BUCKET_NAME=<bucket_name>\ngsutil mb -b on gs://$AX_APS_BUCKET_NAME/\ngcloud iam service-accounts create appranix --display-name \"Appranix service account\"\nAX_SERVICE_ACCOUNT_EMAIL=$(gcloud iam service-accounts list --filter=\"displayName:Appranix service account\" --format 'value(email)')\ngsutil iam ch serviceAccount:$AX_SERVICE_ACCOUNT_EMAIL:objectAdmin gs://${AX_APS_BUCKET_NAME}\ngcloud iam service-accounts keys create ax_service_account.json --iam-account $AX_SERVICE_ACCOUNT_EMAIL\n```\n\nNote: You will require the ```ax_service_account.json``` created here in Step 3.\n\n\n#### Step 2: Obtaining the Appranix token for the cluster\n\n- Log in to your Appranix console and create a cluster connection. Upon connection creation copy the token generated for that cluster.\n\n#### Step 3: Creating the Configmap and Secret in the cluster\n\nA Configmap and Secret which contains the credetianls and bucket configuration has to be created before instaling the operator. It can be done by running the following command against your cluster.\n\nNote: Replace **token** wih the value obtained in Step 2.\n\n\n```shell\nAX_TOKEN=<token>\nAX_SERVICE_ACCOUNT=$(cat ax_service_account.json | base64 -w 0)\ncurl -Ls -H \"Content-Type: application/json\" https://us-central1-appranix-dev-07.cloudfunctions.net/operator-setup  -d '{\"token\": \"'$AX_TOKEN'\", \"secret\": \"'$AX_SERVICE_ACCOUNT'\"}' | oc apply -f -\n```\n\n#### Step 4: Deploying Operator from OperatorHub\n\n- Login to the OpenShift console and switch to ```appranix``` project\n\n- Search for Appranix in OperatorHub and install it.\n\n- Once installed go to the Appranix operator under Installed Operators and click on the BackupStorageLocation tab.\n\n- Now click on **Create BackupStorageLocation** and enter the bucket name under **Objectstorage** and click **Create**.\n\n- You can verify if the insallation is successful by checking the status in the Appranix console.",
+      "csv_display_name": "Appranix APS Operator",
+      "csv_metadata_description": "The Appranix operator enables you to back up and restore your OpenShift cluster resources and persistent volumes.",
+      "csv_name": "appranix-operator.v2.5.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:31:15.819000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "appranix-cps",
+      "provided_apis": [
+        {
+          "group": "aps.appranix.com",
+          "kind": "BackupStorageLocation",
+          "version": "v1"
+        }
+      ],
+      "provider": "Appranix",
+      "related_images": [
+        {
+          "digest": "sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
+          "image": "registry.connect.redhat.com/appranix/apx-operator@sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
+          "name": "apx-operator-b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08-annotation"
+        },
+        {
+          "digest": "sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
+          "image": "registry.connect.redhat.com/appranix/apx-operator@sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:78d3471a6152df1cb066a82f93904110cb80a18f7e576edb3cd3fd180161bab4",
+          "image": "registry.connect.redhat.com/appranix/apx-controller@sha256:78d3471a6152df1cb066a82f93904110cb80a18f7e576edb3cd3fd180161bab4",
+          "name": "controller"
+        },
+        {
+          "digest": "sha256:46ca904bb0c9b3f4628011b610de3dce2ff9abae52294c111e953dc7e6140cd4",
+          "image": "registry.connect.redhat.com/appranix/apx-manager@sha256:46ca904bb0c9b3f4628011b610de3dce2ff9abae52294c111e953dc7e6140cd4",
+          "name": "agent"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "2.5.0",
+      "version_original": "2.5.0"
+    },
+    {
+      "_id": "60e8c9f78ce8053fa514bdd9",
+      "alm_examples": [
+        {
+          "api_version": "aps.appranix.com/v1",
+          "kind": "BackupStorageLocation",
+          "metadata": {
+            "labels": {
+              "component": "appranix"
+            },
+            "name": "default",
+            "namespace": "appranix"
+          },
+          "spec": {
+            "objectStorage": {
+              "bucket": "aps-bucket-store"
+            },
+            "provider": "gcp"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/appranix/apx-operator-bundle@sha256:126965743834b9d3fa15f354f41fe47618cea51c6f2ab88d3401b62b0362b1b6",
+      "bundle_path_digest": "sha256:126965743834b9d3fa15f354f41fe47618cea51c6f2ab88d3401b62b0362b1b6",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-07-09T22:13:11.427000+00:00",
+      "csv_description": "## About this Operator\n\nAppranix helps you to securely backup and restore, perform a disaster\nrecovery and migrate OpenShift cluster resources and persistent\nvolumes.\n\nThe operator works with Appranix to:\n\n- Install and initiate Appranix controller on your cluster\n\n- Take backups of your cluster and restore it in case of loss.\n\n- Migrate cluster resources to other clusters.\n\n- Replicate your production cluster to development and testing clusters.\n\n## Prerequisites\n\n- A storage bucket in GCP or AWS & credentials to access it\n- Appranix token generated for your cluster obtained from the Appranix console\n- A Configmap and Secret in your cluster for the bucket config and credentials\n\n#### Step 1: Creating a storage bucket\n\nNote: Currently only Google Storage bucket is supported, support for AWS S3 Bucket will be available in a future release.\n\n- You can create a bucket through the GCP console or by running the following command in [Google Cloud Shell](https://cloud.google.com/shell/)\n\n```shell\nAX_APS_BUCKET_NAME=<bucket_name>\ngsutil mb -b on gs://$AX_APS_BUCKET_NAME/\ngcloud iam service-accounts create appranix --display-name \"Appranix service account\"\nAX_SERVICE_ACCOUNT_EMAIL=$(gcloud iam service-accounts list --filter=\"displayName:Appranix service account\" --format 'value(email)')\ngsutil iam ch serviceAccount:$AX_SERVICE_ACCOUNT_EMAIL:objectAdmin gs://${AX_APS_BUCKET_NAME}\ngcloud iam service-accounts keys create ax_service_account.json --iam-account $AX_SERVICE_ACCOUNT_EMAIL\n```\n\nNote: You will require the ```ax_service_account.json``` created here in Step 3.\n\n\n#### Step 2: Obtaining the Appranix token for the cluster\n\n- Log in to your Appranix console and create a cluster connection. Upon connection creation copy the token generated for that cluster.\n\n#### Step 3: Creating the Configmap and Secret in the cluster\n\nA Configmap and Secret which contains the credetianls and bucket configuration has to be created before instaling the operator. It can be done by running the following command against your cluster.\n\nNote: Replace **token** wih the value obtained in Step 2.\n\n\n```shell\nAX_TOKEN=<token>\nAX_SERVICE_ACCOUNT=$(cat ax_service_account.json | base64 -w 0)\ncurl -Ls -H \"Content-Type: application/json\" https://us-central1-appranix-dev-07.cloudfunctions.net/operator-setup  -d '{\"token\": \"'$AX_TOKEN'\", \"secret\": \"'$AX_SERVICE_ACCOUNT'\"}' | oc apply -f -\n```\n\n#### Step 4: Deploying Operator from OperatorHub\n\n- Login to the OpenShift console and switch to ```appranix``` project\n\n- Search for Appranix in OperatorHub and install it.\n\n- Once installed go to the Appranix operator under Installed Operators and click on the BackupStorageLocation tab.\n\n- Now click on **Create BackupStorageLocation** and enter the bucket name under **Objectstorage** and click **Create**.\n\n- You can verify if the insallation is successful by checking the status in the Appranix console.",
+      "csv_display_name": "Appranix APS Operator",
+      "csv_metadata_description": "The Appranix operator enables you to back up and restore your OpenShift cluster resources and persistent volumes.",
+      "csv_name": "appranix-operator.v2.5.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:34:53.363000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "appranix-cps",
+      "provided_apis": [],
+      "provider": "Appranix",
+      "related_images": [
+        {
+          "digest": "sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
+          "image": "registry.connect.redhat.com/appranix/apx-operator@sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
+          "name": "apx-operator-b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08-annotation"
+        },
+        {
+          "digest": "sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
+          "image": "registry.connect.redhat.com/appranix/apx-operator@sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:78d3471a6152df1cb066a82f93904110cb80a18f7e576edb3cd3fd180161bab4",
+          "image": "registry.connect.redhat.com/appranix/apx-controller@sha256:78d3471a6152df1cb066a82f93904110cb80a18f7e576edb3cd3fd180161bab4",
+          "name": "controller"
+        },
+        {
+          "digest": "sha256:46ca904bb0c9b3f4628011b610de3dce2ff9abae52294c111e953dc7e6140cd4",
+          "image": "registry.connect.redhat.com/appranix/apx-manager@sha256:46ca904bb0c9b3f4628011b610de3dce2ff9abae52294c111e953dc7e6140cd4",
+          "name": "agent"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "2.5.0",
+      "version_original": "2.5.0"
     }
   ]
 }

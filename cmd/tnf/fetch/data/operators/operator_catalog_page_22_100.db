@@ -1,781 +1,6 @@
 {
   "data": [
     {
-      "_id": "62345fa7314381d2b0756b31",
-      "alm_examples": [
-        {
-          "api_version": "apps.gitlab.com/v1beta2",
-          "kind": "Runner",
-          "metadata": {
-            "name": "example"
-          },
-          "spec": {
-            "gitlabUrl": "https://gitlab.com",
-            "imagePullPolicy": "Always",
-            "tags": "openshift, test",
-            "token": "gitlab-dev-runner-secret"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-runner-operator-bundle@sha256:abe1504fedbf38bc1cb45e5393216bae9cca95066ca84fa730c7e8b129930074",
-      "bundle_path_digest": "sha256:abe1504fedbf38bc1cb45e5393216bae9cca95066ca84fa730c7e8b129930074",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-18T10:32:07.664000+00:00",
-      "csv_description": "GitLab Runner is the lightweight, highly-scalable agent that runs your build jobs and sends the results back to a GitLab instance. GitLab Runner works in conjunction with GitLab CI/CD, the open-source continuous integration service included with GitLab.\n\nThe GitLab Runner operator manages the lifecycle of GitLab Runner in Kubernetes or Openshift clusters. The operator aims to automate the tasks needed to run your CI/CD jobs in your container orchestration platform.\n\n## Usage\n\n To link a GitLab Runner instance to a self-hosted GitLab instance or the hosted [GitLab](https://gitlab.com), you first need to:\n\n 1. create a secret containing the `runner-registration-token` from your GitLab project.\n\n   ```\n  cat > gitlab-runner-secret.yml << EOF\n  apiVersion: v1\n  kind: Secret\n  metadata:\n    name: gitlab-runner-secret\n  type: Opaque\n  stringData:\n    runner-registration-token: REPLACE_ME # your project runner secret\n  EOF\n  ```\n\n  ```\n  oc apply -f gitlab-runner-secret.yml\n  ```\n\n 2. Create the Custom Resource Definition (CRD) file and include the following information. The tags value must be openshift for the job to run.\n\n   ```\n   cat > gitlab-runner.yml << EOF\n   apiVersion: apps.gitlab.com/v1beta2\n   kind: Runner\n   metadata:\n     name: gitlab-runner\n   spec:\n     gitlabUrl: https://gitlab.example.com\n     buildImage: alpine\n     token: gitlab-runner-secret\n     tags: openshift\n   EOF\n   ```\n\n  ```\n  oc apply -f gitlab-runner.yml\n  ```\n\n## Full documentation\n\nVisit [Install GitLab Runner on Red Hat OpenShift](https://docs.gitlab.com/runner/install/openshift.html)\n",
-      "csv_display_name": "GitLab Runner",
-      "csv_metadata_description": "GitLab Runner operator manages lifecycle of GitLab Runner instances",
-      "csv_name": "gitlab-runner-operator.v1.2.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:24:11.164000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "gitlab-runner-operator",
-      "provided_apis": [
-        {
-          "group": "apps.gitlab.com",
-          "kind": "Runner",
-          "version": "v1beta2"
-        }
-      ],
-      "provider": "GitLab, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:f48d93d89905284a35a72ec312ad4313bb1a42deaaab662eb181a65d34a89cd9",
-          "image": "registry.connect.redhat.com/gitlab/gitlab-runner@sha256:f48d93d89905284a35a72ec312ad4313bb1a42deaaab662eb181a65d34a89cd9",
-          "name": "gitlab-runner"
-        },
-        {
-          "digest": "sha256:9148c4c10685871e3bbed037d9c36e85f0603da38e721c5db2a85b9c6defeac9",
-          "image": "registry.connect.redhat.com/gitlab/gitlab-runner-helper@sha256:9148c4c10685871e3bbed037d9c36e85f0603da38e721c5db2a85b9c6defeac9",
-          "name": "gitlab-runner-helper"
-        },
-        {
-          "digest": "sha256:6ac79da50858f82949e1dae4a016cbe86b75de977fe747a958d28dcd5c8e4080",
-          "image": "registry.connect.redhat.com/gitlab/gitlab-runner-operator@sha256:6ac79da50858f82949e1dae4a016cbe86b75de977fe747a958d28dcd5c8e4080",
-          "name": "gitlab-runner-operator"
-        },
-        {
-          "digest": "sha256:dc0f91e256c86c3f7cb930d0e4d48eb68576425bc4bd288fb76decb0577c7e9e",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:dc0f91e256c86c3f7cb930d0e4d48eb68576425bc4bd288fb76decb0577c7e9e",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.2.0",
-      "version_original": "1.2.0"
-    },
-    {
-      "_id": "62345fa95593ce895a7b5355",
-      "alm_examples": [
-        {
-          "api_version": "apps.gitlab.com/v1beta2",
-          "kind": "Runner",
-          "metadata": {
-            "name": "example"
-          },
-          "spec": {
-            "gitlabUrl": "https://gitlab.com",
-            "imagePullPolicy": "Always",
-            "tags": "openshift, test",
-            "token": "gitlab-dev-runner-secret"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-runner-operator-bundle@sha256:a983d27fdb8e3c63bdbf40efe22a2ab62016c3ca75040c2f1a4b429278d72731",
-      "bundle_path_digest": "sha256:a983d27fdb8e3c63bdbf40efe22a2ab62016c3ca75040c2f1a4b429278d72731",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-18T10:32:09.415000+00:00",
-      "csv_description": "GitLab Runner is the lightweight, highly-scalable agent that runs your build jobs and sends the results back to a GitLab instance. GitLab Runner works in conjunction with GitLab CI/CD, the open-source continuous integration service included with GitLab.\n\nThe GitLab Runner operator manages the lifecycle of GitLab Runner in Kubernetes or Openshift clusters. The operator aims to automate the tasks needed to run your CI/CD jobs in your container orchestration platform.\n\n## Usage\n\n To link a GitLab Runner instance to a self-hosted GitLab instance or the hosted [GitLab](https://gitlab.com), you first need to:\n\n 1. create a secret containing the `runner-registration-token` from your GitLab project.\n\n   ```\n  cat > gitlab-runner-secret.yml << EOF\n  apiVersion: v1\n  kind: Secret\n  metadata:\n    name: gitlab-runner-secret\n  type: Opaque\n  stringData:\n    runner-registration-token: REPLACE_ME # your project runner secret\n  EOF\n  ```\n\n  ```\n  oc apply -f gitlab-runner-secret.yml\n  ```\n\n 2. Create the Custom Resource Definition (CRD) file and include the following information. The tags value must be openshift for the job to run.\n\n   ```\n   cat > gitlab-runner.yml << EOF\n   apiVersion: apps.gitlab.com/v1beta2\n   kind: Runner\n   metadata:\n     name: gitlab-runner\n   spec:\n     gitlabUrl: https://gitlab.example.com\n     buildImage: alpine\n     token: gitlab-runner-secret\n     tags: openshift\n   EOF\n   ```\n\n  ```\n  oc apply -f gitlab-runner.yml\n  ```\n\n## Full documentation\n\nVisit [Install GitLab Runner on Red Hat OpenShift](https://docs.gitlab.com/runner/install/openshift.html)\n",
-      "csv_display_name": "GitLab Runner",
-      "csv_metadata_description": "GitLab Runner operator manages lifecycle of GitLab Runner instances",
-      "csv_name": "gitlab-runner-operator.v1.4.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:24:06.498000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "gitlab-runner-operator",
-      "provided_apis": [
-        {
-          "group": "apps.gitlab.com",
-          "kind": "Runner",
-          "version": "v1beta2"
-        }
-      ],
-      "provider": "GitLab, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:4cd860f02a5c22208cebfdae751fdc27069a4c14442a9020024c576c700f0634",
-          "image": "registry.connect.redhat.com/gitlab/gitlab-runner@sha256:4cd860f02a5c22208cebfdae751fdc27069a4c14442a9020024c576c700f0634",
-          "name": "gitlab-runner"
-        },
-        {
-          "digest": "sha256:272c50ca9ef77c92deac0ca302df9e0127d5c54609c35230f96cf1d91de5fe97",
-          "image": "registry.connect.redhat.com/gitlab/gitlab-runner-helper@sha256:272c50ca9ef77c92deac0ca302df9e0127d5c54609c35230f96cf1d91de5fe97",
-          "name": "gitlab-runner-helper"
-        },
-        {
-          "digest": "sha256:c6572cb1c20713f2f582f8b436307e80c23dcac08c1d7bde37833fd266ef9618",
-          "image": "registry.connect.redhat.com/gitlab/gitlab-runner-operator@sha256:c6572cb1c20713f2f582f8b436307e80c23dcac08c1d7bde37833fd266ef9618",
-          "name": "gitlab-runner-operator"
-        },
-        {
-          "digest": "sha256:dc0f91e256c86c3f7cb930d0e4d48eb68576425bc4bd288fb76decb0577c7e9e",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:dc0f91e256c86c3f7cb930d0e4d48eb68576425bc4bd288fb76decb0577c7e9e",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.4.0",
-      "version_original": "1.4.0"
-    },
-    {
-      "_id": "62345fad314381d2b0756b33",
-      "alm_examples": [
-        {
-          "api_version": "xcrypt.zettaset.com/v1alpha1",
-          "kind": "XCrypt",
-          "metadata": {
-            "name": "zts-masterset"
-          },
-          "spec": {
-            "status": {
-              "podNames": "zts-ca",
-              "replicas": "1,"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/zts/xcrypt-operator-1-bundle@sha256:c3913778f986ae4f3a7d94da2a9d0157233dbb676e3c1eecacbdbc02a864685a",
-      "bundle_path_digest": "sha256:c3913778f986ae4f3a7d94da2a9d0157233dbb676e3c1eecacbdbc02a864685a",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-18T10:32:13.847000+00:00",
-      "csv_description": "Zettaset\u2019s RedHat Certified XCrypt Operator allows users to deploy multiple XCrypt components on OpenShift with just a few simple commands. The XCrypt Operator deployment provides software-defined encryption that transparently protects container data throughout your OpenShift environment.\n\n## Core Features\n* **Automated XCrypt provisioning** - Deploying a Zettaset XCrypt has never been easier. Adjust cluster specific configuration and let the Zettaset Operator take care of provisioning XCrypt services and setting up the XCrypt encryption to your exact specification. \n* **CSI Driver deployment**: Zettaset XCrypt Operator automatically deploys Zettaset XCrypt CSI Driver in order to provide automated and transparent data-at-rest  encryption functionality compatible with Openshift and any other container orchestrator. Once the Operator is provisioned, the driver runs fine tuned and ready to work with other XCrypt components.\n* **Multi-node topology**: Encrypt as many nodes and volumes as you need to. XCrypt components can be installed on multiple nodes across the cluster. This is defined by two labels: zts-master and zts-worker. Normally zts-master node is a single node that runs Zettaset XCrypt major services required for the product operation. Multiple nodes can be marked as zts-worker and those are the nodes that can have encrypted volumes.\n* **Seamless Encrypted Volume mount**: Volumes are not only being encrypted, but also are mounted/unmounted to containers with Persistent Volume Claims. This happens as seamlessly as regular volumes provision and mount/unmount.\n* **Robust failover**: A node failure doesn\u2019t affect XCrypt operations on other nodes of the cluster. Encryption on a restarted/recovered node gets back to normal functioning if the node stays healthy and data hasn\u2019t been corrupted during the restart\n\n## About Zettaset XCrypt Kubernetes Encryption for OpenShift\nXCrypt Kubernetes Encryption for OpenShift is a software-only solution that enables encryption of data at rest stored in Red Hat OpenShift container environments without slowing down the DevSecOps process. In addition to providing a transparent and high-performance layer of security that flexibly protects container data across on-premise, in hybrid, and multi-cloud environments, it also helps your organization efficiently transition from DevOps to DevSecOps.  \n\nMore information about Zettaset XCrypt Kubernetes Encryption for OpenShift can be found in the [Deployment and Administration Guide](https://1f2aca073706bb52f501-133f3466c38fdb0417539cdf095d8336.ssl.cf1.rackcdn.com/ZettasetXCryptContainerEncryption.8.5.0.Final.pdf)\n\n## RedHat OpenShift + Zettaset: The next generation of secure enterprise infrastructure for DevSecOps  \nBy combining RedHat\u2019s Container Platform with Zettaset\u2019s certified software-defined encryption, you can create the next generation of secure enterprise infrastructure that DevSecOps requires. Together they create the stable, consistent, and supported base that your organization needs to develop applications faster, simplify updates, drive innovation, and reduce the risk of potential security breaches and data theft.\n### Core Features\n* Software-only for simple and scalable deployments \n* Negligible performance impact\n* Transparent to developers and administrators \n* Works with AWS, Google, and Azure \n* Unique encryption key per container volume \n* Encrypted volumes are only available when in use\n* Direct integration with OpenShift \n* Automated encryption policy management Secure erase of volumes\n* Ability to securely decommission a node\n\n## How does XCrypt Kubernetes Encryption fit into OpenShift? \nXCrypt XCrypt Kubernetes Encryption for OpenShift Encryption makes it incredibly easy to protect container data in your OpenShift environment. \n### Use cases include:\n* Transitioning from DevOps to DevSecOps \n* Ensuring data protection in OpenShift container environments with negligible performance impact \n* Achieving compliance in regulated industries like healthcare and finance\n\n## Other Information\nRole-based access control needs to be configured prior to the Operator installation. Please find details in the [Deployment and Administration Guide](https://1f2aca073706bb52f501-133f3466c38fdb0417539cdf095d8336.ssl.cf1.rackcdn.com/ZettasetXCryptContainerEncryption.8.5.0.Final.pdf)    ",
-      "csv_display_name": "Zettaset XCrypt Operator",
-      "csv_metadata_description": "XCrypt Operator deploys Zettaset XCrypt Container Encryption  - the only software-defined solution that offers transparent high performance data-at-rest encryption of critical data in container environments.",
-      "csv_name": "zts-xcrypt-operator.v0.0.17",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:00:09.453000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "xcrypt-operator",
-      "provided_apis": [
-        {
-          "group": "xcrypt.zettaset.com",
-          "kind": "XCrypt",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Zettaset",
-      "related_images": [
-        {
-          "digest": "sha256:7e6316a6c41dd71c4d9025bd958a475929369284eee1a02d9e870e883acfd9ac",
-          "image": "registry.connect.redhat.com/zts/xcrypt-operator-1@sha256:7e6316a6c41dd71c4d9025bd958a475929369284eee1a02d9e870e883acfd9ac",
-          "name": "xcrypt-operator-1-7e6316a6c41dd71c4d9025bd958a475929369284eee1a02d9e870e883acfd9ac-annotation"
-        },
-        {
-          "digest": "sha256:7e6316a6c41dd71c4d9025bd958a475929369284eee1a02d9e870e883acfd9ac",
-          "image": "registry.connect.redhat.com/zts/xcrypt-operator-1@sha256:7e6316a6c41dd71c4d9025bd958a475929369284eee1a02d9e870e883acfd9ac",
-          "name": "zts-xcrypt-operator"
-        },
-        {
-          "digest": "sha256:9f1015dfb459b69f5dbf449efa0517452095a6cf4f20826ebae278f9f800ffe7",
-          "image": "registry.connect.redhat.com/zts/xcrypt-ca-1@sha256:9f1015dfb459b69f5dbf449efa0517452095a6cf4f20826ebae278f9f800ffe7",
-          "name": "ca"
-        },
-        {
-          "digest": "sha256:9af5d21dd748dfbf4e107f27a5f10fa3c0ba928ade9b989a744b620ce34ec757",
-          "image": "registry.connect.redhat.com/zts/xcrypt-kmip-server-1@sha256:9af5d21dd748dfbf4e107f27a5f10fa3c0ba928ade9b989a744b620ce34ec757",
-          "name": "kmip"
-        },
-        {
-          "digest": "sha256:bc5486892a41e70f5dc4c4e1d82fca8db2149598fb8b5950ba5da1ee2d9d245d",
-          "image": "registry.connect.redhat.com/zts/xcrypt-license-server-1@sha256:bc5486892a41e70f5dc4c4e1d82fca8db2149598fb8b5950ba5da1ee2d9d245d",
-          "name": "ls"
-        },
-        {
-          "digest": "sha256:9faa4b597eb74df412761dffa057b64fb69dbf9fa016414962eb2099a343e734",
-          "image": "registry.connect.redhat.com/zts/xcrypt-host-manager-1@sha256:9faa4b597eb74df412761dffa057b64fb69dbf9fa016414962eb2099a343e734",
-          "name": "hm"
-        },
-        {
-          "digest": "sha256:c15fa9a7cc40891103f426206663dcebe1210c8ee3ab6037cbf64e1f86b9c7e5",
-          "image": "registry.connect.redhat.com/zts/zts-csi-driver-1@sha256:c15fa9a7cc40891103f426206663dcebe1210c8ee3ab6037cbf64e1f86b9c7e5",
-          "name": "csi_driver"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "0.0.17",
-      "version_original": "0.0.17"
-    },
-    {
-      "_id": "62345fb0314381d2b0756b34",
-      "alm_examples": [
-        {
-          "api_version": "anzounstructured.clusters.cambridgesemantics.com/v1",
-          "kind": "AnzoUnstructured",
-          "metadata": {
-            "name": "au01"
-          },
-          "spec": {
-            "auWorker": {
-              "nodeConfig": {
-                "spec": {
-                  "replicas": 1,
-                  "selector": {
-                    "matchLabels": {
-                      "app": "anzounstructured"
-                    }
-                  },
-                  "serviceName": "au-au01-w",
-                  "template": {
-                    "metadata": {
-                      "labels": {
-                        "app": "anzounstructured"
-                      }
-                    },
-                    "spec": {
-                      "containers": [
-                        {
-                          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker@sha256:4db61bdf6dc8b42824a06d2f8d8aeecddde765d123b40a63a7bbf87845719fb2",
-                          "name": "w",
-                          "resources": {
-                            "limits": {
-                              "cpu": "2",
-                              "memory": "4Gi"
-                            },
-                            "requests": {
-                              "cpu": "2",
-                              "memory": "4Gi"
-                            }
-                          }
-                        }
-                      ],
-                      "serviceAccountName": "unstructured-operator"
-                    }
-                  }
-                }
-              }
-            },
-            "msLeader": {
-              "nodeConfig": {
-                "spec": {
-                  "replicas": 1,
-                  "selector": {
-                    "matchLabels": {
-                      "app": "anzounstructured"
-                    }
-                  },
-                  "serviceName": "au-au01-ms",
-                  "template": {
-                    "metadata": {
-                      "labels": {
-                        "app": "anzounstructured"
-                      }
-                    },
-                    "spec": {
-                      "containers": [
-                        {
-                          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-microservices-leader@sha256:0579fd97e81e436eaff3b58c5395f13aa924940a3d51f0bdea5163d327620286",
-                          "name": "ms",
-                          "resources": {
-                            "limits": {
-                              "cpu": "2",
-                              "memory": "4Gi"
-                            },
-                            "requests": {
-                              "cpu": "2",
-                              "memory": "4Gi"
-                            }
-                          }
-                        }
-                      ],
-                      "serviceAccountName": "unstructured-operator"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-operator-bundle@sha256:800c686058a8b80d2c082741019db9d35535b2ba2b59007cbde0c2dffa143e82",
-      "bundle_path_digest": "sha256:800c686058a8b80d2c082741019db9d35535b2ba2b59007cbde0c2dffa143e82",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-18T10:32:16.545000+00:00",
-      "csv_description": "The Anzo Unstructured Operator provides the way to install and configure an anzo unstructured setup on Red Hat K8S environment.\nCurrently, this is possible only through existing Anzo installation.\n\n### Installation\n Refer [installation instructions]( https://github.com/cambridgesemantics/csi-k8s-operator-anzo-unstructured/blob/v2.0.0/README.md )\n\n### Documentation\n\nYou can find our documentation [here.]( https://docs.cambridgesemantics.com/anzo/userdoc/cloud-deployments.htm )\n\n### Support\n\nWe offer Support to our customers through [ Cambridge Semantics Customer Center ]( https://customercenter.cambridgesemantics.com/ ).",
-      "csv_display_name": "Anzo Unstructured Operator",
-      "csv_metadata_description": "Kubernetes Operator for Anzo Unstructured",
-      "csv_name": "anzounstructured-operator.v2.0.101",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:14:27.133000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "anzounstructured-operator",
-      "provided_apis": [
-        {
-          "group": "anzounstructured.clusters.cambridgesemantics.com",
-          "kind": "AnzoUnstructured",
-          "version": "v1"
-        }
-      ],
-      "provider": "Cambridge Semantics Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:a47af068a7aa55c12be84c80d263feeed5597ecc434986b4f2fff782b568bb04",
-          "image": "registry.connect.redhat.com/cambridgesemantics/unstructured-operator@sha256:a47af068a7aa55c12be84c80d263feeed5597ecc434986b4f2fff782b568bb04",
-          "name": "unstructured-operator-a47af068a7aa55c12be84c80d263feeed5597ecc434986b4f2fff782b568bb04-annotation"
-        },
-        {
-          "digest": "sha256:a47af068a7aa55c12be84c80d263feeed5597ecc434986b4f2fff782b568bb04",
-          "image": "registry.connect.redhat.com/cambridgesemantics/unstructured-operator@sha256:a47af068a7aa55c12be84c80d263feeed5597ecc434986b4f2fff782b568bb04",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:0579fd97e81e436eaff3b58c5395f13aa924940a3d51f0bdea5163d327620286",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-microservices-leader@sha256:0579fd97e81e436eaff3b58c5395f13aa924940a3d51f0bdea5163d327620286",
-          "name": "anzo_microservices_leader"
-        },
-        {
-          "digest": "sha256:4db61bdf6dc8b42824a06d2f8d8aeecddde765d123b40a63a7bbf87845719fb2",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker@sha256:4db61bdf6dc8b42824a06d2f8d8aeecddde765d123b40a63a7bbf87845719fb2",
-          "name": "anzo_unstructured_worker"
-        },
-        {
-          "digest": "sha256:0579fd97e81e436eaff3b58c5395f13aa924940a3d51f0bdea5163d327620286",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-microservices-leader@sha256:0579fd97e81e436eaff3b58c5395f13aa924940a3d51f0bdea5163d327620286",
-          "name": "anzo-microservices-leader-0579fd97e81e436eaff3b58c5395f13aa924940a3d51f0bdea5163d327620286-annotation"
-        },
-        {
-          "digest": "sha256:4db61bdf6dc8b42824a06d2f8d8aeecddde765d123b40a63a7bbf87845719fb2",
-          "image": "registry.connect.redhat.com/cambridgesemantics/anzo-unstructured-worker@sha256:4db61bdf6dc8b42824a06d2f8d8aeecddde765d123b40a63a7bbf87845719fb2",
-          "name": "anzo-unstructured-worker-4db61bdf6dc8b42824a06d2f8d8aeecddde765d123b40a63a7bbf87845719fb2-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "2.0.0",
-      "version_original": "2.0.0"
-    },
-    {
-      "_id": "62345fb2314381d2b0756b35",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/iomesh/iomesh@sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
-      "bundle_path_digest": "sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
-      "capabilities": [
-        "Full Lifecycle"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-03-18T10:32:18.838000+00:00",
-      "csv_description": "IOMesh (https://www.iomesh.com/) is a cloud-native storage product specifically designed and developed for Kubernetes. It takes ZBS as its core, a \u201cproduction-ready\u201d distributed storage system developed independently by SmartX, to provide production-level high performance and reliable persistent storage for business-critical applications such as MySQL, Cassandra, MongoDB, etc., contributing to the containerized transformation of stateful applications.      \n## Pre-Requisites\n* According to https://docs.iomesh.com/deploy/prerequisites, make sure that your openshift cluster meets the \"Installation Requirements\" and set up the worker nodes correctly according to the \"Setup Worker Node\" chapter.\n* Run IOMesh Operator pre-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install the dependencies of IOMesh Operator and specific IOMesh settings for the openshift cluster:\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-pre-install-openshift.sh | sh -\n```\n## Install IOMesh Operator and IOMesh Cluster\n* Click install button on the current web page to install IOMesh Operator\n* On the **Installed Operators** -> **IOMesh Operator** -> **Create instance** -> **YAML view**, fill in an IOMesh Custom Resources according https://iomesh.run/iomesh.yaml, change the `spec.*.dataCIDR` to your own data network CIDR:\n## Post Install\n* Run IOMesh Operator post-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install IOMesh CSI Driver\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-post-install-openshift.sh | sh -\n```\n## Getting Started\n* Try to quickstart setup and use IOMesh: https://docs.iomesh.com/deploy/setup-iomesh\n",
-      "csv_display_name": "IOMesh Operator",
-      "csv_metadata_description": "",
-      "csv_name": "iomesh-operator.0.10.1-rc4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:22:47.045000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "iomesh-operator",
-      "provided_apis": [
-        {
-          "group": "iomesh.com",
-          "kind": "IOMeshCluster",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "SmartX",
-      "related_images": [
-        {
-          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
-          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
-          "name": "operator-52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3-annotation"
-        },
-        {
-          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
-          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
-          "name": "operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "0.10.1-rc4",
-      "version_original": "0.10.1-rc4"
-    },
-    {
-      "_id": "62345fb5314381d2b0756b36",
-      "alm_examples": [
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyApplication",
-          "metadata": {
-            "name": "openliberty-app-sample"
-          },
-          "spec": {
-            "applicationImage": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-            "expose": true,
-            "replicas": 1
-          }
-        },
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyDump",
-          "metadata": {
-            "name": "openliberty-dump-sample"
-          },
-          "spec": {
-            "include": [
-              "thread",
-              "heap"
-            ],
-            "podName": "Specify_Pod_Name_Here"
-          }
-        },
-        {
-          "api_version": "apps.openliberty.io/v1beta2",
-          "kind": "OpenLibertyTrace",
-          "metadata": {
-            "name": "openliberty-trace-sample"
-          },
-          "spec": {
-            "maxFileSize": 20,
-            "maxFiles": 5,
-            "podName": "Specify_Pod_Name_Here",
-            "traceSpecification": "*=info:com.ibm.ws.webcontainer*=all"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ibm/open-liberty-operator-bundle@sha256:88ff3cd847c4b606466b1e782cec0dfbdb62fb3dd0e4e1bc8b9c2d1016c74132",
-      "bundle_path_digest": "sha256:88ff3cd847c4b606466b1e782cec0dfbdb62fb3dd0e4e1bc8b9c2d1016c74132",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "beta2",
-      "creation_date": "2022-03-18T10:32:21.767000+00:00",
-      "csv_description": "This advanced Operator can be used to deploy and manage Open Liberty applications with consistent, production-grade QoS. This operator is based on the [Runtime Component Operator](https://github.com/application-stacks/runtime-component-operator) and provides all of its capabilities in addition to Open Liberty specific features such as gathering traces and dumps (Day-2 operations) and easily configuring and managing the single sign-on information for your Open Liberty applications.\n\nOpen Liberty Operator enables enterprise architects to govern the way their applications get deployed & managed in the cluster, while dramatically reducing the learning curve for developers to deploy into Kubernetes - allowing them to focus on writing the code! Here are some key features:\n\n#### Application Lifecyle\nYou can deploy your Open Liberty application container by either pointing to a container image, or an OpenShift ImageStream. When using an ImageStream the Operator will watch for any updates and will re-deploy the modified image.\n\n#### Custom RBAC\nThis Operator is capable of using a custom ServiceAccount from the caller, allowing it to follow RBAC restrictions. By default it creates a ServiceAccount if one is not specified, which can also be bound with specific roles.\n\n#### Environment Configuration\nYou can configure a variety of artifacts with your deployment, such as: labels, annotations, and environment variables from a ConfigMap, a Secret or a value.\n\n#### Routing\nExpose your application to external users via a single toggle to create a Route on OpenShift or an Ingress on other Kubernetes environments. Advanced configuration, such as TLS settings, are also easily enabled. Expiring Route certificates are re-issued.\n\n#### High Availability via Horizontal Pod Autoscaling\nRun multiple instances of your application for high availability. Either specify a static number of replicas or easily configure horizontal auto scaling to create (and delete) instances based on resource consumption.\n\n#### Persistence and advanced storage\nEnable persistence for your application by specifying simple requirements: just tell us the size of the storage and where you would like it to be mounted and We will create and manage that storage for you.\nThis toggles a StatefulSet resource instead of a Deployment resource, so your container can recover transactions and state upon a pod restart.\nWe offer an advanced mode where the user specifies a built-in PersistentVolumeClaim, allowing them to configure many details of the persistent volume, such as its storage class and access mode.\nYou can also easily configure and use a single storage for serviceability related Day-2 operations, such as gatherig server traces and dumps.\n\n#### Service Binding\nYour runtime components can expose services by a simple toggle. We take care of the heavy lifting such as creating kubernetes Secrets with information other services can use to bind. We also keep the bindable information synchronized, so your applications can dynamically reconnect to its required services without any intervention or interruption.\n\n#### Single Sign-On (SSO)\nOpen Liberty provides capabilities to delegate authentication to external providers. Your application users can log in using their existing social media credentials from providers such as Google, Facebook, LinkedIn, Twitter, GitHub, and any OpenID Connect (OIDC) or OAuth 2.0 clients. Open Liberty Operator allows to easily configure and manage the single sign-on information for your applications.\n\n#### Exposing metrics to Prometheus\nThe Open Liberty Operator exposes the runtime container's metrics via the [Prometheus Operator](https://operatorhub.io/operator/prometheus).\nUsers can pick between a basic mode, where they simply specify the label that Prometheus is watching to scrape the metrics from the container, or they can specify the full `ServiceMonitor` spec embedded into the OpenLibertyApplication's `spec.monitoring` key controlling things like the poll internal and security credentials.\n\n#### Easily mount logs and transaction directories\nIf you need to mount the logs and transaction data from your application to an external volume such as NFS (or any storage supported in your cluster), simply add the following (customizing the folder location and size) to your OpenLibertyApplication CR:\n``` storage: size: 2Gi mountPath: \"/logs\" ```\n\n#### Integration with OpenShift Serverless\nDeploy your serverless runtime component using a single toggle.  The Operator will convert all of its generated resources into [Knative](https://knative.dev) resources, allowing your pod to automatically scale to 0 when it is idle.\n\n#### Integration with OpenShift's Topology UI\nWe set the corresponding labels to support OpenShift's Developer Topology UI, which allows you to visualize your entire set of deployments and how they are connected.\n\nSee our [**documentation**](https://github.com/OpenLiberty/open-liberty-operator/tree/main/doc/) for more information.\n",
-      "csv_display_name": "Open Liberty",
-      "csv_metadata_description": "Deploy and manage applications running on Liberty",
-      "csv_name": "open-liberty-operator.v0.8.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:00:21.210000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "open-liberty-certified",
-      "provided_apis": [
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyApplication",
-          "version": "v1beta2"
-        },
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyDump",
-          "version": "v1beta2"
-        },
-        {
-          "group": "apps.openliberty.io",
-          "kind": "OpenLibertyTrace",
-          "version": "v1beta2"
-        }
-      ],
-      "provider": "IBM",
-      "related_images": [
-        {
-          "digest": "sha256:43b3f004a19c91c80ba815aedc1b361b87cd12daa28bb215e6775e64ef890af1",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-operator-controller@sha256:43b3f004a19c91c80ba815aedc1b361b87cd12daa28bb215e6775e64ef890af1",
-          "name": "open-liberty-operator-controller-43b3f004a19c91c80ba815aedc1b361b87cd12daa28bb215e6775e64ef890af1-annotation"
-        },
-        {
-          "digest": "sha256:43b3f004a19c91c80ba815aedc1b361b87cd12daa28bb215e6775e64ef890af1",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-operator-controller@sha256:43b3f004a19c91c80ba815aedc1b361b87cd12daa28bb215e6775e64ef890af1",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "image": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
-          "name": "open-liberty-samples-8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<0.8.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "0.8.0",
-      "version_original": "0.8.0"
-    },
-    {
-      "_id": "62345fbc670f4cadbafad2a6",
-      "alm_examples": [
-        {
-          "api_version": "logs.grafana.com/v1alpha1",
-          "kind": "GrafanaCloudLogForwarder",
-          "metadata": {
-            "name": "grafanacloudlogforwarder-sample",
-            "namespace": "openshift-logging"
-          },
-          "spec": {
-            "apipassword": "******",
-            "url": "******",
-            "username": "******"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/grafana/openshift-cloud-log-forwarder-bundle@sha256:8934fe4f13280cbc19868094bd9accb243f3862c104254b23dcf218c7b2a184d",
-      "bundle_path_digest": "sha256:8934fe4f13280cbc19868094bd9accb243f3862c104254b23dcf218c7b2a184d",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-18T10:32:28.205000+00:00",
-      "csv_description": "Grafana Cloud is a completeobservability stack for metrics, logs, and traces that's tightly integrated with Grafana.\nLeverage the best open source observability software without the overhead of installing, maintaining, and scaling your observability stack.\n",
-      "csv_display_name": "Grafana Cloud Log Forwarder",
-      "csv_metadata_description": "",
-      "csv_name": "grafana-cloud-log-forwarder-operator.v1.0.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:19:08.049000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "grafana-cloud-log-forwarder-operator",
-      "provided_apis": [
-        {
-          "group": "logs.grafana.com",
-          "kind": "GrafanaCloudLogForwarder",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Grafana",
-      "related_images": [
-        {
-          "digest": "sha256:06b389c049dd4648257abf151f16e03d3c518a625a96fe68a63365ea86678514",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:06b389c049dd4648257abf151f16e03d3c518a625a96fe68a63365ea86678514",
-          "name": "ose-kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:9cb04cb779615c2b42ee37528da7f5abf71dc40c238de0c601035c9cf8fa1bc4",
-          "image": "docker.io/grafana/openshift-cloud-log-forwarder@sha256:9cb04cb779615c2b42ee37528da7f5abf71dc40c238de0c601035c9cf8fa1bc4",
-          "name": "openshift-cloud-log-forwarder"
-        },
-        {
-          "digest": "sha256:06b389c049dd4648257abf151f16e03d3c518a625a96fe68a63365ea86678514",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:06b389c049dd4648257abf151f16e03d3c518a625a96fe68a63365ea86678514",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:9cb04cb779615c2b42ee37528da7f5abf71dc40c238de0c601035c9cf8fa1bc4",
-          "image": "docker.io/grafana/openshift-cloud-log-forwarder@sha256:9cb04cb779615c2b42ee37528da7f5abf71dc40c238de0c601035c9cf8fa1bc4",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.0.2",
-      "version_original": "1.0.2"
-    },
-    {
       "_id": "62345fbe5593ce895a7b5358",
       "alm_examples": [
         {
@@ -4671,246 +3896,6 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "1.7.1",
       "version_original": "1.7.1"
-    },
-    {
-      "_id": "62345fe85593ce895a7b535d",
-      "alm_examples": [
-        {
-          "api_version": "citrix.com/v1alpha1",
-          "kind": "CitrixCpxWithIngressController",
-          "metadata": {
-            "name": "cpx-cic"
-          },
-          "spec": {
-            "ADMSettings": {
-              "ADMIP": "",
-              "bandWidth": "",
-              "bandWidthLicense": false,
-              "cpxCores": "",
-              "licenseServerIP": "",
-              "licenseServerPort": 27000,
-              "loginSecret": "",
-              "vCPULicense": false
-            },
-            "bgpSettings": {
-              "bgpConfig": [
-                {
-                  "bgpRouter": {
-                    "localAS": 100,
-                    "neighbor": [
-                      {
-                        "ASOriginationInterval": 10,
-                        "address": "",
-                        "advertisementInterval": 10,
-                        "remoteAS": 100
-                      }
-                    ]
-                  }
-                }
-              ],
-              "required": false
-            },
-            "cic": {
-              "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-              "pullPolicy": "Always",
-              "required": true
-            },
-            "coeConfig": {
-              "distributedTracing": {
-                "enable": false,
-                "samplingrate": 100
-              },
-              "endpoint": {
-                "server": ""
-              },
-              "required": false,
-              "timeseries": {
-                "auditlogs": {
-                  "enable": false
-                },
-                "events": {
-                  "enable": false
-                },
-                "metrics": {
-                  "enable": false,
-                  "mode": "avro"
-                },
-                "port": 5563
-              },
-              "transactions": {
-                "enable": false,
-                "port": 5557
-              }
-            },
-            "cpxBgpRouter": false,
-            "crds": {
-              "install": false,
-              "retainOnDelete": false
-            },
-            "defaultSSLCertSecret": "",
-            "entityPrefix": "",
-            "exporter": {
-              "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-              "ports": {
-                "containerPort": 8888
-              },
-              "pullPolicy": "Always",
-              "required": false
-            },
-            "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-            "imagePullSecrets": [],
-            "ingressClass": [],
-            "ingressIP": "",
-            "ipam": false,
-            "kubernetesURL": "",
-            "license": {
-              "accept": "no"
-            },
-            "logLevel": "INFO",
-            "logProxy": "",
-            "mgmtHttpPort": 9080,
-            "mgmtHttpsPort": 9443,
-            "namespaceLabels": "",
-            "nodeSelector": {
-              "key": "",
-              "value": ""
-            },
-            "nsCookieVersion": "0",
-            "nsGateway": "192.168.1.1",
-            "nsHTTP2ServerSide": "OFF",
-            "nsIP": "192.168.1.2",
-            "nsProtocol": "http",
-            "openshift": true,
-            "pullPolicy": "Always",
-            "routeLabels": "",
-            "serviceAccount": {
-              "create": true
-            },
-            "serviceAnnotations": {},
-            "servicePorts": [],
-            "serviceSpec": {
-              "loadBalancerSourceRanges": []
-            },
-            "serviceType": {
-              "loadBalancer": {
-                "enabled": false,
-                "externalTrafficPolicy": "Local"
-              },
-              "nodePort": {
-                "enabled": false,
-                "httpPort": "",
-                "httpsPort": ""
-              }
-            },
-            "setAsDefaultIngressClass": false,
-            "sslCertManagedByAWS": false,
-            "tolerations": [],
-            "updateIngressStatus": false
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-bundle@sha256:cb78fbaa6e154066b70b1e36731fc268bd61b514493f1541f630fff7f7e16d59",
-      "bundle_path_digest": "sha256:cb78fbaa6e154066b70b1e36731fc268bd61b514493f1541f630fff7f7e16d59",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-03-18T10:33:12.488000+00:00",
-      "csv_description": "Citrix ADC CPX is a container-based application delivery controller that can be provisioned on a Docker host. Citrix ADC CPX enables customers to leverage Docker engine capabilities and use NetScaler load balancing and traffic management features for container-based applications. Citrix Ingress Controller which will be running in side-car mode with Citrix ADC CPX will automatically configures Citrix ADC CPX based on the Ingress resource configuration. This operator can be used deploy Citrix ADC CPX with Citrix ingress controller in an OpenShift environment.",
-      "csv_display_name": "Citrix ADC CPX with Ingress Controller",
-      "csv_metadata_description": "Citrix ADC CPX is a container-based application delivery controller that can be provisioned on a Docker host. Citrix ADC CPX enables customers to leverage Docker engine capabilities and use NetScaler load balancing and traffic management features for container-based applications. Citrix Ingress Controller which will be running in side-car mode with Citrix ADC CPX will automatically configures Citrix ADC CPX based on the Ingress resource configuration. This operator can be used deploy Citrix ADC CPX with Citrix ingress controller in an Openshift environment.",
-      "csv_name": "citrix-cpx-with-ingress-controller-operator.v1.18.5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:19:26.842000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "citrix-cpx-with-ingress-controller-operator",
-      "provided_apis": [
-        {
-          "group": "citrix.com",
-          "kind": "CitrixCpxWithIngressController",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Citrix",
-      "related_images": [
-        {
-          "digest": "sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-controller@sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "name": "citrix-k8s-cpx-ingress-controller-92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d-annotation"
-        },
-        {
-          "digest": "sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-controller@sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "name": "cpx"
-        },
-        {
-          "digest": "sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "name": "cic"
-        },
-        {
-          "digest": "sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "name": "exporter"
-        },
-        {
-          "digest": "sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "name": "citrix-k8s-cpx-ingress-8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc-annotation"
-        },
-        {
-          "digest": "sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "name": "citrix-adc-metrics-exporter-6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8-annotation"
-        },
-        {
-          "digest": "sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "name": "citrix-ingress-controller-91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.18.5",
-      "version_original": "1.18.5"
     },
     {
       "_id": "62345fe9314381d2b0756b3b",
@@ -17757,6 +16742,482 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "2.1.5",
       "version_original": "2.1.5"
+    },
+    {
+      "_id": "6262a41184481d5f52299911",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "fast",
+      "creation_date": "2022-04-22T12:48:17.487000+00:00",
+      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
+      "csv_display_name": "Run:AI",
+      "csv_metadata_description": "",
+      "csv_name": "installkit-customer.v2.0.15",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T00:48:04.787000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "installkit-customer",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "name": "operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "2.1.5",
+      "version_original": "2.1.5"
+    },
+    {
+      "_id": "6262a41384481d5f52299912",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "preview",
+      "creation_date": "2022-04-22T12:48:19.731000+00:00",
+      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
+      "csv_display_name": "Run:AI",
+      "csv_metadata_description": "",
+      "csv_name": "installkit-customer.v2.0.15",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T00:48:08.530000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "installkit-customer",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "name": "operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "2.1.5",
+      "version_original": "2.1.5"
+    },
+    {
+      "_id": "6262a41684481d5f52299913",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:48:22.410000+00:00",
+      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
+      "csv_display_name": "Run:AI",
+      "csv_metadata_description": "",
+      "csv_name": "installkit-customer.v2.0.15",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:48:12.205000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "installkit-customer",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "name": "operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "2.1.5",
+      "version_original": "2.1.5"
+    },
+    {
+      "_id": "6262a41b834f257293b60f46",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/iomesh/iomesh@sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
+      "bundle_path_digest": "sha256:27c5d91d62371f3cf0dea4d50044d8a6e0a6015a453c4216a030683ea2474c64",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:48:27.703000+00:00",
+      "csv_description": "IOMesh (https://www.iomesh.com/) is a cloud-native storage product specifically designed and developed for Kubernetes. It takes ZBS as its core, a \u201cproduction-ready\u201d distributed storage system developed independently by SmartX, to provide production-level high performance and reliable persistent storage for business-critical applications such as MySQL, Cassandra, MongoDB, etc., contributing to the containerized transformation of stateful applications.      \n## Pre-Requisites\n* According to https://docs.iomesh.com/deploy/prerequisites, make sure that your openshift cluster meets the \"Installation Requirements\" and set up the worker nodes correctly according to the \"Setup Worker Node\" chapter.\n* Run IOMesh Operator pre-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install the dependencies of IOMesh Operator and specific IOMesh settings for the openshift cluster:\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-pre-install-openshift.sh | sh -\n```\n## Install IOMesh Operator and IOMesh Cluster\n* Click install button on the current web page to install IOMesh Operator\n* On the **Installed Operators** -> **IOMesh Operator** -> **Create instance** -> **YAML view**, fill in an IOMesh Custom Resources according https://iomesh.run/iomesh.yaml, change the `spec.*.dataCIDR` to your own data network CIDR:\n## Post Install\n* Run IOMesh Operator post-installation script in an environment where oc or kubectl can be used to access the openshift cluster, the script will install IOMesh CSI Driver\n```shell\ncurl -sSL https://iomesh.run/iomesh-operator-post-install-openshift.sh | sh -\n```\n## Getting Started\n* Try to quickstart setup and use IOMesh: https://docs.iomesh.com/deploy/setup-iomesh\n",
+      "csv_display_name": "IOMesh Operator",
+      "csv_metadata_description": "",
+      "csv_name": "iomesh-operator.0.10.1-rc4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:48:27.609000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "iomesh-operator",
+      "provided_apis": [
+        {
+          "group": "iomesh.com",
+          "kind": "IOMeshCluster",
+          "plural": "iomeshclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "name": "operator-52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3-annotation"
+        },
+        {
+          "digest": "sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "image": "iomesh/operator@sha256:52b8718ce46fa764f802f7709f2ca39ebc78cf25e4af78a4c8011e4c0ff1d8f3",
+          "name": "operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.10.1-rc4",
+      "version_original": "0.10.1-rc4"
+    },
+    {
+      "_id": "6262a518173a0d36cf5d6936",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "fast",
+      "creation_date": "2022-04-22T12:52:40.545000+00:00",
+      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
+      "csv_display_name": "Run:AI",
+      "csv_metadata_description": "",
+      "csv_name": "installkit-customer.v2.0.15",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T00:52:24.280000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "installkit-customer",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "name": "operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "2.1.5",
+      "version_original": "2.1.5"
+    },
+    {
+      "_id": "6262a51a84481d5f5229991d",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "preview",
+      "creation_date": "2022-04-22T12:52:42.547000+00:00",
+      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
+      "csv_display_name": "Run:AI",
+      "csv_metadata_description": "",
+      "csv_name": "installkit-customer.v2.0.15",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T00:52:28.021000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "installkit-customer",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "name": "operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "2.1.5",
+      "version_original": "2.1.5"
+    },
+    {
+      "_id": "6262a51b84481d5f5229991e",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/runai/runai-operator@sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "bundle_path_digest": "sha256:c9379256b0ce19b686f999ec2f0cfac1e8c69c8fbb47d574d8ccf485cc5f920a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T12:52:43.876000+00:00",
+      "csv_description": "Run:AI is a cloud-native compute management platform for the AI era. Run:AI gives data scientists access to all of the pooled compute power they need to accelerate AI development and deployment - whether on-premises or in the cloud. The platform provides IT and MLOps with real-time visibility and control over scheduling and dynamic provisioning of GPUs to deliver more than 2X gains in utilization of existing GPU infrastructure. Built on Kubernetes, Run:AI enables seamless integration with existing IT and data science workflows. More at www.run.ai.",
+      "csv_display_name": "Run:AI",
+      "csv_metadata_description": "",
+      "csv_name": "installkit-customer.v2.0.15",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:52:31.529000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "installkit-customer",
+      "provided_apis": [],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "image": "gcr.io/runai-openshift/operator@sha256:75d3eaaa698a72b25fae2ebd414e1a49339517f3a75f752bb76704f673edeb08",
+          "name": "operator"
+        }
+      ],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "2.1.5",
+      "version_original": "2.1.5"
+    },
+    {
+      "_id": "6262a51d834f257293b60f59",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/memsql/operator-bundle@sha256:43d4b83cd44b220ff97974e49f5a451f93058bbf5ed52ef8a650f199bdc0ebdb",
+      "bundle_path_digest": "sha256:43d4b83cd44b220ff97974e49f5a451f93058bbf5ed52ef8a650f199bdc0ebdb",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T12:52:45.077000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "memsql-operator.v0.0.3",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T00:54:58.954000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "memql-certified",
+      "provided_apis": [
+        {
+          "group": "memsql.com",
+          "kind": "MemsqlCluster",
+          "plural": "memsqlclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.0.3",
+      "version_original": "0.0.3"
     }
   ]
 }
