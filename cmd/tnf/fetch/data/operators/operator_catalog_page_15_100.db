@@ -1,276 +1,6 @@
 {
   "data": [
     {
-      "_id": "6154d067bc74e0be7ca671f7",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {
-            "cni": {
-              "binPath": "/var/lib/cni/bin",
-              "confPath": "/var/run/multus/cni/net.d"
-            },
-            "endpointRoutes": {
-              "enabled": true
-            },
-            "hubble": {
-              "tls": {
-                "enabled": false
-              }
-            },
-            "ipam": {
-              "mode": "cluster-pool",
-              "operator": {
-                "clusterPoolIPv4MaskSize": "23",
-                "clusterPoolIPv4PodCIDR": "10.128.0.0/14"
-              }
-            },
-            "kubeProxyReplacement": "probe",
-            "nativeRoutingCIDR": "10.128.0.0/14",
-            "prometheus": {
-              "serviceMonitor": {
-                "enabled": false
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-olm-metadata@sha256:33a2e21a069ff24af4bf0ffc51e83ddf398df5d9735d0123120768e9dc2c27f9",
-      "bundle_path_digest": "sha256:33a2e21a069ff24af4bf0ffc51e83ddf398df5d9735d0123120768e9dc2c27f9",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-09-29T20:45:27.355000+00:00",
-      "csv_description": "Cilium - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.10.4-x5bfd7b3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:46:04.991000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "cilium",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "plural": "ciliumconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Isovalent",
-      "related_images": [
-        {
-          "digest": "sha256:b45ff6a6552d71cbc26e358e0b25759d33818fd92301f1656453c5bcf826ff13",
-          "image": "registry.connect.redhat.com/isovalent/cilium-olm@sha256:b45ff6a6552d71cbc26e358e0b25759d33818fd92301f1656453c5bcf826ff13",
-          "name": "operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.10.4+x5bfd7b3",
-      "version_original": "1.10.4+x5bfd7b3"
-    },
-    {
-      "_id": "6154d080d36186823c2a55d2",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Xl",
-          "metadata": {
-            "name": "xl-release"
-          },
-          "spec": {
-            "global": {
-              "customImageNames": false,
-              "externalArangoDBName": "arangodb",
-              "repository": "registry.connect.redhat.com/turbonomic",
-              "tag": "8.3.1"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:1ae08df19d26498d2211249fcc758af8679d619f825d17ee8517c968873b149d",
-      "bundle_path_digest": "sha256:1ae08df19d26498d2211249fcc758af8679d619f825d17ee8517c968873b149d",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-09-29T20:45:52.560000+00:00",
-      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
-      "csv_display_name": "Turbonomic Platform Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "t8c-operator.v42.0.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:38:00.315000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "t8c-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "42.0.0",
-      "version_original": "42.0.0"
-    },
-    {
-      "_id": "6154d091d36186823c2a55d3",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:205cb3eec37827db8d95099550a5bee4d17e5fc082316205cacedec42d66ba10",
-      "bundle_path_digest": "sha256:205cb3eec37827db8d95099550a5bee4d17e5fc082316205cacedec42d66ba10",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-09-29T20:46:09.718000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.3.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:38:47.692000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "8.3.2",
-      "version_original": "8.3.2"
-    },
-    {
       "_id": "6154d0b5d2c7f84a4d2edca6",
       "alm_examples": [
         {
@@ -17331,6 +17061,567 @@
       "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.100202.5",
+      "version_original": "1.100202.5"
+    },
+    {
+      "_id": "6163f75304fd1c67039dbd73",
+      "alm_examples": [
+        {
+          "api_version": "navigator.nastel.com/v1alpha6",
+          "kind": "NastelNavigator",
+          "metadata": {
+            "name": "nastelnavigator"
+          },
+          "spec": {
+            "cep-wgs": {
+              "image": "registry.connect.redhat.com/nastel/navigator-wgs",
+              "licenseName": "AutoPilotWMQ_MQM.lic",
+              "replicaCount": 1,
+              "resources": {},
+              "service": {
+                "cepServerPort": 3005,
+                "node": {},
+                "type": "NodePort",
+                "wgsPort": 4010
+              },
+              "storage": {
+                "accessMode": "ReadWriteOnce",
+                "capacity": "2Gi"
+              }
+            },
+            "domain": {
+              "image": "registry.connect.redhat.com/nastel/nastel-domain",
+              "replicaCount": 1,
+              "resources": {},
+              "service": {
+                "node": {},
+                "serverPort": 2323,
+                "type": "NodePort",
+                "userPort": 3000
+              },
+              "storage": {
+                "accessMode": "ReadWriteOnce",
+                "capacity": "2Gi"
+              }
+            },
+            "global": {
+              "storage": {
+                "class": ""
+              },
+              "subDomain": "nastel-2-915b3b336cabec458a7c7ec2aa7c625f-0000.us-south.containers.appdomain.cloud"
+            },
+            "navigator": {
+              "image": "registry.connect.redhat.com/nastel/navigator-ui",
+              "replicaCount": 1,
+              "resources": {},
+              "service": {
+                "debugPort": 8000,
+                "node": {},
+                "type": "LoadBalancer",
+                "webPort": 8080
+              }
+            },
+            "nsqcm": {
+              "image": "registry.connect.redhat.com/nastel/navigator-cm",
+              "replicaCount": 1,
+              "resources": {},
+              "service": {
+                "cmAcePort": 5577,
+                "cmEmsPort": 5012,
+                "cmKafkaPort": 5024,
+                "cmPort": 5015,
+                "mqPort": 1414,
+                "node": {},
+                "type": "NodePort"
+              }
+            },
+            "wgs-mysql": {
+              "image": "registry.redhat.io/rhel8/mariadb-103",
+              "replicaCount": 1,
+              "resources": {},
+              "service": {
+                "dbPort": 3306,
+                "type": "ClusterIP"
+              },
+              "storage": {
+                "accessMode": "ReadWriteOnce",
+                "capacity": "2Gi"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nastel/navigator-operator-bundle@sha256:84a55e72cff648548aa146be15886735e3c4d3003c2a5614d689589c17575ea6",
+      "bundle_path_digest": "sha256:84a55e72cff648548aa146be15886735e3c4d3003c2a5614d689589c17575ea6",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-10-11T08:35:31.834000+00:00",
+      "csv_description": "The operator deploys Nastel Navigator component containers:\n  * Nastel Domain Server\n  * Nastel Workgroup Server\n  * MySQL database (MariaDB) instance\n  * Connection Manager\n  * Navigator WebApp\n\nin one go.\n\n[Nastel Navigator](https://www.nastel.com/nastel-navigator/) allows you to manage, audit and administrate instances of IBM MQ, EMS, ACE/IIB and\nKafka middleware.\n",
+      "csv_display_name": "Nastel Navigator Operator",
+      "csv_metadata_description": "Operator to deploy and run Nastel Navigator",
+      "csv_name": "nastel-navigator-operator.v1.100202.5",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:49:58.368000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "nastel-navigator-operator-certified",
+      "provided_apis": [
+        {
+          "group": "navigator.nastel.com",
+          "kind": "NastelNavigator",
+          "plural": "nastelnavigators",
+          "version": "v1alpha6"
+        }
+      ],
+      "provider": "Nastel",
+      "related_images": [
+        {
+          "digest": "sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
+          "image": "registry.connect.redhat.com/nastel/navigator-operator@sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
+          "name": "navigator-operator-5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4-annotation"
+        },
+        {
+          "digest": "sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
+          "image": "registry.connect.redhat.com/nastel/navigator-operator@sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
+          "name": "nastel-navigator-operator"
+        },
+        {
+          "digest": "sha256:68af5064ccd561f3384ebd1be7615f95c5b00d1cda86d97534bae58747b01337",
+          "image": "registry.connect.redhat.com/nastel/nastel-domain@sha256:68af5064ccd561f3384ebd1be7615f95c5b00d1cda86d97534bae58747b01337",
+          "name": "domain"
+        },
+        {
+          "digest": "sha256:b1893a7363dac0b6a898587c97755b6977607e21bf9064bcfed332903098894a",
+          "image": "registry.connect.redhat.com/nastel/navigator-cm@sha256:b1893a7363dac0b6a898587c97755b6977607e21bf9064bcfed332903098894a",
+          "name": "cm"
+        },
+        {
+          "digest": "sha256:a55195ee8b93a81fbcbee0f131a5e0d4c235043f7b13f0b16c1ba3f41cc65020",
+          "image": "registry.connect.redhat.com/nastel/navigator-wgs@sha256:a55195ee8b93a81fbcbee0f131a5e0d4c235043f7b13f0b16c1ba3f41cc65020",
+          "name": "wgs"
+        },
+        {
+          "digest": "sha256:e5d89a40eae7902fd4cbedf14d544c530c29a97e4fa4894af48821dc2c64fa57",
+          "image": "registry.connect.redhat.com/nastel/navigator-ui@sha256:e5d89a40eae7902fd4cbedf14d544c530c29a97e4fa4894af48821dc2c64fa57",
+          "name": "navigator"
+        },
+        {
+          "digest": "sha256:bfb7a648078244982e5ab1549bf016b08219c210b4853e97ba94c2ec7184ac32",
+          "image": "registry.redhat.io/rhel8/mariadb-103@sha256:bfb7a648078244982e5ab1549bf016b08219c210b4853e97ba94c2ec7184ac32",
+          "name": "mysql"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.100202.5",
+      "version_original": "1.100202.5"
+    },
+    {
+      "_id": "6163f81b04fd1c67039dbd74",
+      "alm_examples": [
+        {
+          "api_version": "navigator.nastel.com/v1alpha6",
+          "kind": "NastelNavigator",
+          "metadata": {
+            "name": "nastelnavigator"
+          },
+          "spec": {
+            "cep-wgs": {
+              "image": "registry.connect.redhat.com/nastel/navigator-wgs",
+              "licenseName": "AutoPilotWMQ_MQM.lic",
+              "replicaCount": 1,
+              "resources": {},
+              "service": {
+                "cepServerPort": 3005,
+                "node": {},
+                "type": "NodePort",
+                "wgsPort": 4010
+              },
+              "storage": {
+                "accessMode": "ReadWriteOnce",
+                "capacity": "2Gi"
+              }
+            },
+            "domain": {
+              "image": "registry.connect.redhat.com/nastel/nastel-domain",
+              "replicaCount": 1,
+              "resources": {},
+              "service": {
+                "node": {},
+                "serverPort": 2323,
+                "type": "NodePort",
+                "userPort": 3000
+              },
+              "storage": {
+                "accessMode": "ReadWriteOnce",
+                "capacity": "2Gi"
+              }
+            },
+            "global": {
+              "storage": {
+                "class": ""
+              },
+              "subDomain": "nastel-2-915b3b336cabec458a7c7ec2aa7c625f-0000.us-south.containers.appdomain.cloud"
+            },
+            "navigator": {
+              "image": "registry.connect.redhat.com/nastel/navigator-ui",
+              "replicaCount": 1,
+              "resources": {},
+              "service": {
+                "debugPort": 8000,
+                "node": {},
+                "type": "LoadBalancer",
+                "webPort": 8080
+              }
+            },
+            "nsqcm": {
+              "image": "registry.connect.redhat.com/nastel/navigator-cm",
+              "replicaCount": 1,
+              "resources": {},
+              "service": {
+                "cmAcePort": 5577,
+                "cmEmsPort": 5012,
+                "cmKafkaPort": 5024,
+                "cmPort": 5015,
+                "mqPort": 1414,
+                "node": {},
+                "type": "NodePort"
+              }
+            },
+            "wgs-mysql": {
+              "image": "registry.redhat.io/rhel8/mariadb-103",
+              "replicaCount": 1,
+              "resources": {},
+              "service": {
+                "dbPort": 3306,
+                "type": "ClusterIP"
+              },
+              "storage": {
+                "accessMode": "ReadWriteOnce",
+                "capacity": "2Gi"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nastel/navigator-operator-bundle@sha256:84a55e72cff648548aa146be15886735e3c4d3003c2a5614d689589c17575ea6",
+      "bundle_path_digest": "sha256:84a55e72cff648548aa146be15886735e3c4d3003c2a5614d689589c17575ea6",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-10-11T08:38:51.764000+00:00",
+      "csv_description": "The operator deploys Nastel Navigator component containers:\n  * Nastel Domain Server\n  * Nastel Workgroup Server\n  * MySQL database (MariaDB) instance\n  * Connection Manager\n  * Navigator WebApp\n\nin one go.\n\n[Nastel Navigator](https://www.nastel.com/nastel-navigator/) allows you to manage, audit and administrate instances of IBM MQ, EMS, ACE/IIB and\nKafka middleware.\n",
+      "csv_display_name": "Nastel Navigator Operator",
+      "csv_metadata_description": "Operator to deploy and run Nastel Navigator",
+      "csv_name": "nastel-navigator-operator.v1.100202.5",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:57:45.878000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "nastel-navigator-operator-certified",
+      "provided_apis": [
+        {
+          "group": "navigator.nastel.com",
+          "kind": "NastelNavigator",
+          "plural": "nastelnavigators",
+          "version": "v1alpha6"
+        }
+      ],
+      "provider": "Nastel",
+      "related_images": [
+        {
+          "digest": "sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
+          "image": "registry.connect.redhat.com/nastel/navigator-operator@sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
+          "name": "navigator-operator-5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4-annotation"
+        },
+        {
+          "digest": "sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
+          "image": "registry.connect.redhat.com/nastel/navigator-operator@sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
+          "name": "nastel-navigator-operator"
+        },
+        {
+          "digest": "sha256:68af5064ccd561f3384ebd1be7615f95c5b00d1cda86d97534bae58747b01337",
+          "image": "registry.connect.redhat.com/nastel/nastel-domain@sha256:68af5064ccd561f3384ebd1be7615f95c5b00d1cda86d97534bae58747b01337",
+          "name": "domain"
+        },
+        {
+          "digest": "sha256:b1893a7363dac0b6a898587c97755b6977607e21bf9064bcfed332903098894a",
+          "image": "registry.connect.redhat.com/nastel/navigator-cm@sha256:b1893a7363dac0b6a898587c97755b6977607e21bf9064bcfed332903098894a",
+          "name": "cm"
+        },
+        {
+          "digest": "sha256:a55195ee8b93a81fbcbee0f131a5e0d4c235043f7b13f0b16c1ba3f41cc65020",
+          "image": "registry.connect.redhat.com/nastel/navigator-wgs@sha256:a55195ee8b93a81fbcbee0f131a5e0d4c235043f7b13f0b16c1ba3f41cc65020",
+          "name": "wgs"
+        },
+        {
+          "digest": "sha256:e5d89a40eae7902fd4cbedf14d544c530c29a97e4fa4894af48821dc2c64fa57",
+          "image": "registry.connect.redhat.com/nastel/navigator-ui@sha256:e5d89a40eae7902fd4cbedf14d544c530c29a97e4fa4894af48821dc2c64fa57",
+          "name": "navigator"
+        },
+        {
+          "digest": "sha256:bfb7a648078244982e5ab1549bf016b08219c210b4853e97ba94c2ec7184ac32",
+          "image": "registry.redhat.io/rhel8/mariadb-103@sha256:bfb7a648078244982e5ab1549bf016b08219c210b4853e97ba94c2ec7184ac32",
+          "name": "mysql"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.100202.5",
+      "version_original": "1.100202.5"
+    },
+    {
+      "_id": "6163f9a690fb938ecf600a7b",
+      "alm_examples": [
+        {
+          "api_version": "navigator.nastel.com/v1alpha6",
+          "kind": "NastelNavigator",
+          "metadata": {
+            "name": "nastelnavigator"
+          },
+          "spec": {
+            "cep-wgs": {
+              "image": "registry.connect.redhat.com/nastel/navigator-wgs",
+              "licenseName": "AutoPilotWMQ_MQM.lic",
+              "replicaCount": 1,
+              "resources": {},
+              "service": {
+                "cepServerPort": 3005,
+                "node": {},
+                "type": "NodePort",
+                "wgsPort": 4010
+              },
+              "storage": {
+                "accessMode": "ReadWriteOnce",
+                "capacity": "2Gi"
+              }
+            },
+            "domain": {
+              "image": "registry.connect.redhat.com/nastel/nastel-domain",
+              "replicaCount": 1,
+              "resources": {},
+              "service": {
+                "node": {},
+                "serverPort": 2323,
+                "type": "NodePort",
+                "userPort": 3000
+              },
+              "storage": {
+                "accessMode": "ReadWriteOnce",
+                "capacity": "2Gi"
+              }
+            },
+            "global": {
+              "storage": {
+                "class": ""
+              },
+              "subDomain": "nastel-2-915b3b336cabec458a7c7ec2aa7c625f-0000.us-south.containers.appdomain.cloud"
+            },
+            "navigator": {
+              "image": "registry.connect.redhat.com/nastel/navigator-ui",
+              "replicaCount": 1,
+              "resources": {},
+              "service": {
+                "debugPort": 8000,
+                "node": {},
+                "type": "LoadBalancer",
+                "webPort": 8080
+              }
+            },
+            "nsqcm": {
+              "image": "registry.connect.redhat.com/nastel/navigator-cm",
+              "replicaCount": 1,
+              "resources": {},
+              "service": {
+                "cmAcePort": 5577,
+                "cmEmsPort": 5012,
+                "cmKafkaPort": 5024,
+                "cmPort": 5015,
+                "mqPort": 1414,
+                "node": {},
+                "type": "NodePort"
+              }
+            },
+            "wgs-mysql": {
+              "image": "registry.redhat.io/rhel8/mariadb-103",
+              "replicaCount": 1,
+              "resources": {},
+              "service": {
+                "dbPort": 3306,
+                "type": "ClusterIP"
+              },
+              "storage": {
+                "accessMode": "ReadWriteOnce",
+                "capacity": "2Gi"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nastel/navigator-operator-bundle@sha256:84a55e72cff648548aa146be15886735e3c4d3003c2a5614d689589c17575ea6",
+      "bundle_path_digest": "sha256:84a55e72cff648548aa146be15886735e3c4d3003c2a5614d689589c17575ea6",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-10-11T08:45:26.372000+00:00",
+      "csv_description": "The operator deploys Nastel Navigator component containers:\n  * Nastel Domain Server\n  * Nastel Workgroup Server\n  * MySQL database (MariaDB) instance\n  * Connection Manager\n  * Navigator WebApp\n\nin one go.\n\n[Nastel Navigator](https://www.nastel.com/nastel-navigator/) allows you to manage, audit and administrate instances of IBM MQ, EMS, ACE/IIB and\nKafka middleware.\n",
+      "csv_display_name": "Nastel Navigator Operator",
+      "csv_metadata_description": "Operator to deploy and run Nastel Navigator",
+      "csv_name": "nastel-navigator-operator.v1.100202.5",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:16:56.437000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "nastel-navigator-operator-certified",
+      "provided_apis": [
+        {
+          "group": "navigator.nastel.com",
+          "kind": "NastelNavigator",
+          "plural": "nastelnavigators",
+          "version": "v1alpha6"
+        }
+      ],
+      "provider": "Nastel",
+      "related_images": [
+        {
+          "digest": "sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
+          "image": "registry.connect.redhat.com/nastel/navigator-operator@sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
+          "name": "navigator-operator-5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4-annotation"
+        },
+        {
+          "digest": "sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
+          "image": "registry.connect.redhat.com/nastel/navigator-operator@sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
+          "name": "nastel-navigator-operator"
+        },
+        {
+          "digest": "sha256:68af5064ccd561f3384ebd1be7615f95c5b00d1cda86d97534bae58747b01337",
+          "image": "registry.connect.redhat.com/nastel/nastel-domain@sha256:68af5064ccd561f3384ebd1be7615f95c5b00d1cda86d97534bae58747b01337",
+          "name": "domain"
+        },
+        {
+          "digest": "sha256:b1893a7363dac0b6a898587c97755b6977607e21bf9064bcfed332903098894a",
+          "image": "registry.connect.redhat.com/nastel/navigator-cm@sha256:b1893a7363dac0b6a898587c97755b6977607e21bf9064bcfed332903098894a",
+          "name": "cm"
+        },
+        {
+          "digest": "sha256:a55195ee8b93a81fbcbee0f131a5e0d4c235043f7b13f0b16c1ba3f41cc65020",
+          "image": "registry.connect.redhat.com/nastel/navigator-wgs@sha256:a55195ee8b93a81fbcbee0f131a5e0d4c235043f7b13f0b16c1ba3f41cc65020",
+          "name": "wgs"
+        },
+        {
+          "digest": "sha256:e5d89a40eae7902fd4cbedf14d544c530c29a97e4fa4894af48821dc2c64fa57",
+          "image": "registry.connect.redhat.com/nastel/navigator-ui@sha256:e5d89a40eae7902fd4cbedf14d544c530c29a97e4fa4894af48821dc2c64fa57",
+          "name": "navigator"
+        },
+        {
+          "digest": "sha256:bfb7a648078244982e5ab1549bf016b08219c210b4853e97ba94c2ec7184ac32",
+          "image": "registry.redhat.io/rhel8/mariadb-103@sha256:bfb7a648078244982e5ab1549bf016b08219c210b4853e97ba94c2ec7184ac32",
+          "name": "mysql"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.100202.5",
       "version_original": "1.100202.5"
     }

@@ -5939,508 +5939,6 @@
       "version_original": "8.1.6"
     },
     {
-      "_id": "60a39f23fbae4677fafa7807",
-      "alm_examples": [
-        {
-          "api_version": "citrix.com/v1alpha1",
-          "kind": "CitrixCpxWithIngressController",
-          "metadata": {
-            "name": "cpx-cic"
-          },
-          "spec": {
-            "ADMSettings": {
-              "ADMFingerPrint": "",
-              "ADMIP": "",
-              "bandWidth": "",
-              "bandWidthLicense": false,
-              "cpxCores": "",
-              "licenseServerIP": "",
-              "licenseServerPort": 27000,
-              "loginSecret": "",
-              "vCPULicense": false
-            },
-            "aws": false,
-            "azure": false,
-            "bgpSettings": {
-              "bgpConfig": [
-                {
-                  "bgpRouter": {
-                    "localAS": 100,
-                    "neighbor": [
-                      {
-                        "ASOriginationInterval": 10,
-                        "address": "",
-                        "advertisementInterval": 10,
-                        "remoteAS": 100
-                      }
-                    ]
-                  }
-                }
-              ],
-              "required": false
-            },
-            "cic": {
-              "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-              "pullPolicy": "Always",
-              "required": true
-            },
-            "coeConfig": {
-              "distributedTracing": {
-                "enable": false,
-                "samplingrate": 100
-              },
-              "endpoint": {
-                "server": ""
-              },
-              "required": false,
-              "timeseries": {
-                "auditlogs": {
-                  "enable": false
-                },
-                "events": {
-                  "enable": false
-                },
-                "metrics": {
-                  "enable": false,
-                  "mode": "avro"
-                },
-                "port": 5563
-              },
-              "transactions": {
-                "enable": false,
-                "port": 5557
-              }
-            },
-            "cpxBgpRouter": false,
-            "crds": {
-              "install": true,
-              "retainOnDelete": false
-            },
-            "defaultSSLCertSecret": "",
-            "entityPrefix": "",
-            "exporter": {
-              "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-              "ports": {
-                "containerPort": 8888
-              },
-              "pullPolicy": "Always",
-              "required": false
-            },
-            "image": "registry.connect.redhat.com/citrix/cpx-13-0@sha256:54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d",
-            "ingressClass": "",
-            "ingressIP": "",
-            "ipam": false,
-            "kubernetesURL": "",
-            "license": {
-              "accept": false
-            },
-            "logLevel": "INFO",
-            "logProxy": "",
-            "mgmtHttpPort": 9080,
-            "mgmtHttpsPort": 9443,
-            "namespaceLabels": "",
-            "nodeSelector": {
-              "key": "",
-              "value": ""
-            },
-            "nsCookieVersion": "0",
-            "nsGateway": "192.168.1.1",
-            "nsHTTP2ServerSide": "OFF",
-            "nsIP": "192.168.1.2",
-            "nsProtocol": "http",
-            "openshift": true,
-            "pullPolicy": "Always",
-            "routeLabels": "",
-            "serviceAccount": {
-              "create": true
-            },
-            "serviceAnnotations": {
-              "aws": {
-                "backendProtocol": "",
-                "negotiationPolicy": "",
-                "proxyProtocol": false,
-                "resourcesTags": "",
-                "sslCert": "",
-                "sslPorts": ""
-              },
-              "azure": {
-                "internalLoadBalancer": false
-              }
-            },
-            "serviceType": {
-              "loadBalancer": {
-                "enabled": false,
-                "externalTrafficPolicy": "Local"
-              },
-              "nodePort": {
-                "enabled": false,
-                "httpPort": "",
-                "httpsPort": ""
-              }
-            },
-            "setAsDefaultIngressClass": false,
-            "sslCertManagedByAWS": false,
-            "tolerations": [],
-            "updateIngressStatus": false
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-bundle@sha256:58f15e99628043753fefa5c8df190cc90e82a6bd3b00aed3c52f0fbf69d81039",
-      "bundle_path_digest": "sha256:58f15e99628043753fefa5c8df190cc90e82a6bd3b00aed3c52f0fbf69d81039",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-05-18T11:04:03.006000+00:00",
-      "csv_description": "Citrix ADC CPX is a container-based application delivery controller that can be provisioned on a Docker host. Citrix ADC CPX enables customers to leverage Docker engine capabilities and use NetScaler load balancing and traffic management features for container-based applications. Citrix Ingress Controller which will be running in side-car mode with Citrix ADC CPX will automatically configures Citrix ADC CPX based on the Ingress resource configuration. This operator can be used deploy Citrix ADC CPX with Citrix ingress controller in an OpenShift environment.",
-      "csv_display_name": "Citrix ADC CPX with Ingress Controller",
-      "csv_metadata_description": "Citrix ADC CPX is a container-based application delivery controller that can be provisioned on a Docker host. Citrix ADC CPX enables customers to leverage Docker engine capabilities and use NetScaler load balancing and traffic management features for container-based applications. Citrix Ingress Controller which will be running in side-car mode with Citrix ADC CPX will automatically configures Citrix ADC CPX based on the Ingress resource configuration. This operator can be used deploy Citrix ADC CPX with Citrix ingress controller in an Openshift environment.",
-      "csv_name": "citrix-cpx-with-ingress-controller-operator.v1.13.20",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:40:28.399000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "citrix-cpx-with-ingress-controller-operator",
-      "provided_apis": [
-        {
-          "group": "citrix.com",
-          "kind": "CitrixCpxWithIngressController",
-          "plural": "citrixcpxwithingresscontrollers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "citrix",
-      "related_images": [
-        {
-          "digest": "sha256:4ca00f777a37e3070cfa2651685ba284623a78b55e2f81143ec8b58e967f163a",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-controller@sha256:4ca00f777a37e3070cfa2651685ba284623a78b55e2f81143ec8b58e967f163a",
-          "name": "citrix-k8s-cpx-ingress-controller-4ca00f777a37e3070cfa2651685ba284623a78b55e2f81143ec8b58e967f163a-annotation"
-        },
-        {
-          "digest": "sha256:10252238f921d720b8af7e2ca8e90be6e8516efefc1633697aa048a74041f1c3",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:10252238f921d720b8af7e2ca8e90be6e8516efefc1633697aa048a74041f1c3",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:4ca00f777a37e3070cfa2651685ba284623a78b55e2f81143ec8b58e967f163a",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-controller@sha256:4ca00f777a37e3070cfa2651685ba284623a78b55e2f81143ec8b58e967f163a",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d",
-          "image": "registry.connect.redhat.com/citrix/cpx-13-0@sha256:54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d",
-          "name": "cpx"
-        },
-        {
-          "digest": "sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "name": "cic"
-        },
-        {
-          "digest": "sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "name": "exporter"
-        },
-        {
-          "digest": "sha256:54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d",
-          "image": "registry.connect.redhat.com/citrix/cpx-13-0@sha256:54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d",
-          "name": "cpx-13-0-54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d-annotation"
-        },
-        {
-          "digest": "sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "name": "citrix-adc-metrics-exporter-c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe-annotation"
-        },
-        {
-          "digest": "sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "name": "citrix-ingress-controller-f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.13.20",
-      "version_original": "1.13.20"
-    },
-    {
-      "_id": "60a3acedf787b25f169e67f2",
-      "alm_examples": [
-        {
-          "api_version": "citrix.com/v1alpha1",
-          "kind": "CitrixCpxWithIngressController",
-          "metadata": {
-            "name": "cpx-cic"
-          },
-          "spec": {
-            "ADMSettings": {
-              "ADMFingerPrint": "",
-              "ADMIP": "",
-              "bandWidth": "",
-              "bandWidthLicense": false,
-              "cpxCores": "",
-              "licenseServerIP": "",
-              "licenseServerPort": 27000,
-              "loginSecret": "",
-              "vCPULicense": false
-            },
-            "aws": false,
-            "azure": false,
-            "bgpSettings": {
-              "bgpConfig": [
-                {
-                  "bgpRouter": {
-                    "localAS": 100,
-                    "neighbor": [
-                      {
-                        "ASOriginationInterval": 10,
-                        "address": "",
-                        "advertisementInterval": 10,
-                        "remoteAS": 100
-                      }
-                    ]
-                  }
-                }
-              ],
-              "required": false
-            },
-            "cic": {
-              "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-              "pullPolicy": "Always",
-              "required": true
-            },
-            "coeConfig": {
-              "distributedTracing": {
-                "enable": false,
-                "samplingrate": 100
-              },
-              "endpoint": {
-                "server": ""
-              },
-              "required": false,
-              "timeseries": {
-                "auditlogs": {
-                  "enable": false
-                },
-                "events": {
-                  "enable": false
-                },
-                "metrics": {
-                  "enable": false,
-                  "mode": "avro"
-                },
-                "port": 5563
-              },
-              "transactions": {
-                "enable": false,
-                "port": 5557
-              }
-            },
-            "cpxBgpRouter": false,
-            "crds": {
-              "install": true,
-              "retainOnDelete": false
-            },
-            "defaultSSLCertSecret": "",
-            "entityPrefix": "",
-            "exporter": {
-              "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-              "ports": {
-                "containerPort": 8888
-              },
-              "pullPolicy": "Always",
-              "required": false
-            },
-            "image": "registry.connect.redhat.com/citrix/cpx-13-0@sha256:54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d",
-            "ingressClass": "",
-            "ingressIP": "",
-            "ipam": false,
-            "kubernetesURL": "",
-            "license": {
-              "accept": false
-            },
-            "logLevel": "INFO",
-            "logProxy": "",
-            "mgmtHttpPort": 9080,
-            "mgmtHttpsPort": 9443,
-            "namespaceLabels": "",
-            "nodeSelector": {
-              "key": "",
-              "value": ""
-            },
-            "nsCookieVersion": "0",
-            "nsGateway": "192.168.1.1",
-            "nsHTTP2ServerSide": "OFF",
-            "nsIP": "192.168.1.2",
-            "nsProtocol": "http",
-            "openshift": true,
-            "pullPolicy": "Always",
-            "routeLabels": "",
-            "serviceAccount": {
-              "create": true
-            },
-            "serviceAnnotations": {
-              "aws": {
-                "backendProtocol": "",
-                "negotiationPolicy": "",
-                "proxyProtocol": false,
-                "resourcesTags": "",
-                "sslCert": "",
-                "sslPorts": ""
-              },
-              "azure": {
-                "internalLoadBalancer": false
-              }
-            },
-            "serviceType": {
-              "loadBalancer": {
-                "enabled": false,
-                "externalTrafficPolicy": "Local"
-              },
-              "nodePort": {
-                "enabled": false,
-                "httpPort": "",
-                "httpsPort": ""
-              }
-            },
-            "setAsDefaultIngressClass": false,
-            "sslCertManagedByAWS": false,
-            "tolerations": [],
-            "updateIngressStatus": false
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-bundle@sha256:58f15e99628043753fefa5c8df190cc90e82a6bd3b00aed3c52f0fbf69d81039",
-      "bundle_path_digest": "sha256:58f15e99628043753fefa5c8df190cc90e82a6bd3b00aed3c52f0fbf69d81039",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-05-18T12:02:53.030000+00:00",
-      "csv_description": "Citrix ADC CPX is a container-based application delivery controller that can be provisioned on a Docker host. Citrix ADC CPX enables customers to leverage Docker engine capabilities and use NetScaler load balancing and traffic management features for container-based applications. Citrix Ingress Controller which will be running in side-car mode with Citrix ADC CPX will automatically configures Citrix ADC CPX based on the Ingress resource configuration. This operator can be used deploy Citrix ADC CPX with Citrix ingress controller in an OpenShift environment.",
-      "csv_display_name": "Citrix ADC CPX with Ingress Controller",
-      "csv_metadata_description": "Citrix ADC CPX is a container-based application delivery controller that can be provisioned on a Docker host. Citrix ADC CPX enables customers to leverage Docker engine capabilities and use NetScaler load balancing and traffic management features for container-based applications. Citrix Ingress Controller which will be running in side-car mode with Citrix ADC CPX will automatically configures Citrix ADC CPX based on the Ingress resource configuration. This operator can be used deploy Citrix ADC CPX with Citrix ingress controller in an Openshift environment.",
-      "csv_name": "citrix-cpx-with-ingress-controller-operator.v1.13.20",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:11:59.512000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "citrix-cpx-with-ingress-controller-operator",
-      "provided_apis": [
-        {
-          "group": "citrix.com",
-          "kind": "CitrixCpxWithIngressController",
-          "plural": "citrixcpxwithingresscontrollers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "citrix",
-      "related_images": [
-        {
-          "digest": "sha256:4ca00f777a37e3070cfa2651685ba284623a78b55e2f81143ec8b58e967f163a",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-controller@sha256:4ca00f777a37e3070cfa2651685ba284623a78b55e2f81143ec8b58e967f163a",
-          "name": "citrix-k8s-cpx-ingress-controller-4ca00f777a37e3070cfa2651685ba284623a78b55e2f81143ec8b58e967f163a-annotation"
-        },
-        {
-          "digest": "sha256:10252238f921d720b8af7e2ca8e90be6e8516efefc1633697aa048a74041f1c3",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:10252238f921d720b8af7e2ca8e90be6e8516efefc1633697aa048a74041f1c3",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:4ca00f777a37e3070cfa2651685ba284623a78b55e2f81143ec8b58e967f163a",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-controller@sha256:4ca00f777a37e3070cfa2651685ba284623a78b55e2f81143ec8b58e967f163a",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d",
-          "image": "registry.connect.redhat.com/citrix/cpx-13-0@sha256:54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d",
-          "name": "cpx"
-        },
-        {
-          "digest": "sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "name": "cic"
-        },
-        {
-          "digest": "sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "name": "exporter"
-        },
-        {
-          "digest": "sha256:54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d",
-          "image": "registry.connect.redhat.com/citrix/cpx-13-0@sha256:54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d",
-          "name": "cpx-13-0-54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d-annotation"
-        },
-        {
-          "digest": "sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "name": "citrix-adc-metrics-exporter-c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe-annotation"
-        },
-        {
-          "digest": "sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "name": "citrix-ingress-controller-f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.13.20",
-      "version_original": "1.13.20"
-    },
-    {
       "_id": "60a3bb40f787b25f169e67f5",
       "alm_examples": [
         {
@@ -16633,6 +16131,158 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.15.3",
       "version_original": "1.15.3"
+    },
+    {
+      "_id": "60c24de3ba99c76846ab4b4b",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:9ee5b5d0929502d609cc8fb5267293432f6b8963ce1187810d84979be2cb5edd",
+      "bundle_path_digest": "sha256:9ee5b5d0929502d609cc8fb5267293432f6b8963ce1187810d84979be2cb5edd",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.17",
+      "creation_date": "2021-06-10T17:37:39.680000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.17.3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:38:05.124000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [],
+      "provider": "Tigera",
+      "related_images": [
+        {
+          "digest": "sha256:4b247cdd26bf4887dcddef5bea67283d9e19ac601588e7755aff41fce96d7d1d",
+          "image": "quay.io/tigera/operator@sha256:4b247cdd26bf4887dcddef5bea67283d9e19ac601588e7755aff41fce96d7d1d",
+          "name": "operator-4b247cdd26bf4887dcddef5bea67283d9e19ac601588e7755aff41fce96d7d1d-annotation"
+        },
+        {
+          "digest": "sha256:4b247cdd26bf4887dcddef5bea67283d9e19ac601588e7755aff41fce96d7d1d",
+          "image": "quay.io/tigera/operator@sha256:4b247cdd26bf4887dcddef5bea67283d9e19ac601588e7755aff41fce96d7d1d",
+          "name": "tigera-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.17.3",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.17.3",
+      "version_original": "1.17.3"
+    },
+    {
+      "_id": "60c24e02adf15566a5a97d5c",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:27b53a6972c5accc17d20770828d782bcf6a76432b2231fd8fd4aef41919c8de",
+      "bundle_path_digest": "sha256:27b53a6972c5accc17d20770828d782bcf6a76432b2231fd8fd4aef41919c8de",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.13",
+      "creation_date": "2021-06-10T17:38:10.380000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.13.3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:36:36.309000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [],
+      "provider": "Tigera",
+      "related_images": [
+        {
+          "digest": "sha256:6ab4d69c6d88c90392f3366764bc59e3ae57f5da6271ab5e8ed92540707041d8",
+          "image": "quay.io/tigera/operator@sha256:6ab4d69c6d88c90392f3366764bc59e3ae57f5da6271ab5e8ed92540707041d8",
+          "name": "operator-6ab4d69c6d88c90392f3366764bc59e3ae57f5da6271ab5e8ed92540707041d8-annotation"
+        },
+        {
+          "digest": "sha256:6ab4d69c6d88c90392f3366764bc59e3ae57f5da6271ab5e8ed92540707041d8",
+          "image": "quay.io/tigera/operator@sha256:6ab4d69c6d88c90392f3366764bc59e3ae57f5da6271ab5e8ed92540707041d8",
+          "name": "tigera-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.13.3",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.13.3",
+      "version_original": "1.13.3"
     }
   ]
 }

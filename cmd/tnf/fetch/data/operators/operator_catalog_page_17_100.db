@@ -1,881 +1,6 @@
 {
   "data": [
     {
-      "_id": "619319b3843af1624c4e5eff",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.6-39.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
-      "bundle_path_digest": "sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.8",
-      "creation_date": "2021-11-16T02:38:43.905000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.6-24",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:03:25.144000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis Labs",
-      "related_images": [
-        {
-          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "image": "redislabs/operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "name": "operator-998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b-annotation"
-        },
-        {
-          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.0.6-24",
-      "version_original": "6.0.6-24"
-    },
-    {
-      "_id": "619319f04b3c58bb75800413",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.12-57.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
-      "bundle_path_digest": "sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.8",
-      "creation_date": "2021-11-16T02:39:44.051000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.12-5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:34:52.195000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis Labs",
-      "related_images": [
-        {
-          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "name": "redis-enterprise-operator-b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f-annotation"
-        },
-        {
-          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.0.12-5",
-      "version_original": "6.0.12-5"
-    },
-    {
-      "_id": "61931a0ef286970f08bf665e",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.2.8-41.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:cf89cfbb1c39ac9a7fd925f1e8b5bec94535e4eb64dd6e2da102e9f7b44f9f5e",
-      "bundle_path_digest": "sha256:cf89cfbb1c39ac9a7fd925f1e8b5bec94535e4eb64dd6e2da102e9f7b44f9f5e",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.8",
-      "creation_date": "2021-11-16T02:40:14.546000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.2.8-2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:23:51.214000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis",
-      "related_images": [
-        {
-          "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "name": "redis-enterprise-operator-f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353-annotation"
-        },
-        {
-          "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.2.8-2",
-      "version_original": "6.2.8-2"
-    },
-    {
-      "_id": "61931a14f286970f08bf665f",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.20-97.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        },
-        {
-          "api_version": "app.redislabs.com/v1alpha1",
-          "kind": "RedisEnterpriseDatabase",
-          "metadata": {
-            "name": "redb"
-          },
-          "spec": {
-            "redisEnterpriseCluster": {
-              "name": "rec"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:5666acf5598f96dfbfac5704bb70e6578522979ef63b418ed2d1438a32d2440f",
-      "bundle_path_digest": "sha256:5666acf5598f96dfbfac5704bb70e6578522979ef63b418ed2d1438a32d2440f",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.8",
-      "creation_date": "2021-11-16T02:40:20.002000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.20-12a",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:00:51.600000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseDatabase",
-          "plural": "redisenterprisedatabases",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Redis Labs",
-      "related_images": [
-        {
-          "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
-          "name": "redis-enterprise-operator-f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730-annotation"
-        },
-        {
-          "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
-          "name": "redis-enterprise-operator"
-        },
-        {
-          "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
-          "name": "admission"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.0.20-12a",
-      "version_original": "6.0.20-12a"
-    },
-    {
-      "_id": "61931a4bf286970f08bf6660",
-      "alm_examples": [
-        {
-          "api_version": "apm.neuvector.com/v1alpha1",
-          "kind": "Neuvector",
-          "metadata": {
-            "name": "neuvector"
-          },
-          "spec": {
-            "admissionwebhook": {
-              "type": "ClusterIP"
-            },
-            "bottlerocket": {
-              "enabled": false,
-              "runtimePath": "/run/dockershim.sock"
-            },
-            "containerd": {
-              "enabled": false,
-              "path": "/var/run/containerd/containerd.sock"
-            },
-            "controller": {
-              "apisvc": {
-                "annotations": {},
-                "route": {
-                  "enabled": false,
-                  "host": "",
-                  "termination": "passthrough"
-                },
-                "type": ""
-              },
-              "azureFileShare": {
-                "enabled": false,
-                "secretName": "",
-                "shareName": ""
-              },
-              "certificate": {
-                "keyFile": "tls.key",
-                "pemFile": "tls.pem",
-                "secret": ""
-              },
-              "configmap": {
-                "data": "",
-                "enabled": false
-              },
-              "disruptionbudget": 0,
-              "enabled": true,
-              "federation": {
-                "managedsvc": {
-                  "ingress": {
-                    "annotations": {
-                      "ingress.kubernetes.io/protocol": "https"
-                    },
-                    "enabled": false,
-                    "host": "",
-                    "path": "/",
-                    "secretName": "",
-                    "tls": false
-                  },
-                  "route": {
-                    "enabled": false,
-                    "host": "",
-                    "termination": "passthrough"
-                  },
-                  "type": ""
-                },
-                "mastersvc": {
-                  "ingress": {
-                    "annotations": {
-                      "ingress.kubernetes.io/protocol": "https"
-                    },
-                    "enabled": false,
-                    "host": "",
-                    "path": "/",
-                    "secretName": "",
-                    "tls": false
-                  },
-                  "route": {
-                    "enabled": false,
-                    "host": "",
-                    "termination": "passthrough"
-                  },
-                  "type": ""
-                }
-              },
-              "image": "registry.connect.redhat.com/neuvector/controller",
-              "ingress": {
-                "annotations": {
-                  "ingress.kubernetes.io/protocol": "https"
-                },
-                "enabled": false,
-                "host": "",
-                "path": "/",
-                "secretName": "",
-                "tls": false
-              },
-              "priorityClassName": "",
-              "pvc": {
-                "accessModes": [
-                  "ReadWriteMany"
-                ],
-                "capacity": "",
-                "enabled": false,
-                "storageClass": ""
-              },
-              "replicas": 3,
-              "resources": {},
-              "schedulerName": "",
-              "strategy": {
-                "rollingUpdate": {
-                  "maxSurge": 1,
-                  "maxUnavailable": 0
-                },
-                "type": "RollingUpdate"
-              }
-            },
-            "crdwebhook": {
-              "enabled": true,
-              "type": "ClusterIP"
-            },
-            "crio": {
-              "enabled": true,
-              "path": "/var/run/crio/crio.sock"
-            },
-            "cve": {
-              "scanner": {
-                "dockerPath": "",
-                "enabled": true,
-                "image": "registry.connect.redhat.com/neuvector/scanner@sha256:c0c7095bcb36e93a4c074e5c97d652db5f0133022fd2ab6838a092e8959f2041",
-                "priorityClassName": "",
-                "replicas": 3,
-                "resources": {},
-                "strategy": {
-                  "rollingUpdate": {
-                    "maxSurge": 1,
-                    "maxUnavailable": 0
-                  },
-                  "type": "RollingUpdate"
-                }
-              },
-              "updater": {
-                "enabled": true,
-                "image": "registry.access.redhat.com/ubi8@sha256:060d7d6827b34949cc0fc58a50f72a5dccf00a4cc594406bdf5982f41dfe6118",
-                "priorityClassName": "",
-                "schedule": "0 0 * * *",
-                "secure": false
-              }
-            },
-            "docker": {
-              "enabled": false,
-              "path": "/var/run/docker.sock"
-            },
-            "enforcer": {
-              "enabled": true,
-              "image": "registry.connect.redhat.com/neuvector/enforcer",
-              "priorityClassName": "",
-              "resources": {},
-              "tolerations": [
-                {
-                  "effect": "NoSchedule",
-                  "key": "node-role.kubernetes.io/master"
-                }
-              ]
-            },
-            "k3s": {
-              "enabled": false,
-              "runtimePath": "/run/k3s/containerd/containerd.sock"
-            },
-            "manager": {
-              "certificate": {
-                "keyFile": "tls.key",
-                "pemFile": "tls.pem",
-                "secret": ""
-              },
-              "enabled": true,
-              "env": {
-                "ssl": true
-              },
-              "image": "registry.connect.redhat.com/neuvector/manager",
-              "ingress": {
-                "annotations": {},
-                "enabled": false,
-                "host": "",
-                "path": "/",
-                "secretName": "",
-                "tls": false
-              },
-              "priorityClassName": "",
-              "resources": {},
-              "route": {
-                "enabled": true,
-                "host": "",
-                "termination": "passthrough"
-              },
-              "svc": {
-                "annotations": {},
-                "loadBalancerIP": "",
-                "type": "NodePort"
-              }
-            },
-            "openshift": true,
-            "psp": false,
-            "resources": {},
-            "serviceAccount": "default"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:bd5db9f3403eee933627d3a1ef0c534cac8c7b53eda247589d546c1f6cfed71b",
-      "bundle_path_digest": "sha256:bd5db9f3403eee933627d3a1ef0c534cac8c7b53eda247589d546c1f6cfed71b",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2021-11-16T02:41:15.158000+00:00",
-      "csv_description": "NeuVector delivers the only cloud-native Kubernetes security platform with uncompromising end-to-end protection from DevOps vulnerability protection to automated run-time security, and featuring a true Layer 7 container firewall.\n\nThe NeuVector Operator runs  in the openshift container platform to deploy and manage the NeuVector Security cluster components. The NeuVector operator contains all necessary information to deploy NeuVector using helm charts. You simply need to install the NeuVector operator from the OpenShift embeded operator hub and create NeuVector instance. You can modify the NeuVector installation configuration by modifying yaml while creating the NeuVector instance such as imagePullSecrets, tag version, etc. Please refer to [github link](https://github.com/neuvector/neuvector-helm/tree/master/charts/core) for the values that can be modifed during installation. To upgrade to a newer version of NeuVector, just reapply the NeuVector instance with desired tag , which in turn pulls the specified NeuVector image tags and upgrades as per upgrade plan configured on the helm chart.  NeuVector Operator versions are tied to NeuVector product versions. Version 1.3.1 of the NeuVector Certified Operator deploys version 4.3.2-s1 of NeuVector.\n\n**Complete below steps to Grant Service Account Access to the Privileged SCC before installation.**\n\nCreate the NeuVector namespace\n\n         oc new-project  neuvector\nLogin as system:admin account\n\n         oc login -u system:admin\n\nGrant Service Account Access to the Privileged SCC\n\n         oc -n neuvector adm policy add-scc-to-user privileged -z default\n\nThe following info will be added in the Privileged SCC users:\n\n         - system:serviceaccount:neuvector:default\n\nIn OpenShift 4.6+ use the following to check:\n\n         oc get rolebinding system:openshift:scc:privileged -n neuvector -o wide\n         system:openshift:scc:privileged   ClusterRole/system:openshift:scc:privileged   9m22s                    neuvector/default\n\n\n**Add NeuVector license from NeuVector WebUI->setting**\n\n\n#Deploying the NeuVector Operator#\n\n\nPlease refer to the instructions [here](https://github.com/neuvector/neuvector-operator/blob/master/README.md)\n\n\n",
-      "csv_display_name": "NeuVector Operator",
-      "csv_metadata_description": "NeuVector delivers the only cloud-native Kubernetes security platform with uncompromising end-to-end protection from DevOps vulnerability protection to automated run-time security, and featuring a true Layer 7 container firewall.",
-      "csv_name": "neuvector-operator.v1.3.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:12:29.394000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "neuvector-certified-operator",
-      "provided_apis": [
-        {
-          "group": "apm.neuvector.com",
-          "kind": "Neuvector",
-          "plural": "neuvectors",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "NeuVector",
-      "related_images": [
-        {
-          "digest": "sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "image": "registry.connect.redhat.com/neuvector/neuvector-operator@sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "name": "neuvector-operator-487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1-annotation"
-        },
-        {
-          "digest": "sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "image": "registry.connect.redhat.com/neuvector/neuvector-operator@sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
-          "name": "neuvector-operator"
-        },
-        {
-          "digest": "sha256:afa454d7a22de6161e6ff6b6f859ce15fa0bfc4e9d4e5e191b61125dfc5cad6b",
-          "image": "registry.connect.redhat.com/neuvector/controller@sha256:afa454d7a22de6161e6ff6b6f859ce15fa0bfc4e9d4e5e191b61125dfc5cad6b",
-          "name": "controller"
-        },
-        {
-          "digest": "sha256:f9543cdf9bb338161a3f84a81381f26cbf724a23f6363583417c9da682e91cf8",
-          "image": "registry.connect.redhat.com/neuvector/enforcer@sha256:f9543cdf9bb338161a3f84a81381f26cbf724a23f6363583417c9da682e91cf8",
-          "name": "enforcer"
-        },
-        {
-          "digest": "sha256:085bd24dadcd9d023c6600227ca088ed8d03ab83a70b62401477d10272450952",
-          "image": "registry.connect.redhat.com/neuvector/manager@sha256:085bd24dadcd9d023c6600227ca088ed8d03ab83a70b62401477d10272450952",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:c0c7095bcb36e93a4c074e5c97d652db5f0133022fd2ab6838a092e8959f2041",
-          "image": "registry.connect.redhat.com/neuvector/scanner@sha256:c0c7095bcb36e93a4c074e5c97d652db5f0133022fd2ab6838a092e8959f2041",
-          "name": "scanner"
-        },
-        {
-          "digest": "sha256:060d7d6827b34949cc0fc58a50f72a5dccf00a4cc594406bdf5982f41dfe6118",
-          "image": "registry.access.redhat.com/ubi8@sha256:060d7d6827b34949cc0fc58a50f72a5dccf00a4cc594406bdf5982f41dfe6118",
-          "name": "updater"
-        },
-        {
-          "digest": "sha256:c0c7095bcb36e93a4c074e5c97d652db5f0133022fd2ab6838a092e8959f2041",
-          "image": "registry.connect.redhat.com/neuvector/scanner@sha256:c0c7095bcb36e93a4c074e5c97d652db5f0133022fd2ab6838a092e8959f2041",
-          "name": "scanner-c0c7095bcb36e93a4c074e5c97d652db5f0133022fd2ab6838a092e8959f2041-annotation"
-        },
-        {
-          "digest": "sha256:060d7d6827b34949cc0fc58a50f72a5dccf00a4cc594406bdf5982f41dfe6118",
-          "image": "registry.access.redhat.com/ubi8@sha256:060d7d6827b34949cc0fc58a50f72a5dccf00a4cc594406bdf5982f41dfe6118",
-          "name": "ubi8-060d7d6827b34949cc0fc58a50f72a5dccf00a4cc594406bdf5982f41dfe6118-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.3.1",
-      "version_original": "1.3.1"
-    },
-    {
-      "_id": "61931a5b4b3c58bb75800414",
-      "alm_examples": [
-        {
-          "api_version": "tools.opdev.io/v1",
-          "kind": "DemoResource",
-          "metadata": {
-            "name": "demoresource-sample"
-          },
-          "spec": {
-            "message": "Hello, World!"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/bcook/simple-demo-operator@sha256:027ff7a8f29ce525f1597a76faa6a264ca76029f244bf3b642e1e3f1bb80541c",
-      "bundle_path_digest": "sha256:027ff7a8f29ce525f1597a76faa6a264ca76029f244bf3b642e1e3f1bb80541c",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-11-16T02:41:31.264000+00:00",
-      "csv_description": "A simple demo operator with a minimal reconciliation function, for testing basic operator installation and validation workflows.",
-      "csv_display_name": "Simple Demo Operator",
-      "csv_metadata_description": "",
-      "csv_name": "tc-simple-demo-operator.v0.0.8",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:40:11.892000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "tc-simple-demo-operator",
-      "provided_apis": [
-        {
-          "group": "tools.opdev.io",
-          "kind": "DemoResource",
-          "version": "v1"
-        }
-      ],
-      "provider": "The Partner Lifecycle Engineering Team",
-      "related_images": [
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
-          "image": "quay.io/opdev/simple-demo-operator@sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.0.8",
-      "version_original": "0.0.8"
-    },
-    {
       "_id": "61931aa3843af1624c4e5f02",
       "alm_examples": [],
       "annotations": {
@@ -13244,6 +12369,870 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
       "version": "1.1.14",
       "version_original": "1.1.14"
+    },
+    {
+      "_id": "61a57b36bfd4a5234d5960ce",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1alpha1",
+          "kind": "OpenshiftArtifactoryHa",
+          "metadata": {
+            "name": "openshiftartifactoryha"
+          },
+          "spec": {
+            "artifactory-ha": {
+              "artifactory": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/artifactory-pro",
+                  "tag": "7.25.7-2"
+                },
+                "joinKey": "OVERRIDE",
+                "masterKey": "OVERRIDE",
+                "node": {
+                  "replicaCount": 2,
+                  "waitForPrimaryStartup": {
+                    "enabled": false
+                  }
+                },
+                "uid": "1000721030"
+              },
+              "database": {
+                "driver": "OVERRIDE",
+                "password": "OVERRIDE",
+                "type": "OVERRIDE",
+                "url": "OVERRIDE",
+                "user": "OVERRIDE"
+              },
+              "databaseUpgradeReady": true,
+              "initContainerImage": "registry.connect.redhat.com/jfrog/init@sha256:175efbb8c51f0c50c4d32e876b20083b92ec5a04bab94e93cb3cb92d86164d03",
+              "nginx": {
+                "gid": "1000720107",
+                "http": {
+                  "externalPort": 80,
+                  "internalPort": 8080
+                },
+                "https": {
+                  "externalPort": 443,
+                  "internalPort": 8443
+                },
+                "image": {
+                  "registry": "registry.redhat.io",
+                  "repository": "rhel8/nginx-116",
+                  "tag": "latest"
+                },
+                "service": {
+                  "ssloffload": false
+                },
+                "tlsSecretName": "OVERRIDE",
+                "uid": "1000720104"
+              },
+              "postgresql": {
+                "enabled": false
+              },
+              "waitForDatabase": true
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/jfrog/artifactory-operator-bundle@sha256:49229329083f8836be365b25beda86290cf8c6985dbeb1c46991c2121b54dda9",
+      "bundle_path_digest": "sha256:49229329083f8836be365b25beda86290cf8c6985dbeb1c46991c2121b54dda9",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-11-30T01:15:34.963000+00:00",
+      "csv_description": " ## Breaking change\nPlease update to version 1.1.10 of the operator.\nVersion 1.1.8 and 1.1.9 have issues. Please skip these versions.\n\n## Overview\nOpenshift Operator to deploy JFrog Artifactory Enterprise into your Openshift cluster.\n## Security Context Constraints\nTo deploy this helm chart you will need to be a cluster admin w/ access to the anyuid scc and add the operator service account to the anyuid scc.\n```\noc adm policy add-scc-to-user anyuid -z artifactory-ha-operator -n openshift-operators\n```\nAdd the service account for the Artifactory chart to deploy successfully:\n``` oc adm policy add-scc-to-user anyuid -z openshiftartifactoryha-artifactory-ha -n artifactory ```\n### Usage\n\nAn external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it.\n\nSearch for JFrog and click JFrog Artifactory Enterprise Operator to install.\n\nGo to the Installed Operators.\n\nWait for the JFrog Artifactory Enterprise Operator to complete the installation.\n\nOpen the Operator and click on the provided API: Artifactory HA.\n\nClick Create New Instance and provide the following parameters for your DB configuration:\n\n```\nDATABASE_TYPE\nDATABASE_DRIVER\nDATABASE_URL\nDATABASE_USER\nDATABASE_PASSWORD\n```\nMaster key and Join key must be supplied. To generate a new key for each run the command below:\n\n```\n# Create a key\nexport JOIN_KEY=$(openssl rand -hex 32)\necho ${JOIN_KEY}\n```\n\nTo use TLS you will need to first create a k8s tls secret to store your .crt and .key file into.\nThen supply the value of this k8s secret into the TLS_SECRET field.\n``` oc create secret tls my_tls_secret --cert=tls.crt --key=tls.key --namespace=my_namespace ```\nClick Create for Artifactory Enterprise to deploy into OpenShift and connect to it on the external IP exposed by the load balancer.\n### Create a route\nTo expose Artifactory from Openshift we recommend you create a new route in Openshift.\nYou can either use the oc command line tool or the Openshift web console to generate a new route.\nDepending upon where you terminate TLS you will need to either specify pass through or edge.\nCommand Line (Edge):\n``` oc create route edge --service=openshiftartifactory-ha --cert=tls.crt --key=tls.key --ca-cert=ca.crt --hostname=www.example.com ```\nOr for more information visit the official Openshift documentation on routes here:\nhttps://docs.openshift.com/container-platform/4.6/networking/routes/route-configuration.html\n\n",
+      "csv_display_name": "JFrog Artifactory Enterprise Operator",
+      "csv_metadata_description": "JFrog Artifactory Enterprise deploys Artifactory in a high availability environment across multiple pods",
+      "csv_name": "artifactory-ha-operator.v1.1.14",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:40:39.443000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "openshiftartifactoryha-operator",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "OpenshiftArtifactoryHa",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "JFrog",
+      "related_images": [
+        {
+          "digest": "sha256:9b0b59194a052c63fa0d54d47220b7d2154ac38272694e54492cf2c029043cc4",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:9b0b59194a052c63fa0d54d47220b7d2154ac38272694e54492cf2c029043cc4",
+          "name": "artifactory-operator-9b0b59194a052c63fa0d54d47220b7d2154ac38272694e54492cf2c029043cc4-annotation"
+        },
+        {
+          "digest": "sha256:9b0b59194a052c63fa0d54d47220b7d2154ac38272694e54492cf2c029043cc4",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:9b0b59194a052c63fa0d54d47220b7d2154ac38272694e54492cf2c029043cc4",
+          "name": "artifactory-ha-operator"
+        },
+        {
+          "digest": "sha256:abd96a07bbeffcdcdf69b5998b9256b684e72bcecb9b94b9a623a0c02b276322",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-pro@sha256:abd96a07bbeffcdcdf69b5998b9256b684e72bcecb9b94b9a623a0c02b276322",
+          "name": "artifactory_image_repository"
+        },
+        {
+          "digest": "sha256:225b9d8cac2b4d3a1d193782f4bba749194048b87bf31dcd12ea88422e6350c8",
+          "image": "registry.redhat.io/rhel8/nginx-116@sha256:225b9d8cac2b4d3a1d193782f4bba749194048b87bf31dcd12ea88422e6350c8",
+          "name": "nginx_image_repository"
+        },
+        {
+          "digest": "sha256:175efbb8c51f0c50c4d32e876b20083b92ec5a04bab94e93cb3cb92d86164d03",
+          "image": "registry.connect.redhat.com/jfrog/init@sha256:175efbb8c51f0c50c4d32e876b20083b92ec5a04bab94e93cb3cb92d86164d03",
+          "name": "init-175efbb8c51f0c50c4d32e876b20083b92ec5a04bab94e93cb3cb92d86164d03-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.1.14",
+      "version_original": "1.1.14"
+    },
+    {
+      "_id": "61a57b3f3e9240fca360f54e",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1alpha1",
+          "kind": "OpenshiftArtifactoryHa",
+          "metadata": {
+            "name": "openshiftartifactoryha"
+          },
+          "spec": {
+            "artifactory-ha": {
+              "artifactory": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/artifactory-pro",
+                  "tag": "7.25.7-2"
+                },
+                "joinKey": "OVERRIDE",
+                "masterKey": "OVERRIDE",
+                "node": {
+                  "replicaCount": 2,
+                  "waitForPrimaryStartup": {
+                    "enabled": false
+                  }
+                },
+                "uid": "1000721030"
+              },
+              "database": {
+                "driver": "OVERRIDE",
+                "password": "OVERRIDE",
+                "type": "OVERRIDE",
+                "url": "OVERRIDE",
+                "user": "OVERRIDE"
+              },
+              "databaseUpgradeReady": true,
+              "initContainerImage": "registry.connect.redhat.com/jfrog/init@sha256:175efbb8c51f0c50c4d32e876b20083b92ec5a04bab94e93cb3cb92d86164d03",
+              "nginx": {
+                "gid": "1000720107",
+                "http": {
+                  "externalPort": 80,
+                  "internalPort": 8080
+                },
+                "https": {
+                  "externalPort": 443,
+                  "internalPort": 8443
+                },
+                "image": {
+                  "registry": "registry.redhat.io",
+                  "repository": "rhel8/nginx-116",
+                  "tag": "latest"
+                },
+                "service": {
+                  "ssloffload": false
+                },
+                "tlsSecretName": "OVERRIDE",
+                "uid": "1000720104"
+              },
+              "postgresql": {
+                "enabled": false
+              },
+              "waitForDatabase": true
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/jfrog/artifactory-operator-bundle@sha256:55712df39fd00efa21711d24459e5a0610d9d2221af37a893fd80f7951838fab",
+      "bundle_path_digest": "sha256:55712df39fd00efa21711d24459e5a0610d9d2221af37a893fd80f7951838fab",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-11-30T01:15:43.436000+00:00",
+      "csv_description": " ## Breaking change\nPlease update to version 1.1.10 of the operator.\nVersion 1.1.8 and 1.1.9 have issues. Please skip these versions.\n\n## Overview\nOpenshift Operator to deploy JFrog Artifactory Enterprise into your Openshift cluster.\n## Security Context Constraints\nTo deploy this helm chart you will need to be a cluster admin w/ access to the anyuid scc and add the operator service account to the anyuid scc.\n```\noc adm policy add-scc-to-user anyuid -z artifactory-ha-operator -n openshift-operators\n```\nAdd the service account for the Artifactory chart to deploy successfully:\n``` oc adm policy add-scc-to-user anyuid -z openshiftartifactoryha-artifactory-ha -n artifactory ```\n### Usage\n\nAn external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it.\n\nSearch for JFrog and click JFrog Artifactory Enterprise Operator to install.\n\nGo to the Installed Operators.\n\nWait for the JFrog Artifactory Enterprise Operator to complete the installation.\n\nOpen the Operator and click on the provided API: Artifactory HA.\n\nClick Create New Instance and provide the following parameters for your DB configuration:\n\n```\nDATABASE_TYPE\nDATABASE_DRIVER\nDATABASE_URL\nDATABASE_USER\nDATABASE_PASSWORD\n```\nMaster key and Join key must be supplied. To generate a new key for each run the command below:\n\n```\n# Create a key\nexport JOIN_KEY=$(openssl rand -hex 32)\necho ${JOIN_KEY}\n```\n\nTo use TLS you will need to first create a k8s tls secret to store your .crt and .key file into.\nThen supply the value of this k8s secret into the TLS_SECRET field.\n``` oc create secret tls my_tls_secret --cert=tls.crt --key=tls.key --namespace=my_namespace ```\nClick Create for Artifactory Enterprise to deploy into OpenShift and connect to it on the external IP exposed by the load balancer.\n### Create a route\nTo expose Artifactory from Openshift we recommend you create a new route in Openshift.\nYou can either use the oc command line tool or the Openshift web console to generate a new route.\nDepending upon where you terminate TLS you will need to either specify pass through or edge.\nCommand Line (Edge):\n``` oc create route edge --service=openshiftartifactory-ha --cert=tls.crt --key=tls.key --ca-cert=ca.crt --hostname=www.example.com ```\nOr for more information visit the official Openshift documentation on routes here:\nhttps://docs.openshift.com/container-platform/4.6/networking/routes/route-configuration.html\n\n",
+      "csv_display_name": "JFrog Artifactory Enterprise Operator",
+      "csv_metadata_description": "JFrog Artifactory Enterprise deploys Artifactory in a high availability environment across multiple pods",
+      "csv_name": "artifactory-ha-operator.v1.1.15",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:40:43.771000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "openshiftartifactoryha-operator",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "OpenshiftArtifactoryHa",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "JFrog",
+      "related_images": [
+        {
+          "digest": "sha256:9b0b59194a052c63fa0d54d47220b7d2154ac38272694e54492cf2c029043cc4",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:9b0b59194a052c63fa0d54d47220b7d2154ac38272694e54492cf2c029043cc4",
+          "name": "artifactory-operator-9b0b59194a052c63fa0d54d47220b7d2154ac38272694e54492cf2c029043cc4-annotation"
+        },
+        {
+          "digest": "sha256:9b0b59194a052c63fa0d54d47220b7d2154ac38272694e54492cf2c029043cc4",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:9b0b59194a052c63fa0d54d47220b7d2154ac38272694e54492cf2c029043cc4",
+          "name": "artifactory-ha-operator"
+        },
+        {
+          "digest": "sha256:abd96a07bbeffcdcdf69b5998b9256b684e72bcecb9b94b9a623a0c02b276322",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-pro@sha256:abd96a07bbeffcdcdf69b5998b9256b684e72bcecb9b94b9a623a0c02b276322",
+          "name": "artifactory_image_repository"
+        },
+        {
+          "digest": "sha256:d71d368d6094a5777000a8d99164959ccb97fca355e855e24bd92c13a8df04f6",
+          "image": "registry.redhat.io/rhel8/nginx-116@sha256:d71d368d6094a5777000a8d99164959ccb97fca355e855e24bd92c13a8df04f6",
+          "name": "nginx_image_repository"
+        },
+        {
+          "digest": "sha256:175efbb8c51f0c50c4d32e876b20083b92ec5a04bab94e93cb3cb92d86164d03",
+          "image": "registry.connect.redhat.com/jfrog/init@sha256:175efbb8c51f0c50c4d32e876b20083b92ec5a04bab94e93cb3cb92d86164d03",
+          "name": "init-175efbb8c51f0c50c4d32e876b20083b92ec5a04bab94e93cb3cb92d86164d03-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.1.15",
+      "version_original": "1.1.15"
+    },
+    {
+      "_id": "61a57b47bfd4a5234d5960cf",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "OpenshiftArtifactoryHa",
+          "metadata": {
+            "name": "openshiftartifactoryha"
+          },
+          "spec": {
+            "artifactory-ha": {
+              "artifactory": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/artifactory-pro",
+                  "tag": "7.27.3-1"
+                },
+                "joinKey": "OVERRIDE",
+                "masterKey": "OVERRIDE",
+                "node": {
+                  "replicaCount": 2,
+                  "waitForPrimaryStartup": {
+                    "enabled": false
+                  }
+                },
+                "uid": "1000721030"
+              },
+              "database": {
+                "driver": "OVERRIDE",
+                "password": "OVERRIDE",
+                "type": "OVERRIDE",
+                "url": "OVERRIDE",
+                "user": "OVERRIDE"
+              },
+              "databaseUpgradeReady": true,
+              "initContainerImage": "registry.connect.redhat.com/jfrog/init@sha256:164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8",
+              "nginx": {
+                "gid": "1000720107",
+                "http": {
+                  "externalPort": 80,
+                  "internalPort": 8080
+                },
+                "https": {
+                  "externalPort": 443,
+                  "internalPort": 8443
+                },
+                "image": {
+                  "registry": "registry.redhat.io",
+                  "repository": "rhel8/nginx-116",
+                  "tag": "latest"
+                },
+                "service": {
+                  "ssloffload": false
+                },
+                "tlsSecretName": "OVERRIDE",
+                "uid": "1000720104"
+              },
+              "postgresql": {
+                "enabled": false
+              },
+              "waitForDatabase": true
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/jfrog/artifactory-operator-bundle@sha256:fc374491270b9566b0a5c80f3dd665b2227b1e8fb224eada7e5c98c82926ae08",
+      "bundle_path_digest": "sha256:fc374491270b9566b0a5c80f3dd665b2227b1e8fb224eada7e5c98c82926ae08",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-11-30T01:15:51.531000+00:00",
+      "csv_description": " ## Breaking change\nPlease update to version 1.1.10 of the operator.\nVersion 1.1.8 and 1.1.9 have issues. Please skip these versions.\n\n## Overview\nOpenshift Operator to deploy JFrog Artifactory Enterprise into your Openshift cluster.\n## Security Context Constraints\nTo deploy this helm chart you will need to be a cluster admin w/ access to the anyuid scc and add the operator service account to the anyuid scc.\n```\noc adm policy add-scc-to-user anyuid -z artifactory-ha-operator -n openshift-operators\n```\nAdd the service account for the Artifactory chart to deploy successfully:\n``` oc adm policy add-scc-to-user anyuid -z openshiftartifactoryha-artifactory-ha -n artifactory ```\n### Usage\n\nAn external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it.\n\nSearch for JFrog and click JFrog Artifactory Enterprise Operator to install.\n\nGo to the Installed Operators.\n\nWait for the JFrog Artifactory Enterprise Operator to complete the installation.\n\nOpen the Operator and click on the provided API: Artifactory HA.\n\nClick Create New Instance and provide the following parameters for your DB configuration:\n\n```\nDATABASE_TYPE\nDATABASE_DRIVER\nDATABASE_URL\nDATABASE_USER\nDATABASE_PASSWORD\n```\nMaster key and Join key must be supplied. To generate a new key for each run the command below:\n\n```\n# Create a key\nexport JOIN_KEY=$(openssl rand -hex 32)\necho ${JOIN_KEY}\n```\n\nTo use TLS you will need to first create a k8s tls secret to store your .crt and .key file into.\nThen supply the value of this k8s secret into the TLS_SECRET field.\n``` oc create secret tls my_tls_secret --cert=tls.crt --key=tls.key --namespace=my_namespace ```\nClick Create for Artifactory Enterprise to deploy into OpenShift and connect to it on the external IP exposed by the load balancer.\n### Create a route\nTo expose Artifactory from Openshift we recommend you create a new route in Openshift.\nYou can either use the oc command line tool or the Openshift web console to generate a new route.\nDepending upon where you terminate TLS you will need to either specify pass through or edge.\nCommand Line (Edge):\n``` oc create route edge --service=openshiftartifactory-ha --cert=tls.crt --key=tls.key --ca-cert=ca.crt --hostname=www.example.com ```\nOr for more information visit the official Openshift documentation on routes here:\nhttps://docs.openshift.com/container-platform/4.6/networking/routes/route-configuration.html\n\n",
+      "csv_display_name": "JFrog Artifactory Enterprise Operator",
+      "csv_metadata_description": "JFrog Artifactory Enterprise deploys Artifactory in a high availability environment across multiple pods",
+      "csv_name": "artifactory-ha-operator.v1.1.18",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:40:47.344000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "openshiftartifactoryha-operator",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "OpenshiftArtifactoryHa",
+          "version": "v1"
+        }
+      ],
+      "provider": "JFrog",
+      "related_images": [
+        {
+          "digest": "sha256:e292553e1b6e792ff19276c7f6565d7ed61dd95289eb176066329954bc93e371",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:e292553e1b6e792ff19276c7f6565d7ed61dd95289eb176066329954bc93e371",
+          "name": "artifactory-operator-e292553e1b6e792ff19276c7f6565d7ed61dd95289eb176066329954bc93e371-annotation"
+        },
+        {
+          "digest": "sha256:e292553e1b6e792ff19276c7f6565d7ed61dd95289eb176066329954bc93e371",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:e292553e1b6e792ff19276c7f6565d7ed61dd95289eb176066329954bc93e371",
+          "name": "artifactory-ha-operator"
+        },
+        {
+          "digest": "sha256:7289dde95d1e4d8e161a28cffd9c4a0cc96f92f7536d069ab63ec304a92254fd",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-pro@sha256:7289dde95d1e4d8e161a28cffd9c4a0cc96f92f7536d069ab63ec304a92254fd",
+          "name": "artifactory_image_repository"
+        },
+        {
+          "digest": "sha256:d71d368d6094a5777000a8d99164959ccb97fca355e855e24bd92c13a8df04f6",
+          "image": "registry.redhat.io/rhel8/nginx-116@sha256:d71d368d6094a5777000a8d99164959ccb97fca355e855e24bd92c13a8df04f6",
+          "name": "nginx_image_repository"
+        },
+        {
+          "digest": "sha256:164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8",
+          "image": "registry.connect.redhat.com/jfrog/init@sha256:164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8",
+          "name": "init-164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.1.18",
+      "version_original": "1.1.18"
+    },
+    {
+      "_id": "61a57b4f3e9240fca360f54f",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "OpenshiftArtifactoryHa",
+          "metadata": {
+            "name": "openshiftartifactoryha"
+          },
+          "spec": {
+            "artifactory-ha": {
+              "artifactory": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/artifactory-pro",
+                  "tag": "7.27.3-1"
+                },
+                "joinKey": "OVERRIDE",
+                "masterKey": "OVERRIDE",
+                "node": {
+                  "replicaCount": 2,
+                  "waitForPrimaryStartup": {
+                    "enabled": false
+                  }
+                },
+                "uid": "1000721030"
+              },
+              "database": {
+                "driver": "OVERRIDE",
+                "password": "OVERRIDE",
+                "type": "OVERRIDE",
+                "url": "OVERRIDE",
+                "user": "OVERRIDE"
+              },
+              "databaseUpgradeReady": true,
+              "initContainerImage": "registry.connect.redhat.com/jfrog/init@sha256:164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8",
+              "nginx": {
+                "gid": "1000720107",
+                "http": {
+                  "externalPort": 80,
+                  "internalPort": 8080
+                },
+                "https": {
+                  "externalPort": 443,
+                  "internalPort": 8443
+                },
+                "image": {
+                  "registry": "registry.redhat.io",
+                  "repository": "rhel8/nginx-116",
+                  "tag": "latest"
+                },
+                "service": {
+                  "ssloffload": false
+                },
+                "tlsSecretName": "OVERRIDE",
+                "uid": "1000720104"
+              },
+              "postgresql": {
+                "enabled": false
+              },
+              "waitForDatabase": true
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/jfrog/artifactory-operator-bundle@sha256:3c12c9d9537b12f610b9f759ad0a94ed465608f69e6bd1cd175a8c3d177151b8",
+      "bundle_path_digest": "sha256:3c12c9d9537b12f610b9f759ad0a94ed465608f69e6bd1cd175a8c3d177151b8",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-11-30T01:15:59.736000+00:00",
+      "csv_description": " ## Breaking change\nPlease update to version 1.1.10 of the operator.\nVersion 1.1.8 and 1.1.9 have issues. Please skip these versions.\n\n## Overview\nOpenshift Operator to deploy JFrog Artifactory Enterprise into your Openshift cluster.\n## Security Context Constraints\nTo deploy this helm chart you will need to be a cluster admin w/ access to the anyuid scc and add the operator service account to the anyuid scc.\n```\noc adm policy add-scc-to-user anyuid -z artifactory-ha-operator -n openshift-operators\n```\nAdd the service account for the Artifactory chart to deploy successfully:\n``` oc adm policy add-scc-to-user anyuid -z openshiftartifactoryha-artifactory-ha -n artifactory ```\n### Usage\n\nAn external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it.\n\nSearch for JFrog and click JFrog Artifactory Enterprise Operator to install.\n\nGo to the Installed Operators.\n\nWait for the JFrog Artifactory Enterprise Operator to complete the installation.\n\nOpen the Operator and click on the provided API: Artifactory HA.\n\nClick Create New Instance and provide the following parameters for your DB configuration:\n\n```\nDATABASE_TYPE\nDATABASE_DRIVER\nDATABASE_URL\nDATABASE_USER\nDATABASE_PASSWORD\n```\nMaster key and Join key must be supplied. To generate a new key for each run the command below:\n\n```\n# Create a key\nexport JOIN_KEY=$(openssl rand -hex 32)\necho ${JOIN_KEY}\n```\n\nTo use TLS you will need to first create a k8s tls secret to store your .crt and .key file into.\nThen supply the value of this k8s secret into the TLS_SECRET field.\n``` oc create secret tls my_tls_secret --cert=tls.crt --key=tls.key --namespace=my_namespace ```\nClick Create for Artifactory Enterprise to deploy into OpenShift and connect to it on the external IP exposed by the load balancer.\n### Create a route\nTo expose Artifactory from Openshift we recommend you create a new route in Openshift.\nYou can either use the oc command line tool or the Openshift web console to generate a new route.\nDepending upon where you terminate TLS you will need to either specify pass through or edge.\nCommand Line (Edge):\n``` oc create route edge --service=openshiftartifactory-ha --cert=tls.crt --key=tls.key --ca-cert=ca.crt --hostname=www.example.com ```\nOr for more information visit the official Openshift documentation on routes here:\nhttps://docs.openshift.com/container-platform/4.6/networking/routes/route-configuration.html\n\n",
+      "csv_display_name": "JFrog Artifactory Enterprise Operator",
+      "csv_metadata_description": "JFrog Artifactory Enterprise deploys Artifactory in a high availability environment across multiple pods",
+      "csv_name": "artifactory-ha-operator.v1.1.20",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:40:52.177000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "openshiftartifactoryha-operator",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "OpenshiftArtifactoryHa",
+          "version": "v1"
+        }
+      ],
+      "provider": "JFrog",
+      "related_images": [
+        {
+          "digest": "sha256:29dad888f9b74b2c19f221aa6634c94dcd2144237dc039157056a77cbb0c74a4",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:29dad888f9b74b2c19f221aa6634c94dcd2144237dc039157056a77cbb0c74a4",
+          "name": "artifactory-operator-29dad888f9b74b2c19f221aa6634c94dcd2144237dc039157056a77cbb0c74a4-annotation"
+        },
+        {
+          "digest": "sha256:29dad888f9b74b2c19f221aa6634c94dcd2144237dc039157056a77cbb0c74a4",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:29dad888f9b74b2c19f221aa6634c94dcd2144237dc039157056a77cbb0c74a4",
+          "name": "artifactory-ha-operator"
+        },
+        {
+          "digest": "sha256:7289dde95d1e4d8e161a28cffd9c4a0cc96f92f7536d069ab63ec304a92254fd",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-pro@sha256:7289dde95d1e4d8e161a28cffd9c4a0cc96f92f7536d069ab63ec304a92254fd",
+          "name": "artifactory_image_repository"
+        },
+        {
+          "digest": "sha256:d71d368d6094a5777000a8d99164959ccb97fca355e855e24bd92c13a8df04f6",
+          "image": "registry.redhat.io/rhel8/nginx-116@sha256:d71d368d6094a5777000a8d99164959ccb97fca355e855e24bd92c13a8df04f6",
+          "name": "nginx_image_repository"
+        },
+        {
+          "digest": "sha256:164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8",
+          "image": "registry.connect.redhat.com/jfrog/init@sha256:164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8",
+          "name": "init-164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.1.20",
+      "version_original": "1.1.20"
+    },
+    {
+      "_id": "61a57b60bfd4a5234d5960d0",
+      "alm_examples": [
+        {
+          "api_version": "cilium.io/v1alpha1",
+          "kind": "CiliumConfig",
+          "metadata": {
+            "name": "cilium-openshift-default",
+            "namespace": "placeholder"
+          },
+          "spec": {
+            "cni": {
+              "binPath": "/var/lib/cni/bin",
+              "confPath": "/var/run/multus/cni/net.d"
+            },
+            "endpointRoutes": {
+              "enabled": true
+            },
+            "hubble": {
+              "tls": {
+                "enabled": false
+              }
+            },
+            "ipam": {
+              "mode": "cluster-pool",
+              "operator": {
+                "clusterPoolIPv4MaskSize": "23",
+                "clusterPoolIPv4PodCIDR": "10.128.0.0/14"
+              }
+            },
+            "kubeProxyReplacement": "probe",
+            "nativeRoutingCIDR": "10.128.0.0/14",
+            "prometheus": {
+              "serviceMonitor": {
+                "enabled": false
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-olm-metadata@sha256:33a2e21a069ff24af4bf0ffc51e83ddf398df5d9735d0123120768e9dc2c27f9",
+      "bundle_path_digest": "sha256:33a2e21a069ff24af4bf0ffc51e83ddf398df5d9735d0123120768e9dc2c27f9",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-11-30T01:16:16.258000+00:00",
+      "csv_description": "Cilium - eBPF-based Networking, Security, and Observability",
+      "csv_display_name": "Cilium",
+      "csv_metadata_description": "",
+      "csv_name": "cilium.v1.10.4-x5bfd7b3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:41:51.376000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "cilium",
+      "provided_apis": [
+        {
+          "group": "cilium.io",
+          "kind": "CiliumConfig",
+          "plural": "ciliumconfigs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Isovalent",
+      "related_images": [
+        {
+          "digest": "sha256:b45ff6a6552d71cbc26e358e0b25759d33818fd92301f1656453c5bcf826ff13",
+          "image": "registry.connect.redhat.com/isovalent/cilium-olm@sha256:b45ff6a6552d71cbc26e358e0b25759d33818fd92301f1656453c5bcf826ff13",
+          "name": "operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "1.10.4+x5bfd7b3",
+      "version_original": "1.10.4+x5bfd7b3"
+    },
+    {
+      "_id": "61a57b6927e166330707d960",
+      "alm_examples": [
+        {
+          "api_version": "citrix.citrix.com/v1alpha1",
+          "kind": "Citrix-adc-istio-ingress-gateway",
+          "metadata": {
+            "name": "cxa-ingress-gateway-sample"
+          },
+          "spec": {
+            "ADMSettings": {
+              "ADMIP": "",
+              "bandWidth": "",
+              "bandWidthLicense": false,
+              "cpxCores": "",
+              "licenseServerIP": "",
+              "licenseServerPort": 27000,
+              "vCPULicense": false
+            },
+            "certProvider": {
+              "caAddr": "istiod.istio-system.svc",
+              "caPort": 15012,
+              "certTTLinHours": 720,
+              "clusterId": "Kubernetes",
+              "jwtPolicy": "",
+              "trustDomain": "cluster.local"
+            },
+            "citrixCPX": false,
+            "coe": {
+              "coeTracing": false,
+              "coeURL": ""
+            },
+            "ingressGateway": {
+              "EULA": false,
+              "adcServerName": "",
+              "httpNodePort": 30180,
+              "httpsNodePort": 31443,
+              "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
+              "imagePullPolicy": "IfNotPresent",
+              "label": "citrix-ingressgateway",
+              "lightWeightCPX": 1,
+              "mgmtHttpPort": 10080,
+              "mgmtHttpsPort": 10443,
+              "multiClusterIngress": false,
+              "multiClusterListenerNodePort": 32443,
+              "multiClusterListenerPort": 15443,
+              "multiClusterSvcDomain": "global",
+              "netProfile": "",
+              "netscalerUrl": "",
+              "nodePortRequired": false,
+              "secretVolumes": [],
+              "tcpPort": [],
+              "vserverIP": "nsip"
+            },
+            "istioPilot": {
+              "insecureGrpcPort": 15010,
+              "name": "istiod",
+              "namespace": "istio-system",
+              "secureGrpcPort": 15012
+            },
+            "metricExporter": {
+              "image": "quay.io/citrix/citrix-adc-metrics-exporter@sha256:edc7f42fed88a1652904abb3a9cca09cd555374320a55693087eea2da629e536",
+              "imagePullPolicy": "IfNotPresent",
+              "logLevel": "ERROR",
+              "port": 8888,
+              "required": true,
+              "secure": "YES"
+            },
+            "secretName": "nslogin",
+            "xDSAdaptor": {
+              "image": "quay.io/citrix/citrix-xds-adaptor@sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
+              "imagePullPolicy": "IfNotPresent",
+              "jsonLog": false,
+              "logLevel": "DEBUG",
+              "proxyType": "router",
+              "secureConnect": true
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/citrix/istioingressgateway-bundle@sha256:5af6bafd200b94629bf0c5371a779ec19a726225821daa796d494fa99ef2c6e8",
+      "bundle_path_digest": "sha256:5af6bafd200b94629bf0c5371a779ec19a726225821daa796d494fa99ef2c6e8",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-11-30T01:16:25.137000+00:00",
+      "csv_description": "An Istio ingress gateway acts as an entry point for the incoming traffic and secures and controls access to the service mesh from outside. It also performs routing and load balancing. Citrix ADC CPX, MPX, or VPX can be deployed as an ingress gateway to the Istio service mesh",
+      "csv_display_name": "Citrix ADC Istio Ingress Gateway Operator",
+      "csv_metadata_description": "An Istio ingress gateway acts as an entry point for the incoming traffic. Citrix ADC CPX, MPX, or VPX can be deployed as an ingress gateway to the Istio service jeee An Istio ingress gateway acts as an entry point for the incoming traffic and secures and controls access to the service mesh from outside. It also perform routing and load balancing. Citrix ADC CPX, MPX, or VPX can be deployed as an ingress gateway to the Istio service mesh.",
+      "csv_name": "citrix-adc-istio-ingress-gateway-operator.v0.9.9",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:42:40.246000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "citrix-adc-istio-ingress-gateway-operator",
+      "provided_apis": [
+        {
+          "group": "citrix.citrix.com",
+          "kind": "Citrix-adc-istio-ingress-gateway",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "citrix",
+      "related_images": [
+        {
+          "digest": "sha256:8333b7fb73ad7479be45cb6a71d391554480ee0a623744e0a2e185cd1f45c226",
+          "image": "registry.connect.redhat.com/citrix/citrix-adc-istio-ingress-gateway@sha256:8333b7fb73ad7479be45cb6a71d391554480ee0a623744e0a2e185cd1f45c226",
+          "name": "citrix-adc-istio-ingress-gateway-8333b7fb73ad7479be45cb6a71d391554480ee0a623744e0a2e185cd1f45c226-annotation"
+        },
+        {
+          "digest": "sha256:a5c16c64229aac3564c66816c123e81a849ff93b8a443cd6ff14bd8d63c06644",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:a5c16c64229aac3564c66816c123e81a849ff93b8a443cd6ff14bd8d63c06644",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:8333b7fb73ad7479be45cb6a71d391554480ee0a623744e0a2e185cd1f45c226",
+          "image": "registry.connect.redhat.com/citrix/citrix-adc-istio-ingress-gateway@sha256:8333b7fb73ad7479be45cb6a71d391554480ee0a623744e0a2e185cd1f45c226",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
+          "image": "quay.io/citrix/citrix-xds-adaptor@sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
+          "name": "citrix-xds-adaptor-b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6-annotation"
+        },
+        {
+          "digest": "sha256:edc7f42fed88a1652904abb3a9cca09cd555374320a55693087eea2da629e536",
+          "image": "quay.io/citrix/citrix-adc-metrics-exporter@sha256:edc7f42fed88a1652904abb3a9cca09cd555374320a55693087eea2da629e536",
+          "name": "citrix-adc-metrics-exporter-edc7f42fed88a1652904abb3a9cca09cd555374320a55693087eea2da629e536-annotation"
+        },
+        {
+          "digest": "sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
+          "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
+          "name": "citrix-k8s-cpx-ingress-8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.9.9",
+      "version_original": "0.9.9"
     }
   ]
 }

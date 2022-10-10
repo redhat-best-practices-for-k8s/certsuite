@@ -1,567 +1,6 @@
 {
   "data": [
     {
-      "_id": "6163f75304fd1c67039dbd73",
-      "alm_examples": [
-        {
-          "api_version": "navigator.nastel.com/v1alpha6",
-          "kind": "NastelNavigator",
-          "metadata": {
-            "name": "nastelnavigator"
-          },
-          "spec": {
-            "cep-wgs": {
-              "image": "registry.connect.redhat.com/nastel/navigator-wgs",
-              "licenseName": "AutoPilotWMQ_MQM.lic",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "cepServerPort": 3005,
-                "node": {},
-                "type": "NodePort",
-                "wgsPort": 4010
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "domain": {
-              "image": "registry.connect.redhat.com/nastel/nastel-domain",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "node": {},
-                "serverPort": 2323,
-                "type": "NodePort",
-                "userPort": 3000
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "global": {
-              "storage": {
-                "class": ""
-              },
-              "subDomain": "nastel-2-915b3b336cabec458a7c7ec2aa7c625f-0000.us-south.containers.appdomain.cloud"
-            },
-            "navigator": {
-              "image": "registry.connect.redhat.com/nastel/navigator-ui",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "debugPort": 8000,
-                "node": {},
-                "type": "LoadBalancer",
-                "webPort": 8080
-              }
-            },
-            "nsqcm": {
-              "image": "registry.connect.redhat.com/nastel/navigator-cm",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "cmAcePort": 5577,
-                "cmEmsPort": 5012,
-                "cmKafkaPort": 5024,
-                "cmPort": 5015,
-                "mqPort": 1414,
-                "node": {},
-                "type": "NodePort"
-              }
-            },
-            "wgs-mysql": {
-              "image": "registry.redhat.io/rhel8/mariadb-103",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "dbPort": 3306,
-                "type": "ClusterIP"
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nastel/navigator-operator-bundle@sha256:84a55e72cff648548aa146be15886735e3c4d3003c2a5614d689589c17575ea6",
-      "bundle_path_digest": "sha256:84a55e72cff648548aa146be15886735e3c4d3003c2a5614d689589c17575ea6",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-10-11T08:35:31.834000+00:00",
-      "csv_description": "The operator deploys Nastel Navigator component containers:\n  * Nastel Domain Server\n  * Nastel Workgroup Server\n  * MySQL database (MariaDB) instance\n  * Connection Manager\n  * Navigator WebApp\n\nin one go.\n\n[Nastel Navigator](https://www.nastel.com/nastel-navigator/) allows you to manage, audit and administrate instances of IBM MQ, EMS, ACE/IIB and\nKafka middleware.\n",
-      "csv_display_name": "Nastel Navigator Operator",
-      "csv_metadata_description": "Operator to deploy and run Nastel Navigator",
-      "csv_name": "nastel-navigator-operator.v1.100202.5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:49:58.368000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "nastel-navigator-operator-certified",
-      "provided_apis": [
-        {
-          "group": "navigator.nastel.com",
-          "kind": "NastelNavigator",
-          "plural": "nastelnavigators",
-          "version": "v1alpha6"
-        }
-      ],
-      "provider": "Nastel",
-      "related_images": [
-        {
-          "digest": "sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
-          "image": "registry.connect.redhat.com/nastel/navigator-operator@sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
-          "name": "navigator-operator-5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4-annotation"
-        },
-        {
-          "digest": "sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
-          "image": "registry.connect.redhat.com/nastel/navigator-operator@sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
-          "name": "nastel-navigator-operator"
-        },
-        {
-          "digest": "sha256:68af5064ccd561f3384ebd1be7615f95c5b00d1cda86d97534bae58747b01337",
-          "image": "registry.connect.redhat.com/nastel/nastel-domain@sha256:68af5064ccd561f3384ebd1be7615f95c5b00d1cda86d97534bae58747b01337",
-          "name": "domain"
-        },
-        {
-          "digest": "sha256:b1893a7363dac0b6a898587c97755b6977607e21bf9064bcfed332903098894a",
-          "image": "registry.connect.redhat.com/nastel/navigator-cm@sha256:b1893a7363dac0b6a898587c97755b6977607e21bf9064bcfed332903098894a",
-          "name": "cm"
-        },
-        {
-          "digest": "sha256:a55195ee8b93a81fbcbee0f131a5e0d4c235043f7b13f0b16c1ba3f41cc65020",
-          "image": "registry.connect.redhat.com/nastel/navigator-wgs@sha256:a55195ee8b93a81fbcbee0f131a5e0d4c235043f7b13f0b16c1ba3f41cc65020",
-          "name": "wgs"
-        },
-        {
-          "digest": "sha256:e5d89a40eae7902fd4cbedf14d544c530c29a97e4fa4894af48821dc2c64fa57",
-          "image": "registry.connect.redhat.com/nastel/navigator-ui@sha256:e5d89a40eae7902fd4cbedf14d544c530c29a97e4fa4894af48821dc2c64fa57",
-          "name": "navigator"
-        },
-        {
-          "digest": "sha256:bfb7a648078244982e5ab1549bf016b08219c210b4853e97ba94c2ec7184ac32",
-          "image": "registry.redhat.io/rhel8/mariadb-103@sha256:bfb7a648078244982e5ab1549bf016b08219c210b4853e97ba94c2ec7184ac32",
-          "name": "mysql"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.100202.5",
-      "version_original": "1.100202.5"
-    },
-    {
-      "_id": "6163f81b04fd1c67039dbd74",
-      "alm_examples": [
-        {
-          "api_version": "navigator.nastel.com/v1alpha6",
-          "kind": "NastelNavigator",
-          "metadata": {
-            "name": "nastelnavigator"
-          },
-          "spec": {
-            "cep-wgs": {
-              "image": "registry.connect.redhat.com/nastel/navigator-wgs",
-              "licenseName": "AutoPilotWMQ_MQM.lic",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "cepServerPort": 3005,
-                "node": {},
-                "type": "NodePort",
-                "wgsPort": 4010
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "domain": {
-              "image": "registry.connect.redhat.com/nastel/nastel-domain",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "node": {},
-                "serverPort": 2323,
-                "type": "NodePort",
-                "userPort": 3000
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "global": {
-              "storage": {
-                "class": ""
-              },
-              "subDomain": "nastel-2-915b3b336cabec458a7c7ec2aa7c625f-0000.us-south.containers.appdomain.cloud"
-            },
-            "navigator": {
-              "image": "registry.connect.redhat.com/nastel/navigator-ui",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "debugPort": 8000,
-                "node": {},
-                "type": "LoadBalancer",
-                "webPort": 8080
-              }
-            },
-            "nsqcm": {
-              "image": "registry.connect.redhat.com/nastel/navigator-cm",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "cmAcePort": 5577,
-                "cmEmsPort": 5012,
-                "cmKafkaPort": 5024,
-                "cmPort": 5015,
-                "mqPort": 1414,
-                "node": {},
-                "type": "NodePort"
-              }
-            },
-            "wgs-mysql": {
-              "image": "registry.redhat.io/rhel8/mariadb-103",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "dbPort": 3306,
-                "type": "ClusterIP"
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nastel/navigator-operator-bundle@sha256:84a55e72cff648548aa146be15886735e3c4d3003c2a5614d689589c17575ea6",
-      "bundle_path_digest": "sha256:84a55e72cff648548aa146be15886735e3c4d3003c2a5614d689589c17575ea6",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-10-11T08:38:51.764000+00:00",
-      "csv_description": "The operator deploys Nastel Navigator component containers:\n  * Nastel Domain Server\n  * Nastel Workgroup Server\n  * MySQL database (MariaDB) instance\n  * Connection Manager\n  * Navigator WebApp\n\nin one go.\n\n[Nastel Navigator](https://www.nastel.com/nastel-navigator/) allows you to manage, audit and administrate instances of IBM MQ, EMS, ACE/IIB and\nKafka middleware.\n",
-      "csv_display_name": "Nastel Navigator Operator",
-      "csv_metadata_description": "Operator to deploy and run Nastel Navigator",
-      "csv_name": "nastel-navigator-operator.v1.100202.5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:57:45.878000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "nastel-navigator-operator-certified",
-      "provided_apis": [
-        {
-          "group": "navigator.nastel.com",
-          "kind": "NastelNavigator",
-          "plural": "nastelnavigators",
-          "version": "v1alpha6"
-        }
-      ],
-      "provider": "Nastel",
-      "related_images": [
-        {
-          "digest": "sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
-          "image": "registry.connect.redhat.com/nastel/navigator-operator@sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
-          "name": "navigator-operator-5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4-annotation"
-        },
-        {
-          "digest": "sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
-          "image": "registry.connect.redhat.com/nastel/navigator-operator@sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
-          "name": "nastel-navigator-operator"
-        },
-        {
-          "digest": "sha256:68af5064ccd561f3384ebd1be7615f95c5b00d1cda86d97534bae58747b01337",
-          "image": "registry.connect.redhat.com/nastel/nastel-domain@sha256:68af5064ccd561f3384ebd1be7615f95c5b00d1cda86d97534bae58747b01337",
-          "name": "domain"
-        },
-        {
-          "digest": "sha256:b1893a7363dac0b6a898587c97755b6977607e21bf9064bcfed332903098894a",
-          "image": "registry.connect.redhat.com/nastel/navigator-cm@sha256:b1893a7363dac0b6a898587c97755b6977607e21bf9064bcfed332903098894a",
-          "name": "cm"
-        },
-        {
-          "digest": "sha256:a55195ee8b93a81fbcbee0f131a5e0d4c235043f7b13f0b16c1ba3f41cc65020",
-          "image": "registry.connect.redhat.com/nastel/navigator-wgs@sha256:a55195ee8b93a81fbcbee0f131a5e0d4c235043f7b13f0b16c1ba3f41cc65020",
-          "name": "wgs"
-        },
-        {
-          "digest": "sha256:e5d89a40eae7902fd4cbedf14d544c530c29a97e4fa4894af48821dc2c64fa57",
-          "image": "registry.connect.redhat.com/nastel/navigator-ui@sha256:e5d89a40eae7902fd4cbedf14d544c530c29a97e4fa4894af48821dc2c64fa57",
-          "name": "navigator"
-        },
-        {
-          "digest": "sha256:bfb7a648078244982e5ab1549bf016b08219c210b4853e97ba94c2ec7184ac32",
-          "image": "registry.redhat.io/rhel8/mariadb-103@sha256:bfb7a648078244982e5ab1549bf016b08219c210b4853e97ba94c2ec7184ac32",
-          "name": "mysql"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.100202.5",
-      "version_original": "1.100202.5"
-    },
-    {
-      "_id": "6163f9a690fb938ecf600a7b",
-      "alm_examples": [
-        {
-          "api_version": "navigator.nastel.com/v1alpha6",
-          "kind": "NastelNavigator",
-          "metadata": {
-            "name": "nastelnavigator"
-          },
-          "spec": {
-            "cep-wgs": {
-              "image": "registry.connect.redhat.com/nastel/navigator-wgs",
-              "licenseName": "AutoPilotWMQ_MQM.lic",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "cepServerPort": 3005,
-                "node": {},
-                "type": "NodePort",
-                "wgsPort": 4010
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "domain": {
-              "image": "registry.connect.redhat.com/nastel/nastel-domain",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "node": {},
-                "serverPort": 2323,
-                "type": "NodePort",
-                "userPort": 3000
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "global": {
-              "storage": {
-                "class": ""
-              },
-              "subDomain": "nastel-2-915b3b336cabec458a7c7ec2aa7c625f-0000.us-south.containers.appdomain.cloud"
-            },
-            "navigator": {
-              "image": "registry.connect.redhat.com/nastel/navigator-ui",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "debugPort": 8000,
-                "node": {},
-                "type": "LoadBalancer",
-                "webPort": 8080
-              }
-            },
-            "nsqcm": {
-              "image": "registry.connect.redhat.com/nastel/navigator-cm",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "cmAcePort": 5577,
-                "cmEmsPort": 5012,
-                "cmKafkaPort": 5024,
-                "cmPort": 5015,
-                "mqPort": 1414,
-                "node": {},
-                "type": "NodePort"
-              }
-            },
-            "wgs-mysql": {
-              "image": "registry.redhat.io/rhel8/mariadb-103",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "dbPort": 3306,
-                "type": "ClusterIP"
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nastel/navigator-operator-bundle@sha256:84a55e72cff648548aa146be15886735e3c4d3003c2a5614d689589c17575ea6",
-      "bundle_path_digest": "sha256:84a55e72cff648548aa146be15886735e3c4d3003c2a5614d689589c17575ea6",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-10-11T08:45:26.372000+00:00",
-      "csv_description": "The operator deploys Nastel Navigator component containers:\n  * Nastel Domain Server\n  * Nastel Workgroup Server\n  * MySQL database (MariaDB) instance\n  * Connection Manager\n  * Navigator WebApp\n\nin one go.\n\n[Nastel Navigator](https://www.nastel.com/nastel-navigator/) allows you to manage, audit and administrate instances of IBM MQ, EMS, ACE/IIB and\nKafka middleware.\n",
-      "csv_display_name": "Nastel Navigator Operator",
-      "csv_metadata_description": "Operator to deploy and run Nastel Navigator",
-      "csv_name": "nastel-navigator-operator.v1.100202.5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:16:56.437000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "nastel-navigator-operator-certified",
-      "provided_apis": [
-        {
-          "group": "navigator.nastel.com",
-          "kind": "NastelNavigator",
-          "plural": "nastelnavigators",
-          "version": "v1alpha6"
-        }
-      ],
-      "provider": "Nastel",
-      "related_images": [
-        {
-          "digest": "sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
-          "image": "registry.connect.redhat.com/nastel/navigator-operator@sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
-          "name": "navigator-operator-5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4-annotation"
-        },
-        {
-          "digest": "sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
-          "image": "registry.connect.redhat.com/nastel/navigator-operator@sha256:5c4ba961f67a79f3de3ccc59cda4b3bb699bc461b86a4cb9c4697dfce3701eb4",
-          "name": "nastel-navigator-operator"
-        },
-        {
-          "digest": "sha256:68af5064ccd561f3384ebd1be7615f95c5b00d1cda86d97534bae58747b01337",
-          "image": "registry.connect.redhat.com/nastel/nastel-domain@sha256:68af5064ccd561f3384ebd1be7615f95c5b00d1cda86d97534bae58747b01337",
-          "name": "domain"
-        },
-        {
-          "digest": "sha256:b1893a7363dac0b6a898587c97755b6977607e21bf9064bcfed332903098894a",
-          "image": "registry.connect.redhat.com/nastel/navigator-cm@sha256:b1893a7363dac0b6a898587c97755b6977607e21bf9064bcfed332903098894a",
-          "name": "cm"
-        },
-        {
-          "digest": "sha256:a55195ee8b93a81fbcbee0f131a5e0d4c235043f7b13f0b16c1ba3f41cc65020",
-          "image": "registry.connect.redhat.com/nastel/navigator-wgs@sha256:a55195ee8b93a81fbcbee0f131a5e0d4c235043f7b13f0b16c1ba3f41cc65020",
-          "name": "wgs"
-        },
-        {
-          "digest": "sha256:e5d89a40eae7902fd4cbedf14d544c530c29a97e4fa4894af48821dc2c64fa57",
-          "image": "registry.connect.redhat.com/nastel/navigator-ui@sha256:e5d89a40eae7902fd4cbedf14d544c530c29a97e4fa4894af48821dc2c64fa57",
-          "name": "navigator"
-        },
-        {
-          "digest": "sha256:bfb7a648078244982e5ab1549bf016b08219c210b4853e97ba94c2ec7184ac32",
-          "image": "registry.redhat.io/rhel8/mariadb-103@sha256:bfb7a648078244982e5ab1549bf016b08219c210b4853e97ba94c2ec7184ac32",
-          "name": "mysql"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.100202.5",
-      "version_original": "1.100202.5"
-    },
-    {
       "_id": "616405985cfcf7adc247acb8",
       "alm_examples": [
         {
@@ -16317,488 +15756,6 @@
       "version_original": "1.6.0"
     },
     {
-      "_id": "616e76e7ab7f3f3bb23656f0",
-      "alm_examples": [
-        {
-          "api_version": "citrix.com/v1alpha1",
-          "kind": "CitrixCpxWithIngressController",
-          "metadata": {
-            "name": "cpx-cic"
-          },
-          "spec": {
-            "ADMSettings": {
-              "ADMIP": "",
-              "bandWidth": "",
-              "bandWidthLicense": false,
-              "cpxCores": "",
-              "licenseServerIP": "",
-              "licenseServerPort": 27000,
-              "loginSecret": "",
-              "vCPULicense": false
-            },
-            "bgpSettings": {
-              "bgpConfig": [
-                {
-                  "bgpRouter": {
-                    "localAS": 100,
-                    "neighbor": [
-                      {
-                        "ASOriginationInterval": 10,
-                        "address": "",
-                        "advertisementInterval": 10,
-                        "remoteAS": 100
-                      }
-                    ]
-                  }
-                }
-              ],
-              "required": false
-            },
-            "cic": {
-              "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-              "pullPolicy": "Always",
-              "required": true
-            },
-            "coeConfig": {
-              "distributedTracing": {
-                "enable": false,
-                "samplingrate": 100
-              },
-              "endpoint": {
-                "server": ""
-              },
-              "required": false,
-              "timeseries": {
-                "auditlogs": {
-                  "enable": false
-                },
-                "events": {
-                  "enable": false
-                },
-                "metrics": {
-                  "enable": false,
-                  "mode": "avro"
-                },
-                "port": 5563
-              },
-              "transactions": {
-                "enable": false,
-                "port": 5557
-              }
-            },
-            "cpxBgpRouter": false,
-            "crds": {
-              "install": false,
-              "retainOnDelete": false
-            },
-            "defaultSSLCertSecret": "",
-            "entityPrefix": "",
-            "exporter": {
-              "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-              "ports": {
-                "containerPort": 8888
-              },
-              "pullPolicy": "Always",
-              "required": false
-            },
-            "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-            "imagePullSecrets": [],
-            "ingressClass": [],
-            "ingressIP": "",
-            "ipam": false,
-            "kubernetesURL": "",
-            "license": {
-              "accept": "no"
-            },
-            "logLevel": "INFO",
-            "logProxy": "",
-            "mgmtHttpPort": 9080,
-            "mgmtHttpsPort": 9443,
-            "namespaceLabels": "",
-            "nodeSelector": {
-              "key": "",
-              "value": ""
-            },
-            "nsCookieVersion": "0",
-            "nsGateway": "192.168.1.1",
-            "nsHTTP2ServerSide": "OFF",
-            "nsIP": "192.168.1.2",
-            "nsProtocol": "http",
-            "openshift": true,
-            "pullPolicy": "Always",
-            "routeLabels": "",
-            "serviceAccount": {
-              "create": true
-            },
-            "serviceAnnotations": {},
-            "servicePorts": [],
-            "serviceSpec": {
-              "loadBalancerSourceRanges": []
-            },
-            "serviceType": {
-              "loadBalancer": {
-                "enabled": false,
-                "externalTrafficPolicy": "Local"
-              },
-              "nodePort": {
-                "enabled": false,
-                "httpPort": "",
-                "httpsPort": ""
-              }
-            },
-            "setAsDefaultIngressClass": false,
-            "sslCertManagedByAWS": false,
-            "tolerations": [],
-            "updateIngressStatus": false
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-bundle@sha256:cb78fbaa6e154066b70b1e36731fc268bd61b514493f1541f630fff7f7e16d59",
-      "bundle_path_digest": "sha256:cb78fbaa6e154066b70b1e36731fc268bd61b514493f1541f630fff7f7e16d59",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-10-19T07:42:31.525000+00:00",
-      "csv_description": "Citrix ADC CPX is a container-based application delivery controller that can be provisioned on a Docker host. Citrix ADC CPX enables customers to leverage Docker engine capabilities and use NetScaler load balancing and traffic management features for container-based applications. Citrix Ingress Controller which will be running in side-car mode with Citrix ADC CPX will automatically configures Citrix ADC CPX based on the Ingress resource configuration. This operator can be used deploy Citrix ADC CPX with Citrix ingress controller in an OpenShift environment.",
-      "csv_display_name": "Citrix ADC CPX with Ingress Controller",
-      "csv_metadata_description": "Citrix ADC CPX is a container-based application delivery controller that can be provisioned on a Docker host. Citrix ADC CPX enables customers to leverage Docker engine capabilities and use NetScaler load balancing and traffic management features for container-based applications. Citrix Ingress Controller which will be running in side-car mode with Citrix ADC CPX will automatically configures Citrix ADC CPX based on the Ingress resource configuration. This operator can be used deploy Citrix ADC CPX with Citrix ingress controller in an Openshift environment.",
-      "csv_name": "citrix-cpx-with-ingress-controller-operator.v1.18.5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:54:02.154000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "citrix-cpx-with-ingress-controller-operator",
-      "provided_apis": [
-        {
-          "group": "citrix.com",
-          "kind": "CitrixCpxWithIngressController",
-          "plural": "citrixcpxwithingresscontrollers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Citrix",
-      "related_images": [
-        {
-          "digest": "sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-controller@sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "name": "citrix-k8s-cpx-ingress-controller-92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d-annotation"
-        },
-        {
-          "digest": "sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-controller@sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "name": "cpx"
-        },
-        {
-          "digest": "sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "name": "cic"
-        },
-        {
-          "digest": "sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "name": "exporter"
-        },
-        {
-          "digest": "sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "name": "citrix-k8s-cpx-ingress-8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc-annotation"
-        },
-        {
-          "digest": "sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "name": "citrix-adc-metrics-exporter-6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8-annotation"
-        },
-        {
-          "digest": "sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "name": "citrix-ingress-controller-91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.18.5",
-      "version_original": "1.18.5"
-    },
-    {
-      "_id": "616e7baea73b80d485cf8c8f",
-      "alm_examples": [
-        {
-          "api_version": "citrix.com/v1alpha1",
-          "kind": "CitrixCpxWithIngressController",
-          "metadata": {
-            "name": "cpx-cic"
-          },
-          "spec": {
-            "ADMSettings": {
-              "ADMIP": "",
-              "bandWidth": "",
-              "bandWidthLicense": false,
-              "cpxCores": "",
-              "licenseServerIP": "",
-              "licenseServerPort": 27000,
-              "loginSecret": "",
-              "vCPULicense": false
-            },
-            "bgpSettings": {
-              "bgpConfig": [
-                {
-                  "bgpRouter": {
-                    "localAS": 100,
-                    "neighbor": [
-                      {
-                        "ASOriginationInterval": 10,
-                        "address": "",
-                        "advertisementInterval": 10,
-                        "remoteAS": 100
-                      }
-                    ]
-                  }
-                }
-              ],
-              "required": false
-            },
-            "cic": {
-              "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-              "pullPolicy": "Always",
-              "required": true
-            },
-            "coeConfig": {
-              "distributedTracing": {
-                "enable": false,
-                "samplingrate": 100
-              },
-              "endpoint": {
-                "server": ""
-              },
-              "required": false,
-              "timeseries": {
-                "auditlogs": {
-                  "enable": false
-                },
-                "events": {
-                  "enable": false
-                },
-                "metrics": {
-                  "enable": false,
-                  "mode": "avro"
-                },
-                "port": 5563
-              },
-              "transactions": {
-                "enable": false,
-                "port": 5557
-              }
-            },
-            "cpxBgpRouter": false,
-            "crds": {
-              "install": false,
-              "retainOnDelete": false
-            },
-            "defaultSSLCertSecret": "",
-            "entityPrefix": "",
-            "exporter": {
-              "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-              "ports": {
-                "containerPort": 8888
-              },
-              "pullPolicy": "Always",
-              "required": false
-            },
-            "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-            "imagePullSecrets": [],
-            "ingressClass": [],
-            "ingressIP": "",
-            "ipam": false,
-            "kubernetesURL": "",
-            "license": {
-              "accept": "no"
-            },
-            "logLevel": "INFO",
-            "logProxy": "",
-            "mgmtHttpPort": 9080,
-            "mgmtHttpsPort": 9443,
-            "namespaceLabels": "",
-            "nodeSelector": {
-              "key": "",
-              "value": ""
-            },
-            "nsCookieVersion": "0",
-            "nsGateway": "192.168.1.1",
-            "nsHTTP2ServerSide": "OFF",
-            "nsIP": "192.168.1.2",
-            "nsProtocol": "http",
-            "openshift": true,
-            "pullPolicy": "Always",
-            "routeLabels": "",
-            "serviceAccount": {
-              "create": true
-            },
-            "serviceAnnotations": {},
-            "servicePorts": [],
-            "serviceSpec": {
-              "loadBalancerSourceRanges": []
-            },
-            "serviceType": {
-              "loadBalancer": {
-                "enabled": false,
-                "externalTrafficPolicy": "Local"
-              },
-              "nodePort": {
-                "enabled": false,
-                "httpPort": "",
-                "httpsPort": ""
-              }
-            },
-            "setAsDefaultIngressClass": false,
-            "sslCertManagedByAWS": false,
-            "tolerations": [],
-            "updateIngressStatus": false
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-bundle@sha256:cb78fbaa6e154066b70b1e36731fc268bd61b514493f1541f630fff7f7e16d59",
-      "bundle_path_digest": "sha256:cb78fbaa6e154066b70b1e36731fc268bd61b514493f1541f630fff7f7e16d59",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-10-19T08:02:54.381000+00:00",
-      "csv_description": "Citrix ADC CPX is a container-based application delivery controller that can be provisioned on a Docker host. Citrix ADC CPX enables customers to leverage Docker engine capabilities and use NetScaler load balancing and traffic management features for container-based applications. Citrix Ingress Controller which will be running in side-car mode with Citrix ADC CPX will automatically configures Citrix ADC CPX based on the Ingress resource configuration. This operator can be used deploy Citrix ADC CPX with Citrix ingress controller in an OpenShift environment.",
-      "csv_display_name": "Citrix ADC CPX with Ingress Controller",
-      "csv_metadata_description": "Citrix ADC CPX is a container-based application delivery controller that can be provisioned on a Docker host. Citrix ADC CPX enables customers to leverage Docker engine capabilities and use NetScaler load balancing and traffic management features for container-based applications. Citrix Ingress Controller which will be running in side-car mode with Citrix ADC CPX will automatically configures Citrix ADC CPX based on the Ingress resource configuration. This operator can be used deploy Citrix ADC CPX with Citrix ingress controller in an Openshift environment.",
-      "csv_name": "citrix-cpx-with-ingress-controller-operator.v1.18.5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:45:50.905000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "citrix-cpx-with-ingress-controller-operator",
-      "provided_apis": [
-        {
-          "group": "citrix.com",
-          "kind": "CitrixCpxWithIngressController",
-          "plural": "citrixcpxwithingresscontrollers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Citrix",
-      "related_images": [
-        {
-          "digest": "sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-controller@sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "name": "citrix-k8s-cpx-ingress-controller-92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d-annotation"
-        },
-        {
-          "digest": "sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-controller@sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "name": "cpx"
-        },
-        {
-          "digest": "sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "name": "cic"
-        },
-        {
-          "digest": "sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "name": "exporter"
-        },
-        {
-          "digest": "sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "name": "citrix-k8s-cpx-ingress-8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc-annotation"
-        },
-        {
-          "digest": "sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "name": "citrix-adc-metrics-exporter-6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8-annotation"
-        },
-        {
-          "digest": "sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "name": "citrix-ingress-controller-91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.18.5",
-      "version_original": "1.18.5"
-    },
-    {
       "_id": "616e7ce0a73b80d485cf8c90",
       "alm_examples": [
         {
@@ -17036,247 +15993,6 @@
       "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.18.5",
-      "version_original": "1.18.5"
-    },
-    {
-      "_id": "616e7d218ebd9a62aec7b17f",
-      "alm_examples": [
-        {
-          "api_version": "citrix.com/v1alpha1",
-          "kind": "CitrixCpxWithIngressController",
-          "metadata": {
-            "name": "cpx-cic"
-          },
-          "spec": {
-            "ADMSettings": {
-              "ADMIP": "",
-              "bandWidth": "",
-              "bandWidthLicense": false,
-              "cpxCores": "",
-              "licenseServerIP": "",
-              "licenseServerPort": 27000,
-              "loginSecret": "",
-              "vCPULicense": false
-            },
-            "bgpSettings": {
-              "bgpConfig": [
-                {
-                  "bgpRouter": {
-                    "localAS": 100,
-                    "neighbor": [
-                      {
-                        "ASOriginationInterval": 10,
-                        "address": "",
-                        "advertisementInterval": 10,
-                        "remoteAS": 100
-                      }
-                    ]
-                  }
-                }
-              ],
-              "required": false
-            },
-            "cic": {
-              "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-              "pullPolicy": "Always",
-              "required": true
-            },
-            "coeConfig": {
-              "distributedTracing": {
-                "enable": false,
-                "samplingrate": 100
-              },
-              "endpoint": {
-                "server": ""
-              },
-              "required": false,
-              "timeseries": {
-                "auditlogs": {
-                  "enable": false
-                },
-                "events": {
-                  "enable": false
-                },
-                "metrics": {
-                  "enable": false,
-                  "mode": "avro"
-                },
-                "port": 5563
-              },
-              "transactions": {
-                "enable": false,
-                "port": 5557
-              }
-            },
-            "cpxBgpRouter": false,
-            "crds": {
-              "install": false,
-              "retainOnDelete": false
-            },
-            "defaultSSLCertSecret": "",
-            "entityPrefix": "",
-            "exporter": {
-              "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-              "ports": {
-                "containerPort": 8888
-              },
-              "pullPolicy": "Always",
-              "required": false
-            },
-            "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-            "imagePullSecrets": [],
-            "ingressClass": [],
-            "ingressIP": "",
-            "ipam": false,
-            "kubernetesURL": "",
-            "license": {
-              "accept": "no"
-            },
-            "logLevel": "INFO",
-            "logProxy": "",
-            "mgmtHttpPort": 9080,
-            "mgmtHttpsPort": 9443,
-            "namespaceLabels": "",
-            "nodeSelector": {
-              "key": "",
-              "value": ""
-            },
-            "nsCookieVersion": "0",
-            "nsGateway": "192.168.1.1",
-            "nsHTTP2ServerSide": "OFF",
-            "nsIP": "192.168.1.2",
-            "nsProtocol": "http",
-            "openshift": true,
-            "pullPolicy": "Always",
-            "routeLabels": "",
-            "serviceAccount": {
-              "create": true
-            },
-            "serviceAnnotations": {},
-            "servicePorts": [],
-            "serviceSpec": {
-              "loadBalancerSourceRanges": []
-            },
-            "serviceType": {
-              "loadBalancer": {
-                "enabled": false,
-                "externalTrafficPolicy": "Local"
-              },
-              "nodePort": {
-                "enabled": false,
-                "httpPort": "",
-                "httpsPort": ""
-              }
-            },
-            "setAsDefaultIngressClass": false,
-            "sslCertManagedByAWS": false,
-            "tolerations": [],
-            "updateIngressStatus": false
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-bundle@sha256:cb78fbaa6e154066b70b1e36731fc268bd61b514493f1541f630fff7f7e16d59",
-      "bundle_path_digest": "sha256:cb78fbaa6e154066b70b1e36731fc268bd61b514493f1541f630fff7f7e16d59",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-10-19T08:09:05.957000+00:00",
-      "csv_description": "Citrix ADC CPX is a container-based application delivery controller that can be provisioned on a Docker host. Citrix ADC CPX enables customers to leverage Docker engine capabilities and use NetScaler load balancing and traffic management features for container-based applications. Citrix Ingress Controller which will be running in side-car mode with Citrix ADC CPX will automatically configures Citrix ADC CPX based on the Ingress resource configuration. This operator can be used deploy Citrix ADC CPX with Citrix ingress controller in an OpenShift environment.",
-      "csv_display_name": "Citrix ADC CPX with Ingress Controller",
-      "csv_metadata_description": "Citrix ADC CPX is a container-based application delivery controller that can be provisioned on a Docker host. Citrix ADC CPX enables customers to leverage Docker engine capabilities and use NetScaler load balancing and traffic management features for container-based applications. Citrix Ingress Controller which will be running in side-car mode with Citrix ADC CPX will automatically configures Citrix ADC CPX based on the Ingress resource configuration. This operator can be used deploy Citrix ADC CPX with Citrix ingress controller in an Openshift environment.",
-      "csv_name": "citrix-cpx-with-ingress-controller-operator.v1.18.5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:49:02.070000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "citrix-cpx-with-ingress-controller-operator",
-      "provided_apis": [
-        {
-          "group": "citrix.com",
-          "kind": "CitrixCpxWithIngressController",
-          "plural": "citrixcpxwithingresscontrollers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Citrix",
-      "related_images": [
-        {
-          "digest": "sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-controller@sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "name": "citrix-k8s-cpx-ingress-controller-92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d-annotation"
-        },
-        {
-          "digest": "sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-controller@sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "name": "cpx"
-        },
-        {
-          "digest": "sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "name": "cic"
-        },
-        {
-          "digest": "sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "name": "exporter"
-        },
-        {
-          "digest": "sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "name": "citrix-k8s-cpx-ingress-8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc-annotation"
-        },
-        {
-          "digest": "sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "name": "citrix-adc-metrics-exporter-6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8-annotation"
-        },
-        {
-          "digest": "sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "name": "citrix-ingress-controller-91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.18.5",
       "version_original": "1.18.5"
     },
@@ -25667,6 +24383,881 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "6.0.6-11",
       "version_original": "6.0.6-11"
+    },
+    {
+      "_id": "619319b3843af1624c4e5eff",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.6-39.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
+      "bundle_path_digest": "sha256:b0edae8a793cf9e47a9d33a6341e2d2dfd3656ce8f2a4fbaa7d22a7407402b7f",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2021-11-16T02:38:43.905000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-24",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:03:25.144000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Redis Labs",
+      "related_images": [
+        {
+          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
+          "image": "redislabs/operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
+          "name": "operator-998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b-annotation"
+        },
+        {
+          "digest": "sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:998d6be639f0ce0cb0c51f048845c4d7aaacdb820c2c0e0450392c966744507b",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.6-24",
+      "version_original": "6.0.6-24"
+    },
+    {
+      "_id": "619319f04b3c58bb75800413",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.12-57.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
+      "bundle_path_digest": "sha256:292bef653614d21a7d7a8d7df2507978eafcf66910f978b1edf6469a42302874",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2021-11-16T02:39:44.051000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.12-5",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:34:52.195000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Redis Labs",
+      "related_images": [
+        {
+          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
+          "name": "redis-enterprise-operator-b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f-annotation"
+        },
+        {
+          "digest": "sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:b85c098fc85c2c3a3a9bef5fa227f45fcd2ad14150bba111793c7ed5df45643f",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.12-5",
+      "version_original": "6.0.12-5"
+    },
+    {
+      "_id": "61931a0ef286970f08bf665e",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.2.8-41.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        },
+        {
+          "api_version": "app.redislabs.com/v1alpha1",
+          "kind": "RedisEnterpriseDatabase",
+          "metadata": {
+            "name": "redb"
+          },
+          "spec": {
+            "redisEnterpriseCluster": {
+              "name": "rec"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:cf89cfbb1c39ac9a7fd925f1e8b5bec94535e4eb64dd6e2da102e9f7b44f9f5e",
+      "bundle_path_digest": "sha256:cf89cfbb1c39ac9a7fd925f1e8b5bec94535e4eb64dd6e2da102e9f7b44f9f5e",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2021-11-16T02:40:14.546000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis.\nRedis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\nReplace my-project with the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.2.8-2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:23:51.214000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseDatabase",
+          "plural": "redisenterprisedatabases",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Redis",
+      "related_images": [
+        {
+          "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
+          "name": "redis-enterprise-operator-f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353-annotation"
+        },
+        {
+          "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
+          "name": "redis-enterprise-operator"
+        },
+        {
+          "digest": "sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f1540374d0f4a6e4a7a2520004cf61eb769b65aa89c7da2cd858946e74b45353",
+          "name": "admission"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.2.8-2",
+      "version_original": "6.2.8-2"
+    },
+    {
+      "_id": "61931a14f286970f08bf665f",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.20-97.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        },
+        {
+          "api_version": "app.redislabs.com/v1alpha1",
+          "kind": "RedisEnterpriseDatabase",
+          "metadata": {
+            "name": "redb"
+          },
+          "spec": {
+            "redisEnterpriseCluster": {
+              "name": "rec"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:5666acf5598f96dfbfac5704bb70e6578522979ef63b418ed2d1438a32d2440f",
+      "bundle_path_digest": "sha256:5666acf5598f96dfbfac5704bb70e6578522979ef63b418ed2d1438a32d2440f",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2021-11-16T02:40:20.002000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data structures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-in-class exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project with the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.20-12a",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:00:51.600000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseDatabase",
+          "plural": "redisenterprisedatabases",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Redis Labs",
+      "related_images": [
+        {
+          "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "name": "redis-enterprise-operator-f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730-annotation"
+        },
+        {
+          "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "name": "redis-enterprise-operator"
+        },
+        {
+          "digest": "sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:f0312a08ad92a58669e1593e6202785d79a93b52709bc012d87bd0ee143b5730",
+          "name": "admission"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.20-12a",
+      "version_original": "6.0.20-12a"
+    },
+    {
+      "_id": "61931a4bf286970f08bf6660",
+      "alm_examples": [
+        {
+          "api_version": "apm.neuvector.com/v1alpha1",
+          "kind": "Neuvector",
+          "metadata": {
+            "name": "neuvector"
+          },
+          "spec": {
+            "admissionwebhook": {
+              "type": "ClusterIP"
+            },
+            "bottlerocket": {
+              "enabled": false,
+              "runtimePath": "/run/dockershim.sock"
+            },
+            "containerd": {
+              "enabled": false,
+              "path": "/var/run/containerd/containerd.sock"
+            },
+            "controller": {
+              "apisvc": {
+                "annotations": {},
+                "route": {
+                  "enabled": false,
+                  "host": "",
+                  "termination": "passthrough"
+                },
+                "type": ""
+              },
+              "azureFileShare": {
+                "enabled": false,
+                "secretName": "",
+                "shareName": ""
+              },
+              "certificate": {
+                "keyFile": "tls.key",
+                "pemFile": "tls.pem",
+                "secret": ""
+              },
+              "configmap": {
+                "data": "",
+                "enabled": false
+              },
+              "disruptionbudget": 0,
+              "enabled": true,
+              "federation": {
+                "managedsvc": {
+                  "ingress": {
+                    "annotations": {
+                      "ingress.kubernetes.io/protocol": "https"
+                    },
+                    "enabled": false,
+                    "host": "",
+                    "path": "/",
+                    "secretName": "",
+                    "tls": false
+                  },
+                  "route": {
+                    "enabled": false,
+                    "host": "",
+                    "termination": "passthrough"
+                  },
+                  "type": ""
+                },
+                "mastersvc": {
+                  "ingress": {
+                    "annotations": {
+                      "ingress.kubernetes.io/protocol": "https"
+                    },
+                    "enabled": false,
+                    "host": "",
+                    "path": "/",
+                    "secretName": "",
+                    "tls": false
+                  },
+                  "route": {
+                    "enabled": false,
+                    "host": "",
+                    "termination": "passthrough"
+                  },
+                  "type": ""
+                }
+              },
+              "image": "registry.connect.redhat.com/neuvector/controller",
+              "ingress": {
+                "annotations": {
+                  "ingress.kubernetes.io/protocol": "https"
+                },
+                "enabled": false,
+                "host": "",
+                "path": "/",
+                "secretName": "",
+                "tls": false
+              },
+              "priorityClassName": "",
+              "pvc": {
+                "accessModes": [
+                  "ReadWriteMany"
+                ],
+                "capacity": "",
+                "enabled": false,
+                "storageClass": ""
+              },
+              "replicas": 3,
+              "resources": {},
+              "schedulerName": "",
+              "strategy": {
+                "rollingUpdate": {
+                  "maxSurge": 1,
+                  "maxUnavailable": 0
+                },
+                "type": "RollingUpdate"
+              }
+            },
+            "crdwebhook": {
+              "enabled": true,
+              "type": "ClusterIP"
+            },
+            "crio": {
+              "enabled": true,
+              "path": "/var/run/crio/crio.sock"
+            },
+            "cve": {
+              "scanner": {
+                "dockerPath": "",
+                "enabled": true,
+                "image": "registry.connect.redhat.com/neuvector/scanner@sha256:c0c7095bcb36e93a4c074e5c97d652db5f0133022fd2ab6838a092e8959f2041",
+                "priorityClassName": "",
+                "replicas": 3,
+                "resources": {},
+                "strategy": {
+                  "rollingUpdate": {
+                    "maxSurge": 1,
+                    "maxUnavailable": 0
+                  },
+                  "type": "RollingUpdate"
+                }
+              },
+              "updater": {
+                "enabled": true,
+                "image": "registry.access.redhat.com/ubi8@sha256:060d7d6827b34949cc0fc58a50f72a5dccf00a4cc594406bdf5982f41dfe6118",
+                "priorityClassName": "",
+                "schedule": "0 0 * * *",
+                "secure": false
+              }
+            },
+            "docker": {
+              "enabled": false,
+              "path": "/var/run/docker.sock"
+            },
+            "enforcer": {
+              "enabled": true,
+              "image": "registry.connect.redhat.com/neuvector/enforcer",
+              "priorityClassName": "",
+              "resources": {},
+              "tolerations": [
+                {
+                  "effect": "NoSchedule",
+                  "key": "node-role.kubernetes.io/master"
+                }
+              ]
+            },
+            "k3s": {
+              "enabled": false,
+              "runtimePath": "/run/k3s/containerd/containerd.sock"
+            },
+            "manager": {
+              "certificate": {
+                "keyFile": "tls.key",
+                "pemFile": "tls.pem",
+                "secret": ""
+              },
+              "enabled": true,
+              "env": {
+                "ssl": true
+              },
+              "image": "registry.connect.redhat.com/neuvector/manager",
+              "ingress": {
+                "annotations": {},
+                "enabled": false,
+                "host": "",
+                "path": "/",
+                "secretName": "",
+                "tls": false
+              },
+              "priorityClassName": "",
+              "resources": {},
+              "route": {
+                "enabled": true,
+                "host": "",
+                "termination": "passthrough"
+              },
+              "svc": {
+                "annotations": {},
+                "loadBalancerIP": "",
+                "type": "NodePort"
+              }
+            },
+            "openshift": true,
+            "psp": false,
+            "resources": {},
+            "serviceAccount": "default"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/neuvector/neuvector-operator-bundle@sha256:bd5db9f3403eee933627d3a1ef0c534cac8c7b53eda247589d546c1f6cfed71b",
+      "bundle_path_digest": "sha256:bd5db9f3403eee933627d3a1ef0c534cac8c7b53eda247589d546c1f6cfed71b",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2021-11-16T02:41:15.158000+00:00",
+      "csv_description": "NeuVector delivers the only cloud-native Kubernetes security platform with uncompromising end-to-end protection from DevOps vulnerability protection to automated run-time security, and featuring a true Layer 7 container firewall.\n\nThe NeuVector Operator runs  in the openshift container platform to deploy and manage the NeuVector Security cluster components. The NeuVector operator contains all necessary information to deploy NeuVector using helm charts. You simply need to install the NeuVector operator from the OpenShift embeded operator hub and create NeuVector instance. You can modify the NeuVector installation configuration by modifying yaml while creating the NeuVector instance such as imagePullSecrets, tag version, etc. Please refer to [github link](https://github.com/neuvector/neuvector-helm/tree/master/charts/core) for the values that can be modifed during installation. To upgrade to a newer version of NeuVector, just reapply the NeuVector instance with desired tag , which in turn pulls the specified NeuVector image tags and upgrades as per upgrade plan configured on the helm chart.  NeuVector Operator versions are tied to NeuVector product versions. Version 1.3.1 of the NeuVector Certified Operator deploys version 4.3.2-s1 of NeuVector.\n\n**Complete below steps to Grant Service Account Access to the Privileged SCC before installation.**\n\nCreate the NeuVector namespace\n\n         oc new-project  neuvector\nLogin as system:admin account\n\n         oc login -u system:admin\n\nGrant Service Account Access to the Privileged SCC\n\n         oc -n neuvector adm policy add-scc-to-user privileged -z default\n\nThe following info will be added in the Privileged SCC users:\n\n         - system:serviceaccount:neuvector:default\n\nIn OpenShift 4.6+ use the following to check:\n\n         oc get rolebinding system:openshift:scc:privileged -n neuvector -o wide\n         system:openshift:scc:privileged   ClusterRole/system:openshift:scc:privileged   9m22s                    neuvector/default\n\n\n**Add NeuVector license from NeuVector WebUI->setting**\n\n\n#Deploying the NeuVector Operator#\n\n\nPlease refer to the instructions [here](https://github.com/neuvector/neuvector-operator/blob/master/README.md)\n\n\n",
+      "csv_display_name": "NeuVector Operator",
+      "csv_metadata_description": "NeuVector delivers the only cloud-native Kubernetes security platform with uncompromising end-to-end protection from DevOps vulnerability protection to automated run-time security, and featuring a true Layer 7 container firewall.",
+      "csv_name": "neuvector-operator.v1.3.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:12:29.394000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "neuvector-certified-operator",
+      "provided_apis": [
+        {
+          "group": "apm.neuvector.com",
+          "kind": "Neuvector",
+          "plural": "neuvectors",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "NeuVector",
+      "related_images": [
+        {
+          "digest": "sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
+          "image": "registry.connect.redhat.com/neuvector/neuvector-operator@sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
+          "name": "neuvector-operator-487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1-annotation"
+        },
+        {
+          "digest": "sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
+          "image": "registry.connect.redhat.com/neuvector/neuvector-operator@sha256:487e2d6e817b7e006fb90cf1d5da2964de665424acada7bc63b4fa7b642b64f1",
+          "name": "neuvector-operator"
+        },
+        {
+          "digest": "sha256:afa454d7a22de6161e6ff6b6f859ce15fa0bfc4e9d4e5e191b61125dfc5cad6b",
+          "image": "registry.connect.redhat.com/neuvector/controller@sha256:afa454d7a22de6161e6ff6b6f859ce15fa0bfc4e9d4e5e191b61125dfc5cad6b",
+          "name": "controller"
+        },
+        {
+          "digest": "sha256:f9543cdf9bb338161a3f84a81381f26cbf724a23f6363583417c9da682e91cf8",
+          "image": "registry.connect.redhat.com/neuvector/enforcer@sha256:f9543cdf9bb338161a3f84a81381f26cbf724a23f6363583417c9da682e91cf8",
+          "name": "enforcer"
+        },
+        {
+          "digest": "sha256:085bd24dadcd9d023c6600227ca088ed8d03ab83a70b62401477d10272450952",
+          "image": "registry.connect.redhat.com/neuvector/manager@sha256:085bd24dadcd9d023c6600227ca088ed8d03ab83a70b62401477d10272450952",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:c0c7095bcb36e93a4c074e5c97d652db5f0133022fd2ab6838a092e8959f2041",
+          "image": "registry.connect.redhat.com/neuvector/scanner@sha256:c0c7095bcb36e93a4c074e5c97d652db5f0133022fd2ab6838a092e8959f2041",
+          "name": "scanner"
+        },
+        {
+          "digest": "sha256:060d7d6827b34949cc0fc58a50f72a5dccf00a4cc594406bdf5982f41dfe6118",
+          "image": "registry.access.redhat.com/ubi8@sha256:060d7d6827b34949cc0fc58a50f72a5dccf00a4cc594406bdf5982f41dfe6118",
+          "name": "updater"
+        },
+        {
+          "digest": "sha256:c0c7095bcb36e93a4c074e5c97d652db5f0133022fd2ab6838a092e8959f2041",
+          "image": "registry.connect.redhat.com/neuvector/scanner@sha256:c0c7095bcb36e93a4c074e5c97d652db5f0133022fd2ab6838a092e8959f2041",
+          "name": "scanner-c0c7095bcb36e93a4c074e5c97d652db5f0133022fd2ab6838a092e8959f2041-annotation"
+        },
+        {
+          "digest": "sha256:060d7d6827b34949cc0fc58a50f72a5dccf00a4cc594406bdf5982f41dfe6118",
+          "image": "registry.access.redhat.com/ubi8@sha256:060d7d6827b34949cc0fc58a50f72a5dccf00a4cc594406bdf5982f41dfe6118",
+          "name": "ubi8-060d7d6827b34949cc0fc58a50f72a5dccf00a4cc594406bdf5982f41dfe6118-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.3.1",
+      "version_original": "1.3.1"
+    },
+    {
+      "_id": "61931a5b4b3c58bb75800414",
+      "alm_examples": [
+        {
+          "api_version": "tools.opdev.io/v1",
+          "kind": "DemoResource",
+          "metadata": {
+            "name": "demoresource-sample"
+          },
+          "spec": {
+            "message": "Hello, World!"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/bcook/simple-demo-operator@sha256:027ff7a8f29ce525f1597a76faa6a264ca76029f244bf3b642e1e3f1bb80541c",
+      "bundle_path_digest": "sha256:027ff7a8f29ce525f1597a76faa6a264ca76029f244bf3b642e1e3f1bb80541c",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-11-16T02:41:31.264000+00:00",
+      "csv_description": "A simple demo operator with a minimal reconciliation function, for testing basic operator installation and validation workflows.",
+      "csv_display_name": "Simple Demo Operator",
+      "csv_metadata_description": "",
+      "csv_name": "tc-simple-demo-operator.v0.0.8",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:40:11.892000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "tc-simple-demo-operator",
+      "provided_apis": [
+        {
+          "group": "tools.opdev.io",
+          "kind": "DemoResource",
+          "version": "v1"
+        }
+      ],
+      "provider": "The Partner Lifecycle Engineering Team",
+      "related_images": [
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
+          "image": "quay.io/opdev/simple-demo-operator@sha256:25ca9cb1f3dc7b8ce0aba4d3383cac20f5f5a1298fbbfde4a6adab7b1000cb0e",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.8",
+      "version_original": "0.0.8"
     }
   ]
 }
