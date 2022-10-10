@@ -1,198 +1,6 @@
 {
   "data": [
     {
-      "_id": "60e8c9826814ca1184699835",
-      "alm_examples": [
-        {
-          "api_version": "aps.appranix.com/v1",
-          "kind": "BackupStorageLocation",
-          "metadata": {
-            "labels": {
-              "component": "appranix"
-            },
-            "name": "default",
-            "namespace": "appranix"
-          },
-          "spec": {
-            "objectStorage": {
-              "bucket": "aps-bucket-store"
-            },
-            "provider": "gcp"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/appranix/apx-operator-bundle@sha256:126965743834b9d3fa15f354f41fe47618cea51c6f2ab88d3401b62b0362b1b6",
-      "bundle_path_digest": "sha256:126965743834b9d3fa15f354f41fe47618cea51c6f2ab88d3401b62b0362b1b6",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-07-09T22:11:14.157000+00:00",
-      "csv_description": "## About this Operator\n\nAppranix helps you to securely backup and restore, perform a disaster\nrecovery and migrate OpenShift cluster resources and persistent\nvolumes.\n\nThe operator works with Appranix to:\n\n- Install and initiate Appranix controller on your cluster\n\n- Take backups of your cluster and restore it in case of loss.\n\n- Migrate cluster resources to other clusters.\n\n- Replicate your production cluster to development and testing clusters.\n\n## Prerequisites\n\n- A storage bucket in GCP or AWS & credentials to access it\n- Appranix token generated for your cluster obtained from the Appranix console\n- A Configmap and Secret in your cluster for the bucket config and credentials\n\n#### Step 1: Creating a storage bucket\n\nNote: Currently only Google Storage bucket is supported, support for AWS S3 Bucket will be available in a future release.\n\n- You can create a bucket through the GCP console or by running the following command in [Google Cloud Shell](https://cloud.google.com/shell/)\n\n```shell\nAX_APS_BUCKET_NAME=<bucket_name>\ngsutil mb -b on gs://$AX_APS_BUCKET_NAME/\ngcloud iam service-accounts create appranix --display-name \"Appranix service account\"\nAX_SERVICE_ACCOUNT_EMAIL=$(gcloud iam service-accounts list --filter=\"displayName:Appranix service account\" --format 'value(email)')\ngsutil iam ch serviceAccount:$AX_SERVICE_ACCOUNT_EMAIL:objectAdmin gs://${AX_APS_BUCKET_NAME}\ngcloud iam service-accounts keys create ax_service_account.json --iam-account $AX_SERVICE_ACCOUNT_EMAIL\n```\n\nNote: You will require the ```ax_service_account.json``` created here in Step 3.\n\n\n#### Step 2: Obtaining the Appranix token for the cluster\n\n- Log in to your Appranix console and create a cluster connection. Upon connection creation copy the token generated for that cluster.\n\n#### Step 3: Creating the Configmap and Secret in the cluster\n\nA Configmap and Secret which contains the credetianls and bucket configuration has to be created before instaling the operator. It can be done by running the following command against your cluster.\n\nNote: Replace **token** wih the value obtained in Step 2.\n\n\n```shell\nAX_TOKEN=<token>\nAX_SERVICE_ACCOUNT=$(cat ax_service_account.json | base64 -w 0)\ncurl -Ls -H \"Content-Type: application/json\" https://us-central1-appranix-dev-07.cloudfunctions.net/operator-setup  -d '{\"token\": \"'$AX_TOKEN'\", \"secret\": \"'$AX_SERVICE_ACCOUNT'\"}' | oc apply -f -\n```\n\n#### Step 4: Deploying Operator from OperatorHub\n\n- Login to the OpenShift console and switch to ```appranix``` project\n\n- Search for Appranix in OperatorHub and install it.\n\n- Once installed go to the Appranix operator under Installed Operators and click on the BackupStorageLocation tab.\n\n- Now click on **Create BackupStorageLocation** and enter the bucket name under **Objectstorage** and click **Create**.\n\n- You can verify if the insallation is successful by checking the status in the Appranix console.",
-      "csv_display_name": "Appranix APS Operator",
-      "csv_metadata_description": "The Appranix operator enables you to back up and restore your OpenShift cluster resources and persistent volumes.",
-      "csv_name": "appranix-operator.v2.5.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:31:15.819000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "appranix-cps",
-      "provided_apis": [
-        {
-          "group": "aps.appranix.com",
-          "kind": "BackupStorageLocation",
-          "version": "v1"
-        }
-      ],
-      "provider": "Appranix",
-      "related_images": [
-        {
-          "digest": "sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
-          "image": "registry.connect.redhat.com/appranix/apx-operator@sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
-          "name": "apx-operator-b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08-annotation"
-        },
-        {
-          "digest": "sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
-          "image": "registry.connect.redhat.com/appranix/apx-operator@sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:78d3471a6152df1cb066a82f93904110cb80a18f7e576edb3cd3fd180161bab4",
-          "image": "registry.connect.redhat.com/appranix/apx-controller@sha256:78d3471a6152df1cb066a82f93904110cb80a18f7e576edb3cd3fd180161bab4",
-          "name": "controller"
-        },
-        {
-          "digest": "sha256:46ca904bb0c9b3f4628011b610de3dce2ff9abae52294c111e953dc7e6140cd4",
-          "image": "registry.connect.redhat.com/appranix/apx-manager@sha256:46ca904bb0c9b3f4628011b610de3dce2ff9abae52294c111e953dc7e6140cd4",
-          "name": "agent"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.5.0",
-      "version_original": "2.5.0"
-    },
-    {
-      "_id": "60e8c9f78ce8053fa514bdd9",
-      "alm_examples": [
-        {
-          "api_version": "aps.appranix.com/v1",
-          "kind": "BackupStorageLocation",
-          "metadata": {
-            "labels": {
-              "component": "appranix"
-            },
-            "name": "default",
-            "namespace": "appranix"
-          },
-          "spec": {
-            "objectStorage": {
-              "bucket": "aps-bucket-store"
-            },
-            "provider": "gcp"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/appranix/apx-operator-bundle@sha256:126965743834b9d3fa15f354f41fe47618cea51c6f2ab88d3401b62b0362b1b6",
-      "bundle_path_digest": "sha256:126965743834b9d3fa15f354f41fe47618cea51c6f2ab88d3401b62b0362b1b6",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-07-09T22:13:11.427000+00:00",
-      "csv_description": "## About this Operator\n\nAppranix helps you to securely backup and restore, perform a disaster\nrecovery and migrate OpenShift cluster resources and persistent\nvolumes.\n\nThe operator works with Appranix to:\n\n- Install and initiate Appranix controller on your cluster\n\n- Take backups of your cluster and restore it in case of loss.\n\n- Migrate cluster resources to other clusters.\n\n- Replicate your production cluster to development and testing clusters.\n\n## Prerequisites\n\n- A storage bucket in GCP or AWS & credentials to access it\n- Appranix token generated for your cluster obtained from the Appranix console\n- A Configmap and Secret in your cluster for the bucket config and credentials\n\n#### Step 1: Creating a storage bucket\n\nNote: Currently only Google Storage bucket is supported, support for AWS S3 Bucket will be available in a future release.\n\n- You can create a bucket through the GCP console or by running the following command in [Google Cloud Shell](https://cloud.google.com/shell/)\n\n```shell\nAX_APS_BUCKET_NAME=<bucket_name>\ngsutil mb -b on gs://$AX_APS_BUCKET_NAME/\ngcloud iam service-accounts create appranix --display-name \"Appranix service account\"\nAX_SERVICE_ACCOUNT_EMAIL=$(gcloud iam service-accounts list --filter=\"displayName:Appranix service account\" --format 'value(email)')\ngsutil iam ch serviceAccount:$AX_SERVICE_ACCOUNT_EMAIL:objectAdmin gs://${AX_APS_BUCKET_NAME}\ngcloud iam service-accounts keys create ax_service_account.json --iam-account $AX_SERVICE_ACCOUNT_EMAIL\n```\n\nNote: You will require the ```ax_service_account.json``` created here in Step 3.\n\n\n#### Step 2: Obtaining the Appranix token for the cluster\n\n- Log in to your Appranix console and create a cluster connection. Upon connection creation copy the token generated for that cluster.\n\n#### Step 3: Creating the Configmap and Secret in the cluster\n\nA Configmap and Secret which contains the credetianls and bucket configuration has to be created before instaling the operator. It can be done by running the following command against your cluster.\n\nNote: Replace **token** wih the value obtained in Step 2.\n\n\n```shell\nAX_TOKEN=<token>\nAX_SERVICE_ACCOUNT=$(cat ax_service_account.json | base64 -w 0)\ncurl -Ls -H \"Content-Type: application/json\" https://us-central1-appranix-dev-07.cloudfunctions.net/operator-setup  -d '{\"token\": \"'$AX_TOKEN'\", \"secret\": \"'$AX_SERVICE_ACCOUNT'\"}' | oc apply -f -\n```\n\n#### Step 4: Deploying Operator from OperatorHub\n\n- Login to the OpenShift console and switch to ```appranix``` project\n\n- Search for Appranix in OperatorHub and install it.\n\n- Once installed go to the Appranix operator under Installed Operators and click on the BackupStorageLocation tab.\n\n- Now click on **Create BackupStorageLocation** and enter the bucket name under **Objectstorage** and click **Create**.\n\n- You can verify if the insallation is successful by checking the status in the Appranix console.",
-      "csv_display_name": "Appranix APS Operator",
-      "csv_metadata_description": "The Appranix operator enables you to back up and restore your OpenShift cluster resources and persistent volumes.",
-      "csv_name": "appranix-operator.v2.5.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:34:53.363000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "appranix-cps",
-      "provided_apis": [],
-      "provider": "Appranix",
-      "related_images": [
-        {
-          "digest": "sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
-          "image": "registry.connect.redhat.com/appranix/apx-operator@sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
-          "name": "apx-operator-b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08-annotation"
-        },
-        {
-          "digest": "sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
-          "image": "registry.connect.redhat.com/appranix/apx-operator@sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:78d3471a6152df1cb066a82f93904110cb80a18f7e576edb3cd3fd180161bab4",
-          "image": "registry.connect.redhat.com/appranix/apx-controller@sha256:78d3471a6152df1cb066a82f93904110cb80a18f7e576edb3cd3fd180161bab4",
-          "name": "controller"
-        },
-        {
-          "digest": "sha256:46ca904bb0c9b3f4628011b610de3dce2ff9abae52294c111e953dc7e6140cd4",
-          "image": "registry.connect.redhat.com/appranix/apx-manager@sha256:46ca904bb0c9b3f4628011b610de3dce2ff9abae52294c111e953dc7e6140cd4",
-          "name": "agent"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "2.5.0",
-      "version_original": "2.5.0"
-    },
-    {
       "_id": "60ea04a3ba43af88444a400a",
       "alm_examples": [
         {
@@ -21169,149 +20977,392 @@
       "version_original": "1.0.0"
     },
     {
-      "_id": "611fbe5dbd674341b5c5f16e",
+      "_id": "611fbe6e9f14588c41ebe990",
       "alm_examples": [
         {
-          "api_version": "citrix.com/v1alpha1",
-          "kind": "CitrixCpxWithIngressController",
+          "api_version": "nvidia.com/v1",
+          "kind": "ClusterPolicy",
           "metadata": {
-            "name": "cpx-cic"
+            "name": "gpu-cluster-policy"
           },
           "spec": {
-            "ADMSettings": {
-              "ADMFingerPrint": "",
-              "ADMIP": "",
-              "bandWidth": "",
-              "bandWidthLicense": false,
-              "cpxCores": "",
-              "licenseServerIP": "",
-              "licenseServerPort": 27000,
-              "loginSecret": "",
-              "vCPULicense": false
+            "dcgmExporter": {
+              "affinity": {},
+              "image": "dcgm-exporter",
+              "imagePullSecrets": [],
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.dcgm-exporter": "true"
+              },
+              "podSecurityContext": {},
+              "priorityClassName": "system-node-critical",
+              "repository": "nvcr.io/nvidia/k8s",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:8af02463a8b60b21202d0bf69bc1ee0bb12f684fa367f903d138df6cacc2d0ac"
             },
-            "aws": false,
-            "azure": false,
-            "bgpSettings": {
-              "bgpConfig": [
+            "devicePlugin": {
+              "affinity": {},
+              "args": [],
+              "env": [
                 {
-                  "bgpRouter": {
-                    "localAS": 100,
-                    "neighbor": [
-                      {
-                        "ASOriginationInterval": 10,
-                        "address": "",
-                        "advertisementInterval": 10,
-                        "remoteAS": 100
-                      }
-                    ]
-                  }
+                  "name": "PASS_DEVICE_SPECS",
+                  "value": "true"
+                },
+                {
+                  "name": "FAIL_ON_INIT_ERROR",
+                  "value": "true"
+                },
+                {
+                  "name": "DEVICE_LIST_STRATEGY",
+                  "value": "envvar"
+                },
+                {
+                  "name": "DEVICE_ID_STRATEGY",
+                  "value": "uuid"
+                },
+                {
+                  "name": "NVIDIA_VISIBLE_DEVICES",
+                  "value": "all"
+                },
+                {
+                  "name": "NVIDIA_DRIVER_CAPABILITIES",
+                  "value": "all"
                 }
               ],
-              "required": false
+              "image": "k8s-device-plugin",
+              "imagePullSecrets": [],
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.device-plugin": "true"
+              },
+              "podSecurityContext": {},
+              "priorityClassName": "system-node-critical",
+              "repository": "nvcr.io/nvidia",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:85def0197f388e5e336b1ab0dbec350816c40108a58af946baa1315f4c96ee05"
             },
-            "cic": {
-              "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-              "pullPolicy": "Always",
-              "required": true
+            "driver": {
+              "affinity": {},
+              "enabled": true,
+              "image": "driver",
+              "imagePullSecrets": [],
+              "licensingConfig": {
+                "configMapName": ""
+              },
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.driver": "true"
+              },
+              "podSecurityContext": {},
+              "priorityClassName": "system-node-critical",
+              "repoConfig": {
+                "configMapName": "",
+                "destinationDir": ""
+              },
+              "repository": "nvcr.io/nvidia",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:09ba3eca64a80fab010a9fcd647a2675260272a8c3eb515dfed6dc38a2d31ead"
             },
-            "coeConfig": {
-              "distributedTracing": {
-                "enable": false,
-                "samplingrate": 100
-              },
-              "endpoint": {
-                "server": ""
-              },
-              "required": false,
-              "timeseries": {
-                "auditlogs": {
-                  "enable": false
+            "gfd": {
+              "affinity": {},
+              "env": [
+                {
+                  "name": "GFD_SLEEP_INTERVAL",
+                  "value": "60s"
                 },
-                "events": {
-                  "enable": false
-                },
-                "metrics": {
-                  "enable": false,
-                  "mode": "avro"
-                },
-                "port": 5563
+                {
+                  "name": "FAIL_ON_INIT_ERROR",
+                  "value": "true"
+                }
+              ],
+              "image": "gpu-feature-discovery",
+              "imagePullSecrets": [],
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.gpu-feature-discovery": "true"
               },
-              "transactions": {
-                "enable": false,
-                "port": 5557
+              "podSecurityContext": {},
+              "priorityClassName": "system-node-critical",
+              "repository": "nvcr.io/nvidia",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:bfc39d23568458dfd50c0c5323b6d42bdcd038c420fb2a2becd513a3ed3be27f"
+            },
+            "mig": {
+              "strategy": "single"
+            },
+            "migManager": {
+              "affinity": {},
+              "enabled": true,
+              "env": [
+                {
+                  "name": "WITH_REBOOT",
+                  "value": "false"
+                }
+              ],
+              "image": "k8s-mig-manager",
+              "imagePullSecrets": [],
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.mig-manager": "true"
+              },
+              "podSecurityContext": {},
+              "priorityClassName": "system-node-critical",
+              "repository": "nvcr.io/nvidia/cloud-native",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:495ed3b42e0541590c537ab1b33bda772aad530d3ef6a4f9384d3741a59e2bf8"
+            },
+            "operator": {
+              "defaultRuntime": "crio",
+              "deployGFD": true,
+              "initContainer": {
+                "image": "cuda",
+                "imagePullSecrets": [],
+                "repository": "nvcr.io/nvidia",
+                "version": "sha256:15674e5c45c97994bc92387bad03a0d52d7c1e983709c471c4fecc8e806dbdce"
               }
             },
-            "cpxBgpRouter": false,
-            "crds": {
-              "install": true,
-              "retainOnDelete": false
-            },
-            "defaultSSLCertSecret": "",
-            "entityPrefix": "",
-            "exporter": {
-              "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-              "ports": {
-                "containerPort": 8888
+            "toolkit": {
+              "affinity": {},
+              "enabled": true,
+              "image": "container-toolkit",
+              "imagePullSecrets": [],
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.container-toolkit": "true"
               },
-              "pullPolicy": "Always",
-              "required": false
+              "podSecurityContext": {},
+              "priorityClassName": "system-node-critical",
+              "repository": "nvcr.io/nvidia/k8s",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:ffa284f1f359d70f0e1d6d8e7752d7c92ef7445b0d74965a8682775de37febf8"
             },
-            "image": "registry.connect.redhat.com/citrix/cpx-13-0@sha256:54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d",
-            "ingressClass": "",
-            "ingressIP": "",
-            "ipam": false,
-            "kubernetesURL": "",
-            "license": {
-              "accept": false
-            },
-            "logLevel": "INFO",
-            "logProxy": "",
-            "mgmtHttpPort": 9080,
-            "mgmtHttpsPort": 9443,
-            "namespaceLabels": "",
-            "nodeSelector": {
-              "key": "",
-              "value": ""
-            },
-            "nsCookieVersion": "0",
-            "nsGateway": "192.168.1.1",
-            "nsHTTP2ServerSide": "OFF",
-            "nsIP": "192.168.1.2",
-            "nsProtocol": "http",
-            "openshift": true,
-            "pullPolicy": "Always",
-            "routeLabels": "",
-            "serviceAccount": {
-              "create": true
-            },
-            "serviceAnnotations": {
-              "aws": {
-                "backendProtocol": "",
-                "negotiationPolicy": "",
-                "proxyProtocol": false,
-                "resourcesTags": "",
-                "sslCert": "",
-                "sslPorts": ""
+            "validator": {
+              "affinity": {},
+              "env": [
+                {
+                  "name": "WITH_WORKLOAD",
+                  "value": "true"
+                }
+              ],
+              "image": "gpu-operator-validator",
+              "imagePullSecrets": [],
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.operator-validator": "true"
               },
-              "azure": {
-                "internalLoadBalancer": false
+              "podSecurityContext": {},
+              "priorityClassName": "system-node-critical",
+              "repository": "nvcr.io/nvidia/cloud-native",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:aa1f7bd526ae132c46f3ebe6ecfabe675889e240776ccc2155e31e0c48cc659e"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:380392c15740edd8853ea65b1e19f3b9bd3afea04612f204c244bf5a23b328ce",
+      "bundle_path_digest": "sha256:380392c15740edd8853ea65b1e19f3b9bd3afea04612f204c244bf5a23b328ce",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "v1.7",
+      "creation_date": "2021-08-20T14:38:38.562000+00:00",
+      "csv_description": "Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices through the [device plugin framework](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/). However, configuring and managing nodes with these hardware resources requires configuration of multiple software components such as drivers, container runtimes or other libraries which are difficult and prone to errors.\nThe NVIDIA GPU Operator uses the [operator framework](https://coreos.com/blog/introducing-operator-framework) within Kubernetes to automate the management of all NVIDIA software components needed to provision and monitor GPUs. These components include the NVIDIA drivers (to enable CUDA), Kubernetes device plugin for GPUs, the NVIDIA Container Runtime, automatic node labelling and NVIDIA DCGM exporter.\nVisit the official site of the [GPU Operator](https://github.com/NVIDIA/gpu-operator) for more information. For getting started with using the GPU Operator with OpenShift, see the instructions [here](https://docs.nvidia.com/datacenter/kubernetes/openshift-on-gpu-install-guide/index.html).\n",
+      "csv_display_name": "NVIDIA GPU Operator",
+      "csv_metadata_description": "Automate the management and monitoring of NVIDIA GPUs.",
+      "csv_name": "gpu-operator-certified.v1.7.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:51:03.933000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "gpu-operator-certified",
+      "provided_apis": [
+        {
+          "group": "nvidia.com",
+          "kind": "ClusterPolicy",
+          "plural": "clusterpolicies",
+          "version": "v1"
+        }
+      ],
+      "provider": "NVIDIA Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:3a812cf113f416baca9262fa8423f36141f35696eb6e7a51a7abb40f5ccd5f8c",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:3a812cf113f416baca9262fa8423f36141f35696eb6e7a51a7abb40f5ccd5f8c",
+          "name": "gpu-operator-image"
+        },
+        {
+          "digest": "sha256:8af02463a8b60b21202d0bf69bc1ee0bb12f684fa367f903d138df6cacc2d0ac",
+          "image": "nvcr.io/nvidia/k8s/dcgm-exporter@sha256:8af02463a8b60b21202d0bf69bc1ee0bb12f684fa367f903d138df6cacc2d0ac",
+          "name": "dcgm-exporter-image"
+        },
+        {
+          "digest": "sha256:ffa284f1f359d70f0e1d6d8e7752d7c92ef7445b0d74965a8682775de37febf8",
+          "image": "nvcr.io/nvidia/k8s/container-toolkit@sha256:ffa284f1f359d70f0e1d6d8e7752d7c92ef7445b0d74965a8682775de37febf8",
+          "name": "container-toolkit-image"
+        },
+        {
+          "digest": "sha256:09ba3eca64a80fab010a9fcd647a2675260272a8c3eb515dfed6dc38a2d31ead",
+          "image": "nvcr.io/nvidia/driver@sha256:09ba3eca64a80fab010a9fcd647a2675260272a8c3eb515dfed6dc38a2d31ead",
+          "name": "driver-image"
+        },
+        {
+          "digest": "sha256:85def0197f388e5e336b1ab0dbec350816c40108a58af946baa1315f4c96ee05",
+          "image": "nvcr.io/nvidia/k8s-device-plugin@sha256:85def0197f388e5e336b1ab0dbec350816c40108a58af946baa1315f4c96ee05",
+          "name": "device-plugin-image"
+        },
+        {
+          "digest": "sha256:bfc39d23568458dfd50c0c5323b6d42bdcd038c420fb2a2becd513a3ed3be27f",
+          "image": "nvcr.io/nvidia/gpu-feature-discovery@sha256:bfc39d23568458dfd50c0c5323b6d42bdcd038c420fb2a2becd513a3ed3be27f",
+          "name": "gpu-feature-discovery-image"
+        },
+        {
+          "digest": "sha256:495ed3b42e0541590c537ab1b33bda772aad530d3ef6a4f9384d3741a59e2bf8",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-mig-manager@sha256:495ed3b42e0541590c537ab1b33bda772aad530d3ef6a4f9384d3741a59e2bf8",
+          "name": "mig-manager-image"
+        },
+        {
+          "digest": "sha256:15674e5c45c97994bc92387bad03a0d52d7c1e983709c471c4fecc8e806dbdce",
+          "image": "nvcr.io/nvidia/cuda@sha256:15674e5c45c97994bc92387bad03a0d52d7c1e983709c471c4fecc8e806dbdce",
+          "name": "init-container-image"
+        },
+        {
+          "digest": "sha256:aa1f7bd526ae132c46f3ebe6ecfabe675889e240776ccc2155e31e0c48cc659e",
+          "image": "nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:aa1f7bd526ae132c46f3ebe6ecfabe675889e240776ccc2155e31e0c48cc659e",
+          "name": "gpu-operator-validator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.7.1",
+      "version_original": "1.7.1"
+    },
+    {
+      "_id": "611fbe929f14588c41ebe999",
+      "alm_examples": [
+        {
+          "api_version": "anzograph.clusters.cambridgesemantics.com/v2",
+          "kind": "AnzoGraph",
+          "metadata": {
+            "name": "azg01"
+          },
+          "spec": {
+            "db": {
+              "nodeConfig": {
+                "spec": {
+                  "replicas": 1,
+                  "selector": {
+                    "matchLabels": {
+                      "app_data": "anzograph-data-grpc",
+                      "app_mgmt": "anzograph-mgmt-grpc"
+                    }
+                  },
+                  "serviceName": "anzograph-azg01",
+                  "template": {
+                    "metadata": {
+                      "labels": {
+                        "app_data": "anzograph-data-grpc",
+                        "app_mgmt": "anzograph-mgmt-grpc"
+                      }
+                    },
+                    "spec": {
+                      "containers": [
+                        {
+                          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-db@sha256:8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5",
+                          "name": "db",
+                          "resources": {
+                            "limits": {
+                              "cpu": "8000m",
+                              "memory": "8Gi"
+                            },
+                            "requests": {
+                              "cpu": "8000m",
+                              "memory": "8Gi"
+                            }
+                          }
+                        }
+                      ],
+                      "serviceAccountName": "anzograph-operator"
+                    }
+                  }
+                }
               }
             },
-            "serviceType": {
-              "loadBalancer": {
-                "enabled": false,
-                "externalTrafficPolicy": "Local"
-              },
-              "nodePort": {
-                "enabled": false,
-                "httpPort": "",
-                "httpsPort": ""
+            "deployFrontend": false,
+            "frontend": {
+              "nodeConfig": {
+                "spec": {
+                  "replicas": 1,
+                  "selector": {
+                    "matchLabels": {
+                      "app_mgmt": "anzograph-frontend"
+                    }
+                  },
+                  "serviceName": "anzograph-azg01",
+                  "template": {
+                    "metadata": {
+                      "labels": {
+                        "app_mgmt": "anzograph-frontend"
+                      }
+                    },
+                    "spec": {
+                      "containers": [
+                        {
+                          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-frontend@sha256:c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3",
+                          "name": "frontend",
+                          "resources": {
+                            "limits": {
+                              "cpu": "2000m",
+                              "memory": "4Gi"
+                            },
+                            "requests": {
+                              "cpu": "2000m",
+                              "memory": "4Gi"
+                            }
+                          }
+                        }
+                      ],
+                      "serviceAccountName": "anzograph-operator"
+                    }
+                  }
+                }
               }
-            },
-            "setAsDefaultIngressClass": false,
-            "sslCertManagedByAWS": false,
-            "tolerations": [],
-            "updateIngressStatus": false
+            }
           }
         }
       ],
@@ -21320,17 +21371,17 @@
         "valid_subscription": []
       },
       "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-bundle@sha256:58f15e99628043753fefa5c8df190cc90e82a6bd3b00aed3c52f0fbf69d81039",
-      "bundle_path_digest": "sha256:58f15e99628043753fefa5c8df190cc90e82a6bd3b00aed3c52f0fbf69d81039",
+      "bundle_path": "registry.connect.redhat.com/cambridgesemantics/anzograph-operator-bundle@sha256:9418a3505873ac387f2b5455ec7e696739a2bb6f03232f8c0f59489c605b96f2",
+      "bundle_path_digest": "sha256:9418a3505873ac387f2b5455ec7e696739a2bb6f03232f8c0f59489c605b96f2",
       "capabilities": [
         "Basic Install"
       ],
-      "channel_name": "alpha",
-      "creation_date": "2021-08-20T14:38:21.727000+00:00",
-      "csv_description": "Citrix ADC CPX is a container-based application delivery controller that can be provisioned on a Docker host. Citrix ADC CPX enables customers to leverage Docker engine capabilities and use NetScaler load balancing and traffic management features for container-based applications. Citrix Ingress Controller which will be running in side-car mode with Citrix ADC CPX will automatically configures Citrix ADC CPX based on the Ingress resource configuration. This operator can be used deploy Citrix ADC CPX with Citrix ingress controller in an OpenShift environment.",
-      "csv_display_name": "Citrix ADC CPX with Ingress Controller",
-      "csv_metadata_description": "Citrix ADC CPX is a container-based application delivery controller that can be provisioned on a Docker host. Citrix ADC CPX enables customers to leverage Docker engine capabilities and use NetScaler load balancing and traffic management features for container-based applications. Citrix Ingress Controller which will be running in side-car mode with Citrix ADC CPX will automatically configures Citrix ADC CPX based on the Ingress resource configuration. This operator can be used deploy Citrix ADC CPX with Citrix ingress controller in an Openshift environment.",
-      "csv_name": "citrix-cpx-with-ingress-controller-operator.v1.13.20",
+      "channel_name": "stable",
+      "creation_date": "2021-08-20T14:39:14.376000+00:00",
+      "csv_description": "The AnzoGraph Operator provides the way to install and configure an AnzoGraph\ncluster on Red Hat K8S environment.\n\n### Installation\n Refer [installation instructions]( https://github.com/cambridgesemantics/csi-k8s-operator-anzograph/blob/v2.0.1/README_openshift_marketplace.md )\n\n### Documentation\n\nYou can find our documentation [here.]( https://docs.cambridgesemantics.com/anzograph/userdoc/ )\n\n### Support\n\nWe offer Support to our customers with the AnzoGraph db Enterprise Edition License [here]( https://customercenter.cambridgesemantics.com/ ). For AnzoGraph db Free Edition questions, get help from our Anzograph User Community at Stack Overflow. When submitting a question, include the tag 'anzograph'.",
+      "csv_display_name": "AnzoGraph Operator",
+      "csv_metadata_description": "kubernetes operator for AnzoGraph DB",
+      "csv_name": "anzograph-operator.v2.0.102",
       "in_index_img": true,
       "install_modes": [
         {
@@ -21346,78 +21397,442 @@
           "type": "MultiNamespace"
         },
         {
-          "supported": true,
+          "supported": false,
           "type": "AllNamespaces"
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:45:46.577000+00:00",
-      "latest_in_channel": false,
+      "last_update_date": "2022-09-19T11:42:47.423000+00:00",
+      "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
-      "package": "citrix-cpx-with-ingress-controller-operator",
+      "package": "anzograph-operator",
       "provided_apis": [
         {
-          "group": "citrix.com",
-          "kind": "CitrixCpxWithIngressController",
-          "plural": "citrixcpxwithingresscontrollers",
-          "version": "v1alpha1"
+          "group": "anzograph.clusters.cambridgesemantics.com",
+          "kind": "AnzoGraph",
+          "version": "v2"
         }
       ],
-      "provider": "citrix",
+      "provider": "Cambridge Semantics Inc.",
       "related_images": [
         {
-          "digest": "sha256:4ca00f777a37e3070cfa2651685ba284623a78b55e2f81143ec8b58e967f163a",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-controller@sha256:4ca00f777a37e3070cfa2651685ba284623a78b55e2f81143ec8b58e967f163a",
-          "name": "citrix-k8s-cpx-ingress-controller-4ca00f777a37e3070cfa2651685ba284623a78b55e2f81143ec8b58e967f163a-annotation"
+          "digest": "sha256:a5b212558f748ddc8156541b546290320b656506e039a18903ad9fa6e638e732",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-operator@sha256:a5b212558f748ddc8156541b546290320b656506e039a18903ad9fa6e638e732",
+          "name": "anzograph-operator-a5b212558f748ddc8156541b546290320b656506e039a18903ad9fa6e638e732-annotation"
         },
         {
-          "digest": "sha256:10252238f921d720b8af7e2ca8e90be6e8516efefc1633697aa048a74041f1c3",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:10252238f921d720b8af7e2ca8e90be6e8516efefc1633697aa048a74041f1c3",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:4ca00f777a37e3070cfa2651685ba284623a78b55e2f81143ec8b58e967f163a",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-controller@sha256:4ca00f777a37e3070cfa2651685ba284623a78b55e2f81143ec8b58e967f163a",
+          "digest": "sha256:a5b212558f748ddc8156541b546290320b656506e039a18903ad9fa6e638e732",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-operator@sha256:a5b212558f748ddc8156541b546290320b656506e039a18903ad9fa6e638e732",
           "name": "manager"
         },
         {
-          "digest": "sha256:54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d",
-          "image": "registry.connect.redhat.com/citrix/cpx-13-0@sha256:54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d",
-          "name": "cpx"
+          "digest": "sha256:e3bdddf811b5ba69f388d023aea1ba538edd00e9f415c33ec555321d39129a36",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph@sha256:e3bdddf811b5ba69f388d023aea1ba538edd00e9f415c33ec555321d39129a36",
+          "name": "anzograph_allinone"
         },
         {
-          "digest": "sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "name": "cic"
+          "digest": "sha256:8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-db@sha256:8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5",
+          "name": "anzograph_db"
         },
         {
-          "digest": "sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "name": "exporter"
+          "digest": "sha256:c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-frontend@sha256:c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3",
+          "name": "anzograph_frontend"
         },
         {
-          "digest": "sha256:54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d",
-          "image": "registry.connect.redhat.com/citrix/cpx-13-0@sha256:54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d",
-          "name": "cpx-13-0-54c57fa80f0d12d987c8e1fb2cb118539446f1114997e671dfd1604fab24d23d-annotation"
+          "digest": "sha256:c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-frontend@sha256:c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3",
+          "name": "anzograph-frontend-c1443bcdc8e998fc699f61980a665f1a083350adf2d3d1d55a7cb55e31ca50b3-annotation"
         },
         {
-          "digest": "sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe",
-          "name": "citrix-adc-metrics-exporter-c495fb88a82bac7cd92e13ebf52c24ebf425772acb7f43ab6bd753ffaddc5dfe-annotation"
-        },
-        {
-          "digest": "sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0",
-          "name": "citrix-ingress-controller-f81763b127d4320e6fcefdefc2595e85c02e0be4e7bced0736338039bdff32a0-annotation"
+          "digest": "sha256:8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5",
+          "image": "registry.connect.redhat.com/cambridgesemantics/anzograph-db@sha256:8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5",
+          "name": "anzograph-db-8a5bd26551990929fdb776d6b421a9713cb84e03b19c18f81b625582f7f41af5-annotation"
         }
       ],
       "replaces": null,
       "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.13.20",
-      "version_original": "1.13.20"
+      "version": "2.0.1",
+      "version_original": "2.0.1"
+    },
+    {
+      "_id": "611fbee0dece23122b7a790f",
+      "alm_examples": [
+        {
+          "api_version": "entando.org/v1",
+          "kind": "EntandoDeBundle",
+          "metadata": {
+            "name": "my-bundle",
+            "namespace": "my-namespace"
+          },
+          "spec": {
+            "details": {
+              "name": "my-bundle"
+            }
+          }
+        },
+        {
+          "api_version": "entando.org/v1",
+          "kind": "EntandoDatabaseService",
+          "metadata": {
+            "name": "my-entando-database-service",
+            "namespace": "my-namespace"
+          },
+          "spec": {
+            "createDeployment": true,
+            "databaseName": "my_database",
+            "dbms": "postgresql"
+          }
+        },
+        {
+          "api_version": "entando.org/v1",
+          "kind": "EntandoKeycloakServer",
+          "metadata": {
+            "name": "my-keycloak",
+            "namespace": "my-namespace"
+          },
+          "spec": {
+            "dbms": "postgresql",
+            "environmentVariables": [],
+            "replicas": 1,
+            "standardImage": "redhat-sso"
+          }
+        },
+        {
+          "api_version": "entando.org/v1",
+          "kind": "EntandoClusterInfrastructure",
+          "metadata": {
+            "name": "my-entando-cluster-infrastructure",
+            "namespace": "my-namespace"
+          },
+          "spec": {
+            "environmentVariables": [],
+            "replicas": 1
+          }
+        },
+        {
+          "api_version": "entando.org/v1",
+          "kind": "EntandoPlugin",
+          "metadata": {
+            "name": "my-entando-plugin",
+            "namespace": "my-namespace"
+          },
+          "spec": {
+            "dbms": "postgresql",
+            "healthCheckPath": "/management/health",
+            "image": "entando/entando-avatar-plugin:6.0.5",
+            "ingressHostName": "my-plugin.apps-crc.testing",
+            "ingressPath": "/avatarPlugin",
+            "replicas": 1,
+            "roles": [
+              {
+                "code": "admin",
+                "name": "user"
+              },
+              {
+                "code": "user",
+                "name": "user"
+              }
+            ],
+            "securityLevel": "strict"
+          }
+        },
+        {
+          "api_version": "entando.org/v1",
+          "kind": "EntandoApp",
+          "metadata": {
+            "name": "my-app",
+            "namespace": "my-namespace"
+          },
+          "spec": {
+            "dbms": "postgresql",
+            "environmentVariables": [],
+            "ingressHostName": "my-app.apps-crc.testing",
+            "replicas": 1,
+            "standardServerImage": "eap"
+          }
+        },
+        {
+          "api_version": "entando.org/v1",
+          "kind": "EntandoAppPluginLink",
+          "metadata": {
+            "name": "my-link",
+            "namespace": "my-namespace"
+          },
+          "spec": {
+            "entandoAppName": "my-app",
+            "entandoPluginName": "my-plugin"
+          }
+        },
+        {
+          "api_version": "entando.org/v1",
+          "kind": "EntandoCompositeApp",
+          "metadata": {
+            "name": "my-entando-composite-app",
+            "namespace": "my-namespace"
+          },
+          "spec": {
+            "components": [
+              {
+                "kind": "EntandoDatabaseService",
+                "metadata": {
+                  "name": "inline-entando-database-service"
+                },
+                "spec": {
+                  "createDeployment": true
+                }
+              },
+              {
+                "kind": "EntandoKeycloakServer",
+                "metadata": {
+                  "name": "inline-keycloak"
+                },
+                "spec": {
+                  "standardImage": "redhat-sso"
+                }
+              },
+              {
+                "kind": "EntandoClusterInfrastructure",
+                "metadata": {
+                  "name": "inline-entando-cluster-infrastructure"
+                },
+                "spec": {}
+              },
+              {
+                "kind": "EntandoApp",
+                "metadata": {
+                  "name": "inline-app"
+                },
+                "spec": {
+                  "standardServerImage": "eap"
+                }
+              },
+              {
+                "kind": "EntandoPlugin",
+                "metadata": {
+                  "name": "inline-plugin"
+                },
+                "spec": {
+                  "healthCheckPath": "/management/health",
+                  "image": "entando/entando-avatar-plugin:6.0.5",
+                  "ingressPath": "/avatarPlugin",
+                  "roles": [
+                    {
+                      "code": "admin",
+                      "name": "admin"
+                    },
+                    {
+                      "code": "user",
+                      "name": "user"
+                    }
+                  ]
+                }
+              },
+              {
+                "kind": "EntandoAppPluginLink",
+                "metadata": {
+                  "name": "inline-link"
+                },
+                "spec": {
+                  "entandoAppName": "inline-app",
+                  "entandoPluginName": "inline-plugin"
+                }
+              }
+            ],
+            "dbmsOverride": "postgresql",
+            "ingressHostNameOverride": "entando.apps-crc.testing"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/entando/entando-operator@sha256:110de9cf2e6ecc1d3f6bff990ec9eb890b26c6ade5c03a232421d30e6bbace57",
+      "bundle_path_digest": "sha256:110de9cf2e6ecc1d3f6bff990ec9eb890b26c6ade5c03a232421d30e6bbace57",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-08-20T14:40:32.523000+00:00",
+      "csv_description": "## Entando\n\nThe Entando platform accelerates the development and lifecycle  management of fully modularized applications on Kubernetes. It  provides tools to help developers create and manage applications  using modular frontend and backend components.\nThe Entando Operator automates the installation, provisioning, and  configuration management of the components that make up an Entando  application. Specifically, the operator manages the following custom  resources:\n**EntandoKeycloakServers** for centralized authentication of frontend  and backend components. The operator can deploy Keycloak, or in certified  environments, Red Hat SSO servers that can then be used by subsequent  deployments as an OpenID Connect provider.\n**EntandoApps** for hosting an Entando application. EntandoApps are hosted on Wildfly or JBoss EAP containers, and can also be used to deploy custom  EntandoApp containers.\n**EntandoPlugins** for deploying microservices to customize or enhance your EntandoApp. Entando microservice plugins are deployed to your cluster, and  then linked to one or more EntandoApps.\n## Using the Operator\nThe Entando Operator can be deployed using the default settings without any  configuration. Once deployed, the operator can be customized by editing  the *configmap* and secrets.\n### ConfigMap: entando-operator-config\nThe 'entando-operator-config' ConfigMap can be added after deployment and any changes to it will be picked up by the operator on subsequent event processing. It supports the following keys:\n\n    entando.k8s.operator.gc.controller.pods: set this to \"false\" to keep controller pods after completion.\n    entando.k8s.operator.compliance.mode: set this to \"community\" if there is no requirement for Red Hat compliance.\n    entando.k8s.operator.image.pull.secrets: a comma separated list containing the names of pull secrets that will be linked to all service accounts.\n    entando.k8s.operator.disable.pvc.garbage.collection: set this to \"false\" if you want Persistent Volume Claims to be deleted with the custom resources they are associated with.\n    entando.k8s.operator.impose.default.limits: set this to \"false\" if there is no need to limit the resource consumption of pods on your cluster.\n    entando.k8s.operator.request.to.limit.ratio: a decimal number that default limits will be multiplied by to calculate default requests for resources.\n    entando.k8s.operator.force.db.password.reset: set this to \"true\" if you plan to delete Secrets from your namespace but you want to retain the Database they point to.\n    entando.k8s.operator.pull.policy.override: specify your preferred pullPolicy for images. The default is Always.\n    entando.tls.secret.name: The name of a standard TLS secret to use for HTTPS Ingresses. See the section entando-tls-secret.\n    entando.ca.secret.name: The name of a secret containing CA certificates. See the section entando-ca-cert-secret.\n    entando.assume.external.https.provider: Set this to \"true\" if your cloud provider handles HTTPS for you.\n    entando.use.auto.cert.generation: Set this to \"true\" to have Openshift use its internal CA to generate certificates for your Routes.\n    entando.default.routing.suffix: The domain name that can be suffixed to deployment names when the ingressHostName is omitted. Needs to be preconfigured on your DNS provider.\n    entando.pod.completion.timeout.seconds: The time it will take before Entando fails a run-to-completion Pod.\n    entando.pod.readiness.timeout.seconds: The time it will take before Entando fails a Service Pod.\n    entando.pod.shutdown.timeout.seconds: The time Entando will give a Pod to shutdown gracefully.\n\n\n### entando-pull-secret\nThe secret to be used to pull Entando images from the Red Hat container registry. The name of this secret is hard coded as it is required for the ClusterServiceVersion of this Operator\n### entando-tls-secret\nA standard Kubernetes TLS secret that will be used on all deployments where no custom TLS secret name is specified.\n### entando-ca-cert-secret\nThis is an opaque secret in the Entando Operator's namespace that contains the certificates of all trusted certificate authorities in your environment. This is generally used mainly for self signed certificates. As is generally the case for opaque secrets, there are no constraints on the keys in this secret. However, limit the files inside the secret to X509 certificates or certificate chains. The Entando Operator will load all of these files into a Java keystore that it then configures as the trust store for each container that uses Java.\n",
+      "csv_display_name": "Entando Operator",
+      "csv_metadata_description": "Processes EntandoKeycloakServer, EntandoApp and EntandoPlugin custom resources and deploys the relevant containers in the Kubernetes cluster.",
+      "csv_name": "entando-k8s-operator.v6.3.2-pr2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:49:14.344000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "entando-k8s-operator",
+      "provided_apis": [
+        {
+          "group": "entando.org",
+          "kind": "EntandoApp",
+          "plural": "entandoapps",
+          "version": "v1"
+        },
+        {
+          "group": "entando.org",
+          "kind": "EntandoClusterInfrastructure",
+          "plural": "entandoclusterinfrastructures",
+          "version": "v1"
+        },
+        {
+          "group": "entando.org",
+          "kind": "EntandoCompositeApp",
+          "plural": "entandocompositeapps",
+          "version": "v1"
+        },
+        {
+          "group": "entando.org",
+          "kind": "EntandoDatabaseService",
+          "plural": "entandodatabaseservices",
+          "version": "v1"
+        },
+        {
+          "group": "entando.org",
+          "kind": "EntandoDeBundle",
+          "plural": "entandodebundles",
+          "version": "v1"
+        },
+        {
+          "group": "entando.org",
+          "kind": "EntandoKeycloakServer",
+          "plural": "entandokeycloakservers",
+          "version": "v1"
+        },
+        {
+          "group": "entando.org",
+          "kind": "EntandoPlugin",
+          "plural": "entandoplugins",
+          "version": "v1"
+        },
+        {
+          "group": "entando.org",
+          "kind": "EntandoAppPluginLink",
+          "plural": "entandoapppluginlinks",
+          "version": "v1"
+        }
+      ],
+      "provider": "Entando, Inc",
+      "related_images": [
+        {
+          "digest": "sha256:c8a93ebd69af3cf822dd7d4fcce5d4241cd8dca229c4e25c771bcfecca916839",
+          "image": "entando/entando-k8s-controller-coordinator@sha256:c8a93ebd69af3cf822dd7d4fcce5d4241cd8dca229c4e25c771bcfecca916839",
+          "name": "entando-k8s-controller-coordinator-c8a93ebd69af3cf822dd7d4fcce5d4241cd8dca229c4e25c771bcfecca916839-annotation"
+        },
+        {
+          "digest": "sha256:c8a93ebd69af3cf822dd7d4fcce5d4241cd8dca229c4e25c771bcfecca916839",
+          "image": "entando/entando-k8s-controller-coordinator@sha256:c8a93ebd69af3cf822dd7d4fcce5d4241cd8dca229c4e25c771bcfecca916839",
+          "name": "entando-operator"
+        },
+        {
+          "digest": "sha256:570bce7dc649ac7ac85e7ecb196aabc281c77a94590aa7df7d9746869ce757ea",
+          "image": "registry.redhat.io/rhel8/mysql-80@sha256:570bce7dc649ac7ac85e7ecb196aabc281c77a94590aa7df7d9746869ce757ea",
+          "name": "rhel8_mysql_80"
+        },
+        {
+          "digest": "sha256:f4e5c728b644bf1888ec8086424852ed74b5596a511be29e636fb10218fc9b6f",
+          "image": "registry.redhat.io/rhel8/postgresql-12@sha256:f4e5c728b644bf1888ec8086424852ed74b5596a511be29e636fb10218fc9b6f",
+          "name": "rhel8_postgresql_12"
+        },
+        {
+          "digest": "sha256:1ca90c09302b9cadf8950278d92ad4d7f3a14f02dea8704320794aa77ada8631",
+          "image": "docker.io/entando/app-builder@sha256:1ca90c09302b9cadf8950278d92ad4d7f3a14f02dea8704320794aa77ada8631",
+          "name": "app_builder"
+        },
+        {
+          "digest": "sha256:668191fc86b090452baaba18ec7bbc3d07df5a99750e0c5b98759599d565cfbe",
+          "image": "docker.io/entando/entando-component-manager@sha256:668191fc86b090452baaba18ec7bbc3d07df5a99750e0c5b98759599d565cfbe",
+          "name": "entando_component_manager"
+        },
+        {
+          "digest": "sha256:1f0e35d7f7ee8123721cf8e80ac96ac2f594f21a2b68cf9e720917d090c8095e",
+          "image": "docker.io/entando/entando-de-app-eap@sha256:1f0e35d7f7ee8123721cf8e80ac96ac2f594f21a2b68cf9e720917d090c8095e",
+          "name": "entando_de_app_eap"
+        },
+        {
+          "digest": "sha256:c68d3b129fc625f5d1ee10ed2a107e28c145049d4b513dcdb2c736555025e339",
+          "image": "docker.io/entando/entando-k8s-app-controller@sha256:c68d3b129fc625f5d1ee10ed2a107e28c145049d4b513dcdb2c736555025e339",
+          "name": "entando_k8s_app_controller"
+        },
+        {
+          "digest": "sha256:aa7ba0861705213434e610530c5bf5da1bdb33f1834d3c346174f5a28145c0bd",
+          "image": "docker.io/entando/entando-k8s-app-plugin-link-controller@sha256:aa7ba0861705213434e610530c5bf5da1bdb33f1834d3c346174f5a28145c0bd",
+          "name": "entando_k8s_app_plugin_link_controller"
+        },
+        {
+          "digest": "sha256:86dbea6696349d7b2393e12bacef4d1acec2dd3f8551e397fa26c92706a18dd3",
+          "image": "docker.io/entando/entando-k8s-cluster-infrastructure-controller@sha256:86dbea6696349d7b2393e12bacef4d1acec2dd3f8551e397fa26c92706a18dd3",
+          "name": "entando_k8s_cluster_infrastructure_controller"
+        },
+        {
+          "digest": "sha256:4bc6797bb41b3e407b64530c3cff7a78f3fc2c22863caad9c606ccd650310b61",
+          "image": "docker.io/entando/entando-k8s-composite-app-controller@sha256:4bc6797bb41b3e407b64530c3cff7a78f3fc2c22863caad9c606ccd650310b61",
+          "name": "entando_k8s_composite_app_controller"
+        },
+        {
+          "digest": "sha256:58ca4ad2fca83a715aba9b68609f9056f633d556eb9845b3aff5c05769369539",
+          "image": "docker.io/entando/entando-k8s-database-service-controller@sha256:58ca4ad2fca83a715aba9b68609f9056f633d556eb9845b3aff5c05769369539",
+          "name": "entando_k8s_database_service_controller"
+        },
+        {
+          "digest": "sha256:8ae47dbf93201965106663299f06daad544982fa244d4a0f365a1b717727e5ed",
+          "image": "docker.io/entando/entando-k8s-dbjob@sha256:8ae47dbf93201965106663299f06daad544982fa244d4a0f365a1b717727e5ed",
+          "name": "entando_k8s_dbjob"
+        },
+        {
+          "digest": "sha256:f1ed42001260802353197433cea7df4c2d0e5fd9bcd926bb5ae7c654dfad2ffe",
+          "image": "docker.io/entando/entando-k8s-keycloak-controller@sha256:f1ed42001260802353197433cea7df4c2d0e5fd9bcd926bb5ae7c654dfad2ffe",
+          "name": "entando_k8s_keycloak_controller"
+        },
+        {
+          "digest": "sha256:a20c753dda86e0f54f210e446b404733045ba426fc7186dc3936daed8224fbcb",
+          "image": "docker.io/entando/entando-k8s-plugin-controller@sha256:a20c753dda86e0f54f210e446b404733045ba426fc7186dc3936daed8224fbcb",
+          "name": "entando_k8s_plugin_controller"
+        },
+        {
+          "digest": "sha256:775391f0005e64764288bfe007d9ea576f13618c02ea400d030a7502cfb551bd",
+          "image": "docker.io/entando/entando-k8s-service@sha256:775391f0005e64764288bfe007d9ea576f13618c02ea400d030a7502cfb551bd",
+          "name": "entando_k8s_service"
+        },
+        {
+          "digest": "sha256:3692adb3694b3bf278bed7a678c9d0eaa0aba8e3e3ed4117ca04156525bcac72",
+          "image": "docker.io/entando/entando-redhat-sso@sha256:3692adb3694b3bf278bed7a678c9d0eaa0aba8e3e3ed4117ca04156525bcac72",
+          "name": "entando_redhat_sso"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "6.3.2-pr2",
+      "version_original": "6.3.2-pr2"
     }
   ]
 }
