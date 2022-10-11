@@ -1,239 +1,6 @@
 {
   "data": [
     {
-      "_id": "62cefa01fe766184e15e9d76",
-      "alm_examples": [
-        {
-          "api_version": "charts.konghq.com/v1alpha1",
-          "kind": "Kong",
-          "metadata": {
-            "name": "example-kong"
-          },
-          "spec": {
-            "env": {
-              "prefix": "/kong_prefix/"
-            },
-            "ingressController": {
-              "enabled": true,
-              "installCRDs": false
-            },
-            "proxy": {
-              "type": "NodePort"
-            },
-            "resources": {
-              "limits": {
-                "cpu": "500m",
-                "memory": "2G"
-              },
-              "requests": {
-                "cpu": "100m",
-                "memory": "512Mi"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/kong/kong-offline-operator1-bundle@sha256:ec9e6b1ab44fa4f554c0e296b99332fcae20c54ef01b962bc30ba472d2dd3438",
-      "bundle_path_digest": "sha256:ec9e6b1ab44fa4f554c0e296b99332fcae20c54ef01b962bc30ba472d2dd3438",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-07-13T16:59:45.100000+00:00",
-      "csv_description": "Kong is a popular open-source cloud-native API gateway. Kong Operator is a Kubernetes operator which manages [Kong](https://konghq.com/kong/) and [Kong Enterprise](https://konghq.com/products/kong-enterprise/) clusters.\n\nKong Operator can deploy Kong in various configurations, for example:\n* as a [Kubernetes ingress controller](https://github.com/Kong/kubernetes-ingress-controller), enabling you to expose Kubernetes `Service`s via Kong,\n* a standalone Kong gateway (without the ingress controller; either DB-enabled or DB-less)\n* a standalone Ingress Controller (configuring an external instance of Kong)\n\nThose configurations are further described in the [_Deployment Options_](https://github.com/Kong/kong-operator/blob/v0.10.1/helm-charts/kong/README.md#deployment-options) section of documentation.\n\n### Quick Start\n\nThe [Quick Start guide](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md#quick-start) uses Kong Operator to deploy\nour recommended Kong setup for Kubernetes users (Kong DB-less with Ingress Controller), which includes an instance of Kong\nserving as a proxy to an example Kubernetes service.\n\n### Documentation\n\nThe primary documentation site for Kong Operator is located [in its GitHub repository](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md).\n\nKong Operator provides the same configuration flexibility as the Kong Helm chart.\nRefer to the [Helm chart documentation](https://github.com/Kong/kong-operator/blob/v0.10.1/helm-charts/kong/README.md),\nthe [Configuration](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md#configuration) section of Kong Operator docs, and the example `Kong` resource below.\n\n### Upgrading from versions 0.8.0 and earlier\n\n0.10.0 changes the operator CRD to comply with Kubernetes requirements. Upgrades require manual work to move configuration into the new CRs.\nSee the [0.10.0 upgrade guide](https://github.com/Kong/kong-operator/blob/main/CHANGELOG.md#upgrading-from-previous-versions)\nfor steps to upgrade past 0.8.0.\n",
-      "csv_display_name": "Kong Operator",
-      "csv_metadata_description": "The world\u2019s most popular open source API gateway. Built for multi-cloud and hybrid, optimized for microservices and distributed architectures.",
-      "csv_name": "kong.v0.10.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:50:44.657000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "kong-offline-operator",
-      "provided_apis": [
-        {
-          "group": "charts.konghq.com",
-          "kind": "Kong",
-          "plural": "kongs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Kong Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
-          "image": "registry.connect.redhat.com/kong/kong-offline-operator1@sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
-          "name": "kong-offline-operator1-df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d-annotation"
-        },
-        {
-          "digest": "sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
-          "image": "registry.connect.redhat.com/kong/kong-offline-operator1@sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
-          "name": "kong-operator"
-        },
-        {
-          "digest": "sha256:95848027a62e13abb7172840b930a1e0bcaf37554fd6c948ea7441f59be7146f",
-          "image": "registry.connect.redhat.com/kong/kong@sha256:95848027a62e13abb7172840b930a1e0bcaf37554fd6c948ea7441f59be7146f",
-          "name": "kong"
-        },
-        {
-          "digest": "sha256:45230b6671f375bbe9f524e748702b112dcc1f3f5e8716a276e887ad2944bf33",
-          "image": "registry.connect.redhat.com/kong/kong-ingress-controller@sha256:45230b6671f375bbe9f524e748702b112dcc1f3f5e8716a276e887ad2944bf33",
-          "name": "kong_controller"
-        },
-        {
-          "digest": "sha256:68fecea0d255ee253acbf0c860eaebb7017ef5ef007c25bee9eeffd29ce85b29",
-          "image": "registry.access.redhat.com/ubi8/ubi@sha256:68fecea0d255ee253acbf0c860eaebb7017ef5ef007c25bee9eeffd29ce85b29",
-          "name": "utility"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "0.10.1",
-      "version_original": "0.10.1"
-    },
-    {
-      "_id": "62cefd626537ee32f3d7789f",
-      "alm_examples": [
-        {
-          "api_version": "charts.konghq.com/v1alpha1",
-          "kind": "Kong",
-          "metadata": {
-            "name": "example-kong"
-          },
-          "spec": {
-            "env": {
-              "prefix": "/kong_prefix/"
-            },
-            "ingressController": {
-              "enabled": true,
-              "installCRDs": false
-            },
-            "proxy": {
-              "type": "NodePort"
-            },
-            "resources": {
-              "limits": {
-                "cpu": "500m",
-                "memory": "2G"
-              },
-              "requests": {
-                "cpu": "100m",
-                "memory": "512Mi"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/kong/kong-offline-operator1-bundle@sha256:ec9e6b1ab44fa4f554c0e296b99332fcae20c54ef01b962bc30ba472d2dd3438",
-      "bundle_path_digest": "sha256:ec9e6b1ab44fa4f554c0e296b99332fcae20c54ef01b962bc30ba472d2dd3438",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-07-13T17:14:10.048000+00:00",
-      "csv_description": "Kong is a popular open-source cloud-native API gateway. Kong Operator is a Kubernetes operator which manages [Kong](https://konghq.com/kong/) and [Kong Enterprise](https://konghq.com/products/kong-enterprise/) clusters.\n\nKong Operator can deploy Kong in various configurations, for example:\n* as a [Kubernetes ingress controller](https://github.com/Kong/kubernetes-ingress-controller), enabling you to expose Kubernetes `Service`s via Kong,\n* a standalone Kong gateway (without the ingress controller; either DB-enabled or DB-less)\n* a standalone Ingress Controller (configuring an external instance of Kong)\n\nThose configurations are further described in the [_Deployment Options_](https://github.com/Kong/kong-operator/blob/v0.10.1/helm-charts/kong/README.md#deployment-options) section of documentation.\n\n### Quick Start\n\nThe [Quick Start guide](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md#quick-start) uses Kong Operator to deploy\nour recommended Kong setup for Kubernetes users (Kong DB-less with Ingress Controller), which includes an instance of Kong\nserving as a proxy to an example Kubernetes service.\n\n### Documentation\n\nThe primary documentation site for Kong Operator is located [in its GitHub repository](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md).\n\nKong Operator provides the same configuration flexibility as the Kong Helm chart.\nRefer to the [Helm chart documentation](https://github.com/Kong/kong-operator/blob/v0.10.1/helm-charts/kong/README.md),\nthe [Configuration](https://github.com/Kong/kong-operator/blob/v0.10.1/README.md#configuration) section of Kong Operator docs, and the example `Kong` resource below.\n\n### Upgrading from versions 0.8.0 and earlier\n\n0.10.0 changes the operator CRD to comply with Kubernetes requirements. Upgrades require manual work to move configuration into the new CRs.\nSee the [0.10.0 upgrade guide](https://github.com/Kong/kong-operator/blob/main/CHANGELOG.md#upgrading-from-previous-versions)\nfor steps to upgrade past 0.8.0.\n",
-      "csv_display_name": "Kong Operator",
-      "csv_metadata_description": "The world\u2019s most popular open source API gateway. Built for multi-cloud and hybrid, optimized for microservices and distributed architectures.",
-      "csv_name": "kong.v0.10.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:20:48.490000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "kong-offline-operator",
-      "provided_apis": [
-        {
-          "group": "charts.konghq.com",
-          "kind": "Kong",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Kong Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
-          "image": "registry.connect.redhat.com/kong/kong-offline-operator1@sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
-          "name": "kong-offline-operator1-df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d-annotation"
-        },
-        {
-          "digest": "sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
-          "image": "registry.connect.redhat.com/kong/kong-offline-operator1@sha256:df492b459a0983613ac9741e03af121126632f270f9ff3af116b4a38c57b6d1d",
-          "name": "kong-operator"
-        },
-        {
-          "digest": "sha256:95848027a62e13abb7172840b930a1e0bcaf37554fd6c948ea7441f59be7146f",
-          "image": "registry.connect.redhat.com/kong/kong@sha256:95848027a62e13abb7172840b930a1e0bcaf37554fd6c948ea7441f59be7146f",
-          "name": "kong"
-        },
-        {
-          "digest": "sha256:45230b6671f375bbe9f524e748702b112dcc1f3f5e8716a276e887ad2944bf33",
-          "image": "registry.connect.redhat.com/kong/kong-ingress-controller@sha256:45230b6671f375bbe9f524e748702b112dcc1f3f5e8716a276e887ad2944bf33",
-          "name": "kong_controller"
-        },
-        {
-          "digest": "sha256:68fecea0d255ee253acbf0c860eaebb7017ef5ef007c25bee9eeffd29ce85b29",
-          "image": "registry.access.redhat.com/ubi8/ubi@sha256:68fecea0d255ee253acbf0c860eaebb7017ef5ef007c25bee9eeffd29ce85b29",
-          "name": "utility"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.10.1",
-      "version_original": "0.10.1"
-    },
-    {
       "_id": "62cefeecc942619c6bc54225",
       "alm_examples": [
         {
@@ -17122,6 +16889,192 @@
       "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.1",
+      "version_original": "0.0.1"
+    },
+    {
+      "_id": "62e49ac337bf52680b137c7c",
+      "alm_examples": [
+        {
+          "api_version": "eweb.enterpriseweb.com/v1",
+          "kind": "CloudNFV",
+          "metadata": {
+            "name": "cloudnfv-sample"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/eweb/cloudnfv@sha256:0bb427954fb8df5de197353908a5189922f514e121ae8cdb8242d125b1b3807d",
+      "bundle_path_digest": "sha256:0bb427954fb8df5de197353908a5189922f514e121ae8cdb8242d125b1b3807d",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-07-30T02:43:15.910000+00:00",
+      "csv_description": "Manages a cluster of CloudNFV Runtime Modules",
+      "csv_display_name": "CloudNFV",
+      "csv_metadata_description": "",
+      "csv_name": "cnfv-operator.v0.0.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:23:20.740000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "cnfv-operator",
+      "provided_apis": [
+        {
+          "group": "eweb.enterpriseweb.com",
+          "kind": "CloudNFV",
+          "plural": "cloudnfvs",
+          "version": "v1"
+        }
+      ],
+      "provider": "EnterpriseWeb",
+      "related_images": [
+        {
+          "digest": "sha256:e5913ad5dd20cb1b2299d2387237ef15e645c9a8c9d4f5fe0044b86a6b3dc1df",
+          "image": "quay.io/wmalyk28/cnfv-op@sha256:e5913ad5dd20cb1b2299d2387237ef15e645c9a8c9d4f5fe0044b86a6b3dc1df",
+          "name": "cnfv-operator"
+        },
+        {
+          "digest": "sha256:fcde8375576c9bff602d3a16ef1ba8ae88b780166649ba6ae355737b1d35a03f",
+          "image": "quay.io/wmalyk28/cloudnfv-runtime@sha256:fcde8375576c9bff602d3a16ef1ba8ae88b780166649ba6ae355737b1d35a03f",
+          "name": "cnfv-image"
+        },
+        {
+          "digest": "sha256:61a164ad711478ac603242338f7b3c55986319479878b092be128581a823598e",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:61a164ad711478ac603242338f7b3c55986319479878b092be128581a823598e",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:e5913ad5dd20cb1b2299d2387237ef15e645c9a8c9d4f5fe0044b86a6b3dc1df",
+          "image": "quay.io/wmalyk28/cnfv-op@sha256:e5913ad5dd20cb1b2299d2387237ef15e645c9a8c9d4f5fe0044b86a6b3dc1df",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.0.1",
+      "version_original": "0.0.1"
+    },
+    {
+      "_id": "62e49d9e520c4962d8bdabf8",
+      "alm_examples": [
+        {
+          "api_version": "eweb.enterpriseweb.com/v1",
+          "kind": "CloudNFV",
+          "metadata": {
+            "name": "cloudnfv-sample"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/eweb/cloudnfv@sha256:0bb427954fb8df5de197353908a5189922f514e121ae8cdb8242d125b1b3807d",
+      "bundle_path_digest": "sha256:0bb427954fb8df5de197353908a5189922f514e121ae8cdb8242d125b1b3807d",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-07-30T02:55:26.867000+00:00",
+      "csv_description": "Manages a cluster of CloudNFV Runtime Modules",
+      "csv_display_name": "CloudNFV",
+      "csv_metadata_description": "",
+      "csv_name": "cnfv-operator.v0.0.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:21:29.481000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "cnfv-operator",
+      "provided_apis": [
+        {
+          "group": "eweb.enterpriseweb.com",
+          "kind": "CloudNFV",
+          "plural": "cloudnfvs",
+          "version": "v1"
+        }
+      ],
+      "provider": "EnterpriseWeb",
+      "related_images": [
+        {
+          "digest": "sha256:e5913ad5dd20cb1b2299d2387237ef15e645c9a8c9d4f5fe0044b86a6b3dc1df",
+          "image": "quay.io/wmalyk28/cnfv-op@sha256:e5913ad5dd20cb1b2299d2387237ef15e645c9a8c9d4f5fe0044b86a6b3dc1df",
+          "name": "cnfv-operator"
+        },
+        {
+          "digest": "sha256:fcde8375576c9bff602d3a16ef1ba8ae88b780166649ba6ae355737b1d35a03f",
+          "image": "quay.io/wmalyk28/cloudnfv-runtime@sha256:fcde8375576c9bff602d3a16ef1ba8ae88b780166649ba6ae355737b1d35a03f",
+          "name": "cnfv-image"
+        },
+        {
+          "digest": "sha256:61a164ad711478ac603242338f7b3c55986319479878b092be128581a823598e",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:61a164ad711478ac603242338f7b3c55986319479878b092be128581a823598e",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:e5913ad5dd20cb1b2299d2387237ef15e645c9a8c9d4f5fe0044b86a6b3dc1df",
+          "image": "quay.io/wmalyk28/cnfv-op@sha256:e5913ad5dd20cb1b2299d2387237ef15e645c9a8c9d4f5fe0044b86a6b3dc1df",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "0.0.1",
       "version_original": "0.0.1"
     }

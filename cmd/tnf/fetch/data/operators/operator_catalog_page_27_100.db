@@ -1,106 +1,6 @@
 {
   "data": [
     {
-      "_id": "6262ae3984481d5f52299af0",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
-      "bundle_path_digest": "sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "6.2.8",
-      "creation_date": "2022-04-22T13:31:37.536000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.8-1",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-04-22T13:31:37.536000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.0.8-1",
-      "version_original": "6.0.8-1"
-    },
-    {
-      "_id": "6262ae3bcde83e2b177c226f",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/instana/instana-agent-operator-bundle@sha256:c74519be65015d28508ca3b260449a0365f97968f17e20b48c7b338247c835c3",
-      "bundle_path_digest": "sha256:c74519be65015d28508ca3b260449a0365f97968f17e20b48c7b338247c835c3",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-04-22T13:31:39.432000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "instana-agent-operator.v0.3.9",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T01:18:02.176000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "instana-agent",
-      "provided_apis": [
-        {
-          "group": "instana.io",
-          "kind": "InstanaAgent",
-          "plural": "agents",
-          "version": "v1beta1"
-        },
-        {
-          "group": "instana.io",
-          "kind": "InstanaAgent",
-          "plural": "agents",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.3.9",
-      "version_original": "0.3.9"
-    },
-    {
       "_id": "6262ae42834f257293b61159",
       "alm_examples": [],
       "annotations": {
@@ -13300,6 +13200,182 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "8.5.1",
       "version_original": "8.5.1"
+    },
+    {
+      "_id": "627c6d924be4723d90ee6cfd",
+      "alm_examples": [
+        {
+          "api_version": "app.joget.com/v1alpha1",
+          "kind": "JogetDX",
+          "metadata": {
+            "name": "example-joget"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:e95e296f6633c6154f21dfabd0caf27fd0db871fe4ed987b5415f6f9b62ac230",
+      "bundle_path_digest": "sha256:e95e296f6633c6154f21dfabd0caf27fd0db871fe4ed987b5415f6f9b62ac230",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-12T02:14:42.051000+00:00",
+      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
+      "csv_display_name": "Joget DX Operator",
+      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
+      "csv_name": "joget-dx-openshift-operator.v0.0.26",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:49:26.008000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "joget-dx-operator",
+      "provided_apis": [
+        {
+          "group": "app.joget.com",
+          "kind": "JogetDX",
+          "plural": "jogetdx",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Joget, Inc",
+      "related_images": [
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
+        },
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:46a5da986ccec2377cf27b6d7220dade459b534c69030162dbbd544a560a2c5e",
+          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:46a5da986ccec2377cf27b6d7220dade459b534c69030162dbbd544a560a2c5e",
+          "name": "joget"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.0.26",
+      "version_original": "0.0.26"
+    },
+    {
+      "_id": "627c6d973e0ff4d601b6f9ff",
+      "alm_examples": [
+        {
+          "api_version": "app.joget.com/v1alpha1",
+          "kind": "JogetDX",
+          "metadata": {
+            "name": "example-joget"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:1a7445f65072dc48009b174bc8bd66de5c2d18d98c235c1fa9b3af2dda6de6ce",
+      "bundle_path_digest": "sha256:1a7445f65072dc48009b174bc8bd66de5c2d18d98c235c1fa9b3af2dda6de6ce",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-05-12T02:14:47.622000+00:00",
+      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
+      "csv_display_name": "Joget DX Operator",
+      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
+      "csv_name": "joget-dx-openshift-operator.v0.0.27",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:49:29.766000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "joget-dx-operator",
+      "provided_apis": [
+        {
+          "group": "app.joget.com",
+          "kind": "JogetDX",
+          "plural": "jogetdx",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Joget, Inc",
+      "related_images": [
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
+        },
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:73f7a5500e2af1c40506fb43d7150988c665fab8f1d0df8cc75b5d7c0b325007",
+          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:73f7a5500e2af1c40506fb43d7150988c665fab8f1d0df8cc75b5d7c0b325007",
+          "name": "joget"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.0.27",
+      "version_original": "0.0.27"
     }
   ]
 }

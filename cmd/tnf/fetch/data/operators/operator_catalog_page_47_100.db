@@ -1,306 +1,6 @@
 {
   "data": [
     {
-      "_id": "632122c7b180bb9cb665ef46",
-      "alm_examples": [
-        {
-          "api_version": "rtf.operators.mulesoft.com/v1",
-          "kind": "RuntimeFabric",
-          "metadata": {
-            "name": "runtime-fabric"
-          },
-          "spec": {
-            "agent": {
-              "app": {
-                "resources": {
-                  "limits": {
-                    "cpu": "1000m",
-                    "memory": "500Mi"
-                  },
-                  "requests": {
-                    "cpu": "100m",
-                    "memory": "200Mi"
-                  }
-                }
-              },
-              "rtfd": {
-                "resources": {
-                  "limits": {
-                    "cpu": "50m",
-                    "memory": "50Mi"
-                  },
-                  "requests": {
-                    "cpu": "20m",
-                    "memory": "50Mi"
-                  }
-                }
-              }
-            },
-            "global": {
-              "authorizedNamespaces": false,
-              "cluster": {
-                "flavor": "byok",
-                "type": "openshift"
-              },
-              "containerLogPaths": [
-                "/var/lib/docker/containers",
-                "/var/log/containers",
-                "/var/log/pods"
-              ],
-              "core": {
-                "affinity": {},
-                "tolerations": []
-              },
-              "deployment": {
-                "nodeSelector": ""
-              },
-              "image": {
-                "provider": "aws",
-                "pullSecretName": "rtf-pull-secret",
-                "rtfRegistry": "rtf-runtime-registry.kprod.msap.io"
-              },
-              "logForwarding": {
-                "anypointMonitoring": false
-              },
-              "mule": {
-                "disablePerAppSA": false
-              },
-              "service": {}
-            },
-            "proxy": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/oscargcervantes/runtime-fabric-operator@sha256:06dafc64ad74815cbdc9c8426400d251fc4861c40436aecc38eadbac486c86e8",
-      "bundle_path_digest": "sha256:06dafc64ad74815cbdc9c8426400d251fc4861c40436aecc38eadbac486c86e8",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-09-14T00:39:35.720000+00:00",
-      "csv_description": "Anypoint Runtime Fabric is a container service that you install in your existing Red Hat OpenShift cluster that enables you to run Mule applications, composite APIs, and API gateways across any environment with centralized management via Anypoint Platform.\n\nCapabilities of Runtime Fabric include:\n\n* Isolation between applications by running a separate Mule runtime server per application.\n* Ability to run multiple versions of Mule runtime server on the same set of resources.\n* Scaling applications across multiple replicas.\n* Automated application fail-over.\n* Application management with Anypoint Runtime Manager.\n\nRuntime Fabric supports the following Red Hat OpenShift deployment options:\n\n* Red Hat OpenShift Service on AWS\n* Microsoft Azure Red Hat OpenShift\n* Red Hat OpenShift Dedicated\n* Red Hat OpenShift on IBM Cloud\n* Self-managed Red Hat OpenShift editions (Performance Plus, OCP, Kubernetes engine)\n\nRuntime Fabric supports Red Hat OpenShift versions 4.6 to 4.10.",
-      "csv_display_name": "Runtime Fabric Operator",
-      "csv_metadata_description": "Runtime Fabric Operator Application from Mulesoft",
-      "csv_name": "runtime-fabric-operator.v2.0.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:39:28.509000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "runtime-fabric-operator",
-      "provided_apis": [
-        {
-          "group": "rtf.operators.mulesoft.com",
-          "kind": "RuntimeFabric",
-          "plural": "runtimefabrics",
-          "version": "v1"
-        }
-      ],
-      "provider": "MuleSoft",
-      "related_images": [
-        {
-          "digest": "sha256:7cfc84f28da1a6350f2c2f9c610bc425e4717757536fd908a4d0ec7ca5ff414f",
-          "image": "quay.io/mulesoft/runtime-fabric-operator@sha256:7cfc84f28da1a6350f2c2f9c610bc425e4717757536fd908a4d0ec7ca5ff414f",
-          "name": "runtime-fabric-operator"
-        },
-        {
-          "digest": "sha256:7cfc84f28da1a6350f2c2f9c610bc425e4717757536fd908a4d0ec7ca5ff414f",
-          "image": "quay.io/mulesoft/runtime-fabric-operator@sha256:7cfc84f28da1a6350f2c2f9c610bc425e4717757536fd908a4d0ec7ca5ff414f",
-          "name": "runtime-fabric-operator-7cfc84f28da1a6350f2c2f9c610bc425e4717757536fd908a4d0ec7ca5ff414f-annotation"
-        },
-        {
-          "digest": "sha256:a4f6c39b17f2ba68366c6d4e139ed18ede2ad9f3f9d5bf7477bdcbef73b43e54",
-          "image": "quay.io/mulesoft/kube-rbac-proxy@sha256:a4f6c39b17f2ba68366c6d4e139ed18ede2ad9f3f9d5bf7477bdcbef73b43e54",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:7cfc84f28da1a6350f2c2f9c610bc425e4717757536fd908a4d0ec7ca5ff414f",
-          "image": "quay.io/mulesoft/runtime-fabric-operator@sha256:7cfc84f28da1a6350f2c2f9c610bc425e4717757536fd908a4d0ec7ca5ff414f",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2.0.0",
-      "version_original": "2.0.0"
-    },
-    {
-      "_id": "632125d09b8fb197eeb32c2c",
-      "alm_examples": [
-        {
-          "api_version": "rtf.operators.mulesoft.com/v1",
-          "kind": "RuntimeFabric",
-          "metadata": {
-            "name": "runtime-fabric"
-          },
-          "spec": {
-            "agent": {
-              "app": {
-                "resources": {
-                  "limits": {
-                    "cpu": "1000m",
-                    "memory": "500Mi"
-                  },
-                  "requests": {
-                    "cpu": "100m",
-                    "memory": "200Mi"
-                  }
-                }
-              },
-              "rtfd": {
-                "resources": {
-                  "limits": {
-                    "cpu": "50m",
-                    "memory": "50Mi"
-                  },
-                  "requests": {
-                    "cpu": "20m",
-                    "memory": "50Mi"
-                  }
-                }
-              }
-            },
-            "global": {
-              "authorizedNamespaces": false,
-              "cluster": {
-                "flavor": "byok",
-                "type": "openshift"
-              },
-              "containerLogPaths": [
-                "/var/lib/docker/containers",
-                "/var/log/containers",
-                "/var/log/pods"
-              ],
-              "core": {
-                "affinity": {},
-                "tolerations": []
-              },
-              "deployment": {
-                "nodeSelector": ""
-              },
-              "image": {
-                "provider": "aws",
-                "pullSecretName": "rtf-pull-secret",
-                "rtfRegistry": "rtf-runtime-registry.kprod.msap.io"
-              },
-              "logForwarding": {
-                "anypointMonitoring": false
-              },
-              "mule": {
-                "disablePerAppSA": false
-              },
-              "service": {}
-            },
-            "proxy": {}
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/oscargcervantes/runtime-fabric-operator@sha256:06dafc64ad74815cbdc9c8426400d251fc4861c40436aecc38eadbac486c86e8",
-      "bundle_path_digest": "sha256:06dafc64ad74815cbdc9c8426400d251fc4861c40436aecc38eadbac486c86e8",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-09-14T00:52:32.951000+00:00",
-      "csv_description": "Anypoint Runtime Fabric is a container service that you install in your existing Red Hat OpenShift cluster that enables you to run Mule applications, composite APIs, and API gateways across any environment with centralized management via Anypoint Platform.\n\nCapabilities of Runtime Fabric include:\n\n* Isolation between applications by running a separate Mule runtime server per application.\n* Ability to run multiple versions of Mule runtime server on the same set of resources.\n* Scaling applications across multiple replicas.\n* Automated application fail-over.\n* Application management with Anypoint Runtime Manager.\n\nRuntime Fabric supports the following Red Hat OpenShift deployment options:\n\n* Red Hat OpenShift Service on AWS\n* Microsoft Azure Red Hat OpenShift\n* Red Hat OpenShift Dedicated\n* Red Hat OpenShift on IBM Cloud\n* Self-managed Red Hat OpenShift editions (Performance Plus, OCP, Kubernetes engine)\n\nRuntime Fabric supports Red Hat OpenShift versions 4.6 to 4.10.",
-      "csv_display_name": "Runtime Fabric Operator",
-      "csv_metadata_description": "Runtime Fabric Operator Application from Mulesoft",
-      "csv_name": "runtime-fabric-operator.v2.0.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:09:27.749000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "runtime-fabric-operator",
-      "provided_apis": [
-        {
-          "group": "rtf.operators.mulesoft.com",
-          "kind": "RuntimeFabric",
-          "plural": "runtimefabrics",
-          "version": "v1"
-        }
-      ],
-      "provider": "MuleSoft",
-      "related_images": [
-        {
-          "digest": "sha256:7cfc84f28da1a6350f2c2f9c610bc425e4717757536fd908a4d0ec7ca5ff414f",
-          "image": "quay.io/mulesoft/runtime-fabric-operator@sha256:7cfc84f28da1a6350f2c2f9c610bc425e4717757536fd908a4d0ec7ca5ff414f",
-          "name": "runtime-fabric-operator"
-        },
-        {
-          "digest": "sha256:7cfc84f28da1a6350f2c2f9c610bc425e4717757536fd908a4d0ec7ca5ff414f",
-          "image": "quay.io/mulesoft/runtime-fabric-operator@sha256:7cfc84f28da1a6350f2c2f9c610bc425e4717757536fd908a4d0ec7ca5ff414f",
-          "name": "runtime-fabric-operator-7cfc84f28da1a6350f2c2f9c610bc425e4717757536fd908a4d0ec7ca5ff414f-annotation"
-        },
-        {
-          "digest": "sha256:a4f6c39b17f2ba68366c6d4e139ed18ede2ad9f3f9d5bf7477bdcbef73b43e54",
-          "image": "quay.io/mulesoft/kube-rbac-proxy@sha256:a4f6c39b17f2ba68366c6d4e139ed18ede2ad9f3f9d5bf7477bdcbef73b43e54",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:7cfc84f28da1a6350f2c2f9c610bc425e4717757536fd908a4d0ec7ca5ff414f",
-          "image": "quay.io/mulesoft/runtime-fabric-operator@sha256:7cfc84f28da1a6350f2c2f9c610bc425e4717757536fd908a4d0ec7ca5ff414f",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.0.0",
-      "version_original": "2.0.0"
-    },
-    {
       "_id": "6321e50d316b8eb377eff317",
       "alm_examples": [
         {
@@ -17310,246 +17010,6 @@
       "version_original": "0.10.1-rc4"
     },
     {
-      "_id": "63284128703b1887dc1c7397",
-      "alm_examples": [
-        {
-          "api_version": "citrix.com/v1alpha1",
-          "kind": "CitrixCpxWithIngressController",
-          "metadata": {
-            "name": "cpx-cic"
-          },
-          "spec": {
-            "ADMSettings": {
-              "ADMIP": "",
-              "bandWidth": "",
-              "bandWidthLicense": false,
-              "cpxCores": "",
-              "licenseServerIP": "",
-              "licenseServerPort": 27000,
-              "loginSecret": "",
-              "vCPULicense": false
-            },
-            "bgpSettings": {
-              "bgpConfig": [
-                {
-                  "bgpRouter": {
-                    "localAS": 100,
-                    "neighbor": [
-                      {
-                        "ASOriginationInterval": 10,
-                        "address": "",
-                        "advertisementInterval": 10,
-                        "remoteAS": 100
-                      }
-                    ]
-                  }
-                }
-              ],
-              "required": false
-            },
-            "cic": {
-              "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-              "pullPolicy": "Always",
-              "required": true
-            },
-            "coeConfig": {
-              "distributedTracing": {
-                "enable": false,
-                "samplingrate": 100
-              },
-              "endpoint": {
-                "server": ""
-              },
-              "required": false,
-              "timeseries": {
-                "auditlogs": {
-                  "enable": false
-                },
-                "events": {
-                  "enable": false
-                },
-                "metrics": {
-                  "enable": false,
-                  "mode": "avro"
-                },
-                "port": 5563
-              },
-              "transactions": {
-                "enable": false,
-                "port": 5557
-              }
-            },
-            "cpxBgpRouter": false,
-            "crds": {
-              "install": false,
-              "retainOnDelete": false
-            },
-            "defaultSSLCertSecret": "",
-            "entityPrefix": "",
-            "exporter": {
-              "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-              "ports": {
-                "containerPort": 8888
-              },
-              "pullPolicy": "Always",
-              "required": false
-            },
-            "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-            "imagePullSecrets": [],
-            "ingressClass": [],
-            "ingressIP": "",
-            "ipam": false,
-            "kubernetesURL": "",
-            "license": {
-              "accept": "no"
-            },
-            "logLevel": "INFO",
-            "logProxy": "",
-            "mgmtHttpPort": 9080,
-            "mgmtHttpsPort": 9443,
-            "namespaceLabels": "",
-            "nodeSelector": {
-              "key": "",
-              "value": ""
-            },
-            "nsCookieVersion": "0",
-            "nsGateway": "192.168.1.1",
-            "nsHTTP2ServerSide": "OFF",
-            "nsIP": "192.168.1.2",
-            "nsProtocol": "http",
-            "openshift": true,
-            "pullPolicy": "Always",
-            "routeLabels": "",
-            "serviceAccount": {
-              "create": true
-            },
-            "serviceAnnotations": {},
-            "servicePorts": [],
-            "serviceSpec": {
-              "loadBalancerSourceRanges": []
-            },
-            "serviceType": {
-              "loadBalancer": {
-                "enabled": false,
-                "externalTrafficPolicy": "Local"
-              },
-              "nodePort": {
-                "enabled": false,
-                "httpPort": "",
-                "httpsPort": ""
-              }
-            },
-            "setAsDefaultIngressClass": false,
-            "sslCertManagedByAWS": false,
-            "tolerations": [],
-            "updateIngressStatus": false
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-bundle@sha256:cb78fbaa6e154066b70b1e36731fc268bd61b514493f1541f630fff7f7e16d59",
-      "bundle_path_digest": "sha256:cb78fbaa6e154066b70b1e36731fc268bd61b514493f1541f630fff7f7e16d59",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-09-19T10:15:04.786000+00:00",
-      "csv_description": "Citrix ADC CPX is a container-based application delivery controller that can be provisioned on a Docker host. Citrix ADC CPX enables customers to leverage Docker engine capabilities and use NetScaler load balancing and traffic management features for container-based applications. Citrix Ingress Controller which will be running in side-car mode with Citrix ADC CPX will automatically configures Citrix ADC CPX based on the Ingress resource configuration. This operator can be used deploy Citrix ADC CPX with Citrix ingress controller in an OpenShift environment.",
-      "csv_display_name": "Citrix ADC CPX with Ingress Controller",
-      "csv_metadata_description": "Citrix ADC CPX is a container-based application delivery controller that can be provisioned on a Docker host. Citrix ADC CPX enables customers to leverage Docker engine capabilities and use NetScaler load balancing and traffic management features for container-based applications. Citrix Ingress Controller which will be running in side-car mode with Citrix ADC CPX will automatically configures Citrix ADC CPX based on the Ingress resource configuration. This operator can be used deploy Citrix ADC CPX with Citrix ingress controller in an Openshift environment.",
-      "csv_name": "citrix-cpx-with-ingress-controller-operator.v1.18.5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:34:11.659000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.12",
-      "organization": "certified-operators",
-      "package": "citrix-cpx-with-ingress-controller-operator",
-      "provided_apis": [
-        {
-          "group": "citrix.com",
-          "kind": "CitrixCpxWithIngressController",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Citrix",
-      "related_images": [
-        {
-          "digest": "sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-controller@sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "name": "citrix-k8s-cpx-ingress-controller-92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d-annotation"
-        },
-        {
-          "digest": "sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-controller@sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "name": "cpx"
-        },
-        {
-          "digest": "sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "name": "cic"
-        },
-        {
-          "digest": "sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "name": "exporter"
-        },
-        {
-          "digest": "sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "name": "citrix-k8s-cpx-ingress-8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc-annotation"
-        },
-        {
-          "digest": "sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "name": "citrix-adc-metrics-exporter-6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8-annotation"
-        },
-        {
-          "digest": "sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "name": "citrix-ingress-controller-91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.12",
-      "version": "1.18.5",
-      "version_original": "1.18.5"
-    },
-    {
       "_id": "6328412b2dd1cd9660afb8c9",
       "alm_examples": [
         {
@@ -19860,6 +19320,264 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.12",
       "version": "0.0.2",
       "version_original": "0.0.2"
+    },
+    {
+      "_id": "632841348454bee1cb723962",
+      "alm_examples": [
+        {
+          "api_version": "pmem-csi.intel.com/v1beta1",
+          "kind": "PmemCSIDeployment",
+          "metadata": {
+            "name": "pmem-csi.intel.com"
+          },
+          "spec": {
+            "deviceMode": "lvm",
+            "nodeSelector": {
+              "feature.node.kubernetes.io/memory-nv.dax": "true"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/intel/pmem-csi-operator-os@sha256:72c1ec043ba8bba57e710d1cabac54374612a18cbce05caca9b14310942faa8d",
+      "bundle_path_digest": "sha256:72c1ec043ba8bba57e710d1cabac54374612a18cbce05caca9b14310942faa8d",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-09-19T10:15:16.824000+00:00",
+      "csv_description": "\nIntel PMEM-CSI is a [CSI](https://github.com/container-storage-interface/spec)\nstorage driver for container orchestrators like Kubernetes. It makes local\npersistent memory ([PMEM](https://pmem.io/)) available as a filesystem volume to\ncontainer applications. This is the operator to deploy and manage the\n[PMEM-CSI](https://intel.github.io/pmem-csi/1.0/README.html)\ndriver on a Kubernetes cluster.\n\nRefer to the [PMEM-CSI documentation](https://intel.github.io/pmem-csi/1.0/README.html)\nfor more details on deploying and using the PMEM-CSI driver.\n",
+      "csv_display_name": "Operator for PMEM-CSI driver",
+      "csv_metadata_description": "An operator for deploying and managing the PMEM-CSI driver",
+      "csv_name": "pmem-csi-operator.v1.0.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:32:48.980000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.12",
+      "organization": "certified-operators",
+      "package": "pmem-csi-operator-os",
+      "provided_apis": [
+        {
+          "group": "pmem-csi.intel.com",
+          "kind": "PmemCSIDeployment",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "Intel\u00ae Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:09c98a6588f3d9227f8ae8fc175b533b38590048b79cbdf367eeaa140926010a",
+          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:09c98a6588f3d9227f8ae8fc175b533b38590048b79cbdf367eeaa140926010a",
+          "name": "pmem-csi-driver-os-09c98a6588f3d9227f8ae8fc175b533b38590048b79cbdf367eeaa140926010a-annotation"
+        },
+        {
+          "digest": "sha256:09c98a6588f3d9227f8ae8fc175b533b38590048b79cbdf367eeaa140926010a",
+          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:09c98a6588f3d9227f8ae8fc175b533b38590048b79cbdf367eeaa140926010a",
+          "name": "pmem-csi-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.12",
+      "version": "1.0.0",
+      "version_original": "1.0.0"
+    },
+    {
+      "_id": "63284137a9c6e63893ae5170",
+      "alm_examples": [
+        {
+          "api_version": "pmem-csi.intel.com/v1beta1",
+          "kind": "PmemCSIDeployment",
+          "metadata": {
+            "name": "pmem-csi.intel.com"
+          },
+          "spec": {
+            "deviceMode": "lvm",
+            "nodeSelector": {
+              "feature.node.kubernetes.io/memory-nv.dax": "true"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/intel/pmem-csi-operator-os@sha256:72c1ec043ba8bba57e710d1cabac54374612a18cbce05caca9b14310942faa8d",
+      "bundle_path_digest": "sha256:72c1ec043ba8bba57e710d1cabac54374612a18cbce05caca9b14310942faa8d",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-19T10:15:19.936000+00:00",
+      "csv_description": "\nIntel PMEM-CSI is a [CSI](https://github.com/container-storage-interface/spec)\nstorage driver for container orchestrators like Kubernetes. It makes local\npersistent memory ([PMEM](https://pmem.io/)) available as a filesystem volume to\ncontainer applications. This is the operator to deploy and manage the\n[PMEM-CSI](https://intel.github.io/pmem-csi/1.0/README.html)\ndriver on a Kubernetes cluster.\n\nRefer to the [PMEM-CSI documentation](https://intel.github.io/pmem-csi/1.0/README.html)\nfor more details on deploying and using the PMEM-CSI driver.\n",
+      "csv_display_name": "Operator for PMEM-CSI driver",
+      "csv_metadata_description": "An operator for deploying and managing the PMEM-CSI driver",
+      "csv_name": "pmem-csi-operator.v1.0.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:32:51.883000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.12",
+      "organization": "certified-operators",
+      "package": "pmem-csi-operator-os",
+      "provided_apis": [
+        {
+          "group": "pmem-csi.intel.com",
+          "kind": "PmemCSIDeployment",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "Intel\u00ae Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:09c98a6588f3d9227f8ae8fc175b533b38590048b79cbdf367eeaa140926010a",
+          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:09c98a6588f3d9227f8ae8fc175b533b38590048b79cbdf367eeaa140926010a",
+          "name": "pmem-csi-driver-os-09c98a6588f3d9227f8ae8fc175b533b38590048b79cbdf367eeaa140926010a-annotation"
+        },
+        {
+          "digest": "sha256:09c98a6588f3d9227f8ae8fc175b533b38590048b79cbdf367eeaa140926010a",
+          "image": "registry.connect.redhat.com/intel/pmem-csi-driver-os@sha256:09c98a6588f3d9227f8ae8fc175b533b38590048b79cbdf367eeaa140926010a",
+          "name": "pmem-csi-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.12",
+      "version": "1.0.0",
+      "version_original": "1.0.0"
+    },
+    {
+      "_id": "6328413aeb69678e80bd1d38",
+      "alm_examples": [
+        {
+          "api_version": "certification.redhat.com/v1alpha1",
+          "kind": "OperatorPipeline",
+          "metadata": {
+            "name": "operatorpipeline-sample"
+          },
+          "spec": {
+            "applyCIPipeline": true,
+            "applyHostedPipeline": false,
+            "applyReleasePipeline": false,
+            "gitHubSecretName": "github-api-token",
+            "kubeconfigSecretName": "kubeconfig",
+            "operatorPipelinesRelease": "main",
+            "pyxisSecretName": "pyxis-api-secret"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/opdev/operator-certification-operator-bundle@sha256:5434186d5c4dcd3d6a664fb469c17d336b9ef58836f89446ea5130a335ae214d",
+      "bundle_path_digest": "sha256:5434186d5c4dcd3d6a664fb469c17d336b9ef58836f89446ea5130a335ae214d",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-09-19T10:15:22.569000+00:00",
+      "csv_description": "A Kubernetes operator to provision resources for the operator certification pipeline. This operator is installed in all namespaces which can support multi-tenant scenarios. **Note:** This operator should only be used by Red Hat partners attempting to certify their operator(s).\n\n\n**Requirements**\n\n\nThe certification operator requires that you have the following tools installed, functional, and in your path.\n- [Install](https://docs.openshift.com/container-platform/4.8/cli_reference/openshift_cli/getting-started-cli.html#installing-openshift-cli) oc, the OpenShift CLI tool (tested with version 4.7.13)\n- [Install](https://tekton.dev/docs/cli/) tkn, the Tekton CLI tool (tested with version 0.19.1)\n- [Install](https://git-scm.com/downloads) git, the Git CLI tool (tested with 2.32.0)\n- The certification pipeline expects you to have the source files of your Operator bundle\n\n\n**Pre - Installation**\n\n\nThe below steps exist for simplicity and to make the installation clearer. The operator watches all namespaces, so if secrets/configs/etc already exist in another namespace, feel free to use the existing namespace when following the operator installation steps.\n\n\n**Create a new namespace where the following secrets will be applied.**\n```\noc new-project oco\n```\n\n\n**Add the kubeconfig secret which will be used to deploy the operator under test and run the certification checks.**\n* Open a terminal window\n* Set the `KUBECONFIG` environment variable\n```\nexport KUBECONFIG=/path/to/your/cluster/kubeconfig\n```\n> *This kubeconfig will be used to deploy the Operator under test and run the certification checks.*\n```\noc create secret generic kubeconfig --from-file=kubeconfig=$KUBECONFIG\n```\n\n\n**Configuring steps for submitting the results**\n- Add the github API token to the repo where the PR will be created\n```\noc create secret generic github-api-token --from-literal GITHUB_TOKEN=<github token>\n```\n- Add RedHat Container API access key\n\n  This API access key is specifically related to your unique partner account for Red Hat Connect portal. Instructions to obtain your API key can be found: [here](https://github.com/redhat-openshift-ecosystem/certification-releases/blob/main/4.9/ga/operator-cert-workflow.md#step-b---get-api-key)\n```\noc create secret generic pyxis-api-secret --from-literal pyxis_api_key=< API KEY >\n```\n\n- Optional pipeline configurations can be found [here](https://github.com/redhat-openshift-ecosystem/certification-releases/blob/main/4.9/ga/ci-pipeline.md#optional-configuration)\n\n\n**Execute the Pipeline (Development Iterations)**\n\n\nA pre-requisite to running a pipeline is that a `workspace-template.yaml` exists in the directory you want to execute the `tkn` commands from.\n\nTo create a workspace-template.yaml\n```\ncat <<EOF > workspace-template.yaml\nspec:\n  accessModes:\n    - ReadWriteOnce\n  resources:\n    requests:\n      storage: 5Gi\nEOF\n```\n\nThere are multiple ways to execute the Pipeline which can be found [here](https://github.com/redhat-openshift-ecosystem/certification-releases/blob/main/4.9/ga/ci-pipeline.md#execute-the-pipeline-development-iterations)",
+      "csv_display_name": "Operator Certification Operator",
+      "csv_metadata_description": "",
+      "csv_name": "operator-certification-operator.v1.0.3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:28:26.015000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.12",
+      "organization": "certified-operators",
+      "package": "operator-certification-operator",
+      "provided_apis": [
+        {
+          "group": "certification.redhat.com",
+          "kind": "OperatorPipeline",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Red Hat",
+      "related_images": [
+        {
+          "digest": "sha256:b5786bbbef725badf3dfcc2c2c7a86ead5ebb584c978c47aae8b9a62e241b80d",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:b5786bbbef725badf3dfcc2c2c7a86ead5ebb584c978c47aae8b9a62e241b80d",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:9ed39145a27b56c2465f5076f2cb40fe7d84c8914908e4610ee5b5f9dbf90a58",
+          "image": "quay.io/opdev/operator-certification-operator@sha256:9ed39145a27b56c2465f5076f2cb40fe7d84c8914908e4610ee5b5f9dbf90a58",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.12",
+      "version": "1.0.3",
+      "version_original": "1.0.3"
     }
   ]
 }

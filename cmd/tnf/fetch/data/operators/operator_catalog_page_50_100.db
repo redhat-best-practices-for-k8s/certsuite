@@ -1,1035 +1,6 @@
 {
   "data": [
     {
-      "_id": "632b26181b05b6df63f2cc7c",
-      "alm_examples": [
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaCsp",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "db-password",
-                "name": "aqua-database-password"
-              },
-              "dbDiskSize": 10
-            },
-            "database": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "gateway": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "namespace": "aqua",
-              "requirements": true,
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "route": true,
-            "runAsNonRoot": false,
-            "server": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaDatabase",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "diskSize": 10,
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "gateway": {
-              "host": "aqua-gateway",
-              "port": 8443
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "runAsNonRoot": false,
-            "token": "<<your-token>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaKubeEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "config": {
-              "cluster_name": "aqua-secure",
-              "gateway_address": "aqua-gateway:8443",
-              "imagePullSecret": "aqua-registry"
-            },
-            "deploy": {
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "serviceAccount": "aqua-kube-enforcer-sa",
-              "version": "2022.4"
-            },
-            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaGateway",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaScanner",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "deploy": {
-              "replicas": 1
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "login": {
-              "host": "http://aqua-server:8080",
-              "password": "<<YOUR AQUA USER PASSWORD>>",
-              "username": "<<YOUR AQUA USER NAME>>"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaServer",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:fe86c0b5a3b6da6d631a870971c178d71809fdca3e9e580a439080e33ec718fc",
-      "bundle_path_digest": "sha256:fe86c0b5a3b6da6d631a870971c178d71809fdca3e9e580a439080e33ec718fc",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "2022.4",
-      "creation_date": "2022-09-21T14:56:24.104000+00:00",
-      "csv_description": "The Aqua Security Operator runs within an OpenShift cluster and provides a means to deploy and manage the Aqua Security cluster and components :\n* Server (aka \u201cconsole\u201d)\n* Database (for production environments we recommend to use an external database and not the Aqua default database)\n* Gateway\n* Enforcer (aka \u201cagent\u201d)\n* KubeEnforcer\n* Scanner\n* CSP (package that contains the Server, Database, and Gateway)\n\nUse the Aqua-Operator to\n* Deploy Aqua Security components on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua Security components\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n\n3. Create the secret for Aqua Database password. If you are using an External Database, make sure you use those credentials.\nNOTE: This step is optional and you can specify the Database password when creating the CRs.\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua```\n\nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* 4.6: This maps to the older version of Aqua 4.6.0\n* 5.0: This maps to the Aqua version 5.0.0\n* 5.3: This maps to the Aqua version 5.3.0\n* 6.0: This maps to the Aqua version 6.0.0\n* 6.2: This maps to the Aqua version 6.2.0\n* 6.5: This maps to the Aqua version 6.5.0\n* 2022.4: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/2022.4.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/6.2.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
-      "csv_display_name": "Aqua Security Operator",
-      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
-      "csv_name": "aqua-operator.v2022.4.130",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-21T14:56:24.104000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "aqua-operator-certified",
-      "provided_apis": [
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaCsp",
-          "plural": "aquacsps",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaEnforcer",
-          "plural": "aquaenforcers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaScanner",
-          "plural": "aquascanners",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaServer",
-          "plural": "aquaservers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaGateway",
-          "plural": "aquagateways",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "AquaStarboard",
-          "plural": "aquastarboards",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ClusterConfigAuditReport",
-          "plural": "clusterconfigauditreports",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ConfigAuditReport",
-          "plural": "configauditreports",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaDatabase",
-          "plural": "aquadatabases",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaKubeEnforcer",
-          "plural": "aquakubeenforcers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Aqua Security, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:be6844c048d1c1695d513894fe465d1f3286c5d085c14e6fdb55c7e14c0c8080",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:be6844c048d1c1695d513894fe465d1f3286c5d085c14e6fdb55c7e14c0c8080",
-          "name": "aquasec-be6844c048d1c1695d513894fe465d1f3286c5d085c14e6fdb55c7e14c0c8080-annotation"
-        },
-        {
-          "digest": "sha256:be6844c048d1c1695d513894fe465d1f3286c5d085c14e6fdb55c7e14c0c8080",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:be6844c048d1c1695d513894fe465d1f3286c5d085c14e6fdb55c7e14c0c8080",
-          "name": "aqua-operator"
-        },
-        {
-          "digest": "sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "image": "registry.connect.redhat.com/aquasec/database@sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "name": "database"
-        },
-        {
-          "digest": "sha256:6c03a0cb281e2151e688bd2c5245f6114377a4619bc9a0415358ccbd07c2807d",
-          "image": "registry.connect.redhat.com/aquasec/gateway@sha256:6c03a0cb281e2151e688bd2c5245f6114377a4619bc9a0415358ccbd07c2807d",
-          "name": "gateway"
-        },
-        {
-          "digest": "sha256:e4ae759bfc2c11e210a77305d1b6c99c2d9b08db01b172d295b9cc18b59f6c11",
-          "image": "registry.connect.redhat.com/aquasec/console@sha256:e4ae759bfc2c11e210a77305d1b6c99c2d9b08db01b172d295b9cc18b59f6c11",
-          "name": "server"
-        },
-        {
-          "digest": "sha256:848d4398a21380947a76047fb74690b333bbad0bc2bf9a312cea6dad0a5580dd",
-          "image": "registry.connect.redhat.com/aquasec/scanner@sha256:848d4398a21380947a76047fb74690b333bbad0bc2bf9a312cea6dad0a5580dd",
-          "name": "scanner"
-        },
-        {
-          "digest": "sha256:09d6b9413077196cbd649b6e669b47555936d8751aa88eb4d4790b09860cb3a5",
-          "image": "registry.connect.redhat.com/aquasec/enforcer@sha256:09d6b9413077196cbd649b6e669b47555936d8751aa88eb4d4790b09860cb3a5",
-          "name": "enforcer"
-        },
-        {
-          "digest": "sha256:42ba6232cd7c2d5b75164e6f86671634bdd4ab451766dec2b4b3bbd6874671ab",
-          "image": "registry.connect.redhat.com/aquasec/kube-enforcer@sha256:42ba6232cd7c2d5b75164e6f86671634bdd4ab451766dec2b4b3bbd6874671ab",
-          "name": "kube_enforcer"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.0.2 <2022.4.130",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "2022.4.130",
-      "version_original": "2022.4.130"
-    },
-    {
-      "_id": "632b2703407cfb8fa77c006c",
-      "alm_examples": [
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaCsp",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "db-password",
-                "name": "aqua-database-password"
-              },
-              "dbDiskSize": 10
-            },
-            "database": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "gateway": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "namespace": "aqua",
-              "requirements": true,
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "route": true,
-            "runAsNonRoot": false,
-            "server": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaDatabase",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "diskSize": 10,
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "gateway": {
-              "host": "aqua-gateway",
-              "port": 8443
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "runAsNonRoot": false,
-            "token": "<<your-token>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaKubeEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "config": {
-              "cluster_name": "aqua-secure",
-              "gateway_address": "aqua-gateway:8443",
-              "imagePullSecret": "aqua-registry"
-            },
-            "deploy": {
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "serviceAccount": "aqua-kube-enforcer-sa",
-              "version": "2022.4"
-            },
-            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaGateway",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaScanner",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "deploy": {
-              "replicas": 1
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "login": {
-              "host": "http://aqua-server:8080",
-              "password": "<<YOUR AQUA USER PASSWORD>>",
-              "username": "<<YOUR AQUA USER NAME>>"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaServer",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:fe86c0b5a3b6da6d631a870971c178d71809fdca3e9e580a439080e33ec718fc",
-      "bundle_path_digest": "sha256:fe86c0b5a3b6da6d631a870971c178d71809fdca3e9e580a439080e33ec718fc",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "2022.4",
-      "creation_date": "2022-09-21T15:00:19.712000+00:00",
-      "csv_description": "The Aqua Security Operator runs within an OpenShift cluster and provides a means to deploy and manage the Aqua Security cluster and components :\n* Server (aka \u201cconsole\u201d)\n* Database (for production environments we recommend to use an external database and not the Aqua default database)\n* Gateway\n* Enforcer (aka \u201cagent\u201d)\n* KubeEnforcer\n* Scanner\n* CSP (package that contains the Server, Database, and Gateway)\n\nUse the Aqua-Operator to\n* Deploy Aqua Security components on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua Security components\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n\n3. Create the secret for Aqua Database password. If you are using an External Database, make sure you use those credentials.\nNOTE: This step is optional and you can specify the Database password when creating the CRs.\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua```\n\nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* 4.6: This maps to the older version of Aqua 4.6.0\n* 5.0: This maps to the Aqua version 5.0.0\n* 5.3: This maps to the Aqua version 5.3.0\n* 6.0: This maps to the Aqua version 6.0.0\n* 6.2: This maps to the Aqua version 6.2.0\n* 6.5: This maps to the Aqua version 6.5.0\n* 2022.4: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/2022.4.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/6.2.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
-      "csv_display_name": "Aqua Security Operator",
-      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
-      "csv_name": "aqua-operator.v2022.4.130",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-21T15:00:19.712000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "aqua-operator-certified",
-      "provided_apis": [
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaServer",
-          "plural": "aquaservers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaEnforcer",
-          "plural": "aquaenforcers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "AquaStarboard",
-          "plural": "aquastarboards",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ClusterConfigAuditReport",
-          "plural": "clusterconfigauditreports",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaGateway",
-          "plural": "aquagateways",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaKubeEnforcer",
-          "plural": "aquakubeenforcers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaCsp",
-          "plural": "aquacsps",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaScanner",
-          "plural": "aquascanners",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ConfigAuditReport",
-          "plural": "configauditreports",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaDatabase",
-          "plural": "aquadatabases",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Aqua Security, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:be6844c048d1c1695d513894fe465d1f3286c5d085c14e6fdb55c7e14c0c8080",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:be6844c048d1c1695d513894fe465d1f3286c5d085c14e6fdb55c7e14c0c8080",
-          "name": "aquasec-be6844c048d1c1695d513894fe465d1f3286c5d085c14e6fdb55c7e14c0c8080-annotation"
-        },
-        {
-          "digest": "sha256:be6844c048d1c1695d513894fe465d1f3286c5d085c14e6fdb55c7e14c0c8080",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:be6844c048d1c1695d513894fe465d1f3286c5d085c14e6fdb55c7e14c0c8080",
-          "name": "aqua-operator"
-        },
-        {
-          "digest": "sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "image": "registry.connect.redhat.com/aquasec/database@sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "name": "database"
-        },
-        {
-          "digest": "sha256:6c03a0cb281e2151e688bd2c5245f6114377a4619bc9a0415358ccbd07c2807d",
-          "image": "registry.connect.redhat.com/aquasec/gateway@sha256:6c03a0cb281e2151e688bd2c5245f6114377a4619bc9a0415358ccbd07c2807d",
-          "name": "gateway"
-        },
-        {
-          "digest": "sha256:e4ae759bfc2c11e210a77305d1b6c99c2d9b08db01b172d295b9cc18b59f6c11",
-          "image": "registry.connect.redhat.com/aquasec/console@sha256:e4ae759bfc2c11e210a77305d1b6c99c2d9b08db01b172d295b9cc18b59f6c11",
-          "name": "server"
-        },
-        {
-          "digest": "sha256:848d4398a21380947a76047fb74690b333bbad0bc2bf9a312cea6dad0a5580dd",
-          "image": "registry.connect.redhat.com/aquasec/scanner@sha256:848d4398a21380947a76047fb74690b333bbad0bc2bf9a312cea6dad0a5580dd",
-          "name": "scanner"
-        },
-        {
-          "digest": "sha256:09d6b9413077196cbd649b6e669b47555936d8751aa88eb4d4790b09860cb3a5",
-          "image": "registry.connect.redhat.com/aquasec/enforcer@sha256:09d6b9413077196cbd649b6e669b47555936d8751aa88eb4d4790b09860cb3a5",
-          "name": "enforcer"
-        },
-        {
-          "digest": "sha256:42ba6232cd7c2d5b75164e6f86671634bdd4ab451766dec2b4b3bbd6874671ab",
-          "image": "registry.connect.redhat.com/aquasec/kube-enforcer@sha256:42ba6232cd7c2d5b75164e6f86671634bdd4ab451766dec2b4b3bbd6874671ab",
-          "name": "kube_enforcer"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.0.2 <2022.4.130",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2022.4.130",
-      "version_original": "2022.4.130"
-    },
-    {
-      "_id": "632b27642bdd76944b8e5fe9",
-      "alm_examples": [
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaCsp",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "db-password",
-                "name": "aqua-database-password"
-              },
-              "dbDiskSize": 10
-            },
-            "database": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "gateway": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "namespace": "aqua",
-              "requirements": true,
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "route": true,
-            "runAsNonRoot": false,
-            "server": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaDatabase",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "diskSize": 10,
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "gateway": {
-              "host": "aqua-gateway",
-              "port": 8443
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "runAsNonRoot": false,
-            "token": "<<your-token>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaKubeEnforcer",
-          "metadata": {
-            "name": "aqua"
-          },
-          "spec": {
-            "config": {
-              "cluster_name": "aqua-secure",
-              "gateway_address": "aqua-gateway:8443",
-              "imagePullSecret": "aqua-registry"
-            },
-            "deploy": {
-              "service": "ClusterIP"
-            },
-            "infra": {
-              "serviceAccount": "aqua-kube-enforcer-sa",
-              "version": "2022.4"
-            },
-            "token": "<<KUBE_ENFORCER_GROUP_TOKEN>>"
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaGateway",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "ClusterIP"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            }
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaScanner",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "deploy": {
-              "replicas": 1
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            },
-            "login": {
-              "host": "http://aqua-server:8080",
-              "password": "<<YOUR AQUA USER PASSWORD>>",
-              "username": "<<YOUR AQUA USER NAME>>"
-            },
-            "runAsNonRoot": false
-          }
-        },
-        {
-          "api_version": "operator.aquasec.com/v1alpha1",
-          "kind": "AquaServer",
-          "metadata": {
-            "name": "aqua",
-            "namespace": "aqua"
-          },
-          "spec": {
-            "common": {
-              "databaseSecret": {
-                "key": "<<EXTERNAL DB PASSWORD SECRET KEY>>",
-                "name": "<<EXTERNAL DB PASSWORD SECRET NAME>>"
-              },
-              "splitDB": false
-            },
-            "deploy": {
-              "replicas": 1,
-              "service": "LoadBalancer"
-            },
-            "externalDb": {
-              "host": "<<EXTERNAL DB IP OR DNS>>",
-              "password": "<<EXTERNAL DB PASSWORD (if secret does not exist)>>",
-              "port": "<<EXTERNAL DB PORT>>",
-              "username": "<<EXTERNAL DB USERNAME>>"
-            },
-            "infra": {
-              "serviceAccount": "aqua-sa",
-              "version": "2022.4"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/aquasec/aquasec-operator-bundle@sha256:fe86c0b5a3b6da6d631a870971c178d71809fdca3e9e580a439080e33ec718fc",
-      "bundle_path_digest": "sha256:fe86c0b5a3b6da6d631a870971c178d71809fdca3e9e580a439080e33ec718fc",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "2022.4",
-      "creation_date": "2022-09-21T15:01:56.047000+00:00",
-      "csv_description": "The Aqua Security Operator runs within an OpenShift cluster and provides a means to deploy and manage the Aqua Security cluster and components :\n* Server (aka \u201cconsole\u201d)\n* Database (for production environments we recommend to use an external database and not the Aqua default database)\n* Gateway\n* Enforcer (aka \u201cagent\u201d)\n* KubeEnforcer\n* Scanner\n* CSP (package that contains the Server, Database, and Gateway)\n\nUse the Aqua-Operator to\n* Deploy Aqua Security components on OpenShift\n* Scale up Aqua Security components with extra replicas\n* Assign metadata tags to Aqua Security components\n\nThe Aqua Operator provides a few [Custom Resources](https://github.com/aquasecurity/aqua-operator/tree/master/deploy/crds) for managing the Aqua CSP platform.\n\n## Prerequisites\n\nThere are only 3 prerequisites:\n1. Make sure you have a license and to obtain one, please contact Aqua Security at [Contact Us](mailto:cloudsales@aquasec.com).\n2. Create a new project for aqua\n\n    ```oc new-project aqua```\n\n3. Create the secret for Aqua Database password. If you are using an External Database, make sure you use those credentials.\nNOTE: This step is optional and you can specify the Database password when creating the CRs.\n\n    ```oc create secret generic aqua-database-password --from-literal=db-password=<password> -n aqua```\n\nPlease note that for the certified operator, the Docker registry secret is NOT needed. For the Red Hat certified operator, the Aqua application images are stored in the Red Hat Connect registry and will be automatically pulled by the Aqua operator.\n\n## Choosing the right channel\n\nChannels are a flexible publishing mechanism that offers you three different Aqua versions to deploy, at any point. These channels map to their respective Aqua versions, describing the maturity based on where they are in their lifecycle:\n* 4.6: This maps to the older version of Aqua 4.6.0\n* 5.0: This maps to the Aqua version 5.0.0\n* 5.3: This maps to the Aqua version 5.3.0\n* 6.0: This maps to the Aqua version 6.0.0\n* 6.2: This maps to the Aqua version 6.2.0\n* 6.5: This maps to the Aqua version 6.5.0\n* 2022.4: This is the latest and greatest version of Aqua (default)\n\n## Deploying the Aqua Operator\n\nAqua Operator follows an easy push button deployment that installs the operator in its own aqua namespace.\nPlease refer to the instructions [here](https://github.com/aquasecurity/aqua-operator/blob/2022.4.0/docs/DeployOpenShiftOperator.md).\n\n## Configuring the Aqua Operator\n\nOperators leverage CRDs as a configuration mechanism for the application. Aqua offers a number of CRDs that can be tweaked and configured as per your needs. Please refer to this [link](https://github.com/aquasecurity/aqua-operator/blob/6.2.0/docs/DeployOpenShiftOperator.md#aquacsp-crds) for Custom Resource examples for popular scenarios.\n\n## Support\n\nFor support please contact support@aquasec.com.",
-      "csv_display_name": "Aqua Security Operator",
-      "csv_metadata_description": "The Aqua Security Operator runs within a Openshift cluster and provides a means to deploy and manage Aqua Security cluster and components.",
-      "csv_name": "aqua-operator.v2022.4.130",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-21T15:01:56.047000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "aqua-operator-certified",
-      "provided_apis": [
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ConfigAuditReport",
-          "plural": "configauditreports",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaDatabase",
-          "plural": "aquadatabases",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaEnforcer",
-          "plural": "aquaenforcers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaGateway",
-          "plural": "aquagateways",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "AquaStarboard",
-          "plural": "aquastarboards",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaCsp",
-          "plural": "aquacsps",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaKubeEnforcer",
-          "plural": "aquakubeenforcers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaServer",
-          "plural": "aquaservers",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "operator.aquasec.com",
-          "kind": "AquaScanner",
-          "plural": "aquascanners",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "aquasecurity.github.io",
-          "kind": "ClusterConfigAuditReport",
-          "plural": "clusterconfigauditreports",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Aqua Security, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:be6844c048d1c1695d513894fe465d1f3286c5d085c14e6fdb55c7e14c0c8080",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:be6844c048d1c1695d513894fe465d1f3286c5d085c14e6fdb55c7e14c0c8080",
-          "name": "aquasec-be6844c048d1c1695d513894fe465d1f3286c5d085c14e6fdb55c7e14c0c8080-annotation"
-        },
-        {
-          "digest": "sha256:be6844c048d1c1695d513894fe465d1f3286c5d085c14e6fdb55c7e14c0c8080",
-          "image": "registry.connect.redhat.com/aquasec/aquasec@sha256:be6844c048d1c1695d513894fe465d1f3286c5d085c14e6fdb55c7e14c0c8080",
-          "name": "aqua-operator"
-        },
-        {
-          "digest": "sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "image": "registry.connect.redhat.com/aquasec/database@sha256:2cb83939d45d32560b3499299c46f98d542a1f67f5378774e60c95d255a03768",
-          "name": "database"
-        },
-        {
-          "digest": "sha256:6c03a0cb281e2151e688bd2c5245f6114377a4619bc9a0415358ccbd07c2807d",
-          "image": "registry.connect.redhat.com/aquasec/gateway@sha256:6c03a0cb281e2151e688bd2c5245f6114377a4619bc9a0415358ccbd07c2807d",
-          "name": "gateway"
-        },
-        {
-          "digest": "sha256:e4ae759bfc2c11e210a77305d1b6c99c2d9b08db01b172d295b9cc18b59f6c11",
-          "image": "registry.connect.redhat.com/aquasec/console@sha256:e4ae759bfc2c11e210a77305d1b6c99c2d9b08db01b172d295b9cc18b59f6c11",
-          "name": "server"
-        },
-        {
-          "digest": "sha256:848d4398a21380947a76047fb74690b333bbad0bc2bf9a312cea6dad0a5580dd",
-          "image": "registry.connect.redhat.com/aquasec/scanner@sha256:848d4398a21380947a76047fb74690b333bbad0bc2bf9a312cea6dad0a5580dd",
-          "name": "scanner"
-        },
-        {
-          "digest": "sha256:09d6b9413077196cbd649b6e669b47555936d8751aa88eb4d4790b09860cb3a5",
-          "image": "registry.connect.redhat.com/aquasec/enforcer@sha256:09d6b9413077196cbd649b6e669b47555936d8751aa88eb4d4790b09860cb3a5",
-          "name": "enforcer"
-        },
-        {
-          "digest": "sha256:42ba6232cd7c2d5b75164e6f86671634bdd4ab451766dec2b4b3bbd6874671ab",
-          "image": "registry.connect.redhat.com/aquasec/kube-enforcer@sha256:42ba6232cd7c2d5b75164e6f86671634bdd4ab451766dec2b4b3bbd6874671ab",
-          "name": "kube_enforcer"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.0.2 <2022.4.130",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2022.4.130",
-      "version_original": "2022.4.130"
-    },
-    {
       "_id": "632b70ac6c4612132187ff13",
       "alm_examples": [
         {
@@ -17771,6 +16742,743 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "2.10.6",
       "version_original": "2.10.6"
+    },
+    {
+      "_id": "632d0ba39bb8b51dd356dbf6",
+      "alm_examples": [
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "License",
+          "metadata": {
+            "name": "tvk-license-one",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
+          }
+        },
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "Target",
+          "metadata": {
+            "labels": {
+              "app": "triliovault"
+            },
+            "name": "triliovault-target",
+            "namespace": "openshift-marketplace"
+          },
+          "spec": {
+            "nfsCredentials": {
+              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
+              "nfsOptions": "nfsvers=4"
+            },
+            "type": "NFS",
+            "vendor": "Other"
+          }
+        },
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "BackupPlan",
+          "metadata": {
+            "name": "tvk-backupplan"
+          },
+          "spec": {
+            "backupConfig": {
+              "retentionPolicy": {
+                "name": "retention-policy",
+                "namespace": "openshift-marketplace"
+              },
+              "schedulePolicy": {
+                "fullBackupPolicy": {
+                  "name": "full-bp-policy",
+                  "namespace": "openshift-marketplace"
+                },
+                "incrementalBackupPolicy": {
+                  "name": "inc-bp-policy",
+                  "namespace": "openshift-marketplace"
+                }
+              },
+              "target": {
+                "name": "triliovault-target",
+                "namespace": "openshift-marketplace"
+              }
+            },
+            "backupPlanComponents": {
+              "custom": [
+                {
+                  "matchLabels": {
+                    "app": "nginx"
+                  }
+                }
+              ],
+              "helmReleases": [
+                "sample-release"
+              ],
+              "operators": [
+                {
+                  "applicationResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "app": "etcd"
+                      }
+                    }
+                  ],
+                  "customResources": [
+                    {
+                      "groupVersionKind": {
+                        "group": "etcd.database.coreos.com",
+                        "kind": "EtcdCluster",
+                        "version": "v1beta2"
+                      },
+                      "objects": [
+                        "demo-etcd-cluster"
+                      ]
+                    }
+                  ],
+                  "operatorId": "demo-etcd-cluster",
+                  "operatorResourceSelector": [
+                    {
+                      "matchLabels": {
+                        "release": "demo-etcd-operator"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/trilio/r-3445381-bundle@sha256:06fb1823d7c3bef507a5edc08a9380688ef3703b296f827406508a379d1c46e1",
+      "bundle_path_digest": "sha256:06fb1823d7c3bef507a5edc08a9380688ef3703b296f827406508a379d1c46e1",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-23T01:28:03.380000+00:00",
+      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
+      "csv_display_name": "TrilioVault for Kubernetes",
+      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
+      "csv_name": "k8s-triliovault-stable.2.10.6",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-23T01:28:03.380000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "k8s-triliovault",
+      "provided_apis": [
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "BackupPlan",
+          "plural": "backupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterRestore",
+          "plural": "clusterrestores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Hook",
+          "plural": "hooks",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Policy",
+          "plural": "policies",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "License",
+          "plural": "licenses",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Restore",
+          "plural": "restores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackup",
+          "plural": "clusterbackups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Target",
+          "plural": "targets",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "ClusterBackupPlan",
+          "plural": "clusterbackupplans",
+          "version": "v1"
+        }
+      ],
+      "provider": "Trilio",
+      "related_images": [
+        {
+          "digest": "sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "name": "control-plane-f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1-annotation"
+        },
+        {
+          "digest": "sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "name": "k8s-triliovault-control-plane"
+        },
+        {
+          "digest": "sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "name": "k8s-triliovault-analyzer"
+        },
+        {
+          "digest": "sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "name": "triliovault-admission-webhook"
+        },
+        {
+          "digest": "sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "name": "triliovault-exporter"
+        },
+        {
+          "digest": "sha256:d6b44f1c290fd42bcee6870612ca1ab63f9d439ff87dfda0d3317c47d2be0fdb",
+          "image": "registry.connect.redhat.com/trilio/web@sha256:d6b44f1c290fd42bcee6870612ca1ab63f9d439ff87dfda0d3317c47d2be0fdb",
+          "name": "triliovault-web"
+        },
+        {
+          "digest": "sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "name": "triliovault-web-backend"
+        },
+        {
+          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "name": "triliovault-dex"
+        },
+        {
+          "digest": "sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "name": "webhook-init"
+        },
+        {
+          "digest": "sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "name": "dex-init"
+        },
+        {
+          "digest": "sha256:284b1f3c652fd3de434e5f5a14fdc4c5cb86da9819db4e6b383f1327375a1d42",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:284b1f3c652fd3de434e5f5a14fdc4c5cb86da9819db4e6b383f1327375a1d42",
+          "name": "metamover"
+        },
+        {
+          "digest": "sha256:6404382ebeba9eeb6785163d8da1a070b4ff9edb62a0dba0aa02fb07f75ef369",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:6404382ebeba9eeb6785163d8da1a070b4ff9edb62a0dba0aa02fb07f75ef369",
+          "name": "datamover"
+        },
+        {
+          "digest": "sha256:284b1f3c652fd3de434e5f5a14fdc4c5cb86da9819db4e6b383f1327375a1d42",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:284b1f3c652fd3de434e5f5a14fdc4c5cb86da9819db4e6b383f1327375a1d42",
+          "name": "datastore_attacher"
+        },
+        {
+          "digest": "sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "name": "backup_scheduler"
+        },
+        {
+          "digest": "sha256:284b1f3c652fd3de434e5f5a14fdc4c5cb86da9819db4e6b383f1327375a1d42",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:284b1f3c652fd3de434e5f5a14fdc4c5cb86da9819db4e6b383f1327375a1d42",
+          "name": "backup_cleaner"
+        },
+        {
+          "digest": "sha256:6404382ebeba9eeb6785163d8da1a070b4ff9edb62a0dba0aa02fb07f75ef369",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:6404382ebeba9eeb6785163d8da1a070b4ff9edb62a0dba0aa02fb07f75ef369",
+          "name": "backup_retention"
+        },
+        {
+          "digest": "sha256:6404382ebeba9eeb6785163d8da1a070b4ff9edb62a0dba0aa02fb07f75ef369",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:6404382ebeba9eeb6785163d8da1a070b4ff9edb62a0dba0aa02fb07f75ef369",
+          "name": "target_browser"
+        },
+        {
+          "digest": "sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "name": "hook"
+        },
+        {
+          "digest": "sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "name": "resource_cleaner"
+        },
+        {
+          "digest": "sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "image": "registry.connect.redhat.com/trilio/minio@sha256:62ea930dfe5370eeaa574d88d94fb0120a5af0a1cc90a4a1831be7630a30844c",
+          "name": "minio"
+        },
+        {
+          "digest": "sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "image": "registry.connect.redhat.com/trilio/dex@sha256:7bcb3d85a4447f1fa684b76b8cb7fb314a9ddedbd447b336da8a3ea286b5834f",
+          "name": "dex"
+        },
+        {
+          "digest": "sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:f3fc0c2599ff4e3cdde83cc681e91b33113069e78c2a2e535c716455e88dc9a1",
+          "name": "tvk_init"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<2.10.6",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "2.10.6",
+      "version_original": "2.10.6"
+    },
+    {
+      "_id": "632d69948454bee1cb7351e5",
+      "alm_examples": [
+        {
+          "api_version": "mlops.cnvrg.io/v1",
+          "kind": "CnvrgApp",
+          "metadata": {
+            "name": "cnvrg-app"
+          },
+          "spec": {
+            "clusterDomain": "",
+            "controlPlane": {
+              "baseConfig": {
+                "agentCustomTag": "agnostic-logs",
+                "cnvrgJobRbacStrict": true,
+                "cnvrgJobUid": "0",
+                "cnvrgPrivilegedJob": false,
+                "featureFlags": {
+                  "CNVRG_ENABLE_MOUNT_FOLDERS": "false",
+                  "CNVRG_MOUNT_HOST_FOLDERS": "false",
+                  "CNVRG_PROMETHEUS_METRICS": "true",
+                  "OCP_ENABLED": "true"
+                },
+                "metagpuEnabled": false
+              },
+              "cnvrgScheduler": {
+                "enabled": false
+              },
+              "hyper": {
+                "enabled": true
+              },
+              "image": "docker.io/cnvrg/core@sha256:50a9c8cb0aebb24cc43cbb24de05621075f8989d93db1f030fdbe5b686a6b69b",
+              "nomex": {
+                "enabled": true
+              },
+              "searchkiq": {
+                "enabled": true
+              },
+              "sidekiq": {
+                "enabled": true,
+                "replicas": 1,
+                "split": true
+              },
+              "systemkiq": {
+                "enabled": true
+              },
+              "webapp": {
+                "enabled": true
+              }
+            },
+            "dbs": {
+              "es": {
+                "elastalert": {
+                  "enabled": true
+                },
+                "enabled": true,
+                "kibana": {
+                  "enabled": true
+                }
+              },
+              "minio": {
+                "enabled": true
+              },
+              "pg": {
+                "enabled": true
+              },
+              "prom": {
+                "enabled": true,
+                "extraScrapeConfigs": [
+                  {
+                    "labelSelector": "app=nvidia-dcgm-exporter",
+                    "namespace": "nvidia-gpu-operator",
+                    "role": "endpoints"
+                  },
+                  {
+                    "labelSelector": "app=metagpu-exporter",
+                    "namespace": "cnvrg",
+                    "role": "endpoints"
+                  }
+                ],
+                "grafana": {
+                  "enabled": true
+                }
+              },
+              "redis": {
+                "enabled": true
+              }
+            },
+            "imageHub": "docker.io/cnvrg",
+            "networking": {
+              "ingress": {
+                "type": "openshift"
+              }
+            },
+            "registry": {
+              "name": "cnvrg-app-registry",
+              "password": "",
+              "url": "docker.io",
+              "user": ""
+            }
+          }
+        },
+        {
+          "api_version": "mlops.cnvrg.io/v1",
+          "kind": "CnvrgThirdParty",
+          "metadata": {
+            "name": "cnvrg-thirdparty"
+          },
+          "spec": {
+            "imageHub": "docker.io/cnvrg",
+            "metagpu": {
+              "enabled": true,
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.device-plugin": "true"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/cnvrg-core/cnvrg@sha256:c85a7beb46ace09e8468d2ba416df80807a951576b7b11750a22d4bbf6ee931a",
+      "bundle_path_digest": "sha256:c85a7beb46ace09e8468d2ba416df80807a951576b7b11750a22d4bbf6ee931a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-23T08:08:52.324000+00:00",
+      "csv_description": "## Cnvrg is a Cloud Native AI:OS, transforming the way enterprises manage, scale and accelerate AI.\n#### Installation\nFor quick start, deploy the default CnvrgApp spec.  For advanced deployment scenarios, make required changes\non the CnvrgApp spec through the OpenShift console and deploy the spec.\nHave additional questions? Email us at support@cnvrg.io or read the [docs](https://app.cnvrg.io/docs/).\n#### MetaGpu (Fractional GPU) support\nFor deploying the MetaGPU device plugin, install the default `CnvrgThirdParty` spec on your OpenShift cluster.\nOnce `CnvrgThirdParty` has been successfully deployed, enabled MetaGPU support in `CnvrgApp` CR by setting the\n`spec.controlPlane.baseConfig.metagpuEnabled: true`.\n**Note**: make sure all the low level GPU components (mainly the GPU drivers & GPU container runtimes)\nhas been installed on the OpenShift GPU nodes.\n#### Habana HPU (Gaudi) support\nFor enabling Habana HPU support, add new entry `\"HABANA_ENABLED\": \"true\"`\nunder `spec.controlPlane.baseConfig.featureFlags`",
+      "csv_display_name": "Cnvrg Operator",
+      "csv_metadata_description": "cnvrg.io is an AI OS, transforming the way enterprises manage, scale and accelerate AI.",
+      "csv_name": "cnvrg.v4.3.39",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-23T08:08:52.324000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "cnvrg",
+      "provided_apis": [
+        {
+          "group": "mlops.cnvrg.io",
+          "kind": "CnvrgApp",
+          "plural": "cnvrgapps",
+          "version": "v1"
+        },
+        {
+          "group": "mlops.cnvrg.io",
+          "kind": "CnvrgThirdParty",
+          "plural": "cnvrgthirdparties",
+          "version": "v1"
+        }
+      ],
+      "provider": "cnvrg.io",
+      "related_images": [
+        {
+          "digest": "sha256:70cd60e4cc0c5df2cfdf2be87ac4d7f4e5b90607cef2889f4af0d37f42082813",
+          "image": "docker.io/cnvrg/cnvrg-operator@sha256:70cd60e4cc0c5df2cfdf2be87ac4d7f4e5b90607cef2889f4af0d37f42082813",
+          "name": "cnvrg-operator"
+        },
+        {
+          "digest": "sha256:50a9c8cb0aebb24cc43cbb24de05621075f8989d93db1f030fdbe5b686a6b69b",
+          "image": "docker.io/cnvrg/core@sha256:50a9c8cb0aebb24cc43cbb24de05621075f8989d93db1f030fdbe5b686a6b69b",
+          "name": "core"
+        },
+        {
+          "digest": "sha256:70cd60e4cc0c5df2cfdf2be87ac4d7f4e5b90607cef2889f4af0d37f42082813",
+          "image": "docker.io/cnvrg/cnvrg-operator@sha256:70cd60e4cc0c5df2cfdf2be87ac4d7f4e5b90607cef2889f4af0d37f42082813",
+          "name": "cnvrg-operator-70cd60e4cc0c5df2cfdf2be87ac4d7f4e5b90607cef2889f4af0d37f42082813-annotation"
+        },
+        {
+          "digest": "sha256:50a9c8cb0aebb24cc43cbb24de05621075f8989d93db1f030fdbe5b686a6b69b",
+          "image": "docker.io/cnvrg/core@sha256:50a9c8cb0aebb24cc43cbb24de05621075f8989d93db1f030fdbe5b686a6b69b",
+          "name": "core-50a9c8cb0aebb24cc43cbb24de05621075f8989d93db1f030fdbe5b686a6b69b-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "4.3.39",
+      "version_original": "4.3.39"
+    },
+    {
+      "_id": "632d69988454bee1cb7351e7",
+      "alm_examples": [
+        {
+          "api_version": "mlops.cnvrg.io/v1",
+          "kind": "CnvrgApp",
+          "metadata": {
+            "name": "cnvrg-app"
+          },
+          "spec": {
+            "clusterDomain": "",
+            "controlPlane": {
+              "baseConfig": {
+                "agentCustomTag": "agnostic-logs",
+                "cnvrgJobRbacStrict": true,
+                "cnvrgJobUid": "0",
+                "cnvrgPrivilegedJob": false,
+                "featureFlags": {
+                  "CNVRG_ENABLE_MOUNT_FOLDERS": "false",
+                  "CNVRG_MOUNT_HOST_FOLDERS": "false",
+                  "CNVRG_PROMETHEUS_METRICS": "true",
+                  "OCP_ENABLED": "true"
+                },
+                "metagpuEnabled": false
+              },
+              "cnvrgScheduler": {
+                "enabled": false
+              },
+              "hyper": {
+                "enabled": true
+              },
+              "image": "docker.io/cnvrg/core@sha256:50a9c8cb0aebb24cc43cbb24de05621075f8989d93db1f030fdbe5b686a6b69b",
+              "nomex": {
+                "enabled": true
+              },
+              "searchkiq": {
+                "enabled": true
+              },
+              "sidekiq": {
+                "enabled": true,
+                "replicas": 1,
+                "split": true
+              },
+              "systemkiq": {
+                "enabled": true
+              },
+              "webapp": {
+                "enabled": true
+              }
+            },
+            "dbs": {
+              "es": {
+                "elastalert": {
+                  "enabled": true
+                },
+                "enabled": true,
+                "kibana": {
+                  "enabled": true
+                }
+              },
+              "minio": {
+                "enabled": true
+              },
+              "pg": {
+                "enabled": true
+              },
+              "prom": {
+                "enabled": true,
+                "extraScrapeConfigs": [
+                  {
+                    "labelSelector": "app=nvidia-dcgm-exporter",
+                    "namespace": "nvidia-gpu-operator",
+                    "role": "endpoints"
+                  },
+                  {
+                    "labelSelector": "app=metagpu-exporter",
+                    "namespace": "cnvrg",
+                    "role": "endpoints"
+                  }
+                ],
+                "grafana": {
+                  "enabled": true
+                }
+              },
+              "redis": {
+                "enabled": true
+              }
+            },
+            "imageHub": "docker.io/cnvrg",
+            "networking": {
+              "ingress": {
+                "type": "openshift"
+              }
+            },
+            "registry": {
+              "name": "cnvrg-app-registry",
+              "password": "",
+              "url": "docker.io",
+              "user": ""
+            }
+          }
+        },
+        {
+          "api_version": "mlops.cnvrg.io/v1",
+          "kind": "CnvrgThirdParty",
+          "metadata": {
+            "name": "cnvrg-thirdparty"
+          },
+          "spec": {
+            "imageHub": "docker.io/cnvrg",
+            "metagpu": {
+              "enabled": true,
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.device-plugin": "true"
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/cnvrg-core/cnvrg@sha256:c85a7beb46ace09e8468d2ba416df80807a951576b7b11750a22d4bbf6ee931a",
+      "bundle_path_digest": "sha256:c85a7beb46ace09e8468d2ba416df80807a951576b7b11750a22d4bbf6ee931a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-23T08:08:56.624000+00:00",
+      "csv_description": "## Cnvrg is a Cloud Native AI:OS, transforming the way enterprises manage, scale and accelerate AI.\n#### Installation\nFor quick start, deploy the default CnvrgApp spec.  For advanced deployment scenarios, make required changes\non the CnvrgApp spec through the OpenShift console and deploy the spec.\nHave additional questions? Email us at support@cnvrg.io or read the [docs](https://app.cnvrg.io/docs/).\n#### MetaGpu (Fractional GPU) support\nFor deploying the MetaGPU device plugin, install the default `CnvrgThirdParty` spec on your OpenShift cluster.\nOnce `CnvrgThirdParty` has been successfully deployed, enabled MetaGPU support in `CnvrgApp` CR by setting the\n`spec.controlPlane.baseConfig.metagpuEnabled: true`.\n**Note**: make sure all the low level GPU components (mainly the GPU drivers & GPU container runtimes)\nhas been installed on the OpenShift GPU nodes.\n#### Habana HPU (Gaudi) support\nFor enabling Habana HPU support, add new entry `\"HABANA_ENABLED\": \"true\"`\nunder `spec.controlPlane.baseConfig.featureFlags`",
+      "csv_display_name": "Cnvrg Operator",
+      "csv_metadata_description": "cnvrg.io is an AI OS, transforming the way enterprises manage, scale and accelerate AI.",
+      "csv_name": "cnvrg.v4.3.39",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-23T08:08:56.624000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "cnvrg",
+      "provided_apis": [
+        {
+          "group": "mlops.cnvrg.io",
+          "kind": "CnvrgThirdParty",
+          "plural": "cnvrgthirdparties",
+          "version": "v1"
+        },
+        {
+          "group": "mlops.cnvrg.io",
+          "kind": "CnvrgApp",
+          "plural": "cnvrgapps",
+          "version": "v1"
+        }
+      ],
+      "provider": "cnvrg.io",
+      "related_images": [
+        {
+          "digest": "sha256:70cd60e4cc0c5df2cfdf2be87ac4d7f4e5b90607cef2889f4af0d37f42082813",
+          "image": "docker.io/cnvrg/cnvrg-operator@sha256:70cd60e4cc0c5df2cfdf2be87ac4d7f4e5b90607cef2889f4af0d37f42082813",
+          "name": "cnvrg-operator"
+        },
+        {
+          "digest": "sha256:50a9c8cb0aebb24cc43cbb24de05621075f8989d93db1f030fdbe5b686a6b69b",
+          "image": "docker.io/cnvrg/core@sha256:50a9c8cb0aebb24cc43cbb24de05621075f8989d93db1f030fdbe5b686a6b69b",
+          "name": "core"
+        },
+        {
+          "digest": "sha256:70cd60e4cc0c5df2cfdf2be87ac4d7f4e5b90607cef2889f4af0d37f42082813",
+          "image": "docker.io/cnvrg/cnvrg-operator@sha256:70cd60e4cc0c5df2cfdf2be87ac4d7f4e5b90607cef2889f4af0d37f42082813",
+          "name": "cnvrg-operator-70cd60e4cc0c5df2cfdf2be87ac4d7f4e5b90607cef2889f4af0d37f42082813-annotation"
+        },
+        {
+          "digest": "sha256:50a9c8cb0aebb24cc43cbb24de05621075f8989d93db1f030fdbe5b686a6b69b",
+          "image": "docker.io/cnvrg/core@sha256:50a9c8cb0aebb24cc43cbb24de05621075f8989d93db1f030fdbe5b686a6b69b",
+          "name": "core-50a9c8cb0aebb24cc43cbb24de05621075f8989d93db1f030fdbe5b686a6b69b-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "4.3.39",
+      "version_original": "4.3.39"
     }
   ]
 }

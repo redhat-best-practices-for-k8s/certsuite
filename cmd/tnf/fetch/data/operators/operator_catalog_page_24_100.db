@@ -1,100 +1,6 @@
 {
   "data": [
     {
-      "_id": "6262a7bb834f257293b60fb0",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/triggermesh/aws-event-sources-operator-bundle@sha256:b9d8f05aa217db6847aed2b06cff677777bbdd5606191b832ff53000dea489cd",
-      "bundle_path_digest": "sha256:b9d8f05aa217db6847aed2b06cff677777bbdd5606191b832ff53000dea489cd",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-04-22T13:03:55.121000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "aws-sources-operator.v0.2.2",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-06-17T02:16:50.144000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "aws-event-sources-operator-certified",
-      "provided_apis": [
-        {
-          "group": "sources.triggermesh.com",
-          "kind": "AwsEventSources",
-          "plural": "awseventsources",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.2.2",
-      "version_original": "0.2.2"
-    },
-    {
-      "_id": "6262a7bd84481d5f5229997a",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/instana/instana-agent-operator-bundle@sha256:c74519be65015d28508ca3b260449a0365f97968f17e20b48c7b338247c835c3",
-      "bundle_path_digest": "sha256:c74519be65015d28508ca3b260449a0365f97968f17e20b48c7b338247c835c3",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-04-22T13:03:57.887000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "instana-agent-operator.v0.3.9",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": true,
-      "last_update_date": "2022-06-17T00:50:17.959000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "instana-agent",
-      "provided_apis": [
-        {
-          "group": "instana.io",
-          "kind": "InstanaAgent",
-          "plural": "agents",
-          "version": "v1beta1"
-        },
-        {
-          "group": "instana.io",
-          "kind": "InstanaAgent",
-          "plural": "agents",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [],
-      "replaces": "",
-      "skip_range": "",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "0.3.9",
-      "version_original": "0.3.9"
-    },
-    {
       "_id": "6262a7c2173a0d36cf5d699b",
       "alm_examples": [],
       "annotations": {
@@ -4939,6 +4845,94 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.2.0",
       "version_original": "1.2.0"
+    },
+    {
+      "_id": "6262aa62cde83e2b177c213c",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/memsql/operator-bundle@sha256:47b4b5c50c392e404ca01fcb53fb7ccaf56000ccaeeeded071662df29b5fb44f",
+      "bundle_path_digest": "sha256:47b4b5c50c392e404ca01fcb53fb7ccaf56000ccaeeeded071662df29b5fb44f",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-04-22T13:15:14.273000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "memsql-operator.v1.1.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-06-17T01:29:23.516000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "memql-certified",
+      "provided_apis": [
+        {
+          "group": "memsql.com",
+          "kind": "MemsqlCluster",
+          "plural": "memsqlclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.1.0",
+      "version_original": "1.1.0"
+    },
+    {
+      "_id": "6262aa64173a0d36cf5d69e6",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:0e69c29d33d5ab9d6676c6a6d5b89e57caddf44090bbabc74a12fea3005704bd",
+      "bundle_path_digest": "sha256:0e69c29d33d5ab9d6676c6a6d5b89e57caddf44090bbabc74a12fea3005704bd",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-04-22T13:15:16.473000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "gpu-operator-certified.v1.4.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-06-17T02:14:28.685000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "gpu-operator-certified",
+      "provided_apis": [
+        {
+          "group": "nvidia.com",
+          "kind": "ClusterPolicy",
+          "plural": "clusterpolicies",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [],
+      "replaces": "",
+      "skip_range": "",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.4.0",
+      "version_original": "1.4.0"
     }
   ]
 }
