@@ -58,6 +58,12 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		testContainersPreStop(&env)
 	})
 
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStartupIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
+		testContainersPostStart(&env)
+	})
+
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestImagePullPolicyIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
@@ -180,6 +186,22 @@ func testContainersPreStop(env *provider.TestEnvironment) {
 	if len(badContainers) > 0 {
 		tnf.ClaimFilePrintf("Containers have been found missing lifecycle preStop definitions: %v", badContainers)
 		ginkgo.Fail("Containers have been found missing lifecycle preStop definitions.")
+	}
+}
+
+func testContainersPostStart(env *provider.TestEnvironment) {
+	badContainers := []string{}
+	for _, cut := range env.Containers {
+		logrus.Debugln("check container ", cut.String(), " post start lifecycle ")
+
+		if cut.Lifecycle == nil || (cut.Lifecycle != nil && cut.Lifecycle.PostStart == nil) {
+			badContainers = append(badContainers, cut.Name)
+			tnf.ClaimFilePrintf("%s does not have postStart defined", cut)
+		}
+	}
+	if len(badContainers) > 0 {
+		tnf.ClaimFilePrintf("Containers have been found missing lifecycle postStart definitions: %v", badContainers)
+		ginkgo.Fail("Containers have been found missing lifecycle postStart definitions.")
 	}
 }
 
