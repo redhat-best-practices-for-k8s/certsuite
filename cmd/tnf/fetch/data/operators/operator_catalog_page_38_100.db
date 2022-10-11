@@ -1,356 +1,6 @@
 {
   "data": [
     {
-      "_id": "62e9939ea9a2233d923f76c1",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:fd01824f61500462187132b3b356a5233d61b8b053681b1234a917d42d17e604",
-      "bundle_path_digest": "sha256:fd01824f61500462187132b3b356a5233d61b8b053681b1234a917d42d17e604",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.11",
-      "creation_date": "2022-08-02T21:14:06.801000+00:00",
-      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium Enterprise",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.11.7-x250fc3c",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-08-02T21:14:06.801000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "cilium-enterprise",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:e89bafbff51bfc3634956dc99fde58a9257521ea3fdc36c83de024c4f60c49be",
-          "image": "quay.io/isovalent/cilium@sha256:e89bafbff51bfc3634956dc99fde58a9257521ea3fdc36c83de024c4f60c49be",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:f64748a5f114315d5914adfbd7b8a68847cca24eedf7e2aa1a88d2a9ba33387c",
-          "image": "quay.io/isovalent/hubble-relay@sha256:f64748a5f114315d5914adfbd7b8a68847cca24eedf7e2aa1a88d2a9ba33387c",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:2c25a2dc7bdd9fc9a83aff5232e0a06d7b889f977499d725cc3eb52a5b2529eb",
-          "image": "quay.io/isovalent/operator-generic@sha256:2c25a2dc7bdd9fc9a83aff5232e0a06d7b889f977499d725cc3eb52a5b2529eb",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:e89bafbff51bfc3634956dc99fde58a9257521ea3fdc36c83de024c4f60c49be",
-          "image": "quay.io/isovalent/cilium@sha256:e89bafbff51bfc3634956dc99fde58a9257521ea3fdc36c83de024c4f60c49be",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:211562a667af8777bf387e6c57394cf04921d7016d7a2a450109fc55681eb674",
-          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:211562a667af8777bf387e6c57394cf04921d7016d7a2a450109fc55681eb674",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble-ui-oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble-enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble-enterprise-metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble-enterprise-operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble-export"
-        },
-        {
-          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "name": "hubble-export-fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble-export-s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble-rbac"
-        },
-        {
-          "digest": "sha256:56ab5bb63623960c29b7dc018e33d57aaf44a018d7677fb37f9772cd43c7b651",
-          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:56ab5bb63623960c29b7dc018e33d57aaf44a018d7677fb37f9772cd43c7b651",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:f64748a5f114315d5914adfbd7b8a68847cca24eedf7e2aa1a88d2a9ba33387c",
-          "image": "quay.io/isovalent/hubble-relay@sha256:f64748a5f114315d5914adfbd7b8a68847cca24eedf7e2aa1a88d2a9ba33387c",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:2c25a2dc7bdd9fc9a83aff5232e0a06d7b889f977499d725cc3eb52a5b2529eb",
-          "image": "quay.io/isovalent/operator-generic@sha256:2c25a2dc7bdd9fc9a83aff5232e0a06d7b889f977499d725cc3eb52a5b2529eb",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:e892cba6dafcdf6704df3135a0b38d11894a5f276ace40683e74cb62b9c311d8",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:c9921c65892a5293a4f1bef787636d6ae58cec1af65da06862a47e3450afdc6e",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble_ui_oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble_enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble_enterprise_metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble_enterprise_operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble_export"
-        },
-        {
-          "digest": "sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:05cb13f533f2c89b98a47cd58badda07add54077cd22283ca5028cb39f2e4486",
-          "name": "hubble_export_fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble_export_s3"
-        },
-        {
-          "digest": "sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:03f3304c157024356a6de13c3d91b4506b8e54d587920d80ebcc76cbcfeaeda6",
-          "name": "hubble_rbac"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.11.7+x250fc3c",
-      "version_original": "1.11.7+x250fc3c"
-    },
-    {
-      "_id": "62e993a1d87ec66dbd322b96",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.8-28.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
-      "bundle_path_digest": "sha256:350e0a49321d7a92b95803925f4bcfe97a95d07e1444f3b378fa80370f27087d",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.4",
-      "creation_date": "2022-08-02T21:14:09.274000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.8-1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-08-02T21:14:09.274000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": null,
-      "related_images": [
-        {
-          "digest": "sha256:29c2dec83137378b59946f98c36446241cdf06e083216232ab80e8b667f837ca",
-          "image": "redislabs/operator@sha256:29c2dec83137378b59946f98c36446241cdf06e083216232ab80e8b667f837ca",
-          "name": "operator-29c2dec83137378b59946f98c36446241cdf06e083216232ab80e8b667f837ca-annotation"
-        },
-        {
-          "digest": "sha256:29c2dec83137378b59946f98c36446241cdf06e083216232ab80e8b667f837ca",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:29c2dec83137378b59946f98c36446241cdf06e083216232ab80e8b667f837ca",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "6.0.8-1",
-      "version_original": "6.0.8-1"
-    },
-    {
       "_id": "62e993a40f371fa893a6de48",
       "alm_examples": [
         {
@@ -12770,6 +12420,224 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "6.2.8-2",
       "version_original": "6.2.8-2"
+    },
+    {
+      "_id": "62e99c5efa788ab421560c3a",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "5.4.14-31.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "size": 3,
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:16da0c69f0e2585be8e44abe6e269dd35176771f5a1ecda3111c8a2f52c790a0",
+      "bundle_path_digest": "sha256:16da0c69f0e2585be8e44abe6e269dd35176771f5a1ecda3111c8a2f52c790a0",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "5.4.14",
+      "creation_date": "2022-08-02T21:51:26.282000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v5.4.14-7",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-02T21:51:26.282000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
+          "image": "redislabs/operator@sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
+          "name": "operator-062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217-annotation"
+        },
+        {
+          "digest": "sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "5.4.14-7",
+      "version_original": "5.4.14-7"
+    },
+    {
+      "_id": "62e99c664a2b9e2714ab84bf",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.8-30.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
+      "bundle_path_digest": "sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.10",
+      "creation_date": "2022-08-02T21:51:34.622000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.8-20",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-08-02T21:51:34.622000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        }
+      ],
+      "provider": null,
+      "related_images": [
+        {
+          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
+          "name": "redis-enterprise-operator-0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1-annotation"
+        },
+        {
+          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.8-20",
+      "version_original": "6.0.8-20"
     }
   ]
 }

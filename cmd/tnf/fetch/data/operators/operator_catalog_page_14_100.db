@@ -1,171 +1,6 @@
 {
   "data": [
     {
-      "_id": "612318869f14588c41ebe9ec",
-      "alm_examples": [
-        {
-          "api_version": "ako.vmware.com/v1alpha1",
-          "kind": "AKOConfig",
-          "metadata": {
-            "name": "ako-sample",
-            "namespace": "avi-system"
-          },
-          "spec": {
-            "akoSettings": {
-              "apiServerPort": 8080,
-              "clusterName": "my-cluster",
-              "cniPlugin": "",
-              "deleteConfig": false,
-              "disableStaticRouteSync": false,
-              "enableEVH": false,
-              "fullSyncFrequency": "1800",
-              "layer7Only": false,
-              "logLevel": "INFO",
-              "servicesAPI": false
-            },
-            "controllerSettings": {
-              "cloudName": "Default-Cloud",
-              "controllerIP": "",
-              "controllerVersion": "20.1.5",
-              "serviceEngineGroupName": "Default-Group"
-            },
-            "imagePullPolicy": "IfNotPresent",
-            "imageRepository": "projects.registry.vmware.com/ako/amko",
-            "l4Settings": {
-              "advancedL4": false,
-              "autoFQDN": "default",
-              "defaultDomain": ""
-            },
-            "l7Settings": {
-              "defaultIngController": true,
-              "noPGForSNI": false,
-              "passthroughShardSize": "SMALL",
-              "serviceType": "ClusterIP",
-              "shardVSSize": "LARGE"
-            },
-            "logFile": "avi.log",
-            "mountPath": "/log",
-            "networkSettings": {
-              "subnetIP": "",
-              "subnetPrefix": "",
-              "vipNetworkList": [
-                {
-                  "networkName": ""
-                }
-              ]
-            },
-            "nodePortSelector": {
-              "key": "",
-              "value": ""
-            },
-            "resources": {
-              "limits": {
-                "cpu": "250m",
-                "memory": "300Mi"
-              },
-              "requests": {
-                "cpu": "100m",
-                "memory": "200Mi"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/wavefronthq/ako-operator-bundle@sha256:6a41ad6e74de7e5c94af7781a001c4501fae4b7b5505dcbfd75b04053af1e1ce",
-      "bundle_path_digest": "sha256:6a41ad6e74de7e5c94af7781a001c4501fae4b7b5505dcbfd75b04053af1e1ce",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-08-23T03:39:50.214000+00:00",
-      "csv_description": "Operator to manage the artifacts of the AKO Controller",
-      "csv_display_name": "AKO Operator",
-      "csv_metadata_description": "",
-      "csv_name": "ako-operator.v1.4.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:34:49.295000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "ako-operator",
-      "provided_apis": [
-        {
-          "group": "ako.vmware.com",
-          "kind": "AKOConfig",
-          "plural": "akoconfigs",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "ako.vmware.com",
-          "kind": "AviInfraSetting",
-          "plural": "aviinfrasettings",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "ako.vmware.com",
-          "kind": "HostRule",
-          "plural": "hostrules",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "ako.vmware.com",
-          "kind": "HTTPRule",
-          "plural": "httprules",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "networking.x-k8s.io",
-          "kind": "GatewayClass",
-          "plural": "gatewayclasses",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "networking.x-k8s.io",
-          "kind": "Gateway",
-          "plural": "gateways",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "VMware",
-      "related_images": [
-        {
-          "digest": "sha256:3840a444c7a9e8f799e251779dca616fddc412712084da2620178b705117c493",
-          "image": "projects.registry.vmware.com/ako/ako-operator@sha256:3840a444c7a9e8f799e251779dca616fddc412712084da2620178b705117c493",
-          "name": "ako-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.4.2",
-      "version_original": "1.4.2"
-    },
-    {
       "_id": "6125de5fbd674341b5c5f476",
       "alm_examples": [
         {
@@ -13527,6 +13362,127 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "8.3.2",
       "version_original": "8.3.2"
+    },
+    {
+      "_id": "6154d0b5d2c7f84a4d2edca6",
+      "alm_examples": [
+        {
+          "api_version": "appdynamics.com/v1alpha1",
+          "kind": "Adam",
+          "metadata": {
+            "name": "example-adam",
+            "namespace": "appdynamics"
+          },
+          "spec": {
+            "controllerUrl": "https://saas.appdynamics.com"
+          }
+        },
+        {
+          "api_version": "appdynamics.com/v1alpha1",
+          "kind": "Clusteragent",
+          "metadata": {
+            "name": "k8s-cluster-agent",
+            "namespace": "appdynamics"
+          },
+          "spec": {
+            "account": "customer1",
+            "appName": "Cluster1",
+            "controllerUrl": "https://saas.appdynamics.com",
+            "image": "registry.connect.redhat.com/appdynamics/cluster-agent@sha256:5df48126b5e6c22cd73f8b3f3bdb8cc2fc6fae23085e922de32a586b754b6e7f",
+            "serviceAccountName": "appdynamics-cluster-agent",
+            "stdoutLogging": "true"
+          }
+        },
+        {
+          "api_version": "appdynamics.com/v1alpha1",
+          "kind": "InfraViz",
+          "metadata": {
+            "name": "appd-infraviz",
+            "namespace": "appdynamics"
+          },
+          "spec": {
+            "account": "customer1",
+            "controllerUrl": "https://saas.appdynamics.com",
+            "enableDockerViz": "false",
+            "enableMasters": true,
+            "globalAccount": "customer1_12345",
+            "image": "registry.connect.redhat.com/appdynamics/machine-agent-analytics@sha256:b7ac0d5d6ed5028b97af3e49f79de95e1a78b3ce03ba93f7c4e648eb4b440f65",
+            "netVizPort": 3892,
+            "stdoutLogging": true
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/appdynamics/cluster-agent-operator-bundle@sha256:8334d8638984099f3ef40793e62f1e68e0691c05c86326ae40a752e39bf3f316",
+      "bundle_path_digest": "sha256:8334d8638984099f3ef40793e62f1e68e0691c05c86326ae40a752e39bf3f316",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-09-29T20:46:45.521000+00:00",
+      "csv_description": "AppDynamics Operator simplifies the configuration and lifecycle management of the AppDynamics ClusterAgent and the AppDynamics Machine Agent on different Kubernetes distributions and OpenShift. \nThe Operator encapsulates key operational knowledge on how to configure and upgrade the ClusterAgent and the Machine Agent. \nIt knows, for example, which configuration changes are benign and do not require restart of the ClusterAgent, \nwhich minimizes unnecesary load on the cluster API server.\n\n\n## Operator deployment\n\n* Create namespace for AppDynamics\n```\n  kubectl create namespace appdynamics\n```\n\n* Create Secret `cluster-agent-secret`. Set \"controller-key\" \nto the access key to the AppDynamics controller.  \n\n```\nkubectl -n appdynamics create secret generic cluster-agent-secret --from-literal=controller-key=\"<controller-access-key>\"\n```\n\n* Update the image reference in the Operator deployment spec, if necessary.  \n\nFor additional details refer to [this documentation](https://github.com/Appdynamics/appdynamics-operator)\n",
+      "csv_display_name": "Appdynamics Operator",
+      "csv_metadata_description": "End to end monitoring of applications on Kubernetes and OpenShift clusters with AppDynamics.",
+      "csv_name": "appdynamics-operator.v0.6.12",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:29:29.014000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "appdynamics-operator",
+      "provided_apis": [],
+      "provider": "AppDynamics LLC",
+      "related_images": [
+        {
+          "digest": "sha256:9e992ba1274f818c0ca78d2654ac797e7139584a8e99919f3cf4b0676ac23950",
+          "image": "registry.connect.redhat.com/appdynamics/cluster-agent-operator@sha256:9e992ba1274f818c0ca78d2654ac797e7139584a8e99919f3cf4b0676ac23950",
+          "name": "cluster-agent-operator-9e992ba1274f818c0ca78d2654ac797e7139584a8e99919f3cf4b0676ac23950-annotation"
+        },
+        {
+          "digest": "sha256:9e992ba1274f818c0ca78d2654ac797e7139584a8e99919f3cf4b0676ac23950",
+          "image": "registry.connect.redhat.com/appdynamics/cluster-agent-operator@sha256:9e992ba1274f818c0ca78d2654ac797e7139584a8e99919f3cf4b0676ac23950",
+          "name": "appdynamics-operator"
+        },
+        {
+          "digest": "sha256:b7ac0d5d6ed5028b97af3e49f79de95e1a78b3ce03ba93f7c4e648eb4b440f65",
+          "image": "registry.connect.redhat.com/appdynamics/machine-agent-analytics@sha256:b7ac0d5d6ed5028b97af3e49f79de95e1a78b3ce03ba93f7c4e648eb4b440f65",
+          "name": "machine-agent-analytics-b7ac0d5d6ed5028b97af3e49f79de95e1a78b3ce03ba93f7c4e648eb4b440f65-annotation"
+        },
+        {
+          "digest": "sha256:5df48126b5e6c22cd73f8b3f3bdb8cc2fc6fae23085e922de32a586b754b6e7f",
+          "image": "registry.connect.redhat.com/appdynamics/cluster-agent@sha256:5df48126b5e6c22cd73f8b3f3bdb8cc2fc6fae23085e922de32a586b754b6e7f",
+          "name": "cluster-agent-5df48126b5e6c22cd73f8b3f3bdb8cc2fc6fae23085e922de32a586b754b6e7f-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.6.12",
+      "version_original": "0.6.12"
     }
   ]
 }

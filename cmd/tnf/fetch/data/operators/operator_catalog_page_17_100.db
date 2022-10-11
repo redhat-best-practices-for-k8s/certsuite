@@ -1,165 +1,6 @@
 {
   "data": [
     {
-      "_id": "61931aa3843af1624c4e5f02",
-      "alm_examples": [],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
-      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
-      "capabilities": [
-        ""
-      ],
-      "channel_name": "6.2.8",
-      "creation_date": "2021-11-16T02:42:43.766000+00:00",
-      "csv_description": "",
-      "csv_display_name": "",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.6-6",
-      "in_index_img": true,
-      "install_modes": [],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:37:56.096000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "",
-      "related_images": [],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.0.6-6",
-      "version_original": "6.0.6-6"
-    },
-    {
-      "_id": "61931ac24ae3739687569aca",
-      "alm_examples": [
-        {
-          "api_version": "app.redislabs.com/v1",
-          "kind": "RedisEnterpriseCluster",
-          "metadata": {
-            "name": "rec"
-          },
-          "spec": {
-            "nodes": 3,
-            "persistentSpec": {
-              "enabled": true
-            },
-            "redisEnterpriseImageSpec": {
-              "imagePullPolicy": "IfNotPresent",
-              "repository": "redislabs/redis",
-              "versionTag": "6.0.8-30.rhel7-openshift"
-            },
-            "redisEnterpriseNodeResources": {
-              "limits": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              },
-              "requests": {
-                "cpu": "4000m",
-                "memory": "4Gi"
-              }
-            },
-            "uiServiceType": "ClusterIP",
-            "username": "demo@redislabs.com"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
-      "bundle_path_digest": "sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
-      "capabilities": [
-        "Deep Insights"
-      ],
-      "channel_name": "6.2.8",
-      "creation_date": "2021-11-16T02:43:14.505000+00:00",
-      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
-      "csv_display_name": "Redis Enterprise Operator",
-      "csv_metadata_description": "",
-      "csv_name": "redis-enterprise-operator.v6.0.8-20",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:12:43.423000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redis-enterprise-operator-cert",
-      "provided_apis": [
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "app.redislabs.com",
-          "kind": "RedisEnterpriseCluster",
-          "plural": "redisenterpriseclusters",
-          "version": "v1"
-        }
-      ],
-      "provider": "Redis Labs",
-      "related_images": [
-        {
-          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "name": "redis-enterprise-operator-0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1-annotation"
-        },
-        {
-          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
-          "name": "redis-enterprise-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "6.0.8-20",
-      "version_original": "6.0.8-20"
-    },
-    {
       "_id": "61931accf286970f08bf6663",
       "alm_examples": [
         {
@@ -13233,6 +13074,401 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
       "version": "0.9.9",
       "version_original": "0.9.9"
+    },
+    {
+      "_id": "61a57b72c17162a20c1c6881",
+      "alm_examples": [
+        {
+          "api_version": "citrix.citrix.com/v1alpha1",
+          "kind": "Citrix-cpx-istio-sidecar-injector",
+          "metadata": {
+            "name": "cpx-sidecar-injector-sample"
+          },
+          "spec": {
+            "ADMSettings": {
+              "ADMIP": "",
+              "bandWidth": "",
+              "bandWidthLicense": false,
+              "licenseServerIP": "",
+              "licenseServerPort": 27000
+            },
+            "certProvider": {
+              "caAddr": "istiod.istio-system.svc",
+              "caPort": 15012,
+              "certTTLinHours": 720,
+              "clusterId": "Kubernetes",
+              "jwtPolicy": "",
+              "trustDomain": "cluster.local"
+            },
+            "coe": {
+              "coeTracing": false,
+              "coeURL": ""
+            },
+            "cpxProxy": {
+              "EULA": false,
+              "cpxDisableProbe": "YES",
+              "cpxSidecarMode": true,
+              "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
+              "imagePullPolicy": "IfNotPresent",
+              "mgmtHttpPort": 10080,
+              "mgmtHttpsPort": 10443,
+              "netscalerUrl": "http://127.0.0.1"
+            },
+            "istioPilot": {
+              "SAN": "",
+              "insecureGrpcPort": 15010,
+              "name": "istiod",
+              "namespace": "istio-system",
+              "secureGrpcPort": 15012
+            },
+            "sidecarCertsGenerator": {
+              "image": "quay.io/citrix/cpx-sidecar-injector-certgen@sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
+              "imagePullPolicy": "IfNotPresent"
+            },
+            "sidecarWebHook": {
+              "imagePullPolicy": "IfNotPresent",
+              "webhookImage": "quay.io/citrix/cpx-istio-sidecar-injector@sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac"
+            },
+            "webhook": {
+              "injectionLabelName": "cpx-injection"
+            },
+            "xDSAdaptor": {
+              "image": "quay.io/citrix/citrix-xds-adaptor@sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
+              "imagePullPolicy": "IfNotPresent",
+              "jsonLog": false,
+              "logLevel": "DEBUG",
+              "proxyType": "sidecar",
+              "secureConnect": true
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/citrix/istiosidecarcitrix-bundle@sha256:aa46e5305cf61454f4bec9134d8146449e84173ed580612ede9e1777097a780a",
+      "bundle_path_digest": "sha256:aa46e5305cf61454f4bec9134d8146449e84173ed580612ede9e1777097a780a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-11-30T01:16:34.131000+00:00",
+      "csv_description": "In Istio service mesh, a sidecar proxy runs alongside application pods and it intercepts and manages incoming and outgoing traffic for applications. Citrix ADC CPX can be deployed as the sidecar proxy in application pods. A sidecar proxy applies the configured routing policies or rules to the ingress and egress traffic from the pod.",
+      "csv_display_name": "Citrix ADC CPX Istio Sidecar Injector Operator",
+      "csv_metadata_description": "In Istio service mesh, a sidecar proxy runs alongside application pods and it intercepts and manages incoming and outgoing traffic for applications. Citrix ADC CPX can be deployed as the sidecar proxy in application pods. A sidecar proxy applies the configured routing policies or rules to the ingress and egress traffic from the pod.",
+      "csv_name": "citrix-cpx-istio-sidecar-injector-operator.v0.9.9",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:42:44.205000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "citrix-cpx-istio-sidecar-injector-operator",
+      "provided_apis": [
+        {
+          "group": "citrix.citrix.com",
+          "kind": "Citrix-cpx-istio-sidecar-injector",
+          "plural": "citrix-cpx-istio-sidecar-injectors",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "citrix",
+      "related_images": [
+        {
+          "digest": "sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
+          "image": "registry.connect.redhat.com/citrix/citrix-cpx-istio-sidecar-injector@sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
+          "name": "citrix-cpx-istio-sidecar-injector-ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899-annotation"
+        },
+        {
+          "digest": "sha256:9211b70edbb93d718428e1c9a992e5fc74a20cb213f8a0592ffe340c362890fe",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:9211b70edbb93d718428e1c9a992e5fc74a20cb213f8a0592ffe340c362890fe",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
+          "image": "registry.connect.redhat.com/citrix/citrix-cpx-istio-sidecar-injector@sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
+          "image": "quay.io/citrix/citrix-xds-adaptor@sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
+          "name": "citrix-xds-adaptor-b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6-annotation"
+        },
+        {
+          "digest": "sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac",
+          "image": "quay.io/citrix/cpx-istio-sidecar-injector@sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac",
+          "name": "cpx-istio-sidecar-injector-c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac-annotation"
+        },
+        {
+          "digest": "sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
+          "image": "quay.io/citrix/cpx-sidecar-injector-certgen@sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
+          "name": "cpx-sidecar-injector-certgen-7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb-annotation"
+        },
+        {
+          "digest": "sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
+          "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
+          "name": "citrix-k8s-cpx-ingress-8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.9.9",
+      "version_original": "0.9.9"
+    },
+    {
+      "_id": "61a57b933e9240fca360f551",
+      "alm_examples": [
+        {
+          "api_version": "charts.cloudbees.com/v1alpha1",
+          "kind": "CloudBeesCI",
+          "metadata": {
+            "name": "cloudbeesci-sample"
+          },
+          "spec": {
+            "Agents": {
+              "Enabled": true,
+              "Image": {
+                "dockerImage": "cloudbees/cloudbees-core-agent:2.289.3.2"
+              },
+              "SeparateNamespace": {
+                "Create": false,
+                "Enabled": false
+              }
+            },
+            "Hibernation": {
+              "Enabled": false,
+              "Image": {
+                "dockerImage": "cloudbees/managed-master-hibernation-monitor:247.c5dfce00a179"
+              },
+              "NodeSelector": {},
+              "Tolerations": []
+            },
+            "Master": {
+              "Enabled": true,
+              "Image": {
+                "dockerImage": "cloudbees/cloudbees-core-mm:2.289.3.2"
+              }
+            },
+            "NetworkPolicy": {
+              "Enabled": false,
+              "JMXSelectors": [],
+              "ingressControllerSelector": []
+            },
+            "OperationsCenter": {
+              "AgentListenerPort": 50000,
+              "Annotations": {},
+              "CSRF": {
+                "ProxyCompatibility": false
+              },
+              "CasC": {
+                "ConfigMapName": "oc-casc-bundle",
+                "Enabled": false
+              },
+              "ContainerPort": 8080,
+              "Enabled": true,
+              "ExtraConfigMaps": [],
+              "ExtraContainers": [],
+              "ExtraGroovyConfiguration": {},
+              "ExtraVolumeMounts": [],
+              "ExtraVolumes": [],
+              "HealthProbeLivenessFailureThreshold": 12,
+              "HealthProbes": true,
+              "Image": {
+                "dockerImage": "cloudbees/cloudbees-cloud-core-oc:2.289.3.2"
+              },
+              "Ingress": {
+                "Annotations": {
+                  "kubernetes.io/tls-acme": "false"
+                },
+                "Class": "nginx",
+                "tls": {
+                  "Enable": false
+                }
+              },
+              "LoadBalancerSourceRanges": [
+                "0.0.0.0/0"
+              ],
+              "Name": "cjoc",
+              "NodeSelector": {},
+              "Platform": "standard",
+              "Protocol": "http",
+              "Resources": {
+                "Limits": {
+                  "Cpu": 1,
+                  "Memory": "2G"
+                },
+                "Requests": {
+                  "Cpu": 1,
+                  "Memory": "2G"
+                }
+              },
+              "Route": {
+                "tls": {
+                  "Enable": false,
+                  "InsecureEdgeTerminationPolicy": "Redirect",
+                  "Termination": "edge"
+                }
+              },
+              "ServiceAgentListenerPort": 50000,
+              "ServiceAnnotations": {},
+              "ServicePort": 80,
+              "ServiceType": "ClusterIP",
+              "Tolerations": []
+            },
+            "Persistence": {
+              "AccessMode": "ReadWriteOnce",
+              "Annotations": {},
+              "Size": "20Gi"
+            },
+            "PodSecurityPolicy": {
+              "Annotations": {},
+              "Enabled": false
+            },
+            "Subdomain": false,
+            "ingress-nginx": {
+              "Enabled": false,
+              "controller": {
+                "admissionWebhooks": {
+                  "patch": {
+                    "nodeSelector": {
+                      "kubernetes.io/os": "linux"
+                    }
+                  }
+                },
+                "ingressClass": "nginx",
+                "nodeSelector": {
+                  "kubernetes.io/os": "linux"
+                },
+                "service": {
+                  "externalTrafficPolicy": "Local"
+                }
+              },
+              "defaultBackend": {
+                "nodeSelector": {
+                  "kubernetes.io/os": "linux"
+                }
+              }
+            },
+            "nginx-ingress": {
+              "Enabled": false,
+              "controller": {
+                "ingressClass": "nginx",
+                "nodeSelector": {
+                  "kubernetes.io/os": "linux"
+                },
+                "service": {
+                  "externalTrafficPolicy": "Local"
+                }
+              },
+              "defaultBackend": {
+                "nodeSelector": {
+                  "kubernetes.io/os": "linux"
+                }
+              }
+            },
+            "rbac": {
+              "agentsServiceAccountName": "jenkins-agents",
+              "hibernationMonitorServiceAccountName": "managed-master-hibernation-monitor",
+              "install": true,
+              "masterServiceAccountName": "jenkins",
+              "serviceAccountName": "cjoc"
+            },
+            "sidecarinjector": {
+              "Enabled": false
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/cloudbees/cloudbees-core-modern@sha256:2cf058c819b40512094f84f4d374457455370ec4994d34cee6e39b9d87841f05",
+      "bundle_path_digest": "sha256:2cf058c819b40512094f84f4d374457455370ec4994d34cee6e39b9d87841f05",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-11-30T01:17:07.414000+00:00",
+      "csv_description": "CloudBees CI",
+      "csv_display_name": "CloudBees CI",
+      "csv_metadata_description": "",
+      "csv_name": "cloudbees-ci.v3.34.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:43:23.750000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "cloudbees-ci",
+      "provided_apis": [
+        {
+          "group": "charts.cloudbees.com",
+          "kind": "CloudBeesCI",
+          "plural": "cloudbeescis",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "CloudBees",
+      "related_images": [
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:bd0bd72e9e7807b0fa307de8a93a56967221fe2dd181bac02383f0f9be9120e4",
+          "image": "registry.connect.redhat.com/cloudbees/cloudbees-ci-operator@sha256:bd0bd72e9e7807b0fa307de8a93a56967221fe2dd181bac02383f0f9be9120e4",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "3.34.1",
+      "version_original": "3.34.1"
     }
   ]
 }

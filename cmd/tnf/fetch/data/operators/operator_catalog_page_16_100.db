@@ -1,456 +1,6 @@
 {
   "data": [
     {
-      "_id": "616405985cfcf7adc247acb8",
-      "alm_examples": [
-        {
-          "api_version": "xray.nastel.com/v1alpha3",
-          "kind": "NastelXRay",
-          "metadata": {
-            "name": "nastelxray"
-          },
-          "spec": {
-            "active-mq": {
-              "image": "registry.connect.redhat.com/nastel/nastel-activemq",
-              "replicaCount": 1,
-              "resources": {
-                "limits": {
-                  "cpu": "400m",
-                  "memory": "1000Mi"
-                },
-                "requests": {
-                  "cpu": "200m",
-                  "memory": "500Mi"
-                }
-              },
-              "service": {
-                "amqpPort": 5672,
-                "httpPort": 8161,
-                "ingress": {
-                  "enabled": true
-                },
-                "mqttPort": 1883,
-                "servicePort": 61616,
-                "stopmPort": 61613,
-                "type": "ClusterIP",
-                "wsPort": 61614
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "ap-domain": {
-              "image": "registry.connect.redhat.com/nastel/nastel-ap-domain",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "debugPort": 5440,
-                "node": {},
-                "serverPort": 2323,
-                "type": "NodePort",
-                "userPort": 3000
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "global": {
-              "kafkaCluster": "xray-cluster",
-              "kafkaHost": "xray-cluster-kafka-bootstrap",
-              "kafkaPort": 9092,
-              "subDomain": "nastel-2-915b3b336cabec458a7c7ec2aa7c625f-0000.us-south.containers.appdomain.cloud"
-            },
-            "solr-keeper": {
-              "image": "registry.connect.redhat.com/nastel/nastel-zookeeper",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "clientPort": 2181,
-                "electionPort": 3888,
-                "serverPort": 2888,
-                "type": "ClusterIP"
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "solr-node": {
-              "affinity": {},
-              "exporter": {
-                "configFile": "/opt/solr/contrib/prometheus-exporter/conf/solr-exporter-config.xml",
-                "enabled": false,
-                "livenessProbe": {
-                  "initialDelaySeconds": 20,
-                  "periodSeconds": 10
-                },
-                "podAnnotations": {},
-                "port": 9983,
-                "readinessProbe": {
-                  "initialDelaySeconds": 15,
-                  "periodSeconds": 5
-                },
-                "resources": {},
-                "service": {
-                  "annotations": {},
-                  "type": "ClusterIP"
-                },
-                "threads": 7,
-                "updateStrategy": {}
-              },
-              "image": {
-                "pullPolicy": "Always",
-                "repository": "registry.connect.redhat.com/nastel/nastel-solr"
-              },
-              "javaMem": "-Xms2g -Xmx3g",
-              "livenessProbe": {
-                "initialDelaySeconds": 20,
-                "periodSeconds": 10
-              },
-              "logLevel": "INFO",
-              "podAnnotations": {},
-              "podDisruptionBudget": {
-                "maxUnavailable": 1
-              },
-              "port": 8983,
-              "readinessProbe": {
-                "initialDelaySeconds": 15,
-                "periodSeconds": 5
-              },
-              "replicaCount": 4,
-              "resources": {},
-              "service": {
-                "annotations": {},
-                "ingress": {
-                  "enabled": true
-                },
-                "type": "ClusterIP"
-              },
-              "terminationGracePeriodSeconds": 180,
-              "tls": {
-                "caSecret": {
-                  "bundlePath": "",
-                  "name": ""
-                },
-                "certSecret": {
-                  "certPath": "tls.crt",
-                  "keyPath": "tls.key",
-                  "name": ""
-                },
-                "checkPeerName": "false",
-                "enabled": false,
-                "importKubernetesCA": "false",
-                "keystorePassword": "changeit",
-                "needClientAuth": "false",
-                "wantClientAuth": "false"
-              },
-              "updateStrategy": {
-                "type": "OnDelete"
-              },
-              "volumeClaimTemplates": {
-                "accessModes": [
-                  "ReadWriteOnce"
-                ],
-                "storageSize": "20Gi"
-              },
-              "zookeeper": {
-                "replicaCount": 1
-              }
-            },
-            "xray": {
-              "image": "registry.connect.redhat.com/nastel/xray-ui",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "httpPort": 8080,
-                "node": {},
-                "type": "LoadBalancer"
-              }
-            },
-            "xray-cep": {
-              "image": "registry.connect.redhat.com/nastel/xray-cep",
-              "init": {
-                "dbapi-solr": {
-                  "image": "registry.connect.redhat.com/nastel/xray-dbapi-solr"
-                },
-                "kafka": {
-                  "image": "registry.redhat.io/openshift4/ose-cli"
-                }
-              },
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "cepServerPort": 3005,
-                "node": {},
-                "type": "LoadBalancer",
-                "xRayDataPort": 6580
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "xray-ml-persistance": {
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "xray-ml-queries": {
-              "image": "registry.connect.redhat.com/nastel/xray-ml",
-              "replicaCount": 1,
-              "resources": {}
-            },
-            "xray-ml-train": {
-              "image": "registry.connect.redhat.com/nastel/xray-ml",
-              "replicaCount": 1,
-              "resources": {}
-            }
-          }
-        },
-        {
-          "api_version": "xray.nastel.com/v1alpha3",
-          "kind": "NastelXRayTopology",
-          "metadata": {
-            "name": "nastelxraytopology"
-          },
-          "spec": {
-            "global": {
-              "kafkaCluster": "xray-cluster",
-              "kafkaHost": "xray-cluster-kafka-bootstrap",
-              "kafkaPort": 9092,
-              "subDomain": "nastel-2-915b3b336cabec458a7c7ec2aa7c625f-0000.us-south.containers.appdomain.cloud"
-            },
-            "storm": {
-              "enabled": true,
-              "fullnameOverride": "storm",
-              "name": "storm",
-              "nameOverride": "storm",
-              "nimbus": {
-                "image": {
-                  "pullPolicy": "Always",
-                  "repository": "registry.connect.redhat.com/nastel/nastel-storm"
-                },
-                "replicaCount": 1,
-                "resources": {},
-                "service": {
-                  "name": "nimbus",
-                  "port": 6627,
-                  "type": "ClusterIP"
-                }
-              },
-              "supervisor": {
-                "image": {
-                  "pullPolicy": "Always",
-                  "repository": "registry.connect.redhat.com/nastel/nastel-storm"
-                },
-                "replicaCount": 3,
-                "resources": {},
-                "service": {
-                  "name": "supervisor",
-                  "port": 6700
-                }
-              },
-              "ui": {
-                "enabled": true,
-                "image": {
-                  "pullPolicy": "Always",
-                  "repository": "registry.connect.redhat.com/nastel/nastel-storm"
-                },
-                "ingress": {
-                  "annotations": {},
-                  "enabled": true,
-                  "tls": []
-                },
-                "replicaCount": 1,
-                "resources": {},
-                "service": {
-                  "name": "ui",
-                  "port": 8080,
-                  "type": "ClusterIP"
-                }
-              },
-              "zookeeper": {
-                "enabled": false,
-                "fullnameOverride": "storm-keeper",
-                "port": 2181,
-                "replicaCount": 1,
-                "servers": [
-                  "storm-keeper"
-                ]
-              }
-            },
-            "storm-keeper": {
-              "image": "registry.connect.redhat.com/nastel/nastel-zookeeper",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "clientPort": 2181,
-                "electionPort": 3888,
-                "serverPort": 2888,
-                "type": "ClusterIP"
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "xray-cep": {
-              "service": {
-                "cepServerPort": 3005,
-                "xRayDataPort": 6580
-              }
-            },
-            "xray-storm-topologies": {
-              "image": "registry.connect.redhat.com/nastel/xray-storm",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "httpPort": 8080,
-                "thriftPort": 6627
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nastel/xray-operator-bundle@sha256:492d79e202fa0e7c455a0a5a5b04eee060a726a32e3b1ac566bdb4250a8ada21",
-      "bundle_path_digest": "sha256:492d79e202fa0e7c455a0a5a5b04eee060a726a32e3b1ac566bdb4250a8ada21",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-10-11T09:36:24.231000+00:00",
-      "csv_description": "The operator deploys Nastel XRay component containers:\n  * Nastel Domain Server\n  * XRay Complex Event Processing (CEP)\n  * Solr indexing service\n  * Machine Learning (ML)\n  * XRay WebApp\n  * Storm Topologies (optional)\n\nin one go.\n\n[Nastel XRay](https://www.nastel.com/nastel-xray/) allows you to Track & Trace Transaction and Message Flows, Analyze, Visualize and Report your Big Data.\n",
-      "csv_display_name": "Nastel XRay Operator",
-      "csv_metadata_description": "Operator to deploy and run Nastel XRay",
-      "csv_name": "nastel-xray-operator.v1.330.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:29:58.199000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "nastel-xray-operator",
-      "provided_apis": [
-        {
-          "group": "xray.nastel.com",
-          "kind": "NastelXRay",
-          "plural": "nastelxrays",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "xray.nastel.com",
-          "kind": "NastelXRayTopology",
-          "plural": "nastelxraytopologies",
-          "version": "v1alpha3"
-        }
-      ],
-      "provider": "Nastel",
-      "related_images": [
-        {
-          "digest": "sha256:e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1",
-          "image": "registry.connect.redhat.com/nastel/xray-operator@sha256:e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1",
-          "name": "xray-operator-e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1-annotation"
-        },
-        {
-          "digest": "sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1",
-          "image": "registry.connect.redhat.com/nastel/xray-operator@sha256:e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1",
-          "name": "nastel-xray-operator"
-        },
-        {
-          "digest": "sha256:fd4f6d9dac97fac4e5e53689ea3e7e174d692eda6afff271d3e7e7e4b78a5f68",
-          "image": "registry.connect.redhat.com/nastel/nastel-ap-domain@sha256:fd4f6d9dac97fac4e5e53689ea3e7e174d692eda6afff271d3e7e7e4b78a5f68",
-          "name": "domain"
-        },
-        {
-          "digest": "sha256:854f8433c6138c829757a866273d8f18eef7bf61fcb95d04725f23721c24f022",
-          "image": "registry.connect.redhat.com/nastel/xray-cep@sha256:854f8433c6138c829757a866273d8f18eef7bf61fcb95d04725f23721c24f022",
-          "name": "cep"
-        },
-        {
-          "digest": "sha256:ddcfc764de7e9cfdecd255126fcf69775586c4d7c79c978bb44184a534c7c89a",
-          "image": "registry.redhat.io/openshift4/ose-cli@sha256:ddcfc764de7e9cfdecd255126fcf69775586c4d7c79c978bb44184a534c7c89a",
-          "name": "ose_cli"
-        },
-        {
-          "digest": "sha256:81b6e6b2dbbfc7a71c5d71c571a477950263c7debffbf006a0fd4d96517ac6a4",
-          "image": "registry.connect.redhat.com/nastel/xray-dbapi-solr@sha256:81b6e6b2dbbfc7a71c5d71c571a477950263c7debffbf006a0fd4d96517ac6a4",
-          "name": "solr_dbapi"
-        },
-        {
-          "digest": "sha256:2fdcab2efa8627b33ae9148b0d14f22171dbbd64ccdf00e0a65e234e3e09d2ae",
-          "image": "registry.connect.redhat.com/nastel/xray-ml@sha256:2fdcab2efa8627b33ae9148b0d14f22171dbbd64ccdf00e0a65e234e3e09d2ae",
-          "name": "ml"
-        },
-        {
-          "digest": "sha256:063de804be70b905000b18c635af6b5c6edff74654d44cff99515ee35e8c4f05",
-          "image": "registry.connect.redhat.com/nastel/xray-ui@sha256:063de804be70b905000b18c635af6b5c6edff74654d44cff99515ee35e8c4f05",
-          "name": "xray"
-        },
-        {
-          "digest": "sha256:fd8168d697ae40c5a3e1b7b5d0a23494381178929820de7d1cebb0e4d69cf9ec",
-          "image": "registry.connect.redhat.com/nastel/nastel-activemq@sha256:fd8168d697ae40c5a3e1b7b5d0a23494381178929820de7d1cebb0e4d69cf9ec",
-          "name": "active_mq"
-        },
-        {
-          "digest": "sha256:8e956cc9e631397128ef01b0a305a7c5b5fe3571b2077949c4e0849b1826188d",
-          "image": "registry.connect.redhat.com/nastel/nastel-zookeeper@sha256:8e956cc9e631397128ef01b0a305a7c5b5fe3571b2077949c4e0849b1826188d",
-          "name": "zookeeper"
-        },
-        {
-          "digest": "sha256:ec36c53f0a8ef88dfa357e3d4406032f6404ca6754ed874ba162436284d3e11c",
-          "image": "registry.connect.redhat.com/nastel/nastel-solr@sha256:ec36c53f0a8ef88dfa357e3d4406032f6404ca6754ed874ba162436284d3e11c",
-          "name": "solr"
-        },
-        {
-          "digest": "sha256:79b7ee65b9fd7e6ebe6c62e6a6c373ea54a745d09844972dcc61ae051d526a26",
-          "image": "registry.connect.redhat.com/nastel/nastel-storm@sha256:79b7ee65b9fd7e6ebe6c62e6a6c373ea54a745d09844972dcc61ae051d526a26",
-          "name": "storm"
-        },
-        {
-          "digest": "sha256:f743d6dbcfda7346b1a20f865511b7d6e0cd7407e8d15ab1fb5d8fe16472a982",
-          "image": "registry.connect.redhat.com/nastel/xray-storm@sha256:f743d6dbcfda7346b1a20f865511b7d6e0cd7407e8d15ab1fb5d8fe16472a982",
-          "name": "storm_topology"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.330.1",
-      "version_original": "1.330.1"
-    },
-    {
       "_id": "6164061e90fb938ecf600a83",
       "alm_examples": [
         {
@@ -15756,247 +15306,6 @@
       "version_original": "1.6.0"
     },
     {
-      "_id": "616e7ce0a73b80d485cf8c90",
-      "alm_examples": [
-        {
-          "api_version": "citrix.com/v1alpha1",
-          "kind": "CitrixCpxWithIngressController",
-          "metadata": {
-            "name": "cpx-cic"
-          },
-          "spec": {
-            "ADMSettings": {
-              "ADMIP": "",
-              "bandWidth": "",
-              "bandWidthLicense": false,
-              "cpxCores": "",
-              "licenseServerIP": "",
-              "licenseServerPort": 27000,
-              "loginSecret": "",
-              "vCPULicense": false
-            },
-            "bgpSettings": {
-              "bgpConfig": [
-                {
-                  "bgpRouter": {
-                    "localAS": 100,
-                    "neighbor": [
-                      {
-                        "ASOriginationInterval": 10,
-                        "address": "",
-                        "advertisementInterval": 10,
-                        "remoteAS": 100
-                      }
-                    ]
-                  }
-                }
-              ],
-              "required": false
-            },
-            "cic": {
-              "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-              "pullPolicy": "Always",
-              "required": true
-            },
-            "coeConfig": {
-              "distributedTracing": {
-                "enable": false,
-                "samplingrate": 100
-              },
-              "endpoint": {
-                "server": ""
-              },
-              "required": false,
-              "timeseries": {
-                "auditlogs": {
-                  "enable": false
-                },
-                "events": {
-                  "enable": false
-                },
-                "metrics": {
-                  "enable": false,
-                  "mode": "avro"
-                },
-                "port": 5563
-              },
-              "transactions": {
-                "enable": false,
-                "port": 5557
-              }
-            },
-            "cpxBgpRouter": false,
-            "crds": {
-              "install": false,
-              "retainOnDelete": false
-            },
-            "defaultSSLCertSecret": "",
-            "entityPrefix": "",
-            "exporter": {
-              "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-              "ports": {
-                "containerPort": 8888
-              },
-              "pullPolicy": "Always",
-              "required": false
-            },
-            "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-            "imagePullSecrets": [],
-            "ingressClass": [],
-            "ingressIP": "",
-            "ipam": false,
-            "kubernetesURL": "",
-            "license": {
-              "accept": "no"
-            },
-            "logLevel": "INFO",
-            "logProxy": "",
-            "mgmtHttpPort": 9080,
-            "mgmtHttpsPort": 9443,
-            "namespaceLabels": "",
-            "nodeSelector": {
-              "key": "",
-              "value": ""
-            },
-            "nsCookieVersion": "0",
-            "nsGateway": "192.168.1.1",
-            "nsHTTP2ServerSide": "OFF",
-            "nsIP": "192.168.1.2",
-            "nsProtocol": "http",
-            "openshift": true,
-            "pullPolicy": "Always",
-            "routeLabels": "",
-            "serviceAccount": {
-              "create": true
-            },
-            "serviceAnnotations": {},
-            "servicePorts": [],
-            "serviceSpec": {
-              "loadBalancerSourceRanges": []
-            },
-            "serviceType": {
-              "loadBalancer": {
-                "enabled": false,
-                "externalTrafficPolicy": "Local"
-              },
-              "nodePort": {
-                "enabled": false,
-                "httpPort": "",
-                "httpsPort": ""
-              }
-            },
-            "setAsDefaultIngressClass": false,
-            "sslCertManagedByAWS": false,
-            "tolerations": [],
-            "updateIngressStatus": false
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-bundle@sha256:cb78fbaa6e154066b70b1e36731fc268bd61b514493f1541f630fff7f7e16d59",
-      "bundle_path_digest": "sha256:cb78fbaa6e154066b70b1e36731fc268bd61b514493f1541f630fff7f7e16d59",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-10-19T08:08:00.214000+00:00",
-      "csv_description": "Citrix ADC CPX is a container-based application delivery controller that can be provisioned on a Docker host. Citrix ADC CPX enables customers to leverage Docker engine capabilities and use NetScaler load balancing and traffic management features for container-based applications. Citrix Ingress Controller which will be running in side-car mode with Citrix ADC CPX will automatically configures Citrix ADC CPX based on the Ingress resource configuration. This operator can be used deploy Citrix ADC CPX with Citrix ingress controller in an OpenShift environment.",
-      "csv_display_name": "Citrix ADC CPX with Ingress Controller",
-      "csv_metadata_description": "Citrix ADC CPX is a container-based application delivery controller that can be provisioned on a Docker host. Citrix ADC CPX enables customers to leverage Docker engine capabilities and use NetScaler load balancing and traffic management features for container-based applications. Citrix Ingress Controller which will be running in side-car mode with Citrix ADC CPX will automatically configures Citrix ADC CPX based on the Ingress resource configuration. This operator can be used deploy Citrix ADC CPX with Citrix ingress controller in an Openshift environment.",
-      "csv_name": "citrix-cpx-with-ingress-controller-operator.v1.18.5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:54:46.352000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "citrix-cpx-with-ingress-controller-operator",
-      "provided_apis": [
-        {
-          "group": "citrix.com",
-          "kind": "CitrixCpxWithIngressController",
-          "plural": "citrixcpxwithingresscontrollers",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Citrix",
-      "related_images": [
-        {
-          "digest": "sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-controller@sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "name": "citrix-k8s-cpx-ingress-controller-92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d-annotation"
-        },
-        {
-          "digest": "sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "image": "registry.connect.redhat.com/citrix/citrix-k8s-cpx-ingress-controller@sha256:92677d3e130f52490b52729a192b61ea5a03bd8eefd29f4ffe0222abfe2f9a1d",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "name": "cpx"
-        },
-        {
-          "digest": "sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "name": "cic"
-        },
-        {
-          "digest": "sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "name": "exporter"
-        },
-        {
-          "digest": "sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "name": "citrix-k8s-cpx-ingress-8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc-annotation"
-        },
-        {
-          "digest": "sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "image": "registry.connect.redhat.com/citrix/citrix-adc-metrics-exporter@sha256:6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8",
-          "name": "citrix-adc-metrics-exporter-6ce388d8f6324713b2db96385311d1e7a06c41dc54353c4ed81e6cf3dfdfb4b8-annotation"
-        },
-        {
-          "digest": "sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "image": "registry.connect.redhat.com/citrix/citrix-ingress-controller@sha256:91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821",
-          "name": "citrix-ingress-controller-91e7f337aab58db503e218ba3ac6b9f73173772314f57fc234ea340576426821-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.18.5",
-      "version_original": "1.18.5"
-    },
-    {
       "_id": "616f17bd8ebd9a62aec7b67e",
       "alm_examples": [
         {
@@ -25258,6 +24567,165 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "0.0.8",
       "version_original": "0.0.8"
+    },
+    {
+      "_id": "61931aa3843af1624c4e5f02",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2021-11-16T02:42:43.766000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-6",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:37:56.096000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.6-6",
+      "version_original": "6.0.6-6"
+    },
+    {
+      "_id": "61931ac24ae3739687569aca",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "nodes": 3,
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "6.0.8-30.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
+      "bundle_path_digest": "sha256:889042a1600da27e338f688044802838bb1b8126e9fd900ff0fbccfdf29b75ec",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2021-11-16T02:43:14.505000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.8-20",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:12:43.423000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        }
+      ],
+      "provider": "Redis Labs",
+      "related_images": [
+        {
+          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
+          "name": "redis-enterprise-operator-0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1-annotation"
+        },
+        {
+          "digest": "sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:0b131c1b337c2d0a8d25cb137b0a039fb9c1f30806e90bd83441688aec2998b1",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.8-20",
+      "version_original": "6.0.8-20"
     }
   ]
 }
