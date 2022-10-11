@@ -1,401 +1,6 @@
 {
   "data": [
     {
-      "_id": "61a57b72c17162a20c1c6881",
-      "alm_examples": [
-        {
-          "api_version": "citrix.citrix.com/v1alpha1",
-          "kind": "Citrix-cpx-istio-sidecar-injector",
-          "metadata": {
-            "name": "cpx-sidecar-injector-sample"
-          },
-          "spec": {
-            "ADMSettings": {
-              "ADMIP": "",
-              "bandWidth": "",
-              "bandWidthLicense": false,
-              "licenseServerIP": "",
-              "licenseServerPort": 27000
-            },
-            "certProvider": {
-              "caAddr": "istiod.istio-system.svc",
-              "caPort": 15012,
-              "certTTLinHours": 720,
-              "clusterId": "Kubernetes",
-              "jwtPolicy": "",
-              "trustDomain": "cluster.local"
-            },
-            "coe": {
-              "coeTracing": false,
-              "coeURL": ""
-            },
-            "cpxProxy": {
-              "EULA": false,
-              "cpxDisableProbe": "YES",
-              "cpxSidecarMode": true,
-              "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-              "imagePullPolicy": "IfNotPresent",
-              "mgmtHttpPort": 10080,
-              "mgmtHttpsPort": 10443,
-              "netscalerUrl": "http://127.0.0.1"
-            },
-            "istioPilot": {
-              "SAN": "",
-              "insecureGrpcPort": 15010,
-              "name": "istiod",
-              "namespace": "istio-system",
-              "secureGrpcPort": 15012
-            },
-            "sidecarCertsGenerator": {
-              "image": "quay.io/citrix/cpx-sidecar-injector-certgen@sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
-              "imagePullPolicy": "IfNotPresent"
-            },
-            "sidecarWebHook": {
-              "imagePullPolicy": "IfNotPresent",
-              "webhookImage": "quay.io/citrix/cpx-istio-sidecar-injector@sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac"
-            },
-            "webhook": {
-              "injectionLabelName": "cpx-injection"
-            },
-            "xDSAdaptor": {
-              "image": "quay.io/citrix/citrix-xds-adaptor@sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
-              "imagePullPolicy": "IfNotPresent",
-              "jsonLog": false,
-              "logLevel": "DEBUG",
-              "proxyType": "sidecar",
-              "secureConnect": true
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/citrix/istiosidecarcitrix-bundle@sha256:aa46e5305cf61454f4bec9134d8146449e84173ed580612ede9e1777097a780a",
-      "bundle_path_digest": "sha256:aa46e5305cf61454f4bec9134d8146449e84173ed580612ede9e1777097a780a",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-11-30T01:16:34.131000+00:00",
-      "csv_description": "In Istio service mesh, a sidecar proxy runs alongside application pods and it intercepts and manages incoming and outgoing traffic for applications. Citrix ADC CPX can be deployed as the sidecar proxy in application pods. A sidecar proxy applies the configured routing policies or rules to the ingress and egress traffic from the pod.",
-      "csv_display_name": "Citrix ADC CPX Istio Sidecar Injector Operator",
-      "csv_metadata_description": "In Istio service mesh, a sidecar proxy runs alongside application pods and it intercepts and manages incoming and outgoing traffic for applications. Citrix ADC CPX can be deployed as the sidecar proxy in application pods. A sidecar proxy applies the configured routing policies or rules to the ingress and egress traffic from the pod.",
-      "csv_name": "citrix-cpx-istio-sidecar-injector-operator.v0.9.9",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:42:44.205000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "citrix-cpx-istio-sidecar-injector-operator",
-      "provided_apis": [
-        {
-          "group": "citrix.citrix.com",
-          "kind": "Citrix-cpx-istio-sidecar-injector",
-          "plural": "citrix-cpx-istio-sidecar-injectors",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "citrix",
-      "related_images": [
-        {
-          "digest": "sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
-          "image": "registry.connect.redhat.com/citrix/citrix-cpx-istio-sidecar-injector@sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
-          "name": "citrix-cpx-istio-sidecar-injector-ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899-annotation"
-        },
-        {
-          "digest": "sha256:9211b70edbb93d718428e1c9a992e5fc74a20cb213f8a0592ffe340c362890fe",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:9211b70edbb93d718428e1c9a992e5fc74a20cb213f8a0592ffe340c362890fe",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
-          "image": "registry.connect.redhat.com/citrix/citrix-cpx-istio-sidecar-injector@sha256:ba07565418d5e88d9c1f59bc603c32e642f7ca37521097729b054b65636ca899",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
-          "image": "quay.io/citrix/citrix-xds-adaptor@sha256:b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6",
-          "name": "citrix-xds-adaptor-b5b5ab8435d65dcbe4348c0f1b4b69fef8fcc8a27e67927821ff4b4f0b8594f6-annotation"
-        },
-        {
-          "digest": "sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac",
-          "image": "quay.io/citrix/cpx-istio-sidecar-injector@sha256:c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac",
-          "name": "cpx-istio-sidecar-injector-c40909e434f633ce89e8d0c4df08ed0662833369b6d4b5272dfbc8f4c281b1ac-annotation"
-        },
-        {
-          "digest": "sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
-          "image": "quay.io/citrix/cpx-sidecar-injector-certgen@sha256:7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb",
-          "name": "cpx-sidecar-injector-certgen-7a4cc4a981e703c508361aad75fa3b9df9e562890f4e1c0dfd9973c00e97abfb-annotation"
-        },
-        {
-          "digest": "sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "image": "quay.io/citrix/citrix-k8s-cpx-ingress@sha256:8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc",
-          "name": "citrix-k8s-cpx-ingress-8f28c8af17909f0c0ced2109701755be1edea22b2a80f00aa37da70168abe1dc-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "0.9.9",
-      "version_original": "0.9.9"
-    },
-    {
-      "_id": "61a57b933e9240fca360f551",
-      "alm_examples": [
-        {
-          "api_version": "charts.cloudbees.com/v1alpha1",
-          "kind": "CloudBeesCI",
-          "metadata": {
-            "name": "cloudbeesci-sample"
-          },
-          "spec": {
-            "Agents": {
-              "Enabled": true,
-              "Image": {
-                "dockerImage": "cloudbees/cloudbees-core-agent:2.289.3.2"
-              },
-              "SeparateNamespace": {
-                "Create": false,
-                "Enabled": false
-              }
-            },
-            "Hibernation": {
-              "Enabled": false,
-              "Image": {
-                "dockerImage": "cloudbees/managed-master-hibernation-monitor:247.c5dfce00a179"
-              },
-              "NodeSelector": {},
-              "Tolerations": []
-            },
-            "Master": {
-              "Enabled": true,
-              "Image": {
-                "dockerImage": "cloudbees/cloudbees-core-mm:2.289.3.2"
-              }
-            },
-            "NetworkPolicy": {
-              "Enabled": false,
-              "JMXSelectors": [],
-              "ingressControllerSelector": []
-            },
-            "OperationsCenter": {
-              "AgentListenerPort": 50000,
-              "Annotations": {},
-              "CSRF": {
-                "ProxyCompatibility": false
-              },
-              "CasC": {
-                "ConfigMapName": "oc-casc-bundle",
-                "Enabled": false
-              },
-              "ContainerPort": 8080,
-              "Enabled": true,
-              "ExtraConfigMaps": [],
-              "ExtraContainers": [],
-              "ExtraGroovyConfiguration": {},
-              "ExtraVolumeMounts": [],
-              "ExtraVolumes": [],
-              "HealthProbeLivenessFailureThreshold": 12,
-              "HealthProbes": true,
-              "Image": {
-                "dockerImage": "cloudbees/cloudbees-cloud-core-oc:2.289.3.2"
-              },
-              "Ingress": {
-                "Annotations": {
-                  "kubernetes.io/tls-acme": "false"
-                },
-                "Class": "nginx",
-                "tls": {
-                  "Enable": false
-                }
-              },
-              "LoadBalancerSourceRanges": [
-                "0.0.0.0/0"
-              ],
-              "Name": "cjoc",
-              "NodeSelector": {},
-              "Platform": "standard",
-              "Protocol": "http",
-              "Resources": {
-                "Limits": {
-                  "Cpu": 1,
-                  "Memory": "2G"
-                },
-                "Requests": {
-                  "Cpu": 1,
-                  "Memory": "2G"
-                }
-              },
-              "Route": {
-                "tls": {
-                  "Enable": false,
-                  "InsecureEdgeTerminationPolicy": "Redirect",
-                  "Termination": "edge"
-                }
-              },
-              "ServiceAgentListenerPort": 50000,
-              "ServiceAnnotations": {},
-              "ServicePort": 80,
-              "ServiceType": "ClusterIP",
-              "Tolerations": []
-            },
-            "Persistence": {
-              "AccessMode": "ReadWriteOnce",
-              "Annotations": {},
-              "Size": "20Gi"
-            },
-            "PodSecurityPolicy": {
-              "Annotations": {},
-              "Enabled": false
-            },
-            "Subdomain": false,
-            "ingress-nginx": {
-              "Enabled": false,
-              "controller": {
-                "admissionWebhooks": {
-                  "patch": {
-                    "nodeSelector": {
-                      "kubernetes.io/os": "linux"
-                    }
-                  }
-                },
-                "ingressClass": "nginx",
-                "nodeSelector": {
-                  "kubernetes.io/os": "linux"
-                },
-                "service": {
-                  "externalTrafficPolicy": "Local"
-                }
-              },
-              "defaultBackend": {
-                "nodeSelector": {
-                  "kubernetes.io/os": "linux"
-                }
-              }
-            },
-            "nginx-ingress": {
-              "Enabled": false,
-              "controller": {
-                "ingressClass": "nginx",
-                "nodeSelector": {
-                  "kubernetes.io/os": "linux"
-                },
-                "service": {
-                  "externalTrafficPolicy": "Local"
-                }
-              },
-              "defaultBackend": {
-                "nodeSelector": {
-                  "kubernetes.io/os": "linux"
-                }
-              }
-            },
-            "rbac": {
-              "agentsServiceAccountName": "jenkins-agents",
-              "hibernationMonitorServiceAccountName": "managed-master-hibernation-monitor",
-              "install": true,
-              "masterServiceAccountName": "jenkins",
-              "serviceAccountName": "cjoc"
-            },
-            "sidecarinjector": {
-              "Enabled": false
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/cloudbees/cloudbees-core-modern@sha256:2cf058c819b40512094f84f4d374457455370ec4994d34cee6e39b9d87841f05",
-      "bundle_path_digest": "sha256:2cf058c819b40512094f84f4d374457455370ec4994d34cee6e39b9d87841f05",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-11-30T01:17:07.414000+00:00",
-      "csv_description": "CloudBees CI",
-      "csv_display_name": "CloudBees CI",
-      "csv_metadata_description": "",
-      "csv_name": "cloudbees-ci.v3.34.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:43:23.750000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "cloudbees-ci",
-      "provided_apis": [
-        {
-          "group": "charts.cloudbees.com",
-          "kind": "CloudBeesCI",
-          "plural": "cloudbeescis",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "CloudBees",
-      "related_images": [
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:bd0bd72e9e7807b0fa307de8a93a56967221fe2dd181bac02383f0f9be9120e4",
-          "image": "registry.connect.redhat.com/cloudbees/cloudbees-ci-operator@sha256:bd0bd72e9e7807b0fa307de8a93a56967221fe2dd181bac02383f0f9be9120e4",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "3.34.1",
-      "version_original": "3.34.1"
-    },
-    {
       "_id": "61a57bfb27e166330707d963",
       "alm_examples": [
         {
@@ -20120,6 +19725,334 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.8.0",
       "version_original": "1.8.0"
+    },
+    {
+      "_id": "61d40b8c17f914cd72330c28",
+      "alm_examples": [
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "CouchDBCluster",
+          "metadata": {
+            "name": "example-couchdbcluster"
+          },
+          "spec": {
+            "cpu": "1",
+            "disk": "1Gi",
+            "environment": {
+              "adminPassword": "changeme",
+              "search": true
+            },
+            "memory": "1Gi",
+            "size": 3,
+            "storageClass": ""
+          }
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "FormationLock",
+          "metadata": {
+            "name": "example-formationlock"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Recipe",
+          "metadata": {
+            "name": "example-recipe"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "RecipeTemplate",
+          "metadata": {
+            "name": "example-recipetemplate"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "example-backup"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Bucket",
+          "metadata": {
+            "name": "example-bucket"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Formation",
+          "metadata": {
+            "name": "example-formation"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64"
+      ],
+      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:96a04fb99af74bc88406278004fbbdad4ae9b11189fd35347ebc86f065f8ae4b",
+      "bundle_path_digest": "sha256:96a04fb99af74bc88406278004fbbdad4ae9b11189fd35347ebc86f065f8ae4b",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "v2.2",
+      "creation_date": "2022-01-04T08:55:40.981000+00:00",
+      "csv_description": "Apache CouchDB lets you access your data where you need it. The [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) is implemented in a variety of projects and products that span every imaginable computing environment from globally distributed server-clusters, over mobile phones to web browsers.\n\nStore your data safely, on your own servers, or with any leading cloud provider. Your web- and native applications love CouchDB, because it speaks JSON natively and supports binary data for all your data storage needs.\n\nThe [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) lets your data flow seamlessly between server clusters to mobile phones and web browsers, enabling a compelling [offline-first](http://offlinefirst.org/) user-experience while maintaining high performance and strong reliability. CouchDB comes with a developer-friendly query language, and optionally MapReduce for simple, efficient, and comprehensive data retrieval.\n\n### Operator for Apache CouchDB Features\n* Fully automated deployment and configuration of Apache CouchDB clusters.\n* Support single, multiple, or all namespace install modes.\n\n#### Security\n* TLS - TLS  is supported using Red Hat Service certificates or user-provided certificates.\n* Authentication - The parameter `require_valid_user` defaults to `true`, which means that no requests are allowed from anonymous users. Every request must be authenticated.\n* Authorization - Databases are initially accessible by Apache CouchDB admins only.\n\n#### High Availability\n* Nodes - Each database node in an Apache CouchDB cluster requires its own Kubernetes node. It's recommended that you run it with a minimum of three nodes for any production deployment.\n* Zones - The Apache CouchDB cluster database nodes are spread across available Kubernetes fault zones where available.\n* Replicas - The default configuration for each database is two shards (Q=2) and three shard copies (N=3), where each shard copy is deployed on a separate node in the cluster.\n\n### Reading and writing to Apache CouchDB\n\nThe Operator for Apache CouchDB automatically generates a Service. This can be accessed using port-forwarding e.g. `kubectl port-forward svc/my-couchdb-cluster 443:443 -u admin:mypassword`. Alternatively, configure an OpenShift Route to expose the service externally.\n\n### CouchDB 2.3.1 Update Instructions\nWhen the operator is updated to v2.0 or above any existing CouchDB 2.3.1 cluster will not be automatically upgraded to CouchDB 3. The user must manually trigger this process by removing the version statement `version: 2.3.1` in the CouchDBCluster CR for each CouchDB cluster\nThe operator will then perform a rolling update, with the new pods running CouchDB3.\nIt is advised that customers do this straightaway as CouchDB 2.3.1 is no longer supported.\n\n[Read the complete guide to using the Operator for Apache CouchDB](https://ibm.biz/BdfGQy)\n",
+      "csv_display_name": "Operator for Apache CouchDB",
+      "csv_metadata_description": "Apache CouchDB is a highly available NOSQL database for web and mobile applications\n",
+      "csv_name": "couchdb-operator.v2.2.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:28:59.541000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "couchdb-operator-certified",
+      "provided_apis": [
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "FormationLock",
+          "plural": "formationlocks",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Formation",
+          "plural": "formations",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Recipe",
+          "plural": "recipes",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "RecipeTemplate",
+          "plural": "recipetemplates",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Bucket",
+          "plural": "buckets",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "CouchDBCluster",
+          "plural": "couchdbclusters",
+          "version": "v1"
+        }
+      ],
+      "provider": "IBM",
+      "related_images": [
+        {
+          "digest": "sha256:6af02557f1f9e12ca4037be71804eb5dc4c53134b937278cb779e58b350afb53",
+          "image": "registry.connect.redhat.com/ibm/couchdb3@sha256:6af02557f1f9e12ca4037be71804eb5dc4c53134b937278cb779e58b350afb53",
+          "name": "COUCHDB3"
+        },
+        {
+          "digest": "sha256:29c2509791ece532864c02ce3a429085afc197354308bded80de267ed2586fde",
+          "image": "registry.connect.redhat.com/ibm/couchdb-operator-mgmt@sha256:29c2509791ece532864c02ce3a429085afc197354308bded80de267ed2586fde",
+          "name": "COUCHDB-MGMT"
+        },
+        {
+          "digest": "sha256:4c04bf6b3259fd8251744974dacdd427ef1ddfb1713c61ea673f14bc12906ce4",
+          "image": "registry.connect.redhat.com/ibm/couchdb-operator@sha256:4c04bf6b3259fd8251744974dacdd427ef1ddfb1713c61ea673f14bc12906ce4",
+          "name": "couchdb-operator-4c04bf6b3259fd8251744974dacdd427ef1ddfb1713c61ea673f14bc12906ce4-annotation"
+        },
+        {
+          "digest": "sha256:4c04bf6b3259fd8251744974dacdd427ef1ddfb1713c61ea673f14bc12906ce4",
+          "image": "registry.connect.redhat.com/ibm/couchdb-operator@sha256:4c04bf6b3259fd8251744974dacdd427ef1ddfb1713c61ea673f14bc12906ce4",
+          "name": "couchdb-operator"
+        },
+        {
+          "digest": "sha256:6af02557f1f9e12ca4037be71804eb5dc4c53134b937278cb779e58b350afb53",
+          "image": "registry.connect.redhat.com/ibm/couchdb3@sha256:6af02557f1f9e12ca4037be71804eb5dc4c53134b937278cb779e58b350afb53",
+          "name": "couchdb3"
+        },
+        {
+          "digest": "sha256:29c2509791ece532864c02ce3a429085afc197354308bded80de267ed2586fde",
+          "image": "registry.connect.redhat.com/ibm/couchdb-operator-mgmt@sha256:29c2509791ece532864c02ce3a429085afc197354308bded80de267ed2586fde",
+          "name": "mgmt"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=1.0.0 <2.2.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "2.2.0",
+      "version_original": "2.2.0"
+    },
+    {
+      "_id": "61d427e9d467cd4ec03ef7ff",
+      "alm_examples": [
+        {
+          "api_version": "apps.openliberty.io/v1beta2",
+          "kind": "OpenLibertyApplication",
+          "metadata": {
+            "name": "openliberty-app-sample"
+          },
+          "spec": {
+            "applicationImage": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
+            "expose": true,
+            "replicas": 1
+          }
+        },
+        {
+          "api_version": "apps.openliberty.io/v1beta2",
+          "kind": "OpenLibertyDump",
+          "metadata": {
+            "name": "openliberty-dump-sample"
+          },
+          "spec": {
+            "include": [
+              "thread",
+              "heap"
+            ],
+            "podName": "Specify_Pod_Name_Here"
+          }
+        },
+        {
+          "api_version": "apps.openliberty.io/v1beta2",
+          "kind": "OpenLibertyTrace",
+          "metadata": {
+            "name": "openliberty-trace-sample"
+          },
+          "spec": {
+            "maxFileSize": 20,
+            "maxFiles": 5,
+            "podName": "Specify_Pod_Name_Here",
+            "traceSpecification": "*=info:com.ibm.ws.webcontainer*=all"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm/open-liberty-operator-bundle@sha256:88ff3cd847c4b606466b1e782cec0dfbdb62fb3dd0e4e1bc8b9c2d1016c74132",
+      "bundle_path_digest": "sha256:88ff3cd847c4b606466b1e782cec0dfbdb62fb3dd0e4e1bc8b9c2d1016c74132",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "beta2",
+      "creation_date": "2022-01-04T10:56:41.997000+00:00",
+      "csv_description": "This advanced Operator can be used to deploy and manage Open Liberty applications with consistent, production-grade QoS. This operator is based on the [Runtime Component Operator](https://github.com/application-stacks/runtime-component-operator) and provides all of its capabilities in addition to Open Liberty specific features such as gathering traces and dumps (Day-2 operations) and easily configuring and managing the single sign-on information for your Open Liberty applications.\n\nOpen Liberty Operator enables enterprise architects to govern the way their applications get deployed & managed in the cluster, while dramatically reducing the learning curve for developers to deploy into Kubernetes - allowing them to focus on writing the code! Here are some key features:\n\n#### Application Lifecyle\nYou can deploy your Open Liberty application container by either pointing to a container image, or an OpenShift ImageStream. When using an ImageStream the Operator will watch for any updates and will re-deploy the modified image.\n\n#### Custom RBAC\nThis Operator is capable of using a custom ServiceAccount from the caller, allowing it to follow RBAC restrictions. By default it creates a ServiceAccount if one is not specified, which can also be bound with specific roles.\n\n#### Environment Configuration\nYou can configure a variety of artifacts with your deployment, such as: labels, annotations, and environment variables from a ConfigMap, a Secret or a value.\n\n#### Routing\nExpose your application to external users via a single toggle to create a Route on OpenShift or an Ingress on other Kubernetes environments. Advanced configuration, such as TLS settings, are also easily enabled. Expiring Route certificates are re-issued.\n\n#### High Availability via Horizontal Pod Autoscaling\nRun multiple instances of your application for high availability. Either specify a static number of replicas or easily configure horizontal auto scaling to create (and delete) instances based on resource consumption.\n\n#### Persistence and advanced storage\nEnable persistence for your application by specifying simple requirements: just tell us the size of the storage and where you would like it to be mounted and We will create and manage that storage for you.\nThis toggles a StatefulSet resource instead of a Deployment resource, so your container can recover transactions and state upon a pod restart.\nWe offer an advanced mode where the user specifies a built-in PersistentVolumeClaim, allowing them to configure many details of the persistent volume, such as its storage class and access mode.\nYou can also easily configure and use a single storage for serviceability related Day-2 operations, such as gatherig server traces and dumps.\n\n#### Service Binding\nYour runtime components can expose services by a simple toggle. We take care of the heavy lifting such as creating kubernetes Secrets with information other services can use to bind. We also keep the bindable information synchronized, so your applications can dynamically reconnect to its required services without any intervention or interruption.\n\n#### Single Sign-On (SSO)\nOpen Liberty provides capabilities to delegate authentication to external providers. Your application users can log in using their existing social media credentials from providers such as Google, Facebook, LinkedIn, Twitter, GitHub, and any OpenID Connect (OIDC) or OAuth 2.0 clients. Open Liberty Operator allows to easily configure and manage the single sign-on information for your applications.\n\n#### Exposing metrics to Prometheus\nThe Open Liberty Operator exposes the runtime container's metrics via the [Prometheus Operator](https://operatorhub.io/operator/prometheus).\nUsers can pick between a basic mode, where they simply specify the label that Prometheus is watching to scrape the metrics from the container, or they can specify the full `ServiceMonitor` spec embedded into the OpenLibertyApplication's `spec.monitoring` key controlling things like the poll internal and security credentials.\n\n#### Easily mount logs and transaction directories\nIf you need to mount the logs and transaction data from your application to an external volume such as NFS (or any storage supported in your cluster), simply add the following (customizing the folder location and size) to your OpenLibertyApplication CR:\n``` storage: size: 2Gi mountPath: \"/logs\" ```\n\n#### Integration with OpenShift Serverless\nDeploy your serverless runtime component using a single toggle.  The Operator will convert all of its generated resources into [Knative](https://knative.dev) resources, allowing your pod to automatically scale to 0 when it is idle.\n\n#### Integration with OpenShift's Topology UI\nWe set the corresponding labels to support OpenShift's Developer Topology UI, which allows you to visualize your entire set of deployments and how they are connected.\n\nSee our [**documentation**](https://github.com/OpenLiberty/open-liberty-operator/tree/main/doc/) for more information.\n",
+      "csv_display_name": "Open Liberty",
+      "csv_metadata_description": "Deploy and manage applications running on Liberty",
+      "csv_name": "open-liberty-operator.v0.8.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:19:17.362000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "open-liberty-certified",
+      "provided_apis": [
+        {
+          "group": "apps.openliberty.io",
+          "kind": "OpenLibertyApplication",
+          "plural": "openlibertyapplications",
+          "version": "v1beta2"
+        },
+        {
+          "group": "apps.openliberty.io",
+          "kind": "OpenLibertyDump",
+          "plural": "openlibertydumps",
+          "version": "v1beta2"
+        },
+        {
+          "group": "apps.openliberty.io",
+          "kind": "OpenLibertyTrace",
+          "plural": "openlibertytraces",
+          "version": "v1beta2"
+        }
+      ],
+      "provider": "IBM",
+      "related_images": [
+        {
+          "digest": "sha256:43b3f004a19c91c80ba815aedc1b361b87cd12daa28bb215e6775e64ef890af1",
+          "image": "registry.connect.redhat.com/ibm/open-liberty-operator-controller@sha256:43b3f004a19c91c80ba815aedc1b361b87cd12daa28bb215e6775e64ef890af1",
+          "name": "open-liberty-operator-controller-43b3f004a19c91c80ba815aedc1b361b87cd12daa28bb215e6775e64ef890af1-annotation"
+        },
+        {
+          "digest": "sha256:43b3f004a19c91c80ba815aedc1b361b87cd12daa28bb215e6775e64ef890af1",
+          "image": "registry.connect.redhat.com/ibm/open-liberty-operator-controller@sha256:43b3f004a19c91c80ba815aedc1b361b87cd12daa28bb215e6775e64ef890af1",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
+          "image": "registry.connect.redhat.com/ibm/open-liberty-samples@sha256:8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4",
+          "name": "open-liberty-samples-8ea2d3405ff2829d93c5dda4dab5d695ea8ead34e804aaf6e39ea84f53a15ee4-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<0.8.0",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.8.0",
+      "version_original": "0.8.0"
     }
   ]
 }

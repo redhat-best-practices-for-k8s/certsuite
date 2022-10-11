@@ -1,127 +1,6 @@
 {
   "data": [
     {
-      "_id": "6154d0b5d2c7f84a4d2edca6",
-      "alm_examples": [
-        {
-          "api_version": "appdynamics.com/v1alpha1",
-          "kind": "Adam",
-          "metadata": {
-            "name": "example-adam",
-            "namespace": "appdynamics"
-          },
-          "spec": {
-            "controllerUrl": "https://saas.appdynamics.com"
-          }
-        },
-        {
-          "api_version": "appdynamics.com/v1alpha1",
-          "kind": "Clusteragent",
-          "metadata": {
-            "name": "k8s-cluster-agent",
-            "namespace": "appdynamics"
-          },
-          "spec": {
-            "account": "customer1",
-            "appName": "Cluster1",
-            "controllerUrl": "https://saas.appdynamics.com",
-            "image": "registry.connect.redhat.com/appdynamics/cluster-agent@sha256:5df48126b5e6c22cd73f8b3f3bdb8cc2fc6fae23085e922de32a586b754b6e7f",
-            "serviceAccountName": "appdynamics-cluster-agent",
-            "stdoutLogging": "true"
-          }
-        },
-        {
-          "api_version": "appdynamics.com/v1alpha1",
-          "kind": "InfraViz",
-          "metadata": {
-            "name": "appd-infraviz",
-            "namespace": "appdynamics"
-          },
-          "spec": {
-            "account": "customer1",
-            "controllerUrl": "https://saas.appdynamics.com",
-            "enableDockerViz": "false",
-            "enableMasters": true,
-            "globalAccount": "customer1_12345",
-            "image": "registry.connect.redhat.com/appdynamics/machine-agent-analytics@sha256:b7ac0d5d6ed5028b97af3e49f79de95e1a78b3ce03ba93f7c4e648eb4b440f65",
-            "netVizPort": 3892,
-            "stdoutLogging": true
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/appdynamics/cluster-agent-operator-bundle@sha256:8334d8638984099f3ef40793e62f1e68e0691c05c86326ae40a752e39bf3f316",
-      "bundle_path_digest": "sha256:8334d8638984099f3ef40793e62f1e68e0691c05c86326ae40a752e39bf3f316",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-09-29T20:46:45.521000+00:00",
-      "csv_description": "AppDynamics Operator simplifies the configuration and lifecycle management of the AppDynamics ClusterAgent and the AppDynamics Machine Agent on different Kubernetes distributions and OpenShift. \nThe Operator encapsulates key operational knowledge on how to configure and upgrade the ClusterAgent and the Machine Agent. \nIt knows, for example, which configuration changes are benign and do not require restart of the ClusterAgent, \nwhich minimizes unnecesary load on the cluster API server.\n\n\n## Operator deployment\n\n* Create namespace for AppDynamics\n```\n  kubectl create namespace appdynamics\n```\n\n* Create Secret `cluster-agent-secret`. Set \"controller-key\" \nto the access key to the AppDynamics controller.  \n\n```\nkubectl -n appdynamics create secret generic cluster-agent-secret --from-literal=controller-key=\"<controller-access-key>\"\n```\n\n* Update the image reference in the Operator deployment spec, if necessary.  \n\nFor additional details refer to [this documentation](https://github.com/Appdynamics/appdynamics-operator)\n",
-      "csv_display_name": "Appdynamics Operator",
-      "csv_metadata_description": "End to end monitoring of applications on Kubernetes and OpenShift clusters with AppDynamics.",
-      "csv_name": "appdynamics-operator.v0.6.12",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:29:29.014000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "appdynamics-operator",
-      "provided_apis": [],
-      "provider": "AppDynamics LLC",
-      "related_images": [
-        {
-          "digest": "sha256:9e992ba1274f818c0ca78d2654ac797e7139584a8e99919f3cf4b0676ac23950",
-          "image": "registry.connect.redhat.com/appdynamics/cluster-agent-operator@sha256:9e992ba1274f818c0ca78d2654ac797e7139584a8e99919f3cf4b0676ac23950",
-          "name": "cluster-agent-operator-9e992ba1274f818c0ca78d2654ac797e7139584a8e99919f3cf4b0676ac23950-annotation"
-        },
-        {
-          "digest": "sha256:9e992ba1274f818c0ca78d2654ac797e7139584a8e99919f3cf4b0676ac23950",
-          "image": "registry.connect.redhat.com/appdynamics/cluster-agent-operator@sha256:9e992ba1274f818c0ca78d2654ac797e7139584a8e99919f3cf4b0676ac23950",
-          "name": "appdynamics-operator"
-        },
-        {
-          "digest": "sha256:b7ac0d5d6ed5028b97af3e49f79de95e1a78b3ce03ba93f7c4e648eb4b440f65",
-          "image": "registry.connect.redhat.com/appdynamics/machine-agent-analytics@sha256:b7ac0d5d6ed5028b97af3e49f79de95e1a78b3ce03ba93f7c4e648eb4b440f65",
-          "name": "machine-agent-analytics-b7ac0d5d6ed5028b97af3e49f79de95e1a78b3ce03ba93f7c4e648eb4b440f65-annotation"
-        },
-        {
-          "digest": "sha256:5df48126b5e6c22cd73f8b3f3bdb8cc2fc6fae23085e922de32a586b754b6e7f",
-          "image": "registry.connect.redhat.com/appdynamics/cluster-agent@sha256:5df48126b5e6c22cd73f8b3f3bdb8cc2fc6fae23085e922de32a586b754b6e7f",
-          "name": "cluster-agent-5df48126b5e6c22cd73f8b3f3bdb8cc2fc6fae23085e922de32a586b754b6e7f-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "0.6.12",
-      "version_original": "0.6.12"
-    },
-    {
       "_id": "6154d0e069cb9f1af5ba7477",
       "alm_examples": [
         {
@@ -17624,6 +17503,456 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
       "version": "1.100202.5",
       "version_original": "1.100202.5"
+    },
+    {
+      "_id": "616405985cfcf7adc247acb8",
+      "alm_examples": [
+        {
+          "api_version": "xray.nastel.com/v1alpha3",
+          "kind": "NastelXRay",
+          "metadata": {
+            "name": "nastelxray"
+          },
+          "spec": {
+            "active-mq": {
+              "image": "registry.connect.redhat.com/nastel/nastel-activemq",
+              "replicaCount": 1,
+              "resources": {
+                "limits": {
+                  "cpu": "400m",
+                  "memory": "1000Mi"
+                },
+                "requests": {
+                  "cpu": "200m",
+                  "memory": "500Mi"
+                }
+              },
+              "service": {
+                "amqpPort": 5672,
+                "httpPort": 8161,
+                "ingress": {
+                  "enabled": true
+                },
+                "mqttPort": 1883,
+                "servicePort": 61616,
+                "stopmPort": 61613,
+                "type": "ClusterIP",
+                "wsPort": 61614
+              },
+              "storage": {
+                "accessMode": "ReadWriteOnce",
+                "capacity": "2Gi"
+              }
+            },
+            "ap-domain": {
+              "image": "registry.connect.redhat.com/nastel/nastel-ap-domain",
+              "replicaCount": 1,
+              "resources": {},
+              "service": {
+                "debugPort": 5440,
+                "node": {},
+                "serverPort": 2323,
+                "type": "NodePort",
+                "userPort": 3000
+              },
+              "storage": {
+                "accessMode": "ReadWriteOnce",
+                "capacity": "2Gi"
+              }
+            },
+            "global": {
+              "kafkaCluster": "xray-cluster",
+              "kafkaHost": "xray-cluster-kafka-bootstrap",
+              "kafkaPort": 9092,
+              "subDomain": "nastel-2-915b3b336cabec458a7c7ec2aa7c625f-0000.us-south.containers.appdomain.cloud"
+            },
+            "solr-keeper": {
+              "image": "registry.connect.redhat.com/nastel/nastel-zookeeper",
+              "replicaCount": 1,
+              "resources": {},
+              "service": {
+                "clientPort": 2181,
+                "electionPort": 3888,
+                "serverPort": 2888,
+                "type": "ClusterIP"
+              },
+              "storage": {
+                "accessMode": "ReadWriteOnce",
+                "capacity": "2Gi"
+              }
+            },
+            "solr-node": {
+              "affinity": {},
+              "exporter": {
+                "configFile": "/opt/solr/contrib/prometheus-exporter/conf/solr-exporter-config.xml",
+                "enabled": false,
+                "livenessProbe": {
+                  "initialDelaySeconds": 20,
+                  "periodSeconds": 10
+                },
+                "podAnnotations": {},
+                "port": 9983,
+                "readinessProbe": {
+                  "initialDelaySeconds": 15,
+                  "periodSeconds": 5
+                },
+                "resources": {},
+                "service": {
+                  "annotations": {},
+                  "type": "ClusterIP"
+                },
+                "threads": 7,
+                "updateStrategy": {}
+              },
+              "image": {
+                "pullPolicy": "Always",
+                "repository": "registry.connect.redhat.com/nastel/nastel-solr"
+              },
+              "javaMem": "-Xms2g -Xmx3g",
+              "livenessProbe": {
+                "initialDelaySeconds": 20,
+                "periodSeconds": 10
+              },
+              "logLevel": "INFO",
+              "podAnnotations": {},
+              "podDisruptionBudget": {
+                "maxUnavailable": 1
+              },
+              "port": 8983,
+              "readinessProbe": {
+                "initialDelaySeconds": 15,
+                "periodSeconds": 5
+              },
+              "replicaCount": 4,
+              "resources": {},
+              "service": {
+                "annotations": {},
+                "ingress": {
+                  "enabled": true
+                },
+                "type": "ClusterIP"
+              },
+              "terminationGracePeriodSeconds": 180,
+              "tls": {
+                "caSecret": {
+                  "bundlePath": "",
+                  "name": ""
+                },
+                "certSecret": {
+                  "certPath": "tls.crt",
+                  "keyPath": "tls.key",
+                  "name": ""
+                },
+                "checkPeerName": "false",
+                "enabled": false,
+                "importKubernetesCA": "false",
+                "keystorePassword": "changeit",
+                "needClientAuth": "false",
+                "wantClientAuth": "false"
+              },
+              "updateStrategy": {
+                "type": "OnDelete"
+              },
+              "volumeClaimTemplates": {
+                "accessModes": [
+                  "ReadWriteOnce"
+                ],
+                "storageSize": "20Gi"
+              },
+              "zookeeper": {
+                "replicaCount": 1
+              }
+            },
+            "xray": {
+              "image": "registry.connect.redhat.com/nastel/xray-ui",
+              "replicaCount": 1,
+              "resources": {},
+              "service": {
+                "httpPort": 8080,
+                "node": {},
+                "type": "LoadBalancer"
+              }
+            },
+            "xray-cep": {
+              "image": "registry.connect.redhat.com/nastel/xray-cep",
+              "init": {
+                "dbapi-solr": {
+                  "image": "registry.connect.redhat.com/nastel/xray-dbapi-solr"
+                },
+                "kafka": {
+                  "image": "registry.redhat.io/openshift4/ose-cli"
+                }
+              },
+              "replicaCount": 1,
+              "resources": {},
+              "service": {
+                "cepServerPort": 3005,
+                "node": {},
+                "type": "LoadBalancer",
+                "xRayDataPort": 6580
+              },
+              "storage": {
+                "accessMode": "ReadWriteOnce",
+                "capacity": "2Gi"
+              }
+            },
+            "xray-ml-persistance": {
+              "storage": {
+                "accessMode": "ReadWriteOnce",
+                "capacity": "2Gi"
+              }
+            },
+            "xray-ml-queries": {
+              "image": "registry.connect.redhat.com/nastel/xray-ml",
+              "replicaCount": 1,
+              "resources": {}
+            },
+            "xray-ml-train": {
+              "image": "registry.connect.redhat.com/nastel/xray-ml",
+              "replicaCount": 1,
+              "resources": {}
+            }
+          }
+        },
+        {
+          "api_version": "xray.nastel.com/v1alpha3",
+          "kind": "NastelXRayTopology",
+          "metadata": {
+            "name": "nastelxraytopology"
+          },
+          "spec": {
+            "global": {
+              "kafkaCluster": "xray-cluster",
+              "kafkaHost": "xray-cluster-kafka-bootstrap",
+              "kafkaPort": 9092,
+              "subDomain": "nastel-2-915b3b336cabec458a7c7ec2aa7c625f-0000.us-south.containers.appdomain.cloud"
+            },
+            "storm": {
+              "enabled": true,
+              "fullnameOverride": "storm",
+              "name": "storm",
+              "nameOverride": "storm",
+              "nimbus": {
+                "image": {
+                  "pullPolicy": "Always",
+                  "repository": "registry.connect.redhat.com/nastel/nastel-storm"
+                },
+                "replicaCount": 1,
+                "resources": {},
+                "service": {
+                  "name": "nimbus",
+                  "port": 6627,
+                  "type": "ClusterIP"
+                }
+              },
+              "supervisor": {
+                "image": {
+                  "pullPolicy": "Always",
+                  "repository": "registry.connect.redhat.com/nastel/nastel-storm"
+                },
+                "replicaCount": 3,
+                "resources": {},
+                "service": {
+                  "name": "supervisor",
+                  "port": 6700
+                }
+              },
+              "ui": {
+                "enabled": true,
+                "image": {
+                  "pullPolicy": "Always",
+                  "repository": "registry.connect.redhat.com/nastel/nastel-storm"
+                },
+                "ingress": {
+                  "annotations": {},
+                  "enabled": true,
+                  "tls": []
+                },
+                "replicaCount": 1,
+                "resources": {},
+                "service": {
+                  "name": "ui",
+                  "port": 8080,
+                  "type": "ClusterIP"
+                }
+              },
+              "zookeeper": {
+                "enabled": false,
+                "fullnameOverride": "storm-keeper",
+                "port": 2181,
+                "replicaCount": 1,
+                "servers": [
+                  "storm-keeper"
+                ]
+              }
+            },
+            "storm-keeper": {
+              "image": "registry.connect.redhat.com/nastel/nastel-zookeeper",
+              "replicaCount": 1,
+              "resources": {},
+              "service": {
+                "clientPort": 2181,
+                "electionPort": 3888,
+                "serverPort": 2888,
+                "type": "ClusterIP"
+              },
+              "storage": {
+                "accessMode": "ReadWriteOnce",
+                "capacity": "2Gi"
+              }
+            },
+            "xray-cep": {
+              "service": {
+                "cepServerPort": 3005,
+                "xRayDataPort": 6580
+              }
+            },
+            "xray-storm-topologies": {
+              "image": "registry.connect.redhat.com/nastel/xray-storm",
+              "replicaCount": 1,
+              "resources": {},
+              "service": {
+                "httpPort": 8080,
+                "thriftPort": 6627
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nastel/xray-operator-bundle@sha256:492d79e202fa0e7c455a0a5a5b04eee060a726a32e3b1ac566bdb4250a8ada21",
+      "bundle_path_digest": "sha256:492d79e202fa0e7c455a0a5a5b04eee060a726a32e3b1ac566bdb4250a8ada21",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-10-11T09:36:24.231000+00:00",
+      "csv_description": "The operator deploys Nastel XRay component containers:\n  * Nastel Domain Server\n  * XRay Complex Event Processing (CEP)\n  * Solr indexing service\n  * Machine Learning (ML)\n  * XRay WebApp\n  * Storm Topologies (optional)\n\nin one go.\n\n[Nastel XRay](https://www.nastel.com/nastel-xray/) allows you to Track & Trace Transaction and Message Flows, Analyze, Visualize and Report your Big Data.\n",
+      "csv_display_name": "Nastel XRay Operator",
+      "csv_metadata_description": "Operator to deploy and run Nastel XRay",
+      "csv_name": "nastel-xray-operator.v1.330.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:29:58.199000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "nastel-xray-operator",
+      "provided_apis": [
+        {
+          "group": "xray.nastel.com",
+          "kind": "NastelXRay",
+          "plural": "nastelxrays",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "xray.nastel.com",
+          "kind": "NastelXRayTopology",
+          "plural": "nastelxraytopologies",
+          "version": "v1alpha3"
+        }
+      ],
+      "provider": "Nastel",
+      "related_images": [
+        {
+          "digest": "sha256:e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1",
+          "image": "registry.connect.redhat.com/nastel/xray-operator@sha256:e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1",
+          "name": "xray-operator-e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1-annotation"
+        },
+        {
+          "digest": "sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1",
+          "image": "registry.connect.redhat.com/nastel/xray-operator@sha256:e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1",
+          "name": "nastel-xray-operator"
+        },
+        {
+          "digest": "sha256:fd4f6d9dac97fac4e5e53689ea3e7e174d692eda6afff271d3e7e7e4b78a5f68",
+          "image": "registry.connect.redhat.com/nastel/nastel-ap-domain@sha256:fd4f6d9dac97fac4e5e53689ea3e7e174d692eda6afff271d3e7e7e4b78a5f68",
+          "name": "domain"
+        },
+        {
+          "digest": "sha256:854f8433c6138c829757a866273d8f18eef7bf61fcb95d04725f23721c24f022",
+          "image": "registry.connect.redhat.com/nastel/xray-cep@sha256:854f8433c6138c829757a866273d8f18eef7bf61fcb95d04725f23721c24f022",
+          "name": "cep"
+        },
+        {
+          "digest": "sha256:ddcfc764de7e9cfdecd255126fcf69775586c4d7c79c978bb44184a534c7c89a",
+          "image": "registry.redhat.io/openshift4/ose-cli@sha256:ddcfc764de7e9cfdecd255126fcf69775586c4d7c79c978bb44184a534c7c89a",
+          "name": "ose_cli"
+        },
+        {
+          "digest": "sha256:81b6e6b2dbbfc7a71c5d71c571a477950263c7debffbf006a0fd4d96517ac6a4",
+          "image": "registry.connect.redhat.com/nastel/xray-dbapi-solr@sha256:81b6e6b2dbbfc7a71c5d71c571a477950263c7debffbf006a0fd4d96517ac6a4",
+          "name": "solr_dbapi"
+        },
+        {
+          "digest": "sha256:2fdcab2efa8627b33ae9148b0d14f22171dbbd64ccdf00e0a65e234e3e09d2ae",
+          "image": "registry.connect.redhat.com/nastel/xray-ml@sha256:2fdcab2efa8627b33ae9148b0d14f22171dbbd64ccdf00e0a65e234e3e09d2ae",
+          "name": "ml"
+        },
+        {
+          "digest": "sha256:063de804be70b905000b18c635af6b5c6edff74654d44cff99515ee35e8c4f05",
+          "image": "registry.connect.redhat.com/nastel/xray-ui@sha256:063de804be70b905000b18c635af6b5c6edff74654d44cff99515ee35e8c4f05",
+          "name": "xray"
+        },
+        {
+          "digest": "sha256:fd8168d697ae40c5a3e1b7b5d0a23494381178929820de7d1cebb0e4d69cf9ec",
+          "image": "registry.connect.redhat.com/nastel/nastel-activemq@sha256:fd8168d697ae40c5a3e1b7b5d0a23494381178929820de7d1cebb0e4d69cf9ec",
+          "name": "active_mq"
+        },
+        {
+          "digest": "sha256:8e956cc9e631397128ef01b0a305a7c5b5fe3571b2077949c4e0849b1826188d",
+          "image": "registry.connect.redhat.com/nastel/nastel-zookeeper@sha256:8e956cc9e631397128ef01b0a305a7c5b5fe3571b2077949c4e0849b1826188d",
+          "name": "zookeeper"
+        },
+        {
+          "digest": "sha256:ec36c53f0a8ef88dfa357e3d4406032f6404ca6754ed874ba162436284d3e11c",
+          "image": "registry.connect.redhat.com/nastel/nastel-solr@sha256:ec36c53f0a8ef88dfa357e3d4406032f6404ca6754ed874ba162436284d3e11c",
+          "name": "solr"
+        },
+        {
+          "digest": "sha256:79b7ee65b9fd7e6ebe6c62e6a6c373ea54a745d09844972dcc61ae051d526a26",
+          "image": "registry.connect.redhat.com/nastel/nastel-storm@sha256:79b7ee65b9fd7e6ebe6c62e6a6c373ea54a745d09844972dcc61ae051d526a26",
+          "name": "storm"
+        },
+        {
+          "digest": "sha256:f743d6dbcfda7346b1a20f865511b7d6e0cd7407e8d15ab1fb5d8fe16472a982",
+          "image": "registry.connect.redhat.com/nastel/xray-storm@sha256:f743d6dbcfda7346b1a20f865511b7d6e0cd7407e8d15ab1fb5d8fe16472a982",
+          "name": "storm_topology"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.330.1",
+      "version_original": "1.330.1"
     }
   ]
 }

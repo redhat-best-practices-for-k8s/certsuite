@@ -1,0 +1,2288 @@
+{
+  "data": [
+    {
+      "_id": "609aaf4ad04af0e74bb05821",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:0b16171987afd2205857a91ae15f34e316dac574faca5abfa13e0a4d025e37c8",
+      "bundle_path_digest": "sha256:0b16171987afd2205857a91ae15f34e316dac574faca5abfa13e0a4d025e37c8",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-05-11T16:22:34.492000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "mongodb-enterprise.v1.7.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:53:40.225000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "mongodb-enterprise",
+      "provided_apis": [],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.7.0",
+      "version_original": "1.7.0"
+    },
+    {
+      "_id": "609aaf4b3048c1ac9a6fea99",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/seldonio/seldon-core-operator-bundle@sha256:cb77b47b96bbdc309b17468b8f644bac7206be94125d43a1609f20637937876f",
+      "bundle_path_digest": "sha256:cb77b47b96bbdc309b17468b8f644bac7206be94125d43a1609f20637937876f",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-05-11T16:22:35.637000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "seldon-operator.v1.2.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:28:38.714000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "seldon-operator-certified",
+      "provided_apis": [
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1"
+        },
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1alpha2"
+        },
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1alpha3"
+        }
+      ],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.2.0",
+      "version_original": "1.2.0"
+    },
+    {
+      "_id": "609aaf4ed04af0e74bb05827",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/jfrog/artifactory-operator-bundle@sha256:ee798802b03e93ccc74762d5da175a0e6f00692ca7f2c94c16c2048862bee7ba",
+      "bundle_path_digest": "sha256:ee798802b03e93ccc74762d5da175a0e6f00692ca7f2c94c16c2048862bee7ba",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-05-11T16:22:38.389000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "artifactory-ha-operator.v1.0.3",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:27:20.817000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "openshiftartifactoryha-operator",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "OpenshiftArtifactoryHa",
+          "plural": "openshiftartifactoryhas",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.0.3",
+      "version_original": "1.0.3"
+    },
+    {
+      "_id": "609aaf4fe2b160d361d250ff",
+      "alm_examples": [
+        {
+          "api_version": "dynatrace.com/v1alpha1",
+          "kind": "OneAgent",
+          "metadata": {
+            "name": "oneagent",
+            "namespace": "dynatrace"
+          },
+          "spec": {
+            "apiUrl": "https://ENVIRONMENTID.live.dynatrace.com/api",
+            "args": [
+              "--set-app-log-content-access=true"
+            ],
+            "tolerations": [
+              {
+                "effect": "NoSchedule",
+                "key": "node-role.kubernetes.io/master",
+                "operator": "Exists"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "dynatrace.com/v1alpha1",
+          "kind": "OneAgentAPM",
+          "metadata": {
+            "name": "oneagentapm",
+            "namespace": "dynatrace"
+          },
+          "spec": {
+            "apiUrl": "https://ENVIRONMENTID.live.dynatrace.com/api"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/dynatrace/dynatrace-oneagent-operator-bundle@sha256:8c4b0a6f8e465f5b969ea88d78cb3883a308b1c8c19f68e3c9cef2f6a0b40584",
+      "bundle_path_digest": "sha256:8c4b0a6f8e465f5b969ea88d78cb3883a308b1c8c19f68e3c9cef2f6a0b40584",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-05-11T16:22:39.054000+00:00",
+      "csv_description": "The Dynatrace OneAgent Operator allows users to easily deploy full-stack monitoring for [OpenShift clusters](https://www.dynatrace.com/technologies/openshift-monitoring/). The Dynatrace OneAgent automatically monitors the workload running in containers down to the code and request level.\n\n### Installing the OneAgent\nOnce you've installed the Operator, you can create OneAgent custom resources to monitor your environment.\n\nFirst, please add a Secret within the Project you've deployed the Dynatrace Operator to, which would contain your API and PaaS tokens. Create tokens of type *Dynatrace API* (`API_TOKEN`) and *Platform as a Service* (`PAAS_TOKEN`) and use their values in the following commands respectively.\n\nFor assistance please refer to [Create user-generated access tokens](https://www.dynatrace.com/support/help/shortlink/token#create-user-generated-access-tokens).\n\n``` $ oc -n <project> create secret generic oneagent --from-literal=\"apiToken=API_TOKEN\" --from-literal=\"paasToken=PAAS_TOKEN\" ```\n\nYou may update this Secret at any time to rotate the tokens.\n\nThen please add an OneAgent object in the Project where the Operator has been deployed, configured to your needs.\n\n### Required Parameters\n* `apiUrl` - provide the URL to the API of your Dynatrace environment. In Dynatrace SaaS it will look like `https://<ENVIRONMENTID>.live.dynatrace.com/api` . In Dynatrace Managed like `https://<YourDynatraceServerURL>/e/<ENVIRONMENTID>/api` .\n\n### Advanced Options\n* **Image Override** - use a copy of the OneAgent container image from a registry other than Docker's or Red Hat's\n* **NodeSelectors** - select a subset of your cluster's nodes to run the Dynatrace OneAgent on, based on labels\n* **Tolerations** - add specific tolerations to the agent so that it can monitor all of the nodes in your cluster; we include the default toleration so that Dynatrace OneAgent also monitors the master nodes\n* **Priority Class Name** - define the priorityClassName for OneAgent pods\n* **Environment variables** - define environment variables for the OneAgent container\n* **Disable Certificate Checking** - disable any certificate validation that may interact poorly with proxies with in your cluster\n* **Disable OneAgent Update** - disable the Operator's auto-update feature for OneAgent pods\n* **Enable Istio Auto-config** - automatically create Istio objects for egress communication to the Dynatrace environment from the OneAgent\n\nFor a complete list of supported parameters please consult the [Operator Deploy Guide](https://www.dynatrace.com/support/help/shortlink/openshift-deploy).\n\n### Help\nYou can find more about our instructions in our [documentation](https://www.dynatrace.com/support/help/shortlink/openshift-deploy#install-oneagent-operator).\n",
+      "csv_display_name": "Dynatrace OneAgent",
+      "csv_metadata_description": "Install full-stack monitoring of OpenShift clusters with the Dynatrace OneAgent.",
+      "csv_name": "dynatrace-monitoring.v0.9.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:15:59.331000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "oneagent-certified",
+      "provided_apis": [
+        {
+          "group": "dynatrace.com",
+          "kind": "OneAgentAPM",
+          "plural": "oneagentapms",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "dynatrace.com",
+          "kind": "OneAgent",
+          "plural": "oneagents",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Dynatrace LLC",
+      "related_images": [
+        {
+          "digest": "sha256:874eb4d800e765126c6ffe31319cfc66bbfa332f28983e0444af9ad9abb8fcd9",
+          "image": "registry.connect.redhat.com/dynatrace/dynatrace-oneagent-operator@sha256:874eb4d800e765126c6ffe31319cfc66bbfa332f28983e0444af9ad9abb8fcd9",
+          "name": "dynatrace-oneagent-operator-874eb4d800e765126c6ffe31319cfc66bbfa332f28983e0444af9ad9abb8fcd9-annotation"
+        },
+        {
+          "digest": "sha256:874eb4d800e765126c6ffe31319cfc66bbfa332f28983e0444af9ad9abb8fcd9",
+          "image": "registry.connect.redhat.com/dynatrace/dynatrace-oneagent-operator@sha256:874eb4d800e765126c6ffe31319cfc66bbfa332f28983e0444af9ad9abb8fcd9",
+          "name": "dynatrace-oneagent-operator"
+        },
+        {
+          "digest": "sha256:874eb4d800e765126c6ffe31319cfc66bbfa332f28983e0444af9ad9abb8fcd9",
+          "image": "registry.connect.redhat.com/dynatrace/dynatrace-oneagent-operator@sha256:874eb4d800e765126c6ffe31319cfc66bbfa332f28983e0444af9ad9abb8fcd9",
+          "name": "webhook"
+        },
+        {
+          "digest": "sha256:874eb4d800e765126c6ffe31319cfc66bbfa332f28983e0444af9ad9abb8fcd9",
+          "image": "registry.connect.redhat.com/dynatrace/dynatrace-oneagent-operator@sha256:874eb4d800e765126c6ffe31319cfc66bbfa332f28983e0444af9ad9abb8fcd9",
+          "name": "bootstrapper"
+        },
+        {
+          "digest": "sha256:84b493fe700018e64eee329d25c1e4c8f395a46932ccc8ed6be2f65581bb2cb0",
+          "image": "registry.connect.redhat.com/dynatrace/oneagent@sha256:84b493fe700018e64eee329d25c1e4c8f395a46932ccc8ed6be2f65581bb2cb0",
+          "name": "dynatrace_oneagent"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.9.0",
+      "version_original": "0.9.0"
+    },
+    {
+      "_id": "609aaf52d04af0e74bb05829",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/elastic/eck@sha256:9587db325f9cc13519f16e9fd675e8d74c80603ea6173ed0c25f74e72a2744a2",
+      "bundle_path_digest": "sha256:9587db325f9cc13519f16e9fd675e8d74c80603ea6173ed0c25f74e72a2744a2",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-05-11T16:22:42.288000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "elasticsearch-eck-operator-certified.v1.3.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:31:42.107000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "elasticsearch-eck-operator-certified",
+      "provided_apis": [
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "plural": "elasticsearches",
+          "version": "v1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "plural": "kibanas",
+          "version": "v1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "plural": "apmservers",
+          "version": "v1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "plural": "apmservers",
+          "version": "v1beta1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "plural": "elasticsearches",
+          "version": "v1beta1"
+        },
+        {
+          "group": "elasticsearch.k8s.elastic.co",
+          "kind": "Elasticsearch",
+          "plural": "elasticsearches",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "enterprisesearch.k8s.elastic.co",
+          "kind": "EnterpriseSearch",
+          "plural": "enterprisesearches",
+          "version": "v1beta1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "plural": "kibanas",
+          "version": "v1beta1"
+        },
+        {
+          "group": "kibana.k8s.elastic.co",
+          "kind": "Kibana",
+          "plural": "kibanas",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "apm.k8s.elastic.co",
+          "kind": "ApmServer",
+          "plural": "apmservers",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "beat.k8s.elastic.co",
+          "kind": "Beat",
+          "plural": "beats",
+          "version": "v1beta1"
+        }
+      ],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.3.0",
+      "version_original": "1.3.0"
+    },
+    {
+      "_id": "609aaf523048c1ac9a6fea9d",
+      "alm_examples": [
+        {
+          "api_version": "instana.io/v1beta1",
+          "kind": "InstanaAgent",
+          "metadata": {
+            "name": "instana-agent",
+            "namespace": "instana-agent"
+          },
+          "spec": {
+            "agent.endpoint.host": "ingress-red-saas.instana.io",
+            "agent.endpoint.port": 443,
+            "agent.env": {
+              "INSTANA_AGENT_TAGS": "example"
+            },
+            "agent.key": "replace-me",
+            "agent.zone.name": "my-zone",
+            "config.files": {
+              "configuration.yaml": "# You can leave this empty, or use this to configure your instana agent.\n# See https://docs.instana.io/quick_start/agent_setup/container/kubernetes/\n"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/instana/instana-agent-operator-bundle@sha256:e3bbdf42b6d8e4d5d41793209ebc8c883efee6be03273bc3fef3ce3fe0dc171a",
+      "bundle_path_digest": "sha256:e3bbdf42b6d8e4d5d41793209ebc8c883efee6be03273bc3fef3ce3fe0dc171a",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2021-05-11T16:22:42.679000+00:00",
+      "csv_description": "# Instana\n\nInstana is an [APM solution](https://www.instana.com/product-overview/) built for microservices that enables IT Ops to build applications faster and deliver higher quality services by automating monitoring, tracing and root cause analysis. The solution is optimized for [Kubernetes](https://www.instana.com/automatic-kubernetes-monitoring/) and [OpenShift](https://www.instana.com/blog/automatic-root-cause-analysis-for-openshift-applications/).\n\n## Instana Agent Operator\n\nThis is the Kubernetes Operator for installing the Instana Agent on Kubernetes or OpenShift.\n\n## Prerequisites for OpenShift\n\nBefore the agent will be able to run in OpenShift, you need to perform a couple of extra configuration steps.\n\nYou need to set up a project for the Instana Agent and configure it's permissions.\n\nThe project you create here needs to be the namespace where you create the Instana Agent custom resource that the operator will use to deploy the agent.\n\nFor example, create the `instana-agent` project:\n\n    oc new-project instana-agent\n\nThen, ensure the `instana-agent` service account is in the privileged security context:\n\n    oc adm policy add-scc-to-user privileged -z instana-agent\n\nThis service account will be created by the operator.\n\nNow you can proceed with installing the operator for the Instana agent.\n\n## Installation and Configuration\n\nFirst, install this operator from [OperatorHub.io](https://operatorhub.io/), [OpenShift Container Platform](https://www.openshift.com/), or [OKD](https://www.okd.io/).\n\nSecond, create the target namespace where the Instana agent should be installed. The agent does not need to run in the same namespace as the operator. Most users create a new namespace `instana-agent` for running the agents.\n\nThird, create a custom resource with the agent configuration in the target namespace. The operator will pick up the custom resource and install the Instana agent accordingly.\n\nThe following is a minimal template of the custom resource:\n\n```yaml\napiVersion: instana.io/v1alpha1\nkind: InstanaAgent\nmetadata:\n  name: instana-agent\n  namespace: instana-agent\nspec:\n  agent.zone.name: '{{ (optional) name of the zone of the host }}'\n  agent.key: '{{ put your Instana agent key here }}'\n  agent.endpoint.host: '{{ the monitoring ingress endpoint }}'\n  agent.endpoint.port: '{{ the monitoring ingress endpoint port, wrapped in quotes }}'\nconfig.files:\n  configuration.yaml: |\n    # You can leave this empty, or use this to configure your instana agent.\n    # See https://docs.instana.io/quick_start/agent_setup/container/kubernetes/\n```\n\nSave the template in a file `instana-agent.yaml` and edit the following values:\n\n* If your target namespace is not `instana-agent`, replace the `namespace:` accordingly.\n* `agent.key` must be set with your Instana agent key.\n* `agent.endpoint` must be set with the monitoring ingress endpoint, generally either `saas-us-west-2.instana.io` or `saas-eu-west-1.instana.io`.\n* `agent.endpoint.port` must be set with the monitoring ingress port, generally \"443\" (wrapped in quotes).\n* `agent.zone.name` should be set with the name of the Kubernetes cluster that is be displayed in Instana.\n\nFor advanced configuration, you can edit the contents of the `configuration.yaml` file. View documentation here: [https://docs.instana.io/quick_start/agent_setup/container/kubernetes/](https://docs.instana.io/quick_start/agent_setup/container/kubernetes/).\n\nApply the custom resource with `kubectl apply -f instana-agent.yaml`. After some time, you should see `instana-agent` Pods being created on each node of your cluster, and your cluster should show on the infrastructure map on your Instana Web interface.\n\n## Uninstalling\n\nIn order to uninstall the Instana agent, simply remove the custom resource with `kubectl delete -f instana-agent.yaml`.\n\n## Source Code\n\nThe Instana agent operator is an open source project hosted on [https://github.com/instana/instana-agent-operator](https://github.com/instana/instana-agent-operator/).\n",
+      "csv_display_name": "Instana Agent Operator",
+      "csv_metadata_description": "Fully automated Application Performance Monitoring (APM) for microservices.",
+      "csv_name": "instana-agent-operator.v0.2.6",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:02:59.155000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "instana-agent",
+      "provided_apis": [
+        {
+          "group": "instana.io",
+          "kind": "InstanaAgent",
+          "plural": "agents",
+          "version": "v1beta1"
+        },
+        {
+          "group": "instana.io",
+          "kind": "InstanaAgent",
+          "plural": "agents",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Instana",
+      "related_images": [
+        {
+          "digest": "sha256:afaa2d44ad481992e80caa291929c0b24966301f53d5bef1895978969eee9a73",
+          "image": "registry.connect.redhat.com/instana/instana-agent-operator@sha256:afaa2d44ad481992e80caa291929c0b24966301f53d5bef1895978969eee9a73",
+          "name": "instana-agent-operator-afaa2d44ad481992e80caa291929c0b24966301f53d5bef1895978969eee9a73-annotation"
+        },
+        {
+          "digest": "sha256:afaa2d44ad481992e80caa291929c0b24966301f53d5bef1895978969eee9a73",
+          "image": "registry.connect.redhat.com/instana/instana-agent-operator@sha256:afaa2d44ad481992e80caa291929c0b24966301f53d5bef1895978969eee9a73",
+          "name": "instana-agent-operator"
+        },
+        {
+          "digest": "sha256:dea7f13415849e8a68e4efb26436511ca19ed5f2ff10e45f5394f2da23273d1e",
+          "image": "registry.connect.redhat.com/instana/agent@sha256:dea7f13415849e8a68e4efb26436511ca19ed5f2ff10e45f5394f2da23273d1e",
+          "name": "instana_agent"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.2.6",
+      "version_original": "0.2.6"
+    },
+    {
+      "_id": "609aaf55d04af0e74bb0582b",
+      "alm_examples": [
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "License",
+          "metadata": {
+            "name": "triliovault-license"
+          },
+          "spec": {
+            "key": "xLkNDgwKD3jafZJNb8IwDIbv+RWRdo6Uj5a2SD1MwKRtjE0bsLOTuiISpFWaovHv145NQy3iPcb249d27j6xoE/tnkpJOZ/KaBrFVHLJycwjBFu5OQSk/8r7IOMJk5IsCttn0IHyB4+49hb2BEywR6SjjOBbJHtr0DW4Rd9cUnJJXsC6gA6cwcVXbf3pbKLvrRhPmersVYca3GlEfsdiB4Gs2oNG/1pumo5+EWaCfKA/on+cDysh5gWokjOjU8WEQGBaQMSM0DrDiTKTpCterOgV5d07+wXIm4Dleehh+3y9vd8s138MdduEqWq8YsLBAZsaDBbkudW4Gc1Ic56ITHMwrEwTwSIlY5bqLGGGx1kW6QQzUZKfncPotJfrf2u92UGDN37HDDorNgxPlAtOe3d0VRXYfAMj8ZzrMEYCIQCVaI/QJN+2M/QJWimd28dWOi/6o5s5I5+z30JrmzwGnQIhAKrSu8NeUIqXGEBTQvPKe3n2U0LNPht/ZAQIs5CZNeWlX02gk"
+          }
+        },
+        {
+          "api_version": "triliovault.trilio.io/v1",
+          "kind": "Target",
+          "metadata": {
+            "labels": {
+              "app": "triliovault"
+            },
+            "name": "triliovault-target"
+          },
+          "spec": {
+            "nfsCredentials": {
+              "nfsExport": "00.00.00.00:/src/nfs/kubedata",
+              "nfsOptions": "nfsvers=4"
+            },
+            "type": "NFS",
+            "vendor": "Other"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/trilio/r-3445381-bundle@sha256:46bd2d9a110bb8964d675bec5863de8dd2e5dcdf7d6b97a0d64a8a543fbeebf7",
+      "bundle_path_digest": "sha256:46bd2d9a110bb8964d675bec5863de8dd2e5dcdf7d6b97a0d64a8a543fbeebf7",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "cluster",
+      "creation_date": "2021-05-11T16:22:45.516000+00:00",
+      "csv_description": "TrilioVault for Kubernetes is an enterprise-grade, cloud-native platform purpose built for data protection and management of Kubernetes applications for IT managers, administrators and developers. TrilioVault supports upstream Kubernetes and OpenShift environments and offers the following features:\n  * Application-Centric - protects both data and metadata for Helm, Operator or custom Label based applications.\n  * Red Hat Certified - first backup and recovery solution with OpenShift Operator Certification.\n  * Native to Kubernetes & OpenShift: Packaged and deployed as an Operator, integrated via Kubernetes API and with all features that it provides.\n  * Infrastructure Agnostic: Compatible with any Storage (CSI, NFS, S3), or any Cloud (Private or Public).\n  * Application Deployment & Tooling: Helm, Operators, Labels, Prometheus, Fluentd.\nTutorials\n------------\nPlease click the link below to access the TrilioVault for Kubernetes \"How-To\" series for deployment, best practice and use-case videos\n<a href=\"https://www.trilio.io/triliovault-for-kubernetes\">TrilioVault for Kubernetes - Tutorials and How-To </a>\u201d\nLicensing\n--------\nCustomers can download a 30-day Free Trial or a 10-node Basic Edition at no cost.  You can also connect with the Trilio team for an Enterprise Edition license with no limitations and Premium Support.\nFor more information on license plans please vist:\n<a href=\"www.trilio.io/plans\"> Trilio Vault for Kubernetes licensing and plans </a>\nAbout Trilio\n----------------\nTrilio is trusted by global cloud infrastructure operators to deliver data protection, application resiliency, infrastructure migration and infrastructure version management. Our TrilioVault technology supports Kubernetes, OpenStack and Virtualization environments to recover from disasters, migrate tenant workloads, move workloads to new infrastructures and migrate to new infrastructure software distributions. www.trilio.io and @triliodata on Twitter.",
+      "csv_display_name": "TrilioVault for Kubernetes",
+      "csv_metadata_description": "Cloud-Native Data Protection for Kubernetes",
+      "csv_name": "k8s-triliovault-cluster.v2.0.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:55:31.932000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "k8s-triliovault",
+      "provided_apis": [
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Policy",
+          "plural": "policies",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Restore",
+          "plural": "restores",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Restore",
+          "plural": "restores",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Target",
+          "plural": "targets",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "BackupPlan",
+          "plural": "backupplans",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Hook",
+          "plural": "hooks",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Hook",
+          "plural": "hooks",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Target",
+          "plural": "targets",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "BackupPlan",
+          "plural": "backupplans",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "License",
+          "plural": "licenses",
+          "version": "v1"
+        },
+        {
+          "group": "triliovault.trilio.io",
+          "kind": "Policy",
+          "plural": "policies",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Trilio",
+      "related_images": [
+        {
+          "digest": "sha256:3415b187697f03bb7a1ef26db70559d58dc81090269ef788d3d74a0540b024c5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:3415b187697f03bb7a1ef26db70559d58dc81090269ef788d3d74a0540b024c5",
+          "name": "control-plane-3415b187697f03bb7a1ef26db70559d58dc81090269ef788d3d74a0540b024c5-annotation"
+        },
+        {
+          "digest": "sha256:3415b187697f03bb7a1ef26db70559d58dc81090269ef788d3d74a0540b024c5",
+          "image": "registry.connect.redhat.com/trilio/control-plane@sha256:3415b187697f03bb7a1ef26db70559d58dc81090269ef788d3d74a0540b024c5",
+          "name": "k8s-triliovault-control-plane"
+        },
+        {
+          "digest": "sha256:57ea3249fb4b25dd06796b6226d7f9dde811ca81be29ba3908b4b7ddbda788bc",
+          "image": "registry.connect.redhat.com/trilio/trilio-admission-webhook@sha256:57ea3249fb4b25dd06796b6226d7f9dde811ca81be29ba3908b4b7ddbda788bc",
+          "name": "triliovault-admission-webhook"
+        },
+        {
+          "digest": "sha256:c03c47c33b68da6e9aa6d7c0453d902de757487caf9732dea96ed1c66a0e7254",
+          "image": "registry.connect.redhat.com/trilio/exporter@sha256:c03c47c33b68da6e9aa6d7c0453d902de757487caf9732dea96ed1c66a0e7254",
+          "name": "triliovault-exporter"
+        },
+        {
+          "digest": "sha256:88fed31fcc21d3fe6423ba59dcb5c7c502193f19616dd725b053769c4faab8e7",
+          "image": "registry.connect.redhat.com/trilio/web@sha256:88fed31fcc21d3fe6423ba59dcb5c7c502193f19616dd725b053769c4faab8e7",
+          "name": "triliovault-web"
+        },
+        {
+          "digest": "sha256:7fc096ca3d70e5b6cbe74d40cce4008a2d7e1eb11e7d6693149fd75e13da10cf",
+          "image": "registry.connect.redhat.com/trilio/web-backend@sha256:7fc096ca3d70e5b6cbe74d40cce4008a2d7e1eb11e7d6693149fd75e13da10cf",
+          "name": "triliovault-backend"
+        },
+        {
+          "digest": "sha256:e2c1ccb21176dbcf3f010ae71205b25a09cc864a3273552f48d8e24a47bbabb3",
+          "image": "registry.connect.redhat.com/trilio/control-plane-init@sha256:e2c1ccb21176dbcf3f010ae71205b25a09cc864a3273552f48d8e24a47bbabb3",
+          "name": "control-plane-init"
+        },
+        {
+          "digest": "sha256:1a7f5b84b637947f77a667dfcc9e646b5f8995a20e8edb3c526791080d03d3e9",
+          "image": "registry.connect.redhat.com/trilio/trilio-webhook-init@sha256:1a7f5b84b637947f77a667dfcc9e646b5f8995a20e8edb3c526791080d03d3e9",
+          "name": "webhook-init"
+        },
+        {
+          "digest": "sha256:8835028b73d64cab5a4ca797896bd3a2956b3eda9df23fd3a5f45f1f06bc02fd",
+          "image": "registry.connect.redhat.com/trilio/metamover@sha256:8835028b73d64cab5a4ca797896bd3a2956b3eda9df23fd3a5f45f1f06bc02fd",
+          "name": "metamover"
+        },
+        {
+          "digest": "sha256:00ffd308ece1b2b405e7512f0ec8b9b08da5c9c03692de82731d90889047a317",
+          "image": "registry.connect.redhat.com/trilio/datamover@sha256:00ffd308ece1b2b405e7512f0ec8b9b08da5c9c03692de82731d90889047a317",
+          "name": "datamover"
+        },
+        {
+          "digest": "sha256:c49c9cac54c11c2aeb56c32e75a5c59997b7fcebf5ffe53e523858052ba133a3",
+          "image": "registry.connect.redhat.com/trilio/datastore-attacher@sha256:c49c9cac54c11c2aeb56c32e75a5c59997b7fcebf5ffe53e523858052ba133a3",
+          "name": "datastore_attacher"
+        },
+        {
+          "digest": "sha256:e09a907e1e5c876c68447d15f96e8b7f08fb5132ffccd26f0715424724e65fac",
+          "image": "registry.connect.redhat.com/trilio/backup-scheduler@sha256:e09a907e1e5c876c68447d15f96e8b7f08fb5132ffccd26f0715424724e65fac",
+          "name": "backup_scheduler"
+        },
+        {
+          "digest": "sha256:94685bd0f32cb73aa5a67093c9b9b5868996faf52255c913fbfd4aaa53071085",
+          "image": "registry.connect.redhat.com/trilio/backup-cleaner@sha256:94685bd0f32cb73aa5a67093c9b9b5868996faf52255c913fbfd4aaa53071085",
+          "name": "backup_cleaner"
+        },
+        {
+          "digest": "sha256:537f14f455daaad8e50706608e2de90ecde8d79640a0d1160a0dbd20877a769d",
+          "image": "registry.connect.redhat.com/trilio/backup-retention@sha256:537f14f455daaad8e50706608e2de90ecde8d79640a0d1160a0dbd20877a769d",
+          "name": "backup_retention"
+        },
+        {
+          "digest": "sha256:ff646c9f7e3d1c78307759f13a1e4f2fd5273d0144ae7a17dc63a622779a6e21",
+          "image": "registry.connect.redhat.com/trilio/target-browser@sha256:ff646c9f7e3d1c78307759f13a1e4f2fd5273d0144ae7a17dc63a622779a6e21",
+          "name": "target_browser"
+        },
+        {
+          "digest": "sha256:2a6b8212dd2c10623479fd93d8a34d6b5aeb6792e0b47ee1779bdbf91eebeb40",
+          "image": "registry.connect.redhat.com/trilio/hook-executor@sha256:2a6b8212dd2c10623479fd93d8a34d6b5aeb6792e0b47ee1779bdbf91eebeb40",
+          "name": "hook"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "2.0.1",
+      "version_original": "2.0.1"
+    },
+    {
+      "_id": "609aaf5756933b164fe2120f",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "5.4.14-31.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "size": 3,
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:16da0c69f0e2585be8e44abe6e269dd35176771f5a1ecda3111c8a2f52c790a0",
+      "bundle_path_digest": "sha256:16da0c69f0e2585be8e44abe6e269dd35176771f5a1ecda3111c8a2f52c790a0",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.0.12",
+      "creation_date": "2021-05-11T16:22:47.864000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v5.4.14-7",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:20:54.113000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Redis Labs",
+      "related_images": [
+        {
+          "digest": "sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
+          "image": "redislabs/operator@sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
+          "name": "operator-062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217-annotation"
+        },
+        {
+          "digest": "sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "5.4.14-7",
+      "version_original": "5.4.14-7"
+    },
+    {
+      "_id": "609aaf58d04af0e74bb05830",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm-edge/data-explorer-operator-bundle@sha256:252eb0f3b3cf70b199f209a8ec03ff0d1c99c4cc0a60af18687238944b6e5140",
+      "bundle_path_digest": "sha256:252eb0f3b3cf70b199f209a8ec03ff0d1c99c4cc0a60af18687238944b6e5140",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-05-11T16:22:48.810000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "data-explorer-operator.v0.0.7",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:29:16.993000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "data-explorer-operator-certified",
+      "provided_apis": [
+        {
+          "group": "data-explorer.com",
+          "kind": "DashboardWithJupyterHub",
+          "plural": "dashboardwithjupyterhubs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.0.7",
+      "version_original": "0.0.7"
+    },
+    {
+      "_id": "609aaf583048c1ac9a6feaa0",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "bundle_path_digest": "sha256:a16342d44039d3619f08f3fdd411e0074f7809442fbb486939b69f8c15451ecf",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.0.6",
+      "creation_date": "2021-05-11T16:22:48.985000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-11",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:20:46.371000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.6-11",
+      "version_original": "6.0.6-11"
+    },
+    {
+      "_id": "609aaf5ad04af0e74bb05831",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/seldonio/seldon-core-operator-bundle@sha256:c380d43717df7db52058bcf261ece6ceb0e0ce779b0576d31d25d8a3c9c70e55",
+      "bundle_path_digest": "sha256:c380d43717df7db52058bcf261ece6ceb0e0ce779b0576d31d25d8a3c9c70e55",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-05-11T16:22:50.303000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "seldon-operator.v1.1.0",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:30:21.309000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "seldon-operator-certified",
+      "provided_apis": [
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1alpha3"
+        },
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1"
+        },
+        {
+          "group": "machinelearning.seldon.io",
+          "kind": "SeldonDeployment",
+          "plural": "seldondeployments",
+          "version": "v1alpha2"
+        }
+      ],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.1.0",
+      "version_original": "1.1.0"
+    },
+    {
+      "_id": "609aaf5b3048c1ac9a6feaa3",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/memsql/operator-bundle@sha256:1a400322ed8279e6ded73c7fd89c3cc5df2f74ebede9d192017268166a2bb97e",
+      "bundle_path_digest": "sha256:1a400322ed8279e6ded73c7fd89c3cc5df2f74ebede9d192017268166a2bb97e",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-05-11T16:22:51.758000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "memsql-operator.v0.0.2",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:41:59.251000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "memql-certified",
+      "provided_apis": [
+        {
+          "group": "memsql.com",
+          "kind": "MemsqlCluster",
+          "plural": "memsqlclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.0.2",
+      "version_original": "0.0.2"
+    },
+    {
+      "_id": "609aaf5c3048c1ac9a6feaa4",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nastel/navigator-operator-bundle@sha256:8742dab8b0f0fb06c3bbed65d27baddff3df29575f57c50a4e44fc11365929a3",
+      "bundle_path_digest": "sha256:8742dab8b0f0fb06c3bbed65d27baddff3df29575f57c50a4e44fc11365929a3",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-05-11T16:22:52.478000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "nastel-navigator-operator.v0.0.14",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:19:11.810000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "nastel-navigator-operator-certified",
+      "provided_apis": [
+        {
+          "group": "navigator.nastel.com",
+          "kind": "NastelNavigator",
+          "plural": "nastelnavigators",
+          "version": "v1alpha6"
+        }
+      ],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.0.14",
+      "version_original": "0.0.14"
+    },
+    {
+      "_id": "609aaf5d3048c1ac9a6feaa5",
+      "alm_examples": [
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIIsilon",
+          "metadata": {
+            "name": "isilon",
+            "namespace": "test-isilon"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_VERBOSE",
+                    "value": "1"
+                  },
+                  {
+                    "name": "X_CSI_ISI_ENDPOINT",
+                    "value": "1.1.1.1"
+                  },
+                  {
+                    "name": "X_CSI_ISI_PORT",
+                    "value": "8080"
+                  },
+                  {
+                    "name": "X_CSI_ISI_PATH",
+                    "value": "/ifs/data/csi"
+                  },
+                  {
+                    "name": "X_CSI_ISILON_NO_PROBE_ON_START",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_ISI_AUTOPROBE",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_ISI_INSECURE",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_DEBUG",
+                    "value": "true"
+                  }
+                ],
+                "image": "dellemc/csi-isilon:v1.3.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v3",
+              "controller": {
+                "envs": [
+                  {
+                    "name": "X_CSI_ISI_QUOTA_ENABLED",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_ISI_ACCESS_ZONE",
+                    "value": "System"
+                  }
+                ]
+              },
+              "forceUpdate": false,
+              "node": {
+                "envs": [
+                  {
+                    "name": "X_CSI_ISILON_NFS_V3",
+                    "value": "false"
+                  }
+                ]
+              },
+              "replicas": 1,
+              "sideCars": [
+                {
+                  "args": [
+                    "--volume-name-prefix=csipscale"
+                  ],
+                  "name": "provisioner"
+                }
+              ],
+              "storageClass": [
+                {
+                  "allowVolumeExpansion": true,
+                  "default": true,
+                  "name": "storageclass",
+                  "parameters": {
+                    "AccessZone": "System",
+                    "AzServiceIP": "1.1.1.1",
+                    "IsiPath": "/ifs/data/csi",
+                    "RootClientEnabled": "false"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIIsilon",
+          "metadata": {
+            "name": "isilon",
+            "namespace": "test-isilon"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_VERBOSE",
+                    "value": "1"
+                  },
+                  {
+                    "name": "X_CSI_ISI_ENDPOINT",
+                    "value": "1.1.1.1"
+                  },
+                  {
+                    "name": "X_CSI_ISI_PORT",
+                    "value": "8080"
+                  },
+                  {
+                    "name": "X_CSI_ISI_PATH",
+                    "value": "/ifs/data/csi"
+                  },
+                  {
+                    "name": "X_CSI_ISILON_NO_PROBE_ON_START",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_ISI_AUTOPROBE",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_ISI_INSECURE",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_DEBUG",
+                    "value": "false"
+                  }
+                ],
+                "image": "dellemc/csi-isilon:v1.3.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v3",
+              "controller": {
+                "envs": [
+                  {
+                    "name": "X_CSI_ISI_QUOTA_ENABLED",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_ISI_ACCESS_ZONE",
+                    "value": "System"
+                  }
+                ]
+              },
+              "forceUpdate": false,
+              "node": {
+                "envs": [
+                  {
+                    "name": "X_CSI_ISILON_NFS_V3",
+                    "value": "false"
+                  }
+                ]
+              },
+              "replicas": 1,
+              "sideCars": [
+                {
+                  "args": [
+                    "--volume-name-prefix=csipscale"
+                  ],
+                  "name": "provisioner"
+                }
+              ],
+              "snapshotClass": [
+                {
+                  "name": "volumesnapshotclass",
+                  "parameters": {
+                    "IsiPath": "/ifs/data/csi"
+                  }
+                }
+              ],
+              "storageClass": [
+                {
+                  "allowVolumeExpansion": true,
+                  "default": true,
+                  "name": "storageclass",
+                  "parameters": {
+                    "AccessZone": "System",
+                    "AzServiceIP": "1.1.1.1",
+                    "IsiPath": "/ifs/data/csi",
+                    "RootClientEnabled": "false"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIPowerMaxRevProxy",
+          "metadata": {
+            "name": "powermax-reverseproxy",
+            "namespace": "test-powermax"
+          },
+          "spec": {
+            "config": {
+              "linkConfig": {
+                "backup": {
+                  "skipCertificateValidation": true,
+                  "url": "https://0.0.0.0:8443"
+                },
+                "primary": {
+                  "certSecret": "",
+                  "skipCertificateValidation": true,
+                  "url": "https://0.0.0.0:8443"
+                }
+              },
+              "mode": "Linked"
+            },
+            "image": "dellemc/csipowermax-reverseproxy:v1.0.0.000R",
+            "imagePullPolicy": "Always",
+            "tlsSecret": "csirevproxy-tls-secret"
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIPowerMax",
+          "metadata": {
+            "name": "test-powermax",
+            "namespace": "test-powermax"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_POWERMAX_ENDPOINT",
+                    "value": "https://0.0.0.0:8443/"
+                  },
+                  {
+                    "name": "X_CSI_K8S_CLUSTER_PREFIX",
+                    "value": "XYZ"
+                  },
+                  {
+                    "name": "X_CSI_POWERMAX_PORTGROUPS",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_POWERMAX_ARRAYS",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_TRANSPORT_PROTOCOL",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_POWERMAX_PROXY_SERVICE_NAME",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_GRPC_MAX_THREADS",
+                    "value": "4"
+                  }
+                ],
+                "image": "dellemc/csi-powermax:v1.4.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v3",
+              "forceUpdate": false,
+              "node": {
+                "envs": [
+                  {
+                    "name": "X_CSI_POWERMAX_ISCSI_ENABLE_CHAP",
+                    "value": "false"
+                  }
+                ]
+              },
+              "replicas": 1,
+              "storageClass": [
+                {
+                  "allowVolumeExpansion": false,
+                  "default": true,
+                  "name": "bronze",
+                  "parameters": {
+                    "SRP": "DEFAULT_SRP",
+                    "SYMID": "000000000001",
+                    "ServiceLevel": "Bronze"
+                  },
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "allowVolumeExpansion": true,
+                  "name": "bronze-resize",
+                  "parameters": {
+                    "SRP": "DEFAULT_SRP",
+                    "SYMID": "000000000001",
+                    "ServiceLevel": "Bronze"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIPowerMax",
+          "metadata": {
+            "name": "test-powermax",
+            "namespace": "test-powermax"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_POWERMAX_ENDPOINT",
+                    "value": "https://0.0.0.0:8443/"
+                  },
+                  {
+                    "name": "X_CSI_K8S_CLUSTER_PREFIX",
+                    "value": "XYZ"
+                  },
+                  {
+                    "name": "X_CSI_POWERMAX_PORTGROUPS",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_POWERMAX_ARRAYS",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_TRANSPORT_PROTOCOL",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_POWERMAX_PROXY_SERVICE_NAME",
+                    "value": ""
+                  },
+                  {
+                    "name": "X_CSI_GRPC_MAX_THREADS",
+                    "value": "4"
+                  }
+                ],
+                "image": "dellemc/csi-powermax:v1.4.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v3",
+              "forceUpdate": false,
+              "node": {
+                "envs": [
+                  {
+                    "name": "X_CSI_POWERMAX_ISCSI_ENABLE_CHAP",
+                    "value": "false"
+                  }
+                ]
+              },
+              "replicas": 1,
+              "snapshotClass": [
+                {
+                  "name": "powermax-snapclass"
+                }
+              ],
+              "storageClass": [
+                {
+                  "allowVolumeExpansion": false,
+                  "default": true,
+                  "name": "bronze",
+                  "parameters": {
+                    "SRP": "DEFAULT_SRP",
+                    "SYMID": "000000000001",
+                    "ServiceLevel": "Bronze"
+                  },
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "allowVolumeExpansion": true,
+                  "name": "bronze-resize",
+                  "parameters": {
+                    "SRP": "DEFAULT_SRP",
+                    "SYMID": "000000000001",
+                    "ServiceLevel": "Bronze"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIPowerStore",
+          "metadata": {
+            "name": "test-powerstore",
+            "namespace": "test-powerstore"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_POWERSTORE_ENDPOINT",
+                    "value": "https://127.0.0.1/api/rest"
+                  },
+                  {
+                    "name": "X_CSI_POWERSTORE_NODE_NAME_PREFIX",
+                    "value": "csi"
+                  },
+                  {
+                    "name": "X_CSI_TRANSPORT_PROTOCOL",
+                    "value": "ISCSI"
+                  },
+                  {
+                    "name": "X_CSI_FC_PORTS_FILTER_FILE_PATH",
+                    "value": "/etc/fc-ports-filter"
+                  }
+                ],
+                "image": "dellemc/csi-powerstore:v1.1.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v1",
+              "forceUpdate": false,
+              "replicas": 1,
+              "storageClass": [
+                {
+                  "default": true,
+                  "name": "powerstore",
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "name": "powerstore-xfs",
+                  "parameters": {
+                    "FsType": "xfs"
+                  },
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "name": "powerstore-nfs",
+                  "parameters": {
+                    "FsType": "nfs",
+                    "nasName": "nas-server"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIPowerStore",
+          "metadata": {
+            "name": "test-powerstore",
+            "namespace": "test-powerstore"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_POWERSTORE_ENDPOINT",
+                    "value": "https://127.0.0.1/api/rest"
+                  },
+                  {
+                    "name": "X_CSI_POWERSTORE_NODE_NAME_PREFIX",
+                    "value": "csi"
+                  },
+                  {
+                    "name": "X_CSI_TRANSPORT_PROTOCOL",
+                    "value": "ISCSI"
+                  },
+                  {
+                    "name": "X_CSI_FC_PORTS_FILTER_FILE_PATH",
+                    "value": "/etc/fc-ports-filter"
+                  }
+                ],
+                "image": "dellemc/csi-powerstore:v1.1.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v1",
+              "forceUpdate": false,
+              "replicas": 1,
+              "snapshotClass": [
+                {
+                  "name": "powerstore-snapshot"
+                }
+              ],
+              "storageClass": [
+                {
+                  "default": true,
+                  "name": "powerstore",
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "name": "powerstore-xfs",
+                  "parameters": {
+                    "FsType": "xfs"
+                  },
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "name": "powerstore-nfs",
+                  "parameters": {
+                    "FsType": "nfs",
+                    "nasName": "nas-server"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIUnity",
+          "metadata": {
+            "name": "test-unity",
+            "namespace": "test-unity"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_UNITY_DEBUG",
+                    "value": "true"
+                  }
+                ],
+                "image": "dellemc/csi-unity:v1.3.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2",
+              "replicas": 1,
+              "sideCars": [
+                {
+                  "args": [
+                    "--volume-name-prefix=csiunity"
+                  ],
+                  "name": "provisioner"
+                }
+              ],
+              "storageClass": [
+                {
+                  "allowVolumeExpansion": true,
+                  "default": true,
+                  "name": "virt2016****-fc",
+                  "parameters": {
+                    "arrayId": "VIRT2016****",
+                    "protocol": "FC",
+                    "storagePool": "pool_1"
+                  },
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "allowVolumeExpansion": true,
+                  "name": "virt2017****-iscsi",
+                  "parameters": {
+                    "arrayId": "VIRT2017****",
+                    "protocol": "iSCSI",
+                    "storagePool": "pool_1"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIUnity",
+          "metadata": {
+            "name": "test-unity",
+            "namespace": "test-unity"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_UNITY_DEBUG",
+                    "value": "true"
+                  }
+                ],
+                "image": "dellemc/csi-unity:v1.3.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2",
+              "replicas": 1,
+              "sideCars": [
+                {
+                  "args": [
+                    "--volume-name-prefix=csiunity"
+                  ],
+                  "name": "provisioner"
+                }
+              ],
+              "snapshotClass": [
+                {
+                  "name": "test-snap",
+                  "parameters": {
+                    "retentionDuration": ""
+                  }
+                }
+              ],
+              "storageClass": [
+                {
+                  "allowVolumeExpansion": true,
+                  "default": true,
+                  "name": "virt2016****-fc",
+                  "parameters": {
+                    "arrayId": "VIRT2016****",
+                    "protocol": "FC",
+                    "storagePool": "pool_1"
+                  },
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "allowVolumeExpansion": true,
+                  "name": "virt2017****-iscsi",
+                  "parameters": {
+                    "arrayId": "VIRT2017****",
+                    "protocol": "iSCSI",
+                    "storagePool": "pool_1"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIVXFlexOS",
+          "metadata": {
+            "name": "test-vxflexos",
+            "namespace": "test-vxflexos"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_VXFLEXOS_SYSTEMNAME",
+                    "value": "systemname"
+                  },
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENDPOINT",
+                    "value": "https://127.0.0.0"
+                  },
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENABLELISTVOLUMESNAPSHOT",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENABLESNAPSHOTCGDELETE",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_DEBUG",
+                    "value": "true"
+                  }
+                ],
+                "image": "dellemc/csi-vxflexos:v1.2.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2",
+              "forceUpdate": false,
+              "replicas": 1,
+              "storageClass": [
+                {
+                  "allowVolumeExpansion": true,
+                  "allowedTopologies": [
+                    {
+                      "matchLabelExpressions": [
+                        {
+                          "key": "csi-vxflexos.dellemc.com/X_CSI_VXFLEXOS_SYSTEMNAME",
+                          "values": [
+                            "csi-vxflexos.dellemc.com"
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "default": true,
+                  "name": "vxflexos",
+                  "parameters": {
+                    "storagepool": "pool1"
+                  },
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "allowVolumeExpansion": true,
+                  "allowedTopologies": [
+                    {
+                      "matchLabelExpressions": [
+                        {
+                          "key": "csi-vxflexos.dellemc.com/X_CSI_VXFLEXOS_SYSTEMNAME",
+                          "values": [
+                            "csi-vxflexos.dellemc.com"
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "default": false,
+                  "name": "vxflexos-xfs",
+                  "parameters": {
+                    "FsType": "xfs",
+                    "storagepool": "pool2"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIVXFlexOS",
+          "metadata": {
+            "name": "test-vxflexos",
+            "namespace": "test-vxflexos"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_VXFLEXOS_SYSTEMNAME",
+                    "value": "systemname"
+                  },
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENDPOINT",
+                    "value": "https://127.0.0.0"
+                  },
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENABLELISTVOLUMESNAPSHOT",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENABLESNAPSHOTCGDELETE",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_DEBUG",
+                    "value": "true"
+                  }
+                ],
+                "image": "dellemc/csi-vxflexos:v1.2.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2",
+              "forceUpdate": false,
+              "replicas": 1,
+              "snapshotClass": [
+                {
+                  "name": "vxflexos-snapclass"
+                }
+              ],
+              "storageClass": [
+                {
+                  "allowVolumeExpansion": true,
+                  "allowedTopologies": [
+                    {
+                      "matchLabelExpressions": [
+                        {
+                          "key": "csi-vxflexos.dellemc.com/X_CSI_VXFLEXOS_SYSTEMNAME",
+                          "values": [
+                            "csi-vxflexos.dellemc.com"
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "default": true,
+                  "name": "vxflexos",
+                  "parameters": {
+                    "storagepool": "pool1"
+                  },
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "allowVolumeExpansion": true,
+                  "allowedTopologies": [
+                    {
+                      "matchLabelExpressions": [
+                        {
+                          "key": "csi-vxflexos.dellemc.com/X_CSI_VXFLEXOS_SYSTEMNAME",
+                          "values": [
+                            "csi-vxflexos.dellemc.com"
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "default": false,
+                  "name": "vxflexos-xfs",
+                  "parameters": {
+                    "FsType": "xfs",
+                    "storagepool": "pool2"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIIsilon",
+          "metadata": {
+            "name": "isilon",
+            "namespace": "test-isilon"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_VERBOSE",
+                    "value": "1"
+                  },
+                  {
+                    "name": "X_CSI_ISI_ENDPOINT",
+                    "value": "1.1.1.1"
+                  },
+                  {
+                    "name": "X_CSI_ISI_PORT",
+                    "value": "8080"
+                  },
+                  {
+                    "name": "X_CSI_ISI_PATH",
+                    "value": "/ifs/data/csi"
+                  },
+                  {
+                    "name": "X_CSI_ISILON_NO_PROBE_ON_START",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_ISI_AUTOPROBE",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_ISI_INSECURE",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_DEBUG",
+                    "value": "true"
+                  }
+                ],
+                "image": "dellemc/csi-isilon:v1.3.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v3",
+              "controller": {
+                "envs": [
+                  {
+                    "name": "X_CSI_ISI_QUOTA_ENABLED",
+                    "value": "true"
+                  },
+                  {
+                    "name": "X_CSI_ISI_ACCESS_ZONE",
+                    "value": "System"
+                  }
+                ]
+              },
+              "forceUpdate": false,
+              "node": {
+                "envs": [
+                  {
+                    "name": "X_CSI_ISILON_NFS_V3",
+                    "value": "false"
+                  }
+                ]
+              },
+              "replicas": 1,
+              "sideCars": [
+                {
+                  "args": [
+                    "--volume-name-prefix=csipscale"
+                  ],
+                  "name": "provisioner"
+                }
+              ],
+              "snapshotClass": [
+                {
+                  "name": "volumesnapshotclass",
+                  "parameters": {
+                    "IsiPath": "/ifs/data/csi"
+                  }
+                }
+              ],
+              "storageClass": [
+                {
+                  "allowVolumeExpansion": true,
+                  "default": true,
+                  "name": "storageclass",
+                  "parameters": {
+                    "AccessZone": "System",
+                    "AzServiceIP": "1.1.1.1",
+                    "IsiPath": "/ifs/data/csi",
+                    "RootClientEnabled": "false"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIUnity",
+          "metadata": {
+            "name": "test-unity",
+            "namespace": "test-unity"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_UNITY_DEBUG",
+                    "value": "true"
+                  }
+                ],
+                "image": "dellemc/csi-unity:v1.3.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2",
+              "replicas": 1,
+              "sideCars": [
+                {
+                  "args": [
+                    "--volume-name-prefix=csiunity"
+                  ],
+                  "name": "provisioner"
+                }
+              ],
+              "snapshotClass": [
+                {
+                  "name": "test-snap",
+                  "parameters": {
+                    "retentionDuration": ""
+                  }
+                }
+              ],
+              "storageClass": [
+                {
+                  "allowVolumeExpansion": true,
+                  "default": true,
+                  "name": "virt2016****-fc",
+                  "parameters": {
+                    "arrayId": "VIRT2016****",
+                    "protocol": "FC",
+                    "storagePool": "pool_1"
+                  },
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "allowVolumeExpansion": true,
+                  "name": "virt2017****-iscsi",
+                  "parameters": {
+                    "arrayId": "VIRT2017****",
+                    "protocol": "iSCSI",
+                    "storagePool": "pool_1"
+                  },
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "allowVolumeExpansion": true,
+                  "name": "virt2017****-nfs",
+                  "parameters": {
+                    "arrayId": "VIRT2017****",
+                    "hostIoSize": "8192",
+                    "nasServer": "nas_1",
+                    "protocol": "NFS",
+                    "storagePool": "pool_1"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "api_version": "storage.dell.com/v1",
+          "kind": "CSIVXFlexOS",
+          "metadata": {
+            "name": "test-vxflexos",
+            "namespace": "test-vxflexos"
+          },
+          "spec": {
+            "driver": {
+              "common": {
+                "envs": [
+                  {
+                    "name": "X_CSI_VXFLEXOS_SYSTEMNAME",
+                    "value": "systemname"
+                  },
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENDPOINT",
+                    "value": "https://127.0.0.1"
+                  },
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENABLELISTVOLUMESNAPSHOT",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_VXFLEXOS_ENABLESNAPSHOTCGDELETE",
+                    "value": "false"
+                  },
+                  {
+                    "name": "X_CSI_DEBUG",
+                    "value": "true"
+                  }
+                ],
+                "image": "dellemc/csi-vxflexos:v1.2.0.000R",
+                "imagePullPolicy": "IfNotPresent"
+              },
+              "configVersion": "v2",
+              "forceUpdate": false,
+              "replicas": 1,
+              "snapshotClass": [
+                {
+                  "name": "vxflexos-snapclass"
+                }
+              ],
+              "storageClass": [
+                {
+                  "allowVolumeExpansion": true,
+                  "allowedTopologies": [
+                    {
+                      "matchLabelExpressions": [
+                        {
+                          "key": "csi-vxflexos.dellemc.com/X_CSI_VXFLEXOS_SYSTEMNAME",
+                          "values": [
+                            "csi-vxflexos.dellemc.com"
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "default": true,
+                  "name": "vxflexos",
+                  "parameters": {
+                    "storagepool": "pool1"
+                  },
+                  "reclaimPolicy": "Delete"
+                },
+                {
+                  "allowVolumeExpansion": true,
+                  "allowedTopologies": [
+                    {
+                      "matchLabelExpressions": [
+                        {
+                          "key": "csi-vxflexos.dellemc.com/X_CSI_VXFLEXOS_SYSTEMNAME",
+                          "values": [
+                            "csi-vxflexos.dellemc.com"
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "default": false,
+                  "name": "vxflexos-xfs",
+                  "parameters": {
+                    "FsType": "xfs",
+                    "storagepool": "pool2"
+                  },
+                  "reclaimPolicy": "Delete"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/dell-emc/dell-csiop-bundle-110@sha256:0fe8dd27ddc36df73517195b9d4983a4c54e3036683c83952a9514f335ac557d",
+      "bundle_path_digest": "sha256:0fe8dd27ddc36df73517195b9d4983a4c54e3036683c83952a9514f335ac557d",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-05-11T16:22:53.795000+00:00",
+      "csv_description": "Dell CSI Operator for Dell EMC CSI Drivers\nDell CSI Operator is an operator which can be used to install and manage various CSI Drivers provided by Dell EMC for different storage arrays.",
+      "csv_display_name": "Dell CSI Operator",
+      "csv_metadata_description": "An operator for installing and managing CSI Drivers provided by Dell EMC",
+      "csv_name": "dell-csi-operator.v1.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:23:06.271000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "dell-csi-operator-certified",
+      "provided_apis": [
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIPowerStore",
+          "plural": "csipowerstores",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIUnity",
+          "plural": "csiunities",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIVXFlexOS",
+          "plural": "csivxflexoses",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIIsilon",
+          "plural": "csiisilons",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIPowerMax",
+          "plural": "csipowermaxes",
+          "version": "v1"
+        },
+        {
+          "group": "storage.dell.com",
+          "kind": "CSIPowerMaxRevProxy",
+          "plural": "csipowermaxrevproxies",
+          "version": "v1"
+        }
+      ],
+      "provider": "Dell EMC",
+      "related_images": [
+        {
+          "digest": "sha256:113435c9d0d805a2d7f4e6b5bdd6d21a3e489cb0278a9e81b2bc142c0fd5eb0f",
+          "image": "dellemc/dell-csi-operator@sha256:113435c9d0d805a2d7f4e6b5bdd6d21a3e489cb0278a9e81b2bc142c0fd5eb0f",
+          "name": "dell-csi-operator-113435c9d0d805a2d7f4e6b5bdd6d21a3e489cb0278a9e81b2bc142c0fd5eb0f-annotation"
+        },
+        {
+          "digest": "sha256:113435c9d0d805a2d7f4e6b5bdd6d21a3e489cb0278a9e81b2bc142c0fd5eb0f",
+          "image": "dellemc/dell-csi-operator@sha256:113435c9d0d805a2d7f4e6b5bdd6d21a3e489cb0278a9e81b2bc142c0fd5eb0f",
+          "name": "dell-csi-operator"
+        },
+        {
+          "digest": "sha256:a9286defaba7b3a519d585ba0e37d0b2cbee74ebfe590960b0b1d6a5e97d1e1d",
+          "image": "busybox@sha256:a9286defaba7b3a519d585ba0e37d0b2cbee74ebfe590960b0b1d6a5e97d1e1d",
+          "name": "config-copy"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.1.0",
+      "version_original": "1.1.0"
+    },
+    {
+      "_id": "609aaf5ee2b160d361d25106",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:02820de3e0134fbca92a2d59286dfc4c873a2df593d9b08e1e17481554c9c717",
+      "bundle_path_digest": "sha256:02820de3e0134fbca92a2d59286dfc4c873a2df593d9b08e1e17481554c9c717",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-05-11T16:22:54.617000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "tigera-operator.v1.5.2",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:25:46.534000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.5.2",
+      "version_original": "1.5.2"
+    }
+  ],
+  "total": 5315
+}
