@@ -183,10 +183,7 @@ func testContainersPreStop(env *provider.TestEnvironment) {
 			tnf.ClaimFilePrintf("%s does not have preStop defined", cut)
 		}
 	}
-	if len(badContainers) > 0 {
-		tnf.ClaimFilePrintf("Containers have been found missing lifecycle preStop definitions: %v", badContainers)
-		ginkgo.Fail("Containers have been found missing lifecycle preStop definitions.")
-	}
+	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testContainersPostStart(env *provider.TestEnvironment) {
@@ -199,10 +196,7 @@ func testContainersPostStart(env *provider.TestEnvironment) {
 			tnf.ClaimFilePrintf("%s does not have postStart defined", cut)
 		}
 	}
-	if len(badContainers) > 0 {
-		tnf.ClaimFilePrintf("Containers have been found missing lifecycle postStart definitions: %v", badContainers)
-		ginkgo.Fail("Containers have been found missing lifecycle postStart definitions.")
-	}
+	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testContainersImagePolicy(env *provider.TestEnvironment) {
