@@ -29,9 +29,6 @@ const (
 	AutomountServiceTokenExceptionProcess = `Identify which Kubernetes APIs are required if you need to utilize automount service tokens.  Depending on
 												which APIs are utilized, Red Hat possibly might make those APIs available to use via OpenShift.`
 
-	ShutdownExceptionProcess = `Identify which pod is not conforming to the process and submit information as to why it cannot 
-									use a prestop shutdown specification.`
-
 	IsRedHatReleaseExceptionProcess = `Document which containers are not able to meet the RHEL-based container 
 											requirement and if/when the base image can be updated.`
 
