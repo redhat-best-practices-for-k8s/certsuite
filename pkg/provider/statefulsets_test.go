@@ -103,3 +103,16 @@ func TestIsAffinityCompliantStatefulSets(t *testing.T) {
 		assert.Equal(t, tc.isCompliant, result)
 	}
 }
+
+func TestStatefulsetToString(t *testing.T) {
+	ss := StatefulSet{
+		StatefulSet: &appsv1.StatefulSet{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "test1",
+				Namespace: "testNS",
+			},
+		},
+	}
+
+	assert.Equal(t, "statefulset: test1 ns: testNS", ss.ToString())
+}
