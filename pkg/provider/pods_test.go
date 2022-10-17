@@ -154,3 +154,15 @@ func TestIsAffinityCompliantPods(t *testing.T) {
 		assert.Equal(t, tc.isCompliant, result)
 	}
 }
+
+func TestPodString(t *testing.T) {
+	p := Pod{
+		Pod: &corev1.Pod{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "test1",
+				Namespace: "testNS",
+			},
+		},
+	}
+	assert.Equal(t, "pod: test1 ns: testNS", p.String())
+}
