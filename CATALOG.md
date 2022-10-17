@@ -413,11 +413,25 @@ Test Case Name|container-shutdown
 Test Case Label|lifecycle-container-shutdown
 Unique ID|http://test-network-function.com/testcases/lifecycle/container-shutdown
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/lifecycle/container-shutdown Ensure that the containers lifecycle pre-stop management feature is configured.
+Description|http://test-network-function.com/testcases/lifecycle/container-shutdown Ensure that the containers lifecycle preStop management feature is configured.
 Result Type|normative
-Suggested Remediation| 	It's considered best-practices to define prestop for proper management of container lifecycle. 	The prestop can be used to gracefully stop the container and clean resources (e.g., DB connection). 	 	The prestop can be configured using : 	 1) Exec : executes the supplied command inside the container 	 2) HTTP : executes HTTP request against the specified endpoint. 	 	When defined. K8s will handle shutdown of the container using the following: 	1) K8s first execute the preStop hook inside the container. 	2) K8s will wait for a grace period. 	3) K8s will clean the remaining processes using KILL signal.		 		
+Suggested Remediation|The preStop can be used to gracefully stop the container and clean resources (e.g., DB connection). For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.1.3, 12.2 and 12.5
-Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot  									use a prestop shutdown specification.
+Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.
+Tags|common
+#### container-startup
+
+Property|Description
+---|---
+Test Case Name|container-startup
+Test Case Label|lifecycle-container-startup
+Unique ID|http://test-network-function.com/testcases/lifecycle/container-startup
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/lifecycle/container-startup Ensure that the containers lifecycle postStart management feature is configured.
+Result Type|normative
+Suggested Remediation|PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will  not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.1.3, 12.2 and 12.5
+Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.
 Tags|common
 #### cpu-isolation
 

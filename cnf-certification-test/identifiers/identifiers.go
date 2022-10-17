@@ -106,6 +106,8 @@ var (
 	TestAffinityRequiredPods                 claim.Identifier
 	TestAffinityRequiredDeployments          claim.Identifier
 	TestAffinityRequiredStatefulSets         claim.Identifier
+	TestStartupIdentifier                    claim.Identifier
+	TestShutdownIdentifier                   claim.Identifier
 )
 
 //nolint:funlen
@@ -213,6 +215,34 @@ The label value is not important, only its presence.`,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		TagExtended)
 
+	TestStartupIdentifier = AddCatalogEntry(
+		"container-startup",
+		common.LifecycleTestKey,
+		`Ensure that the containers lifecycle postStart management feature is configured.`,
+		`PostStart is normally used to configure the container, set up dependencies, and
+record the new creation. You could use this event to check that a required
+API is available before the container’s main work begins. Kubernetes will 
+not change the container’s state to Running until the PostStart script has
+executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and
+https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
+		NormativeResult,
+		`Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.`,
+		VersionOne,
+		bestPracticeDocV1dot3URL+" Section 5.1.3, 12.2 and 12.5",
+		TagCommon)
+
+	TestShutdownIdentifier = AddCatalogEntry(
+		"container-shutdown",
+		common.LifecycleTestKey,
+		`Ensure that the containers lifecycle preStop management feature is configured.`,
+		`The preStop can be used to gracefully stop the container and clean resources (e.g., DB connection).
+For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and
+https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
+		NormativeResult,
+		`Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.`,
+		VersionOne,
+		bestPracticeDocV1dot3URL+" Section 5.1.3, 12.2 and 12.5",
+		TagCommon)
 	return Catalog
 }
 
@@ -476,12 +506,6 @@ var (
 	TestCrdsStatusSubresourceIdentifier = claim.Identifier{
 		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.ObservabilityTestKey, "crd-status"),
-		Version: VersionOne,
-	}
-	// TestShutdownIdentifier ensures pre-stop lifecycle is defined
-	TestShutdownIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
-		Url:     formTestURL(common.LifecycleTestKey, "container-shutdown"),
 		Version: VersionOne,
 	}
 	// TestSysctlConfigsIdentifier ensures that the node's sysctl configs are consistent with the MachineConfig CR
@@ -1104,16 +1128,6 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.13 and 5.2.14",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestUnalteredStartupBootParamsIdentifier.Tags,
-	},
-	TestShutdownIdentifier: {
-		Identifier: TestShutdownIdentifier,
-		Type:       NormativeResult,
-		Description: formDescription(TestShutdownIdentifier,
-			`Ensure that the containers lifecycle pre-stop management feature is configured.`),
-		Remediation:           ShutdownRemediation,
-		ExceptionProcess:      ShutdownExceptionProcess,
-		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.1.3, 12.2 and 12.5",
-		Tags:                  TestShutdownIdentifier.Tags,
 	},
 	TestPodRecreationIdentifier: {
 		Identifier: TestPodRecreationIdentifier,

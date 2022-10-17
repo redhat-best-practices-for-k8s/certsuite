@@ -20,20 +20,6 @@ const (
 	//nolint:gosec
 	AutomountServiceTokenRemediation = `Check that pod has automountServiceAccountToken set to false or pod is attached to service account which has automountServiceAccountToken set to false`
 
-	ShutdownRemediation = `
-	It's considered best-practices to define prestop for proper management of container lifecycle.
-	The prestop can be used to gracefully stop the container and clean resources (e.g., DB connection).
-	
-	The prestop can be configured using :
-	 1) Exec : executes the supplied command inside the container
-	 2) HTTP : executes HTTP request against the specified endpoint.
-	
-	When defined. K8s will handle shutdown of the container using the following:
-	1) K8s first execute the preStop hook inside the container.
-	2) K8s will wait for a grace period.
-	3) K8s will clean the remaining processes using KILL signal.		
-		`
-
 	IsRedHatReleaseRemediation = `Build a new container image that is based on UBI (Red Hat Universal Base Image).`
 
 	NodeOperatingSystemRemediation = `Please update your workers to a version that is supported by your version of OpenShift`
