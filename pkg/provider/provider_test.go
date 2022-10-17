@@ -789,32 +789,6 @@ func TestContainerStringFuncs(t *testing.T) {
 	}
 }
 
-func TestDeploymentToString(t *testing.T) {
-	dp := Deployment{
-		Deployment: &appsv1.Deployment{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      "test1",
-				Namespace: "testNS",
-			},
-		},
-	}
-
-	assert.Equal(t, "deployment: test1 ns: testNS", dp.ToString())
-}
-
-func TestStatefulsetToString(t *testing.T) {
-	ss := StatefulSet{
-		StatefulSet: &appsv1.StatefulSet{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      "test1",
-				Namespace: "testNS",
-			},
-		},
-	}
-
-	assert.Equal(t, "statefulset: test1 ns: testNS", ss.ToString())
-}
-
 func TestCsvToString(t *testing.T) {
 	assert.Equal(t, "operator csv: test1 ns: testNS", CsvToString(&olmv1Alpha.ClusterServiceVersion{
 		ObjectMeta: metav1.ObjectMeta{
@@ -822,18 +796,6 @@ func TestCsvToString(t *testing.T) {
 			Namespace: "testNS",
 		},
 	}))
-}
-
-func TestPodString(t *testing.T) {
-	p := Pod{
-		Pod: &corev1.Pod{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      "test1",
-				Namespace: "testNS",
-			},
-		},
-	}
-	assert.Equal(t, "pod: test1 ns: testNS", p.String())
 }
 
 func TestOperatorString(t *testing.T) {

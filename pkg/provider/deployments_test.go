@@ -103,3 +103,16 @@ func TestIsAffinityCompliantDeployments(t *testing.T) {
 		assert.Equal(t, tc.isCompliant, result)
 	}
 }
+
+func TestDeploymentToString(t *testing.T) {
+	dp := Deployment{
+		Deployment: &appsv1.Deployment{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "test1",
+				Namespace: "testNS",
+			},
+		},
+	}
+
+	assert.Equal(t, "deployment: test1 ns: testNS", dp.ToString())
+}
