@@ -111,19 +111,19 @@ var kernelTaints = map[int]string{
 
 	// RedHat custom taints for RHEL/CoreOS
 	// https://access.redhat.com/solutions/40594
-	27: "Red Hat extension: Hardware for which support has been removed. / OMGZOMBIES easter egg.",
-	28: "Red Hat extension: Unsupported hardware. Refer to \"UNSUPPORTED HARDWARE DEVICE:\" kernel log entry for details.",
-	29: "Red Hat extension: Technology Preview code was loaded; cf. Technology Preview features support scope description. Refer to \"TECH PREVIEW:\" kernel log entry for details.",
-	30: "Red Hat extension: reserved taint bit 30",
-	31: "Red Hat extension: reserved taint bit 31",
+	27: "Red Hat extension: Hardware for which support has been removed. / OMGZOMBIES easter egg",
+	28: "Red Hat extension: Unsupported hardware. Refer to \"UNSUPPORTED HARDWARE DEVICE:\" kernel log entry for details",
+	29: "Red Hat extension: Technology Preview code was loaded; cf. Technology Preview features support scope description. Refer to \"TECH PREVIEW:\" kernel log entry for details",
+	30: "Red Hat extension: reserved",
+	31: "Red Hat extension: reserved",
 }
 
 func getTaintMsg(bit int) string {
 	if taintMsg, exists := kernelTaints[bit]; exists {
-		return taintMsg
+		return fmt.Sprintf("%s (tainted bit %d)", taintMsg, bit)
 	}
 
-	return fmt.Sprintf("reserved kernel taint bit %d", bit)
+	return fmt.Sprintf("reserved (tainted bit %d)", bit)
 }
 
 func DecodeKernelTaints(bitmap uint64) []string {

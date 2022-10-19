@@ -78,49 +78,49 @@ func TestDecodeKernelTaints(t *testing.T) {
 		// Reserved taint bit 23
 		{
 			taintsBitMask:  1 << 23,
-			expectedTaints: []string{"reserved kernel taint bit 23"},
+			expectedTaints: []string{"reserved (tainted bit 23)"},
 		},
 
 		// Taint bit 0
 		{
 			taintsBitMask:  1 << 0,
-			expectedTaints: []string{"proprietary module was loaded"},
+			expectedTaints: []string{"proprietary module was loaded (tainted bit 0)"},
 		},
 
 		// Taint bit 11
 		{
 			taintsBitMask:  1 << 11,
-			expectedTaints: []string{"workaround for bug in platform firmware applied"},
+			expectedTaints: []string{"workaround for bug in platform firmware applied (tainted bit 11)"},
 		},
 
 		// Bit 18
 		{
 			taintsBitMask:  1 << 18,
-			expectedTaints: []string{"an in-kernel test has been run"},
+			expectedTaints: []string{"an in-kernel test has been run (tainted bit 18)"},
 		},
 
 		// Bits 0 and 18
 		{
 			taintsBitMask:  (1 << 0) | (1 << 18),
-			expectedTaints: []string{"proprietary module was loaded", "an in-kernel test has been run"},
+			expectedTaints: []string{"proprietary module was loaded (tainted bit 0)", "an in-kernel test has been run (tainted bit 18)"},
 		},
 
-		// Bits 1, 24 and 30
+		// Bits 0, 24 and 30
 		{
 			taintsBitMask:  (1 << 0) | (1 << 24) | (1 << 30),
-			expectedTaints: []string{"proprietary module was loaded", "reserved kernel taint bit 24", "Red Hat extension: reserved taint bit 30"},
+			expectedTaints: []string{"proprietary module was loaded (tainted bit 0)", "reserved (tainted bit 24)", "Red Hat extension: reserved (tainted bit 30)"},
 		},
 
 		// RH's bit 29
 		{
 			taintsBitMask:  1 << 29,
-			expectedTaints: []string{"Red Hat extension: Technology Preview code was loaded; cf. Technology Preview features support scope description. Refer to \"TECH PREVIEW:\" kernel log entry for details."},
+			expectedTaints: []string{"Red Hat extension: Technology Preview code was loaded; cf. Technology Preview features support scope description. Refer to \"TECH PREVIEW:\" kernel log entry for details (tainted bit 29)"},
 		},
 
 		// RH's reserved bit 31
 		{
 			taintsBitMask:  1 << 31,
-			expectedTaints: []string{"Red Hat extension: reserved taint bit 31"},
+			expectedTaints: []string{"Red Hat extension: reserved (tainted bit 31)"},
 		},
 	}
 
