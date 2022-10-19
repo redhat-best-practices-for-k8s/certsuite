@@ -1,0 +1,3622 @@
+{
+  "data": [
+    {
+      "_id": "60c7f7336819538376be28be",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:f4a4dd85a542527a6c7768d6c4a68079e2414d794e736027c8362040259739dd",
+      "bundle_path_digest": "sha256:f4a4dd85a542527a6c7768d6c4a68079e2414d794e736027c8362040259739dd",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.13",
+      "creation_date": "2021-06-15T00:41:23.612000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.13.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:54:23.769000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMBlock",
+          "plural": "ipamblocks",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "Installation",
+          "plural": "installations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkSet",
+          "plural": "globalnetworksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "ClusterInformation",
+          "plural": "clusterinformations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPPeer",
+          "plural": "bgppeers",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkSet",
+          "plural": "networksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "HostEndpoint",
+          "plural": "hostendpoints",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkPolicy",
+          "plural": "globalnetworkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkPolicy",
+          "plural": "networkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BlockAffinity",
+          "plural": "blockaffinities",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPConfiguration",
+          "plural": "bgpconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMConfig",
+          "plural": "ipamconfigs",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMHandle",
+          "plural": "ipamhandles",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "FelixConfiguration",
+          "plural": "felixconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "KubeControllersConfiguration",
+          "plural": "kubecontrollersconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "TigeraStatus",
+          "plural": "tigerastatuses",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPPool",
+          "plural": "ippools",
+          "version": "v1"
+        }
+      ],
+      "provider": "Tigera",
+      "related_images": [
+        {
+          "digest": "sha256:d87b1e1ed9273bbb96046090f2dccef0064cdbdea17a4bf70805515207abba66",
+          "image": "quay.io/tigera/operator@sha256:d87b1e1ed9273bbb96046090f2dccef0064cdbdea17a4bf70805515207abba66",
+          "name": "operator-d87b1e1ed9273bbb96046090f2dccef0064cdbdea17a4bf70805515207abba66-annotation"
+        },
+        {
+          "digest": "sha256:d87b1e1ed9273bbb96046090f2dccef0064cdbdea17a4bf70805515207abba66",
+          "image": "quay.io/tigera/operator@sha256:d87b1e1ed9273bbb96046090f2dccef0064cdbdea17a4bf70805515207abba66",
+          "name": "tigera-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.13.4",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.13.4",
+      "version_original": "1.13.4"
+    },
+    {
+      "_id": "60c803eb102db8eff441327d",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:f4a4dd85a542527a6c7768d6c4a68079e2414d794e736027c8362040259739dd",
+      "bundle_path_digest": "sha256:f4a4dd85a542527a6c7768d6c4a68079e2414d794e736027c8362040259739dd",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.13",
+      "creation_date": "2021-06-15T01:35:39.646000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.13.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:53:39.570000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkSet",
+          "plural": "networksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "KubeControllersConfiguration",
+          "plural": "kubecontrollersconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "FelixConfiguration",
+          "plural": "felixconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "HostEndpoint",
+          "plural": "hostendpoints",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPPeer",
+          "plural": "bgppeers",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMConfig",
+          "plural": "ipamconfigs",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "Installation",
+          "plural": "installations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "ClusterInformation",
+          "plural": "clusterinformations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPConfiguration",
+          "plural": "bgpconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMHandle",
+          "plural": "ipamhandles",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "TigeraStatus",
+          "plural": "tigerastatuses",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BlockAffinity",
+          "plural": "blockaffinities",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkPolicy",
+          "plural": "networkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPPool",
+          "plural": "ippools",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkSet",
+          "plural": "globalnetworksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMBlock",
+          "plural": "ipamblocks",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkPolicy",
+          "plural": "globalnetworkpolicies",
+          "version": "v1"
+        }
+      ],
+      "provider": "Tigera",
+      "related_images": [
+        {
+          "digest": "sha256:d87b1e1ed9273bbb96046090f2dccef0064cdbdea17a4bf70805515207abba66",
+          "image": "quay.io/tigera/operator@sha256:d87b1e1ed9273bbb96046090f2dccef0064cdbdea17a4bf70805515207abba66",
+          "name": "operator-d87b1e1ed9273bbb96046090f2dccef0064cdbdea17a4bf70805515207abba66-annotation"
+        },
+        {
+          "digest": "sha256:d87b1e1ed9273bbb96046090f2dccef0064cdbdea17a4bf70805515207abba66",
+          "image": "quay.io/tigera/operator@sha256:d87b1e1ed9273bbb96046090f2dccef0064cdbdea17a4bf70805515207abba66",
+          "name": "tigera-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.13.4",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.13.4",
+      "version_original": "1.13.4"
+    },
+    {
+      "_id": "60c8437b47c96fe63ef4cef1",
+      "alm_examples": [
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "CouchDBCluster",
+          "metadata": {
+            "name": "example-couchdbcluster"
+          },
+          "spec": {
+            "cpu": "1",
+            "disk": "1Gi",
+            "environment": {
+              "adminPassword": "changeme"
+            },
+            "memory": "1Gi",
+            "size": 3,
+            "storageClass": ""
+          }
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "FormationLock",
+          "metadata": {
+            "name": "example-formationlock"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Recipe",
+          "metadata": {
+            "name": "example-recipe"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "RecipeTemplate",
+          "metadata": {
+            "name": "example-recipetemplate"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "example-backup"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Bucket",
+          "metadata": {
+            "name": "example-bucket"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Formation",
+          "metadata": {
+            "name": "example-formation"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:b8ac62cfe07d974c7140d1a594047bc796760c0546dfcd56e83805a434c5f871",
+      "bundle_path_digest": "sha256:b8ac62cfe07d974c7140d1a594047bc796760c0546dfcd56e83805a434c5f871",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-06-15T06:06:51.360000+00:00",
+      "csv_description": "Apache CouchDB lets you access your data where you need it. The [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) is implemented in a variety of projects and products that span every imaginable computing environment from globally distributed server-clusters, over mobile phones to web browsers.\n\nStore your data safely, on your own servers, or with any leading cloud provider. Your web- and native applications love CouchDB, because it speaks JSON natively and supports binary data for all your data storage needs.\n\nThe [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) lets your data flow seamlessly between server clusters to mobile phones and web browsers, enabling a compelling [offline-first](http://offlinefirst.org/) user-experience while maintaining high performance and strong reliability. CouchDB comes with a developer-friendly query language, and optionally MapReduce for simple, efficient, and comprehensive data retrieval.\n\n### Operator for Apache CouchDB Features\n* Fully automated deployment and configuration of Apache CouchDB clusters.\n* Support single, multiple, or all namespace install modes.\n\n#### Security\n* TLS - TLS  is supported using Red Hat Service certificates or user-provided certificates.\n* Authentication - The parameter `require_valid_user` defaults to `true`, which means that no requests are allowed from anonymous users. Every request must be authenticated.\n* Authorization - Databases are initially accessible by Apache CouchDB admins only.\n\n#### High Availability\n* Nodes - Each database node in an Apache CouchDB cluster requires its own Kubernetes node. It's recommended that you run it with a minimum of three nodes for any production deployment.\n* Zones - The Apache CouchDB cluster database nodes are spread across available Kubernetes fault zones where available.\n* Replicas - The default configuration for each database is two shards (Q=2) and three shard copies (N=3), where each shard copy is deployed on a separate node in the cluster.\n\n### Reading and writing to Apache CouchDB\n\nThe Operator for Apache CouchDB automatically generates a Service. This can be accessed using port-forwarding e.g. `kubectl port-forward svc/my-couchdb-cluster 443:443 -u admin:mypassword`. Alternatively, configure an OpenShift Route to expose the service externally.\n\n[Read the complete guide to using the Operator for Apache CouchDB](https://cloud.ibm.com/docs/services/Cloudant?topic=Cloudant-apache-couchdb-operator)\n",
+      "csv_display_name": "Operator for Apache CouchDB",
+      "csv_metadata_description": "Apache CouchDB is a highly available NOSQL database for web and mobile applications\n",
+      "csv_name": "couchdb-operator.v1.4.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:46:09.315000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "couchdb-operator-certified",
+      "provided_apis": [
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "FormationLock",
+          "plural": "formationlocks",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Formation",
+          "plural": "formations",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Recipe",
+          "plural": "recipes",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "RecipeTemplate",
+          "plural": "recipetemplates",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Bucket",
+          "plural": "buckets",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "CouchDBCluster",
+          "plural": "couchdbclusters",
+          "version": "v1"
+        }
+      ],
+      "provider": "IBM",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.4.4",
+      "version_original": "1.4.4"
+    },
+    {
+      "_id": "60c8443147c96fe63ef4cef2",
+      "alm_examples": [
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "CouchDBCluster",
+          "metadata": {
+            "name": "example-couchdbcluster"
+          },
+          "spec": {
+            "cpu": "1",
+            "disk": "1Gi",
+            "environment": {
+              "adminPassword": "changeme"
+            },
+            "memory": "1Gi",
+            "size": 3,
+            "storageClass": ""
+          }
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "FormationLock",
+          "metadata": {
+            "name": "example-formationlock"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Recipe",
+          "metadata": {
+            "name": "example-recipe"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "RecipeTemplate",
+          "metadata": {
+            "name": "example-recipetemplate"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "example-backup"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Bucket",
+          "metadata": {
+            "name": "example-bucket"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Formation",
+          "metadata": {
+            "name": "example-formation"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:b8ac62cfe07d974c7140d1a594047bc796760c0546dfcd56e83805a434c5f871",
+      "bundle_path_digest": "sha256:b8ac62cfe07d974c7140d1a594047bc796760c0546dfcd56e83805a434c5f871",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "v1.4",
+      "creation_date": "2021-06-15T06:09:53.848000+00:00",
+      "csv_description": "Apache CouchDB lets you access your data where you need it. The [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) is implemented in a variety of projects and products that span every imaginable computing environment from globally distributed server-clusters, over mobile phones to web browsers.\n\nStore your data safely, on your own servers, or with any leading cloud provider. Your web- and native applications love CouchDB, because it speaks JSON natively and supports binary data for all your data storage needs.\n\nThe [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) lets your data flow seamlessly between server clusters to mobile phones and web browsers, enabling a compelling [offline-first](http://offlinefirst.org/) user-experience while maintaining high performance and strong reliability. CouchDB comes with a developer-friendly query language, and optionally MapReduce for simple, efficient, and comprehensive data retrieval.\n\n### Operator for Apache CouchDB Features\n* Fully automated deployment and configuration of Apache CouchDB clusters.\n* Support single, multiple, or all namespace install modes.\n\n#### Security\n* TLS - TLS  is supported using Red Hat Service certificates or user-provided certificates.\n* Authentication - The parameter `require_valid_user` defaults to `true`, which means that no requests are allowed from anonymous users. Every request must be authenticated.\n* Authorization - Databases are initially accessible by Apache CouchDB admins only.\n\n#### High Availability\n* Nodes - Each database node in an Apache CouchDB cluster requires its own Kubernetes node. It's recommended that you run it with a minimum of three nodes for any production deployment.\n* Zones - The Apache CouchDB cluster database nodes are spread across available Kubernetes fault zones where available.\n* Replicas - The default configuration for each database is two shards (Q=2) and three shard copies (N=3), where each shard copy is deployed on a separate node in the cluster.\n\n### Reading and writing to Apache CouchDB\n\nThe Operator for Apache CouchDB automatically generates a Service. This can be accessed using port-forwarding e.g. `kubectl port-forward svc/my-couchdb-cluster 443:443 -u admin:mypassword`. Alternatively, configure an OpenShift Route to expose the service externally.\n\n[Read the complete guide to using the Operator for Apache CouchDB](https://cloud.ibm.com/docs/services/Cloudant?topic=Cloudant-apache-couchdb-operator)\n",
+      "csv_display_name": "Operator for Apache CouchDB",
+      "csv_metadata_description": "Apache CouchDB is a highly available NOSQL database for web and mobile applications\n",
+      "csv_name": "couchdb-operator.v1.4.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:47:55.208000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "couchdb-operator-certified",
+      "provided_apis": [
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "FormationLock",
+          "plural": "formationlocks",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Formation",
+          "plural": "formations",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Recipe",
+          "plural": "recipes",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "RecipeTemplate",
+          "plural": "recipetemplates",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Bucket",
+          "plural": "buckets",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "CouchDBCluster",
+          "plural": "couchdbclusters",
+          "version": "v1"
+        }
+      ],
+      "provider": "IBM",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.4.4",
+      "version_original": "1.4.4"
+    },
+    {
+      "_id": "60c8444fcea799d7301bf9ad",
+      "alm_examples": [
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "CouchDBCluster",
+          "metadata": {
+            "name": "example-couchdbcluster"
+          },
+          "spec": {
+            "cpu": "1",
+            "disk": "1Gi",
+            "environment": {
+              "adminPassword": "changeme"
+            },
+            "memory": "1Gi",
+            "size": 3,
+            "storageClass": ""
+          }
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "FormationLock",
+          "metadata": {
+            "name": "example-formationlock"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Recipe",
+          "metadata": {
+            "name": "example-recipe"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "RecipeTemplate",
+          "metadata": {
+            "name": "example-recipetemplate"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "example-backup"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Bucket",
+          "metadata": {
+            "name": "example-bucket"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "couchdb.databases.cloud.ibm.com/v1",
+          "kind": "Formation",
+          "metadata": {
+            "name": "example-formation"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm/couchdb-operator-certified-bundle@sha256:b8ac62cfe07d974c7140d1a594047bc796760c0546dfcd56e83805a434c5f871",
+      "bundle_path_digest": "sha256:b8ac62cfe07d974c7140d1a594047bc796760c0546dfcd56e83805a434c5f871",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "v1.4",
+      "creation_date": "2021-06-15T06:10:23.678000+00:00",
+      "csv_description": "Apache CouchDB lets you access your data where you need it. The [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) is implemented in a variety of projects and products that span every imaginable computing environment from globally distributed server-clusters, over mobile phones to web browsers.\n\nStore your data safely, on your own servers, or with any leading cloud provider. Your web- and native applications love CouchDB, because it speaks JSON natively and supports binary data for all your data storage needs.\n\nThe [Couch Replication Protocol](http://docs.couchdb.org/en/master/replication/protocol.html) lets your data flow seamlessly between server clusters to mobile phones and web browsers, enabling a compelling [offline-first](http://offlinefirst.org/) user-experience while maintaining high performance and strong reliability. CouchDB comes with a developer-friendly query language, and optionally MapReduce for simple, efficient, and comprehensive data retrieval.\n\n### Operator for Apache CouchDB Features\n* Fully automated deployment and configuration of Apache CouchDB clusters.\n* Support single, multiple, or all namespace install modes.\n\n#### Security\n* TLS - TLS  is supported using Red Hat Service certificates or user-provided certificates.\n* Authentication - The parameter `require_valid_user` defaults to `true`, which means that no requests are allowed from anonymous users. Every request must be authenticated.\n* Authorization - Databases are initially accessible by Apache CouchDB admins only.\n\n#### High Availability\n* Nodes - Each database node in an Apache CouchDB cluster requires its own Kubernetes node. It's recommended that you run it with a minimum of three nodes for any production deployment.\n* Zones - The Apache CouchDB cluster database nodes are spread across available Kubernetes fault zones where available.\n* Replicas - The default configuration for each database is two shards (Q=2) and three shard copies (N=3), where each shard copy is deployed on a separate node in the cluster.\n\n### Reading and writing to Apache CouchDB\n\nThe Operator for Apache CouchDB automatically generates a Service. This can be accessed using port-forwarding e.g. `kubectl port-forward svc/my-couchdb-cluster 443:443 -u admin:mypassword`. Alternatively, configure an OpenShift Route to expose the service externally.\n\n[Read the complete guide to using the Operator for Apache CouchDB](https://cloud.ibm.com/docs/services/Cloudant?topic=Cloudant-apache-couchdb-operator)\n",
+      "csv_display_name": "Operator for Apache CouchDB",
+      "csv_metadata_description": "Apache CouchDB is a highly available NOSQL database for web and mobile applications\n",
+      "csv_name": "couchdb-operator.v1.4.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:27:30.928000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "couchdb-operator-certified",
+      "provided_apis": [
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "FormationLock",
+          "plural": "formationlocks",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Formation",
+          "plural": "formations",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Recipe",
+          "plural": "recipes",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "RecipeTemplate",
+          "plural": "recipetemplates",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "Bucket",
+          "plural": "buckets",
+          "version": "v1"
+        },
+        {
+          "group": "couchdb.databases.cloud.ibm.com",
+          "kind": "CouchDBCluster",
+          "plural": "couchdbclusters",
+          "version": "v1"
+        }
+      ],
+      "provider": "IBM",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.4.4",
+      "version_original": "1.4.4"
+    },
+    {
+      "_id": "60c94ef81e47f18b44877e57",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:000bfd00ee565fa58b562c7ef97058677a1ade9e987ae60f6b20dd95804fd3d9",
+      "bundle_path_digest": "sha256:000bfd00ee565fa58b562c7ef97058677a1ade9e987ae60f6b20dd95804fd3d9",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.13",
+      "creation_date": "2021-06-16T01:08:08.822000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.13.5",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:41:14.078000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [],
+      "provider": "Tigera",
+      "related_images": [
+        {
+          "digest": "sha256:ad30f54322b1a02bcf95489cf7b054387e323cfa5226020c90d68fb401dcaab1",
+          "image": "quay.io/tigera/operator@sha256:ad30f54322b1a02bcf95489cf7b054387e323cfa5226020c90d68fb401dcaab1",
+          "name": "operator-ad30f54322b1a02bcf95489cf7b054387e323cfa5226020c90d68fb401dcaab1-annotation"
+        },
+        {
+          "digest": "sha256:ad30f54322b1a02bcf95489cf7b054387e323cfa5226020c90d68fb401dcaab1",
+          "image": "quay.io/tigera/operator@sha256:ad30f54322b1a02bcf95489cf7b054387e323cfa5226020c90d68fb401dcaab1",
+          "name": "tigera-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.13.5",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.13.5",
+      "version_original": "1.13.5"
+    },
+    {
+      "_id": "60c94f8948e99376f66308ee",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:000bfd00ee565fa58b562c7ef97058677a1ade9e987ae60f6b20dd95804fd3d9",
+      "bundle_path_digest": "sha256:000bfd00ee565fa58b562c7ef97058677a1ade9e987ae60f6b20dd95804fd3d9",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.13",
+      "creation_date": "2021-06-16T01:10:33.359000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.13.5",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:53:47.905000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkPolicy",
+          "plural": "networkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "FelixConfiguration",
+          "plural": "felixconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "TigeraStatus",
+          "plural": "tigerastatuses",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMBlock",
+          "plural": "ipamblocks",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPPeer",
+          "plural": "bgppeers",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BlockAffinity",
+          "plural": "blockaffinities",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkSet",
+          "plural": "networksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMConfig",
+          "plural": "ipamconfigs",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "HostEndpoint",
+          "plural": "hostendpoints",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPConfiguration",
+          "plural": "bgpconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkSet",
+          "plural": "globalnetworksets",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "Installation",
+          "plural": "installations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "KubeControllersConfiguration",
+          "plural": "kubecontrollersconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMHandle",
+          "plural": "ipamhandles",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "ClusterInformation",
+          "plural": "clusterinformations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkPolicy",
+          "plural": "globalnetworkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPPool",
+          "plural": "ippools",
+          "version": "v1"
+        }
+      ],
+      "provider": "Tigera",
+      "related_images": [
+        {
+          "digest": "sha256:ad30f54322b1a02bcf95489cf7b054387e323cfa5226020c90d68fb401dcaab1",
+          "image": "quay.io/tigera/operator@sha256:ad30f54322b1a02bcf95489cf7b054387e323cfa5226020c90d68fb401dcaab1",
+          "name": "operator-ad30f54322b1a02bcf95489cf7b054387e323cfa5226020c90d68fb401dcaab1-annotation"
+        },
+        {
+          "digest": "sha256:ad30f54322b1a02bcf95489cf7b054387e323cfa5226020c90d68fb401dcaab1",
+          "image": "quay.io/tigera/operator@sha256:ad30f54322b1a02bcf95489cf7b054387e323cfa5226020c90d68fb401dcaab1",
+          "name": "tigera-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.13.5",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.13.5",
+      "version_original": "1.13.5"
+    },
+    {
+      "_id": "60c94f9948e99376f66308ef",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:000bfd00ee565fa58b562c7ef97058677a1ade9e987ae60f6b20dd95804fd3d9",
+      "bundle_path_digest": "sha256:000bfd00ee565fa58b562c7ef97058677a1ade9e987ae60f6b20dd95804fd3d9",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.13",
+      "creation_date": "2021-06-16T01:10:49.804000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.13.5",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:22:01.307000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [
+        {
+          "group": "operator.tigera.io",
+          "kind": "TigeraStatus",
+          "plural": "tigerastatuses",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMConfig",
+          "plural": "ipamconfigs",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "FelixConfiguration",
+          "plural": "felixconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "Installation",
+          "plural": "installations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkSet",
+          "plural": "globalnetworksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkPolicy",
+          "plural": "networkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPPeer",
+          "plural": "bgppeers",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkSet",
+          "plural": "networksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMHandle",
+          "plural": "ipamhandles",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "HostEndpoint",
+          "plural": "hostendpoints",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPConfiguration",
+          "plural": "bgpconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPPool",
+          "plural": "ippools",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BlockAffinity",
+          "plural": "blockaffinities",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "KubeControllersConfiguration",
+          "plural": "kubecontrollersconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "ClusterInformation",
+          "plural": "clusterinformations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMBlock",
+          "plural": "ipamblocks",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkPolicy",
+          "plural": "globalnetworkpolicies",
+          "version": "v1"
+        }
+      ],
+      "provider": "Tigera",
+      "related_images": [
+        {
+          "digest": "sha256:ad30f54322b1a02bcf95489cf7b054387e323cfa5226020c90d68fb401dcaab1",
+          "image": "quay.io/tigera/operator@sha256:ad30f54322b1a02bcf95489cf7b054387e323cfa5226020c90d68fb401dcaab1",
+          "name": "operator-ad30f54322b1a02bcf95489cf7b054387e323cfa5226020c90d68fb401dcaab1-annotation"
+        },
+        {
+          "digest": "sha256:ad30f54322b1a02bcf95489cf7b054387e323cfa5226020c90d68fb401dcaab1",
+          "image": "quay.io/tigera/operator@sha256:ad30f54322b1a02bcf95489cf7b054387e323cfa5226020c90d68fb401dcaab1",
+          "name": "tigera-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.13.5",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.13.5",
+      "version_original": "1.13.5"
+    },
+    {
+      "_id": "60c9a9cf2ec20576b977fc25",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:aa9d2bf965b948b63984c559222951341ce834047cbc43a4fce597b14541ec2c",
+      "bundle_path_digest": "sha256:aa9d2bf965b948b63984c559222951341ce834047cbc43a4fce597b14541ec2c",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.13",
+      "creation_date": "2021-06-16T07:35:43.539000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.13.6",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:30:09.213000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPPool",
+          "plural": "ippools",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "Installation",
+          "plural": "installations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkPolicy",
+          "plural": "networkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "FelixConfiguration",
+          "plural": "felixconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPPeer",
+          "plural": "bgppeers",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPConfiguration",
+          "plural": "bgpconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkSet",
+          "plural": "networksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMConfig",
+          "plural": "ipamconfigs",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "ClusterInformation",
+          "plural": "clusterinformations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkPolicy",
+          "plural": "globalnetworkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMHandle",
+          "plural": "ipamhandles",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BlockAffinity",
+          "plural": "blockaffinities",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "HostEndpoint",
+          "plural": "hostendpoints",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "KubeControllersConfiguration",
+          "plural": "kubecontrollersconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkSet",
+          "plural": "globalnetworksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMBlock",
+          "plural": "ipamblocks",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "TigeraStatus",
+          "plural": "tigerastatuses",
+          "version": "v1"
+        }
+      ],
+      "provider": "Tigera",
+      "related_images": [
+        {
+          "digest": "sha256:da88dfe4852040fa7a7dc67bf7cde35341bea49e72b7d326ee390b5728ee1a87",
+          "image": "quay.io/tigera/operator@sha256:da88dfe4852040fa7a7dc67bf7cde35341bea49e72b7d326ee390b5728ee1a87",
+          "name": "operator-da88dfe4852040fa7a7dc67bf7cde35341bea49e72b7d326ee390b5728ee1a87-annotation"
+        },
+        {
+          "digest": "sha256:da88dfe4852040fa7a7dc67bf7cde35341bea49e72b7d326ee390b5728ee1a87",
+          "image": "quay.io/tigera/operator@sha256:da88dfe4852040fa7a7dc67bf7cde35341bea49e72b7d326ee390b5728ee1a87",
+          "name": "tigera-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.13.6",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.13.6",
+      "version_original": "1.13.6"
+    },
+    {
+      "_id": "60c9a9ef1e47f18b44877e5b",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:aa9d2bf965b948b63984c559222951341ce834047cbc43a4fce597b14541ec2c",
+      "bundle_path_digest": "sha256:aa9d2bf965b948b63984c559222951341ce834047cbc43a4fce597b14541ec2c",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.13",
+      "creation_date": "2021-06-16T07:36:15.021000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.13.6",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:31:31.267000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPPool",
+          "plural": "ippools",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkPolicy",
+          "plural": "networkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "Installation",
+          "plural": "installations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPPeer",
+          "plural": "bgppeers",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkSet",
+          "plural": "globalnetworksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "KubeControllersConfiguration",
+          "plural": "kubecontrollersconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "ClusterInformation",
+          "plural": "clusterinformations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BlockAffinity",
+          "plural": "blockaffinities",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMConfig",
+          "plural": "ipamconfigs",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMHandle",
+          "plural": "ipamhandles",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPConfiguration",
+          "plural": "bgpconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "TigeraStatus",
+          "plural": "tigerastatuses",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMBlock",
+          "plural": "ipamblocks",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkPolicy",
+          "plural": "globalnetworkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "HostEndpoint",
+          "plural": "hostendpoints",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkSet",
+          "plural": "networksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "FelixConfiguration",
+          "plural": "felixconfigurations",
+          "version": "v1"
+        }
+      ],
+      "provider": "Tigera",
+      "related_images": [
+        {
+          "digest": "sha256:da88dfe4852040fa7a7dc67bf7cde35341bea49e72b7d326ee390b5728ee1a87",
+          "image": "quay.io/tigera/operator@sha256:da88dfe4852040fa7a7dc67bf7cde35341bea49e72b7d326ee390b5728ee1a87",
+          "name": "operator-da88dfe4852040fa7a7dc67bf7cde35341bea49e72b7d326ee390b5728ee1a87-annotation"
+        },
+        {
+          "digest": "sha256:da88dfe4852040fa7a7dc67bf7cde35341bea49e72b7d326ee390b5728ee1a87",
+          "image": "quay.io/tigera/operator@sha256:da88dfe4852040fa7a7dc67bf7cde35341bea49e72b7d326ee390b5728ee1a87",
+          "name": "tigera-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.13.6",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.13.6",
+      "version_original": "1.13.6"
+    },
+    {
+      "_id": "60c9ab282ec20576b977fc26",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:aa9d2bf965b948b63984c559222951341ce834047cbc43a4fce597b14541ec2c",
+      "bundle_path_digest": "sha256:aa9d2bf965b948b63984c559222951341ce834047cbc43a4fce597b14541ec2c",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.13",
+      "creation_date": "2021-06-16T07:41:28.863000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.13.6",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:25:10.938000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [],
+      "provider": "Tigera",
+      "related_images": [
+        {
+          "digest": "sha256:da88dfe4852040fa7a7dc67bf7cde35341bea49e72b7d326ee390b5728ee1a87",
+          "image": "quay.io/tigera/operator@sha256:da88dfe4852040fa7a7dc67bf7cde35341bea49e72b7d326ee390b5728ee1a87",
+          "name": "operator-da88dfe4852040fa7a7dc67bf7cde35341bea49e72b7d326ee390b5728ee1a87-annotation"
+        },
+        {
+          "digest": "sha256:da88dfe4852040fa7a7dc67bf7cde35341bea49e72b7d326ee390b5728ee1a87",
+          "image": "quay.io/tigera/operator@sha256:da88dfe4852040fa7a7dc67bf7cde35341bea49e72b7d326ee390b5728ee1a87",
+          "name": "tigera-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.13.6",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.13.6",
+      "version_original": "1.13.6"
+    },
+    {
+      "_id": "60ca1a1e73de3533cd9400c3",
+      "alm_examples": [
+        {
+          "api_version": "nvidia.com/v1",
+          "kind": "ClusterPolicy",
+          "metadata": {
+            "name": "gpu-cluster-policy"
+          },
+          "spec": {
+            "dcgmExporter": {
+              "affinity": {},
+              "image": "dcgm-exporter",
+              "imagePullSecrets": [],
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.dcgm-exporter": "true"
+              },
+              "podSecurityContext": {},
+              "priorityClassName": "system-node-critical",
+              "repository": "nvcr.io/nvidia/k8s",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:8af02463a8b60b21202d0bf69bc1ee0bb12f684fa367f903d138df6cacc2d0ac"
+            },
+            "devicePlugin": {
+              "affinity": {},
+              "args": [],
+              "env": [
+                {
+                  "name": "PASS_DEVICE_SPECS",
+                  "value": "true"
+                },
+                {
+                  "name": "FAIL_ON_INIT_ERROR",
+                  "value": "true"
+                },
+                {
+                  "name": "DEVICE_LIST_STRATEGY",
+                  "value": "envvar"
+                },
+                {
+                  "name": "DEVICE_ID_STRATEGY",
+                  "value": "uuid"
+                },
+                {
+                  "name": "NVIDIA_VISIBLE_DEVICES",
+                  "value": "all"
+                },
+                {
+                  "name": "NVIDIA_DRIVER_CAPABILITIES",
+                  "value": "all"
+                }
+              ],
+              "image": "k8s-device-plugin",
+              "imagePullSecrets": [],
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.device-plugin": "true"
+              },
+              "podSecurityContext": {},
+              "priorityClassName": "system-node-critical",
+              "repository": "nvcr.io/nvidia",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:85def0197f388e5e336b1ab0dbec350816c40108a58af946baa1315f4c96ee05"
+            },
+            "driver": {
+              "affinity": {},
+              "enabled": true,
+              "image": "driver",
+              "imagePullSecrets": [],
+              "licensingConfig": {
+                "configMapName": ""
+              },
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.driver": "true"
+              },
+              "podSecurityContext": {},
+              "priorityClassName": "system-node-critical",
+              "repoConfig": {
+                "configMapName": "",
+                "destinationDir": ""
+              },
+              "repository": "nvcr.io/nvidia",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:09ba3eca64a80fab010a9fcd647a2675260272a8c3eb515dfed6dc38a2d31ead"
+            },
+            "gfd": {
+              "affinity": {},
+              "env": [
+                {
+                  "name": "GFD_SLEEP_INTERVAL",
+                  "value": "60s"
+                },
+                {
+                  "name": "FAIL_ON_INIT_ERROR",
+                  "value": "true"
+                }
+              ],
+              "image": "gpu-feature-discovery",
+              "imagePullSecrets": [],
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.gpu-feature-discovery": "true"
+              },
+              "podSecurityContext": {},
+              "priorityClassName": "system-node-critical",
+              "repository": "nvcr.io/nvidia",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:bfc39d23568458dfd50c0c5323b6d42bdcd038c420fb2a2becd513a3ed3be27f"
+            },
+            "mig": {
+              "strategy": "single"
+            },
+            "migManager": {
+              "affinity": {},
+              "enabled": true,
+              "env": [
+                {
+                  "name": "WITH_REBOOT",
+                  "value": "false"
+                }
+              ],
+              "image": "k8s-mig-manager",
+              "imagePullSecrets": [],
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.mig-manager": "true"
+              },
+              "podSecurityContext": {},
+              "priorityClassName": "system-node-critical",
+              "repository": "nvcr.io/nvidia/cloud-native",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:495ed3b42e0541590c537ab1b33bda772aad530d3ef6a4f9384d3741a59e2bf8"
+            },
+            "operator": {
+              "defaultRuntime": "crio",
+              "deployGFD": true,
+              "initContainer": {
+                "image": "cuda",
+                "imagePullSecrets": [],
+                "repository": "nvcr.io/nvidia",
+                "version": "sha256:15674e5c45c97994bc92387bad03a0d52d7c1e983709c471c4fecc8e806dbdce"
+              }
+            },
+            "toolkit": {
+              "affinity": {},
+              "enabled": true,
+              "image": "container-toolkit",
+              "imagePullSecrets": [],
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.container-toolkit": "true"
+              },
+              "podSecurityContext": {},
+              "priorityClassName": "system-node-critical",
+              "repository": "nvcr.io/nvidia/k8s",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:ffa284f1f359d70f0e1d6d8e7752d7c92ef7445b0d74965a8682775de37febf8"
+            },
+            "validator": {
+              "affinity": {},
+              "env": [
+                {
+                  "name": "WITH_WORKLOAD",
+                  "value": "true"
+                }
+              ],
+              "image": "gpu-operator-validator",
+              "imagePullSecrets": [],
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.operator-validator": "true"
+              },
+              "podSecurityContext": {},
+              "priorityClassName": "system-node-critical",
+              "repository": "nvcr.io/nvidia/cloud-native",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:aa1f7bd526ae132c46f3ebe6ecfabe675889e240776ccc2155e31e0c48cc659e"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:cfe7d0a44fd39d3b273f05167ecb156dab0b8383e6931372258007f8b077fe44",
+      "bundle_path_digest": "sha256:cfe7d0a44fd39d3b273f05167ecb156dab0b8383e6931372258007f8b077fe44",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "v1.7",
+      "creation_date": "2021-06-16T15:34:54.499000+00:00",
+      "csv_description": "Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices through the [device plugin framework](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/). However, configuring and managing nodes with these hardware resources requires configuration of multiple software components such as drivers, container runtimes or other libraries which are difficult and prone to errors.\nThe NVIDIA GPU Operator uses the [operator framework](https://coreos.com/blog/introducing-operator-framework) within Kubernetes to automate the management of all NVIDIA software components needed to provision and monitor GPUs. These components include the NVIDIA drivers (to enable CUDA), Kubernetes device plugin for GPUs, the NVIDIA Container Runtime, automatic node labelling and NVIDIA DCGM exporter.\nVisit the official site of the [GPU Operator](https://github.com/NVIDIA/gpu-operator) for more information. For getting started with using the GPU Operator with OpenShift, see the instructions [here](https://docs.nvidia.com/datacenter/kubernetes/openshift-on-gpu-install-guide/index.html).\n",
+      "csv_display_name": "NVIDIA GPU Operator",
+      "csv_metadata_description": "Automate the management and monitoring of NVIDIA GPUs.",
+      "csv_name": "gpu-operator-certified.v1.7.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:30:54.159000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "gpu-operator-certified",
+      "provided_apis": [
+        {
+          "group": "nvidia.com",
+          "kind": "ClusterPolicy",
+          "plural": "clusterpolicies",
+          "version": "v1"
+        }
+      ],
+      "provider": "NVIDIA Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:3a812cf113f416baca9262fa8423f36141f35696eb6e7a51a7abb40f5ccd5f8c",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:3a812cf113f416baca9262fa8423f36141f35696eb6e7a51a7abb40f5ccd5f8c",
+          "name": "gpu-operator-image"
+        },
+        {
+          "digest": "sha256:8af02463a8b60b21202d0bf69bc1ee0bb12f684fa367f903d138df6cacc2d0ac",
+          "image": "nvcr.io/nvidia/k8s/dcgm-exporter@sha256:8af02463a8b60b21202d0bf69bc1ee0bb12f684fa367f903d138df6cacc2d0ac",
+          "name": "dcgm-exporter-image"
+        },
+        {
+          "digest": "sha256:ffa284f1f359d70f0e1d6d8e7752d7c92ef7445b0d74965a8682775de37febf8",
+          "image": "nvcr.io/nvidia/k8s/container-toolkit@sha256:ffa284f1f359d70f0e1d6d8e7752d7c92ef7445b0d74965a8682775de37febf8",
+          "name": "container-toolkit-image"
+        },
+        {
+          "digest": "sha256:09ba3eca64a80fab010a9fcd647a2675260272a8c3eb515dfed6dc38a2d31ead",
+          "image": "nvcr.io/nvidia/driver@sha256:09ba3eca64a80fab010a9fcd647a2675260272a8c3eb515dfed6dc38a2d31ead",
+          "name": "driver-image"
+        },
+        {
+          "digest": "sha256:85def0197f388e5e336b1ab0dbec350816c40108a58af946baa1315f4c96ee05",
+          "image": "nvcr.io/nvidia/k8s-device-plugin@sha256:85def0197f388e5e336b1ab0dbec350816c40108a58af946baa1315f4c96ee05",
+          "name": "device-plugin-image"
+        },
+        {
+          "digest": "sha256:bfc39d23568458dfd50c0c5323b6d42bdcd038c420fb2a2becd513a3ed3be27f",
+          "image": "nvcr.io/nvidia/gpu-feature-discovery@sha256:bfc39d23568458dfd50c0c5323b6d42bdcd038c420fb2a2becd513a3ed3be27f",
+          "name": "gpu-feature-discovery-image"
+        },
+        {
+          "digest": "sha256:495ed3b42e0541590c537ab1b33bda772aad530d3ef6a4f9384d3741a59e2bf8",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-mig-manager@sha256:495ed3b42e0541590c537ab1b33bda772aad530d3ef6a4f9384d3741a59e2bf8",
+          "name": "mig-manager-image"
+        },
+        {
+          "digest": "sha256:15674e5c45c97994bc92387bad03a0d52d7c1e983709c471c4fecc8e806dbdce",
+          "image": "nvcr.io/nvidia/cuda@sha256:15674e5c45c97994bc92387bad03a0d52d7c1e983709c471c4fecc8e806dbdce",
+          "name": "init-container-image"
+        },
+        {
+          "digest": "sha256:aa1f7bd526ae132c46f3ebe6ecfabe675889e240776ccc2155e31e0c48cc659e",
+          "image": "nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:aa1f7bd526ae132c46f3ebe6ecfabe675889e240776ccc2155e31e0c48cc659e",
+          "name": "gpu-operator-validator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.7.1",
+      "version_original": "1.7.1"
+    },
+    {
+      "_id": "60ca1b922ec20576b977fd5a",
+      "alm_examples": [
+        {
+          "api_version": "nvidia.com/v1",
+          "kind": "ClusterPolicy",
+          "metadata": {
+            "name": "gpu-cluster-policy"
+          },
+          "spec": {
+            "dcgmExporter": {
+              "affinity": {},
+              "image": "dcgm-exporter",
+              "imagePullSecrets": [],
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.dcgm-exporter": "true"
+              },
+              "podSecurityContext": {},
+              "priorityClassName": "system-node-critical",
+              "repository": "nvcr.io/nvidia/k8s",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:8af02463a8b60b21202d0bf69bc1ee0bb12f684fa367f903d138df6cacc2d0ac"
+            },
+            "devicePlugin": {
+              "affinity": {},
+              "args": [],
+              "env": [
+                {
+                  "name": "PASS_DEVICE_SPECS",
+                  "value": "true"
+                },
+                {
+                  "name": "FAIL_ON_INIT_ERROR",
+                  "value": "true"
+                },
+                {
+                  "name": "DEVICE_LIST_STRATEGY",
+                  "value": "envvar"
+                },
+                {
+                  "name": "DEVICE_ID_STRATEGY",
+                  "value": "uuid"
+                },
+                {
+                  "name": "NVIDIA_VISIBLE_DEVICES",
+                  "value": "all"
+                },
+                {
+                  "name": "NVIDIA_DRIVER_CAPABILITIES",
+                  "value": "all"
+                }
+              ],
+              "image": "k8s-device-plugin",
+              "imagePullSecrets": [],
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.device-plugin": "true"
+              },
+              "podSecurityContext": {},
+              "priorityClassName": "system-node-critical",
+              "repository": "nvcr.io/nvidia",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:85def0197f388e5e336b1ab0dbec350816c40108a58af946baa1315f4c96ee05"
+            },
+            "driver": {
+              "affinity": {},
+              "enabled": true,
+              "image": "driver",
+              "imagePullSecrets": [],
+              "licensingConfig": {
+                "configMapName": ""
+              },
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.driver": "true"
+              },
+              "podSecurityContext": {},
+              "priorityClassName": "system-node-critical",
+              "repoConfig": {
+                "configMapName": "",
+                "destinationDir": ""
+              },
+              "repository": "nvcr.io/nvidia",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:09ba3eca64a80fab010a9fcd647a2675260272a8c3eb515dfed6dc38a2d31ead"
+            },
+            "gfd": {
+              "affinity": {},
+              "env": [
+                {
+                  "name": "GFD_SLEEP_INTERVAL",
+                  "value": "60s"
+                },
+                {
+                  "name": "FAIL_ON_INIT_ERROR",
+                  "value": "true"
+                }
+              ],
+              "image": "gpu-feature-discovery",
+              "imagePullSecrets": [],
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.gpu-feature-discovery": "true"
+              },
+              "podSecurityContext": {},
+              "priorityClassName": "system-node-critical",
+              "repository": "nvcr.io/nvidia",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:bfc39d23568458dfd50c0c5323b6d42bdcd038c420fb2a2becd513a3ed3be27f"
+            },
+            "mig": {
+              "strategy": "single"
+            },
+            "migManager": {
+              "affinity": {},
+              "enabled": true,
+              "env": [
+                {
+                  "name": "WITH_REBOOT",
+                  "value": "false"
+                }
+              ],
+              "image": "k8s-mig-manager",
+              "imagePullSecrets": [],
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.mig-manager": "true"
+              },
+              "podSecurityContext": {},
+              "priorityClassName": "system-node-critical",
+              "repository": "nvcr.io/nvidia/cloud-native",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:495ed3b42e0541590c537ab1b33bda772aad530d3ef6a4f9384d3741a59e2bf8"
+            },
+            "operator": {
+              "defaultRuntime": "crio",
+              "deployGFD": true,
+              "initContainer": {
+                "image": "cuda",
+                "imagePullSecrets": [],
+                "repository": "nvcr.io/nvidia",
+                "version": "sha256:15674e5c45c97994bc92387bad03a0d52d7c1e983709c471c4fecc8e806dbdce"
+              }
+            },
+            "toolkit": {
+              "affinity": {},
+              "enabled": true,
+              "image": "container-toolkit",
+              "imagePullSecrets": [],
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.container-toolkit": "true"
+              },
+              "podSecurityContext": {},
+              "priorityClassName": "system-node-critical",
+              "repository": "nvcr.io/nvidia/k8s",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:ffa284f1f359d70f0e1d6d8e7752d7c92ef7445b0d74965a8682775de37febf8"
+            },
+            "validator": {
+              "affinity": {},
+              "env": [
+                {
+                  "name": "WITH_WORKLOAD",
+                  "value": "true"
+                }
+              ],
+              "image": "gpu-operator-validator",
+              "imagePullSecrets": [],
+              "nodeSelector": {
+                "nvidia.com/gpu.deploy.operator-validator": "true"
+              },
+              "podSecurityContext": {},
+              "priorityClassName": "system-node-critical",
+              "repository": "nvcr.io/nvidia/cloud-native",
+              "resources": {},
+              "securityContext": {},
+              "tolerations": [],
+              "version": "sha256:aa1f7bd526ae132c46f3ebe6ecfabe675889e240776ccc2155e31e0c48cc659e"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/nvidia/gpu-operator-bundle@sha256:cfe7d0a44fd39d3b273f05167ecb156dab0b8383e6931372258007f8b077fe44",
+      "bundle_path_digest": "sha256:cfe7d0a44fd39d3b273f05167ecb156dab0b8383e6931372258007f8b077fe44",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "v1.7",
+      "creation_date": "2021-06-16T15:41:06.614000+00:00",
+      "csv_description": "Kubernetes provides access to special hardware resources such as NVIDIA GPUs, NICs, Infiniband adapters and other devices through the [device plugin framework](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/). However, configuring and managing nodes with these hardware resources requires configuration of multiple software components such as drivers, container runtimes or other libraries which are difficult and prone to errors.\nThe NVIDIA GPU Operator uses the [operator framework](https://coreos.com/blog/introducing-operator-framework) within Kubernetes to automate the management of all NVIDIA software components needed to provision and monitor GPUs. These components include the NVIDIA drivers (to enable CUDA), Kubernetes device plugin for GPUs, the NVIDIA Container Runtime, automatic node labelling and NVIDIA DCGM exporter.\nVisit the official site of the [GPU Operator](https://github.com/NVIDIA/gpu-operator) for more information. For getting started with using the GPU Operator with OpenShift, see the instructions [here](https://docs.nvidia.com/datacenter/kubernetes/openshift-on-gpu-install-guide/index.html).\n",
+      "csv_display_name": "NVIDIA GPU Operator",
+      "csv_metadata_description": "Automate the management and monitoring of NVIDIA GPUs.",
+      "csv_name": "gpu-operator-certified.v1.7.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:36:55.269000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "gpu-operator-certified",
+      "provided_apis": [
+        {
+          "group": "nvidia.com",
+          "kind": "ClusterPolicy",
+          "plural": "clusterpolicies",
+          "version": "v1"
+        }
+      ],
+      "provider": "NVIDIA Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:3a812cf113f416baca9262fa8423f36141f35696eb6e7a51a7abb40f5ccd5f8c",
+          "image": "nvcr.io/nvidia/gpu-operator@sha256:3a812cf113f416baca9262fa8423f36141f35696eb6e7a51a7abb40f5ccd5f8c",
+          "name": "gpu-operator-image"
+        },
+        {
+          "digest": "sha256:8af02463a8b60b21202d0bf69bc1ee0bb12f684fa367f903d138df6cacc2d0ac",
+          "image": "nvcr.io/nvidia/k8s/dcgm-exporter@sha256:8af02463a8b60b21202d0bf69bc1ee0bb12f684fa367f903d138df6cacc2d0ac",
+          "name": "dcgm-exporter-image"
+        },
+        {
+          "digest": "sha256:ffa284f1f359d70f0e1d6d8e7752d7c92ef7445b0d74965a8682775de37febf8",
+          "image": "nvcr.io/nvidia/k8s/container-toolkit@sha256:ffa284f1f359d70f0e1d6d8e7752d7c92ef7445b0d74965a8682775de37febf8",
+          "name": "container-toolkit-image"
+        },
+        {
+          "digest": "sha256:09ba3eca64a80fab010a9fcd647a2675260272a8c3eb515dfed6dc38a2d31ead",
+          "image": "nvcr.io/nvidia/driver@sha256:09ba3eca64a80fab010a9fcd647a2675260272a8c3eb515dfed6dc38a2d31ead",
+          "name": "driver-image"
+        },
+        {
+          "digest": "sha256:85def0197f388e5e336b1ab0dbec350816c40108a58af946baa1315f4c96ee05",
+          "image": "nvcr.io/nvidia/k8s-device-plugin@sha256:85def0197f388e5e336b1ab0dbec350816c40108a58af946baa1315f4c96ee05",
+          "name": "device-plugin-image"
+        },
+        {
+          "digest": "sha256:bfc39d23568458dfd50c0c5323b6d42bdcd038c420fb2a2becd513a3ed3be27f",
+          "image": "nvcr.io/nvidia/gpu-feature-discovery@sha256:bfc39d23568458dfd50c0c5323b6d42bdcd038c420fb2a2becd513a3ed3be27f",
+          "name": "gpu-feature-discovery-image"
+        },
+        {
+          "digest": "sha256:495ed3b42e0541590c537ab1b33bda772aad530d3ef6a4f9384d3741a59e2bf8",
+          "image": "nvcr.io/nvidia/cloud-native/k8s-mig-manager@sha256:495ed3b42e0541590c537ab1b33bda772aad530d3ef6a4f9384d3741a59e2bf8",
+          "name": "mig-manager-image"
+        },
+        {
+          "digest": "sha256:15674e5c45c97994bc92387bad03a0d52d7c1e983709c471c4fecc8e806dbdce",
+          "image": "nvcr.io/nvidia/cuda@sha256:15674e5c45c97994bc92387bad03a0d52d7c1e983709c471c4fecc8e806dbdce",
+          "name": "init-container-image"
+        },
+        {
+          "digest": "sha256:aa1f7bd526ae132c46f3ebe6ecfabe675889e240776ccc2155e31e0c48cc659e",
+          "image": "nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:aa1f7bd526ae132c46f3ebe6ecfabe675889e240776ccc2155e31e0c48cc659e",
+          "name": "gpu-operator-validator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.7.1",
+      "version_original": "1.7.1"
+    },
+    {
+      "_id": "60ca2f3e2ec20576b977fe2d",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:2f9ae23e5d031fbb99d4dd7981de0c94a084b3264833dfd5b0e270ead872d624",
+      "bundle_path_digest": "sha256:2f9ae23e5d031fbb99d4dd7981de0c94a084b3264833dfd5b0e270ead872d624",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.13",
+      "creation_date": "2021-06-16T17:05:02.108000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.13.7",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T11:27:55.068000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [],
+      "provider": "Tigera",
+      "related_images": [
+        {
+          "digest": "sha256:35c840efe79cb0acafdb86a3c0607b672675c2c0b08fe37db66758f8877d6e7f",
+          "image": "quay.io/tigera/operator@sha256:35c840efe79cb0acafdb86a3c0607b672675c2c0b08fe37db66758f8877d6e7f",
+          "name": "operator-35c840efe79cb0acafdb86a3c0607b672675c2c0b08fe37db66758f8877d6e7f-annotation"
+        },
+        {
+          "digest": "sha256:35c840efe79cb0acafdb86a3c0607b672675c2c0b08fe37db66758f8877d6e7f",
+          "image": "quay.io/tigera/operator@sha256:35c840efe79cb0acafdb86a3c0607b672675c2c0b08fe37db66758f8877d6e7f",
+          "name": "tigera-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.13.7",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.13.7",
+      "version_original": "1.13.7"
+    },
+    {
+      "_id": "60ca30762ec20576b977fe2e",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:2f9ae23e5d031fbb99d4dd7981de0c94a084b3264833dfd5b0e270ead872d624",
+      "bundle_path_digest": "sha256:2f9ae23e5d031fbb99d4dd7981de0c94a084b3264833dfd5b0e270ead872d624",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.13",
+      "creation_date": "2021-06-16T17:10:14.222000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.13.7",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:24:07.214000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMBlock",
+          "plural": "ipamblocks",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "TigeraStatus",
+          "plural": "tigerastatuses",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "HostEndpoint",
+          "plural": "hostendpoints",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMHandle",
+          "plural": "ipamhandles",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPPool",
+          "plural": "ippools",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkPolicy",
+          "plural": "networkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPConfiguration",
+          "plural": "bgpconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "Installation",
+          "plural": "installations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkSet",
+          "plural": "globalnetworksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "KubeControllersConfiguration",
+          "plural": "kubecontrollersconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMConfig",
+          "plural": "ipamconfigs",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BlockAffinity",
+          "plural": "blockaffinities",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "ClusterInformation",
+          "plural": "clusterinformations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "FelixConfiguration",
+          "plural": "felixconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkSet",
+          "plural": "networksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPPeer",
+          "plural": "bgppeers",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkPolicy",
+          "plural": "globalnetworkpolicies",
+          "version": "v1"
+        }
+      ],
+      "provider": "Tigera",
+      "related_images": [
+        {
+          "digest": "sha256:35c840efe79cb0acafdb86a3c0607b672675c2c0b08fe37db66758f8877d6e7f",
+          "image": "quay.io/tigera/operator@sha256:35c840efe79cb0acafdb86a3c0607b672675c2c0b08fe37db66758f8877d6e7f",
+          "name": "operator-35c840efe79cb0acafdb86a3c0607b672675c2c0b08fe37db66758f8877d6e7f-annotation"
+        },
+        {
+          "digest": "sha256:35c840efe79cb0acafdb86a3c0607b672675c2c0b08fe37db66758f8877d6e7f",
+          "image": "quay.io/tigera/operator@sha256:35c840efe79cb0acafdb86a3c0607b672675c2c0b08fe37db66758f8877d6e7f",
+          "name": "tigera-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.13.7",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.13.7",
+      "version_original": "1.13.7"
+    },
+    {
+      "_id": "60ca368573de3533cd94019b",
+      "alm_examples": [
+        {
+          "api_version": "operator.tigera.io/v1",
+          "kind": "Installation",
+          "metadata": {
+            "name": "default"
+          },
+          "spec": {
+            "variant": "Calico"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:2f9ae23e5d031fbb99d4dd7981de0c94a084b3264833dfd5b0e270ead872d624",
+      "bundle_path_digest": "sha256:2f9ae23e5d031fbb99d4dd7981de0c94a084b3264833dfd5b0e270ead872d624",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "release-v1.13",
+      "creation_date": "2021-06-16T17:36:05.394000+00:00",
+      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
+      "csv_display_name": "Tigera Operator",
+      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
+      "csv_name": "tigera-operator.v1.13.7",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-09-19T12:32:09.426000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "tigera-operator",
+      "provided_apis": [
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkPolicy",
+          "plural": "networkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "NetworkSet",
+          "plural": "networksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "ClusterInformation",
+          "plural": "clusterinformations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMConfig",
+          "plural": "ipamconfigs",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMHandle",
+          "plural": "ipamhandles",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "KubeControllersConfiguration",
+          "plural": "kubecontrollersconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "TigeraStatus",
+          "plural": "tigerastatuses",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkSet",
+          "plural": "globalnetworksets",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "FelixConfiguration",
+          "plural": "felixconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPPeer",
+          "plural": "bgppeers",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "HostEndpoint",
+          "plural": "hostendpoints",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPPool",
+          "plural": "ippools",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "GlobalNetworkPolicy",
+          "plural": "globalnetworkpolicies",
+          "version": "v1"
+        },
+        {
+          "group": "operator.tigera.io",
+          "kind": "Installation",
+          "plural": "installations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "IPAMBlock",
+          "plural": "ipamblocks",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BGPConfiguration",
+          "plural": "bgpconfigurations",
+          "version": "v1"
+        },
+        {
+          "group": "crd.projectcalico.org",
+          "kind": "BlockAffinity",
+          "plural": "blockaffinities",
+          "version": "v1"
+        }
+      ],
+      "provider": "Tigera",
+      "related_images": [
+        {
+          "digest": "sha256:35c840efe79cb0acafdb86a3c0607b672675c2c0b08fe37db66758f8877d6e7f",
+          "image": "quay.io/tigera/operator@sha256:35c840efe79cb0acafdb86a3c0607b672675c2c0b08fe37db66758f8877d6e7f",
+          "name": "operator-35c840efe79cb0acafdb86a3c0607b672675c2c0b08fe37db66758f8877d6e7f-annotation"
+        },
+        {
+          "digest": "sha256:35c840efe79cb0acafdb86a3c0607b672675c2c0b08fe37db66758f8877d6e7f",
+          "image": "quay.io/tigera/operator@sha256:35c840efe79cb0acafdb86a3c0607b672675c2c0b08fe37db66758f8877d6e7f",
+          "name": "tigera-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<1.13.7",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.13.7",
+      "version_original": "1.13.7"
+    },
+    {
+      "_id": "60ca670f9a087cbed9d02c74",
+      "alm_examples": [
+        {
+          "api_version": "agent.stonebranch.com/v1alpha1",
+          "kind": "Stonebranch",
+          "metadata": {
+            "name": "stonebranch-sample"
+          },
+          "spec": {
+            "config": {
+              "omsAutoStart": "no",
+              "uagAgentClusters": "AGENT_CLUSTER_APP_5461d88d5",
+              "uagAutoStart": "yes",
+              "uagEnableSsl": "yes",
+              "uagNetname": "OPSAUTOCONF",
+              "uagOmsServers": "7878\\\\@ps2.stonebranchdev.cloud",
+              "uagTransient": "yes",
+              "uagUsername": "stonebranch",
+              "uemAutoStart": "yes"
+            },
+            "createSharedPersistentVolumeClaim": {
+              "enable": true,
+              "storage#": "5Gi",
+              "storage_class": "ibmc-file-bronze-gid"
+            },
+            "useExistingSharedStorage": {
+              "enable": false,
+              "storage_name": "my-custom-pvc"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/stonebranch/stonebranch-operator-bundle@sha256:f9b6fc609704afb3a1872e38e7015b603ac06bd62530684c4fb22289051ff7b0",
+      "bundle_path_digest": "sha256:f9b6fc609704afb3a1872e38e7015b603ac06bd62530684c4fb22289051ff7b0",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-06-16T21:03:11.996000+00:00",
+      "csv_description": "Stonebranch Universal Agent IT Automation software",
+      "csv_display_name": "Universalagent Operator",
+      "csv_metadata_description": "Stonebranch Universal Agent IT Automation software",
+      "csv_name": "universalagent-operator.v1.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:07:07.765000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "stonebranch-universalagent-operator-certified",
+      "provided_apis": [
+        {
+          "group": "agent.stonebranch.com",
+          "kind": "Stonebranch",
+          "plural": "stonebranches",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Stonebranch",
+      "related_images": [
+        {
+          "digest": "sha256:aac5620c01815d4449a184c728268dfb999c1412006a4f6ab0b1018b43d413e9",
+          "image": "registry.connect.redhat.com/stonebranch/universal-agent@sha256:aac5620c01815d4449a184c728268dfb999c1412006a4f6ab0b1018b43d413e9",
+          "name": "universal-agent-aac5620c01815d4449a184c728268dfb999c1412006a4f6ab0b1018b43d413e9-annotation"
+        },
+        {
+          "digest": "sha256:331049f20a66e983578d0cf0e2d447a495ac8734588a867df4b7a5a309beb991",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:331049f20a66e983578d0cf0e2d447a495ac8734588a867df4b7a5a309beb991",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:6709fd47319626e898e9fa1d778f1bd6ce977f9b2e9f67971810b4263b9fb2be",
+          "image": "registry.connect.redhat.com/stonebranch/stonebranch-operator@sha256:6709fd47319626e898e9fa1d778f1bd6ce977f9b2e9f67971810b4263b9fb2be",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:aac5620c01815d4449a184c728268dfb999c1412006a4f6ab0b1018b43d413e9",
+          "image": "registry.connect.redhat.com/stonebranch/universal-agent@sha256:aac5620c01815d4449a184c728268dfb999c1412006a4f6ab0b1018b43d413e9",
+          "name": "universal_agent"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.1.0",
+      "version_original": "1.1.0"
+    },
+    {
+      "_id": "60ca68e1a5f4191b6335f5ca",
+      "alm_examples": [
+        {
+          "api_version": "agent.stonebranch.com/v1alpha1",
+          "kind": "Stonebranch",
+          "metadata": {
+            "name": "stonebranch-sample"
+          },
+          "spec": {
+            "config": {
+              "omsAutoStart": "no",
+              "uagAgentClusters": "AGENT_CLUSTER_APP_5461d88d5",
+              "uagAutoStart": "yes",
+              "uagEnableSsl": "yes",
+              "uagNetname": "OPSAUTOCONF",
+              "uagOmsServers": "7878\\\\@ps2.stonebranchdev.cloud",
+              "uagTransient": "yes",
+              "uagUsername": "stonebranch",
+              "uemAutoStart": "yes"
+            },
+            "createSharedPersistentVolumeClaim": {
+              "enable": true,
+              "storage#": "5Gi",
+              "storage_class": "ibmc-file-bronze-gid"
+            },
+            "useExistingSharedStorage": {
+              "enable": false,
+              "storage_name": "my-custom-pvc"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/stonebranch/stonebranch-operator-bundle@sha256:f9b6fc609704afb3a1872e38e7015b603ac06bd62530684c4fb22289051ff7b0",
+      "bundle_path_digest": "sha256:f9b6fc609704afb3a1872e38e7015b603ac06bd62530684c4fb22289051ff7b0",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-06-16T21:10:57.899000+00:00",
+      "csv_description": "Stonebranch Universal Agent IT Automation software",
+      "csv_display_name": "Universalagent Operator",
+      "csv_metadata_description": "Stonebranch Universal Agent IT Automation software",
+      "csv_name": "universalagent-operator.v1.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:33:15.046000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "stonebranch-universalagent-operator-certified",
+      "provided_apis": [
+        {
+          "group": "agent.stonebranch.com",
+          "kind": "Stonebranch",
+          "plural": "stonebranches",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Stonebranch",
+      "related_images": [
+        {
+          "digest": "sha256:aac5620c01815d4449a184c728268dfb999c1412006a4f6ab0b1018b43d413e9",
+          "image": "registry.connect.redhat.com/stonebranch/universal-agent@sha256:aac5620c01815d4449a184c728268dfb999c1412006a4f6ab0b1018b43d413e9",
+          "name": "universal-agent-aac5620c01815d4449a184c728268dfb999c1412006a4f6ab0b1018b43d413e9-annotation"
+        },
+        {
+          "digest": "sha256:331049f20a66e983578d0cf0e2d447a495ac8734588a867df4b7a5a309beb991",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:331049f20a66e983578d0cf0e2d447a495ac8734588a867df4b7a5a309beb991",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:6709fd47319626e898e9fa1d778f1bd6ce977f9b2e9f67971810b4263b9fb2be",
+          "image": "registry.connect.redhat.com/stonebranch/stonebranch-operator@sha256:6709fd47319626e898e9fa1d778f1bd6ce977f9b2e9f67971810b4263b9fb2be",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:aac5620c01815d4449a184c728268dfb999c1412006a4f6ab0b1018b43d413e9",
+          "image": "registry.connect.redhat.com/stonebranch/universal-agent@sha256:aac5620c01815d4449a184c728268dfb999c1412006a4f6ab0b1018b43d413e9",
+          "name": "universal_agent"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.1.0",
+      "version_original": "1.1.0"
+    },
+    {
+      "_id": "60ca6ebd9a087cbed9d02c79",
+      "alm_examples": [
+        {
+          "api_version": "agent.stonebranch.com/v1alpha1",
+          "kind": "Stonebranch",
+          "metadata": {
+            "name": "stonebranch-sample"
+          },
+          "spec": {
+            "config": {
+              "omsAutoStart": "no",
+              "uagAgentClusters": "AGENT_CLUSTER_APP_5461d88d5",
+              "uagAutoStart": "yes",
+              "uagEnableSsl": "yes",
+              "uagNetname": "OPSAUTOCONF",
+              "uagOmsServers": "7878\\\\@ps2.stonebranchdev.cloud",
+              "uagTransient": "yes",
+              "uagUsername": "stonebranch",
+              "uemAutoStart": "yes"
+            },
+            "createSharedPersistentVolumeClaim": {
+              "enable": true,
+              "storage#": "5Gi",
+              "storage_class": "ibmc-file-bronze-gid"
+            },
+            "useExistingSharedStorage": {
+              "enable": false,
+              "storage_name": "my-custom-pvc"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/stonebranch/stonebranch-operator-bundle@sha256:f9b6fc609704afb3a1872e38e7015b603ac06bd62530684c4fb22289051ff7b0",
+      "bundle_path_digest": "sha256:f9b6fc609704afb3a1872e38e7015b603ac06bd62530684c4fb22289051ff7b0",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-06-16T21:35:57.335000+00:00",
+      "csv_description": "Stonebranch Universal Agent IT Automation software",
+      "csv_display_name": "Universalagent Operator",
+      "csv_metadata_description": "Stonebranch Universal Agent IT Automation software",
+      "csv_name": "universalagent-operator.v1.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:48:54.698000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "stonebranch-universalagent-operator-certified",
+      "provided_apis": [
+        {
+          "group": "agent.stonebranch.com",
+          "kind": "Stonebranch",
+          "plural": "stonebranches",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Stonebranch",
+      "related_images": [
+        {
+          "digest": "sha256:aac5620c01815d4449a184c728268dfb999c1412006a4f6ab0b1018b43d413e9",
+          "image": "registry.connect.redhat.com/stonebranch/universal-agent@sha256:aac5620c01815d4449a184c728268dfb999c1412006a4f6ab0b1018b43d413e9",
+          "name": "universal-agent-aac5620c01815d4449a184c728268dfb999c1412006a4f6ab0b1018b43d413e9-annotation"
+        },
+        {
+          "digest": "sha256:331049f20a66e983578d0cf0e2d447a495ac8734588a867df4b7a5a309beb991",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:331049f20a66e983578d0cf0e2d447a495ac8734588a867df4b7a5a309beb991",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:6709fd47319626e898e9fa1d778f1bd6ce977f9b2e9f67971810b4263b9fb2be",
+          "image": "registry.connect.redhat.com/stonebranch/stonebranch-operator@sha256:6709fd47319626e898e9fa1d778f1bd6ce977f9b2e9f67971810b4263b9fb2be",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:aac5620c01815d4449a184c728268dfb999c1412006a4f6ab0b1018b43d413e9",
+          "image": "registry.connect.redhat.com/stonebranch/universal-agent@sha256:aac5620c01815d4449a184c728268dfb999c1412006a4f6ab0b1018b43d413e9",
+          "name": "universal_agent"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.1.0",
+      "version_original": "1.1.0"
+    },
+    {
+      "_id": "60ca9147a5f4191b6335f5ee",
+      "alm_examples": [
+        {
+          "api_version": "hedvig.io/v1",
+          "kind": "HedvigDeploy",
+          "metadata": {
+            "name": "testdeploy",
+            "namespace": "hedvig"
+          },
+          "spec": {
+            "cluster": {
+              "name": "hedvigcl",
+              "seeds": [
+                "hedvigcl1.hedvig.io",
+                "hedvigcl2.hedvig.io",
+                "hedvigcl3.hedvig.io"
+              ]
+            },
+            "controller": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "hedvig/hedvig-csi-volume-driver",
+              "tag": "v-2.0"
+            },
+            "k8s": {
+              "name": "k8scl"
+            },
+            "node": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "hedvig/hedvig-csi-volume-driver",
+              "tag": "v-2.0"
+            },
+            "proxy": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "hedvig/hedvig-proxy",
+              "tag": "v-4.3.1"
+            },
+            "sidecars": [
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-provisioner",
+                "repository": "quay.io/k8scsi/csi-provisioner",
+                "tag": "v1.6.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-snapshotter",
+                "repository": "quay.io/k8scsi/csi-snapshotter",
+                "tag": "v2.1.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-resizer",
+                "repository": "quay.io/k8scsi/csi-resizer",
+                "tag": "v0.5.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-node-driver-registrar",
+                "repository": "quay.io/k8scsi/csi-node-driver-registrar",
+                "tag": "v1.0-canary"
+              }
+            ]
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/commvault-hedvig/hedvig-operator@sha256:a68668ac612e5240c61c22f05f7c5c53054058d2caa624c6a49576e61de5d193",
+      "bundle_path_digest": "sha256:a68668ac612e5240c61c22f05f7c5c53054058d2caa624c6a49576e61de5d193",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-06-17T00:03:19.963000+00:00",
+      "csv_description": "The Hedvig Distributed Storage Platform is a software-defined, scale-out storage solution. It distributes data simultaneously across multiple locations \u2013 from on-premises data centers to the cloud \u2013 and scales capacity on-demand by leveraging the storage of commodity x86/ARM servers. The distributed write maximizes availability and protects data from hardware failures ranging from a single disk to an entire site, improving disaster recovery planning.\n\nHedvig provides a CSI Driver for accelerating your journey into the container ecosystem. CSI Driver enables containerized applications to maintain state by dynamically provisioning and consuming Hedvig virtual disks as persistent volumes. \n### \n\nHedvig Operator deploys the Hedvig Storage Proxy and the Hedvig CSI Driver to manage the life cycle of persistent storage in Kubernetes and Openshift.\n\n**Supported Container Orchestrators:**\n* Kubernetes 1.13 to 1.20\n* Red Hat OpenShift 4.1 to 4.7\n\n**Supported Hedvig Releases:**\n* Hedvig 4.0\n* Hedvig 4.1\n* Hedvig 4.2\n* Hedvig 4.3\n\nPlease refer to the [documentation](https://documentation.commvault.com/commvault/hedvig/others/pdf/Hedvig_Operator_User_Guide.pdf) for steps to install and use the operator.\n\n\n\n\n\n",
+      "csv_display_name": "Hedvig Operator",
+      "csv_metadata_description": "Hedvig Operator is the official operator to deploy and manage Hedvig components in container orchestrators such as Kubernetes and Openshift.",
+      "csv_name": "hedvig-operator.v1.0.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:22:11.667000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "hedvig-operator",
+      "provided_apis": [
+        {
+          "group": "hedvig.io",
+          "kind": "HedvigDeploy",
+          "plural": "hedvigdeploys",
+          "version": "v1"
+        }
+      ],
+      "provider": "Commvault",
+      "related_images": [
+        {
+          "digest": "sha256:49390fb8502978b56006de7e1fc40a5e74ee0c175d95359ddcdab487110c41f1",
+          "image": "registry.connect.redhat.com/commvault-hedvig/hedvig-operator1@sha256:49390fb8502978b56006de7e1fc40a5e74ee0c175d95359ddcdab487110c41f1",
+          "name": "hedvig-operator1-49390fb8502978b56006de7e1fc40a5e74ee0c175d95359ddcdab487110c41f1-annotation"
+        },
+        {
+          "digest": "sha256:49390fb8502978b56006de7e1fc40a5e74ee0c175d95359ddcdab487110c41f1",
+          "image": "registry.connect.redhat.com/commvault-hedvig/hedvig-operator1@sha256:49390fb8502978b56006de7e1fc40a5e74ee0c175d95359ddcdab487110c41f1",
+          "name": "hedvig-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.0.1",
+      "version_original": "1.0.1"
+    },
+    {
+      "_id": "60ca92189a087cbed9d02c9a",
+      "alm_examples": [
+        {
+          "api_version": "hedvig.io/v1",
+          "kind": "HedvigDeploy",
+          "metadata": {
+            "name": "testdeploy",
+            "namespace": "hedvig"
+          },
+          "spec": {
+            "cluster": {
+              "name": "hedvigcl",
+              "seeds": [
+                "hedvigcl1.hedvig.io",
+                "hedvigcl2.hedvig.io",
+                "hedvigcl3.hedvig.io"
+              ]
+            },
+            "controller": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "hedvig/hedvig-csi-volume-driver",
+              "tag": "v-2.0"
+            },
+            "k8s": {
+              "name": "k8scl"
+            },
+            "node": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "hedvig/hedvig-csi-volume-driver",
+              "tag": "v-2.0"
+            },
+            "proxy": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "hedvig/hedvig-proxy",
+              "tag": "v-4.3.1"
+            },
+            "sidecars": [
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-provisioner",
+                "repository": "quay.io/k8scsi/csi-provisioner",
+                "tag": "v1.6.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-snapshotter",
+                "repository": "quay.io/k8scsi/csi-snapshotter",
+                "tag": "v2.1.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-resizer",
+                "repository": "quay.io/k8scsi/csi-resizer",
+                "tag": "v0.5.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-node-driver-registrar",
+                "repository": "quay.io/k8scsi/csi-node-driver-registrar",
+                "tag": "v1.0-canary"
+              }
+            ]
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/commvault-hedvig/hedvig-operator@sha256:a68668ac612e5240c61c22f05f7c5c53054058d2caa624c6a49576e61de5d193",
+      "bundle_path_digest": "sha256:a68668ac612e5240c61c22f05f7c5c53054058d2caa624c6a49576e61de5d193",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-06-17T00:06:48.438000+00:00",
+      "csv_description": "The Hedvig Distributed Storage Platform is a software-defined, scale-out storage solution. It distributes data simultaneously across multiple locations \u2013 from on-premises data centers to the cloud \u2013 and scales capacity on-demand by leveraging the storage of commodity x86/ARM servers. The distributed write maximizes availability and protects data from hardware failures ranging from a single disk to an entire site, improving disaster recovery planning.\n\nHedvig provides a CSI Driver for accelerating your journey into the container ecosystem. CSI Driver enables containerized applications to maintain state by dynamically provisioning and consuming Hedvig virtual disks as persistent volumes. \n### \n\nHedvig Operator deploys the Hedvig Storage Proxy and the Hedvig CSI Driver to manage the life cycle of persistent storage in Kubernetes and Openshift.\n\n**Supported Container Orchestrators:**\n* Kubernetes 1.13 to 1.20\n* Red Hat OpenShift 4.1 to 4.7\n\n**Supported Hedvig Releases:**\n* Hedvig 4.0\n* Hedvig 4.1\n* Hedvig 4.2\n* Hedvig 4.3\n\nPlease refer to the [documentation](https://documentation.commvault.com/commvault/hedvig/others/pdf/Hedvig_Operator_User_Guide.pdf) for steps to install and use the operator.\n\n\n\n\n\n",
+      "csv_display_name": "Hedvig Operator",
+      "csv_metadata_description": "Hedvig Operator is the official operator to deploy and manage Hedvig components in container orchestrators such as Kubernetes and Openshift.",
+      "csv_name": "hedvig-operator.v1.0.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T12:27:10.590000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "hedvig-operator",
+      "provided_apis": [
+        {
+          "group": "hedvig.io",
+          "kind": "HedvigDeploy",
+          "plural": "hedvigdeploys",
+          "version": "v1"
+        }
+      ],
+      "provider": "Commvault",
+      "related_images": [
+        {
+          "digest": "sha256:49390fb8502978b56006de7e1fc40a5e74ee0c175d95359ddcdab487110c41f1",
+          "image": "registry.connect.redhat.com/commvault-hedvig/hedvig-operator1@sha256:49390fb8502978b56006de7e1fc40a5e74ee0c175d95359ddcdab487110c41f1",
+          "name": "hedvig-operator1-49390fb8502978b56006de7e1fc40a5e74ee0c175d95359ddcdab487110c41f1-annotation"
+        },
+        {
+          "digest": "sha256:49390fb8502978b56006de7e1fc40a5e74ee0c175d95359ddcdab487110c41f1",
+          "image": "registry.connect.redhat.com/commvault-hedvig/hedvig-operator1@sha256:49390fb8502978b56006de7e1fc40a5e74ee0c175d95359ddcdab487110c41f1",
+          "name": "hedvig-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.0.1",
+      "version_original": "1.0.1"
+    },
+    {
+      "_id": "60ca921da5f4191b6335f5ef",
+      "alm_examples": [
+        {
+          "api_version": "hedvig.io/v1",
+          "kind": "HedvigDeploy",
+          "metadata": {
+            "name": "testdeploy",
+            "namespace": "hedvig"
+          },
+          "spec": {
+            "cluster": {
+              "name": "hedvigcl",
+              "seeds": [
+                "hedvigcl1.hedvig.io",
+                "hedvigcl2.hedvig.io",
+                "hedvigcl3.hedvig.io"
+              ]
+            },
+            "controller": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "hedvig/hedvig-csi-volume-driver",
+              "tag": "v-2.0"
+            },
+            "k8s": {
+              "name": "k8scl"
+            },
+            "node": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "hedvig/hedvig-csi-volume-driver",
+              "tag": "v-2.0"
+            },
+            "proxy": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "hedvig/hedvig-proxy",
+              "tag": "v-4.3.1"
+            },
+            "sidecars": [
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-provisioner",
+                "repository": "quay.io/k8scsi/csi-provisioner",
+                "tag": "v1.6.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-snapshotter",
+                "repository": "quay.io/k8scsi/csi-snapshotter",
+                "tag": "v2.1.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-resizer",
+                "repository": "quay.io/k8scsi/csi-resizer",
+                "tag": "v0.5.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-node-driver-registrar",
+                "repository": "quay.io/k8scsi/csi-node-driver-registrar",
+                "tag": "v1.0-canary"
+              }
+            ]
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/commvault-hedvig/hedvig-operator@sha256:a68668ac612e5240c61c22f05f7c5c53054058d2caa624c6a49576e61de5d193",
+      "bundle_path_digest": "sha256:a68668ac612e5240c61c22f05f7c5c53054058d2caa624c6a49576e61de5d193",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-06-17T00:06:53.186000+00:00",
+      "csv_description": "The Hedvig Distributed Storage Platform is a software-defined, scale-out storage solution. It distributes data simultaneously across multiple locations \u2013 from on-premises data centers to the cloud \u2013 and scales capacity on-demand by leveraging the storage of commodity x86/ARM servers. The distributed write maximizes availability and protects data from hardware failures ranging from a single disk to an entire site, improving disaster recovery planning.\n\nHedvig provides a CSI Driver for accelerating your journey into the container ecosystem. CSI Driver enables containerized applications to maintain state by dynamically provisioning and consuming Hedvig virtual disks as persistent volumes. \n### \n\nHedvig Operator deploys the Hedvig Storage Proxy and the Hedvig CSI Driver to manage the life cycle of persistent storage in Kubernetes and Openshift.\n\n**Supported Container Orchestrators:**\n* Kubernetes 1.13 to 1.20\n* Red Hat OpenShift 4.1 to 4.7\n\n**Supported Hedvig Releases:**\n* Hedvig 4.0\n* Hedvig 4.1\n* Hedvig 4.2\n* Hedvig 4.3\n\nPlease refer to the [documentation](https://documentation.commvault.com/commvault/hedvig/others/pdf/Hedvig_Operator_User_Guide.pdf) for steps to install and use the operator.\n\n\n\n\n\n",
+      "csv_display_name": "Hedvig Operator",
+      "csv_metadata_description": "Hedvig Operator is the official operator to deploy and manage Hedvig components in container orchestrators such as Kubernetes and Openshift.",
+      "csv_name": "hedvig-operator.v1.0.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:36:57.041000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "hedvig-operator",
+      "provided_apis": [
+        {
+          "group": "hedvig.io",
+          "kind": "HedvigDeploy",
+          "plural": "hedvigdeploys",
+          "version": "v1"
+        }
+      ],
+      "provider": "Commvault",
+      "related_images": [
+        {
+          "digest": "sha256:49390fb8502978b56006de7e1fc40a5e74ee0c175d95359ddcdab487110c41f1",
+          "image": "registry.connect.redhat.com/commvault-hedvig/hedvig-operator1@sha256:49390fb8502978b56006de7e1fc40a5e74ee0c175d95359ddcdab487110c41f1",
+          "name": "hedvig-operator1-49390fb8502978b56006de7e1fc40a5e74ee0c175d95359ddcdab487110c41f1-annotation"
+        },
+        {
+          "digest": "sha256:49390fb8502978b56006de7e1fc40a5e74ee0c175d95359ddcdab487110c41f1",
+          "image": "registry.connect.redhat.com/commvault-hedvig/hedvig-operator1@sha256:49390fb8502978b56006de7e1fc40a5e74ee0c175d95359ddcdab487110c41f1",
+          "name": "hedvig-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.0.1",
+      "version_original": "1.0.1"
+    },
+    {
+      "_id": "60ca9275bb0cfd2a15da34b3",
+      "alm_examples": [
+        {
+          "api_version": "hedvig.io/v1",
+          "kind": "HedvigDeploy",
+          "metadata": {
+            "name": "testdeploy",
+            "namespace": "hedvig"
+          },
+          "spec": {
+            "cluster": {
+              "name": "hedvigcl",
+              "seeds": [
+                "hedvigcl1.hedvig.io",
+                "hedvigcl2.hedvig.io",
+                "hedvigcl3.hedvig.io"
+              ]
+            },
+            "controller": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "hedvig/hedvig-csi-volume-driver",
+              "tag": "v-2.0"
+            },
+            "k8s": {
+              "name": "k8scl"
+            },
+            "node": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "hedvig/hedvig-csi-volume-driver",
+              "tag": "v-2.0"
+            },
+            "proxy": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "hedvig/hedvig-proxy",
+              "tag": "v-4.3.1"
+            },
+            "sidecars": [
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-provisioner",
+                "repository": "quay.io/k8scsi/csi-provisioner",
+                "tag": "v1.6.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-snapshotter",
+                "repository": "quay.io/k8scsi/csi-snapshotter",
+                "tag": "v2.1.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-resizer",
+                "repository": "quay.io/k8scsi/csi-resizer",
+                "tag": "v0.5.0"
+              },
+              {
+                "imagePullPolicy": "IfNotPresent",
+                "name": "csi-node-driver-registrar",
+                "repository": "quay.io/k8scsi/csi-node-driver-registrar",
+                "tag": "v1.0-canary"
+              }
+            ]
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/commvault-hedvig/hedvig-operator@sha256:a68668ac612e5240c61c22f05f7c5c53054058d2caa624c6a49576e61de5d193",
+      "bundle_path_digest": "sha256:a68668ac612e5240c61c22f05f7c5c53054058d2caa624c6a49576e61de5d193",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-06-17T00:08:21.155000+00:00",
+      "csv_description": "The Hedvig Distributed Storage Platform is a software-defined, scale-out storage solution. It distributes data simultaneously across multiple locations \u2013 from on-premises data centers to the cloud \u2013 and scales capacity on-demand by leveraging the storage of commodity x86/ARM servers. The distributed write maximizes availability and protects data from hardware failures ranging from a single disk to an entire site, improving disaster recovery planning.\n\nHedvig provides a CSI Driver for accelerating your journey into the container ecosystem. CSI Driver enables containerized applications to maintain state by dynamically provisioning and consuming Hedvig virtual disks as persistent volumes. \n### \n\nHedvig Operator deploys the Hedvig Storage Proxy and the Hedvig CSI Driver to manage the life cycle of persistent storage in Kubernetes and Openshift.\n\n**Supported Container Orchestrators:**\n* Kubernetes 1.13 to 1.20\n* Red Hat OpenShift 4.1 to 4.7\n\n**Supported Hedvig Releases:**\n* Hedvig 4.0\n* Hedvig 4.1\n* Hedvig 4.2\n* Hedvig 4.3\n\nPlease refer to the [documentation](https://documentation.commvault.com/commvault/hedvig/others/pdf/Hedvig_Operator_User_Guide.pdf) for steps to install and use the operator.\n\n\n\n\n\n",
+      "csv_display_name": "Hedvig Operator",
+      "csv_metadata_description": "Hedvig Operator is the official operator to deploy and manage Hedvig components in container orchestrators such as Kubernetes and Openshift.",
+      "csv_name": "hedvig-operator.v1.0.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-09-19T11:30:16.496000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "hedvig-operator",
+      "provided_apis": [
+        {
+          "group": "hedvig.io",
+          "kind": "HedvigDeploy",
+          "plural": "hedvigdeploys",
+          "version": "v1"
+        }
+      ],
+      "provider": "Commvault",
+      "related_images": [
+        {
+          "digest": "sha256:49390fb8502978b56006de7e1fc40a5e74ee0c175d95359ddcdab487110c41f1",
+          "image": "registry.connect.redhat.com/commvault-hedvig/hedvig-operator1@sha256:49390fb8502978b56006de7e1fc40a5e74ee0c175d95359ddcdab487110c41f1",
+          "name": "hedvig-operator1-49390fb8502978b56006de7e1fc40a5e74ee0c175d95359ddcdab487110c41f1-annotation"
+        },
+        {
+          "digest": "sha256:49390fb8502978b56006de7e1fc40a5e74ee0c175d95359ddcdab487110c41f1",
+          "image": "registry.connect.redhat.com/commvault-hedvig/hedvig-operator1@sha256:49390fb8502978b56006de7e1fc40a5e74ee0c175d95359ddcdab487110c41f1",
+          "name": "hedvig-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.0.1",
+      "version_original": "1.0.1"
+    }
+  ],
+  "total": 5323
+}
