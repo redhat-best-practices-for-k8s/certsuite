@@ -217,6 +217,20 @@ Suggested Remediation|Add requests and limits to your container spec.  See: http
 Best Practice Reference|https://TODO Section 4.6.11
 Exception Process|There is no documented exception process for this.
 Tags|common
+#### security-context
+
+Property|Description
+---|---
+Test Case Name|security-context
+Test Case Label|access-control-security-context
+Unique ID|http://test-network-function.com/testcases/access-control/security-context
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/access-control/security-context Checks the security context is match one of the 4 categories
+Result Type|normative
+Suggested Remediation|Change the pod and containers "runAsUser" uid to something other than root(0)
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
+Exception Process|If your application needs root user access, please document why your application cannot be ran as 											non-root and supply the reasoning for exception.
+Tags|common
 #### security-context-capabilities-check
 
 Property|Description
