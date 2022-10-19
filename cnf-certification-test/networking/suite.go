@@ -121,7 +121,26 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		testPartnerSpecificTCPPorts(&env)
 	})
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestDpdkCPUPinningExecProbe)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
+		dpdkPods := env.GetCPUPinningPodsWithDpdk()
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, dpdkPods)
+		testExecProbDenyAtCPUPinning(dpdkPods)
+	})
 })
+
+func testExecProbDenyAtCPUPinning(dpdkPods []*provider.Pod) {
+	ginkgo.By("Check if exec probe is happening")
+
+	for _, cpuPinnedPod := range dpdkPods {
+		for _, x := range cpuPinnedPod.Containers {
+			if x.LivenessProbe != nil || x.StartupProbe != nil || x.ReadinessProbe != nil {
+				ginkgo.Fail("Exec prob is not allowed")
+			}
+		}
+	}
+}
 
 //nolint:funlen
 func testUndeclaredContainerPortsUsage(env *provider.TestEnvironment) {

@@ -135,11 +135,22 @@ type MachineConfig struct {
 }
 
 type cniNetworkInterface struct {
-	Name      string                 `json:"name"`
-	Interface string                 `json:"interface"`
-	IPs       []string               `json:"ips"`
-	Default   bool                   `json:"default"`
-	DNS       map[string]interface{} `json:"dns"`
+	Name       string                 `json:"name"`
+	Interface  string                 `json:"interface"`
+	IPs        []string               `json:"ips"`
+	Default    bool                   `json:"default"`
+	DNS        map[string]interface{} `json:"dns"`
+	DeviceInfo deviceInfo             `json:"device-info"`
+}
+
+type deviceInfo struct {
+	Type    string `json:"type"`
+	Version string `json:"version"`
+	PCI     pci    `json:"pci"`
+}
+
+type pci struct {
+	PciAddress string `json:"pci-address"`
 }
 
 var (
@@ -412,6 +423,20 @@ func GetPodIPsPerNet(annotation string) (ips map[string][]string, err error) {
 		}
 	}
 	return ips, nil
+}
+
+func GetPciPerPod(annotation string) (pciAddr []string, err error) {
+	var cniInfo []cniNetworkInterface
+	err = json.Unmarshal([]byte(annotation), &cniInfo)
+	if err != nil {
+		return nil, errors.New("could not unmarshal network-status annotation")
+	}
+	for _, cniInterface := range cniInfo {
+		if cniInterface.DeviceInfo.PCI.PciAddress != "" {
+			pciAddr = append(pciAddr, cniInterface.DeviceInfo.PCI.PciAddress)
+		}
+	}
+	return pciAddr, nil
 }
 
 func (env *TestEnvironment) SetNeedsRefresh() {

@@ -225,7 +225,7 @@ Test Case Name|security-context-capabilities-check
 Test Case Label|access-control-security-context-capabilities-check
 Unique ID|http://test-network-function.com/testcases/access-control/security-context-capabilities-check
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/access-control/security-context-capabilities-check Tests that the following capabilities are not granted: 			- NET_ADMIN 			- SYS_ADMIN  			- NET_RAW 			- IPC_LOCK 
+Description|http://test-network-function.com/testcases/access-control/security-context-capabilities-check Tests that the following capabilities are not granted: 			- NET_ADMIN 			- SYS_ADMIN 			- NET_RAW 			- IPC_LOCK 
 Result Type|normative
 Suggested Remediation|Remove the following capabilities from the container/pod definitions: NET_ADMIN SCC, SYS_ADMIN SCC, NET_RAW SCC, IPC_LOCK SCC
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
@@ -401,7 +401,7 @@ Unique ID|http://test-network-function.com/testcases/lifecycle/container-startup
 Version|v1.0.0
 Description|http://test-network-function.com/testcases/lifecycle/container-startup Ensure that the containers lifecycle postStart management feature is configured.
 Result Type|normative
-Suggested Remediation|PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will  not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks
+Suggested Remediation|PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.1.3, 12.2 and 12.5
 Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.
 Tags|common
@@ -427,7 +427,7 @@ Test Case Name|deployment-scaling
 Test Case Label|lifecycle-deployment-scaling
 Unique ID|http://test-network-function.com/testcases/lifecycle/deployment-scaling
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/lifecycle/deployment-scaling Tests that CNF deployments support scale in/out operations.  			First, The test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the  			scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s. 		    In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the  			original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the deployment/s
+Description|http://test-network-function.com/testcases/lifecycle/deployment-scaling Tests that CNF deployments support scale in/out operations. 			First, The test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the 			scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s. 		    In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the 			original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the deployment/s
 Result Type|normative
 Suggested Remediation|Ensure CNF deployments/replica sets can scale in/out successfully.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
@@ -511,7 +511,7 @@ Test Case Name|pod-recreation
 Test Case Label|lifecycle-pod-recreation
 Unique ID|http://test-network-function.com/testcases/lifecycle/pod-recreation
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/lifecycle/pod-recreation Tests that a CNF is configured to support High Availability.   			First, this test cordons and drains a Node that hosts the CNF Pod.   			Next, the test ensures that OpenShift can re-instantiate the Pod on another Node,  			and that the actual replica count matches the desired replica count.
+Description|http://test-network-function.com/testcases/lifecycle/pod-recreation Tests that a CNF is configured to support High Availability. 			First, this test cordons and drains a Node that hosts the CNF Pod. 			Next, the test ensures that OpenShift can re-instantiate the Pod on another Node, 			and that the actual replica count matches the desired replica count.
 Result Type|normative
 Suggested Remediation|Ensure that CNF Pod(s) utilize a configuration that supports High Availability.   	Additionally, ensure that there are available Nodes in the OpenShift cluster that can be utilized in the event that a host Node fails.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
@@ -553,7 +553,7 @@ Test Case Name|scaling
 Test Case Label|lifecycle-scaling
 Unique ID|http://test-network-function.com/testcases/lifecycle/scaling
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/lifecycle/scaling Tests that CNF deployments support scale in/out operations.  			First, The test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the  			scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s.
+Description|http://test-network-function.com/testcases/lifecycle/scaling Tests that CNF deployments support scale in/out operations. 			First, The test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the 			scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s.
 Result Type|normative
 Suggested Remediation|Ensure CNF deployments/replica sets can scale in/out successfully.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
@@ -581,7 +581,7 @@ Test Case Name|statefulset-scaling
 Test Case Label|lifecycle-statefulset-scaling
 Unique ID|http://test-network-function.com/testcases/lifecycle/statefulset-scaling
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/lifecycle/statefulset-scaling Tests that CNF statefulsets support scale in/out operations.  			First, The test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the  			scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the statefulset/s. 			In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the  			original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the statefulset/s
+Description|http://test-network-function.com/testcases/lifecycle/statefulset-scaling Tests that CNF statefulsets support scale in/out operations. 			First, The test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the 			scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the statefulset/s. 			In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the 			original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the statefulset/s
 Result Type|normative
 Suggested Remediation|Ensure CNF statefulsets/replica sets can scale in/out successfully.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
@@ -621,6 +621,20 @@ Tags|extended
 
 ### networking
 
+#### dpdk-cpu-pinning-exec-probe
+
+Property|Description
+---|---
+Test Case Name|dpdk-cpu-pinning-exec-probe
+Test Case Label|networking-dpdk-cpu-pinning-exec-probe
+Unique ID|http://test-network-function.com/testcases/networking/dpdk-cpu-pinning-exec-probe
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/networking/dpdk-cpu-pinning-exec-probe If a CNF is doing CPI pinning, exec probes may not be used.
+Result Type|informative
+Suggested Remediation|If the CNF is doing CPU pinning and running a DPDK process do not use exec probes (executing a command within the container) as it may pile up and block the node eventually.
+Best Practice Reference|https://TODO Section 4.6.24
+Exception Process|There is no documented exception process for this.
+Tags|extended
 #### dual-stack-service
 
 Property|Description
@@ -873,7 +887,7 @@ Test Case Name|install-status-no-privileges
 Test Case Label|operator-install-status-no-privileges
 Unique ID|http://test-network-function.com/testcases/operator/install-status-no-privileges
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/operator/install-status-no-privileges The operator is not installed with privileged rights. Test passes if clusterPermissions is not present in the CSV manifest or is present  with no resourceNames under its rules.
+Description|http://test-network-function.com/testcases/operator/install-status-no-privileges The operator is not installed with privileged rights. Test passes if clusterPermissions is not present in the CSV manifest or is present with no resourceNames under its rules.
 Result Type|normative
 Suggested Remediation|Ensure all the CNF operators have no privileges on cluster resources.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.12 and 5.3.3
