@@ -239,16 +239,16 @@ func testTainted(env *provider.TestEnvironment, testerFuncs nodetainted.TaintedF
 			errNodes = append(errNodes, dp.Name)
 			break
 		}
-		taintMsg, individualTaints := nodetainted.DecodeKernelTaints(taintedBitmap)
 
+		taints := nodetainted.DecodeKernelTaints(taintedBitmap)
 		// Count how many taints come from `module was loaded` taints versus `other`
 		logrus.Debug("Checking for 'module was loaded' taints")
-		logrus.Debug("individualTaints", individualTaints)
+		logrus.Debugf("Taints found: %v", taints)
 		moduleTaintsFound := false
 		otherTaintsFound := false
 
 		otherTaints := []string{}
-		for _, it := range individualTaints {
+		for _, it := range taints {
 			if strings.Contains(it, `module was loaded`) {
 				moduleTaintsFound = true
 			} else {
@@ -289,7 +289,7 @@ func testTainted(env *provider.TestEnvironment, testerFuncs nodetainted.TaintedF
 
 		// Only print the message if there is something to report failure or tainted node wise.
 		if len(taintedNodes) != 0 || len(errNodes) != 0 {
-			tnf.ClaimFilePrintf("Decoded tainted kernel causes (code=%d) for node %s : %s\n", taintedBitmap, dp.Name, taintMsg)
+			tnf.ClaimFilePrintf("Decoded tainted kernel causes (code=%d) for node %s : %s\n", taintedBitmap, dp.Name, strings.Join(taints, ","))
 		}
 	}
 

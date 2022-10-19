@@ -63,12 +63,69 @@ func TestTaintsAccepted(t *testing.T) {
 	}
 }
 
+//nolint:funlen
 func TestDecodeKernelTaints(t *testing.T) {
-	taint1, taint1Slice := DecodeKernelTaints(2048)
-	assert.Equal(t, taint1, "workaround for bug in platform firmware applied, ")
-	assert.Len(t, taint1Slice, 1)
+	tcs := []struct {
+		taintsBitMask  uint64
+		expectedTaints []string
+	}{
+		// No taints
+		{
+			taintsBitMask:  0,
+			expectedTaints: []string{},
+		},
 
-	taint2, taint2Slice := DecodeKernelTaints(32769)
-	assert.Equal(t, taint2, "proprietary module was loaded, kernel has been live patched, ")
-	assert.Len(t, taint2Slice, 2)
+		// Reserved taint bit 23
+		{
+			taintsBitMask:  1 << 23,
+			expectedTaints: []string{"reserved kernel taint bit 23"},
+		},
+
+		// Taint bit 0
+		{
+			taintsBitMask:  1 << 0,
+			expectedTaints: []string{"proprietary module was loaded"},
+		},
+
+		// Taint bit 11
+		{
+			taintsBitMask:  1 << 11,
+			expectedTaints: []string{"workaround for bug in platform firmware applied"},
+		},
+
+		// Bit 18
+		{
+			taintsBitMask:  1 << 18,
+			expectedTaints: []string{"an in-kernel test has been run"},
+		},
+
+		// Bits 0 and 18
+		{
+			taintsBitMask:  (1 << 0) | (1 << 18),
+			expectedTaints: []string{"proprietary module was loaded", "an in-kernel test has been run"},
+		},
+
+		// Bits 1, 24 and 30
+		{
+			taintsBitMask:  (1 << 0) | (1 << 24) | (1 << 30),
+			expectedTaints: []string{"proprietary module was loaded", "reserved kernel taint bit 24", "Red Hat extension: reserved taint bit 30"},
+		},
+
+		// RH's bit 29
+		{
+			taintsBitMask:  1 << 29,
+			expectedTaints: []string{"Red Hat extension: Technology Preview code was loaded; cf. Technology Preview features support scope description. Refer to \"TECH PREVIEW:\" kernel log entry for details."},
+		},
+
+		// RH's reserved bit 31
+		{
+			taintsBitMask:  1 << 31,
+			expectedTaints: []string{"Red Hat extension: reserved taint bit 31"},
+		},
+	}
+
+	for _, tc := range tcs {
+		taints := DecodeKernelTaints(tc.taintsBitMask)
+		assert.Equal(t, tc.expectedTaints, taints)
+	}
 }
