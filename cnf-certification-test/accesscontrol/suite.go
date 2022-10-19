@@ -61,6 +61,12 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		TestSecConCapabilities(&env)
 	})
+	// container security context: check if it match one of the 4 catagories
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSecContextIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
+		testContainerSCC(&env)
+	})
 	// container security context: non-root user
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSecConNonRootUserIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), ginkgo.Label(tags...), func() {
@@ -648,4 +654,111 @@ func Test1337UIDs(env *provider.TestEnvironment) {
 	}
 
 	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
+}
+
+type ContainerSCC struct {
+	HostDirVolumePlugin bool
+	HostIPC             bool
+	HostNetwork         bool
+	HostPID             bool
+	HostPorts           bool
+	PrivilegeEscalation bool
+	PrivilegedContainer bool
+	RunAsUser           bool
+	Capabilities        string
+}
+
+var (
+	catagory1 = ContainerSCC{false,
+		false,
+		false,
+		false,
+		false,
+		true,
+		false,
+		true,
+		""}
+
+	catagory2 = ContainerSCC{false,
+		false,
+		false,
+		false,
+		false,
+		true,
+		false,
+		false,
+		""}
+
+	catagory3 = ContainerSCC{false,
+		false,
+		false,
+		false,
+		false,
+		true,
+		false,
+		true,
+		"NET_ADMIN, NET_RAW"}
+	catagory4 = ContainerSCC{false,
+		false,
+		false,
+		false,
+		false,
+		true,
+		false,
+		true,
+		"IPC_LOCK, NET_ADMIN, NET_RAW"}
+)
+
+func testContainerSCC(env *provider.TestEnvironment) {
+	var containerSCC ContainerSCC
+	const leetNum = 1337
+	var badCut []string
+	for _, pod := range env.Pods {
+		containerSCC.HostIPC = pod.Spec.HostIPC
+		containerSCC.HostNetwork = pod.Spec.HostNetwork
+		containerSCC.HostPID = pod.Spec.HostPID
+		if pod.Spec.SecurityContext.RunAsUser != nil && *pod.Spec.SecurityContext.RunAsUser == int64(leetNum) {
+			containerSCC.RunAsUser = true
+		} else {
+			containerSCC.RunAsUser = false
+		}
+		for _, cut := range pod.Spec.Containers {
+			containerSCC.HostPorts = false
+			for _, aPort := range cut.Ports {
+				if aPort.HostPort != 0 {
+					containerSCC.HostPorts = true
+					break
+				}
+			}
+			if cut.SecurityContext != nil && cut.SecurityContext.AllowPrivilegeEscalation != nil {
+				if *(cut.SecurityContext.AllowPrivilegeEscalation) {
+					containerSCC.PrivilegedContainer = true
+				} else {
+					containerSCC.PrivilegedContainer = false
+				}
+			}
+			if cut.SecurityContext != nil && cut.SecurityContext.Capabilities != nil {
+				containerSCC.Capabilities = cut.SecurityContext.Capabilities.String()
+			} else {
+				containerSCC.Capabilities = ""
+			}
+			if cut.SecurityContext != nil && cut.SecurityContext.RunAsUser != nil && *cut.SecurityContext.RunAsUser == int64(leetNum) {
+				containerSCC.RunAsUser = true
+			} else {
+				containerSCC.RunAsUser = false
+			}
+			// after building the containerSCC need to check to wich catagory it is
+			if containerSCC == catagory1 {
+				logrus.Info("is ok")
+			} else if containerSCC == catagory2 {
+				logrus.Info("is ok")
+			} else if containerSCC == catagory3 {
+				logrus.Info("is ok")
+			} else if containerSCC == catagory4 {
+				logrus.Info("is ok")
+			} else {
+				badCut = append(badCut, cut.Name)
+			}
+		}
+	}
 }
