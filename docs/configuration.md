@@ -1,0 +1,82 @@
+# Test configuration
+
+The certification test suite supports autodiscovery using labels and annotations.
+
+These can be configured through the following config file.
+  - `tnf_config.yml`
+  
+[Sample](https://github.com/test-network-function/cnf-certification-test/blob/main/cnf-certification-test/tnf_config.yml)
+
+As per the requirement the following fields can be changed.
+
+## targetNameSpaces
+
+Multiple namespaces can be specified to deploy partner pods for testing through `targetNameSpaces` in the config file.
+
+``` { .yaml .annotate }
+targetNameSpaces:
+  - name: firstnamespace
+  - name: secondnamespace
+```
+## targetPodLabels
+The goal of this section is to specify the labels to be used to identify the CNF resources under test.
+
+!!! note "Highly recommended"
+
+    The labels should be defined in pod definition rather than added after pod is created, as labels added later on will be lost in case the pod gets rescheduled. In case of pods defined as part of a deployment, it's best to use the same label as the one defined in the `spec.selector.matchLabels` section of the deployment yaml. The prefix field can be used to avoid naming collision with other labels.
+
+``` { .yaml .annotate }
+targetPodLabels:
+  - prefix: test-network-function.com
+    name: generic
+    value: target
+```
+
+The corresponding pod label used to match pods is:
+``` { .yaml .annotate }
+test-network-function.com/generic: target
+```
+
+Once the pods are found, all of their containers are also added to the target container list. A target deployment list will also be created with all the deployments which the test pods belong to.
+
+## targetCrds
+In order to autodiscover the CRDs to be tested, an array of search filters can be set under the "targetCrdFilters" label. The autodiscovery mechanism will iterate through all the filters to look for all the CRDs that match it. Currently, filters only work by name suffix.
+
+``` { .yaml .annotate }
+targetCrdFilters:
+ - nameSuffix: "group1.tnf.com"
+ - nameSuffix: "anydomain.com"
+```
+
+The autodiscovery mechanism will create a list of all CRD names in the cluster whose names have the suffix `group1.tnf.com` or `anydomain.com`, e.g. `crd1.group1.tnf.com` or `mycrd.mygroup.anydomain.com`.
+
+## testTarget
+### podsUnderTest / containersUnderTest
+The autodiscovery mechanism will attempt to identify the default network device and all the IP addresses of the pods it needs for network connectivity tests, though that information can be explicitly set using annotations if needed.
+
+
+#### Pod IPs
+
+* The `k8s.v1.cni.cncf.io/networks-status` annotation is checked and all IPs from it are used. This annotation is automatically managed in OpenShift but may not be present in K8s.
+* If it is not present, then only known IPs associated with the pod are used (the pod `.status.ips` field).
+
+#### Network Interfaces
+
+* The annotation `test-network-function.com/defaultnetworkinterface` is the highest priority, and must contain a JSON-encoded string of the primary network interface for the pod. This must be explicitly set if needed. Examples are provided in [cnf-certification-test-partner](https://github.com/test-network-function/cnf-certification-test-partner).
+* If the above is not present, the `k8s.v1.cni.cncf.io/networks-status` annotation is checked and the `interface` from the first entry found with `"default"=true` is used. This annotation is automatically managed in OpenShift but may not be present in K8s.
+
+The label `test-network-function.com/skip_connectivity_tests` excludes pods from all connectivity tests. The label value is not important, only its presence.
+The label `test-network-function.com/skip_multus_connectivity_tests` excludes pods from [Multus](https://github.com/k8snetworkplumbingwg/multus-cni) connectivity tests. Tests on default interface are still done. The label value is not important, but its presence.
+
+## AffinityRequired
+For CNF workloads that require pods to use Pod or Node Affinity rules, the label `AffinityRequired: true` must be included on either the Deployment, StatefulSet, or Pod YAML.  This will prevent any tests for anti-affinity to fail as well as test your workloads for affinity rules that support your CNF's use-case.
+
+## certifiedcontainerinfo
+
+The `certifiedcontainerinfo` section contains information about CNFs containers that are
+to be checked for certification status on Red Hat catalogs.
+
+## Operators
+
+CSVs to be tested by the `operator` and `affiliated-certification` specs are identified with the `test-network-function.com/operator=target`
+label. Any value is permitted but `target` is used here for consistency with the other specs.
