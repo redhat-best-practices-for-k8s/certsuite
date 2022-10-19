@@ -25,6 +25,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/namespace"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/rbac"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/resources"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/tolerations"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
@@ -587,40 +588,7 @@ func testPodRequestsAndLimits(env *provider.TestEnvironment) {
 	// Loop through the containers, looking for containers that are missing requests or limits.
 	// These need to be defined in order to pass.
 	for _, cut := range env.Containers {
-		badContainer := false
-		// Parse the limits.
-		if len(cut.Resources.Limits) == 0 {
-			tnf.ClaimFilePrintf("Container has been found missing resource limits: %s", cut.String())
-			badContainer = true
-		} else {
-			if cut.Resources.Limits.Cpu() == nil {
-				tnf.ClaimFilePrintf("Container has been found missing CPU limits: %s", cut.String())
-				badContainer = true
-			}
-
-			if cut.Resources.Limits.Memory() == nil {
-				tnf.ClaimFilePrintf("Container has been found missing memory limits: %s", cut.String())
-				badContainer = true
-			}
-		}
-
-		// Parse the requests.
-		if len(cut.Resources.Requests) == 0 {
-			tnf.ClaimFilePrintf("Container has been found missing resource requests: %s", cut.String())
-			badContainer = true
-		} else {
-			if cut.Resources.Requests.Cpu() == nil {
-				tnf.ClaimFilePrintf("Container has been found missing CPU requests: %s", cut.String())
-				badContainer = true
-			}
-
-			if cut.Resources.Requests.Memory() == nil {
-				tnf.ClaimFilePrintf("Container has been found missing memory requests: %s", cut.String())
-				badContainer = true
-			}
-		}
-
-		if badContainer {
+		if !resources.HasRequestsAndLimitsSet(cut) {
 			containersMissingRequestsOrLimits = append(containersMissingRequestsOrLimits, cut.String())
 		}
 	}
