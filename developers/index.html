@@ -736,6 +736,13 @@
 </code></pre></div></p>
 </li>
 <li>
+<p>Set K8s config of the cluster where test pods are running</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">KUBECONFIG</span><span class="o">=</span>&lt;&lt;mypath&gt;&gt;
+</code></pre></div>
+<ul>
+<li>
 <p>Execute test suite, which would build and run the suite</p>
 <p>For example, to run <code>networking</code> tests
 <div class="highlight"><pre><span></span><code>./script/development.sh -l networking
