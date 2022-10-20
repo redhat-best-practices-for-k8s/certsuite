@@ -246,7 +246,7 @@
   
     <li class="md-tabs__item">
       <a href="../test-container/" class="md-tabs__link">
-        Build & Run Test
+        Build | Execute
       </a>
     </li>
   
@@ -446,6 +446,20 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#targetpodlabels" class="md-nav__link">
+    targetPodLabels
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#targetcrds" class="md-nav__link">
+    targetCrds
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#testtarget" class="md-nav__link">
     testTarget
   </a>
@@ -457,6 +471,26 @@
   <a href="#podsundertest-containersundertest" class="md-nav__link">
     podsUnderTest / containersUnderTest
   </a>
+  
+    <nav class="md-nav" aria-label="podsUnderTest / containersUnderTest">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pod-ips" class="md-nav__link">
+    Pod IPs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-interfaces" class="md-nav__link">
+    Network Interfaces
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -606,14 +640,14 @@
       
       
         <label class="md-nav__link" for="__nav_4">
-          Build & Run Test
+          Build | Execute
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" aria-label="Build & Run Test" data-md-level="1">
+      <nav class="md-nav" aria-label="Build | Execute" data-md-level="1">
         <label class="md-nav__title" for="__nav_4">
           <span class="md-nav__icon md-icon"></span>
-          Build & Run Test
+          Build | Execute
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
@@ -782,6 +816,20 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#targetpodlabels" class="md-nav__link">
+    targetPodLabels
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#targetcrds" class="md-nav__link">
+    targetCrds
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#testtarget" class="md-nav__link">
     testTarget
   </a>
@@ -793,6 +841,26 @@
   <a href="#podsundertest-containersundertest" class="md-nav__link">
     podsUnderTest / containersUnderTest
   </a>
+  
+    <nav class="md-nav" aria-label="podsUnderTest / containersUnderTest">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pod-ips" class="md-nav__link">
+    Pod IPs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-interfaces" class="md-nav__link">
+    Network Interfaces
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -843,54 +911,57 @@
 
 
 <h1 id="test-configuration">Test configuration<a class="headerlink" href="#test-configuration" title="Permanent link">&para;</a></h1>
-<p>The Test Network Function support autodiscovery using labels and annotations. The following sections describe how to configure the <abbr title="Test Network Function">TNF</abbr> via labels/annotation and the corresponding settings in the config file. A sample config file can be found <a href="cnf-certification-test/tnf_config.yml">here</a>.</p>
+<p>The certification test suite supports autodiscovery using labels and annotations.</p>
+<p>These can be configured through a config file. <a href="https://github.com/test-network-function/cnf-certification-test/blob/main/cnf-certification-test/tnf_config.yml">Sample</a></p>
+<p>As per the requirement the following fields can be changed.</p>
 <h2 id="targetnamespaces">targetNameSpaces<a class="headerlink" href="#targetnamespaces" title="Permanent link">&para;</a></h2>
-<p>Multiple namespaces can be specified in the <a href="cnf-certification-test/tnf_config.yml">configuration file</a>. Namespaces will be used by autodiscovery to find the Pods under test.
-``` shell script
-targetNameSpaces:
-  - name: firstnamespace
-  - name: secondnamespace
-<div class="highlight"><pre><span></span><code>## targetPodLabels
-The goal of this section is to specify the labels to be used to identify the CNF resources under test. It&#39;s highly recommended that the labels should be defined in pod definition rather than added after pod is created, as labels added later on will be lost in case the pod gets rescheduled. In case of pods defined as part of a deployment, it&#39;s best to use the same label as the one defined in the `spec.selector.matchLabels` section of the deployment yaml. The prefix field can be used to avoid naming collision with other labels.
-```shell script
-targetPodLabels:
-  - prefix: test-network-function.com
-    name: generic
-    value: target
+<p>Multiple namespaces can be specified to deploy partner pods for testing through <code>targetNameSpaces</code> in the config file.</p>
+<div class="annotate highlight"><pre><span></span><code><span class="nt">targetNameSpaces</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">firstnamespace</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">secondnamespace</span><span class="w"></span>
+</code></pre></div>
+<h2 id="targetpodlabels">targetPodLabels<a class="headerlink" href="#targetpodlabels" title="Permanent link">&para;</a></h2>
+<p>The goal of this section is to specify the labels to be used to identify the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> resources under test.</p>
+<div class="admonition note">
+<p class="admonition-title">Highly recommended</p>
+<p>The labels should be defined in pod definition rather than added after pod is created, as labels added later on will be lost in case the pod gets rescheduled. In case of pods defined as part of a deployment, it&rsquo;s best to use the same label as the one defined in the <code>spec.selector.matchLabels</code> section of the deployment yaml. The prefix field can be used to avoid naming collision with other labels.</p>
+</div>
+<div class="annotate highlight"><pre><span></span><code><span class="nt">targetPodLabels</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">prefix</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test-network-function.com</span><span class="w"></span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generic</span><span class="w"></span>
+<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">target</span><span class="w"></span>
+</code></pre></div>
+<p>The corresponding pod label used to match pods is:
+<div class="annotate highlight"><pre><span></span><code><span class="nt">test-network-function.com/generic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">target</span><span class="w"></span>
 </code></pre></div></p>
-<p>The corresponding label used to match pods is:
-```shell script
-test-network-function.com/generic: target
-<div class="highlight"><pre><span></span><code>Once the pods are found, all of their containers are also added to the target container list. A target deployments list will also be created with all the deployments which the test pods belong to.
-
-## targetCrds
-In order to autodiscover the CRDs to be tested, an array of search filters can be set under the &quot;targetCrdFilters&quot; label. The autodiscovery mechanism will iterate through all the filters to look for all the CRDs that match it. Currently, filters only work by name suffix.
-
-```shell-script
-targetCrdFilters:
- - nameSuffix: &quot;group1.tnf.com&quot;
- - nameSuffix: &quot;anydomain.com&quot;
-</code></pre></div></p>
-<p>The autodiscovery mechanism will create a list of all CRD names in the cluster whose names have the suffix &ldquo;group1.tnf.com&rdquo; or &ldquo;anydomain.com&rdquo;, e.g. &ldquo;crd1.group1.tnf.com&rdquo; or &ldquo;mycrd.mygroup.anydomain.com&rdquo;.</p>
+<p>Once the pods are found, all of their containers are also added to the target container list. A target deployment list will also be created with all the deployments which the test pods belong to.</p>
+<h2 id="targetcrds">targetCrds<a class="headerlink" href="#targetcrds" title="Permanent link">&para;</a></h2>
+<p>In order to autodiscover the CRDs to be tested, an array of search filters can be set under the &ldquo;targetCrdFilters&rdquo; label. The autodiscovery mechanism will iterate through all the filters to look for all the CRDs that match it. Currently, filters only work by name suffix.</p>
+<div class="annotate highlight"><pre><span></span><code><span class="nt">targetCrdFilters</span><span class="p">:</span><span class="w"></span>
+<span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">nameSuffix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;group1.tnf.com&quot;</span><span class="w"></span>
+<span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">nameSuffix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;anydomain.com&quot;</span><span class="w"></span>
+</code></pre></div>
+<p>The autodiscovery mechanism will create a list of all <abbr title="Custom Resource Definition">CRD</abbr> names in the cluster whose names have the suffix <code>group1.tnf.com</code> or <code>anydomain.com</code>, e.g. <code>crd1.group1.tnf.com</code> or <code>mycrd.mygroup.anydomain.com</code>.</p>
 <h2 id="testtarget">testTarget<a class="headerlink" href="#testtarget" title="Permanent link">&para;</a></h2>
 <h3 id="podsundertest-containersundertest">podsUnderTest / containersUnderTest<a class="headerlink" href="#podsundertest-containersundertest" title="Permanent link">&para;</a></h3>
-<p>The autodiscovery mechanism will attempt to identify the default network device and all the IP addresses of the pods it needs for network connectivity tests, though that information can be explicitly set using annotations if needed. For Pod IPs:</p>
+<p>The autodiscovery mechanism will attempt to identify the default network device and all the IP addresses of the pods it needs for network connectivity tests, though that information can be explicitly set using annotations if needed.</p>
+<h4 id="pod-ips">Pod IPs<a class="headerlink" href="#pod-ips" title="Permanent link">&para;</a></h4>
 <ul>
-<li>The annotation test-network-function.com/multusips is the highest priority, and must contain a JSON-encoded list of IP addresses to be tested for the pod. This must be explicitly set.</li>
-<li>If the above is not present, the k8s.v1.cni.cncf.io/networks-status annotation is checked and all IPs from it are used. This annotation is automatically managed in OpenShift but may not be present in K8s.</li>
-<li>If neither of the above is present, then only known IPs associated with the pod are used (the pod .status.ips field).</li>
+<li>The annotation <code>test-network-function.com/multusips</code> is the highest priority, and must contain a JSON-encoded list of IP addresses to be tested for the pod. <strong>This must be explicitly set</strong>.</li>
+<li>If the above is not present, the <code>k8s.v1.cni.cncf.io/networks-status</code> annotation is checked and all IPs from it are used. This annotation is automatically managed in OpenShift but may not be present in K8s.</li>
+<li>If neither of the above is present, then only known IPs associated with the pod are used (the pod <code>.status.ips</code> field).</li>
 </ul>
-<p>For Network Interfaces:</p>
+<h4 id="network-interfaces">Network Interfaces<a class="headerlink" href="#network-interfaces" title="Permanent link">&para;</a></h4>
 <ul>
-<li>The annotation test-network-function.com/defaultnetworkinterface is the highest priority, and must contain a JSON-encoded string of the primary network interface for the pod. This must be explicitly set if needed. Examples can be seen in cnf-certification-test-partner</li>
-<li>If the above is not present, the k8s.v1.cni.cncf.io/networks-status annotation is checked and the &ldquo;interface&rdquo; from the first entry found with &ldquo;default&rdquo;=true is used. This annotation is automatically managed in OpenShift but may not be present in K8s.</li>
+<li>The annotation <code>test-network-function.com/defaultnetworkinterface</code> is the highest priority, and must contain a JSON-encoded string of the primary network interface for the pod. This must be explicitly set if needed. Examples are provided in <a href="https://github.com/test-network-function/cnf-certification-test-partner">cnf-certification-test-partner</a>.</li>
+<li>If the above is not present, the <code>k8s.v1.cni.cncf.io/networks-status</code> annotation is checked and the <code>interface</code> from the first entry found with <code>"default"=true</code> is used. This annotation is automatically managed in OpenShift but may not be present in K8s.</li>
 </ul>
-<p>The label test-network-function.com/skip_connectivity_tests excludes pods from all connectivity tests. The label value is not important, only its presence.
-The label test-network-function.com/skip_multus_connectivity_tests excludes pods from multus connectivity tests. Tests on default interface are still done. The label value is not important, only its presence.</p>
+<p>The label <code>test-network-function.com/skip_connectivity_tests</code> excludes pods from all connectivity tests. The label value is not important, only its presence.
+The label <code>test-network-function.com/skip_multus_connectivity_tests</code> excludes pods from <a href="https://github.com/k8snetworkplumbingwg/multus-cni">Multus</a> connectivity tests. Tests on default interface are still done. The label value is not important, but its presence.</p>
 <h2 id="affinityrequired">AffinityRequired<a class="headerlink" href="#affinityrequired" title="Permanent link">&para;</a></h2>
-<p>For <abbr title="Cloud-Native Network Functions or Containerised Network Function">CNF</abbr> workloads that require pods to use Pod or Node Affinity rules, the label <code>AffinityRequired: true</code> must be included on either the Deployment, StatefulSet, or Pod YAML.  This will prevent any tests for anti-affinity to fail as well as test your workloads for affinity rules that support your <abbr title="Cloud-Native Network Functions or Containerised Network Function">CNF</abbr>&lsquo;s use-case.</p>
+<p>For <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> workloads that require pods to use Pod or Node Affinity rules, the label <code>AffinityRequired: true</code> must be included on either the Deployment, StatefulSet, or Pod YAML.  This will prevent any tests for anti-affinity to fail as well as test your workloads for affinity rules that support your <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>&lsquo;s use-case.</p>
 <h2 id="certifiedcontainerinfo">certifiedcontainerinfo<a class="headerlink" href="#certifiedcontainerinfo" title="Permanent link">&para;</a></h2>
-<p>The <code>certifiedcontainerinfo</code> section contains information about CNFs containers that are
+<p>The <code>certifiedcontainerinfo</code> section contains information about <abbr title="Cloud-Native Network Functions">CNFs</abbr> containers that are
 to be checked for certification status on Red Hat catalogs.</p>
 <h2 id="operators">Operators<a class="headerlink" href="#operators" title="Permanent link">&para;</a></h2>
 <p>CSVs to be tested by the <code>operator</code> and <code>affiliated-certification</code> specs are identified with the <code>test-network-function.com/operator=target</code>
@@ -973,7 +1044,7 @@ label. Any value is permitted but <code>target</code> is used here for consisten
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "content.tooltips"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "content.tooltips", "content.code.annotate"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.078830c0.min.js"></script>

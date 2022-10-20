@@ -244,7 +244,7 @@
   
     <li class="md-tabs__item">
       <a href="../test-container/" class="md-tabs__link">
-        Build & Run Test
+        Build | Execute
       </a>
     </li>
   
@@ -522,14 +522,14 @@
       
       
         <label class="md-nav__link" for="__nav_4">
-          Build & Run Test
+          Build | Execute
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" aria-label="Build & Run Test" data-md-level="1">
+      <nav class="md-nav" aria-label="Build | Execute" data-md-level="1">
         <label class="md-nav__title" for="__nav_4">
           <span class="md-nav__icon md-icon"></span>
-          Build & Run Test
+          Build | Execute
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
@@ -858,9 +858,9 @@
 outcome of all of the tests.  This claim file is the proof of the test run that is evaluated by Red Hat when
 &ldquo;certified&rdquo; status is being considered.  For more information about the contents of the claim file please see the
 <a href="https://github.com/test-network-function/test-network-function-claim/blob/main/schemas/claim.schema.json">schema</a>.  You can
-read more about the purpose of the claim file and <abbr title="Cloud-Native Network Functions or Containerised Network Function">CNF</abbr> Certification in the
+read more about the purpose of the claim file and <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification in the
 <a href="https://redhat-connect.gitbook.io/openshift-badges/badges/cloud-native-network-functions-cnf">Guide</a>.</p>
-<h3 id="adding-test-results-for-the-cnf-validation-test-suite-to-a-claim-file">Adding Test Results for the <abbr title="Cloud-Native Network Functions or Containerised Network Function">CNF</abbr> Validation Test Suite to a Claim File<a class="headerlink" href="#adding-test-results-for-the-cnf-validation-test-suite-to-a-claim-file" title="Permanent link">&para;</a></h3>
+<h3 id="adding-test-results-for-the-cnf-validation-test-suite-to-a-claim-file">Adding Test Results for the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Validation Test Suite to a Claim File<a class="headerlink" href="#adding-test-results-for-the-cnf-validation-test-suite-to-a-claim-file" title="Permanent link">&para;</a></h3>
 <p>e.g. Adding a cnf platform test results to your existing claim file.</p>
 <p>You can use the claim cli tool to append other related test suite results to your existing claim.json file.
 The output of the tool will be an updated claim file.
@@ -880,10 +880,10 @@ The output of the tool will be an updated claim file.
  &quot;-tests&quot;: &quot;14&quot;,
 </code></pre></div></p>
 <h2 id="command-line-output">Command Line Output<a class="headerlink" href="#command-line-output" title="Permanent link">&para;</a></h2>
-<p>When run the <abbr title="Cloud-Native Network Functions or Containerised Network Function">CNF</abbr> test suite will output a report to the terminal that is primarily useful for Developers to evaluate and
+<p>When run the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> test suite will output a report to the terminal that is primarily useful for Developers to evaluate and
 address problems.  This output is similar to many testing tools.</p>
 <h4 id="test-successful-output-example">Test successful output example<a class="headerlink" href="#test-successful-output-example" title="Permanent link">&para;</a></h4>
-<p>Here&rsquo;s an example of a Test pass.  It verifies that the <abbr title="Cloud-Native Network Functions or Containerised Network Function">CNF</abbr> is using a replica set:</p>
+<p>Here&rsquo;s an example of a Test pass.  It verifies that the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> is using a replica set:</p>
 <div class="highlight"><pre><span></span><code>------------------------------
 lifecycle when Testing owners of CNF pod
   Should be only ReplicaSet
@@ -1041,7 +1041,7 @@ operator
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "content.tooltips"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "content.tooltips", "content.code.annotate"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.078830c0.min.js"></script>
