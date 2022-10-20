@@ -705,7 +705,6 @@ var (
 		true,
 		false,
 		false,
-
 		"NET_ADMIN, NET_RAW"}
 	catagory4 = ContainerSCC{false,
 		false,
@@ -722,7 +721,7 @@ var (
 
 func testContainerSCC(env *provider.TestEnvironment) {
 	var containerSCC ContainerSCC
-	const leetNum = 1337
+	const istioProxyContainerUID = 1337
 	var badCut []string
 	for _, pod := range env.Pods {
 		containerSCC.HostIPC = pod.Spec.HostIPC
@@ -753,7 +752,7 @@ func testContainerSCC(env *provider.TestEnvironment) {
 			} else {
 				containerSCC.Capabilities = ""
 			}
-			if cut.SecurityContext != nil && cut.SecurityContext.RunAsUser != nil && *cut.SecurityContext.RunAsUser == int64(leetNum) {
+			if cut.SecurityContext != nil && cut.SecurityContext.RunAsUser != nil && *cut.SecurityContext.RunAsUser == int64(istioProxyContainerUID) {
 				containerSCC.RunAsUser = true
 			} else {
 				containerSCC.RunAsUser = false
