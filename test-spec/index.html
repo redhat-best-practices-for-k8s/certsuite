@@ -801,14 +801,19 @@
 <h1 id="test-specifications">Test Specifications<a class="headerlink" href="#test-specifications" title="Permanent link">&para;</a></h1>
 <h2 id="available-test-specs">Available Test Specs<a class="headerlink" href="#available-test-specs" title="Permanent link">&para;</a></h2>
 <p>There are two categories for <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> tests;  &lsquo;General&rsquo; and &lsquo;<abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>-specific&rsquo; (TODO).</p>
-<p>The &lsquo;General&rsquo; tests are designed to test any commodity <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> running on OpenShift, and include specifications such as
-&lsquo;Default&rsquo; network connectivity.</p>
-<p>&lsquo;<abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>-specific&rsquo; tests are designed to test some unique aspects of the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> under test are behaving correctly.  This could
+<ul>
+<li><strong>General</strong></li>
+</ul>
+<p>These tests are designed to test any commodity <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> running on OpenShift, and include specifications such as
+<code>Default</code> network connectivity.</p>
+<ul>
+<li><strong><abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>-Specific</strong></li>
+</ul>
+<p>These tests are designed to test some unique aspects of the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> under test are behaving correctly.  This could
 include specifications such as issuing a <code>GET</code> request to a web server, or passing traffic through an IPSEC tunnel.</p>
-<p>&lsquo;<abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>-specific&rsquo; test are yet to be defined.</p>
 <h3 id="general-tests">General tests<a class="headerlink" href="#general-tests" title="Permanent link">&para;</a></h3>
 <p>Test in the &ldquo;general&rdquo; category belong to multiple suites that can be run in any combination as is
-appropriate for the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>(s) under test. Test suites group tests by topic area:</p>
+appropriate for the <abbr title="Cloud-Native Network Functions">CNFs</abbr> under test. Test suites group tests by topic area:</p>
 <table>
 <thead>
 <tr>

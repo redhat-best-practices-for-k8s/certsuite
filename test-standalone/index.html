@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#building-and-running-the-standalone-test-executable" class="md-skip">
+        <a href="#build-and-run-the-standalone-test-executable" class="md-skip">
           Skip to content
         </a>
       
@@ -589,15 +589,56 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#dependencies" class="md-nav__link">
-    Dependencies
+  <a href="#install-dependencies" class="md-nav__link">
+    Install dependencies
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#building-the-tests" class="md-nav__link">
-    Building the Tests
+  <a href="#build-the-test-suite" class="md-nav__link">
+    Build the Test Suite
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-a-cnf" class="md-nav__link">
+    Test a CNF
+  </a>
+  
+    <nav class="md-nav" aria-label="Test a CNF">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#run-a-single-test" class="md-nav__link">
+    Run a single test
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-a-subset" class="md-nav__link">
+    Run a subset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#labels-for-offline-environments" class="md-nav__link">
+    Labels for offline environments
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build-test-a-cnf" class="md-nav__link">
+    Build + Test a CNF
   </a>
   
 </li>
@@ -741,15 +782,56 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#dependencies" class="md-nav__link">
-    Dependencies
+  <a href="#install-dependencies" class="md-nav__link">
+    Install dependencies
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#building-the-tests" class="md-nav__link">
-    Building the Tests
+  <a href="#build-the-test-suite" class="md-nav__link">
+    Build the Test Suite
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-a-cnf" class="md-nav__link">
+    Test a CNF
+  </a>
+  
+    <nav class="md-nav" aria-label="Test a CNF">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#run-a-single-test" class="md-nav__link">
+    Run a single test
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-a-subset" class="md-nav__link">
+    Run a subset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#labels-for-offline-environments" class="md-nav__link">
+    Labels for offline environments
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build-test-a-cnf" class="md-nav__link">
+    Build + Test a CNF
   </a>
   
 </li>
@@ -774,11 +856,22 @@
   </a>
 
 
-<h1 id="building-and-running-the-standalone-test-executable">Building and running the standalone test executable<a class="headerlink" href="#building-and-running-the-standalone-test-executable" title="Permanent link">&para;</a></h1>
-<p>Currently, all available tests are part of the &ldquo;<abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification Test Suite&rdquo; test suite, which serves as the entrypoint to run all test specs.
-By default, <code>cnf-certification-test</code> emits results to <code>cnf-certification-test/cnf-certification-tests_junit.xml</code>.</p>
-<h3 id="dependencies">Dependencies<a class="headerlink" href="#dependencies" title="Permanent link">&para;</a></h3>
-<p>At a minimum, the following dependencies must be installed <em>prior</em> to running <code>make install-tools</code>.</p>
+<h1 id="build-and-run-the-standalone-test-executable">Build and Run the standalone test executable<a class="headerlink" href="#build-and-run-the-standalone-test-executable" title="Permanent link">&para;</a></h1>
+<p><strong>Prerequisites</strong></p>
+<p>The repo is cloned and all the commands should be run from the cloned repo.</p>
+<div class="highlight"><pre><span></span><code>mkdir ~/workspace
+<span class="nb">cd</span> ~/workspace
+git clone git@github.com:test-network-function/cnf-certification-test.git
+<span class="nb">cd</span> cnf-certification-test
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By default, <code>cnf-certification-test</code> emits results to <code>cnf-certification-test/cnf-certification-tests_junit.xml</code>.</p>
+</div>
+<h3 id="install-dependencies">Install dependencies<a class="headerlink" href="#install-dependencies" title="Permanent link">&para;</a></h3>
+<p>Run the following command to install the following dependencies.</p>
+<div class="highlight"><pre><span></span><code>make install-tools
+</code></pre></div>
 <table>
 <thead>
 <tr>
@@ -806,71 +899,62 @@ By default, <code>cnf-certification-test</code> emits results to <code>cnf-certi
 </tbody>
 </table>
 <p>Other binary dependencies required to run tests can be installed using the following command:</p>
-<p>```shell script
-make install-tools
-<div class="highlight"><pre><span></span><code>*Note*: You must also make sure that `$GOBIN` (default `$GOPATH/bin`) is on your `$PATH`.
-
-*Note*:  Efforts to containerize this offering are considered a work in progress.
-
-
-
-### Pulling The Code
-
-In order to pull the code, issue the following command:
-
-```shell script
-mkdir ~/workspace
-cd ~/workspace
-git clone git@github.com:test-network-function/cnf-certification-test.git
-cd cnf-certification-test
-</code></pre></div></p>
-<h3 id="building-the-tests">Building the Tests<a class="headerlink" href="#building-the-tests" title="Permanent link">&para;</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul>
+<li>
+<p>You must also make sure that <code>$GOBIN</code> (default <code>$GOPATH/bin</code>) is on your <code>$PATH</code>.</p>
+</li>
+<li>
+<p>Efforts to containerise this offering are considered a work in progress.</p>
+</li>
+</ul>
+</div>
+<h3 id="build-the-test-suite">Build the Test Suite<a class="headerlink" href="#build-the-test-suite" title="Permanent link">&para;</a></h3>
 <p>In order to build the test executable, first make sure you have satisfied the <a href="#dependencies">dependencies</a>.
-```shell script
-make build-cnf-tests
-<div class="highlight"><pre><span></span><code>*Gotcha:* The `make build*` commands run unit tests where appropriate. They do NOT test the CNF.
-
-### Testing a CNF
-
-Once the executable is built, a CNF can be tested by specifying which suites to run using the `run-cnf-suites.sh` helper
-script.
-
-Run any combination of the suites keywords listed at in the [General tests](#general-tests) section, e.g.
-
-```shell script
-./run-cnf-suites.sh -l &quot;lifecycle&quot;
-./run-cnf-suites.sh -l &quot;networking,lifecycle&quot;
-./run-cnf-suites.sh -l &quot;operator,networking&quot;
-./run-cnf-suites.sh -l &quot;networking,platform-alteration&quot;
-./run-cnf-suites.sh -l &quot;networking,lifecycle,affiliated-certification,operator&quot;
+<div class="highlight"><pre><span></span><code>make build-cnf-tests
 </code></pre></div></p>
-<p>As with &ldquo;run-tnf-container.sh&rdquo;, if <code>-l</code> is not specified here, the tnf will run in &lsquo;diagnostic&rsquo; mode. See <a href="#run-the-tests">Run the tests</a> section for more info.</p>
+<p><em>Gotcha:</em> The <code>make build*</code> commands run unit tests where appropriate. They do NOT test the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>.</p>
+<h3 id="test-a-cnf">Test a <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr><a class="headerlink" href="#test-a-cnf" title="Permanent link">&para;</a></h3>
+<p>A <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> is tested by specifying which suites to run using the <code>run-cnf-suites.sh</code> helper
+script.</p>
+<p>Run any combination of the suites keywords listed at in the <a href="#general-tests">General tests</a> section, e.g.</p>
+<div class="highlight"><pre><span></span><code>./run-cnf-suites.sh -l <span class="s2">&quot;lifecycle&quot;</span>
+./run-cnf-suites.sh -l <span class="s2">&quot;networking,lifecycle&quot;</span>
+./run-cnf-suites.sh -l <span class="s2">&quot;operator,networking&quot;</span>
+./run-cnf-suites.sh -l <span class="s2">&quot;networking,platform-alteration&quot;</span>
+./run-cnf-suites.sh -l <span class="s2">&quot;networking,lifecycle,affiliated-certification,operator&quot;</span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As with &ldquo;run-tnf-container.sh&rdquo;, if <code>-l</code> is not specified here, the tnf will run in &lsquo;diagnostic&rsquo; mode.</p>
 <p>By default the claim file will be output into the same location as the test executable. The <code>-o</code> argument for
 <code>run-cnf-suites.sh</code> can be used to provide a new location that the output files will be saved to. For more detailed
 control over the outputs, see the output of <code>cnf-certification-test.test --help</code>.</p>
-<p>```shell script
-cd cnf-certification-test &amp;&amp; ./cnf-certification-test.test &ndash;help
-<div class="highlight"><pre><span></span><code>*Gotcha:* check that OCP cluster has resources to deploy [debug image](#check-cluster-resources)
-
-#### Running a single test or a subset
-All tests have unique labels, which can be used to filter which tests are to be run. This is useful when debugging
-a single test.
-
-You can select the test to be executed when running `run-cnf-suites.sh` with the following command-line:
-```shell script
-./run-cnf-suites.sh -l operator-install-source
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span> cnf-certification-test <span class="o">&amp;&amp;</span> ./cnf-certification-test.test --help
+</code></pre></div>
+</div>
+<h4 id="run-a-single-test">Run a single test<a class="headerlink" href="#run-a-single-test" title="Permanent link">&para;</a></h4>
+<p>All tests have unique labels, which can be used to filter which tests are to be run. This is useful when debugging
+a single test.</p>
+<p>To select the test to be executed when running <code>run-cnf-suites.sh</code> with the following command-line:
+<div class="highlight"><pre><span></span><code>./run-cnf-suites.sh -l operator-install-source
 </code></pre></div></p>
-<p>Note that the test labels work the same as the suite labels, so you can select more than one test with the filtering mechanism shown before.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The test labels work the same as the suite labels, so you can select more than one test with the filtering mechanism shown before.</p>
+</div>
+<h4 id="run-a-subset">Run a subset<a class="headerlink" href="#run-a-subset" title="Permanent link">&para;</a></h4>
 <p>You can find all the labels attached to the tests by running the following command:
-```shell script
-./run-cnf-suites.sh &ndash;list
-<div class="highlight"><pre><span></span><code>You can also check the [CATALOG.md](CATALOG.md) to find all test labels.
-#### Labels to run in offline environments
-Some tests do require connectivity to Redhat servers to validate certification status.
-If you&#39;re running the tests in an offline environment, you can skip the tests using the `l` option as explained in [Label use](#running-a-single-test-or-a-subset)
-```shell script
-./run-cnf-suites.sh -l &#39;!online&#39;
+<div class="highlight"><pre><span></span><code>./run-cnf-suites.sh --list
 </code></pre></div></p>
+<p>You can also check the <a href="CATALOG.md">CATALOG.md</a> to find all test labels.</p>
+<h4 id="labels-for-offline-environments">Labels for offline environments<a class="headerlink" href="#labels-for-offline-environments" title="Permanent link">&para;</a></h4>
+<p>Some tests do require connectivity to Redhat servers to validate certification status.
+To run the tests in an offline environment, skip the tests using the <code>l</code> option.
+<div class="highlight"><pre><span></span><code>./run-cnf-suites.sh -l <span class="s1">&#39;!online&#39;</span>
+</code></pre></div></p>
+<h3 id="build-test-a-cnf">Build + Test a <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr><a class="headerlink" href="#build-test-a-cnf" title="Permanent link">&para;</a></h3>
 
 
 

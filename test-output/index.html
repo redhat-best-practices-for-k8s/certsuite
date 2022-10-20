@@ -628,19 +628,6 @@
     Claim File
   </a>
   
-    <nav class="md-nav" aria-label="Claim File">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#adding-test-results-for-the-cnf-validation-test-suite-to-a-claim-file" class="md-nav__link">
-    Adding Test Results for the CNF Validation Test Suite to a Claim File
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -652,15 +639,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#test-successful-output-example" class="md-nav__link">
-    Test successful output example
+  <a href="#example-successful-test" class="md-nav__link">
+    Example: Successful test
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#test-failed-output-examples" class="md-nav__link">
-    Test failed output examples
+  <a href="#example-test-failed-output" class="md-nav__link">
+    Example: Test failed output
   </a>
   
 </li>
@@ -783,19 +770,6 @@
     Claim File
   </a>
   
-    <nav class="md-nav" aria-label="Claim File">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#adding-test-results-for-the-cnf-validation-test-suite-to-a-claim-file" class="md-nav__link">
-    Adding Test Results for the CNF Validation Test Suite to a Claim File
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -807,15 +781,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#test-successful-output-example" class="md-nav__link">
-    Test successful output example
+  <a href="#example-successful-test" class="md-nav__link">
+    Example: Successful test
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#test-failed-output-examples" class="md-nav__link">
-    Test failed output examples
+  <a href="#example-test-failed-output" class="md-nav__link">
+    Example: Test failed output
   </a>
   
 </li>
@@ -860,29 +834,30 @@ outcome of all of the tests.  This claim file is the proof of the test run that 
 <a href="https://github.com/test-network-function/test-network-function-claim/blob/main/schemas/claim.schema.json">schema</a>.  You can
 read more about the purpose of the claim file and <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification in the
 <a href="https://redhat-connect.gitbook.io/openshift-badges/badges/cloud-native-network-functions-cnf">Guide</a>.</p>
-<h3 id="adding-test-results-for-the-cnf-validation-test-suite-to-a-claim-file">Adding Test Results for the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Validation Test Suite to a Claim File<a class="headerlink" href="#adding-test-results-for-the-cnf-validation-test-suite-to-a-claim-file" title="Permanent link">&para;</a></h3>
+<p><strong>Add Test Results for the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Validation Test Suite to a Claim File</strong></p>
 <p>e.g. Adding a cnf platform test results to your existing claim file.</p>
 <p>You can use the claim cli tool to append other related test suite results to your existing claim.json file.
 The output of the tool will be an updated claim file.
-<div class="highlight"><pre><span></span><code>go run cmd/tools/cmd/main.go claim-add --claimfile=claim.json --reportdir=/home/$USER/reports
+<div class="highlight"><pre><span></span><code><span class="k">go</span><span class="w"> </span><span class="nx">run</span><span class="w"> </span><span class="nx">cmd</span><span class="o">/</span><span class="nx">tools</span><span class="o">/</span><span class="nx">cmd</span><span class="o">/</span><span class="nx">main</span><span class="p">.</span><span class="k">go</span><span class="w"> </span><span class="nx">claim</span><span class="o">-</span><span class="nx">add</span><span class="w"> </span><span class="o">--</span><span class="nx">claimfile</span><span class="p">=</span><span class="nx">claim</span><span class="p">.</span><span class="nx">json</span><span class="w"></span>
+<span class="o">--</span><span class="nx">reportdir</span><span class="p">=</span><span class="o">/</span><span class="nx">home</span><span class="o">/</span><span class="err">$</span><span class="nx">USER</span><span class="o">/</span><span class="nx">reports</span><span class="w"></span>
 </code></pre></div>
  Args:<br />
-<code>--claimfile is an existing claim.json file</code>
-<code>--repordir :path to test results that you want to include.</code></p>
+<code>--claimfile is an existing claim.json file</code></p>
+<p><code>--repordir :path to test results that you want to include.</code></p>
 <p>The tests result files from the given report dir will be appended under the result section of the claim file using file name as the key/value pair.
  The tool will ignore the test result, if the key name is already present under result section of the claim file.
-<div class="highlight"><pre><span></span><code> &quot;results&quot;: {
- &quot;cnf-certification-tests_junit&quot;: {
- &quot;testsuite&quot;: {
- &quot;-errors&quot;: &quot;0&quot;,
- &quot;-failures&quot;: &quot;2&quot;,
- &quot;-name&quot;: &quot;CNF Certification Test Suite&quot;,
- &quot;-tests&quot;: &quot;14&quot;,
+<div class="highlight"><pre><span></span><code><span class="w"> </span><span class="nt">&quot;results&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w"> </span><span class="nt">&quot;cnf-certification-tests_junit&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w"> </span><span class="nt">&quot;testsuite&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w"> </span><span class="nt">&quot;-errors&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w"> </span><span class="nt">&quot;-failures&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w"> </span><span class="nt">&quot;-name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CNF Certification Test Suite&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w"> </span><span class="nt">&quot;-tests&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;14&quot;</span><span class="p">,</span><span class="w"></span>
 </code></pre></div></p>
 <h2 id="command-line-output">Command Line Output<a class="headerlink" href="#command-line-output" title="Permanent link">&para;</a></h2>
 <p>When run the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> test suite will output a report to the terminal that is primarily useful for Developers to evaluate and
 address problems.  This output is similar to many testing tools.</p>
-<h4 id="test-successful-output-example">Test successful output example<a class="headerlink" href="#test-successful-output-example" title="Permanent link">&para;</a></h4>
+<h4 id="example-successful-test">Example: Successful test<a class="headerlink" href="#example-successful-test" title="Permanent link">&para;</a></h4>
 <p>Here&rsquo;s an example of a Test pass.  It verifies that the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> is using a replica set:</p>
 <div class="highlight"><pre><span></span><code>------------------------------
 lifecycle when Testing owners of CNF pod
@@ -892,7 +867,7 @@ lifecycle when Testing owners of CNF pod
 <span class="m">2021</span>/07/27 <span class="m">11</span>:41:26 Match <span class="k">for</span> RE: <span class="s2">&quot;(?s)OWNERKIND\n.+((.|\n)*END_OF_TEST_SENTINEL\n)&quot;</span> found: <span class="o">[</span><span class="s2">&quot;OWNERKIND\nReplicaSet\nEND_OF_TEST_SENTINEL\n&quot;</span> <span class="s2">&quot;END_OF_TEST_SENTINEL\n&quot;</span> <span class="s2">&quot;&quot;</span><span class="o">]</span> Buffer: <span class="s2">&quot;OWNERKIND\nReplicaSet\nEND_OF_TEST_SENTINEL\n&quot;</span>
 •
 </code></pre></div>
-<h4 id="test-failed-output-examples">Test failed output examples<a class="headerlink" href="#test-failed-output-examples" title="Permanent link">&para;</a></h4>
+<h4 id="example-test-failed-output">Example: Test failed output<a class="headerlink" href="#example-test-failed-output" title="Permanent link">&para;</a></h4>
 <p>The following is the output from a Test failure.  In this case, the test is checking that a CSV (ClusterServiceVersion)
 is installed correctly, but does not find it (the operator was not present on the cluster under test):</p>
 <div class="highlight"><pre><span></span><code>------------------------------
