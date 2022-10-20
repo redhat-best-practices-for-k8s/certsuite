@@ -221,24 +221,6 @@
         
   
   
-    
-  
-
-
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../developers/" class="md-tabs__link md-tabs__link--active">
-        Developers' Guide
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
 
 
   
@@ -286,6 +268,24 @@
       Exception Process
     </a>
   </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../developers/" class="md-tabs__link md-tabs__link--active">
+        Developers' Guide
+      </a>
+    </li>
+  
 
       
         
@@ -437,14 +437,12 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
       
       
       
@@ -456,90 +454,12 @@
       
       
         <label class="md-nav__link" for="__nav_3">
-          Developers' Guide
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" aria-label="Developers' Guide" data-md-level="1">
-        <label class="md-nav__title" for="__nav_3">
-          <span class="md-nav__icon md-icon"></span>
-          Developers' Guide
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../developers/" class="md-nav__link">
-        Developers
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-    
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        CNF Developers
-      </a>
-      
-    </li>
-  
-
-            
-          
-        </ul>
-      </nav>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
-      
-      
-      
-        
-          
-        
-          
-        
-      
-      
-        <label class="md-nav__link" for="__nav_4">
           Build | Execute
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Build | Execute" data-md-level="1">
-        <label class="md-nav__title" for="__nav_4">
+        <label class="md-nav__title" for="__nav_3">
           <span class="md-nav__icon md-icon"></span>
           Build | Execute
         </label>
@@ -620,6 +540,86 @@
       <a href="../exception/" class="md-nav__link">
         Exception Process
       </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" checked>
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_7">
+          Developers' Guide
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Developers' Guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Developers' Guide
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developers/" class="md-nav__link">
+        Developers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        CNF Developers
+      </a>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -715,6 +715,16 @@
 
 
 <h1 id="cnf-developers-guidelines"><abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Developers Guidelines<a class="headerlink" href="#cnf-developers-guidelines" title="Permanent link">&para;</a></h1>
+<p>Developers of <abbr title="Cloud-Native Network Functions">CNFs</abbr>, particularly those targeting
+<a href="https://redhat-connect.gitbook.io/openshift-badges/badges/cloud-native-network-functions-cnf"><abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification with Red Hat on OpenShift</a>,
+can use this suite to test the interaction of their <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> with OpenShift.  If you are interested in <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification
+please contact <a href="https://redhat-connect.gitbook.io/red-hat-partner-connect-general-guide/managing-your-account/getting-help/technology-partner-success-desk">Red Hat</a>.</p>
+<p>Refer to the rest of the documentation in this file to see how to install and run the tests as well as how to
+interpret the results.</p>
+<p>You will need an <a href="https://docs.openshift.com/container-platform/4.10/welcome/index.html">OpenShift 4.10 installation</a>
+running your <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>, and at least one other machine available to host the test suite.  The
+<a href="https://github.com/test-network-function/cnf-certification-test-partner">cnf-certification-test-partner</a> repository has a very
+simple example of this you can model your setup on.</p>
 
 
 
@@ -756,13 +766,13 @@
       
       
         
-        <a href="../test-container/" class="md-footer__link md-footer__link--next" aria-label="Next: Prebuilt container" rel="next">
+        <a href="../reference/" class="md-footer__link md-footer__link--next" aria-label="Next: Contribution Guideline" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Prebuilt container
+              Contribution Guideline
             </div>
           </div>
           <div class="md-footer__button md-icon">
