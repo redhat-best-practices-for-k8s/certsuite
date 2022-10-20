@@ -657,15 +657,17 @@ func Test1337UIDs(env *provider.TestEnvironment) {
 }
 
 type ContainerSCC struct {
-	HostDirVolumePlugin bool
-	HostIPC             bool
-	HostNetwork         bool
-	HostPID             bool
-	HostPorts           bool
-	PrivilegeEscalation bool
-	PrivilegedContainer bool
-	RunAsUser           bool
-	Capabilities        string
+	HostDirVolumePlugin    bool
+	HostIPC                bool
+	HostNetwork            bool
+	HostPID                bool
+	HostPorts              bool
+	PrivilegeEscalation    bool
+	PrivilegedContainer    bool
+	RunAsUser              bool
+	ReadOnlyRootFilesystem bool
+	RunAsNonRoot           bool
+	Capabilities           string
 }
 
 var (
@@ -677,6 +679,8 @@ var (
 		true,
 		false,
 		true,
+		false,
+		false,
 		""}
 
 	catagory2 = ContainerSCC{false,
@@ -687,6 +691,8 @@ var (
 		true,
 		false,
 		false,
+		false,
+		true,
 		""}
 
 	catagory3 = ContainerSCC{false,
@@ -697,6 +703,9 @@ var (
 		true,
 		false,
 		true,
+		false,
+		false,
+
 		"NET_ADMIN, NET_RAW"}
 	catagory4 = ContainerSCC{false,
 		false,
@@ -706,6 +715,8 @@ var (
 		true,
 		false,
 		true,
+		false,
+		false,
 		"IPC_LOCK, NET_ADMIN, NET_RAW"}
 )
 
@@ -746,6 +757,12 @@ func testContainerSCC(env *provider.TestEnvironment) {
 				containerSCC.RunAsUser = true
 			} else {
 				containerSCC.RunAsUser = false
+			}
+			if cut.SecurityContext != nil && cut.SecurityContext.ReadOnlyRootFilesystem != nil {
+				containerSCC.ReadOnlyRootFilesystem = *cut.SecurityContext.ReadOnlyRootFilesystem
+			}
+			if cut.SecurityContext != nil && cut.SecurityContext.RunAsNonRoot != nil {
+				containerSCC.RunAsNonRoot = *cut.SecurityContext.RunAsNonRoot
 			}
 			// after building the containerSCC need to check to wich catagory it is
 			if containerSCC == catagory1 {
