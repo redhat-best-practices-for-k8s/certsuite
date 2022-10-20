@@ -225,11 +225,15 @@
   
 
 
-  <li class="md-tabs__item">
-    <a href="developers/" class="md-tabs__link">
-      Developers' Guide
-    </a>
-  </li>
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="developers/" class="md-tabs__link">
+        Developers' Guide
+      </a>
+    </li>
+  
 
       
         
@@ -241,7 +245,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="run-test.md" class="md-tabs__link">
+      <a href="test-container/" class="md-tabs__link">
         Build & Run Test
       </a>
     </li>
@@ -254,8 +258,32 @@
 
 
   <li class="md-tabs__item">
-    <a href="standalone/" class="md-tabs__link">
-      Build and Run the standalone test executable
+    <a href="test-spec/" class="md-tabs__link">
+      Available Test Specs
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="test-output/" class="md-tabs__link">
+      Test Output
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="exception/" class="md-tabs__link">
+      Exception Process
     </a>
   </li>
 
@@ -430,7 +458,7 @@
   
   
     <li class="md-nav__item">
-      <a href="test-spec/" class="md-nav__link">
+      <a href="runtime-env/" class="md-nav__link">
         Runtime environment variables
       </a>
     </li>
@@ -451,10 +479,63 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Developers' Guide
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Developers' Guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Developers' Guide
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
       <a href="developers/" class="md-nav__link">
-        Developers' Guide
+        Developers
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="cnf-developers/" class="md-nav__link">
+        CNF Developers
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -499,8 +580,8 @@
   
   
     <li class="md-nav__item">
-      <a href="run-test.md" class="md-nav__link">
-        None
+      <a href="test-container/" class="md-nav__link">
+        Within prebuilt container
       </a>
     </li>
   
@@ -513,8 +594,8 @@
   
   
     <li class="md-nav__item">
-      <a href="How to run" class="md-nav__link">
-        None
+      <a href="test-standalone/" class="md-nav__link">
+        Standalone test executable
       </a>
     </li>
   
@@ -535,8 +616,38 @@
   
   
     <li class="md-nav__item">
-      <a href="standalone/" class="md-nav__link">
-        Build and Run the standalone test executable
+      <a href="test-spec/" class="md-nav__link">
+        Available Test Specs
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="test-output/" class="md-nav__link">
+        Test Output
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="exception/" class="md-nav__link">
+        Exception Process
       </a>
     </li>
   
@@ -553,7 +664,7 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
       
       
       
@@ -562,13 +673,13 @@
         
       
       
-        <label class="md-nav__link" for="__nav_6">
+        <label class="md-nav__link" for="__nav_8">
           Reference
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Reference" data-md-level="1">
-        <label class="md-nav__title" for="__nav_6">
+        <label class="md-nav__title" for="__nav_8">
           <span class="md-nav__icon md-icon"></span>
           Reference
         </label>
@@ -648,18 +759,36 @@
 
 
 <h1 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h1>
-<p>This repository contains a set of Cloud-Native Network Functions (CNFs) test cases and the framework to build more. The tests and framework are intended
-to test the interaction of CNFs with OpenShift Container Platform.  It also generates a report
-(claim.json) after running tests.</p>
-<p>Please consult <a href="./CATALOG.md">CATALOG.md</a> for a catalog of the included test cases and test case building blocks.</p>
-<p>The suite is provided here in part so that CNF Developers can use the suite to test their CNFs readiness for
-certification.  Please see &ldquo;CNF Developers&rdquo; below for more information.</p>
+<p>This repository provides a set of Cloud-Native Network Functions (<abbr title="Cloud-Native Network Functions or Containerised Network Function">CNF</abbr>) test cases and the framework to add more test cases.</p>
+<p>The purpose of the tests and the framework is to test the interaction of <abbr title="Cloud-Native Network Functions or Containerised Network Function">CNF</abbr> with OpenShift Container Platform (<abbr title="OpenShift Container Platform">OCP</abbr>).  </p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>This test suite is provided for the <abbr title="Cloud-Native Network Functions or Containerised Network Function">CNF</abbr> Developers to test their CNFs readiness for certification.
+Please see &ldquo;<abbr title="Cloud-Native Network Functions or Containerised Network Function">CNF</abbr> Developers&rdquo; for more information.</p>
+</div>
+<p><strong>Features</strong></p>
+<ul>
+<li>
+<p>The framework generates a report (named <code>claim.json</code>) as the end of test execution.</p>
+</li>
+<li>
+<p>The catalog of the existing test cases and test building blocks are available in <a href="./CATALOG.md">CATALOG.md</a></p>
+</li>
+</ul>
 <h2 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h2>
 <p><img alt="overview" src="assets/images/overview-new.svg" /></p>
-<p>In the diagram above:
-- the <code>CNF</code> is the CNF to be certified. The certification suite identifies the resources (containers/pods/operators etc) belonging to the CNF via labels or static data entries in the config file
-- the <code>Certification container/exec</code> is the certification test suite running on the platform or in a container. The executable verifies the CNF under test configuration and its interactions with openshift
-- the <code>Debug</code> pods are part of a daemonset responsible to run various privileged commands on kubernetes nodes. Debug pods are useful to run platform tests and test commands (e.g. ping) in container namespaces without changing the container image content. The debug daemonset is instantiated via the cnf-certification-test-partner repository <a href="https://github.com/test-network-function/cnf-certification-test-partner">repo</a>.</p>
+<p>There are 3 building blocks in the above framework.</p>
+<ul>
+<li>
+<p>the <code>CNF</code> represents the <abbr title="Cloud-Native Network Functions or Containerised Network Function">CNF</abbr> to be certified. The certification suite identifies the resources (containers/pods/operators etc) belonging to the <abbr title="Cloud-Native Network Functions or Containerised Network Function">CNF</abbr> via labels or static data entries in the config file</p>
+</li>
+<li>
+<p>the <code>Certification container/exec</code> is the certification test suite running on the platform or in a container. The executable verifies the <abbr title="Cloud-Native Network Functions or Containerised Network Function">CNF</abbr> under test configuration and its interactions with openshift</p>
+</li>
+<li>
+<p>the <code>Debug</code> pods are part of a Kubernetes daemonset responsible to run various <strong>privileged commands</strong> on kubernetes nodes. Debug pods are useful to run platform tests and test commands (e.g. ping) in container namespaces without changing the container image content. The debug daemonset is instantiated via the <a href="https://github.com/test-network-function/cnf-certification-test-partner">cnf-certification-test-partner</a> repository.</p>
+</li>
+</ul>
 
 
 
@@ -723,7 +852,7 @@ certification.  Please see &ldquo;CNF Developers&rdquo; below for more informati
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking"], "search": "assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "content.tooltips"], "search": "assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
       <script src="assets/javascripts/bundle.078830c0.min.js"></script>
