@@ -658,7 +658,7 @@
   
     <li class="md-nav__item">
       <a href="../test-container/" class="md-nav__link">
-        Within prebuilt container
+        Prebuilt container
       </a>
     </li>
   
@@ -947,9 +947,8 @@
 <p>The autodiscovery mechanism will attempt to identify the default network device and all the IP addresses of the pods it needs for network connectivity tests, though that information can be explicitly set using annotations if needed.</p>
 <h4 id="pod-ips">Pod IPs<a class="headerlink" href="#pod-ips" title="Permanent link">&para;</a></h4>
 <ul>
-<li>The annotation <code>test-network-function.com/multusips</code> is the highest priority, and must contain a JSON-encoded list of IP addresses to be tested for the pod. <strong>This must be explicitly set</strong>.</li>
-<li>If the above is not present, the <code>k8s.v1.cni.cncf.io/networks-status</code> annotation is checked and all IPs from it are used. This annotation is automatically managed in OpenShift but may not be present in K8s.</li>
-<li>If neither of the above is present, then only known IPs associated with the pod are used (the pod <code>.status.ips</code> field).</li>
+<li>The <code>k8s.v1.cni.cncf.io/networks-status</code> annotation is checked and all IPs from it are used. This annotation is automatically managed in OpenShift but may not be present in K8s.</li>
+<li>If it is not present, then only known IPs associated with the pod are used (the pod <code>.status.ips</code> field).</li>
 </ul>
 <h4 id="network-interfaces">Network Interfaces<a class="headerlink" href="#network-interfaces" title="Permanent link">&para;</a></h4>
 <ul>

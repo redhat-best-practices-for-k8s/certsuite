@@ -13,7 +13,7 @@
     
     
       
-        <title>Within prebuilt container - CNF Certification Test</title>
+        <title>Prebuilt container - CNF Certification Test</title>
       
     
     
@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#running-the-tests-within-a-prebuilt-container" class="md-skip">
+        <a href="#with-quay-test-container-image" class="md-skip">
           Skip to content
         </a>
       
@@ -99,7 +99,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Within prebuilt container
+              Prebuilt container
             
           </span>
         </div>
@@ -549,12 +549,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          Within prebuilt container
+          Prebuilt container
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Within prebuilt container
+        Prebuilt container
       </a>
       
         
@@ -571,23 +571,71 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#running-the-tests-within-a-prebuilt-container" class="md-nav__link">
-    Running the tests within a prebuilt container
+  <a href="#with-quay-test-container-image" class="md-nav__link">
+    With quay test container image
   </a>
   
-    <nav class="md-nav" aria-label="Running the tests within a prebuilt container">
+    <nav class="md-nav" aria-label="With quay test container image">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#pulling-test-image" class="md-nav__link">
-    Pulling test image
+  <a href="#pull-test-image" class="md-nav__link">
+    Pull test image
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#running-using-docker-instead-of-podman" class="md-nav__link">
-    Running using docker instead of podman
+  <a href="#check-cluster-resources" class="md-nav__link">
+    Check cluster resources
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-the-tests" class="md-nav__link">
+    Run the tests
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-with-docker" class="md-nav__link">
+    Run with docker
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#with-local-test-container-image" class="md-nav__link">
+    With local test container image
+  </a>
+  
+    <nav class="md-nav" aria-label="With local test container image">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#build-locally" class="md-nav__link">
+    Build locally
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-from-an-unofficial-source" class="md-nav__link">
+    Build from an unofficial source
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-the-tests_1" class="md-nav__link">
+    Run the tests
   </a>
   
 </li>
@@ -748,23 +796,71 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#running-the-tests-within-a-prebuilt-container" class="md-nav__link">
-    Running the tests within a prebuilt container
+  <a href="#with-quay-test-container-image" class="md-nav__link">
+    With quay test container image
   </a>
   
-    <nav class="md-nav" aria-label="Running the tests within a prebuilt container">
+    <nav class="md-nav" aria-label="With quay test container image">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#pulling-test-image" class="md-nav__link">
-    Pulling test image
+  <a href="#pull-test-image" class="md-nav__link">
+    Pull test image
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#running-using-docker-instead-of-podman" class="md-nav__link">
-    Running using docker instead of podman
+  <a href="#check-cluster-resources" class="md-nav__link">
+    Check cluster resources
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-the-tests" class="md-nav__link">
+    Run the tests
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-with-docker" class="md-nav__link">
+    Run with docker
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#with-local-test-container-image" class="md-nav__link">
+    With local test container image
+  </a>
+  
+    <nav class="md-nav" aria-label="With local test container image">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#build-locally" class="md-nav__link">
+    Build locally
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-from-an-unofficial-source" class="md-nav__link">
+    Build from an unofficial source
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-the-tests_1" class="md-nav__link">
+    Run the tests
   </a>
   
 </li>
@@ -794,74 +890,103 @@
   </a>
 
 
-  <h1>Within prebuilt container</h1>
+  <h1>Prebuilt container</h1>
 
-<h2 id="running-the-tests-within-a-prebuilt-container">Running the tests within a prebuilt container<a class="headerlink" href="#running-the-tests-within-a-prebuilt-container" title="Permanent link">&para;</a></h2>
-<h3 id="pulling-test-image">Pulling test image<a class="headerlink" href="#pulling-test-image" title="Permanent link">&para;</a></h3>
-<p>An image is built and is available at this repository: <a href="https://quay.io/repository/testnetworkfunction/cnf-certification-test">quay.io</a>
-The image can be pulled using :
-```shell script
-podman pull quay.io/testnetworkfunction/cnf-certification-test
-<div class="highlight"><pre><span></span><code>### Cluster requirement
-* OCP cluster should allow interactive shell sessions to pods/containers to stay alive when being idle for more than a few minutes. If it is not the case, consult the maintainer of the cluster infrastructure on how it can be enabled. Also, make sure the firewalls/load balancers on the path do not timeout idle connections too quickly.
-* OCP cluster should provide enough resources to drain nodes and reschedule pods. If that is not the case, then ``lifecycle-pod-recreation`` test should be skipped.
-### Check cluster resources
-Some tests suites such as platform-alteration require node access to get node configuration like hugepage.
-In order to get the required information, the test suite does not ssh into nodes, but instead rely on [oc debug tools ](https://docs.openshift.com/container-platform/3.7/cli_reference/basic_cli_operations.html#debug). This tool makes it easier to fetch information from nodes and also to debug running pods.
-
-In short, oc debug tool will launch a new container ending with &quot;-debug&quot; suffix, the container will be destroyed once the debug session is done. To be able to create the debug pod,  the cluster should have enough resources, otherwise those tests would fail.
-
-**Note:**
-It&#39;s recommended to clean up disk space and make sure there&#39;s enough resources to deploy another container image in every node before starting the tests.
-### Run the tests
-``./run-tnf-container.sh`` script is used to launch the tests.
-
-There are several required arguments:
-
-* `-t` gives the local directory that contains tnf config files set up for the test.
-* `-o` gives the local directory that the test results will be available in once the container exits. This directory must exist in order for the claim file to be written.
-
-Optional arguments are:
-* `-l` gives the list of labels to be run. See [Ginkgo Spec Labels](https://onsi.github.io/ginkgo/#spec-labels) for more information on how to filter tests with labels.
-* `-i` gives a name to a custom TNF container image. Supports local images, as well as images from external registries.
-* `-k` gives a path to one or more kubeconfig files to be used by the container to authenticate with the cluster. Paths must be separated by a colon.
-* `-n` gives the network mode of the container. Defaults set to `host`, which requires selinux to be disabled. Alternatively, `bridge` mode can be used with selinux if TNF_CONTAINER_CLIENT is set to `docker` or running the test as root. See the [docker run --network parameter reference](https://docs.docker.com/engine/reference/run/#network-settings) for more information on how to configure network settings.
-
-If `-l` is not specified, the tnf will run in &#39;diagnostic&#39; mode. In this mode, no test case will run: it will only get information from the cluster (PUTs, CRDs, nodes info, etc...) to save it in the claim file. This can be used to make sure the configuration was properly set and the autodiscovery found the right pods/crds...
-
-If `-k` is not specified, autodiscovery is performed.
-The autodiscovery first looks for paths in the `$KUBECONFIG` environment variable on the host system, and if the variable is not set or is empty, the default configuration stored in `$HOME/.kube/config` is checked.
-
-```shell script
-./run-tnf-container.sh -k ~/.kube/config -t ~/tnf/config -o ~/tnf/output -l &quot;networking,access-control&quot;
-</code></pre></div></p>
+<p>The tests can be run within a prebuilt container in the <abbr title="OpenShift Container Platform">OCP</abbr> cluster.</p>
+<p><strong>Prerequisites for the <abbr title="OpenShift Container Platform">OCP</abbr> cluster</strong></p>
+<ul>
+<li>The cluster should allow interactive shell sessions to pods/containers to stay alive when being idle for more than a few minutes. To enable it, consult the maintainer of the cluster infrastructure. Also, make sure the firewalls/load balancers on the path do not timeout idle connections too quickly.</li>
+<li>The cluster should have enough resources to drain nodes and reschedule pods. If that is not the case, then <code>lifecycle-pod-recreation</code> test should be skipped.</li>
+</ul>
+<h2 id="with-quay-test-container-image">With quay test container image<a class="headerlink" href="#with-quay-test-container-image" title="Permanent link">&para;</a></h2>
+<h3 id="pull-test-image">Pull test image<a class="headerlink" href="#pull-test-image" title="Permanent link">&para;</a></h3>
+<p>The test image is available at this repository in <a href="https://quay.io/repository/testnetworkfunction/cnf-certification-test">quay.io</a> and can be pulled using
+The image can be pulled using :</p>
+<div class="highlight"><pre><span></span><code>podman pull quay.io/testnetworkfunction/cnf-certification-test
+</code></pre></div>
+<h3 id="check-cluster-resources">Check cluster resources<a class="headerlink" href="#check-cluster-resources" title="Permanent link">&para;</a></h3>
+<p>Some tests suites such as <code>platform-alteration</code> require node access to get node configuration like <code>hugepage</code>.
+In order to get the required information, the test suite does not <code>ssh</code> into nodes, but instead rely on <a href="https://docs.openshift.com/container-platform/3.7/cli_reference/basic_cli_operations.html#debug">oc debug tools </a>. This tool makes it easier to fetch information from nodes and also to debug running pods.</p>
+<p><code>oc debug tool</code> will launch a new container ending with <strong>-debug</strong> suffix, and the container will be destroyed once the debug session is done. Ensure that the cluster should have enough resources to create debug pod, otherwise those tests would fail.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It&rsquo;s <strong>recommended</strong> to clean up disk space and make sure there&rsquo;s enough resources to deploy another container image in every node before starting the tests.</p>
+</div>
+<h3 id="run-the-tests">Run the tests<a class="headerlink" href="#run-the-tests" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>./run-tnf-container.sh
+</code></pre></div>
+<p><strong>Required arguments</strong></p>
+<ul>
+<li><code>-t</code> to provide the path of the local directory that contains tnf config files</li>
+<li><code>-o</code> to provide the path of the local directory that the test results will be available after the container exits.</li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This directory must exist in order for the claim file to be written.</p>
+</div>
+<p><strong>Optional arguments</strong></p>
+<ul>
+<li><code>-l</code> to list the labels to be run. See <a href="https://onsi.github.io/ginkgo/#spec-labels">Ginkgo Spec Labels</a> for more information on how to filter tests with labels.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <code>-l</code> is not specified, the tnf will run in &lsquo;diagnostic&rsquo; mode. In this mode, no test case will run: it will only get information from the cluster (PUTs, CRDs, nodes info, etc&hellip;) to save it in the claim file. This can be used to make sure the configuration was properly set and the autodiscovery found the right pods/crds&hellip;</p>
+</div>
+<ul>
+<li>
+<p><code>-i</code> to provide a name to a custom <abbr title="Test Network Function">TNF</abbr> container image. Supports local images, as well as images from external registries.</p>
+</li>
+<li>
+<p><code>-k</code> to set a path to one or more kubeconfig files to be used by the container to authenticate with the cluster. Paths must be separated by a colon.</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <code>-k</code> is not specified, autodiscovery is performed.</p>
+<p>The autodiscovery first looks for paths in the <code>$KUBECONFIG</code> environment variable on the host system, and if the variable is not set or is empty, the default configuration stored in <code>$HOME/.kube/config</code> is checked.</p>
+</div>
+<ul>
+<li><code>-n</code> to give the network mode of the container. Defaults set to <code>host</code>, which requires selinux to be disabled. Alternatively, <code>bridge</code> mode can be used with selinux if TNF_CONTAINER_CLIENT is set to <code>docker</code> or running the test as root.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See the <a href="https://docs.docker.com/engine/reference/run/#network-settings">docker run &ndash;network parameter reference</a> for more information on how to configure network settings.</p>
+</div>
+<p><strong>Command to run</strong></p>
+<div class="highlight"><pre><span></span><code>./run-tnf-container.sh -k ~/.kube/config -t ~/tnf/config
+-o ~/tnf/output -l <span class="s2">&quot;networking,access-control&quot;</span>
+</code></pre></div>
 <p>See <a href="#general-tests">General tests</a> for a list of available keywords.</p>
-<h3 id="running-using-docker-instead-of-podman">Running using <code>docker</code> instead of <code>podman</code><a class="headerlink" href="#running-using-docker-instead-of-podman" title="Permanent link">&para;</a></h3>
-<p>By default, <code>run-container.sh</code> utilizes <code>podman</code>. However, you can configure an alternate container virtualization
-client using <code>TNF_CONTAINER_CLIENT</code>. This is particularly useful for operating systems that do not readily support
-<code>podman</code>. In order to configure the test harness to use <code>docker</code>, issue the following prior to
+<h3 id="run-with-docker">Run with <code>docker</code><a class="headerlink" href="#run-with-docker" title="Permanent link">&para;</a></h3>
+<p>By default, <code>run-container.sh</code> utilizes <code>podman</code>. However, an alternate container virtualization
+client using <code>TNF_CONTAINER_CLIENT</code> can be configured. This is particularly useful for operating systems that do not readily support
+<code>podman</code>.</p>
+<p>In order to configure the test harness to use <code>docker</code>, issue the following prior to
 <code>run-tnf-container.sh</code>:</p>
-<p>```shell script
-export TNF_CONTAINER_CLIENT=docker
-<div class="highlight"><pre><span></span><code>### Building the container image locally
-
-You can build an image locally by using the command below. Use the value of `TNF_VERSION` to set a branch, a tag, or a hash of a commit that will be installed into the image. Also use `OPENSHIFT_VERSION` to point to the OCP version of the cluster in which the workloads to be tested are deployed.
-
-```shell script
-podman build -t cnf-certification-test:v1.0.5 \
-  --build-arg TNF_VERSION=v1.0.5 \
-  --build-arg OPENSHIFT_VERSION=4.7.55 .
-</code></pre></div></p>
-<p>To build an image that installs <abbr title="Test Network Function">TNF</abbr> from an unofficial source (e.g. a fork of the <abbr title="Test Network Function">TNF</abbr> repository), use the <code>TNF_SRC_URL</code> build argument to override the URL to a source repository.</p>
-<p>```shell script
-podman build -t cnf-certification-test:v1.0.5 \
-  &ndash;build-arg TNF_VERSION=v1.0.5 \
-  &ndash;build-arg TNF_SRC_URL=<a href="https://github.com/test-network-function/cnf-certification-test">https://github.com/test-network-function/cnf-certification-test</a> \
-  &ndash;build-arg OPENSHIFT_VERSION=4.7.55 .
-<div class="highlight"><pre><span></span><code>To make `run-tnf-container.sh` use the newly built image, specify the custom TNF image using the `-i` parameter.
-
-```shell script
-./run-tnf-container.sh -i test-network-function:v1.0.5 -t ~/tnf/config -o ~/tnf/output -l &quot;networking,access-control&quot;
+<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">TNF_CONTAINER_CLIENT</span><span class="o">=</span>docker
+</code></pre></div>
+<h2 id="with-local-test-container-image">With local test container image<a class="headerlink" href="#with-local-test-container-image" title="Permanent link">&para;</a></h2>
+<h3 id="build-locally">Build locally<a class="headerlink" href="#build-locally" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>podman build -t cnf-certification-test:v1.0.5 <span class="se">\</span>
+  --build-arg <span class="nv">TNF_VERSION</span><span class="o">=</span>v1.0.5 <span class="se">\</span>
+  --build-arg <span class="nv">OPENSHIFT_VERSION</span><span class="o">=</span><span class="m">4</span>.7.55 .
+</code></pre></div>
+<ul>
+<li><code>TNF_VERSION</code> value is set to a branch, a tag, or a hash of a commit that will be installed into the image</li>
+<li><code>OPENSHIFT_VERSION</code> value points to the <abbr title="OpenShift Container Platform">OCP</abbr> version of the cluster in which the workloads to be tested are deployed.</li>
+</ul>
+<h3 id="build-from-an-unofficial-source">Build from an unofficial source<a class="headerlink" href="#build-from-an-unofficial-source" title="Permanent link">&para;</a></h3>
+<p>The unofficial source could be a fork of the <abbr title="Test Network Function">TNF</abbr> repository.</p>
+<p>Use the <code>TNF_SRC_URL</code> build argument to override the URL to a source repository.</p>
+<div class="highlight"><pre><span></span><code>podman build -t cnf-certification-test:v1.0.5 <span class="se">\</span>
+  --build-arg <span class="nv">TNF_VERSION</span><span class="o">=</span>v1.0.5 <span class="se">\</span>
+  --build-arg <span class="nv">TNF_SRC_URL</span><span class="o">=</span>https://github.com/test-network-function/cnf-certification-test <span class="se">\</span>
+  --build-arg <span class="nv">OPENSHIFT_VERSION</span><span class="o">=</span><span class="m">4</span>.7.55 .
+</code></pre></div>
+<h3 id="run-the-tests_1">Run the tests<a class="headerlink" href="#run-the-tests_1" title="Permanent link">&para;</a></h3>
+<p>Specify the custom <abbr title="Test Network Function">TNF</abbr> image using the <code>-i</code> parameter.</p>
+<p><div class="highlight"><pre><span></span><code>./run-tnf-container.sh -i test-network-function:v1.0.5
+-t ~/tnf/config -o ~/tnf/output -l <span class="s2">&quot;networking,access-control&quot;</span>
 </code></pre></div>
  Note: see <a href="#general-tests">General tests</a> for a list of available keywords.</p>
 

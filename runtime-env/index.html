@@ -473,13 +473,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#execute-test-suites-from-openshift-knicnf-feature-deploy" class="md-nav__link">
-    Execute test suites from openshift-kni/cnf-feature-deploy
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -604,7 +597,7 @@
   
     <li class="md-nav__item">
       <a href="../test-container/" class="md-nav__link">
-        Within prebuilt container
+        Prebuilt container
       </a>
     </li>
   
@@ -775,13 +768,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#execute-test-suites-from-openshift-knicnf-feature-deploy" class="md-nav__link">
-    Execute test suites from openshift-kni/cnf-feature-deploy
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -824,13 +810,6 @@ and <code>TNF_PARTNER_REPO</code> should be set to the local repo, e.g.:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">TNF_PARTNER_REPO</span><span class="o">=</span><span class="s2">&quot;registry.dfwt5g.lab:5000/testnetworkfunction&quot;</span>
 </code></pre></div>
 <p>Note that you can also specify the debug pod image to use with <code>SUPPORT_IMAGE</code> environment variable, default to <code>debug-partner:latest</code>.</p>
-<h2 id="execute-test-suites-from-openshift-knicnf-feature-deploy">Execute test suites from openshift-kni/cnf-feature-deploy<a class="headerlink" href="#execute-test-suites-from-openshift-knicnf-feature-deploy" title="Permanent link">&para;</a></h2>
-<p>The test suites from openshift-kni/cnf-feature-deploy can be run prior to the actual <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> certification test execution and the results are incorporated in the same claim file if the following environment variable is set:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">TNF_RUN_CFD_TEST</span><span class="o">=</span><span class="nb">true</span>
-</code></pre></div>
-<p>By default, the image with release tag <code>4.6</code> is used and the ginkgo skip argument is set to <code>performance|sriov|ptp|sctp|xt_u32|dpdk|ovn</code>.</p>
-<p>To override the default behaviour, set these environment variables: <code>TNF_CFD_IMAGE_TAG</code> and <code>TNF_CFD_SKIP</code>.</p>
-<p>For more information on the test suites, refer to <a href="https://github.com/openshift-kni/cnf-features-deploy">the cnf-features-deploy repository</a></p>
 
 
 
