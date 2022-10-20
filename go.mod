@@ -224,3 +224,9 @@ replace github.com/openshift/machine-config-operator => github.com/openshift/mac
 replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/sebrandon1/openshift-preflight v0.0.21
 
 replace k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver v0.26.0-alpha.2
+
+replace k8s.io/apimachinery => k8s.io/apimachinery v0.25.3
+
+replace k8s.io/client-go => k8s.io/client-go v0.25.3
+
+replace k8s.io/api => k8s.io/api v0.25.3

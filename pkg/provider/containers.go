@@ -37,39 +37,6 @@ var (
 	ignoredContainerNames = []string{"istio-proxy"}
 )
 
-// PreflightContainerResults holds information pertaining to the container image results from openshift-preflight
-type PreflightContainerResults struct {
-	Image       string `json:"image"`
-	Passed      bool   `json:"passed"`
-	TestLibrary struct {
-		Name    string `json:"name"`
-		Version string `json:"version"`
-		Commit  string `json:"commit"`
-	} `json:"test_library"`
-	Results struct {
-		Passed []struct {
-			Name        string `json:"name"`
-			ElapsedTime int    `json:"elapsed_time"`
-			Description string `json:"description"`
-		} `json:"passed"`
-		Failed []struct {
-			Name             string `json:"name"`
-			ElapsedTime      int    `json:"elapsed_time"`
-			Description      string `json:"description"`
-			Help             string `json:"help"`
-			Suggestion       string `json:"suggestion"`
-			KnowledgebaseURL string `json:"knowledgebase_url"`
-			CheckURL         string `json:"check_url"`
-		} `json:"failed"`
-		Errors []struct {
-			Name        string `json:"name"`
-			ElapsedTime int    `json:"elapsed_time"`
-			Description string `json:"description"`
-			Help        string `json:"help"`
-		} `json:"errors"`
-	} `json:"results"`
-}
-
 type Container struct {
 	*corev1.Container
 	Status                   corev1.ContainerStatus
@@ -79,7 +46,7 @@ type Container struct {
 	Runtime                  string
 	UID                      string
 	ContainerImageIdentifier configuration.ContainerImageIdentifier
-	PreflightResults         PreflightContainerResults
+	PreflightResults         plibRuntime.Results
 }
 
 func GetContainer() *Container {
@@ -124,7 +91,7 @@ func (c *Container) SetPreflightResults() error {
 	}
 
 	// Unmarshal the JSON blob into the preflight results struct
-	var tempPreflightResults PreflightContainerResults
+	var tempPreflightResults plibRuntime.Results
 	err = json.Unmarshal(f, &tempPreflightResults)
 	if err != nil {
 		panic(err)

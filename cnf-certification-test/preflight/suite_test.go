@@ -21,6 +21,7 @@ import (
 	"os"
 	"testing"
 
+	plibRuntime "github.com/sebrandon1/openshift-preflight/certification/runtime"
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
@@ -32,7 +33,7 @@ func TestGatherTestNamesFromContainerResults(t *testing.T) {
 	output, err := os.ReadFile(testData)
 	assert.Nil(t, err)
 
-	var tempPreflightResults provider.PreflightContainerResults
+	var tempPreflightResults plibRuntime.Results
 	err = json.Unmarshal(output, &tempPreflightResults)
 	assert.Nil(t, err)
 	c.PreflightResults = tempPreflightResults
@@ -41,17 +42,12 @@ func TestGatherTestNamesFromContainerResults(t *testing.T) {
 	results := gatherTestNamesFromContainerResults(containerList)
 
 	// Assert a "Passed" result
-	assert.Equal(t, results["LayerCountAcceptable"], dynamicTestEntry{
-		description: "Checking if container has less than 40 layers.  Too many layers within the container images can degrade container performance.",
-	})
+	assert.Equal(t, results["LayerCountAcceptable"].Metadata().Description, "Checking if container has less than 40 layers.  Too many layers within the container images can degrade container performance.")
 
 	// Assert a "Failed" result
-	assert.Equal(t, results["HasLicense"], dynamicTestEntry{
-		description: "Checking if terms and conditions applicable to the software including open source licensing information are present. The license must be at /licenses",
-		suggestion:  "Create a directory named /licenses and include all relevant licensing and/or terms and conditions as text file(s) in that directory.",
-		kbURL:       "https://access.redhat.com/documentation/en-us/red_hat_software_certification/8.45/html/red_hat_openshift_software_certification_policy_guide/assembly-requirements-for-container-images_openshift-sw-cert-policy-introduction",
-		checkURL:    "https://access.redhat.com/documentation/en-us/red_hat_software_certification/8.45/html/red_hat_openshift_software_certification_policy_guide/assembly-requirements-for-container-images_openshift-sw-cert-policy-introduction",
-	})
+	assert.Equal(t, results["HasLicense"].Metadata().Description, "Checking if terms and conditions applicable to the software including open source licensing information are present. The license must be at /licenses")
+	assert.Equal(t, results["HasLicense"].Help().Suggestion, "Create a directory named /licenses and include all relevant licensing and/or terms and conditions as text file(s) in that directory.")
+	assert.Equal(t, results["HasLicense"].Metadata().KnowledgeBaseURL, "https://access.redhat.com/documentation/en-us/red_hat_software_certification/8.45/html/red_hat_openshift_software_certification_policy_guide/assembly-requirements-for-container-images_openshift-sw-cert-policy-introduction")
 }
 
 func TestGatherTestNamesFromOperatorResults(t *testing.T) {
@@ -61,7 +57,7 @@ func TestGatherTestNamesFromOperatorResults(t *testing.T) {
 	output, err := os.ReadFile(testData)
 	assert.Nil(t, err)
 
-	var tempPreflightResults provider.PreflightOperatorResults
+	var tempPreflightResults plibRuntime.Results
 	err = json.Unmarshal(output, &tempPreflightResults)
 	assert.Nil(t, err)
 	op.PreflightResults = tempPreflightResults
@@ -70,12 +66,8 @@ func TestGatherTestNamesFromOperatorResults(t *testing.T) {
 	results := gatherTestNamesFromOperatorResults(operatorList)
 
 	// Assert a "Passed" result
-	assert.Equal(t, results["ValidateOperatorBundle"], dynamicTestEntry{
-		description: "Validating Bundle image that checks if it can validate the content and format of the operator bundle",
-	})
+	assert.Equal(t, results["ValidateOperatorBundle"].Metadata().Description, "Validating Bundle image that checks if it can validate the content and format of the operator bundle")
 
 	// Assert a "Error" result
-	assert.Equal(t, results["ScorecardBasicSpecCheck"], dynamicTestEntry{
-		description: "Check to make sure that all CRs have a spec block.",
-	})
+	assert.Equal(t, results["ScorecardBasicSpecCheck"].Metadata().Description, "Check to make sure that all CRs have a spec block.")
 }

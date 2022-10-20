@@ -18,6 +18,7 @@ package preflight
 
 import (
 	"github.com/onsi/ginkgo/v2"
+	plibRuntime "github.com/sebrandon1/openshift-preflight/certification/runtime"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
@@ -26,13 +27,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
-
-type dynamicTestEntry struct {
-	description string
-	suggestion  string
-	checkURL    string
-	kbURL       string
-}
 
 var _ = ginkgo.Describe(common.PreflightTestKey, func() {
 	logrus.Debugf("Entering %s suite", common.PreflightTestKey)
@@ -51,7 +45,7 @@ var _ = ginkgo.Describe(common.PreflightTestKey, func() {
 	// Handle Container-based preflight tests
 	for testName, testEntry := range containerTestEntries {
 		// Store the test names into the Catalog map for results to be dynamically printed
-		aID := identifiers.AddCatalogEntry(testName, common.PreflightTestKey, testEntry.description, testEntry.suggestion, "", "", "", "", "common")
+		aID := identifiers.AddCatalogEntry(testName, common.PreflightTestKey, testEntry.Metadata().Description, testEntry.Help().Suggestion, "", "", "", "", "common")
 		testID, tags := identifiers.GetGinkgoTestIDAndLabels(aID)
 
 		logrus.Infof("Testing ginkgo test: %s ID: %s", testName, testID)
@@ -61,7 +55,7 @@ var _ = ginkgo.Describe(common.PreflightTestKey, func() {
 	// Handle Operator-based preflight tests
 	for testName, testEntry := range operatorTestEntries {
 		// Store the test names into the Catalog map for results to be dynamically printed
-		aID := identifiers.AddCatalogEntry(testName, common.PreflightTestKey, testEntry.description, testEntry.suggestion, "", "", "", "", "common")
+		aID := identifiers.AddCatalogEntry(testName, common.PreflightTestKey, testEntry.Metadata().Description, testEntry.Help().Suggestion, "", "", "", "", "common")
 		testID, tags := identifiers.GetGinkgoTestIDAndLabels(aID)
 
 		logrus.Infof("Testing ginkgo test: %s ID: %s", testName, testID)
@@ -77,20 +71,20 @@ func GeneratePreflightContainerGinkgoTest(testName, testID string, tags []string
 		var failedContainers []string
 		var erroredContainers []string
 		for _, cut := range containers {
-			for _, i := range cut.PreflightResults.Results.Passed {
-				if i.Name == testName {
+			for _, i := range cut.PreflightResults.Passed {
+				if i.Name() == testName {
 					logrus.Infof("%s has passed preflight test: %s", cut.String(), testName)
 				}
 			}
-			for _, i := range cut.PreflightResults.Results.Failed {
-				if i.Name == testName {
+			for _, i := range cut.PreflightResults.Failed {
+				if i.Name() == testName {
 					logrus.Infof("%s has failed preflight test: %s", cut.String(), testName)
 					tnf.ClaimFilePrintf("%s has failed preflight test: %s", cut.String(), testName)
 					failedContainers = append(failedContainers, cut.String())
 				}
 			}
-			for _, i := range cut.PreflightResults.Results.Errors {
-				if i.Name == testName {
+			for _, i := range cut.PreflightResults.Errors {
+				if i.Name() == testName {
 					logrus.Infof("%s has errored preflight test: %s", cut.String(), testName)
 					tnf.ClaimFilePrintf("%s has errored preflight test: %s", cut.String(), testName)
 					erroredContainers = append(erroredContainers, cut.String())
@@ -110,22 +104,20 @@ func GeneratePreflightOperatorGinkgoTest(testName, testID string, tags []string,
 		var failedContainers []string
 		var erroredContainers []string
 		for _, op := range operators {
-
-			logrus.Info(op)
-			for _, i := range op.PreflightResults.Results.Passed {
-				if i.Name == testName {
+			for _, i := range op.PreflightResults.Passed {
+				if i.Name() == testName {
 					logrus.Infof("%s has passed preflight test: %s", op.String(), testName)
 				}
 			}
-			for _, i := range op.PreflightResults.Results.Failed {
-				if i.Name == testName {
+			for _, i := range op.PreflightResults.Failed {
+				if i.Name() == testName {
 					logrus.Infof("%s has failed preflight test: %s", op.String(), testName)
 					tnf.ClaimFilePrintf("%s has failed preflight test: %s", op.String(), testName)
 					failedContainers = append(failedContainers, op.String())
 				}
 			}
-			for _, i := range op.PreflightResults.Results.Errors {
-				if i.Name == testName {
+			for _, i := range op.PreflightResults.Errors {
+				if i.Name() == testName {
 					logrus.Infof("%s has errored preflight test: %s", op.String(), testName)
 					tnf.ClaimFilePrintf("%s has errored preflight test: %s", op.String(), testName)
 					erroredContainers = append(erroredContainers, op.String())
@@ -137,53 +129,35 @@ func GeneratePreflightOperatorGinkgoTest(testName, testID string, tags []string,
 	})
 }
 
-func gatherTestNamesFromContainerResults(containers []*provider.Container) map[string]dynamicTestEntry {
-	testEntries := make(map[string]dynamicTestEntry)
+func gatherTestNamesFromContainerResults(containers []*provider.Container) map[string]plibRuntime.Result {
+	testEntries := make(map[string]plibRuntime.Result)
 	for _, cut := range containers {
-		for _, i := range cut.PreflightResults.Results.Passed {
-			testEntries[i.Name] = dynamicTestEntry{
-				description: i.Description,
-			}
+		for _, i := range cut.PreflightResults.Passed {
+			testEntries[i.Name()] = i
 		}
 		// Failed Results have more information than the rest
-		for _, i := range cut.PreflightResults.Results.Failed {
-			testEntries[i.Name] = dynamicTestEntry{
-				description: i.Description,
-				checkURL:    i.CheckURL,
-				kbURL:       i.KnowledgebaseURL,
-				suggestion:  i.Suggestion,
-			}
+		for _, i := range cut.PreflightResults.Failed {
+			testEntries[i.Name()] = i
 		}
-		for _, i := range cut.PreflightResults.Results.Errors {
-			testEntries[i.Name] = dynamicTestEntry{
-				description: i.Description,
-			}
+		for _, i := range cut.PreflightResults.Errors {
+			testEntries[i.Name()] = i
 		}
 	}
 	return testEntries
 }
 
-func gatherTestNamesFromOperatorResults(operators []*provider.Operator) map[string]dynamicTestEntry {
-	testEntries := make(map[string]dynamicTestEntry)
+func gatherTestNamesFromOperatorResults(operators []*provider.Operator) map[string]plibRuntime.Result {
+	testEntries := make(map[string]plibRuntime.Result)
 	for _, op := range operators {
-		for _, i := range op.PreflightResults.Results.Passed {
-			testEntries[i.Name] = dynamicTestEntry{
-				description: i.Description,
-			}
+		for _, i := range op.PreflightResults.Passed {
+			testEntries[i.Name()] = i
 		}
 		// Failed Results have more information than the rest
-		for _, i := range op.PreflightResults.Results.Failed {
-			testEntries[i.Name] = dynamicTestEntry{
-				description: i.Description,
-				checkURL:    i.CheckURL,
-				kbURL:       i.KnowledgebaseURL,
-				suggestion:  i.Suggestion,
-			}
+		for _, i := range op.PreflightResults.Failed {
+			testEntries[i.Name()] = i
 		}
-		for _, i := range op.PreflightResults.Results.Errors {
-			testEntries[i.Name] = dynamicTestEntry{
-				description: i.Description,
-			}
+		for _, i := range op.PreflightResults.Errors {
+			testEntries[i.Name()] = i
 		}
 	}
 	return testEntries

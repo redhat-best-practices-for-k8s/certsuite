@@ -29,38 +29,6 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type PreflightOperatorResults struct {
-	Image       string `json:"image"`
-	Passed      bool   `json:"passed"`
-	TestLibrary struct {
-		Name    string `json:"name"`
-		Version string `json:"version"`
-		Commit  string `json:"commit"`
-	} `json:"test_library"`
-	Results struct {
-		Passed []struct {
-			Name        string `json:"name"`
-			ElapsedTime int    `json:"elapsed_time"`
-			Description string `json:"description"`
-		} `json:"passed"`
-		Failed []struct {
-			Name             string `json:"name"`
-			ElapsedTime      int    `json:"elapsed_time"`
-			Description      string `json:"description"`
-			Help             string `json:"help"`
-			Suggestion       string `json:"suggestion"`
-			KnowledgebaseURL string `json:"knowledgebase_url"`
-			CheckURL         string `json:"check_url"`
-		} `json:"failed"`
-		Errors []struct {
-			Name        string `json:"name"`
-			ElapsedTime int    `json:"elapsed_time"`
-			Description string `json:"description"`
-			Help        string `json:"help"`
-		} `json:"errors"`
-	} `json:"results"`
-}
-
 type Operator struct {
 	Name             string                            `yaml:"name" json:"name"`
 	Namespace        string                            `yaml:"namespace" json:"namespace"`
@@ -71,7 +39,7 @@ type Operator struct {
 	Org              string                            `yaml:"org" json:"org"`
 	Version          string                            `yaml:"version" json:"version"`
 	Channel          string                            `yaml:"channel" json:"channel"`
-	PreflightResults PreflightOperatorResults
+	PreflightResults plibRuntime.Results
 }
 
 func (op *Operator) String() string {
@@ -105,7 +73,7 @@ func (op *Operator) SetPreflightResults() error {
 	}
 
 	// Unmarshal the JSON blob into the preflight results struct
-	var tempPreflightResults PreflightOperatorResults
+	var tempPreflightResults plibRuntime.Results
 	err = json.Unmarshal(f, &tempPreflightResults)
 	if err != nil {
 		panic(err)
@@ -146,10 +114,10 @@ func createOperators(csvs []olmv1Alpha.ClusterServiceVersion, subscriptions []ol
 		}
 
 		for _, installPlan := range csvInstallPlans {
-			indexImage, err := getCatalogSourceImageIndexFromInstallPlan(installPlan)
-			if err != nil {
+			indexImage, catalogErr := getCatalogSourceImageIndexFromInstallPlan(installPlan)
+			if catalogErr != nil {
 				return nil, fmt.Errorf("failed to get installPlan image index for csv %s (ns %s) installPlan %s, err: %s",
-					csv.Name, csv.Namespace, installPlan.Name, err)
+					csv.Name, csv.Namespace, installPlan.Name, catalogErr)
 			}
 
 			op.InstallPlans = append(op.InstallPlans, CsvInstallPlan{
