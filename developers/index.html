@@ -663,7 +663,7 @@
   
     <li class="md-nav__item">
       <a href="../reference/" class="md-nav__link">
-        Contribution Guideline
+        Helpful Links
       </a>
     </li>
   
@@ -737,16 +737,14 @@
 </li>
 <li>
 <p>Set K8s config of the cluster where test pods are running</p>
-</li>
-</ul>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">KUBECONFIG</span><span class="o">=</span>&lt;&lt;mypath&gt;&gt;
+<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">KUBECONFIG</span><span class="o">=</span>&lt;&lt;mypath/.kube/config&gt;&gt;
 </code></pre></div>
-<ul>
+</li>
 <li>
 <p>Execute test suite, which would build and run the suite</p>
-<p>For example, to run <code>networking</code> tests
+<p>For example, to run <code>networking</code> tests</p>
 <div class="highlight"><pre><span></span><code>./script/development.sh -l networking
-</code></pre></div></p>
+</code></pre></div>
 </li>
 </ul>
 

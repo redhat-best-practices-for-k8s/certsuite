@@ -562,40 +562,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#command-line-output" class="md-nav__link">
-    Command Line Output
-  </a>
-  
-    <nav class="md-nav" aria-label="Command Line Output">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#example-successful-test" class="md-nav__link">
-    Example: Successful test
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#example-test-failed-output" class="md-nav__link">
-    Example: Test failed output
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#log-level" class="md-nav__link">
-    Log level
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -726,7 +692,7 @@
   
     <li class="md-nav__item">
       <a href="../reference/" class="md-nav__link">
-        Contribution Guideline
+        Helpful Links
       </a>
     </li>
   
@@ -772,40 +738,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#command-line-output" class="md-nav__link">
-    Command Line Output
-  </a>
-  
-    <nav class="md-nav" aria-label="Command Line Output">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#example-successful-test" class="md-nav__link">
-    Example: Successful test
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#example-test-failed-output" class="md-nav__link">
-    Example: Test failed output
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#log-level" class="md-nav__link">
-    Log level
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -828,24 +760,22 @@
 
 <h1 id="test-output">Test Output<a class="headerlink" href="#test-output" title="Permanent link">&para;</a></h1>
 <h2 id="claim-file">Claim File<a class="headerlink" href="#claim-file" title="Permanent link">&para;</a></h2>
-<p>The test suite generates a &ldquo;claim&rdquo; file, which describes the system(s) under test, the tests that were run, and the
-outcome of all of the tests.  This claim file is the proof of the test run that is evaluated by Red Hat when
-&ldquo;certified&rdquo; status is being considered.  For more information about the contents of the claim file please see the
-<a href="https://github.com/test-network-function/test-network-function-claim/blob/main/schemas/claim.schema.json">schema</a>.  You can
-read more about the purpose of the claim file and <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification in the
-<a href="https://redhat-connect.gitbook.io/openshift-badges/badges/cloud-native-network-functions-cnf">Guide</a>.</p>
-<p><strong>Add Test Results for the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Validation Test Suite to a Claim File</strong></p>
-<p>e.g. Adding a cnf platform test results to your existing claim file.</p>
-<p>You can use the claim cli tool to append other related test suite results to your existing claim.json file.
-The output of the tool will be an updated claim file.
-<div class="highlight"><pre><span></span><code><span class="k">go</span><span class="w"> </span><span class="nx">run</span><span class="w"> </span><span class="nx">cmd</span><span class="o">/</span><span class="nx">tools</span><span class="o">/</span><span class="nx">cmd</span><span class="o">/</span><span class="nx">main</span><span class="p">.</span><span class="k">go</span><span class="w"> </span><span class="nx">claim</span><span class="o">-</span><span class="nx">add</span><span class="w"> </span><span class="o">--</span><span class="nx">claimfile</span><span class="p">=</span><span class="nx">claim</span><span class="p">.</span><span class="nx">json</span><span class="w"></span>
+<p>The test suite generates an output file, named <strong>claim</strong> file. This file is considered as the proof of <abbr title="Cloud-Native Network Functions">CNFs</abbr> test run, evaluated by Red Hat when <strong>certified</strong> status is considered.</p>
+<p>This file describes the following</p>
+<ul>
+<li>The system(s) under test</li>
+<li>The tests that are executed</li>
+<li>The outcome of the executed / skipped tests</li>
+</ul>
+<p><strong>How to add a <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> platform test result to the existing claim file?</strong></p>
+<p><div class="highlight"><pre><span></span><code><span class="k">go</span><span class="w"> </span><span class="nx">run</span><span class="w"> </span><span class="nx">cmd</span><span class="o">/</span><span class="nx">tools</span><span class="o">/</span><span class="nx">cmd</span><span class="o">/</span><span class="nx">main</span><span class="p">.</span><span class="k">go</span><span class="w"> </span><span class="nx">claim</span><span class="o">-</span><span class="nx">add</span><span class="w"> </span><span class="o">--</span><span class="nx">claimfile</span><span class="p">=</span><span class="nx">claim</span><span class="p">.</span><span class="nx">json</span><span class="w"></span>
 <span class="o">--</span><span class="nx">reportdir</span><span class="p">=</span><span class="o">/</span><span class="nx">home</span><span class="o">/</span><span class="err">$</span><span class="nx">USER</span><span class="o">/</span><span class="nx">reports</span><span class="w"></span>
 </code></pre></div>
- Args:<br />
+ <strong>Args</strong>:<br />
 <code>--claimfile is an existing claim.json file</code></p>
 <p><code>--repordir :path to test results that you want to include.</code></p>
 <p>The tests result files from the given report dir will be appended under the result section of the claim file using file name as the key/value pair.
- The tool will ignore the test result, if the key name is already present under result section of the claim file.
+ The tool will ignore the test result, if the key name is already present under result section of the claim file.</p>
 <div class="highlight"><pre><span></span><code><span class="w"> </span><span class="nt">&quot;results&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w"> </span><span class="nt">&quot;cnf-certification-tests_junit&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w"> </span><span class="nt">&quot;testsuite&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
@@ -853,91 +783,14 @@ The output of the tool will be an updated claim file.
 <span class="w"> </span><span class="nt">&quot;-failures&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w"> </span><span class="nt">&quot;-name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CNF Certification Test Suite&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w"> </span><span class="nt">&quot;-tests&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;14&quot;</span><span class="p">,</span><span class="w"></span>
-</code></pre></div></p>
-<h2 id="command-line-output">Command Line Output<a class="headerlink" href="#command-line-output" title="Permanent link">&para;</a></h2>
-<p>When run the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> test suite will output a report to the terminal that is primarily useful for Developers to evaluate and
-address problems.  This output is similar to many testing tools.</p>
-<h4 id="example-successful-test">Example: Successful test<a class="headerlink" href="#example-successful-test" title="Permanent link">&para;</a></h4>
-<p>Here&rsquo;s an example of a Test pass.  It verifies that the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> is using a replica set:</p>
-<div class="highlight"><pre><span></span><code>------------------------------
-lifecycle when Testing owners of CNF pod
-  Should be only ReplicaSet
-  /Users/<span class="nv">$USER</span>/cnf-cert/test-network-function/cnf-certification-test/lifecycle/suite.go:339
-<span class="m">2021</span>/07/27 <span class="m">11</span>:41:25 Sent: <span class="s2">&quot;oc -n tnf get pods test-697ff58f87-d55zx -o custom-columns=OWNERKIND:.metadata.ownerReferences\\[\\*\\].kind &amp;&amp; echo END_OF_TEST_SENTINEL\n&quot;</span>
-<span class="m">2021</span>/07/27 <span class="m">11</span>:41:26 Match <span class="k">for</span> RE: <span class="s2">&quot;(?s)OWNERKIND\n.+((.|\n)*END_OF_TEST_SENTINEL\n)&quot;</span> found: <span class="o">[</span><span class="s2">&quot;OWNERKIND\nReplicaSet\nEND_OF_TEST_SENTINEL\n&quot;</span> <span class="s2">&quot;END_OF_TEST_SENTINEL\n&quot;</span> <span class="s2">&quot;&quot;</span><span class="o">]</span> Buffer: <span class="s2">&quot;OWNERKIND\nReplicaSet\nEND_OF_TEST_SENTINEL\n&quot;</span>
-•
+<span class="w"> </span><span class="err">...</span><span class="w"></span>
 </code></pre></div>
-<h4 id="example-test-failed-output">Example: Test failed output<a class="headerlink" href="#example-test-failed-output" title="Permanent link">&para;</a></h4>
-<p>The following is the output from a Test failure.  In this case, the test is checking that a CSV (ClusterServiceVersion)
-is installed correctly, but does not find it (the operator was not present on the cluster under test):</p>
-<div class="highlight"><pre><span></span><code>------------------------------
-operator Runs <span class="nb">test</span> on operators when under <span class="nb">test</span> is: my-etcd/etcdoperator.v0.9.4  
-  tests <span class="k">for</span>: CSV_INSTALLED
-  /Users/<span class="nv">$USER</span>/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:122
-<span class="m">2020</span>/12/15 <span class="m">15</span>:28:19 Sent: <span class="s2">&quot;oc get csv etcdoperator.v0.9.4 -n my-etcd -o json | jq -r &#39;.status.phase&#39;\n&quot;</span>
-
-• Failure <span class="o">[</span><span class="m">10</span>.002 seconds<span class="o">]</span>
-operator
-/Users/<span class="nv">$USER</span>/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:58
-  Runs <span class="nb">test</span> on operators
-  /Users/<span class="nv">$USER</span>/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:71
-    when under <span class="nb">test</span> is: my-etcd/etcdoperator.v0.9.4
-    /Users/<span class="nv">$USER</span>/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:121
-      tests <span class="k">for</span>: CSV_INSTALLED <span class="o">[</span>It<span class="o">]</span>
-      /Users/<span class="nv">$USER</span>/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:122
-
-      Expected
-          &lt;int&gt;: <span class="m">0</span>
-      to equal
-          &lt;int&gt;: <span class="m">1</span>
-</code></pre></div>
-<p>The following is the output from a Test failure.  In this case, the test is checking that a Subscription
-is installed correctly, but does not find it (the operator was not present on the cluster under test):</p>
-<div class="highlight"><pre><span></span><code>------------------------------
-operator Runs <span class="nb">test</span> on operators when under <span class="nb">test</span> is: my-etcd/etcd
-  tests <span class="k">for</span>: SUBSCRIPTION_INSTALLED
-  /Users/<span class="nv">$USER</span>/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:129
-<span class="m">2021</span>/04/09 <span class="m">12</span>:37:10 Sent: <span class="s2">&quot;oc get subscription etcd -n my-etcd -ojson | jq -r &#39;.spec.name&#39;\n&quot;</span>
-
-• Failure <span class="o">[</span><span class="m">10</span>.000 seconds<span class="o">]</span>
-operator
-/Users/<span class="nv">$USER</span>/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:55
-  Runs <span class="nb">test</span> on operators
-  /Users/<span class="nv">$USER</span>/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:68
-    when under <span class="nb">test</span> is: default/etcdoperator.v0.9.4
-    /Users/<span class="nv">$USER</span>/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:128
-      tests <span class="k">for</span>: SUBSCRIPTION_INSTALLED <span class="o">[</span>It<span class="o">]</span>
-      /Users/<span class="nv">$USER</span>/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:129
-
-      Expected
-          &lt;int&gt;: <span class="m">0</span>
-      to equal
-          &lt;int&gt;: <span class="m">1</span>
-</code></pre></div>
-<p>The following is the output from a Test failure.  In this case, the test is checking clusterPermissions for
-specific CSV, but does not find it (the operator was not present on the cluster under test):</p>
-<div class="highlight"><pre><span></span><code>------------------------------
-operator Runs <span class="nb">test</span> on operators
-  should eventually be verified as certified <span class="o">(</span>operator redhat-marketplace/etcd-operator<span class="o">)</span>
-  /Users/<span class="nv">$USER</span>/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:146
-
-• Failure <span class="o">[</span><span class="m">30</span>.002 seconds<span class="o">]</span>
-operator
-/Users/<span class="nv">$USER</span>/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:76
-  Runs <span class="nb">test</span> on operators
-  /Users/<span class="nv">$USER</span>/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:89
-    should eventually be verified as certified <span class="o">(</span>operator redhat-marketplace/etcd-operator<span class="o">)</span> <span class="o">[</span>It<span class="o">]</span>
-    /Users/<span class="nv">$USER</span>/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:146
-
-    Timed out after <span class="m">30</span>.001s.
-    Expected
-        &lt;bool&gt;: <span class="nb">false</span>
-    to be <span class="nb">true</span>
-
-    /Users/<span class="nv">$USER</span>/cnf-cert/test-network-function/cnf-certification-test/operator/suite.go:152
-</code></pre></div>
-<h2 id="log-level">Log level<a class="headerlink" href="#log-level" title="Permanent link">&para;</a></h2>
-<p>The optional TNF_LOG_LEVEL environment variable sets the log level. Defaults to &ldquo;info&rdquo; if not set. Valid values are: trace, debug, info, warn, error, fatal, panic.</p>
+<p><strong>Reference</strong></p>
+<p>For more details on the contents of the claim file</p>
+<ul>
+<li><a href="https://github.com/test-network-function/test-network-function-claim/blob/main/schemas/claim.schema.json">schema</a>.  </li>
+<li><a href="https://redhat-connect.gitbook.io/openshift-badges/badges/cloud-native-network-functions-cnf">Guide</a>.</li>
+</ul>
 
 
 
