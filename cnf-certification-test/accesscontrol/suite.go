@@ -62,7 +62,7 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		TestSecConCapabilities(&env)
 	})
-	// container security context: check if it match one of the 4 catagories
+	// container security context: check if it match one of the 4 categories
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSecContextIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
@@ -694,7 +694,8 @@ func testContainerSCC(env *provider.TestEnvironment) {
 		} else {
 			containerSCC.RunAsUser = false
 		}
-		for _, cut := range pod.Spec.Containers {
+		for j := 0; j < len(pod.Spec.Containers); j++ {
+			cut := &(pod.Spec.Containers[j])
 			containerSCC.HostPorts = false
 			for _, aPort := range cut.Ports {
 				if aPort.HostPort != 0 {
@@ -725,18 +726,20 @@ func testContainerSCC(env *provider.TestEnvironment) {
 			if cut.SecurityContext != nil && cut.SecurityContext.RunAsNonRoot != nil {
 				containerSCC.RunAsNonRoot = *cut.SecurityContext.RunAsNonRoot
 			}
-			// after building the containerSCC need to check to wich catagory it is
-			if containerSCC == catagory1 {
+			// after building the containerSCC need to check to which category it is
+			switch containerSCC {
+			case catagory1:
 				logrus.Info("is ok")
-			} else if containerSCC == catagory2 {
+			case catagory2:
 				logrus.Info("is ok")
-			} else if containerSCC == catagory3 {
+			case catagory3:
 				logrus.Info("is ok")
-			} else if containerSCC == catagory4 {
+			case catagory4:
 				logrus.Info("is ok")
-			} else {
+			default:
 				badCut = append(badCut, cut.Name)
 			}
 		}
 	}
+	testhelper.AddTestResultLog("Non-compliant", badCut, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
