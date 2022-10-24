@@ -689,7 +689,7 @@ func testContainerSCC(env *provider.TestEnvironment) {
 		containerSCC.HostIPC = pod.Spec.HostIPC
 		containerSCC.HostNetwork = pod.Spec.HostNetwork
 		containerSCC.HostPID = pod.Spec.HostPID
-		if pod.Spec.SecurityContext.RunAsUser != nil && *pod.Spec.SecurityContext.RunAsUser == int64(leetNum) {
+		if pod.Spec.SecurityContext.RunAsUser != nil && *pod.Spec.SecurityContext.RunAsUser == int64(istioProxyContainerUID) {
 			containerSCC.RunAsUser = true
 		} else {
 			containerSCC.RunAsUser = false
