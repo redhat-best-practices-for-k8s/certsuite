@@ -30,11 +30,11 @@ func TestIsContainerCertified(t *testing.T) {
 	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "0.56.0-1", "")
 	assert.Equal(t, true, v) // true
 
-	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "0.56.0-1", "sha256:c358eee360a1e7754c2d555ec5fba4e6a42f1ede2bc9dd9e59068dd287113b33")
+	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "0.56.0-1", "sha256:03f7f2499233a302351821d6f78f0e813c3f749258184f4133144558097c57b0")
 	assert.Equal(t, true, v) // true
 
 	// wrong tag, valid digest, should be true
-	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "0.56.0-100", "sha256:c358eee360a1e7754c2d555ec5fba4e6a42f1ede2bc9dd9e59068dd287113b33")
+	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "0.56.0-100", "sha256:03f7f2499233a302351821d6f78f0e813c3f749258184f4133144558097c57b0")
 	assert.Equal(t, true, v) // true
 
 	// wrong tag, everything else is valid
