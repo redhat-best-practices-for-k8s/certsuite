@@ -99,7 +99,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		if env.GetWorkerCount() < minWorkerNodesForLifecycle {
 			ginkgo.Skip("Skipping pod high availability test because invalid number of available workers.")
 		}
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.GetAntiAffinityRequiredDeployments(), env.GetAntiAffinityRequiredStatefulSets())
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Deployments, env.StatefulSets)
 		testHighAvailability(&env)
 	})
 
@@ -160,16 +160,6 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestAffinityRequiredPods)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testAffinityRequiredPods(&env)
-	})
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestAffinityRequiredStatefulSets)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testAffinityRequiredStatefulSets(&env)
-	})
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestAffinityRequiredDeployments)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testAffinityRequiredDeployments(&env)
 	})
 })
 
@@ -350,24 +340,37 @@ func testHighAvailability(env *provider.TestEnvironment) {
 
 	badDeployments := []string{}
 	badStatefulSet := []string{}
-	for _, dp := range env.GetAntiAffinityRequiredDeployments() {
+	for _, dp := range env.Deployments {
 		if dp.Spec.Replicas == nil || *(dp.Spec.Replicas) <= 1 {
 			badDeployments = append(badDeployments, dp.ToString())
 			tnf.ClaimFilePrintf("Deployment found without valid high availability: %s", dp.ToString())
 			continue
 		}
+
+		// Skip any AffinityRequired pods
+		//nolint:goconst
+		if dp.Spec.Template.Labels["AffinityRequired"] == "true" {
+			continue
+		}
+
 		if dp.Spec.Template.Spec.Affinity == nil ||
 			dp.Spec.Template.Spec.Affinity.PodAntiAffinity == nil {
 			badDeployments = append(badDeployments, dp.ToString())
 			tnf.ClaimFilePrintf("Deployment found without valid high availability: %s", dp.ToString())
 		}
 	}
-	for _, st := range env.GetAntiAffinityRequiredStatefulSets() {
+	for _, st := range env.StatefulSets {
 		if st.Spec.Replicas == nil || *(st.Spec.Replicas) <= 1 {
 			badStatefulSet = append(badStatefulSet, st.ToString())
 			tnf.ClaimFilePrintf("StatefulSet found without valid high availability: %s", st.ToString())
 			continue
 		}
+
+		// Skip any AffinityRequired pods
+		if st.Spec.Template.Labels["AffinityRequired"] == "true" {
+			continue
+		}
+
 		if st.Spec.Template.Spec.Affinity == nil ||
 			st.Spec.Template.Spec.Affinity.PodAntiAffinity == nil {
 			badDeployments = append(badDeployments, st.ToString())
@@ -492,38 +495,5 @@ func testAffinityRequiredPods(env *provider.TestEnvironment) {
 			podsDesiringAffinityRequiredMissingLabel = append(podsDesiringAffinityRequiredMissingLabel, put)
 		}
 	}
-
 	testhelper.AddTestResultLog("Non-compliant", podsDesiringAffinityRequiredMissingLabel, tnf.ClaimFilePrintf, ginkgo.Fail)
-}
-
-func testAffinityRequiredDeployments(env *provider.TestEnvironment) {
-	testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetAffinityRequiredDeployments())
-
-	var deploymentsDesiringAffinityRequiredMissingLabel []*provider.Deployment
-	for _, dep := range env.GetAffinityRequiredDeployments() {
-		// Check if the deployment is Affinity compliant.
-		result, err := dep.IsAffinityCompliant()
-		if !result {
-			tnf.ClaimFilePrintf(err.Error())
-			deploymentsDesiringAffinityRequiredMissingLabel = append(deploymentsDesiringAffinityRequiredMissingLabel, dep)
-		}
-	}
-
-	testhelper.AddTestResultLog("Non-compliant", deploymentsDesiringAffinityRequiredMissingLabel, tnf.ClaimFilePrintf, ginkgo.Fail)
-}
-
-func testAffinityRequiredStatefulSets(env *provider.TestEnvironment) {
-	testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetAffinityRequiredStatefulSets())
-
-	var ssDesiringAffinityRequiredMissingLabel []*provider.StatefulSet
-	for _, ss := range env.GetAffinityRequiredStatefulSets() {
-		// Check if the statefulset is Affinity compliant.
-		result, err := ss.IsAffinityCompliant()
-		if !result {
-			tnf.ClaimFilePrintf(err.Error())
-			ssDesiringAffinityRequiredMissingLabel = append(ssDesiringAffinityRequiredMissingLabel, ss)
-		}
-	}
-
-	testhelper.AddTestResultLog("Non-compliant", ssDesiringAffinityRequiredMissingLabel, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
