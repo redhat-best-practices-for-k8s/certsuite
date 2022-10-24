@@ -3,4 +3,15 @@
 
 The documentation is published [here](https://test-network-function.github.io/cnf-certification-test/)
 
+## Target Audience
+
+- Partner
+- Developer
+
 Please contact us in case the documentation is broken.
+
+## Pre-requisites
+
+- Knowledge on Kubernetes
+- OpenShift Container Platform
+- Kubernetes Operator

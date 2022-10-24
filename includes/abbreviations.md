@@ -4,3 +4,4 @@
 *[CNFs]: Cloud-Native Network Functions
 *[OCP]: OpenShift Container Platform
 *[CRD]: Custom Resource Definition
+*[CSV]: ClusterServiceVersion in Operator Lifecycle Manager

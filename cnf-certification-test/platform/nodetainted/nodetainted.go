@@ -87,42 +87,54 @@ func (nt *NodeTainted) ModuleInTree(moduleName string, ctx clientsholder.Context
 	return !strings.Contains(cmdOutput, "O")
 }
 
-func GetTaintedBitValues() []string {
-	return []string{"proprietary module was loaded",
-		"module was force loaded",
-		"kernel running on an out of specification system",
-		"module was force unloaded",
-		"processor reported a Machine Check Exception (MCE)",
-		"bad page referenced or some unexpected page flags",
-		"taint requested by userspace application",
-		"kernel died recently, i.e. there was an OOPS or BUG",
-		"ACPI table overridden by user",
-		"kernel issued warning",
-		"staging driver was loaded",
-		"workaround for bug in platform firmware applied",
-		"externally-built (“out-of-tree”) module was loaded",
-		"unsigned module was loaded",
-		"soft lockup occurred",
-		"kernel has been live patched",
-		"auxiliary taint, defined for and used by distros",
-		"kernel was built with the struct randomization plugin",
-	}
+var kernelTaints = map[int]string{
+	// Linux standard kernel taints
+	0:  "proprietary module was loaded",
+	1:  "module was force loaded",
+	2:  "kernel running on an out of specification system",
+	3:  "module was force unloaded",
+	4:  "processor reported a Machine Check Exception (MCE)",
+	5:  "bad page referenced or some unexpected page flags",
+	6:  "taint requested by userspace application",
+	7:  "kernel died recently, i.e. there was an OOPS or BUG",
+	8:  "ACPI table overridden by user",
+	9:  "kernel issued warning",
+	10: "staging driver was loaded",
+	11: "workaround for bug in platform firmware applied",
+	12: "externally-built (“out-of-tree”) module was loaded",
+	13: "unsigned module was loaded",
+	14: "soft lockup occurred",
+	15: "kernel has been live patched",
+	16: "auxiliary taint, defined for and used by distros",
+	17: "kernel was built with the struct randomization plugin",
+	18: "an in-kernel test has been run",
+
+	// RedHat custom taints for RHEL/CoreOS
+	// https://access.redhat.com/solutions/40594
+	27: "Red Hat extension: Hardware for which support has been removed. / OMGZOMBIES easter egg",
+	28: "Red Hat extension: Unsupported hardware. Refer to \"UNSUPPORTED HARDWARE DEVICE:\" kernel log entry for details",
+	29: "Red Hat extension: Technology Preview code was loaded; cf. Technology Preview features support scope description. Refer to \"TECH PREVIEW:\" kernel log entry for details",
+	30: "Red Hat extension: reserved",
+	31: "Red Hat extension: reserved",
 }
 
-//nolint:gocritic
-func DecodeKernelTaints(bitmap uint64) (string, []string) {
-	values := GetTaintedBitValues()
-	var sb strings.Builder
-	individualTaints := []string{}
-	for i := 0; i < 32; i++ {
+func getTaintMsg(bit int) string {
+	if taintMsg, exists := kernelTaints[bit]; exists {
+		return fmt.Sprintf("%s (tainted bit %d)", taintMsg, bit)
+	}
+
+	return fmt.Sprintf("reserved (tainted bit %d)", bit)
+}
+
+func DecodeKernelTaints(bitmap uint64) []string {
+	taints := []string{}
+	for i := 0; i < 64; i++ {
 		bit := (bitmap >> i) & 1
 		if bit == 1 {
-			sb.WriteString(fmt.Sprintf("%s, ", values[i]))
-			// Storing the individual taint messages for extra parsing.
-			individualTaints = append(individualTaints, values[i])
+			taints = append(taints, getTaintMsg(i))
 		}
 	}
-	return sb.String(), individualTaints
+	return taints
 }
 
 func (nt *NodeTainted) GetOutOfTreeModules(modules []string, ctx clientsholder.Context) []string {

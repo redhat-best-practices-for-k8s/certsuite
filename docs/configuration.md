@@ -4,7 +4,7 @@ The certification test suite supports autodiscovery using labels and annotations
 
 These can be configured through the following config file.
   - `tnf_config.yml`
-  
+
 [Sample](https://github.com/test-network-function/cnf-certification-test/blob/main/cnf-certification-test/tnf_config.yml)
 
 As per the requirement the following fields can be changed.
@@ -78,5 +78,5 @@ to be checked for certification status on Red Hat catalogs.
 
 ## Operators
 
-CSVs to be tested by the `operator` and `affiliated-certification` specs are identified with the `test-network-function.com/operator=target`
-label. Any value is permitted but `target` is used here for consistency with the other specs.
+The CSV of the installed Operators can be tested by the `operator` and `affiliated-certification` specs are identified with the `test-network-function.com/operator=target`
+label. Any value is permitted here but `target` is used here for consistency with the other specs.
