@@ -277,7 +277,7 @@ var (
 	}
 	// TestSecContextIdentifier tests that pods or containers are not running with root permissions
 	TestSecContextIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagExtended),
 		Url:     formTestURL(common.AccessControlTestKey, "security-context"),
 		Version: VersionOne,
 	}
