@@ -69,7 +69,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNonTaintedNodeKernelsIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
-		testTainted(&env, nodetainted.NewNodeTaintedTester(clientsholder.GetClientsHolder())) // minikube tainted kernels are allowed via config
+		testTainted(&env) // minikube tainted kernels are allowed via config
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsRedHatReleaseIdentifier)
@@ -210,7 +210,7 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 }
 
 //nolint:funlen
-func testTainted(env *provider.TestEnvironment, testerFuncs nodetainted.TaintedFuncs) {
+func testTainted(env *provider.TestEnvironment) {
 	var taintedNodes []string
 	var errNodes []string
 
@@ -218,9 +218,10 @@ func testTainted(env *provider.TestEnvironment, testerFuncs nodetainted.TaintedF
 	for _, dp := range env.DebugPods {
 		// Create OCP context to pass around
 		ocpContext := clientsholder.NewContext(dp.Namespace, dp.Name, dp.Spec.Containers[0].Name)
+		tf := nodetainted.NewNodeTaintedTester(&ocpContext)
 
 		// Get the taint information from the node kernel
-		taintInfo, err := testerFuncs.GetKernelTaintInfo(ocpContext)
+		taintInfo, err := tf.GetKernelTaintInfo()
 		if err != nil {
 			logrus.Error("failed to retrieve kernel taint information from debug pod/host")
 			tnf.ClaimFilePrintf("failed to retrieve kernel taint information from debug pod/host")
@@ -269,11 +270,11 @@ func testTainted(env *provider.TestEnvironment, testerFuncs nodetainted.TaintedF
 			}
 		} else if moduleTaintsFound {
 			// Retrieve the modules from the node (via the debug pod)
-			modules := testerFuncs.GetModulesFromNode(ocpContext)
+			modules := tf.GetModulesFromNode()
 			logrus.Debugf("Got the modules from node %s: %v", dp.Name, modules)
 
 			// Retrieve all of the out of tree modules.
-			taintedModules := testerFuncs.GetOutOfTreeModules(modules, ocpContext)
+			taintedModules := tf.GetOutOfTreeModules(modules)
 			logrus.Debug("Collected all of the tainted modules: ", taintedModules)
 			logrus.Debug("Modules allowed via configuration: ", env.Config.AcceptedKernelTaints)
 
