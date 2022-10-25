@@ -18,9 +18,7 @@ package provider
 
 import (
 	"fmt"
-	"strconv"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	appsv1 "k8s.io/api/apps/v1"
 	appv1client "k8s.io/client-go/kubernetes/typed/apps/v1"
@@ -65,31 +63,6 @@ func (d *Deployment) ToString() string {
 		d.Name,
 		d.Namespace,
 	)
-}
-
-func (d *Deployment) AffinityRequired() bool {
-	if val, ok := d.Labels[AffinityRequiredKey]; ok {
-		result, err := strconv.ParseBool(val)
-		if err != nil {
-			logrus.Warnf("failure to parse bool %v", val)
-			return false
-		}
-		return result
-	}
-	return false
-}
-
-func (d *Deployment) IsAffinityCompliant() (bool, error) {
-	if d.Spec.Template.Spec.Affinity == nil {
-		return false, fmt.Errorf("%s has been found with an AffinityRequired flag but is missing corresponding affinity rules", d.String())
-	}
-	if d.Spec.Template.Spec.Affinity.PodAntiAffinity != nil {
-		return false, fmt.Errorf("%s has been found with an AffinityRequired flag but has anti-affinity rules", d.String())
-	}
-	if d.Spec.Template.Spec.Affinity.PodAffinity == nil && d.Spec.Template.Spec.Affinity.NodeAffinity == nil {
-		return false, fmt.Errorf("%s has been found with an AffinityRequired flag but is missing corresponding pod/node affinity rules", d.String())
-	}
-	return true, nil
 }
 
 func GetUpdatedDeployment(ac appv1client.AppsV1Interface, namespace, podName string) (*Deployment, error) {

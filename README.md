@@ -76,7 +76,7 @@ The label test-network-function.com/skip_connectivity_tests excludes pods from a
 The label test-network-function.com/skip_multus_connectivity_tests excludes pods from multus connectivity tests. Tests on default interface are still done. The label value is not important, only its presence.
 
 ### AffinityRequired
-For CNF workloads that require pods to use Pod or Node Affinity rules, the label `AffinityRequired: true` must be included on either the Deployment, StatefulSet, or Pod YAML.  This will prevent any tests for anti-affinity to fail as well as test your workloads for affinity rules that support your CNF's use-case.
+For CNF workloads that require pods to use Pod or Node Affinity rules, the label `AffinityRequired: true` must be included on the Pod YAML.  This will prevent any tests for anti-affinity to fail as well as test your workloads for affinity rules that support your CNF's use-case.
 
 ### certifiedcontainerinfo
 
