@@ -1,1465 +1,6 @@
 {
   "data": [
     {
-      "_id": "62fe79ffdca7d12fdf8dc16d",
-      "alm_examples": [
-        {
-          "api_version": "apps.gitlab.com/v1beta1",
-          "kind": "GitLab",
-          "metadata": {
-            "name": "gitlab",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "chart": {
-              "values": {
-                "certmanager": {
-                  "install": false
-                },
-                "global": {
-                  "hosts": {
-                    "domain": "example.com"
-                  },
-                  "ingress": {
-                    "configureCertmanager": false,
-                    "tls": {}
-                  }
-                }
-              },
-              "version": "6.2.2"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
-      "bundle_path_digest": "sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "unstable",
-      "creation_date": "2022-08-18T17:42:23.548000+00:00",
-      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
-      "csv_display_name": "GitLab",
-      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
-      "csv_name": "gitlab-operator-kubernetes.v0.10.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:46:01.395000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "gitlab-operator-kubernetes",
-      "provided_apis": [
-        {
-          "group": "apps.gitlab.com",
-          "kind": "GitLab",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "GitLab Inc",
-      "related_images": [
-        {
-          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "name": "cloud-native/gitlab-operator-04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97-annotation"
-        },
-        {
-          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "0.10.2",
-      "version_original": "0.10.2"
-    },
-    {
-      "_id": "62fe7a5707f6a613524f8e30",
-      "alm_examples": [
-        {
-          "api_version": "apps.gitlab.com/v1beta1",
-          "kind": "GitLab",
-          "metadata": {
-            "name": "gitlab",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "chart": {
-              "values": {
-                "certmanager": {
-                  "install": false
-                },
-                "global": {
-                  "hosts": {
-                    "domain": "example.com"
-                  },
-                  "ingress": {
-                    "configureCertmanager": false,
-                    "tls": {}
-                  }
-                }
-              },
-              "version": "6.2.2"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
-      "bundle_path_digest": "sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-18T17:43:51.128000+00:00",
-      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
-      "csv_display_name": "GitLab",
-      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
-      "csv_name": "gitlab-operator-kubernetes.v0.10.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:49:59.308000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "gitlab-operator-kubernetes",
-      "provided_apis": [
-        {
-          "group": "apps.gitlab.com",
-          "kind": "GitLab",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "GitLab Inc",
-      "related_images": [
-        {
-          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "name": "cloud-native/gitlab-operator-04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97-annotation"
-        },
-        {
-          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.10.2",
-      "version_original": "0.10.2"
-    },
-    {
-      "_id": "62fe7a57dca7d12fdf8dc18b",
-      "alm_examples": [
-        {
-          "api_version": "apps.gitlab.com/v1beta1",
-          "kind": "GitLab",
-          "metadata": {
-            "name": "gitlab",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "chart": {
-              "values": {
-                "certmanager": {
-                  "install": false
-                },
-                "global": {
-                  "hosts": {
-                    "domain": "example.com"
-                  },
-                  "ingress": {
-                    "configureCertmanager": false,
-                    "tls": {}
-                  }
-                }
-              },
-              "version": "6.2.2"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
-      "bundle_path_digest": "sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "unstable",
-      "creation_date": "2022-08-18T17:43:51.800000+00:00",
-      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
-      "csv_display_name": "GitLab",
-      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
-      "csv_name": "gitlab-operator-kubernetes.v0.10.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:50:04.795000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "gitlab-operator-kubernetes",
-      "provided_apis": [
-        {
-          "group": "apps.gitlab.com",
-          "kind": "GitLab",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "GitLab Inc",
-      "related_images": [
-        {
-          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "name": "cloud-native/gitlab-operator-04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97-annotation"
-        },
-        {
-          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.10.2",
-      "version_original": "0.10.2"
-    },
-    {
-      "_id": "62fe7ab8051dd1e2227e77f4",
-      "alm_examples": [
-        {
-          "api_version": "apps.gitlab.com/v1beta1",
-          "kind": "GitLab",
-          "metadata": {
-            "name": "gitlab",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "chart": {
-              "values": {
-                "certmanager": {
-                  "install": false
-                },
-                "global": {
-                  "hosts": {
-                    "domain": "example.com"
-                  },
-                  "ingress": {
-                    "configureCertmanager": false,
-                    "tls": {}
-                  }
-                }
-              },
-              "version": "6.2.2"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
-      "bundle_path_digest": "sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "unstable",
-      "creation_date": "2022-08-18T17:45:28.372000+00:00",
-      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
-      "csv_display_name": "GitLab",
-      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
-      "csv_name": "gitlab-operator-kubernetes.v0.10.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:47:37.944000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "gitlab-operator-kubernetes",
-      "provided_apis": [
-        {
-          "group": "apps.gitlab.com",
-          "kind": "GitLab",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "GitLab Inc",
-      "related_images": [
-        {
-          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "name": "cloud-native/gitlab-operator-04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97-annotation"
-        },
-        {
-          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.10.2",
-      "version_original": "0.10.2"
-    },
-    {
-      "_id": "62fe7ab9dca7d12fdf8dc1a0",
-      "alm_examples": [
-        {
-          "api_version": "apps.gitlab.com/v1beta1",
-          "kind": "GitLab",
-          "metadata": {
-            "name": "gitlab",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "chart": {
-              "values": {
-                "certmanager": {
-                  "install": false
-                },
-                "global": {
-                  "hosts": {
-                    "domain": "example.com"
-                  },
-                  "ingress": {
-                    "configureCertmanager": false,
-                    "tls": {}
-                  }
-                }
-              },
-              "version": "6.2.2"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
-      "bundle_path_digest": "sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-18T17:45:29.523000+00:00",
-      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
-      "csv_display_name": "GitLab",
-      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
-      "csv_name": "gitlab-operator-kubernetes.v0.10.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:22:39.602000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "gitlab-operator-kubernetes",
-      "provided_apis": [
-        {
-          "group": "apps.gitlab.com",
-          "kind": "GitLab",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "GitLab Inc",
-      "related_images": [
-        {
-          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "name": "cloud-native/gitlab-operator-04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97-annotation"
-        },
-        {
-          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.10.2",
-      "version_original": "0.10.2"
-    },
-    {
-      "_id": "62fe7bdbf49810331c9379cf",
-      "alm_examples": [
-        {
-          "api_version": "apps.gitlab.com/v1beta1",
-          "kind": "GitLab",
-          "metadata": {
-            "name": "gitlab",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "chart": {
-              "values": {
-                "certmanager": {
-                  "install": false
-                },
-                "global": {
-                  "hosts": {
-                    "domain": "example.com"
-                  },
-                  "ingress": {
-                    "configureCertmanager": false,
-                    "tls": {}
-                  }
-                }
-              },
-              "version": "6.2.2"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
-      "bundle_path_digest": "sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "unstable",
-      "creation_date": "2022-08-18T17:50:19.904000+00:00",
-      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
-      "csv_display_name": "GitLab",
-      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
-      "csv_name": "gitlab-operator-kubernetes.v0.10.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:12:18.058000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "gitlab-operator-kubernetes",
-      "provided_apis": [
-        {
-          "group": "apps.gitlab.com",
-          "kind": "GitLab",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "GitLab Inc",
-      "related_images": [
-        {
-          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "name": "cloud-native/gitlab-operator-04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97-annotation"
-        },
-        {
-          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.10.2",
-      "version_original": "0.10.2"
-    },
-    {
-      "_id": "62fe7bdc53cb8f6da455039f",
-      "alm_examples": [
-        {
-          "api_version": "apps.gitlab.com/v1beta1",
-          "kind": "GitLab",
-          "metadata": {
-            "name": "gitlab",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "chart": {
-              "values": {
-                "certmanager": {
-                  "install": false
-                },
-                "global": {
-                  "hosts": {
-                    "domain": "example.com"
-                  },
-                  "ingress": {
-                    "configureCertmanager": false,
-                    "tls": {}
-                  }
-                }
-              },
-              "version": "6.2.2"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
-      "bundle_path_digest": "sha256:ed0b672abe5cc0bead650973485bb7a5ecef7eb8062e1e65b2da6a9cf7ef561b",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-08-18T17:50:20.412000+00:00",
-      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
-      "csv_display_name": "GitLab",
-      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
-      "csv_name": "gitlab-operator-kubernetes.v0.10.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:40:38.565000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "gitlab-operator-kubernetes",
-      "provided_apis": [
-        {
-          "group": "apps.gitlab.com",
-          "kind": "GitLab",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "GitLab Inc",
-      "related_images": [
-        {
-          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "name": "cloud-native/gitlab-operator-04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97-annotation"
-        },
-        {
-          "digest": "sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:04b049c54017737f41e14ca1ffdf80aed3d175f1b743a24fc87350d14b83de97",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.10.2",
-      "version_original": "0.10.2"
-    },
-    {
-      "_id": "62ffdf5a051dd1e2227ebc73",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:8ec87e78e7bb6c6983d9b84f2cf82c084aea33e8ebbd8e40e26356f1a6d53d36",
-      "bundle_path_digest": "sha256:8ec87e78e7bb6c6983d9b84f2cf82c084aea33e8ebbd8e40e26356f1a6d53d36",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.11",
-      "creation_date": "2022-08-19T19:07:06.767000+00:00",
-      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium Enterprise",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.11.8-x9da5374",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:02:56.832000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "cilium-enterprise",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Isovalent",
-      "related_images": [
-        {
-          "digest": "sha256:07cfd3b32dea33bd4143f0ecc577d546fdc0e95ee9cd63d68826e2089e5a304d",
-          "image": "quay.io/isovalent/cilium@sha256:07cfd3b32dea33bd4143f0ecc577d546fdc0e95ee9cd63d68826e2089e5a304d",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:f4d9ce3a078dbebf93c9e5fb7d594d72cf9e7c4b52b4cfc912d87cfdb76a1e0b",
-          "image": "quay.io/isovalent/hubble-relay@sha256:f4d9ce3a078dbebf93c9e5fb7d594d72cf9e7c4b52b4cfc912d87cfdb76a1e0b",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:948628cbf397ee14eda014e8a0d7ca06db9957f7ac47e6623a0480fe79b0ac40",
-          "image": "quay.io/isovalent/operator-generic@sha256:948628cbf397ee14eda014e8a0d7ca06db9957f7ac47e6623a0480fe79b0ac40",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:07cfd3b32dea33bd4143f0ecc577d546fdc0e95ee9cd63d68826e2089e5a304d",
-          "image": "quay.io/isovalent/cilium@sha256:07cfd3b32dea33bd4143f0ecc577d546fdc0e95ee9cd63d68826e2089e5a304d",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:856339f0735c08f8ab7cc229e8d52e4b881a020128777b17527f0e62de990ed1",
-          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:856339f0735c08f8ab7cc229e8d52e4b881a020128777b17527f0e62de990ed1",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:20364df292b5047f14c48805e6a62918bd32d7f2a36f34480cafc8c9ea3a5c9a",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:20364df292b5047f14c48805e6a62918bd32d7f2a36f34480cafc8c9ea3a5c9a",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:7af8f63d1b3844d65606374fbd770e09b4548915bb3d556a358d2b21aeb4bed1",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:7af8f63d1b3844d65606374fbd770e09b4548915bb3d556a358d2b21aeb4bed1",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble-ui-oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble-enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble-enterprise-metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble-enterprise-operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble-export"
-        },
-        {
-          "digest": "sha256:eaf42a84821509b69e2ef2b658796062e79a90e63045a98689da3da99a12e492",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:eaf42a84821509b69e2ef2b658796062e79a90e63045a98689da3da99a12e492",
-          "name": "hubble-export-fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble-export-s3"
-        },
-        {
-          "digest": "sha256:9ae9187c25b1d49e9338c6ba4c73be18adee551da2bb9a342602d5060103ae11",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:9ae9187c25b1d49e9338c6ba4c73be18adee551da2bb9a342602d5060103ae11",
-          "name": "hubble-rbac"
-        },
-        {
-          "digest": "sha256:e88657808b3e3f3d43fb1b8051f8c1dffb39879ce134eb0389a8e4340e7ad11b",
-          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:e88657808b3e3f3d43fb1b8051f8c1dffb39879ce134eb0389a8e4340e7ad11b",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:f4d9ce3a078dbebf93c9e5fb7d594d72cf9e7c4b52b4cfc912d87cfdb76a1e0b",
-          "image": "quay.io/isovalent/hubble-relay@sha256:f4d9ce3a078dbebf93c9e5fb7d594d72cf9e7c4b52b4cfc912d87cfdb76a1e0b",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:948628cbf397ee14eda014e8a0d7ca06db9957f7ac47e6623a0480fe79b0ac40",
-          "image": "quay.io/isovalent/operator-generic@sha256:948628cbf397ee14eda014e8a0d7ca06db9957f7ac47e6623a0480fe79b0ac40",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:20364df292b5047f14c48805e6a62918bd32d7f2a36f34480cafc8c9ea3a5c9a",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:20364df292b5047f14c48805e6a62918bd32d7f2a36f34480cafc8c9ea3a5c9a",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:7af8f63d1b3844d65606374fbd770e09b4548915bb3d556a358d2b21aeb4bed1",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:7af8f63d1b3844d65606374fbd770e09b4548915bb3d556a358d2b21aeb4bed1",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble_ui_oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble_enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble_enterprise_metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble_enterprise_operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble_export"
-        },
-        {
-          "digest": "sha256:eaf42a84821509b69e2ef2b658796062e79a90e63045a98689da3da99a12e492",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:eaf42a84821509b69e2ef2b658796062e79a90e63045a98689da3da99a12e492",
-          "name": "hubble_export_fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble_export_s3"
-        },
-        {
-          "digest": "sha256:9ae9187c25b1d49e9338c6ba4c73be18adee551da2bb9a342602d5060103ae11",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:9ae9187c25b1d49e9338c6ba4c73be18adee551da2bb9a342602d5060103ae11",
-          "name": "hubble_rbac"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "1.11.8+x9da5374",
-      "version_original": "1.11.8+x9da5374"
-    },
-    {
-      "_id": "62ffdf707892413c524f82b0",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:8ec87e78e7bb6c6983d9b84f2cf82c084aea33e8ebbd8e40e26356f1a6d53d36",
-      "bundle_path_digest": "sha256:8ec87e78e7bb6c6983d9b84f2cf82c084aea33e8ebbd8e40e26356f1a6d53d36",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.11",
-      "creation_date": "2022-08-19T19:07:28.484000+00:00",
-      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium Enterprise",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.11.8-x9da5374",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:42:20.832000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "cilium-enterprise",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "plural": "ciliumconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Isovalent",
-      "related_images": [
-        {
-          "digest": "sha256:07cfd3b32dea33bd4143f0ecc577d546fdc0e95ee9cd63d68826e2089e5a304d",
-          "image": "quay.io/isovalent/cilium@sha256:07cfd3b32dea33bd4143f0ecc577d546fdc0e95ee9cd63d68826e2089e5a304d",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:f4d9ce3a078dbebf93c9e5fb7d594d72cf9e7c4b52b4cfc912d87cfdb76a1e0b",
-          "image": "quay.io/isovalent/hubble-relay@sha256:f4d9ce3a078dbebf93c9e5fb7d594d72cf9e7c4b52b4cfc912d87cfdb76a1e0b",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:948628cbf397ee14eda014e8a0d7ca06db9957f7ac47e6623a0480fe79b0ac40",
-          "image": "quay.io/isovalent/operator-generic@sha256:948628cbf397ee14eda014e8a0d7ca06db9957f7ac47e6623a0480fe79b0ac40",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:07cfd3b32dea33bd4143f0ecc577d546fdc0e95ee9cd63d68826e2089e5a304d",
-          "image": "quay.io/isovalent/cilium@sha256:07cfd3b32dea33bd4143f0ecc577d546fdc0e95ee9cd63d68826e2089e5a304d",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:856339f0735c08f8ab7cc229e8d52e4b881a020128777b17527f0e62de990ed1",
-          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:856339f0735c08f8ab7cc229e8d52e4b881a020128777b17527f0e62de990ed1",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:20364df292b5047f14c48805e6a62918bd32d7f2a36f34480cafc8c9ea3a5c9a",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:20364df292b5047f14c48805e6a62918bd32d7f2a36f34480cafc8c9ea3a5c9a",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:7af8f63d1b3844d65606374fbd770e09b4548915bb3d556a358d2b21aeb4bed1",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:7af8f63d1b3844d65606374fbd770e09b4548915bb3d556a358d2b21aeb4bed1",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble-ui-oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble-enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble-enterprise-metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble-enterprise-operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble-export"
-        },
-        {
-          "digest": "sha256:eaf42a84821509b69e2ef2b658796062e79a90e63045a98689da3da99a12e492",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:eaf42a84821509b69e2ef2b658796062e79a90e63045a98689da3da99a12e492",
-          "name": "hubble-export-fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble-export-s3"
-        },
-        {
-          "digest": "sha256:9ae9187c25b1d49e9338c6ba4c73be18adee551da2bb9a342602d5060103ae11",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:9ae9187c25b1d49e9338c6ba4c73be18adee551da2bb9a342602d5060103ae11",
-          "name": "hubble-rbac"
-        },
-        {
-          "digest": "sha256:e88657808b3e3f3d43fb1b8051f8c1dffb39879ce134eb0389a8e4340e7ad11b",
-          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:e88657808b3e3f3d43fb1b8051f8c1dffb39879ce134eb0389a8e4340e7ad11b",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:f4d9ce3a078dbebf93c9e5fb7d594d72cf9e7c4b52b4cfc912d87cfdb76a1e0b",
-          "image": "quay.io/isovalent/hubble-relay@sha256:f4d9ce3a078dbebf93c9e5fb7d594d72cf9e7c4b52b4cfc912d87cfdb76a1e0b",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:948628cbf397ee14eda014e8a0d7ca06db9957f7ac47e6623a0480fe79b0ac40",
-          "image": "quay.io/isovalent/operator-generic@sha256:948628cbf397ee14eda014e8a0d7ca06db9957f7ac47e6623a0480fe79b0ac40",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:20364df292b5047f14c48805e6a62918bd32d7f2a36f34480cafc8c9ea3a5c9a",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:20364df292b5047f14c48805e6a62918bd32d7f2a36f34480cafc8c9ea3a5c9a",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:7af8f63d1b3844d65606374fbd770e09b4548915bb3d556a358d2b21aeb4bed1",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:7af8f63d1b3844d65606374fbd770e09b4548915bb3d556a358d2b21aeb4bed1",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble_ui_oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble_enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble_enterprise_metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble_enterprise_operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble_export"
-        },
-        {
-          "digest": "sha256:eaf42a84821509b69e2ef2b658796062e79a90e63045a98689da3da99a12e492",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:eaf42a84821509b69e2ef2b658796062e79a90e63045a98689da3da99a12e492",
-          "name": "hubble_export_fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble_export_s3"
-        },
-        {
-          "digest": "sha256:9ae9187c25b1d49e9338c6ba4c73be18adee551da2bb9a342602d5060103ae11",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:9ae9187c25b1d49e9338c6ba4c73be18adee551da2bb9a342602d5060103ae11",
-          "name": "hubble_rbac"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "1.11.8+x9da5374",
-      "version_original": "1.11.8+x9da5374"
-    },
-    {
-      "_id": "62ffe2f6051dd1e2227ebcb0",
-      "alm_examples": [
-        {
-          "api_version": "cilium.io/v1alpha1",
-          "kind": "CiliumConfig",
-          "metadata": {
-            "name": "cilium-openshift-default",
-            "namespace": "placeholder"
-          },
-          "spec": {}
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/isovalent/cilium-ee-olm-metadata@sha256:8ec87e78e7bb6c6983d9b84f2cf82c084aea33e8ebbd8e40e26356f1a6d53d36",
-      "bundle_path_digest": "sha256:8ec87e78e7bb6c6983d9b84f2cf82c084aea33e8ebbd8e40e26356f1a6d53d36",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "1.11",
-      "creation_date": "2022-08-19T19:22:30.655000+00:00",
-      "csv_description": "Cilium Enterprise - eBPF-based Networking, Security, and Observability",
-      "csv_display_name": "Cilium Enterprise",
-      "csv_metadata_description": "",
-      "csv_name": "cilium.v1.11.8-x9da5374",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:45:19.352000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "cilium-enterprise",
-      "provided_apis": [
-        {
-          "group": "cilium.io",
-          "kind": "CiliumConfig",
-          "plural": "ciliumconfigs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Isovalent",
-      "related_images": [
-        {
-          "digest": "sha256:07cfd3b32dea33bd4143f0ecc577d546fdc0e95ee9cd63d68826e2089e5a304d",
-          "image": "quay.io/isovalent/cilium@sha256:07cfd3b32dea33bd4143f0ecc577d546fdc0e95ee9cd63d68826e2089e5a304d",
-          "name": "cilium"
-        },
-        {
-          "digest": "sha256:f4d9ce3a078dbebf93c9e5fb7d594d72cf9e7c4b52b4cfc912d87cfdb76a1e0b",
-          "image": "quay.io/isovalent/hubble-relay@sha256:f4d9ce3a078dbebf93c9e5fb7d594d72cf9e7c4b52b4cfc912d87cfdb76a1e0b",
-          "name": "hubble-relay"
-        },
-        {
-          "digest": "sha256:948628cbf397ee14eda014e8a0d7ca06db9957f7ac47e6623a0480fe79b0ac40",
-          "image": "quay.io/isovalent/operator-generic@sha256:948628cbf397ee14eda014e8a0d7ca06db9957f7ac47e6623a0480fe79b0ac40",
-          "name": "cilium-operator"
-        },
-        {
-          "digest": "sha256:07cfd3b32dea33bd4143f0ecc577d546fdc0e95ee9cd63d68826e2089e5a304d",
-          "image": "quay.io/isovalent/cilium@sha256:07cfd3b32dea33bd4143f0ecc577d546fdc0e95ee9cd63d68826e2089e5a304d",
-          "name": "preflight"
-        },
-        {
-          "digest": "sha256:856339f0735c08f8ab7cc229e8d52e4b881a020128777b17527f0e62de990ed1",
-          "image": "quay.io/isovalent/clustermesh-apiserver@sha256:856339f0735c08f8ab7cc229e8d52e4b881a020128777b17527f0e62de990ed1",
-          "name": "clustermesh"
-        },
-        {
-          "digest": "sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "image": "quay.io/cilium/certgen@sha256:0c2b71bb3469990e7990e7e26243617aa344b5a69a4ce465740b8577f9d48ab9",
-          "name": "certgen"
-        },
-        {
-          "digest": "sha256:20364df292b5047f14c48805e6a62918bd32d7f2a36f34480cafc8c9ea3a5c9a",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:20364df292b5047f14c48805e6a62918bd32d7f2a36f34480cafc8c9ea3a5c9a",
-          "name": "hubble-ui-backend"
-        },
-        {
-          "digest": "sha256:7af8f63d1b3844d65606374fbd770e09b4548915bb3d556a358d2b21aeb4bed1",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:7af8f63d1b3844d65606374fbd770e09b4548915bb3d556a358d2b21aeb4bed1",
-          "name": "hubble-ui-frontend"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble-ui-oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd-operator"
-        },
-        {
-          "digest": "sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "image": "quay.io/cilium/startup-script@sha256:1daf817f34000399fcb5da9a94cb299e2810d2c7a52e51de22ba0d4783b6ce84",
-          "name": "nodeinit"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh-etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble-enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble-enterprise-metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble-enterprise-operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble-export"
-        },
-        {
-          "digest": "sha256:eaf42a84821509b69e2ef2b658796062e79a90e63045a98689da3da99a12e492",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:eaf42a84821509b69e2ef2b658796062e79a90e63045a98689da3da99a12e492",
-          "name": "hubble-export-fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble-export-s3"
-        },
-        {
-          "digest": "sha256:9ae9187c25b1d49e9338c6ba4c73be18adee551da2bb9a342602d5060103ae11",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:9ae9187c25b1d49e9338c6ba4c73be18adee551da2bb9a342602d5060103ae11",
-          "name": "hubble-rbac"
-        },
-        {
-          "digest": "sha256:e88657808b3e3f3d43fb1b8051f8c1dffb39879ce134eb0389a8e4340e7ad11b",
-          "image": "registry.connect.redhat.com/isovalent/cilium-ee-olm@sha256:e88657808b3e3f3d43fb1b8051f8c1dffb39879ce134eb0389a8e4340e7ad11b",
-          "name": "operator"
-        },
-        {
-          "digest": "sha256:f4d9ce3a078dbebf93c9e5fb7d594d72cf9e7c4b52b4cfc912d87cfdb76a1e0b",
-          "image": "quay.io/isovalent/hubble-relay@sha256:f4d9ce3a078dbebf93c9e5fb7d594d72cf9e7c4b52b4cfc912d87cfdb76a1e0b",
-          "name": "hubble_relay"
-        },
-        {
-          "digest": "sha256:948628cbf397ee14eda014e8a0d7ca06db9957f7ac47e6623a0480fe79b0ac40",
-          "image": "quay.io/isovalent/operator-generic@sha256:948628cbf397ee14eda014e8a0d7ca06db9957f7ac47e6623a0480fe79b0ac40",
-          "name": "cilium_operator"
-        },
-        {
-          "digest": "sha256:20364df292b5047f14c48805e6a62918bd32d7f2a36f34480cafc8c9ea3a5c9a",
-          "image": "quay.io/isovalent/hubble-ui-enterprise-backend@sha256:20364df292b5047f14c48805e6a62918bd32d7f2a36f34480cafc8c9ea3a5c9a",
-          "name": "hubble_ui_be"
-        },
-        {
-          "digest": "sha256:7af8f63d1b3844d65606374fbd770e09b4548915bb3d556a358d2b21aeb4bed1",
-          "image": "quay.io/isovalent/hubble-ui-enterprise@sha256:7af8f63d1b3844d65606374fbd770e09b4548915bb3d556a358d2b21aeb4bed1",
-          "name": "hubble_ui_fe"
-        },
-        {
-          "digest": "sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "image": "quay.io/oauth2-proxy/oauth2-proxy@sha256:ecd26b74a01f2b547ddaed4d32d35f8f5e09c378d5c1fc6cfa63f0adf659ac2b",
-          "name": "hubble_ui_oauth"
-        },
-        {
-          "digest": "sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "image": "quay.io/cilium/cilium-etcd-operator@sha256:04b8327f7f992693c2cb483b999041ed8f92efc8e14f2a5f3ab95574a65ea2dc",
-          "name": "etcd_operator"
-        },
-        {
-          "digest": "sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "image": "quay.io/coreos/etcd@sha256:04833b601fa130512450afa45c4fe484fee1293634f34c7ddc231bd193c74017",
-          "name": "clustermesh_etcd"
-        },
-        {
-          "digest": "sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "image": "quay.io/isovalent/hubble-enterprise@sha256:1e1d3e6c199546b2398f4166ff64210c04075bb407c8f07c5be8d3db08560d4a",
-          "name": "hubble_enterprise"
-        },
-        {
-          "digest": "sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "image": "quay.io/isovalent/hubble-enterprise-metadata@sha256:72c7aa3961f14df413569cd156820a45553bb24d393b11246a18bf8b6553e022",
-          "name": "hubble_enterprise_metadata"
-        },
-        {
-          "digest": "sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "image": "quay.io/isovalent/hubble-enterprise-operator@sha256:0d5e6a5d9c07780c18e5aa81d8f1c95c399bff2d36a44fa5f61ac89a788ca83b",
-          "name": "hubble_enterprise_operator"
-        },
-        {
-          "digest": "sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "image": "quay.io/cilium/hubble-export-stdout@sha256:f1b1475a3c89950481264f5f8ca63eea3b911a45dc83fdf15122d695a0fba9b3",
-          "name": "hubble_export"
-        },
-        {
-          "digest": "sha256:eaf42a84821509b69e2ef2b658796062e79a90e63045a98689da3da99a12e492",
-          "image": "quay.io/isovalent/hubble-export-fluentd@sha256:eaf42a84821509b69e2ef2b658796062e79a90e63045a98689da3da99a12e492",
-          "name": "hubble_export_fluentd"
-        },
-        {
-          "digest": "sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "image": "quay.io/isovalent/hubble-export-s3@sha256:ce4f71f7f13301133b7d471b87fb81108b2c2da7fc29865ef96bc8431b2be72b",
-          "name": "hubble_export_s3"
-        },
-        {
-          "digest": "sha256:9ae9187c25b1d49e9338c6ba4c73be18adee551da2bb9a342602d5060103ae11",
-          "image": "quay.io/isovalent/hubble-rbac@sha256:9ae9187c25b1d49e9338c6ba4c73be18adee551da2bb9a342602d5060103ae11",
-          "name": "hubble_rbac"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.11.8+x9da5374",
-      "version_original": "1.11.8+x9da5374"
-    },
-    {
       "_id": "62fffbe5dca7d12fdf8e0c78",
       "alm_examples": [
         {
@@ -1515,7 +56,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:12:04.446000+00:00",
+      "last_update_date": "2022-10-24T11:25:12.987000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -1603,7 +144,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:55:59.445000+00:00",
+      "last_update_date": "2022-10-24T11:22:50.410000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -1691,7 +232,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:01:03.307000+00:00",
+      "last_update_date": "2022-10-24T11:20:45.831000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -1779,7 +320,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:59:25.056000+00:00",
+      "last_update_date": "2022-10-24T12:00:26.261000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -2191,7 +732,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:17:57.001000+00:00",
+      "last_update_date": "2022-10-24T11:30:24.291000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -2718,7 +1259,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:17:51.381000+00:00",
+      "last_update_date": "2022-10-24T11:30:30.997000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -3245,7 +1786,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:47:26.394000+00:00",
+      "last_update_date": "2022-10-24T11:00:37.890000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -3788,7 +2329,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:47:31.042000+00:00",
+      "last_update_date": "2022-10-24T11:00:42.233000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -4331,7 +2872,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:44:04.726000+00:00",
+      "last_update_date": "2022-10-24T11:04:27.716000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -4873,7 +3414,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:44:08.548000+00:00",
+      "last_update_date": "2022-10-24T11:04:33.377000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -5415,7 +3956,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:21:43.855000+00:00",
+      "last_update_date": "2022-10-24T12:02:50.599000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -5958,7 +4499,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:18:35.389000+00:00",
+      "last_update_date": "2022-10-24T11:24:07.443000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -6263,7 +4804,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:00:55.502000+00:00",
+      "last_update_date": "2022-10-24T11:50:01.461000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -6582,7 +5123,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:34:58.356000+00:00",
+      "last_update_date": "2022-10-24T10:58:17.050000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -6911,7 +5452,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:50:29.893000+00:00",
+      "last_update_date": "2022-10-24T11:14:21.005000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -7240,7 +5781,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:55:44.759000+00:00",
+      "last_update_date": "2022-10-24T11:12:30.659000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -7569,7 +6110,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:29:33.295000+00:00",
+      "last_update_date": "2022-10-24T10:40:28.403000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -7898,7 +6439,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:19:15.283000+00:00",
+      "last_update_date": "2022-10-24T11:33:56.152000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -8215,7 +6756,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:24:15.934000+00:00",
+      "last_update_date": "2022-10-24T11:29:33.888000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -8417,7 +6958,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:25:30.632000+00:00",
+      "last_update_date": "2022-10-24T11:46:28.954000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -8619,7 +7160,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:32:56.269000+00:00",
+      "last_update_date": "2022-10-24T12:03:02.840000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -8766,7 +7307,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:06:54.461000+00:00",
+      "last_update_date": "2022-10-24T11:24:27+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -8878,7 +7419,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:45:32.703000+00:00",
+      "last_update_date": "2022-10-24T11:06:38.332000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -8991,7 +7532,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:49:33.082000+00:00",
+      "last_update_date": "2022-10-24T11:04:27.113000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -9103,7 +7644,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:26:58.468000+00:00",
+      "last_update_date": "2022-10-24T11:41:39.459000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -9215,7 +7756,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:15:01.307000+00:00",
+      "last_update_date": "2022-10-24T11:06:23.235000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -9327,7 +7868,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:48:37.283000+00:00",
+      "last_update_date": "2022-10-24T11:06:37.270000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -9490,7 +8031,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:21:15.354000+00:00",
+      "last_update_date": "2022-10-24T11:29:38.571000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -9678,7 +8219,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:53:02.955000+00:00",
+      "last_update_date": "2022-10-24T11:18:35.711000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -9867,7 +8408,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:45:04.537000+00:00",
+      "last_update_date": "2022-10-24T11:30:29.517000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -10056,7 +8597,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:58:25.868000+00:00",
+      "last_update_date": "2022-10-24T11:16:42.506000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -10184,7 +8725,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:23:37.870000+00:00",
+      "last_update_date": "2022-10-24T11:54:45.549000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -10386,7 +8927,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:03:45.857000+00:00",
+      "last_update_date": "2022-10-24T11:23:50.132000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -10589,7 +9130,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:58:18.378000+00:00",
+      "last_update_date": "2022-10-24T11:25:49.562000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -10792,7 +9333,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:23:58.868000+00:00",
+      "last_update_date": "2022-10-24T11:02:06.102000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -10995,7 +9536,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:23:24.096000+00:00",
+      "last_update_date": "2022-10-24T11:51:01.189000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -11198,7 +9739,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:07:57.296000+00:00",
+      "last_update_date": "2022-10-24T11:33:40.446000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -11417,7 +9958,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:08:26.921000+00:00",
+      "last_update_date": "2022-10-24T11:25:59.716000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -11535,7 +10076,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:08:32.843000+00:00",
+      "last_update_date": "2022-10-24T11:26:05.623000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -11653,7 +10194,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:45:25.744000+00:00",
+      "last_update_date": "2022-10-24T11:06:26.389000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -11772,7 +10313,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:45:29.100000+00:00",
+      "last_update_date": "2022-10-24T11:06:32.505000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -11891,7 +10432,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:36:10.037000+00:00",
+      "last_update_date": "2022-10-24T12:04:57.721000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -12009,7 +10550,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:31:32.710000+00:00",
+      "last_update_date": "2022-10-24T12:13:20.840000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -12127,7 +10668,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:49:23.008000+00:00",
+      "last_update_date": "2022-10-24T11:04:13.471000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -12246,7 +10787,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:49:28.524000+00:00",
+      "last_update_date": "2022-10-24T11:04:20.198000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -12365,7 +10906,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:35:15.888000+00:00",
+      "last_update_date": "2022-10-24T10:57:00.732000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -12483,7 +11024,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:43:50.752000+00:00",
+      "last_update_date": "2022-10-24T11:01:27.616000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -12601,7 +11142,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:31:34.737000+00:00",
+      "last_update_date": "2022-10-24T10:55:30+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -12719,7 +11260,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:38:01.259000+00:00",
+      "last_update_date": "2022-10-24T10:47:23.313000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -12811,7 +11352,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:51:00.448000+00:00",
+      "last_update_date": "2022-10-24T11:15:20.007000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -12910,7 +11451,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:51:12.582000+00:00",
+      "last_update_date": "2022-10-24T11:15:34.354000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -13009,7 +11550,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:51:22.607000+00:00",
+      "last_update_date": "2022-10-24T11:15:48.191000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -13108,7 +11649,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:51:33.586000+00:00",
+      "last_update_date": "2022-10-24T11:16:01.265000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -13207,7 +11748,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:51:44.862000+00:00",
+      "last_update_date": "2022-10-24T11:16:16.225000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -13306,7 +11847,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:51:54.920000+00:00",
+      "last_update_date": "2022-10-24T11:16:28.818000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -13405,7 +11946,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:52:05.219000+00:00",
+      "last_update_date": "2022-10-24T11:16:40.957000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -13504,7 +12045,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:52:14.253000+00:00",
+      "last_update_date": "2022-10-24T11:16:56.020000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -13603,7 +12144,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:52:25.172000+00:00",
+      "last_update_date": "2022-10-24T11:17:11.441000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -13702,7 +12243,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:52:46.728000+00:00",
+      "last_update_date": "2022-10-24T11:17:42.857000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -13801,7 +12342,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:08:46.425000+00:00",
+      "last_update_date": "2022-10-24T11:32:38.410000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -13898,7 +12439,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:09:06.047000+00:00",
+      "last_update_date": "2022-10-24T11:32:12.790000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -13995,7 +12536,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:09:19.696000+00:00",
+      "last_update_date": "2022-10-24T11:33:43.439000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -14092,7 +12633,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:08:52.947000+00:00",
+      "last_update_date": "2022-10-24T11:33:35.697000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -14189,7 +12730,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:09:32.678000+00:00",
+      "last_update_date": "2022-10-21T15:42:57.731000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -14286,7 +12827,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:09:12.061000+00:00",
+      "last_update_date": "2022-10-24T11:33:28.187000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -14383,7 +12924,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:10:01.149000+00:00",
+      "last_update_date": "2022-10-24T11:32:25.003000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -14480,7 +13021,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:09:40.079000+00:00",
+      "last_update_date": "2022-10-24T11:32:30.473000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -14577,7 +13118,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:09:48.561000+00:00",
+      "last_update_date": "2022-10-24T11:32:46.605000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -14674,7 +13215,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:08:59.222000+00:00",
+      "last_update_date": "2022-10-24T11:33:13.073000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -14771,7 +13312,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:56:12.936000+00:00",
+      "last_update_date": "2022-10-24T11:13:29.540000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -14870,7 +13411,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:56:24.311000+00:00",
+      "last_update_date": "2022-10-24T11:13:41.627000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -14969,7 +13510,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:56:35.215000+00:00",
+      "last_update_date": "2022-10-24T11:13:55.039000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -15068,7 +13609,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:56:45.809000+00:00",
+      "last_update_date": "2022-10-24T11:14:12.321000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -15167,7 +13708,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:56:55.894000+00:00",
+      "last_update_date": "2022-10-24T11:14:25.736000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -15266,7 +13807,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:57:06.344000+00:00",
+      "last_update_date": "2022-10-24T11:14:38.370000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -15365,7 +13906,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:57:16.042000+00:00",
+      "last_update_date": "2022-10-24T11:14:53.114000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -15464,7 +14005,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:57:26.507000+00:00",
+      "last_update_date": "2022-10-24T11:15:06.898000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -15563,7 +14104,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:57:36.984000+00:00",
+      "last_update_date": "2022-10-24T11:15:21.098000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -15662,7 +14203,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:57:47.347000+00:00",
+      "last_update_date": "2022-10-24T11:15:35.339000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -15761,7 +14302,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:58:10.594000+00:00",
+      "last_update_date": "2022-10-24T11:16:02.751000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -15860,7 +14401,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:03:48.882000+00:00",
+      "last_update_date": "2022-10-24T11:34:03.610000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -15959,7 +14500,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:57:33.728000+00:00",
+      "last_update_date": "2022-10-24T12:07:56.497000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -16058,7 +14599,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:57:50.484000+00:00",
+      "last_update_date": "2022-10-24T11:02:29.739000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -16157,7 +14698,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:12:11.739000+00:00",
+      "last_update_date": "2022-10-24T12:03:36.944000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -16256,7 +14797,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:30:37.846000+00:00",
+      "last_update_date": "2022-10-24T11:45:36.538000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -16355,7 +14896,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:34:59.436000+00:00",
+      "last_update_date": "2022-10-24T12:06:45.438000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -16454,7 +14995,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:35:56.690000+00:00",
+      "last_update_date": "2022-10-24T11:06:49.382000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -16553,7 +15094,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:59:25.473000+00:00",
+      "last_update_date": "2022-10-24T11:41:42.768000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -16652,7 +15193,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:37:29.244000+00:00",
+      "last_update_date": "2022-10-24T11:58:33.836000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -16751,7 +15292,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:28:26.351000+00:00",
+      "last_update_date": "2022-10-24T11:22:34.156000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -16794,6 +15335,996 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "8.5.3",
       "version_original": "8.5.3"
+    },
+    {
+      "_id": "6308d6f307bb65fa2c2ab2ac",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:b5e9c7c6ef879adb58154bfa52ec7c657e4bd0cdc643031037d9395051abdb79",
+      "bundle_path_digest": "sha256:b5e9c7c6ef879adb58154bfa52ec7c657e4bd0cdc643031037d9395051abdb79",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-26T14:21:39.922000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T10:59:08.807000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:7f72251c432f107e4102f91abb17469eedcf02f9a7860d7ec7c9bd0ad77746ae",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:7f72251c432f107e4102f91abb17469eedcf02f9a7860d7ec7c9bd0ad77746ae",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "8.5.2",
+      "version_original": "8.5.2"
+    },
+    {
+      "_id": "6308d942d0608cae4548292e",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:23f06fa446df0253aeacaf9f063d959c91e56f8a210ac493dc47bc238bb84bfe",
+      "bundle_path_digest": "sha256:23f06fa446df0253aeacaf9f063d959c91e56f8a210ac493dc47bc238bb84bfe",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-26T14:31:30.293000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.5",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T10:50:45.435000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:e08debe4fcac4b377e86ed57c9587057e8f99d37c5bd8acfe94dfa17605d0759",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:e08debe4fcac4b377e86ed57c9587057e8f99d37c5bd8acfe94dfa17605d0759",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "8.5.5",
+      "version_original": "8.5.5"
+    },
+    {
+      "_id": "6308d943d0608cae45482931",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:5884d075419f55d2df891c5efaf1613daf29a7998838deb916c5b599af4170c2",
+      "bundle_path_digest": "sha256:5884d075419f55d2df891c5efaf1613daf29a7998838deb916c5b599af4170c2",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-26T14:31:31.181000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T10:46:17.420000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:ef6e5f17c31eb5828b29751591778650c397d89b8de1960b215b34cd2e41810a",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:ef6e5f17c31eb5828b29751591778650c397d89b8de1960b215b34cd2e41810a",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "8.5.4",
+      "version_original": "8.5.4"
+    },
+    {
+      "_id": "6308d94338a6fe67b681f118",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:b5e9c7c6ef879adb58154bfa52ec7c657e4bd0cdc643031037d9395051abdb79",
+      "bundle_path_digest": "sha256:b5e9c7c6ef879adb58154bfa52ec7c657e4bd0cdc643031037d9395051abdb79",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-26T14:31:31.755000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T10:46:50.110000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:7f72251c432f107e4102f91abb17469eedcf02f9a7860d7ec7c9bd0ad77746ae",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:7f72251c432f107e4102f91abb17469eedcf02f9a7860d7ec7c9bd0ad77746ae",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "8.5.2",
+      "version_original": "8.5.2"
+    },
+    {
+      "_id": "6308d944d0608cae45482935",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:e5bf556da7ffdcd3e2e9c6e543d8ef7f1844216774e703dfec53e466e609d854",
+      "bundle_path_digest": "sha256:e5bf556da7ffdcd3e2e9c6e543d8ef7f1844216774e703dfec53e466e609d854",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-26T14:31:32.557000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T10:44:08.059000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:f78525afc39849d143c7fbe8992b95a26cb0d3443bc6a8fe7fbe49145887c8d7",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:f78525afc39849d143c7fbe8992b95a26cb0d3443bc6a8fe7fbe49145887c8d7",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "8.5.1",
+      "version_original": "8.5.1"
+    },
+    {
+      "_id": "6308d94507bb65fa2c2ab30f",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:65fd30b6c03b1f3eb44d8efb1407a7e0ba9e861adf3b9196640371482ced1df4",
+      "bundle_path_digest": "sha256:65fd30b6c03b1f3eb44d8efb1407a7e0ba9e861adf3b9196640371482ced1df4",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-26T14:31:33.422000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.6",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T10:47:29.280000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:8aa3d62bb82b65ba95daf3170c316485486e7ca8052b5b525566b7a15b6f08e5",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:8aa3d62bb82b65ba95daf3170c316485486e7ca8052b5b525566b7a15b6f08e5",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "8.5.6",
+      "version_original": "8.5.6"
+    },
+    {
+      "_id": "6308d9451d920575dc1462e2",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:d01e9da1a9897bb6f12ad4034bea571b53ea08d53d0fd7eebe30298a44ea4f65",
+      "bundle_path_digest": "sha256:d01e9da1a9897bb6f12ad4034bea571b53ea08d53d0fd7eebe30298a44ea4f65",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-26T14:31:33.987000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T10:40:15.359000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:fc69790f6713bd3f2f4d1cefd9eadac7ebe776cd0f83ae1ec523d80f2c276f59",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:fc69790f6713bd3f2f4d1cefd9eadac7ebe776cd0f83ae1ec523d80f2c276f59",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "8.5.0",
+      "version_original": "8.5.0"
+    },
+    {
+      "_id": "6308d9463832081c9baa64d3",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:bea7192e07456b6f23901e623137f7bde8c3a2313d80c3c6a8007f04e1fb3687",
+      "bundle_path_digest": "sha256:bea7192e07456b6f23901e623137f7bde8c3a2313d80c3c6a8007f04e1fb3687",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-26T14:31:34.671000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.6.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T11:35:11.413000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:08821c5d0be33de5170acf94ffd7a6cd92b9d2a26922af1f3869b502087f7f62",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:08821c5d0be33de5170acf94ffd7a6cd92b9d2a26922af1f3869b502087f7f62",
+          "name": "kubeturbo-operator-08821c5d0be33de5170acf94ffd7a6cd92b9d2a26922af1f3869b502087f7f62-annotation"
+        },
+        {
+          "digest": "sha256:08821c5d0be33de5170acf94ffd7a6cd92b9d2a26922af1f3869b502087f7f62",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:08821c5d0be33de5170acf94ffd7a6cd92b9d2a26922af1f3869b502087f7f62",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:1af800b95cb2a80edb0359b46ab10d609acb3ebe062e019f9dfc7c4b40ae58c2",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:1af800b95cb2a80edb0359b46ab10d609acb3ebe062e019f9dfc7c4b40ae58c2",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "8.6.0",
+      "version_original": "8.6.0"
+    },
+    {
+      "_id": "6308d9471d920575dc1462e4",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:c4611b427d4fcc9b7ae59ff170cb2336c162cd3a1672d19f41305aa4fa7aaa6b",
+      "bundle_path_digest": "sha256:c4611b427d4fcc9b7ae59ff170cb2336c162cd3a1672d19f41305aa4fa7aaa6b",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-26T14:31:35.135000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.5.3",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T10:57:57.806000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
+        },
+        {
+          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:c766014cd4f4ba08c4daec2486866e89428c35f121661d40ab7f9876db639dd4",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:c766014cd4f4ba08c4daec2486866e89428c35f121661d40ab7f9876db639dd4",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "8.5.3",
+      "version_original": "8.5.3"
+    },
+    {
+      "_id": "6308d94738a6fe67b681f11e",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:b26e8e4586fb89ce91a82f4de871b1a75ebe53ccb745a1a69e2509390b98742e",
+      "bundle_path_digest": "sha256:b26e8e4586fb89ce91a82f4de871b1a75ebe53ccb745a1a69e2509390b98742e",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-08-26T14:31:35.564000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.6.2-beta.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T11:04:37.828000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
+          "name": "kubeturbo-operator-ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2-annotation"
+        },
+        {
+          "digest": "sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:5837627733a3ca7b2df5272b2cb9e3ae1751c28b08d956674304c7b2424fb94c",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:5837627733a3ca7b2df5272b2cb9e3ae1751c28b08d956674304c7b2424fb94c",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "8.6.2-beta.1",
+      "version_original": "8.6.2-beta.1"
     }
   ]
 }

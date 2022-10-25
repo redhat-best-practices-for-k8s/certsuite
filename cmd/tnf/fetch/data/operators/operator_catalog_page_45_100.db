@@ -1,996 +1,6 @@
 {
   "data": [
     {
-      "_id": "6308d6f307bb65fa2c2ab2ac",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:b5e9c7c6ef879adb58154bfa52ec7c657e4bd0cdc643031037d9395051abdb79",
-      "bundle_path_digest": "sha256:b5e9c7c6ef879adb58154bfa52ec7c657e4bd0cdc643031037d9395051abdb79",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-08-26T14:21:39.922000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.5.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:05:00.464000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
-        },
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:7f72251c432f107e4102f91abb17469eedcf02f9a7860d7ec7c9bd0ad77746ae",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:7f72251c432f107e4102f91abb17469eedcf02f9a7860d7ec7c9bd0ad77746ae",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "8.5.2",
-      "version_original": "8.5.2"
-    },
-    {
-      "_id": "6308d942d0608cae4548292e",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:23f06fa446df0253aeacaf9f063d959c91e56f8a210ac493dc47bc238bb84bfe",
-      "bundle_path_digest": "sha256:23f06fa446df0253aeacaf9f063d959c91e56f8a210ac493dc47bc238bb84bfe",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-08-26T14:31:30.293000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.5.5",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:35:44.240000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
-        },
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:e08debe4fcac4b377e86ed57c9587057e8f99d37c5bd8acfe94dfa17605d0759",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:e08debe4fcac4b377e86ed57c9587057e8f99d37c5bd8acfe94dfa17605d0759",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "8.5.5",
-      "version_original": "8.5.5"
-    },
-    {
-      "_id": "6308d943d0608cae45482931",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:5884d075419f55d2df891c5efaf1613daf29a7998838deb916c5b599af4170c2",
-      "bundle_path_digest": "sha256:5884d075419f55d2df891c5efaf1613daf29a7998838deb916c5b599af4170c2",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-08-26T14:31:31.181000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.5.4",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:31:41.540000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
-        },
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:ef6e5f17c31eb5828b29751591778650c397d89b8de1960b215b34cd2e41810a",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:ef6e5f17c31eb5828b29751591778650c397d89b8de1960b215b34cd2e41810a",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "8.5.4",
-      "version_original": "8.5.4"
-    },
-    {
-      "_id": "6308d94338a6fe67b681f118",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:b5e9c7c6ef879adb58154bfa52ec7c657e4bd0cdc643031037d9395051abdb79",
-      "bundle_path_digest": "sha256:b5e9c7c6ef879adb58154bfa52ec7c657e4bd0cdc643031037d9395051abdb79",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-08-26T14:31:31.755000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.5.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:22:58.244000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
-        },
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:7f72251c432f107e4102f91abb17469eedcf02f9a7860d7ec7c9bd0ad77746ae",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:7f72251c432f107e4102f91abb17469eedcf02f9a7860d7ec7c9bd0ad77746ae",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "8.5.2",
-      "version_original": "8.5.2"
-    },
-    {
-      "_id": "6308d944d0608cae45482935",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:e5bf556da7ffdcd3e2e9c6e543d8ef7f1844216774e703dfec53e466e609d854",
-      "bundle_path_digest": "sha256:e5bf556da7ffdcd3e2e9c6e543d8ef7f1844216774e703dfec53e466e609d854",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-08-26T14:31:32.557000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.5.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:48:41.004000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
-        },
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:f78525afc39849d143c7fbe8992b95a26cb0d3443bc6a8fe7fbe49145887c8d7",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:f78525afc39849d143c7fbe8992b95a26cb0d3443bc6a8fe7fbe49145887c8d7",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "8.5.1",
-      "version_original": "8.5.1"
-    },
-    {
-      "_id": "6308d94507bb65fa2c2ab30f",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:65fd30b6c03b1f3eb44d8efb1407a7e0ba9e861adf3b9196640371482ced1df4",
-      "bundle_path_digest": "sha256:65fd30b6c03b1f3eb44d8efb1407a7e0ba9e861adf3b9196640371482ced1df4",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-08-26T14:31:33.422000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.5.6",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:50:18.750000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
-        },
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:8aa3d62bb82b65ba95daf3170c316485486e7ca8052b5b525566b7a15b6f08e5",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:8aa3d62bb82b65ba95daf3170c316485486e7ca8052b5b525566b7a15b6f08e5",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "8.5.6",
-      "version_original": "8.5.6"
-    },
-    {
-      "_id": "6308d9451d920575dc1462e2",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:d01e9da1a9897bb6f12ad4034bea571b53ea08d53d0fd7eebe30298a44ea4f65",
-      "bundle_path_digest": "sha256:d01e9da1a9897bb6f12ad4034bea571b53ea08d53d0fd7eebe30298a44ea4f65",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-08-26T14:31:33.987000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.5.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:40:38.043000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
-        },
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:fc69790f6713bd3f2f4d1cefd9eadac7ebe776cd0f83ae1ec523d80f2c276f59",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:fc69790f6713bd3f2f4d1cefd9eadac7ebe776cd0f83ae1ec523d80f2c276f59",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "8.5.0",
-      "version_original": "8.5.0"
-    },
-    {
-      "_id": "6308d9463832081c9baa64d3",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:bea7192e07456b6f23901e623137f7bde8c3a2313d80c3c6a8007f04e1fb3687",
-      "bundle_path_digest": "sha256:bea7192e07456b6f23901e623137f7bde8c3a2313d80c3c6a8007f04e1fb3687",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-08-26T14:31:34.671000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.6.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:13:46.979000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:08821c5d0be33de5170acf94ffd7a6cd92b9d2a26922af1f3869b502087f7f62",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:08821c5d0be33de5170acf94ffd7a6cd92b9d2a26922af1f3869b502087f7f62",
-          "name": "kubeturbo-operator-08821c5d0be33de5170acf94ffd7a6cd92b9d2a26922af1f3869b502087f7f62-annotation"
-        },
-        {
-          "digest": "sha256:08821c5d0be33de5170acf94ffd7a6cd92b9d2a26922af1f3869b502087f7f62",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:08821c5d0be33de5170acf94ffd7a6cd92b9d2a26922af1f3869b502087f7f62",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:1af800b95cb2a80edb0359b46ab10d609acb3ebe062e019f9dfc7c4b40ae58c2",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:1af800b95cb2a80edb0359b46ab10d609acb3ebe062e019f9dfc7c4b40ae58c2",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "8.6.0",
-      "version_original": "8.6.0"
-    },
-    {
-      "_id": "6308d9471d920575dc1462e4",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:c4611b427d4fcc9b7ae59ff170cb2336c162cd3a1672d19f41305aa4fa7aaa6b",
-      "bundle_path_digest": "sha256:c4611b427d4fcc9b7ae59ff170cb2336c162cd3a1672d19f41305aa4fa7aaa6b",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-08-26T14:31:35.135000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.5.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:46:55.247000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator-e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47-annotation"
-        },
-        {
-          "digest": "sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:e5cdbdeeaf639afe9782fceb9bf32c5e06e2b6ed4ded41e06abe8f49bda7ac47",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:c766014cd4f4ba08c4daec2486866e89428c35f121661d40ab7f9876db639dd4",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:c766014cd4f4ba08c4daec2486866e89428c35f121661d40ab7f9876db639dd4",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "8.5.3",
-      "version_original": "8.5.3"
-    },
-    {
-      "_id": "6308d94738a6fe67b681f11e",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Kubeturbo",
-          "metadata": {
-            "name": "kubeturbo-release"
-          },
-          "spec": {
-            "serverMeta": {
-              "turboServer": "https://Turbo_server_URL"
-            },
-            "targetConfig": {
-              "targetName": "Cluster_Name"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:b26e8e4586fb89ce91a82f4de871b1a75ebe53ccb745a1a69e2509390b98742e",
-      "bundle_path_digest": "sha256:b26e8e4586fb89ce91a82f4de871b1a75ebe53ccb745a1a69e2509390b98742e",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-08-26T14:31:35.564000+00:00",
-      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
-      "csv_display_name": "Kubeturbo Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "kubeturbo-operator.v8.6.2-beta.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:25:09.645000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "kubeturbo-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Kubeturbo",
-          "plural": "kubeturbos",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2",
-          "name": "kubeturbo-operator-ed98919c05037442b32d3e892fbce1ae766571766d5cfb6e49db7926c8b704e2-annotation"
-        },
-        {
-          "digest": "sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:352267882f0bc348290f860892831952299d64509b7e9722d6a5a847811ecdec",
-          "name": "kubeturbo-operator"
-        },
-        {
-          "digest": "sha256:5837627733a3ca7b2df5272b2cb9e3ae1751c28b08d956674304c7b2424fb94c",
-          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:5837627733a3ca7b2df5272b2cb9e3ae1751c28b08d956674304c7b2424fb94c",
-          "name": "kubeturbo"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "8.6.2-beta.1",
-      "version_original": "8.6.2-beta.1"
-    },
-    {
       "_id": "6308d948d0608cae4548293d",
       "alm_examples": [
         {
@@ -1045,7 +55,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:29:34.844000+00:00",
+      "last_update_date": "2022-10-24T10:46:54.958000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -1144,7 +154,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:39:23.214000+00:00",
+      "last_update_date": "2022-10-24T10:49:46.699000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -1259,7 +269,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:39:03.264000+00:00",
+      "last_update_date": "2022-10-24T10:56:27.792000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -1373,7 +383,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:41:54.438000+00:00",
+      "last_update_date": "2022-10-24T10:51:46.021000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -1487,7 +497,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:17:51.665000+00:00",
+      "last_update_date": "2022-10-24T11:11:54.524000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -1590,7 +600,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:56:04.740000+00:00",
+      "last_update_date": "2022-10-24T11:22:56.745000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -1742,7 +752,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:01:08.936000+00:00",
+      "last_update_date": "2022-10-24T11:20:51.419000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -1894,7 +904,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:42:40.358000+00:00",
+      "last_update_date": "2022-10-24T11:37:57.815000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -2046,7 +1056,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:33:34.871000+00:00",
+      "last_update_date": "2022-10-24T11:22:20.335000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -2396,7 +1406,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:01:57.429000+00:00",
+      "last_update_date": "2022-10-24T11:51:25.209000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -2751,7 +1761,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:45:07.295000+00:00",
+      "last_update_date": "2022-10-24T11:06:04.003000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -3120,7 +2130,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:49:04.843000+00:00",
+      "last_update_date": "2022-10-24T11:03:21.431000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -3489,7 +2499,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:23:39.027000+00:00",
+      "last_update_date": "2022-10-24T12:10:04.532000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -3858,7 +2868,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:57:27.583000+00:00",
+      "last_update_date": "2022-10-24T10:48:33.500000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -4227,7 +3237,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:09:06.298000+00:00",
+      "last_update_date": "2022-10-24T11:34:46.987000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -4393,7 +3403,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-21T20:27:03.248000+00:00",
+      "last_update_date": "2022-10-24T11:17:35.696000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -4492,7 +3502,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:52:51.773000+00:00",
+      "last_update_date": "2022-10-24T11:17:50.258000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -4591,7 +3601,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:10:08.897000+00:00",
+      "last_update_date": "2022-10-24T11:34:16.388000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -4688,7 +3698,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-21T20:14:37.407000+00:00",
+      "last_update_date": "2022-10-24T11:34:39.938000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -4785,7 +3795,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-21T20:31:48.845000+00:00",
+      "last_update_date": "2022-10-24T11:15:56.971000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -4884,7 +3894,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:58:15.676000+00:00",
+      "last_update_date": "2022-10-24T11:16:10.434000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -4983,7 +3993,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:31:49.920000+00:00",
+      "last_update_date": "2022-10-24T11:32:27.209000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -5082,7 +4092,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-21T20:37:17.202000+00:00",
+      "last_update_date": "2022-10-24T11:04:29.080000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -5181,7 +4191,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-21T20:51:09.519000+00:00",
+      "last_update_date": "2022-10-24T11:31:51.139000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -5280,7 +4290,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:11:58.825000+00:00",
+      "last_update_date": "2022-10-24T11:09:44.382000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -5373,7 +4383,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:12:09.159000+00:00",
+      "last_update_date": "2022-10-24T11:36:10.332000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -5382,7 +4392,6 @@
         {
           "group": "csi.hpe.com",
           "kind": "XSPC",
-          "plural": "xspcs",
           "version": "v1"
         }
       ],
@@ -5450,7 +4459,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:03:58.403000+00:00",
+      "last_update_date": "2022-10-24T11:35:25.146000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -5527,7 +4536,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:20:18.047000+00:00",
+      "last_update_date": "2022-10-24T11:34:21.926000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -5610,7 +4619,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:36:55.288000+00:00",
+      "last_update_date": "2022-10-24T12:07:17.986000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -5709,7 +4718,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:35:43.390000+00:00",
+      "last_update_date": "2022-10-24T11:28:51.061000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -5808,7 +4817,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:43:24.585000+00:00",
+      "last_update_date": "2022-10-24T11:58:13.601000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -5907,7 +4916,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:00:38.130000+00:00",
+      "last_update_date": "2022-10-24T11:00:51.483000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -6006,7 +5015,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:12:47.871000+00:00",
+      "last_update_date": "2022-10-24T11:51:11.832000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -6105,7 +5114,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:23:44.094000+00:00",
+      "last_update_date": "2022-10-24T11:51:59.628000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -6204,7 +5213,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:12:54.128000+00:00",
+      "last_update_date": "2022-10-24T11:30:22.502000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -6303,7 +5312,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:07:24.452000+00:00",
+      "last_update_date": "2022-10-24T10:59:09.778000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -6402,7 +5411,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:03:06.019000+00:00",
+      "last_update_date": "2022-10-24T11:37:34.821000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -6501,7 +5510,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:56:45.450000+00:00",
+      "last_update_date": "2022-10-24T11:45:06.756000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -6600,7 +5609,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:52:46.011000+00:00",
+      "last_update_date": "2022-10-24T11:31:25.012000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -6699,7 +5708,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:32:37.019000+00:00",
+      "last_update_date": "2022-10-24T11:09:11.367000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -6798,7 +5807,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-21T20:31:33.759000+00:00",
+      "last_update_date": "2022-10-24T11:57:17.100000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -6908,8 +5917,8 @@
           "type": "AllNamespaces"
         }
       ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:40:17.703000+00:00",
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T10:57:50.138000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -7019,8 +6028,8 @@
           "type": "AllNamespaces"
         }
       ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:43:09.644000+00:00",
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T10:54:29.014000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -7130,8 +6139,8 @@
           "type": "AllNamespaces"
         }
       ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:33:13.870000+00:00",
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T10:58:32.710000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -7241,8 +6250,8 @@
           "type": "AllNamespaces"
         }
       ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:38:42.583000+00:00",
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T11:48:59.004000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -7352,8 +6361,8 @@
           "type": "AllNamespaces"
         }
       ],
-      "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:05:50.574000+00:00",
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T11:01:41.307000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -7555,7 +6564,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:11:31.572000+00:00",
+      "last_update_date": "2022-10-24T11:26:47.220000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -7800,7 +6809,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:11:36.918000+00:00",
+      "last_update_date": "2022-10-24T11:26:56.781000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -8045,7 +7054,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:00:43.917000+00:00",
+      "last_update_date": "2022-10-24T11:29:50.028000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -8054,19 +7063,16 @@
         {
           "group": "sts.silicom.com",
           "kind": "StsConfig",
-          "plural": "stsconfigs",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsNode",
-          "plural": "stsnodes",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsOperatorConfig",
-          "plural": "stsoperatorconfigs",
           "version": "v1alpha1"
         }
       ],
@@ -8293,7 +7299,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:00:49.650000+00:00",
+      "last_update_date": "2022-10-24T11:29:57.051000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -8302,19 +7308,16 @@
         {
           "group": "sts.silicom.com",
           "kind": "StsConfig",
-          "plural": "stsconfigs",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsNode",
-          "plural": "stsnodes",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsOperatorConfig",
-          "plural": "stsoperatorconfigs",
           "version": "v1alpha1"
         }
       ],
@@ -8541,7 +7544,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:07:47.145000+00:00",
+      "last_update_date": "2022-10-24T11:29:40.324000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -8550,19 +7553,16 @@
         {
           "group": "sts.silicom.com",
           "kind": "StsConfig",
-          "plural": "stsconfigs",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsNode",
-          "plural": "stsnodes",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsOperatorConfig",
-          "plural": "stsoperatorconfigs",
           "version": "v1alpha1"
         }
       ],
@@ -8789,7 +7789,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:07:53.966000+00:00",
+      "last_update_date": "2022-10-24T11:29:49.612000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -8798,19 +7798,16 @@
         {
           "group": "sts.silicom.com",
           "kind": "StsConfig",
-          "plural": "stsconfigs",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsNode",
-          "plural": "stsnodes",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsOperatorConfig",
-          "plural": "stsoperatorconfigs",
           "version": "v1alpha1"
         }
       ],
@@ -9037,7 +8034,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:19:26.353000+00:00",
+      "last_update_date": "2022-10-24T11:05:37.153000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -9046,19 +8043,16 @@
         {
           "group": "sts.silicom.com",
           "kind": "StsConfig",
-          "plural": "stsconfigs",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsNode",
-          "plural": "stsnodes",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsOperatorConfig",
-          "plural": "stsoperatorconfigs",
           "version": "v1alpha1"
         }
       ],
@@ -9285,7 +8279,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:24:03.858000+00:00",
+      "last_update_date": "2022-10-24T11:13:33.388000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -9294,19 +8288,16 @@
         {
           "group": "sts.silicom.com",
           "kind": "StsConfig",
-          "plural": "stsconfigs",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsNode",
-          "plural": "stsnodes",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsOperatorConfig",
-          "plural": "stsoperatorconfigs",
           "version": "v1alpha1"
         }
       ],
@@ -9517,7 +8508,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-23T01:07:38.541000+00:00",
+      "last_update_date": "2022-10-24T11:50:07.272000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -9836,7 +8827,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-23T01:07:49.602000+00:00",
+      "last_update_date": "2022-10-24T11:14:27.341000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -10165,7 +9156,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-23T01:23:46.581000+00:00",
+      "last_update_date": "2022-10-24T11:12:38.498000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -10494,7 +9485,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-23T01:28:04.239000+00:00",
+      "last_update_date": "2022-10-24T11:20:59.352000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -10823,7 +9814,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-23T01:27:31.201000+00:00",
+      "last_update_date": "2022-10-24T11:32:45.533000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -11152,7 +10143,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-23T01:27:46.226000+00:00",
+      "last_update_date": "2022-10-24T11:42:55.739000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -11597,7 +10588,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-28T08:41:53.494000+00:00",
+      "last_update_date": "2022-10-24T11:50:42.592000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -11927,7 +10918,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-28T08:41:34.985000+00:00",
+      "last_update_date": "2022-10-24T11:31:04.237000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -11936,25 +10927,21 @@
         {
           "group": "sriovfec.intel.com",
           "kind": "SriovFecNodeConfig",
-          "plural": "sriovfecnodeconfigs",
           "version": "v1"
         },
         {
           "group": "sriovfec.intel.com",
           "kind": "SriovFecNodeConfig",
-          "plural": "sriovfecnodeconfigs",
           "version": "v2"
         },
         {
           "group": "sriovfec.intel.com",
           "kind": "SriovFecClusterConfig",
-          "plural": "sriovfecclusterconfigs",
           "version": "v1"
         },
         {
           "group": "sriovfec.intel.com",
           "kind": "SriovFecClusterConfig",
-          "plural": "sriovfecclusterconfigs",
           "version": "v2"
         }
       ],
@@ -12261,7 +11248,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-28T08:45:12.508000+00:00",
+      "last_update_date": "2022-10-24T11:31:00.640000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -12270,25 +11257,21 @@
         {
           "group": "sriovfec.intel.com",
           "kind": "SriovFecNodeConfig",
-          "plural": "sriovfecnodeconfigs",
           "version": "v2"
         },
         {
           "group": "sriovfec.intel.com",
           "kind": "SriovFecClusterConfig",
-          "plural": "sriovfecclusterconfigs",
           "version": "v1"
         },
         {
           "group": "sriovfec.intel.com",
           "kind": "SriovFecClusterConfig",
-          "plural": "sriovfecclusterconfigs",
           "version": "v2"
         },
         {
           "group": "sriovfec.intel.com",
           "kind": "SriovFecNodeConfig",
-          "plural": "sriovfecnodeconfigs",
           "version": "v1"
         }
       ],
@@ -12437,7 +11420,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:01:28.108000+00:00",
+      "last_update_date": "2022-10-24T11:25:28.033000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -12589,7 +11572,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:46:54.358000+00:00",
+      "last_update_date": "2022-10-24T11:09:34.671000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -12604,7 +11587,6 @@
         {
           "group": "hazelcast.com",
           "kind": "Map",
-          "plural": "maps",
           "version": "v1alpha1"
         },
         {
@@ -12746,7 +11728,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:51:38.336000+00:00",
+      "last_update_date": "2022-10-24T11:07:33.746000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -12761,7 +11743,6 @@
         {
           "group": "hazelcast.com",
           "kind": "Map",
-          "plural": "maps",
           "version": "v1alpha1"
         },
         {
@@ -12903,7 +11884,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:00:31.751000+00:00",
+      "last_update_date": "2022-10-24T11:31:09.329000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -12912,7 +11893,6 @@
         {
           "group": "hazelcast.com",
           "kind": "Map",
-          "plural": "maps",
           "version": "v1alpha1"
         },
         {
@@ -13060,7 +12040,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:45:27.247000+00:00",
+      "last_update_date": "2022-10-24T11:28:04.317000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -13087,7 +12067,6 @@
         {
           "group": "hazelcast.com",
           "kind": "Map",
-          "plural": "maps",
           "version": "v1alpha1"
         },
         {
@@ -13217,7 +12196,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:34:44.908000+00:00",
+      "last_update_date": "2022-10-24T11:07:45.832000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -13432,7 +12411,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:00:55.061000+00:00",
+      "last_update_date": "2022-10-24T11:30:05.774000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -13441,19 +12420,16 @@
         {
           "group": "sts.silicom.com",
           "kind": "StsConfig",
-          "plural": "stsconfigs",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsNode",
-          "plural": "stsnodes",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsOperatorConfig",
-          "plural": "stsoperatorconfigs",
           "version": "v1alpha1"
         }
       ],
@@ -13680,7 +12656,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:01:01.046000+00:00",
+      "last_update_date": "2022-10-24T11:30:13.524000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -13689,19 +12665,16 @@
         {
           "group": "sts.silicom.com",
           "kind": "StsConfig",
-          "plural": "stsconfigs",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsNode",
-          "plural": "stsnodes",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsOperatorConfig",
-          "plural": "stsoperatorconfigs",
           "version": "v1alpha1"
         }
       ],
@@ -13928,7 +12901,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:11:19.442000+00:00",
+      "last_update_date": "2022-10-24T11:26:32.248000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -14173,7 +13146,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:11:43.094000+00:00",
+      "last_update_date": "2022-10-24T11:27:09.521000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -14418,7 +13391,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:07:59.684000+00:00",
+      "last_update_date": "2022-10-24T11:29:56.021000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -14427,19 +13400,16 @@
         {
           "group": "sts.silicom.com",
           "kind": "StsOperatorConfig",
-          "plural": "stsoperatorconfigs",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsConfig",
-          "plural": "stsconfigs",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsNode",
-          "plural": "stsnodes",
           "version": "v1alpha1"
         }
       ],
@@ -14666,7 +13636,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:08:06.576000+00:00",
+      "last_update_date": "2022-10-24T11:30:04.116000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -14675,19 +13645,16 @@
         {
           "group": "sts.silicom.com",
           "kind": "StsOperatorConfig",
-          "plural": "stsoperatorconfigs",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsConfig",
-          "plural": "stsconfigs",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsNode",
-          "plural": "stsnodes",
           "version": "v1alpha1"
         }
       ],
@@ -14914,7 +13881,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:18:04.784000+00:00",
+      "last_update_date": "2022-10-24T12:12:38.500000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -14923,19 +13890,16 @@
         {
           "group": "sts.silicom.com",
           "kind": "StsNode",
-          "plural": "stsnodes",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsOperatorConfig",
-          "plural": "stsoperatorconfigs",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsConfig",
-          "plural": "stsconfigs",
           "version": "v1alpha1"
         }
       ],
@@ -15162,7 +14126,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:25:24.148000+00:00",
+      "last_update_date": "2022-10-24T11:47:11.342000+00:00",
       "latest_in_channel": false,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -15171,19 +14135,16 @@
         {
           "group": "sts.silicom.com",
           "kind": "StsNode",
-          "plural": "stsnodes",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsOperatorConfig",
-          "plural": "stsoperatorconfigs",
           "version": "v1alpha1"
         },
         {
           "group": "sts.silicom.com",
           "kind": "StsConfig",
-          "plural": "stsconfigs",
           "version": "v1alpha1"
         }
       ],
@@ -15394,7 +14355,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:02:08.589000+00:00",
+      "last_update_date": "2022-10-24T11:53:44.876000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -15578,7 +14539,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:00:42.505000+00:00",
+      "last_update_date": "2022-10-24T11:20:19.822000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -15587,7 +14548,6 @@
         {
           "group": "sonatype.com",
           "kind": "NexusRepo",
-          "plural": "nexusrepos",
           "version": "v1alpha1"
         }
       ],
@@ -15763,7 +14723,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:55:35.829000+00:00",
+      "last_update_date": "2022-10-24T11:22:25.447000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -15772,7 +14732,6 @@
         {
           "group": "sonatype.com",
           "kind": "NexusRepo",
-          "plural": "nexusrepos",
           "version": "v1alpha1"
         }
       ],
@@ -15948,7 +14907,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:12:13.737000+00:00",
+      "last_update_date": "2022-10-24T11:50:36.964000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -16133,7 +15092,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T11:59:18.747000+00:00",
+      "last_update_date": "2022-10-24T12:05:02.924000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -16318,7 +15277,7 @@
         }
       ],
       "is_default_channel": true,
-      "last_update_date": "2022-09-19T12:12:42.426000+00:00",
+      "last_update_date": "2022-10-24T11:50:48.716000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -16462,7 +15421,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:43:05.662000+00:00",
+      "last_update_date": "2022-10-24T11:02:43.647000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -16471,25 +15430,21 @@
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "Pooler",
-          "plural": "poolers",
           "version": "v1"
         },
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "ScheduledBackup",
-          "plural": "scheduledbackups",
           "version": "v1"
         },
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "Backup",
-          "plural": "backups",
           "version": "v1"
         },
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "Cluster",
-          "plural": "clusters",
           "version": "v1"
         }
       ],
@@ -16614,7 +15569,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:03:31.113000+00:00",
+      "last_update_date": "2022-10-24T11:29:53.148000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.11",
       "organization": "certified-operators",
@@ -16762,7 +15717,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:46:10.929000+00:00",
+      "last_update_date": "2022-10-24T10:58:38.754000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.9",
       "organization": "certified-operators",
@@ -16771,25 +15726,21 @@
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "Pooler",
-          "plural": "poolers",
           "version": "v1"
         },
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "ScheduledBackup",
-          "plural": "scheduledbackups",
           "version": "v1"
         },
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "Backup",
-          "plural": "backups",
           "version": "v1"
         },
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "Cluster",
-          "plural": "clusters",
           "version": "v1"
         }
       ],
@@ -16914,7 +15865,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T12:02:23.317000+00:00",
+      "last_update_date": "2022-10-24T10:58:12.301000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.8",
       "organization": "certified-operators",
@@ -16923,25 +15874,21 @@
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "Backup",
-          "plural": "backups",
           "version": "v1"
         },
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "Cluster",
-          "plural": "clusters",
           "version": "v1"
         },
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "Pooler",
-          "plural": "poolers",
           "version": "v1"
         },
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "ScheduledBackup",
-          "plural": "scheduledbackups",
           "version": "v1"
         }
       ],
@@ -17066,7 +16013,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:45:39.323000+00:00",
+      "last_update_date": "2022-10-24T11:25:53.289000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.7",
       "organization": "certified-operators",
@@ -17075,25 +16022,21 @@
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "Pooler",
-          "plural": "poolers",
           "version": "v1"
         },
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "ScheduledBackup",
-          "plural": "scheduledbackups",
           "version": "v1"
         },
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "Backup",
-          "plural": "backups",
           "version": "v1"
         },
         {
           "group": "postgresql.k8s.enterprisedb.io",
           "kind": "Cluster",
-          "plural": "clusters",
           "version": "v1"
         }
       ],
@@ -17218,7 +16161,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:29:59.215000+00:00",
+      "last_update_date": "2022-10-24T11:27:25.397000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.6",
       "organization": "certified-operators",
@@ -17319,7 +16262,7 @@
         }
       ],
       "is_default_channel": false,
-      "last_update_date": "2022-09-19T11:40:56.109000+00:00",
+      "last_update_date": "2022-10-24T10:59:14.197000+00:00",
       "latest_in_channel": true,
       "ocp_version": "4.10",
       "organization": "certified-operators",
@@ -17354,6 +16297,886 @@
       "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a19e07b4a446557978fc9",
+      "alm_examples": [
+        {
+          "api_version": "bookkeeper.streamnative.io/v1alpha1",
+          "kind": "BookKeeperCluster",
+          "metadata": {
+            "name": "bookkeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-09-08T16:35:44.740000+00:00",
+      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
+      "csv_display_name": "BookKeeper Operator",
+      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
+      "csv_name": "bookkeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T10:59:24.555000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "bookkeeper-operator",
+      "provided_apis": [
+        {
+          "group": "bookkeeper.streamnative.io",
+          "kind": "BookKeeperCluster",
+          "plural": "bookkeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a19e1649384639b989720",
+      "alm_examples": [
+        {
+          "api_version": "bookkeeper.streamnative.io/v1alpha1",
+          "kind": "BookKeeperCluster",
+          "metadata": {
+            "name": "bookkeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-08T16:35:45.126000+00:00",
+      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
+      "csv_display_name": "BookKeeper Operator",
+      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
+      "csv_name": "bookkeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T10:59:31.006000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "bookkeeper-operator",
+      "provided_apis": [
+        {
+          "group": "bookkeeper.streamnative.io",
+          "kind": "BookKeeperCluster",
+          "plural": "bookkeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a1c9b778c198f6e686067",
+      "alm_examples": [
+        {
+          "api_version": "bookkeeper.streamnative.io/v1alpha1",
+          "kind": "BookKeeperCluster",
+          "metadata": {
+            "name": "bookkeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-09-08T16:47:23.365000+00:00",
+      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
+      "csv_display_name": "BookKeeper Operator",
+      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
+      "csv_name": "bookkeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T10:55:42.900000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "bookkeeper-operator",
+      "provided_apis": [
+        {
+          "group": "bookkeeper.streamnative.io",
+          "kind": "BookKeeperCluster",
+          "plural": "bookkeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a1cabad2e331948d10c54",
+      "alm_examples": [
+        {
+          "api_version": "bookkeeper.streamnative.io/v1alpha1",
+          "kind": "BookKeeperCluster",
+          "metadata": {
+            "name": "bookkeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-09-08T16:47:39.299000+00:00",
+      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
+      "csv_display_name": "BookKeeper Operator",
+      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
+      "csv_name": "bookkeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T10:55:49.748000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "bookkeeper-operator",
+      "provided_apis": [
+        {
+          "group": "bookkeeper.streamnative.io",
+          "kind": "BookKeeperCluster",
+          "plural": "bookkeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a1cb0778c198f6e68607c",
+      "alm_examples": [
+        {
+          "api_version": "bookkeeper.streamnative.io/v1alpha1",
+          "kind": "BookKeeperCluster",
+          "metadata": {
+            "name": "bookkeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-08T16:47:44.007000+00:00",
+      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
+      "csv_display_name": "BookKeeper Operator",
+      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
+      "csv_name": "bookkeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T10:55:55.208000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "bookkeeper-operator",
+      "provided_apis": [
+        {
+          "group": "bookkeeper.streamnative.io",
+          "kind": "BookKeeperCluster",
+          "plural": "bookkeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a1dd698244e6fcd9876ed",
+      "alm_examples": [
+        {
+          "api_version": "bookkeeper.streamnative.io/v1alpha1",
+          "kind": "BookKeeperCluster",
+          "metadata": {
+            "name": "bookkeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-09-08T16:52:38.429000+00:00",
+      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
+      "csv_display_name": "BookKeeper Operator",
+      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
+      "csv_name": "bookkeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T12:08:45.201000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "bookkeeper-operator",
+      "provided_apis": [
+        {
+          "group": "bookkeeper.streamnative.io",
+          "kind": "BookKeeperCluster",
+          "plural": "bookkeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a1dd698244e6fcd9876ef",
+      "alm_examples": [
+        {
+          "api_version": "bookkeeper.streamnative.io/v1alpha1",
+          "kind": "BookKeeperCluster",
+          "metadata": {
+            "name": "bookkeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-08T16:52:38.879000+00:00",
+      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
+      "csv_display_name": "BookKeeper Operator",
+      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
+      "csv_name": "bookkeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T11:14:44.099000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "bookkeeper-operator",
+      "provided_apis": [
+        {
+          "group": "bookkeeper.streamnative.io",
+          "kind": "BookKeeperCluster",
+          "plural": "bookkeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a1dd7e0886f15d82b1d96",
+      "alm_examples": [
+        {
+          "api_version": "bookkeeper.streamnative.io/v1alpha1",
+          "kind": "BookKeeperCluster",
+          "metadata": {
+            "name": "bookkeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-09-08T16:52:39.313000+00:00",
+      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
+      "csv_display_name": "BookKeeper Operator",
+      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
+      "csv_name": "bookkeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T11:11:05.504000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "bookkeeper-operator",
+      "provided_apis": [
+        {
+          "group": "bookkeeper.streamnative.io",
+          "kind": "BookKeeperCluster",
+          "plural": "bookkeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a1ed7cc56faa0a4996404",
+      "alm_examples": [
+        {
+          "api_version": "bookkeeper.streamnative.io/v1alpha1",
+          "kind": "BookKeeperCluster",
+          "metadata": {
+            "name": "bookkeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "beta",
+      "creation_date": "2022-09-08T16:56:55.369000+00:00",
+      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
+      "csv_display_name": "BookKeeper Operator",
+      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
+      "csv_name": "bookkeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T10:58:48.661000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "bookkeeper-operator",
+      "provided_apis": [
+        {
+          "group": "bookkeeper.streamnative.io",
+          "kind": "BookKeeperCluster",
+          "plural": "bookkeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.12.2",
+      "version_original": "0.12.2"
+    },
+    {
+      "_id": "631a1ed88fb97f44736f9c8b",
+      "alm_examples": [
+        {
+          "api_version": "bookkeeper.streamnative.io/v1alpha1",
+          "kind": "BookKeeperCluster",
+          "metadata": {
+            "name": "bookkeepercluster-sample"
+          },
+          "spec": {
+            "foo": "bar"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/streamnative/bookkeeper-operator-bundle@sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "bundle_path_digest": "sha256:9a440c5ebc41c9563b5fcf3f6adc7c2257c08cfa125b403ab461631a82faed66",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-09-08T16:56:56.013000+00:00",
+      "csv_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes and automates tasks related to operating a Bookkeeper cluster. It provides a full management life-cycle for BookKeeper, including deployment, upgrades, scaling, and configuration changes. You can manage BookKeeper clusters using the Kubernetes Application Programming Interface (API) and the kubectl tool\n",
+      "csv_display_name": "BookKeeper Operator",
+      "csv_metadata_description": "The BookKeeper Operator manages BookKeeper clusters deployed to Kubernetes",
+      "csv_name": "bookkeeper-operator.v0.12.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T11:26:34.043000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "bookkeeper-operator",
+      "provided_apis": [
+        {
+          "group": "bookkeeper.streamnative.io",
+          "kind": "BookKeeperCluster",
+          "plural": "bookkeeperclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "StreamNative",
+      "related_images": [
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "bookkeeper-operator-1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308-annotation"
+        },
+        {
+          "digest": "sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "image": "quay.io/streamnativeio/kube-rbac-proxy@sha256:34e8724e0f47e31eb2ec3279ac398b657db5f60f167426ee73138e2e84af6486",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "image": "quay.io/streamnativeio/bookkeeper-operator@sha256:1c2e5c59ae472cba31908bde8545a43583164d798b2565a26967b35a7752c308",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "0.12.2",
       "version_original": "0.12.2"
     }
