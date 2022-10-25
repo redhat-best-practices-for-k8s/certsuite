@@ -230,7 +230,7 @@ Result Type|normative
 Suggested Remediation|Change the pod and containers "runAsUser" uid to something other than root(0)
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|If your application needs root user access, please document why your application cannot be ran as 											non-root and supply the reasoning for exception.
-Tags|common
+Tags|extended
 #### security-context-capabilities-check
 
 Property|Description
