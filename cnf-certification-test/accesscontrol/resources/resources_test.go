@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 )
 
@@ -26,13 +26,13 @@ func TestHasRequestsAndLimitsSet(t *testing.T) {
 	}{
 		{ // Test Case #1 - Happy path, all resource are set
 			testContainer: &provider.Container{
-				Container: &v1.Container{
-					Resources: v1.ResourceRequirements{
-						Requests: v1.ResourceList{
+				Container: &corev1.Container{
+					Resources: corev1.ResourceRequirements{
+						Requests: corev1.ResourceList{
 							"cpu":    resource.MustParse(validCPULimit),
 							"memory": resource.MustParse(validMemLimit),
 						},
-						Limits: v1.ResourceList{
+						Limits: corev1.ResourceList{
 							"cpu":    resource.MustParse(validCPULimit),
 							"memory": resource.MustParse(validMemLimit),
 						},
@@ -43,9 +43,9 @@ func TestHasRequestsAndLimitsSet(t *testing.T) {
 		},
 		{ // Test Case #2 - Failure due to missing limits
 			testContainer: &provider.Container{
-				Container: &v1.Container{
-					Resources: v1.ResourceRequirements{
-						Requests: v1.ResourceList{
+				Container: &corev1.Container{
+					Resources: corev1.ResourceRequirements{
+						Requests: corev1.ResourceList{
 							"cpu":    resource.MustParse(validCPULimit),
 							"memory": resource.MustParse(validMemLimit),
 						},
@@ -57,13 +57,13 @@ func TestHasRequestsAndLimitsSet(t *testing.T) {
 		},
 		{ // Test Case #3 - Failure due to missing memory limit
 			testContainer: &provider.Container{
-				Container: &v1.Container{
-					Resources: v1.ResourceRequirements{
-						Requests: v1.ResourceList{
+				Container: &corev1.Container{
+					Resources: corev1.ResourceRequirements{
+						Requests: corev1.ResourceList{
 							"cpu":    resource.MustParse(validCPULimit),
 							"memory": resource.MustParse(validMemLimit),
 						},
-						Limits: v1.ResourceList{
+						Limits: corev1.ResourceList{
 							"cpu": resource.MustParse(validCPULimit),
 						},
 					},
@@ -73,7 +73,7 @@ func TestHasRequestsAndLimitsSet(t *testing.T) {
 		},
 		{ // Test Case #4 - Failure due to missing resources in general
 			testContainer: &provider.Container{
-				Container: &v1.Container{},
+				Container: &corev1.Container{},
 			},
 			expectedResult: false,
 		},
