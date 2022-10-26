@@ -56,56 +56,6 @@ func (env *TestEnvironment) GetAffinityRequiredPods() []*Pod {
 	return filteredPods
 }
 
-func (env *TestEnvironment) GetAntiAffinityRequiredPods() []*Pod {
-	var filteredPods []*Pod
-	for _, p := range env.Pods {
-		if !p.AffinityRequired() {
-			filteredPods = append(filteredPods, p)
-		}
-	}
-	return filteredPods
-}
-
-func (env *TestEnvironment) GetAffinityRequiredDeployments() []*Deployment {
-	var filteredDeployments []*Deployment
-	for _, d := range env.Deployments {
-		if d.AffinityRequired() {
-			filteredDeployments = append(filteredDeployments, d)
-		}
-	}
-	return filteredDeployments
-}
-
-func (env *TestEnvironment) GetAntiAffinityRequiredDeployments() []*Deployment {
-	var filteredDeployments []*Deployment
-	for _, d := range env.Deployments {
-		if !d.AffinityRequired() {
-			filteredDeployments = append(filteredDeployments, d)
-		}
-	}
-	return filteredDeployments
-}
-
-func (env *TestEnvironment) GetAffinityRequiredStatefulSets() []*StatefulSet {
-	var filteredStatefulSets []*StatefulSet
-	for _, d := range env.StatefulSets {
-		if d.AffinityRequired() {
-			filteredStatefulSets = append(filteredStatefulSets, d)
-		}
-	}
-	return filteredStatefulSets
-}
-
-func (env *TestEnvironment) GetAntiAffinityRequiredStatefulSets() []*StatefulSet {
-	var filteredStatefulSets []*StatefulSet
-	for _, d := range env.StatefulSets {
-		if !d.AffinityRequired() {
-			filteredStatefulSets = append(filteredStatefulSets, d)
-		}
-	}
-	return filteredStatefulSets
-}
-
 func (env *TestEnvironment) GetHugepagesPods() []*Pod {
 	var filteredPods []*Pod
 	for _, p := range env.Pods {

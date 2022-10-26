@@ -104,8 +104,6 @@ var (
 	TestPodHugePages2M                       claim.Identifier
 	TestReservedExtendedPartnerPorts         claim.Identifier
 	TestAffinityRequiredPods                 claim.Identifier
-	TestAffinityRequiredDeployments          claim.Identifier
-	TestAffinityRequiredStatefulSets         claim.Identifier
 	TestStartupIdentifier                    claim.Identifier
 	TestShutdownIdentifier                   claim.Identifier
 )
@@ -186,28 +184,6 @@ The label value is not important, only its presence.`,
 		"affinity-required-pods",
 		common.LifecycleTestKey,
 		`Checks that affinity rules are in place if AffinityRequired: 'true' labels are set on Pods.`,
-		AffinityRequiredRemediation,
-		InformativeResult,
-		NoDocumentedProcess,
-		VersionOne,
-		bestPracticeDocV1dot4URL+" Section 4.6.24",
-		TagExtended)
-
-	TestAffinityRequiredDeployments = AddCatalogEntry(
-		"affinity-required-deployments",
-		common.LifecycleTestKey,
-		`Checks that affinity rules are in place if AffinityRequired: 'true' labels are set on Deployments.`,
-		AffinityRequiredRemediation,
-		InformativeResult,
-		NoDocumentedProcess,
-		VersionOne,
-		bestPracticeDocV1dot4URL+" Section 4.6.24",
-		TagExtended)
-
-	TestAffinityRequiredStatefulSets = AddCatalogEntry(
-		"affinity-required-statefulsets",
-		common.LifecycleTestKey,
-		`Checks that affinity rules are in place if AffinityRequired: 'true' labels are set on StatefulSets.`,
 		AffinityRequiredRemediation,
 		InformativeResult,
 		NoDocumentedProcess,
