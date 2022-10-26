@@ -231,7 +231,7 @@ func testTainted(env *provider.TestEnvironment, testerFuncs nodetainted.TaintedF
 
 		var taintedBitmap uint64
 		nodeTaintsAccepted := true
-		taintedBitmap, err = strconv.ParseUint(taintInfo, 10, 64) //nolint:gomnd // base 10 and uint64
+		taintedBitmap, err = strconv.ParseUint(taintInfo, 10, 64) // base 10 and uint64
 
 		if err != nil {
 			logrus.Errorf("failed to parse uint with: %s", err)
