@@ -30,7 +30,6 @@ var (
 	requiredDropCapabilities = []string{"KILL", "MKNOD", "SETUID", "SETGID"}
 	category3AddCapabilities = []string{"NET_ADMIN, NET_RAW"}
 	category4AddCapabilities = []string{"NET_ADMIN, NET_RAW, IPC_LOCK"}
-	Allowvolumes             = []string{"configMap, downwardAPI, emptyDir,persistentVolumeClaim,projected,secret"}
 	Category1                = ContainerSCC{false,
 		false,
 		false,
