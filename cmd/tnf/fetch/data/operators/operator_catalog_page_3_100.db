@@ -2135,8 +2135,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -2144,14 +2144,14 @@
             "event_scheduler_frequency": "@hourly",
             "image_pull_secret": "bas-images-pull-secret",
             "kafka": {
-              "storage#": "5G",
               "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
+              "storage_size": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze",
+              "zookeeper_storage_size": "5G"
             },
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             }
           }
         },
@@ -2171,8 +2171,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -2181,14 +2181,14 @@
             "ibmproxyurl": "https://iaps.ibm.com",
             "image_pull_secret": "bas-images-pull-secret",
             "kafka": {
-              "storage#": "5G",
               "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
+              "storage_size": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze",
+              "zookeeper_storage_size": "5G"
             },
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             }
           }
         },
@@ -2218,8 +2218,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -2228,14 +2228,14 @@
             "ibmproxyurl": "https://iaps.ibm.com",
             "image_pull_secret": "bas-images-pull-secret",
             "kafka": {
-              "storage#": "5G",
               "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
+              "storage_size": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze",
+              "zookeeper_storage_size": "5G"
             },
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             },
             "prometheus_metrics": [],
             "prometheus_scheduler_frequency": "@daily"
@@ -2261,8 +2261,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -2271,8 +2271,8 @@
             "ibmproxyurl": "https://iaps.ibm.com",
             "image_pull_secret": "bas-images-pull-secret",
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             },
             "prometheus_metrics": [],
             "prometheus_scheduler_frequency": "@daily"
@@ -2493,8 +2493,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -2502,14 +2502,14 @@
             "event_scheduler_frequency": "@hourly",
             "image_pull_secret": "bas-images-pull-secret",
             "kafka": {
-              "storage#": "5G",
               "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
+              "storage_size": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze",
+              "zookeeper_storage_size": "5G"
             },
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             }
           }
         },
@@ -2529,8 +2529,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -2539,14 +2539,14 @@
             "ibmproxyurl": "https://iaps.ibm.com",
             "image_pull_secret": "bas-images-pull-secret",
             "kafka": {
-              "storage#": "5G",
               "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
+              "storage_size": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze",
+              "zookeeper_storage_size": "5G"
             },
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             }
           }
         },
@@ -2576,8 +2576,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -2586,14 +2586,14 @@
             "ibmproxyurl": "https://iaps.ibm.com",
             "image_pull_secret": "bas-images-pull-secret",
             "kafka": {
-              "storage#": "5G",
               "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
+              "storage_size": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze",
+              "zookeeper_storage_size": "5G"
             },
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             },
             "prometheus_metrics": [],
             "prometheus_scheduler_frequency": "@daily"
@@ -2619,8 +2619,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -2629,8 +2629,8 @@
             "ibmproxyurl": "https://iaps.ibm.com",
             "image_pull_secret": "bas-images-pull-secret",
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             },
             "prometheus_metrics": [],
             "prometheus_scheduler_frequency": "@daily"
@@ -5928,8 +5928,8 @@
                   "-Ddse.system_distributed_replication_dc_names=dc1",
                   "-Ddse.system_distributed_replication_per_dc=1"
                 ],
-                "initial_heap#": "800M",
-                "max_heap#": "800M"
+                "initial_heap_size": "800M",
+                "max_heap_size": "800M"
               }
             },
             "managementApiAuth": {
@@ -6045,8 +6045,8 @@
                   "-Ddse.system_distributed_replication_dc_names=dc1",
                   "-Ddse.system_distributed_replication_per_dc=1"
                 ],
-                "initial_heap#": "800M",
-                "max_heap#": "800M"
+                "initial_heap_size": "800M",
+                "max_heap_size": "800M"
               }
             },
             "managementApiAuth": {
@@ -12303,8 +12303,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -12312,14 +12312,14 @@
             "event_scheduler_frequency": "@hourly",
             "image_pull_secret": "bas-images-pull-secret",
             "kafka": {
-              "storage#": "5G",
               "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
+              "storage_size": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze",
+              "zookeeper_storage_size": "5G"
             },
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             }
           }
         },
@@ -12339,8 +12339,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -12349,14 +12349,14 @@
             "ibmproxyurl": "https://iaps.ibm.com",
             "image_pull_secret": "bas-images-pull-secret",
             "kafka": {
-              "storage#": "5G",
               "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
+              "storage_size": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze",
+              "zookeeper_storage_size": "5G"
             },
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             }
           }
         },
@@ -12386,8 +12386,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -12396,14 +12396,14 @@
             "ibmproxyurl": "https://iaps.ibm.com",
             "image_pull_secret": "bas-images-pull-secret",
             "kafka": {
-              "storage#": "5G",
               "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
+              "storage_size": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze",
+              "zookeeper_storage_size": "5G"
             },
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             },
             "prometheus_metrics": [],
             "prometheus_scheduler_frequency": "@daily"
@@ -12429,8 +12429,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -12439,8 +12439,8 @@
             "ibmproxyurl": "https://iaps.ibm.com",
             "image_pull_secret": "bas-images-pull-secret",
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             },
             "prometheus_metrics": [],
             "prometheus_scheduler_frequency": "@daily"

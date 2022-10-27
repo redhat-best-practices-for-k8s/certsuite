@@ -566,24 +566,24 @@
           },
           "spec": {
             "backup_storage": {
-              "storage#": "20G",
-              "storage_class": "ibmc-file-gold-gid"
+              "storage_class": "ibmc-file-gold-gid",
+              "storage_size": "20G"
             },
             "env_type": "prod",
             "in_memory_storage": {
-              "storage#": "20G",
-              "storage_class": "ibmc-file-gold-gid"
+              "storage_class": "ibmc-file-gold-gid",
+              "storage_size": "20G"
             },
             "license": {
               "accept": false
             },
             "metadata_storage": {
-              "storage#": "20G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "20G"
             },
             "photo_storage": {
-              "storage#": "500G",
-              "storage_class": "ibmc-file-gold-gid"
+              "storage_class": "ibmc-file-gold-gid",
+              "storage_size": "500G"
             },
             "vm_request_method": "dynamic"
           }
