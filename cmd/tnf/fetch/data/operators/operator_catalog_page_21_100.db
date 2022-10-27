@@ -2532,8 +2532,8 @@
                 "role_manager": "CassandraRoleManager"
               },
               "jvm-server-options": {
-                "initial_heap#": "1G",
-                "max_heap#": "1G"
+                "initial_heap_size": "1G",
+                "max_heap_size": "1G"
               }
             },
             "dockerImageRunsAsCassandra": false,
@@ -3657,8 +3657,8 @@
                 "role_manager": "CassandraRoleManager"
               },
               "jvm-server-options": {
-                "initial_heap#": "1G",
-                "max_heap#": "1G"
+                "initial_heap_size": "1G",
+                "max_heap_size": "1G"
               }
             },
             "dockerImageRunsAsCassandra": false,

@@ -11,8 +11,8 @@
           },
           "spec": {
             "backup_storage": {
-              "storage#": "20G",
-              "storage_class": "ibmc-file-gold-gid"
+              "storage_class": "ibmc-file-gold-gid",
+              "storage_size": "20G"
             },
             "email_notification": {
               "accept": true,
@@ -20,19 +20,19 @@
             },
             "env_type": "prod",
             "in_memory_storage": {
-              "storage#": "20G",
-              "storage_class": "ibmc-file-gold-gid"
+              "storage_class": "ibmc-file-gold-gid",
+              "storage_size": "20G"
             },
             "license": {
               "accept": false
             },
             "metadata_storage": {
-              "storage#": "20G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "20G"
             },
             "photo_storage": {
-              "storage#": "500G",
-              "storage_class": "ibmc-file-gold-gid"
+              "storage_class": "ibmc-file-gold-gid",
+              "storage_size": "500G"
             },
             "vm_request_method": "dynamic"
           }
@@ -168,8 +168,8 @@
           },
           "spec": {
             "backup_storage": {
-              "storage#": "20G",
-              "storage_class": "ibmc-file-gold-gid"
+              "storage_class": "ibmc-file-gold-gid",
+              "storage_size": "20G"
             },
             "email_notification": {
               "accept": true,
@@ -177,19 +177,19 @@
             },
             "env_type": "prod",
             "in_memory_storage": {
-              "storage#": "20G",
-              "storage_class": "ibmc-file-gold-gid"
+              "storage_class": "ibmc-file-gold-gid",
+              "storage_size": "20G"
             },
             "license": {
               "accept": false
             },
             "metadata_storage": {
-              "storage#": "20G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "20G"
             },
             "photo_storage": {
-              "storage#": "500G",
-              "storage_class": "ibmc-file-gold-gid"
+              "storage_class": "ibmc-file-gold-gid",
+              "storage_size": "500G"
             },
             "vm_request_method": "dynamic"
           }
@@ -338,8 +338,8 @@
             },
             "postgres": {
               "enable_pg_tls": true,
-              "storage#": "20G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "20G"
             }
           }
         }
@@ -466,8 +466,8 @@
             },
             "postgres": {
               "enable_pg_tls": true,
-              "storage#": "20G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "20G"
             }
           }
         }
@@ -581,8 +581,8 @@
           },
           "spec": {
             "backup_storage": {
-              "storage#": "20G",
-              "storage_class": "ibmc-file-gold-gid"
+              "storage_class": "ibmc-file-gold-gid",
+              "storage_size": "20G"
             },
             "email_notification": {
               "accept": true,
@@ -590,19 +590,19 @@
             },
             "env_type": "prod",
             "in_memory_storage": {
-              "storage#": "20G",
-              "storage_class": "ibmc-file-gold-gid"
+              "storage_class": "ibmc-file-gold-gid",
+              "storage_size": "20G"
             },
             "license": {
               "accept": false
             },
             "metadata_storage": {
-              "storage#": "20G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "20G"
             },
             "photo_storage": {
-              "storage#": "500G",
-              "storage_class": "ibmc-file-gold-gid"
+              "storage_class": "ibmc-file-gold-gid",
+              "storage_size": "500G"
             },
             "vm_request_method": "dynamic"
           }
@@ -738,8 +738,8 @@
           },
           "spec": {
             "backup_storage": {
-              "storage#": "20G",
-              "storage_class": "ibmc-file-gold-gid"
+              "storage_class": "ibmc-file-gold-gid",
+              "storage_size": "20G"
             },
             "email_notification": {
               "accept": true,
@@ -747,19 +747,19 @@
             },
             "env_type": "prod",
             "in_memory_storage": {
-              "storage#": "20G",
-              "storage_class": "ibmc-file-gold-gid"
+              "storage_class": "ibmc-file-gold-gid",
+              "storage_size": "20G"
             },
             "license": {
               "accept": false
             },
             "metadata_storage": {
-              "storage#": "20G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "20G"
             },
             "photo_storage": {
-              "storage#": "500G",
-              "storage_class": "ibmc-file-gold-gid"
+              "storage_class": "ibmc-file-gold-gid",
+              "storage_size": "500G"
             },
             "vm_request_method": "dynamic"
           }

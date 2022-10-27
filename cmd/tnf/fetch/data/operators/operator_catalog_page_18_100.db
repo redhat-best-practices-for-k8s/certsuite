@@ -5164,8 +5164,8 @@
             "activeservers": "",
             "allow_key": "",
             "allow_privileged": true,
-            "buffer#": 100,
             "buffer_send": 5,
+            "buffer_size": 100,
             "debug_level": 3,
             "deny_key": "system.run[*]",
             "host_interface": "",
@@ -5219,16 +5219,16 @@
               "timeout": 3
             },
             "server": {
-              "cache#": "8M",
+              "cache_size": "8M",
               "cache_update_frequency": 60,
               "db_tls_cipher": "",
               "db_tls_cipher13": "",
               "db_tls_cipher_13": "",
               "db_tls_connect": "",
               "debug_level": 3,
-              "export_file#": "",
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
+              "export_file_size": "",
+              "history_cache_size": "16M",
+              "history_index_cache_size": "4M",
               "history_storage_date_index": true,
               "history_storage_types": "",
               "housekeeping_frequency": 1,
@@ -5266,12 +5266,12 @@
               "tlscipherpsk": "",
               "tlscipherpsk13": "",
               "trapper_timeout": 300,
-              "trend_cache#": "4M",
+              "trend_cache_size": "4M",
               "unavailable_delay": 60,
               "unreachable_delay": 15,
               "unreachable_period": 45,
-              "value_cache#": "8M",
-              "vmware_cache#": "8M",
+              "value_cache_size": "8M",
+              "vmware_cache_size": "8M",
               "vmware_frequency": 60,
               "vmware_perf_frequency": 60,
               "vmware_timeout": 10
@@ -5286,7 +5286,7 @@
               "max_execution_time": 300,
               "max_input_time": 300,
               "memory_limit": "128M",
-              "post_max#": "16M",
+              "post_max_size": "16M",
               "server_name": "Kubernetes installation",
               "session_name": "zbx_sessionid",
               "sso_settings": "",
@@ -5315,17 +5315,17 @@
               "start_pollers": 5,
               "timeout": 3
             },
-            "java_gateway#": 1,
+            "java_gateway_size": 1,
             "server": {
-              "cache#": "8M",
+              "cache_size": "8M",
               "cache_update_frequency": 60,
               "db_tls_cipher": "",
               "db_tls_cipher_13": "",
               "db_tls_connect": "",
               "debug_level": 3,
-              "export_file#": "",
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
+              "export_file_size": "",
+              "history_cache_size": "16M",
+              "history_index_cache_size": "4M",
               "history_storage_date_index": true,
               "history_storage_types": "",
               "housekeeping_frequency": 1,
@@ -5363,12 +5363,12 @@
               "tlsciphercert": "",
               "tlscipherpsk13": "",
               "trapper_timeout": 300,
-              "trend_cache#": "4M",
+              "trend_cache_size": "4M",
               "unavailable_delay": 60,
               "unreachable_delay": 15,
               "unreachable_period": 45,
-              "value_cache#": "8M",
-              "vmware_cache#": "8M",
+              "value_cache_size": "8M",
+              "vmware_cache_size": "8M",
               "vmware_frequency": 60,
               "vmware_perf_frequency": 60,
               "vmware_timeout": 10
@@ -5386,15 +5386,15 @@
               "max_execution_time": 300,
               "max_input_time": 300,
               "memory_limit": "128M",
-              "post_max#": "16M",
+              "post_max_size": "16M",
               "server_name": "Kubernetes installation",
               "session_name": "zbx_sessionid",
               "sso_settings": "",
               "timezone": "Europe/Riga",
               "upload_max_filesize": "2M"
             },
-            "web#": 2,
             "web_enable_route": true,
+            "web_size": 2,
             "zabbix_mysql_volumeclaim": "mysql-volume-claim",
             "zabbix_mysqlsecret": "zabbix-mysql-secrets"
           }
@@ -5417,10 +5417,10 @@
               "start_pollers": 5,
               "timeout": 3
             },
-            "java_gateway#": 1,
+            "java_gateway_size": 1,
             "mysql_database": "zabbix_proxy",
             "proxy": {
-              "cache#": "8M",
+              "cache_size": "8M",
               "config_frequency": 3600,
               "data_sender_frequency": 1,
               "db_tls_cipher": "",
@@ -5428,8 +5428,8 @@
               "db_tls_connect": "",
               "debug_level": 3,
               "enable_remote_commands": false,
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
+              "history_cache_size": "16M",
+              "history_index_cache_size": "4M",
               "hostname": "",
               "hostname_item": "system.hostname",
               "housekeeping_frequency": 1,
@@ -5477,7 +5477,7 @@
               "unavailable_delay": 60,
               "unreachable_delay": 15,
               "unreachable_period": 45,
-              "vmware_cache#": "8M",
+              "vmware_cache_size": "8M",
               "vmware_frequency": 60,
               "vmware_perf_frequency": 60,
               "vmware_timeout": 10
@@ -5502,15 +5502,15 @@
               "start_pollers": 5,
               "timeout": 3
             },
-            "java_gateway#": 1,
+            "java_gateway_size": 1,
             "proxy": {
-              "cache#": "8M",
+              "cache_size": "8M",
               "config_frequency": 3600,
               "data_sender_frequency": 1,
               "debug_level": 3,
               "enable_remote_commands": false,
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
+              "history_cache_size": "16M",
+              "history_index_cache_size": "4M",
               "hostname": "",
               "hostname_item": "system.hostname",
               "housekeeping_frequency": 1,
@@ -5558,12 +5558,12 @@
               "unavailable_delay": 60,
               "unreachable_delay": 15,
               "unreachable_period": 45,
-              "vmware_cache#": "8M",
+              "vmware_cache_size": "8M",
               "vmware_frequency": 60,
               "vmware_perf_frequency": 60,
               "vmware_timeout": 10
             },
-            "proxy#": 1
+            "proxy_size": 1
           }
         },
         {
@@ -5585,19 +5585,19 @@
               "start_pollers": 5,
               "timeout": 3
             },
-            "java_gateway#": 1,
+            "java_gateway_size": 1,
             "mysql_database": "zabbix",
             "server": {
-              "cache#": "8M",
+              "cache_size": "8M",
               "cache_update_frequency": 60,
               "db_tls_cipher": "",
               "db_tls_cipher13": "",
               "db_tls_cipher_13": "",
               "db_tls_connect": "",
               "debug_level": 3,
-              "export_file#": "",
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
+              "export_file_size": "",
+              "history_cache_size": "16M",
+              "history_index_cache_size": "4M",
               "history_storage_date_index": true,
               "history_storage_types": "",
               "housekeeping_frequency": 1,
@@ -5635,12 +5635,12 @@
               "tlscipherpsk": "",
               "tlscipherpsk13": "",
               "trapper_timeout": 300,
-              "trend_cache#": "4M",
+              "trend_cache_size": "4M",
               "unavailable_delay": 60,
               "unreachable_delay": 15,
               "unreachable_period": 45,
-              "value_cache#": "8M",
-              "vmware_cache#": "8M",
+              "value_cache_size": "8M",
+              "vmware_cache_size": "8M",
               "vmware_frequency": 60,
               "vmware_perf_frequency": 60,
               "vmware_timeout": 10
@@ -5658,15 +5658,15 @@
               "max_execution_time": 300,
               "max_input_time": 300,
               "memory_limit": "128M",
-              "post_max#": "16M",
+              "post_max_size": "16M",
               "server_name": "Kubernetes installation",
               "session_name": "zbx_sessionid",
               "sso_settings": "",
               "timezone": "Europe/Riga",
               "upload_max_filesize": "2M"
             },
-            "web#": 2,
             "web_enable_route": true,
+            "web_size": 2,
             "zabbix_mysqlsecret": "zabbix-mysql-secrets"
           }
         },
@@ -5685,8 +5685,8 @@
             "activeservers": "",
             "allow_key": "",
             "allow_privileged": true,
-            "buffer#": 100,
             "buffer_send": 5,
+            "buffer_size": 100,
             "debug_level": 3,
             "deny_key": "system.run[*]",
             "host_interface": "",
@@ -5742,19 +5742,19 @@
               "start_pollers": 5,
               "timeout": 3
             },
-            "java_gateway#": 1,
+            "java_gateway_size": 1,
             "mysql_database": "zabbix",
             "server": {
-              "cache#": "8M",
+              "cache_size": "8M",
               "cache_update_frequency": 60,
               "db_tls_cipher": "",
               "db_tls_cipher13": "",
               "db_tls_cipher_13": "",
               "db_tls_connect": "",
               "debug_level": 3,
-              "export_file#": "",
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
+              "export_file_size": "",
+              "history_cache_size": "16M",
+              "history_index_cache_size": "4M",
               "history_storage_date_index": true,
               "history_storage_types": "",
               "housekeeping_frequency": 1,
@@ -5792,12 +5792,12 @@
               "tlscipherpsk": "",
               "tlscipherpsk13": "",
               "trapper_timeout": 300,
-              "trend_cache#": "4M",
+              "trend_cache_size": "4M",
               "unavailable_delay": 60,
               "unreachable_delay": 15,
               "unreachable_period": 45,
-              "value_cache#": "8M",
-              "vmware_cache#": "8M",
+              "value_cache_size": "8M",
+              "vmware_cache_size": "8M",
               "vmware_frequency": 60,
               "vmware_perf_frequency": 60,
               "vmware_timeout": 10
@@ -5815,15 +5815,15 @@
               "max_execution_time": 300,
               "max_input_time": 300,
               "memory_limit": "128M",
-              "post_max#": "16M",
+              "post_max_size": "16M",
               "server_name": "Kubernetes installation",
               "session_name": "zbx_sessionid",
               "sso_settings": "",
               "timezone": "Europe/Riga",
               "upload_max_filesize": "2M"
             },
-            "web#": 2,
             "web_enable_route": true,
+            "web_size": 2,
             "zabbix_mysqlsecret": "mysql-secrets"
           }
         },
@@ -5843,15 +5843,15 @@
               "start_pollers": 5,
               "timeout": 3
             },
-            "java_gateway#": 1,
+            "java_gateway_size": 1,
             "proxy": {
-              "cache#": "8M",
+              "cache_size": "8M",
               "config_frequency": 3600,
               "data_sender_frequency": 1,
               "debug_level": 3,
               "enable_remote_commands": false,
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
+              "history_cache_size": "16M",
+              "history_index_cache_size": "4M",
               "hostname": "",
               "hostname_item": "system.hostname",
               "housekeeping_frequency": 1,
@@ -5899,12 +5899,12 @@
               "unavailable_delay": 60,
               "unreachable_delay": 15,
               "unreachable_period": 45,
-              "vmware_cache#": "8M",
+              "vmware_cache_size": "8M",
               "vmware_frequency": 60,
               "vmware_perf_frequency": 60,
               "vmware_timeout": 10
             },
-            "proxy#": 1
+            "proxy_size": 1
           }
         },
         {
@@ -5925,10 +5925,10 @@
               "start_pollers": 5,
               "timeout": 3
             },
-            "java_gateway#": 1,
+            "java_gateway_size": 1,
             "mysql_database": "zabbix_proxy",
             "proxy": {
-              "cache#": "8M",
+              "cache_size": "8M",
               "config_frequency": 3600,
               "data_sender_frequency": 1,
               "db_tls_cipher": "",
@@ -5936,8 +5936,8 @@
               "db_tls_connect": "",
               "debug_level": 3,
               "enable_remote_commands": false,
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
+              "history_cache_size": "16M",
+              "history_index_cache_size": "4M",
               "hostname": "",
               "hostname_item": "system.hostname",
               "housekeeping_frequency": 1,
@@ -5985,7 +5985,7 @@
               "unavailable_delay": 60,
               "unreachable_delay": 15,
               "unreachable_period": 45,
-              "vmware_cache#": "8M",
+              "vmware_cache_size": "8M",
               "vmware_frequency": 60,
               "vmware_perf_frequency": 60,
               "vmware_timeout": 10
@@ -6011,17 +6011,17 @@
               "start_pollers": 5,
               "timeout": 3
             },
-            "java_gateway#": 1,
+            "java_gateway_size": 1,
             "server": {
-              "cache#": "8M",
+              "cache_size": "8M",
               "cache_update_frequency": 60,
               "db_tls_cipher": "",
               "db_tls_cipher_13": "",
               "db_tls_connect": "",
               "debug_level": 3,
-              "export_file#": "",
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
+              "export_file_size": "",
+              "history_cache_size": "16M",
+              "history_index_cache_size": "4M",
               "history_storage_date_index": true,
               "history_storage_types": "",
               "housekeeping_frequency": 1,
@@ -6059,12 +6059,12 @@
               "tlsciphercert": "",
               "tlscipherpsk13": "",
               "trapper_timeout": 300,
-              "trend_cache#": "4M",
+              "trend_cache_size": "4M",
               "unavailable_delay": 60,
               "unreachable_delay": 15,
               "unreachable_period": 45,
-              "value_cache#": "8M",
-              "vmware_cache#": "8M",
+              "value_cache_size": "8M",
+              "vmware_cache_size": "8M",
               "vmware_frequency": 60,
               "vmware_perf_frequency": 60,
               "vmware_timeout": 10
@@ -6082,15 +6082,15 @@
               "max_execution_time": 300,
               "max_input_time": 300,
               "memory_limit": "128M",
-              "post_max#": "16M",
+              "post_max_size": "16M",
               "server_name": "Kubernetes installation",
               "session_name": "zbx_sessionid",
               "sso_settings": "",
               "timezone": "Europe/Riga",
               "upload_max_filesize": "2M"
             },
-            "web#": 2,
             "web_enable_route": true,
+            "web_size": 2,
             "zabbix_mysql_volumeclaim": "mysql-volume-claim",
             "zabbix_mysqlsecret": "mysql-secrets"
           }
@@ -6112,16 +6112,16 @@
               "timeout": 3
             },
             "server": {
-              "cache#": "8M",
+              "cache_size": "8M",
               "cache_update_frequency": 60,
               "db_tls_cipher": "",
               "db_tls_cipher13": "",
               "db_tls_cipher_13": "",
               "db_tls_connect": "",
               "debug_level": 3,
-              "export_file#": "",
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
+              "export_file_size": "",
+              "history_cache_size": "16M",
+              "history_index_cache_size": "4M",
               "history_storage_date_index": true,
               "history_storage_types": "",
               "housekeeping_frequency": 1,
@@ -6159,12 +6159,12 @@
               "tlscipherpsk": "",
               "tlscipherpsk13": "",
               "trapper_timeout": 300,
-              "trend_cache#": "4M",
+              "trend_cache_size": "4M",
               "unavailable_delay": 60,
               "unreachable_delay": 15,
               "unreachable_period": 45,
-              "value_cache#": "8M",
-              "vmware_cache#": "8M",
+              "value_cache_size": "8M",
+              "vmware_cache_size": "8M",
               "vmware_frequency": 60,
               "vmware_perf_frequency": 60,
               "vmware_timeout": 10
@@ -6179,7 +6179,7 @@
               "max_execution_time": 300,
               "max_input_time": 300,
               "memory_limit": "128M",
-              "post_max#": "16M",
+              "post_max_size": "16M",
               "server_name": "Kubernetes installation",
               "session_name": "zbx_sessionid",
               "sso_settings": "",
@@ -6348,8 +6348,8 @@
             "activeservers": "",
             "allow_key": "",
             "allow_privileged": true,
-            "buffer#": 100,
             "buffer_send": 5,
+            "buffer_size": 100,
             "debug_level": 3,
             "deny_key": "system.run[*]",
             "host_interface": "",
@@ -6403,16 +6403,16 @@
               "timeout": 3
             },
             "server": {
-              "cache#": "8M",
+              "cache_size": "8M",
               "cache_update_frequency": 60,
               "db_tls_cipher": "",
               "db_tls_cipher13": "",
               "db_tls_cipher_13": "",
               "db_tls_connect": "",
               "debug_level": 3,
-              "export_file#": "",
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
+              "export_file_size": "",
+              "history_cache_size": "16M",
+              "history_index_cache_size": "4M",
               "history_storage_date_index": true,
               "history_storage_types": "",
               "housekeeping_frequency": 1,
@@ -6450,12 +6450,12 @@
               "tlscipherpsk": "",
               "tlscipherpsk13": "",
               "trapper_timeout": 300,
-              "trend_cache#": "4M",
+              "trend_cache_size": "4M",
               "unavailable_delay": 60,
               "unreachable_delay": 15,
               "unreachable_period": 45,
-              "value_cache#": "8M",
-              "vmware_cache#": "8M",
+              "value_cache_size": "8M",
+              "vmware_cache_size": "8M",
               "vmware_frequency": 60,
               "vmware_perf_frequency": 60,
               "vmware_timeout": 10
@@ -6470,7 +6470,7 @@
               "max_execution_time": 300,
               "max_input_time": 300,
               "memory_limit": "128M",
-              "post_max#": "16M",
+              "post_max_size": "16M",
               "server_name": "Kubernetes installation",
               "session_name": "zbx_sessionid",
               "sso_settings": "",
@@ -6499,17 +6499,17 @@
               "start_pollers": 5,
               "timeout": 3
             },
-            "java_gateway#": 1,
+            "java_gateway_size": 1,
             "server": {
-              "cache#": "8M",
+              "cache_size": "8M",
               "cache_update_frequency": 60,
               "db_tls_cipher": "",
               "db_tls_cipher_13": "",
               "db_tls_connect": "",
               "debug_level": 3,
-              "export_file#": "",
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
+              "export_file_size": "",
+              "history_cache_size": "16M",
+              "history_index_cache_size": "4M",
               "history_storage_date_index": true,
               "history_storage_types": "",
               "housekeeping_frequency": 1,
@@ -6547,12 +6547,12 @@
               "tlsciphercert": "",
               "tlscipherpsk13": "",
               "trapper_timeout": 300,
-              "trend_cache#": "4M",
+              "trend_cache_size": "4M",
               "unavailable_delay": 60,
               "unreachable_delay": 15,
               "unreachable_period": 45,
-              "value_cache#": "8M",
-              "vmware_cache#": "8M",
+              "value_cache_size": "8M",
+              "vmware_cache_size": "8M",
               "vmware_frequency": 60,
               "vmware_perf_frequency": 60,
               "vmware_timeout": 10
@@ -6570,15 +6570,15 @@
               "max_execution_time": 300,
               "max_input_time": 300,
               "memory_limit": "128M",
-              "post_max#": "16M",
+              "post_max_size": "16M",
               "server_name": "Kubernetes installation",
               "session_name": "zbx_sessionid",
               "sso_settings": "",
               "timezone": "Europe/Riga",
               "upload_max_filesize": "2M"
             },
-            "web#": 2,
             "web_enable_route": true,
+            "web_size": 2,
             "zabbix_mysql_volumeclaim": "mysql-volume-claim",
             "zabbix_mysqlsecret": "zabbix-mysql-secrets"
           }
@@ -6601,10 +6601,10 @@
               "start_pollers": 5,
               "timeout": 3
             },
-            "java_gateway#": 1,
+            "java_gateway_size": 1,
             "mysql_database": "zabbix_proxy",
             "proxy": {
-              "cache#": "8M",
+              "cache_size": "8M",
               "config_frequency": 3600,
               "data_sender_frequency": 1,
               "db_tls_cipher": "",
@@ -6612,8 +6612,8 @@
               "db_tls_connect": "",
               "debug_level": 3,
               "enable_remote_commands": false,
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
+              "history_cache_size": "16M",
+              "history_index_cache_size": "4M",
               "hostname": "",
               "hostname_item": "system.hostname",
               "housekeeping_frequency": 1,
@@ -6661,7 +6661,7 @@
               "unavailable_delay": 60,
               "unreachable_delay": 15,
               "unreachable_period": 45,
-              "vmware_cache#": "8M",
+              "vmware_cache_size": "8M",
               "vmware_frequency": 60,
               "vmware_perf_frequency": 60,
               "vmware_timeout": 10
@@ -6686,15 +6686,15 @@
               "start_pollers": 5,
               "timeout": 3
             },
-            "java_gateway#": 1,
+            "java_gateway_size": 1,
             "proxy": {
-              "cache#": "8M",
+              "cache_size": "8M",
               "config_frequency": 3600,
               "data_sender_frequency": 1,
               "debug_level": 3,
               "enable_remote_commands": false,
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
+              "history_cache_size": "16M",
+              "history_index_cache_size": "4M",
               "hostname": "",
               "hostname_item": "system.hostname",
               "housekeeping_frequency": 1,
@@ -6742,12 +6742,12 @@
               "unavailable_delay": 60,
               "unreachable_delay": 15,
               "unreachable_period": 45,
-              "vmware_cache#": "8M",
+              "vmware_cache_size": "8M",
               "vmware_frequency": 60,
               "vmware_perf_frequency": 60,
               "vmware_timeout": 10
             },
-            "proxy#": 1
+            "proxy_size": 1
           }
         },
         {
@@ -6769,19 +6769,19 @@
               "start_pollers": 5,
               "timeout": 3
             },
-            "java_gateway#": 1,
+            "java_gateway_size": 1,
             "mysql_database": "zabbix",
             "server": {
-              "cache#": "8M",
+              "cache_size": "8M",
               "cache_update_frequency": 60,
               "db_tls_cipher": "",
               "db_tls_cipher13": "",
               "db_tls_cipher_13": "",
               "db_tls_connect": "",
               "debug_level": 3,
-              "export_file#": "",
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
+              "export_file_size": "",
+              "history_cache_size": "16M",
+              "history_index_cache_size": "4M",
               "history_storage_date_index": true,
               "history_storage_types": "",
               "housekeeping_frequency": 1,
@@ -6819,12 +6819,12 @@
               "tlscipherpsk": "",
               "tlscipherpsk13": "",
               "trapper_timeout": 300,
-              "trend_cache#": "4M",
+              "trend_cache_size": "4M",
               "unavailable_delay": 60,
               "unreachable_delay": 15,
               "unreachable_period": 45,
-              "value_cache#": "8M",
-              "vmware_cache#": "8M",
+              "value_cache_size": "8M",
+              "vmware_cache_size": "8M",
               "vmware_frequency": 60,
               "vmware_perf_frequency": 60,
               "vmware_timeout": 10
@@ -6842,15 +6842,15 @@
               "max_execution_time": 300,
               "max_input_time": 300,
               "memory_limit": "128M",
-              "post_max#": "16M",
+              "post_max_size": "16M",
               "server_name": "Kubernetes installation",
               "session_name": "zbx_sessionid",
               "sso_settings": "",
               "timezone": "Europe/Riga",
               "upload_max_filesize": "2M"
             },
-            "web#": 2,
             "web_enable_route": true,
+            "web_size": 2,
             "zabbix_mysqlsecret": "zabbix-mysql-secrets"
           }
         },
@@ -6869,8 +6869,8 @@
             "activeservers": "",
             "allow_key": "",
             "allow_privileged": true,
-            "buffer#": 100,
             "buffer_send": 5,
+            "buffer_size": 100,
             "debug_level": 3,
             "deny_key": "system.run[*]",
             "host_interface": "",
@@ -6926,19 +6926,19 @@
               "start_pollers": 5,
               "timeout": 3
             },
-            "java_gateway#": 1,
+            "java_gateway_size": 1,
             "mysql_database": "zabbix",
             "server": {
-              "cache#": "8M",
+              "cache_size": "8M",
               "cache_update_frequency": 60,
               "db_tls_cipher": "",
               "db_tls_cipher13": "",
               "db_tls_cipher_13": "",
               "db_tls_connect": "",
               "debug_level": 3,
-              "export_file#": "",
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
+              "export_file_size": "",
+              "history_cache_size": "16M",
+              "history_index_cache_size": "4M",
               "history_storage_date_index": true,
               "history_storage_types": "",
               "housekeeping_frequency": 1,
@@ -6976,12 +6976,12 @@
               "tlscipherpsk": "",
               "tlscipherpsk13": "",
               "trapper_timeout": 300,
-              "trend_cache#": "4M",
+              "trend_cache_size": "4M",
               "unavailable_delay": 60,
               "unreachable_delay": 15,
               "unreachable_period": 45,
-              "value_cache#": "8M",
-              "vmware_cache#": "8M",
+              "value_cache_size": "8M",
+              "vmware_cache_size": "8M",
               "vmware_frequency": 60,
               "vmware_perf_frequency": 60,
               "vmware_timeout": 10
@@ -6999,15 +6999,15 @@
               "max_execution_time": 300,
               "max_input_time": 300,
               "memory_limit": "128M",
-              "post_max#": "16M",
+              "post_max_size": "16M",
               "server_name": "Kubernetes installation",
               "session_name": "zbx_sessionid",
               "sso_settings": "",
               "timezone": "Europe/Riga",
               "upload_max_filesize": "2M"
             },
-            "web#": 2,
             "web_enable_route": true,
+            "web_size": 2,
             "zabbix_mysqlsecret": "mysql-secrets"
           }
         },
@@ -7027,15 +7027,15 @@
               "start_pollers": 5,
               "timeout": 3
             },
-            "java_gateway#": 1,
+            "java_gateway_size": 1,
             "proxy": {
-              "cache#": "8M",
+              "cache_size": "8M",
               "config_frequency": 3600,
               "data_sender_frequency": 1,
               "debug_level": 3,
               "enable_remote_commands": false,
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
+              "history_cache_size": "16M",
+              "history_index_cache_size": "4M",
               "hostname": "",
               "hostname_item": "system.hostname",
               "housekeeping_frequency": 1,
@@ -7083,12 +7083,12 @@
               "unavailable_delay": 60,
               "unreachable_delay": 15,
               "unreachable_period": 45,
-              "vmware_cache#": "8M",
+              "vmware_cache_size": "8M",
               "vmware_frequency": 60,
               "vmware_perf_frequency": 60,
               "vmware_timeout": 10
             },
-            "proxy#": 1
+            "proxy_size": 1
           }
         },
         {
@@ -7109,10 +7109,10 @@
               "start_pollers": 5,
               "timeout": 3
             },
-            "java_gateway#": 1,
+            "java_gateway_size": 1,
             "mysql_database": "zabbix_proxy",
             "proxy": {
-              "cache#": "8M",
+              "cache_size": "8M",
               "config_frequency": 3600,
               "data_sender_frequency": 1,
               "db_tls_cipher": "",
@@ -7120,8 +7120,8 @@
               "db_tls_connect": "",
               "debug_level": 3,
               "enable_remote_commands": false,
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
+              "history_cache_size": "16M",
+              "history_index_cache_size": "4M",
               "hostname": "",
               "hostname_item": "system.hostname",
               "housekeeping_frequency": 1,
@@ -7169,7 +7169,7 @@
               "unavailable_delay": 60,
               "unreachable_delay": 15,
               "unreachable_period": 45,
-              "vmware_cache#": "8M",
+              "vmware_cache_size": "8M",
               "vmware_frequency": 60,
               "vmware_perf_frequency": 60,
               "vmware_timeout": 10
@@ -7195,17 +7195,17 @@
               "start_pollers": 5,
               "timeout": 3
             },
-            "java_gateway#": 1,
+            "java_gateway_size": 1,
             "server": {
-              "cache#": "8M",
+              "cache_size": "8M",
               "cache_update_frequency": 60,
               "db_tls_cipher": "",
               "db_tls_cipher_13": "",
               "db_tls_connect": "",
               "debug_level": 3,
-              "export_file#": "",
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
+              "export_file_size": "",
+              "history_cache_size": "16M",
+              "history_index_cache_size": "4M",
               "history_storage_date_index": true,
               "history_storage_types": "",
               "housekeeping_frequency": 1,
@@ -7243,12 +7243,12 @@
               "tlsciphercert": "",
               "tlscipherpsk13": "",
               "trapper_timeout": 300,
-              "trend_cache#": "4M",
+              "trend_cache_size": "4M",
               "unavailable_delay": 60,
               "unreachable_delay": 15,
               "unreachable_period": 45,
-              "value_cache#": "8M",
-              "vmware_cache#": "8M",
+              "value_cache_size": "8M",
+              "vmware_cache_size": "8M",
               "vmware_frequency": 60,
               "vmware_perf_frequency": 60,
               "vmware_timeout": 10
@@ -7266,15 +7266,15 @@
               "max_execution_time": 300,
               "max_input_time": 300,
               "memory_limit": "128M",
-              "post_max#": "16M",
+              "post_max_size": "16M",
               "server_name": "Kubernetes installation",
               "session_name": "zbx_sessionid",
               "sso_settings": "",
               "timezone": "Europe/Riga",
               "upload_max_filesize": "2M"
             },
-            "web#": 2,
             "web_enable_route": true,
+            "web_size": 2,
             "zabbix_mysql_volumeclaim": "mysql-volume-claim",
             "zabbix_mysqlsecret": "mysql-secrets"
           }
@@ -7296,16 +7296,16 @@
               "timeout": 3
             },
             "server": {
-              "cache#": "8M",
+              "cache_size": "8M",
               "cache_update_frequency": 60,
               "db_tls_cipher": "",
               "db_tls_cipher13": "",
               "db_tls_cipher_13": "",
               "db_tls_connect": "",
               "debug_level": 3,
-              "export_file#": "",
-              "history_cache#": "16M",
-              "history_index_cache#": "4M",
+              "export_file_size": "",
+              "history_cache_size": "16M",
+              "history_index_cache_size": "4M",
               "history_storage_date_index": true,
               "history_storage_types": "",
               "housekeeping_frequency": 1,
@@ -7343,12 +7343,12 @@
               "tlscipherpsk": "",
               "tlscipherpsk13": "",
               "trapper_timeout": 300,
-              "trend_cache#": "4M",
+              "trend_cache_size": "4M",
               "unavailable_delay": 60,
               "unreachable_delay": 15,
               "unreachable_period": 45,
-              "value_cache#": "8M",
-              "vmware_cache#": "8M",
+              "value_cache_size": "8M",
+              "vmware_cache_size": "8M",
               "vmware_frequency": 60,
               "vmware_perf_frequency": 60,
               "vmware_timeout": 10
@@ -7363,7 +7363,7 @@
               "max_execution_time": 300,
               "max_input_time": 300,
               "memory_limit": "128M",
-              "post_max#": "16M",
+              "post_max_size": "16M",
               "server_name": "Kubernetes installation",
               "session_name": "zbx_sessionid",
               "sso_settings": "",
@@ -9252,7 +9252,7 @@
           },
           "spec": {
             "api_timeout": 3,
-            "cluster_collection#": 10737418240,
+            "cluster_collection_size": 10737418240,
             "cluster_platform": "OpenShift",
             "common_config_log_level": "INFO",
             "db_startup_recheck_time": 5,
@@ -9260,10 +9260,10 @@
             "default_monitor_count": 10,
             "default_monitor_interval": 60,
             "default_repeat_interval": 1800,
-            "detail_collection#": 10737418240,
+            "detail_collection_size": 10737418240,
             "detect_count": 1,
             "detect_interval": 60,
-            "event_collection#": 10737418240,
+            "event_collection_size": 10737418240,
             "expire_after_seconds": 31536000,
             "get_info_interval": 60,
             "get_info_ssc": "off",
@@ -9293,11 +9293,11 @@
               "use_ebs": "n",
               "web_console_host": "REPLACE_WEB_CONSOLE_HOST"
             },
-            "policy_fired_histories_collection_max#": 1073741824,
+            "policy_fired_histories_collection_max_size": 1073741824,
             "policy_fired_histories_expire_after_seconds": 31536000,
             "skip_action_interval": 600,
             "ssc_auth_by_secret": "false",
-            "ssc_event_collection#": 1073741824,
+            "ssc_event_collection_size": 1073741824,
             "use_auth": "false",
             "use_pv": "false",
             "user_authority_config_json": "[\n  {\n    \"username\": \"cluster-admin-user\",\n    \"is_cluster_admin\": true,\n    \"namespaces\": []\n  },\n  {\n    \"username\": \"tenant-user\",\n    \"is_cluster_admin\": false,\n    \"namespaces\": [\n      \"tenant-namespace\"\n    ]\n  }\n]\n"
@@ -9394,7 +9394,7 @@
           },
           "spec": {
             "api_timeout": 3,
-            "cluster_collection#": 10737418240,
+            "cluster_collection_size": 10737418240,
             "cluster_platform": "OpenShift",
             "common_config_log_level": "INFO",
             "db_startup_recheck_time": 5,
@@ -9402,10 +9402,10 @@
             "default_monitor_count": 10,
             "default_monitor_interval": 60,
             "default_repeat_interval": 1800,
-            "detail_collection#": 10737418240,
+            "detail_collection_size": 10737418240,
             "detect_count": 1,
             "detect_interval": 60,
-            "event_collection#": 10737418240,
+            "event_collection_size": 10737418240,
             "expire_after_seconds": 31536000,
             "get_info_interval": 60,
             "get_info_ssc": "off",
@@ -9435,11 +9435,11 @@
               "use_ebs": "n",
               "web_console_host": "REPLACE_WEB_CONSOLE_HOST"
             },
-            "policy_fired_histories_collection_max#": 1073741824,
+            "policy_fired_histories_collection_max_size": 1073741824,
             "policy_fired_histories_expire_after_seconds": 31536000,
             "skip_action_interval": 600,
             "ssc_auth_by_secret": "false",
-            "ssc_event_collection#": 1073741824,
+            "ssc_event_collection_size": 1073741824,
             "use_auth": "false",
             "use_pv": "false",
             "user_authority_config_json": "[\n  {\n    \"username\": \"cluster-admin-user\",\n    \"is_cluster_admin\": true,\n    \"namespaces\": []\n  },\n  {\n    \"username\": \"tenant-user\",\n    \"is_cluster_admin\": false,\n    \"namespaces\": [\n      \"tenant-namespace\"\n    ]\n  }\n]\n"
@@ -9536,7 +9536,7 @@
           },
           "spec": {
             "api_timeout": 3,
-            "cluster_collection#": 10737418240,
+            "cluster_collection_size": 10737418240,
             "cluster_platform": "OpenShift",
             "common_config_log_level": "INFO",
             "db_startup_recheck_time": 5,
@@ -9544,10 +9544,10 @@
             "default_monitor_count": 10,
             "default_monitor_interval": 60,
             "default_repeat_interval": 1800,
-            "detail_collection#": 10737418240,
+            "detail_collection_size": 10737418240,
             "detect_count": 1,
             "detect_interval": 60,
-            "event_collection#": 10737418240,
+            "event_collection_size": 10737418240,
             "expire_after_seconds": 31536000,
             "get_info_interval": 60,
             "get_info_ssc": "off",
@@ -9577,11 +9577,11 @@
               "use_ebs": "n",
               "web_console_host": "REPLACE_WEB_CONSOLE_HOST"
             },
-            "policy_fired_histories_collection_max#": 1073741824,
+            "policy_fired_histories_collection_max_size": 1073741824,
             "policy_fired_histories_expire_after_seconds": 31536000,
             "skip_action_interval": 600,
             "ssc_auth_by_secret": "false",
-            "ssc_event_collection#": 1073741824,
+            "ssc_event_collection_size": 1073741824,
             "use_auth": "false",
             "use_pv": "false",
             "user_authority_config_json": "[\n  {\n    \"username\": \"cluster-admin-user\",\n    \"is_cluster_admin\": true,\n    \"namespaces\": []\n  },\n  {\n    \"username\": \"tenant-user\",\n    \"is_cluster_admin\": false,\n    \"namespaces\": [\n      \"tenant-namespace\"\n    ]\n  }\n]\n"
@@ -13830,8 +13830,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -13839,14 +13839,14 @@
             "event_scheduler_frequency": "@hourly",
             "image_pull_secret": "bas-images-pull-secret",
             "kafka": {
-              "storage#": "5G",
               "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
+              "storage_size": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze",
+              "zookeeper_storage_size": "5G"
             },
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             }
           }
         },
@@ -13866,8 +13866,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -13876,14 +13876,14 @@
             "ibmproxyurl": "https://iaps.ibm.com",
             "image_pull_secret": "bas-images-pull-secret",
             "kafka": {
-              "storage#": "5G",
               "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
+              "storage_size": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze",
+              "zookeeper_storage_size": "5G"
             },
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             }
           }
         },
@@ -13913,8 +13913,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -13923,14 +13923,14 @@
             "ibmproxyurl": "https://iaps.ibm.com",
             "image_pull_secret": "bas-images-pull-secret",
             "kafka": {
-              "storage#": "5G",
               "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
+              "storage_size": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze",
+              "zookeeper_storage_size": "5G"
             },
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             },
             "prometheus_metrics": [],
             "prometheus_scheduler_frequency": "@daily"
@@ -13956,8 +13956,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -13966,8 +13966,8 @@
             "ibmproxyurl": "https://iaps.ibm.com",
             "image_pull_secret": "bas-images-pull-secret",
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             },
             "prometheus_metrics": [],
             "prometheus_scheduler_frequency": "@daily"
@@ -14188,8 +14188,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -14197,14 +14197,14 @@
             "event_scheduler_frequency": "@hourly",
             "image_pull_secret": "bas-images-pull-secret",
             "kafka": {
-              "storage#": "5G",
               "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
+              "storage_size": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze",
+              "zookeeper_storage_size": "5G"
             },
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             }
           }
         },
@@ -14224,8 +14224,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -14234,14 +14234,14 @@
             "ibmproxyurl": "https://iaps.ibm.com",
             "image_pull_secret": "bas-images-pull-secret",
             "kafka": {
-              "storage#": "5G",
               "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
+              "storage_size": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze",
+              "zookeeper_storage_size": "5G"
             },
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             }
           }
         },
@@ -14271,8 +14271,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -14281,14 +14281,14 @@
             "ibmproxyurl": "https://iaps.ibm.com",
             "image_pull_secret": "bas-images-pull-secret",
             "kafka": {
-              "storage#": "5G",
               "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
+              "storage_size": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze",
+              "zookeeper_storage_size": "5G"
             },
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             },
             "prometheus_metrics": [],
             "prometheus_scheduler_frequency": "@daily"
@@ -14314,8 +14314,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -14324,8 +14324,8 @@
             "ibmproxyurl": "https://iaps.ibm.com",
             "image_pull_secret": "bas-images-pull-secret",
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             },
             "prometheus_metrics": [],
             "prometheus_scheduler_frequency": "@daily"
@@ -17757,8 +17757,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -17766,14 +17766,14 @@
             "event_scheduler_frequency": "@hourly",
             "image_pull_secret": "bas-images-pull-secret",
             "kafka": {
-              "storage#": "5G",
               "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
+              "storage_size": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze",
+              "zookeeper_storage_size": "5G"
             },
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             }
           }
         },
@@ -17793,8 +17793,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -17803,14 +17803,14 @@
             "ibmproxyurl": "https://iaps.ibm.com",
             "image_pull_secret": "bas-images-pull-secret",
             "kafka": {
-              "storage#": "5G",
               "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
+              "storage_size": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze",
+              "zookeeper_storage_size": "5G"
             },
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             }
           }
         },
@@ -17840,8 +17840,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -17850,14 +17850,14 @@
             "ibmproxyurl": "https://iaps.ibm.com",
             "image_pull_secret": "bas-images-pull-secret",
             "kafka": {
-              "storage#": "5G",
               "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
+              "storage_size": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze",
+              "zookeeper_storage_size": "5G"
             },
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             },
             "prometheus_metrics": [],
             "prometheus_scheduler_frequency": "@daily"
@@ -17883,8 +17883,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -17893,8 +17893,8 @@
             "ibmproxyurl": "https://iaps.ibm.com",
             "image_pull_secret": "bas-images-pull-secret",
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             },
             "prometheus_metrics": [],
             "prometheus_scheduler_frequency": "@daily"
@@ -18792,8 +18792,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -18801,14 +18801,14 @@
             "event_scheduler_frequency": "@hourly",
             "image_pull_secret": "bas-images-pull-secret",
             "kafka": {
-              "storage#": "5G",
               "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
+              "storage_size": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze",
+              "zookeeper_storage_size": "5G"
             },
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             }
           }
         },
@@ -18828,8 +18828,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -18838,14 +18838,14 @@
             "ibmproxyurl": "https://iaps.ibm.com",
             "image_pull_secret": "bas-images-pull-secret",
             "kafka": {
-              "storage#": "5G",
               "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
+              "storage_size": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze",
+              "zookeeper_storage_size": "5G"
             },
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             }
           }
         },
@@ -18875,8 +18875,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -18885,14 +18885,14 @@
             "ibmproxyurl": "https://iaps.ibm.com",
             "image_pull_secret": "bas-images-pull-secret",
             "kafka": {
-              "storage#": "5G",
               "storage_class": "ibmc-block-bronze",
-              "zookeeper_storage#": "5G",
-              "zookeeper_storage_class": "ibmc-block-bronze"
+              "storage_size": "5G",
+              "zookeeper_storage_class": "ibmc-block-bronze",
+              "zookeeper_storage_size": "5G"
             },
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             },
             "prometheus_metrics": [],
             "prometheus_scheduler_frequency": "@daily"
@@ -18918,8 +18918,8 @@
             "db_archive": {
               "frequency": "@monthly",
               "persistent_storage": {
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               },
               "retention_age": 6
             },
@@ -18928,8 +18928,8 @@
             "ibmproxyurl": "https://iaps.ibm.com",
             "image_pull_secret": "bas-images-pull-secret",
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             },
             "prometheus_metrics": [],
             "prometheus_scheduler_frequency": "@daily"

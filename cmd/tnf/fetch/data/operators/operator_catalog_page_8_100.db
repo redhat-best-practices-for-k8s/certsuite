@@ -4763,15 +4763,15 @@
             "airgapped": {
               "persistent_storage": {
                 "access_mode": "ReadWriteMany",
-                "storage#": "10G",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               }
             },
             "event_scheduler_frequency": "@hourly",
             "image_pull_secret": "growthstack-pull-secret",
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             }
           }
         },
@@ -4785,17 +4785,17 @@
             "airgapped": {
               "enabled": false,
               "persistent_storage": {
-                "storage#": "10G",
                 "storage_accessmode": "ReadWriteMany",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               }
             },
             "event_scheduler_frequency": "@hourly",
             "ibmproxyurl": "https://iaps.ibm.com;",
             "image_pull_secret": "growthstack-pull-secret",
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             }
           }
         },
@@ -4829,17 +4829,17 @@
             "airgapped": {
               "enabled": false,
               "persistent_storage": {
-                "storage#": "10G",
                 "storage_accessmode": "ReadWriteMany",
-                "storage_class": "ibmc-file-bronze-gid"
+                "storage_class": "ibmc-file-bronze-gid",
+                "storage_size": "10G"
               }
             },
             "event_scheduler_frequency": "@hourly",
             "ibmproxyurl": "https://iaps.ibm.com;",
             "image_pull_secret": "growthstack-pull-secret",
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             },
             "prometheus_scheduler_frequency": "@hourly"
           }
@@ -4855,8 +4855,8 @@
             "ibmproxyurl": "https://iaps.ibm.com;",
             "image_pull_secret": "growthstack-pull-secret",
             "postgres": {
-              "storage#": "10G",
-              "storage_class": "ibmc-block-bronze"
+              "storage_class": "ibmc-block-bronze",
+              "storage_size": "10G"
             },
             "prometheus_scheduler_frequency": "@hourly"
           }
