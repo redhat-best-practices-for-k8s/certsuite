@@ -228,8 +228,8 @@ Version|v1.0.0
 Description|http://test-network-function.com/testcases/access-control/security-context Checks the security context is match one of the 4 categories
 Result Type|normative
 Suggested Remediation|Change the pod and containers "runAsUser" uid to something other than root(0)
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
-Exception Process|If your application needs root user access, please document why your application cannot be ran as 											non-root and supply the reasoning for exception.
+Best Practice Reference|https://TODO Section 4.5
+Exception Process|If the contaier had the right configuration of the allowed category from the 4 list so the test will pass the list is on page 51 on 								the CNF Security Context Constraints (SCC) section 4.5, Applications MUST use one of the approved Security Context Constraints  								profiles unless an exception (SEAT) is approved by Verizon.
 Tags|extended
 #### security-context-capabilities-check
 

@@ -770,10 +770,10 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Identifier:       TestSecContextIdentifier,
 		Type:             NormativeResult,
 		Remediation:      SecConNonRootUserRemediation,
-		ExceptionProcess: SecConNonRootUserExceptionProcess,
+		ExceptionProcess: SecConExceptionProcess,
 		Description: formDescription(TestSecContextIdentifier,
 			`Checks the security context is match one of the 4 categories`),
-		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
+		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 4.5",
 		Tags:                  TestSecContextIdentifier.Tags,
 	},
 	TestSecConPrivilegeEscalation: {

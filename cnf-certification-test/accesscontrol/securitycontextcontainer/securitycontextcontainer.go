@@ -1,6 +1,10 @@
 package securitycontextcontainer
 
 import (
+	"reflect"
+	"sort"
+
+	"github.com/sirupsen/logrus"
 	v1 "k8s.io/api/core/v1"
 )
 
@@ -15,11 +19,19 @@ type ContainerSCC struct {
 	RunAsUser              bool
 	ReadOnlyRootFilesystem bool
 	RunAsNonRoot           bool
+	FsGroup                bool
+	SeLinuxContext         bool
 	Capabilities           string
+	HaveDropCapabilities   bool
+	AllVolumeAllowed       bool
 }
 
 var (
-	Catagory1 = ContainerSCC{false,
+	requiredDropCapabilities = []string{"KILL", "MKNOD", "SETUID", "SETGID"}
+	category3AddCapabilities = []string{"NET_ADMIN, NET_RAW"}
+	category4AddCapabilities = []string{"NET_ADMIN, NET_RAW, IPC_LOCK"}
+	Allowvolumes             = []string{"configMap, downwardAPI, emptyDir,persistentVolumeClaim,projected,secret"}
+	Catagory1                = ContainerSCC{false,
 		false,
 		false,
 		false,
@@ -29,7 +41,11 @@ var (
 		true,
 		false,
 		false,
-		""}
+		true,
+		true,
+		"",
+		true,
+		true}
 
 	Catagory2 = ContainerSCC{false,
 		false,
@@ -41,7 +57,11 @@ var (
 		false,
 		false,
 		true,
-		""}
+		true,
+		true,
+		"",
+		true,
+		true}
 
 	Catagory3 = ContainerSCC{false,
 		false,
@@ -53,7 +73,11 @@ var (
 		true,
 		false,
 		false,
-		"NET_ADMIN, NET_RAW"}
+		true,
+		true,
+		"catagory3",
+		true,
+		true}
 	Catagory4 = ContainerSCC{false,
 		false,
 		false,
@@ -64,11 +88,14 @@ var (
 		true,
 		false,
 		false,
-		"IPC_LOCK, NET_ADMIN, NET_RAW"}
+		true,
+		true,
+		"catagory4",
+		true,
+		true}
 )
 
 func GetContainerSCC(cut *v1.Container, containerSCC ContainerSCC) ContainerSCC {
-	const istioProxyContainerUID = 1337
 	containerSCC.HostPorts = false
 	for _, aPort := range cut.Ports {
 		if aPort.HostPort != 0 {
@@ -76,22 +103,16 @@ func GetContainerSCC(cut *v1.Container, containerSCC ContainerSCC) ContainerSCC 
 			break
 		}
 	}
+	containerSCC = updateCapabilities(cut, containerSCC)
 	if cut.SecurityContext != nil && cut.SecurityContext.AllowPrivilegeEscalation != nil {
-		if *(cut.SecurityContext.AllowPrivilegeEscalation) {
-			containerSCC.PrivilegedContainer = true
-		} else {
-			containerSCC.PrivilegedContainer = false
-		}
+		containerSCC.PrivilegeEscalation = *(cut.SecurityContext.AllowPrivilegeEscalation)
 	}
-	if cut.SecurityContext != nil && cut.SecurityContext.Capabilities != nil {
-		containerSCC.Capabilities = cut.SecurityContext.Capabilities.String()
-	} else {
-		containerSCC.Capabilities = ""
+	if cut.SecurityContext != nil && cut.SecurityContext.Privileged != nil {
+		containerSCC.PrivilegedContainer = *(cut.SecurityContext.Privileged)
 	}
-	if cut.SecurityContext != nil && cut.SecurityContext.RunAsUser != nil && *cut.SecurityContext.RunAsUser == int64(istioProxyContainerUID) {
+
+	if cut.SecurityContext != nil && cut.SecurityContext.RunAsUser != nil {
 		containerSCC.RunAsUser = true
-	} else {
-		containerSCC.RunAsUser = false
 	}
 	if cut.SecurityContext != nil && cut.SecurityContext.ReadOnlyRootFilesystem != nil {
 		containerSCC.ReadOnlyRootFilesystem = *cut.SecurityContext.ReadOnlyRootFilesystem
@@ -99,5 +120,103 @@ func GetContainerSCC(cut *v1.Container, containerSCC ContainerSCC) ContainerSCC 
 	if cut.SecurityContext != nil && cut.SecurityContext.RunAsNonRoot != nil {
 		containerSCC.RunAsNonRoot = *cut.SecurityContext.RunAsNonRoot
 	}
+	if cut.SecurityContext != nil && cut.SecurityContext.SELinuxOptions != nil {
+		containerSCC.SeLinuxContext = true
+	} else {
+		containerSCC.SeLinuxContext = false
+	}
 	return containerSCC
+}
+
+func updateCapabilities(cut *v1.Container, containerSCC ContainerSCC) ContainerSCC {
+	containerSCC.HaveDropCapabilities = false
+	if cut.SecurityContext != nil && cut.SecurityContext.Capabilities != nil {
+		var sliceDropCapabilities []string
+		for _, ncc := range cut.SecurityContext.Capabilities.Drop {
+			sliceDropCapabilities = append(sliceDropCapabilities, string(ncc))
+		}
+		sort.Strings(sliceDropCapabilities)
+		sort.Strings(requiredDropCapabilities)
+		containerSCC.HaveDropCapabilities = reflect.DeepEqual(sliceDropCapabilities, requiredDropCapabilities)
+		contain := true
+
+		for _, ncc := range cut.SecurityContext.Capabilities.Add {
+			if !contains(category3AddCapabilities, string(ncc)) {
+				contain = false
+			}
+		}
+		if contain {
+			containerSCC.Capabilities = "catagory3"
+		} else {
+			contain = true
+			for _, ncc := range cut.SecurityContext.Capabilities.Add {
+				if !contains(category4AddCapabilities, string(ncc)) {
+					contain = false
+				}
+			}
+			if contain {
+				containerSCC.Capabilities = "catagory4"
+			} else {
+				containerSCC.Capabilities = "catagory5"
+			}
+		}
+	} else {
+		containerSCC.Capabilities = ""
+	}
+	return containerSCC
+}
+func contains(elems []string, v string) bool {
+	for _, s := range elems {
+		if v == s {
+			return true
+		}
+	}
+	return false
+}
+
+func AllVolumeAllowed(volumes []v1.Volume) bool {
+	countVolume := 0
+	for j := 0; j < len(volumes); j++ {
+		if volumes[j].ConfigMap != nil {
+			countVolume++
+		}
+		if volumes[j].DownwardAPI != nil {
+			countVolume++
+		}
+		if volumes[j].EmptyDir != nil {
+			countVolume++
+		}
+		if volumes[j].PersistentVolumeClaim != nil {
+			countVolume++
+		}
+		if volumes[j].Projected != nil {
+			countVolume++
+		}
+		if volumes[j].Secret != nil {
+			countVolume++
+		}
+	}
+	return countVolume == len(volumes)
+}
+
+func Checkcategory(containers []v1.Container, containerSCC ContainerSCC) []string {
+	var badCcontainer []string
+	for j := 0; j < len(containers); j++ {
+		cut := &(containers[j])
+		percontainerSCC := GetContainerSCC(cut, containerSCC)
+		// after building the containerSCC need to check to which category it is
+		switch percontainerSCC {
+		case Catagory1:
+			logrus.Info("is ok")
+		case Catagory2:
+			logrus.Info("is ok")
+		case Catagory3:
+			logrus.Info("is ok")
+		case Catagory4:
+			logrus.Info("is ok")
+		default:
+			badCcontainer = append(badCcontainer, cut.Name)
+		}
+	}
+	return badCcontainer
 }

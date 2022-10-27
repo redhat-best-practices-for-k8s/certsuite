@@ -1,5 +1,5 @@
 targetNameSpaces:
-  - name: tnf
+  - name: kube-system
 targetPodLabels:
   - prefix: test-network-function.com
     name: generic

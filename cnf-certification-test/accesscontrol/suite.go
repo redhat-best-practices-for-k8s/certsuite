@@ -56,19 +56,19 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 		env = provider.GetTestEnvironment()
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
-
+	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSecContextIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
+		testContainerSCC(&env)
+	})
 	// Security Context: non-compliant capabilities
-	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSecConCapabilitiesIdentifier)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSecConCapabilitiesIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		TestSecConCapabilities(&env)
 	})
 	// container security context: check if it match one of the 4 categories
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSecContextIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
-		testContainerSCC(&env)
-	})
+
 	// container security context: non-root user
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSecConNonRootUserIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), ginkgo.Label(tags...), func() {
@@ -619,36 +619,27 @@ func Test1337UIDs(env *provider.TestEnvironment) {
 	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
+// a test for security context that are allowed from the documentation of the cnf
+// an allowed one will pass the test
 func testContainerSCC(env *provider.TestEnvironment) {
 	var containerSCC securitycontextcontainer.ContainerSCC
-	const istioProxyContainerUID = 1337
-	var badCut []string
+	var badCcontainer []string
 	for _, pod := range env.Pods {
 		containerSCC.HostIPC = pod.Spec.HostIPC
 		containerSCC.HostNetwork = pod.Spec.HostNetwork
 		containerSCC.HostPID = pod.Spec.HostPID
-		if pod.Spec.SecurityContext.RunAsUser != nil && *pod.Spec.SecurityContext.RunAsUser == int64(istioProxyContainerUID) {
+		containerSCC.AllVolumeAllowed = securitycontextcontainer.AllVolumeAllowed(pod.Spec.Volumes)
+		if pod.Spec.SecurityContext != nil && pod.Spec.SecurityContext.RunAsUser != nil {
 			containerSCC.RunAsUser = true
 		} else {
 			containerSCC.RunAsUser = false
 		}
-		for j := 0; j < len(pod.Spec.Containers); j++ {
-			cut := &(pod.Spec.Containers[j])
-			containerSCC = securitycontextcontainer.GetContainerSCC(cut, containerSCC)
-			// after building the containerSCC need to check to which category it is
-			switch containerSCC {
-			case securitycontextcontainer.Catagory1:
-				logrus.Info("is ok")
-			case securitycontextcontainer.Catagory2:
-				logrus.Info("is ok")
-			case securitycontextcontainer.Catagory3:
-				logrus.Info("is ok")
-			case securitycontextcontainer.Catagory4:
-				logrus.Info("is ok")
-			default:
-				badCut = append(badCut, cut.Name)
-			}
+		if pod.Spec.SecurityContext != nil && pod.Spec.SecurityContext.FSGroup != nil {
+			containerSCC.FsGroup = true
+		} else {
+			containerSCC.FsGroup = false
 		}
+		badCcontainer = securitycontextcontainer.Checkcategory(pod.Spec.Containers, containerSCC)
 	}
-	testhelper.AddTestResultLog("Non-compliant", badCut, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultLog("Non-compliant", badCcontainer, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
