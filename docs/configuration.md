@@ -62,14 +62,13 @@ The autodiscovery mechanism will attempt to identify the default network device 
 
 #### Network Interfaces
 
-* The annotation `test-network-function.com/defaultnetworkinterface` is the highest priority, and must contain a JSON-encoded string of the primary network interface for the pod. This must be explicitly set if needed. Examples are provided in [cnf-certification-test-partner](https://github.com/test-network-function/cnf-certification-test-partner).
-* If the above is not present, the `k8s.v1.cni.cncf.io/networks-status` annotation is checked and the `interface` from the first entry found with `"default"=true` is used. This annotation is automatically managed in OpenShift but may not be present in K8s.
+* The `k8s.v1.cni.cncf.io/networks-status` annotation is checked and the `interface` from the first entry found with `"default"=true` is used. This annotation is automatically managed in OpenShift but may not be present in K8s.
 
 The label `test-network-function.com/skip_connectivity_tests` excludes pods from all connectivity tests. The label value is not important, only its presence.
 The label `test-network-function.com/skip_multus_connectivity_tests` excludes pods from [Multus](https://github.com/k8snetworkplumbingwg/multus-cni) connectivity tests. Tests on default interface are still done. The label value is not important, but its presence.
 
 ## AffinityRequired
-For CNF workloads that require pods to use Pod or Node Affinity rules, the label `AffinityRequired: true` must be included on either the Deployment, StatefulSet, or Pod YAML.  This will prevent any tests for anti-affinity to fail as well as test your workloads for affinity rules that support your CNF's use-case.
+For CNF workloads that require pods to use Pod or Node Affinity rules, the label `AffinityRequired: true` must be included on the Pod YAML.  This will prevent any tests for anti-affinity to fail as well as test your workloads for affinity rules that support your CNF's use-case.
 
 ## certifiedcontainerinfo
 

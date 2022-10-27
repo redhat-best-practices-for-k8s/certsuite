@@ -2,7 +2,6 @@ The tests can be run within a prebuilt container in the OCP cluster.
 
 **Prerequisites for the OCP cluster**
 
-* The cluster should allow interactive shell sessions to pods/containers to stay alive when being idle for more than a few minutes. To enable it, consult the maintainer of the cluster infrastructure. Also, make sure the firewalls/load balancers on the path do not timeout idle connections too quickly.
 * The cluster should have enough resources to drain nodes and reschedule pods. If that is not the case, then ``lifecycle-pod-recreation`` test should be skipped.
 
 ## With quay test container image
@@ -94,8 +93,8 @@ export TNF_CONTAINER_CLIENT=docker
 ### Build locally
 
 ```shell
-podman build -t cnf-certification-test:v1.0.5 \
-  --build-arg TNF_VERSION=v1.0.5 \
+podman build -t cnf-certification-test:v4.0.2 \
+  --build-arg TNF_VERSION=v4.0.2 \
   --build-arg OPENSHIFT_VERSION=4.7.55 .
 ```
 
@@ -110,7 +109,7 @@ The unofficial source could be a fork of the TNF repository.
 Use the `TNF_SRC_URL` build argument to override the URL to a source repository.
 
 ```shell
-podman build -t cnf-certification-test:v1.0.5 \
+podman build -t cnf-certification-test:v4.0.2 \
   --build-arg TNF_VERSION=v1.0.5 \
   --build-arg TNF_SRC_URL=https://github.com/test-network-function/cnf-certification-test \
   --build-arg OPENSHIFT_VERSION=4.7.55 .
@@ -121,7 +120,7 @@ podman build -t cnf-certification-test:v1.0.5 \
 Specify the custom TNF image using the `-i` parameter.
 
 ```shell
-./run-tnf-container.sh -i test-network-function:v1.0.5
+./run-tnf-container.sh -i cnf-certification-test:v4.0.2
 -t ~/tnf/config -o ~/tnf/output -l "networking,access-control"
 ```
  Note: see [General tests](#general-tests) for a list of available keywords.

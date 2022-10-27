@@ -26,10 +26,10 @@ make install-tools
 
 Dependency|Minimum Version
 ---|---
-[GoLang](https://golang.org/dl/)|1.18
-[golangci-lint](https://golangci-lint.run/usage/install/)|1.49.0
+[GoLang](https://golang.org/dl/)|1.19
+[golangci-lint](https://golangci-lint.run/usage/install/)|1.50.1
 [jq](https://stedolan.github.io/jq/)|1.6
-[OpenShift Client](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/)|4.7
+[OpenShift Client](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/)|4.11
 
 Other binary dependencies required to run tests can be installed using the following command:
 

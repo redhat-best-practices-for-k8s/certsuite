@@ -4,7 +4,7 @@ This repository provides a set of Cloud-Native Network Functions (CNF) test case
 
 !!! tip "CNF"
 
-    The app (containers/pods/operators) we want to certify according Telco partner/RH's best practices.
+    The app (containers/pods/operators) we want to certify according Telco partner/Red Hat's best practices.
 
 !!! tip "TNF/Certification Test Suite"
 

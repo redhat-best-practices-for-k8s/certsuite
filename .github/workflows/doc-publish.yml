@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: generate site
-        uses: ./.github/actions/
+        uses: ./.github/actions/documentation
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
