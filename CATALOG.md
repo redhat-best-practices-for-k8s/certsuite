@@ -227,9 +227,9 @@ Unique ID|http://test-network-function.com/testcases/access-control/security-con
 Version|v1.0.0
 Description|http://test-network-function.com/testcases/access-control/security-context Checks the security context is match one of the 4 categories
 Result Type|normative
-Suggested Remediation|Change the pod and containers "runAsUser" uid to something other than root(0)
+Suggested Remediation|Change the secutiry contesxt to be one of the 4 that are allowd on the documetation section 4.5
 Best Practice Reference|https://TODO Section 4.5
-Exception Process|If the contaier had the right configuration of the allowed category from the 4 list so the test will pass the list is on page 51 on 								the CNF Security Context Constraints (SCC) section 4.5, Applications MUST use one of the approved Security Context Constraints  								profiles unless an exception (SEAT) is approved by Verizon.
+Exception Process|If the contaier had the right configuration of the allowed category from the 4 list so the test will pass the  	list is on page 51 on the CNF Security Context Constraints (SCC) section 4.5,  	Applications MUST use one of the approved Security Context Constraints profiles unless an exception (SEAT) is approved by Verizon.
 Tags|extended
 #### security-context-capabilities-check
 

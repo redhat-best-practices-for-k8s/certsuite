@@ -31,7 +31,7 @@ var (
 	category3AddCapabilities = []string{"NET_ADMIN, NET_RAW"}
 	category4AddCapabilities = []string{"NET_ADMIN, NET_RAW, IPC_LOCK"}
 	Allowvolumes             = []string{"configMap, downwardAPI, emptyDir,persistentVolumeClaim,projected,secret"}
-	Catagory1                = ContainerSCC{false,
+	Category1                = ContainerSCC{false,
 		false,
 		false,
 		false,
@@ -47,7 +47,7 @@ var (
 		true,
 		true}
 
-	Catagory2 = ContainerSCC{false,
+	Category2 = ContainerSCC{false,
 		false,
 		false,
 		false,
@@ -63,7 +63,7 @@ var (
 		true,
 		true}
 
-	Catagory3 = ContainerSCC{false,
+	Category3 = ContainerSCC{false,
 		false,
 		false,
 		false,
@@ -78,7 +78,7 @@ var (
 		"catagory3",
 		true,
 		true}
-	Catagory4 = ContainerSCC{false,
+	Category4 = ContainerSCC{false,
 		false,
 		false,
 		false,
@@ -206,13 +206,13 @@ func Checkcategory(containers []v1.Container, containerSCC ContainerSCC) []strin
 		percontainerSCC := GetContainerSCC(cut, containerSCC)
 		// after building the containerSCC need to check to which category it is
 		switch percontainerSCC {
-		case Catagory1:
+		case Category1:
 			logrus.Info("is ok")
-		case Catagory2:
+		case Category2:
 			logrus.Info("is ok")
-		case Catagory3:
+		case Category3:
 			logrus.Info("is ok")
-		case Catagory4:
+		case Category4:
 			logrus.Info("is ok")
 		default:
 			badCcontainer = append(badCcontainer, cut.Name)
