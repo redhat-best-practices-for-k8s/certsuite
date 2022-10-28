@@ -954,13 +954,12 @@
 </ul>
 <h4 id="network-interfaces">Network Interfaces<a class="headerlink" href="#network-interfaces" title="Permanent link">&para;</a></h4>
 <ul>
-<li>The annotation <code>test-network-function.com/defaultnetworkinterface</code> is the highest priority, and must contain a JSON-encoded string of the primary network interface for the pod. This must be explicitly set if needed. Examples are provided in <a href="https://github.com/test-network-function/cnf-certification-test-partner">cnf-certification-test-partner</a>.</li>
-<li>If the above is not present, the <code>k8s.v1.cni.cncf.io/networks-status</code> annotation is checked and the <code>interface</code> from the first entry found with <code>"default"=true</code> is used. This annotation is automatically managed in OpenShift but may not be present in K8s.</li>
+<li>The <code>k8s.v1.cni.cncf.io/networks-status</code> annotation is checked and the <code>interface</code> from the first entry found with <code>"default"=true</code> is used. This annotation is automatically managed in OpenShift but may not be present in K8s.</li>
 </ul>
 <p>The label <code>test-network-function.com/skip_connectivity_tests</code> excludes pods from all connectivity tests. The label value is not important, only its presence.
 The label <code>test-network-function.com/skip_multus_connectivity_tests</code> excludes pods from <a href="https://github.com/k8snetworkplumbingwg/multus-cni">Multus</a> connectivity tests. Tests on default interface are still done. The label value is not important, but its presence.</p>
 <h2 id="affinityrequired">AffinityRequired<a class="headerlink" href="#affinityrequired" title="Permanent link">&para;</a></h2>
-<p>For <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> workloads that require pods to use Pod or Node Affinity rules, the label <code>AffinityRequired: true</code> must be included on either the Deployment, StatefulSet, or Pod YAML.  This will prevent any tests for anti-affinity to fail as well as test your workloads for affinity rules that support your <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>&lsquo;s use-case.</p>
+<p>For <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> workloads that require pods to use Pod or Node Affinity rules, the label <code>AffinityRequired: true</code> must be included on the Pod YAML.  This will prevent any tests for anti-affinity to fail as well as test your workloads for affinity rules that support your <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>&lsquo;s use-case.</p>
 <h2 id="certifiedcontainerinfo">certifiedcontainerinfo<a class="headerlink" href="#certifiedcontainerinfo" title="Permanent link">&para;</a></h2>
 <p>The <code>certifiedcontainerinfo</code> section contains information about <abbr title="Cloud-Native Network Functions">CNFs</abbr> containers that are
 to be checked for certification status on Red Hat catalogs.</p>
