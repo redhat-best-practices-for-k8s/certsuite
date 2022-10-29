@@ -14262,394 +14262,6 @@
       "version_original": "8.6.4"
     },
     {
-      "_id": "633057821b05b6df63f38746",
-      "alm_examples": [
-        {
-          "api_version": "compute.functionmesh.io/v1alpha1",
-          "kind": "Function",
-          "metadata": {
-            "name": "java-function-sample",
-            "namespace": "default"
-          },
-          "spec": {
-            "autoAck": true,
-            "className": "org.apache.pulsar.functions.api.examples.ExclamationFunction",
-            "clusterName": "test-pulsar",
-            "forwardSourceMessageProperty": true,
-            "input": {
-              "topics": [
-                "persistent://public/default/java-function-input-topic"
-              ],
-              "typeClassName": "java.lang.String"
-            },
-            "java": {
-              "extraDependenciesDir": "random-dir/",
-              "jar": "pulsar-functions-api-examples.jar",
-              "jarLocation": "public/default/nlu-test-java-function"
-            },
-            "logTopic": "persistent://public/default/logging-function-logs",
-            "maxPendingAsyncRequests": 1000,
-            "maxReplicas": 5,
-            "output": {
-              "topic": "persistent://public/default/java-function-output-topic",
-              "typeClassName": "java.lang.String"
-            },
-            "pod": {
-              "annotations": {
-                "managed-function": "true"
-              },
-              "env": [
-                {
-                  "name": "EXAMPLE_VARIABLE",
-                  "value": "exampleValue"
-                }
-              ],
-              "imagePullSecrets": [
-                {
-                  "name": "regcred"
-                }
-              ],
-              "initContainers": [
-                {
-                  "command": [
-                    "sh",
-                    "-c",
-                    "echo The app is running! && sleep 30"
-                  ],
-                  "image": "busybox:1.28",
-                  "name": "init-function"
-                }
-              ],
-              "labels": {
-                "locaction": "mtv"
-              },
-              "sidecars": [
-                {
-                  "command": [
-                    "sh",
-                    "-c",
-                    "echo The app is running! && sleep 30000"
-                  ],
-                  "image": "busybox:1.28",
-                  "name": "sidecar-function"
-                }
-              ],
-              "volumes": [
-                {
-                  "emptyDir": {},
-                  "name": "cache-volume"
-                }
-              ]
-            },
-            "pulsar": {
-              "authSecret": "test-auth",
-              "pulsarConfig": "test-pulsar",
-              "tlsSecret": "test-tls"
-            },
-            "replicas": 1,
-            "resources": {
-              "limits": {
-                "cpu": "0.2",
-                "memory": "1.1G"
-              },
-              "requests": {
-                "cpu": "0.1",
-                "memory": "1G"
-              }
-            },
-            "secretsMap": {
-              "name": {
-                "key": "username",
-                "path": "test-secret"
-              },
-              "pwd": {
-                "key": "password",
-                "path": "test-secret"
-              }
-            },
-            "volumeMounts": [
-              {
-                "mountPath": "/cache",
-                "name": "cache-volume"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "compute.functionmesh.io/v1alpha1",
-          "kind": "FunctionMesh",
-          "metadata": {
-            "name": "functionmesh-sample"
-          },
-          "spec": {
-            "functions": [
-              {
-                "autoAck": true,
-                "className": "org.apache.pulsar.functions.api.examples.ExclamationFunction",
-                "clusterName": "test-pulsar",
-                "forwardSourceMessageProperty": true,
-                "input": {
-                  "topics": [
-                    "persistent://public/default/functionmesh-input-topic"
-                  ],
-                  "typeClassName": "java.lang.String"
-                },
-                "java": {
-                  "jar": "pulsar-functions-api-examples.jar",
-                  "jarLocation": "public/default/nlu-test-functionmesh-ex1"
-                },
-                "logTopic": "persistent://public/default/logging-function-log",
-                "maxReplicas": 1,
-                "name": "ex1",
-                "output": {
-                  "topic": "persistent://public/default/mid-topic",
-                  "typeClassName": "java.lang.String"
-                },
-                "pulsar": {
-                  "pulsarConfig": "mesh-test-pulsar"
-                },
-                "replicas": 1,
-                "resources": {
-                  "limits": {
-                    "cpu": "0.2",
-                    "memory": "1.1G"
-                  },
-                  "requests": {
-                    "cpu": "0.1",
-                    "memory": "1G"
-                  }
-                }
-              },
-              {
-                "autoAck": true,
-                "className": "org.apache.pulsar.functions.api.examples.ExclamationFunction",
-                "clusterName": "test-pulsar",
-                "forwardSourceMessageProperty": true,
-                "input": {
-                  "topics": [
-                    "persistent://public/default/mid-topic"
-                  ],
-                  "typeClassName": "java.lang.String"
-                },
-                "java": {
-                  "jar": "pulsar-functions-api-examples.jar",
-                  "jarLocation": "public/default/nlu-test-functionmesh-ex2"
-                },
-                "logTopic": "persistent://public/default/logging-function-logs",
-                "maxReplicas": 1,
-                "name": "ex2",
-                "output": {
-                  "topic": "persistent://public/default/functionmesh-output-topic",
-                  "typeClassName": "java.lang.String"
-                },
-                "pulsar": {
-                  "pulsarConfig": "mesh-test-pulsar"
-                },
-                "replicas": 1,
-                "resources": {
-                  "limits": {
-                    "cpu": "0.2",
-                    "memory": "1.1G"
-                  },
-                  "requests": {
-                    "cpu": "0.1",
-                    "memory": "1G"
-                  }
-                }
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "compute.functionmesh.io/v1alpha1",
-          "kind": "Sink",
-          "metadata": {
-            "name": "sink-sample"
-          },
-          "spec": {
-            "autoAck": true,
-            "className": "org.apache.pulsar.io.elasticsearch.ElasticSearchSink",
-            "clusterName": "test-pulsar",
-            "image": "streamnative/pulsar-io-elastic-search:2.10.0.0-rc10",
-            "input": {
-              "topics": [
-                "persistent://public/default/input"
-              ],
-              "typeClassName": "[B"
-            },
-            "java": {
-              "jar": "connectors/pulsar-io-elastic-search-2.10.0.0-rc10.nar",
-              "jarLocation": ""
-            },
-            "maxReplicas": 1,
-            "pulsar": {
-              "pulsarConfig": "test-sink"
-            },
-            "replicas": 1,
-            "resources": {
-              "limits": {
-                "cpu": "0.2",
-                "memory": "1.1G"
-              },
-              "requests": {
-                "cpu": "0.1",
-                "memory": "1G"
-              }
-            },
-            "sinkConfig": {
-              "elasticSearchUrl": "http://quickstart-es-http.default.svc.cluster.local:9200",
-              "indexName": "my_index",
-              "password": "wJ757TmoXEd941kXm07Z2GW3",
-              "typeName": "doc",
-              "username": "elastic"
-            }
-          }
-        },
-        {
-          "api_version": "compute.functionmesh.io/v1alpha1",
-          "kind": "Source",
-          "metadata": {
-            "name": "source-sample"
-          },
-          "spec": {
-            "className": "org.apache.pulsar.io.debezium.mongodb.DebeziumMongoDbSource",
-            "clusterName": "test-pulsar",
-            "forwardSourceMessageProperty": true,
-            "image": "streamnative/pulsar-io-debezium-mongodb:2.10.0.0-rc10",
-            "java": {
-              "jar": "connectors/pulsar-io-debezium-mongodb-2.10.0.0-rc10.nar",
-              "jarLocation": ""
-            },
-            "maxReplicas": 1,
-            "output": {
-              "producerConf": {
-                "maxPendingMessages": 1000,
-                "maxPendingMessagesAcrossPartitions": 50000,
-                "useThreadLocalProducers": true
-              },
-              "topic": "persistent://public/default/destination",
-              "typeClassName": "org.apache.pulsar.common.schema.KeyValue"
-            },
-            "pulsar": {
-              "pulsarConfig": "test-source"
-            },
-            "replicas": 1,
-            "resources": {
-              "limits": {
-                "cpu": "0.2",
-                "memory": "1.1G"
-              },
-              "requests": {
-                "cpu": "0.1",
-                "memory": "1G"
-              }
-            },
-            "sourceConfig": {
-              "database.whitelist": "inventory",
-              "mongodb.hosts": "rs0/mongo-dbz-0.mongo.default.svc.cluster.local:27017,rs0/mongo-dbz-1.mongo.default.svc.cluster.local:27017,rs0/mongo-dbz-2.mongo.default.svc.cluster.local:27017",
-              "mongodb.name": "dbserver1",
-              "mongodb.password": "dbz",
-              "mongodb.task.id": "1",
-              "mongodb.user": "debezium",
-              "pulsar.service.url": "pulsar://test-pulsar-broker.default.svc.cluster.local:6650"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/streamnative/function-mesh-bundle@sha256:76537db90d8e64ee43cff269d1769caa84d45c9262de5312e1eb6bee9b74202f",
-      "bundle_path_digest": "sha256:76537db90d8e64ee43cff269d1769caa84d45c9262de5312e1eb6bee9b74202f",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-09-25T13:28:34.211000+00:00",
-      "csv_description": "[Function Mesh](https://functionmesh.io/) is a serverless framework purpose-built for stream processing applications. It brings powerful event-streaming capabilities to your applications by orchestrating multiple [Pulsar Functions](http://pulsar.apache.org/docs/en/next/functions-overview/) and [Pulsar IO connectors](http://pulsar.apache.org/docs/en/next/io-overview/) for complex stream processing jobs on Kubernetes.\nPrerequisites:\n- Install cert-manager operator first.\n",
-      "csv_display_name": "Function Mesh Operator",
-      "csv_metadata_description": "The Function Mesh Operator manages the Pulsar Functions and Connectors deployed on a Kubernetes cluster.",
-      "csv_name": "function-mesh.v0.6.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T11:39:56.786000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "function-mesh",
-      "provided_apis": [
-        {
-          "group": "compute.functionmesh.io",
-          "kind": "Function",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "compute.functionmesh.io",
-          "kind": "Sink",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "compute.functionmesh.io",
-          "kind": "Source",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "compute.functionmesh.io",
-          "kind": "FunctionMesh",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "StreamNative",
-      "related_images": [
-        {
-          "digest": "sha256:15ab33a8e2726416a05e034184a2253d33871aba40e6f41347511caf47e08d36",
-          "image": "quay.io/streamnativeio/function-mesh@sha256:15ab33a8e2726416a05e034184a2253d33871aba40e6f41347511caf47e08d36",
-          "name": "function-mesh"
-        },
-        {
-          "digest": "sha256:67ecb332573384515406ebd71816781366b70adb0eb66345e5980e92603373e1",
-          "image": "docker.cloudsmith.io/streamnative/mirrors/gcr.io/kubebuilder/kube-rbac-proxy@sha256:67ecb332573384515406ebd71816781366b70adb0eb66345e5980e92603373e1",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:15ab33a8e2726416a05e034184a2253d33871aba40e6f41347511caf47e08d36",
-          "image": "quay.io/streamnativeio/function-mesh@sha256:15ab33a8e2726416a05e034184a2253d33871aba40e6f41347511caf47e08d36",
-          "name": "function-mesh-15ab33a8e2726416a05e034184a2253d33871aba40e6f41347511caf47e08d36-annotation"
-        },
-        {
-          "digest": "sha256:15ab33a8e2726416a05e034184a2253d33871aba40e6f41347511caf47e08d36",
-          "image": "quay.io/streamnativeio/function-mesh@sha256:15ab33a8e2726416a05e034184a2253d33871aba40e6f41347511caf47e08d36",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<0.6.0",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.6.0",
-      "version_original": "0.6.0"
-    },
-    {
       "_id": "63305796fc81574279e7fff2",
       "alm_examples": [
         {
@@ -15428,6 +15040,224 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "0.6.0",
       "version_original": "0.6.0"
+    },
+    {
+      "_id": "6330992c407cfb8fa77cbfc2",
+      "alm_examples": [
+        {
+          "api_version": "sts.silicom.com/v1alpha1",
+          "kind": "StsConfig",
+          "metadata": {
+            "name": "bc-1",
+            "namespace": "openshift-operators"
+          },
+          "spec": {
+            "interfaces": [
+              {
+                "ethName": "enp2s0f0",
+                "ethPort": 1,
+                "holdoff": 500,
+                "ipv4": 1,
+                "ipv6": 1,
+                "mode": "Slave",
+                "ql": 4,
+                "qlEnable": 1,
+                "synce": 1
+              },
+              {
+                "ethName": "enp2s0f1",
+                "ethPort": 1,
+                "holdoff": 500,
+                "ipv4": 1,
+                "ipv6": 1,
+                "mode": "Master",
+                "ql": 4,
+                "qlEnable": 1,
+                "synce": 1
+              },
+              {
+                "ethName": "enp2s0f2",
+                "ethPort": 2,
+                "holdoff": 500,
+                "ipv4": 1,
+                "mode": "Master",
+                "ql": 4,
+                "qlEnable": 1,
+                "synce": 1
+              }
+            ],
+            "mode": "T-BC-8275.1",
+            "nodeSelector": {
+              "sts.silicom.com/config": "bc-1"
+            }
+          }
+        },
+        {
+          "api_version": "sts.silicom.com/v1alpha1",
+          "kind": "StsConfig",
+          "metadata": {
+            "name": "gm-1",
+            "namespace": "openshift-operators"
+          },
+          "spec": {
+            "interfaces": [
+              {
+                "ethName": "enp2s0f0",
+                "ethPort": 1,
+                "holdoff": 500,
+                "ipv4": 1,
+                "ipv6": 1,
+                "mode": "Master",
+                "ql": 4,
+                "qlEnable": 1,
+                "synce": 1
+              }
+            ],
+            "mode": "T-GM.8275.1",
+            "nodeSelector": {
+              "sts.silicom.com/mode": "gm-1"
+            }
+          }
+        },
+        {
+          "api_version": "sts.silicom.com/v1alpha1",
+          "kind": "StsNode",
+          "metadata": {
+            "name": "worker2"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "sts.silicom.com/v1alpha1",
+          "kind": "StsOperatorConfig",
+          "metadata": {
+            "name": "sts-operator-config",
+            "namespace": "openshift-operators"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64"
+      ],
+      "bundle_path": "registry.connect.redhat.com/silicomltd/silicom-sts-operator@sha256:ddfe2ef7d9e1093860adc84f44a0f4af7fc18b4742152b7779da05dbdca74d58",
+      "bundle_path_digest": "sha256:ddfe2ef7d9e1093860adc84f44a0f4af7fc18b4742152b7779da05dbdca74d58",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-09-25T18:08:43.979000+00:00",
+      "csv_description": "Silicom STS line card for 4G and 5G NIC enable real-time data transmission\nwith high timing accuracy at the lowest cost to power 5G DRAN and CRAN edge\ndeployments.\n\n* Support 1588/PTP over IPv4 / IPV6, IEEE1588v2\n* Support SyncE /ITU-T G.8262\n* T-BC/T-TSC Boundary Clock and TSC Slave Clock /G.8273.2\n* T-GM Grand Master /G.8273.1 per G.8275.1 PTP Profile\n* PRTC Primary Reference Time Clock Class B/G.8272\n* T-TC Transparent Clock /G.8273.3\n* 1588 Software Stack and Servo Software in x86\n* [Silicom STS2 Card](https://www.silicom-usa.com/pr/server-adapters/networking-adapters/10-gigabit-ethernet-networking-adapters/p410g8ts81-timesync-server-adapter)\n\n### Prequisites:\n* [NFD Operator](https://operatorhub.io/operator/nfd-operator \"NFD operator needed for the discovery of STS cards\").\n* [SRO Operator](https://github.com/openshift/special-resource-operator)\n",
+      "csv_display_name": "Silicom STS Operator",
+      "csv_metadata_description": "This Operator is a Kubernetes custom controller whose goal\nis to serve the installation and lifecycle management of\nSilicom STS device plugins for Kubernetes.\n",
+      "csv_name": "silicom-sts-operator.v0.1.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T12:04:36.834000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.12",
+      "organization": "certified-operators",
+      "package": "silicom-sts-operator",
+      "provided_apis": [
+        {
+          "group": "sts.silicom.com",
+          "kind": "StsConfig",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "sts.silicom.com",
+          "kind": "StsNode",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "sts.silicom.com",
+          "kind": "StsOperatorConfig",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Silicom Ltd.",
+      "related_images": [
+        {
+          "digest": "sha256:cc1066f0ab347fd11c2214d6633b9727f581830bcc6b638df51e5657a5408c07",
+          "image": "quay.io/silicom/gpsd@sha256:cc1066f0ab347fd11c2214d6633b9727f581830bcc6b638df51e5657a5408c07",
+          "name": "gpsd"
+        },
+        {
+          "digest": "sha256:f471a2596c2cff1c538a7f167c3c586721f36dd9690cf656e329f797fd16f412",
+          "image": "quay.io/silicom/phc2sys@sha256:f471a2596c2cff1c538a7f167c3c586721f36dd9690cf656e329f797fd16f412",
+          "name": "phc2sys"
+        },
+        {
+          "digest": "sha256:410d078fdf94a306942d36c69d86af35afd51711b2dad67a7d6ced7f5b52c8d3",
+          "image": "quay.io/silicom/tsyncd@sha256:410d078fdf94a306942d36c69d86af35afd51711b2dad67a7d6ced7f5b52c8d3",
+          "name": "tsyncd"
+        },
+        {
+          "digest": "sha256:7ddf9e3ba749f6ec8ded7c4a2d41d94008eb64f69e38f14a01e082f780b08994",
+          "image": "quay.io/silicom/grpc-tsyncd@sha256:7ddf9e3ba749f6ec8ded7c4a2d41d94008eb64f69e38f14a01e082f780b08994",
+          "name": "grpc-tsyncd"
+        },
+        {
+          "digest": "sha256:529cd89559276680efcd73ef4e8d19df5741726dcfb02ad17a1c9f264d378fe0",
+          "image": "quay.io/silicom/sts-plugin@sha256:529cd89559276680efcd73ef4e8d19df5741726dcfb02ad17a1c9f264d378fe0",
+          "name": "sts-plugin"
+        },
+        {
+          "digest": "sha256:56fbe39ec7b1732959f1bdef7854376e3b8f6aa7a1ebd2dcdd84c738a2eb7604",
+          "image": "quay.io/silicom/ice-driver-src@sha256:56fbe39ec7b1732959f1bdef7854376e3b8f6aa7a1ebd2dcdd84c738a2eb7604",
+          "name": "ice-driver-src"
+        },
+        {
+          "digest": "sha256:26d352120fc86e5b67610ecd56ac383f07f093d8606e26f913acad7dbe11a8de",
+          "image": "quay.io/silicom/sts-operator@sha256:26d352120fc86e5b67610ecd56ac383f07f093d8606e26f913acad7dbe11a8de",
+          "name": "sts-operator"
+        },
+        {
+          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
+          "image": "quay.io/silicom/sts-operator@sha256:a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5",
+          "name": "sts-operator-a79a5cf99f5238ee08c509efe0b6142197ef0b79a6b209c125d9f7b7235758e5-annotation"
+        },
+        {
+          "digest": "sha256:26d352120fc86e5b67610ecd56ac383f07f093d8606e26f913acad7dbe11a8de",
+          "image": "quay.io/silicom/sts-operator@sha256:26d352120fc86e5b67610ecd56ac383f07f093d8606e26f913acad7dbe11a8de",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.12",
+      "version": "0.1.2",
+      "version_original": "0.1.2"
     }
   ]
 }

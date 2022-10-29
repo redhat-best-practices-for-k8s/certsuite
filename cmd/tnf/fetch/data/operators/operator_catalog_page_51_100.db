@@ -1,365 +1,6 @@
 {
   "data": [
     {
-      "_id": "633c6a55394f2c415dc1a711",
-      "alm_examples": [
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "MarketplaceConfig",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "marketplaceconfig",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "clusterUUID": "",
-            "features": {
-              "deployment": true,
-              "meterDefinitionCatalogServer": false,
-              "registration": true
-            },
-            "installIBMCatalogSource": true,
-            "isDisconnected": false,
-            "rhmAccountID": ""
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "MeterBase",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "meterbase",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "enabled": true,
-            "prometheus": {
-              "resources": {
-                "limits": {
-                  "cpu": "2",
-                  "memory": "2Gi"
-                },
-                "requests": {
-                  "cpu": "1",
-                  "memory": "1G"
-                }
-              },
-              "storage": {
-                "size": "20Gi"
-              }
-            }
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "MeterReport",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "example-meterreport",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "endTime": "2020-08-05T00:00:00Z",
-            "prometheusService": {
-              "name": "rhm-prometheus-meterbase",
-              "namespace": "openshift-redhat-marketplace",
-              "targetPort": "rbac"
-            },
-            "startTime": "2020-08-04T00:00:00Z"
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "RazeeDeployment",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "razeedeployment-example",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "clusterUUID": "example-cluster-uuid",
-            "enabled": true
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1alpha1",
-          "kind": "RemoteResourceS3",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "example-remoteresources3",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "auth": {
-              "iam": {
-                "apiKeyRef": {
-                  "valueFrom": {
-                    "secretKeyRef": {
-                      "key": "accesskey",
-                      "name": "rhm-cos-reader-key"
-                    }
-                  }
-                },
-                "grantType": "urn:ibm:params:oauth:grant-type:apikey",
-                "responseType": "cloud_iam",
-                "url": "https://iam.cloud.ibm.com/identity/token"
-              }
-            },
-            "requests": [
-              {
-                "options": {
-                  "url": "https://s3.us-east.cloud-object-storage.appdomain.cloud/your-accountId/your-cluster-uuid/name-of-child.yaml"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1beta1",
-          "kind": "MeterDefinition",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "example-meterdefinition-4",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "group": "partner.metering.com",
-            "kind": "App",
-            "meters": [
-              {
-                "aggregation": "sum",
-                "metricId": "container_cpu_usage_core_avg",
-                "period": "1h",
-                "query": "rate(container_cpu_usage_seconds_total{cpu=\"total\",container=\"db\"}[5m])*100",
-                "workloadType": "Pod"
-              }
-            ],
-            "resourceFilters": [
-              {
-                "namespace": {
-                  "useOperatorGroup": true
-                },
-                "ownerCRD": {
-                  "apiVersion": "marketplace.redhat.com/v1alpha1",
-                  "kind": "RazeeDeployment"
-                },
-                "workloadType": "Pod"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "marketplace.redhat.com/v1beta1",
-          "kind": "MeterDefinition",
-          "metadata": {
-            "labels": {
-              "redhat.marketplace.com/name": "redhat-marketplace-operator"
-            },
-            "name": "meterdefinition-sample",
-            "namespace": "openshift-redhat-marketplace"
-          },
-          "spec": {
-            "group": "partner.metering.com",
-            "kind": "App",
-            "meters": [
-              {
-                "aggregation": "sum",
-                "metricId": "container_cpu_usage_core_avg",
-                "period": "1h",
-                "query": "rate(container_cpu_usage_seconds_total{cpu=\"total\",container=\"db\"}[5m])*100",
-                "workloadType": "Pod"
-              }
-            ],
-            "resourceFilters": [
-              {
-                "namespace": {
-                  "useOperatorGroup": true
-                },
-                "ownerCRD": {
-                  "apiVersion": "marketplace.redhat.com/v1alpha1",
-                  "kind": "RazeeDeployment"
-                },
-                "workloadType": "Pod"
-              }
-            ]
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64",
-        "ppc64le",
-        "s390x"
-      ],
-      "bundle_path": "registry.connect.redhat.com/rh-marketplace/rh-marketplace-bundle@sha256:59c9ea52e8321078e9cf831106c92e4feed1b503463490425e64c5876956f1da",
-      "bundle_path_digest": "sha256:59c9ea52e8321078e9cf831106c92e4feed1b503463490425e64c5876956f1da",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-10-04T17:16:05.175000+00:00",
-      "csv_description": "The Red Hat Marketplace Operator provides cluster management, metering and\noperator installation for Red Hat Marketplace customers.\n### **Important Note**\nA set of instructions for onboarding is provided here. For more detailed onboarding instructions or information about what is installed please visit [marketplace.redhat.com](https://marketplace.redhat.com).\nTo access images from Red Hat Marketplace and the Marketplace container catalog you will need to make the pull secret attained in installation available to the workloads running on the cluster.\n### Prerequisites\n1. It is recommended to [enable monitoring for user-defined projects](https://docs.openshift.com/container-platform/4.10/monitoring/enabling-monitoring-for-user-defined-projects.html) as the Prometheus provider.\n2. Edit the cluster-monitoring-config ConfigMap object:\n  \n   ```sh\n   $ oc -n openshift-monitoring edit configmap cluster-monitoring-config\n   ```\n\n3. Add enableUserWorkload: true under data/config.yaml:\n  \n    ```sh\n    apiVersion: v1\n    kind: ConfigMap\n    metadata:\n      name: cluster-monitoring-config\n      namespace: openshift-monitoring\n    data:\n      config.yaml: |\n        enableUserWorkload: true\n    ```\n\n4. Configure the user-workload-monitoring-config ConfigMap object:\n  \n    ```sh\n    $ oc -n openshift-user-workload-monitoring edit configmap user-workload-monitoring-config\n    ```\n\n5. Configure a minimum retention time of 168h and minimum storage capacity of 40Gi\n  \n    ```sh\n    apiVersion: v1\n    kind: ConfigMap\n    metadata:\n      name: user-workload-monitoring-config\n      namespace: openshift-user-workload-monitoring\n    data:\n      config.yaml: |\n        prometheus:\n          retention: 168h\n          volumeClaimTemplate:\n            spec:\n              resources:\n                requests:\n                  storage: 40Gi\n    ```\n\n### Installation\n1. Create or get your pull secret from [Red Hat Marketplace](https://marketplace.redhat.com/en-us/documentation/clusters#get-pull-secret).\n2. Install the Red Hat Marketplace Operator in the openshift-redhat-marketplace namespace.\n3. Create a Kubernetes secret in the openshift-redhat-marketplace namespace with the name `redhat-marketplace-pull-secret` and key `PULL_SECRET` with the value of the Red hat Marketplace Pull Secret.\n\n   ```sh\n   # Replace ${PULL_SECRET} with your secret from Red Hat Marketplace\n   oc create secret generic redhat-marketplace-pull-secret -n  openshift-redhat-marketplace --from-literal=PULL_SECRET=${PULL_SECRET}\n   ```\n\n4. Install the Red Hat Marketplace pull secret as a global pull secret on the cluster.\n   **Warning:** This step will make your cluster perform a rolling restart.\n   These steps require `oc`, `jq`, and `base64` to be available on your machine.\n\n   ```sh\n   # Create the docker pull secret file using your PULL_SECRET from Red Hat Marketplace.\n   # Store it in a file called entitledregistryconfigjson.\n   oc create secret docker-registry entitled-registry --docker-server=registry.marketplace.redhat.com --docker-username \"cp\" --docker-password \"${PULL_SECRET}\" --dry-run=true --output=\"jsonpath={.data.\\.dockerconfigjson}\" | base64 --decode > entitledregistryconfigjson\n   # Get the current global secrets on the cluster and store it as a file named dockerconfigjson\n   oc get secret pull-secret -n openshift-config --output=\"jsonpath={.data.\\.dockerconfigjson}\" | base64 --decode > dockerconfigjson\n   # Merge the two dockerconfigs together into a file called dockerconfigjson-merged.\n   jq -s '.[0] * .[1]' dockerconfigjson entitledregistryconfigjson > dockerconfigjson-merged\n   # Set the cluster's dockerconfig file to the new merged version.\n   oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=dockerconfigjson-merged\n   # Cluster will now restart.\n   ```\n\n### Why is a global pull secret required?\nIn order to successfully install the Red Hat Marketplace products, you will need to make the pull secret available across the cluster. This can be achieved by applying the Red Hat Marketplace Pull Secret as a [global pull secret](https://docs.openshift.com/container-platform/4.6/openshift_images/managing_images/using-image-pull-secrets.html#images-update-global-pull-secret_using-image-pull-secrets).\nFor alternative approachs, please see the official OpenShift [documentation](https://docs.openshift.com/container-platform/4.6/openshift_images/managing_images/using-image-pull-secrets.html).\n### Documentation\nYou can find our documentation [here.](https://marketplace.redhat.com/en-us/documentation/)\n### Getting help\nIf you encounter any issues while using Red Hat Marketplace operator, you\ncan create an issue on our [Github\nrepo](https://github.com/redhat-marketplace/redhat-marketplace-operator) for\nbugs, enhancements, or other requests. You can also visit our main page and\nreview our [support](https://marketplace.redhat.com/en-us/support) and [documentation](https://marketplace.redhat.com/en-us/documentation/).\n### Readme\nYou can find our readme [here.](https://github.com/redhat-marketplace/redhat-marketplace-operator/blob/develop/README.md)\n### License information\nYou can find our license information [here.](https://github.com/redhat-marketplace/redhat-marketplace-operator/blob/develop/LICENSE)\n",
-      "csv_display_name": "Red Hat Marketplace",
-      "csv_metadata_description": "The Red Hat Marketplace Operator provides cluster management, metering and operator installation for Red Hat Marketplace customers.",
-      "csv_name": "redhat-marketplace-operator.v2.8.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-10-24T11:56:31.148000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "redhat-marketplace-operator",
-      "provided_apis": [
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "RemoteResourceS3",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MarketplaceConfig",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MeterBase",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MeterDefinition",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MeterDefinition",
-          "version": "v1beta1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "MeterReport",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "marketplace.redhat.com",
-          "kind": "RazeeDeployment",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Red Hat Marketplace",
-      "related_images": [
-        {
-          "digest": "sha256:8d00f0718882e7c4f28f7dd0171cec2aabe470440daef02bf1821032d1563d15",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:8d00f0718882e7c4f28f7dd0171cec2aabe470440daef02bf1821032d1563d15",
-          "name": "kube_rbac_proxy"
-        },
-        {
-          "digest": "sha256:0b691105c2bd7e24a3072e2e793b72b442605269bdf6b0e13944b9cb27285d07",
-          "image": "registry.redhat.io/openshift4/ose-configmap-reloader@sha256:0b691105c2bd7e24a3072e2e793b72b442605269bdf6b0e13944b9cb27285d07",
-          "name": "configmap_reloader"
-        },
-        {
-          "digest": "sha256:d0a841dbbf16fde198e361ecc110eebc89221aabac2291e23b55614fc1992764",
-          "image": "registry.redhat.io/openshift4/ose-prometheus-operator@sha256:d0a841dbbf16fde198e361ecc110eebc89221aabac2291e23b55614fc1992764",
-          "name": "prometheus_operator"
-        },
-        {
-          "digest": "sha256:6e7a075b9ff8d3e2459dad46445758a2a3f6fc4887392645b4ca86fe5b1d0fb0",
-          "image": "us.icr.io/armada-master/remoteresources3@sha256:6e7a075b9ff8d3e2459dad46445758a2a3f6fc4887392645b4ca86fe5b1d0fb0",
-          "name": "rhm_rrs3_deployment"
-        },
-        {
-          "digest": "sha256:4422044d95b4181fbf6618b11ba50b1ced4d18382443caf4a544d7ea9147c9f4",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-authcheck@sha256:4422044d95b4181fbf6618b11ba50b1ced4d18382443caf4a544d7ea9147c9f4",
-          "name": "authcheck"
-        },
-        {
-          "digest": "sha256:d16eebb8840a63d3700cdcbf635ae2160df92955e9fef7cf4f8f41cf696165ce",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-data-service@sha256:d16eebb8840a63d3700cdcbf635ae2160df92955e9fef7cf4f8f41cf696165ce",
-          "name": "dqlite"
-        },
-        {
-          "digest": "sha256:44ec91705e89029bd4aa89e7432a82d1da9991a46e698afc1ef51545a0ae637d",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-reporter@sha256:44ec91705e89029bd4aa89e7432a82d1da9991a46e698afc1ef51545a0ae637d",
-          "name": "reporter"
-        },
-        {
-          "digest": "sha256:7b47d6aec483a159e182c8360c6830405337446ea92b012bacb5d30883b46b7c",
-          "image": "registry.redhat.io/openshift4/ose-prometheus@sha256:7b47d6aec483a159e182c8360c6830405337446ea92b012bacb5d30883b46b7c",
-          "name": "prometheus"
-        },
-        {
-          "digest": "sha256:02cac40abbdaf9cab97d50d7f7d5803993a32f9a21997a6caa3e5f27342cdc60",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-metric-state@sha256:02cac40abbdaf9cab97d50d7f7d5803993a32f9a21997a6caa3e5f27342cdc60",
-          "name": "metric_state"
-        },
-        {
-          "digest": "sha256:7cc4a46f132ce4cac57a6a48236cd9b326476bdba8f8f27f884c5687ded389f5",
-          "image": "registry.redhat.io/openshift4/ose-oauth-proxy@sha256:7cc4a46f132ce4cac57a6a48236cd9b326476bdba8f8f27f884c5687ded389f5",
-          "name": "oauth_proxy"
-        },
-        {
-          "digest": "sha256:9dd6a3999077d1830a6d0b3a7dfb7e744fc29ac9858df674472ee82c2e5b8ff4",
-          "image": "us.icr.io/armada-master/watch-keeper@sha256:9dd6a3999077d1830a6d0b3a7dfb7e744fc29ac9858df674472ee82c2e5b8ff4",
-          "name": "rhm_watch_keeper_deployment"
-        },
-        {
-          "digest": "sha256:84fab183dd572f8d4aa7b7b1418433ec66e45c6e3f736f5c1d42e937d2d0a92c",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-operator@sha256:84fab183dd572f8d4aa7b7b1418433ec66e45c6e3f736f5c1d42e937d2d0a92c",
-          "name": "redhat-marketplace-operator-84fab183dd572f8d4aa7b7b1418433ec66e45c6e3f736f5c1d42e937d2d0a92c-annotation"
-        },
-        {
-          "digest": "sha256:2f0d7f50bfaf581794d1391ee12c09ecb7cbfb5c14ebcf273dbb3213e7ba1927",
-          "image": "registry.redhat.io/openshift4/ose-prometheus-config-reloader@sha256:2f0d7f50bfaf581794d1391ee12c09ecb7cbfb5c14ebcf273dbb3213e7ba1927",
-          "name": "prometheus_configmap_reloader"
-        },
-        {
-          "digest": "sha256:84fab183dd572f8d4aa7b7b1418433ec66e45c6e3f736f5c1d42e937d2d0a92c",
-          "image": "quay.io/rh-marketplace/redhat-marketplace-operator@sha256:84fab183dd572f8d4aa7b7b1418433ec66e45c6e3f736f5c1d42e937d2d0a92c",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=1.0.0 <2.8.2",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2.8.2",
-      "version_original": "2.8.2"
-    },
-    {
       "_id": "633c6c490474789a00f8a374",
       "alm_examples": [
         {
@@ -13225,183 +12866,6 @@
       "version_original": "0.0.1"
     },
     {
-      "_id": "6347419caaff71c4985cf163",
-      "alm_examples": [
-        {
-          "api_version": "helm.infinidat.com/v1alpha1",
-          "kind": "InfiniboxCsiDriver",
-          "metadata": {
-            "name": "infiniboxcsidriver-sample"
-          },
-          "spec": {
-            "Infinibox_Cred": {
-              "SecretName": "infinibox-creds",
-              "hostname": "my-infinibox-hostname",
-              "inbound_secret": "0.0000000000000",
-              "inbound_user": "iqn.2020-06.com.csi-driver-iscsi.infinidat:commonout",
-              "outbound_secret": "0.0000000000000",
-              "outbound_user": "iqn.2020-06.com.csi-driver-iscsi.infinidat:commonin",
-              "password": "my-infinibox-password",
-              "username": "my-infinibox-username"
-            },
-            "csiDriverName": "infinibox-csi-driver",
-            "csiDriverVersion": "v2.1.3",
-            "images": {
-              "attachersidecar": "k8s.gcr.io/sig-storage/csi-attacher@sha256:8b9c313c05f54fb04f8d430896f5f5904b6cb157df261501b29adc04d2b2dc7b",
-              "attachersidecar_pull_policy": "IfNotPresent",
-              "csidriver": "registry.connect.redhat.com/infinidat/infinibox-csidriver-certified@sha256:6357bb5a7e382d64abff44ef4cea62f08e7099997946ab1c666cdfc6519419ea",
-              "csidriver_pull_policy": "Always",
-              "imagePullSecret": "private-docker-reg-secret",
-              "provisionersidecar": "k8s.gcr.io/sig-storage/csi-provisioner@sha256:122bfb8c1edabb3c0edd63f06523e6940d958d19b3957dc7b1d6f81e9f1f6119",
-              "provisionersidecar_pull_policy": "IfNotPresent",
-              "registrarsidecar": "k8s.gcr.io/sig-storage/csi-node-driver-registrar@sha256:4fd21f36075b44d1a423dfb262ad79202ce54e95f5cbc4622a6c1c38ab287ad6",
-              "registrarsidecar_pull_policy": "IfNotPresent",
-              "resizersidecar": "k8s.gcr.io/sig-storage/csi-resizer@sha256:9ebbf9f023e7b41ccee3d52afe39a89e3ddacdbb69269d583abfc25847cfd9e4",
-              "resizersidecar_pull_policy": "IfNotPresent",
-              "snapshottersidecar": "k8s.gcr.io/sig-storage/csi-snapshotter@sha256:89e900a160a986a1a7a4eba7f5259e510398fa87ca9b8a729e7dec59e04c7709",
-              "snapshottersidecar_pull_policy": "IfNotPresent"
-            },
-            "instanceCount": 1,
-            "logLevel": "debug",
-            "replicaCount": 1,
-            "volumeNamePrefix": "csi"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/infinidat/infinibox-operator-certified-bundle@sha256:8daa342c390768084f3620a3b6cf7c79e68c8b8761924ba3e2ecc5dfd7334adc",
-      "bundle_path_digest": "sha256:8daa342c390768084f3620a3b6cf7c79e68c8b8761924ba3e2ecc5dfd7334adc",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-10-12T22:37:16.226000+00:00",
-      "csv_description": "Infinidat InfiniBox Container Storage Interface (CSI) Driver is a CNCF-compliant Kubernetes integration for InfiniBox storage systems, offering advanced enterprise functionality for petabyte-scale Kubernetes deployments including Red Hat OpenShift.\n \n## Features and Benefits\n  \n* **Multi-protocol flexibility** - manage Kubernetes Persistent Volumes attached via block and file protocols, including Fibre Channel, iSCSI, and NFS, with all Kubernetes PV access modes\n* **Multi-petabyte scalability** - support hundreds of thousands of PVs per InfiniBox system and control multiple InfiniBox arrays within a single Kubernetes cluster  \n* **Advanced enterprise features** - manage native InfiniBox snapshots and clones, including restoring from snapshots, and import PVs created outside of InfiniBox CSI Driver\n  \n## Required Parameters\n  \n* `hostname` - IP address or hostname of the InfiniBox management interface\n* `username` / `password` - InfiniBox credentials\n* `SecretName` - secret name, to be used in the StorageClass to define a specific InfiniBox for persistent volumes\n\n## Optional Parameters\n* `inbound_user` / `inbound_secret` / `outbound_user` / `outbound_secret` - credentials for iSCSI CHAP authentication\n",
-      "csv_display_name": "InfiniBox CSI Driver - Operator",
-      "csv_metadata_description": "CNCF-compliant Kubernetes integration for Infinidat InfiniBox storage systems, offering advanced enterprise functionality for petabyte-scale Kubernetes deployments including Red Hat OpenShift Platform.",
-      "csv_name": "infinibox-operator.v2.1.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-10-24T11:10:42.341000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "infinibox-operator-certified",
-      "provided_apis": [
-        {
-          "group": "snapshot.storage.k8s.io",
-          "kind": "VolumeSnapshotClass",
-          "version": "v1beta1"
-        },
-        {
-          "group": "snapshot.storage.k8s.io",
-          "kind": "VolumeSnapshotContent",
-          "version": "v1"
-        },
-        {
-          "group": "snapshot.storage.k8s.io",
-          "kind": "VolumeSnapshotContent",
-          "version": "v1beta1"
-        },
-        {
-          "group": "snapshot.storage.k8s.io",
-          "kind": "VolumeSnapshot",
-          "version": "v1"
-        },
-        {
-          "group": "snapshot.storage.k8s.io",
-          "kind": "VolumeSnapshot",
-          "version": "v1beta1"
-        },
-        {
-          "group": "helm.infinidat.com",
-          "kind": "InfiniboxCsiDriver",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "snapshot.storage.k8s.io",
-          "kind": "VolumeSnapshotClass",
-          "version": "v1"
-        }
-      ],
-      "provider": "Infinidat",
-      "related_images": [
-        {
-          "digest": "sha256:6357bb5a7e382d64abff44ef4cea62f08e7099997946ab1c666cdfc6519419ea",
-          "image": "registry.connect.redhat.com/infinidat/infinibox-csidriver-certified@sha256:6357bb5a7e382d64abff44ef4cea62f08e7099997946ab1c666cdfc6519419ea",
-          "name": "infinidat-csi-driver-eb85dccf227878db16171924b901c55583da7576cb4d5b215cf00a57d498a569-annotation"
-        },
-        {
-          "digest": "sha256:d99a8d144816b951a67648c12c0b988936ccd25cf3754f3cd85ab8c01592248f",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:d99a8d144816b951a67648c12c0b988936ccd25cf3754f3cd85ab8c01592248f",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:65c6d7b2c307104f1eb4fd7fbfa0a7ea61536fd2183078ea9b1a092e610bf9c2",
-          "image": "registry.connect.redhat.com/infinidat/infinibox-operator-certified@sha256:65c6d7b2c307104f1eb4fd7fbfa0a7ea61536fd2183078ea9b1a092e610bf9c2",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:89e900a160a986a1a7a4eba7f5259e510398fa87ca9b8a729e7dec59e04c7709",
-          "image": "k8s.gcr.io/sig-storage/csi-snapshotter@sha256:89e900a160a986a1a7a4eba7f5259e510398fa87ca9b8a729e7dec59e04c7709",
-          "name": "csi-snapshotter-89e900a160a986a1a7a4eba7f5259e510398fa87ca9b8a729e7dec59e04c7709-annotation"
-        },
-        {
-          "digest": "sha256:9ebbf9f023e7b41ccee3d52afe39a89e3ddacdbb69269d583abfc25847cfd9e4",
-          "image": "k8s.gcr.io/sig-storage/csi-resizer@sha256:9ebbf9f023e7b41ccee3d52afe39a89e3ddacdbb69269d583abfc25847cfd9e4",
-          "name": "csi-resizer-9ebbf9f023e7b41ccee3d52afe39a89e3ddacdbb69269d583abfc25847cfd9e4-annotation"
-        },
-        {
-          "digest": "sha256:4fd21f36075b44d1a423dfb262ad79202ce54e95f5cbc4622a6c1c38ab287ad6",
-          "image": "k8s.gcr.io/sig-storage/csi-node-driver-registrar@sha256:4fd21f36075b44d1a423dfb262ad79202ce54e95f5cbc4622a6c1c38ab287ad6",
-          "name": "csi-node-driver-registrar-4fd21f36075b44d1a423dfb262ad79202ce54e95f5cbc4622a6c1c38ab287ad6-annotation"
-        },
-        {
-          "digest": "sha256:122bfb8c1edabb3c0edd63f06523e6940d958d19b3957dc7b1d6f81e9f1f6119",
-          "image": "k8s.gcr.io/sig-storage/csi-provisioner@sha256:122bfb8c1edabb3c0edd63f06523e6940d958d19b3957dc7b1d6f81e9f1f6119",
-          "name": "csi-provisioner-122bfb8c1edabb3c0edd63f06523e6940d958d19b3957dc7b1d6f81e9f1f6119-annotation"
-        },
-        {
-          "digest": "sha256:8b9c313c05f54fb04f8d430896f5f5904b6cb157df261501b29adc04d2b2dc7b",
-          "image": "k8s.gcr.io/sig-storage/csi-attacher@sha256:8b9c313c05f54fb04f8d430896f5f5904b6cb157df261501b29adc04d2b2dc7b",
-          "name": "csi-attacher-8b9c313c05f54fb04f8d430896f5f5904b6cb157df261501b29adc04d2b2dc7b-annotation"
-        },
-        {
-          "digest": "sha256:6357bb5a7e382d64abff44ef4cea62f08e7099997946ab1c666cdfc6519419ea",
-          "image": "registry.connect.redhat.com/infinidat/infinibox-csidriver-certified@sha256:6357bb5a7e382d64abff44ef4cea62f08e7099997946ab1c666cdfc6519419ea",
-          "name": "infinibox-csidriver-certified-6357bb5a7e382d64abff44ef4cea62f08e7099997946ab1c666cdfc6519419ea-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<2.1.3",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "2.1.3",
-      "version_original": "2.1.3"
-    },
-    {
       "_id": "6347419faaff71c4985cf166",
       "alm_examples": [
         {
@@ -13579,183 +13043,6 @@
       "version_original": "2.1.3"
     },
     {
-      "_id": "634745449f195e5618882c61",
-      "alm_examples": [
-        {
-          "api_version": "helm.infinidat.com/v1alpha1",
-          "kind": "InfiniboxCsiDriver",
-          "metadata": {
-            "name": "infiniboxcsidriver-sample"
-          },
-          "spec": {
-            "Infinibox_Cred": {
-              "SecretName": "infinibox-creds",
-              "hostname": "my-infinibox-hostname",
-              "inbound_secret": "0.0000000000000",
-              "inbound_user": "iqn.2020-06.com.csi-driver-iscsi.infinidat:commonout",
-              "outbound_secret": "0.0000000000000",
-              "outbound_user": "iqn.2020-06.com.csi-driver-iscsi.infinidat:commonin",
-              "password": "my-infinibox-password",
-              "username": "my-infinibox-username"
-            },
-            "csiDriverName": "infinibox-csi-driver",
-            "csiDriverVersion": "v2.1.3",
-            "images": {
-              "attachersidecar": "k8s.gcr.io/sig-storage/csi-attacher@sha256:8b9c313c05f54fb04f8d430896f5f5904b6cb157df261501b29adc04d2b2dc7b",
-              "attachersidecar_pull_policy": "IfNotPresent",
-              "csidriver": "registry.connect.redhat.com/infinidat/infinibox-csidriver-certified@sha256:6357bb5a7e382d64abff44ef4cea62f08e7099997946ab1c666cdfc6519419ea",
-              "csidriver_pull_policy": "Always",
-              "imagePullSecret": "private-docker-reg-secret",
-              "provisionersidecar": "k8s.gcr.io/sig-storage/csi-provisioner@sha256:122bfb8c1edabb3c0edd63f06523e6940d958d19b3957dc7b1d6f81e9f1f6119",
-              "provisionersidecar_pull_policy": "IfNotPresent",
-              "registrarsidecar": "k8s.gcr.io/sig-storage/csi-node-driver-registrar@sha256:4fd21f36075b44d1a423dfb262ad79202ce54e95f5cbc4622a6c1c38ab287ad6",
-              "registrarsidecar_pull_policy": "IfNotPresent",
-              "resizersidecar": "k8s.gcr.io/sig-storage/csi-resizer@sha256:9ebbf9f023e7b41ccee3d52afe39a89e3ddacdbb69269d583abfc25847cfd9e4",
-              "resizersidecar_pull_policy": "IfNotPresent",
-              "snapshottersidecar": "k8s.gcr.io/sig-storage/csi-snapshotter@sha256:89e900a160a986a1a7a4eba7f5259e510398fa87ca9b8a729e7dec59e04c7709",
-              "snapshottersidecar_pull_policy": "IfNotPresent"
-            },
-            "instanceCount": 1,
-            "logLevel": "debug",
-            "replicaCount": 1,
-            "volumeNamePrefix": "csi"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/infinidat/infinibox-operator-certified-bundle@sha256:8daa342c390768084f3620a3b6cf7c79e68c8b8761924ba3e2ecc5dfd7334adc",
-      "bundle_path_digest": "sha256:8daa342c390768084f3620a3b6cf7c79e68c8b8761924ba3e2ecc5dfd7334adc",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-10-12T22:52:52.933000+00:00",
-      "csv_description": "Infinidat InfiniBox Container Storage Interface (CSI) Driver is a CNCF-compliant Kubernetes integration for InfiniBox storage systems, offering advanced enterprise functionality for petabyte-scale Kubernetes deployments including Red Hat OpenShift.\n \n## Features and Benefits\n  \n* **Multi-protocol flexibility** - manage Kubernetes Persistent Volumes attached via block and file protocols, including Fibre Channel, iSCSI, and NFS, with all Kubernetes PV access modes\n* **Multi-petabyte scalability** - support hundreds of thousands of PVs per InfiniBox system and control multiple InfiniBox arrays within a single Kubernetes cluster  \n* **Advanced enterprise features** - manage native InfiniBox snapshots and clones, including restoring from snapshots, and import PVs created outside of InfiniBox CSI Driver\n  \n## Required Parameters\n  \n* `hostname` - IP address or hostname of the InfiniBox management interface\n* `username` / `password` - InfiniBox credentials\n* `SecretName` - secret name, to be used in the StorageClass to define a specific InfiniBox for persistent volumes\n\n## Optional Parameters\n* `inbound_user` / `inbound_secret` / `outbound_user` / `outbound_secret` - credentials for iSCSI CHAP authentication\n",
-      "csv_display_name": "InfiniBox CSI Driver - Operator",
-      "csv_metadata_description": "CNCF-compliant Kubernetes integration for Infinidat InfiniBox storage systems, offering advanced enterprise functionality for petabyte-scale Kubernetes deployments including Red Hat OpenShift Platform.",
-      "csv_name": "infinibox-operator.v2.1.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-10-24T11:09:14.346000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "infinibox-operator-certified",
-      "provided_apis": [
-        {
-          "group": "snapshot.storage.k8s.io",
-          "kind": "VolumeSnapshotClass",
-          "version": "v1beta1"
-        },
-        {
-          "group": "snapshot.storage.k8s.io",
-          "kind": "VolumeSnapshotContent",
-          "version": "v1"
-        },
-        {
-          "group": "snapshot.storage.k8s.io",
-          "kind": "VolumeSnapshotContent",
-          "version": "v1beta1"
-        },
-        {
-          "group": "snapshot.storage.k8s.io",
-          "kind": "VolumeSnapshot",
-          "version": "v1"
-        },
-        {
-          "group": "snapshot.storage.k8s.io",
-          "kind": "VolumeSnapshot",
-          "version": "v1beta1"
-        },
-        {
-          "group": "helm.infinidat.com",
-          "kind": "InfiniboxCsiDriver",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "snapshot.storage.k8s.io",
-          "kind": "VolumeSnapshotClass",
-          "version": "v1"
-        }
-      ],
-      "provider": "Infinidat",
-      "related_images": [
-        {
-          "digest": "sha256:6357bb5a7e382d64abff44ef4cea62f08e7099997946ab1c666cdfc6519419ea",
-          "image": "registry.connect.redhat.com/infinidat/infinibox-csidriver-certified@sha256:6357bb5a7e382d64abff44ef4cea62f08e7099997946ab1c666cdfc6519419ea",
-          "name": "infinidat-csi-driver-eb85dccf227878db16171924b901c55583da7576cb4d5b215cf00a57d498a569-annotation"
-        },
-        {
-          "digest": "sha256:d99a8d144816b951a67648c12c0b988936ccd25cf3754f3cd85ab8c01592248f",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:d99a8d144816b951a67648c12c0b988936ccd25cf3754f3cd85ab8c01592248f",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:65c6d7b2c307104f1eb4fd7fbfa0a7ea61536fd2183078ea9b1a092e610bf9c2",
-          "image": "registry.connect.redhat.com/infinidat/infinibox-operator-certified@sha256:65c6d7b2c307104f1eb4fd7fbfa0a7ea61536fd2183078ea9b1a092e610bf9c2",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:89e900a160a986a1a7a4eba7f5259e510398fa87ca9b8a729e7dec59e04c7709",
-          "image": "k8s.gcr.io/sig-storage/csi-snapshotter@sha256:89e900a160a986a1a7a4eba7f5259e510398fa87ca9b8a729e7dec59e04c7709",
-          "name": "csi-snapshotter-89e900a160a986a1a7a4eba7f5259e510398fa87ca9b8a729e7dec59e04c7709-annotation"
-        },
-        {
-          "digest": "sha256:9ebbf9f023e7b41ccee3d52afe39a89e3ddacdbb69269d583abfc25847cfd9e4",
-          "image": "k8s.gcr.io/sig-storage/csi-resizer@sha256:9ebbf9f023e7b41ccee3d52afe39a89e3ddacdbb69269d583abfc25847cfd9e4",
-          "name": "csi-resizer-9ebbf9f023e7b41ccee3d52afe39a89e3ddacdbb69269d583abfc25847cfd9e4-annotation"
-        },
-        {
-          "digest": "sha256:4fd21f36075b44d1a423dfb262ad79202ce54e95f5cbc4622a6c1c38ab287ad6",
-          "image": "k8s.gcr.io/sig-storage/csi-node-driver-registrar@sha256:4fd21f36075b44d1a423dfb262ad79202ce54e95f5cbc4622a6c1c38ab287ad6",
-          "name": "csi-node-driver-registrar-4fd21f36075b44d1a423dfb262ad79202ce54e95f5cbc4622a6c1c38ab287ad6-annotation"
-        },
-        {
-          "digest": "sha256:122bfb8c1edabb3c0edd63f06523e6940d958d19b3957dc7b1d6f81e9f1f6119",
-          "image": "k8s.gcr.io/sig-storage/csi-provisioner@sha256:122bfb8c1edabb3c0edd63f06523e6940d958d19b3957dc7b1d6f81e9f1f6119",
-          "name": "csi-provisioner-122bfb8c1edabb3c0edd63f06523e6940d958d19b3957dc7b1d6f81e9f1f6119-annotation"
-        },
-        {
-          "digest": "sha256:8b9c313c05f54fb04f8d430896f5f5904b6cb157df261501b29adc04d2b2dc7b",
-          "image": "k8s.gcr.io/sig-storage/csi-attacher@sha256:8b9c313c05f54fb04f8d430896f5f5904b6cb157df261501b29adc04d2b2dc7b",
-          "name": "csi-attacher-8b9c313c05f54fb04f8d430896f5f5904b6cb157df261501b29adc04d2b2dc7b-annotation"
-        },
-        {
-          "digest": "sha256:6357bb5a7e382d64abff44ef4cea62f08e7099997946ab1c666cdfc6519419ea",
-          "image": "registry.connect.redhat.com/infinidat/infinibox-csidriver-certified@sha256:6357bb5a7e382d64abff44ef4cea62f08e7099997946ab1c666cdfc6519419ea",
-          "name": "infinibox-csidriver-certified-6357bb5a7e382d64abff44ef4cea62f08e7099997946ab1c666cdfc6519419ea-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<2.1.3",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "2.1.3",
-      "version_original": "2.1.3"
-    },
-    {
       "_id": "6347454856bb63e3c77af41d",
       "alm_examples": [
         {
@@ -13929,183 +13216,6 @@
       "skip_range": "<2.1.3",
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "2.1.3",
-      "version_original": "2.1.3"
-    },
-    {
-      "_id": "634746a856bb63e3c77af489",
-      "alm_examples": [
-        {
-          "api_version": "helm.infinidat.com/v1alpha1",
-          "kind": "InfiniboxCsiDriver",
-          "metadata": {
-            "name": "infiniboxcsidriver-sample"
-          },
-          "spec": {
-            "Infinibox_Cred": {
-              "SecretName": "infinibox-creds",
-              "hostname": "my-infinibox-hostname",
-              "inbound_secret": "0.0000000000000",
-              "inbound_user": "iqn.2020-06.com.csi-driver-iscsi.infinidat:commonout",
-              "outbound_secret": "0.0000000000000",
-              "outbound_user": "iqn.2020-06.com.csi-driver-iscsi.infinidat:commonin",
-              "password": "my-infinibox-password",
-              "username": "my-infinibox-username"
-            },
-            "csiDriverName": "infinibox-csi-driver",
-            "csiDriverVersion": "v2.1.3",
-            "images": {
-              "attachersidecar": "k8s.gcr.io/sig-storage/csi-attacher@sha256:8b9c313c05f54fb04f8d430896f5f5904b6cb157df261501b29adc04d2b2dc7b",
-              "attachersidecar_pull_policy": "IfNotPresent",
-              "csidriver": "registry.connect.redhat.com/infinidat/infinibox-csidriver-certified@sha256:6357bb5a7e382d64abff44ef4cea62f08e7099997946ab1c666cdfc6519419ea",
-              "csidriver_pull_policy": "Always",
-              "imagePullSecret": "private-docker-reg-secret",
-              "provisionersidecar": "k8s.gcr.io/sig-storage/csi-provisioner@sha256:122bfb8c1edabb3c0edd63f06523e6940d958d19b3957dc7b1d6f81e9f1f6119",
-              "provisionersidecar_pull_policy": "IfNotPresent",
-              "registrarsidecar": "k8s.gcr.io/sig-storage/csi-node-driver-registrar@sha256:4fd21f36075b44d1a423dfb262ad79202ce54e95f5cbc4622a6c1c38ab287ad6",
-              "registrarsidecar_pull_policy": "IfNotPresent",
-              "resizersidecar": "k8s.gcr.io/sig-storage/csi-resizer@sha256:9ebbf9f023e7b41ccee3d52afe39a89e3ddacdbb69269d583abfc25847cfd9e4",
-              "resizersidecar_pull_policy": "IfNotPresent",
-              "snapshottersidecar": "k8s.gcr.io/sig-storage/csi-snapshotter@sha256:89e900a160a986a1a7a4eba7f5259e510398fa87ca9b8a729e7dec59e04c7709",
-              "snapshottersidecar_pull_policy": "IfNotPresent"
-            },
-            "instanceCount": 1,
-            "logLevel": "debug",
-            "replicaCount": 1,
-            "volumeNamePrefix": "csi"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/infinidat/infinibox-operator-certified-bundle@sha256:8daa342c390768084f3620a3b6cf7c79e68c8b8761924ba3e2ecc5dfd7334adc",
-      "bundle_path_digest": "sha256:8daa342c390768084f3620a3b6cf7c79e68c8b8761924ba3e2ecc5dfd7334adc",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-10-12T22:58:48.250000+00:00",
-      "csv_description": "Infinidat InfiniBox Container Storage Interface (CSI) Driver is a CNCF-compliant Kubernetes integration for InfiniBox storage systems, offering advanced enterprise functionality for petabyte-scale Kubernetes deployments including Red Hat OpenShift.\n \n## Features and Benefits\n  \n* **Multi-protocol flexibility** - manage Kubernetes Persistent Volumes attached via block and file protocols, including Fibre Channel, iSCSI, and NFS, with all Kubernetes PV access modes\n* **Multi-petabyte scalability** - support hundreds of thousands of PVs per InfiniBox system and control multiple InfiniBox arrays within a single Kubernetes cluster  \n* **Advanced enterprise features** - manage native InfiniBox snapshots and clones, including restoring from snapshots, and import PVs created outside of InfiniBox CSI Driver\n  \n## Required Parameters\n  \n* `hostname` - IP address or hostname of the InfiniBox management interface\n* `username` / `password` - InfiniBox credentials\n* `SecretName` - secret name, to be used in the StorageClass to define a specific InfiniBox for persistent volumes\n\n## Optional Parameters\n* `inbound_user` / `inbound_secret` / `outbound_user` / `outbound_secret` - credentials for iSCSI CHAP authentication\n",
-      "csv_display_name": "InfiniBox CSI Driver - Operator",
-      "csv_metadata_description": "CNCF-compliant Kubernetes integration for Infinidat InfiniBox storage systems, offering advanced enterprise functionality for petabyte-scale Kubernetes deployments including Red Hat OpenShift Platform.",
-      "csv_name": "infinibox-operator.v2.1.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-10-24T11:48:16.412000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "infinibox-operator-certified",
-      "provided_apis": [
-        {
-          "group": "snapshot.storage.k8s.io",
-          "kind": "VolumeSnapshotClass",
-          "version": "v1"
-        },
-        {
-          "group": "snapshot.storage.k8s.io",
-          "kind": "VolumeSnapshotClass",
-          "version": "v1beta1"
-        },
-        {
-          "group": "snapshot.storage.k8s.io",
-          "kind": "VolumeSnapshotContent",
-          "version": "v1"
-        },
-        {
-          "group": "snapshot.storage.k8s.io",
-          "kind": "VolumeSnapshotContent",
-          "version": "v1beta1"
-        },
-        {
-          "group": "snapshot.storage.k8s.io",
-          "kind": "VolumeSnapshot",
-          "version": "v1"
-        },
-        {
-          "group": "snapshot.storage.k8s.io",
-          "kind": "VolumeSnapshot",
-          "version": "v1beta1"
-        },
-        {
-          "group": "helm.infinidat.com",
-          "kind": "InfiniboxCsiDriver",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Infinidat",
-      "related_images": [
-        {
-          "digest": "sha256:6357bb5a7e382d64abff44ef4cea62f08e7099997946ab1c666cdfc6519419ea",
-          "image": "registry.connect.redhat.com/infinidat/infinibox-csidriver-certified@sha256:6357bb5a7e382d64abff44ef4cea62f08e7099997946ab1c666cdfc6519419ea",
-          "name": "infinidat-csi-driver-eb85dccf227878db16171924b901c55583da7576cb4d5b215cf00a57d498a569-annotation"
-        },
-        {
-          "digest": "sha256:d99a8d144816b951a67648c12c0b988936ccd25cf3754f3cd85ab8c01592248f",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:d99a8d144816b951a67648c12c0b988936ccd25cf3754f3cd85ab8c01592248f",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:65c6d7b2c307104f1eb4fd7fbfa0a7ea61536fd2183078ea9b1a092e610bf9c2",
-          "image": "registry.connect.redhat.com/infinidat/infinibox-operator-certified@sha256:65c6d7b2c307104f1eb4fd7fbfa0a7ea61536fd2183078ea9b1a092e610bf9c2",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:89e900a160a986a1a7a4eba7f5259e510398fa87ca9b8a729e7dec59e04c7709",
-          "image": "k8s.gcr.io/sig-storage/csi-snapshotter@sha256:89e900a160a986a1a7a4eba7f5259e510398fa87ca9b8a729e7dec59e04c7709",
-          "name": "csi-snapshotter-89e900a160a986a1a7a4eba7f5259e510398fa87ca9b8a729e7dec59e04c7709-annotation"
-        },
-        {
-          "digest": "sha256:9ebbf9f023e7b41ccee3d52afe39a89e3ddacdbb69269d583abfc25847cfd9e4",
-          "image": "k8s.gcr.io/sig-storage/csi-resizer@sha256:9ebbf9f023e7b41ccee3d52afe39a89e3ddacdbb69269d583abfc25847cfd9e4",
-          "name": "csi-resizer-9ebbf9f023e7b41ccee3d52afe39a89e3ddacdbb69269d583abfc25847cfd9e4-annotation"
-        },
-        {
-          "digest": "sha256:4fd21f36075b44d1a423dfb262ad79202ce54e95f5cbc4622a6c1c38ab287ad6",
-          "image": "k8s.gcr.io/sig-storage/csi-node-driver-registrar@sha256:4fd21f36075b44d1a423dfb262ad79202ce54e95f5cbc4622a6c1c38ab287ad6",
-          "name": "csi-node-driver-registrar-4fd21f36075b44d1a423dfb262ad79202ce54e95f5cbc4622a6c1c38ab287ad6-annotation"
-        },
-        {
-          "digest": "sha256:122bfb8c1edabb3c0edd63f06523e6940d958d19b3957dc7b1d6f81e9f1f6119",
-          "image": "k8s.gcr.io/sig-storage/csi-provisioner@sha256:122bfb8c1edabb3c0edd63f06523e6940d958d19b3957dc7b1d6f81e9f1f6119",
-          "name": "csi-provisioner-122bfb8c1edabb3c0edd63f06523e6940d958d19b3957dc7b1d6f81e9f1f6119-annotation"
-        },
-        {
-          "digest": "sha256:8b9c313c05f54fb04f8d430896f5f5904b6cb157df261501b29adc04d2b2dc7b",
-          "image": "k8s.gcr.io/sig-storage/csi-attacher@sha256:8b9c313c05f54fb04f8d430896f5f5904b6cb157df261501b29adc04d2b2dc7b",
-          "name": "csi-attacher-8b9c313c05f54fb04f8d430896f5f5904b6cb157df261501b29adc04d2b2dc7b-annotation"
-        },
-        {
-          "digest": "sha256:6357bb5a7e382d64abff44ef4cea62f08e7099997946ab1c666cdfc6519419ea",
-          "image": "registry.connect.redhat.com/infinidat/infinibox-csidriver-certified@sha256:6357bb5a7e382d64abff44ef4cea62f08e7099997946ab1c666cdfc6519419ea",
-          "name": "infinibox-csidriver-certified-6357bb5a7e382d64abff44ef4cea62f08e7099997946ab1c666cdfc6519419ea-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<2.1.3",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "2.1.3",
       "version_original": "2.1.3"
     },
@@ -23001,6 +22111,1913 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "1.17.2",
       "version_original": "1.17.2"
+    },
+    {
+      "_id": "634e789beba32fffe3a3cb09",
+      "alm_examples": [
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDB",
+          "metadata": {
+            "name": "my-replica-set"
+          },
+          "spec": {
+            "credentials": "my-credentials",
+            "members": 3,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": true,
+            "type": "ReplicaSet",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDB",
+          "metadata": {
+            "name": "sample-sharded-cluster"
+          },
+          "spec": {
+            "configServerCount": 3,
+            "credentials": "my-credentials",
+            "mongodsPerShardCount": 3,
+            "mongosCount": 2,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": true,
+            "shardCount": 1,
+            "type": "ShardedCluster",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBMulti",
+          "metadata": {
+            "name": "multi-replica-set"
+          },
+          "spec": {
+            "clusterSpecList": {
+              "clusterSpecs": [
+                {
+                  "clusterName": "e2e.cluster1.mongokubernetes.com",
+                  "members": 2
+                },
+                {
+                  "clusterName": "e2e.cluster2.mongokubernetes.com",
+                  "members": 1
+                },
+                {
+                  "clusterName": "e2e.cluster3.mongokubernetes.com",
+                  "members": 2
+                }
+              ]
+            },
+            "credentials": "my-credentials",
+            "duplicateServiceObjects": false,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": false,
+            "type": "ReplicaSet",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBOpsManager",
+          "metadata": {
+            "name": "ops-manager"
+          },
+          "spec": {
+            "adminCredentials": "ops-manager-admin",
+            "applicationDatabase": {
+              "members": 3,
+              "podSpec": {
+                "cpu": 1
+              }
+            },
+            "configuration": {
+              "mms.fromEmailAddr": "admin@thecompany.com"
+            },
+            "externalConnectivity": {
+              "type": "LoadBalancer"
+            },
+            "version": "6.0.3"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBUser",
+          "metadata": {
+            "name": "my-replica-set-x509-user"
+          },
+          "spec": {
+            "db": "$external",
+            "mongodbResourceRef": {
+              "name": "my-replica-set"
+            },
+            "roles": [
+              {
+                "db": "admin",
+                "name": "dbOwner"
+              }
+            ],
+            "username": "CN=my-replica-set-x509-user,OU=cloud,O=MongoDB,L=New York,ST=New York,C=US"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:465386a458f1e9ed5e084f36b2fa9a088527c6bc9e5ebbf9db5acba2e855a311",
+      "bundle_path_digest": "sha256:465386a458f1e9ed5e084f36b2fa9a088527c6bc9e5ebbf9db5acba2e855a311",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-10-18T09:57:47.669000+00:00",
+      "csv_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB\ninto Kubernetes clusters, using our management, monitoring and backup\nplatforms, Ops Manager and Cloud Manager.\n\n## Before You Start\n\nTo start using the operator you''ll need an account in MongoDB Cloud Manager or\na MongoDB Ops Manager deployment.\n\n* [Create a Secret with your OpsManager API key](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-operator-credentials/#procedure)\n\n* [Create a ConfigMap with your OpsManager project ID and URL](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-project-using-configmap/)\n\nBy installing this integration, you will be able to deploy MongoDB instances\nwith a single simple command.\n\n## Required Parameters\n\n* `opsManager` or `cloudManager` - Enter the name of the ConfigMap containing project information\n* `credentials` - Enter the name of the Secret containing your OpsManager credentials\n* `type` - Enter MongoDB Deployment Types (\"Standalone\", \"ReplicaSet\", \"ShardedCluster\"\n\n## Supported MongoDB Deployment Types ##\n\n* Standalone: An instance of mongod that is running as a single server and\nnot as part of a replica set, this is, it does not do any kind of\nreplication.\n\n* Replica Set: A replica set in MongoDB is a group of mongod processes that\nmaintain the same data set. Replica sets provide redundancy and high\navailability, and are the basis for all production deployments. This section\nintroduces replication in MongoDB as well as the components and architecture\nof replica sets. The section also provides tutorials for common tasks\nrelated to replica sets.\n\n* Sharded Cluster: The set of nodes comprising a sharded MongoDB deployment.\nA sharded cluster consists of config servers, shards, and one or more mongos\nrouting processes. Sharding is a A database architecture that partitions\ndata by key ranges and distributes the data among two or more database\ninstances. Sharding enables horizontal scaling.\n\n## Requirements for deploying MongoDB OpsManager\n\n* In order to deploy resources of type MongoDB OpsManager, you will need to\ncreate a secret containing the [credentials](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/plan-om-resource/#om-rsrc-prereqs)\nfor the Global Owner user\n\n## Security ##\n\nThe operator can enable TLS for all traffic between servers and also between\nclients and servers. Before enabling `security.tls.enabled` to `true` you\nshould create your certificates.  or you can leave the operator to create all\nthe certificates for you. The operator ability to create certs is been\ndeprecated due to Kubernetes API changes.\n\nFor more information, please read the official MongoDB\nKubernetes Operator  [docs](https://docs.mongodb.com/kubernetes-operator/stable/).\n",
+      "csv_display_name": "MongoDB Enterprise Operator",
+      "csv_metadata_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB into Kubernetes clusters, using our management, monitoring and backup platforms, Ops Manager and Cloud Manager.",
+      "csv_name": "mongodb-enterprise.v1.17.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T11:00:36.924000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "mongodb-enterprise",
+      "provided_apis": [
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBUser",
+          "plural": "mongodbusers",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBOpsManager",
+          "plural": "opsmanagers",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDB",
+          "plural": "mongodb",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBMulti",
+          "plural": "mongodbmulti",
+          "version": "v1"
+        }
+      ],
+      "provider": "MongoDB, Inc",
+      "related_images": [
+        {
+          "digest": "sha256:dc9ae18097d195f3849f981410a1c3d6d761528a15c31b954f0523144800305a",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:dc9ae18097d195f3849f981410a1c3d6d761528a15c31b954f0523144800305a",
+          "name": "mongodb-image-4-2-11-ent"
+        },
+        {
+          "digest": "sha256:fd18f261e761e4db1c43dd58fbdb3eee15aed3f29884dc2bda7fe680c548d843",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:fd18f261e761e4db1c43dd58fbdb3eee15aed3f29884dc2bda7fe680c548d843",
+          "name": "ops_manager_image_repository_5_0_7"
+        },
+        {
+          "digest": "sha256:252b2d9e0c4ea38696b64a7b1d9bbf6fee4e5158836cf0457e239ed1742d4ef2",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:252b2d9e0c4ea38696b64a7b1d9bbf6fee4e5158836cf0457e239ed1742d4ef2",
+          "name": "ops_manager_image_repository_6_0_0"
+        },
+        {
+          "digest": "sha256:2190c594ca1cb533f030bdbb4c85306c04f27727b26a6f477c797411cf6465a3",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:2190c594ca1cb533f030bdbb4c85306c04f27727b26a6f477c797411cf6465a3",
+          "name": "ops_manager_image_repository_6_0_1"
+        },
+        {
+          "digest": "sha256:e0bba5cb396ae358ab4cb33530eae3be5629f0b3951cfc69b9854edc4a056d5c",
+          "image": "quay.io/mongodb/mongodb-agent-ubi@sha256:e0bba5cb396ae358ab4cb33530eae3be5629f0b3951cfc69b9854edc4a056d5c",
+          "name": "agent_image_11_12_0_7388_1"
+        },
+        {
+          "digest": "sha256:0dc25aa7b78643d4dd9500171433ff0a37c1775f6065daf6da37e3c17e1b5cc3",
+          "image": "quay.io/mongodb/mongodb-agent-ubi@sha256:0dc25aa7b78643d4dd9500171433ff0a37c1775f6065daf6da37e3c17e1b5cc3",
+          "name": "agent-image-11-0-5-6963-1"
+        },
+        {
+          "digest": "sha256:f41f51ec106286e8abef96d250de9cbd31b4fae4c3c9e3d570177637f3bcba75",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:f41f51ec106286e8abef96d250de9cbd31b4fae4c3c9e3d570177637f3bcba75",
+          "name": "ops_manager_image_repository_5_0_1"
+        },
+        {
+          "digest": "sha256:a07dc434a4beba9098f6c6d354f7caa42d2baee909362319d0d07f622c5c4c5d",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:a07dc434a4beba9098f6c6d354f7caa42d2baee909362319d0d07f622c5c4c5d",
+          "name": "ops_manager_image_repository_5_0_3"
+        },
+        {
+          "digest": "sha256:6bb57f86eab5b51ccb381af364b84504e29b583a7d31c1d2ddd4bd77d7eeadc7",
+          "image": "quay.io/mongodb/mongodb-enterprise-init-ops-manager-ubi@sha256:6bb57f86eab5b51ccb381af364b84504e29b583a7d31c1d2ddd4bd77d7eeadc7",
+          "name": "init-ops-manager-image-repository-1-0-9"
+        },
+        {
+          "digest": "sha256:6b69818beb352b8573dcbe44436faaf5237d7b113f504a3804d5bcc0bd14237f",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:6b69818beb352b8573dcbe44436faaf5237d7b113f504a3804d5bcc0bd14237f",
+          "name": "ops-manager-image-repository-5-0-6"
+        },
+        {
+          "digest": "sha256:34661ad8677fc312d1fdae4f8f74647c72a11cfb6c0df03fc76bd85853cfcc78",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:34661ad8677fc312d1fdae4f8f74647c72a11cfb6c0df03fc76bd85853cfcc78",
+          "name": "ops-manager-image-repository-5-0-14"
+        },
+        {
+          "digest": "sha256:6025795ee27026e14aca5f041651d7130557982e008d184a130bf47c6f8627a4",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:6025795ee27026e14aca5f041651d7130557982e008d184a130bf47c6f8627a4",
+          "name": "ops-manager-image-repository-6-0-2"
+        },
+        {
+          "digest": "sha256:6c7d0b9c2558dd7d6525ca6955638165b318f93172c87077df8a8a539ffb6960",
+          "image": "quay.io/mongodb/mongodb-enterprise-database-ubi@sha256:6c7d0b9c2558dd7d6525ca6955638165b318f93172c87077df8a8a539ffb6960",
+          "name": "mongodb_enterprise_database_image_2_0_2"
+        },
+        {
+          "digest": "sha256:9e69a6b1934d9f0996223909a382668101ee56da2a0e805bbc9c1003d5401e82",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:9e69a6b1934d9f0996223909a382668101ee56da2a0e805bbc9c1003d5401e82",
+          "name": "ops_manager_image_repository_5_0_0"
+        },
+        {
+          "digest": "sha256:6b69818beb352b8573dcbe44436faaf5237d7b113f504a3804d5bcc0bd14237f",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:6b69818beb352b8573dcbe44436faaf5237d7b113f504a3804d5bcc0bd14237f",
+          "name": "ops_manager_image_repository_5_0_6"
+        },
+        {
+          "digest": "sha256:38cec89a8ef38976dbf8905ba1c462fc2b068b03ae5d6129837404e29bc7cebe",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:38cec89a8ef38976dbf8905ba1c462fc2b068b03ae5d6129837404e29bc7cebe",
+          "name": "ops-manager-image-repository-5-0-11"
+        },
+        {
+          "digest": "sha256:6bb57f86eab5b51ccb381af364b84504e29b583a7d31c1d2ddd4bd77d7eeadc7",
+          "image": "quay.io/mongodb/mongodb-enterprise-init-ops-manager-ubi@sha256:6bb57f86eab5b51ccb381af364b84504e29b583a7d31c1d2ddd4bd77d7eeadc7",
+          "name": "init_ops_manager_image_repository_1_0_9"
+        },
+        {
+          "digest": "sha256:a71ef1f9861749a928d6349533aee976a7cc747fca18421b7ac99105f9bdfe56",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:a71ef1f9861749a928d6349533aee976a7cc747fca18421b7ac99105f9bdfe56",
+          "name": "ops_manager_image_repository_5_0_10"
+        },
+        {
+          "digest": "sha256:455a2635d428d71ab4a91c641f2cad8329f1ec7e351d86ab6439258c408cbf37",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:455a2635d428d71ab4a91c641f2cad8329f1ec7e351d86ab6439258c408cbf37",
+          "name": "ops-manager-image-repository-5-0-13"
+        },
+        {
+          "digest": "sha256:ed8a16becb323b2e4a79b4335ece0208fe24526a2e59b3cb487017f9a517fda9",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:ed8a16becb323b2e4a79b4335ece0208fe24526a2e59b3cb487017f9a517fda9",
+          "name": "mongodb-image-4-2-8-ent"
+        },
+        {
+          "digest": "sha256:4cb837bbdad39bf3fcf1872efd8ab0ee140f60c25c22f56a9e450c96a857f720",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:4cb837bbdad39bf3fcf1872efd8ab0ee140f60c25c22f56a9e450c96a857f720",
+          "name": "mongodb-image-5-0-1-ent"
+        },
+        {
+          "digest": "sha256:c477382df0759df86dd080d6e89e68fc5bcd8c4043c2a29f9c7b1908547570d9",
+          "image": "quay.io/mongodb/mongodb-enterprise-init-database-ubi@sha256:c477382df0759df86dd080d6e89e68fc5bcd8c4043c2a29f9c7b1908547570d9",
+          "name": "init_database_image_repository_1_0_13"
+        },
+        {
+          "digest": "sha256:4cb837bbdad39bf3fcf1872efd8ab0ee140f60c25c22f56a9e450c96a857f720",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:4cb837bbdad39bf3fcf1872efd8ab0ee140f60c25c22f56a9e450c96a857f720",
+          "name": "mongodb_image_5_0_1_ent"
+        },
+        {
+          "digest": "sha256:5dd88996a32f00562f990499bd201656984c6f13a275760f5ea53344fe0f4ebb",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:5dd88996a32f00562f990499bd201656984c6f13a275760f5ea53344fe0f4ebb",
+          "name": "mongodb_image_5_0_5_ent"
+        },
+        {
+          "digest": "sha256:252b2d9e0c4ea38696b64a7b1d9bbf6fee4e5158836cf0457e239ed1742d4ef2",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:252b2d9e0c4ea38696b64a7b1d9bbf6fee4e5158836cf0457e239ed1742d4ef2",
+          "name": "ops-manager-image-repository-6-0-0"
+        },
+        {
+          "digest": "sha256:2190c594ca1cb533f030bdbb4c85306c04f27727b26a6f477c797411cf6465a3",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:2190c594ca1cb533f030bdbb4c85306c04f27727b26a6f477c797411cf6465a3",
+          "name": "ops-manager-image-repository-6-0-1"
+        },
+        {
+          "digest": "sha256:ad17c3d8291df35166895b9cff47940d6f1c5299d6b6c34b9a46c2cde4e141f2",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:ad17c3d8291df35166895b9cff47940d6f1c5299d6b6c34b9a46c2cde4e141f2",
+          "name": "mongodb-image-4-4-0-ent"
+        },
+        {
+          "digest": "sha256:28ee83e553624699ed3de11539f722cc30730eb709c6cd1e5746c75d0bbbb940",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:28ee83e553624699ed3de11539f722cc30730eb709c6cd1e5746c75d0bbbb940",
+          "name": "ops_manager_image_repository_5_0_15"
+        },
+        {
+          "digest": "sha256:7a1ac40a1f966c5349c39adf0ef6d0ebff24fd1e3c4ada433f4ec21bbd1c46e6",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:7a1ac40a1f966c5349c39adf0ef6d0ebff24fd1e3c4ada433f4ec21bbd1c46e6",
+          "name": "mongodb_image_4_4_11_ent"
+        },
+        {
+          "digest": "sha256:e8d5f8ff86ef98d5d5b9e29d770fb53055de2fd46665c554cc556fdf1f8156ff",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:e8d5f8ff86ef98d5d5b9e29d770fb53055de2fd46665c554cc556fdf1f8156ff",
+          "name": "mongodb_image_4_4_4_ent"
+        },
+        {
+          "digest": "sha256:e0bba5cb396ae358ab4cb33530eae3be5629f0b3951cfc69b9854edc4a056d5c",
+          "image": "quay.io/mongodb/mongodb-agent-ubi@sha256:e0bba5cb396ae358ab4cb33530eae3be5629f0b3951cfc69b9854edc4a056d5c",
+          "name": "agent-image-11-12-0-7388-1"
+        },
+        {
+          "digest": "sha256:a07dc434a4beba9098f6c6d354f7caa42d2baee909362319d0d07f622c5c4c5d",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:a07dc434a4beba9098f6c6d354f7caa42d2baee909362319d0d07f622c5c4c5d",
+          "name": "ops-manager-image-repository-5-0-3"
+        },
+        {
+          "digest": "sha256:cd788fbe390639d9d8713bb79a7cffd9781f78728aafa31bcac4a7574f1b8f45",
+          "image": "quay.io/mongodb/mongodb-agent-ubi@sha256:cd788fbe390639d9d8713bb79a7cffd9781f78728aafa31bcac4a7574f1b8f45",
+          "name": "agent_image_12_0_4_7554_1"
+        },
+        {
+          "digest": "sha256:455a2635d428d71ab4a91c641f2cad8329f1ec7e351d86ab6439258c408cbf37",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:455a2635d428d71ab4a91c641f2cad8329f1ec7e351d86ab6439258c408cbf37",
+          "name": "ops_manager_image_repository_5_0_13"
+        },
+        {
+          "digest": "sha256:6025795ee27026e14aca5f041651d7130557982e008d184a130bf47c6f8627a4",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:6025795ee27026e14aca5f041651d7130557982e008d184a130bf47c6f8627a4",
+          "name": "ops_manager_image_repository_6_0_2"
+        },
+        {
+          "digest": "sha256:f41f51ec106286e8abef96d250de9cbd31b4fae4c3c9e3d570177637f3bcba75",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:f41f51ec106286e8abef96d250de9cbd31b4fae4c3c9e3d570177637f3bcba75",
+          "name": "ops-manager-image-repository-5-0-1"
+        },
+        {
+          "digest": "sha256:4cf34aef851f856867379309658cd95b2c135c5244dbb77803aa81b263983f0e",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:4cf34aef851f856867379309658cd95b2c135c5244dbb77803aa81b263983f0e",
+          "name": "ops-manager-image-repository-5-0-9"
+        },
+        {
+          "digest": "sha256:8eff2e05a9abb07dc75cf90450317bc45011b0718f25afaa990e896be96f97a8",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:8eff2e05a9abb07dc75cf90450317bc45011b0718f25afaa990e896be96f97a8",
+          "name": "mongodb-image-4-2-2-ent"
+        },
+        {
+          "digest": "sha256:5cd3ed1053dae64c2cc7e13718cb93f899deffec7116ee7115cf92fa8f42f2e5",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:5cd3ed1053dae64c2cc7e13718cb93f899deffec7116ee7115cf92fa8f42f2e5",
+          "name": "mongodb-image-4-2-6-ent"
+        },
+        {
+          "digest": "sha256:c43dce16f851587d7a41591309d2b3a6e5fe9798941490b56a4356fe619890d0",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:c43dce16f851587d7a41591309d2b3a6e5fe9798941490b56a4356fe619890d0",
+          "name": "ops_manager_image_repository_5_0_8"
+        },
+        {
+          "digest": "sha256:5cd3ed1053dae64c2cc7e13718cb93f899deffec7116ee7115cf92fa8f42f2e5",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:5cd3ed1053dae64c2cc7e13718cb93f899deffec7116ee7115cf92fa8f42f2e5",
+          "name": "mongodb_image_4_2_6_ent"
+        },
+        {
+          "digest": "sha256:ad17c3d8291df35166895b9cff47940d6f1c5299d6b6c34b9a46c2cde4e141f2",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:ad17c3d8291df35166895b9cff47940d6f1c5299d6b6c34b9a46c2cde4e141f2",
+          "name": "mongodb_image_4_4_0_ent"
+        },
+        {
+          "digest": "sha256:fd18f261e761e4db1c43dd58fbdb3eee15aed3f29884dc2bda7fe680c548d843",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:fd18f261e761e4db1c43dd58fbdb3eee15aed3f29884dc2bda7fe680c548d843",
+          "name": "ops-manager-image-repository-5-0-7"
+        },
+        {
+          "digest": "sha256:3ebbf727ba407f7e4ea115c3a3b224f0ab76e24fffbcc27257b5455950b8bc35",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:3ebbf727ba407f7e4ea115c3a3b224f0ab76e24fffbcc27257b5455950b8bc35",
+          "name": "ops-manager-image-repository-6-0-3"
+        },
+        {
+          "digest": "sha256:7a1ac40a1f966c5349c39adf0ef6d0ebff24fd1e3c4ada433f4ec21bbd1c46e6",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:7a1ac40a1f966c5349c39adf0ef6d0ebff24fd1e3c4ada433f4ec21bbd1c46e6",
+          "name": "mongodb-image-4-4-11-ent"
+        },
+        {
+          "digest": "sha256:10f8fcffce5440793ab9541f1024420a4773fe7fc5e059c35e91439920f423c1",
+          "image": "quay.io/mongodb/mongodb-enterprise-init-appdb-ubi@sha256:10f8fcffce5440793ab9541f1024420a4773fe7fc5e059c35e91439920f423c1",
+          "name": "init_appdb_image_repository_1_0_13"
+        },
+        {
+          "digest": "sha256:0dc25aa7b78643d4dd9500171433ff0a37c1775f6065daf6da37e3c17e1b5cc3",
+          "image": "quay.io/mongodb/mongodb-agent-ubi@sha256:0dc25aa7b78643d4dd9500171433ff0a37c1775f6065daf6da37e3c17e1b5cc3",
+          "name": "agent_image_11_0_5_6963_1"
+        },
+        {
+          "digest": "sha256:dc9ae18097d195f3849f981410a1c3d6d761528a15c31b954f0523144800305a",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:dc9ae18097d195f3849f981410a1c3d6d761528a15c31b954f0523144800305a",
+          "name": "mongodb_image_4_2_11_ent"
+        },
+        {
+          "digest": "sha256:10f8fcffce5440793ab9541f1024420a4773fe7fc5e059c35e91439920f423c1",
+          "image": "quay.io/mongodb/mongodb-enterprise-init-appdb-ubi@sha256:10f8fcffce5440793ab9541f1024420a4773fe7fc5e059c35e91439920f423c1",
+          "name": "init-appdb-image-repository-1-0-13"
+        },
+        {
+          "digest": "sha256:cd788fbe390639d9d8713bb79a7cffd9781f78728aafa31bcac4a7574f1b8f45",
+          "image": "quay.io/mongodb/mongodb-agent-ubi@sha256:cd788fbe390639d9d8713bb79a7cffd9781f78728aafa31bcac4a7574f1b8f45",
+          "name": "agent-image-12-0-4-7554-1"
+        },
+        {
+          "digest": "sha256:c43dce16f851587d7a41591309d2b3a6e5fe9798941490b56a4356fe619890d0",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:c43dce16f851587d7a41591309d2b3a6e5fe9798941490b56a4356fe619890d0",
+          "name": "ops-manager-image-repository-5-0-8"
+        },
+        {
+          "digest": "sha256:34661ad8677fc312d1fdae4f8f74647c72a11cfb6c0df03fc76bd85853cfcc78",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:34661ad8677fc312d1fdae4f8f74647c72a11cfb6c0df03fc76bd85853cfcc78",
+          "name": "ops_manager_image_repository_5_0_14"
+        },
+        {
+          "digest": "sha256:8eff2e05a9abb07dc75cf90450317bc45011b0718f25afaa990e896be96f97a8",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:8eff2e05a9abb07dc75cf90450317bc45011b0718f25afaa990e896be96f97a8",
+          "name": "mongodb_image_4_2_2_ent"
+        },
+        {
+          "digest": "sha256:9e69a6b1934d9f0996223909a382668101ee56da2a0e805bbc9c1003d5401e82",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:9e69a6b1934d9f0996223909a382668101ee56da2a0e805bbc9c1003d5401e82",
+          "name": "ops-manager-image-repository-5-0-0"
+        },
+        {
+          "digest": "sha256:d7943712d06f615a299b83839b9bc8ecc3abc94b455283c2fc226c0792e9f914",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:d7943712d06f615a299b83839b9bc8ecc3abc94b455283c2fc226c0792e9f914",
+          "name": "ops-manager-image-repository-5-0-5"
+        },
+        {
+          "digest": "sha256:a71ef1f9861749a928d6349533aee976a7cc747fca18421b7ac99105f9bdfe56",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:a71ef1f9861749a928d6349533aee976a7cc747fca18421b7ac99105f9bdfe56",
+          "name": "ops-manager-image-repository-5-0-10"
+        },
+        {
+          "digest": "sha256:e8d5f8ff86ef98d5d5b9e29d770fb53055de2fd46665c554cc556fdf1f8156ff",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:e8d5f8ff86ef98d5d5b9e29d770fb53055de2fd46665c554cc556fdf1f8156ff",
+          "name": "mongodb-image-4-4-4-ent"
+        },
+        {
+          "digest": "sha256:1386f67460740a8cc4d1777b90ed1f84625ecec463ed9afd066bd64c355ac272",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:1386f67460740a8cc4d1777b90ed1f84625ecec463ed9afd066bd64c355ac272",
+          "name": "ops-manager-image-repository-5-0-4"
+        },
+        {
+          "digest": "sha256:759829f647d0562eb12c1bf2e5a47be206c4e511cd4e0dfc6c9a4e31c810f9b2",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:759829f647d0562eb12c1bf2e5a47be206c4e511cd4e0dfc6c9a4e31c810f9b2",
+          "name": "ops-manager-image-repository-5-0-12"
+        },
+        {
+          "digest": "sha256:d7943712d06f615a299b83839b9bc8ecc3abc94b455283c2fc226c0792e9f914",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:d7943712d06f615a299b83839b9bc8ecc3abc94b455283c2fc226c0792e9f914",
+          "name": "ops_manager_image_repository_5_0_5"
+        },
+        {
+          "digest": "sha256:38cec89a8ef38976dbf8905ba1c462fc2b068b03ae5d6129837404e29bc7cebe",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:38cec89a8ef38976dbf8905ba1c462fc2b068b03ae5d6129837404e29bc7cebe",
+          "name": "ops_manager_image_repository_5_0_11"
+        },
+        {
+          "digest": "sha256:3ebbf727ba407f7e4ea115c3a3b224f0ab76e24fffbcc27257b5455950b8bc35",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:3ebbf727ba407f7e4ea115c3a3b224f0ab76e24fffbcc27257b5455950b8bc35",
+          "name": "ops_manager_image_repository_6_0_3"
+        },
+        {
+          "digest": "sha256:ed8a16becb323b2e4a79b4335ece0208fe24526a2e59b3cb487017f9a517fda9",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:ed8a16becb323b2e4a79b4335ece0208fe24526a2e59b3cb487017f9a517fda9",
+          "name": "mongodb_image_4_2_8_ent"
+        },
+        {
+          "digest": "sha256:9555e5847c7c7a756a4665fb1ffd4c6300495c9c271ed75a5856a558f030c555",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:9555e5847c7c7a756a4665fb1ffd4c6300495c9c271ed75a5856a558f030c555",
+          "name": "ops-manager-image-repository-5-0-2"
+        },
+        {
+          "digest": "sha256:5dd88996a32f00562f990499bd201656984c6f13a275760f5ea53344fe0f4ebb",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:5dd88996a32f00562f990499bd201656984c6f13a275760f5ea53344fe0f4ebb",
+          "name": "mongodb-image-5-0-5-ent"
+        },
+        {
+          "digest": "sha256:9555e5847c7c7a756a4665fb1ffd4c6300495c9c271ed75a5856a558f030c555",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:9555e5847c7c7a756a4665fb1ffd4c6300495c9c271ed75a5856a558f030c555",
+          "name": "ops_manager_image_repository_5_0_2"
+        },
+        {
+          "digest": "sha256:759829f647d0562eb12c1bf2e5a47be206c4e511cd4e0dfc6c9a4e31c810f9b2",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:759829f647d0562eb12c1bf2e5a47be206c4e511cd4e0dfc6c9a4e31c810f9b2",
+          "name": "ops_manager_image_repository_5_0_12"
+        },
+        {
+          "digest": "sha256:6c7d0b9c2558dd7d6525ca6955638165b318f93172c87077df8a8a539ffb6960",
+          "image": "quay.io/mongodb/mongodb-enterprise-database-ubi@sha256:6c7d0b9c2558dd7d6525ca6955638165b318f93172c87077df8a8a539ffb6960",
+          "name": "mongodb-enterprise-database-image-2-0-2"
+        },
+        {
+          "digest": "sha256:c477382df0759df86dd080d6e89e68fc5bcd8c4043c2a29f9c7b1908547570d9",
+          "image": "quay.io/mongodb/mongodb-enterprise-init-database-ubi@sha256:c477382df0759df86dd080d6e89e68fc5bcd8c4043c2a29f9c7b1908547570d9",
+          "name": "init-database-image-repository-1-0-13"
+        },
+        {
+          "digest": "sha256:28ee83e553624699ed3de11539f722cc30730eb709c6cd1e5746c75d0bbbb940",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:28ee83e553624699ed3de11539f722cc30730eb709c6cd1e5746c75d0bbbb940",
+          "name": "ops-manager-image-repository-5-0-15"
+        },
+        {
+          "digest": "sha256:0a99a81c8a24af654dbe4ebf7126d7044ce2e481caffd21f848ba4ba93e1f741",
+          "image": "quay.io/mongodb/mongodb-enterprise-operator-ubi@sha256:0a99a81c8a24af654dbe4ebf7126d7044ce2e481caffd21f848ba4ba93e1f741",
+          "name": "mongodb-enterprise-operator"
+        },
+        {
+          "digest": "sha256:1386f67460740a8cc4d1777b90ed1f84625ecec463ed9afd066bd64c355ac272",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:1386f67460740a8cc4d1777b90ed1f84625ecec463ed9afd066bd64c355ac272",
+          "name": "ops_manager_image_repository_5_0_4"
+        },
+        {
+          "digest": "sha256:4cf34aef851f856867379309658cd95b2c135c5244dbb77803aa81b263983f0e",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:4cf34aef851f856867379309658cd95b2c135c5244dbb77803aa81b263983f0e",
+          "name": "ops_manager_image_repository_5_0_9"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.17.2",
+      "version_original": "1.17.2"
+    },
+    {
+      "_id": "634e78f76804229d44ddad36",
+      "alm_examples": [
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDB",
+          "metadata": {
+            "name": "my-replica-set"
+          },
+          "spec": {
+            "credentials": "my-credentials",
+            "members": 3,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": true,
+            "type": "ReplicaSet",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDB",
+          "metadata": {
+            "name": "sample-sharded-cluster"
+          },
+          "spec": {
+            "configServerCount": 3,
+            "credentials": "my-credentials",
+            "mongodsPerShardCount": 3,
+            "mongosCount": 2,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": true,
+            "shardCount": 1,
+            "type": "ShardedCluster",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBMulti",
+          "metadata": {
+            "name": "multi-replica-set"
+          },
+          "spec": {
+            "clusterSpecList": {
+              "clusterSpecs": [
+                {
+                  "clusterName": "e2e.cluster1.mongokubernetes.com",
+                  "members": 2
+                },
+                {
+                  "clusterName": "e2e.cluster2.mongokubernetes.com",
+                  "members": 1
+                },
+                {
+                  "clusterName": "e2e.cluster3.mongokubernetes.com",
+                  "members": 2
+                }
+              ]
+            },
+            "credentials": "my-credentials",
+            "duplicateServiceObjects": false,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": false,
+            "type": "ReplicaSet",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBOpsManager",
+          "metadata": {
+            "name": "ops-manager"
+          },
+          "spec": {
+            "adminCredentials": "ops-manager-admin",
+            "applicationDatabase": {
+              "members": 3,
+              "podSpec": {
+                "cpu": 1
+              }
+            },
+            "configuration": {
+              "mms.fromEmailAddr": "admin@thecompany.com"
+            },
+            "externalConnectivity": {
+              "type": "LoadBalancer"
+            },
+            "version": "6.0.3"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBUser",
+          "metadata": {
+            "name": "my-replica-set-x509-user"
+          },
+          "spec": {
+            "db": "$external",
+            "mongodbResourceRef": {
+              "name": "my-replica-set"
+            },
+            "roles": [
+              {
+                "db": "admin",
+                "name": "dbOwner"
+              }
+            ],
+            "username": "CN=my-replica-set-x509-user,OU=cloud,O=MongoDB,L=New York,ST=New York,C=US"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:465386a458f1e9ed5e084f36b2fa9a088527c6bc9e5ebbf9db5acba2e855a311",
+      "bundle_path_digest": "sha256:465386a458f1e9ed5e084f36b2fa9a088527c6bc9e5ebbf9db5acba2e855a311",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-10-18T09:59:19.583000+00:00",
+      "csv_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB\ninto Kubernetes clusters, using our management, monitoring and backup\nplatforms, Ops Manager and Cloud Manager.\n\n## Before You Start\n\nTo start using the operator you''ll need an account in MongoDB Cloud Manager or\na MongoDB Ops Manager deployment.\n\n* [Create a Secret with your OpsManager API key](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-operator-credentials/#procedure)\n\n* [Create a ConfigMap with your OpsManager project ID and URL](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-project-using-configmap/)\n\nBy installing this integration, you will be able to deploy MongoDB instances\nwith a single simple command.\n\n## Required Parameters\n\n* `opsManager` or `cloudManager` - Enter the name of the ConfigMap containing project information\n* `credentials` - Enter the name of the Secret containing your OpsManager credentials\n* `type` - Enter MongoDB Deployment Types (\"Standalone\", \"ReplicaSet\", \"ShardedCluster\"\n\n## Supported MongoDB Deployment Types ##\n\n* Standalone: An instance of mongod that is running as a single server and\nnot as part of a replica set, this is, it does not do any kind of\nreplication.\n\n* Replica Set: A replica set in MongoDB is a group of mongod processes that\nmaintain the same data set. Replica sets provide redundancy and high\navailability, and are the basis for all production deployments. This section\nintroduces replication in MongoDB as well as the components and architecture\nof replica sets. The section also provides tutorials for common tasks\nrelated to replica sets.\n\n* Sharded Cluster: The set of nodes comprising a sharded MongoDB deployment.\nA sharded cluster consists of config servers, shards, and one or more mongos\nrouting processes. Sharding is a A database architecture that partitions\ndata by key ranges and distributes the data among two or more database\ninstances. Sharding enables horizontal scaling.\n\n## Requirements for deploying MongoDB OpsManager\n\n* In order to deploy resources of type MongoDB OpsManager, you will need to\ncreate a secret containing the [credentials](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/plan-om-resource/#om-rsrc-prereqs)\nfor the Global Owner user\n\n## Security ##\n\nThe operator can enable TLS for all traffic between servers and also between\nclients and servers. Before enabling `security.tls.enabled` to `true` you\nshould create your certificates.  or you can leave the operator to create all\nthe certificates for you. The operator ability to create certs is been\ndeprecated due to Kubernetes API changes.\n\nFor more information, please read the official MongoDB\nKubernetes Operator  [docs](https://docs.mongodb.com/kubernetes-operator/stable/).\n",
+      "csv_display_name": "MongoDB Enterprise Operator",
+      "csv_metadata_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB into Kubernetes clusters, using our management, monitoring and backup platforms, Ops Manager and Cloud Manager.",
+      "csv_name": "mongodb-enterprise.v1.17.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T12:04:21.954000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "mongodb-enterprise",
+      "provided_apis": [
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBUser",
+          "plural": "mongodbusers",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBOpsManager",
+          "plural": "opsmanagers",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDB",
+          "plural": "mongodb",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBMulti",
+          "plural": "mongodbmulti",
+          "version": "v1"
+        }
+      ],
+      "provider": "MongoDB, Inc",
+      "related_images": [
+        {
+          "digest": "sha256:dc9ae18097d195f3849f981410a1c3d6d761528a15c31b954f0523144800305a",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:dc9ae18097d195f3849f981410a1c3d6d761528a15c31b954f0523144800305a",
+          "name": "mongodb-image-4-2-11-ent"
+        },
+        {
+          "digest": "sha256:fd18f261e761e4db1c43dd58fbdb3eee15aed3f29884dc2bda7fe680c548d843",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:fd18f261e761e4db1c43dd58fbdb3eee15aed3f29884dc2bda7fe680c548d843",
+          "name": "ops_manager_image_repository_5_0_7"
+        },
+        {
+          "digest": "sha256:252b2d9e0c4ea38696b64a7b1d9bbf6fee4e5158836cf0457e239ed1742d4ef2",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:252b2d9e0c4ea38696b64a7b1d9bbf6fee4e5158836cf0457e239ed1742d4ef2",
+          "name": "ops_manager_image_repository_6_0_0"
+        },
+        {
+          "digest": "sha256:2190c594ca1cb533f030bdbb4c85306c04f27727b26a6f477c797411cf6465a3",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:2190c594ca1cb533f030bdbb4c85306c04f27727b26a6f477c797411cf6465a3",
+          "name": "ops_manager_image_repository_6_0_1"
+        },
+        {
+          "digest": "sha256:e0bba5cb396ae358ab4cb33530eae3be5629f0b3951cfc69b9854edc4a056d5c",
+          "image": "quay.io/mongodb/mongodb-agent-ubi@sha256:e0bba5cb396ae358ab4cb33530eae3be5629f0b3951cfc69b9854edc4a056d5c",
+          "name": "agent_image_11_12_0_7388_1"
+        },
+        {
+          "digest": "sha256:0dc25aa7b78643d4dd9500171433ff0a37c1775f6065daf6da37e3c17e1b5cc3",
+          "image": "quay.io/mongodb/mongodb-agent-ubi@sha256:0dc25aa7b78643d4dd9500171433ff0a37c1775f6065daf6da37e3c17e1b5cc3",
+          "name": "agent-image-11-0-5-6963-1"
+        },
+        {
+          "digest": "sha256:f41f51ec106286e8abef96d250de9cbd31b4fae4c3c9e3d570177637f3bcba75",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:f41f51ec106286e8abef96d250de9cbd31b4fae4c3c9e3d570177637f3bcba75",
+          "name": "ops_manager_image_repository_5_0_1"
+        },
+        {
+          "digest": "sha256:a07dc434a4beba9098f6c6d354f7caa42d2baee909362319d0d07f622c5c4c5d",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:a07dc434a4beba9098f6c6d354f7caa42d2baee909362319d0d07f622c5c4c5d",
+          "name": "ops_manager_image_repository_5_0_3"
+        },
+        {
+          "digest": "sha256:6bb57f86eab5b51ccb381af364b84504e29b583a7d31c1d2ddd4bd77d7eeadc7",
+          "image": "quay.io/mongodb/mongodb-enterprise-init-ops-manager-ubi@sha256:6bb57f86eab5b51ccb381af364b84504e29b583a7d31c1d2ddd4bd77d7eeadc7",
+          "name": "init-ops-manager-image-repository-1-0-9"
+        },
+        {
+          "digest": "sha256:6b69818beb352b8573dcbe44436faaf5237d7b113f504a3804d5bcc0bd14237f",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:6b69818beb352b8573dcbe44436faaf5237d7b113f504a3804d5bcc0bd14237f",
+          "name": "ops-manager-image-repository-5-0-6"
+        },
+        {
+          "digest": "sha256:34661ad8677fc312d1fdae4f8f74647c72a11cfb6c0df03fc76bd85853cfcc78",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:34661ad8677fc312d1fdae4f8f74647c72a11cfb6c0df03fc76bd85853cfcc78",
+          "name": "ops-manager-image-repository-5-0-14"
+        },
+        {
+          "digest": "sha256:6025795ee27026e14aca5f041651d7130557982e008d184a130bf47c6f8627a4",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:6025795ee27026e14aca5f041651d7130557982e008d184a130bf47c6f8627a4",
+          "name": "ops-manager-image-repository-6-0-2"
+        },
+        {
+          "digest": "sha256:6c7d0b9c2558dd7d6525ca6955638165b318f93172c87077df8a8a539ffb6960",
+          "image": "quay.io/mongodb/mongodb-enterprise-database-ubi@sha256:6c7d0b9c2558dd7d6525ca6955638165b318f93172c87077df8a8a539ffb6960",
+          "name": "mongodb_enterprise_database_image_2_0_2"
+        },
+        {
+          "digest": "sha256:9e69a6b1934d9f0996223909a382668101ee56da2a0e805bbc9c1003d5401e82",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:9e69a6b1934d9f0996223909a382668101ee56da2a0e805bbc9c1003d5401e82",
+          "name": "ops_manager_image_repository_5_0_0"
+        },
+        {
+          "digest": "sha256:6b69818beb352b8573dcbe44436faaf5237d7b113f504a3804d5bcc0bd14237f",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:6b69818beb352b8573dcbe44436faaf5237d7b113f504a3804d5bcc0bd14237f",
+          "name": "ops_manager_image_repository_5_0_6"
+        },
+        {
+          "digest": "sha256:38cec89a8ef38976dbf8905ba1c462fc2b068b03ae5d6129837404e29bc7cebe",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:38cec89a8ef38976dbf8905ba1c462fc2b068b03ae5d6129837404e29bc7cebe",
+          "name": "ops-manager-image-repository-5-0-11"
+        },
+        {
+          "digest": "sha256:6bb57f86eab5b51ccb381af364b84504e29b583a7d31c1d2ddd4bd77d7eeadc7",
+          "image": "quay.io/mongodb/mongodb-enterprise-init-ops-manager-ubi@sha256:6bb57f86eab5b51ccb381af364b84504e29b583a7d31c1d2ddd4bd77d7eeadc7",
+          "name": "init_ops_manager_image_repository_1_0_9"
+        },
+        {
+          "digest": "sha256:a71ef1f9861749a928d6349533aee976a7cc747fca18421b7ac99105f9bdfe56",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:a71ef1f9861749a928d6349533aee976a7cc747fca18421b7ac99105f9bdfe56",
+          "name": "ops_manager_image_repository_5_0_10"
+        },
+        {
+          "digest": "sha256:455a2635d428d71ab4a91c641f2cad8329f1ec7e351d86ab6439258c408cbf37",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:455a2635d428d71ab4a91c641f2cad8329f1ec7e351d86ab6439258c408cbf37",
+          "name": "ops-manager-image-repository-5-0-13"
+        },
+        {
+          "digest": "sha256:ed8a16becb323b2e4a79b4335ece0208fe24526a2e59b3cb487017f9a517fda9",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:ed8a16becb323b2e4a79b4335ece0208fe24526a2e59b3cb487017f9a517fda9",
+          "name": "mongodb-image-4-2-8-ent"
+        },
+        {
+          "digest": "sha256:4cb837bbdad39bf3fcf1872efd8ab0ee140f60c25c22f56a9e450c96a857f720",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:4cb837bbdad39bf3fcf1872efd8ab0ee140f60c25c22f56a9e450c96a857f720",
+          "name": "mongodb-image-5-0-1-ent"
+        },
+        {
+          "digest": "sha256:c477382df0759df86dd080d6e89e68fc5bcd8c4043c2a29f9c7b1908547570d9",
+          "image": "quay.io/mongodb/mongodb-enterprise-init-database-ubi@sha256:c477382df0759df86dd080d6e89e68fc5bcd8c4043c2a29f9c7b1908547570d9",
+          "name": "init_database_image_repository_1_0_13"
+        },
+        {
+          "digest": "sha256:4cb837bbdad39bf3fcf1872efd8ab0ee140f60c25c22f56a9e450c96a857f720",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:4cb837bbdad39bf3fcf1872efd8ab0ee140f60c25c22f56a9e450c96a857f720",
+          "name": "mongodb_image_5_0_1_ent"
+        },
+        {
+          "digest": "sha256:5dd88996a32f00562f990499bd201656984c6f13a275760f5ea53344fe0f4ebb",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:5dd88996a32f00562f990499bd201656984c6f13a275760f5ea53344fe0f4ebb",
+          "name": "mongodb_image_5_0_5_ent"
+        },
+        {
+          "digest": "sha256:252b2d9e0c4ea38696b64a7b1d9bbf6fee4e5158836cf0457e239ed1742d4ef2",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:252b2d9e0c4ea38696b64a7b1d9bbf6fee4e5158836cf0457e239ed1742d4ef2",
+          "name": "ops-manager-image-repository-6-0-0"
+        },
+        {
+          "digest": "sha256:2190c594ca1cb533f030bdbb4c85306c04f27727b26a6f477c797411cf6465a3",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:2190c594ca1cb533f030bdbb4c85306c04f27727b26a6f477c797411cf6465a3",
+          "name": "ops-manager-image-repository-6-0-1"
+        },
+        {
+          "digest": "sha256:ad17c3d8291df35166895b9cff47940d6f1c5299d6b6c34b9a46c2cde4e141f2",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:ad17c3d8291df35166895b9cff47940d6f1c5299d6b6c34b9a46c2cde4e141f2",
+          "name": "mongodb-image-4-4-0-ent"
+        },
+        {
+          "digest": "sha256:28ee83e553624699ed3de11539f722cc30730eb709c6cd1e5746c75d0bbbb940",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:28ee83e553624699ed3de11539f722cc30730eb709c6cd1e5746c75d0bbbb940",
+          "name": "ops_manager_image_repository_5_0_15"
+        },
+        {
+          "digest": "sha256:7a1ac40a1f966c5349c39adf0ef6d0ebff24fd1e3c4ada433f4ec21bbd1c46e6",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:7a1ac40a1f966c5349c39adf0ef6d0ebff24fd1e3c4ada433f4ec21bbd1c46e6",
+          "name": "mongodb_image_4_4_11_ent"
+        },
+        {
+          "digest": "sha256:e8d5f8ff86ef98d5d5b9e29d770fb53055de2fd46665c554cc556fdf1f8156ff",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:e8d5f8ff86ef98d5d5b9e29d770fb53055de2fd46665c554cc556fdf1f8156ff",
+          "name": "mongodb_image_4_4_4_ent"
+        },
+        {
+          "digest": "sha256:e0bba5cb396ae358ab4cb33530eae3be5629f0b3951cfc69b9854edc4a056d5c",
+          "image": "quay.io/mongodb/mongodb-agent-ubi@sha256:e0bba5cb396ae358ab4cb33530eae3be5629f0b3951cfc69b9854edc4a056d5c",
+          "name": "agent-image-11-12-0-7388-1"
+        },
+        {
+          "digest": "sha256:a07dc434a4beba9098f6c6d354f7caa42d2baee909362319d0d07f622c5c4c5d",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:a07dc434a4beba9098f6c6d354f7caa42d2baee909362319d0d07f622c5c4c5d",
+          "name": "ops-manager-image-repository-5-0-3"
+        },
+        {
+          "digest": "sha256:cd788fbe390639d9d8713bb79a7cffd9781f78728aafa31bcac4a7574f1b8f45",
+          "image": "quay.io/mongodb/mongodb-agent-ubi@sha256:cd788fbe390639d9d8713bb79a7cffd9781f78728aafa31bcac4a7574f1b8f45",
+          "name": "agent_image_12_0_4_7554_1"
+        },
+        {
+          "digest": "sha256:455a2635d428d71ab4a91c641f2cad8329f1ec7e351d86ab6439258c408cbf37",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:455a2635d428d71ab4a91c641f2cad8329f1ec7e351d86ab6439258c408cbf37",
+          "name": "ops_manager_image_repository_5_0_13"
+        },
+        {
+          "digest": "sha256:6025795ee27026e14aca5f041651d7130557982e008d184a130bf47c6f8627a4",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:6025795ee27026e14aca5f041651d7130557982e008d184a130bf47c6f8627a4",
+          "name": "ops_manager_image_repository_6_0_2"
+        },
+        {
+          "digest": "sha256:f41f51ec106286e8abef96d250de9cbd31b4fae4c3c9e3d570177637f3bcba75",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:f41f51ec106286e8abef96d250de9cbd31b4fae4c3c9e3d570177637f3bcba75",
+          "name": "ops-manager-image-repository-5-0-1"
+        },
+        {
+          "digest": "sha256:4cf34aef851f856867379309658cd95b2c135c5244dbb77803aa81b263983f0e",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:4cf34aef851f856867379309658cd95b2c135c5244dbb77803aa81b263983f0e",
+          "name": "ops-manager-image-repository-5-0-9"
+        },
+        {
+          "digest": "sha256:8eff2e05a9abb07dc75cf90450317bc45011b0718f25afaa990e896be96f97a8",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:8eff2e05a9abb07dc75cf90450317bc45011b0718f25afaa990e896be96f97a8",
+          "name": "mongodb-image-4-2-2-ent"
+        },
+        {
+          "digest": "sha256:5cd3ed1053dae64c2cc7e13718cb93f899deffec7116ee7115cf92fa8f42f2e5",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:5cd3ed1053dae64c2cc7e13718cb93f899deffec7116ee7115cf92fa8f42f2e5",
+          "name": "mongodb-image-4-2-6-ent"
+        },
+        {
+          "digest": "sha256:c43dce16f851587d7a41591309d2b3a6e5fe9798941490b56a4356fe619890d0",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:c43dce16f851587d7a41591309d2b3a6e5fe9798941490b56a4356fe619890d0",
+          "name": "ops_manager_image_repository_5_0_8"
+        },
+        {
+          "digest": "sha256:5cd3ed1053dae64c2cc7e13718cb93f899deffec7116ee7115cf92fa8f42f2e5",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:5cd3ed1053dae64c2cc7e13718cb93f899deffec7116ee7115cf92fa8f42f2e5",
+          "name": "mongodb_image_4_2_6_ent"
+        },
+        {
+          "digest": "sha256:ad17c3d8291df35166895b9cff47940d6f1c5299d6b6c34b9a46c2cde4e141f2",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:ad17c3d8291df35166895b9cff47940d6f1c5299d6b6c34b9a46c2cde4e141f2",
+          "name": "mongodb_image_4_4_0_ent"
+        },
+        {
+          "digest": "sha256:fd18f261e761e4db1c43dd58fbdb3eee15aed3f29884dc2bda7fe680c548d843",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:fd18f261e761e4db1c43dd58fbdb3eee15aed3f29884dc2bda7fe680c548d843",
+          "name": "ops-manager-image-repository-5-0-7"
+        },
+        {
+          "digest": "sha256:3ebbf727ba407f7e4ea115c3a3b224f0ab76e24fffbcc27257b5455950b8bc35",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:3ebbf727ba407f7e4ea115c3a3b224f0ab76e24fffbcc27257b5455950b8bc35",
+          "name": "ops-manager-image-repository-6-0-3"
+        },
+        {
+          "digest": "sha256:7a1ac40a1f966c5349c39adf0ef6d0ebff24fd1e3c4ada433f4ec21bbd1c46e6",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:7a1ac40a1f966c5349c39adf0ef6d0ebff24fd1e3c4ada433f4ec21bbd1c46e6",
+          "name": "mongodb-image-4-4-11-ent"
+        },
+        {
+          "digest": "sha256:10f8fcffce5440793ab9541f1024420a4773fe7fc5e059c35e91439920f423c1",
+          "image": "quay.io/mongodb/mongodb-enterprise-init-appdb-ubi@sha256:10f8fcffce5440793ab9541f1024420a4773fe7fc5e059c35e91439920f423c1",
+          "name": "init_appdb_image_repository_1_0_13"
+        },
+        {
+          "digest": "sha256:0dc25aa7b78643d4dd9500171433ff0a37c1775f6065daf6da37e3c17e1b5cc3",
+          "image": "quay.io/mongodb/mongodb-agent-ubi@sha256:0dc25aa7b78643d4dd9500171433ff0a37c1775f6065daf6da37e3c17e1b5cc3",
+          "name": "agent_image_11_0_5_6963_1"
+        },
+        {
+          "digest": "sha256:dc9ae18097d195f3849f981410a1c3d6d761528a15c31b954f0523144800305a",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:dc9ae18097d195f3849f981410a1c3d6d761528a15c31b954f0523144800305a",
+          "name": "mongodb_image_4_2_11_ent"
+        },
+        {
+          "digest": "sha256:10f8fcffce5440793ab9541f1024420a4773fe7fc5e059c35e91439920f423c1",
+          "image": "quay.io/mongodb/mongodb-enterprise-init-appdb-ubi@sha256:10f8fcffce5440793ab9541f1024420a4773fe7fc5e059c35e91439920f423c1",
+          "name": "init-appdb-image-repository-1-0-13"
+        },
+        {
+          "digest": "sha256:cd788fbe390639d9d8713bb79a7cffd9781f78728aafa31bcac4a7574f1b8f45",
+          "image": "quay.io/mongodb/mongodb-agent-ubi@sha256:cd788fbe390639d9d8713bb79a7cffd9781f78728aafa31bcac4a7574f1b8f45",
+          "name": "agent-image-12-0-4-7554-1"
+        },
+        {
+          "digest": "sha256:c43dce16f851587d7a41591309d2b3a6e5fe9798941490b56a4356fe619890d0",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:c43dce16f851587d7a41591309d2b3a6e5fe9798941490b56a4356fe619890d0",
+          "name": "ops-manager-image-repository-5-0-8"
+        },
+        {
+          "digest": "sha256:34661ad8677fc312d1fdae4f8f74647c72a11cfb6c0df03fc76bd85853cfcc78",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:34661ad8677fc312d1fdae4f8f74647c72a11cfb6c0df03fc76bd85853cfcc78",
+          "name": "ops_manager_image_repository_5_0_14"
+        },
+        {
+          "digest": "sha256:8eff2e05a9abb07dc75cf90450317bc45011b0718f25afaa990e896be96f97a8",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:8eff2e05a9abb07dc75cf90450317bc45011b0718f25afaa990e896be96f97a8",
+          "name": "mongodb_image_4_2_2_ent"
+        },
+        {
+          "digest": "sha256:9e69a6b1934d9f0996223909a382668101ee56da2a0e805bbc9c1003d5401e82",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:9e69a6b1934d9f0996223909a382668101ee56da2a0e805bbc9c1003d5401e82",
+          "name": "ops-manager-image-repository-5-0-0"
+        },
+        {
+          "digest": "sha256:d7943712d06f615a299b83839b9bc8ecc3abc94b455283c2fc226c0792e9f914",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:d7943712d06f615a299b83839b9bc8ecc3abc94b455283c2fc226c0792e9f914",
+          "name": "ops-manager-image-repository-5-0-5"
+        },
+        {
+          "digest": "sha256:a71ef1f9861749a928d6349533aee976a7cc747fca18421b7ac99105f9bdfe56",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:a71ef1f9861749a928d6349533aee976a7cc747fca18421b7ac99105f9bdfe56",
+          "name": "ops-manager-image-repository-5-0-10"
+        },
+        {
+          "digest": "sha256:e8d5f8ff86ef98d5d5b9e29d770fb53055de2fd46665c554cc556fdf1f8156ff",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:e8d5f8ff86ef98d5d5b9e29d770fb53055de2fd46665c554cc556fdf1f8156ff",
+          "name": "mongodb-image-4-4-4-ent"
+        },
+        {
+          "digest": "sha256:1386f67460740a8cc4d1777b90ed1f84625ecec463ed9afd066bd64c355ac272",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:1386f67460740a8cc4d1777b90ed1f84625ecec463ed9afd066bd64c355ac272",
+          "name": "ops-manager-image-repository-5-0-4"
+        },
+        {
+          "digest": "sha256:759829f647d0562eb12c1bf2e5a47be206c4e511cd4e0dfc6c9a4e31c810f9b2",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:759829f647d0562eb12c1bf2e5a47be206c4e511cd4e0dfc6c9a4e31c810f9b2",
+          "name": "ops-manager-image-repository-5-0-12"
+        },
+        {
+          "digest": "sha256:d7943712d06f615a299b83839b9bc8ecc3abc94b455283c2fc226c0792e9f914",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:d7943712d06f615a299b83839b9bc8ecc3abc94b455283c2fc226c0792e9f914",
+          "name": "ops_manager_image_repository_5_0_5"
+        },
+        {
+          "digest": "sha256:38cec89a8ef38976dbf8905ba1c462fc2b068b03ae5d6129837404e29bc7cebe",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:38cec89a8ef38976dbf8905ba1c462fc2b068b03ae5d6129837404e29bc7cebe",
+          "name": "ops_manager_image_repository_5_0_11"
+        },
+        {
+          "digest": "sha256:3ebbf727ba407f7e4ea115c3a3b224f0ab76e24fffbcc27257b5455950b8bc35",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:3ebbf727ba407f7e4ea115c3a3b224f0ab76e24fffbcc27257b5455950b8bc35",
+          "name": "ops_manager_image_repository_6_0_3"
+        },
+        {
+          "digest": "sha256:ed8a16becb323b2e4a79b4335ece0208fe24526a2e59b3cb487017f9a517fda9",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:ed8a16becb323b2e4a79b4335ece0208fe24526a2e59b3cb487017f9a517fda9",
+          "name": "mongodb_image_4_2_8_ent"
+        },
+        {
+          "digest": "sha256:9555e5847c7c7a756a4665fb1ffd4c6300495c9c271ed75a5856a558f030c555",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:9555e5847c7c7a756a4665fb1ffd4c6300495c9c271ed75a5856a558f030c555",
+          "name": "ops-manager-image-repository-5-0-2"
+        },
+        {
+          "digest": "sha256:5dd88996a32f00562f990499bd201656984c6f13a275760f5ea53344fe0f4ebb",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:5dd88996a32f00562f990499bd201656984c6f13a275760f5ea53344fe0f4ebb",
+          "name": "mongodb-image-5-0-5-ent"
+        },
+        {
+          "digest": "sha256:9555e5847c7c7a756a4665fb1ffd4c6300495c9c271ed75a5856a558f030c555",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:9555e5847c7c7a756a4665fb1ffd4c6300495c9c271ed75a5856a558f030c555",
+          "name": "ops_manager_image_repository_5_0_2"
+        },
+        {
+          "digest": "sha256:759829f647d0562eb12c1bf2e5a47be206c4e511cd4e0dfc6c9a4e31c810f9b2",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:759829f647d0562eb12c1bf2e5a47be206c4e511cd4e0dfc6c9a4e31c810f9b2",
+          "name": "ops_manager_image_repository_5_0_12"
+        },
+        {
+          "digest": "sha256:6c7d0b9c2558dd7d6525ca6955638165b318f93172c87077df8a8a539ffb6960",
+          "image": "quay.io/mongodb/mongodb-enterprise-database-ubi@sha256:6c7d0b9c2558dd7d6525ca6955638165b318f93172c87077df8a8a539ffb6960",
+          "name": "mongodb-enterprise-database-image-2-0-2"
+        },
+        {
+          "digest": "sha256:c477382df0759df86dd080d6e89e68fc5bcd8c4043c2a29f9c7b1908547570d9",
+          "image": "quay.io/mongodb/mongodb-enterprise-init-database-ubi@sha256:c477382df0759df86dd080d6e89e68fc5bcd8c4043c2a29f9c7b1908547570d9",
+          "name": "init-database-image-repository-1-0-13"
+        },
+        {
+          "digest": "sha256:28ee83e553624699ed3de11539f722cc30730eb709c6cd1e5746c75d0bbbb940",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:28ee83e553624699ed3de11539f722cc30730eb709c6cd1e5746c75d0bbbb940",
+          "name": "ops-manager-image-repository-5-0-15"
+        },
+        {
+          "digest": "sha256:0a99a81c8a24af654dbe4ebf7126d7044ce2e481caffd21f848ba4ba93e1f741",
+          "image": "quay.io/mongodb/mongodb-enterprise-operator-ubi@sha256:0a99a81c8a24af654dbe4ebf7126d7044ce2e481caffd21f848ba4ba93e1f741",
+          "name": "mongodb-enterprise-operator"
+        },
+        {
+          "digest": "sha256:1386f67460740a8cc4d1777b90ed1f84625ecec463ed9afd066bd64c355ac272",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:1386f67460740a8cc4d1777b90ed1f84625ecec463ed9afd066bd64c355ac272",
+          "name": "ops_manager_image_repository_5_0_4"
+        },
+        {
+          "digest": "sha256:4cf34aef851f856867379309658cd95b2c135c5244dbb77803aa81b263983f0e",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:4cf34aef851f856867379309658cd95b2c135c5244dbb77803aa81b263983f0e",
+          "name": "ops_manager_image_repository_5_0_9"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "1.17.2",
+      "version_original": "1.17.2"
+    },
+    {
+      "_id": "634e7c11a13cf60c13d854dc",
+      "alm_examples": [
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDB",
+          "metadata": {
+            "name": "my-replica-set"
+          },
+          "spec": {
+            "credentials": "my-credentials",
+            "members": 3,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": true,
+            "type": "ReplicaSet",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDB",
+          "metadata": {
+            "name": "sample-sharded-cluster"
+          },
+          "spec": {
+            "configServerCount": 3,
+            "credentials": "my-credentials",
+            "mongodsPerShardCount": 3,
+            "mongosCount": 2,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": true,
+            "shardCount": 1,
+            "type": "ShardedCluster",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBMulti",
+          "metadata": {
+            "name": "multi-replica-set"
+          },
+          "spec": {
+            "clusterSpecList": {
+              "clusterSpecs": [
+                {
+                  "clusterName": "e2e.cluster1.mongokubernetes.com",
+                  "members": 2
+                },
+                {
+                  "clusterName": "e2e.cluster2.mongokubernetes.com",
+                  "members": 1
+                },
+                {
+                  "clusterName": "e2e.cluster3.mongokubernetes.com",
+                  "members": 2
+                }
+              ]
+            },
+            "credentials": "my-credentials",
+            "duplicateServiceObjects": false,
+            "opsManager": {
+              "configMapRef": {
+                "name": "my-project"
+              }
+            },
+            "persistent": false,
+            "type": "ReplicaSet",
+            "version": "4.4.0-ent"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBOpsManager",
+          "metadata": {
+            "name": "ops-manager"
+          },
+          "spec": {
+            "adminCredentials": "ops-manager-admin",
+            "applicationDatabase": {
+              "members": 3,
+              "podSpec": {
+                "cpu": 1
+              }
+            },
+            "configuration": {
+              "mms.fromEmailAddr": "admin@thecompany.com"
+            },
+            "externalConnectivity": {
+              "type": "LoadBalancer"
+            },
+            "version": "6.0.3"
+          }
+        },
+        {
+          "api_version": "mongodb.com/v1",
+          "kind": "MongoDBUser",
+          "metadata": {
+            "name": "my-replica-set-x509-user"
+          },
+          "spec": {
+            "db": "$external",
+            "mongodbResourceRef": {
+              "name": "my-replica-set"
+            },
+            "roles": [
+              {
+                "db": "admin",
+                "name": "dbOwner"
+              }
+            ],
+            "username": "CN=my-replica-set-x509-user,OU=cloud,O=MongoDB,L=New York,ST=New York,C=US"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/mongodb/enterprise-operator-bundle@sha256:465386a458f1e9ed5e084f36b2fa9a088527c6bc9e5ebbf9db5acba2e855a311",
+      "bundle_path_digest": "sha256:465386a458f1e9ed5e084f36b2fa9a088527c6bc9e5ebbf9db5acba2e855a311",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-10-18T10:12:33.669000+00:00",
+      "csv_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB\ninto Kubernetes clusters, using our management, monitoring and backup\nplatforms, Ops Manager and Cloud Manager.\n\n## Before You Start\n\nTo start using the operator you''ll need an account in MongoDB Cloud Manager or\na MongoDB Ops Manager deployment.\n\n* [Create a Secret with your OpsManager API key](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-operator-credentials/#procedure)\n\n* [Create a ConfigMap with your OpsManager project ID and URL](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/create-project-using-configmap/)\n\nBy installing this integration, you will be able to deploy MongoDB instances\nwith a single simple command.\n\n## Required Parameters\n\n* `opsManager` or `cloudManager` - Enter the name of the ConfigMap containing project information\n* `credentials` - Enter the name of the Secret containing your OpsManager credentials\n* `type` - Enter MongoDB Deployment Types (\"Standalone\", \"ReplicaSet\", \"ShardedCluster\"\n\n## Supported MongoDB Deployment Types ##\n\n* Standalone: An instance of mongod that is running as a single server and\nnot as part of a replica set, this is, it does not do any kind of\nreplication.\n\n* Replica Set: A replica set in MongoDB is a group of mongod processes that\nmaintain the same data set. Replica sets provide redundancy and high\navailability, and are the basis for all production deployments. This section\nintroduces replication in MongoDB as well as the components and architecture\nof replica sets. The section also provides tutorials for common tasks\nrelated to replica sets.\n\n* Sharded Cluster: The set of nodes comprising a sharded MongoDB deployment.\nA sharded cluster consists of config servers, shards, and one or more mongos\nrouting processes. Sharding is a A database architecture that partitions\ndata by key ranges and distributes the data among two or more database\ninstances. Sharding enables horizontal scaling.\n\n## Requirements for deploying MongoDB OpsManager\n\n* In order to deploy resources of type MongoDB OpsManager, you will need to\ncreate a secret containing the [credentials](https://docs.mongodb.com/kubernetes-operator/stable/tutorial/plan-om-resource/#om-rsrc-prereqs)\nfor the Global Owner user\n\n## Security ##\n\nThe operator can enable TLS for all traffic between servers and also between\nclients and servers. Before enabling `security.tls.enabled` to `true` you\nshould create your certificates.  or you can leave the operator to create all\nthe certificates for you. The operator ability to create certs is been\ndeprecated due to Kubernetes API changes.\n\nFor more information, please read the official MongoDB\nKubernetes Operator  [docs](https://docs.mongodb.com/kubernetes-operator/stable/).\n",
+      "csv_display_name": "MongoDB Enterprise Operator",
+      "csv_metadata_description": "The MongoDB Enterprise Kubernetes Operator enables easy deploys of MongoDB into Kubernetes clusters, using our management, monitoring and backup platforms, Ops Manager and Cloud Manager.",
+      "csv_name": "mongodb-enterprise.v1.17.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T10:47:00.194000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "mongodb-enterprise",
+      "provided_apis": [
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBOpsManager",
+          "plural": "opsmanagers",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDB",
+          "plural": "mongodb",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBMulti",
+          "plural": "mongodbmulti",
+          "version": "v1"
+        },
+        {
+          "group": "mongodb.com",
+          "kind": "MongoDBUser",
+          "plural": "mongodbusers",
+          "version": "v1"
+        }
+      ],
+      "provider": "MongoDB, Inc",
+      "related_images": [
+        {
+          "digest": "sha256:dc9ae18097d195f3849f981410a1c3d6d761528a15c31b954f0523144800305a",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:dc9ae18097d195f3849f981410a1c3d6d761528a15c31b954f0523144800305a",
+          "name": "mongodb-image-4-2-11-ent"
+        },
+        {
+          "digest": "sha256:fd18f261e761e4db1c43dd58fbdb3eee15aed3f29884dc2bda7fe680c548d843",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:fd18f261e761e4db1c43dd58fbdb3eee15aed3f29884dc2bda7fe680c548d843",
+          "name": "ops_manager_image_repository_5_0_7"
+        },
+        {
+          "digest": "sha256:252b2d9e0c4ea38696b64a7b1d9bbf6fee4e5158836cf0457e239ed1742d4ef2",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:252b2d9e0c4ea38696b64a7b1d9bbf6fee4e5158836cf0457e239ed1742d4ef2",
+          "name": "ops_manager_image_repository_6_0_0"
+        },
+        {
+          "digest": "sha256:2190c594ca1cb533f030bdbb4c85306c04f27727b26a6f477c797411cf6465a3",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:2190c594ca1cb533f030bdbb4c85306c04f27727b26a6f477c797411cf6465a3",
+          "name": "ops_manager_image_repository_6_0_1"
+        },
+        {
+          "digest": "sha256:e0bba5cb396ae358ab4cb33530eae3be5629f0b3951cfc69b9854edc4a056d5c",
+          "image": "quay.io/mongodb/mongodb-agent-ubi@sha256:e0bba5cb396ae358ab4cb33530eae3be5629f0b3951cfc69b9854edc4a056d5c",
+          "name": "agent_image_11_12_0_7388_1"
+        },
+        {
+          "digest": "sha256:0dc25aa7b78643d4dd9500171433ff0a37c1775f6065daf6da37e3c17e1b5cc3",
+          "image": "quay.io/mongodb/mongodb-agent-ubi@sha256:0dc25aa7b78643d4dd9500171433ff0a37c1775f6065daf6da37e3c17e1b5cc3",
+          "name": "agent-image-11-0-5-6963-1"
+        },
+        {
+          "digest": "sha256:f41f51ec106286e8abef96d250de9cbd31b4fae4c3c9e3d570177637f3bcba75",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:f41f51ec106286e8abef96d250de9cbd31b4fae4c3c9e3d570177637f3bcba75",
+          "name": "ops_manager_image_repository_5_0_1"
+        },
+        {
+          "digest": "sha256:a07dc434a4beba9098f6c6d354f7caa42d2baee909362319d0d07f622c5c4c5d",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:a07dc434a4beba9098f6c6d354f7caa42d2baee909362319d0d07f622c5c4c5d",
+          "name": "ops_manager_image_repository_5_0_3"
+        },
+        {
+          "digest": "sha256:6bb57f86eab5b51ccb381af364b84504e29b583a7d31c1d2ddd4bd77d7eeadc7",
+          "image": "quay.io/mongodb/mongodb-enterprise-init-ops-manager-ubi@sha256:6bb57f86eab5b51ccb381af364b84504e29b583a7d31c1d2ddd4bd77d7eeadc7",
+          "name": "init-ops-manager-image-repository-1-0-9"
+        },
+        {
+          "digest": "sha256:6b69818beb352b8573dcbe44436faaf5237d7b113f504a3804d5bcc0bd14237f",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:6b69818beb352b8573dcbe44436faaf5237d7b113f504a3804d5bcc0bd14237f",
+          "name": "ops-manager-image-repository-5-0-6"
+        },
+        {
+          "digest": "sha256:34661ad8677fc312d1fdae4f8f74647c72a11cfb6c0df03fc76bd85853cfcc78",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:34661ad8677fc312d1fdae4f8f74647c72a11cfb6c0df03fc76bd85853cfcc78",
+          "name": "ops-manager-image-repository-5-0-14"
+        },
+        {
+          "digest": "sha256:6025795ee27026e14aca5f041651d7130557982e008d184a130bf47c6f8627a4",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:6025795ee27026e14aca5f041651d7130557982e008d184a130bf47c6f8627a4",
+          "name": "ops-manager-image-repository-6-0-2"
+        },
+        {
+          "digest": "sha256:6c7d0b9c2558dd7d6525ca6955638165b318f93172c87077df8a8a539ffb6960",
+          "image": "quay.io/mongodb/mongodb-enterprise-database-ubi@sha256:6c7d0b9c2558dd7d6525ca6955638165b318f93172c87077df8a8a539ffb6960",
+          "name": "mongodb_enterprise_database_image_2_0_2"
+        },
+        {
+          "digest": "sha256:9e69a6b1934d9f0996223909a382668101ee56da2a0e805bbc9c1003d5401e82",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:9e69a6b1934d9f0996223909a382668101ee56da2a0e805bbc9c1003d5401e82",
+          "name": "ops_manager_image_repository_5_0_0"
+        },
+        {
+          "digest": "sha256:6b69818beb352b8573dcbe44436faaf5237d7b113f504a3804d5bcc0bd14237f",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:6b69818beb352b8573dcbe44436faaf5237d7b113f504a3804d5bcc0bd14237f",
+          "name": "ops_manager_image_repository_5_0_6"
+        },
+        {
+          "digest": "sha256:38cec89a8ef38976dbf8905ba1c462fc2b068b03ae5d6129837404e29bc7cebe",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:38cec89a8ef38976dbf8905ba1c462fc2b068b03ae5d6129837404e29bc7cebe",
+          "name": "ops-manager-image-repository-5-0-11"
+        },
+        {
+          "digest": "sha256:6bb57f86eab5b51ccb381af364b84504e29b583a7d31c1d2ddd4bd77d7eeadc7",
+          "image": "quay.io/mongodb/mongodb-enterprise-init-ops-manager-ubi@sha256:6bb57f86eab5b51ccb381af364b84504e29b583a7d31c1d2ddd4bd77d7eeadc7",
+          "name": "init_ops_manager_image_repository_1_0_9"
+        },
+        {
+          "digest": "sha256:a71ef1f9861749a928d6349533aee976a7cc747fca18421b7ac99105f9bdfe56",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:a71ef1f9861749a928d6349533aee976a7cc747fca18421b7ac99105f9bdfe56",
+          "name": "ops_manager_image_repository_5_0_10"
+        },
+        {
+          "digest": "sha256:455a2635d428d71ab4a91c641f2cad8329f1ec7e351d86ab6439258c408cbf37",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:455a2635d428d71ab4a91c641f2cad8329f1ec7e351d86ab6439258c408cbf37",
+          "name": "ops-manager-image-repository-5-0-13"
+        },
+        {
+          "digest": "sha256:ed8a16becb323b2e4a79b4335ece0208fe24526a2e59b3cb487017f9a517fda9",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:ed8a16becb323b2e4a79b4335ece0208fe24526a2e59b3cb487017f9a517fda9",
+          "name": "mongodb-image-4-2-8-ent"
+        },
+        {
+          "digest": "sha256:4cb837bbdad39bf3fcf1872efd8ab0ee140f60c25c22f56a9e450c96a857f720",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:4cb837bbdad39bf3fcf1872efd8ab0ee140f60c25c22f56a9e450c96a857f720",
+          "name": "mongodb-image-5-0-1-ent"
+        },
+        {
+          "digest": "sha256:c477382df0759df86dd080d6e89e68fc5bcd8c4043c2a29f9c7b1908547570d9",
+          "image": "quay.io/mongodb/mongodb-enterprise-init-database-ubi@sha256:c477382df0759df86dd080d6e89e68fc5bcd8c4043c2a29f9c7b1908547570d9",
+          "name": "init_database_image_repository_1_0_13"
+        },
+        {
+          "digest": "sha256:4cb837bbdad39bf3fcf1872efd8ab0ee140f60c25c22f56a9e450c96a857f720",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:4cb837bbdad39bf3fcf1872efd8ab0ee140f60c25c22f56a9e450c96a857f720",
+          "name": "mongodb_image_5_0_1_ent"
+        },
+        {
+          "digest": "sha256:5dd88996a32f00562f990499bd201656984c6f13a275760f5ea53344fe0f4ebb",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:5dd88996a32f00562f990499bd201656984c6f13a275760f5ea53344fe0f4ebb",
+          "name": "mongodb_image_5_0_5_ent"
+        },
+        {
+          "digest": "sha256:252b2d9e0c4ea38696b64a7b1d9bbf6fee4e5158836cf0457e239ed1742d4ef2",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:252b2d9e0c4ea38696b64a7b1d9bbf6fee4e5158836cf0457e239ed1742d4ef2",
+          "name": "ops-manager-image-repository-6-0-0"
+        },
+        {
+          "digest": "sha256:2190c594ca1cb533f030bdbb4c85306c04f27727b26a6f477c797411cf6465a3",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:2190c594ca1cb533f030bdbb4c85306c04f27727b26a6f477c797411cf6465a3",
+          "name": "ops-manager-image-repository-6-0-1"
+        },
+        {
+          "digest": "sha256:ad17c3d8291df35166895b9cff47940d6f1c5299d6b6c34b9a46c2cde4e141f2",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:ad17c3d8291df35166895b9cff47940d6f1c5299d6b6c34b9a46c2cde4e141f2",
+          "name": "mongodb-image-4-4-0-ent"
+        },
+        {
+          "digest": "sha256:28ee83e553624699ed3de11539f722cc30730eb709c6cd1e5746c75d0bbbb940",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:28ee83e553624699ed3de11539f722cc30730eb709c6cd1e5746c75d0bbbb940",
+          "name": "ops_manager_image_repository_5_0_15"
+        },
+        {
+          "digest": "sha256:7a1ac40a1f966c5349c39adf0ef6d0ebff24fd1e3c4ada433f4ec21bbd1c46e6",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:7a1ac40a1f966c5349c39adf0ef6d0ebff24fd1e3c4ada433f4ec21bbd1c46e6",
+          "name": "mongodb_image_4_4_11_ent"
+        },
+        {
+          "digest": "sha256:e8d5f8ff86ef98d5d5b9e29d770fb53055de2fd46665c554cc556fdf1f8156ff",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:e8d5f8ff86ef98d5d5b9e29d770fb53055de2fd46665c554cc556fdf1f8156ff",
+          "name": "mongodb_image_4_4_4_ent"
+        },
+        {
+          "digest": "sha256:e0bba5cb396ae358ab4cb33530eae3be5629f0b3951cfc69b9854edc4a056d5c",
+          "image": "quay.io/mongodb/mongodb-agent-ubi@sha256:e0bba5cb396ae358ab4cb33530eae3be5629f0b3951cfc69b9854edc4a056d5c",
+          "name": "agent-image-11-12-0-7388-1"
+        },
+        {
+          "digest": "sha256:a07dc434a4beba9098f6c6d354f7caa42d2baee909362319d0d07f622c5c4c5d",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:a07dc434a4beba9098f6c6d354f7caa42d2baee909362319d0d07f622c5c4c5d",
+          "name": "ops-manager-image-repository-5-0-3"
+        },
+        {
+          "digest": "sha256:cd788fbe390639d9d8713bb79a7cffd9781f78728aafa31bcac4a7574f1b8f45",
+          "image": "quay.io/mongodb/mongodb-agent-ubi@sha256:cd788fbe390639d9d8713bb79a7cffd9781f78728aafa31bcac4a7574f1b8f45",
+          "name": "agent_image_12_0_4_7554_1"
+        },
+        {
+          "digest": "sha256:455a2635d428d71ab4a91c641f2cad8329f1ec7e351d86ab6439258c408cbf37",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:455a2635d428d71ab4a91c641f2cad8329f1ec7e351d86ab6439258c408cbf37",
+          "name": "ops_manager_image_repository_5_0_13"
+        },
+        {
+          "digest": "sha256:6025795ee27026e14aca5f041651d7130557982e008d184a130bf47c6f8627a4",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:6025795ee27026e14aca5f041651d7130557982e008d184a130bf47c6f8627a4",
+          "name": "ops_manager_image_repository_6_0_2"
+        },
+        {
+          "digest": "sha256:f41f51ec106286e8abef96d250de9cbd31b4fae4c3c9e3d570177637f3bcba75",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:f41f51ec106286e8abef96d250de9cbd31b4fae4c3c9e3d570177637f3bcba75",
+          "name": "ops-manager-image-repository-5-0-1"
+        },
+        {
+          "digest": "sha256:4cf34aef851f856867379309658cd95b2c135c5244dbb77803aa81b263983f0e",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:4cf34aef851f856867379309658cd95b2c135c5244dbb77803aa81b263983f0e",
+          "name": "ops-manager-image-repository-5-0-9"
+        },
+        {
+          "digest": "sha256:8eff2e05a9abb07dc75cf90450317bc45011b0718f25afaa990e896be96f97a8",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:8eff2e05a9abb07dc75cf90450317bc45011b0718f25afaa990e896be96f97a8",
+          "name": "mongodb-image-4-2-2-ent"
+        },
+        {
+          "digest": "sha256:5cd3ed1053dae64c2cc7e13718cb93f899deffec7116ee7115cf92fa8f42f2e5",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:5cd3ed1053dae64c2cc7e13718cb93f899deffec7116ee7115cf92fa8f42f2e5",
+          "name": "mongodb-image-4-2-6-ent"
+        },
+        {
+          "digest": "sha256:c43dce16f851587d7a41591309d2b3a6e5fe9798941490b56a4356fe619890d0",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:c43dce16f851587d7a41591309d2b3a6e5fe9798941490b56a4356fe619890d0",
+          "name": "ops_manager_image_repository_5_0_8"
+        },
+        {
+          "digest": "sha256:5cd3ed1053dae64c2cc7e13718cb93f899deffec7116ee7115cf92fa8f42f2e5",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:5cd3ed1053dae64c2cc7e13718cb93f899deffec7116ee7115cf92fa8f42f2e5",
+          "name": "mongodb_image_4_2_6_ent"
+        },
+        {
+          "digest": "sha256:ad17c3d8291df35166895b9cff47940d6f1c5299d6b6c34b9a46c2cde4e141f2",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:ad17c3d8291df35166895b9cff47940d6f1c5299d6b6c34b9a46c2cde4e141f2",
+          "name": "mongodb_image_4_4_0_ent"
+        },
+        {
+          "digest": "sha256:fd18f261e761e4db1c43dd58fbdb3eee15aed3f29884dc2bda7fe680c548d843",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:fd18f261e761e4db1c43dd58fbdb3eee15aed3f29884dc2bda7fe680c548d843",
+          "name": "ops-manager-image-repository-5-0-7"
+        },
+        {
+          "digest": "sha256:3ebbf727ba407f7e4ea115c3a3b224f0ab76e24fffbcc27257b5455950b8bc35",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:3ebbf727ba407f7e4ea115c3a3b224f0ab76e24fffbcc27257b5455950b8bc35",
+          "name": "ops-manager-image-repository-6-0-3"
+        },
+        {
+          "digest": "sha256:7a1ac40a1f966c5349c39adf0ef6d0ebff24fd1e3c4ada433f4ec21bbd1c46e6",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:7a1ac40a1f966c5349c39adf0ef6d0ebff24fd1e3c4ada433f4ec21bbd1c46e6",
+          "name": "mongodb-image-4-4-11-ent"
+        },
+        {
+          "digest": "sha256:10f8fcffce5440793ab9541f1024420a4773fe7fc5e059c35e91439920f423c1",
+          "image": "quay.io/mongodb/mongodb-enterprise-init-appdb-ubi@sha256:10f8fcffce5440793ab9541f1024420a4773fe7fc5e059c35e91439920f423c1",
+          "name": "init_appdb_image_repository_1_0_13"
+        },
+        {
+          "digest": "sha256:0dc25aa7b78643d4dd9500171433ff0a37c1775f6065daf6da37e3c17e1b5cc3",
+          "image": "quay.io/mongodb/mongodb-agent-ubi@sha256:0dc25aa7b78643d4dd9500171433ff0a37c1775f6065daf6da37e3c17e1b5cc3",
+          "name": "agent_image_11_0_5_6963_1"
+        },
+        {
+          "digest": "sha256:dc9ae18097d195f3849f981410a1c3d6d761528a15c31b954f0523144800305a",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:dc9ae18097d195f3849f981410a1c3d6d761528a15c31b954f0523144800305a",
+          "name": "mongodb_image_4_2_11_ent"
+        },
+        {
+          "digest": "sha256:10f8fcffce5440793ab9541f1024420a4773fe7fc5e059c35e91439920f423c1",
+          "image": "quay.io/mongodb/mongodb-enterprise-init-appdb-ubi@sha256:10f8fcffce5440793ab9541f1024420a4773fe7fc5e059c35e91439920f423c1",
+          "name": "init-appdb-image-repository-1-0-13"
+        },
+        {
+          "digest": "sha256:cd788fbe390639d9d8713bb79a7cffd9781f78728aafa31bcac4a7574f1b8f45",
+          "image": "quay.io/mongodb/mongodb-agent-ubi@sha256:cd788fbe390639d9d8713bb79a7cffd9781f78728aafa31bcac4a7574f1b8f45",
+          "name": "agent-image-12-0-4-7554-1"
+        },
+        {
+          "digest": "sha256:c43dce16f851587d7a41591309d2b3a6e5fe9798941490b56a4356fe619890d0",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:c43dce16f851587d7a41591309d2b3a6e5fe9798941490b56a4356fe619890d0",
+          "name": "ops-manager-image-repository-5-0-8"
+        },
+        {
+          "digest": "sha256:34661ad8677fc312d1fdae4f8f74647c72a11cfb6c0df03fc76bd85853cfcc78",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:34661ad8677fc312d1fdae4f8f74647c72a11cfb6c0df03fc76bd85853cfcc78",
+          "name": "ops_manager_image_repository_5_0_14"
+        },
+        {
+          "digest": "sha256:8eff2e05a9abb07dc75cf90450317bc45011b0718f25afaa990e896be96f97a8",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:8eff2e05a9abb07dc75cf90450317bc45011b0718f25afaa990e896be96f97a8",
+          "name": "mongodb_image_4_2_2_ent"
+        },
+        {
+          "digest": "sha256:9e69a6b1934d9f0996223909a382668101ee56da2a0e805bbc9c1003d5401e82",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:9e69a6b1934d9f0996223909a382668101ee56da2a0e805bbc9c1003d5401e82",
+          "name": "ops-manager-image-repository-5-0-0"
+        },
+        {
+          "digest": "sha256:d7943712d06f615a299b83839b9bc8ecc3abc94b455283c2fc226c0792e9f914",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:d7943712d06f615a299b83839b9bc8ecc3abc94b455283c2fc226c0792e9f914",
+          "name": "ops-manager-image-repository-5-0-5"
+        },
+        {
+          "digest": "sha256:a71ef1f9861749a928d6349533aee976a7cc747fca18421b7ac99105f9bdfe56",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:a71ef1f9861749a928d6349533aee976a7cc747fca18421b7ac99105f9bdfe56",
+          "name": "ops-manager-image-repository-5-0-10"
+        },
+        {
+          "digest": "sha256:e8d5f8ff86ef98d5d5b9e29d770fb53055de2fd46665c554cc556fdf1f8156ff",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:e8d5f8ff86ef98d5d5b9e29d770fb53055de2fd46665c554cc556fdf1f8156ff",
+          "name": "mongodb-image-4-4-4-ent"
+        },
+        {
+          "digest": "sha256:1386f67460740a8cc4d1777b90ed1f84625ecec463ed9afd066bd64c355ac272",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:1386f67460740a8cc4d1777b90ed1f84625ecec463ed9afd066bd64c355ac272",
+          "name": "ops-manager-image-repository-5-0-4"
+        },
+        {
+          "digest": "sha256:759829f647d0562eb12c1bf2e5a47be206c4e511cd4e0dfc6c9a4e31c810f9b2",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:759829f647d0562eb12c1bf2e5a47be206c4e511cd4e0dfc6c9a4e31c810f9b2",
+          "name": "ops-manager-image-repository-5-0-12"
+        },
+        {
+          "digest": "sha256:d7943712d06f615a299b83839b9bc8ecc3abc94b455283c2fc226c0792e9f914",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:d7943712d06f615a299b83839b9bc8ecc3abc94b455283c2fc226c0792e9f914",
+          "name": "ops_manager_image_repository_5_0_5"
+        },
+        {
+          "digest": "sha256:38cec89a8ef38976dbf8905ba1c462fc2b068b03ae5d6129837404e29bc7cebe",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:38cec89a8ef38976dbf8905ba1c462fc2b068b03ae5d6129837404e29bc7cebe",
+          "name": "ops_manager_image_repository_5_0_11"
+        },
+        {
+          "digest": "sha256:3ebbf727ba407f7e4ea115c3a3b224f0ab76e24fffbcc27257b5455950b8bc35",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:3ebbf727ba407f7e4ea115c3a3b224f0ab76e24fffbcc27257b5455950b8bc35",
+          "name": "ops_manager_image_repository_6_0_3"
+        },
+        {
+          "digest": "sha256:ed8a16becb323b2e4a79b4335ece0208fe24526a2e59b3cb487017f9a517fda9",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:ed8a16becb323b2e4a79b4335ece0208fe24526a2e59b3cb487017f9a517fda9",
+          "name": "mongodb_image_4_2_8_ent"
+        },
+        {
+          "digest": "sha256:9555e5847c7c7a756a4665fb1ffd4c6300495c9c271ed75a5856a558f030c555",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:9555e5847c7c7a756a4665fb1ffd4c6300495c9c271ed75a5856a558f030c555",
+          "name": "ops-manager-image-repository-5-0-2"
+        },
+        {
+          "digest": "sha256:5dd88996a32f00562f990499bd201656984c6f13a275760f5ea53344fe0f4ebb",
+          "image": "quay.io/mongodb/mongodb-enterprise-appdb-database-ubi@sha256:5dd88996a32f00562f990499bd201656984c6f13a275760f5ea53344fe0f4ebb",
+          "name": "mongodb-image-5-0-5-ent"
+        },
+        {
+          "digest": "sha256:9555e5847c7c7a756a4665fb1ffd4c6300495c9c271ed75a5856a558f030c555",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:9555e5847c7c7a756a4665fb1ffd4c6300495c9c271ed75a5856a558f030c555",
+          "name": "ops_manager_image_repository_5_0_2"
+        },
+        {
+          "digest": "sha256:759829f647d0562eb12c1bf2e5a47be206c4e511cd4e0dfc6c9a4e31c810f9b2",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:759829f647d0562eb12c1bf2e5a47be206c4e511cd4e0dfc6c9a4e31c810f9b2",
+          "name": "ops_manager_image_repository_5_0_12"
+        },
+        {
+          "digest": "sha256:6c7d0b9c2558dd7d6525ca6955638165b318f93172c87077df8a8a539ffb6960",
+          "image": "quay.io/mongodb/mongodb-enterprise-database-ubi@sha256:6c7d0b9c2558dd7d6525ca6955638165b318f93172c87077df8a8a539ffb6960",
+          "name": "mongodb-enterprise-database-image-2-0-2"
+        },
+        {
+          "digest": "sha256:c477382df0759df86dd080d6e89e68fc5bcd8c4043c2a29f9c7b1908547570d9",
+          "image": "quay.io/mongodb/mongodb-enterprise-init-database-ubi@sha256:c477382df0759df86dd080d6e89e68fc5bcd8c4043c2a29f9c7b1908547570d9",
+          "name": "init-database-image-repository-1-0-13"
+        },
+        {
+          "digest": "sha256:28ee83e553624699ed3de11539f722cc30730eb709c6cd1e5746c75d0bbbb940",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:28ee83e553624699ed3de11539f722cc30730eb709c6cd1e5746c75d0bbbb940",
+          "name": "ops-manager-image-repository-5-0-15"
+        },
+        {
+          "digest": "sha256:0a99a81c8a24af654dbe4ebf7126d7044ce2e481caffd21f848ba4ba93e1f741",
+          "image": "quay.io/mongodb/mongodb-enterprise-operator-ubi@sha256:0a99a81c8a24af654dbe4ebf7126d7044ce2e481caffd21f848ba4ba93e1f741",
+          "name": "mongodb-enterprise-operator"
+        },
+        {
+          "digest": "sha256:1386f67460740a8cc4d1777b90ed1f84625ecec463ed9afd066bd64c355ac272",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:1386f67460740a8cc4d1777b90ed1f84625ecec463ed9afd066bd64c355ac272",
+          "name": "ops_manager_image_repository_5_0_4"
+        },
+        {
+          "digest": "sha256:4cf34aef851f856867379309658cd95b2c135c5244dbb77803aa81b263983f0e",
+          "image": "quay.io/mongodb/mongodb-enterprise-ops-manager-ubi@sha256:4cf34aef851f856867379309658cd95b2c135c5244dbb77803aa81b263983f0e",
+          "name": "ops_manager_image_repository_5_0_9"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.17.2",
+      "version_original": "1.17.2"
+    },
+    {
+      "_id": "634f31804b6c281902e9a56c",
+      "alm_examples": [
+        {
+          "api_version": "vfunction.com/v1",
+          "kind": "VfunctionServer",
+          "metadata": {
+            "labels": {
+              "app.kubernetes.io/instance": "vfunction-server",
+              "app.kubernetes.io/managed-by": "operator",
+              "app.kubernetes.io/name": "vfunction",
+              "name": "vfunction"
+            },
+            "name": "vfunction-server",
+            "namespace": "vfunction"
+          },
+          "spec": {
+            "admin": {
+              "email": "admin@mycompany.com",
+              "name": "Admin",
+              "password": "Password1!"
+            },
+            "authentication": {
+              "authority": "",
+              "ca_root_crt": "",
+              "client_id": "",
+              "issuer": "",
+              "jwks_url": ""
+            },
+            "backup": {
+              "mysql": {
+                "S3": {
+                  "bucket": "",
+                  "key": "",
+                  "region": "",
+                  "secret": ""
+                }
+              }
+            },
+            "host": "http://my.domain.com",
+            "measurements": {
+              "S3": {
+                "bucket": "",
+                "key": "",
+                "region": "",
+                "secret": ""
+              },
+              "auto_scaling": "No",
+              "max_number_of_services": "10",
+              "min_number_of_services": "2"
+            },
+            "org_name": "MyCompany",
+            "smtp": {
+              "identity": "",
+              "password": "",
+              "url": "",
+              "user": ""
+            },
+            "tls": {
+              "crt": "",
+              "key": "",
+              "use_letsencrypt": "No"
+            },
+            "upgrade": "Never"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/vfunction/vfunction-server-operator-bundle@sha256:92894398c27374a7603f2bc08d63558c7e99b632a31a62eea35fd62605b5f63b",
+      "bundle_path_digest": "sha256:92894398c27374a7603f2bc08d63558c7e99b632a31a62eea35fd62605b5f63b",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-10-18T23:06:40.750000+00:00",
+      "csv_description": "\n## Introduction\n\n[vFunction](https://www.vfunction.com/) is a cloud-native modernization platform that combines dynamic and static code analysis, machine learning, and automation to automatically identify and extract services from existing applications. vFunction is the only platform purpose-built for modernization of Java applications.\n\nThe vFunction modernization process starts by learning the running monolithic application, and surfacing the interdependencies within it. Using AI, the platform analyzes and identifies services that can be separated from the application. This decomposition can present a range of micro, mini, or even macro services, depending on your application environment, each being an independently deployable and scalable application component.\n\nvFunction automates the extraction of these services, enabling you to modernize your monolith, quickly and easily.\n\n## The vFunction platform\n\nThe platform consists of 3 basic components; the server, the controller package, and a tools package. The server runs as an operand on an OpenShift environment. The controller package is installed on the machine that runs the monolithic application which can be either a Linux or a Windows machine, and the tools are run on a development machine, with access to the code of the monolithic application.\n\nThe controller package consists of three elements: the vFunction agent, that collects data during the dynamic analysis phase; the vFunction Viper application, that performs static analysis on the binaries of the application; and the vFunction controller that handles all the communication between the agent, Viper, and the vFunction server.\n\nThe vFunction agent is a mix of a Java and native agent, and needs to run on the JVM that is currently running your application. [Refer to the vFunction OOB Support Matrix document](https://drive.google.com/file/d/1ccq8LFab1FrYAimDUxwgjiCOdk4QuVzs/view) for a list of supported application servers and JVMs.\n\nThis operator installs a vFunction server instance to be connected later with one or more vFunction controllers installed on your application machine(s).\n\n## Before You Start\n\nThe vFunction operator requires a Red Hat OpenShift Kubernetes Application Platform 4.x.\n\nThe cluster recommended configuration (which is the same as the minimal one) should consist of:\n\n- *1 master node*\n\n- *1 worker node*\n\n- *Storage capacity enough for dynamically provision 2 PVs of 50G each*\n\n- *A default StorageClass configured*\n\nvFunction doesn\u2019t provide any encryption mechanism for data stored on any attached storage. If required, encryption can be achieved by the client by using its own external means on the storage itself.\n\nvFunction supports backup of all critical data as part of the application. Nevertheless, for complete backup of entire data it is recommended that the client apply its own storage based backup mechanism.\n\n## Install Prerequisites\n\n###Cluster:\nThe operator was certified and tested on OCP 4.6 and 4.7.\nIf you encounter any issue with other OCP versions or cloud providers please contact info@vfunction.com.\n\n###Storage:\nThe operator creates two new PersistentVolumeClaims (PVCs) during installation time. For their creation, it relies on the default StorageClass to dynamically provision two PersistentVolumes (PVs). The system must have a default StorageClass in place.\n\nBoth PersistentVolumes are accessed with ReadWriteOnce mode.\n\n###Project:\nThe operator should be installed in a new and dedicated project (namespace). If you intend to install more than one vFunction operands in the same cluster, please use different projects for each one. Installation of more than one operand on the same cluster will allow scaling by load balancing multiple applications to different vFunction servers.\n\n## Installation instructions\n\n1. Prepare the YAML file to use in the installation:\n\n    a. Copy the following YAML template into a text editor:\n\n    ```yaml\n        apiVersion: vfunction.com/v1\n        kind: VfunctionServer\n        metadata:\n          name: vfunction\n          namespace: vfunction\n          labels:\n            name: vfunction\n            app.kubernetes.io/name: vfunction\n            app.kubernetes.io/instance: vfunction-server\n            app.kubernetes.io/managed-by: operator\n        spec:\n          host: \"http://my.domain.com\"\n          org_name: \"MyCompany\"\n          upgrade: \"Never\"\n          admin:\n            email: \"admin@mycompany.com\"\n            name: \"Admin\"\n            password: \"Password1!\"\n          measurements:\n            auto_scaling: \"No\"\n            min_number_of_services: \"2\"\n            max_number_of_services: \"10\"\n            S3:\n              bucket: \"\"\n              key: \"\"\n              secret: \"\"\n          smtp:\n            password: \"\"\n            url: \"\"\n            identity: \"\"\n            user: \"\"\n          authentication:\n            authority: \"\"\n            client_id: \"\"\n            jwks_url: \"\"\n            issuer: \"\"\n            ca_root_crt: |\n              -----BEGIN CERTIFICATE-----\n              ...\n              -----END CERTIFICATE-----\n          tls:\n            use_letsencrypt: \"No\"\n            crt: |\n              -----BEGIN CERTIFICATE-----\n              ...\n              -----END CERTIFICATE-----\n            key: |\n              -----BEGIN PRIVATE KEY-----\n              ...\n              -----END PRIVATE KEY-----\n          backup:\n            mysql:\n              S3:\n                bucket: \"\"\n                key: \"\"\n                secret: \"\"\n    ```\n    b. Customize the template fields by replacing with your information:\n\n    - **host**: Enter the FQDN for accessing the vFunction dashboard.\n                Make sure that you use a domain name and not an IP address. Writing \"https://\" will mandate TLS while writing \"http://\" will expose the server through HTTP.\n    - **org_name**: Enter your organization name.\n    - **upgrade**: Choose auto-upgrade mode\n        - **Daily**: The operator will check for a new version every day at 3 AM and will install it automatically.\n        - **Always**: The operator will check for a new version every 10 minutes and will install it automatically.\n        - **Never**: The automatic upgrading mechanism is off (default).\n        - **Maintenance**: Put the operator in a maintenance mode.\n    - **admin.email**: Enter the email address of your administrator.\n    - **admin.name**: Enter the name of your administrator.\n    - **admin.password**: Enter the password you want to use for the vFunction administrator.\n                          The password should be at least 8 characters long, and consist of at least one lowercase letter, at least one uppercase letter, at least one number, and at least one special character.\n    - **measurements.auto_scaling**: Indicates if the measurement services auto scalling is active.\n    - **measurements.min\\_num\\_of\\_services**: Minimum Number of measurement service pods.\n    - **measurements.max\\_num\\_of\\_services**: Maximum Number of measurement service pods.\n    - **measurements.S3**: Save all measurements data to S3, instead of local PV (optional).\n        - **measurements.S3.bucket**: Measurements S3 bucket name.\n        - **measurements.S3.key**: Measurements S3 key.\n        - **measurements.S3.secret**: Measurements S3 secret.\n        - **measurements.S3.region**: Measurements S3 region.\n    - **smtp.user**: Enter the email address for a designated user for the SMTP server (optional).\n    - **smtp.password**: Enter this user\u2019s password (optional).\n    - **smtp.identity**: Enter this user\u2019s password (optional).\n    - **smtp.url**: Enter the SMTP server URL (optional).\n    - **authentication.authority**: Authority for authentication (Optional).\n    - **authentication.client_id**: Client ID for authentication (Optional).\n    - **authentication.jwks_url**: JWKS URL for authentication (Optional).\n    - **authentication.issuer**: Issuer for authentication (Optional).\n    - **authentication.ca\\_root\\_crt**: CA root certificate for authentication (Optional).\n    - **tls.crt**: If your host FQDN starts with \u201chttps\u201d, paste in the certifications you have for using the TLS connection.\n    - **tls.key**: If your host FQDN starts with \u201chttps\u201d, enter the key you have for using the TLS connection.\n    - **backup.mysql.S3**: Backup MySQL to S3 (optional).\n        - **backup.mysql.S3.bucket**: MySQL backup S3 bucket name.\n        - **backup.mysql.S3.key**: MySQL backup S3 key.\n        - **backup.mysql.S3.secret**: MySQL backup S3 secret.\n        - **backup.mysql.S3.region**: MySQL backup S3 region.\n\n1. In the Installed Operators window choose and click on vFunction Operator and then Create Instance.\n1. In the Create vFunctionServer window, paste the YAML file that you created in step 1.\n1. Click Create.\n1. You can now click on your new created vFunction operand in order to see its details and installation progress.\n\n## Verifying the installation\n\nCheck that the operand installed successfully:\n\n1. Check that the \"Operand State\" property shows \u201cWorking\u201d.\n1. Check that the \"Successfully Installed\" property shows \"Yes\".\n\nIf \"Operand State\" shows \"Failed\", it indicates the operand wasn\u2019t installed correctly. Check the events and logs for all pods (operator and image containers) for any issues. In the event that you cannot troubleshoot, contact vFunction support.\n\n## After installation\n\nThe vFunction site is now accessible via the newly created vFunction application custom address, for example, my.domain.com. There are two ways you can access the vFunction dashboard.\n\n### Access using the router canonical hostname\n\n1. Update your DNS provider by creating a canonical name (CNAME) record.\nThis record should point to your host address, and to the \u201dvfunction\u201d subdomain of the  OpenShift canonical router hostname as the alias.\nFor example, ***my.domain.com.   CNAME   vfunction.apps.ocp4.my-openshift.com.***\n2. Find your cluster Router Canonical Hostname address in the newly created vfunction-route-xxx under your vFunction OpenShift project -> **Networking** -> **Routes** -> **vfunction-route-xxx** route -> **Router Canonical Hostname** field.\nYou can now access the dashboard using your defined \"host\" spec property (as above).\n\n### Access using the nginx service location\n\nYou may use this access method if your OpenShift is installed on a provider that supports exposing LoadBalancer-type services.\n1. Update your DNS provider by creating a canonical name (CNAME) record.\nThis record should point to your host address and to the vfunction-nginx-xxx service location.\nFor example, ***my.domain.com.   CNAME   a05951ed7cdf-1394239323.us-east-1.elb.amazonaws.com.***\n1. Point your custom domain to the vfunction-nginx-xxx service's external IP location, which you can find in the OpenShift project > **Networking** -> **Services** -> **vfunction-nginx-xxx** service > **Service Address** > **Location** field.\n\n## Upgrade and Rollback\n\nThe vFunction operator includes a built-in auto-upgrade mechanism.\n\nYou can choose one of 4 upgrading modes:\n- **Daily**: The operator will check for a new version every day at 3 AM and will install it automatically.\n- **Always**: The operator will check for a new version every 10 minutes and will install it automatically.\n- **Never**: The automatic upgrading mechanism is off (default).\n- **Maintenance**: Put the operator in a maintenance mode.\n\nFor an on-demand upgrade,  you can change anytime the upgrading mode from \u201cNever\u201d to \u201cAlways\u201d, wait for the operand to be upgraded, and change again to \u201cNever\u201d.\n\nDuring the upgrade, the \"Operand State\" property will change to \u201cUpgrading...\u201d and back again to \u201cWorking\u201d after a successful upgrade.\n\nIn case of a failure upgrading the operand, an automatic rollback to the last working version will occur. The failed version will be marked as defective and the operator will not try to upgrade to it again.\n\nChoosing the \"Maintenance\" option will tell the operator to take down all pods, so you can safely fix storage issues, return volumes from snapshots, etc.\nAfter finishing the maintenance, return the upgrade mode to your original desired policy.",
+      "csv_display_name": "vFunction Operator",
+      "csv_metadata_description": "vFunction is a cutting-edge code analysis, machine learning, and automation to boost your Java modernization projects.",
+      "csv_name": "vfunction-server-operator.v2.6.897",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T11:35:27.231000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "vfunction-server-operator",
+      "provided_apis": [
+        {
+          "group": "vfunction.com",
+          "kind": "VfunctionServer",
+          "plural": "vfunctionservers",
+          "version": "v1"
+        }
+      ],
+      "provider": "vFunction",
+      "related_images": [
+        {
+          "digest": "sha256:3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c",
+          "image": "registry.connect.redhat.com/vfunction/vfunction-server-operator@sha256:3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c",
+          "name": "vfunction-server-operator"
+        },
+        {
+          "digest": "sha256:dc9d83489306945205eceead338f63636fec3cac208f1b8edc679180422cbe29",
+          "image": "registry.connect.redhat.com/vfunction/vfunction-mysql@sha256:dc9d83489306945205eceead338f63636fec3cac208f1b8edc679180422cbe29",
+          "name": "vfunction-mysql"
+        },
+        {
+          "digest": "sha256:913f07b4713d339c0bbdce87c480e35e56847f53c155cea7f5df56a07b39c5c5",
+          "image": "registry.connect.redhat.com/vfunction/vfunction-nginx@sha256:913f07b4713d339c0bbdce87c480e35e56847f53c155cea7f5df56a07b39c5c5",
+          "name": "vfunction-nginx"
+        },
+        {
+          "digest": "sha256:829eaf9282f5f92effbed9c37d2e241210b20cd9f6f3d50e149b96c57dd3f9d6",
+          "image": "registry.connect.redhat.com/vfunction/vfunction-storage@sha256:829eaf9282f5f92effbed9c37d2e241210b20cd9f6f3d50e149b96c57dd3f9d6",
+          "name": "vfunction-storage"
+        },
+        {
+          "digest": "sha256:6e6be6a7f6a260d17cce0a744257d5780a616be4ca4589db6ad4641b1ea79410",
+          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-idp@sha256:6e6be6a7f6a260d17cce0a744257d5780a616be4ca4589db6ad4641b1ea79410",
+          "name": "vfunction-vfapi-idp"
+        },
+        {
+          "digest": "sha256:f876f30bdd4b96946a74419b453170b38d6d877a36359e3ac8160e2261a4d38a",
+          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-measurements@sha256:f876f30bdd4b96946a74419b453170b38d6d877a36359e3ac8160e2261a4d38a",
+          "name": "vfunction-vfapi-measurements"
+        },
+        {
+          "digest": "sha256:5346b4f23923f5f02492f088f91e01e8a85ce2722e9f8afa45642f2c6bdcfb8e",
+          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-organizations@sha256:5346b4f23923f5f02492f088f91e01e8a85ce2722e9f8afa45642f2c6bdcfb8e",
+          "name": "vfunction-vfapi-organizations"
+        },
+        {
+          "digest": "sha256:191bedeb9120858bead76fdda1212ada88512a5c596a07741000241e13a8f5a1",
+          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-users@sha256:191bedeb9120858bead76fdda1212ada88512a5c596a07741000241e13a8f5a1",
+          "name": "vfunction-vfapi-users"
+        },
+        {
+          "digest": "sha256:3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c",
+          "image": "registry.connect.redhat.com/vfunction/vfunction-server-operator@sha256:3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c",
+          "name": "vfunction-server-operator-3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c-annotation"
+        },
+        {
+          "digest": "sha256:dc9d83489306945205eceead338f63636fec3cac208f1b8edc679180422cbe29",
+          "image": "registry.connect.redhat.com/vfunction/vfunction-mysql@sha256:dc9d83489306945205eceead338f63636fec3cac208f1b8edc679180422cbe29",
+          "name": "vfunction_mysql_original_image"
+        },
+        {
+          "digest": "sha256:913f07b4713d339c0bbdce87c480e35e56847f53c155cea7f5df56a07b39c5c5",
+          "image": "registry.connect.redhat.com/vfunction/vfunction-nginx@sha256:913f07b4713d339c0bbdce87c480e35e56847f53c155cea7f5df56a07b39c5c5",
+          "name": "vfunction_nginx_original_image"
+        },
+        {
+          "digest": "sha256:829eaf9282f5f92effbed9c37d2e241210b20cd9f6f3d50e149b96c57dd3f9d6",
+          "image": "registry.connect.redhat.com/vfunction/vfunction-storage@sha256:829eaf9282f5f92effbed9c37d2e241210b20cd9f6f3d50e149b96c57dd3f9d6",
+          "name": "vfunction_storage_original_image"
+        },
+        {
+          "digest": "sha256:6e6be6a7f6a260d17cce0a744257d5780a616be4ca4589db6ad4641b1ea79410",
+          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-idp@sha256:6e6be6a7f6a260d17cce0a744257d5780a616be4ca4589db6ad4641b1ea79410",
+          "name": "vfunction_vfapi_idp_original_image"
+        },
+        {
+          "digest": "sha256:f876f30bdd4b96946a74419b453170b38d6d877a36359e3ac8160e2261a4d38a",
+          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-measurements@sha256:f876f30bdd4b96946a74419b453170b38d6d877a36359e3ac8160e2261a4d38a",
+          "name": "vfunction_vfapi_measurements_original_image"
+        },
+        {
+          "digest": "sha256:5346b4f23923f5f02492f088f91e01e8a85ce2722e9f8afa45642f2c6bdcfb8e",
+          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-organizations@sha256:5346b4f23923f5f02492f088f91e01e8a85ce2722e9f8afa45642f2c6bdcfb8e",
+          "name": "vfunction_vfapi_organizations_original_image"
+        },
+        {
+          "digest": "sha256:191bedeb9120858bead76fdda1212ada88512a5c596a07741000241e13a8f5a1",
+          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-users@sha256:191bedeb9120858bead76fdda1212ada88512a5c596a07741000241e13a8f5a1",
+          "name": "vfunction_vfapi_users_original_image"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<2.6.897",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "2.6.897",
+      "version_original": "2.6.897"
     }
   ]
 }
