@@ -124,12 +124,12 @@ require (
 	go.starlark.net v0.0.0-20220928063852-5fccb4daaf6d // indirect
 	golang.org/x/crypto v0.0.0-20221005025214-4161e89ecf1b // indirect
 	golang.org/x/net v0.1.0 // indirect
-	golang.org/x/oauth2 v0.0.0-20220909003341-f21342109be1 // indirect
+	golang.org/x/oauth2 v0.1.0 // indirect
 	golang.org/x/sync v0.0.0-20220929204114-8fcdb60fdcc0 // indirect
 	golang.org/x/sys v0.1.0 // indirect
 	golang.org/x/term v0.1.0 // indirect
 	golang.org/x/text v0.4.0 // indirect
-	golang.org/x/time v0.0.0-20220922220347-f3bd1da661af // indirect
+	golang.org/x/time v0.1.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20220930163606-c98284e70a91 // indirect
 	google.golang.org/grpc v1.49.0 // indirect
@@ -159,6 +159,7 @@ require (
 	github.com/go-yaml/yaml v2.1.0+incompatible
 	github.com/openshift/machine-config-operator v0.0.0-00010101000000-000000000000
 	github.com/test-network-function/cnfextensions v0.0.0-20220908220149-566dd6fe6b0e
+	github.com/test-network-function/privileged-daemonset v0.0.2-0.20221031135535-c8d6e61587fd
 	gopkg.in/yaml.v3 v3.0.1
 	k8s.io/kubectl v0.25.3
 )
