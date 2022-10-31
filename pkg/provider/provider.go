@@ -225,16 +225,38 @@ func buildTestEnvironment() { //nolint:funlen
 func getPodContainers(aPod *corev1.Pod, useIgnoreList bool) (containerList []*Container) {
 	for j := 0; j < len(aPod.Spec.Containers); j++ {
 		cut := &(aPod.Spec.Containers[j])
-		var state corev1.ContainerStatus
+		var status corev1.ContainerStatus
 		if len(aPod.Status.ContainerStatuses) > 0 {
-			state = aPod.Status.ContainerStatuses[j]
+			status = aPod.Status.ContainerStatuses[j]
 		} else {
 			logrus.Errorf("%s is not ready, skipping status collection", aPod.String())
 		}
-		aRuntime, uid := GetRuntimeUID(&state)
+		aRuntime, uid := GetRuntimeUID(&status)
 		container := Container{Podname: aPod.Name, Namespace: aPod.Namespace,
-			NodeName: aPod.Spec.NodeName, Container: cut, Status: state, Runtime: aRuntime, UID: uid,
+			NodeName: aPod.Spec.NodeName, Container: cut, Status: status, Runtime: aRuntime, UID: uid,
 			ContainerImageIdentifier: buildContainerImageSource(aPod.Spec.Containers[j].Image)}
+
+		// Warn if readiness probe didn't succeeded yet.
+		if !status.Ready {
+			logrus.Warnf("%s is not ready yet.", &container)
+		}
+
+		// Warn if container state is not running.
+		if state := &status.State; state.Running == nil {
+			reason := ""
+			switch {
+			case state.Waiting != nil:
+				reason = "waiting - " + state.Waiting.Reason
+			case state.Terminated != nil:
+				reason = "terminated - " + state.Terminated.Reason
+			default:
+				// When no state was explicitly set, it's assumed to be in "waiting state".
+				reason = "waiting state reason unknown"
+			}
+
+			logrus.Warnf("%s is not running (reason: %s, restarts %d): some test cases might fail.",
+				&container, reason, status.RestartCount)
+		}
 
 		// Build slices of containers based on whether or not we are "ignoring" them or not.
 		if useIgnoreList && container.HasIgnoredContainerName() {
