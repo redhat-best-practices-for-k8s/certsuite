@@ -17,9 +17,11 @@
 package nodetainted
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 )
 
@@ -127,5 +129,110 @@ func TestDecodeKernelTaints(t *testing.T) {
 	for _, tc := range tcs {
 		taints := DecodeKernelTaints(tc.taintsBitMask)
 		assert.Equal(t, tc.expectedTaints, taints)
+	}
+}
+
+func TestGetOutOfTreeModules(t *testing.T) {
+	testCases := []struct {
+		testModules            []string
+		expectedTaintedModules []string
+		runCommandOutput       string
+	}{
+		{ // output is O
+			testModules:            []string{"module1"},
+			expectedTaintedModules: []string{"module1"},
+			runCommandOutput:       "O", // O means out-of-tree
+		},
+		{ // output is 1 (could be anything)
+			testModules:            []string{"module2"},
+			expectedTaintedModules: []string{},
+			runCommandOutput:       "1",
+		},
+	}
+
+	for _, tc := range testCases {
+		origFunc := runCommand
+		runCommand = func(ctx *clientsholder.Context, cmd string) (string, error) {
+			return tc.runCommandOutput, nil
+		}
+		nt := NewNodeTaintedTester(nil)
+		assert.Equal(t, tc.expectedTaintedModules, nt.GetOutOfTreeModules(tc.testModules))
+		runCommand = origFunc
+	}
+}
+
+func TestGetKernelTaintInfo(t *testing.T) {
+	testCases := []struct {
+		runCommandOutput string
+		runCommandError  error
+		funcOutput       string
+		funcErr          error
+	}{
+		{
+			runCommandOutput: "test1",
+			runCommandError:  nil,
+			funcOutput:       "test1",
+			funcErr:          nil,
+		},
+		{
+			runCommandOutput: "test1\n",
+			runCommandError:  nil,
+			funcOutput:       "test1",
+			funcErr:          nil,
+		},
+		{
+			runCommandOutput: "test1\r\t",
+			runCommandError:  nil,
+			funcOutput:       "test1",
+			funcErr:          nil,
+		},
+		{
+			runCommandOutput: "test1",
+			runCommandError:  errors.New("this is an error"),
+			funcOutput:       "",
+			funcErr:          errors.New("this is an error"),
+		},
+	}
+
+	for _, tc := range testCases {
+		origFunc := runCommand
+		runCommand = func(ctx *clientsholder.Context, cmd string) (string, error) {
+			return tc.runCommandOutput, tc.runCommandError
+		}
+		nt := NewNodeTaintedTester(nil)
+		result, err := nt.GetKernelTaintInfo()
+		assert.Equal(t, tc.funcOutput, result)
+		assert.Equal(t, tc.funcErr, err)
+		runCommand = origFunc
+	}
+}
+
+func TestGetModulesFromNode(t *testing.T) {
+	testCases := []struct {
+		runCommandOutput string
+		runCommandError  error
+		expectedOutput   []string
+	}{
+		{
+			runCommandOutput: "module1\nmodule2\nmodule3",
+			runCommandError:  nil,
+			expectedOutput:   []string{"module1", "module2", "module3"},
+		},
+		{
+			runCommandOutput: "\tmodule1\nmodule2",
+			runCommandError:  nil,
+			expectedOutput:   []string{"module1", "module2"},
+		},
+	}
+
+	for _, tc := range testCases {
+		origFunc := runCommand
+		runCommand = func(ctx *clientsholder.Context, cmd string) (string, error) {
+			return tc.runCommandOutput, tc.runCommandError
+		}
+		nt := NewNodeTaintedTester(nil)
+		assert.Equal(t, tc.expectedOutput, nt.GetModulesFromNode())
+
+		runCommand = origFunc
 	}
 }

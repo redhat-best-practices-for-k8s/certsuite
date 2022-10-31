@@ -29,26 +29,12 @@ import (
 
 // NodeTainted holds information about tainted nodes.
 type NodeTainted struct {
-	ClientHolder *clientsholder.ClientsHolder
+	ctx *clientsholder.Context
 }
 
-type TaintedFuncs interface {
-	runCommand(ctx clientsholder.Context, cmd string) (string, error)
-	GetKernelTaintInfo(ctx clientsholder.Context) (string, error)
-	GetModulesFromNode(ctx clientsholder.Context) []string
-	ModuleInTree(moduleName string, ctx clientsholder.Context) bool
-	GetOutOfTreeModules(modules []string, ctx clientsholder.Context) []string
-}
-
-// NewNodeTainted creates a new NodeTainted tester
-func NewNodeTaintedTester(client *clientsholder.ClientsHolder) *NodeTainted {
-	return &NodeTainted{
-		ClientHolder: client,
-	}
-}
-
-func (nt *NodeTainted) runCommand(ctx clientsholder.Context, cmd string) (string, error) {
-	output, outerr, err := nt.ClientHolder.ExecCommandContainer(ctx, cmd)
+var runCommand = func(ctx *clientsholder.Context, cmd string) (string, error) {
+	ch := clientsholder.GetClientsHolder()
+	output, outerr, err := ch.ExecCommandContainer(*ctx, cmd)
 	if err != nil {
 		logrus.Errorln("can't execute command on container ", err)
 		return "", err
@@ -60,8 +46,15 @@ func (nt *NodeTainted) runCommand(ctx clientsholder.Context, cmd string) (string
 	return output, nil
 }
 
-func (nt *NodeTainted) GetKernelTaintInfo(ctx clientsholder.Context) (string, error) {
-	output, err := nt.runCommand(ctx, `cat /proc/sys/kernel/tainted`)
+// NewNodeTainted creates a new NodeTainted tester
+func NewNodeTaintedTester(context *clientsholder.Context) *NodeTainted {
+	return &NodeTainted{
+		ctx: context,
+	}
+}
+
+func (nt *NodeTainted) GetKernelTaintInfo() (string, error) {
+	output, err := runCommand(nt.ctx, `cat /proc/sys/kernel/tainted`)
 	if err != nil {
 		return "", err
 	}
@@ -71,19 +64,19 @@ func (nt *NodeTainted) GetKernelTaintInfo(ctx clientsholder.Context) (string, er
 	return output, nil
 }
 
-func (nt *NodeTainted) GetModulesFromNode(ctx clientsholder.Context) []string {
+func (nt *NodeTainted) GetModulesFromNode() []string {
 	// Get the 1st column list of the modules running on the node.
 	// Split on the return/newline and get the list of the modules back.
 	command := `chroot /host lsmod | awk '{ print $1 }' | grep -v Module`
-	output, _ := nt.runCommand(ctx, command)
+	output, _ := runCommand(nt.ctx, command)
 	output = strings.ReplaceAll(output, "\t", "")
 	moduleList := strings.Split(strings.ReplaceAll(output, "\r\n", "\n"), "\n")
 	return stringhelper.RemoveEmptyStrings(moduleList)
 }
 
-func (nt *NodeTainted) ModuleInTree(moduleName string, ctx clientsholder.Context) bool {
+func (nt *NodeTainted) ModuleInTree(moduleName string) bool {
 	command := `chroot /host cat /sys/module/` + moduleName + `/taint`
-	cmdOutput, _ := nt.runCommand(ctx, command)
+	cmdOutput, _ := runCommand(nt.ctx, command)
 	return !strings.Contains(cmdOutput, "O")
 }
 
@@ -137,11 +130,11 @@ func DecodeKernelTaints(bitmap uint64) []string {
 	return taints
 }
 
-func (nt *NodeTainted) GetOutOfTreeModules(modules []string, ctx clientsholder.Context) []string {
+func (nt *NodeTainted) GetOutOfTreeModules(modules []string) []string {
 	taintedModules := []string{}
 	for _, module := range modules {
 		logrus.Debug(fmt.Sprintf("Looking for module in tree: %s", module))
-		if !nt.ModuleInTree(module, ctx) {
+		if !nt.ModuleInTree(module) {
 			taintedModules = append(taintedModules, module)
 		}
 	}
