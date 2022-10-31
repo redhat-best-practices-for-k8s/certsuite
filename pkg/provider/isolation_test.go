@@ -20,7 +20,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -48,13 +48,13 @@ func TestCPUIsolation(t *testing.T) {
 			testPod: &Pod{
 				Containers: []*Container{
 					{
-						Container: &v1.Container{
-							Resources: v1.ResourceRequirements{
-								Requests: v1.ResourceList{
+						Container: &corev1.Container{
+							Resources: corev1.ResourceRequirements{
+								Requests: corev1.ResourceList{
 									"cpu":    resource.MustParse(validCPULimit),
 									"memory": resource.MustParse(validMemLimit),
 								},
-								Limits: v1.ResourceList{
+								Limits: corev1.ResourceList{
 									"cpu":    resource.MustParse(validCPULimit),
 									"memory": resource.MustParse(validMemLimit),
 								},
@@ -62,8 +62,8 @@ func TestCPUIsolation(t *testing.T) {
 						},
 					},
 				},
-				Pod: &v1.Pod{
-					Spec: v1.PodSpec{
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
 						RuntimeClassName: &testClassName,
 					},
 					ObjectMeta: metav1.ObjectMeta{
@@ -83,13 +83,13 @@ func TestCPUIsolation(t *testing.T) {
 			testPod: &Pod{
 				Containers: []*Container{
 					{
-						Container: &v1.Container{
-							Resources: v1.ResourceRequirements{
-								Requests: v1.ResourceList{
+						Container: &corev1.Container{
+							Resources: corev1.ResourceRequirements{
+								Requests: corev1.ResourceList{
 									"cpu":    resource.MustParse(validCPULimit),
 									"memory": resource.MustParse(validMemLimit),
 								},
-								Limits: v1.ResourceList{
+								Limits: corev1.ResourceList{
 									"cpu":    resource.MustParse(invalidCPULimit2),
 									"memory": resource.MustParse(invalidMemLimit2),
 								},
@@ -97,8 +97,8 @@ func TestCPUIsolation(t *testing.T) {
 						},
 					},
 				},
-				Pod: &v1.Pod{
-					Spec: v1.PodSpec{
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
 						RuntimeClassName: &testClassName,
 					},
 					ObjectMeta: metav1.ObjectMeta{
@@ -118,13 +118,13 @@ func TestCPUIsolation(t *testing.T) {
 			testPod: &Pod{
 				Containers: []*Container{
 					{
-						Container: &v1.Container{
-							Resources: v1.ResourceRequirements{
-								Requests: v1.ResourceList{
+						Container: &corev1.Container{
+							Resources: corev1.ResourceRequirements{
+								Requests: corev1.ResourceList{
 									"cpu":    resource.MustParse(invalidCPULimit1),
 									"memory": resource.MustParse(invalidMemLimit1),
 								},
-								Limits: v1.ResourceList{
+								Limits: corev1.ResourceList{
 									"cpu":    resource.MustParse(invalidCPULimit1),
 									"memory": resource.MustParse(invalidMemLimit1),
 								},
@@ -132,8 +132,8 @@ func TestCPUIsolation(t *testing.T) {
 						},
 					},
 				},
-				Pod: &v1.Pod{
-					Spec: v1.PodSpec{
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
 						RuntimeClassName: &testClassName,
 					},
 					ObjectMeta: metav1.ObjectMeta{
@@ -153,13 +153,13 @@ func TestCPUIsolation(t *testing.T) {
 			testPod: &Pod{
 				Containers: []*Container{
 					{
-						Container: &v1.Container{
-							Resources: v1.ResourceRequirements{
-								Requests: v1.ResourceList{
+						Container: &corev1.Container{
+							Resources: corev1.ResourceRequirements{
+								Requests: corev1.ResourceList{
 									"cpu":    resource.MustParse(validCPULimit),
 									"memory": resource.MustParse(validMemLimit),
 								},
-								Limits: v1.ResourceList{
+								Limits: corev1.ResourceList{
 									"cpu":    resource.MustParse(validCPULimit),
 									"memory": resource.MustParse(validMemLimit),
 								},
@@ -167,8 +167,8 @@ func TestCPUIsolation(t *testing.T) {
 						},
 					},
 				},
-				Pod: &v1.Pod{
-					Spec: v1.PodSpec{
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
 						RuntimeClassName: nil,
 					},
 					ObjectMeta: metav1.ObjectMeta{
@@ -188,13 +188,13 @@ func TestCPUIsolation(t *testing.T) {
 			testPod: &Pod{
 				Containers: []*Container{
 					{
-						Container: &v1.Container{
-							Resources: v1.ResourceRequirements{
-								Requests: v1.ResourceList{
+						Container: &corev1.Container{
+							Resources: corev1.ResourceRequirements{
+								Requests: corev1.ResourceList{
 									"cpu":    resource.MustParse(validCPULimit),
 									"memory": resource.MustParse(validMemLimit),
 								},
-								Limits: v1.ResourceList{
+								Limits: corev1.ResourceList{
 									"cpu":    resource.MustParse(validCPULimit),
 									"memory": resource.MustParse(validMemLimit),
 								},
@@ -202,8 +202,8 @@ func TestCPUIsolation(t *testing.T) {
 						},
 					},
 				},
-				Pod: &v1.Pod{
-					Spec: v1.PodSpec{
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
 						RuntimeClassName: &testClassName,
 					},
 					ObjectMeta: metav1.ObjectMeta{

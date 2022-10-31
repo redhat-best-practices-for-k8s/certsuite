@@ -20,7 +20,7 @@ import (
 	"fmt"
 
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 )
 
 func Log() (out string) {
@@ -39,7 +39,7 @@ func Log() (out string) {
 	}
 	out += "\nPending Pods:\n"
 	for _, p := range env.AllPods {
-		if p.Status.Phase != v1.PodSucceeded && p.Status.Phase != v1.PodRunning {
+		if p.Status.Phase != corev1.PodSucceeded && p.Status.Phase != corev1.PodRunning {
 			out += p.String() + "\n"
 		}
 	}
