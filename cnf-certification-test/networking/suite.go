@@ -123,7 +123,6 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	})
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestDpdkCPUPinningExecProbe)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		dpdkPods := env.GetCPUPinningPodsWithDpdk()
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, dpdkPods)
 		testExecProbDenyAtCPUPinning(dpdkPods)
