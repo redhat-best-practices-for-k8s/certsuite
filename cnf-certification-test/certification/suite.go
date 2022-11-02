@@ -41,6 +41,7 @@ const (
 )
 
 var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
+	logrus.Debugf("Entering %s suite", common.AffiliatedCertTestKey)
 	var env provider.TestEnvironment
 	ginkgo.BeforeEach(func() {
 		env = provider.GetTestEnvironment()

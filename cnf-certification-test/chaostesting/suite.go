@@ -23,6 +23,7 @@ const (
 )
 
 var _ = ginkgo.Describe(common.ChaosTesting, func() {
+	logrus.Debugf("Entering %s suite", common.ChaosTesting)
 	var env provider.TestEnvironment
 
 	ginkgo.BeforeEach(func() {
