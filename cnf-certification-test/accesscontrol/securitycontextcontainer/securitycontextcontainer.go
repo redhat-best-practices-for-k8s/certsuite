@@ -5,6 +5,7 @@ import (
 	"sort"
 
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	v1 "k8s.io/api/core/v1"
 )
 
@@ -14,7 +15,7 @@ type ContainerSCC struct {
 	HostNetwork            bool
 	HostPID                bool
 	HostPorts              bool
-	PrivilegeEscalation    bool
+	PrivilegeEscalation    bool // this can be true or false
 	PrivilegedContainer    bool
 	RunAsUser              bool
 	ReadOnlyRootFilesystem bool
@@ -74,7 +75,7 @@ var (
 		false,
 		true,
 		true,
-		"catagory3",
+		"category3",
 		true,
 		true}
 	Category4 = ContainerSCC{false,
@@ -89,7 +90,7 @@ var (
 		false,
 		true,
 		true,
-		"catagory4",
+		"category4",
 		true,
 		true}
 )
@@ -104,7 +105,7 @@ func GetContainerSCC(cut *v1.Container, containerSCC ContainerSCC) ContainerSCC 
 	}
 	containerSCC = updateCapabilities(cut, containerSCC)
 	if cut.SecurityContext != nil && cut.SecurityContext.AllowPrivilegeEscalation != nil {
-		containerSCC.PrivilegeEscalation = *(cut.SecurityContext.AllowPrivilegeEscalation)
+		containerSCC.PrivilegeEscalation = true
 	}
 	if cut.SecurityContext != nil && cut.SecurityContext.Privileged != nil {
 		containerSCC.PrivilegedContainer = *(cut.SecurityContext.Privileged)
@@ -137,26 +138,17 @@ func updateCapabilities(cut *v1.Container, containerSCC ContainerSCC) ContainerS
 		sort.Strings(sliceDropCapabilities)
 		sort.Strings(requiredDropCapabilities)
 		containerSCC.HaveDropCapabilities = reflect.DeepEqual(sliceDropCapabilities, requiredDropCapabilities)
-		contain := true
-
-		for _, ncc := range cut.SecurityContext.Capabilities.Add {
-			if !contains(category3AddCapabilities, string(ncc)) {
-				contain = false
-			}
-		}
-		if contain {
-			containerSCC.Capabilities = "catagory3"
+		if checkContainCateegory(cut.SecurityContext.Capabilities.Add, category3AddCapabilities) {
+			containerSCC.Capabilities = "category3"
 		} else {
-			contain = true
-			for _, ncc := range cut.SecurityContext.Capabilities.Add {
-				if !contains(category4AddCapabilities, string(ncc)) {
-					contain = false
-				}
-			}
-			if contain {
-				containerSCC.Capabilities = "catagory4"
+			if checkContainCateegory(cut.SecurityContext.Capabilities.Add, category4AddCapabilities) {
+				containerSCC.Capabilities = "category4"
 			} else {
-				containerSCC.Capabilities = "catagory5"
+				if len(cut.SecurityContext.Capabilities.Add) > 0 {
+					containerSCC.Capabilities = "category5"
+				} else {
+					containerSCC.Capabilities = ""
+				}
 			}
 		}
 	} else {
@@ -218,4 +210,31 @@ func Checkcategory(containers []v1.Container, containerSCC ContainerSCC) []strin
 		}
 	}
 	return badCcontainer
+}
+func checkContainCateegory(addCapability []v1.Capability, categoryAddCapabilities []string) bool {
+	for _, ncc := range addCapability {
+		if !contains(categoryAddCapabilities, string(ncc)) {
+			return false
+		}
+	}
+	return len(addCapability) > 0
+}
+
+func CheckPod(pod *provider.Pod) []string {
+	var containerSCC ContainerSCC
+	containerSCC.HostIPC = pod.Spec.HostIPC
+	containerSCC.HostNetwork = pod.Spec.HostNetwork
+	containerSCC.HostPID = pod.Spec.HostPID
+	containerSCC.AllVolumeAllowed = AllVolumeAllowed(pod.Spec.Volumes)
+	if pod.Spec.SecurityContext != nil && pod.Spec.SecurityContext.RunAsUser != nil {
+		containerSCC.RunAsUser = true
+	} else {
+		containerSCC.RunAsUser = false
+	}
+	if pod.Spec.SecurityContext != nil && pod.Spec.SecurityContext.FSGroup != nil {
+		containerSCC.FsGroup = true
+	} else {
+		containerSCC.FsGroup = false
+	}
+	return Checkcategory(pod.Spec.Containers, containerSCC)
 }
