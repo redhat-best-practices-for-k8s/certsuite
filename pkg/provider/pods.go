@@ -36,6 +36,7 @@ type Pod struct {
 	*corev1.Pod
 	Containers         []*Container
 	MultusIPs          map[string][]string
+	MultusPCIs         []string
 	SkipNetTests       bool
 	SkipMultusNetTests bool
 }
@@ -45,6 +46,11 @@ func NewPod(aPod *corev1.Pod) (out Pod) {
 	out.Pod = aPod
 	out.MultusIPs = make(map[string][]string)
 	out.MultusIPs, err = GetPodIPsPerNet(aPod.GetAnnotations()[CniNetworksStatusKey])
+	if err != nil {
+		logrus.Errorf("Could not decode networks-status annotation, error: %s", err)
+	}
+
+	out.MultusPCIs, err = GetPciPerPod(aPod.GetAnnotations()[CniNetworksStatusKey])
 	if err != nil {
 		logrus.Errorf("Could not decode networks-status annotation, error: %s", err)
 	}

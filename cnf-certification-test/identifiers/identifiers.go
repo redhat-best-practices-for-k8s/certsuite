@@ -106,6 +106,7 @@ var (
 	TestAffinityRequiredPods                 claim.Identifier
 	TestStartupIdentifier                    claim.Identifier
 	TestShutdownIdentifier                   claim.Identifier
+	TestDpdkCPUPinningExecProbe              claim.Identifier
 )
 
 //nolint:funlen
@@ -197,7 +198,7 @@ The label value is not important, only its presence.`,
 		`Ensure that the containers lifecycle postStart management feature is configured.`,
 		`PostStart is normally used to configure the container, set up dependencies, and
 record the new creation. You could use this event to check that a required
-API is available before the container’s main work begins. Kubernetes will 
+API is available before the container’s main work begins. Kubernetes will
 not change the container’s state to Running until the PostStart script has
 executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and
 https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
@@ -219,6 +220,18 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		VersionOne,
 		bestPracticeDocV1dot3URL+" Section 5.1.3, 12.2 and 12.5",
 		TagCommon)
+
+	TestDpdkCPUPinningExecProbe = AddCatalogEntry(
+		"dpdk-cpu-pinning-exec-probe",
+		common.NetworkingTestKey,
+		`If a CNF is doing CPI pinning, exec probes may not be used.`,
+		DpdkCPUPinningExecProbeRemediation,
+		InformativeResult,
+		NoDocumentedProcess,
+		VersionOne,
+		bestPracticeDocV1dot4URL+" Section 4.6.24",
+		TagExtended)
+
 	return Catalog
 }
 
@@ -676,10 +689,10 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Identifier: TestDeploymentScalingIdentifier,
 		Type:       NormativeResult,
 		Description: formDescription(TestDeploymentScalingIdentifier,
-			`Tests that CNF deployments support scale in/out operations. 
-			First, The test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the 
+			`Tests that CNF deployments support scale in/out operations.
+			First, The test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the
 			scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s.
-		    In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the 
+		    In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the
 			original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the deployment/s`),
 		Remediation:           DeploymentScalingRemediation,
 		ExceptionProcess:      NoDocumentedProcess,
@@ -690,10 +703,10 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Identifier: TestStateFulSetScalingIdentifier,
 		Type:       NormativeResult,
 		Description: formDescription(TestStateFulSetScalingIdentifier,
-			`Tests that CNF statefulsets support scale in/out operations. 
-			First, The test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the 
+			`Tests that CNF statefulsets support scale in/out operations.
+			First, The test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the
 			scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the statefulset/s.
-			In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the 
+			In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the
 			original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the statefulset/s`),
 		Remediation:           StatefulSetScalingRemediation,
 		ExceptionProcess:      NoDocumentedProcess,
@@ -708,7 +721,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Description: formDescription(TestSecConCapabilitiesIdentifier,
 			`Tests that the following capabilities are not granted:
 			- NET_ADMIN
-			- SYS_ADMIN 
+			- SYS_ADMIN
 			- NET_RAW
 			- IPC_LOCK
 `),
@@ -929,7 +942,7 @@ the same hacks.'`),
 		Type:        NormativeResult,
 		Remediation: OperatorNoPrivilegesRemediation,
 		Description: formDescription(TestOperatorNoPrivileges,
-			`The operator is not installed with privileged rights. Test passes if clusterPermissions is not present in the CSV manifest or is present 
+			`The operator is not installed with privileged rights. Test passes if clusterPermissions is not present in the CSV manifest or is present
 with no resourceNames under its rules.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.12 and 5.3.3",
 		ExceptionProcess:      NoDocumentedProcess,
@@ -1093,9 +1106,9 @@ that there are no changes to the following directories:
 		Identifier: TestPodRecreationIdentifier,
 		Type:       NormativeResult,
 		Description: formDescription(TestPodRecreationIdentifier,
-			`Tests that a CNF is configured to support High Availability.  
-			First, this test cordons and drains a Node that hosts the CNF Pod.  
-			Next, the test ensures that OpenShift can re-instantiate the Pod on another Node, 
+			`Tests that a CNF is configured to support High Availability.
+			First, this test cordons and drains a Node that hosts the CNF Pod.
+			Next, the test ensures that OpenShift can re-instantiate the Pod on another Node,
 			and that the actual replica count matches the desired replica count.`),
 		Remediation:           PodRecreationRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
@@ -1128,8 +1141,8 @@ that there are no changes to the following directories:
 		Identifier: TestScalingIdentifier,
 		Type:       NormativeResult,
 		Description: formDescription(TestScalingIdentifier,
-			`Tests that CNF deployments support scale in/out operations. 
-			First, The test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the 
+			`Tests that CNF deployments support scale in/out operations.
+			First, The test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the
 			scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s.`),
 		Remediation:           ScalingRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",

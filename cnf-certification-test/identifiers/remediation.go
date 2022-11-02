@@ -187,4 +187,6 @@ const (
 	AffinityRequiredRemediation = `If a pod/statefulset/deployment is required to use affinity rules, please add AffinityRequired: 'true' as a label`
 
 	ContainerPortNameFormatRemediation = `Ensure that the container's ports name follow our partner naming conventions`
+
+	DpdkCPUPinningExecProbeRemediation = "If the CNF is doing CPU pinning and running a DPDK process do not use exec probes (executing a command within the container) as it may pile up and block the node eventually."
 )

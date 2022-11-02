@@ -16,6 +16,14 @@
 
 package provider
 
+import (
+	"fmt"
+	"strings"
+
+	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+)
+
 func (env *TestEnvironment) GetGuaranteedPods() []*Pod {
 	var filteredPods []*Pod
 	for _, p := range env.Pods {
@@ -61,6 +69,35 @@ func (env *TestEnvironment) GetHugepagesPods() []*Pod {
 	for _, p := range env.Pods {
 		if p.HasHugepages() {
 			filteredPods = append(filteredPods, p)
+		}
+	}
+	return filteredPods
+}
+
+func (env *TestEnvironment) GetCPUPinningPodsWithDpdk() []*Pod {
+	return filterDPDKRunningPods(env.GetGuaranteedPods())
+}
+
+func filterDPDKRunningPods(pods []*Pod) []*Pod {
+	var filteredPods []*Pod
+	const (
+		dpdkDriver           = "vfio-pci"
+		findDeviceSubCommand = "find /sys -name"
+	)
+	o := clientsholder.GetClientsHolder()
+	for _, pod := range pods {
+		if len(pod.MultusPCIs) == 0 {
+			continue
+		}
+		ctx := clientsholder.NewContext(pod.Namespace, pod.Name, pod.Spec.Containers[0].Name)
+		findCommand := fmt.Sprintf("%s '%s'", findDeviceSubCommand, pod.MultusPCIs[0])
+		outStr, errStr, err := o.ExecCommandContainer(ctx, findCommand)
+		if err != nil || errStr != "" {
+			logrus.Errorf("Failed to execute command %s in debug %s, errStr: %s, err: %s", findCommand, pod.String(), errStr, err)
+			continue
+		}
+		if strings.Contains(outStr, dpdkDriver) {
+			filteredPods = append(filteredPods, pod)
 		}
 	}
 	return filteredPods
