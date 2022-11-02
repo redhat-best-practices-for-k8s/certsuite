@@ -1,829 +1,6 @@
 {
   "data": [
     {
-      "_id": "634f3273aaff71c4985ec5c1",
-      "alm_examples": [
-        {
-          "api_version": "vfunction.com/v1",
-          "kind": "VfunctionServer",
-          "metadata": {
-            "labels": {
-              "app.kubernetes.io/instance": "vfunction-server",
-              "app.kubernetes.io/managed-by": "operator",
-              "app.kubernetes.io/name": "vfunction",
-              "name": "vfunction"
-            },
-            "name": "vfunction-server",
-            "namespace": "vfunction"
-          },
-          "spec": {
-            "admin": {
-              "email": "admin@mycompany.com",
-              "name": "Admin",
-              "password": "Password1!"
-            },
-            "authentication": {
-              "authority": "",
-              "ca_root_crt": "",
-              "client_id": "",
-              "issuer": "",
-              "jwks_url": ""
-            },
-            "backup": {
-              "mysql": {
-                "S3": {
-                  "bucket": "",
-                  "key": "",
-                  "region": "",
-                  "secret": ""
-                }
-              }
-            },
-            "host": "http://my.domain.com",
-            "measurements": {
-              "S3": {
-                "bucket": "",
-                "key": "",
-                "region": "",
-                "secret": ""
-              },
-              "auto_scaling": "No",
-              "max_number_of_services": "10",
-              "min_number_of_services": "2"
-            },
-            "org_name": "MyCompany",
-            "smtp": {
-              "identity": "",
-              "password": "",
-              "url": "",
-              "user": ""
-            },
-            "tls": {
-              "crt": "",
-              "key": "",
-              "use_letsencrypt": "No"
-            },
-            "upgrade": "Never"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/vfunction/vfunction-server-operator-bundle@sha256:92894398c27374a7603f2bc08d63558c7e99b632a31a62eea35fd62605b5f63b",
-      "bundle_path_digest": "sha256:92894398c27374a7603f2bc08d63558c7e99b632a31a62eea35fd62605b5f63b",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-10-18T23:10:43.762000+00:00",
-      "csv_description": "\n## Introduction\n\n[vFunction](https://www.vfunction.com/) is a cloud-native modernization platform that combines dynamic and static code analysis, machine learning, and automation to automatically identify and extract services from existing applications. vFunction is the only platform purpose-built for modernization of Java applications.\n\nThe vFunction modernization process starts by learning the running monolithic application, and surfacing the interdependencies within it. Using AI, the platform analyzes and identifies services that can be separated from the application. This decomposition can present a range of micro, mini, or even macro services, depending on your application environment, each being an independently deployable and scalable application component.\n\nvFunction automates the extraction of these services, enabling you to modernize your monolith, quickly and easily.\n\n## The vFunction platform\n\nThe platform consists of 3 basic components; the server, the controller package, and a tools package. The server runs as an operand on an OpenShift environment. The controller package is installed on the machine that runs the monolithic application which can be either a Linux or a Windows machine, and the tools are run on a development machine, with access to the code of the monolithic application.\n\nThe controller package consists of three elements: the vFunction agent, that collects data during the dynamic analysis phase; the vFunction Viper application, that performs static analysis on the binaries of the application; and the vFunction controller that handles all the communication between the agent, Viper, and the vFunction server.\n\nThe vFunction agent is a mix of a Java and native agent, and needs to run on the JVM that is currently running your application. [Refer to the vFunction OOB Support Matrix document](https://drive.google.com/file/d/1ccq8LFab1FrYAimDUxwgjiCOdk4QuVzs/view) for a list of supported application servers and JVMs.\n\nThis operator installs a vFunction server instance to be connected later with one or more vFunction controllers installed on your application machine(s).\n\n## Before You Start\n\nThe vFunction operator requires a Red Hat OpenShift Kubernetes Application Platform 4.x.\n\nThe cluster recommended configuration (which is the same as the minimal one) should consist of:\n\n- *1 master node*\n\n- *1 worker node*\n\n- *Storage capacity enough for dynamically provision 2 PVs of 50G each*\n\n- *A default StorageClass configured*\n\nvFunction doesn\u2019t provide any encryption mechanism for data stored on any attached storage. If required, encryption can be achieved by the client by using its own external means on the storage itself.\n\nvFunction supports backup of all critical data as part of the application. Nevertheless, for complete backup of entire data it is recommended that the client apply its own storage based backup mechanism.\n\n## Install Prerequisites\n\n###Cluster:\nThe operator was certified and tested on OCP 4.6 and 4.7.\nIf you encounter any issue with other OCP versions or cloud providers please contact info@vfunction.com.\n\n###Storage:\nThe operator creates two new PersistentVolumeClaims (PVCs) during installation time. For their creation, it relies on the default StorageClass to dynamically provision two PersistentVolumes (PVs). The system must have a default StorageClass in place.\n\nBoth PersistentVolumes are accessed with ReadWriteOnce mode.\n\n###Project:\nThe operator should be installed in a new and dedicated project (namespace). If you intend to install more than one vFunction operands in the same cluster, please use different projects for each one. Installation of more than one operand on the same cluster will allow scaling by load balancing multiple applications to different vFunction servers.\n\n## Installation instructions\n\n1. Prepare the YAML file to use in the installation:\n\n    a. Copy the following YAML template into a text editor:\n\n    ```yaml\n        apiVersion: vfunction.com/v1\n        kind: VfunctionServer\n        metadata:\n          name: vfunction\n          namespace: vfunction\n          labels:\n            name: vfunction\n            app.kubernetes.io/name: vfunction\n            app.kubernetes.io/instance: vfunction-server\n            app.kubernetes.io/managed-by: operator\n        spec:\n          host: \"http://my.domain.com\"\n          org_name: \"MyCompany\"\n          upgrade: \"Never\"\n          admin:\n            email: \"admin@mycompany.com\"\n            name: \"Admin\"\n            password: \"Password1!\"\n          measurements:\n            auto_scaling: \"No\"\n            min_number_of_services: \"2\"\n            max_number_of_services: \"10\"\n            S3:\n              bucket: \"\"\n              key: \"\"\n              secret: \"\"\n          smtp:\n            password: \"\"\n            url: \"\"\n            identity: \"\"\n            user: \"\"\n          authentication:\n            authority: \"\"\n            client_id: \"\"\n            jwks_url: \"\"\n            issuer: \"\"\n            ca_root_crt: |\n              -----BEGIN CERTIFICATE-----\n              ...\n              -----END CERTIFICATE-----\n          tls:\n            use_letsencrypt: \"No\"\n            crt: |\n              -----BEGIN CERTIFICATE-----\n              ...\n              -----END CERTIFICATE-----\n            key: |\n              -----BEGIN PRIVATE KEY-----\n              ...\n              -----END PRIVATE KEY-----\n          backup:\n            mysql:\n              S3:\n                bucket: \"\"\n                key: \"\"\n                secret: \"\"\n    ```\n    b. Customize the template fields by replacing with your information:\n\n    - **host**: Enter the FQDN for accessing the vFunction dashboard.\n                Make sure that you use a domain name and not an IP address. Writing \"https://\" will mandate TLS while writing \"http://\" will expose the server through HTTP.\n    - **org_name**: Enter your organization name.\n    - **upgrade**: Choose auto-upgrade mode\n        - **Daily**: The operator will check for a new version every day at 3 AM and will install it automatically.\n        - **Always**: The operator will check for a new version every 10 minutes and will install it automatically.\n        - **Never**: The automatic upgrading mechanism is off (default).\n        - **Maintenance**: Put the operator in a maintenance mode.\n    - **admin.email**: Enter the email address of your administrator.\n    - **admin.name**: Enter the name of your administrator.\n    - **admin.password**: Enter the password you want to use for the vFunction administrator.\n                          The password should be at least 8 characters long, and consist of at least one lowercase letter, at least one uppercase letter, at least one number, and at least one special character.\n    - **measurements.auto_scaling**: Indicates if the measurement services auto scalling is active.\n    - **measurements.min\\_num\\_of\\_services**: Minimum Number of measurement service pods.\n    - **measurements.max\\_num\\_of\\_services**: Maximum Number of measurement service pods.\n    - **measurements.S3**: Save all measurements data to S3, instead of local PV (optional).\n        - **measurements.S3.bucket**: Measurements S3 bucket name.\n        - **measurements.S3.key**: Measurements S3 key.\n        - **measurements.S3.secret**: Measurements S3 secret.\n        - **measurements.S3.region**: Measurements S3 region.\n    - **smtp.user**: Enter the email address for a designated user for the SMTP server (optional).\n    - **smtp.password**: Enter this user\u2019s password (optional).\n    - **smtp.identity**: Enter this user\u2019s password (optional).\n    - **smtp.url**: Enter the SMTP server URL (optional).\n    - **authentication.authority**: Authority for authentication (Optional).\n    - **authentication.client_id**: Client ID for authentication (Optional).\n    - **authentication.jwks_url**: JWKS URL for authentication (Optional).\n    - **authentication.issuer**: Issuer for authentication (Optional).\n    - **authentication.ca\\_root\\_crt**: CA root certificate for authentication (Optional).\n    - **tls.crt**: If your host FQDN starts with \u201chttps\u201d, paste in the certifications you have for using the TLS connection.\n    - **tls.key**: If your host FQDN starts with \u201chttps\u201d, enter the key you have for using the TLS connection.\n    - **backup.mysql.S3**: Backup MySQL to S3 (optional).\n        - **backup.mysql.S3.bucket**: MySQL backup S3 bucket name.\n        - **backup.mysql.S3.key**: MySQL backup S3 key.\n        - **backup.mysql.S3.secret**: MySQL backup S3 secret.\n        - **backup.mysql.S3.region**: MySQL backup S3 region.\n\n1. In the Installed Operators window choose and click on vFunction Operator and then Create Instance.\n1. In the Create vFunctionServer window, paste the YAML file that you created in step 1.\n1. Click Create.\n1. You can now click on your new created vFunction operand in order to see its details and installation progress.\n\n## Verifying the installation\n\nCheck that the operand installed successfully:\n\n1. Check that the \"Operand State\" property shows \u201cWorking\u201d.\n1. Check that the \"Successfully Installed\" property shows \"Yes\".\n\nIf \"Operand State\" shows \"Failed\", it indicates the operand wasn\u2019t installed correctly. Check the events and logs for all pods (operator and image containers) for any issues. In the event that you cannot troubleshoot, contact vFunction support.\n\n## After installation\n\nThe vFunction site is now accessible via the newly created vFunction application custom address, for example, my.domain.com. There are two ways you can access the vFunction dashboard.\n\n### Access using the router canonical hostname\n\n1. Update your DNS provider by creating a canonical name (CNAME) record.\nThis record should point to your host address, and to the \u201dvfunction\u201d subdomain of the  OpenShift canonical router hostname as the alias.\nFor example, ***my.domain.com.   CNAME   vfunction.apps.ocp4.my-openshift.com.***\n2. Find your cluster Router Canonical Hostname address in the newly created vfunction-route-xxx under your vFunction OpenShift project -> **Networking** -> **Routes** -> **vfunction-route-xxx** route -> **Router Canonical Hostname** field.\nYou can now access the dashboard using your defined \"host\" spec property (as above).\n\n### Access using the nginx service location\n\nYou may use this access method if your OpenShift is installed on a provider that supports exposing LoadBalancer-type services.\n1. Update your DNS provider by creating a canonical name (CNAME) record.\nThis record should point to your host address and to the vfunction-nginx-xxx service location.\nFor example, ***my.domain.com.   CNAME   a05951ed7cdf-1394239323.us-east-1.elb.amazonaws.com.***\n1. Point your custom domain to the vfunction-nginx-xxx service's external IP location, which you can find in the OpenShift project > **Networking** -> **Services** -> **vfunction-nginx-xxx** service > **Service Address** > **Location** field.\n\n## Upgrade and Rollback\n\nThe vFunction operator includes a built-in auto-upgrade mechanism.\n\nYou can choose one of 4 upgrading modes:\n- **Daily**: The operator will check for a new version every day at 3 AM and will install it automatically.\n- **Always**: The operator will check for a new version every 10 minutes and will install it automatically.\n- **Never**: The automatic upgrading mechanism is off (default).\n- **Maintenance**: Put the operator in a maintenance mode.\n\nFor an on-demand upgrade,  you can change anytime the upgrading mode from \u201cNever\u201d to \u201cAlways\u201d, wait for the operand to be upgraded, and change again to \u201cNever\u201d.\n\nDuring the upgrade, the \"Operand State\" property will change to \u201cUpgrading...\u201d and back again to \u201cWorking\u201d after a successful upgrade.\n\nIn case of a failure upgrading the operand, an automatic rollback to the last working version will occur. The failed version will be marked as defective and the operator will not try to upgrade to it again.\n\nChoosing the \"Maintenance\" option will tell the operator to take down all pods, so you can safely fix storage issues, return volumes from snapshots, etc.\nAfter finishing the maintenance, return the upgrade mode to your original desired policy.",
-      "csv_display_name": "vFunction Operator",
-      "csv_metadata_description": "vFunction is a cutting-edge code analysis, machine learning, and automation to boost your Java modernization projects.",
-      "csv_name": "vfunction-server-operator.v2.6.897",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T11:35:10.736000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "vfunction-server-operator",
-      "provided_apis": [
-        {
-          "group": "vfunction.com",
-          "kind": "VfunctionServer",
-          "version": "v1"
-        }
-      ],
-      "provider": "vFunction",
-      "related_images": [
-        {
-          "digest": "sha256:3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-server-operator@sha256:3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c",
-          "name": "vfunction-server-operator"
-        },
-        {
-          "digest": "sha256:dc9d83489306945205eceead338f63636fec3cac208f1b8edc679180422cbe29",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-mysql@sha256:dc9d83489306945205eceead338f63636fec3cac208f1b8edc679180422cbe29",
-          "name": "vfunction-mysql"
-        },
-        {
-          "digest": "sha256:913f07b4713d339c0bbdce87c480e35e56847f53c155cea7f5df56a07b39c5c5",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-nginx@sha256:913f07b4713d339c0bbdce87c480e35e56847f53c155cea7f5df56a07b39c5c5",
-          "name": "vfunction-nginx"
-        },
-        {
-          "digest": "sha256:829eaf9282f5f92effbed9c37d2e241210b20cd9f6f3d50e149b96c57dd3f9d6",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-storage@sha256:829eaf9282f5f92effbed9c37d2e241210b20cd9f6f3d50e149b96c57dd3f9d6",
-          "name": "vfunction-storage"
-        },
-        {
-          "digest": "sha256:6e6be6a7f6a260d17cce0a744257d5780a616be4ca4589db6ad4641b1ea79410",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-idp@sha256:6e6be6a7f6a260d17cce0a744257d5780a616be4ca4589db6ad4641b1ea79410",
-          "name": "vfunction-vfapi-idp"
-        },
-        {
-          "digest": "sha256:f876f30bdd4b96946a74419b453170b38d6d877a36359e3ac8160e2261a4d38a",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-measurements@sha256:f876f30bdd4b96946a74419b453170b38d6d877a36359e3ac8160e2261a4d38a",
-          "name": "vfunction-vfapi-measurements"
-        },
-        {
-          "digest": "sha256:5346b4f23923f5f02492f088f91e01e8a85ce2722e9f8afa45642f2c6bdcfb8e",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-organizations@sha256:5346b4f23923f5f02492f088f91e01e8a85ce2722e9f8afa45642f2c6bdcfb8e",
-          "name": "vfunction-vfapi-organizations"
-        },
-        {
-          "digest": "sha256:191bedeb9120858bead76fdda1212ada88512a5c596a07741000241e13a8f5a1",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-users@sha256:191bedeb9120858bead76fdda1212ada88512a5c596a07741000241e13a8f5a1",
-          "name": "vfunction-vfapi-users"
-        },
-        {
-          "digest": "sha256:3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-server-operator@sha256:3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c",
-          "name": "vfunction-server-operator-3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c-annotation"
-        },
-        {
-          "digest": "sha256:dc9d83489306945205eceead338f63636fec3cac208f1b8edc679180422cbe29",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-mysql@sha256:dc9d83489306945205eceead338f63636fec3cac208f1b8edc679180422cbe29",
-          "name": "vfunction_mysql_original_image"
-        },
-        {
-          "digest": "sha256:913f07b4713d339c0bbdce87c480e35e56847f53c155cea7f5df56a07b39c5c5",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-nginx@sha256:913f07b4713d339c0bbdce87c480e35e56847f53c155cea7f5df56a07b39c5c5",
-          "name": "vfunction_nginx_original_image"
-        },
-        {
-          "digest": "sha256:829eaf9282f5f92effbed9c37d2e241210b20cd9f6f3d50e149b96c57dd3f9d6",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-storage@sha256:829eaf9282f5f92effbed9c37d2e241210b20cd9f6f3d50e149b96c57dd3f9d6",
-          "name": "vfunction_storage_original_image"
-        },
-        {
-          "digest": "sha256:6e6be6a7f6a260d17cce0a744257d5780a616be4ca4589db6ad4641b1ea79410",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-idp@sha256:6e6be6a7f6a260d17cce0a744257d5780a616be4ca4589db6ad4641b1ea79410",
-          "name": "vfunction_vfapi_idp_original_image"
-        },
-        {
-          "digest": "sha256:f876f30bdd4b96946a74419b453170b38d6d877a36359e3ac8160e2261a4d38a",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-measurements@sha256:f876f30bdd4b96946a74419b453170b38d6d877a36359e3ac8160e2261a4d38a",
-          "name": "vfunction_vfapi_measurements_original_image"
-        },
-        {
-          "digest": "sha256:5346b4f23923f5f02492f088f91e01e8a85ce2722e9f8afa45642f2c6bdcfb8e",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-organizations@sha256:5346b4f23923f5f02492f088f91e01e8a85ce2722e9f8afa45642f2c6bdcfb8e",
-          "name": "vfunction_vfapi_organizations_original_image"
-        },
-        {
-          "digest": "sha256:191bedeb9120858bead76fdda1212ada88512a5c596a07741000241e13a8f5a1",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-users@sha256:191bedeb9120858bead76fdda1212ada88512a5c596a07741000241e13a8f5a1",
-          "name": "vfunction_vfapi_users_original_image"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<2.6.897",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "2.6.897",
-      "version_original": "2.6.897"
-    },
-    {
-      "_id": "634f32a01c4f5f0092872d35",
-      "alm_examples": [
-        {
-          "api_version": "vfunction.com/v1",
-          "kind": "VfunctionServer",
-          "metadata": {
-            "labels": {
-              "app.kubernetes.io/instance": "vfunction-server",
-              "app.kubernetes.io/managed-by": "operator",
-              "app.kubernetes.io/name": "vfunction",
-              "name": "vfunction"
-            },
-            "name": "vfunction-server",
-            "namespace": "vfunction"
-          },
-          "spec": {
-            "admin": {
-              "email": "admin@mycompany.com",
-              "name": "Admin",
-              "password": "Password1!"
-            },
-            "authentication": {
-              "authority": "",
-              "ca_root_crt": "",
-              "client_id": "",
-              "issuer": "",
-              "jwks_url": ""
-            },
-            "backup": {
-              "mysql": {
-                "S3": {
-                  "bucket": "",
-                  "key": "",
-                  "region": "",
-                  "secret": ""
-                }
-              }
-            },
-            "host": "http://my.domain.com",
-            "measurements": {
-              "S3": {
-                "bucket": "",
-                "key": "",
-                "region": "",
-                "secret": ""
-              },
-              "auto_scaling": "No",
-              "max_number_of_services": "10",
-              "min_number_of_services": "2"
-            },
-            "org_name": "MyCompany",
-            "smtp": {
-              "identity": "",
-              "password": "",
-              "url": "",
-              "user": ""
-            },
-            "tls": {
-              "crt": "",
-              "key": "",
-              "use_letsencrypt": "No"
-            },
-            "upgrade": "Never"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/vfunction/vfunction-server-operator-bundle@sha256:92894398c27374a7603f2bc08d63558c7e99b632a31a62eea35fd62605b5f63b",
-      "bundle_path_digest": "sha256:92894398c27374a7603f2bc08d63558c7e99b632a31a62eea35fd62605b5f63b",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-10-18T23:11:28.323000+00:00",
-      "csv_description": "\n## Introduction\n\n[vFunction](https://www.vfunction.com/) is a cloud-native modernization platform that combines dynamic and static code analysis, machine learning, and automation to automatically identify and extract services from existing applications. vFunction is the only platform purpose-built for modernization of Java applications.\n\nThe vFunction modernization process starts by learning the running monolithic application, and surfacing the interdependencies within it. Using AI, the platform analyzes and identifies services that can be separated from the application. This decomposition can present a range of micro, mini, or even macro services, depending on your application environment, each being an independently deployable and scalable application component.\n\nvFunction automates the extraction of these services, enabling you to modernize your monolith, quickly and easily.\n\n## The vFunction platform\n\nThe platform consists of 3 basic components; the server, the controller package, and a tools package. The server runs as an operand on an OpenShift environment. The controller package is installed on the machine that runs the monolithic application which can be either a Linux or a Windows machine, and the tools are run on a development machine, with access to the code of the monolithic application.\n\nThe controller package consists of three elements: the vFunction agent, that collects data during the dynamic analysis phase; the vFunction Viper application, that performs static analysis on the binaries of the application; and the vFunction controller that handles all the communication between the agent, Viper, and the vFunction server.\n\nThe vFunction agent is a mix of a Java and native agent, and needs to run on the JVM that is currently running your application. [Refer to the vFunction OOB Support Matrix document](https://drive.google.com/file/d/1ccq8LFab1FrYAimDUxwgjiCOdk4QuVzs/view) for a list of supported application servers and JVMs.\n\nThis operator installs a vFunction server instance to be connected later with one or more vFunction controllers installed on your application machine(s).\n\n## Before You Start\n\nThe vFunction operator requires a Red Hat OpenShift Kubernetes Application Platform 4.x.\n\nThe cluster recommended configuration (which is the same as the minimal one) should consist of:\n\n- *1 master node*\n\n- *1 worker node*\n\n- *Storage capacity enough for dynamically provision 2 PVs of 50G each*\n\n- *A default StorageClass configured*\n\nvFunction doesn\u2019t provide any encryption mechanism for data stored on any attached storage. If required, encryption can be achieved by the client by using its own external means on the storage itself.\n\nvFunction supports backup of all critical data as part of the application. Nevertheless, for complete backup of entire data it is recommended that the client apply its own storage based backup mechanism.\n\n## Install Prerequisites\n\n###Cluster:\nThe operator was certified and tested on OCP 4.6 and 4.7.\nIf you encounter any issue with other OCP versions or cloud providers please contact info@vfunction.com.\n\n###Storage:\nThe operator creates two new PersistentVolumeClaims (PVCs) during installation time. For their creation, it relies on the default StorageClass to dynamically provision two PersistentVolumes (PVs). The system must have a default StorageClass in place.\n\nBoth PersistentVolumes are accessed with ReadWriteOnce mode.\n\n###Project:\nThe operator should be installed in a new and dedicated project (namespace). If you intend to install more than one vFunction operands in the same cluster, please use different projects for each one. Installation of more than one operand on the same cluster will allow scaling by load balancing multiple applications to different vFunction servers.\n\n## Installation instructions\n\n1. Prepare the YAML file to use in the installation:\n\n    a. Copy the following YAML template into a text editor:\n\n    ```yaml\n        apiVersion: vfunction.com/v1\n        kind: VfunctionServer\n        metadata:\n          name: vfunction\n          namespace: vfunction\n          labels:\n            name: vfunction\n            app.kubernetes.io/name: vfunction\n            app.kubernetes.io/instance: vfunction-server\n            app.kubernetes.io/managed-by: operator\n        spec:\n          host: \"http://my.domain.com\"\n          org_name: \"MyCompany\"\n          upgrade: \"Never\"\n          admin:\n            email: \"admin@mycompany.com\"\n            name: \"Admin\"\n            password: \"Password1!\"\n          measurements:\n            auto_scaling: \"No\"\n            min_number_of_services: \"2\"\n            max_number_of_services: \"10\"\n            S3:\n              bucket: \"\"\n              key: \"\"\n              secret: \"\"\n          smtp:\n            password: \"\"\n            url: \"\"\n            identity: \"\"\n            user: \"\"\n          authentication:\n            authority: \"\"\n            client_id: \"\"\n            jwks_url: \"\"\n            issuer: \"\"\n            ca_root_crt: |\n              -----BEGIN CERTIFICATE-----\n              ...\n              -----END CERTIFICATE-----\n          tls:\n            use_letsencrypt: \"No\"\n            crt: |\n              -----BEGIN CERTIFICATE-----\n              ...\n              -----END CERTIFICATE-----\n            key: |\n              -----BEGIN PRIVATE KEY-----\n              ...\n              -----END PRIVATE KEY-----\n          backup:\n            mysql:\n              S3:\n                bucket: \"\"\n                key: \"\"\n                secret: \"\"\n    ```\n    b. Customize the template fields by replacing with your information:\n\n    - **host**: Enter the FQDN for accessing the vFunction dashboard.\n                Make sure that you use a domain name and not an IP address. Writing \"https://\" will mandate TLS while writing \"http://\" will expose the server through HTTP.\n    - **org_name**: Enter your organization name.\n    - **upgrade**: Choose auto-upgrade mode\n        - **Daily**: The operator will check for a new version every day at 3 AM and will install it automatically.\n        - **Always**: The operator will check for a new version every 10 minutes and will install it automatically.\n        - **Never**: The automatic upgrading mechanism is off (default).\n        - **Maintenance**: Put the operator in a maintenance mode.\n    - **admin.email**: Enter the email address of your administrator.\n    - **admin.name**: Enter the name of your administrator.\n    - **admin.password**: Enter the password you want to use for the vFunction administrator.\n                          The password should be at least 8 characters long, and consist of at least one lowercase letter, at least one uppercase letter, at least one number, and at least one special character.\n    - **measurements.auto_scaling**: Indicates if the measurement services auto scalling is active.\n    - **measurements.min\\_num\\_of\\_services**: Minimum Number of measurement service pods.\n    - **measurements.max\\_num\\_of\\_services**: Maximum Number of measurement service pods.\n    - **measurements.S3**: Save all measurements data to S3, instead of local PV (optional).\n        - **measurements.S3.bucket**: Measurements S3 bucket name.\n        - **measurements.S3.key**: Measurements S3 key.\n        - **measurements.S3.secret**: Measurements S3 secret.\n        - **measurements.S3.region**: Measurements S3 region.\n    - **smtp.user**: Enter the email address for a designated user for the SMTP server (optional).\n    - **smtp.password**: Enter this user\u2019s password (optional).\n    - **smtp.identity**: Enter this user\u2019s password (optional).\n    - **smtp.url**: Enter the SMTP server URL (optional).\n    - **authentication.authority**: Authority for authentication (Optional).\n    - **authentication.client_id**: Client ID for authentication (Optional).\n    - **authentication.jwks_url**: JWKS URL for authentication (Optional).\n    - **authentication.issuer**: Issuer for authentication (Optional).\n    - **authentication.ca\\_root\\_crt**: CA root certificate for authentication (Optional).\n    - **tls.crt**: If your host FQDN starts with \u201chttps\u201d, paste in the certifications you have for using the TLS connection.\n    - **tls.key**: If your host FQDN starts with \u201chttps\u201d, enter the key you have for using the TLS connection.\n    - **backup.mysql.S3**: Backup MySQL to S3 (optional).\n        - **backup.mysql.S3.bucket**: MySQL backup S3 bucket name.\n        - **backup.mysql.S3.key**: MySQL backup S3 key.\n        - **backup.mysql.S3.secret**: MySQL backup S3 secret.\n        - **backup.mysql.S3.region**: MySQL backup S3 region.\n\n1. In the Installed Operators window choose and click on vFunction Operator and then Create Instance.\n1. In the Create vFunctionServer window, paste the YAML file that you created in step 1.\n1. Click Create.\n1. You can now click on your new created vFunction operand in order to see its details and installation progress.\n\n## Verifying the installation\n\nCheck that the operand installed successfully:\n\n1. Check that the \"Operand State\" property shows \u201cWorking\u201d.\n1. Check that the \"Successfully Installed\" property shows \"Yes\".\n\nIf \"Operand State\" shows \"Failed\", it indicates the operand wasn\u2019t installed correctly. Check the events and logs for all pods (operator and image containers) for any issues. In the event that you cannot troubleshoot, contact vFunction support.\n\n## After installation\n\nThe vFunction site is now accessible via the newly created vFunction application custom address, for example, my.domain.com. There are two ways you can access the vFunction dashboard.\n\n### Access using the router canonical hostname\n\n1. Update your DNS provider by creating a canonical name (CNAME) record.\nThis record should point to your host address, and to the \u201dvfunction\u201d subdomain of the  OpenShift canonical router hostname as the alias.\nFor example, ***my.domain.com.   CNAME   vfunction.apps.ocp4.my-openshift.com.***\n2. Find your cluster Router Canonical Hostname address in the newly created vfunction-route-xxx under your vFunction OpenShift project -> **Networking** -> **Routes** -> **vfunction-route-xxx** route -> **Router Canonical Hostname** field.\nYou can now access the dashboard using your defined \"host\" spec property (as above).\n\n### Access using the nginx service location\n\nYou may use this access method if your OpenShift is installed on a provider that supports exposing LoadBalancer-type services.\n1. Update your DNS provider by creating a canonical name (CNAME) record.\nThis record should point to your host address and to the vfunction-nginx-xxx service location.\nFor example, ***my.domain.com.   CNAME   a05951ed7cdf-1394239323.us-east-1.elb.amazonaws.com.***\n1. Point your custom domain to the vfunction-nginx-xxx service's external IP location, which you can find in the OpenShift project > **Networking** -> **Services** -> **vfunction-nginx-xxx** service > **Service Address** > **Location** field.\n\n## Upgrade and Rollback\n\nThe vFunction operator includes a built-in auto-upgrade mechanism.\n\nYou can choose one of 4 upgrading modes:\n- **Daily**: The operator will check for a new version every day at 3 AM and will install it automatically.\n- **Always**: The operator will check for a new version every 10 minutes and will install it automatically.\n- **Never**: The automatic upgrading mechanism is off (default).\n- **Maintenance**: Put the operator in a maintenance mode.\n\nFor an on-demand upgrade,  you can change anytime the upgrading mode from \u201cNever\u201d to \u201cAlways\u201d, wait for the operand to be upgraded, and change again to \u201cNever\u201d.\n\nDuring the upgrade, the \"Operand State\" property will change to \u201cUpgrading...\u201d and back again to \u201cWorking\u201d after a successful upgrade.\n\nIn case of a failure upgrading the operand, an automatic rollback to the last working version will occur. The failed version will be marked as defective and the operator will not try to upgrade to it again.\n\nChoosing the \"Maintenance\" option will tell the operator to take down all pods, so you can safely fix storage issues, return volumes from snapshots, etc.\nAfter finishing the maintenance, return the upgrade mode to your original desired policy.",
-      "csv_display_name": "vFunction Operator",
-      "csv_metadata_description": "vFunction is a cutting-edge code analysis, machine learning, and automation to boost your Java modernization projects.",
-      "csv_name": "vfunction-server-operator.v2.6.897",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T11:57:37.938000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "vfunction-server-operator",
-      "provided_apis": [
-        {
-          "group": "vfunction.com",
-          "kind": "VfunctionServer",
-          "plural": "vfunctionservers",
-          "version": "v1"
-        }
-      ],
-      "provider": "vFunction",
-      "related_images": [
-        {
-          "digest": "sha256:3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-server-operator@sha256:3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c",
-          "name": "vfunction-server-operator"
-        },
-        {
-          "digest": "sha256:dc9d83489306945205eceead338f63636fec3cac208f1b8edc679180422cbe29",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-mysql@sha256:dc9d83489306945205eceead338f63636fec3cac208f1b8edc679180422cbe29",
-          "name": "vfunction-mysql"
-        },
-        {
-          "digest": "sha256:913f07b4713d339c0bbdce87c480e35e56847f53c155cea7f5df56a07b39c5c5",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-nginx@sha256:913f07b4713d339c0bbdce87c480e35e56847f53c155cea7f5df56a07b39c5c5",
-          "name": "vfunction-nginx"
-        },
-        {
-          "digest": "sha256:829eaf9282f5f92effbed9c37d2e241210b20cd9f6f3d50e149b96c57dd3f9d6",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-storage@sha256:829eaf9282f5f92effbed9c37d2e241210b20cd9f6f3d50e149b96c57dd3f9d6",
-          "name": "vfunction-storage"
-        },
-        {
-          "digest": "sha256:6e6be6a7f6a260d17cce0a744257d5780a616be4ca4589db6ad4641b1ea79410",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-idp@sha256:6e6be6a7f6a260d17cce0a744257d5780a616be4ca4589db6ad4641b1ea79410",
-          "name": "vfunction-vfapi-idp"
-        },
-        {
-          "digest": "sha256:f876f30bdd4b96946a74419b453170b38d6d877a36359e3ac8160e2261a4d38a",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-measurements@sha256:f876f30bdd4b96946a74419b453170b38d6d877a36359e3ac8160e2261a4d38a",
-          "name": "vfunction-vfapi-measurements"
-        },
-        {
-          "digest": "sha256:5346b4f23923f5f02492f088f91e01e8a85ce2722e9f8afa45642f2c6bdcfb8e",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-organizations@sha256:5346b4f23923f5f02492f088f91e01e8a85ce2722e9f8afa45642f2c6bdcfb8e",
-          "name": "vfunction-vfapi-organizations"
-        },
-        {
-          "digest": "sha256:191bedeb9120858bead76fdda1212ada88512a5c596a07741000241e13a8f5a1",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-users@sha256:191bedeb9120858bead76fdda1212ada88512a5c596a07741000241e13a8f5a1",
-          "name": "vfunction-vfapi-users"
-        },
-        {
-          "digest": "sha256:3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-server-operator@sha256:3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c",
-          "name": "vfunction-server-operator-3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c-annotation"
-        },
-        {
-          "digest": "sha256:dc9d83489306945205eceead338f63636fec3cac208f1b8edc679180422cbe29",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-mysql@sha256:dc9d83489306945205eceead338f63636fec3cac208f1b8edc679180422cbe29",
-          "name": "vfunction_mysql_original_image"
-        },
-        {
-          "digest": "sha256:913f07b4713d339c0bbdce87c480e35e56847f53c155cea7f5df56a07b39c5c5",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-nginx@sha256:913f07b4713d339c0bbdce87c480e35e56847f53c155cea7f5df56a07b39c5c5",
-          "name": "vfunction_nginx_original_image"
-        },
-        {
-          "digest": "sha256:829eaf9282f5f92effbed9c37d2e241210b20cd9f6f3d50e149b96c57dd3f9d6",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-storage@sha256:829eaf9282f5f92effbed9c37d2e241210b20cd9f6f3d50e149b96c57dd3f9d6",
-          "name": "vfunction_storage_original_image"
-        },
-        {
-          "digest": "sha256:6e6be6a7f6a260d17cce0a744257d5780a616be4ca4589db6ad4641b1ea79410",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-idp@sha256:6e6be6a7f6a260d17cce0a744257d5780a616be4ca4589db6ad4641b1ea79410",
-          "name": "vfunction_vfapi_idp_original_image"
-        },
-        {
-          "digest": "sha256:f876f30bdd4b96946a74419b453170b38d6d877a36359e3ac8160e2261a4d38a",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-measurements@sha256:f876f30bdd4b96946a74419b453170b38d6d877a36359e3ac8160e2261a4d38a",
-          "name": "vfunction_vfapi_measurements_original_image"
-        },
-        {
-          "digest": "sha256:5346b4f23923f5f02492f088f91e01e8a85ce2722e9f8afa45642f2c6bdcfb8e",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-organizations@sha256:5346b4f23923f5f02492f088f91e01e8a85ce2722e9f8afa45642f2c6bdcfb8e",
-          "name": "vfunction_vfapi_organizations_original_image"
-        },
-        {
-          "digest": "sha256:191bedeb9120858bead76fdda1212ada88512a5c596a07741000241e13a8f5a1",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-users@sha256:191bedeb9120858bead76fdda1212ada88512a5c596a07741000241e13a8f5a1",
-          "name": "vfunction_vfapi_users_original_image"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<2.6.897",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "2.6.897",
-      "version_original": "2.6.897"
-    },
-    {
-      "_id": "634f3471abedb8735f5ed6c6",
-      "alm_examples": [
-        {
-          "api_version": "vfunction.com/v1",
-          "kind": "VfunctionServer",
-          "metadata": {
-            "labels": {
-              "app.kubernetes.io/instance": "vfunction-server",
-              "app.kubernetes.io/managed-by": "operator",
-              "app.kubernetes.io/name": "vfunction",
-              "name": "vfunction"
-            },
-            "name": "vfunction-server",
-            "namespace": "vfunction"
-          },
-          "spec": {
-            "admin": {
-              "email": "admin@mycompany.com",
-              "name": "Admin",
-              "password": "Password1!"
-            },
-            "authentication": {
-              "authority": "",
-              "ca_root_crt": "",
-              "client_id": "",
-              "issuer": "",
-              "jwks_url": ""
-            },
-            "backup": {
-              "mysql": {
-                "S3": {
-                  "bucket": "",
-                  "key": "",
-                  "region": "",
-                  "secret": ""
-                }
-              }
-            },
-            "host": "http://my.domain.com",
-            "measurements": {
-              "S3": {
-                "bucket": "",
-                "key": "",
-                "region": "",
-                "secret": ""
-              },
-              "auto_scaling": "No",
-              "max_number_of_services": "10",
-              "min_number_of_services": "2"
-            },
-            "org_name": "MyCompany",
-            "smtp": {
-              "identity": "",
-              "password": "",
-              "url": "",
-              "user": ""
-            },
-            "tls": {
-              "crt": "",
-              "key": "",
-              "use_letsencrypt": "No"
-            },
-            "upgrade": "Never"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/vfunction/vfunction-server-operator-bundle@sha256:92894398c27374a7603f2bc08d63558c7e99b632a31a62eea35fd62605b5f63b",
-      "bundle_path_digest": "sha256:92894398c27374a7603f2bc08d63558c7e99b632a31a62eea35fd62605b5f63b",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-10-18T23:19:13.321000+00:00",
-      "csv_description": "\n## Introduction\n\n[vFunction](https://www.vfunction.com/) is a cloud-native modernization platform that combines dynamic and static code analysis, machine learning, and automation to automatically identify and extract services from existing applications. vFunction is the only platform purpose-built for modernization of Java applications.\n\nThe vFunction modernization process starts by learning the running monolithic application, and surfacing the interdependencies within it. Using AI, the platform analyzes and identifies services that can be separated from the application. This decomposition can present a range of micro, mini, or even macro services, depending on your application environment, each being an independently deployable and scalable application component.\n\nvFunction automates the extraction of these services, enabling you to modernize your monolith, quickly and easily.\n\n## The vFunction platform\n\nThe platform consists of 3 basic components; the server, the controller package, and a tools package. The server runs as an operand on an OpenShift environment. The controller package is installed on the machine that runs the monolithic application which can be either a Linux or a Windows machine, and the tools are run on a development machine, with access to the code of the monolithic application.\n\nThe controller package consists of three elements: the vFunction agent, that collects data during the dynamic analysis phase; the vFunction Viper application, that performs static analysis on the binaries of the application; and the vFunction controller that handles all the communication between the agent, Viper, and the vFunction server.\n\nThe vFunction agent is a mix of a Java and native agent, and needs to run on the JVM that is currently running your application. [Refer to the vFunction OOB Support Matrix document](https://drive.google.com/file/d/1ccq8LFab1FrYAimDUxwgjiCOdk4QuVzs/view) for a list of supported application servers and JVMs.\n\nThis operator installs a vFunction server instance to be connected later with one or more vFunction controllers installed on your application machine(s).\n\n## Before You Start\n\nThe vFunction operator requires a Red Hat OpenShift Kubernetes Application Platform 4.x.\n\nThe cluster recommended configuration (which is the same as the minimal one) should consist of:\n\n- *1 master node*\n\n- *1 worker node*\n\n- *Storage capacity enough for dynamically provision 2 PVs of 50G each*\n\n- *A default StorageClass configured*\n\nvFunction doesn\u2019t provide any encryption mechanism for data stored on any attached storage. If required, encryption can be achieved by the client by using its own external means on the storage itself.\n\nvFunction supports backup of all critical data as part of the application. Nevertheless, for complete backup of entire data it is recommended that the client apply its own storage based backup mechanism.\n\n## Install Prerequisites\n\n###Cluster:\nThe operator was certified and tested on OCP 4.6 and 4.7.\nIf you encounter any issue with other OCP versions or cloud providers please contact info@vfunction.com.\n\n###Storage:\nThe operator creates two new PersistentVolumeClaims (PVCs) during installation time. For their creation, it relies on the default StorageClass to dynamically provision two PersistentVolumes (PVs). The system must have a default StorageClass in place.\n\nBoth PersistentVolumes are accessed with ReadWriteOnce mode.\n\n###Project:\nThe operator should be installed in a new and dedicated project (namespace). If you intend to install more than one vFunction operands in the same cluster, please use different projects for each one. Installation of more than one operand on the same cluster will allow scaling by load balancing multiple applications to different vFunction servers.\n\n## Installation instructions\n\n1. Prepare the YAML file to use in the installation:\n\n    a. Copy the following YAML template into a text editor:\n\n    ```yaml\n        apiVersion: vfunction.com/v1\n        kind: VfunctionServer\n        metadata:\n          name: vfunction\n          namespace: vfunction\n          labels:\n            name: vfunction\n            app.kubernetes.io/name: vfunction\n            app.kubernetes.io/instance: vfunction-server\n            app.kubernetes.io/managed-by: operator\n        spec:\n          host: \"http://my.domain.com\"\n          org_name: \"MyCompany\"\n          upgrade: \"Never\"\n          admin:\n            email: \"admin@mycompany.com\"\n            name: \"Admin\"\n            password: \"Password1!\"\n          measurements:\n            auto_scaling: \"No\"\n            min_number_of_services: \"2\"\n            max_number_of_services: \"10\"\n            S3:\n              bucket: \"\"\n              key: \"\"\n              secret: \"\"\n          smtp:\n            password: \"\"\n            url: \"\"\n            identity: \"\"\n            user: \"\"\n          authentication:\n            authority: \"\"\n            client_id: \"\"\n            jwks_url: \"\"\n            issuer: \"\"\n            ca_root_crt: |\n              -----BEGIN CERTIFICATE-----\n              ...\n              -----END CERTIFICATE-----\n          tls:\n            use_letsencrypt: \"No\"\n            crt: |\n              -----BEGIN CERTIFICATE-----\n              ...\n              -----END CERTIFICATE-----\n            key: |\n              -----BEGIN PRIVATE KEY-----\n              ...\n              -----END PRIVATE KEY-----\n          backup:\n            mysql:\n              S3:\n                bucket: \"\"\n                key: \"\"\n                secret: \"\"\n    ```\n    b. Customize the template fields by replacing with your information:\n\n    - **host**: Enter the FQDN for accessing the vFunction dashboard.\n                Make sure that you use a domain name and not an IP address. Writing \"https://\" will mandate TLS while writing \"http://\" will expose the server through HTTP.\n    - **org_name**: Enter your organization name.\n    - **upgrade**: Choose auto-upgrade mode\n        - **Daily**: The operator will check for a new version every day at 3 AM and will install it automatically.\n        - **Always**: The operator will check for a new version every 10 minutes and will install it automatically.\n        - **Never**: The automatic upgrading mechanism is off (default).\n        - **Maintenance**: Put the operator in a maintenance mode.\n    - **admin.email**: Enter the email address of your administrator.\n    - **admin.name**: Enter the name of your administrator.\n    - **admin.password**: Enter the password you want to use for the vFunction administrator.\n                          The password should be at least 8 characters long, and consist of at least one lowercase letter, at least one uppercase letter, at least one number, and at least one special character.\n    - **measurements.auto_scaling**: Indicates if the measurement services auto scalling is active.\n    - **measurements.min\\_num\\_of\\_services**: Minimum Number of measurement service pods.\n    - **measurements.max\\_num\\_of\\_services**: Maximum Number of measurement service pods.\n    - **measurements.S3**: Save all measurements data to S3, instead of local PV (optional).\n        - **measurements.S3.bucket**: Measurements S3 bucket name.\n        - **measurements.S3.key**: Measurements S3 key.\n        - **measurements.S3.secret**: Measurements S3 secret.\n        - **measurements.S3.region**: Measurements S3 region.\n    - **smtp.user**: Enter the email address for a designated user for the SMTP server (optional).\n    - **smtp.password**: Enter this user\u2019s password (optional).\n    - **smtp.identity**: Enter this user\u2019s password (optional).\n    - **smtp.url**: Enter the SMTP server URL (optional).\n    - **authentication.authority**: Authority for authentication (Optional).\n    - **authentication.client_id**: Client ID for authentication (Optional).\n    - **authentication.jwks_url**: JWKS URL for authentication (Optional).\n    - **authentication.issuer**: Issuer for authentication (Optional).\n    - **authentication.ca\\_root\\_crt**: CA root certificate for authentication (Optional).\n    - **tls.crt**: If your host FQDN starts with \u201chttps\u201d, paste in the certifications you have for using the TLS connection.\n    - **tls.key**: If your host FQDN starts with \u201chttps\u201d, enter the key you have for using the TLS connection.\n    - **backup.mysql.S3**: Backup MySQL to S3 (optional).\n        - **backup.mysql.S3.bucket**: MySQL backup S3 bucket name.\n        - **backup.mysql.S3.key**: MySQL backup S3 key.\n        - **backup.mysql.S3.secret**: MySQL backup S3 secret.\n        - **backup.mysql.S3.region**: MySQL backup S3 region.\n\n1. In the Installed Operators window choose and click on vFunction Operator and then Create Instance.\n1. In the Create vFunctionServer window, paste the YAML file that you created in step 1.\n1. Click Create.\n1. You can now click on your new created vFunction operand in order to see its details and installation progress.\n\n## Verifying the installation\n\nCheck that the operand installed successfully:\n\n1. Check that the \"Operand State\" property shows \u201cWorking\u201d.\n1. Check that the \"Successfully Installed\" property shows \"Yes\".\n\nIf \"Operand State\" shows \"Failed\", it indicates the operand wasn\u2019t installed correctly. Check the events and logs for all pods (operator and image containers) for any issues. In the event that you cannot troubleshoot, contact vFunction support.\n\n## After installation\n\nThe vFunction site is now accessible via the newly created vFunction application custom address, for example, my.domain.com. There are two ways you can access the vFunction dashboard.\n\n### Access using the router canonical hostname\n\n1. Update your DNS provider by creating a canonical name (CNAME) record.\nThis record should point to your host address, and to the \u201dvfunction\u201d subdomain of the  OpenShift canonical router hostname as the alias.\nFor example, ***my.domain.com.   CNAME   vfunction.apps.ocp4.my-openshift.com.***\n2. Find your cluster Router Canonical Hostname address in the newly created vfunction-route-xxx under your vFunction OpenShift project -> **Networking** -> **Routes** -> **vfunction-route-xxx** route -> **Router Canonical Hostname** field.\nYou can now access the dashboard using your defined \"host\" spec property (as above).\n\n### Access using the nginx service location\n\nYou may use this access method if your OpenShift is installed on a provider that supports exposing LoadBalancer-type services.\n1. Update your DNS provider by creating a canonical name (CNAME) record.\nThis record should point to your host address and to the vfunction-nginx-xxx service location.\nFor example, ***my.domain.com.   CNAME   a05951ed7cdf-1394239323.us-east-1.elb.amazonaws.com.***\n1. Point your custom domain to the vfunction-nginx-xxx service's external IP location, which you can find in the OpenShift project > **Networking** -> **Services** -> **vfunction-nginx-xxx** service > **Service Address** > **Location** field.\n\n## Upgrade and Rollback\n\nThe vFunction operator includes a built-in auto-upgrade mechanism.\n\nYou can choose one of 4 upgrading modes:\n- **Daily**: The operator will check for a new version every day at 3 AM and will install it automatically.\n- **Always**: The operator will check for a new version every 10 minutes and will install it automatically.\n- **Never**: The automatic upgrading mechanism is off (default).\n- **Maintenance**: Put the operator in a maintenance mode.\n\nFor an on-demand upgrade,  you can change anytime the upgrading mode from \u201cNever\u201d to \u201cAlways\u201d, wait for the operand to be upgraded, and change again to \u201cNever\u201d.\n\nDuring the upgrade, the \"Operand State\" property will change to \u201cUpgrading...\u201d and back again to \u201cWorking\u201d after a successful upgrade.\n\nIn case of a failure upgrading the operand, an automatic rollback to the last working version will occur. The failed version will be marked as defective and the operator will not try to upgrade to it again.\n\nChoosing the \"Maintenance\" option will tell the operator to take down all pods, so you can safely fix storage issues, return volumes from snapshots, etc.\nAfter finishing the maintenance, return the upgrade mode to your original desired policy.",
-      "csv_display_name": "vFunction Operator",
-      "csv_metadata_description": "vFunction is a cutting-edge code analysis, machine learning, and automation to boost your Java modernization projects.",
-      "csv_name": "vfunction-server-operator.v2.6.897",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T11:52:12.443000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "vfunction-server-operator",
-      "provided_apis": [
-        {
-          "group": "vfunction.com",
-          "kind": "VfunctionServer",
-          "plural": "vfunctionservers",
-          "version": "v1"
-        }
-      ],
-      "provider": "vFunction",
-      "related_images": [
-        {
-          "digest": "sha256:3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-server-operator@sha256:3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c",
-          "name": "vfunction-server-operator"
-        },
-        {
-          "digest": "sha256:dc9d83489306945205eceead338f63636fec3cac208f1b8edc679180422cbe29",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-mysql@sha256:dc9d83489306945205eceead338f63636fec3cac208f1b8edc679180422cbe29",
-          "name": "vfunction-mysql"
-        },
-        {
-          "digest": "sha256:913f07b4713d339c0bbdce87c480e35e56847f53c155cea7f5df56a07b39c5c5",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-nginx@sha256:913f07b4713d339c0bbdce87c480e35e56847f53c155cea7f5df56a07b39c5c5",
-          "name": "vfunction-nginx"
-        },
-        {
-          "digest": "sha256:829eaf9282f5f92effbed9c37d2e241210b20cd9f6f3d50e149b96c57dd3f9d6",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-storage@sha256:829eaf9282f5f92effbed9c37d2e241210b20cd9f6f3d50e149b96c57dd3f9d6",
-          "name": "vfunction-storage"
-        },
-        {
-          "digest": "sha256:6e6be6a7f6a260d17cce0a744257d5780a616be4ca4589db6ad4641b1ea79410",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-idp@sha256:6e6be6a7f6a260d17cce0a744257d5780a616be4ca4589db6ad4641b1ea79410",
-          "name": "vfunction-vfapi-idp"
-        },
-        {
-          "digest": "sha256:f876f30bdd4b96946a74419b453170b38d6d877a36359e3ac8160e2261a4d38a",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-measurements@sha256:f876f30bdd4b96946a74419b453170b38d6d877a36359e3ac8160e2261a4d38a",
-          "name": "vfunction-vfapi-measurements"
-        },
-        {
-          "digest": "sha256:5346b4f23923f5f02492f088f91e01e8a85ce2722e9f8afa45642f2c6bdcfb8e",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-organizations@sha256:5346b4f23923f5f02492f088f91e01e8a85ce2722e9f8afa45642f2c6bdcfb8e",
-          "name": "vfunction-vfapi-organizations"
-        },
-        {
-          "digest": "sha256:191bedeb9120858bead76fdda1212ada88512a5c596a07741000241e13a8f5a1",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-users@sha256:191bedeb9120858bead76fdda1212ada88512a5c596a07741000241e13a8f5a1",
-          "name": "vfunction-vfapi-users"
-        },
-        {
-          "digest": "sha256:3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-server-operator@sha256:3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c",
-          "name": "vfunction-server-operator-3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c-annotation"
-        },
-        {
-          "digest": "sha256:dc9d83489306945205eceead338f63636fec3cac208f1b8edc679180422cbe29",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-mysql@sha256:dc9d83489306945205eceead338f63636fec3cac208f1b8edc679180422cbe29",
-          "name": "vfunction_mysql_original_image"
-        },
-        {
-          "digest": "sha256:913f07b4713d339c0bbdce87c480e35e56847f53c155cea7f5df56a07b39c5c5",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-nginx@sha256:913f07b4713d339c0bbdce87c480e35e56847f53c155cea7f5df56a07b39c5c5",
-          "name": "vfunction_nginx_original_image"
-        },
-        {
-          "digest": "sha256:829eaf9282f5f92effbed9c37d2e241210b20cd9f6f3d50e149b96c57dd3f9d6",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-storage@sha256:829eaf9282f5f92effbed9c37d2e241210b20cd9f6f3d50e149b96c57dd3f9d6",
-          "name": "vfunction_storage_original_image"
-        },
-        {
-          "digest": "sha256:6e6be6a7f6a260d17cce0a744257d5780a616be4ca4589db6ad4641b1ea79410",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-idp@sha256:6e6be6a7f6a260d17cce0a744257d5780a616be4ca4589db6ad4641b1ea79410",
-          "name": "vfunction_vfapi_idp_original_image"
-        },
-        {
-          "digest": "sha256:f876f30bdd4b96946a74419b453170b38d6d877a36359e3ac8160e2261a4d38a",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-measurements@sha256:f876f30bdd4b96946a74419b453170b38d6d877a36359e3ac8160e2261a4d38a",
-          "name": "vfunction_vfapi_measurements_original_image"
-        },
-        {
-          "digest": "sha256:5346b4f23923f5f02492f088f91e01e8a85ce2722e9f8afa45642f2c6bdcfb8e",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-organizations@sha256:5346b4f23923f5f02492f088f91e01e8a85ce2722e9f8afa45642f2c6bdcfb8e",
-          "name": "vfunction_vfapi_organizations_original_image"
-        },
-        {
-          "digest": "sha256:191bedeb9120858bead76fdda1212ada88512a5c596a07741000241e13a8f5a1",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-users@sha256:191bedeb9120858bead76fdda1212ada88512a5c596a07741000241e13a8f5a1",
-          "name": "vfunction_vfapi_users_original_image"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<2.6.897",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "2.6.897",
-      "version_original": "2.6.897"
-    },
-    {
-      "_id": "634f36b69f195e56188a0219",
-      "alm_examples": [
-        {
-          "api_version": "vfunction.com/v1",
-          "kind": "VfunctionServer",
-          "metadata": {
-            "labels": {
-              "app.kubernetes.io/instance": "vfunction-server",
-              "app.kubernetes.io/managed-by": "operator",
-              "app.kubernetes.io/name": "vfunction",
-              "name": "vfunction"
-            },
-            "name": "vfunction-server",
-            "namespace": "vfunction"
-          },
-          "spec": {
-            "admin": {
-              "email": "admin@mycompany.com",
-              "name": "Admin",
-              "password": "Password1!"
-            },
-            "authentication": {
-              "authority": "",
-              "ca_root_crt": "",
-              "client_id": "",
-              "issuer": "",
-              "jwks_url": ""
-            },
-            "backup": {
-              "mysql": {
-                "S3": {
-                  "bucket": "",
-                  "key": "",
-                  "region": "",
-                  "secret": ""
-                }
-              }
-            },
-            "host": "http://my.domain.com",
-            "measurements": {
-              "S3": {
-                "bucket": "",
-                "key": "",
-                "region": "",
-                "secret": ""
-              },
-              "auto_scaling": "No",
-              "max_number_of_services": "10",
-              "min_number_of_services": "2"
-            },
-            "org_name": "MyCompany",
-            "smtp": {
-              "identity": "",
-              "password": "",
-              "url": "",
-              "user": ""
-            },
-            "tls": {
-              "crt": "",
-              "key": "",
-              "use_letsencrypt": "No"
-            },
-            "upgrade": "Never"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/vfunction/vfunction-server-operator-bundle@sha256:92894398c27374a7603f2bc08d63558c7e99b632a31a62eea35fd62605b5f63b",
-      "bundle_path_digest": "sha256:92894398c27374a7603f2bc08d63558c7e99b632a31a62eea35fd62605b5f63b",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-10-18T23:28:54.250000+00:00",
-      "csv_description": "\n## Introduction\n\n[vFunction](https://www.vfunction.com/) is a cloud-native modernization platform that combines dynamic and static code analysis, machine learning, and automation to automatically identify and extract services from existing applications. vFunction is the only platform purpose-built for modernization of Java applications.\n\nThe vFunction modernization process starts by learning the running monolithic application, and surfacing the interdependencies within it. Using AI, the platform analyzes and identifies services that can be separated from the application. This decomposition can present a range of micro, mini, or even macro services, depending on your application environment, each being an independently deployable and scalable application component.\n\nvFunction automates the extraction of these services, enabling you to modernize your monolith, quickly and easily.\n\n## The vFunction platform\n\nThe platform consists of 3 basic components; the server, the controller package, and a tools package. The server runs as an operand on an OpenShift environment. The controller package is installed on the machine that runs the monolithic application which can be either a Linux or a Windows machine, and the tools are run on a development machine, with access to the code of the monolithic application.\n\nThe controller package consists of three elements: the vFunction agent, that collects data during the dynamic analysis phase; the vFunction Viper application, that performs static analysis on the binaries of the application; and the vFunction controller that handles all the communication between the agent, Viper, and the vFunction server.\n\nThe vFunction agent is a mix of a Java and native agent, and needs to run on the JVM that is currently running your application. [Refer to the vFunction OOB Support Matrix document](https://drive.google.com/file/d/1ccq8LFab1FrYAimDUxwgjiCOdk4QuVzs/view) for a list of supported application servers and JVMs.\n\nThis operator installs a vFunction server instance to be connected later with one or more vFunction controllers installed on your application machine(s).\n\n## Before You Start\n\nThe vFunction operator requires a Red Hat OpenShift Kubernetes Application Platform 4.x.\n\nThe cluster recommended configuration (which is the same as the minimal one) should consist of:\n\n- *1 master node*\n\n- *1 worker node*\n\n- *Storage capacity enough for dynamically provision 2 PVs of 50G each*\n\n- *A default StorageClass configured*\n\nvFunction doesn\u2019t provide any encryption mechanism for data stored on any attached storage. If required, encryption can be achieved by the client by using its own external means on the storage itself.\n\nvFunction supports backup of all critical data as part of the application. Nevertheless, for complete backup of entire data it is recommended that the client apply its own storage based backup mechanism.\n\n## Install Prerequisites\n\n###Cluster:\nThe operator was certified and tested on OCP 4.6 and 4.7.\nIf you encounter any issue with other OCP versions or cloud providers please contact info@vfunction.com.\n\n###Storage:\nThe operator creates two new PersistentVolumeClaims (PVCs) during installation time. For their creation, it relies on the default StorageClass to dynamically provision two PersistentVolumes (PVs). The system must have a default StorageClass in place.\n\nBoth PersistentVolumes are accessed with ReadWriteOnce mode.\n\n###Project:\nThe operator should be installed in a new and dedicated project (namespace). If you intend to install more than one vFunction operands in the same cluster, please use different projects for each one. Installation of more than one operand on the same cluster will allow scaling by load balancing multiple applications to different vFunction servers.\n\n## Installation instructions\n\n1. Prepare the YAML file to use in the installation:\n\n    a. Copy the following YAML template into a text editor:\n\n    ```yaml\n        apiVersion: vfunction.com/v1\n        kind: VfunctionServer\n        metadata:\n          name: vfunction\n          namespace: vfunction\n          labels:\n            name: vfunction\n            app.kubernetes.io/name: vfunction\n            app.kubernetes.io/instance: vfunction-server\n            app.kubernetes.io/managed-by: operator\n        spec:\n          host: \"http://my.domain.com\"\n          org_name: \"MyCompany\"\n          upgrade: \"Never\"\n          admin:\n            email: \"admin@mycompany.com\"\n            name: \"Admin\"\n            password: \"Password1!\"\n          measurements:\n            auto_scaling: \"No\"\n            min_number_of_services: \"2\"\n            max_number_of_services: \"10\"\n            S3:\n              bucket: \"\"\n              key: \"\"\n              secret: \"\"\n          smtp:\n            password: \"\"\n            url: \"\"\n            identity: \"\"\n            user: \"\"\n          authentication:\n            authority: \"\"\n            client_id: \"\"\n            jwks_url: \"\"\n            issuer: \"\"\n            ca_root_crt: |\n              -----BEGIN CERTIFICATE-----\n              ...\n              -----END CERTIFICATE-----\n          tls:\n            use_letsencrypt: \"No\"\n            crt: |\n              -----BEGIN CERTIFICATE-----\n              ...\n              -----END CERTIFICATE-----\n            key: |\n              -----BEGIN PRIVATE KEY-----\n              ...\n              -----END PRIVATE KEY-----\n          backup:\n            mysql:\n              S3:\n                bucket: \"\"\n                key: \"\"\n                secret: \"\"\n    ```\n    b. Customize the template fields by replacing with your information:\n\n    - **host**: Enter the FQDN for accessing the vFunction dashboard.\n                Make sure that you use a domain name and not an IP address. Writing \"https://\" will mandate TLS while writing \"http://\" will expose the server through HTTP.\n    - **org_name**: Enter your organization name.\n    - **upgrade**: Choose auto-upgrade mode\n        - **Daily**: The operator will check for a new version every day at 3 AM and will install it automatically.\n        - **Always**: The operator will check for a new version every 10 minutes and will install it automatically.\n        - **Never**: The automatic upgrading mechanism is off (default).\n        - **Maintenance**: Put the operator in a maintenance mode.\n    - **admin.email**: Enter the email address of your administrator.\n    - **admin.name**: Enter the name of your administrator.\n    - **admin.password**: Enter the password you want to use for the vFunction administrator.\n                          The password should be at least 8 characters long, and consist of at least one lowercase letter, at least one uppercase letter, at least one number, and at least one special character.\n    - **measurements.auto_scaling**: Indicates if the measurement services auto scalling is active.\n    - **measurements.min\\_num\\_of\\_services**: Minimum Number of measurement service pods.\n    - **measurements.max\\_num\\_of\\_services**: Maximum Number of measurement service pods.\n    - **measurements.S3**: Save all measurements data to S3, instead of local PV (optional).\n        - **measurements.S3.bucket**: Measurements S3 bucket name.\n        - **measurements.S3.key**: Measurements S3 key.\n        - **measurements.S3.secret**: Measurements S3 secret.\n        - **measurements.S3.region**: Measurements S3 region.\n    - **smtp.user**: Enter the email address for a designated user for the SMTP server (optional).\n    - **smtp.password**: Enter this user\u2019s password (optional).\n    - **smtp.identity**: Enter this user\u2019s password (optional).\n    - **smtp.url**: Enter the SMTP server URL (optional).\n    - **authentication.authority**: Authority for authentication (Optional).\n    - **authentication.client_id**: Client ID for authentication (Optional).\n    - **authentication.jwks_url**: JWKS URL for authentication (Optional).\n    - **authentication.issuer**: Issuer for authentication (Optional).\n    - **authentication.ca\\_root\\_crt**: CA root certificate for authentication (Optional).\n    - **tls.crt**: If your host FQDN starts with \u201chttps\u201d, paste in the certifications you have for using the TLS connection.\n    - **tls.key**: If your host FQDN starts with \u201chttps\u201d, enter the key you have for using the TLS connection.\n    - **backup.mysql.S3**: Backup MySQL to S3 (optional).\n        - **backup.mysql.S3.bucket**: MySQL backup S3 bucket name.\n        - **backup.mysql.S3.key**: MySQL backup S3 key.\n        - **backup.mysql.S3.secret**: MySQL backup S3 secret.\n        - **backup.mysql.S3.region**: MySQL backup S3 region.\n\n1. In the Installed Operators window choose and click on vFunction Operator and then Create Instance.\n1. In the Create vFunctionServer window, paste the YAML file that you created in step 1.\n1. Click Create.\n1. You can now click on your new created vFunction operand in order to see its details and installation progress.\n\n## Verifying the installation\n\nCheck that the operand installed successfully:\n\n1. Check that the \"Operand State\" property shows \u201cWorking\u201d.\n1. Check that the \"Successfully Installed\" property shows \"Yes\".\n\nIf \"Operand State\" shows \"Failed\", it indicates the operand wasn\u2019t installed correctly. Check the events and logs for all pods (operator and image containers) for any issues. In the event that you cannot troubleshoot, contact vFunction support.\n\n## After installation\n\nThe vFunction site is now accessible via the newly created vFunction application custom address, for example, my.domain.com. There are two ways you can access the vFunction dashboard.\n\n### Access using the router canonical hostname\n\n1. Update your DNS provider by creating a canonical name (CNAME) record.\nThis record should point to your host address, and to the \u201dvfunction\u201d subdomain of the  OpenShift canonical router hostname as the alias.\nFor example, ***my.domain.com.   CNAME   vfunction.apps.ocp4.my-openshift.com.***\n2. Find your cluster Router Canonical Hostname address in the newly created vfunction-route-xxx under your vFunction OpenShift project -> **Networking** -> **Routes** -> **vfunction-route-xxx** route -> **Router Canonical Hostname** field.\nYou can now access the dashboard using your defined \"host\" spec property (as above).\n\n### Access using the nginx service location\n\nYou may use this access method if your OpenShift is installed on a provider that supports exposing LoadBalancer-type services.\n1. Update your DNS provider by creating a canonical name (CNAME) record.\nThis record should point to your host address and to the vfunction-nginx-xxx service location.\nFor example, ***my.domain.com.   CNAME   a05951ed7cdf-1394239323.us-east-1.elb.amazonaws.com.***\n1. Point your custom domain to the vfunction-nginx-xxx service's external IP location, which you can find in the OpenShift project > **Networking** -> **Services** -> **vfunction-nginx-xxx** service > **Service Address** > **Location** field.\n\n## Upgrade and Rollback\n\nThe vFunction operator includes a built-in auto-upgrade mechanism.\n\nYou can choose one of 4 upgrading modes:\n- **Daily**: The operator will check for a new version every day at 3 AM and will install it automatically.\n- **Always**: The operator will check for a new version every 10 minutes and will install it automatically.\n- **Never**: The automatic upgrading mechanism is off (default).\n- **Maintenance**: Put the operator in a maintenance mode.\n\nFor an on-demand upgrade,  you can change anytime the upgrading mode from \u201cNever\u201d to \u201cAlways\u201d, wait for the operand to be upgraded, and change again to \u201cNever\u201d.\n\nDuring the upgrade, the \"Operand State\" property will change to \u201cUpgrading...\u201d and back again to \u201cWorking\u201d after a successful upgrade.\n\nIn case of a failure upgrading the operand, an automatic rollback to the last working version will occur. The failed version will be marked as defective and the operator will not try to upgrade to it again.\n\nChoosing the \"Maintenance\" option will tell the operator to take down all pods, so you can safely fix storage issues, return volumes from snapshots, etc.\nAfter finishing the maintenance, return the upgrade mode to your original desired policy.",
-      "csv_display_name": "vFunction Operator",
-      "csv_metadata_description": "vFunction is a cutting-edge code analysis, machine learning, and automation to boost your Java modernization projects.",
-      "csv_name": "vfunction-server-operator.v2.6.897",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T11:59:22.104000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "vfunction-server-operator",
-      "provided_apis": [
-        {
-          "group": "vfunction.com",
-          "kind": "VfunctionServer",
-          "plural": "vfunctionservers",
-          "version": "v1"
-        }
-      ],
-      "provider": "vFunction",
-      "related_images": [
-        {
-          "digest": "sha256:3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-server-operator@sha256:3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c",
-          "name": "vfunction-server-operator"
-        },
-        {
-          "digest": "sha256:dc9d83489306945205eceead338f63636fec3cac208f1b8edc679180422cbe29",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-mysql@sha256:dc9d83489306945205eceead338f63636fec3cac208f1b8edc679180422cbe29",
-          "name": "vfunction-mysql"
-        },
-        {
-          "digest": "sha256:913f07b4713d339c0bbdce87c480e35e56847f53c155cea7f5df56a07b39c5c5",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-nginx@sha256:913f07b4713d339c0bbdce87c480e35e56847f53c155cea7f5df56a07b39c5c5",
-          "name": "vfunction-nginx"
-        },
-        {
-          "digest": "sha256:829eaf9282f5f92effbed9c37d2e241210b20cd9f6f3d50e149b96c57dd3f9d6",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-storage@sha256:829eaf9282f5f92effbed9c37d2e241210b20cd9f6f3d50e149b96c57dd3f9d6",
-          "name": "vfunction-storage"
-        },
-        {
-          "digest": "sha256:6e6be6a7f6a260d17cce0a744257d5780a616be4ca4589db6ad4641b1ea79410",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-idp@sha256:6e6be6a7f6a260d17cce0a744257d5780a616be4ca4589db6ad4641b1ea79410",
-          "name": "vfunction-vfapi-idp"
-        },
-        {
-          "digest": "sha256:f876f30bdd4b96946a74419b453170b38d6d877a36359e3ac8160e2261a4d38a",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-measurements@sha256:f876f30bdd4b96946a74419b453170b38d6d877a36359e3ac8160e2261a4d38a",
-          "name": "vfunction-vfapi-measurements"
-        },
-        {
-          "digest": "sha256:5346b4f23923f5f02492f088f91e01e8a85ce2722e9f8afa45642f2c6bdcfb8e",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-organizations@sha256:5346b4f23923f5f02492f088f91e01e8a85ce2722e9f8afa45642f2c6bdcfb8e",
-          "name": "vfunction-vfapi-organizations"
-        },
-        {
-          "digest": "sha256:191bedeb9120858bead76fdda1212ada88512a5c596a07741000241e13a8f5a1",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-users@sha256:191bedeb9120858bead76fdda1212ada88512a5c596a07741000241e13a8f5a1",
-          "name": "vfunction-vfapi-users"
-        },
-        {
-          "digest": "sha256:3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-server-operator@sha256:3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c",
-          "name": "vfunction-server-operator-3f346a105d7223f3115b85200bfd2e9afee9eccb9f8f1539dbf4cc5bd79b1c5c-annotation"
-        },
-        {
-          "digest": "sha256:dc9d83489306945205eceead338f63636fec3cac208f1b8edc679180422cbe29",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-mysql@sha256:dc9d83489306945205eceead338f63636fec3cac208f1b8edc679180422cbe29",
-          "name": "vfunction_mysql_original_image"
-        },
-        {
-          "digest": "sha256:913f07b4713d339c0bbdce87c480e35e56847f53c155cea7f5df56a07b39c5c5",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-nginx@sha256:913f07b4713d339c0bbdce87c480e35e56847f53c155cea7f5df56a07b39c5c5",
-          "name": "vfunction_nginx_original_image"
-        },
-        {
-          "digest": "sha256:829eaf9282f5f92effbed9c37d2e241210b20cd9f6f3d50e149b96c57dd3f9d6",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-storage@sha256:829eaf9282f5f92effbed9c37d2e241210b20cd9f6f3d50e149b96c57dd3f9d6",
-          "name": "vfunction_storage_original_image"
-        },
-        {
-          "digest": "sha256:6e6be6a7f6a260d17cce0a744257d5780a616be4ca4589db6ad4641b1ea79410",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-idp@sha256:6e6be6a7f6a260d17cce0a744257d5780a616be4ca4589db6ad4641b1ea79410",
-          "name": "vfunction_vfapi_idp_original_image"
-        },
-        {
-          "digest": "sha256:f876f30bdd4b96946a74419b453170b38d6d877a36359e3ac8160e2261a4d38a",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-measurements@sha256:f876f30bdd4b96946a74419b453170b38d6d877a36359e3ac8160e2261a4d38a",
-          "name": "vfunction_vfapi_measurements_original_image"
-        },
-        {
-          "digest": "sha256:5346b4f23923f5f02492f088f91e01e8a85ce2722e9f8afa45642f2c6bdcfb8e",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-organizations@sha256:5346b4f23923f5f02492f088f91e01e8a85ce2722e9f8afa45642f2c6bdcfb8e",
-          "name": "vfunction_vfapi_organizations_original_image"
-        },
-        {
-          "digest": "sha256:191bedeb9120858bead76fdda1212ada88512a5c596a07741000241e13a8f5a1",
-          "image": "registry.connect.redhat.com/vfunction/vfunction-vfapi-users@sha256:191bedeb9120858bead76fdda1212ada88512a5c596a07741000241e13a8f5a1",
-          "name": "vfunction_vfapi_users_original_image"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<2.6.897",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2.6.897",
-      "version_original": "2.6.897"
-    },
-    {
       "_id": "634f661d4b6c281902e9b90f",
       "alm_examples": [
         {
@@ -24867,6 +24044,451 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.15.2",
       "version_original": "1.15.2"
+    },
+    {
+      "_id": "63567910b980f02541a03cf6",
+      "alm_examples": [
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Backup",
+          "metadata": {
+            "name": "backup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Cluster",
+          "metadata": {
+            "name": "cluster-sample"
+          },
+          "spec": {
+            "instances": 3,
+            "logLevel": "info",
+            "primaryUpdateStrategy": "unsupervised",
+            "storage": {
+              "size": "1Gi"
+            }
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "Pooler",
+          "metadata": {
+            "name": "pooler-sample-rw"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "instances": 1,
+            "pgbouncer": {
+              "poolMode": "session"
+            },
+            "type": "rw"
+          }
+        },
+        {
+          "api_version": "postgresql.k8s.enterprisedb.io/v1",
+          "kind": "ScheduledBackup",
+          "metadata": {
+            "name": "scheduledbackup-sample"
+          },
+          "spec": {
+            "cluster": {
+              "name": "cluster-sample"
+            },
+            "schedule": "0 0 0 * * *"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [
+        "amd64",
+        "ppc64le",
+        "s390x"
+      ],
+      "bundle_path": "registry.connect.redhat.com/enterprisedb/cloud-native-postgresql@sha256:e0624abf48e3f643638e93a633a4017961b454f133830f6d369b238d58a6eb8b",
+      "bundle_path_digest": "sha256:e0624abf48e3f643638e93a633a4017961b454f133830f6d369b238d58a6eb8b",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "null",
+      "creation_date": "2022-10-24T11:37:52.771000+00:00",
+      "csv_description": "EDB Postgres for Kubernetes is an operator designed, developed, and supported by EDB that covers the full \nlifecycle of a highly available Postgres database clusters with a primary/standby architecture, using native\nstreaming replication. It is based on the open source CloudNativePG operator, and provides additional value\nsuch as compatibility with Oracle using EDB Postgres Advanced Server and additional supported platforms such\nas IBM Power and OpenShift.\n\nKey features available include:\n\n* Kubernetes API integration for high availability\n* Self-healing through failover and automated recreation of replicas\n* Capacity management with scale up/down capabilities\n* Planned switchovers for scheduled maintenance\n* Read-only and read-write Kubernetes services definitions\n* Rolling updates for Postgres minor versions and operator upgrades\n* Continuous backup and point-in-time recovery\n* Connection Pooling with PgBouncer\n* Integrated metrics exporter out of the box\n* PostgreSQL replication across multiple Kubernetes clusters\n* Red Hat certified operator for OpenShift\n\nThe operator has been renamed from Cloud Native PostgreSQL. Existing users of Cloud Native PostgreSQL will not\nexperience any change, as the underlying components and resources have not changed.\n",
+      "csv_display_name": "EDB Postgres for Kubernetes",
+      "csv_metadata_description": "Operator to manage Postgres high availability clusters with a primary/standby architecture.",
+      "csv_name": "cloud-native-postgresql.v1.15.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T11:37:52.771000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "cloud-native-postgresql",
+      "provided_apis": [
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Cluster",
+          "plural": "clusters",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Pooler",
+          "plural": "poolers",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "ScheduledBackup",
+          "plural": "scheduledbackups",
+          "version": "v1"
+        },
+        {
+          "group": "postgresql.k8s.enterprisedb.io",
+          "kind": "Backup",
+          "plural": "backups",
+          "version": "v1"
+        }
+      ],
+      "provider": "EnterpriseDB Corporation",
+      "related_images": [
+        {
+          "digest": "sha256:af4718fd40222fb3fc68fa1952baa69e61a35085429f10e6fcd5db46d60f0bfc",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:af4718fd40222fb3fc68fa1952baa69e61a35085429f10e6fcd5db46d60f0bfc",
+          "name": "cloud-native-postgresql-af4718fd40222fb3fc68fa1952baa69e61a35085429f10e6fcd5db46d60f0bfc-annotation"
+        },
+        {
+          "digest": "sha256:af4718fd40222fb3fc68fa1952baa69e61a35085429f10e6fcd5db46d60f0bfc",
+          "image": "quay.io/enterprisedb/cloud-native-postgresql@sha256:af4718fd40222fb3fc68fa1952baa69e61a35085429f10e6fcd5db46d60f0bfc",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": ">=0.6.0 < 1.15.2",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "1.15.2",
+      "version_original": "1.15.2"
+    },
+    {
+      "_id": "63570c76d154712fbb23290e",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:ac8a089f6475190c78e50930f3429453f40724539bf510c728cb9b40ac7c1ae1",
+      "bundle_path_digest": "sha256:ac8a089f6475190c78e50930f3429453f40724539bf510c728cb9b40ac7c1ae1",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-10-24T22:06:46.421000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.6.6",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T22:06:46.421000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.12",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "name": "kubeturbo-operator-f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a-annotation"
+        },
+        {
+          "digest": "sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:3a432582424901098ba1a17e785bc9d3f4533d5507988679ffec1366f2f6c5c8",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:3a432582424901098ba1a17e785bc9d3f4533d5507988679ffec1366f2f6c5c8",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.12",
+      "version": "8.6.6",
+      "version_original": "8.6.6"
+    },
+    {
+      "_id": "63570d986794cb8805ac4329",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:ac8a089f6475190c78e50930f3429453f40724539bf510c728cb9b40ac7c1ae1",
+      "bundle_path_digest": "sha256:ac8a089f6475190c78e50930f3429453f40724539bf510c728cb9b40ac7c1ae1",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-10-24T22:11:36.298000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.6.6",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T22:11:36.298000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "name": "kubeturbo-operator-f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a-annotation"
+        },
+        {
+          "digest": "sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:3a432582424901098ba1a17e785bc9d3f4533d5507988679ffec1366f2f6c5c8",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:3a432582424901098ba1a17e785bc9d3f4533d5507988679ffec1366f2f6c5c8",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "8.6.6",
+      "version_original": "8.6.6"
+    },
+    {
+      "_id": "63570e82bf8d22683941e623",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:ac8a089f6475190c78e50930f3429453f40724539bf510c728cb9b40ac7c1ae1",
+      "bundle_path_digest": "sha256:ac8a089f6475190c78e50930f3429453f40724539bf510c728cb9b40ac7c1ae1",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-10-24T22:15:30.012000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.6.6",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T22:15:30.012000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "name": "kubeturbo-operator-f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a-annotation"
+        },
+        {
+          "digest": "sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:3a432582424901098ba1a17e785bc9d3f4533d5507988679ffec1366f2f6c5c8",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:3a432582424901098ba1a17e785bc9d3f4533d5507988679ffec1366f2f6c5c8",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "8.6.6",
+      "version_original": "8.6.6"
     }
   ]
 }
