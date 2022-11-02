@@ -158,8 +158,7 @@ func TestGetUID(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		c := GetContainer()
-		c.Container = &corev1.Container{}
+		c := NewContainer()
 		c.Status.ContainerID = tc.testCID
 		uid, err := c.GetUID()
 		assert.Equal(t, tc.expectedErr, err)

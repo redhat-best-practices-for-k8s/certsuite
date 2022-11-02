@@ -42,8 +42,10 @@ type Container struct {
 	ContainerImageIdentifier configuration.ContainerImageIdentifier
 }
 
-func GetContainer() *Container {
-	return &Container{}
+func NewContainer() *Container {
+	return &Container{
+		Container: &corev1.Container{}, // initialize the corev1.Container object
+	}
 }
 
 func (c *Container) GetUID() (string, error) {
