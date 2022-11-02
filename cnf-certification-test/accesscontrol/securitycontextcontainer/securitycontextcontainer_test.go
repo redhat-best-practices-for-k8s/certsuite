@@ -1,6 +1,6 @@
 package securitycontextcontainer
 
-/*import (
+import (
 	"testing"
 
 	corev1 "k8s.io/api/core/v1"
@@ -10,47 +10,20 @@ package securitycontextcontainer
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func TestRemoveEmptyStrings(t *testing.T) {
-	var runAs *int64
-	*runAs = 2000
-	var allopiv *bool
-	*allopiv = true
+func TestCheckPod(t *testing.T) {
+	runAs := int64(2000)
+	allopiv := true
 	testCases := []struct {
 		testSlice     *provider.Pod
 		expectedSlice []string
 	}{
 		{
-			testSlice: &provider.Pod{
-				Pod: &corev1.Pod{
-					ObjectMeta: metav1.ObjectMeta{},
-					Spec: corev1.PodSpec{
-						HostIPC:     false,
-						HostNetwork: false,
-						HostPID:     false,
-						SecurityContext: &corev1.PodSecurityContext{
-							RunAsUser:  runAs,
-							RunAsGroup: runAs,
-							FSGroup:    runAs,
-						},
-						Containers: []corev1.Container{
-							corev1.Container{
-								SecurityContext: &corev1.SecurityContext{
-									AllowPrivilegeEscalation: allopiv,
-									Capabilities: &corev1.Capabilities{
-										Drop: []corev1.Capability{
-											"KILL", "MKNOD", "SETUID", "SETGID",
-										},
-									},
-									SELinuxOptions: &corev1.SELinuxOptions{
-										Level: "s0:c123,c456",
-									},
-								},
-							},
-						},
-					},
-				},
-			},
+			testSlice:     createPod(runAs, allopiv, "KILL", "MKNOD", "SETUID", "SETGID"),
 			expectedSlice: nil,
+		},
+		{
+			testSlice:     createPod(runAs, allopiv, "AAA", "MKNOD", "SETUID", "SETGID"),
+			expectedSlice: []string{"test"}, // its a failed one
 		},
 	}
 
@@ -58,4 +31,38 @@ func TestRemoveEmptyStrings(t *testing.T) {
 		assert.Equal(t, tc.expectedSlice, CheckPod(tc.testSlice))
 	}
 }
-*/
+
+func createPod(runAs int64, allopiv bool, st1, st2, st3, st4 string) *provider.Pod {
+	return &provider.Pod{
+		Pod: &corev1.Pod{
+			ObjectMeta: metav1.ObjectMeta{},
+			Spec: corev1.PodSpec{
+				HostIPC:     false,
+				HostNetwork: false,
+				HostPID:     false,
+				SecurityContext: &corev1.PodSecurityContext{
+					RunAsUser:  &runAs,
+					RunAsGroup: &runAs,
+					FSGroup:    &runAs,
+				},
+				Containers: []corev1.Container{
+					corev1.Container{
+						Name: "test",
+						SecurityContext: &corev1.SecurityContext{
+							AllowPrivilegeEscalation: &allopiv,
+							Capabilities: &corev1.Capabilities{
+								Drop: []corev1.Capability{
+									corev1.Capability(st1), corev1.Capability(st2), corev1.Capability(st3),
+									corev1.Capability(st4),
+								},
+							},
+							SELinuxOptions: &corev1.SELinuxOptions{
+								Level: "s0:c123,c456",
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+}
