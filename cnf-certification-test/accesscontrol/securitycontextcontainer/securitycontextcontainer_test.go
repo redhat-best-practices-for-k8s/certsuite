@@ -46,7 +46,7 @@ func createPod(runAs int64, allopiv bool, st1, st2, st3, st4 string) *provider.P
 					FSGroup:    &runAs,
 				},
 				Containers: []corev1.Container{
-					corev1.Container{
+					{
 						Name: "test",
 						SecurityContext: &corev1.SecurityContext{
 							AllowPrivilegeEscalation: &allopiv,
