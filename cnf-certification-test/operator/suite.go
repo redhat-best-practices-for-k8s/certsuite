@@ -83,7 +83,7 @@ func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
 		csv := env.Operators[i].Csv
 		clusterPermissions := csv.Spec.InstallStrategy.StrategySpec.ClusterPermissions
 		if len(clusterPermissions) == 0 {
-			logrus.Debugf("No clusterPermissions found in %s", &env.Operators[i])
+			logrus.Debugf("No clusterPermissions found in %s", env.Operators[i])
 			continue
 		}
 
