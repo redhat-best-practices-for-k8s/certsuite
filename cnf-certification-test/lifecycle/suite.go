@@ -30,6 +30,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/scaling"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/volumes"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
+	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/postmortem"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
@@ -273,12 +274,36 @@ func testPodNodeSelectorAndAffinityBestPractices(env *provider.TestEnvironment) 
 	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
+func nameInDeploymentSkipList(name, namespace string, list []configuration.SkipScalingTestDeploymentNamesInfo) bool {
+	for _, l := range list {
+		if name == l.Name && namespace == l.Namespace {
+			return true
+		}
+	}
+	return false
+}
+
+func nameInStatefulSetSkipList(name, namespace string, list []configuration.SkipScalingTestStatefulSetNamesInfo) bool {
+	for _, l := range list {
+		if name == l.Name && namespace == l.Namespace {
+			return true
+		}
+	}
+	return false
+}
+
 //nolint:dupl
 func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration) {
 	ginkgo.By("Testing deployment scaling")
 	defer env.SetNeedsRefresh()
 	failedDeployments := []string{}
 	for i := range env.Deployments {
+		// Skip deployment if it is allowed by config
+		if nameInDeploymentSkipList(env.Deployments[i].Name, env.Deployments[i].Namespace, env.Config.SkipScalingTestDeploymentNames) {
+			logrus.Debugf("%s is being skipped due to configuration setting", env.Deployments[i].String())
+			continue
+		}
+
 		// TestDeploymentScaling test scaling of deployment
 		// This is the entry point for deployment scaling tests
 		ns, name := env.Deployments[i].Namespace, env.Deployments[i].Name
@@ -310,6 +335,12 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 	defer env.SetNeedsRefresh()
 	failedStatefulSets := []string{}
 	for i := range env.StatefulSets {
+		// Skip statefulset if it is allowed by config
+		if nameInStatefulSetSkipList(env.StatefulSets[i].Name, env.StatefulSets[i].Namespace, env.Config.SkipScalingTestStatefulSetNames) {
+			logrus.Debugf("%s is being skipped due to configuration setting", env.StatefulSets[i].String())
+			continue
+		}
+
 		// TeststatefulsetScaling test scaling of statefulset
 		// This is the entry point for statefulset scaling tests
 		ns, name := env.StatefulSets[i].Namespace, env.StatefulSets[i].Name

@@ -20,5 +20,9 @@ checkDiscoveredContainerCertificationStatus: false
 acceptedKernelTaints:
   - module: vboxsf
   - module: vboxguest
+skipScalingTestDeploymentNames:
+  - name: deployment1
+skipScalingTestStatefulsetNames:
+  - name: statefulset1
 skipHelmChartList:
   - name: coredns
