@@ -235,13 +235,17 @@ func CheckPod(pod *provider.Pod) []string {
 	}
 	containerSCC.AllVolumeAllowed = AllVolumeAllowed(pod.Spec.Volumes)
 	if pod.Spec.SecurityContext != nil && pod.Spec.SecurityContext.RunAsUser != nil {
+		logrus.Info("Spec.SecurityContext.RunAsUser is true")
 		containerSCC.RunAsUser = true
 	} else {
+		logrus.Info("Spec.SecurityContext.RunAsUser is false")
 		containerSCC.RunAsUser = false
 	}
 	if pod.Spec.SecurityContext != nil && pod.Spec.SecurityContext.FSGroup != nil {
+		logrus.Info("FsGroupis true")
 		containerSCC.FsGroup = true
 	} else {
+		logrus.Info("FsGroupis false")
 		containerSCC.FsGroup = false
 	}
 	return CheckCategory(pod.Spec.Containers, containerSCC)
