@@ -42,7 +42,7 @@ var (
 		false,
 		true,
 		false,
-		false,
+		true,
 		true,
 		true,
 		"category1,2",
@@ -115,6 +115,7 @@ func GetContainerSCC(cut *v1.Container, containerSCC ContainerSCC) ContainerSCC 
 		containerSCC.PrivilegedContainer = *(cut.SecurityContext.Privileged)
 	}
 	if cut.SecurityContext != nil && cut.SecurityContext.RunAsUser != nil {
+		logrus.Info("RunAsUser is ", cut.SecurityContext.RunAsUser)
 		containerSCC.RunAsUser = true
 	}
 	containerSCC.ReadOnlyRootFilesystem = false
