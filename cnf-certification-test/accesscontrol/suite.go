@@ -624,8 +624,7 @@ func Test1337UIDs(env *provider.TestEnvironment) {
 func testContainerSCC(env *provider.TestEnvironment) {
 	var badContainer []string
 	for _, pod := range env.Pods {
-		containersBad := securitycontextcontainer.CheckPod(pod)
-		badContainer = append(badContainer, containersBad...)
+		badContainer = append(badContainer, securitycontextcontainer.CheckPod(pod)...)
 	}
 	testhelper.AddTestResultLog("Non-compliant", badContainer, tnf.ClaimFilePrintf, ginkgo.Fail)
 }

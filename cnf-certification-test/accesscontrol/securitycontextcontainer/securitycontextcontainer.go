@@ -6,6 +6,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	v1 "k8s.io/api/core/v1"
 )
 
@@ -112,7 +113,6 @@ func GetContainerSCC(cut *v1.Container, containerSCC ContainerSCC) ContainerSCC 
 		logrus.Info("PrivilegedContainer is ", *(cut.SecurityContext.Privileged))
 		containerSCC.PrivilegedContainer = *(cut.SecurityContext.Privileged)
 	}
-
 	if cut.SecurityContext != nil && cut.SecurityContext.RunAsUser != nil {
 		logrus.Info("RunAsUser is true")
 		containerSCC.RunAsUser = true
@@ -130,6 +130,7 @@ func GetContainerSCC(cut *v1.Container, containerSCC ContainerSCC) ContainerSCC 
 
 		containerSCC.SeLinuxContext = true
 	} else {
+		logrus.Info("SELinuxOptions is ", cut.SecurityContext.SELinuxOptions)
 		logrus.Info("SELinuxOptions is false")
 
 		containerSCC.SeLinuxContext = false
@@ -167,14 +168,6 @@ func updateCapabilities(cut *v1.Container, containerSCC ContainerSCC) ContainerS
 	}
 	return containerSCC
 }
-func contains(elems []string, v string) bool {
-	for _, s := range elems {
-		if v == s {
-			return true
-		}
-	}
-	return false
-}
 
 func AllVolumeAllowed(volumes []v1.Volume) bool {
 	countVolume := 0
@@ -201,7 +194,7 @@ func AllVolumeAllowed(volumes []v1.Volume) bool {
 	return countVolume == len(volumes)
 }
 
-func Checkcategory(containers []v1.Container, containerSCC ContainerSCC) []string {
+func CheckCategory(containers []v1.Container, containerSCC ContainerSCC) []string {
 	var badCcontainer []string
 	for j := 0; j < len(containers); j++ {
 		cut := &(containers[j])
@@ -224,9 +217,7 @@ func Checkcategory(containers []v1.Container, containerSCC ContainerSCC) []strin
 }
 func checkContainCateegory(addCapability []v1.Capability, categoryAddCapabilities []string) bool {
 	for _, ncc := range addCapability {
-		if !contains(categoryAddCapabilities, string(ncc)) {
-			return false
-		}
+		return stringhelper.StringInSlice(categoryAddCapabilities, string(ncc), true)
 	}
 	return len(addCapability) > 0
 }
@@ -247,5 +238,5 @@ func CheckPod(pod *provider.Pod) []string {
 	} else {
 		containerSCC.FsGroup = false
 	}
-	return Checkcategory(pod.Spec.Containers, containerSCC)
+	return CheckCategory(pod.Spec.Containers, containerSCC)
 }
