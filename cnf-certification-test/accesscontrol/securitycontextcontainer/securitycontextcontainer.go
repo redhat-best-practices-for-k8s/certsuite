@@ -105,24 +105,33 @@ func GetContainerSCC(cut *v1.Container, containerSCC ContainerSCC) ContainerSCC 
 	}
 	containerSCC = updateCapabilities(cut, containerSCC)
 	if cut.SecurityContext != nil && cut.SecurityContext.AllowPrivilegeEscalation != nil {
+		logrus.Info("PrivilegeEscalation is true")
 		containerSCC.PrivilegeEscalation = true
 	}
 	if cut.SecurityContext != nil && cut.SecurityContext.Privileged != nil {
+		logrus.Info("PrivilegedContainer is ", *(cut.SecurityContext.Privileged))
 		containerSCC.PrivilegedContainer = *(cut.SecurityContext.Privileged)
 	}
 
 	if cut.SecurityContext != nil && cut.SecurityContext.RunAsUser != nil {
+		logrus.Info("RunAsUser is true")
 		containerSCC.RunAsUser = true
 	}
 	if cut.SecurityContext != nil && cut.SecurityContext.ReadOnlyRootFilesystem != nil {
+		logrus.Info("ReadOnlyRootFilesystem is ", *(cut.SecurityContext.ReadOnlyRootFilesystem))
 		containerSCC.ReadOnlyRootFilesystem = *cut.SecurityContext.ReadOnlyRootFilesystem
 	}
 	if cut.SecurityContext != nil && cut.SecurityContext.RunAsNonRoot != nil {
+		logrus.Info("RunAsNonRoot is ", *(cut.SecurityContext.RunAsNonRoot))
 		containerSCC.RunAsNonRoot = *cut.SecurityContext.RunAsNonRoot
 	}
 	if cut.SecurityContext != nil && cut.SecurityContext.SELinuxOptions != nil {
+		logrus.Info("SELinuxOptions is true")
+
 		containerSCC.SeLinuxContext = true
 	} else {
+		logrus.Info("SELinuxOptions is false")
+
 		containerSCC.SeLinuxContext = false
 	}
 	return containerSCC
@@ -139,6 +148,7 @@ func updateCapabilities(cut *v1.Container, containerSCC ContainerSCC) ContainerS
 		sort.Strings(requiredDropCapabilities)
 		containerSCC.HaveDropCapabilities = reflect.DeepEqual(sliceDropCapabilities, requiredDropCapabilities)
 		if checkContainCateegory(cut.SecurityContext.Capabilities.Add, category3AddCapabilities) {
+			logrus.Info("category is category3")
 			containerSCC.Capabilities = "category3"
 		} else {
 			if checkContainCateegory(cut.SecurityContext.Capabilities.Add, category4AddCapabilities) {
@@ -147,6 +157,7 @@ func updateCapabilities(cut *v1.Container, containerSCC ContainerSCC) ContainerS
 				if len(cut.SecurityContext.Capabilities.Add) > 0 {
 					containerSCC.Capabilities = "category5"
 				} else {
+					logrus.Info("category is category")
 					containerSCC.Capabilities = ""
 				}
 			}
