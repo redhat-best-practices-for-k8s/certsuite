@@ -210,6 +210,7 @@ const (
 	CategoryID1NoUID0
 	CategoryID2
 	CategoryID3
+	CategoryID4
 )
 
 type PodListcategory struct {
@@ -266,7 +267,7 @@ func CheckCategory(containers []corev1.Container, containerSCC ContainerSCC, pod
 				Containername: cut.Name,
 				Podname:       podName,
 				NameSpace:     nameSpace,
-				Category:      4,
+				Category:      CategoryID4,
 			}
 
 			logrus.Info("no one from the categories")
