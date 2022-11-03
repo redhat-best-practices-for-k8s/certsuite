@@ -80,7 +80,7 @@ type TestEnvironment struct { // rename this with testTarget
 
 	// Note: Containers is a filtered list of objects based on a block list of disallowed container names.
 	Containers             []*Container `json:"testContainers"`
-	Operators              []Operator   `json:"testOperators"`
+	Operators              []*Operator  `json:"testOperators"`
 	PersistentVolumes      []corev1.PersistentVolume
 	PersistentVolumeClaims []corev1.PersistentVolumeClaim
 
@@ -108,18 +108,6 @@ type CsvInstallPlan struct {
 	BundleImage string `yaml:"bundleImage" json:"bundleImage"`
 	// IndexImage is the URL referencing the index image
 	IndexImage string `yaml:"indexImage" json:"indexImage"`
-}
-
-type Operator struct {
-	Name             string                            `yaml:"name" json:"name"`
-	Namespace        string                            `yaml:"namespace" json:"namespace"`
-	Csv              *olmv1Alpha.ClusterServiceVersion `yaml:"csv" json:"csv"`
-	SubscriptionName string                            `yaml:"subscriptionName" json:"subscriptionName"`
-	InstallPlans     []CsvInstallPlan                  `yaml:"installPlans,omitempty" json:"installPlans,omitempty"`
-	Package          string                            `yaml:"package" json:"package"`
-	Org              string                            `yaml:"org" json:"org"`
-	Version          string                            `yaml:"version" json:"version"`
-	Channel          string                            `yaml:"channel" json:"channel"`
 }
 
 type MachineConfig struct {
@@ -380,17 +368,6 @@ func GetRuntimeUID(cs *corev1.ContainerStatus) (runtime, uid string) {
 	return runtime, uid
 }
 
-func CsvToString(csv *olmv1Alpha.ClusterServiceVersion) string {
-	return fmt.Sprintf("operator csv: %s ns: %s",
-		csv.Name,
-		csv.Namespace,
-	)
-}
-
-func (op *Operator) String() string {
-	return fmt.Sprintf("csv: %s ns:%s subscription:%s", op.Name, op.Namespace, op.SubscriptionName)
-}
-
 // GetPodIPsPerNet gets the IPs of a pod.
 // CNI annotation "k8s.v1.cni.cncf.io/networks-status".
 // Returns (ips, error).
@@ -524,54 +501,6 @@ func getCatalogSourceImageIndexFromInstallPlan(installPlan *olmv1Alpha.InstallPl
 	}
 
 	return catalogSource.Spec.Image, nil
-}
-
-//nolint:funlen
-func createOperators(csvs []olmv1Alpha.ClusterServiceVersion, subscriptions []olmv1Alpha.Subscription) ([]Operator, error) {
-	installPlans := map[string][]olmv1Alpha.InstallPlan{} // Helper: maps a namespace name to all its installplans.
-	operators := []Operator{}
-	for i := range csvs {
-		csv := &csvs[i]
-		op := Operator{Name: csv.Name, Namespace: csv.Namespace, Csv: csv}
-
-		packageAndVersion := strings.SplitN(csv.Name, ".", 2) //nolint:gomnd // ok
-		op.Version = packageAndVersion[1]
-
-		for s := range subscriptions {
-			subscription := &subscriptions[s]
-			if subscription.Status.InstalledCSV != csv.Name || subscription.Namespace != csv.Namespace {
-				continue
-			}
-
-			op.SubscriptionName = subscription.Name
-			op.Package = subscription.Spec.Package
-			op.Org = subscription.Spec.CatalogSource
-			op.Channel = subscription.Spec.Channel
-			break
-		}
-
-		csvInstallPlans, err := getCsvInstallPlans(csv.Namespace, csv.Name, installPlans)
-		if err != nil {
-			return nil, fmt.Errorf("failed to get installPlans for csv %s (ns %s), err: %s", csv.Name, csv.Namespace, err)
-		}
-
-		for _, installPlan := range csvInstallPlans {
-			indexImage, err := getCatalogSourceImageIndexFromInstallPlan(installPlan)
-			if err != nil {
-				return nil, fmt.Errorf("failed to get installPlan image index for csv %s (ns %s) installPlan %s, err: %s",
-					csv.Name, csv.Namespace, installPlan.Name, err)
-			}
-
-			op.InstallPlans = append(op.InstallPlans, CsvInstallPlan{
-				Name:        installPlan.Name,
-				BundleImage: installPlan.Status.BundleLookups[0].Path,
-				IndexImage:  indexImage,
-			})
-		}
-		operators = append(operators, op)
-	}
-
-	return operators, nil
 }
 
 func getMachineConfig(mcName string, machineConfigs map[string]MachineConfig) (MachineConfig, error) {
