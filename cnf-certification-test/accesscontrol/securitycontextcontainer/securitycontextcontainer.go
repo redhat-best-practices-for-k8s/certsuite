@@ -228,6 +228,7 @@ const (
 	CategoryID4String       = "OtherTypes"
 )
 
+// print the strings
 func (category CategoryID) String() string {
 	switch category {
 	case CategoryID1:
