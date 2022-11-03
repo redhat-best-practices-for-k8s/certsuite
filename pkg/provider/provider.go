@@ -304,16 +304,6 @@ func IsOCPCluster() bool {
 	return !env.variables.NonOcpCluster
 }
 
-func IsinstalledCsv(csv *olmv1Alpha.ClusterServiceVersion, subscriptions []olmv1Alpha.Subscription) (bool, olmv1Alpha.Subscription) {
-	var returnsub olmv1Alpha.Subscription
-	for i := range subscriptions {
-		if subscriptions[i].Status.InstalledCSV == csv.Name {
-			returnsub = subscriptions[i]
-			return true, returnsub
-		}
-	}
-	return false, returnsub
-}
 func WaitDebugPodsReady() error {
 	oc := clientsholder.GetClientsHolder()
 	nodes, err := oc.K8sClient.CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
