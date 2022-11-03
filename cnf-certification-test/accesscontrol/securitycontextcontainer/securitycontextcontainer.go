@@ -36,6 +36,7 @@ type ContainerSCC struct {
 
 var (
 	requiredDropCapabilities = []string{"MKNOD", "SETUID", "SETGID", "KILL"}
+	dropAll                  = []string{"ALL"}
 	category2AddCapabilities = []string{"NET_ADMIN, NET_RAW"}
 	category3AddCapabilities = []string{"NET_ADMIN, NET_RAW, IPC_LOCK"}
 	Category1                = ContainerSCC{false,
@@ -151,7 +152,7 @@ func updateCapabilities(cut *v1.Container, containerSCC ContainerSCC) ContainerS
 		logrus.Info("sliceDropCapabilities", sliceDropCapabilities)
 
 		sort.Strings(requiredDropCapabilities)
-		if reflect.DeepEqual(sliceDropCapabilities, requiredDropCapabilities) {
+		if reflect.DeepEqual(sliceDropCapabilities, requiredDropCapabilities) || reflect.DeepEqual(sliceDropCapabilities, dropAll) {
 			containerSCC.HaveDropCapabilities = haveRequiredDrop
 		}
 
