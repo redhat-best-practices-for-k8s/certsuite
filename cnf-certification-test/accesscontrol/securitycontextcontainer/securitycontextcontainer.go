@@ -117,8 +117,8 @@ func GetContainerSCC(cut *v1.Container, containerSCC ContainerSCC) ContainerSCC 
 		logrus.Info("RunAsUser is true")
 		containerSCC.RunAsUser = true
 	}
+	logrus.Info("ReadOnlyRootFilesystem is ", *(cut.SecurityContext.ReadOnlyRootFilesystem))
 	if cut.SecurityContext != nil && cut.SecurityContext.ReadOnlyRootFilesystem != nil {
-		logrus.Info("ReadOnlyRootFilesystem is ", *(cut.SecurityContext.ReadOnlyRootFilesystem))
 		containerSCC.ReadOnlyRootFilesystem = *cut.SecurityContext.ReadOnlyRootFilesystem
 	}
 	if cut.SecurityContext != nil && cut.SecurityContext.RunAsNonRoot != nil {
@@ -126,12 +126,8 @@ func GetContainerSCC(cut *v1.Container, containerSCC ContainerSCC) ContainerSCC 
 		containerSCC.RunAsNonRoot = *cut.SecurityContext.RunAsNonRoot
 	}
 	if cut.SecurityContext != nil && cut.SecurityContext.SELinuxOptions != nil {
-		logrus.Info("SELinuxOptions is true")
+		logrus.Info("SELinuxOptions is true", cut.SecurityContext.SELinuxOptions)
 		containerSCC.SeLinuxContext = true
-	} else {
-		logrus.Info("SELinuxOptions is ", cut.SecurityContext.SELinuxOptions)
-		logrus.Info("SELinuxOptions is false")
-		containerSCC.SeLinuxContext = false
 	}
 	return containerSCC
 }
@@ -226,10 +222,10 @@ func CheckPod(pod *provider.Pod) []string {
 	containerSCC.HostNetwork = pod.Spec.HostNetwork
 	containerSCC.HostPID = pod.Spec.HostPID
 	if pod.Spec.SecurityContext != nil && pod.Spec.SecurityContext.SELinuxOptions != nil {
+		logrus.Info("SELinuxOptions is ", pod.Spec.SecurityContext.SELinuxOptions)
 		logrus.Info("SELinuxOptions is true")
 		containerSCC.SeLinuxContext = true
 	} else {
-		logrus.Info("SELinuxOptions is ", pod.Spec.SecurityContext.SELinuxOptions)
 		logrus.Info("SELinuxOptions is false")
 		containerSCC.SeLinuxContext = false
 	}
