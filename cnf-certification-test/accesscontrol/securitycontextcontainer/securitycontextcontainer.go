@@ -127,12 +127,10 @@ func GetContainerSCC(cut *v1.Container, containerSCC ContainerSCC) ContainerSCC 
 	}
 	if cut.SecurityContext != nil && cut.SecurityContext.SELinuxOptions != nil {
 		logrus.Info("SELinuxOptions is true")
-
 		containerSCC.SeLinuxContext = true
 	} else {
 		logrus.Info("SELinuxOptions is ", cut.SecurityContext.SELinuxOptions)
 		logrus.Info("SELinuxOptions is false")
-
 		containerSCC.SeLinuxContext = false
 	}
 	return containerSCC
@@ -227,6 +225,14 @@ func CheckPod(pod *provider.Pod) []string {
 	containerSCC.HostIPC = pod.Spec.HostIPC
 	containerSCC.HostNetwork = pod.Spec.HostNetwork
 	containerSCC.HostPID = pod.Spec.HostPID
+	if pod.Spec.SecurityContext != nil && pod.Spec.SecurityContext.SELinuxOptions != nil {
+		logrus.Info("SELinuxOptions is true")
+		containerSCC.SeLinuxContext = true
+	} else {
+		logrus.Info("SELinuxOptions is ", pod.Spec.SecurityContext.SELinuxOptions)
+		logrus.Info("SELinuxOptions is false")
+		containerSCC.SeLinuxContext = false
+	}
 	containerSCC.AllVolumeAllowed = AllVolumeAllowed(pod.Spec.Volumes)
 	if pod.Spec.SecurityContext != nil && pod.Spec.SecurityContext.RunAsUser != nil {
 		containerSCC.RunAsUser = true
