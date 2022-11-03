@@ -1,0 +1,79 @@
+---
+site_name: CNF Certification Test
+repo_name: GitHub
+repo_url: https://github.com/test-network-function/cnf-certification-test/
+theme:
+  name: material
+  features:
+    - navigation.indexes
+    # - navigation.instant
+    # - navigation.prune
+    - navigation.sections
+    - navigation.tabs
+    # - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    - content.tooltips
+    - content.code.annotate
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - abbr
+  - attr_list
+  - pymdownx.snippets
+  - admonition
+  - smarty
+  - extra
+  - codehilite
+  - admonition
+  - tables
+  - pymdownx.details
+  - pymdownx.superfences
+  - markdown_include.include:
+      base_path: docs
+  - pymdownx.magiclink
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.mark
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.snippets:
+      auto_append:
+        - includes/abbreviations.md
+
+plugins:
+  - search
+
+nav:
+  - "index.md"
+  - Setup:
+      - Test Configuration: "configuration.md"
+      - Runtime environment variables: "runtime-env.md"
+  - Build | Execute:
+      - Prebuilt container: "test-container.md"
+      - Standalone test executable: "test-standalone.md"
+  - Available Test Specs: "test-spec.md"
+  - Test Output: "test-output.md"
+  - Exception Process: "exception.md"
+  - Developers' Guide:
+      - Developers: "developers.md"
+      - CNF Developers: "cnf-developers.md"
+  - Reference:
+      - reference.md
