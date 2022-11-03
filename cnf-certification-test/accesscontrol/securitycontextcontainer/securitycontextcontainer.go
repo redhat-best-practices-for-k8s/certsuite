@@ -45,7 +45,7 @@ var (
 		false,
 		true,
 		true,
-		"",
+		"category1,2",
 		true,
 		true}
 
@@ -61,7 +61,7 @@ var (
 		true,
 		true,
 		true,
-		"",
+		"category1,2",
 		true,
 		true}
 
@@ -139,6 +139,7 @@ func updateCapabilities(cut *v1.Container, containerSCC ContainerSCC) ContainerS
 		for _, ncc := range cut.SecurityContext.Capabilities.Drop {
 			sliceDropCapabilities = append(sliceDropCapabilities, string(ncc))
 		}
+		logrus.Info("cut.SecurityContext.Capabilities.Drop", cut.SecurityContext.Capabilities.Drop)
 		sort.Strings(sliceDropCapabilities)
 		sort.Strings(requiredDropCapabilities)
 		containerSCC.HaveDropCapabilities = reflect.DeepEqual(sliceDropCapabilities, requiredDropCapabilities)
@@ -152,13 +153,13 @@ func updateCapabilities(cut *v1.Container, containerSCC ContainerSCC) ContainerS
 				if len(cut.SecurityContext.Capabilities.Add) > 0 {
 					containerSCC.Capabilities = "category5"
 				} else {
-					logrus.Info("category is category")
-					containerSCC.Capabilities = ""
+					logrus.Info("category is category1,2")
+					containerSCC.Capabilities = "category1,2"
 				}
 			}
 		}
 	} else {
-		containerSCC.Capabilities = ""
+		containerSCC.Capabilities = "category1,2"
 	}
 	return containerSCC
 }
