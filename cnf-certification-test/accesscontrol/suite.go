@@ -622,7 +622,7 @@ func Test1337UIDs(env *provider.TestEnvironment) {
 // a test for security context that are allowed from the documentation of the cnf
 // an allowed one will pass the test
 func testContainerSCC(env *provider.TestEnvironment) {
-	var badContainer []string
+	var badContainer [][]string
 	for _, pod := range env.Pods {
 		badContainer = append(badContainer, securitycontextcontainer.CheckPod(pod)...)
 	}

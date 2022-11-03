@@ -209,7 +209,7 @@ func CheckCategory(containers []v1.Container, containerSCC ContainerSCC) []strin
 			badCcontainer = append(badCcontainer, cut.Name)
 			logrus.Info("its Category4")
 		default:
-			logrus.Info("no one from the categoties")
+			logrus.Info("no one from the categories")
 			badCcontainer = append(badCcontainer, cut.Name)
 		}
 	}
@@ -222,7 +222,7 @@ func checkContainCateegory(addCapability []v1.Capability, categoryAddCapabilitie
 	return len(addCapability) > 0
 }
 
-func CheckPod(pod *provider.Pod) []string {
+func CheckPod(pod *provider.Pod) [][]string {
 	var containerSCC ContainerSCC
 	containerSCC.HostIPC = pod.Spec.HostIPC
 	containerSCC.HostNetwork = pod.Spec.HostNetwork
@@ -250,5 +250,6 @@ func CheckPod(pod *provider.Pod) []string {
 		logrus.Info("FsGroupis false")
 		containerSCC.FsGroup = false
 	}
-	return CheckCategory(pod.Spec.Containers, containerSCC)
+	array := [][]string{CheckCategory(pod.Spec.Containers, containerSCC), {pod.Namespace}}
+	return array
 }
