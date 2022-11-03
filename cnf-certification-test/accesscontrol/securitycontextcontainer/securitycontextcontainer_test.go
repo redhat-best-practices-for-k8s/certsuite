@@ -32,7 +32,7 @@ func TestCheckPod(t *testing.T) {
 				Containername: "test",
 				Podname:       "test",
 				NameSpace:     "tnf",
-				Category:      CategoryID3,
+				Category:      CategoryID4,
 			}},
 			// its a failed one
 		},
