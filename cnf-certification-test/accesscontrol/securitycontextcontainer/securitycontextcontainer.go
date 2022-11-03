@@ -202,11 +202,21 @@ func AllVolumeAllowed(volumes []corev1.Volume) bool {
 	return countVolume == len(volumes)
 }
 
+type CategoryID int
+
+const (
+	Undefined CategoryID = iota
+	CategoryID1
+	CategoryID1NoUID0
+	CategoryID2
+	CategoryID3
+)
+
 type PodListcategory struct {
 	Containername string
 	Podname       string
 	NameSpace     string
-	Category      string
+	Category      CategoryID
 }
 
 //nolint:funlen
@@ -224,7 +234,7 @@ func CheckCategory(containers []corev1.Container, containerSCC ContainerSCC, pod
 				Containername: cut.Name,
 				Podname:       podName,
 				NameSpace:     nameSpace,
-				Category:      "Category1",
+				Category:      CategoryID1,
 			}
 			logrus.Info("Category1")
 		case Category1NoUID0:
@@ -232,7 +242,7 @@ func CheckCategory(containers []corev1.Container, containerSCC ContainerSCC, pod
 				Containername: cut.Name,
 				Podname:       podName,
 				NameSpace:     nameSpace,
-				Category:      "Category1-no-uid0",
+				Category:      CategoryID1NoUID0,
 			}
 			logrus.Info("its Category1-no-uid0")
 		case Category2:
@@ -240,7 +250,7 @@ func CheckCategory(containers []corev1.Container, containerSCC ContainerSCC, pod
 				Containername: cut.Name,
 				Podname:       podName,
 				NameSpace:     nameSpace,
-				Category:      "Category2",
+				Category:      CategoryID2,
 			}
 			logrus.Info("its Category2")
 		case Category3:
@@ -248,7 +258,7 @@ func CheckCategory(containers []corev1.Container, containerSCC ContainerSCC, pod
 				Containername: cut.Name,
 				Podname:       podName,
 				NameSpace:     nameSpace,
-				Category:      "Category3",
+				Category:      CategoryID3,
 			}
 			logrus.Info("its Category3")
 		default:
@@ -256,7 +266,7 @@ func CheckCategory(containers []corev1.Container, containerSCC ContainerSCC, pod
 				Containername: cut.Name,
 				Podname:       podName,
 				NameSpace:     nameSpace,
-				Category:      "OtherType",
+				Category:      4,
 			}
 
 			logrus.Info("no one from the categories")

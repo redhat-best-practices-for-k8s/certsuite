@@ -621,24 +621,23 @@ func Test1337UIDs(env *provider.TestEnvironment) {
 
 // a test for security context that are allowed from the documentation of the cnf
 // an allowed one will pass the test
-const Category3 = "Category3"
 
 func testContainerSCC(env *provider.TestEnvironment) {
 	var badContainer []securitycontextcontainer.PodListcategory
 	var goodContainer []securitycontextcontainer.PodListcategory
 	var listCategoryContainer []securitycontextcontainer.PodListcategory
-	highLevelCat := "Category2"
+	highLevelCat := securitycontextcontainer.CategoryID1
 	for _, pod := range env.Pods {
 		listCategory := securitycontextcontainer.CheckPod(pod)
 		listCategoryContainer = append(listCategoryContainer, listCategory...)
 		for _, cat := range listCategory {
-			if cat.Category != "Category1" && cat.Category != "Category1-no-uid0" {
+			if cat.Category > securitycontextcontainer.CategoryID1NoUID0 {
 				badContainer = append(badContainer, cat)
 			} else {
 				goodContainer = append(goodContainer, cat)
 			}
-			if cat.Category == Category3 {
-				highLevelCat = Category3
+			if cat.Category > highLevelCat {
+				highLevelCat = cat.Category
 			}
 		}
 		tnf.ClaimFilePrintf("list of category", listCategory)
