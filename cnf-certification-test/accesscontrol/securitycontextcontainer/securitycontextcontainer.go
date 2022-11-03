@@ -12,8 +12,8 @@ import (
 )
 
 const (
-	category1 = "category1"
-	other     = "other"
+	category1        = "category1"
+	haveRequiredDrop = "haveRequiredDrop"
 )
 
 type ContainerSCC struct {
@@ -35,11 +35,10 @@ type ContainerSCC struct {
 }
 
 var (
-	requiredDropCapabilities        = []string{"KILL", "MKNOD", "SETUID", "SETGID"}
-	requiredDropCapabilitiesForCat1 = []string{"KILL", "MKNOD", "SETUID", "SETGID", "NET_RAW"}
-	category2AddCapabilities        = []string{"NET_ADMIN, NET_RAW"}
-	category3AddCapabilities        = []string{"NET_ADMIN, NET_RAW, IPC_LOCK"}
-	Category1                       = ContainerSCC{false,
+	requiredDropCapabilities = []string{"MKNOD", "SETUID", "SETGID", "KILL"}
+	category2AddCapabilities = []string{"NET_ADMIN, NET_RAW"}
+	category3AddCapabilities = []string{"NET_ADMIN, NET_RAW, IPC_LOCK"}
+	Category1                = ContainerSCC{false,
 		false,
 		false,
 		false,
@@ -52,7 +51,7 @@ var (
 		true,
 		true,
 		category1,
-		category1,
+		haveRequiredDrop,
 		true}
 
 	Category2 = ContainerSCC{false,
@@ -68,7 +67,7 @@ var (
 		true,
 		true,
 		category1,
-		other,
+		haveRequiredDrop,
 		true}
 
 	Category3 = ContainerSCC{false,
@@ -84,7 +83,7 @@ var (
 		true,
 		true,
 		"category2",
-		other,
+		haveRequiredDrop,
 		true}
 
 	Category4 = ContainerSCC{false,
@@ -100,7 +99,7 @@ var (
 		true,
 		true,
 		"category3",
-		other,
+		haveRequiredDrop,
 		true}
 )
 
@@ -141,7 +140,7 @@ func GetContainerSCC(cut *v1.Container, containerSCC ContainerSCC) ContainerSCC 
 }
 
 func updateCapabilities(cut *v1.Container, containerSCC ContainerSCC) ContainerSCC {
-	containerSCC.HaveDropCapabilities = other
+	containerSCC.HaveDropCapabilities = "notHaveRequiredDrop"
 	if cut.SecurityContext != nil && cut.SecurityContext.Capabilities != nil {
 		var sliceDropCapabilities []string
 		for _, ncc := range cut.SecurityContext.Capabilities.Drop {
@@ -149,13 +148,13 @@ func updateCapabilities(cut *v1.Container, containerSCC ContainerSCC) ContainerS
 		}
 		logrus.Info("cut.SecurityContext.Capabilities.Drop", cut.SecurityContext.Capabilities.Drop)
 		sort.Strings(sliceDropCapabilities)
+		logrus.Info("sliceDropCapabilities", sliceDropCapabilities)
+
 		sort.Strings(requiredDropCapabilities)
 		if reflect.DeepEqual(sliceDropCapabilities, requiredDropCapabilities) {
-			containerSCC.HaveDropCapabilities = other
+			containerSCC.HaveDropCapabilities = haveRequiredDrop
 		}
-		if reflect.DeepEqual(sliceDropCapabilities, requiredDropCapabilitiesForCat1) {
-			containerSCC.HaveDropCapabilities = category1
-		}
+
 		if checkContainCateegory(cut.SecurityContext.Capabilities.Add, category2AddCapabilities) {
 			logrus.Info("category is category2")
 			containerSCC.Capabilities = "category2"
