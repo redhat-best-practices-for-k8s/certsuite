@@ -8,7 +8,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 )
 
 const (
@@ -30,7 +30,7 @@ type ContainerSCC struct {
 	FsGroup                bool
 	SeLinuxContext         bool
 	Capabilities           string
-	HaveDropCapabilities   string
+	HaveDropCapabilities   bool
 	AllVolumeAllowed       bool
 }
 
@@ -52,10 +52,10 @@ var (
 		true,
 		true,
 		category1,
-		haveRequiredDrop,
+		true,
 		true}
 
-	Category2 = ContainerSCC{false,
+	Category1NoUID0 = ContainerSCC{false,
 		false,
 		false,
 		false,
@@ -68,7 +68,23 @@ var (
 		true,
 		true,
 		category1,
-		haveRequiredDrop,
+		true,
+		true}
+
+	Category2 = ContainerSCC{false,
+		false,
+		false,
+		false,
+		false,
+		true,
+		false,
+		true,
+		false,
+		true,
+		true,
+		true,
+		"category2",
+		true,
 		true}
 
 	Category3 = ContainerSCC{false,
@@ -83,28 +99,12 @@ var (
 		true,
 		true,
 		true,
-		"category2",
-		haveRequiredDrop,
-		true}
-
-	Category4 = ContainerSCC{false,
-		false,
-		false,
-		false,
-		false,
-		true,
-		false,
-		true,
-		false,
-		true,
-		true,
-		true,
 		"category3",
-		haveRequiredDrop,
+		true,
 		true}
 )
 
-func GetContainerSCC(cut *v1.Container, containerSCC ContainerSCC) ContainerSCC {
+func GetContainerSCC(cut *corev1.Container, containerSCC ContainerSCC) ContainerSCC {
 	containerSCC.HostPorts = false
 	for _, aPort := range cut.Ports {
 		if aPort.HostPort != 0 {
@@ -140,8 +140,8 @@ func GetContainerSCC(cut *v1.Container, containerSCC ContainerSCC) ContainerSCC 
 	return containerSCC
 }
 
-func updateCapabilities(cut *v1.Container, containerSCC ContainerSCC) ContainerSCC {
-	containerSCC.HaveDropCapabilities = "notHaveRequiredDrop"
+func updateCapabilities(cut *corev1.Container, containerSCC ContainerSCC) ContainerSCC {
+	containerSCC.HaveDropCapabilities = false
 	if cut.SecurityContext != nil && cut.SecurityContext.Capabilities != nil {
 		var sliceDropCapabilities []string
 		for _, ncc := range cut.SecurityContext.Capabilities.Drop {
@@ -153,14 +153,14 @@ func updateCapabilities(cut *v1.Container, containerSCC ContainerSCC) ContainerS
 
 		sort.Strings(requiredDropCapabilities)
 		if reflect.DeepEqual(sliceDropCapabilities, requiredDropCapabilities) || reflect.DeepEqual(sliceDropCapabilities, dropAll) {
-			containerSCC.HaveDropCapabilities = haveRequiredDrop
+			containerSCC.HaveDropCapabilities = true
 		}
 
-		if checkContainCateegory(cut.SecurityContext.Capabilities.Add, category2AddCapabilities) {
+		if checkContainCategory(cut.SecurityContext.Capabilities.Add, category2AddCapabilities) {
 			logrus.Info("category is category2")
 			containerSCC.Capabilities = "category2"
 		} else {
-			if checkContainCateegory(cut.SecurityContext.Capabilities.Add, category3AddCapabilities) {
+			if checkContainCategory(cut.SecurityContext.Capabilities.Add, category3AddCapabilities) {
 				containerSCC.Capabilities = "category3"
 			} else {
 				if len(cut.SecurityContext.Capabilities.Add) > 0 {
@@ -177,7 +177,7 @@ func updateCapabilities(cut *v1.Container, containerSCC ContainerSCC) ContainerS
 	return containerSCC
 }
 
-func AllVolumeAllowed(volumes []v1.Volume) bool {
+func AllVolumeAllowed(volumes []corev1.Volume) bool {
 	countVolume := 0
 	for j := 0; j < len(volumes); j++ {
 		if volumes[j].ConfigMap != nil {
@@ -202,40 +202,78 @@ func AllVolumeAllowed(volumes []v1.Volume) bool {
 	return countVolume == len(volumes)
 }
 
-func CheckCategory(containers []v1.Container, containerSCC ContainerSCC) []string {
-	var badCcontainer []string
+type PodListcategory struct {
+	Containername string
+	Podname       string
+	NameSpace     string
+	Category      string
+}
+
+//nolint:funlen
+func CheckCategory(containers []corev1.Container, containerSCC ContainerSCC, podName, nameSpace string) []PodListcategory {
+	var ContainerList []PodListcategory
+	var categoryinfo PodListcategory
 	for j := 0; j < len(containers); j++ {
 		cut := &(containers[j])
 		percontainerSCC := GetContainerSCC(cut, containerSCC)
 		tnf.ClaimFilePrintf("percontainerSCC is ", percontainerSCC)
-
 		// after building the containerSCC need to check to which category it is
 		switch percontainerSCC {
 		case Category1:
-			logrus.Info("is ok")
+			categoryinfo = PodListcategory{
+				Containername: cut.Name,
+				Podname:       podName,
+				NameSpace:     nameSpace,
+				Category:      "Category1",
+			}
+			logrus.Info("Category1")
+		case Category1NoUID0:
+			categoryinfo = PodListcategory{
+				Containername: cut.Name,
+				Podname:       podName,
+				NameSpace:     nameSpace,
+				Category:      "Category1-no-uid0",
+			}
+			logrus.Info("its Category1-no-uid0")
 		case Category2:
-			logrus.Info("its Category 1-no-uid0")
-		case Category3:
-			badCcontainer = append(badCcontainer, cut.Name)
+			categoryinfo = PodListcategory{
+				Containername: cut.Name,
+				Podname:       podName,
+				NameSpace:     nameSpace,
+				Category:      "Category2",
+			}
 			logrus.Info("its Category2")
-		case Category4:
-			badCcontainer = append(badCcontainer, cut.Name)
+		case Category3:
+			categoryinfo = PodListcategory{
+				Containername: cut.Name,
+				Podname:       podName,
+				NameSpace:     nameSpace,
+				Category:      "Category3",
+			}
 			logrus.Info("its Category3")
 		default:
+			categoryinfo = PodListcategory{
+				Containername: cut.Name,
+				Podname:       podName,
+				NameSpace:     nameSpace,
+				Category:      "OtherType",
+			}
+
 			logrus.Info("no one from the categories")
-			badCcontainer = append(badCcontainer, cut.Name)
 		}
+		ContainerList = append(ContainerList, categoryinfo)
 	}
-	return badCcontainer
+	return ContainerList
 }
-func checkContainCateegory(addCapability []v1.Capability, categoryAddCapabilities []string) bool {
+
+func checkContainCategory(addCapability []corev1.Capability, categoryAddCapabilities []string) bool {
 	for _, ncc := range addCapability {
 		return stringhelper.StringInSlice(categoryAddCapabilities, string(ncc), true)
 	}
 	return len(addCapability) > 0
 }
 
-func CheckPod(pod *provider.Pod) []string {
+func CheckPod(pod *provider.Pod) []PodListcategory {
 	var containerSCC ContainerSCC
 	containerSCC.HostIPC = pod.Spec.HostIPC
 	containerSCC.HostNetwork = pod.Spec.HostNetwork
@@ -263,5 +301,5 @@ func CheckPod(pod *provider.Pod) []string {
 		logrus.Info("FsGroupis false")
 		containerSCC.FsGroup = false
 	}
-	return CheckCategory(pod.Spec.Containers, containerSCC)
+	return CheckCategory(pod.Spec.Containers, containerSCC, pod.Name, pod.Namespace)
 }

@@ -621,24 +621,27 @@ func Test1337UIDs(env *provider.TestEnvironment) {
 
 // a test for security context that are allowed from the documentation of the cnf
 // an allowed one will pass the test
-type podList struct {
-	badContainer []string
-	name         string
-	nameSpace    string
-}
+const Category3 = "Category3"
 
 func testContainerSCC(env *provider.TestEnvironment) {
-	var badContainer []podList
+	var badContainer []securitycontextcontainer.PodListcategory
+	var listCategoryContainer []securitycontextcontainer.PodListcategory
+	highLevelCat := "Category2"
 	for _, pod := range env.Pods {
-		badContainers := securitycontextcontainer.CheckPod(pod)
-		if badContainers != nil {
-			array := podList{
-				badContainer: badContainers,
-				name:         pod.Name,
-				nameSpace:    pod.Namespace,
+		listCategory := securitycontextcontainer.CheckPod(pod)
+		listCategoryContainer = append(listCategoryContainer, listCategory...)
+		for _, cat := range listCategory {
+			if cat.Category != "Category1" && cat.Category != "Category1-no-uid0" {
+				badContainer = append(badContainer, cat)
 			}
-			badContainer = append(badContainer, array)
+			if cat.Category == Category3 {
+				highLevelCat = Category3
+			}
 		}
+		tnf.ClaimFilePrintf("list of category", listCategory)
 	}
+	tnf.ClaimFilePrintf("high level of category", highLevelCat)
+	tnf.ClaimFilePrintf("list of all category", listCategoryContainer)
+	tnf.ClaimFilePrintf("list of badPods", badContainer)
 	testhelper.AddTestResultLog("Non-compliant", badContainer, tnf.ClaimFilePrintf, ginkgo.Fail)
 }

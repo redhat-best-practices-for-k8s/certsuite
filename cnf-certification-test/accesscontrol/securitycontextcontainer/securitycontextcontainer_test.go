@@ -15,15 +15,26 @@ func TestCheckPod(t *testing.T) {
 	allopiv := true
 	testCases := []struct {
 		testSlice     *provider.Pod
-		expectedSlice []string
+		expectedSlice []PodListcategory
 	}{
 		{
-			testSlice:     createPod(runAs, allopiv, "KILL", "MKNOD", "SETUID", "SETGID"),
-			expectedSlice: nil,
+			testSlice: createPod(runAs, allopiv, "KILL", "MKNOD", "SETUID", "SETGID"),
+			expectedSlice: []PodListcategory{{
+				Containername: "test",
+				Podname:       "test",
+				NameSpace:     "tnf",
+				Category:      "Category1",
+			}},
 		},
 		{
-			testSlice:     createPod(runAs, allopiv, "AAA", "MKNOD", "SETUID", "SETGID"),
-			expectedSlice: []string{"test"}, // its a failed one
+			testSlice: createPod(runAs, allopiv, "AAA", "MKNOD", "SETUID", "SETGID"),
+			expectedSlice: []PodListcategory{{
+				Containername: "test",
+				Podname:       "test",
+				NameSpace:     "tnf",
+				Category:      "OtherType",
+			}},
+			// its a failed one
 		},
 	}
 
@@ -35,7 +46,10 @@ func TestCheckPod(t *testing.T) {
 func createPod(runAs int64, allopiv bool, st1, st2, st3, st4 string) *provider.Pod {
 	return &provider.Pod{
 		Pod: &corev1.Pod{
-			ObjectMeta: metav1.ObjectMeta{},
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "test",
+				Namespace: "tnf",
+			},
 			Spec: corev1.PodSpec{
 				HostIPC:     false,
 				HostNetwork: false,
