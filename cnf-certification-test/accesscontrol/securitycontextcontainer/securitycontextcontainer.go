@@ -220,6 +220,32 @@ type PodListcategory struct {
 	Category      CategoryID
 }
 
+const (
+	CategoryID1String       = "CategoryID1"
+	CategoryID1NoUID0String = "CategoryID1NoUID0"
+	CategoryID2String       = "CategoryID2"
+	CategoryID3String       = "CategoryID3"
+	CategoryID4String       = "OtherTypes"
+)
+
+func (category CategoryID) String() string {
+	switch category {
+	case CategoryID1:
+		return CategoryID1String
+	case CategoryID1NoUID0:
+		return CategoryID1NoUID0String
+	case CategoryID2:
+		return CategoryID2String
+	case CategoryID3:
+		return CategoryID3String
+	case CategoryID4:
+		return CategoryID4String
+	case Undefined:
+		return CategoryID4String
+	}
+	return CategoryID4String
+}
+
 //nolint:funlen
 func CheckCategory(containers []corev1.Container, containerSCC ContainerSCC, podName, nameSpace string) []PodListcategory {
 	var ContainerList []PodListcategory

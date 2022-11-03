@@ -640,7 +640,6 @@ func testContainerSCC(env *provider.TestEnvironment) {
 				highLevelCat = cat.Category
 			}
 		}
-		tnf.ClaimFilePrintf("list of category", listCategory)
 	}
 	tnf.ClaimFilePrintf("list of goodContainer", goodContainer)
 	tnf.ClaimFilePrintf("list of badContainers", badContainer)
