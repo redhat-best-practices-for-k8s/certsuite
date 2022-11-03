@@ -636,7 +636,6 @@ func testContainerSCC(env *provider.TestEnvironment) {
 				badContainer = append(badContainer, cat)
 			} else {
 				goodContainer = append(goodContainer, cat)
-
 			}
 			if cat.Category == Category3 {
 				highLevelCat = Category3
@@ -647,5 +646,6 @@ func testContainerSCC(env *provider.TestEnvironment) {
 	tnf.ClaimFilePrintf("list of goodContainer", goodContainer)
 	tnf.ClaimFilePrintf("list of badContainers", badContainer)
 	tnf.ClaimFilePrintf("high level of category", highLevelCat)
+	tnf.ClaimFilePrintf("list of all ", listCategoryContainer)
 	testhelper.AddTestResultLog("Non-compliant", badContainer, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
