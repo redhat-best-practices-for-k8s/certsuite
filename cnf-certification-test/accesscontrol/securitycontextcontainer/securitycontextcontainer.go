@@ -7,6 +7,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
+	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	v1 "k8s.io/api/core/v1"
 )
 
@@ -109,23 +110,23 @@ func GetContainerSCC(cut *v1.Container, containerSCC ContainerSCC) ContainerSCC 
 		logrus.Info("PrivilegeEscalation is true")
 		containerSCC.PrivilegeEscalation = true
 	}
+	containerSCC.PrivilegedContainer = false
 	if cut.SecurityContext != nil && cut.SecurityContext.Privileged != nil {
-		logrus.Info("PrivilegedContainer is ", *(cut.SecurityContext.Privileged))
 		containerSCC.PrivilegedContainer = *(cut.SecurityContext.Privileged)
 	}
 	if cut.SecurityContext != nil && cut.SecurityContext.RunAsUser != nil {
-		logrus.Info("RunAsUser is true")
 		containerSCC.RunAsUser = true
 	}
+	containerSCC.ReadOnlyRootFilesystem = false
 	if cut.SecurityContext != nil && cut.SecurityContext.ReadOnlyRootFilesystem != nil {
 		containerSCC.ReadOnlyRootFilesystem = *cut.SecurityContext.ReadOnlyRootFilesystem
 	}
+	containerSCC.RunAsNonRoot = false
 	if cut.SecurityContext != nil && cut.SecurityContext.RunAsNonRoot != nil {
 		logrus.Info("RunAsNonRoot is ", *(cut.SecurityContext.RunAsNonRoot))
 		containerSCC.RunAsNonRoot = *cut.SecurityContext.RunAsNonRoot
 	}
 	if cut.SecurityContext != nil && cut.SecurityContext.SELinuxOptions != nil {
-		logrus.Info("SELinuxOptions is true", cut.SecurityContext.SELinuxOptions)
 		containerSCC.SeLinuxContext = true
 	}
 	return containerSCC
@@ -192,17 +193,23 @@ func CheckCategory(containers []v1.Container, containerSCC ContainerSCC) []strin
 	for j := 0; j < len(containers); j++ {
 		cut := &(containers[j])
 		percontainerSCC := GetContainerSCC(cut, containerSCC)
+		tnf.ClaimFilePrintf("percontainerSCC is ", percontainerSCC)
+
 		// after building the containerSCC need to check to which category it is
 		switch percontainerSCC {
 		case Category1:
 			logrus.Info("is ok")
 		case Category2:
-			logrus.Info("is ok")
+			badCcontainer = append(badCcontainer, cut.Name)
+			logrus.Info("its Category2")
 		case Category3:
-			logrus.Info("is ok")
+			badCcontainer = append(badCcontainer, cut.Name)
+			logrus.Info("its Category3")
 		case Category4:
-			logrus.Info("is ok")
+			badCcontainer = append(badCcontainer, cut.Name)
+			logrus.Info("its Category4")
 		default:
+			logrus.Info("no one from the categoties")
 			badCcontainer = append(badCcontainer, cut.Name)
 		}
 	}
