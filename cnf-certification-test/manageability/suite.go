@@ -31,6 +31,7 @@ import (
 
 // All actual test code belongs below here.  Utilities belong above.
 var _ = ginkgo.Describe(common.ManageabilityTestKey, func() {
+	logrus.Debugf("Entering %s suite", common.ManageabilityTestKey)
 	var env provider.TestEnvironment
 	ginkgo.BeforeEach(func() {
 		env = provider.GetTestEnvironment()
