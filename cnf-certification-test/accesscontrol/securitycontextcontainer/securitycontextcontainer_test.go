@@ -59,6 +59,7 @@ func createPod(runAs int64, allopiv bool, st1, st2, st3, st4 string) *provider.P
 							SELinuxOptions: &corev1.SELinuxOptions{
 								Level: "s0:c123,c456",
 							},
+							RunAsNonRoot: &allopiv,
 						},
 					},
 				},

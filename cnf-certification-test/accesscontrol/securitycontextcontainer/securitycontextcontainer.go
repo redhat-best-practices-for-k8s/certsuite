@@ -11,6 +11,11 @@ import (
 	v1 "k8s.io/api/core/v1"
 )
 
+const (
+	category1 = "category1"
+	other     = "other"
+)
+
 type ContainerSCC struct {
 	HostDirVolumePlugin    bool
 	HostIPC                bool
@@ -25,15 +30,16 @@ type ContainerSCC struct {
 	FsGroup                bool
 	SeLinuxContext         bool
 	Capabilities           string
-	HaveDropCapabilities   bool
+	HaveDropCapabilities   string
 	AllVolumeAllowed       bool
 }
 
 var (
-	requiredDropCapabilities = []string{"KILL", "MKNOD", "SETUID", "SETGID"}
-	category3AddCapabilities = []string{"NET_ADMIN, NET_RAW"}
-	category4AddCapabilities = []string{"NET_ADMIN, NET_RAW, IPC_LOCK"}
-	Category1                = ContainerSCC{false,
+	requiredDropCapabilities        = []string{"KILL", "MKNOD", "SETUID", "SETGID"}
+	requiredDropCapabilitiesForCat1 = []string{"KILL", "MKNOD", "SETUID", "SETGID", "NET_RAW"}
+	category2AddCapabilities        = []string{"NET_ADMIN, NET_RAW"}
+	category3AddCapabilities        = []string{"NET_ADMIN, NET_RAW, IPC_LOCK"}
+	Category1                       = ContainerSCC{false,
 		false,
 		false,
 		false,
@@ -45,8 +51,8 @@ var (
 		true,
 		true,
 		true,
-		"category1,2",
-		true,
+		category1,
+		category1,
 		true}
 
 	Category2 = ContainerSCC{false,
@@ -58,11 +64,11 @@ var (
 		false,
 		false,
 		false,
+		false,
 		true,
 		true,
-		true,
-		"category1,2",
-		true,
+		category1,
+		other,
 		true}
 
 	Category3 = ContainerSCC{false,
@@ -74,12 +80,13 @@ var (
 		false,
 		true,
 		false,
-		false,
 		true,
 		true,
-		"category3",
 		true,
+		"category2",
+		other,
 		true}
+
 	Category4 = ContainerSCC{false,
 		false,
 		false,
@@ -89,11 +96,11 @@ var (
 		false,
 		true,
 		false,
-		false,
 		true,
 		true,
-		"category4",
 		true,
+		"category3",
+		other,
 		true}
 )
 
@@ -134,7 +141,7 @@ func GetContainerSCC(cut *v1.Container, containerSCC ContainerSCC) ContainerSCC 
 }
 
 func updateCapabilities(cut *v1.Container, containerSCC ContainerSCC) ContainerSCC {
-	containerSCC.HaveDropCapabilities = false
+	containerSCC.HaveDropCapabilities = other
 	if cut.SecurityContext != nil && cut.SecurityContext.Capabilities != nil {
 		var sliceDropCapabilities []string
 		for _, ncc := range cut.SecurityContext.Capabilities.Drop {
@@ -143,24 +150,29 @@ func updateCapabilities(cut *v1.Container, containerSCC ContainerSCC) ContainerS
 		logrus.Info("cut.SecurityContext.Capabilities.Drop", cut.SecurityContext.Capabilities.Drop)
 		sort.Strings(sliceDropCapabilities)
 		sort.Strings(requiredDropCapabilities)
-		containerSCC.HaveDropCapabilities = reflect.DeepEqual(sliceDropCapabilities, requiredDropCapabilities)
-		if checkContainCateegory(cut.SecurityContext.Capabilities.Add, category3AddCapabilities) {
-			logrus.Info("category is category3")
-			containerSCC.Capabilities = "category3"
+		if reflect.DeepEqual(sliceDropCapabilities, requiredDropCapabilities) {
+			containerSCC.HaveDropCapabilities = other
+		}
+		if reflect.DeepEqual(sliceDropCapabilities, requiredDropCapabilitiesForCat1) {
+			containerSCC.HaveDropCapabilities = category1
+		}
+		if checkContainCateegory(cut.SecurityContext.Capabilities.Add, category2AddCapabilities) {
+			logrus.Info("category is category2")
+			containerSCC.Capabilities = "category2"
 		} else {
-			if checkContainCateegory(cut.SecurityContext.Capabilities.Add, category4AddCapabilities) {
-				containerSCC.Capabilities = "category4"
+			if checkContainCateegory(cut.SecurityContext.Capabilities.Add, category3AddCapabilities) {
+				containerSCC.Capabilities = "category3"
 			} else {
 				if len(cut.SecurityContext.Capabilities.Add) > 0 {
 					containerSCC.Capabilities = "category5"
 				} else {
-					logrus.Info("category is category1,2")
-					containerSCC.Capabilities = "category1,2"
+					logrus.Info("category is category1")
+					containerSCC.Capabilities = category1
 				}
 			}
 		}
 	} else {
-		containerSCC.Capabilities = "category1,2"
+		containerSCC.Capabilities = category1
 	}
 	return containerSCC
 }
@@ -202,14 +214,13 @@ func CheckCategory(containers []v1.Container, containerSCC ContainerSCC) []strin
 		case Category1:
 			logrus.Info("is ok")
 		case Category2:
-			badCcontainer = append(badCcontainer, cut.Name)
-			logrus.Info("its Category2")
+			logrus.Info("its Category 1-no-uid0")
 		case Category3:
 			badCcontainer = append(badCcontainer, cut.Name)
-			logrus.Info("its Category3")
+			logrus.Info("its Category2")
 		case Category4:
 			badCcontainer = append(badCcontainer, cut.Name)
-			logrus.Info("its Category4")
+			logrus.Info("its Category3")
 		default:
 			logrus.Info("no one from the categories")
 			badCcontainer = append(badCcontainer, cut.Name)

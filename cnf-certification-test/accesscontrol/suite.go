@@ -638,7 +638,6 @@ func testContainerSCC(env *provider.TestEnvironment) {
 				nameSpace:    pod.Namespace,
 			}
 			badContainer = append(badContainer, array)
-
 		}
 	}
 	testhelper.AddTestResultLog("Non-compliant", badContainer, tnf.ClaimFilePrintf, ginkgo.Fail)
