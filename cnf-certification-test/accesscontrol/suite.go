@@ -621,10 +621,25 @@ func Test1337UIDs(env *provider.TestEnvironment) {
 
 // a test for security context that are allowed from the documentation of the cnf
 // an allowed one will pass the test
+type podList struct {
+	badContainer []string
+	name         string
+	nameSpace    string
+}
+
 func testContainerSCC(env *provider.TestEnvironment) {
-	var badContainer [][]string
+	var badContainer []podList
 	for _, pod := range env.Pods {
-		badContainer = append(badContainer, securitycontextcontainer.CheckPod(pod)...)
+		badContainers := securitycontextcontainer.CheckPod(pod)
+		if badContainers != nil {
+			array := podList{
+				badContainer: badContainers,
+				name:         pod.Name,
+				nameSpace:    pod.Namespace,
+			}
+			badContainer = append(badContainer, array)
+
+		}
 	}
 	testhelper.AddTestResultLog("Non-compliant", badContainer, tnf.ClaimFilePrintf, ginkgo.Fail)
 }

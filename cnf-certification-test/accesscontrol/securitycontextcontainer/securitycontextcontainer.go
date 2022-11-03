@@ -222,7 +222,7 @@ func checkContainCateegory(addCapability []v1.Capability, categoryAddCapabilitie
 	return len(addCapability) > 0
 }
 
-func CheckPod(pod *provider.Pod) [][]string {
+func CheckPod(pod *provider.Pod) []string {
 	var containerSCC ContainerSCC
 	containerSCC.HostIPC = pod.Spec.HostIPC
 	containerSCC.HostNetwork = pod.Spec.HostNetwork
@@ -250,6 +250,5 @@ func CheckPod(pod *provider.Pod) [][]string {
 		logrus.Info("FsGroupis false")
 		containerSCC.FsGroup = false
 	}
-	array := [][]string{CheckCategory(pod.Spec.Containers, containerSCC), {pod.Namespace}}
-	return array
+	return CheckCategory(pod.Spec.Containers, containerSCC)
 }
