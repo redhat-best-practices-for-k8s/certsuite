@@ -117,7 +117,6 @@ func GetContainerSCC(cut *v1.Container, containerSCC ContainerSCC) ContainerSCC 
 		logrus.Info("RunAsUser is true")
 		containerSCC.RunAsUser = true
 	}
-	logrus.Info("ReadOnlyRootFilesystem is ", *(cut.SecurityContext.ReadOnlyRootFilesystem))
 	if cut.SecurityContext != nil && cut.SecurityContext.ReadOnlyRootFilesystem != nil {
 		containerSCC.ReadOnlyRootFilesystem = *cut.SecurityContext.ReadOnlyRootFilesystem
 	}
