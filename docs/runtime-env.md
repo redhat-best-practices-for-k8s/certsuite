@@ -2,6 +2,20 @@
 
 To run the test suite, some runtime environment variables are to be set.
 
+## OCP >=4.12 Labels
+The following labels need to be added to your default namespace in your cluster if you are running OCP >=4.12:
+
+```shell
+pod-security.kubernetes.io/enforce: privileged
+pod-security.kubernetes.io/enforce-version: latest
+```
+
+You can manually label the namespace with:
+```shell
+oc label namespace/default  pod-security.kubernetes.io/enforce=privileged
+oc label namespace/default  pod-security.kubernetes.io/enforce-version=latest
+```
+
 ## Disable intrusive tests
 To skip intrusive tests which may disrupt cluster operations, issue the following:
 
