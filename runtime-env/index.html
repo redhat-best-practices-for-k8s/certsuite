@@ -453,6 +453,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#ocp-412-labels" class="md-nav__link">
+    OCP &gt;=4.12 Labels
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#disable-intrusive-tests" class="md-nav__link">
     Disable intrusive tests
   </a>
@@ -748,6 +755,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#ocp-412-labels" class="md-nav__link">
+    OCP &gt;=4.12 Labels
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#disable-intrusive-tests" class="md-nav__link">
     Disable intrusive tests
   </a>
@@ -790,6 +804,15 @@
 
 <h1 id="runtime-environment-variables">Runtime environment variables<a class="headerlink" href="#runtime-environment-variables" title="Permanent link">&para;</a></h1>
 <p>To run the test suite, some runtime environment variables are to be set.</p>
+<h2 id="ocp-412-labels"><abbr title="OpenShift Container Platform">OCP</abbr> &gt;=4.12 Labels<a class="headerlink" href="#ocp-412-labels" title="Permanent link">&para;</a></h2>
+<p>The following labels need to be added to your default namespace in your cluster if you are running <abbr title="OpenShift Container Platform">OCP</abbr> &gt;=4.12:</p>
+<div class="highlight"><pre><span></span><code>pod-security.kubernetes.io/enforce: privileged
+pod-security.kubernetes.io/enforce-version: latest
+</code></pre></div>
+<p>You can manually label the namespace with:
+<div class="highlight"><pre><span></span><code>oc label namespace/default  pod-security.kubernetes.io/enforce<span class="o">=</span>privileged
+oc label namespace/default  pod-security.kubernetes.io/enforce-version<span class="o">=</span>latest
+</code></pre></div></p>
 <h2 id="disable-intrusive-tests">Disable intrusive tests<a class="headerlink" href="#disable-intrusive-tests" title="Permanent link">&para;</a></h2>
 <p>To skip intrusive tests which may disrupt cluster operations, issue the following:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">TNF_NON_INTRUSIVE_ONLY</span><span class="o">=</span><span class="nb">true</span>
