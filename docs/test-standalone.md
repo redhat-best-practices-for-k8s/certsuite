@@ -54,7 +54,7 @@ make build-cnf-tests
 A CNF is tested by specifying which suites to run using the `run-cnf-suites.sh` helper
 script.
 
-Run any combination of the suites keywords listed at in the [General tests](#general-tests) section, e.g.
+Run any combination of the suites keywords listed at in the [General tests](test-spec.md#general-tests) section, e.g.
 
 ```shell
 ./run-cnf-suites.sh -l "lifecycle"
