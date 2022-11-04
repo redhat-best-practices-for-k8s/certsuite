@@ -1,6 +1,7 @@
 package securitycontextcontainer
 
 import (
+	"fmt"
 	"reflect"
 	"sort"
 
@@ -220,6 +221,13 @@ type PodListcategory struct {
 	Category      CategoryID
 }
 
+// print the strings
+func (category PodListcategory) String() string {
+	returnString := fmt.Sprintf("Containername: %s Podname: %s NameSpace: %s Category: %s  ",
+		category.Containername, category.Podname, category.Podname, category.Category)
+	return returnString
+}
+
 const (
 	CategoryID1String       = "CategoryID1"
 	CategoryID1NoUID0String = "CategoryID1NoUID0"
@@ -254,7 +262,7 @@ func CheckCategory(containers []corev1.Container, containerSCC ContainerSCC, pod
 	for j := 0; j < len(containers); j++ {
 		cut := &(containers[j])
 		percontainerSCC := GetContainerSCC(cut, containerSCC)
-		tnf.ClaimFilePrintf("percontainerSCC is ", percontainerSCC)
+		tnf.ClaimFilePrintf("containerSCC for container ", cut, "is ", percontainerSCC)
 		// after building the containerSCC need to check to which category it is
 		switch percontainerSCC {
 		case Category1:
@@ -280,6 +288,7 @@ func CheckCategory(containers []corev1.Container, containerSCC ContainerSCC, pod
 				NameSpace:     nameSpace,
 				Category:      CategoryID2,
 			}
+			returnNotEqualFileds(cut, containerSCC, podName, nameSpace)
 			logrus.Info("its Category2")
 		case Category3:
 			categoryinfo = PodListcategory{
@@ -288,6 +297,7 @@ func CheckCategory(containers []corev1.Container, containerSCC ContainerSCC, pod
 				NameSpace:     nameSpace,
 				Category:      CategoryID3,
 			}
+			returnNotEqualFileds(cut, containerSCC, podName, nameSpace)
 			logrus.Info("its Category3")
 		default:
 			categoryinfo = PodListcategory{
@@ -296,7 +306,7 @@ func CheckCategory(containers []corev1.Container, containerSCC ContainerSCC, pod
 				NameSpace:     nameSpace,
 				Category:      CategoryID4,
 			}
-
+			returnNotEqualFileds(cut, containerSCC, podName, nameSpace)
 			logrus.Info("no one from the categories")
 		}
 		ContainerList = append(ContainerList, categoryinfo)
@@ -340,4 +350,49 @@ func CheckPod(pod *provider.Pod) []PodListcategory {
 		containerSCC.FsGroup = false
 	}
 	return CheckCategory(pod.Spec.Containers, containerSCC, pod.Name, pod.Namespace)
+}
+
+//nolint:funlen
+func returnNotEqualFileds(cut *corev1.Container, containerSCC ContainerSCC, podName, nameSpace string) {
+	tnf.ClaimFilePrintf("different calue from Category1/UID0 for container  ", cut.Name, "his pod is ", podName,
+		"and name space is ", nameSpace)
+	if Category1.AllVolumeAllowed != containerSCC.AllVolumeAllowed {
+		tnf.ClaimFilePrintf("there is volume that are not from the list")
+	}
+	if Category1.FsGroup != containerSCC.FsGroup {
+		tnf.ClaimFilePrintf("FsGroup value are not true")
+	}
+	if Category1.HaveDropCapabilities != containerSCC.HaveDropCapabilities {
+		tnf.ClaimFilePrintf("its didnt have all the required (MKNOD, SETUID, SETGID, KILL) drop value ")
+	}
+	if Category1.HostDirVolumePlugin != containerSCC.HostDirVolumePlugin {
+		tnf.ClaimFilePrintf("HostDirVolumePlugin value are not false ")
+	}
+	if Category1.HostIPC != containerSCC.HostIPC {
+		tnf.ClaimFilePrintf("HostIPC value are not false ")
+	}
+	if Category1.HostNetwork != containerSCC.HostNetwork {
+		tnf.ClaimFilePrintf("HostNetwork value are not false ")
+	}
+	if Category1.HostPID != containerSCC.HostPID {
+		tnf.ClaimFilePrintf("HostPID value are not false ")
+	}
+	if Category1.HostPorts != containerSCC.HostPorts {
+		tnf.ClaimFilePrintf("HostPorts value are not false ")
+	}
+	if Category1.PrivilegeEscalation != containerSCC.PrivilegeEscalation {
+		tnf.ClaimFilePrintf("HostPorts value are not set on that container - it can be true or false")
+	}
+	if Category1.PrivilegedContainer != containerSCC.PrivilegedContainer {
+		tnf.ClaimFilePrintf("HostPorts value are not ", Category1.PrivilegedContainer)
+	}
+	if Category1.ReadOnlyRootFilesystem != containerSCC.ReadOnlyRootFilesystem {
+		tnf.ClaimFilePrintf("ReadOnlyRootFilesystem value are not ", Category1.ReadOnlyRootFilesystem)
+	}
+	if Category1.SeLinuxContext != containerSCC.SeLinuxContext {
+		tnf.ClaimFilePrintf("SeLinuxContext value are not set so its not", Category1.SeLinuxContext)
+	}
+	if Category1.Capabilities != containerSCC.Capabilities {
+		tnf.ClaimFilePrintf("ADD Capabilities need to be nil and here its not")
+	}
 }
