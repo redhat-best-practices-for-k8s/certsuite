@@ -72,7 +72,7 @@ In order to get the required information, the test suite does not `ssh` into nod
 -o ~/tnf/output -l "networking,access-control"
 ```
 
-See [General tests](#general-tests) for a list of available keywords.
+See [General tests](test-spec.md#general-tests) for a list of available keywords.
 
 ### Run with `docker`
 
@@ -123,4 +123,4 @@ Specify the custom TNF image using the `-i` parameter.
 ./run-tnf-container.sh -i cnf-certification-test:v4.0.2
 -t ~/tnf/config -o ~/tnf/output -l "networking,access-control"
 ```
- Note: see [General tests](#general-tests) for a list of available keywords.
+ Note: see [General tests](test-spec.md#general-tests) for a list of available keywords.
