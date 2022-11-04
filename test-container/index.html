@@ -955,7 +955,7 @@ In order to get the required information, the test suite does not <code>ssh</cod
 <div class="highlight"><pre><span></span><code>./run-tnf-container.sh -k ~/.kube/config -t ~/tnf/config
 -o ~/tnf/output -l <span class="s2">&quot;networking,access-control&quot;</span>
 </code></pre></div>
-<p>See <a href="#general-tests">General tests</a> for a list of available keywords.</p>
+<p>See <a href="../test-spec/#general-tests">General tests</a> for a list of available keywords.</p>
 <h3 id="run-with-docker">Run with <code>docker</code><a class="headerlink" href="#run-with-docker" title="Permanent link">&para;</a></h3>
 <p>By default, <code>run-container.sh</code> utilizes <code>podman</code>. However, an alternate container virtualization
 client using <code>TNF_CONTAINER_CLIENT</code> can be configured. This is particularly useful for operating systems that do not readily support
@@ -987,7 +987,7 @@ client using <code>TNF_CONTAINER_CLIENT</code> can be configured. This is partic
 <p><div class="highlight"><pre><span></span><code>./run-tnf-container.sh -i cnf-certification-test:v4.0.2
 -t ~/tnf/config -o ~/tnf/output -l <span class="s2">&quot;networking,access-control&quot;</span>
 </code></pre></div>
- Note: see <a href="#general-tests">General tests</a> for a list of available keywords.</p>
+ Note: see <a href="../test-spec/#general-tests">General tests</a> for a list of available keywords.</p>
 
 
 
