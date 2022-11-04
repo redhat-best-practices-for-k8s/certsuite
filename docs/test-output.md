@@ -10,6 +10,9 @@ This file describes the following
 * The tests that are executed
 * The outcome of the executed / skipped tests
 
+**Files that need to be submitted for certification**
+When submitting results back to Red Hat for certification, please include the above mentioned claim file, the JUnit file, and any available console logs.
+
 **How to add a CNF platform test result to the existing claim file?**
 
 ```go
