@@ -76,6 +76,20 @@ func formTestTags(tags ...string) string {
 }
 
 func AddCatalogEntry(testID, suiteName, description, remediation, testType, exception, version, reference string, tags ...string) (aID claim.Identifier) {
+	// Default Values (if missing)
+	if strings.TrimSpace(exception) == "" {
+		exception = NoDocumentedProcess
+	}
+	if strings.TrimSpace(version) == "" {
+		version = VersionOne
+	}
+	if strings.TrimSpace(reference) == "" {
+		reference = "No Reference Document Specified"
+	}
+	if len(tags) == 0 {
+		tags = append(tags, TagCommon)
+	}
+
 	aID = claim.Identifier{
 		Tags:    formTestTags(tags...),
 		Url:     formTestURL(suiteName, testID),
