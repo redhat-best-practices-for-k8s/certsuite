@@ -625,11 +625,9 @@ func Test1337UIDs(env *provider.TestEnvironment) {
 func testContainerSCC(env *provider.TestEnvironment) {
 	var badContainer []securitycontextcontainer.PodListcategory
 	var goodContainer []securitycontextcontainer.PodListcategory
-	var listCategoryContainer []securitycontextcontainer.PodListcategory
 	highLevelCat := securitycontextcontainer.CategoryID1
 	for _, pod := range env.Pods {
 		listCategory := securitycontextcontainer.CheckPod(pod)
-		listCategoryContainer = append(listCategoryContainer, listCategory...)
 		for _, cat := range listCategory {
 			if cat.Category > securitycontextcontainer.CategoryID1NoUID0 {
 				badContainer = append(badContainer, cat)
@@ -641,9 +639,8 @@ func testContainerSCC(env *provider.TestEnvironment) {
 			}
 		}
 	}
-	tnf.ClaimFilePrintf("list of goodContainer", goodContainer)
-	tnf.ClaimFilePrintf("list of badContainers", badContainer)
-	tnf.ClaimFilePrintf("high level of category", highLevelCat)
-	tnf.ClaimFilePrintf("list of all ", listCategoryContainer)
+	tnf.ClaimFilePrintf("list of goodContainer %+v", goodContainer, "\n")
+	tnf.ClaimFilePrintf("list of badContainers %+v", badContainer, "\n")
+	tnf.ClaimFilePrintf("high level of category", highLevelCat, "\n")
 	testhelper.AddTestResultLog("Non-compliant", badContainer, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
