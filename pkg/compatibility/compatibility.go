@@ -93,6 +93,8 @@ var (
 			MinRHCOSVersion:      "4.8",
 			RHELVersionsAccepted: []string{"7.9"},
 		},
+
+		// End of life
 		"4.7": {
 			GADate:  time.Date(2021, 2, 24, 0, 0, 0, 0, time.UTC),  // February 24, 2021
 			FSEDate: time.Date(2021, 10, 27, 0, 0, 0, 0, time.UTC), // October 27, 2021
@@ -102,8 +104,6 @@ var (
 			MinRHCOSVersion:      "4.7",
 			RHELVersionsAccepted: []string{"7.9"},
 		},
-
-		// End of life
 		"4.6": {
 			GADate:  time.Date(2020, 10, 27, 0, 0, 0, 0, time.UTC), // October 27, 2020
 			FSEDate: time.Date(2021, 3, 24, 0, 0, 0, 0, time.UTC),  // March 24, 2021
