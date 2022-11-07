@@ -222,7 +222,7 @@ type PodListcategory struct {
 
 // print the strings
 func (category PodListcategory) String() string {
-	returnString := fmt.Sprintf("Containername: %s Podname: %s NameSpace: %s Category: %s  ",
+	returnString := fmt.Sprintf("Containername: %s Podname: %s NameSpace: %s Category: %s \n ",
 		category.Containername, category.Podname, category.Podname, category.Category)
 	return returnString
 }
@@ -232,7 +232,7 @@ const (
 	CategoryID1NoUID0String = "CategoryID1NoUID0(automatically granted, basic rights with mesh networks)"
 	CategoryID2String       = "CategoryID2(advanced networking (vlan tag, dscp, priority))"
 	CategoryID3String       = "CategoryID3(SRIOV and DPDK)"
-	CategoryID4String       = "CategoryID4(anything not matching previous category)"
+	CategoryID4String       = "CategoryID4(anything not matching lower category)"
 )
 
 // print the strings
