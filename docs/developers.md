@@ -34,5 +34,5 @@ export TNF_NON_INTRUSIVE_ONLY=true
     For example, to run `networking` tests
 
     ```shell
-    ./script/development.sh -l networking
+    ./script/development.sh networking
     ```
