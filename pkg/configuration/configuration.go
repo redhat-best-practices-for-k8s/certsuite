@@ -48,6 +48,22 @@ type AcceptedKernelTaintsInfo struct {
 	Module string `yaml:"module" json:"module"`
 }
 
+// SkipScalingTestDeploymentsInfo contains a list of names of deployments that should be skipped by the scaling tests to prevent issues
+type SkipScalingTestDeploymentsInfo struct {
+
+	// Deployment name and namespace that can be skipped by the scaling tests
+	Name      string `yaml:"name" json:"name"`
+	Namespace string `yaml:"namespace" json:"namespace"`
+}
+
+// SkipScalingTestStatefulSetsInfo contains a list of names of statefulsets that should be skipped by the scaling tests to prevent issues
+type SkipScalingTestStatefulSetsInfo struct {
+
+	// StatefulSet name and namespace that can be skipped by the scaling tests
+	Name      string `yaml:"name" json:"name"`
+	Namespace string `yaml:"namespace" json:"namespace"`
+}
+
 // Label ns/name/value for resource lookup
 type Label struct {
 	Prefix string `yaml:"prefix" json:"prefix"`
@@ -96,6 +112,10 @@ type TestConfiguration struct {
 	// AcceptedKernelTaints
 	AcceptedKernelTaints []AcceptedKernelTaintsInfo `yaml:"acceptedKernelTaints,omitempty" json:"acceptedKernelTaints,omitempty"`
 	SkipHelmChartList    []SkipHelmChartList        `yaml:"skipHelmChartList" json:"skipHelmChartList"`
+	// SkipScalingTestDeploymentNames
+	SkipScalingTestDeployments []SkipScalingTestDeploymentsInfo `yaml:"skipScalingTestDeployments,omitempty" json:"skipScalingTestDeployments,omitempty"`
+	// SkipScalingTestStatefulSetNames
+	SkipScalingTestStatefulSets []SkipScalingTestStatefulSetsInfo `yaml:"skipScalingTestStatefulSets,omitempty" json:"skipScalingTestStatefulSets,omitempty"`
 	// CheckDiscoveredContainerCertificationStatus controls whether the container certification test will validate images used by autodiscovered containers, in addition to the configured image list
 	CheckDiscoveredContainerCertificationStatus bool `yaml:"checkDiscoveredContainerCertificationStatus" json:"checkDiscoveredContainerCertificationStatus"`
 }
