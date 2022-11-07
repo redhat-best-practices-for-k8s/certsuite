@@ -20566,636 +20566,6 @@
       "version_original": "0.13.0"
     },
     {
-      "_id": "63563dd39bc8a28e5344886f",
-      "alm_examples": [
-        {
-          "api_version": "apps.gitlab.com/v1beta1",
-          "kind": "GitLab",
-          "metadata": {
-            "name": "gitlab",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "chart": {
-              "values": {
-                "certmanager": {
-                  "install": false
-                },
-                "global": {
-                  "hosts": {
-                    "domain": "example.com"
-                  },
-                  "ingress": {
-                    "configureCertmanager": false,
-                    "tls": {}
-                  }
-                }
-              },
-              "version": "6.5.0"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:528fd4d79efb72d8f7efac4317c4489f675cb14de43eedb3021abf53b082c4d9",
-      "bundle_path_digest": "sha256:528fd4d79efb72d8f7efac4317c4489f675cb14de43eedb3021abf53b082c4d9",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-10-24T07:25:07.980000+00:00",
-      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
-      "csv_display_name": "GitLab",
-      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
-      "csv_name": "gitlab-operator-kubernetes.v0.13.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T11:04:57.300000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "gitlab-operator-kubernetes",
-      "provided_apis": [
-        {
-          "group": "apps.gitlab.com",
-          "kind": "GitLab",
-          "plural": "gitlabs",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "GitLab Inc",
-      "related_images": [
-        {
-          "digest": "sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "name": "cloud-native/gitlab-operator-03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606-annotation"
-        },
-        {
-          "digest": "sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.13.0",
-      "version_original": "0.13.0"
-    },
-    {
-      "_id": "63563dd72860db926e45ea3f",
-      "alm_examples": [
-        {
-          "api_version": "apps.gitlab.com/v1beta1",
-          "kind": "GitLab",
-          "metadata": {
-            "name": "gitlab",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "chart": {
-              "values": {
-                "certmanager": {
-                  "install": false
-                },
-                "global": {
-                  "hosts": {
-                    "domain": "example.com"
-                  },
-                  "ingress": {
-                    "configureCertmanager": false,
-                    "tls": {}
-                  }
-                }
-              },
-              "version": "6.5.0"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:528fd4d79efb72d8f7efac4317c4489f675cb14de43eedb3021abf53b082c4d9",
-      "bundle_path_digest": "sha256:528fd4d79efb72d8f7efac4317c4489f675cb14de43eedb3021abf53b082c4d9",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "unstable",
-      "creation_date": "2022-10-24T07:25:11.493000+00:00",
-      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
-      "csv_display_name": "GitLab",
-      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
-      "csv_name": "gitlab-operator-kubernetes.v0.13.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-10-24T11:05:07.036000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "gitlab-operator-kubernetes",
-      "provided_apis": [
-        {
-          "group": "apps.gitlab.com",
-          "kind": "GitLab",
-          "plural": "gitlabs",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "GitLab Inc",
-      "related_images": [
-        {
-          "digest": "sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "name": "cloud-native/gitlab-operator-03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606-annotation"
-        },
-        {
-          "digest": "sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.13.0",
-      "version_original": "0.13.0"
-    },
-    {
-      "_id": "63563deecd605248fd711239",
-      "alm_examples": [
-        {
-          "api_version": "apps.gitlab.com/v1beta1",
-          "kind": "GitLab",
-          "metadata": {
-            "name": "gitlab",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "chart": {
-              "values": {
-                "certmanager": {
-                  "install": false
-                },
-                "global": {
-                  "hosts": {
-                    "domain": "example.com"
-                  },
-                  "ingress": {
-                    "configureCertmanager": false,
-                    "tls": {}
-                  }
-                }
-              },
-              "version": "6.5.0"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:528fd4d79efb72d8f7efac4317c4489f675cb14de43eedb3021abf53b082c4d9",
-      "bundle_path_digest": "sha256:528fd4d79efb72d8f7efac4317c4489f675cb14de43eedb3021abf53b082c4d9",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "unstable",
-      "creation_date": "2022-10-24T07:25:34.925000+00:00",
-      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
-      "csv_display_name": "GitLab",
-      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
-      "csv_name": "gitlab-operator-kubernetes.v0.13.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-10-24T12:08:21.683000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "gitlab-operator-kubernetes",
-      "provided_apis": [
-        {
-          "group": "apps.gitlab.com",
-          "kind": "GitLab",
-          "plural": "gitlabs",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "GitLab Inc",
-      "related_images": [
-        {
-          "digest": "sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "name": "cloud-native/gitlab-operator-03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606-annotation"
-        },
-        {
-          "digest": "sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.13.0",
-      "version_original": "0.13.0"
-    },
-    {
-      "_id": "63563df25a8cf06bf6aee871",
-      "alm_examples": [
-        {
-          "api_version": "apps.gitlab.com/v1beta1",
-          "kind": "GitLab",
-          "metadata": {
-            "name": "gitlab",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "chart": {
-              "values": {
-                "certmanager": {
-                  "install": false
-                },
-                "global": {
-                  "hosts": {
-                    "domain": "example.com"
-                  },
-                  "ingress": {
-                    "configureCertmanager": false,
-                    "tls": {}
-                  }
-                }
-              },
-              "version": "6.5.0"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:528fd4d79efb72d8f7efac4317c4489f675cb14de43eedb3021abf53b082c4d9",
-      "bundle_path_digest": "sha256:528fd4d79efb72d8f7efac4317c4489f675cb14de43eedb3021abf53b082c4d9",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-10-24T07:25:38.927000+00:00",
-      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
-      "csv_display_name": "GitLab",
-      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
-      "csv_name": "gitlab-operator-kubernetes.v0.13.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T11:14:16.136000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "gitlab-operator-kubernetes",
-      "provided_apis": [
-        {
-          "group": "apps.gitlab.com",
-          "kind": "GitLab",
-          "plural": "gitlabs",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "GitLab Inc",
-      "related_images": [
-        {
-          "digest": "sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "name": "cloud-native/gitlab-operator-03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606-annotation"
-        },
-        {
-          "digest": "sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "0.13.0",
-      "version_original": "0.13.0"
-    },
-    {
-      "_id": "63563ea5029b470cc6259f12",
-      "alm_examples": [
-        {
-          "api_version": "apps.gitlab.com/v1beta1",
-          "kind": "GitLab",
-          "metadata": {
-            "name": "gitlab",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "chart": {
-              "values": {
-                "certmanager": {
-                  "install": false
-                },
-                "global": {
-                  "hosts": {
-                    "domain": "example.com"
-                  },
-                  "ingress": {
-                    "configureCertmanager": false,
-                    "tls": {}
-                  }
-                }
-              },
-              "version": "6.5.0"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:528fd4d79efb72d8f7efac4317c4489f675cb14de43eedb3021abf53b082c4d9",
-      "bundle_path_digest": "sha256:528fd4d79efb72d8f7efac4317c4489f675cb14de43eedb3021abf53b082c4d9",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2022-10-24T07:28:37.332000+00:00",
-      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
-      "csv_display_name": "GitLab",
-      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
-      "csv_name": "gitlab-operator-kubernetes.v0.13.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T11:07:12.500000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "gitlab-operator-kubernetes",
-      "provided_apis": [
-        {
-          "group": "apps.gitlab.com",
-          "kind": "GitLab",
-          "plural": "gitlabs",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "GitLab Inc",
-      "related_images": [
-        {
-          "digest": "sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "name": "cloud-native/gitlab-operator-03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606-annotation"
-        },
-        {
-          "digest": "sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "0.13.0",
-      "version_original": "0.13.0"
-    },
-    {
-      "_id": "63563ea8029b470cc6259f18",
-      "alm_examples": [
-        {
-          "api_version": "apps.gitlab.com/v1beta1",
-          "kind": "GitLab",
-          "metadata": {
-            "name": "gitlab",
-            "namespace": "gitlab-system"
-          },
-          "spec": {
-            "chart": {
-              "values": {
-                "certmanager": {
-                  "install": false
-                },
-                "global": {
-                  "hosts": {
-                    "domain": "example.com"
-                  },
-                  "ingress": {
-                    "configureCertmanager": false,
-                    "tls": {}
-                  }
-                }
-              },
-              "version": "6.5.0"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/gitlab/gitlab-operator-bundle@sha256:528fd4d79efb72d8f7efac4317c4489f675cb14de43eedb3021abf53b082c4d9",
-      "bundle_path_digest": "sha256:528fd4d79efb72d8f7efac4317c4489f675cb14de43eedb3021abf53b082c4d9",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "unstable",
-      "creation_date": "2022-10-24T07:28:40.547000+00:00",
-      "csv_description": "# Overview\n\nThe GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.\n\n[Documentation](https://docs.gitlab.com/charts/installation/operator.html)\n\nThe operator, while new and still actively being developed, aims to:\n- ease installation and configuration of GitLab instances\n- offer seamless upgrades from version to version\n\n## GitLab\n\nGitLab is a complete open-source DevOps platform, delivered as a single application, fundamentally changing the way Development, Security, and Ops teams collaborate and build software. From idea to production, GitLab helps teams improve cycle time from weeks to minutes, reduce development process costs and decrease time to market while increasing developer productivity.\n\nBuilt on Open Source, GitLab delivers new innovations and features on the same day of every month by leveraging contributions from a passionate, global community of thousands of developers and millions of users. Over 100,000 of the world\u2019s most demanding organizations trust GitLab to deliver great software at new speeds.\n\nIf you would like to enable advanced DevOps capabilities and activate enterprise features such as security, risk, and compliance capabilities, please contact our sales team to purchase an enterprise license.\n\n# Prerequisites\n\nPlease visit [Prerequisites](https://docs.gitlab.com/charts/installation/operator.html#prerequisites) section of GitLab Operator Documentation.\n\n## IngressClass\n\nCluster-wide `IngressClass` should be created prior to Operator setup, as OLM does not currently support this object type:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: IngressClass\nmetadata:\n  # Ensure this value matches `spec.chart.values.global.ingress.class`\n  # in the GitLab CR on the next step.\n  name: gitlab-nginx\nspec:\n  controller: k8s.io/ingress-nginx\n```\n",
-      "csv_display_name": "GitLab",
-      "csv_metadata_description": "The GitLab operator is responsible for managing the full lifecycle of GitLab instances in your Kubernetes or Openshift container platforms.",
-      "csv_name": "gitlab-operator-kubernetes.v0.13.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-10-24T11:07:21.860000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "gitlab-operator-kubernetes",
-      "provided_apis": [
-        {
-          "group": "apps.gitlab.com",
-          "kind": "GitLab",
-          "plural": "gitlabs",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "GitLab Inc",
-      "related_images": [
-        {
-          "digest": "sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "name": "cloud-native/gitlab-operator-03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606-annotation"
-        },
-        {
-          "digest": "sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "image": "registry.gitlab.com/gitlab-org/cloud-native/gitlab-operator@sha256:03e30ebf74eb95768d1a11f29fed3dfad08443e0b902fcfee1c950f05ed26606",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:e10d1d982dd653db74ca87a1d1ad017bc5ef1aeb651bdea089debf16485b080b",
-          "name": "kube-rbac-proxy"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "0.13.0",
-      "version_original": "0.13.0"
-    },
-    {
       "_id": "63563efe2860db926e45eba1",
       "alm_examples": [
         {
@@ -24489,6 +23859,626 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
       "version": "8.6.6",
       "version_original": "8.6.6"
+    },
+    {
+      "_id": "63570ee5bf8d22683941e67d",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:ac8a089f6475190c78e50930f3429453f40724539bf510c728cb9b40ac7c1ae1",
+      "bundle_path_digest": "sha256:ac8a089f6475190c78e50930f3429453f40724539bf510c728cb9b40ac7c1ae1",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-10-24T22:17:09.142000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.6.6",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T22:17:09.142000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "name": "kubeturbo-operator-f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a-annotation"
+        },
+        {
+          "digest": "sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:3a432582424901098ba1a17e785bc9d3f4533d5507988679ffec1366f2f6c5c8",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:3a432582424901098ba1a17e785bc9d3f4533d5507988679ffec1366f2f6c5c8",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "8.6.6",
+      "version_original": "8.6.6"
+    },
+    {
+      "_id": "63570f302860db926e4694ec",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:ac8a089f6475190c78e50930f3429453f40724539bf510c728cb9b40ac7c1ae1",
+      "bundle_path_digest": "sha256:ac8a089f6475190c78e50930f3429453f40724539bf510c728cb9b40ac7c1ae1",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-10-24T22:18:24.399000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.6.6",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T22:18:24.399000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "name": "kubeturbo-operator-f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a-annotation"
+        },
+        {
+          "digest": "sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:3a432582424901098ba1a17e785bc9d3f4533d5507988679ffec1366f2f6c5c8",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:3a432582424901098ba1a17e785bc9d3f4533d5507988679ffec1366f2f6c5c8",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "8.6.6",
+      "version_original": "8.6.6"
+    },
+    {
+      "_id": "63570fe3d154712fbb232c23",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:ac8a089f6475190c78e50930f3429453f40724539bf510c728cb9b40ac7c1ae1",
+      "bundle_path_digest": "sha256:ac8a089f6475190c78e50930f3429453f40724539bf510c728cb9b40ac7c1ae1",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-10-24T22:21:23.297000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.6.6",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T22:21:23.297000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.8",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "name": "kubeturbo-operator-f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a-annotation"
+        },
+        {
+          "digest": "sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:3a432582424901098ba1a17e785bc9d3f4533d5507988679ffec1366f2f6c5c8",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:3a432582424901098ba1a17e785bc9d3f4533d5507988679ffec1366f2f6c5c8",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
+      "version": "8.6.6",
+      "version_original": "8.6.6"
+    },
+    {
+      "_id": "63570ff42860db926e46959c",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Kubeturbo",
+          "metadata": {
+            "name": "kubeturbo-release"
+          },
+          "spec": {
+            "serverMeta": {
+              "turboServer": "https://Turbo_server_URL"
+            },
+            "targetConfig": {
+              "targetName": "Cluster_Name"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/kubeturbo-operator-bundle@sha256:ac8a089f6475190c78e50930f3429453f40724539bf510c728cb9b40ac7c1ae1",
+      "bundle_path_digest": "sha256:ac8a089f6475190c78e50930f3429453f40724539bf510c728cb9b40ac7c1ae1",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-10-24T22:21:40.400000+00:00",
+      "csv_description": "### Application Resource Management for Kubernetes\nTurbonomic AI-powered Application Resource Management simultaneously optimizes performance, compliance, and cost in real time.\nSoftware manages the complete application stack, automatically. Applications are continually resourced to perform while satisfying business constraints.\n\nTurbonomic makes workloads smart \u2014 enabling them to self-manage and determines the specific actions that will drive continuous health:\n\n* Continuous placement for Pods (rescheduling)\n* Continuous scaling for applications and  the underlying cluster.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a container \u2014 KubeTurbo \u2014 that runs in your Kubernetes or Red Hat OpenShift cluster to discover and monitor your environment.\nKubeTurbo runs together with the default scheduler and sends this data back to the Turbonomic analytics engine.\nTurbonomic determines the right actions that drive continuous health, including continuous placement for Pods and continuous scaling for applications and the underlying cluster.",
+      "csv_display_name": "Kubeturbo Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "kubeturbo-operator.v8.6.6",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T22:21:40.400000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "kubeturbo-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Kubeturbo",
+          "plural": "kubeturbos",
+          "version": "v1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "name": "kubeturbo-operator-f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a-annotation"
+        },
+        {
+          "digest": "sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo-operator@sha256:f6d1e43b82e9ea96378b7535d441fc46c8d676ce0a4037b0c8b88e91f261350a",
+          "name": "kubeturbo-operator"
+        },
+        {
+          "digest": "sha256:3a432582424901098ba1a17e785bc9d3f4533d5507988679ffec1366f2f6c5c8",
+          "image": "registry.connect.redhat.com/turbonomic/kubeturbo@sha256:3a432582424901098ba1a17e785bc9d3f4533d5507988679ffec1366f2f6c5c8",
+          "name": "kubeturbo"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "8.6.6",
+      "version_original": "8.6.6"
+    },
+    {
+      "_id": "63571906ecddd9b37fd329da",
+      "alm_examples": [
+        {
+          "api_version": "core.libopenstorage.org/v1",
+          "kind": "StorageCluster",
+          "metadata": {
+            "annotations": {
+              "portworx.io/is-openshift": "true"
+            },
+            "name": "portworx",
+            "namespace": "test-operator"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "core.libopenstorage.org/v1",
+          "kind": "StorageNode",
+          "metadata": {
+            "name": "example",
+            "namespace": "test-operator"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/portworx/portworx-certified-bundle@sha256:0cf6b7cf6227fd7e0ac72c24667b623983c3d7e63f9271b2347d7191ecd02018",
+      "bundle_path_digest": "sha256:0cf6b7cf6227fd7e0ac72c24667b623983c3d7e63f9271b2347d7191ecd02018",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-10-24T23:00:22.210000+00:00",
+      "csv_description": "Portworx-Enterprise is the most widely-used and reliable cloud-native\nstorage solution for production workloads and provides high-availability,\ndata protection and security for containerized applications.\n\nPortworx Enterprise enables you to migrate entire applications, including\ndata, between clusters in a single data center or cloud, or between clouds,\nwith a single kubectl command.\n\nThe cloud native storage and data management platform that enterprises trust\nto manage data in containers now has an operator which simplifies the install,\nconfiguration, upgrades and manages the Portworx Enterprise cluster lifecycle.\n\nLearn more about the Portworx Enterprise\n[the data platform for Kubernetes](https://portworx.com/products/introduction)\n\nTo learn more about the platform features, please visit our\n[product features page](https://portworx.com/products/features)\n\n### About Portworx\n\nPortworx is the solution for running stateful containers in production,\ndesigned with DevOps in mind. With Portworx, users can manage any database\nor stateful service on any infrastructure using any container scheduler,\nincluding Kubernetes, Mesosphere DC/OS, and Docker Swarm. Portworx solves\nthe five most common problems DevOps teams encounter when running stateful\nservices in production: persistence, high availability, data automation,\nsecurity, and support for multiple data stores and infrastructure.\n\n### How to install StorageCluster\n\nTo customize your cluster's configuration (specification), use the\n[Spec Generator](https://central.portworx.com/) from PX-Central.\n\n### Prerequisite\n\nEnsure ports 17001-17020 on worker nodes are reachable from master and other worker nodes.\n\n### Tutorials\n\n* [Portworx Enterprise on Openshift](https://portworx.com/openshift)\n\n* [Stateful applications on Kubernetes](https://docs.portworx.com/portworx-install-with-kubernetes/application-install-with-kubernetes)\n\n* [Portworx Enterprise on Kubernetes](https://docs.portworx.com/portworx-install-with-kubernetes)\n\n* [Kafka on Kubernetes](https://portworx.com/kafka-kubernetes)\n\n* [Elastisearch on Kubernetes](https://portworx.com/elasticsearch-kubernetes)\n\n* [PostgreSQL on Kubernetes](https://portworx.com/postgres-kubernetes/)\n\n* [MongoDB on Kubernetes](https://portworx.com/mongodb-kubernetes/)\n\n* [Cassandra on Kubernetes](https://portworx.com/cassandra-kubernetes/)\n\n* [Kubernetes backup and recovery](https://portworx.com/kubernetes-backup/)\n\n* [Disaster Recovery for Kubernetes](https://portworx.com/kubernetes-disaster-recovery/)\n\n### Uninstall\n\nDeleting the StorageCluster object for Portworx cluster does not stop Portworx\nservice running on the nodes, to avoid application downtime.\n\nTo uninstall Portworx completely without wiping the data, you should add the\nfollowing delete strategy to the StorageCluster spec:\n```\nspec:\n  deleteStrategy:\n    type: Uninstall\n```\n**Caution:** To uninstall Portworx and **wipe all the data**, you should use the following\ndelete strategy:\n```\nspec:\n  deleteStrategy:\n    type: UninstallAndWipe\n```\n",
+      "csv_display_name": "Portworx Enterprise",
+      "csv_metadata_description": "Cloud native storage solution for production workloads",
+      "csv_name": "portworx-operator.v1.10.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T23:00:22.210000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "portworx-certified",
+      "provided_apis": [
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageNode",
+          "plural": "storagenodes",
+          "version": "v1"
+        },
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageNode",
+          "plural": "storagenodes",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageCluster",
+          "plural": "storageclusters",
+          "version": "v1"
+        },
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageCluster",
+          "plural": "storageclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Portworx",
+      "related_images": [
+        {
+          "digest": "sha256:088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e",
+          "image": "registry.connect.redhat.com/portworx/openstorage-operator@sha256:088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e",
+          "name": "openstorage-operator-088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e-annotation"
+        },
+        {
+          "digest": "sha256:088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e",
+          "image": "registry.connect.redhat.com/portworx/openstorage-operator@sha256:088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e",
+          "name": "portworx-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.10.0",
+      "version_original": "1.10.0"
+    },
+    {
+      "_id": "6357190aff875f4a0d860c8d",
+      "alm_examples": [
+        {
+          "api_version": "core.libopenstorage.org/v1",
+          "kind": "StorageCluster",
+          "metadata": {
+            "annotations": {
+              "portworx.io/is-openshift": "true"
+            },
+            "name": "portworx",
+            "namespace": "test-operator"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "core.libopenstorage.org/v1",
+          "kind": "StorageNode",
+          "metadata": {
+            "name": "example",
+            "namespace": "test-operator"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/portworx/portworx-certified-bundle@sha256:0cf6b7cf6227fd7e0ac72c24667b623983c3d7e63f9271b2347d7191ecd02018",
+      "bundle_path_digest": "sha256:0cf6b7cf6227fd7e0ac72c24667b623983c3d7e63f9271b2347d7191ecd02018",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-10-24T23:00:26.968000+00:00",
+      "csv_description": "Portworx-Enterprise is the most widely-used and reliable cloud-native\nstorage solution for production workloads and provides high-availability,\ndata protection and security for containerized applications.\n\nPortworx Enterprise enables you to migrate entire applications, including\ndata, between clusters in a single data center or cloud, or between clouds,\nwith a single kubectl command.\n\nThe cloud native storage and data management platform that enterprises trust\nto manage data in containers now has an operator which simplifies the install,\nconfiguration, upgrades and manages the Portworx Enterprise cluster lifecycle.\n\nLearn more about the Portworx Enterprise\n[the data platform for Kubernetes](https://portworx.com/products/introduction)\n\nTo learn more about the platform features, please visit our\n[product features page](https://portworx.com/products/features)\n\n### About Portworx\n\nPortworx is the solution for running stateful containers in production,\ndesigned with DevOps in mind. With Portworx, users can manage any database\nor stateful service on any infrastructure using any container scheduler,\nincluding Kubernetes, Mesosphere DC/OS, and Docker Swarm. Portworx solves\nthe five most common problems DevOps teams encounter when running stateful\nservices in production: persistence, high availability, data automation,\nsecurity, and support for multiple data stores and infrastructure.\n\n### How to install StorageCluster\n\nTo customize your cluster's configuration (specification), use the\n[Spec Generator](https://central.portworx.com/) from PX-Central.\n\n### Prerequisite\n\nEnsure ports 17001-17020 on worker nodes are reachable from master and other worker nodes.\n\n### Tutorials\n\n* [Portworx Enterprise on Openshift](https://portworx.com/openshift)\n\n* [Stateful applications on Kubernetes](https://docs.portworx.com/portworx-install-with-kubernetes/application-install-with-kubernetes)\n\n* [Portworx Enterprise on Kubernetes](https://docs.portworx.com/portworx-install-with-kubernetes)\n\n* [Kafka on Kubernetes](https://portworx.com/kafka-kubernetes)\n\n* [Elastisearch on Kubernetes](https://portworx.com/elasticsearch-kubernetes)\n\n* [PostgreSQL on Kubernetes](https://portworx.com/postgres-kubernetes/)\n\n* [MongoDB on Kubernetes](https://portworx.com/mongodb-kubernetes/)\n\n* [Cassandra on Kubernetes](https://portworx.com/cassandra-kubernetes/)\n\n* [Kubernetes backup and recovery](https://portworx.com/kubernetes-backup/)\n\n* [Disaster Recovery for Kubernetes](https://portworx.com/kubernetes-disaster-recovery/)\n\n### Uninstall\n\nDeleting the StorageCluster object for Portworx cluster does not stop Portworx\nservice running on the nodes, to avoid application downtime.\n\nTo uninstall Portworx completely without wiping the data, you should add the\nfollowing delete strategy to the StorageCluster spec:\n```\nspec:\n  deleteStrategy:\n    type: Uninstall\n```\n**Caution:** To uninstall Portworx and **wipe all the data**, you should use the following\ndelete strategy:\n```\nspec:\n  deleteStrategy:\n    type: UninstallAndWipe\n```\n",
+      "csv_display_name": "Portworx Enterprise",
+      "csv_metadata_description": "Cloud native storage solution for production workloads",
+      "csv_name": "portworx-operator.v1.10.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T23:00:26.968000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "portworx-certified",
+      "provided_apis": [
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageNode",
+          "plural": "storagenodes",
+          "version": "v1"
+        },
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageNode",
+          "plural": "storagenodes",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageCluster",
+          "plural": "storageclusters",
+          "version": "v1"
+        },
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageCluster",
+          "plural": "storageclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Portworx",
+      "related_images": [
+        {
+          "digest": "sha256:088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e",
+          "image": "registry.connect.redhat.com/portworx/openstorage-operator@sha256:088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e",
+          "name": "openstorage-operator-088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e-annotation"
+        },
+        {
+          "digest": "sha256:088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e",
+          "image": "registry.connect.redhat.com/portworx/openstorage-operator@sha256:088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e",
+          "name": "portworx-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.10.0",
+      "version_original": "1.10.0"
     }
   ]
 }
