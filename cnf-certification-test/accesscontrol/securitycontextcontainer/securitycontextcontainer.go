@@ -405,7 +405,7 @@ func compareCategory(refCategory, containerSCC ContainerSCC, id CategoryID) bool
 	}
 	if refCategory.Capabilities != containerSCC.Capabilities {
 		result = false
-		tnf.ClaimFilePrintf("SeLinuxContext = %s but expected %s - NOK", containerSCC.Capabilities, refCategory.Capabilities)
+		tnf.ClaimFilePrintf("Capabilities = %s but expected %s - NOK", containerSCC.Capabilities, refCategory.Capabilities)
 	}
 	return result
 }
