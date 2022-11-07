@@ -1,5 +1,8 @@
 package securitycontextcontainer
 
+// https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/
+// api we used as a reference
+
 import (
 	"fmt"
 	"reflect"
@@ -42,21 +45,21 @@ func (okNok OkNok) String() string {
 }
 
 type ContainerSCC struct {
-	HostDirVolumePlugin    OkNok // 0 or 1 - 0 is false 1 - true
-	HostIPC                OkNok
-	HostNetwork            OkNok
-	HostPID                OkNok
-	HostPorts              OkNok
-	PrivilegeEscalation    OkNok // this can be true or false
-	PrivilegedContainer    OkNok
-	RunAsUser              OkNok
-	ReadOnlyRootFilesystem OkNok
-	RunAsNonRoot           OkNok
-	FsGroup                OkNok
-	SeLinuxContext         OkNok
-	Capabilities           string
-	HaveDropCapabilities   OkNok
-	AllVolumeAllowed       OkNok
+	HostDirVolumePluginPresent OkNok // 0 or 1 - 0 is false 1 - true
+	HostIPC                    OkNok
+	HostNetwork                OkNok
+	HostPID                    OkNok
+	HostPorts                  OkNok
+	PrivilegeEscalation        OkNok // this can be true or false
+	PrivilegedContainer        OkNok
+	RunAsUserPresent           OkNok // thes filed that checking if the value is present
+	ReadOnlyRootFilesystem     OkNok
+	RunAsNonRoot               OkNok
+	FsGroupPresent             OkNok
+	SeLinuxContextPresent      OkNok
+	Capabilities               string
+	HaveDropCapabilities       OkNok
+	AllVolumeAllowed           OkNok
 }
 
 var (
@@ -129,6 +132,7 @@ var (
 		OK}
 )
 
+// nolint[:gocritic,:gocyclo]
 func GetContainerSCC(cut *provider.Container, containerSCC ContainerSCC) ContainerSCC {
 	containerSCC.HostPorts = NOK
 	for _, aPort := range cut.Ports {
@@ -146,9 +150,8 @@ func GetContainerSCC(cut *provider.Container, containerSCC ContainerSCC) Contain
 	if cut.SecurityContext != nil && cut.SecurityContext.Privileged != nil && *(cut.SecurityContext.Privileged) {
 		containerSCC.PrivilegedContainer = OK
 	}
-	containerSCC.RunAsUser = NOK
 	if cut.SecurityContext != nil && cut.SecurityContext.RunAsUser != nil {
-		containerSCC.RunAsUser = OK
+		containerSCC.RunAsUserPresent = OK
 	}
 	containerSCC.ReadOnlyRootFilesystem = NOK
 	if cut.SecurityContext != nil && cut.SecurityContext.ReadOnlyRootFilesystem != nil && *cut.SecurityContext.ReadOnlyRootFilesystem {
@@ -158,9 +161,8 @@ func GetContainerSCC(cut *provider.Container, containerSCC ContainerSCC) Contain
 	if cut.SecurityContext != nil && cut.SecurityContext.RunAsNonRoot != nil && *cut.SecurityContext.RunAsNonRoot {
 		containerSCC.RunAsNonRoot = OK
 	}
-	containerSCC.SeLinuxContext = NOK
 	if cut.SecurityContext != nil && cut.SecurityContext.SELinuxOptions != nil {
-		containerSCC.SeLinuxContext = OK
+		containerSCC.SeLinuxContextPresent = OK
 	}
 	return containerSCC
 }
@@ -198,7 +200,7 @@ func updateCapabilities(cut *provider.Container, containerSCC *ContainerSCC) {
 	}
 }
 
-func AllVolumeAllowed(volumes []corev1.Volume) (OkNok, OkNok) {
+func AllVolumeAllowed(volumes []corev1.Volume) (r1, r2 OkNok) {
 	countVolume := 0
 	var value OkNok
 	value = NOK
@@ -283,7 +285,7 @@ func (category CategoryID) String() string {
 	return CategoryID4String
 }
 
-// //nolint:gocritic
+//nolint:gocritic
 func CheckCategory(containers []corev1.Container, containerSCC ContainerSCC, podName, nameSpace string) []PodListcategory {
 	var ContainerList []PodListcategory
 	var categoryinfo PodListcategory
@@ -297,15 +299,15 @@ func CheckCategory(containers []corev1.Container, containerSCC ContainerSCC, pod
 			Podname:       podName,
 			NameSpace:     nameSpace,
 		}
-		if compareCategory(Category1, percontainerSCC, CategoryID1) {
+		if compareCategory(&Category1, &percontainerSCC, CategoryID1) {
 			tnf.ClaimFilePrintf("Testing if pod belongs to category1 ")
 			categoryinfo.Category = CategoryID1
-		} else if compareCategory(Category1NoUID0, percontainerSCC, CategoryID1NoUID0) {
+		} else if compareCategory(&Category1NoUID0, &percontainerSCC, CategoryID1NoUID0) {
 			tnf.ClaimFilePrintf("Testing if pod belongs to category1NoUID0 ")
 			categoryinfo.Category = CategoryID1NoUID0
-		} else if compareCategory(Category2, percontainerSCC, CategoryID2) {
+		} else if compareCategory(&Category2, &percontainerSCC, CategoryID2) {
 			categoryinfo.Category = CategoryID2
-		} else if compareCategory(Category3, percontainerSCC, CategoryID3) {
+		} else if compareCategory(&Category3, &percontainerSCC, CategoryID3) {
 			categoryinfo.Category = CategoryID3
 		} else {
 			categoryinfo.Category = CategoryID4
@@ -325,7 +327,6 @@ func checkContainCategory(addCapability []corev1.Capability, categoryAddCapabili
 
 func CheckPod(pod *provider.Pod) []PodListcategory {
 	var containerSCC ContainerSCC
-	//containerSCC.HostDirVolumePlugin = NOK
 	containerSCC.HostIPC = NOK
 	if pod.Spec.HostIPC {
 		containerSCC.HostIPC = OK
@@ -338,27 +339,26 @@ func CheckPod(pod *provider.Pod) []PodListcategory {
 	if pod.Spec.HostPID {
 		containerSCC.HostPID = OK
 	}
+	containerSCC.SeLinuxContextPresent = NOK
 	if pod.Spec.SecurityContext != nil && pod.Spec.SecurityContext.SELinuxOptions != nil {
-		containerSCC.SeLinuxContext = OK
-	} else {
-		containerSCC.SeLinuxContext = NOK
+		containerSCC.SeLinuxContextPresent = OK
 	}
-	containerSCC.AllVolumeAllowed, containerSCC.HostDirVolumePlugin = AllVolumeAllowed(pod.Spec.Volumes)
+	containerSCC.AllVolumeAllowed, containerSCC.HostDirVolumePluginPresent = AllVolumeAllowed(pod.Spec.Volumes)
 	if pod.Spec.SecurityContext != nil && pod.Spec.SecurityContext.RunAsUser != nil {
-		containerSCC.RunAsUser = OK
+		containerSCC.RunAsUserPresent = OK
 	} else {
-		containerSCC.RunAsUser = NOK
+		containerSCC.RunAsUserPresent = NOK
 	}
 	if pod.Spec.SecurityContext != nil && pod.Spec.SecurityContext.FSGroup != nil {
-		containerSCC.FsGroup = OK
+		containerSCC.FsGroupPresent = OK
 	} else {
-		containerSCC.FsGroup = NOK
+		containerSCC.FsGroupPresent = NOK
 	}
 	return CheckCategory(pod.Spec.Containers, containerSCC, pod.Name, pod.Namespace)
 }
 
-//nolint:funlen
-func compareCategory(refCategory, containerSCC ContainerSCC, id CategoryID) bool {
+// nolint:[gocyclo,funlen]
+func compareCategory(refCategory, containerSCC *ContainerSCC, id CategoryID) bool {
 	result := true
 	tnf.ClaimFilePrintf("Testing if pod belongs to category %s", &id)
 	if refCategory.AllVolumeAllowed == containerSCC.AllVolumeAllowed {
@@ -367,10 +367,10 @@ func compareCategory(refCategory, containerSCC ContainerSCC, id CategoryID) bool
 		result = false
 		tnf.ClaimFilePrintf("AllVolumeAllowed = %s but expected >=<=%s -  NOK", containerSCC.AllVolumeAllowed, refCategory.AllVolumeAllowed)
 	}
-	if refCategory.RunAsUser == containerSCC.RunAsUser {
-		tnf.ClaimFilePrintf("RunAsUser = %s - OK", containerSCC.RunAsUser)
+	if refCategory.RunAsUserPresent == containerSCC.RunAsUserPresent {
+		tnf.ClaimFilePrintf("RunAsUserPresent = %s - OK", containerSCC.RunAsUserPresent)
 	} else {
-		tnf.ClaimFilePrintf("RunAsUser = %s but expected  %s - NOK", containerSCC.RunAsUser, refCategory.RunAsUser)
+		tnf.ClaimFilePrintf("RunAsUserPresent = %s but expected  %s - NOK", containerSCC.RunAsUserPresent, refCategory.RunAsUserPresent)
 		result = false
 	}
 	if refCategory.RunAsNonRoot >= containerSCC.RunAsNonRoot {
@@ -379,10 +379,10 @@ func compareCategory(refCategory, containerSCC ContainerSCC, id CategoryID) bool
 		tnf.ClaimFilePrintf("RunAsNonRoot = %s but expected  %s - NOK", containerSCC.RunAsNonRoot, refCategory.RunAsNonRoot)
 		result = false
 	}
-	if refCategory.FsGroup == containerSCC.FsGroup {
-		tnf.ClaimFilePrintf("FsGroup = %s - OK", containerSCC.FsGroup)
+	if refCategory.FsGroupPresent == containerSCC.FsGroupPresent {
+		tnf.ClaimFilePrintf("FsGroupPresent  = %s - OK", containerSCC.FsGroupPresent)
 	} else {
-		tnf.ClaimFilePrintf("FsGroup = %s but expected  %s - NOK", containerSCC.FsGroup, refCategory.FsGroup)
+		tnf.ClaimFilePrintf("FsGroupPresent  = %s but expected  %s - NOK", containerSCC.FsGroupPresent, refCategory.FsGroupPresent)
 		result = false
 	}
 	if refCategory.HaveDropCapabilities == containerSCC.HaveDropCapabilities {
@@ -392,10 +392,10 @@ func compareCategory(refCategory, containerSCC ContainerSCC, id CategoryID) bool
 		tnf.ClaimFilePrintf("its didnt have all the required (MKNOD, SETUID, SETGID, KILL)/(ALL) drop value ")
 		result = false
 	}
-	if refCategory.HostDirVolumePlugin == containerSCC.HostDirVolumePlugin {
-		tnf.ClaimFilePrintf("HostDirVolumePlugin = %s - OK", containerSCC.HostDirVolumePlugin)
+	if refCategory.HostDirVolumePluginPresent == containerSCC.HostDirVolumePluginPresent {
+		tnf.ClaimFilePrintf("HostDirVolumePluginPresent = %s - OK", containerSCC.HostDirVolumePluginPresent)
 	} else {
-		tnf.ClaimFilePrintf("HostDirVolumePlugin = %s but expected  %s - NOK", containerSCC.HostDirVolumePlugin, refCategory.HostDirVolumePlugin)
+		tnf.ClaimFilePrintf("HostDirVolumePluginPresent = %s but expected  %s - NOK", containerSCC.HostDirVolumePluginPresent, refCategory.HostDirVolumePluginPresent)
 		result = false
 	}
 	if refCategory.HostIPC >= containerSCC.HostIPC {
@@ -440,12 +440,11 @@ func compareCategory(refCategory, containerSCC ContainerSCC, id CategoryID) bool
 		result = false
 		tnf.ClaimFilePrintf("ReadOnlyRootFilesystem = %s but expected <= %s - NOK", containerSCC.ReadOnlyRootFilesystem, refCategory.ReadOnlyRootFilesystem)
 	}
-	if refCategory.SeLinuxContext == containerSCC.SeLinuxContext {
-		tnf.ClaimFilePrintf("SeLinuxContext is not nil - OK")
+	if refCategory.SeLinuxContextPresent == containerSCC.SeLinuxContextPresent {
+		tnf.ClaimFilePrintf("SeLinuxContextPresent  is not nil - OK")
 	} else {
 		result = false
-		tnf.ClaimFilePrintf("SeLinuxContext = %s but expected  %s - NOK", containerSCC.SeLinuxContext, refCategory.SeLinuxContext)
-		tnf.ClaimFilePrintf("SeLinuxContext expected to be non nil")
+		tnf.ClaimFilePrintf("SeLinuxContextPresent  = %s but expected  %s expected to be non nil - NOK", containerSCC.SeLinuxContextPresent, refCategory.SeLinuxContextPresent)
 	}
 	if refCategory.Capabilities != containerSCC.Capabilities {
 		result = false

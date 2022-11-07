@@ -11,7 +11,7 @@ import (
 )
 
 func TestCheckPod(t *testing.T) {
-	runAs := int64(2000)
+	runAs := int64(20000)
 	allopiv := true
 	testCases := []struct {
 		testSlice     *provider.Pod
