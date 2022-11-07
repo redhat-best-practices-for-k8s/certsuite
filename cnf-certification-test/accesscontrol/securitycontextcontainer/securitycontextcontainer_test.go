@@ -12,13 +12,13 @@ import (
 
 func TestCheckPod(t *testing.T) {
 	runAs := int64(20000)
-	allopiv := true
+
 	testCases := []struct {
 		testSlice     *provider.Pod
 		expectedSlice []PodListcategory
 	}{
 		{
-			testSlice: createPod(runAs, allopiv, "KILL", "MKNOD", "SETUID", "SETGID"),
+			testSlice: createPod(runAs, false, true, []corev1.Capability{"KILL", "MKNOD", "SETUID", "SETGID"},[]corev1.Capability{}),
 			expectedSlice: []PodListcategory{{
 				Containername: "test",
 				Podname:       "test",
@@ -27,7 +27,34 @@ func TestCheckPod(t *testing.T) {
 			}},
 		},
 		{
-			testSlice: createPod(runAs, allopiv, "AAA", "MKNOD", "SETUID", "SETGID"),
+			testSlice: createPod(runAs, true, true, []corev1.Capability{"KILL", "MKNOD", "SETUID", "SETGID"},[]corev1.Capability{}),
+			expectedSlice: []PodListcategory{{
+				Containername: "test",
+				Podname:       "test",
+				NameSpace:     "tnf",
+				Category:      CategoryID1NoUID0,
+			}},
+		},
+				{
+			testSlice: createPod(runAs, false, true, []corev1.Capability{"KILL", "MKNOD", "SETUID", "SETGID"}, []corev1.Capability{"NET_ADMIN", "NET_RAW"}),
+			expectedSlice: []PodListcategory{{
+				Containername: "test",
+				Podname:       "test",
+				NameSpace:     "tnf",
+				Category:      CategoryID2,
+			}},
+		},
+		{
+			testSlice: createPod(runAs, false, true, []corev1.Capability{"KILL", "MKNOD", "SETUID", "SETGID"}, []corev1.Capability{"IPC_LOCK", "NET_ADMIN", "NET_RAW"}),
+			expectedSlice: []PodListcategory{{
+				Containername: "test",
+				Podname:       "test",
+				NameSpace:     "tnf",
+				Category:      CategoryID3,
+			}},
+		},
+		{
+			testSlice: createPod(runAs, true, true, []corev1.Capability{"AAA", "MKNOD", "SETUID", "SETGID"},[]corev1.Capability{}),
 			expectedSlice: []PodListcategory{{
 				Containername: "test",
 				Podname:       "test",
@@ -43,7 +70,7 @@ func TestCheckPod(t *testing.T) {
 	}
 }
 
-func createPod(runAs int64, allopiv bool, st1, st2, st3, st4 string) *provider.Pod {
+func createPod(runAs int64, RunAsNonRootParam,AllowPrivilegeEscalationParam  bool, drop, add []corev1.Capability) *provider.Pod {
 	return &provider.Pod{
 		Pod: &corev1.Pod{
 			ObjectMeta: metav1.ObjectMeta{
@@ -63,17 +90,15 @@ func createPod(runAs int64, allopiv bool, st1, st2, st3, st4 string) *provider.P
 					{
 						Name: "test",
 						SecurityContext: &corev1.SecurityContext{
-							AllowPrivilegeEscalation: &allopiv,
+							AllowPrivilegeEscalation: &AllowPrivilegeEscalationParam,
 							Capabilities: &corev1.Capabilities{
-								Drop: []corev1.Capability{
-									corev1.Capability(st1), corev1.Capability(st2), corev1.Capability(st3),
-									corev1.Capability(st4),
-								},
+								Drop: []corev1.Capability(drop),
+								Add: []corev1.Capability(add),
 							},
 							SELinuxOptions: &corev1.SELinuxOptions{
 								Level: "s0:c123,c456",
 							},
-							RunAsNonRoot: &allopiv,
+							RunAsNonRoot: &RunAsNonRootParam,
 						},
 					},
 				},

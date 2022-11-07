@@ -67,69 +67,73 @@ var (
 	dropAll                  = []string{"ALL"}
 	category2AddCapabilities = []string{"NET_ADMIN, NET_RAW"}
 	category3AddCapabilities = []string{"NET_ADMIN, NET_RAW, IPC_LOCK"}
-	Category1                = ContainerSCC{NOK,
-		NOK,
-		NOK,
-		NOK,
-		NOK,
-		OK,
-		NOK,
-		OK,
-		NOK,
-		OK,
-		OK,
-		OK,
-		category1,
-		OK,
-		OK}
+	Category1                = ContainerSCC{
+		NOK, //HostDirVolumePluginPresent
+		NOK, //HostIPC
+		NOK, //HostNetwork
+		NOK, //HostPID
+		NOK, //HostPorts
+		OK, //PrivilegeEscalation
+		NOK, //PrivilegedContainer
+		OK, //RunAsUserPresent
+		NOK, //ReadOnlyRootFilesystem
+		NOK, //RunAsNonRoot
+		OK, //FsGroupPresent
+		OK, //SeLinuxContextPresent
+		category1,//Capabilities
+		OK, //HaveDropCapabilities
+		OK} //AllVolumeAllowed
 
-	Category1NoUID0 = ContainerSCC{NOK,
-		NOK,
-		NOK,
-		NOK,
-		NOK,
-		OK,
-		NOK,
-		NOK,
-		NOK,
-		NOK,
-		OK,
-		OK,
-		category1,
-		OK,
-		OK}
+	Category1NoUID0 = ContainerSCC{
+		NOK, //HostDirVolumePluginPresent
+		NOK, //HostIPC
+		NOK, //HostNetwork
+		NOK, //HostPID
+		NOK, //HostPorts
+		OK, //PrivilegeEscalation
+		NOK, //PrivilegedContainer
+		OK, //RunAsUserPresent
+		NOK, //ReadOnlyRootFilesystem
+		OK, //RunAsNonRoot
+		OK, //FsGroupPresent
+		OK, //SeLinuxContextPresent
+		category1,//Capabilities
+		OK, //HaveDropCapabilities
+		OK} //AllVolumeAllowed
 
-	Category2 = ContainerSCC{NOK,
-		NOK,
-		NOK,
-		NOK,
-		NOK,
-		OK,
-		NOK,
-		OK,
-		NOK,
-		OK,
-		OK,
-		OK,
-		"category2",
-		OK,
-		OK}
+	Category2 = ContainerSCC{
+		NOK, //HostDirVolumePluginPresent
+		NOK, //HostIPC
+		NOK, //HostNetwork
+		NOK, //HostPID
+		NOK, //HostPorts
+		OK, //PrivilegeEscalation
+		NOK, //PrivilegedContainer
+		OK, //RunAsUserPresent
+		NOK, //ReadOnlyRootFilesystem
+		OK, //RunAsNonRoot
+		OK, //FsGroupPresent
+		OK, //SeLinuxContextPresent
+		"category2",//Capabilities
+		OK, //HaveDropCapabilities
+		OK} //AllVolumeAllowed
 
-	Category3 = ContainerSCC{NOK,
-		NOK,
-		NOK,
-		NOK,
-		NOK,
-		OK,
-		NOK,
-		OK,
-		NOK,
-		OK,
-		OK,
-		OK,
-		"category3",
-		OK,
-		OK}
+	Category3 = ContainerSCC{
+		NOK, //HostDirVolumePluginPresent
+		NOK, //HostIPC
+		NOK, //HostNetwork
+		NOK, //HostPID
+		NOK, //HostPorts
+		OK, //PrivilegeEscalation
+		NOK, //PrivilegedContainer
+		OK, //RunAsUserPresent
+		NOK, //ReadOnlyRootFilesystem
+		OK, //RunAsNonRoot
+		OK, //FsGroupPresent
+		OK, //SeLinuxContextPresent
+		"category3",//Capabilities
+		OK, //HaveDropCapabilities
+		OK} //AllVolumeAllowed
 )
 
 //nolint:gocritic,gocyclo
