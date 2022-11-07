@@ -26,7 +26,7 @@ const (
 
 	SecConNonRootUserRemediation = `Change the pod and containers "runAsUser" uid to something other than root(0)`
 
-	SecConRemediation = `Change the secutiry context to be one of the 4 that are allowed on the documentation section 4.5`
+	SecConRemediation = `Change the security context to be one of the 4 that are allowed on the documentation section 4.5`
 
 	UnalteredBaseImageRemediation = `Ensure that Container applications do not modify the Container Base Image.  In particular, ensure that the following
 	directories are not modified:

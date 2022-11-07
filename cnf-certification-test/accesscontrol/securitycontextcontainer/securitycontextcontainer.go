@@ -113,7 +113,7 @@ func GetContainerSCC(cut *provider.Container, containerSCC ContainerSCC) Contain
 			break
 		}
 	}
-	containerSCC = updateCapabilities(cut, containerSCC)
+	updateCapabilities(cut, &containerSCC)
 	if cut.SecurityContext != nil && cut.SecurityContext.AllowPrivilegeEscalation != nil {
 		logrus.Info("PrivilegeEscalation is true")
 		containerSCC.PrivilegeEscalation = true
@@ -141,7 +141,7 @@ func GetContainerSCC(cut *provider.Container, containerSCC ContainerSCC) Contain
 	return containerSCC
 }
 
-func updateCapabilities(cut *provider.Container, containerSCC ContainerSCC) ContainerSCC {
+func updateCapabilities(cut *provider.Container, containerSCC *ContainerSCC) {
 	containerSCC.HaveDropCapabilities = false
 	if cut.SecurityContext != nil && cut.SecurityContext.Capabilities != nil {
 		var sliceDropCapabilities []string
@@ -175,7 +175,6 @@ func updateCapabilities(cut *provider.Container, containerSCC ContainerSCC) Cont
 	} else {
 		containerSCC.Capabilities = category1
 	}
-	return containerSCC
 }
 
 func AllVolumeAllowed(volumes []corev1.Volume) bool {
