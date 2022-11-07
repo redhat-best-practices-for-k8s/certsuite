@@ -228,11 +228,11 @@ func (category PodListcategory) String() string {
 }
 
 const (
-	CategoryID1String       = "CategoryID1"
-	CategoryID1NoUID0String = "CategoryID1NoUID0"
-	CategoryID2String       = "CategoryID2"
-	CategoryID3String       = "CategoryID3"
-	CategoryID4String       = "OtherTypes"
+	CategoryID1String       = "CategoryID1(limited access granted automatically)"
+	CategoryID1NoUID0String = "CategoryID1NoUID0(automatically granted, basic rights with mesh networks)"
+	CategoryID2String       = "CategoryID2(advanced networking (vlan tag, dscp, priority))"
+	CategoryID3String       = "CategoryID3(SRIOV and DPDK)"
+	CategoryID4String       = "CategoryID4(anything not matching previous category)"
 )
 
 // print the strings

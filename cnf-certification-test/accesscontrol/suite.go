@@ -640,7 +640,7 @@ func testContainerSCC(env *provider.TestEnvironment) {
 		}
 	}
 	tnf.ClaimFilePrintf("list of goodContainer that are Category1 or CategoryNOUID0  %+v \n", goodContainer)
-	tnf.ClaimFilePrintf("list of badContainers that are not from Category1 or CategoryINNOUID0  %+v \n", badContainer)
-	tnf.ClaimFilePrintf("high level of category %s \n", highLevelCat)
+	tnf.ClaimFilePrintf("list of badContainers that are not from Category1 or CategoryNoUID0  %+v \n", badContainer)
+	tnf.ClaimFilePrintf("CNF category (highest container category across all containers):  %s \n", highLevelCat)
 	testhelper.AddTestResultLog("Non-compliant", badContainer, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
