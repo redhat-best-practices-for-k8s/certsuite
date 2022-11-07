@@ -20,7 +20,9 @@ certifiedoperatorinfo:
 acceptedKernelTaints:
   - module: "taint1"
   - module: "taint2"
-skipScalingTestDeploymentNames:
+skipScalingTestDeployments:
   - name: "deployment1"
+    namespace: "tnf"
 skipScalingTestStatefulSetNames:
   - name: "statefulset1"
+    namespace: "tnf"

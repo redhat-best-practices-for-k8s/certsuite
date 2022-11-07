@@ -274,7 +274,7 @@ func testPodNodeSelectorAndAffinityBestPractices(env *provider.TestEnvironment) 
 	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
-func nameInDeploymentSkipList(name, namespace string, list []configuration.SkipScalingTestDeploymentNamesInfo) bool {
+func nameInDeploymentSkipList(name, namespace string, list []configuration.SkipScalingTestDeploymentsInfo) bool {
 	for _, l := range list {
 		if name == l.Name && namespace == l.Namespace {
 			return true
@@ -283,7 +283,7 @@ func nameInDeploymentSkipList(name, namespace string, list []configuration.SkipS
 	return false
 }
 
-func nameInStatefulSetSkipList(name, namespace string, list []configuration.SkipScalingTestStatefulSetNamesInfo) bool {
+func nameInStatefulSetSkipList(name, namespace string, list []configuration.SkipScalingTestStatefulSetsInfo) bool {
 	for _, l := range list {
 		if name == l.Name && namespace == l.Namespace {
 			return true
@@ -299,8 +299,8 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration)
 	failedDeployments := []string{}
 	for i := range env.Deployments {
 		// Skip deployment if it is allowed by config
-		if nameInDeploymentSkipList(env.Deployments[i].Name, env.Deployments[i].Namespace, env.Config.SkipScalingTestDeploymentNames) {
-			logrus.Debugf("%s is being skipped due to configuration setting", env.Deployments[i].String())
+		if nameInDeploymentSkipList(env.Deployments[i].Name, env.Deployments[i].Namespace, env.Config.SkipScalingTestDeployments) {
+			tnf.ClaimFilePrintf("%s is being skipped due to configuration setting", env.Deployments[i].String())
 			continue
 		}
 
@@ -336,8 +336,8 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 	failedStatefulSets := []string{}
 	for i := range env.StatefulSets {
 		// Skip statefulset if it is allowed by config
-		if nameInStatefulSetSkipList(env.StatefulSets[i].Name, env.StatefulSets[i].Namespace, env.Config.SkipScalingTestStatefulSetNames) {
-			logrus.Debugf("%s is being skipped due to configuration setting", env.StatefulSets[i].String())
+		if nameInStatefulSetSkipList(env.StatefulSets[i].Name, env.StatefulSets[i].Namespace, env.Config.SkipScalingTestStatefulSets) {
+			tnf.ClaimFilePrintf("%s is being skipped due to configuration setting", env.StatefulSets[i].String())
 			continue
 		}
 
