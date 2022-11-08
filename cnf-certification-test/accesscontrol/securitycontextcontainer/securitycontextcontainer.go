@@ -152,7 +152,7 @@ var (
 // print the strings
 func (category PodListcategory) String() string {
 	returnString := fmt.Sprintf("Containername: %s Podname: %s NameSpace: %s Category: %s \n ",
-		category.Containername, category.Podname, category.Podname, category.Category)
+		category.Containername, category.Podname, category.NameSpace, category.Category)
 	return returnString
 }
 
