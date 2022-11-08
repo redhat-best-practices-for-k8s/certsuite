@@ -19,6 +19,7 @@ package clientsholder
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"time"
 
 	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
@@ -138,17 +139,45 @@ func GetClientsHolder(filenames ...string) *ClientsHolder {
 	return clientsHolder
 }
 
+// createTempFile is a helper function to create a temporary file in the
+// system's tmp folder. If the system doesn't have a tmp folder mounted,
+// as in many containers, use app's directory as a failover.
+func createTempFile(prefix string) (file *os.File, err error) {
+	tmpDir := os.TempDir()
+
+	// Make sure the temp folder exists.
+	_, err = os.Stat(tmpDir)
+	if err != nil {
+		// tmp folder may not exist in this system: use app's directory
+		// as fallthrough.
+		var appPath string
+		appPath, err = os.Executable()
+		if err != nil {
+			return nil, fmt.Errorf("failed to get current app's path: %s", err)
+		}
+		tmpDir = filepath.Dir(appPath)
+		logrus.Debugf("tnf app path: %s", tmpDir)
+	}
+
+	file, err = os.CreateTemp(tmpDir, prefix)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create temporary file in %s: %w", tmpDir, err)
+	}
+
+	return file, nil
+}
+
 // createMergedKubeConfigFile creates a merged kube config file in the system's
 // temporary folder, e.g.: /tmp/tnf-merged-kubeconfig-730845179
 func createMergedKubeConfigFile(kubeConfig *clientcmdapi.Config) (filePath string, err error) {
-	file, err := os.CreateTemp("", "tnf-merged-kubeconfig-*")
-	if err != nil {
-		return "", fmt.Errorf("failed to create temporary file: %w", err)
-	}
-
 	yamlBytes, err := clientcmd.Write(*kubeConfig)
 	if err != nil {
 		return "", fmt.Errorf("failed to generate yaml bytes from kubeconfig: %w", err)
+	}
+
+	file, err := createTempFile("tnf-merged-kubeconfig-*")
+	if err != nil {
+		return "", fmt.Errorf("failed to create temp file: %s", err)
 	}
 
 	_, err = file.Write(yamlBytes)
