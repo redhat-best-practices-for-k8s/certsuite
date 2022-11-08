@@ -169,6 +169,7 @@ func TestTest(t *testing.T) {
 	configurations, err := claimhelper.MarshalConfigurations()
 	if err != nil {
 		log.Errorf("Configuration node missing because of: %s", err)
+		t.FailNow()
 	}
 
 	claimData.Nodes = claimhelper.GenerateNodes()
