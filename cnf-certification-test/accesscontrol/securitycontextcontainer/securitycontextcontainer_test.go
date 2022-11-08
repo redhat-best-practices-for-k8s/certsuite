@@ -19,6 +19,7 @@ func TestCheckPod(t *testing.T) {
 		expectedSlice []PodListcategory
 	}{
 		{
+			// Category 1 - pass
 			testSlice: createPod(runAs, false, true, []corev1.Capability{"KILL", "MKNOD", "SETUID", "SETGID"}, []corev1.Capability{}),
 			expectedSlice: []PodListcategory{{
 				Containername: "test",
@@ -28,6 +29,7 @@ func TestCheckPod(t *testing.T) {
 			}},
 		},
 		{
+			// Category 1 no UIOD0 - pass
 			testSlice: createPod(runAs2, true, true, []corev1.Capability{"KILL", "MKNOD", "SETUID", "SETGID"}, []corev1.Capability{}),
 			expectedSlice: []PodListcategory{{
 				Containername: "test",
@@ -37,6 +39,7 @@ func TestCheckPod(t *testing.T) {
 			}},
 		},
 		{
+			// Category 2 - pass
 			testSlice: createPod(runAs, false, true, []corev1.Capability{"KILL", "MKNOD", "SETUID", "SETGID"}, []corev1.Capability{"NET_ADMIN", "NET_RAW"}),
 			expectedSlice: []PodListcategory{{
 				Containername: "test",
@@ -46,6 +49,7 @@ func TestCheckPod(t *testing.T) {
 			}},
 		},
 		{
+			// category 3 - pass
 			testSlice: createPod(runAs, false, true, []corev1.Capability{"KILL", "MKNOD", "SETUID", "SETGID"}, []corev1.Capability{"IPC_LOCK", "NET_ADMIN", "NET_RAW"}),
 			expectedSlice: []PodListcategory{{
 				Containername: "test",
@@ -55,14 +59,44 @@ func TestCheckPod(t *testing.T) {
 			}},
 		},
 		{
-			testSlice: createPod(runAs2, true, false, []corev1.Capability{"AAA", "MKNOD", "SETUID", "SETGID"}, []corev1.Capability{}),
+			// Fail due to required drop capabilities missing
+			testSlice: createPod(runAs2, false, true, []corev1.Capability{"SYS_TIME", "MKNOD", "SETUID", "SETGID"}, []corev1.Capability{}),
 			expectedSlice: []PodListcategory{{
 				Containername: "test",
 				Podname:       "test",
 				NameSpace:     "tnf",
 				Category:      CategoryID4,
 			}},
-			// its a failed one
+		},
+		{
+			// Category 1 - passing with extra drop capabilities
+			testSlice: createPod(runAs2, false, true, []corev1.Capability{"SYS_TIME", "KILL", "MKNOD", "SETUID", "SETGID"}, []corev1.Capability{}),
+			expectedSlice: []PodListcategory{{
+				Containername: "test",
+				Podname:       "test",
+				NameSpace:     "tnf",
+				Category:      CategoryID1,
+			}},
+		},
+		{
+			// Category 1 - passing with ALL drop capabilities
+			testSlice: createPod(runAs2, false, true, []corev1.Capability{"ALL"}, []corev1.Capability{}),
+			expectedSlice: []PodListcategory{{
+				Containername: "test",
+				Podname:       "test",
+				NameSpace:     "tnf",
+				Category:      CategoryID1,
+			}},
+		},
+		{
+			// Category 1 - pass with no privilege escalation
+			testSlice: createPod(runAs, false, false, []corev1.Capability{"KILL", "MKNOD", "SETUID", "SETGID"}, []corev1.Capability{}),
+			expectedSlice: []PodListcategory{{
+				Containername: "test",
+				Podname:       "test",
+				NameSpace:     "tnf",
+				Category:      CategoryID1,
+			}},
 		},
 	}
 
