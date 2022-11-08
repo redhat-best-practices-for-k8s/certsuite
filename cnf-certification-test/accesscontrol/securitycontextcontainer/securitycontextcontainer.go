@@ -228,7 +228,7 @@ func updateCapabilitiesFromContainer(cut *provider.Container, containerSCC *Cont
 		sort.Strings(sliceDropCapabilities)
 
 		sort.Strings(requiredDropCapabilities)
-		if reflect.DeepEqual(sliceDropCapabilities, requiredDropCapabilities) || reflect.DeepEqual(sliceDropCapabilities, dropAll) {
+		if subslice(requiredDropCapabilities, sliceDropCapabilities) || reflect.DeepEqual(sliceDropCapabilities, dropAll) {
 			containerSCC.RequiredDropCapabilitiesPresent = OK
 		}
 
@@ -250,7 +250,25 @@ func updateCapabilitiesFromContainer(cut *provider.Container, containerSCC *Cont
 		containerSCC.CapabilitiesCategory = CategoryID1
 	}
 }
-
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
+}
+func subslice(s1, s2 []string) bool {
+	if len(s1) > len(s2) {
+		return false
+	}
+	for _, e := range s1 {
+		if !contains(s2, e) {
+			return false
+		}
+	}
+	return true
+}
 func AllVolumeAllowed(volumes []corev1.Volume) (r1, r2 OkNok) {
 	countVolume := 0
 	var value OkNok
