@@ -1,1137 +1,6 @@
 {
   "data": [
     {
-      "_id": "634f661d4b6c281902e9b90f",
-      "alm_examples": [
-        {
-          "api_version": "fep.fujitsu.io/v1",
-          "kind": "FEPAction",
-          "metadata": {
-            "name": "new-fep-action"
-          },
-          "spec": {
-            "fepAction": {
-              "args": [
-                "new-fep-sts-0",
-                "new-fep-sts-1"
-              ],
-              "type": "reload"
-            },
-            "sysExtraLogging": false,
-            "targetClusterName": "new-fep"
-          }
-        },
-        {
-          "api_version": "fep.fujitsu.io/v1",
-          "kind": "FEPExporter",
-          "metadata": {
-            "name": "new-fep-exporter"
-          },
-          "spec": {
-            "fepExporter": {
-              "exporterLogLevel": "error",
-              "fepClusterList": [
-                "new-fep1"
-              ],
-              "image": {
-                "pullPolicy": "IfNotPresent"
-              },
-              "mcSpec": {
-                "limits": {
-                  "cpu": "500m",
-                  "memory": "700Mi"
-                },
-                "requests": {
-                  "cpu": "200m",
-                  "memory": "512Mi"
-                }
-              },
-              "restartRequired": false,
-              "sysExtraLogging": false,
-              "userCustomQueries": "usr_example:\n  query: \"SELECT EXTRACT(EPOCH FROM (now() - pg_last_xact_replay_timestamp())) as lag\"\n  master: true\n  metrics:\n    - lag:\n        usage: \"GAUGE\"\n        description: \"Replication lag behind master in seconds\""
-            }
-          }
-        },
-        {
-          "api_version": "fep.fujitsu.io/v1",
-          "kind": "FEPPgpool2",
-          "metadata": {
-            "name": "new-fep-pgpool2"
-          },
-          "spec": {
-            "count": 2,
-            "customhba": "local   all         all                               trust\nhost    all         all         127.0.0.1/32          trust\nhost    all         all         ::1/128               trust\n",
-            "customlogsize": "128Mi",
-            "customparams": "listen_addresses = '*'\npcp_listen_addresses = '*'\nnum_init_children = 32\nreserved_connections = 0\nenable_pool_hba = off\nallow_clear_text_frontend_auth = off\nauthentication_timeout = 80\nbackend_weight0 = 1\nbackend_weight1 = 1\nbackend_flag0 = 'ALWAYS_PRIMARY'\nbackend_flag1 = 'DISALLOW_TO_FAILOVER'\nconnection_cache = on\nmax_pool = 4\nlisten_backlog_multiplier = 2\nserialize_accept = off\nchild_life_time = 300\nclient_idle_limit = 0\nchild_max_connections = 0\nconnection_life_time = 0\nreset_query_list = 'ABORT; DISCARD ALL'\nclient_min_messages = info\nlog_min_messages = debug1\nlog_statement = on\nlog_per_node_statement = on\nlog_client_messages = on\nlog_hostname = on\nlog_connections = on\nlog_line_prefix = '%t: pid %p: '\nload_balance_mode = on\nignore_leading_white_space = on\nwhite_function_list = ''\nblack_function_list = 'currval,lastval,nextval,setval'\nblack_query_pattern_list = ''\ndatabase_redirect_preference_list = ''\napp_name_redirect_preference_list = ''\nallow_sql_comments = off\ndisable_load_balance_on_write = 'transaction'\nstatement_level_load_balance = on\nsr_check_period = 0\nsr_check_user = 'postgres'\ndelay_threshold = 0\nlog_standby_delay = 'none'\nssl = on\nssl_ciphers = 'HIGH:MEDIUM:+3DES:!aNULL'\nssl_prefer_server_ciphers = off\nssl_ecdh_curve = 'prime256v1'\nssl_dh_params_file = ''\nrelcache_expire = 0\nrelcache_size = 256\ncheck_temp_table = catalog\ncheck_unlogged_table = on\nenable_shared_relcache = on\nrelcache_query_target = primary\nwd_port0 = 9000\nfailover_on_backend_error = off\n",
-            "custompcp": "none",
-            "customsslcacert": "none",
-            "customsslcert": "-----BEGIN CERTIFICATE-----\nMIIDTzCCAjegAwIBAgIUYssQ8I74US5g+1+Z7CHuaDgkZnEwDQYJKoZIhvcNAQEL\nBQAwNzEQMA4GA1UECgwHRnVqaXRzdTEjMCEGA1UEAwwaRkVQIFJvb3QgQ0EgZm9y\nIEt1YmVybmV0ZXMwHhcNMjEwMjA2MDM1MjI4WhcNMzEwMjA0MDM1MjI4WjA3MRAw\nDgYDVQQKDAdGdWppdHN1MSMwIQYDVQQDDBpGRVAgUm9vdCBDQSBmb3IgS3ViZXJu\nZXRlczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMs97gUF0xkUzCgL\n7MiiDju9ySr/ziwjvcYU7jA9ML+SLmftMs3HtcYbAmSntqI+MDBSR/FAJTOoytuT\npV+mCFcGj2YAjDpliHPeNcUpbryy4YMChF3+MovkIwGCksxo5rhiWhGmoBYpA48P\n4Xe8SPlzqMzhFvNeKzyiUhvjutS2Y1Ss38lsTaurFPx64vQ2PaC54XzdwMptXtpb\ntYmWSzCpJWwxZ6lF3vitdA2w0tnBWNyctAd0+RIM/fvArxiIqseAux9t0uogm5to\nlRIhvekuxOpXBPEqtIYQ4j9XUW2JH8vUDnzPkPvjrq+A3Ug8OyyfGVrW7+VYXozu\nc4aP7P0CAwEAAaNTMFEwHQYDVR0OBBYEFBzCutQ7S74WEhS5V2sNEJBGyLpmMB8G\nA1UdIwQYMBaAFBzCutQ7S74WEhS5V2sNEJBGyLpmMA8GA1UdEwEB/wQFMAMBAf8w\nDQYJKoZIhvcNAQELBQADggEBAMDwD85RAaWEBptFgLzKw+9xEUy1vcZaonAuA1qc\nT342XTueyAugxkC11HwdCGgGS34VyctfMGqj4AW6pA2ez4tLrbOps4DmV4sw8uBL\n8pgRDgfly3ob9FEg2wa0hmrwX9jH5Bt4vySUE2785uPAqaspT2UNtTBxS85BUi1T\nsKId2Rtil6an281Z81wyWVI6Jm2D4MG0mbsiGcTPlCtdg/UljvDYymXlAvd4vNhl\nk9hDa13TgDqJKgKdTIcmZoNQdpEVgFcO0h9AEUy5AuLqxHq60dLfZ6ESGPlMI7Lm\ni4PzYbCnBmOe+7TnHcPSyrnehs66Ik+oifRd82eYS7vKjFw=\n-----END CERTIFICATE-----",
-            "customsslkey": "none",
-            "fepclustername": "new-fep",
-            "imagePullPolicy": "IfNotPresent",
-            "limits": {
-              "cpu": "400m",
-              "memory": "512Mi"
-            },
-            "requests": {
-              "cpu": "200m",
-              "memory": "256Mi"
-            },
-            "serviceport": 9999,
-            "statusport": 9898
-          }
-        },
-        {
-          "api_version": "fep.fujitsu.io/v1",
-          "kind": "FEPRestore",
-          "metadata": {
-            "name": "new-fep-restore"
-          },
-          "spec": {
-            "fromFEPcluster": "new-fep",
-            "imagePullPolicy": "IfNotPresent",
-            "mcSpec": {
-              "limits": {
-                "cpu": "200m",
-                "memory": "300Mi"
-              },
-              "requests": {
-                "cpu": "100m",
-                "memory": "200Mi"
-              }
-            },
-            "restoretype": "latest",
-            "sysExtraLogging": false,
-            "toFEPcluster": "new-fep-2"
-          }
-        },
-        {
-          "api_version": "fep.fujitsu.io/v2",
-          "kind": "FEPCluster",
-          "metadata": {
-            "name": "new-fep"
-          },
-          "spec": {
-            "fep": {
-              "customAnnotations": {
-                "allDeployments": {}
-              },
-              "forceSsl": true,
-              "image": {
-                "pullPolicy": "IfNotPresent"
-              },
-              "instances": 1,
-              "mcSpec": {
-                "limits": {
-                  "cpu": "500m",
-                  "memory": "700Mi"
-                },
-                "requests": {
-                  "cpu": "200m",
-                  "memory": "512Mi"
-                }
-              },
-              "podAntiAffinity": false,
-              "podDisruptionBudget": false,
-              "servicePort": 27500,
-              "syncMode": "off",
-              "sysExtraLogging": false
-            },
-            "fepChildCrVal": {
-              "backup": {
-                "image": {
-                  "pullPolicy": "IfNotPresent"
-                },
-                "mcSpec": {
-                  "limits": {
-                    "cpu": 0.2,
-                    "memory": "300Mi"
-                  },
-                  "requests": {
-                    "cpu": 0.1,
-                    "memory": "200Mi"
-                  }
-                },
-                "pgbackrestParams": "# if log volume is not defined, log_directory should be\n# changed to '/database/userdata/data/log'\n[global]\nrepo1-retention-full=7\nrepo1-retention-full-type=time\nlog-path=/database/log/backup\n",
-                "postScript": " ",
-                "preScript": " ",
-                "schedule": {
-                  "num": 2
-                },
-                "schedule1": {
-                  "schedule": "15 0 * * 0",
-                  "type": "full"
-                },
-                "schedule2": {
-                  "schedule": "15 0 * * 1-6",
-                  "type": "incr"
-                },
-                "schedule3": {
-                  "schedule": " ",
-                  "type": " "
-                },
-                "schedule4": {
-                  "schedule": " ",
-                  "type": " "
-                },
-                "schedule5": {
-                  "schedule": " ",
-                  "type": " "
-                }
-              },
-              "customPgAudit": "# define pg audit custom params here to override defaults.\n# if log volume is not defined, log_directory should be\n# changed to '/database/userdata/data/log'\n[output]\nlogger = 'auditlog'\nlog_directory = '/database/log/audit'\nlog_truncate_on_rotation = on\nlog_filename = 'pgaudit-%a.log'\nlog_rotation_age = 1d\nlog_rotation_size = 0\n[rule]\n",
-              "customPgHba": "# define pg_hba custom rules here to be merged with default rules.\n# TYPE     DATABASE        USER        ADDRESS        METHOD\n",
-              "customPgParams": "# define custom postgresql.conf parameters below to override defaults.\n# Current values are as per default FEP deployment\nshared_preload_libraries='pgx_datamasking,pg_prewarm,pg_stat_statements'\nsession_preload_libraries='pg_prewarm'\nmax_prepared_transactions = 100\nmax_worker_processes = 30\nmax_connections = 100\nwork_mem = 1MB\nmaintenance_work_mem = 12MB\nshared_buffers = 128MB\neffective_cache_size = 384MB\ncheckpoint_completion_target = 0.8\n# tcp parameters\ntcp_keepalives_idle = 30\ntcp_keepalives_interval = 10\ntcp_keepalives_count = 3\n# logging parameters in default fep installation\n# if log volume is not defined, log_directory should be\n# changed to '/database/userdata/data/log'\nlog_directory = '/database/log'\nlog_filename = 'logfile-%a.log'\nlog_file_mode = 0600\nlog_truncate_on_rotation = on\nlog_rotation_age = 1d\nlog_rotation_size = 0\nlog_checkpoints = on\nlog_line_prefix = '%e %t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h'\nlog_lock_waits = on\nlog_autovacuum_min_duration = 60s\nlogging_collector = on\npgaudit.config_file='/opt/app-root/src/pgaudit-cfg/pgaudit.conf'\nlog_replication_commands = on\nlog_min_messages = WARNING\nlog_destination = stderr\n# wal_archive parameters in default fep installation\narchive_mode = on\narchive_command = 'pgbackrest --stanza=backupstanza --config=/database/userdata/pgbackrest.conf archive-push %p'\nwal_level = replica\nmax_wal_senders = 12\nwal_keep_segments = 64\ntrack_activities = on\ntrack_counts = on\n",
-              "storage": {
-                "archivewalVol": {
-                  "size": "1Gi"
-                },
-                "backupVol": {
-                  "size": "2Gi"
-                },
-                "dataVol": {
-                  "size": "2Gi"
-                },
-                "logVol": {
-                  "size": "1Gi"
-                },
-                "tablespaceVol": {
-                  "size": "512Mi"
-                },
-                "walVol": {
-                  "size": "1200Mi"
-                }
-              },
-              "sysUsers": {
-                "pgAdminPassword": "admin-password",
-                "pgRewindPassword": "rewind_password",
-                "pgRewindUser": "rewind_user",
-                "pgdb": "mydb",
-                "pgpassword": "mydbpassword",
-                "pgreplpassword": "repluserpwd",
-                "pgrepluser": "repluser",
-                "pguser": "mydbuser",
-                "tdepassphrase": "tde-passphrase"
-              },
-              "systemCertificates": {
-                "cacrt": "-----BEGIN CERTIFICATE-----\nMIIDTzCCAjegAwIBAgIUYssQ8I74US5g+1+Z7CHuaDgkZnEwDQYJKoZIhvcNAQEL\nBQAwNzEQMA4GA1UECgwHRnVqaXRzdTEjMCEGA1UEAwwaRkVQIFJvb3QgQ0EgZm9y\nIEt1YmVybmV0ZXMwHhcNMjEwMjA2MDM1MjI4WhcNMzEwMjA0MDM1MjI4WjA3MRAw\nDgYDVQQKDAdGdWppdHN1MSMwIQYDVQQDDBpGRVAgUm9vdCBDQSBmb3IgS3ViZXJu\nZXRlczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMs97gUF0xkUzCgL\n7MiiDju9ySr/ziwjvcYU7jA9ML+SLmftMs3HtcYbAmSntqI+MDBSR/FAJTOoytuT\npV+mCFcGj2YAjDpliHPeNcUpbryy4YMChF3+MovkIwGCksxo5rhiWhGmoBYpA48P\n4Xe8SPlzqMzhFvNeKzyiUhvjutS2Y1Ss38lsTaurFPx64vQ2PaC54XzdwMptXtpb\ntYmWSzCpJWwxZ6lF3vitdA2w0tnBWNyctAd0+RIM/fvArxiIqseAux9t0uogm5to\nlRIhvekuxOpXBPEqtIYQ4j9XUW2JH8vUDnzPkPvjrq+A3Ug8OyyfGVrW7+VYXozu\nc4aP7P0CAwEAAaNTMFEwHQYDVR0OBBYEFBzCutQ7S74WEhS5V2sNEJBGyLpmMB8G\nA1UdIwQYMBaAFBzCutQ7S74WEhS5V2sNEJBGyLpmMA8GA1UdEwEB/wQFMAMBAf8w\nDQYJKoZIhvcNAQELBQADggEBAMDwD85RAaWEBptFgLzKw+9xEUy1vcZaonAuA1qc\nT342XTueyAugxkC11HwdCGgGS34VyctfMGqj4AW6pA2ez4tLrbOps4DmV4sw8uBL\n8pgRDgfly3ob9FEg2wa0hmrwX9jH5Bt4vySUE2785uPAqaspT2UNtTBxS85BUi1T\nsKId2Rtil6an281Z81wyWVI6Jm2D4MG0mbsiGcTPlCtdg/UljvDYymXlAvd4vNhl\nk9hDa13TgDqJKgKdTIcmZoNQdpEVgFcO0h9AEUy5AuLqxHq60dLfZ6ESGPlMI7Lm\ni4PzYbCnBmOe+7TnHcPSyrnehs66Ik+oifRd82eYS7vKjFw=\n-----END CERTIFICATE-----",
-                "crt": "-----BEGIN CERTIFICATE-----\nMIIDUTCCAjmgAwIBAgIRAMocW3qMoHrD6qRvMPppMkMwDQYJKoZIhvcNAQELBQAw\nNzEQMA4GA1UECgwHRnVqaXRzdTEjMCEGA1UEAwwaRkVQIFJvb3QgQ0EgZm9yIEt1\nYmVybmV0ZXMwHhcNMjEwMjA2MDQzMjM2WhcNMjYwMjA1MDQzMjM2WjA/MRAwDgYD\nVQQKEwdGdWppdHN1MSswKQYDVQQDEyJGVUpJVFNVIEVudGVycHJpc2UgUG9zdGdy\nZXMgU2VydmVyMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4AI33yvH\nZws+jta6qpV6wzJqF8odIfTIpCfbrVcUUtLFKJ1I2e4SceTKi6O3C/I1XuvWlpng\n5IO65+fQQLO06z1/AuQT78YUn/Wlm9x1aHVsv4ANB5JWWqDOjrRT3o7nRPGXfila\nbP0rGE2mJJcVR9nExJ3IeaktgT3sb8YlXvtchyYpmjdbfxabTz07ig0+6/cwKoRR\nxOK8Uf7f5euE0cI/490J6r5Rs4lgD8sIQNCUFlTFYvmAH7gcdssSFBt8NPlUATHE\nsoFmlW0DKCJWNhTLOht+s6L/1zwTHLjPG2pdkG6Wdgmu5H2pDml8CDNLDv98Aj7i\n+I5SRKKcVPlnuQIDAQABo1AwTjAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUH\nAwIwDAYDVR0TAQH/BAIwADAfBgNVHSMEGDAWgBQcwrrUO0u+FhIUuVdrDRCQRsi6\nZjANBgkqhkiG9w0BAQsFAAOCAQEAm5dxBoI9pScOCvRAchg4CprdRDSJb9K6yB3O\nnCAxnM47iHeXnY3WlnI388kHu8DU7O4ba1tJbGs3KY9KzioPk43pU12jWkO1onoF\n+mTDjx/Ef1cYWA9r5q/LtgTa6Q2sxV4O2x67QW82aAnaxO34dV5zWCPIvAoovZBV\nHRT+BgCg3r2vD1RGKK2nl1aYJtWhO1SZubam+VttdZ/vbM9oOJctxmImsEtBXjkY\nKteePdQtLL5o03JhyXWyRshCq+HMmKf2KgyY8gvydGcP4eLQdBWcW40LcnVq6UjT\n0kJycJEKngMVademq1ZWHGaiYB7hyT6GhgIcHUJ2cKrPgbEh1Q==\n-----END CERTIFICATE-----",
-                "key": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEA4AI33yvHZws+jta6qpV6wzJqF8odIfTIpCfbrVcUUtLFKJ1I\n2e4SceTKi6O3C/I1XuvWlpng5IO65+fQQLO06z1/AuQT78YUn/Wlm9x1aHVsv4AN\nB5JWWqDOjrRT3o7nRPGXfilabP0rGE2mJJcVR9nExJ3IeaktgT3sb8YlXvtchyYp\nmjdbfxabTz07ig0+6/cwKoRRxOK8Uf7f5euE0cI/490J6r5Rs4lgD8sIQNCUFlTF\nYvmAH7gcdssSFBt8NPlUATHEsoFmlW0DKCJWNhTLOht+s6L/1zwTHLjPG2pdkG6W\ndgmu5H2pDml8CDNLDv98Aj7i+I5SRKKcVPlnuQIDAQABAoIBAFPQYKlOzw/+BA0b\nyMIUpdctIMb/54CR/xR0mVw1DbSjigNVPjHUQvB8Y1B2FAITQObgJO06bAv0QdWN\nRb0/v/yYiNJDFjaLjaIAHlO/2+oWrXbFaZqgpVDJhB+e1xaZr2x7XGxm+p925k30\nl6pvIRY+I8JRKvZiV1VZHwL/R3JOtPr++xMZtLVjVOI+f+ySqJ+TZHuAjm49EKxj\ncEmmJ28b7QcziXsvKy00f+zbqLIBKXQdZAFU5eEr1BsDRXdRW+Kf0XIvftuy4BJZ\nvoKT+VGhEvF/qysswL4+6IAO6tpuYnnM0Y2d3sOGoWPkTcQK0MekYKzL/WmtCjNs\n9hodJtECgYEA5EWyhEOf4uOKe5TDp697UCUvXLoOR58FDe/S8XNvScn29jjOkqIg\nOMoqo9xAkJTNTzqn5UUdt1x/pgM2NxlPLFijrc0zQlX3SoOO2ryDd9WNi7YKtN16\nKJqa536WeZu2OEbuAZ+S3GALVy1RPeTNPnUOmKnF06DjDUGzLNCZy10CgYEA+zfw\n952DWuz1U0Z4wvAEqqcgUKXPKrkTXV/iUnjkDkrLYVr0ZofDNTXrdHl+UedFmaOC\ncieZn6DNhcdz5tKtyysGMH3g/qs9PfoGUngvcXsy0Egk04l3x1jc8TTCLqXZXYaQ\nHMsx51n+R58oncPtzYSUOr9qQ6PbC2CstTbFJA0CgYEAjGEsUliAB/jknfEzjXjG\nPdhQUxb8VyE864Az2lah9t/kJzFyIAziAeqZ5GE7t247AGFTBRTHHI8e1Qoemi3P\nWbc9GVIbFs1lIYbcIDpUIyrKPEP8O5QEXtoNLxXTFgAjRGKiVY87spjCAJ+W2ZhO\ne/1it5GYXfgQCYQA2yuBmOUCgYANRkR2YR1axaCk+NlSu6oTdmdPu6M5x7PNQE7O\nOtMaKjua9lppvIzFGAdMDUtueoEEAE7ZR1xnwfB6PDLUpJdIYAqgr1YfPt8qkjaZ\nTv56yZ7CwL0pbF8m6nwqRrZoDp1wwraEvvvxFKFKGY/k3kCHlpTakdjEoDjn3gDi\nRnWeVQKBgCEneMSzucei5LRppRtRaJw/Btll8qlPMlX3W7dxQ3cLwpmLOn0m51Fp\nPIZ44zYK8R6fu4+/sSrlfaIg86Ugeufp6YNxyNROKxUGza5vDIu5OftwWtBeg+UK\nZ8lLWNdX6pp7WMujmF3H1DrkBbauYMUKZ4UxUYtelgHERMePIxwb\n-----END RSA PRIVATE KEY-----"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64",
-        "s390x"
-      ],
-      "bundle_path": "registry.connect.redhat.com/fujitsu-postgres/fujitsu-enterprise-postgres-13-bundle@sha256:2eec17f2d5085c9608eedf3b1bc01ddc679c04b47a74627d73b2f99a7155d6a8",
-      "bundle_path_digest": "sha256:2eec17f2d5085c9608eedf3b1bc01ddc679c04b47a74627d73b2f99a7155d6a8",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "stable-13",
-      "creation_date": "2022-10-19T02:51:09.040000+00:00",
-      "csv_description": "FUJITSU Enterprise Postgres 13 delivers an enterprise-grade PostgreSQL on OpenShift Container Platform. \n\nThis solution provides the flexibility of a hybrid cloud solution while delivering an enhanced distribution of PostgreSQL to support enterprise-level workloads and provide improved deployment and management, availability, performance, data governance and security.  \n\nAvailable as a multi-architecture container built for both amd64 and s390x. \n\nThe download and Use of the Product is strictly subject to the terms of the End User License Agreement with Fujitsu Limited found at https://www.fast.fujitsu.com/fujitsu-enterprise-postgres-license-agreements. Where the Product that has been embedded as a whole or part into a third party program, only Authorised Customers may download and use the Product.\n",
-      "csv_display_name": "FUJITSU Enterprise Postgres 13 Operator",
-      "csv_metadata_description": "OpenShift Operator for Fujitsu Enterprise Postgres 13",
-      "csv_name": "fujitsu-enterprise-operator.v3.1.8",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T11:23:25.441000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "fujitsu-enterprise-operator",
-      "provided_apis": [
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPAction",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPAutoscale",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPBackup",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPCert",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPCluster",
-          "version": "v2"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPConfig",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPExporter",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPPgpool2",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPPgpool2Cert",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPRestore",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPUser",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPVolume",
-          "version": "v1"
-        }
-      ],
-      "provider": "Fujitsu",
-      "related_images": [
-        {
-          "digest": "sha256:b470cd1b7e53ccdee53fd5c90bdc549bb759adaf18b19d62c741c845c6070942",
-          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-server@sha256:b470cd1b7e53ccdee53fd5c90bdc549bb759adaf18b19d62c741c845c6070942",
-          "name": "fep"
-        },
-        {
-          "digest": "sha256:ead441a8cf9ef858697362b89c746ce6f127006fd1a5b2bf882ad4449f6940a3",
-          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-backup@sha256:ead441a8cf9ef858697362b89c746ce6f127006fd1a5b2bf882ad4449f6940a3",
-          "name": "backup"
-        },
-        {
-          "digest": "sha256:0cbd0a074e139239c08fd2c3b96efbb81cc1b0c4baa48d748cf303c85d166781",
-          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-restore@sha256:0cbd0a074e139239c08fd2c3b96efbb81cc1b0c4baa48d748cf303c85d166781",
-          "name": "restore"
-        },
-        {
-          "digest": "sha256:dacb109c8b7ebacd8e5d429499289c08e7717befd8a555efdc6eb241a70a8021",
-          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-pgpool2@sha256:dacb109c8b7ebacd8e5d429499289c08e7717befd8a555efdc6eb241a70a8021",
-          "name": "pgpool2"
-        },
-        {
-          "digest": "sha256:420dfb5a0dbe06e3b6f5139e93610c6ed4fdf28afff933d2518d6d70af25cb44",
-          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-exporter@sha256:420dfb5a0dbe06e3b6f5139e93610c6ed4fdf28afff933d2518d6d70af25cb44",
-          "name": "fepexporter"
-        },
-        {
-          "digest": "sha256:ce00dc2ce10b12b2807f988666fbe9692427234b225bf457cc7077f1ede17c64",
-          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-operator@sha256:ce00dc2ce10b12b2807f988666fbe9692427234b225bf457cc7077f1ede17c64",
-          "name": "fujitsu-enterprise-postgres-13-operator-ce00dc2ce10b12b2807f988666fbe9692427234b225bf457cc7077f1ede17c64-annotation"
-        },
-        {
-          "digest": "sha256:ce00dc2ce10b12b2807f988666fbe9692427234b225bf457cc7077f1ede17c64",
-          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-operator@sha256:ce00dc2ce10b12b2807f988666fbe9692427234b225bf457cc7077f1ede17c64",
-          "name": "fep-ansible-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<3.1.8",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "3.1.8",
-      "version_original": "3.1.8"
-    },
-    {
-      "_id": "634f662f1c4f5f0092873ffe",
-      "alm_examples": [
-        {
-          "api_version": "fep.fujitsu.io/v1",
-          "kind": "FEPAction",
-          "metadata": {
-            "name": "new-fep-action"
-          },
-          "spec": {
-            "fepAction": {
-              "args": [
-                "new-fep-sts-0",
-                "new-fep-sts-1"
-              ],
-              "type": "reload"
-            },
-            "sysExtraLogging": false,
-            "targetClusterName": "new-fep"
-          }
-        },
-        {
-          "api_version": "fep.fujitsu.io/v1",
-          "kind": "FEPExporter",
-          "metadata": {
-            "name": "new-fep-exporter"
-          },
-          "spec": {
-            "fepExporter": {
-              "exporterLogLevel": "error",
-              "fepClusterList": [
-                "new-fep1"
-              ],
-              "image": {
-                "pullPolicy": "IfNotPresent"
-              },
-              "mcSpec": {
-                "limits": {
-                  "cpu": "500m",
-                  "memory": "700Mi"
-                },
-                "requests": {
-                  "cpu": "200m",
-                  "memory": "512Mi"
-                }
-              },
-              "restartRequired": false,
-              "sysExtraLogging": false,
-              "userCustomQueries": "usr_example:\n  query: \"SELECT EXTRACT(EPOCH FROM (now() - pg_last_xact_replay_timestamp())) as lag\"\n  master: true\n  metrics:\n    - lag:\n        usage: \"GAUGE\"\n        description: \"Replication lag behind master in seconds\""
-            }
-          }
-        },
-        {
-          "api_version": "fep.fujitsu.io/v1",
-          "kind": "FEPPgpool2",
-          "metadata": {
-            "name": "new-fep-pgpool2"
-          },
-          "spec": {
-            "count": 2,
-            "customhba": "local   all         all                               trust\nhost    all         all         127.0.0.1/32          trust\nhost    all         all         ::1/128               trust\n",
-            "customlogsize": "128Mi",
-            "customparams": "listen_addresses = '*'\npcp_listen_addresses = '*'\nnum_init_children = 32\nreserved_connections = 0\nenable_pool_hba = off\nallow_clear_text_frontend_auth = off\nauthentication_timeout = 80\nbackend_weight0 = 1\nbackend_weight1 = 1\nbackend_flag0 = 'ALWAYS_PRIMARY'\nbackend_flag1 = 'DISALLOW_TO_FAILOVER'\nconnection_cache = on\nmax_pool = 4\nlisten_backlog_multiplier = 2\nserialize_accept = off\nchild_life_time = 300\nclient_idle_limit = 0\nchild_max_connections = 0\nconnection_life_time = 0\nreset_query_list = 'ABORT; DISCARD ALL'\nclient_min_messages = info\nlog_min_messages = debug1\nlog_statement = on\nlog_per_node_statement = on\nlog_client_messages = on\nlog_hostname = on\nlog_connections = on\nlog_line_prefix = '%t: pid %p: '\nload_balance_mode = on\nignore_leading_white_space = on\nwhite_function_list = ''\nblack_function_list = 'currval,lastval,nextval,setval'\nblack_query_pattern_list = ''\ndatabase_redirect_preference_list = ''\napp_name_redirect_preference_list = ''\nallow_sql_comments = off\ndisable_load_balance_on_write = 'transaction'\nstatement_level_load_balance = on\nsr_check_period = 0\nsr_check_user = 'postgres'\ndelay_threshold = 0\nlog_standby_delay = 'none'\nssl = on\nssl_ciphers = 'HIGH:MEDIUM:+3DES:!aNULL'\nssl_prefer_server_ciphers = off\nssl_ecdh_curve = 'prime256v1'\nssl_dh_params_file = ''\nrelcache_expire = 0\nrelcache_size = 256\ncheck_temp_table = catalog\ncheck_unlogged_table = on\nenable_shared_relcache = on\nrelcache_query_target = primary\nwd_port0 = 9000\nfailover_on_backend_error = off\n",
-            "custompcp": "none",
-            "customsslcacert": "none",
-            "customsslcert": "-----BEGIN CERTIFICATE-----\nMIIDTzCCAjegAwIBAgIUYssQ8I74US5g+1+Z7CHuaDgkZnEwDQYJKoZIhvcNAQEL\nBQAwNzEQMA4GA1UECgwHRnVqaXRzdTEjMCEGA1UEAwwaRkVQIFJvb3QgQ0EgZm9y\nIEt1YmVybmV0ZXMwHhcNMjEwMjA2MDM1MjI4WhcNMzEwMjA0MDM1MjI4WjA3MRAw\nDgYDVQQKDAdGdWppdHN1MSMwIQYDVQQDDBpGRVAgUm9vdCBDQSBmb3IgS3ViZXJu\nZXRlczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMs97gUF0xkUzCgL\n7MiiDju9ySr/ziwjvcYU7jA9ML+SLmftMs3HtcYbAmSntqI+MDBSR/FAJTOoytuT\npV+mCFcGj2YAjDpliHPeNcUpbryy4YMChF3+MovkIwGCksxo5rhiWhGmoBYpA48P\n4Xe8SPlzqMzhFvNeKzyiUhvjutS2Y1Ss38lsTaurFPx64vQ2PaC54XzdwMptXtpb\ntYmWSzCpJWwxZ6lF3vitdA2w0tnBWNyctAd0+RIM/fvArxiIqseAux9t0uogm5to\nlRIhvekuxOpXBPEqtIYQ4j9XUW2JH8vUDnzPkPvjrq+A3Ug8OyyfGVrW7+VYXozu\nc4aP7P0CAwEAAaNTMFEwHQYDVR0OBBYEFBzCutQ7S74WEhS5V2sNEJBGyLpmMB8G\nA1UdIwQYMBaAFBzCutQ7S74WEhS5V2sNEJBGyLpmMA8GA1UdEwEB/wQFMAMBAf8w\nDQYJKoZIhvcNAQELBQADggEBAMDwD85RAaWEBptFgLzKw+9xEUy1vcZaonAuA1qc\nT342XTueyAugxkC11HwdCGgGS34VyctfMGqj4AW6pA2ez4tLrbOps4DmV4sw8uBL\n8pgRDgfly3ob9FEg2wa0hmrwX9jH5Bt4vySUE2785uPAqaspT2UNtTBxS85BUi1T\nsKId2Rtil6an281Z81wyWVI6Jm2D4MG0mbsiGcTPlCtdg/UljvDYymXlAvd4vNhl\nk9hDa13TgDqJKgKdTIcmZoNQdpEVgFcO0h9AEUy5AuLqxHq60dLfZ6ESGPlMI7Lm\ni4PzYbCnBmOe+7TnHcPSyrnehs66Ik+oifRd82eYS7vKjFw=\n-----END CERTIFICATE-----",
-            "customsslkey": "none",
-            "fepclustername": "new-fep",
-            "imagePullPolicy": "IfNotPresent",
-            "limits": {
-              "cpu": "400m",
-              "memory": "512Mi"
-            },
-            "requests": {
-              "cpu": "200m",
-              "memory": "256Mi"
-            },
-            "serviceport": 9999,
-            "statusport": 9898
-          }
-        },
-        {
-          "api_version": "fep.fujitsu.io/v1",
-          "kind": "FEPRestore",
-          "metadata": {
-            "name": "new-fep-restore"
-          },
-          "spec": {
-            "fromFEPcluster": "new-fep",
-            "imagePullPolicy": "IfNotPresent",
-            "mcSpec": {
-              "limits": {
-                "cpu": "200m",
-                "memory": "300Mi"
-              },
-              "requests": {
-                "cpu": "100m",
-                "memory": "200Mi"
-              }
-            },
-            "restoretype": "latest",
-            "sysExtraLogging": false,
-            "toFEPcluster": "new-fep-2"
-          }
-        },
-        {
-          "api_version": "fep.fujitsu.io/v2",
-          "kind": "FEPCluster",
-          "metadata": {
-            "name": "new-fep"
-          },
-          "spec": {
-            "fep": {
-              "customAnnotations": {
-                "allDeployments": {}
-              },
-              "forceSsl": true,
-              "image": {
-                "pullPolicy": "IfNotPresent"
-              },
-              "instances": 1,
-              "mcSpec": {
-                "limits": {
-                  "cpu": "500m",
-                  "memory": "700Mi"
-                },
-                "requests": {
-                  "cpu": "200m",
-                  "memory": "512Mi"
-                }
-              },
-              "podAntiAffinity": false,
-              "podDisruptionBudget": false,
-              "servicePort": 27500,
-              "syncMode": "off",
-              "sysExtraLogging": false
-            },
-            "fepChildCrVal": {
-              "backup": {
-                "image": {
-                  "pullPolicy": "IfNotPresent"
-                },
-                "mcSpec": {
-                  "limits": {
-                    "cpu": 0.2,
-                    "memory": "300Mi"
-                  },
-                  "requests": {
-                    "cpu": 0.1,
-                    "memory": "200Mi"
-                  }
-                },
-                "pgbackrestParams": "# if log volume is not defined, log_directory should be\n# changed to '/database/userdata/data/log'\n[global]\nrepo1-retention-full=7\nrepo1-retention-full-type=time\nlog-path=/database/log/backup\n",
-                "postScript": " ",
-                "preScript": " ",
-                "schedule": {
-                  "num": 2
-                },
-                "schedule1": {
-                  "schedule": "15 0 * * 0",
-                  "type": "full"
-                },
-                "schedule2": {
-                  "schedule": "15 0 * * 1-6",
-                  "type": "incr"
-                },
-                "schedule3": {
-                  "schedule": " ",
-                  "type": " "
-                },
-                "schedule4": {
-                  "schedule": " ",
-                  "type": " "
-                },
-                "schedule5": {
-                  "schedule": " ",
-                  "type": " "
-                }
-              },
-              "customPgAudit": "# define pg audit custom params here to override defaults.\n# if log volume is not defined, log_directory should be\n# changed to '/database/userdata/data/log'\n[output]\nlogger = 'auditlog'\nlog_directory = '/database/log/audit'\nlog_truncate_on_rotation = on\nlog_filename = 'pgaudit-%a.log'\nlog_rotation_age = 1d\nlog_rotation_size = 0\n[rule]\n",
-              "customPgHba": "# define pg_hba custom rules here to be merged with default rules.\n# TYPE     DATABASE        USER        ADDRESS        METHOD\n",
-              "customPgParams": "# define custom postgresql.conf parameters below to override defaults.\n# Current values are as per default FEP deployment\nshared_preload_libraries='pgx_datamasking,pg_prewarm,pg_stat_statements'\nsession_preload_libraries='pg_prewarm'\nmax_prepared_transactions = 100\nmax_worker_processes = 30\nmax_connections = 100\nwork_mem = 1MB\nmaintenance_work_mem = 12MB\nshared_buffers = 128MB\neffective_cache_size = 384MB\ncheckpoint_completion_target = 0.8\n# tcp parameters\ntcp_keepalives_idle = 30\ntcp_keepalives_interval = 10\ntcp_keepalives_count = 3\n# logging parameters in default fep installation\n# if log volume is not defined, log_directory should be\n# changed to '/database/userdata/data/log'\nlog_directory = '/database/log'\nlog_filename = 'logfile-%a.log'\nlog_file_mode = 0600\nlog_truncate_on_rotation = on\nlog_rotation_age = 1d\nlog_rotation_size = 0\nlog_checkpoints = on\nlog_line_prefix = '%e %t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h'\nlog_lock_waits = on\nlog_autovacuum_min_duration = 60s\nlogging_collector = on\npgaudit.config_file='/opt/app-root/src/pgaudit-cfg/pgaudit.conf'\nlog_replication_commands = on\nlog_min_messages = WARNING\nlog_destination = stderr\n# wal_archive parameters in default fep installation\narchive_mode = on\narchive_command = 'pgbackrest --stanza=backupstanza --config=/database/userdata/pgbackrest.conf archive-push %p'\nwal_level = replica\nmax_wal_senders = 12\nwal_keep_segments = 64\ntrack_activities = on\ntrack_counts = on\n",
-              "storage": {
-                "archivewalVol": {
-                  "size": "1Gi"
-                },
-                "backupVol": {
-                  "size": "2Gi"
-                },
-                "dataVol": {
-                  "size": "2Gi"
-                },
-                "logVol": {
-                  "size": "1Gi"
-                },
-                "tablespaceVol": {
-                  "size": "512Mi"
-                },
-                "walVol": {
-                  "size": "1200Mi"
-                }
-              },
-              "sysUsers": {
-                "pgAdminPassword": "admin-password",
-                "pgRewindPassword": "rewind_password",
-                "pgRewindUser": "rewind_user",
-                "pgdb": "mydb",
-                "pgpassword": "mydbpassword",
-                "pgreplpassword": "repluserpwd",
-                "pgrepluser": "repluser",
-                "pguser": "mydbuser",
-                "tdepassphrase": "tde-passphrase"
-              },
-              "systemCertificates": {
-                "cacrt": "-----BEGIN CERTIFICATE-----\nMIIDTzCCAjegAwIBAgIUYssQ8I74US5g+1+Z7CHuaDgkZnEwDQYJKoZIhvcNAQEL\nBQAwNzEQMA4GA1UECgwHRnVqaXRzdTEjMCEGA1UEAwwaRkVQIFJvb3QgQ0EgZm9y\nIEt1YmVybmV0ZXMwHhcNMjEwMjA2MDM1MjI4WhcNMzEwMjA0MDM1MjI4WjA3MRAw\nDgYDVQQKDAdGdWppdHN1MSMwIQYDVQQDDBpGRVAgUm9vdCBDQSBmb3IgS3ViZXJu\nZXRlczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMs97gUF0xkUzCgL\n7MiiDju9ySr/ziwjvcYU7jA9ML+SLmftMs3HtcYbAmSntqI+MDBSR/FAJTOoytuT\npV+mCFcGj2YAjDpliHPeNcUpbryy4YMChF3+MovkIwGCksxo5rhiWhGmoBYpA48P\n4Xe8SPlzqMzhFvNeKzyiUhvjutS2Y1Ss38lsTaurFPx64vQ2PaC54XzdwMptXtpb\ntYmWSzCpJWwxZ6lF3vitdA2w0tnBWNyctAd0+RIM/fvArxiIqseAux9t0uogm5to\nlRIhvekuxOpXBPEqtIYQ4j9XUW2JH8vUDnzPkPvjrq+A3Ug8OyyfGVrW7+VYXozu\nc4aP7P0CAwEAAaNTMFEwHQYDVR0OBBYEFBzCutQ7S74WEhS5V2sNEJBGyLpmMB8G\nA1UdIwQYMBaAFBzCutQ7S74WEhS5V2sNEJBGyLpmMA8GA1UdEwEB/wQFMAMBAf8w\nDQYJKoZIhvcNAQELBQADggEBAMDwD85RAaWEBptFgLzKw+9xEUy1vcZaonAuA1qc\nT342XTueyAugxkC11HwdCGgGS34VyctfMGqj4AW6pA2ez4tLrbOps4DmV4sw8uBL\n8pgRDgfly3ob9FEg2wa0hmrwX9jH5Bt4vySUE2785uPAqaspT2UNtTBxS85BUi1T\nsKId2Rtil6an281Z81wyWVI6Jm2D4MG0mbsiGcTPlCtdg/UljvDYymXlAvd4vNhl\nk9hDa13TgDqJKgKdTIcmZoNQdpEVgFcO0h9AEUy5AuLqxHq60dLfZ6ESGPlMI7Lm\ni4PzYbCnBmOe+7TnHcPSyrnehs66Ik+oifRd82eYS7vKjFw=\n-----END CERTIFICATE-----",
-                "crt": "-----BEGIN CERTIFICATE-----\nMIIDUTCCAjmgAwIBAgIRAMocW3qMoHrD6qRvMPppMkMwDQYJKoZIhvcNAQELBQAw\nNzEQMA4GA1UECgwHRnVqaXRzdTEjMCEGA1UEAwwaRkVQIFJvb3QgQ0EgZm9yIEt1\nYmVybmV0ZXMwHhcNMjEwMjA2MDQzMjM2WhcNMjYwMjA1MDQzMjM2WjA/MRAwDgYD\nVQQKEwdGdWppdHN1MSswKQYDVQQDEyJGVUpJVFNVIEVudGVycHJpc2UgUG9zdGdy\nZXMgU2VydmVyMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4AI33yvH\nZws+jta6qpV6wzJqF8odIfTIpCfbrVcUUtLFKJ1I2e4SceTKi6O3C/I1XuvWlpng\n5IO65+fQQLO06z1/AuQT78YUn/Wlm9x1aHVsv4ANB5JWWqDOjrRT3o7nRPGXfila\nbP0rGE2mJJcVR9nExJ3IeaktgT3sb8YlXvtchyYpmjdbfxabTz07ig0+6/cwKoRR\nxOK8Uf7f5euE0cI/490J6r5Rs4lgD8sIQNCUFlTFYvmAH7gcdssSFBt8NPlUATHE\nsoFmlW0DKCJWNhTLOht+s6L/1zwTHLjPG2pdkG6Wdgmu5H2pDml8CDNLDv98Aj7i\n+I5SRKKcVPlnuQIDAQABo1AwTjAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUH\nAwIwDAYDVR0TAQH/BAIwADAfBgNVHSMEGDAWgBQcwrrUO0u+FhIUuVdrDRCQRsi6\nZjANBgkqhkiG9w0BAQsFAAOCAQEAm5dxBoI9pScOCvRAchg4CprdRDSJb9K6yB3O\nnCAxnM47iHeXnY3WlnI388kHu8DU7O4ba1tJbGs3KY9KzioPk43pU12jWkO1onoF\n+mTDjx/Ef1cYWA9r5q/LtgTa6Q2sxV4O2x67QW82aAnaxO34dV5zWCPIvAoovZBV\nHRT+BgCg3r2vD1RGKK2nl1aYJtWhO1SZubam+VttdZ/vbM9oOJctxmImsEtBXjkY\nKteePdQtLL5o03JhyXWyRshCq+HMmKf2KgyY8gvydGcP4eLQdBWcW40LcnVq6UjT\n0kJycJEKngMVademq1ZWHGaiYB7hyT6GhgIcHUJ2cKrPgbEh1Q==\n-----END CERTIFICATE-----",
-                "key": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEA4AI33yvHZws+jta6qpV6wzJqF8odIfTIpCfbrVcUUtLFKJ1I\n2e4SceTKi6O3C/I1XuvWlpng5IO65+fQQLO06z1/AuQT78YUn/Wlm9x1aHVsv4AN\nB5JWWqDOjrRT3o7nRPGXfilabP0rGE2mJJcVR9nExJ3IeaktgT3sb8YlXvtchyYp\nmjdbfxabTz07ig0+6/cwKoRRxOK8Uf7f5euE0cI/490J6r5Rs4lgD8sIQNCUFlTF\nYvmAH7gcdssSFBt8NPlUATHEsoFmlW0DKCJWNhTLOht+s6L/1zwTHLjPG2pdkG6W\ndgmu5H2pDml8CDNLDv98Aj7i+I5SRKKcVPlnuQIDAQABAoIBAFPQYKlOzw/+BA0b\nyMIUpdctIMb/54CR/xR0mVw1DbSjigNVPjHUQvB8Y1B2FAITQObgJO06bAv0QdWN\nRb0/v/yYiNJDFjaLjaIAHlO/2+oWrXbFaZqgpVDJhB+e1xaZr2x7XGxm+p925k30\nl6pvIRY+I8JRKvZiV1VZHwL/R3JOtPr++xMZtLVjVOI+f+ySqJ+TZHuAjm49EKxj\ncEmmJ28b7QcziXsvKy00f+zbqLIBKXQdZAFU5eEr1BsDRXdRW+Kf0XIvftuy4BJZ\nvoKT+VGhEvF/qysswL4+6IAO6tpuYnnM0Y2d3sOGoWPkTcQK0MekYKzL/WmtCjNs\n9hodJtECgYEA5EWyhEOf4uOKe5TDp697UCUvXLoOR58FDe/S8XNvScn29jjOkqIg\nOMoqo9xAkJTNTzqn5UUdt1x/pgM2NxlPLFijrc0zQlX3SoOO2ryDd9WNi7YKtN16\nKJqa536WeZu2OEbuAZ+S3GALVy1RPeTNPnUOmKnF06DjDUGzLNCZy10CgYEA+zfw\n952DWuz1U0Z4wvAEqqcgUKXPKrkTXV/iUnjkDkrLYVr0ZofDNTXrdHl+UedFmaOC\ncieZn6DNhcdz5tKtyysGMH3g/qs9PfoGUngvcXsy0Egk04l3x1jc8TTCLqXZXYaQ\nHMsx51n+R58oncPtzYSUOr9qQ6PbC2CstTbFJA0CgYEAjGEsUliAB/jknfEzjXjG\nPdhQUxb8VyE864Az2lah9t/kJzFyIAziAeqZ5GE7t247AGFTBRTHHI8e1Qoemi3P\nWbc9GVIbFs1lIYbcIDpUIyrKPEP8O5QEXtoNLxXTFgAjRGKiVY87spjCAJ+W2ZhO\ne/1it5GYXfgQCYQA2yuBmOUCgYANRkR2YR1axaCk+NlSu6oTdmdPu6M5x7PNQE7O\nOtMaKjua9lppvIzFGAdMDUtueoEEAE7ZR1xnwfB6PDLUpJdIYAqgr1YfPt8qkjaZ\nTv56yZ7CwL0pbF8m6nwqRrZoDp1wwraEvvvxFKFKGY/k3kCHlpTakdjEoDjn3gDi\nRnWeVQKBgCEneMSzucei5LRppRtRaJw/Btll8qlPMlX3W7dxQ3cLwpmLOn0m51Fp\nPIZ44zYK8R6fu4+/sSrlfaIg86Ugeufp6YNxyNROKxUGza5vDIu5OftwWtBeg+UK\nZ8lLWNdX6pp7WMujmF3H1DrkBbauYMUKZ4UxUYtelgHERMePIxwb\n-----END RSA PRIVATE KEY-----"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64",
-        "s390x"
-      ],
-      "bundle_path": "registry.connect.redhat.com/fujitsu-postgres/fujitsu-enterprise-postgres-13-bundle@sha256:2eec17f2d5085c9608eedf3b1bc01ddc679c04b47a74627d73b2f99a7155d6a8",
-      "bundle_path_digest": "sha256:2eec17f2d5085c9608eedf3b1bc01ddc679c04b47a74627d73b2f99a7155d6a8",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "stable-13",
-      "creation_date": "2022-10-19T02:51:27.127000+00:00",
-      "csv_description": "FUJITSU Enterprise Postgres 13 delivers an enterprise-grade PostgreSQL on OpenShift Container Platform. \n\nThis solution provides the flexibility of a hybrid cloud solution while delivering an enhanced distribution of PostgreSQL to support enterprise-level workloads and provide improved deployment and management, availability, performance, data governance and security.  \n\nAvailable as a multi-architecture container built for both amd64 and s390x. \n\nThe download and Use of the Product is strictly subject to the terms of the End User License Agreement with Fujitsu Limited found at https://www.fast.fujitsu.com/fujitsu-enterprise-postgres-license-agreements. Where the Product that has been embedded as a whole or part into a third party program, only Authorised Customers may download and use the Product.\n",
-      "csv_display_name": "FUJITSU Enterprise Postgres 13 Operator",
-      "csv_metadata_description": "OpenShift Operator for Fujitsu Enterprise Postgres 13",
-      "csv_name": "fujitsu-enterprise-operator.v3.1.8",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T11:07:01.853000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "fujitsu-enterprise-operator",
-      "provided_apis": [
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPRestore",
-          "plural": "feprestores",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPUser",
-          "plural": "fepusers",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPBackup",
-          "plural": "fepbackups",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPAction",
-          "plural": "fepactions",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPCert",
-          "plural": "fepcerts",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPVolume",
-          "plural": "fepvolumes",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPAutoscale",
-          "plural": "fepautoscales",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPExporter",
-          "plural": "fepexporters",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPPgpool2Cert",
-          "plural": "feppgpool2certs",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPCluster",
-          "plural": "fepclusters",
-          "version": "v2"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPConfig",
-          "plural": "fepconfigs",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPPgpool2",
-          "plural": "feppgpool2s",
-          "version": "v1"
-        }
-      ],
-      "provider": "Fujitsu",
-      "related_images": [
-        {
-          "digest": "sha256:b470cd1b7e53ccdee53fd5c90bdc549bb759adaf18b19d62c741c845c6070942",
-          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-server@sha256:b470cd1b7e53ccdee53fd5c90bdc549bb759adaf18b19d62c741c845c6070942",
-          "name": "fep"
-        },
-        {
-          "digest": "sha256:ead441a8cf9ef858697362b89c746ce6f127006fd1a5b2bf882ad4449f6940a3",
-          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-backup@sha256:ead441a8cf9ef858697362b89c746ce6f127006fd1a5b2bf882ad4449f6940a3",
-          "name": "backup"
-        },
-        {
-          "digest": "sha256:0cbd0a074e139239c08fd2c3b96efbb81cc1b0c4baa48d748cf303c85d166781",
-          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-restore@sha256:0cbd0a074e139239c08fd2c3b96efbb81cc1b0c4baa48d748cf303c85d166781",
-          "name": "restore"
-        },
-        {
-          "digest": "sha256:dacb109c8b7ebacd8e5d429499289c08e7717befd8a555efdc6eb241a70a8021",
-          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-pgpool2@sha256:dacb109c8b7ebacd8e5d429499289c08e7717befd8a555efdc6eb241a70a8021",
-          "name": "pgpool2"
-        },
-        {
-          "digest": "sha256:420dfb5a0dbe06e3b6f5139e93610c6ed4fdf28afff933d2518d6d70af25cb44",
-          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-exporter@sha256:420dfb5a0dbe06e3b6f5139e93610c6ed4fdf28afff933d2518d6d70af25cb44",
-          "name": "fepexporter"
-        },
-        {
-          "digest": "sha256:ce00dc2ce10b12b2807f988666fbe9692427234b225bf457cc7077f1ede17c64",
-          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-operator@sha256:ce00dc2ce10b12b2807f988666fbe9692427234b225bf457cc7077f1ede17c64",
-          "name": "fujitsu-enterprise-postgres-13-operator-ce00dc2ce10b12b2807f988666fbe9692427234b225bf457cc7077f1ede17c64-annotation"
-        },
-        {
-          "digest": "sha256:ce00dc2ce10b12b2807f988666fbe9692427234b225bf457cc7077f1ede17c64",
-          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-operator@sha256:ce00dc2ce10b12b2807f988666fbe9692427234b225bf457cc7077f1ede17c64",
-          "name": "fep-ansible-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<3.1.8",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "3.1.8",
-      "version_original": "3.1.8"
-    },
-    {
-      "_id": "634f66414b6c281902e9b920",
-      "alm_examples": [
-        {
-          "api_version": "fep.fujitsu.io/v1",
-          "kind": "FEPAction",
-          "metadata": {
-            "name": "new-fep-action"
-          },
-          "spec": {
-            "fepAction": {
-              "args": [
-                "new-fep-sts-0",
-                "new-fep-sts-1"
-              ],
-              "type": "reload"
-            },
-            "sysExtraLogging": false,
-            "targetClusterName": "new-fep"
-          }
-        },
-        {
-          "api_version": "fep.fujitsu.io/v1",
-          "kind": "FEPExporter",
-          "metadata": {
-            "name": "new-fep-exporter"
-          },
-          "spec": {
-            "fepExporter": {
-              "exporterLogLevel": "error",
-              "fepClusterList": [
-                "new-fep1"
-              ],
-              "image": {
-                "pullPolicy": "IfNotPresent"
-              },
-              "mcSpec": {
-                "limits": {
-                  "cpu": "500m",
-                  "memory": "700Mi"
-                },
-                "requests": {
-                  "cpu": "200m",
-                  "memory": "512Mi"
-                }
-              },
-              "restartRequired": false,
-              "sysExtraLogging": false,
-              "userCustomQueries": "usr_example:\n  query: \"SELECT EXTRACT(EPOCH FROM (now() - pg_last_xact_replay_timestamp())) as lag\"\n  master: true\n  metrics:\n    - lag:\n        usage: \"GAUGE\"\n        description: \"Replication lag behind master in seconds\""
-            }
-          }
-        },
-        {
-          "api_version": "fep.fujitsu.io/v1",
-          "kind": "FEPPgpool2",
-          "metadata": {
-            "name": "new-fep-pgpool2"
-          },
-          "spec": {
-            "count": 2,
-            "customhba": "local   all         all                               trust\nhost    all         all         127.0.0.1/32          trust\nhost    all         all         ::1/128               trust\n",
-            "customlogsize": "128Mi",
-            "customparams": "listen_addresses = '*'\npcp_listen_addresses = '*'\nnum_init_children = 32\nreserved_connections = 0\nenable_pool_hba = off\nallow_clear_text_frontend_auth = off\nauthentication_timeout = 80\nbackend_weight0 = 1\nbackend_weight1 = 1\nbackend_flag0 = 'ALWAYS_PRIMARY'\nbackend_flag1 = 'DISALLOW_TO_FAILOVER'\nconnection_cache = on\nmax_pool = 4\nlisten_backlog_multiplier = 2\nserialize_accept = off\nchild_life_time = 300\nclient_idle_limit = 0\nchild_max_connections = 0\nconnection_life_time = 0\nreset_query_list = 'ABORT; DISCARD ALL'\nclient_min_messages = info\nlog_min_messages = debug1\nlog_statement = on\nlog_per_node_statement = on\nlog_client_messages = on\nlog_hostname = on\nlog_connections = on\nlog_line_prefix = '%t: pid %p: '\nload_balance_mode = on\nignore_leading_white_space = on\nwhite_function_list = ''\nblack_function_list = 'currval,lastval,nextval,setval'\nblack_query_pattern_list = ''\ndatabase_redirect_preference_list = ''\napp_name_redirect_preference_list = ''\nallow_sql_comments = off\ndisable_load_balance_on_write = 'transaction'\nstatement_level_load_balance = on\nsr_check_period = 0\nsr_check_user = 'postgres'\ndelay_threshold = 0\nlog_standby_delay = 'none'\nssl = on\nssl_ciphers = 'HIGH:MEDIUM:+3DES:!aNULL'\nssl_prefer_server_ciphers = off\nssl_ecdh_curve = 'prime256v1'\nssl_dh_params_file = ''\nrelcache_expire = 0\nrelcache_size = 256\ncheck_temp_table = catalog\ncheck_unlogged_table = on\nenable_shared_relcache = on\nrelcache_query_target = primary\nwd_port0 = 9000\nfailover_on_backend_error = off\n",
-            "custompcp": "none",
-            "customsslcacert": "none",
-            "customsslcert": "-----BEGIN CERTIFICATE-----\nMIIDTzCCAjegAwIBAgIUYssQ8I74US5g+1+Z7CHuaDgkZnEwDQYJKoZIhvcNAQEL\nBQAwNzEQMA4GA1UECgwHRnVqaXRzdTEjMCEGA1UEAwwaRkVQIFJvb3QgQ0EgZm9y\nIEt1YmVybmV0ZXMwHhcNMjEwMjA2MDM1MjI4WhcNMzEwMjA0MDM1MjI4WjA3MRAw\nDgYDVQQKDAdGdWppdHN1MSMwIQYDVQQDDBpGRVAgUm9vdCBDQSBmb3IgS3ViZXJu\nZXRlczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMs97gUF0xkUzCgL\n7MiiDju9ySr/ziwjvcYU7jA9ML+SLmftMs3HtcYbAmSntqI+MDBSR/FAJTOoytuT\npV+mCFcGj2YAjDpliHPeNcUpbryy4YMChF3+MovkIwGCksxo5rhiWhGmoBYpA48P\n4Xe8SPlzqMzhFvNeKzyiUhvjutS2Y1Ss38lsTaurFPx64vQ2PaC54XzdwMptXtpb\ntYmWSzCpJWwxZ6lF3vitdA2w0tnBWNyctAd0+RIM/fvArxiIqseAux9t0uogm5to\nlRIhvekuxOpXBPEqtIYQ4j9XUW2JH8vUDnzPkPvjrq+A3Ug8OyyfGVrW7+VYXozu\nc4aP7P0CAwEAAaNTMFEwHQYDVR0OBBYEFBzCutQ7S74WEhS5V2sNEJBGyLpmMB8G\nA1UdIwQYMBaAFBzCutQ7S74WEhS5V2sNEJBGyLpmMA8GA1UdEwEB/wQFMAMBAf8w\nDQYJKoZIhvcNAQELBQADggEBAMDwD85RAaWEBptFgLzKw+9xEUy1vcZaonAuA1qc\nT342XTueyAugxkC11HwdCGgGS34VyctfMGqj4AW6pA2ez4tLrbOps4DmV4sw8uBL\n8pgRDgfly3ob9FEg2wa0hmrwX9jH5Bt4vySUE2785uPAqaspT2UNtTBxS85BUi1T\nsKId2Rtil6an281Z81wyWVI6Jm2D4MG0mbsiGcTPlCtdg/UljvDYymXlAvd4vNhl\nk9hDa13TgDqJKgKdTIcmZoNQdpEVgFcO0h9AEUy5AuLqxHq60dLfZ6ESGPlMI7Lm\ni4PzYbCnBmOe+7TnHcPSyrnehs66Ik+oifRd82eYS7vKjFw=\n-----END CERTIFICATE-----",
-            "customsslkey": "none",
-            "fepclustername": "new-fep",
-            "imagePullPolicy": "IfNotPresent",
-            "limits": {
-              "cpu": "400m",
-              "memory": "512Mi"
-            },
-            "requests": {
-              "cpu": "200m",
-              "memory": "256Mi"
-            },
-            "serviceport": 9999,
-            "statusport": 9898
-          }
-        },
-        {
-          "api_version": "fep.fujitsu.io/v1",
-          "kind": "FEPRestore",
-          "metadata": {
-            "name": "new-fep-restore"
-          },
-          "spec": {
-            "fromFEPcluster": "new-fep",
-            "imagePullPolicy": "IfNotPresent",
-            "mcSpec": {
-              "limits": {
-                "cpu": "200m",
-                "memory": "300Mi"
-              },
-              "requests": {
-                "cpu": "100m",
-                "memory": "200Mi"
-              }
-            },
-            "restoretype": "latest",
-            "sysExtraLogging": false,
-            "toFEPcluster": "new-fep-2"
-          }
-        },
-        {
-          "api_version": "fep.fujitsu.io/v2",
-          "kind": "FEPCluster",
-          "metadata": {
-            "name": "new-fep"
-          },
-          "spec": {
-            "fep": {
-              "customAnnotations": {
-                "allDeployments": {}
-              },
-              "forceSsl": true,
-              "image": {
-                "pullPolicy": "IfNotPresent"
-              },
-              "instances": 1,
-              "mcSpec": {
-                "limits": {
-                  "cpu": "500m",
-                  "memory": "700Mi"
-                },
-                "requests": {
-                  "cpu": "200m",
-                  "memory": "512Mi"
-                }
-              },
-              "podAntiAffinity": false,
-              "podDisruptionBudget": false,
-              "servicePort": 27500,
-              "syncMode": "off",
-              "sysExtraLogging": false
-            },
-            "fepChildCrVal": {
-              "backup": {
-                "image": {
-                  "pullPolicy": "IfNotPresent"
-                },
-                "mcSpec": {
-                  "limits": {
-                    "cpu": 0.2,
-                    "memory": "300Mi"
-                  },
-                  "requests": {
-                    "cpu": 0.1,
-                    "memory": "200Mi"
-                  }
-                },
-                "pgbackrestParams": "# if log volume is not defined, log_directory should be\n# changed to '/database/userdata/data/log'\n[global]\nrepo1-retention-full=7\nrepo1-retention-full-type=time\nlog-path=/database/log/backup\n",
-                "postScript": " ",
-                "preScript": " ",
-                "schedule": {
-                  "num": 2
-                },
-                "schedule1": {
-                  "schedule": "15 0 * * 0",
-                  "type": "full"
-                },
-                "schedule2": {
-                  "schedule": "15 0 * * 1-6",
-                  "type": "incr"
-                },
-                "schedule3": {
-                  "schedule": " ",
-                  "type": " "
-                },
-                "schedule4": {
-                  "schedule": " ",
-                  "type": " "
-                },
-                "schedule5": {
-                  "schedule": " ",
-                  "type": " "
-                }
-              },
-              "customPgAudit": "# define pg audit custom params here to override defaults.\n# if log volume is not defined, log_directory should be\n# changed to '/database/userdata/data/log'\n[output]\nlogger = 'auditlog'\nlog_directory = '/database/log/audit'\nlog_truncate_on_rotation = on\nlog_filename = 'pgaudit-%a.log'\nlog_rotation_age = 1d\nlog_rotation_size = 0\n[rule]\n",
-              "customPgHba": "# define pg_hba custom rules here to be merged with default rules.\n# TYPE     DATABASE        USER        ADDRESS        METHOD\n",
-              "customPgParams": "# define custom postgresql.conf parameters below to override defaults.\n# Current values are as per default FEP deployment\nshared_preload_libraries='pgx_datamasking,pg_prewarm,pg_stat_statements'\nsession_preload_libraries='pg_prewarm'\nmax_prepared_transactions = 100\nmax_worker_processes = 30\nmax_connections = 100\nwork_mem = 1MB\nmaintenance_work_mem = 12MB\nshared_buffers = 128MB\neffective_cache_size = 384MB\ncheckpoint_completion_target = 0.8\n# tcp parameters\ntcp_keepalives_idle = 30\ntcp_keepalives_interval = 10\ntcp_keepalives_count = 3\n# logging parameters in default fep installation\n# if log volume is not defined, log_directory should be\n# changed to '/database/userdata/data/log'\nlog_directory = '/database/log'\nlog_filename = 'logfile-%a.log'\nlog_file_mode = 0600\nlog_truncate_on_rotation = on\nlog_rotation_age = 1d\nlog_rotation_size = 0\nlog_checkpoints = on\nlog_line_prefix = '%e %t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h'\nlog_lock_waits = on\nlog_autovacuum_min_duration = 60s\nlogging_collector = on\npgaudit.config_file='/opt/app-root/src/pgaudit-cfg/pgaudit.conf'\nlog_replication_commands = on\nlog_min_messages = WARNING\nlog_destination = stderr\n# wal_archive parameters in default fep installation\narchive_mode = on\narchive_command = 'pgbackrest --stanza=backupstanza --config=/database/userdata/pgbackrest.conf archive-push %p'\nwal_level = replica\nmax_wal_senders = 12\nwal_keep_segments = 64\ntrack_activities = on\ntrack_counts = on\n",
-              "storage": {
-                "archivewalVol": {
-                  "size": "1Gi"
-                },
-                "backupVol": {
-                  "size": "2Gi"
-                },
-                "dataVol": {
-                  "size": "2Gi"
-                },
-                "logVol": {
-                  "size": "1Gi"
-                },
-                "tablespaceVol": {
-                  "size": "512Mi"
-                },
-                "walVol": {
-                  "size": "1200Mi"
-                }
-              },
-              "sysUsers": {
-                "pgAdminPassword": "admin-password",
-                "pgRewindPassword": "rewind_password",
-                "pgRewindUser": "rewind_user",
-                "pgdb": "mydb",
-                "pgpassword": "mydbpassword",
-                "pgreplpassword": "repluserpwd",
-                "pgrepluser": "repluser",
-                "pguser": "mydbuser",
-                "tdepassphrase": "tde-passphrase"
-              },
-              "systemCertificates": {
-                "cacrt": "-----BEGIN CERTIFICATE-----\nMIIDTzCCAjegAwIBAgIUYssQ8I74US5g+1+Z7CHuaDgkZnEwDQYJKoZIhvcNAQEL\nBQAwNzEQMA4GA1UECgwHRnVqaXRzdTEjMCEGA1UEAwwaRkVQIFJvb3QgQ0EgZm9y\nIEt1YmVybmV0ZXMwHhcNMjEwMjA2MDM1MjI4WhcNMzEwMjA0MDM1MjI4WjA3MRAw\nDgYDVQQKDAdGdWppdHN1MSMwIQYDVQQDDBpGRVAgUm9vdCBDQSBmb3IgS3ViZXJu\nZXRlczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMs97gUF0xkUzCgL\n7MiiDju9ySr/ziwjvcYU7jA9ML+SLmftMs3HtcYbAmSntqI+MDBSR/FAJTOoytuT\npV+mCFcGj2YAjDpliHPeNcUpbryy4YMChF3+MovkIwGCksxo5rhiWhGmoBYpA48P\n4Xe8SPlzqMzhFvNeKzyiUhvjutS2Y1Ss38lsTaurFPx64vQ2PaC54XzdwMptXtpb\ntYmWSzCpJWwxZ6lF3vitdA2w0tnBWNyctAd0+RIM/fvArxiIqseAux9t0uogm5to\nlRIhvekuxOpXBPEqtIYQ4j9XUW2JH8vUDnzPkPvjrq+A3Ug8OyyfGVrW7+VYXozu\nc4aP7P0CAwEAAaNTMFEwHQYDVR0OBBYEFBzCutQ7S74WEhS5V2sNEJBGyLpmMB8G\nA1UdIwQYMBaAFBzCutQ7S74WEhS5V2sNEJBGyLpmMA8GA1UdEwEB/wQFMAMBAf8w\nDQYJKoZIhvcNAQELBQADggEBAMDwD85RAaWEBptFgLzKw+9xEUy1vcZaonAuA1qc\nT342XTueyAugxkC11HwdCGgGS34VyctfMGqj4AW6pA2ez4tLrbOps4DmV4sw8uBL\n8pgRDgfly3ob9FEg2wa0hmrwX9jH5Bt4vySUE2785uPAqaspT2UNtTBxS85BUi1T\nsKId2Rtil6an281Z81wyWVI6Jm2D4MG0mbsiGcTPlCtdg/UljvDYymXlAvd4vNhl\nk9hDa13TgDqJKgKdTIcmZoNQdpEVgFcO0h9AEUy5AuLqxHq60dLfZ6ESGPlMI7Lm\ni4PzYbCnBmOe+7TnHcPSyrnehs66Ik+oifRd82eYS7vKjFw=\n-----END CERTIFICATE-----",
-                "crt": "-----BEGIN CERTIFICATE-----\nMIIDUTCCAjmgAwIBAgIRAMocW3qMoHrD6qRvMPppMkMwDQYJKoZIhvcNAQELBQAw\nNzEQMA4GA1UECgwHRnVqaXRzdTEjMCEGA1UEAwwaRkVQIFJvb3QgQ0EgZm9yIEt1\nYmVybmV0ZXMwHhcNMjEwMjA2MDQzMjM2WhcNMjYwMjA1MDQzMjM2WjA/MRAwDgYD\nVQQKEwdGdWppdHN1MSswKQYDVQQDEyJGVUpJVFNVIEVudGVycHJpc2UgUG9zdGdy\nZXMgU2VydmVyMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4AI33yvH\nZws+jta6qpV6wzJqF8odIfTIpCfbrVcUUtLFKJ1I2e4SceTKi6O3C/I1XuvWlpng\n5IO65+fQQLO06z1/AuQT78YUn/Wlm9x1aHVsv4ANB5JWWqDOjrRT3o7nRPGXfila\nbP0rGE2mJJcVR9nExJ3IeaktgT3sb8YlXvtchyYpmjdbfxabTz07ig0+6/cwKoRR\nxOK8Uf7f5euE0cI/490J6r5Rs4lgD8sIQNCUFlTFYvmAH7gcdssSFBt8NPlUATHE\nsoFmlW0DKCJWNhTLOht+s6L/1zwTHLjPG2pdkG6Wdgmu5H2pDml8CDNLDv98Aj7i\n+I5SRKKcVPlnuQIDAQABo1AwTjAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUH\nAwIwDAYDVR0TAQH/BAIwADAfBgNVHSMEGDAWgBQcwrrUO0u+FhIUuVdrDRCQRsi6\nZjANBgkqhkiG9w0BAQsFAAOCAQEAm5dxBoI9pScOCvRAchg4CprdRDSJb9K6yB3O\nnCAxnM47iHeXnY3WlnI388kHu8DU7O4ba1tJbGs3KY9KzioPk43pU12jWkO1onoF\n+mTDjx/Ef1cYWA9r5q/LtgTa6Q2sxV4O2x67QW82aAnaxO34dV5zWCPIvAoovZBV\nHRT+BgCg3r2vD1RGKK2nl1aYJtWhO1SZubam+VttdZ/vbM9oOJctxmImsEtBXjkY\nKteePdQtLL5o03JhyXWyRshCq+HMmKf2KgyY8gvydGcP4eLQdBWcW40LcnVq6UjT\n0kJycJEKngMVademq1ZWHGaiYB7hyT6GhgIcHUJ2cKrPgbEh1Q==\n-----END CERTIFICATE-----",
-                "key": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEA4AI33yvHZws+jta6qpV6wzJqF8odIfTIpCfbrVcUUtLFKJ1I\n2e4SceTKi6O3C/I1XuvWlpng5IO65+fQQLO06z1/AuQT78YUn/Wlm9x1aHVsv4AN\nB5JWWqDOjrRT3o7nRPGXfilabP0rGE2mJJcVR9nExJ3IeaktgT3sb8YlXvtchyYp\nmjdbfxabTz07ig0+6/cwKoRRxOK8Uf7f5euE0cI/490J6r5Rs4lgD8sIQNCUFlTF\nYvmAH7gcdssSFBt8NPlUATHEsoFmlW0DKCJWNhTLOht+s6L/1zwTHLjPG2pdkG6W\ndgmu5H2pDml8CDNLDv98Aj7i+I5SRKKcVPlnuQIDAQABAoIBAFPQYKlOzw/+BA0b\nyMIUpdctIMb/54CR/xR0mVw1DbSjigNVPjHUQvB8Y1B2FAITQObgJO06bAv0QdWN\nRb0/v/yYiNJDFjaLjaIAHlO/2+oWrXbFaZqgpVDJhB+e1xaZr2x7XGxm+p925k30\nl6pvIRY+I8JRKvZiV1VZHwL/R3JOtPr++xMZtLVjVOI+f+ySqJ+TZHuAjm49EKxj\ncEmmJ28b7QcziXsvKy00f+zbqLIBKXQdZAFU5eEr1BsDRXdRW+Kf0XIvftuy4BJZ\nvoKT+VGhEvF/qysswL4+6IAO6tpuYnnM0Y2d3sOGoWPkTcQK0MekYKzL/WmtCjNs\n9hodJtECgYEA5EWyhEOf4uOKe5TDp697UCUvXLoOR58FDe/S8XNvScn29jjOkqIg\nOMoqo9xAkJTNTzqn5UUdt1x/pgM2NxlPLFijrc0zQlX3SoOO2ryDd9WNi7YKtN16\nKJqa536WeZu2OEbuAZ+S3GALVy1RPeTNPnUOmKnF06DjDUGzLNCZy10CgYEA+zfw\n952DWuz1U0Z4wvAEqqcgUKXPKrkTXV/iUnjkDkrLYVr0ZofDNTXrdHl+UedFmaOC\ncieZn6DNhcdz5tKtyysGMH3g/qs9PfoGUngvcXsy0Egk04l3x1jc8TTCLqXZXYaQ\nHMsx51n+R58oncPtzYSUOr9qQ6PbC2CstTbFJA0CgYEAjGEsUliAB/jknfEzjXjG\nPdhQUxb8VyE864Az2lah9t/kJzFyIAziAeqZ5GE7t247AGFTBRTHHI8e1Qoemi3P\nWbc9GVIbFs1lIYbcIDpUIyrKPEP8O5QEXtoNLxXTFgAjRGKiVY87spjCAJ+W2ZhO\ne/1it5GYXfgQCYQA2yuBmOUCgYANRkR2YR1axaCk+NlSu6oTdmdPu6M5x7PNQE7O\nOtMaKjua9lppvIzFGAdMDUtueoEEAE7ZR1xnwfB6PDLUpJdIYAqgr1YfPt8qkjaZ\nTv56yZ7CwL0pbF8m6nwqRrZoDp1wwraEvvvxFKFKGY/k3kCHlpTakdjEoDjn3gDi\nRnWeVQKBgCEneMSzucei5LRppRtRaJw/Btll8qlPMlX3W7dxQ3cLwpmLOn0m51Fp\nPIZ44zYK8R6fu4+/sSrlfaIg86Ugeufp6YNxyNROKxUGza5vDIu5OftwWtBeg+UK\nZ8lLWNdX6pp7WMujmF3H1DrkBbauYMUKZ4UxUYtelgHERMePIxwb\n-----END RSA PRIVATE KEY-----"
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [
-        "amd64",
-        "s390x"
-      ],
-      "bundle_path": "registry.connect.redhat.com/fujitsu-postgres/fujitsu-enterprise-postgres-13-bundle@sha256:2eec17f2d5085c9608eedf3b1bc01ddc679c04b47a74627d73b2f99a7155d6a8",
-      "bundle_path_digest": "sha256:2eec17f2d5085c9608eedf3b1bc01ddc679c04b47a74627d73b2f99a7155d6a8",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "stable-13",
-      "creation_date": "2022-10-19T02:51:45.121000+00:00",
-      "csv_description": "FUJITSU Enterprise Postgres 13 delivers an enterprise-grade PostgreSQL on OpenShift Container Platform. \n\nThis solution provides the flexibility of a hybrid cloud solution while delivering an enhanced distribution of PostgreSQL to support enterprise-level workloads and provide improved deployment and management, availability, performance, data governance and security.  \n\nAvailable as a multi-architecture container built for both amd64 and s390x. \n\nThe download and Use of the Product is strictly subject to the terms of the End User License Agreement with Fujitsu Limited found at https://www.fast.fujitsu.com/fujitsu-enterprise-postgres-license-agreements. Where the Product that has been embedded as a whole or part into a third party program, only Authorised Customers may download and use the Product.\n",
-      "csv_display_name": "FUJITSU Enterprise Postgres 13 Operator",
-      "csv_metadata_description": "OpenShift Operator for Fujitsu Enterprise Postgres 13",
-      "csv_name": "fujitsu-enterprise-operator.v3.1.8",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T12:24:34.742000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.12",
-      "organization": "certified-operators",
-      "package": "fujitsu-enterprise-operator",
-      "provided_apis": [
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPAction",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPAutoscale",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPBackup",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPCert",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPCluster",
-          "version": "v2"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPConfig",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPExporter",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPPgpool2",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPPgpool2Cert",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPRestore",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPUser",
-          "version": "v1"
-        },
-        {
-          "group": "fep.fujitsu.io",
-          "kind": "FEPVolume",
-          "version": "v1"
-        }
-      ],
-      "provider": "Fujitsu",
-      "related_images": [
-        {
-          "digest": "sha256:b470cd1b7e53ccdee53fd5c90bdc549bb759adaf18b19d62c741c845c6070942",
-          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-server@sha256:b470cd1b7e53ccdee53fd5c90bdc549bb759adaf18b19d62c741c845c6070942",
-          "name": "fep"
-        },
-        {
-          "digest": "sha256:ead441a8cf9ef858697362b89c746ce6f127006fd1a5b2bf882ad4449f6940a3",
-          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-backup@sha256:ead441a8cf9ef858697362b89c746ce6f127006fd1a5b2bf882ad4449f6940a3",
-          "name": "backup"
-        },
-        {
-          "digest": "sha256:0cbd0a074e139239c08fd2c3b96efbb81cc1b0c4baa48d748cf303c85d166781",
-          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-restore@sha256:0cbd0a074e139239c08fd2c3b96efbb81cc1b0c4baa48d748cf303c85d166781",
-          "name": "restore"
-        },
-        {
-          "digest": "sha256:dacb109c8b7ebacd8e5d429499289c08e7717befd8a555efdc6eb241a70a8021",
-          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-pgpool2@sha256:dacb109c8b7ebacd8e5d429499289c08e7717befd8a555efdc6eb241a70a8021",
-          "name": "pgpool2"
-        },
-        {
-          "digest": "sha256:420dfb5a0dbe06e3b6f5139e93610c6ed4fdf28afff933d2518d6d70af25cb44",
-          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-exporter@sha256:420dfb5a0dbe06e3b6f5139e93610c6ed4fdf28afff933d2518d6d70af25cb44",
-          "name": "fepexporter"
-        },
-        {
-          "digest": "sha256:ce00dc2ce10b12b2807f988666fbe9692427234b225bf457cc7077f1ede17c64",
-          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-operator@sha256:ce00dc2ce10b12b2807f988666fbe9692427234b225bf457cc7077f1ede17c64",
-          "name": "fujitsu-enterprise-postgres-13-operator-ce00dc2ce10b12b2807f988666fbe9692427234b225bf457cc7077f1ede17c64-annotation"
-        },
-        {
-          "digest": "sha256:ce00dc2ce10b12b2807f988666fbe9692427234b225bf457cc7077f1ede17c64",
-          "image": "quay.io/fujitsu/fujitsu-enterprise-postgres-13-operator@sha256:ce00dc2ce10b12b2807f988666fbe9692427234b225bf457cc7077f1ede17c64",
-          "name": "fep-ansible-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<3.1.8",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.12",
-      "version": "3.1.8",
-      "version_original": "3.1.8"
-    },
-    {
       "_id": "634f66c2bf36f5bcdc8be7a6",
       "alm_examples": [
         {
@@ -24477,6 +23346,334 @@
       "skip_range": null,
       "skips": [],
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "1.10.0",
+      "version_original": "1.10.0"
+    },
+    {
+      "_id": "6357193decddd9b37fd32a1e",
+      "alm_examples": [
+        {
+          "api_version": "core.libopenstorage.org/v1",
+          "kind": "StorageCluster",
+          "metadata": {
+            "annotations": {
+              "portworx.io/is-openshift": "true"
+            },
+            "name": "portworx",
+            "namespace": "test-operator"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "core.libopenstorage.org/v1",
+          "kind": "StorageNode",
+          "metadata": {
+            "name": "example",
+            "namespace": "test-operator"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/portworx/portworx-certified-bundle@sha256:0cf6b7cf6227fd7e0ac72c24667b623983c3d7e63f9271b2347d7191ecd02018",
+      "bundle_path_digest": "sha256:0cf6b7cf6227fd7e0ac72c24667b623983c3d7e63f9271b2347d7191ecd02018",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-10-24T23:01:17.228000+00:00",
+      "csv_description": "Portworx-Enterprise is the most widely-used and reliable cloud-native\nstorage solution for production workloads and provides high-availability,\ndata protection and security for containerized applications.\n\nPortworx Enterprise enables you to migrate entire applications, including\ndata, between clusters in a single data center or cloud, or between clouds,\nwith a single kubectl command.\n\nThe cloud native storage and data management platform that enterprises trust\nto manage data in containers now has an operator which simplifies the install,\nconfiguration, upgrades and manages the Portworx Enterprise cluster lifecycle.\n\nLearn more about the Portworx Enterprise\n[the data platform for Kubernetes](https://portworx.com/products/introduction)\n\nTo learn more about the platform features, please visit our\n[product features page](https://portworx.com/products/features)\n\n### About Portworx\n\nPortworx is the solution for running stateful containers in production,\ndesigned with DevOps in mind. With Portworx, users can manage any database\nor stateful service on any infrastructure using any container scheduler,\nincluding Kubernetes, Mesosphere DC/OS, and Docker Swarm. Portworx solves\nthe five most common problems DevOps teams encounter when running stateful\nservices in production: persistence, high availability, data automation,\nsecurity, and support for multiple data stores and infrastructure.\n\n### How to install StorageCluster\n\nTo customize your cluster's configuration (specification), use the\n[Spec Generator](https://central.portworx.com/) from PX-Central.\n\n### Prerequisite\n\nEnsure ports 17001-17020 on worker nodes are reachable from master and other worker nodes.\n\n### Tutorials\n\n* [Portworx Enterprise on Openshift](https://portworx.com/openshift)\n\n* [Stateful applications on Kubernetes](https://docs.portworx.com/portworx-install-with-kubernetes/application-install-with-kubernetes)\n\n* [Portworx Enterprise on Kubernetes](https://docs.portworx.com/portworx-install-with-kubernetes)\n\n* [Kafka on Kubernetes](https://portworx.com/kafka-kubernetes)\n\n* [Elastisearch on Kubernetes](https://portworx.com/elasticsearch-kubernetes)\n\n* [PostgreSQL on Kubernetes](https://portworx.com/postgres-kubernetes/)\n\n* [MongoDB on Kubernetes](https://portworx.com/mongodb-kubernetes/)\n\n* [Cassandra on Kubernetes](https://portworx.com/cassandra-kubernetes/)\n\n* [Kubernetes backup and recovery](https://portworx.com/kubernetes-backup/)\n\n* [Disaster Recovery for Kubernetes](https://portworx.com/kubernetes-disaster-recovery/)\n\n### Uninstall\n\nDeleting the StorageCluster object for Portworx cluster does not stop Portworx\nservice running on the nodes, to avoid application downtime.\n\nTo uninstall Portworx completely without wiping the data, you should add the\nfollowing delete strategy to the StorageCluster spec:\n```\nspec:\n  deleteStrategy:\n    type: Uninstall\n```\n**Caution:** To uninstall Portworx and **wipe all the data**, you should use the following\ndelete strategy:\n```\nspec:\n  deleteStrategy:\n    type: UninstallAndWipe\n```\n",
+      "csv_display_name": "Portworx Enterprise",
+      "csv_metadata_description": "Cloud native storage solution for production workloads",
+      "csv_name": "portworx-operator.v1.10.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T23:01:17.228000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "portworx-certified",
+      "provided_apis": [
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageCluster",
+          "version": "v1"
+        },
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageCluster",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageNode",
+          "version": "v1"
+        },
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageNode",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Portworx",
+      "related_images": [
+        {
+          "digest": "sha256:088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e",
+          "image": "registry.connect.redhat.com/portworx/openstorage-operator@sha256:088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e",
+          "name": "openstorage-operator-088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e-annotation"
+        },
+        {
+          "digest": "sha256:088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e",
+          "image": "registry.connect.redhat.com/portworx/openstorage-operator@sha256:088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e",
+          "name": "portworx-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "1.10.0",
+      "version_original": "1.10.0"
+    },
+    {
+      "_id": "6357194485973d76ed0162c9",
+      "alm_examples": [
+        {
+          "api_version": "core.libopenstorage.org/v1",
+          "kind": "StorageCluster",
+          "metadata": {
+            "annotations": {
+              "portworx.io/is-openshift": "true"
+            },
+            "name": "portworx",
+            "namespace": "test-operator"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "core.libopenstorage.org/v1",
+          "kind": "StorageNode",
+          "metadata": {
+            "name": "example",
+            "namespace": "test-operator"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/portworx/portworx-certified-bundle@sha256:0cf6b7cf6227fd7e0ac72c24667b623983c3d7e63f9271b2347d7191ecd02018",
+      "bundle_path_digest": "sha256:0cf6b7cf6227fd7e0ac72c24667b623983c3d7e63f9271b2347d7191ecd02018",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-10-24T23:01:24.846000+00:00",
+      "csv_description": "Portworx-Enterprise is the most widely-used and reliable cloud-native\nstorage solution for production workloads and provides high-availability,\ndata protection and security for containerized applications.\n\nPortworx Enterprise enables you to migrate entire applications, including\ndata, between clusters in a single data center or cloud, or between clouds,\nwith a single kubectl command.\n\nThe cloud native storage and data management platform that enterprises trust\nto manage data in containers now has an operator which simplifies the install,\nconfiguration, upgrades and manages the Portworx Enterprise cluster lifecycle.\n\nLearn more about the Portworx Enterprise\n[the data platform for Kubernetes](https://portworx.com/products/introduction)\n\nTo learn more about the platform features, please visit our\n[product features page](https://portworx.com/products/features)\n\n### About Portworx\n\nPortworx is the solution for running stateful containers in production,\ndesigned with DevOps in mind. With Portworx, users can manage any database\nor stateful service on any infrastructure using any container scheduler,\nincluding Kubernetes, Mesosphere DC/OS, and Docker Swarm. Portworx solves\nthe five most common problems DevOps teams encounter when running stateful\nservices in production: persistence, high availability, data automation,\nsecurity, and support for multiple data stores and infrastructure.\n\n### How to install StorageCluster\n\nTo customize your cluster's configuration (specification), use the\n[Spec Generator](https://central.portworx.com/) from PX-Central.\n\n### Prerequisite\n\nEnsure ports 17001-17020 on worker nodes are reachable from master and other worker nodes.\n\n### Tutorials\n\n* [Portworx Enterprise on Openshift](https://portworx.com/openshift)\n\n* [Stateful applications on Kubernetes](https://docs.portworx.com/portworx-install-with-kubernetes/application-install-with-kubernetes)\n\n* [Portworx Enterprise on Kubernetes](https://docs.portworx.com/portworx-install-with-kubernetes)\n\n* [Kafka on Kubernetes](https://portworx.com/kafka-kubernetes)\n\n* [Elastisearch on Kubernetes](https://portworx.com/elasticsearch-kubernetes)\n\n* [PostgreSQL on Kubernetes](https://portworx.com/postgres-kubernetes/)\n\n* [MongoDB on Kubernetes](https://portworx.com/mongodb-kubernetes/)\n\n* [Cassandra on Kubernetes](https://portworx.com/cassandra-kubernetes/)\n\n* [Kubernetes backup and recovery](https://portworx.com/kubernetes-backup/)\n\n* [Disaster Recovery for Kubernetes](https://portworx.com/kubernetes-disaster-recovery/)\n\n### Uninstall\n\nDeleting the StorageCluster object for Portworx cluster does not stop Portworx\nservice running on the nodes, to avoid application downtime.\n\nTo uninstall Portworx completely without wiping the data, you should add the\nfollowing delete strategy to the StorageCluster spec:\n```\nspec:\n  deleteStrategy:\n    type: Uninstall\n```\n**Caution:** To uninstall Portworx and **wipe all the data**, you should use the following\ndelete strategy:\n```\nspec:\n  deleteStrategy:\n    type: UninstallAndWipe\n```\n",
+      "csv_display_name": "Portworx Enterprise",
+      "csv_metadata_description": "Cloud native storage solution for production workloads",
+      "csv_name": "portworx-operator.v1.10.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T23:01:24.846000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "portworx-certified",
+      "provided_apis": [
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageCluster",
+          "version": "v1"
+        },
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageCluster",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageNode",
+          "version": "v1"
+        },
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageNode",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Portworx",
+      "related_images": [
+        {
+          "digest": "sha256:088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e",
+          "image": "registry.connect.redhat.com/portworx/openstorage-operator@sha256:088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e",
+          "name": "openstorage-operator-088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e-annotation"
+        },
+        {
+          "digest": "sha256:088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e",
+          "image": "registry.connect.redhat.com/portworx/openstorage-operator@sha256:088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e",
+          "name": "portworx-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "1.10.0",
+      "version_original": "1.10.0"
+    },
+    {
+      "_id": "635719a685973d76ed016368",
+      "alm_examples": [
+        {
+          "api_version": "core.libopenstorage.org/v1",
+          "kind": "StorageCluster",
+          "metadata": {
+            "annotations": {
+              "portworx.io/is-openshift": "true"
+            },
+            "name": "portworx",
+            "namespace": "test-operator"
+          },
+          "spec": {}
+        },
+        {
+          "api_version": "core.libopenstorage.org/v1",
+          "kind": "StorageNode",
+          "metadata": {
+            "name": "example",
+            "namespace": "test-operator"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/portworx/portworx-certified-bundle@sha256:0cf6b7cf6227fd7e0ac72c24667b623983c3d7e63f9271b2347d7191ecd02018",
+      "bundle_path_digest": "sha256:0cf6b7cf6227fd7e0ac72c24667b623983c3d7e63f9271b2347d7191ecd02018",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-10-24T23:03:02.004000+00:00",
+      "csv_description": "Portworx-Enterprise is the most widely-used and reliable cloud-native\nstorage solution for production workloads and provides high-availability,\ndata protection and security for containerized applications.\n\nPortworx Enterprise enables you to migrate entire applications, including\ndata, between clusters in a single data center or cloud, or between clouds,\nwith a single kubectl command.\n\nThe cloud native storage and data management platform that enterprises trust\nto manage data in containers now has an operator which simplifies the install,\nconfiguration, upgrades and manages the Portworx Enterprise cluster lifecycle.\n\nLearn more about the Portworx Enterprise\n[the data platform for Kubernetes](https://portworx.com/products/introduction)\n\nTo learn more about the platform features, please visit our\n[product features page](https://portworx.com/products/features)\n\n### About Portworx\n\nPortworx is the solution for running stateful containers in production,\ndesigned with DevOps in mind. With Portworx, users can manage any database\nor stateful service on any infrastructure using any container scheduler,\nincluding Kubernetes, Mesosphere DC/OS, and Docker Swarm. Portworx solves\nthe five most common problems DevOps teams encounter when running stateful\nservices in production: persistence, high availability, data automation,\nsecurity, and support for multiple data stores and infrastructure.\n\n### How to install StorageCluster\n\nTo customize your cluster's configuration (specification), use the\n[Spec Generator](https://central.portworx.com/) from PX-Central.\n\n### Prerequisite\n\nEnsure ports 17001-17020 on worker nodes are reachable from master and other worker nodes.\n\n### Tutorials\n\n* [Portworx Enterprise on Openshift](https://portworx.com/openshift)\n\n* [Stateful applications on Kubernetes](https://docs.portworx.com/portworx-install-with-kubernetes/application-install-with-kubernetes)\n\n* [Portworx Enterprise on Kubernetes](https://docs.portworx.com/portworx-install-with-kubernetes)\n\n* [Kafka on Kubernetes](https://portworx.com/kafka-kubernetes)\n\n* [Elastisearch on Kubernetes](https://portworx.com/elasticsearch-kubernetes)\n\n* [PostgreSQL on Kubernetes](https://portworx.com/postgres-kubernetes/)\n\n* [MongoDB on Kubernetes](https://portworx.com/mongodb-kubernetes/)\n\n* [Cassandra on Kubernetes](https://portworx.com/cassandra-kubernetes/)\n\n* [Kubernetes backup and recovery](https://portworx.com/kubernetes-backup/)\n\n* [Disaster Recovery for Kubernetes](https://portworx.com/kubernetes-disaster-recovery/)\n\n### Uninstall\n\nDeleting the StorageCluster object for Portworx cluster does not stop Portworx\nservice running on the nodes, to avoid application downtime.\n\nTo uninstall Portworx completely without wiping the data, you should add the\nfollowing delete strategy to the StorageCluster spec:\n```\nspec:\n  deleteStrategy:\n    type: Uninstall\n```\n**Caution:** To uninstall Portworx and **wipe all the data**, you should use the following\ndelete strategy:\n```\nspec:\n  deleteStrategy:\n    type: UninstallAndWipe\n```\n",
+      "csv_display_name": "Portworx Enterprise",
+      "csv_metadata_description": "Cloud native storage solution for production workloads",
+      "csv_name": "portworx-operator.v1.10.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": true,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T23:03:02.004000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "portworx-certified",
+      "provided_apis": [
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageNode",
+          "plural": "storagenodes",
+          "version": "v1"
+        },
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageNode",
+          "plural": "storagenodes",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageCluster",
+          "plural": "storageclusters",
+          "version": "v1"
+        },
+        {
+          "group": "core.libopenstorage.org",
+          "kind": "StorageCluster",
+          "plural": "storageclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Portworx",
+      "related_images": [
+        {
+          "digest": "sha256:088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e",
+          "image": "registry.connect.redhat.com/portworx/openstorage-operator@sha256:088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e",
+          "name": "openstorage-operator-088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e-annotation"
+        },
+        {
+          "digest": "sha256:088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e",
+          "image": "registry.connect.redhat.com/portworx/openstorage-operator@sha256:088f1af8328269bd6c36360c2e04ded7164c16bc130238707a824fb58b33e55e",
+          "name": "portworx-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
       "version": "1.10.0",
       "version_original": "1.10.0"
     }
