@@ -10,15 +10,17 @@ env:
   REGISTRY: quay.io
   REGISTRY_LOCAL: localhost
   RELEASE_LEVEL: '4.11'
-  IMAGE_NAME: testnetworkfunction/cnf-certification-test
-  IMAGE_TAG: unstable
+  TNF_IMAGE_NAME: testnetworkfunction/cnf-certification-test
+  TNF_IMAGE_TAG: unstable
+  OCT_IMAGE_NAME: testnetworkfunction/oct
+  OCT_IMAGE_TAG: latest
   TNF_CONTAINER_CLIENT: docker
   TNF_NON_INTRUSIVE_ONLY: false
   TNF_DISABLE_CONFIG_AUTODISCOVER: false
   TNF_CONFIG_DIR: /tmp/tnf/config
   TNF_OUTPUT_DIR: /tmp/tnf/output
   TNF_SRC_URL: 'https://github.com/${{ github.repository }}'
-  TESTING_CMD_PARAMS: '-n host -i ${REGISTRY_LOCAL}/${IMAGE_NAME}:${IMAGE_TAG} -t ${TNF_CONFIG_DIR} -o ${TNF_OUTPUT_DIR}'
+  TESTING_CMD_PARAMS: '-n host -i ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} -t ${TNF_CONFIG_DIR} -o ${TNF_OUTPUT_DIR}'
   TNF_SMOKE_TESTS_LOG_LEVEL: trace
   ON_DEMAND_DEBUG_PODS: false
   TERM: xterm-color
@@ -144,6 +146,13 @@ jobs:
         with:
           ref: ${{ github.sha }}
 
+      # Update the CNF containers, helm charts and operators DB
+
+      - name: Update the CNF DB
+        run: |
+          docker pull ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
+          docker run -v ${GITHUB_WORKSPACE}/cnf-certification-test/cmd/tnf/fetch:/tmp/dump:Z --env OCT_DUMP_ONLY=true ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
+
       - name: Install ginkgo
         run: go install github.com/onsi/ginkgo/v2/ginkgo@v2.4.0
 
@@ -191,8 +200,8 @@ jobs:
           VERSIONS=($(sudo curl -sH 'Accept: application/json' "https://api.openshift.com/api/upgrades_info/v1/graph?channel=stable-${RELEASE_LEVEL}&arch=amd64" | jq -r '.nodes[].version' | sort -t "." -k1,1n -k2,2n -k3,3n))
           OPENSHIFT_VERSION=${VERSIONS[${#VERSIONS[@]} - 1]}
           docker build --no-cache \
-            -t ${REGISTRY_LOCAL}/${IMAGE_NAME}:${IMAGE_TAG} \
-            -t ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} \
+            -t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} \
+            -t ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} \
             --build-arg TNF_VERSION=${COMMIT_SHA} \
             --build-arg TNF_SRC_URL=${TNF_SRC_URL} \
             --build-arg OPENSHIFT_VERSION=${OPENSHIFT_VERSION} .
@@ -235,4 +244,4 @@ jobs:
 
       - name: (if on main and upstream) Push the newly built image to Quay.io
         if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
-        run: docker push --all-tags ${REGISTRY}/${IMAGE_NAME}
+        run: docker push --all-tags ${REGISTRY}/${TNF_IMAGE_NAME}

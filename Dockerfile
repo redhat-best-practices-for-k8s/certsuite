@@ -1,3 +1,5 @@
+FROM quay.io/testnetworkfunction/oct:latest AS db
+
 FROM registry.access.redhat.com/ubi8/ubi:latest AS build
 ARG TNF_PARTNER_DIR=/usr/tnf-partner
 
@@ -9,6 +11,8 @@ ENV OPENSHIFT_VERSION=${OPENSHIFT_VERSION}
 ENV TNF_DIR=/usr/tnf
 ENV TNF_SRC_DIR=${TNF_DIR}/tnf-src
 ENV TNF_BIN_DIR=${TNF_DIR}/cnf-certification-test
+
+ENV OCT_DB_PATH=/usr/oct/cmd/tnf/fetch
 
 ENV TEMP_DIR=/tmp
 
@@ -54,6 +58,9 @@ ARG GIT_PARTNER_CHECKOUT_TARGET=$TNF_PARTNER_VERSION
 RUN git clone --no-single-branch --depth=1 ${TNF_SRC_URL} ${TNF_SRC_DIR}
 RUN git -C ${TNF_SRC_DIR} fetch origin ${GIT_CHECKOUT_TARGET}
 RUN git -C ${TNF_SRC_DIR} checkout ${GIT_CHECKOUT_TARGET}
+
+# Update the CNF containers, helm charts and operators DB
+COPY --from=db ${OCT_DB_PATH} ${TNF_SRC_DIR}/cnf-certification-test/cmd/tnf/fetch
 
 # Clone the partner source repository and checkout the target branch/tag/commit
 RUN git clone --no-single-branch --depth=1 ${TNF_PARTNER_SRC_URL} ${TNF_PARTNER_SRC_DIR}
