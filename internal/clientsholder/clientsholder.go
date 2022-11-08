@@ -18,6 +18,8 @@ package clientsholder
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 	"time"
 
 	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
@@ -40,18 +42,20 @@ import (
 	networkingv1 "k8s.io/client-go/kubernetes/typed/networking/v1"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
+	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 )
 
 type ClientsHolder struct {
-	RestConfig          *rest.Config
-	DynamicClient       dynamic.Interface
-	APIExtClient        apiextv1.Interface
-	OlmClient           olmClient.Interface
-	OcpClient           clientconfigv1.ConfigV1Interface
-	K8sClient           kubernetes.Interface
-	K8sNetworkingClient networkingv1.NetworkingV1Interface
-	MachineCfg          ocpMachine.Interface
-	ready               bool
+	RestConfig           *rest.Config
+	DynamicClient        dynamic.Interface
+	APIExtClient         apiextv1.Interface
+	OlmClient            olmClient.Interface
+	OcpClient            clientconfigv1.ConfigV1Interface
+	K8sClient            kubernetes.Interface
+	K8sNetworkingClient  networkingv1.NetworkingV1Interface
+	MachineCfg           ocpMachine.Interface
+	MergedKubeConfigFile string
+	ready                bool
 }
 
 var clientsHolder = ClientsHolder{}
@@ -135,6 +139,55 @@ func GetClientsHolder(filenames ...string) *ClientsHolder {
 	return clientsHolder
 }
 
+// createTempFile is a helper function to create a temporary file in the
+// system's tmp folder. If the system doesn't have a tmp folder mounted,
+// as in many containers, use app's directory as a failover.
+func createTempFile(prefix string) (file *os.File, err error) {
+	tmpDir := os.TempDir()
+
+	// Make sure the temp folder exists.
+	_, err = os.Stat(tmpDir)
+	if err != nil {
+		// tmp folder may not exist in this system: use app's directory
+		// as fallthrough.
+		var appPath string
+		appPath, err = os.Executable()
+		if err != nil {
+			return nil, fmt.Errorf("failed to get current app's path: %s", err)
+		}
+		tmpDir = filepath.Dir(appPath)
+		logrus.Debugf("tnf app path: %s", tmpDir)
+	}
+
+	file, err = os.CreateTemp(tmpDir, prefix)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create temporary file in %s: %w", tmpDir, err)
+	}
+
+	return file, nil
+}
+
+// createMergedKubeConfigFile creates a merged kube config file in the system's
+// temporary folder, e.g.: /tmp/tnf-merged-kubeconfig-730845179
+func createMergedKubeConfigFile(kubeConfig *clientcmdapi.Config) (filePath string, err error) {
+	yamlBytes, err := clientcmd.Write(*kubeConfig)
+	if err != nil {
+		return "", fmt.Errorf("failed to generate yaml bytes from kubeconfig: %w", err)
+	}
+
+	file, err := createTempFile("tnf-merged-kubeconfig-*")
+	if err != nil {
+		return "", fmt.Errorf("failed to create temp file: %s", err)
+	}
+
+	_, err = file.Write(yamlBytes)
+	if err != nil {
+		return "", fmt.Errorf("failed to write merged kubeconfig to temp file (%s): %w", file.Name(), err)
+	}
+
+	return file.Name(), nil
+}
+
 // GetClientsHolder instantiate an ocp client
 func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:funlen // this is a special function with lots of assignments
 	logrus.Infof("Creating k8s go-clients holder.")
@@ -158,6 +211,19 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	if err != nil {
 		return nil, fmt.Errorf("cannot instantiate rest config: %s", err)
 	}
+
+	// Save merged config to temporary kubeconfig file.
+	kubeRawConfig, err := kubeconfig.RawConfig()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get kube raw config: %w", err)
+	}
+
+	clientsHolder.MergedKubeConfigFile, err = createMergedKubeConfigFile(&kubeRawConfig)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create merged kube config file: %w", err)
+	}
+	logrus.Infof("Merged kube config file: %s", clientsHolder.MergedKubeConfigFile)
+
 	DefaultTimeout := 10 * time.Second
 	clientsHolder.RestConfig.Timeout = DefaultTimeout
 
