@@ -15,11 +15,6 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
-const (
-	category1        = "category1"
-	haveRequiredDrop = "haveRequiredDrop"
-)
-
 type OkNok int
 
 const (
@@ -45,21 +40,39 @@ func (okNok OkNok) String() string {
 }
 
 type ContainerSCC struct {
-	HostDirVolumePluginPresent OkNok // 0 or 1 - 0 is false 1 - true
-	HostIPC                    OkNok
-	HostNetwork                OkNok
-	HostPID                    OkNok
-	HostPorts                  OkNok
-	PrivilegeEscalation        OkNok // this can be true or false
-	PrivilegedContainer        OkNok
-	RunAsUserPresent           OkNok // thes filed that checking if the value is present
-	ReadOnlyRootFilesystem     OkNok
-	RunAsNonRoot               OkNok
-	FsGroupPresent             OkNok
-	SeLinuxContextPresent      OkNok
-	Capabilities               string
-	HaveDropCapabilities       OkNok
-	AllVolumeAllowed           OkNok
+	HostDirVolumePluginPresent      OkNok // 0 or 1 - 0 is false 1 - true
+	HostIPC                         OkNok
+	HostNetwork                     OkNok
+	HostPID                         OkNok
+	HostPorts                       OkNok
+	PrivilegeEscalation             OkNok // this can be true or false
+	PrivilegedContainer             OkNok
+	RunAsUserPresent                OkNok // thes filed that checking if the value is present
+	ReadOnlyRootFilesystem          OkNok
+	RunAsNonRoot                    OkNok
+	FsGroupPresent                  OkNok
+	SeLinuxContextPresent           OkNok
+	CapabilitiesCategory            CategoryID
+	RequiredDropCapabilitiesPresent OkNok
+	AllVolumeAllowed                OkNok
+}
+
+type CategoryID int
+
+const (
+	Undefined CategoryID = iota
+	CategoryID1
+	CategoryID1NoUID0
+	CategoryID2
+	CategoryID3
+	CategoryID4
+)
+
+type PodListcategory struct {
+	Containername string
+	Podname       string
+	NameSpace     string
+	Category      CategoryID
 }
 
 var (
@@ -68,73 +81,107 @@ var (
 	category2AddCapabilities = []string{"NET_ADMIN, NET_RAW"}
 	category3AddCapabilities = []string{"NET_ADMIN, NET_RAW, IPC_LOCK"}
 	Category1                = ContainerSCC{
-		NOK, //HostDirVolumePluginPresent
-		NOK, //HostIPC
-		NOK, //HostNetwork
-		NOK, //HostPID
-		NOK, //HostPorts
-		OK, //PrivilegeEscalation
-		NOK, //PrivilegedContainer
-		OK, //RunAsUserPresent
-		NOK, //ReadOnlyRootFilesystem
-		NOK, //RunAsNonRoot
-		OK, //FsGroupPresent
-		OK, //SeLinuxContextPresent
-		category1,//Capabilities
-		OK, //HaveDropCapabilities
-		OK} //AllVolumeAllowed
+		NOK,         // HostDirVolumePluginPresent
+		NOK,         // HostIPC
+		NOK,         // HostNetwork
+		NOK,         // HostPID
+		NOK,         // HostPorts
+		OK,          // PrivilegeEscalation
+		NOK,         // PrivilegedContainer
+		OK,          // RunAsUserPresent
+		NOK,         // ReadOnlyRootFilesystem
+		NOK,         // RunAsNonRoot
+		OK,          // FsGroupPresent
+		OK,          // SeLinuxContextPresent
+		CategoryID1, // Capabilities
+		OK,          // RequiredDropCapabilitiesPresent
+		OK}          // AllVolumeAllowed
 
 	Category1NoUID0 = ContainerSCC{
-		NOK, //HostDirVolumePluginPresent
-		NOK, //HostIPC
-		NOK, //HostNetwork
-		NOK, //HostPID
-		NOK, //HostPorts
-		OK, //PrivilegeEscalation
-		NOK, //PrivilegedContainer
-		OK, //RunAsUserPresent
-		NOK, //ReadOnlyRootFilesystem
-		OK, //RunAsNonRoot
-		OK, //FsGroupPresent
-		OK, //SeLinuxContextPresent
-		category1,//Capabilities
-		OK, //HaveDropCapabilities
-		OK} //AllVolumeAllowed
+		NOK,         // HostDirVolumePluginPresent
+		NOK,         // HostIPC
+		NOK,         // HostNetwork
+		NOK,         // HostPID
+		NOK,         // HostPorts
+		OK,          // PrivilegeEscalation
+		NOK,         // PrivilegedContainer
+		OK,          // RunAsUserPresent
+		NOK,         // ReadOnlyRootFilesystem
+		OK,          // RunAsNonRoot
+		OK,          // FsGroupPresent
+		OK,          // SeLinuxContextPresent
+		CategoryID1, // Capabilities
+		OK,          // RequiredDropCapabilitiesPresent
+		OK}          // AllVolumeAllowed
 
 	Category2 = ContainerSCC{
-		NOK, //HostDirVolumePluginPresent
-		NOK, //HostIPC
-		NOK, //HostNetwork
-		NOK, //HostPID
-		NOK, //HostPorts
-		OK, //PrivilegeEscalation
-		NOK, //PrivilegedContainer
-		OK, //RunAsUserPresent
-		NOK, //ReadOnlyRootFilesystem
-		OK, //RunAsNonRoot
-		OK, //FsGroupPresent
-		OK, //SeLinuxContextPresent
-		"category2",//Capabilities
-		OK, //HaveDropCapabilities
-		OK} //AllVolumeAllowed
+		NOK,         // HostDirVolumePluginPresent
+		NOK,         // HostIPC
+		NOK,         // HostNetwork
+		NOK,         // HostPID
+		NOK,         // HostPorts
+		OK,          // PrivilegeEscalation
+		NOK,         // PrivilegedContainer
+		OK,          // RunAsUserPresent
+		NOK,         // ReadOnlyRootFilesystem
+		OK,          // RunAsNonRoot
+		OK,          // FsGroupPresent
+		OK,          // SeLinuxContextPresent
+		CategoryID2, // Capabilities
+		OK,          // RequiredDropCapabilitiesPresent
+		OK}          // AllVolumeAllowed
 
 	Category3 = ContainerSCC{
-		NOK, //HostDirVolumePluginPresent
-		NOK, //HostIPC
-		NOK, //HostNetwork
-		NOK, //HostPID
-		NOK, //HostPorts
-		OK, //PrivilegeEscalation
-		NOK, //PrivilegedContainer
-		OK, //RunAsUserPresent
-		NOK, //ReadOnlyRootFilesystem
-		OK, //RunAsNonRoot
-		OK, //FsGroupPresent
-		OK, //SeLinuxContextPresent
-		"category3",//Capabilities
-		OK, //HaveDropCapabilities
-		OK} //AllVolumeAllowed
+		NOK,         // HostDirVolumePluginPresent
+		NOK,         // HostIPC
+		NOK,         // HostNetwork
+		NOK,         // HostPID
+		NOK,         // HostPorts
+		OK,          // PrivilegeEscalation
+		NOK,         // PrivilegedContainer
+		OK,          // RunAsUserPresent
+		NOK,         // ReadOnlyRootFilesystem
+		OK,          // RunAsNonRoot
+		OK,          // FsGroupPresent
+		OK,          // SeLinuxContextPresent
+		CategoryID3, // Capabilities
+		OK,          // RequiredDropCapabilitiesPresent
+		OK}          // AllVolumeAllowed
 )
+
+// print the strings
+func (category PodListcategory) String() string {
+	returnString := fmt.Sprintf("Containername: %s Podname: %s NameSpace: %s Category: %s \n ",
+		category.Containername, category.Podname, category.Podname, category.Category)
+	return returnString
+}
+
+const (
+	CategoryID1String       = "CategoryID1(limited access granted automatically)"
+	CategoryID1NoUID0String = "CategoryID1NoUID0(automatically granted, basic rights with mesh networks)"
+	CategoryID2String       = "CategoryID2(advanced networking (vlan tag, dscp, priority))"
+	CategoryID3String       = "CategoryID3(SRIOV and DPDK)"
+	CategoryID4String       = "CategoryID4(anything not matching lower category)"
+)
+
+// print the strings
+func (category CategoryID) String() string {
+	switch category {
+	case CategoryID1:
+		return CategoryID1String
+	case CategoryID1NoUID0:
+		return CategoryID1NoUID0String
+	case CategoryID2:
+		return CategoryID2String
+	case CategoryID3:
+		return CategoryID3String
+	case CategoryID4:
+		return CategoryID4String
+	case Undefined:
+		return CategoryID4String
+	}
+	return CategoryID4String
+}
 
 //nolint:gocritic,gocyclo
 func GetContainerSCC(cut *provider.Container, containerSCC ContainerSCC) ContainerSCC {
@@ -145,7 +192,7 @@ func GetContainerSCC(cut *provider.Container, containerSCC ContainerSCC) Contain
 			break
 		}
 	}
-	updateCapabilities(cut, &containerSCC)
+	updateCapabilitiesFromContainer(cut, &containerSCC)
 	containerSCC.PrivilegeEscalation = NOK
 	if cut.SecurityContext != nil && cut.SecurityContext.AllowPrivilegeEscalation != nil {
 		containerSCC.PrivilegeEscalation = OK
@@ -171,8 +218,8 @@ func GetContainerSCC(cut *provider.Container, containerSCC ContainerSCC) Contain
 	return containerSCC
 }
 
-func updateCapabilities(cut *provider.Container, containerSCC *ContainerSCC) {
-	containerSCC.HaveDropCapabilities = NOK
+func updateCapabilitiesFromContainer(cut *provider.Container, containerSCC *ContainerSCC) {
+	containerSCC.RequiredDropCapabilitiesPresent = NOK
 	if cut.SecurityContext != nil && cut.SecurityContext.Capabilities != nil {
 		var sliceDropCapabilities []string
 		for _, ncc := range cut.SecurityContext.Capabilities.Drop {
@@ -182,25 +229,25 @@ func updateCapabilities(cut *provider.Container, containerSCC *ContainerSCC) {
 
 		sort.Strings(requiredDropCapabilities)
 		if reflect.DeepEqual(sliceDropCapabilities, requiredDropCapabilities) || reflect.DeepEqual(sliceDropCapabilities, dropAll) {
-			containerSCC.HaveDropCapabilities = OK
+			containerSCC.RequiredDropCapabilitiesPresent = OK
 		}
 
 		if checkContainCategory(cut.SecurityContext.Capabilities.Add, category2AddCapabilities) {
-			containerSCC.Capabilities = "category2"
+			containerSCC.CapabilitiesCategory = CategoryID2
 		} else {
 			if checkContainCategory(cut.SecurityContext.Capabilities.Add, category3AddCapabilities) {
-				containerSCC.Capabilities = "category3"
+				containerSCC.CapabilitiesCategory = CategoryID3
 			} else {
 				if len(cut.SecurityContext.Capabilities.Add) > 0 {
-					containerSCC.Capabilities = "category4"
+					containerSCC.CapabilitiesCategory = CategoryID4
 				} else {
 					logrus.Info("category is category1")
-					containerSCC.Capabilities = category1
+					containerSCC.CapabilitiesCategory = CategoryID1
 				}
 			}
 		}
 	} else {
-		containerSCC.Capabilities = category1
+		containerSCC.CapabilitiesCategory = CategoryID1
 	}
 }
 
@@ -237,60 +284,8 @@ func AllVolumeAllowed(volumes []corev1.Volume) (r1, r2 OkNok) {
 	return NOK, value
 }
 
-type CategoryID int
-
-const (
-	Undefined CategoryID = iota
-	CategoryID1
-	CategoryID1NoUID0
-	CategoryID2
-	CategoryID3
-	CategoryID4
-)
-
-type PodListcategory struct {
-	Containername string
-	Podname       string
-	NameSpace     string
-	Category      CategoryID
-}
-
-// print the strings
-func (category PodListcategory) String() string {
-	returnString := fmt.Sprintf("Containername: %s Podname: %s NameSpace: %s Category: %s \n ",
-		category.Containername, category.Podname, category.Podname, category.Category)
-	return returnString
-}
-
-const (
-	CategoryID1String       = "CategoryID1(limited access granted automatically)"
-	CategoryID1NoUID0String = "CategoryID1NoUID0(automatically granted, basic rights with mesh networks)"
-	CategoryID2String       = "CategoryID2(advanced networking (vlan tag, dscp, priority))"
-	CategoryID3String       = "CategoryID3(SRIOV and DPDK)"
-	CategoryID4String       = "CategoryID4(anything not matching lower category)"
-)
-
-// print the strings
-func (category CategoryID) String() string {
-	switch category {
-	case CategoryID1:
-		return CategoryID1String
-	case CategoryID1NoUID0:
-		return CategoryID1NoUID0String
-	case CategoryID2:
-		return CategoryID2String
-	case CategoryID3:
-		return CategoryID3String
-	case CategoryID4:
-		return CategoryID4String
-	case Undefined:
-		return CategoryID4String
-	}
-	return CategoryID4String
-}
-
 //nolint:gocritic
-func CheckCategory(containers []corev1.Container, containerSCC ContainerSCC, podName, nameSpace string) []PodListcategory {
+func checkContainerCategory(containers []corev1.Container, containerSCC ContainerSCC, podName, nameSpace string) []PodListcategory {
 	var ContainerList []PodListcategory
 	var categoryinfo PodListcategory
 	for j := 0; j < len(containers); j++ {
@@ -358,101 +353,125 @@ func CheckPod(pod *provider.Pod) []PodListcategory {
 	} else {
 		containerSCC.FsGroupPresent = NOK
 	}
-	return CheckCategory(pod.Spec.Containers, containerSCC, pod.Name, pod.Namespace)
+	return checkContainerCategory(pod.Spec.Containers, containerSCC, pod.Name, pod.Namespace)
 }
 
 //nolint:gocyclo,funlen
 func compareCategory(refCategory, containerSCC *ContainerSCC, id CategoryID) bool {
 	result := true
 	tnf.ClaimFilePrintf("Testing if pod belongs to category %s", &id)
+	// AllVolumeAllowed reports whether the volumes in the container are compliant to the SCC (same volume list for all SCCs).
+	// True means that all volumes declared in the pod are allowed in the SCC.
+	// False means that at least one volume is disallowed
 	if refCategory.AllVolumeAllowed == containerSCC.AllVolumeAllowed {
 		tnf.ClaimFilePrintf("AllVolumeAllowed = %s - OK", containerSCC.AllVolumeAllowed)
 	} else {
 		result = false
 		tnf.ClaimFilePrintf("AllVolumeAllowed = %s but expected >=<=%s -  NOK", containerSCC.AllVolumeAllowed, refCategory.AllVolumeAllowed)
 	}
+	// RunAsUserPresent reports whether the RunAsUser Field is set to something other than nil as requested by All SCC categories.
+	// True means that the RunAsUser Field is set.
+	// False means that it is not set (nil)
 	if refCategory.RunAsUserPresent == containerSCC.RunAsUserPresent {
 		tnf.ClaimFilePrintf("RunAsUserPresent = %s - OK", containerSCC.RunAsUserPresent)
 	} else {
 		tnf.ClaimFilePrintf("RunAsUserPresent = %s but expected  %s - NOK", containerSCC.RunAsUserPresent, refCategory.RunAsUserPresent)
 		result = false
 	}
+	// RunAsNonRoot is true if the RunAsNonRoot field is set to true, false otherwise.
 	if refCategory.RunAsNonRoot >= containerSCC.RunAsNonRoot {
 		tnf.ClaimFilePrintf("RunAsNonRoot = %s - OK", containerSCC.RunAsNonRoot)
 	} else {
 		tnf.ClaimFilePrintf("RunAsNonRoot = %s but expected  %s - NOK", containerSCC.RunAsNonRoot, refCategory.RunAsNonRoot)
 		result = false
 	}
+	// FsGroupPresent reports whether the FsGroup Field is set to something other than nil as requested by All SCC categories.
+	// True means that the FsGroup Field is set.
+	// False means that it is not set (nil)
 	if refCategory.FsGroupPresent == containerSCC.FsGroupPresent {
 		tnf.ClaimFilePrintf("FsGroupPresent  = %s - OK", containerSCC.FsGroupPresent)
 	} else {
 		tnf.ClaimFilePrintf("FsGroupPresent  = %s but expected  %s - NOK", containerSCC.FsGroupPresent, refCategory.FsGroupPresent)
 		result = false
 	}
-	if refCategory.HaveDropCapabilities == containerSCC.HaveDropCapabilities {
+	// RequiredDropCapabilitiesPresent is true if the drop DropCapabilities field has at least the set of required drop capabilities ( same required set for all categories ).
+	// False means that some required DropCapabilities are missing.
+	if refCategory.RequiredDropCapabilitiesPresent == containerSCC.RequiredDropCapabilitiesPresent {
 		tnf.ClaimFilePrintf("DropCapabilities list - OK")
 	} else {
-		tnf.ClaimFilePrintf("HaveDropCapabilities = %s but expected  %s - NOK", containerSCC.HaveDropCapabilities, refCategory.HaveDropCapabilities)
+		tnf.ClaimFilePrintf("RequiredDropCapabilitiesPresent = %s but expected  %s - NOK", containerSCC.RequiredDropCapabilitiesPresent, refCategory.RequiredDropCapabilitiesPresent)
 		tnf.ClaimFilePrintf("its didnt have all the required (MKNOD, SETUID, SETGID, KILL)/(ALL) drop value ")
 		result = false
 	}
+	// HostDirVolumePluginPresent is true if a hostpath volume is configured, false otherwise.
+	// It is a deprecated field and is derived from the volume list currently configured in the container.
+	// see https://docs.openshift.com/container-platform/3.11/admin_guide/manage_scc.html#use-the-hostpath-volume-plugin
 	if refCategory.HostDirVolumePluginPresent == containerSCC.HostDirVolumePluginPresent {
 		tnf.ClaimFilePrintf("HostDirVolumePluginPresent = %s - OK", containerSCC.HostDirVolumePluginPresent)
 	} else {
 		tnf.ClaimFilePrintf("HostDirVolumePluginPresent = %s but expected  %s - NOK", containerSCC.HostDirVolumePluginPresent, refCategory.HostDirVolumePluginPresent)
 		result = false
 	}
+	// HostIPC is true if the HostIPC field is set to true, false otherwise.
 	if refCategory.HostIPC >= containerSCC.HostIPC {
 		tnf.ClaimFilePrintf("HostIPC = %s - OK", containerSCC.HostIPC)
 	} else {
 		result = false
 		tnf.ClaimFilePrintf("HostIPC = %s but expected <= %s - NOK", containerSCC.HostIPC, refCategory.HostIPC)
 	}
+	// HostNetwork is true if the HostNetwork field is set to true, false otherwise.
 	if refCategory.HostNetwork >= containerSCC.HostNetwork {
 		tnf.ClaimFilePrintf("HostNetwork = %s - OK", containerSCC.HostNetwork)
 	} else {
 		result = false
 		tnf.ClaimFilePrintf("HostNetwork = %s but expected <= %s - NOK", containerSCC.HostNetwork, refCategory.HostNetwork)
 	}
+	// HostPID is true if the HostPID field is set to true, false otherwise.
 	if refCategory.HostPID >= containerSCC.HostPID {
 		tnf.ClaimFilePrintf("HostPID = %s - OK", containerSCC.HostPID)
 	} else {
 		result = false
 		tnf.ClaimFilePrintf("HostPID = %s but expected <= %s - NOK", containerSCC.HostPID, refCategory.HostPID)
 	}
+	// HostPorts is true if the HostPorts field is set to true, false otherwise.
 	if refCategory.HostPorts >= containerSCC.HostPorts {
 		tnf.ClaimFilePrintf("HostPorts = %s - OK", containerSCC.HostPorts)
 	} else {
 		result = false
 		tnf.ClaimFilePrintf("HostPorts = %s but expected <= %s - NOK", containerSCC.HostPorts, refCategory.HostPorts)
 	}
+	// PrivilegeEscalation is true if the PrivilegeEscalation field is set to true, false otherwise.
 	if refCategory.PrivilegeEscalation >= containerSCC.PrivilegeEscalation {
 		tnf.ClaimFilePrintf("HostNetwork = %s - OK", containerSCC.HostNetwork)
 	} else {
 		result = false
 		tnf.ClaimFilePrintf("PrivilegeEscalation = %s but expected <= %s - NOK", containerSCC.PrivilegeEscalation, refCategory.PrivilegeEscalation)
 	}
+	// PrivilegedContainer is true if the PrivilegedContainer field is set to true, false otherwise.
 	if refCategory.PrivilegedContainer >= containerSCC.PrivilegedContainer {
 		tnf.ClaimFilePrintf("PrivilegedContainer = %s - OK", containerSCC.PrivilegedContainer)
 	} else {
 		result = false
 		tnf.ClaimFilePrintf("PrivilegedContainer = %s but expected <= %s - NOK", containerSCC.PrivilegedContainer, refCategory.PrivilegedContainer)
 	}
+	// ReadOnlyRootFilesystem is true if the ReadOnlyRootFilesystem field is set to true, false otherwise.
 	if refCategory.ReadOnlyRootFilesystem >= containerSCC.ReadOnlyRootFilesystem {
 		tnf.ClaimFilePrintf("ReadOnlyRootFilesystem = %s - OK", containerSCC.ReadOnlyRootFilesystem)
 	} else {
 		result = false
 		tnf.ClaimFilePrintf("ReadOnlyRootFilesystem = %s but expected <= %s - NOK", containerSCC.ReadOnlyRootFilesystem, refCategory.ReadOnlyRootFilesystem)
 	}
+	// SeLinuxContextPresent is true if the SeLinuxContext field is present and set to a value (e.g. not nil), false otherwise.
 	if refCategory.SeLinuxContextPresent == containerSCC.SeLinuxContextPresent {
 		tnf.ClaimFilePrintf("SeLinuxContextPresent  is not nil - OK")
 	} else {
 		result = false
 		tnf.ClaimFilePrintf("SeLinuxContextPresent  = %s but expected  %s expected to be non nil - NOK", containerSCC.SeLinuxContextPresent, refCategory.SeLinuxContextPresent)
 	}
-	if refCategory.Capabilities != containerSCC.Capabilities {
+	// CapabilitiesCategory indicates the lowest SCC category to which the list of capabilities.add in the container can be mapped to.
+	if refCategory.CapabilitiesCategory != containerSCC.CapabilitiesCategory {
 		result = false
-		tnf.ClaimFilePrintf("Capabilities = %s but expected  %s - NOK", containerSCC.Capabilities, refCategory.Capabilities)
+		tnf.ClaimFilePrintf("CapabilitiesCategory = %s but expected  %s - NOK", containerSCC.CapabilitiesCategory, refCategory.CapabilitiesCategory)
 	}
 	return result
 }
