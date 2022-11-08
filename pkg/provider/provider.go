@@ -27,7 +27,6 @@ import (
 	"encoding/json"
 
 	mcv1 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1"
-	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
@@ -103,7 +102,6 @@ type TestEnvironment struct { // rename this with testTarget
 	AllInstallPlans      []*olmv1Alpha.InstallPlan   `json:"-"`
 	AllCatalogSources    []*olmv1Alpha.CatalogSource `json:"-"`
 	IstioServiceMesh     bool
-	ValidProtocolNames   []string
 }
 
 type MachineConfig struct {
