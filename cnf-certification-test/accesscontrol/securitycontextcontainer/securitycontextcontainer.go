@@ -390,6 +390,12 @@ func compareCategory(refCategory, containerSCC *ContainerSCC, id CategoryID) boo
 	// RunAsUserPresent reports whether the RunAsUser Field is set to something other than nil as requested by All SCC categories.
 	// True means that the RunAsUser Field is set.
 	// False means that it is not set (nil)
+	// The runAsUser range can be specified in the SCC itself. If not, it is specified in the namespace, see
+	// https://docs.openshift.com/container-platform/4.11/authentication/managing-security-context-constraints.html#security-context-constraints-pre-allocated-values_configuring-internal-oauth
+	// runAsUser:
+	// type: MustRunAsRange
+	// uidRangeMin: 1000
+	// uidRangeMax: 2000
 	if refCategory.RunAsUserPresent == containerSCC.RunAsUserPresent {
 		tnf.ClaimFilePrintf("RunAsUserPresent = %s - OK", containerSCC.RunAsUserPresent)
 	} else {
@@ -397,6 +403,7 @@ func compareCategory(refCategory, containerSCC *ContainerSCC, id CategoryID) boo
 		result = false
 	}
 	// RunAsNonRoot is true if the RunAsNonRoot field is set to true, false otherwise.
+	// if setting a range including the roor UID 0 ( for instance 0-2000), then this option can disallow it.
 	if refCategory.RunAsNonRoot >= containerSCC.RunAsNonRoot {
 		tnf.ClaimFilePrintf("RunAsNonRoot = %s - OK", containerSCC.RunAsNonRoot)
 	} else {
@@ -406,6 +413,13 @@ func compareCategory(refCategory, containerSCC *ContainerSCC, id CategoryID) boo
 	// FsGroupPresent reports whether the FsGroup Field is set to something other than nil as requested by All SCC categories.
 	// True means that the FsGroup Field is set.
 	// False means that it is not set (nil)
+	// The FSGroup range can be specified in the SCC itself. If not, it is specified in the namespace, see
+	// https://docs.openshift.com/container-platform/4.11/authentication/managing-security-context-constraints.html#security-context-constraints-pre-allocated-values_configuring-internal-oauth
+	// fsGroup:
+	// type: MustRunAs
+	// ranges:
+	// - min: 1000900000
+	// max: 1000900010
 	if refCategory.FsGroupPresent == containerSCC.FsGroupPresent {
 		tnf.ClaimFilePrintf("FsGroupPresent  = %s - OK", containerSCC.FsGroupPresent)
 	} else {
@@ -480,6 +494,7 @@ func compareCategory(refCategory, containerSCC *ContainerSCC, id CategoryID) boo
 		tnf.ClaimFilePrintf("ReadOnlyRootFilesystem = %s but expected <= %s - NOK", containerSCC.ReadOnlyRootFilesystem, refCategory.ReadOnlyRootFilesystem)
 	}
 	// SeLinuxContextPresent is true if the SeLinuxContext field is present and set to a value (e.g. not nil), false otherwise.
+	// An SELinuxContext strategy of MustRunAs with no level set. Admission looks for the openshift.io/sa.scc.mcs annotation to populate the level.
 	if refCategory.SeLinuxContextPresent == containerSCC.SeLinuxContextPresent {
 		tnf.ClaimFilePrintf("SeLinuxContextPresent  is not nil - OK")
 	} else {
