@@ -8,7 +8,6 @@ import (
 	"reflect"
 	"sort"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
@@ -232,18 +231,15 @@ func updateCapabilitiesFromContainer(cut *provider.Container, containerSCC *Cont
 			containerSCC.RequiredDropCapabilitiesPresent = OK
 		}
 
-		if checkContainCategory(cut.SecurityContext.Capabilities.Add, category2AddCapabilities) {
+		if len(cut.SecurityContext.Capabilities.Add) == 0 {
+			containerSCC.CapabilitiesCategory = CategoryID1
+		} else if checkContainCategory(cut.SecurityContext.Capabilities.Add, category2AddCapabilities) {
 			containerSCC.CapabilitiesCategory = CategoryID2
 		} else {
 			if checkContainCategory(cut.SecurityContext.Capabilities.Add, category3AddCapabilities) {
 				containerSCC.CapabilitiesCategory = CategoryID3
 			} else {
-				if len(cut.SecurityContext.Capabilities.Add) > 0 {
-					containerSCC.CapabilitiesCategory = CategoryID4
-				} else {
-					logrus.Info("category is category1")
-					containerSCC.CapabilitiesCategory = CategoryID1
-				}
+				containerSCC.CapabilitiesCategory = CategoryID4
 			}
 		}
 	} else {
@@ -335,13 +331,13 @@ func checkContainerCategory(containers []corev1.Container, containerSCC Containe
 	return ContainerList
 }
 
-func checkContainCategory(addCapability []corev1.Capability, categoryAddCapabilities []string) bool {
+func checkContainCategory(addCapability []corev1.Capability, referenceCategoryAddCapabilities []string) bool {
 	for _, ncc := range addCapability {
-		if !stringhelper.StringInSlice(categoryAddCapabilities, string(ncc), true) {
+		if !stringhelper.StringInSlice(referenceCategoryAddCapabilities, string(ncc), true) {
 			return false
 		}
 	}
-	return len(addCapability) > 0
+	return true
 }
 
 func CheckPod(pod *provider.Pod) []PodListcategory {
