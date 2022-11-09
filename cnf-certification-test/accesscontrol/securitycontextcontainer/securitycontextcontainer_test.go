@@ -98,26 +98,6 @@ func TestCheckPod(t *testing.T) {
 			}},
 		},
 		{
-			// Passing with extra drop
-			testSlice: createPod(runAs2, false, true, []corev1.Capability{"SYS_TIME", "KILL", "MKNOD", "SETUID", "SETGID"}, []corev1.Capability{}),
-			expectedSlice: []PodListcategory{{
-				Containername: "test",
-				Podname:       "test",
-				NameSpace:     "tnf",
-				Category:      CategoryID1,
-			}},
-		},
-		{
-
-			testSlice: createPod(runAs2, false, true, []corev1.Capability{"ALL"}, []corev1.Capability{}),
-			expectedSlice: []PodListcategory{{
-				Containername: "test",
-				Podname:       "test",
-				NameSpace:     "tnf",
-				Category:      CategoryID1,
-			}},
-		},
-		{
 
 			testSlice: createPod2Containers(runAs2, false, true, []corev1.Capability{"ALL"}, []corev1.Capability{}),
 			expectedSlice: []PodListcategory{{
