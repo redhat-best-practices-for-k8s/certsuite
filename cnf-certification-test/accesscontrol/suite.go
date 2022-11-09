@@ -639,7 +639,10 @@ func testContainerSCC(env *provider.TestEnvironment) {
 			}
 		}
 	}
+	logrus.Infof("CNF category (highest container category across all containers):  %s \n", highLevelCat)
 	tnf.ClaimFilePrintf("CNF category (highest container category across all containers):  %s \n", highLevelCat)
+	logrus.Infof("List of containers that are Category1 or CategoryNoUID0 %+v \n", goodContainer)
 	tnf.ClaimFilePrintf("List of containers that are Category1 or CategoryNoUID0 %+v \n", goodContainer)
+	logrus.Infof("List of non-compliant containers that are not from Category1 or CategoryNoUID0 - %+v", badContainer)
 	testhelper.AddTestResultLog("List of non-compliant containers that are not from Category1 or CategoryNoUID0 - ", badContainer, tnf.ClaimFilePrintf, ginkgo.Fail)
 }

@@ -337,7 +337,7 @@ func checkContainerCategory(containers []corev1.Container, containerSCC Containe
 
 func checkContainCategory(addCapability []corev1.Capability, categoryAddCapabilities []string) bool {
 	for _, ncc := range addCapability {
-		return stringhelper.StringInSlice(categoryAddCapabilities, string(ncc), true)
+		return stringhelper.StringInSlice(categoryAddCapabilities, string(ncc), false)
 	}
 	return len(addCapability) > 0
 }
@@ -505,6 +505,8 @@ func compareCategory(refCategory, containerSCC *ContainerSCC, id CategoryID) boo
 	if refCategory.CapabilitiesCategory != containerSCC.CapabilitiesCategory {
 		result = false
 		tnf.ClaimFilePrintf("CapabilitiesCategory = %s but expected  %s - NOK", containerSCC.CapabilitiesCategory, refCategory.CapabilitiesCategory)
+	} else {
+		tnf.ClaimFilePrintf("CapabilitiesCategory  list is as expected %s - OK", containerSCC.CapabilitiesCategory)
 	}
 	return result
 }
