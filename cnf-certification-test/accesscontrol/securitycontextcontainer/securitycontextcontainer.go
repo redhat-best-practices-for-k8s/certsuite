@@ -337,7 +337,9 @@ func checkContainerCategory(containers []corev1.Container, containerSCC Containe
 
 func checkContainCategory(addCapability []corev1.Capability, categoryAddCapabilities []string) bool {
 	for _, ncc := range addCapability {
-		return stringhelper.StringInSlice(categoryAddCapabilities, string(ncc), false)
+		if !stringhelper.StringInSlice(categoryAddCapabilities, string(ncc), true) {
+			return false
+		}
 	}
 	return len(addCapability) > 0
 }
