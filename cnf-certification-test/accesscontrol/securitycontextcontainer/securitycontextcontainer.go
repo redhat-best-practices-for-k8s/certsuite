@@ -231,7 +231,7 @@ func updateCapabilitiesFromContainer(cut *provider.Container, containerSCC *Cont
 		if subslice(requiredDropCapabilities, sliceDropCapabilities) || reflect.DeepEqual(sliceDropCapabilities, dropAll) {
 			containerSCC.RequiredDropCapabilitiesPresent = OK
 		}
-		if len(cut.SecurityContext.Capabilities.Add) == 0 {
+		if len(cut.SecurityContext.Capabilities.Add) == 0 { // check if the len=0 this mean that is cat1
 			containerSCC.CapabilitiesCategory = CategoryID1
 		} else if checkContainCategory(cut.SecurityContext.Capabilities.Add, category2AddCapabilities) {
 			containerSCC.CapabilitiesCategory = CategoryID2
