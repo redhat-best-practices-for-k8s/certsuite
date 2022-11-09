@@ -31,8 +31,8 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	k8sPriviledgedDs "github.com/test-network-function/privileged-daemonset"
 	"helm.sh/helm/v3/pkg/release"
-	appsv1 "k8s.io/api/apps/v1"
 	scalingv1 "k8s.io/api/autoscaling/v1"
 	corev1 "k8s.io/api/core/v1"
 	networkingv1 "k8s.io/api/networking/v1"
@@ -138,7 +138,7 @@ var (
 
 func buildTestEnvironment() { //nolint:funlen
 	// Wait for the debug pods to be ready before the autodiscovery starts.
-	err := WaitDebugPodsReady()
+	err := k8sPriviledgedDs.WaitDaemonsetReady(DaemonSetNamespace, DaemonSetName, debugPodsTimeout)
 	if err != nil {
 		logrus.Errorf("Debug daemonset failure: %s", err)
 	}
@@ -280,50 +280,6 @@ func GetTestEnvironment() TestEnvironment {
 
 func IsOCPCluster() bool {
 	return !env.variables.NonOcpCluster
-}
-
-func WaitDebugPodsReady() error {
-	oc := clientsholder.GetClientsHolder()
-	nodes, err := oc.K8sClient.CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
-	if err != nil {
-		return fmt.Errorf("failed to get node list, err:%s", err)
-	}
-
-	nodesCount := int32(len(nodes.Items))
-	isReady := false
-	for start := time.Now(); !isReady && time.Since(start) < debugPodsTimeout; {
-		daemonSet, err := oc.K8sClient.AppsV1().DaemonSets(DaemonSetNamespace).Get(context.TODO(), DaemonSetName, metav1.GetOptions{})
-		if err != nil {
-			return fmt.Errorf("failed to get daemonset, err: %s", err)
-		}
-
-		logrus.Infof("Waiting for (%d) debug pods to be ready: %+v", nodesCount, daemonSet.Status)
-
-		if daemonSet.Status.DesiredNumberScheduled != nodesCount {
-			logrus.Warnf("daemonset DesiredNumberScheduled (%d) not equal to number of nodes:%d, please instantiate debug pods on all nodes",
-				daemonSet.Status.DesiredNumberScheduled, nodesCount)
-		} else if isDaemonSetReady(&daemonSet.Status) {
-			isReady = true
-			break
-		}
-
-		time.Sleep(debugPodsRetryInterval)
-	}
-
-	if !isReady {
-		return errors.New("daemonset debug pods not ready")
-	}
-
-	logrus.Infof("All the debug pods are ready.")
-	return nil
-}
-
-func isDaemonSetReady(status *appsv1.DaemonSetStatus) bool {
-	//nolint:gocritic
-	return status.DesiredNumberScheduled == status.CurrentNumberScheduled &&
-		status.DesiredNumberScheduled == status.NumberAvailable &&
-		status.DesiredNumberScheduled == status.NumberReady &&
-		status.NumberMisscheduled == 0
 }
 
 func buildContainerImageSource(url string) configuration.ContainerImageIdentifier {
