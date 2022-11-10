@@ -26,6 +26,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/namespace"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/rbac"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/resources"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/securitycontextcontainer"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/tolerations"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
@@ -55,13 +56,19 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 		env = provider.GetTestEnvironment()
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
-
+	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSecContextIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
+		testContainerSCC(&env)
+	})
 	// Security Context: non-compliant capabilities
-	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSecConCapabilitiesIdentifier)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSecConCapabilitiesIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		TestSecConCapabilities(&env)
 	})
+	// container security context: check if it match one of the 4 categories
+
 	// container security context: non-root user
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSecConNonRootUserIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), ginkgo.Label(tags...), func() {
@@ -610,4 +617,32 @@ func Test1337UIDs(env *provider.TestEnvironment) {
 	}
 
 	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
+}
+
+// a test for security context that are allowed from the documentation of the cnf
+// an allowed one will pass the test
+
+func testContainerSCC(env *provider.TestEnvironment) {
+	var badContainer []securitycontextcontainer.PodListcategory
+	var goodContainer []securitycontextcontainer.PodListcategory
+	highLevelCat := securitycontextcontainer.CategoryID1
+	for _, pod := range env.Pods {
+		listCategory := securitycontextcontainer.CheckPod(pod)
+		for _, cat := range listCategory {
+			if cat.Category > securitycontextcontainer.CategoryID1NoUID0 {
+				badContainer = append(badContainer, cat)
+			} else {
+				goodContainer = append(goodContainer, cat)
+			}
+			if cat.Category > highLevelCat {
+				highLevelCat = cat.Category
+			}
+		}
+	}
+	logrus.Infof("CNF category (highest container category across all containers):  %s \n", highLevelCat)
+	tnf.ClaimFilePrintf("CNF category (highest container category across all containers):  %s \n", highLevelCat)
+	logrus.Infof("List of containers that are Category1 or CategoryNoUID0 %+v \n", goodContainer)
+	tnf.ClaimFilePrintf("List of containers that are Category1 or CategoryNoUID0 %+v \n", goodContainer)
+	logrus.Infof("List of non-compliant containers that are not from Category1 or CategoryNoUID0 - %+v", badContainer)
+	testhelper.AddTestResultLog("List of non-compliant containers that are not from Category1 or CategoryNoUID0 - ", badContainer, tnf.ClaimFilePrintf, ginkgo.Fail)
 }

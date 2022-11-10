@@ -275,6 +275,12 @@ var (
 		Url:     formTestURL(common.AccessControlTestKey, "security-context-non-root-user-check"),
 		Version: VersionOne,
 	}
+	// TestSecContextIdentifier tests that pods or containers are not running with root permissions
+	TestSecContextIdentifier = claim.Identifier{
+		Tags:    formTestTags(TagExtended),
+		Url:     formTestURL(common.AccessControlTestKey, "security-context"),
+		Version: VersionOne,
+	}
 	// TestSecPrivilegedEscalation tests that containers are not allowed privilege escalation
 	TestSecConPrivilegeEscalation = claim.Identifier{
 		Tags:    formTestTags(TagCommon),
@@ -759,6 +765,16 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 			`Checks the security context runAsUser parameter in pods and containers to make sure it is not set to uid root(0)`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		Tags:                  TestSecConNonRootUserIdentifier.Tags,
+	},
+	TestSecContextIdentifier: {
+		Identifier:       TestSecContextIdentifier,
+		Type:             NormativeResult,
+		Remediation:      SecConRemediation,
+		ExceptionProcess: SecConExceptionProcess,
+		Description: formDescription(TestSecContextIdentifier,
+			`Checks the security context is match one of the 4 categories`),
+		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 4.5",
+		Tags:                  TestSecContextIdentifier.Tags,
 	},
 	TestSecConPrivilegeEscalation: {
 		Identifier:       TestSecConPrivilegeEscalation,

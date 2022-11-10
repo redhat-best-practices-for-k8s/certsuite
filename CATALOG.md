@@ -217,6 +217,20 @@ Suggested Remediation|Add requests and limits to your container spec.  See: http
 Best Practice Reference|https://TODO Section 4.6.11
 Exception Process|There is no documented exception process for this.
 Tags|common
+#### security-context
+
+Property|Description
+---|---
+Test Case Name|security-context
+Test Case Label|access-control-security-context
+Unique ID|http://test-network-function.com/testcases/access-control/security-context
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/access-control/security-context Checks the security context is match one of the 4 categories
+Result Type|normative
+Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
+Best Practice Reference|https://TODO Section 4.5
+Exception Process|If the contaier had the right configuration of the allowed category from the 4 list so the test will pass the  	list is on page 51 on the CNF Security Context Constraints (SCC) section 4.5(Allowed categories are category 1 and categorynoid0),  	Applications MUST use one of the approved Security Context Constraints.
+Tags|extended
 #### security-context-capabilities-check
 
 Property|Description
