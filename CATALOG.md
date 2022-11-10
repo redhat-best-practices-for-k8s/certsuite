@@ -545,7 +545,6 @@ Suggested Remediation|Add a readiness probe to deployed containers
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.16, 12.1 and 12.5
 Exception Process|There is no documented exception process for this.
 Tags|common
-
 #### startup-probe
 
 Property|Description

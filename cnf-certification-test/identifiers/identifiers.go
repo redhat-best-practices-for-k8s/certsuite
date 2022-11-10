@@ -1151,18 +1151,6 @@ that there are no changes to the following directories:
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestServiceMeshIdentifier.Tags,
 	},
-	TestScalingIdentifier: {
-		Identifier: TestScalingIdentifier,
-		Type:       NormativeResult,
-		Description: formDescription(TestScalingIdentifier,
-			`Tests that CNF deployments support scale in/out operations.
-			First, The test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the
-			scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s.`),
-		Remediation:           ScalingRemediation,
-		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
-		ExceptionProcess:      NoDocumentedProcess,
-		Tags:                  TestScalingIdentifier.Tags,
-	},
 	TestIsRedHatReleaseIdentifier: {
 		Identifier: TestIsRedHatReleaseIdentifier,
 		Type:       NormativeResult,
