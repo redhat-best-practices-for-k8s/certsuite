@@ -22,6 +22,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type otherString string
+
 //nolint:funlen
 func TestStringInSlice(t *testing.T) {
 	testCases := []struct {
@@ -62,6 +64,61 @@ func TestStringInSlice(t *testing.T) {
 		},
 		{
 			testSlice: []string{
+				"intree: Y",
+				"intree: N",
+				"outoftree: Y",
+			},
+			testString:      "intree:",
+			containsFeature: false, // Note: Turn 'off' the contains check
+			expected:        false,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expected, StringInSlice(tc.testSlice, tc.testString, tc.containsFeature))
+	}
+}
+
+//nolint:funlen
+func TestStringInSlice_other(t *testing.T) {
+	testCases := []struct {
+		testSlice       []otherString
+		testString      otherString
+		containsFeature bool
+		expected        bool
+	}{
+		{
+			testSlice: []otherString{
+				"apples",
+				"bananas",
+				"oranges",
+			},
+			testString:      "apples",
+			containsFeature: false,
+			expected:        true,
+		},
+		{
+			testSlice: []otherString{
+				"apples",
+				"bananas",
+				"oranges",
+			},
+			testString:      "tacos",
+			containsFeature: false,
+			expected:        false,
+		},
+		{
+			testSlice: []otherString{
+				"intree: Y",
+				"intree: N",
+				"outoftree: Y",
+			},
+			testString:      "intree:",
+			containsFeature: true, // Note: Turn 'on' the contains check
+			expected:        true,
+		},
+		{
+			testSlice: []otherString{
 				"intree: Y",
 				"intree: N",
 				"outoftree: Y",
