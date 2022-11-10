@@ -21,14 +21,14 @@ import (
 )
 
 // StringInSlice checks a slice for a given string.
-func StringInSlice(s []string, str string, contains bool) bool {
+func StringInSlice[T ~string](s []T, str T, contains bool) bool {
 	for _, v := range s {
 		if !contains {
-			if strings.TrimSpace(v) == str {
+			if strings.TrimSpace(string(v)) == string(str) {
 				return true
 			}
 		} else {
-			if strings.Contains(strings.TrimSpace(v), str) {
+			if strings.Contains(strings.TrimSpace(string(v)), string(str)) {
 				return true
 			}
 		}
