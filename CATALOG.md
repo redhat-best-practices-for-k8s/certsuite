@@ -545,20 +545,7 @@ Suggested Remediation|Add a readiness probe to deployed containers
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.16, 12.1 and 12.5
 Exception Process|There is no documented exception process for this.
 Tags|common
-#### scaling
 
-Property|Description
----|---
-Test Case Name|scaling
-Test Case Label|lifecycle-scaling
-Unique ID|http://test-network-function.com/testcases/lifecycle/scaling
-Version|v1.0.0
-Description|http://test-network-function.com/testcases/lifecycle/scaling Tests that CNF deployments support scale in/out operations. 			First, The test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the 			scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s.
-Result Type|normative
-Suggested Remediation|Ensure CNF deployments/replica sets can scale in/out successfully.
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
-Exception Process|There is no documented exception process for this.
-Tags|common
 #### startup-probe
 
 Property|Description
