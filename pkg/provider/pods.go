@@ -166,3 +166,7 @@ func (p *Pod) IsAffinityCompliant() (bool, error) {
 	}
 	return true, nil
 }
+
+func (p *Pod) IsShareProcessNamespace() bool {
+	return p.Spec.ShareProcessNamespace != nil && *p.Spec.ShareProcessNamespace
+}

@@ -34,6 +34,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
@@ -155,8 +156,9 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	// SYS_PTRACE capability
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSysPtraceCapabilityIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
-		TestSysPtraceCapability(&env)
+		shareProcessPods := env.GetShareProcessNamespacePods()
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, shareProcessPods)
+		TestSysPtraceCapability(shareProcessPods)
 	})
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNamespaceResourceQuotaIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
@@ -492,25 +494,26 @@ func TestSYSNiceRealtimeCapability(env *provider.TestEnvironment) {
 	testhelper.AddTestResultLog("Non-compliant", containersWithoutSysNice, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
-func TestSysPtraceCapability(env *provider.TestEnvironment) {
+func TestSysPtraceCapability(shareProcessPods []*provider.Pod) {
 	var podsWithoutSysPtrace []string
-
-	for _, put := range env.Pods {
+	for _, put := range shareProcessPods {
 		sysPtraceEnabled := false
-		if put.Spec.ShareProcessNamespace != nil && *put.Spec.ShareProcessNamespace {
-			for _, cut := range put.Containers {
-				if strings.Contains(cut.SecurityContext.Capabilities.String(), "SYS_PTRACE") {
-					sysPtraceEnabled = true
-					break
-				}
+		for _, cut := range put.Containers {
+			if cut.SecurityContext == nil ||
+				cut.SecurityContext.Capabilities == nil ||
+				len(cut.SecurityContext.Capabilities.Add) == 0 {
+				continue
 			}
-			if !sysPtraceEnabled {
-				tnf.ClaimFilePrintf("Pod %s has process namespace sharing enabled but no container allowing the SYS_PTRACE capability.", put.String())
-				podsWithoutSysPtrace = append(podsWithoutSysPtrace, put.String())
+			if stringhelper.StringInSlice(cut.SecurityContext.Capabilities.Add, "SYS_PTRACE", false) {
+				sysPtraceEnabled = true
+				break
 			}
 		}
+		if !sysPtraceEnabled {
+			tnf.ClaimFilePrintf("Pod %s has process namespace sharing enabled but no container allowing the SYS_PTRACE capability.", put.String())
+			podsWithoutSysPtrace = append(podsWithoutSysPtrace, put.String())
+		}
 	}
-
 	testhelper.AddTestResultLog("Non-compliant", podsWithoutSysPtrace, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
