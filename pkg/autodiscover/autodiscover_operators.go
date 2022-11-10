@@ -18,6 +18,7 @@ package autodiscover
 
 import (
 	"context"
+	"fmt"
 
 	helmclient "github.com/mittwald/go-helm-client"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
@@ -34,14 +35,9 @@ const (
 	istioNamespace = "istio-system"
 )
 
-func findIstioNamespace(oc corev1client.CoreV1Interface) bool {
-	nsList, err := oc.Namespaces().List(context.TODO(), metav1.ListOptions{})
-	if err != nil {
-		logrus.Errorln("Error when listing", "err: ", err)
-		return false
-	}
-	for index := range nsList.Items {
-		if nsList.Items[index].ObjectMeta.Name == istioNamespace {
+func findIstioNamespace(allNs *[]string) bool {
+	for index := range *allNs {
+		if (*allNs)[index] == istioNamespace {
 			return true
 		}
 	}
@@ -72,10 +68,42 @@ func findOperatorsByLabel(olmClient clientOlm.Interface, labels []configuration.
 
 	return csvs
 }
+func getAllNamespaces(oc corev1client.CoreV1Interface) (allNs []string, err error) {
+	nsList, err := oc.Namespaces().List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		logrus.Errorln("Error when listing", "err: ", err)
+		return allNs, fmt.Errorf("error getting all namespaces, err: %s", err)
+	}
+	for index := range nsList.Items {
+		allNs = append(allNs, nsList.Items[index].ObjectMeta.Name)
+	}
+	return allNs, nil
+}
+func getAllOperators(olmClient clientOlm.Interface) []olmv1Alpha.ClusterServiceVersion {
+	csvs := []olmv1Alpha.ClusterServiceVersion{}
+
+	logrus.Debugf("Searching CSVs in namespace All")
+	csvList, err := olmClient.OperatorsV1alpha1().ClusterServiceVersions("").List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		logrus.Errorln("error when listing csvs in all namespaces")
+	}
+	csvs = append(csvs, csvList.Items...)
+
+	logrus.Infof("Found %d CSVs:", len(csvs))
+	for i := range csvs {
+		logrus.Infof(" CSV name: %s (ns: %s)", csvs[i].Name, csvs[i].Namespace)
+	}
+	return csvs
+}
+
 func findSubscriptions(olmClient clientOlm.Interface, namespaces []string) []olmv1Alpha.Subscription {
 	subscriptions := []olmv1Alpha.Subscription{}
 	for _, ns := range namespaces {
-		logrus.Debugf("Searching subscriptions in namespace %s", ns)
+		displayNs := ns
+		if ns == "" {
+			displayNs = "All Namespaces"
+		}
+		logrus.Debugf("Searching subscriptions in namespace %s", displayNs)
 		subscription, err := olmClient.OperatorsV1alpha1().Subscriptions(ns).List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
 			logrus.Errorln("error when listing subscriptions in ns=", ns)
@@ -114,4 +142,28 @@ func getHelmList(restConfig *rest.Config, namespaces []string) map[string][]*rel
 		helmChartReleases[ns] = nsHelmchartreleases
 	}
 	return helmChartReleases
+}
+
+// getAllInstallPlans is a helper function to get the all the installPlans in a cluster.
+func getAllInstallPlans(olmClient clientOlm.Interface) (out []*olmv1Alpha.InstallPlan, err error) {
+	installPlanList, err := olmClient.OperatorsV1alpha1().InstallPlans("").List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		return nil, fmt.Errorf("unable get installplans in cluster, err: %s", err)
+	}
+	for index := range installPlanList.Items {
+		out = append(out, &installPlanList.Items[index])
+	}
+	return out, nil
+}
+
+// getAllCatalogSources is a helper function to get the all the CatalogSources in a cluster.
+func getAllCatalogSources(olmClient clientOlm.Interface) (out []*olmv1Alpha.CatalogSource, err error) {
+	catalogSourcesList, err := olmClient.OperatorsV1alpha1().CatalogSources("").List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		return nil, fmt.Errorf("unable get CatalogSources in cluster, err: %s", err)
+	}
+	for index := range catalogSourcesList.Items {
+		out = append(out, &catalogSourcesList.Items[index])
+	}
+	return out, nil
 }

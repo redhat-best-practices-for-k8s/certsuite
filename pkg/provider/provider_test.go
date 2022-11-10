@@ -17,7 +17,6 @@
 package provider
 
 import (
-	"fmt"
 	"testing"
 
 	"errors"
@@ -25,13 +24,9 @@ import (
 	corev1 "k8s.io/api/core/v1"
 
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
-	olmFakeClient "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned/fake"
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime"
-	k8sTesting "k8s.io/client-go/testing"
 )
 
 var (
@@ -111,208 +106,6 @@ func TestGetUID(t *testing.T) {
 		uid, err := c.GetUID()
 		assert.Equal(t, tc.expectedErr, err)
 		assert.Equal(t, tc.expectedUID, uid)
-	}
-}
-
-func loadAllOlmRuntimeTestObjects() {
-	loadCustomOlmRuntimeTestObjects(&ns1InstallPlan1, &ns2InstallPlan1, &ns2InstallPlan2,
-		&catalogSource1, &catalogSource2, &catalogSource3)
-}
-
-func loadCustomOlmRuntimeTestObjects(olmObjects ...runtime.Object) {
-	_ = clientsholder.GetTestClientsHolder(nil)
-
-	clientsholder.SetupFakeOlmClient(olmObjects)
-}
-
-//nolint:funlen
-func TestGetInstallPlansInNamespace(t *testing.T) {
-	fakeErrorReactionFn := func(action k8sTesting.Action) (handled bool, ret runtime.Object, err error) {
-		return true, nil, fmt.Errorf("fake error")
-	}
-
-	testCases := []struct {
-		namespace                   string
-		useErrorReactionFn          bool
-		expectedNsInstallplans      []olmv1Alpha.InstallPlan
-		expectedClusterInstallPlans map[string][]olmv1Alpha.InstallPlan
-		expectedErrorStr            string
-	}{
-		{
-			namespace:              "ns1",
-			expectedNsInstallplans: []olmv1Alpha.InstallPlan{ns1InstallPlan1},
-			expectedClusterInstallPlans: map[string][]olmv1Alpha.InstallPlan{
-				"ns1": {ns1InstallPlan1},
-			},
-		},
-		{
-			namespace:              "ns2",
-			expectedNsInstallplans: []olmv1Alpha.InstallPlan{ns2InstallPlan1, ns2InstallPlan2},
-			expectedClusterInstallPlans: map[string][]olmv1Alpha.InstallPlan{
-				"ns1": {ns1InstallPlan1},
-				"ns2": {ns2InstallPlan1, ns2InstallPlan2},
-			},
-		},
-		{
-			namespace:              "ns3",
-			useErrorReactionFn:     true,
-			expectedNsInstallplans: []olmv1Alpha.InstallPlan{},
-			expectedClusterInstallPlans: map[string][]olmv1Alpha.InstallPlan{
-				"ns1": {ns1InstallPlan1},
-				"ns2": {ns2InstallPlan1, ns2InstallPlan2},
-			},
-			expectedErrorStr: "unable get installplans in namespace ns3, err: fake error",
-		},
-	}
-
-	clusterInstallPlans := map[string][]olmv1Alpha.InstallPlan{}
-	for _, tc := range testCases {
-		loadAllOlmRuntimeTestObjects()
-		// In case the TC needs a particular set of olm runtime objects:
-		if tc.useErrorReactionFn {
-			oc := clientsholder.GetClientsHolder()
-			oc.OlmClient.(*olmFakeClient.Clientset).PrependReactor("list", "installplans", fakeErrorReactionFn)
-		}
-
-		installPlans, err := getInstallPlansInNamespace(tc.namespace, clusterInstallPlans)
-		if tc.expectedErrorStr == "" {
-			assert.Nil(t, err)
-			assert.Equal(t, tc.expectedNsInstallplans, installPlans)
-			assert.Equal(t, tc.expectedClusterInstallPlans, clusterInstallPlans)
-		} else {
-			assert.NotNil(t, err)
-			assert.Equal(t, errors.New(tc.expectedErrorStr), err)
-		}
-	}
-}
-
-//nolint:funlen
-func TestGetCsvInstallPlans(t *testing.T) {
-	loadAllOlmRuntimeTestObjects()
-
-	op4InstallPlan1 := olmv1Alpha.InstallPlan{
-		TypeMeta:   metav1.TypeMeta{Kind: "InstallPlan"},
-		ObjectMeta: metav1.ObjectMeta{Name: "installPlan1", Namespace: "ns4"},
-		Spec:       olmv1Alpha.InstallPlanSpec{ClusterServiceVersionNames: []string{"op4.v4.0.4"}},
-		Status: olmv1Alpha.InstallPlanStatus{BundleLookups: []olmv1Alpha.BundleLookup{{Path: "lookuppath1",
-			CatalogSourceRef: &corev1.ObjectReference{Name: "catalogSource1", Namespace: "ns4"}}}},
-	}
-	op4InstallPlan2 := op4InstallPlan1
-	op4InstallPlan2.ObjectMeta.Name = "installPlan2"
-
-	testCases := []struct {
-		namespace            string
-		csv                  string
-		olmObjects           []runtime.Object
-		expectedInstallPlans []*olmv1Alpha.InstallPlan
-		expectedErrorFmt     string
-	}{
-		{
-			namespace:            "ns1",
-			csv:                  "op1.v1.0.1",
-			expectedInstallPlans: []*olmv1Alpha.InstallPlan{&ns1InstallPlan1},
-		},
-		{
-			namespace:            "ns2",
-			csv:                  "op1.v1.0.1",
-			expectedInstallPlans: []*olmv1Alpha.InstallPlan{&ns2InstallPlan1},
-		},
-		{
-			namespace:            "ns2",
-			csv:                  "op2.v2.0.2",
-			expectedInstallPlans: []*olmv1Alpha.InstallPlan{&ns2InstallPlan2},
-		},
-		{
-			namespace:            "ns1",
-			csv:                  "csv2",
-			expectedInstallPlans: nil,
-			expectedErrorFmt:     "no installplans found for csv %s (ns %s)",
-		},
-		// Operator with a "bad" install plan.
-		{
-			namespace: "ns3",
-			csv:       "op3.v3.0.3",
-			olmObjects: []runtime.Object{
-				&olmv1Alpha.InstallPlan{
-					TypeMeta:   metav1.TypeMeta{Kind: "InstallPlan"},
-					ObjectMeta: metav1.ObjectMeta{Name: "badInstallPlan", Namespace: "ns3"},
-					Spec:       olmv1Alpha.InstallPlanSpec{ClusterServiceVersionNames: []string{"op3.v3.0.3"}},
-					// This installPlan will not be retrieved as it lacks of the bundle lookups info in the status field.
-					Status: olmv1Alpha.InstallPlanStatus{},
-				},
-			},
-			expectedInstallPlans: nil,
-			expectedErrorFmt:     "no installplans found for csv %s (ns %s)",
-		},
-		// Two intallPlans for the same csv, in a new namespace.
-		{
-			namespace:            "ns4",
-			csv:                  "op4.v4.0.4",
-			olmObjects:           []runtime.Object{&op4InstallPlan1, &op4InstallPlan2},
-			expectedInstallPlans: []*olmv1Alpha.InstallPlan{&op4InstallPlan1, &op4InstallPlan2},
-			expectedErrorFmt:     "",
-		},
-	}
-
-	clusterInstallPlans := map[string][]olmv1Alpha.InstallPlan{}
-	for _, tc := range testCases {
-		// In case the TC needs a particular set of olm runtime objects:
-		if tc.olmObjects != nil {
-			loadCustomOlmRuntimeTestObjects(tc.olmObjects...)
-		} else {
-			loadAllOlmRuntimeTestObjects()
-		}
-		installPlans, err := getCsvInstallPlans(tc.namespace, tc.csv, clusterInstallPlans)
-		assert.Equal(t, tc.expectedInstallPlans, installPlans)
-		if tc.expectedErrorFmt == "" {
-			assert.Nil(t, err)
-		} else {
-			assert.NotNil(t, err)
-			assert.Equal(t, err, fmt.Errorf(tc.expectedErrorFmt, tc.csv, tc.namespace))
-		}
-	}
-}
-
-func TestGetCatalogSourceImageIndexFromInstallPlan(t *testing.T) {
-	loadAllOlmRuntimeTestObjects()
-
-	testCases := []struct {
-		installPlan        *olmv1Alpha.InstallPlan
-		expectedImageIndex string
-		expectedErrorStr   string
-	}{
-		{
-			installPlan:        &ns1InstallPlan1,
-			expectedImageIndex: "catalogSource1Image",
-		},
-		{
-			installPlan:        &ns2InstallPlan1,
-			expectedImageIndex: "catalogSource2Image",
-		},
-		{
-			installPlan:        &ns2InstallPlan2,
-			expectedImageIndex: "catalogSource3Image",
-		},
-		{
-			installPlan: &olmv1Alpha.InstallPlan{
-				Status: olmv1Alpha.InstallPlanStatus{
-					BundleLookups: []olmv1Alpha.BundleLookup{
-						{Path: "path", CatalogSourceRef: &corev1.ObjectReference{Name: "catalogName", Namespace: "notExistingNamespace"}}}},
-			},
-			expectedImageIndex: "",
-			expectedErrorStr:   "failed to get catalogsource: catalogsources.operators.coreos.com \"catalogName\" not found",
-		},
-	}
-
-	for _, tc := range testCases {
-		imageIndex, err := getCatalogSourceImageIndexFromInstallPlan(tc.installPlan)
-		assert.Equal(t, tc.expectedImageIndex, imageIndex)
-		if tc.expectedErrorStr == "" {
-			assert.Nil(t, err)
-		} else {
-			assert.NotNil(t, err)
-			assert.Equal(t, err, errors.New(tc.expectedErrorStr))
-		}
 	}
 }
 

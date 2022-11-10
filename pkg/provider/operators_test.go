@@ -17,13 +17,13 @@
 package provider
 
 import (
-	"errors"
 	"testing"
 
+	"github.com/operator-framework/api/pkg/lib/version"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
+
 	"github.com/stretchr/testify/assert"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime"
 )
 
 func TestCsvToString(t *testing.T) {
@@ -47,22 +47,9 @@ func TestOperatorString(t *testing.T) {
 //nolint:funlen
 func TestCreateOperators(t *testing.T) {
 	// op1 in namespace ns1
-	op1Ns1 := olmv1Alpha.ClusterServiceVersion{
-		TypeMeta:   metav1.TypeMeta{Kind: "ClusterServiceVersion"},
-		ObjectMeta: metav1.ObjectMeta{Name: "op1.v1.0.1", Namespace: "ns1"},
-	}
-
-	// op1 in namespace ns2
-	op1Ns2 := olmv1Alpha.ClusterServiceVersion{
-		TypeMeta:   metav1.TypeMeta{Kind: "ClusterServiceVersion"},
-		ObjectMeta: metav1.ObjectMeta{Name: "op1.v1.0.1", Namespace: "ns2"},
-	}
-
-	// op2 in namespace ns2
-	op2Ns2 := olmv1Alpha.ClusterServiceVersion{
-		TypeMeta:   metav1.TypeMeta{Kind: "ClusterServiceVersion"},
-		ObjectMeta: metav1.ObjectMeta{Name: "op2.v2.0.2", Namespace: "ns2"},
-	}
+	op1Ns1 := createCsv("op1.v1.0.1", "ns1", 1, 0, 1)
+	op1Ns2 := createCsv("op1.v1.0.1", "ns2", 1, 0, 1)
+	op2Ns2 := createCsv("op2.v2.0.2", "ns2", 2, 0, 2)
 
 	subscription1 := olmv1Alpha.Subscription{
 		TypeMeta:   metav1.TypeMeta{Kind: "Subscription"},
@@ -70,14 +57,12 @@ func TestCreateOperators(t *testing.T) {
 		Spec:       &olmv1Alpha.SubscriptionSpec{Package: "op1", CatalogSource: "catalogSource1"},
 		Status:     olmv1Alpha.SubscriptionStatus{InstalledCSV: "op1.v1.0.1"},
 	}
-
 	subscription2 := olmv1Alpha.Subscription{
 		TypeMeta:   metav1.TypeMeta{Kind: "Subscription"},
 		ObjectMeta: metav1.ObjectMeta{Name: "subs2", Namespace: "ns2"},
 		Spec:       &olmv1Alpha.SubscriptionSpec{Package: "op1", CatalogSource: "catalogSource2"},
 		Status:     olmv1Alpha.SubscriptionStatus{InstalledCSV: "op1.v1.0.1"},
 	}
-
 	subscription3 := olmv1Alpha.Subscription{
 		TypeMeta:   metav1.TypeMeta{Kind: "Subscription"},
 		ObjectMeta: metav1.ObjectMeta{Name: "subs3", Namespace: "ns2"},
@@ -88,20 +73,25 @@ func TestCreateOperators(t *testing.T) {
 	testCases := []struct {
 		csvs              []olmv1Alpha.ClusterServiceVersion
 		subscriptions     []olmv1Alpha.Subscription
-		olmObjects        []runtime.Object
+		installPlan       []*olmv1Alpha.InstallPlan
+		catalogSource     []*olmv1Alpha.CatalogSource
 		expectedOperators []*Operator
 		expectedErrorStr  string
 	}{
+		// ns1: csv1/subs1
 		{
 			csvs:              []olmv1Alpha.ClusterServiceVersion{},
 			subscriptions:     []olmv1Alpha.Subscription{subscription1},
+			installPlan:       []*olmv1Alpha.InstallPlan{&ns1InstallPlan1},
+			catalogSource:     []*olmv1Alpha.CatalogSource{&catalogSource1},
 			expectedOperators: []*Operator{},
-			expectedErrorStr:  "",
 		},
 		// ns1: csv1/subs1
 		{
 			csvs:          []olmv1Alpha.ClusterServiceVersion{op1Ns1},
 			subscriptions: []olmv1Alpha.Subscription{subscription1},
+			installPlan:   []*olmv1Alpha.InstallPlan{&ns1InstallPlan1},
+			catalogSource: []*olmv1Alpha.CatalogSource{&catalogSource1},
 			expectedOperators: []*Operator{
 				{
 					Name:             "op1.v1.0.1",
@@ -115,32 +105,59 @@ func TestCreateOperators(t *testing.T) {
 							IndexImage:  "catalogSource1Image",
 						},
 					},
-					Package: "op1",
-					Org:     "catalogSource1",
-					Version: "v1.0.1",
+					Package:  "op1",
+					Org:      "catalogSource1",
+					Version:  "1.0.1",
+					NameOnly: "op1",
 				},
 			},
 		},
 		// ns1: csv1/subs1 - installPlan not found.
 		{
-			csvs:              []olmv1Alpha.ClusterServiceVersion{op1Ns1},
-			subscriptions:     []olmv1Alpha.Subscription{subscription1},
-			olmObjects:        make([]runtime.Object, 0),
-			expectedOperators: nil,
-			expectedErrorStr:  "failed to get installPlans for csv op1.v1.0.1 (ns ns1), err: no installplans found for csv op1.v1.0.1 (ns ns1)",
+			csvs:          []olmv1Alpha.ClusterServiceVersion{op1Ns1},
+			subscriptions: []olmv1Alpha.Subscription{subscription1},
+			installPlan:   []*olmv1Alpha.InstallPlan{},
+			catalogSource: []*olmv1Alpha.CatalogSource{},
+			expectedOperators: []*Operator{
+				{
+					Name:             "op1.v1.0.1",
+					Namespace:        "ns1",
+					Csv:              &op1Ns1,
+					SubscriptionName: "subs1",
+					InstallPlans:     nil,
+					Package:          "op1",
+					Org:              "catalogSource1",
+					Version:          "1.0.1",
+					NameOnly:         "op1",
+				},
+			},
 		},
 		// ns1: csv1/subs1 - bundleImage not found.
 		{
-			csvs:              []olmv1Alpha.ClusterServiceVersion{op1Ns1},
-			subscriptions:     []olmv1Alpha.Subscription{subscription1},
-			olmObjects:        []runtime.Object{&ns1InstallPlan1},
-			expectedOperators: nil,
-			expectedErrorStr:  "failed to get installPlan image index for csv op1.v1.0.1 (ns ns1) installPlan ns1Plan1, err: failed to get catalogsource: catalogsources.operators.coreos.com \"catalogSource1\" not found",
+			csvs:          []olmv1Alpha.ClusterServiceVersion{op1Ns1},
+			subscriptions: []olmv1Alpha.Subscription{subscription1},
+			installPlan:   []*olmv1Alpha.InstallPlan{&ns1InstallPlan1},
+			catalogSource: []*olmv1Alpha.CatalogSource{},
+			expectedOperators: []*Operator{
+				{
+					Name:             "op1.v1.0.1",
+					Namespace:        "ns1",
+					Csv:              &op1Ns1,
+					SubscriptionName: "subs1",
+					InstallPlans:     nil,
+					Package:          "op1",
+					Org:              "catalogSource1",
+					Version:          "1.0.1",
+					NameOnly:         "op1",
+				},
+			},
 		},
 		// ns1: csv1/subs1, ns2: csv2 (without subscription)
 		{
 			csvs:          []olmv1Alpha.ClusterServiceVersion{op1Ns1, op1Ns2},
 			subscriptions: []olmv1Alpha.Subscription{subscription1},
+			installPlan:   []*olmv1Alpha.InstallPlan{&ns1InstallPlan1, &ns2InstallPlan1},
+			catalogSource: []*olmv1Alpha.CatalogSource{&catalogSource1, &catalogSource2},
 			expectedOperators: []*Operator{
 				{
 					Name:             "op1.v1.0.1",
@@ -154,9 +171,10 @@ func TestCreateOperators(t *testing.T) {
 							IndexImage:  "catalogSource1Image",
 						},
 					},
-					Package: "op1",
-					Org:     "catalogSource1",
-					Version: "v1.0.1",
+					Package:  "op1",
+					Org:      "catalogSource1",
+					Version:  "1.0.1",
+					NameOnly: "op1",
 				},
 				{
 					Name:             "op1.v1.0.1",
@@ -170,8 +188,9 @@ func TestCreateOperators(t *testing.T) {
 							IndexImage:  "catalogSource2Image",
 						},
 					},
-					Package: "",
-					Version: "v1.0.1",
+					Package:  "",
+					Version:  "1.0.1",
+					NameOnly: "op1",
 				},
 			},
 		},
@@ -179,6 +198,8 @@ func TestCreateOperators(t *testing.T) {
 		{
 			csvs:          []olmv1Alpha.ClusterServiceVersion{op1Ns1, op1Ns2},
 			subscriptions: []olmv1Alpha.Subscription{subscription1, subscription2},
+			installPlan:   []*olmv1Alpha.InstallPlan{&ns1InstallPlan1, &ns2InstallPlan1},
+			catalogSource: []*olmv1Alpha.CatalogSource{&catalogSource1, &catalogSource2},
 			expectedOperators: []*Operator{
 				{
 					Name:             "op1.v1.0.1",
@@ -192,9 +213,10 @@ func TestCreateOperators(t *testing.T) {
 							IndexImage:  "catalogSource1Image",
 						},
 					},
-					Package: "op1",
-					Org:     "catalogSource1",
-					Version: "v1.0.1",
+					Package:  "op1",
+					Org:      "catalogSource1",
+					Version:  "1.0.1",
+					NameOnly: "op1",
 				},
 				{
 					Name:             "op1.v1.0.1",
@@ -208,9 +230,10 @@ func TestCreateOperators(t *testing.T) {
 							IndexImage:  "catalogSource2Image",
 						},
 					},
-					Package: "op1",
-					Org:     "catalogSource2",
-					Version: "v1.0.1",
+					Package:  "op1",
+					Org:      "catalogSource2",
+					Version:  "1.0.1",
+					NameOnly: "op1",
 				},
 			},
 		},
@@ -218,6 +241,8 @@ func TestCreateOperators(t *testing.T) {
 		{
 			csvs:          []olmv1Alpha.ClusterServiceVersion{op1Ns1, op1Ns2, op2Ns2},
 			subscriptions: []olmv1Alpha.Subscription{subscription1, subscription2, subscription3},
+			installPlan:   []*olmv1Alpha.InstallPlan{&ns1InstallPlan1, &ns2InstallPlan1, &ns2InstallPlan2},
+			catalogSource: []*olmv1Alpha.CatalogSource{&catalogSource1, &catalogSource2, &catalogSource3},
 			expectedOperators: []*Operator{
 				{
 					Name:             "op1.v1.0.1",
@@ -231,9 +256,10 @@ func TestCreateOperators(t *testing.T) {
 							IndexImage:  "catalogSource1Image",
 						},
 					},
-					Package: "op1",
-					Org:     "catalogSource1",
-					Version: "v1.0.1",
+					Package:  "op1",
+					Org:      "catalogSource1",
+					Version:  "1.0.1",
+					NameOnly: "op1",
 				},
 				{
 					Name:             "op1.v1.0.1",
@@ -247,10 +273,12 @@ func TestCreateOperators(t *testing.T) {
 							IndexImage:  "catalogSource2Image",
 						},
 					},
-					Package: "op1",
-					Org:     "catalogSource2",
-					Version: "v1.0.1",
+					Package:  "op1",
+					Org:      "catalogSource2",
+					Version:  "1.0.1",
+					NameOnly: "op1",
 				},
+
 				{
 					Name:             "op2.v2.0.2",
 					Namespace:        "ns2",
@@ -263,29 +291,30 @@ func TestCreateOperators(t *testing.T) {
 							IndexImage:  "catalogSource3Image",
 						},
 					},
-					Package: "op2",
-					Org:     "catalogSource3",
-					Version: "v2.0.2",
+					Package:  "op2",
+					Org:      "catalogSource3",
+					Version:  "2.0.2",
+					NameOnly: "op2",
 				},
 			},
 		},
 	}
 
 	for _, tc := range testCases {
-		// In case the TC needs a particular set of olm runtime objects:
-		if tc.olmObjects != nil {
-			loadCustomOlmRuntimeTestObjects(tc.olmObjects...)
-		} else {
-			loadAllOlmRuntimeTestObjects()
-		}
-
-		ops, err := createOperators(tc.csvs, tc.subscriptions)
+		ops := createOperators(tc.csvs, tc.subscriptions, tc.installPlan, tc.catalogSource, true, false)
 		assert.Equal(t, tc.expectedOperators, ops)
-		if tc.expectedErrorStr == "" {
-			assert.Nil(t, err)
-		} else {
-			assert.NotNil(t, err)
-			assert.Equal(t, errors.New(tc.expectedErrorStr), err)
-		}
 	}
+}
+
+func createCsv(name, namespace string, verMajor, verMinor, verPatch uint64) (aCsv olmv1Alpha.ClusterServiceVersion) {
+	aCsv.Name = name
+	aCsv.Namespace = namespace
+
+	aVersion := version.OperatorVersion{}
+	aVersion.Major = verMajor
+	aVersion.Minor = verMinor
+	aVersion.Patch = verPatch
+
+	aCsv.Spec.Version = aVersion
+	return aCsv
 }

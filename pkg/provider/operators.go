@@ -17,14 +17,11 @@
 package provider
 
 import (
-	"context"
 	"fmt"
 	"strings"
 
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 type Operator struct {
@@ -37,6 +34,7 @@ type Operator struct {
 	Org              string                            `yaml:"org" json:"org"`
 	Version          string                            `yaml:"version" json:"version"`
 	Channel          string                            `yaml:"channel" json:"channel"`
+	NameOnly         string                            `yaml:"NameOnly" json:"NameOnly"`
 }
 
 type CsvInstallPlan struct {
@@ -52,17 +50,27 @@ func (op *Operator) String() string {
 	return fmt.Sprintf("csv: %s ns:%s subscription:%s", op.Name, op.Namespace, op.SubscriptionName)
 }
 
-//nolint:funlen
-func createOperators(csvs []olmv1Alpha.ClusterServiceVersion, subscriptions []olmv1Alpha.Subscription) ([]*Operator, error) {
-	installPlans := map[string][]olmv1Alpha.InstallPlan{} // Helper: maps a namespace name to all its installplans.
+// TODO: Fix lint properly
+//
+//nolint:funlen,gocyclo,lll
+func createOperators(csvs []olmv1Alpha.ClusterServiceVersion, subscriptions []olmv1Alpha.Subscription, allInstallPlans []*olmv1Alpha.InstallPlan, allCatalogSources []*olmv1Alpha.CatalogSource, catalogSourceNotRequired, succeededRequired bool) []*Operator {
+	const (
+		maxSize = 2
+	)
+
 	operators := []*Operator{}
 	for i := range csvs {
 		csv := &csvs[i]
 		op := &Operator{Name: csv.Name, Namespace: csv.Namespace, Csv: csv}
 
-		packageAndVersion := strings.SplitN(csv.Name, ".", 2) //nolint:gomnd // ok
-		op.Version = packageAndVersion[1]
+		packageAndVersion := strings.SplitN(csv.Name, ".", maxSize)
+		if len(packageAndVersion) == 0 {
+			continue
+		}
+		op.NameOnly = packageAndVersion[0]
+		op.Version = csv.Spec.Version.String()
 
+		atLeastOneSubscription := false
 		for s := range subscriptions {
 			subscription := &subscriptions[s]
 			if subscription.Status.InstalledCSV != csv.Name || subscription.Namespace != csv.Namespace {
@@ -73,19 +81,39 @@ func createOperators(csvs []olmv1Alpha.ClusterServiceVersion, subscriptions []ol
 			op.Package = subscription.Spec.Package
 			op.Org = subscription.Spec.CatalogSource
 			op.Channel = subscription.Spec.Channel
+			atLeastOneSubscription = true
 			break
 		}
-
-		csvInstallPlans, err := getCsvInstallPlans(csv.Namespace, csv.Name, installPlans)
-		if err != nil {
-			return nil, fmt.Errorf("failed to get installPlans for csv %s (ns %s), err: %v", csv.Name, csv.Namespace, err)
+		if !atLeastOneSubscription {
+			logrus.Warnf("Subscription not found for csv %s (ns %s) This Operator will not receive updates.", csv.Name, csv.Namespace)
 		}
 
-		for _, installPlan := range csvInstallPlans {
-			indexImage, catalogErr := getCatalogSourceImageIndexFromInstallPlan(installPlan)
+		atLeastOneInstallPlan := false
+		for _, installPlan := range allInstallPlans {
+			if installPlan.Namespace != csv.Namespace {
+				continue
+			}
+			alLeastOneCsv := false
+			for _, csvName := range installPlan.Spec.ClusterServiceVersionNames {
+				if csv.Name != csvName {
+					continue
+				}
+
+				if installPlan.Status.BundleLookups == nil {
+					logrus.Warnf("InstallPlan %s for csv %s (ns %s) does not have bundle lookups. It will be skipped.", installPlan.Name, csv.Name, csv.Namespace)
+					continue
+				}
+				alLeastOneCsv = true
+				break
+			}
+			if !alLeastOneCsv {
+				continue
+			}
+			indexImage, catalogErr := getCatalogSourceImageIndexFromInstallPlan(installPlan, allCatalogSources)
 			if catalogErr != nil {
-				return nil, fmt.Errorf("failed to get installPlan image index for csv %s (ns %s) installPlan %s, err: %v",
+				logrus.Tracef("failed to get installPlan image index for csv %s (ns %s) installPlan %s, err: %v",
 					csv.Name, csv.Namespace, installPlan.Name, catalogErr)
+				continue
 			}
 
 			op.InstallPlans = append(op.InstallPlans, CsvInstallPlan{
@@ -93,12 +121,21 @@ func createOperators(csvs []olmv1Alpha.ClusterServiceVersion, subscriptions []ol
 				BundleImage: installPlan.Status.BundleLookups[0].Path,
 				IndexImage:  indexImage,
 			})
+			atLeastOneInstallPlan = true
+			break
 		}
-
+		if !atLeastOneInstallPlan {
+			logrus.Warnf("InstallPlan with BundleLookups not found for csv %s (ns %s) not present. Catalog source not available", csv.Name, csv.Namespace)
+		}
+		if !(atLeastOneInstallPlan || catalogSourceNotRequired) {
+			continue
+		}
+		if !(csv.Status.Phase == olmv1Alpha.CSVPhaseSucceeded || !succeededRequired) {
+			continue
+		}
 		operators = append(operators, op)
 	}
-
-	return operators, nil
+	return operators
 }
 
 func CsvToString(csv *olmv1Alpha.ClusterServiceVersion) string {
@@ -108,71 +145,52 @@ func CsvToString(csv *olmv1Alpha.ClusterServiceVersion) string {
 	)
 }
 
-// getInstallPlansInNamespace is a helper function to get the installPlans in a namespace. The
-// map installPlans is used to store them in order to avoid repeating http requests for a namespace
-// whose installPlans were already obtained.
-func getInstallPlansInNamespace(namespace string, clusterInstallPlans map[string][]olmv1Alpha.InstallPlan) ([]olmv1Alpha.InstallPlan, error) {
-	// Check if installplans were stored before.
-	nsInstallPlans, exist := clusterInstallPlans[namespace]
-	if exist {
-		return nsInstallPlans, nil
-	}
+func getSummaryAllOperators(operators []*Operator) (summary []string) {
+	for _, o := range operators {
+		targetNamespaces := ""
+		value, ok := o.Csv.ObjectMeta.Annotations["olm.targetNamespaces"]
 
-	clients := clientsholder.GetClientsHolder()
-	installPlanList, err := clients.OlmClient.OperatorsV1alpha1().InstallPlans(namespace).List(context.TODO(), metav1.ListOptions{})
-	if err != nil {
-		return nil, fmt.Errorf("unable get installplans in namespace %s, err: %v", namespace, err)
-	}
-
-	nsInstallPlans = installPlanList.Items
-	clusterInstallPlans[namespace] = nsInstallPlans
-
-	return nsInstallPlans, nil
-}
-
-// getCsvInstallPlans is a helper function that returns the installPlans for a CSV in a namespace.
-// The map clusterInstallPlans is used to store previously retrieved installPlans, in order to save
-// http requests.
-func getCsvInstallPlans(namespace, csv string, clusterInstallPlans map[string][]olmv1Alpha.InstallPlan) ([]*olmv1Alpha.InstallPlan, error) {
-	nsInstallPlans, err := getInstallPlansInNamespace(namespace, clusterInstallPlans)
-	if err != nil {
-		return nil, err
-	}
-
-	installPlans := []*olmv1Alpha.InstallPlan{}
-	for i := range nsInstallPlans {
-		nsInstallPlan := &nsInstallPlans[i]
-		for _, csvName := range nsInstallPlan.Spec.ClusterServiceVersionNames {
-			if csv != csvName {
-				continue
-			}
-
-			if nsInstallPlan.Status.BundleLookups == nil {
-				logrus.Warnf("InstallPlan %s for csv %s (ns %s) does not have bundle lookups. It will be skipped.", nsInstallPlan.Name, csv, namespace)
-				continue
-			}
-
-			installPlans = append(installPlans, nsInstallPlan)
+		if !ok || value == "" {
+			targetNamespaces = "All namespaces"
+		} else {
+			targetNamespaces = value + " Single namespace"
 		}
-	}
 
-	if len(installPlans) == 0 {
-		return nil, fmt.Errorf("no installplans found for csv %s (ns %s)", csv, namespace)
+		summary = append(summary, string(o.Csv.Status.Phase)+" operator: "+o.NameOnly+" ver: "+o.Version+" in ns: "+o.Namespace+" ( "+targetNamespaces+" managed )")
 	}
-
-	return installPlans, nil
+	return summary
 }
 
-func getCatalogSourceImageIndexFromInstallPlan(installPlan *olmv1Alpha.InstallPlan) (string, error) {
+func getShortSummaryAllOperators(operators []*Operator) (summary []string) {
+	operatorMap := map[string]bool{}
+	for _, o := range operators {
+		targetNamespaces := ""
+		value, ok := o.Csv.ObjectMeta.Annotations["olm.targetNamespaces"]
+
+		if !ok || value == "" {
+			targetNamespaces = " ( All namespaces managed )"
+		} else {
+			targetNamespaces = " in ns: " + o.Namespace + " ( Single namespace )"
+		}
+
+		operatorMap[string(o.Csv.Status.Phase)+" operator: "+o.NameOnly+" ver: "+o.Version+targetNamespaces] = true
+	}
+	for s := range operatorMap {
+		summary = append(summary, s)
+	}
+	return summary
+}
+
+func getCatalogSourceImageIndexFromInstallPlan(installPlan *olmv1Alpha.InstallPlan, allCatalogSources []*olmv1Alpha.CatalogSource) (string, error) {
 	// ToDo/Technical debt: what to do if installPlan has more than one BundleLookups entries.
 	catalogSourceName := installPlan.Status.BundleLookups[0].CatalogSourceRef.Name
 	catalogSourceNamespace := installPlan.Status.BundleLookups[0].CatalogSourceRef.Namespace
 
-	clients := clientsholder.GetClientsHolder()
-	catalogSource, err := clients.OlmClient.OperatorsV1alpha1().CatalogSources(catalogSourceNamespace).Get(context.TODO(), catalogSourceName, metav1.GetOptions{})
-	if err != nil {
-		return "", fmt.Errorf("failed to get catalogsource: %s", err)
+	for _, s := range allCatalogSources {
+		if s.Namespace == catalogSourceNamespace && s.Name == catalogSourceName {
+			return s.Spec.Image, nil
+		}
 	}
 
-	return catalogSource.Spec.Image, nil
+	return "", fmt.Errorf("failed to get catalogsource: not found")
 }
