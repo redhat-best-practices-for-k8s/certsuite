@@ -172,6 +172,11 @@ func testUndeclaredContainerPortsUsage(env *provider.TestEnvironment) {
 		// Verify that all the listening ports have been declared in the container spec
 		failedPod := false
 		for listeningPort := range listeningPorts {
+			if put.ContainsIstioProxy() && netcommons.ReservedIstioPorts[int32(listeningPort.PortNumber)] {
+				tnf.ClaimFilePrintf("%s is listening on port %d protocol %s, but the pod also contains istio-proxy. Ignoring.", put, listeningPort.PortNumber, listeningPort.Protocol)
+				continue
+			}
+
 			if !declaredPorts[listeningPort] {
 				tnf.ClaimFilePrintf("%s is listening on port %d protocol %s, but that port was not declared in any container spec.", put, listeningPort.PortNumber, listeningPort.Protocol)
 				failedPod = true

@@ -170,3 +170,12 @@ func (p *Pod) IsAffinityCompliant() (bool, error) {
 func (p *Pod) IsShareProcessNamespace() bool {
 	return p.Spec.ShareProcessNamespace != nil && *p.Spec.ShareProcessNamespace
 }
+
+func (p *Pod) ContainsIstioProxy() bool {
+	for _, container := range p.Containers {
+		if container.Name == "istio-proxy" {
+			return true
+		}
+	}
+	return false
+}
