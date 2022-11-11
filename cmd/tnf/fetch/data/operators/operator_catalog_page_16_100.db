@@ -1,1439 +1,6 @@
 {
   "data": [
     {
-      "_id": "6164061e90fb938ecf600a83",
-      "alm_examples": [
-        {
-          "api_version": "xray.nastel.com/v1alpha3",
-          "kind": "NastelXRay",
-          "metadata": {
-            "name": "nastelxray"
-          },
-          "spec": {
-            "active-mq": {
-              "image": "registry.connect.redhat.com/nastel/nastel-activemq",
-              "replicaCount": 1,
-              "resources": {
-                "limits": {
-                  "cpu": "400m",
-                  "memory": "1000Mi"
-                },
-                "requests": {
-                  "cpu": "200m",
-                  "memory": "500Mi"
-                }
-              },
-              "service": {
-                "amqpPort": 5672,
-                "httpPort": 8161,
-                "ingress": {
-                  "enabled": true
-                },
-                "mqttPort": 1883,
-                "servicePort": 61616,
-                "stopmPort": 61613,
-                "type": "ClusterIP",
-                "wsPort": 61614
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "ap-domain": {
-              "image": "registry.connect.redhat.com/nastel/nastel-ap-domain",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "debugPort": 5440,
-                "node": {},
-                "serverPort": 2323,
-                "type": "NodePort",
-                "userPort": 3000
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "global": {
-              "kafkaCluster": "xray-cluster",
-              "kafkaHost": "xray-cluster-kafka-bootstrap",
-              "kafkaPort": 9092,
-              "subDomain": "nastel-2-915b3b336cabec458a7c7ec2aa7c625f-0000.us-south.containers.appdomain.cloud"
-            },
-            "solr-keeper": {
-              "image": "registry.connect.redhat.com/nastel/nastel-zookeeper",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "clientPort": 2181,
-                "electionPort": 3888,
-                "serverPort": 2888,
-                "type": "ClusterIP"
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "solr-node": {
-              "affinity": {},
-              "exporter": {
-                "configFile": "/opt/solr/contrib/prometheus-exporter/conf/solr-exporter-config.xml",
-                "enabled": false,
-                "livenessProbe": {
-                  "initialDelaySeconds": 20,
-                  "periodSeconds": 10
-                },
-                "podAnnotations": {},
-                "port": 9983,
-                "readinessProbe": {
-                  "initialDelaySeconds": 15,
-                  "periodSeconds": 5
-                },
-                "resources": {},
-                "service": {
-                  "annotations": {},
-                  "type": "ClusterIP"
-                },
-                "threads": 7,
-                "updateStrategy": {}
-              },
-              "image": {
-                "pullPolicy": "Always",
-                "repository": "registry.connect.redhat.com/nastel/nastel-solr"
-              },
-              "javaMem": "-Xms2g -Xmx3g",
-              "livenessProbe": {
-                "initialDelaySeconds": 20,
-                "periodSeconds": 10
-              },
-              "logLevel": "INFO",
-              "podAnnotations": {},
-              "podDisruptionBudget": {
-                "maxUnavailable": 1
-              },
-              "port": 8983,
-              "readinessProbe": {
-                "initialDelaySeconds": 15,
-                "periodSeconds": 5
-              },
-              "replicaCount": 4,
-              "resources": {},
-              "service": {
-                "annotations": {},
-                "ingress": {
-                  "enabled": true
-                },
-                "type": "ClusterIP"
-              },
-              "terminationGracePeriodSeconds": 180,
-              "tls": {
-                "caSecret": {
-                  "bundlePath": "",
-                  "name": ""
-                },
-                "certSecret": {
-                  "certPath": "tls.crt",
-                  "keyPath": "tls.key",
-                  "name": ""
-                },
-                "checkPeerName": "false",
-                "enabled": false,
-                "importKubernetesCA": "false",
-                "keystorePassword": "changeit",
-                "needClientAuth": "false",
-                "wantClientAuth": "false"
-              },
-              "updateStrategy": {
-                "type": "OnDelete"
-              },
-              "volumeClaimTemplates": {
-                "accessModes": [
-                  "ReadWriteOnce"
-                ],
-                "storageSize": "20Gi"
-              },
-              "zookeeper": {
-                "replicaCount": 1
-              }
-            },
-            "xray": {
-              "image": "registry.connect.redhat.com/nastel/xray-ui",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "httpPort": 8080,
-                "node": {},
-                "type": "LoadBalancer"
-              }
-            },
-            "xray-cep": {
-              "image": "registry.connect.redhat.com/nastel/xray-cep",
-              "init": {
-                "dbapi-solr": {
-                  "image": "registry.connect.redhat.com/nastel/xray-dbapi-solr"
-                },
-                "kafka": {
-                  "image": "registry.redhat.io/openshift4/ose-cli"
-                }
-              },
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "cepServerPort": 3005,
-                "node": {},
-                "type": "LoadBalancer",
-                "xRayDataPort": 6580
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "xray-ml-persistance": {
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "xray-ml-queries": {
-              "image": "registry.connect.redhat.com/nastel/xray-ml",
-              "replicaCount": 1,
-              "resources": {}
-            },
-            "xray-ml-train": {
-              "image": "registry.connect.redhat.com/nastel/xray-ml",
-              "replicaCount": 1,
-              "resources": {}
-            }
-          }
-        },
-        {
-          "api_version": "xray.nastel.com/v1alpha3",
-          "kind": "NastelXRayTopology",
-          "metadata": {
-            "name": "nastelxraytopology"
-          },
-          "spec": {
-            "global": {
-              "kafkaCluster": "xray-cluster",
-              "kafkaHost": "xray-cluster-kafka-bootstrap",
-              "kafkaPort": 9092,
-              "subDomain": "nastel-2-915b3b336cabec458a7c7ec2aa7c625f-0000.us-south.containers.appdomain.cloud"
-            },
-            "storm": {
-              "enabled": true,
-              "fullnameOverride": "storm",
-              "name": "storm",
-              "nameOverride": "storm",
-              "nimbus": {
-                "image": {
-                  "pullPolicy": "Always",
-                  "repository": "registry.connect.redhat.com/nastel/nastel-storm"
-                },
-                "replicaCount": 1,
-                "resources": {},
-                "service": {
-                  "name": "nimbus",
-                  "port": 6627,
-                  "type": "ClusterIP"
-                }
-              },
-              "supervisor": {
-                "image": {
-                  "pullPolicy": "Always",
-                  "repository": "registry.connect.redhat.com/nastel/nastel-storm"
-                },
-                "replicaCount": 3,
-                "resources": {},
-                "service": {
-                  "name": "supervisor",
-                  "port": 6700
-                }
-              },
-              "ui": {
-                "enabled": true,
-                "image": {
-                  "pullPolicy": "Always",
-                  "repository": "registry.connect.redhat.com/nastel/nastel-storm"
-                },
-                "ingress": {
-                  "annotations": {},
-                  "enabled": true,
-                  "tls": []
-                },
-                "replicaCount": 1,
-                "resources": {},
-                "service": {
-                  "name": "ui",
-                  "port": 8080,
-                  "type": "ClusterIP"
-                }
-              },
-              "zookeeper": {
-                "enabled": false,
-                "fullnameOverride": "storm-keeper",
-                "port": 2181,
-                "replicaCount": 1,
-                "servers": [
-                  "storm-keeper"
-                ]
-              }
-            },
-            "storm-keeper": {
-              "image": "registry.connect.redhat.com/nastel/nastel-zookeeper",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "clientPort": 2181,
-                "electionPort": 3888,
-                "serverPort": 2888,
-                "type": "ClusterIP"
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "xray-cep": {
-              "service": {
-                "cepServerPort": 3005,
-                "xRayDataPort": 6580
-              }
-            },
-            "xray-storm-topologies": {
-              "image": "registry.connect.redhat.com/nastel/xray-storm",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "httpPort": 8080,
-                "thriftPort": 6627
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nastel/xray-operator-bundle@sha256:492d79e202fa0e7c455a0a5a5b04eee060a726a32e3b1ac566bdb4250a8ada21",
-      "bundle_path_digest": "sha256:492d79e202fa0e7c455a0a5a5b04eee060a726a32e3b1ac566bdb4250a8ada21",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-10-11T09:38:38.080000+00:00",
-      "csv_description": "The operator deploys Nastel XRay component containers:\n  * Nastel Domain Server\n  * XRay Complex Event Processing (CEP)\n  * Solr indexing service\n  * Machine Learning (ML)\n  * XRay WebApp\n  * Storm Topologies (optional)\n\nin one go.\n\n[Nastel XRay](https://www.nastel.com/nastel-xray/) allows you to Track & Trace Transaction and Message Flows, Analyze, Visualize and Report your Big Data.\n",
-      "csv_display_name": "Nastel XRay Operator",
-      "csv_metadata_description": "Operator to deploy and run Nastel XRay",
-      "csv_name": "nastel-xray-operator.v1.330.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T11:56:05.988000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "nastel-xray-operator",
-      "provided_apis": [
-        {
-          "group": "xray.nastel.com",
-          "kind": "NastelXRay",
-          "plural": "nastelxrays",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "xray.nastel.com",
-          "kind": "NastelXRayTopology",
-          "plural": "nastelxraytopologies",
-          "version": "v1alpha3"
-        }
-      ],
-      "provider": "Nastel",
-      "related_images": [
-        {
-          "digest": "sha256:e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1",
-          "image": "registry.connect.redhat.com/nastel/xray-operator@sha256:e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1",
-          "name": "xray-operator-e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1-annotation"
-        },
-        {
-          "digest": "sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1",
-          "image": "registry.connect.redhat.com/nastel/xray-operator@sha256:e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1",
-          "name": "nastel-xray-operator"
-        },
-        {
-          "digest": "sha256:fd4f6d9dac97fac4e5e53689ea3e7e174d692eda6afff271d3e7e7e4b78a5f68",
-          "image": "registry.connect.redhat.com/nastel/nastel-ap-domain@sha256:fd4f6d9dac97fac4e5e53689ea3e7e174d692eda6afff271d3e7e7e4b78a5f68",
-          "name": "domain"
-        },
-        {
-          "digest": "sha256:854f8433c6138c829757a866273d8f18eef7bf61fcb95d04725f23721c24f022",
-          "image": "registry.connect.redhat.com/nastel/xray-cep@sha256:854f8433c6138c829757a866273d8f18eef7bf61fcb95d04725f23721c24f022",
-          "name": "cep"
-        },
-        {
-          "digest": "sha256:ddcfc764de7e9cfdecd255126fcf69775586c4d7c79c978bb44184a534c7c89a",
-          "image": "registry.redhat.io/openshift4/ose-cli@sha256:ddcfc764de7e9cfdecd255126fcf69775586c4d7c79c978bb44184a534c7c89a",
-          "name": "ose_cli"
-        },
-        {
-          "digest": "sha256:81b6e6b2dbbfc7a71c5d71c571a477950263c7debffbf006a0fd4d96517ac6a4",
-          "image": "registry.connect.redhat.com/nastel/xray-dbapi-solr@sha256:81b6e6b2dbbfc7a71c5d71c571a477950263c7debffbf006a0fd4d96517ac6a4",
-          "name": "solr_dbapi"
-        },
-        {
-          "digest": "sha256:2fdcab2efa8627b33ae9148b0d14f22171dbbd64ccdf00e0a65e234e3e09d2ae",
-          "image": "registry.connect.redhat.com/nastel/xray-ml@sha256:2fdcab2efa8627b33ae9148b0d14f22171dbbd64ccdf00e0a65e234e3e09d2ae",
-          "name": "ml"
-        },
-        {
-          "digest": "sha256:063de804be70b905000b18c635af6b5c6edff74654d44cff99515ee35e8c4f05",
-          "image": "registry.connect.redhat.com/nastel/xray-ui@sha256:063de804be70b905000b18c635af6b5c6edff74654d44cff99515ee35e8c4f05",
-          "name": "xray"
-        },
-        {
-          "digest": "sha256:fd8168d697ae40c5a3e1b7b5d0a23494381178929820de7d1cebb0e4d69cf9ec",
-          "image": "registry.connect.redhat.com/nastel/nastel-activemq@sha256:fd8168d697ae40c5a3e1b7b5d0a23494381178929820de7d1cebb0e4d69cf9ec",
-          "name": "active_mq"
-        },
-        {
-          "digest": "sha256:8e956cc9e631397128ef01b0a305a7c5b5fe3571b2077949c4e0849b1826188d",
-          "image": "registry.connect.redhat.com/nastel/nastel-zookeeper@sha256:8e956cc9e631397128ef01b0a305a7c5b5fe3571b2077949c4e0849b1826188d",
-          "name": "zookeeper"
-        },
-        {
-          "digest": "sha256:ec36c53f0a8ef88dfa357e3d4406032f6404ca6754ed874ba162436284d3e11c",
-          "image": "registry.connect.redhat.com/nastel/nastel-solr@sha256:ec36c53f0a8ef88dfa357e3d4406032f6404ca6754ed874ba162436284d3e11c",
-          "name": "solr"
-        },
-        {
-          "digest": "sha256:79b7ee65b9fd7e6ebe6c62e6a6c373ea54a745d09844972dcc61ae051d526a26",
-          "image": "registry.connect.redhat.com/nastel/nastel-storm@sha256:79b7ee65b9fd7e6ebe6c62e6a6c373ea54a745d09844972dcc61ae051d526a26",
-          "name": "storm"
-        },
-        {
-          "digest": "sha256:f743d6dbcfda7346b1a20f865511b7d6e0cd7407e8d15ab1fb5d8fe16472a982",
-          "image": "registry.connect.redhat.com/nastel/xray-storm@sha256:f743d6dbcfda7346b1a20f865511b7d6e0cd7407e8d15ab1fb5d8fe16472a982",
-          "name": "storm_topology"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.330.1",
-      "version_original": "1.330.1"
-    },
-    {
-      "_id": "616406ef5cfcf7adc247acb9",
-      "alm_examples": [
-        {
-          "api_version": "xray.nastel.com/v1alpha3",
-          "kind": "NastelXRay",
-          "metadata": {
-            "name": "nastelxray"
-          },
-          "spec": {
-            "active-mq": {
-              "image": "registry.connect.redhat.com/nastel/nastel-activemq",
-              "replicaCount": 1,
-              "resources": {
-                "limits": {
-                  "cpu": "400m",
-                  "memory": "1000Mi"
-                },
-                "requests": {
-                  "cpu": "200m",
-                  "memory": "500Mi"
-                }
-              },
-              "service": {
-                "amqpPort": 5672,
-                "httpPort": 8161,
-                "ingress": {
-                  "enabled": true
-                },
-                "mqttPort": 1883,
-                "servicePort": 61616,
-                "stopmPort": 61613,
-                "type": "ClusterIP",
-                "wsPort": 61614
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "ap-domain": {
-              "image": "registry.connect.redhat.com/nastel/nastel-ap-domain",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "debugPort": 5440,
-                "node": {},
-                "serverPort": 2323,
-                "type": "NodePort",
-                "userPort": 3000
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "global": {
-              "kafkaCluster": "xray-cluster",
-              "kafkaHost": "xray-cluster-kafka-bootstrap",
-              "kafkaPort": 9092,
-              "subDomain": "nastel-2-915b3b336cabec458a7c7ec2aa7c625f-0000.us-south.containers.appdomain.cloud"
-            },
-            "solr-keeper": {
-              "image": "registry.connect.redhat.com/nastel/nastel-zookeeper",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "clientPort": 2181,
-                "electionPort": 3888,
-                "serverPort": 2888,
-                "type": "ClusterIP"
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "solr-node": {
-              "affinity": {},
-              "exporter": {
-                "configFile": "/opt/solr/contrib/prometheus-exporter/conf/solr-exporter-config.xml",
-                "enabled": false,
-                "livenessProbe": {
-                  "initialDelaySeconds": 20,
-                  "periodSeconds": 10
-                },
-                "podAnnotations": {},
-                "port": 9983,
-                "readinessProbe": {
-                  "initialDelaySeconds": 15,
-                  "periodSeconds": 5
-                },
-                "resources": {},
-                "service": {
-                  "annotations": {},
-                  "type": "ClusterIP"
-                },
-                "threads": 7,
-                "updateStrategy": {}
-              },
-              "image": {
-                "pullPolicy": "Always",
-                "repository": "registry.connect.redhat.com/nastel/nastel-solr"
-              },
-              "javaMem": "-Xms2g -Xmx3g",
-              "livenessProbe": {
-                "initialDelaySeconds": 20,
-                "periodSeconds": 10
-              },
-              "logLevel": "INFO",
-              "podAnnotations": {},
-              "podDisruptionBudget": {
-                "maxUnavailable": 1
-              },
-              "port": 8983,
-              "readinessProbe": {
-                "initialDelaySeconds": 15,
-                "periodSeconds": 5
-              },
-              "replicaCount": 4,
-              "resources": {},
-              "service": {
-                "annotations": {},
-                "ingress": {
-                  "enabled": true
-                },
-                "type": "ClusterIP"
-              },
-              "terminationGracePeriodSeconds": 180,
-              "tls": {
-                "caSecret": {
-                  "bundlePath": "",
-                  "name": ""
-                },
-                "certSecret": {
-                  "certPath": "tls.crt",
-                  "keyPath": "tls.key",
-                  "name": ""
-                },
-                "checkPeerName": "false",
-                "enabled": false,
-                "importKubernetesCA": "false",
-                "keystorePassword": "changeit",
-                "needClientAuth": "false",
-                "wantClientAuth": "false"
-              },
-              "updateStrategy": {
-                "type": "OnDelete"
-              },
-              "volumeClaimTemplates": {
-                "accessModes": [
-                  "ReadWriteOnce"
-                ],
-                "storageSize": "20Gi"
-              },
-              "zookeeper": {
-                "replicaCount": 1
-              }
-            },
-            "xray": {
-              "image": "registry.connect.redhat.com/nastel/xray-ui",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "httpPort": 8080,
-                "node": {},
-                "type": "LoadBalancer"
-              }
-            },
-            "xray-cep": {
-              "image": "registry.connect.redhat.com/nastel/xray-cep",
-              "init": {
-                "dbapi-solr": {
-                  "image": "registry.connect.redhat.com/nastel/xray-dbapi-solr"
-                },
-                "kafka": {
-                  "image": "registry.redhat.io/openshift4/ose-cli"
-                }
-              },
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "cepServerPort": 3005,
-                "node": {},
-                "type": "LoadBalancer",
-                "xRayDataPort": 6580
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "xray-ml-persistance": {
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "xray-ml-queries": {
-              "image": "registry.connect.redhat.com/nastel/xray-ml",
-              "replicaCount": 1,
-              "resources": {}
-            },
-            "xray-ml-train": {
-              "image": "registry.connect.redhat.com/nastel/xray-ml",
-              "replicaCount": 1,
-              "resources": {}
-            }
-          }
-        },
-        {
-          "api_version": "xray.nastel.com/v1alpha3",
-          "kind": "NastelXRayTopology",
-          "metadata": {
-            "name": "nastelxraytopology"
-          },
-          "spec": {
-            "global": {
-              "kafkaCluster": "xray-cluster",
-              "kafkaHost": "xray-cluster-kafka-bootstrap",
-              "kafkaPort": 9092,
-              "subDomain": "nastel-2-915b3b336cabec458a7c7ec2aa7c625f-0000.us-south.containers.appdomain.cloud"
-            },
-            "storm": {
-              "enabled": true,
-              "fullnameOverride": "storm",
-              "name": "storm",
-              "nameOverride": "storm",
-              "nimbus": {
-                "image": {
-                  "pullPolicy": "Always",
-                  "repository": "registry.connect.redhat.com/nastel/nastel-storm"
-                },
-                "replicaCount": 1,
-                "resources": {},
-                "service": {
-                  "name": "nimbus",
-                  "port": 6627,
-                  "type": "ClusterIP"
-                }
-              },
-              "supervisor": {
-                "image": {
-                  "pullPolicy": "Always",
-                  "repository": "registry.connect.redhat.com/nastel/nastel-storm"
-                },
-                "replicaCount": 3,
-                "resources": {},
-                "service": {
-                  "name": "supervisor",
-                  "port": 6700
-                }
-              },
-              "ui": {
-                "enabled": true,
-                "image": {
-                  "pullPolicy": "Always",
-                  "repository": "registry.connect.redhat.com/nastel/nastel-storm"
-                },
-                "ingress": {
-                  "annotations": {},
-                  "enabled": true,
-                  "tls": []
-                },
-                "replicaCount": 1,
-                "resources": {},
-                "service": {
-                  "name": "ui",
-                  "port": 8080,
-                  "type": "ClusterIP"
-                }
-              },
-              "zookeeper": {
-                "enabled": false,
-                "fullnameOverride": "storm-keeper",
-                "port": 2181,
-                "replicaCount": 1,
-                "servers": [
-                  "storm-keeper"
-                ]
-              }
-            },
-            "storm-keeper": {
-              "image": "registry.connect.redhat.com/nastel/nastel-zookeeper",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "clientPort": 2181,
-                "electionPort": 3888,
-                "serverPort": 2888,
-                "type": "ClusterIP"
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "xray-cep": {
-              "service": {
-                "cepServerPort": 3005,
-                "xRayDataPort": 6580
-              }
-            },
-            "xray-storm-topologies": {
-              "image": "registry.connect.redhat.com/nastel/xray-storm",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "httpPort": 8080,
-                "thriftPort": 6627
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nastel/xray-operator-bundle@sha256:492d79e202fa0e7c455a0a5a5b04eee060a726a32e3b1ac566bdb4250a8ada21",
-      "bundle_path_digest": "sha256:492d79e202fa0e7c455a0a5a5b04eee060a726a32e3b1ac566bdb4250a8ada21",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-10-11T09:42:07.084000+00:00",
-      "csv_description": "The operator deploys Nastel XRay component containers:\n  * Nastel Domain Server\n  * XRay Complex Event Processing (CEP)\n  * Solr indexing service\n  * Machine Learning (ML)\n  * XRay WebApp\n  * Storm Topologies (optional)\n\nin one go.\n\n[Nastel XRay](https://www.nastel.com/nastel-xray/) allows you to Track & Trace Transaction and Message Flows, Analyze, Visualize and Report your Big Data.\n",
-      "csv_display_name": "Nastel XRay Operator",
-      "csv_metadata_description": "Operator to deploy and run Nastel XRay",
-      "csv_name": "nastel-xray-operator.v1.330.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T11:43:13.134000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "nastel-xray-operator",
-      "provided_apis": [
-        {
-          "group": "xray.nastel.com",
-          "kind": "NastelXRay",
-          "plural": "nastelxrays",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "xray.nastel.com",
-          "kind": "NastelXRayTopology",
-          "plural": "nastelxraytopologies",
-          "version": "v1alpha3"
-        }
-      ],
-      "provider": "Nastel",
-      "related_images": [
-        {
-          "digest": "sha256:e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1",
-          "image": "registry.connect.redhat.com/nastel/xray-operator@sha256:e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1",
-          "name": "xray-operator-e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1-annotation"
-        },
-        {
-          "digest": "sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1",
-          "image": "registry.connect.redhat.com/nastel/xray-operator@sha256:e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1",
-          "name": "nastel-xray-operator"
-        },
-        {
-          "digest": "sha256:fd4f6d9dac97fac4e5e53689ea3e7e174d692eda6afff271d3e7e7e4b78a5f68",
-          "image": "registry.connect.redhat.com/nastel/nastel-ap-domain@sha256:fd4f6d9dac97fac4e5e53689ea3e7e174d692eda6afff271d3e7e7e4b78a5f68",
-          "name": "domain"
-        },
-        {
-          "digest": "sha256:854f8433c6138c829757a866273d8f18eef7bf61fcb95d04725f23721c24f022",
-          "image": "registry.connect.redhat.com/nastel/xray-cep@sha256:854f8433c6138c829757a866273d8f18eef7bf61fcb95d04725f23721c24f022",
-          "name": "cep"
-        },
-        {
-          "digest": "sha256:ddcfc764de7e9cfdecd255126fcf69775586c4d7c79c978bb44184a534c7c89a",
-          "image": "registry.redhat.io/openshift4/ose-cli@sha256:ddcfc764de7e9cfdecd255126fcf69775586c4d7c79c978bb44184a534c7c89a",
-          "name": "ose_cli"
-        },
-        {
-          "digest": "sha256:81b6e6b2dbbfc7a71c5d71c571a477950263c7debffbf006a0fd4d96517ac6a4",
-          "image": "registry.connect.redhat.com/nastel/xray-dbapi-solr@sha256:81b6e6b2dbbfc7a71c5d71c571a477950263c7debffbf006a0fd4d96517ac6a4",
-          "name": "solr_dbapi"
-        },
-        {
-          "digest": "sha256:2fdcab2efa8627b33ae9148b0d14f22171dbbd64ccdf00e0a65e234e3e09d2ae",
-          "image": "registry.connect.redhat.com/nastel/xray-ml@sha256:2fdcab2efa8627b33ae9148b0d14f22171dbbd64ccdf00e0a65e234e3e09d2ae",
-          "name": "ml"
-        },
-        {
-          "digest": "sha256:063de804be70b905000b18c635af6b5c6edff74654d44cff99515ee35e8c4f05",
-          "image": "registry.connect.redhat.com/nastel/xray-ui@sha256:063de804be70b905000b18c635af6b5c6edff74654d44cff99515ee35e8c4f05",
-          "name": "xray"
-        },
-        {
-          "digest": "sha256:fd8168d697ae40c5a3e1b7b5d0a23494381178929820de7d1cebb0e4d69cf9ec",
-          "image": "registry.connect.redhat.com/nastel/nastel-activemq@sha256:fd8168d697ae40c5a3e1b7b5d0a23494381178929820de7d1cebb0e4d69cf9ec",
-          "name": "active_mq"
-        },
-        {
-          "digest": "sha256:8e956cc9e631397128ef01b0a305a7c5b5fe3571b2077949c4e0849b1826188d",
-          "image": "registry.connect.redhat.com/nastel/nastel-zookeeper@sha256:8e956cc9e631397128ef01b0a305a7c5b5fe3571b2077949c4e0849b1826188d",
-          "name": "zookeeper"
-        },
-        {
-          "digest": "sha256:ec36c53f0a8ef88dfa357e3d4406032f6404ca6754ed874ba162436284d3e11c",
-          "image": "registry.connect.redhat.com/nastel/nastel-solr@sha256:ec36c53f0a8ef88dfa357e3d4406032f6404ca6754ed874ba162436284d3e11c",
-          "name": "solr"
-        },
-        {
-          "digest": "sha256:79b7ee65b9fd7e6ebe6c62e6a6c373ea54a745d09844972dcc61ae051d526a26",
-          "image": "registry.connect.redhat.com/nastel/nastel-storm@sha256:79b7ee65b9fd7e6ebe6c62e6a6c373ea54a745d09844972dcc61ae051d526a26",
-          "name": "storm"
-        },
-        {
-          "digest": "sha256:f743d6dbcfda7346b1a20f865511b7d6e0cd7407e8d15ab1fb5d8fe16472a982",
-          "image": "registry.connect.redhat.com/nastel/xray-storm@sha256:f743d6dbcfda7346b1a20f865511b7d6e0cd7407e8d15ab1fb5d8fe16472a982",
-          "name": "storm_topology"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.330.1",
-      "version_original": "1.330.1"
-    },
-    {
-      "_id": "616406f95ac6c125049020f4",
-      "alm_examples": [
-        {
-          "api_version": "xray.nastel.com/v1alpha3",
-          "kind": "NastelXRay",
-          "metadata": {
-            "name": "nastelxray"
-          },
-          "spec": {
-            "active-mq": {
-              "image": "registry.connect.redhat.com/nastel/nastel-activemq",
-              "replicaCount": 1,
-              "resources": {
-                "limits": {
-                  "cpu": "400m",
-                  "memory": "1000Mi"
-                },
-                "requests": {
-                  "cpu": "200m",
-                  "memory": "500Mi"
-                }
-              },
-              "service": {
-                "amqpPort": 5672,
-                "httpPort": 8161,
-                "ingress": {
-                  "enabled": true
-                },
-                "mqttPort": 1883,
-                "servicePort": 61616,
-                "stopmPort": 61613,
-                "type": "ClusterIP",
-                "wsPort": 61614
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "ap-domain": {
-              "image": "registry.connect.redhat.com/nastel/nastel-ap-domain",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "debugPort": 5440,
-                "node": {},
-                "serverPort": 2323,
-                "type": "NodePort",
-                "userPort": 3000
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "global": {
-              "kafkaCluster": "xray-cluster",
-              "kafkaHost": "xray-cluster-kafka-bootstrap",
-              "kafkaPort": 9092,
-              "subDomain": "nastel-2-915b3b336cabec458a7c7ec2aa7c625f-0000.us-south.containers.appdomain.cloud"
-            },
-            "solr-keeper": {
-              "image": "registry.connect.redhat.com/nastel/nastel-zookeeper",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "clientPort": 2181,
-                "electionPort": 3888,
-                "serverPort": 2888,
-                "type": "ClusterIP"
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "solr-node": {
-              "affinity": {},
-              "exporter": {
-                "configFile": "/opt/solr/contrib/prometheus-exporter/conf/solr-exporter-config.xml",
-                "enabled": false,
-                "livenessProbe": {
-                  "initialDelaySeconds": 20,
-                  "periodSeconds": 10
-                },
-                "podAnnotations": {},
-                "port": 9983,
-                "readinessProbe": {
-                  "initialDelaySeconds": 15,
-                  "periodSeconds": 5
-                },
-                "resources": {},
-                "service": {
-                  "annotations": {},
-                  "type": "ClusterIP"
-                },
-                "threads": 7,
-                "updateStrategy": {}
-              },
-              "image": {
-                "pullPolicy": "Always",
-                "repository": "registry.connect.redhat.com/nastel/nastel-solr"
-              },
-              "javaMem": "-Xms2g -Xmx3g",
-              "livenessProbe": {
-                "initialDelaySeconds": 20,
-                "periodSeconds": 10
-              },
-              "logLevel": "INFO",
-              "podAnnotations": {},
-              "podDisruptionBudget": {
-                "maxUnavailable": 1
-              },
-              "port": 8983,
-              "readinessProbe": {
-                "initialDelaySeconds": 15,
-                "periodSeconds": 5
-              },
-              "replicaCount": 4,
-              "resources": {},
-              "service": {
-                "annotations": {},
-                "ingress": {
-                  "enabled": true
-                },
-                "type": "ClusterIP"
-              },
-              "terminationGracePeriodSeconds": 180,
-              "tls": {
-                "caSecret": {
-                  "bundlePath": "",
-                  "name": ""
-                },
-                "certSecret": {
-                  "certPath": "tls.crt",
-                  "keyPath": "tls.key",
-                  "name": ""
-                },
-                "checkPeerName": "false",
-                "enabled": false,
-                "importKubernetesCA": "false",
-                "keystorePassword": "changeit",
-                "needClientAuth": "false",
-                "wantClientAuth": "false"
-              },
-              "updateStrategy": {
-                "type": "OnDelete"
-              },
-              "volumeClaimTemplates": {
-                "accessModes": [
-                  "ReadWriteOnce"
-                ],
-                "storageSize": "20Gi"
-              },
-              "zookeeper": {
-                "replicaCount": 1
-              }
-            },
-            "xray": {
-              "image": "registry.connect.redhat.com/nastel/xray-ui",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "httpPort": 8080,
-                "node": {},
-                "type": "LoadBalancer"
-              }
-            },
-            "xray-cep": {
-              "image": "registry.connect.redhat.com/nastel/xray-cep",
-              "init": {
-                "dbapi-solr": {
-                  "image": "registry.connect.redhat.com/nastel/xray-dbapi-solr"
-                },
-                "kafka": {
-                  "image": "registry.redhat.io/openshift4/ose-cli"
-                }
-              },
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "cepServerPort": 3005,
-                "node": {},
-                "type": "LoadBalancer",
-                "xRayDataPort": 6580
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "xray-ml-persistance": {
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "xray-ml-queries": {
-              "image": "registry.connect.redhat.com/nastel/xray-ml",
-              "replicaCount": 1,
-              "resources": {}
-            },
-            "xray-ml-train": {
-              "image": "registry.connect.redhat.com/nastel/xray-ml",
-              "replicaCount": 1,
-              "resources": {}
-            }
-          }
-        },
-        {
-          "api_version": "xray.nastel.com/v1alpha3",
-          "kind": "NastelXRayTopology",
-          "metadata": {
-            "name": "nastelxraytopology"
-          },
-          "spec": {
-            "global": {
-              "kafkaCluster": "xray-cluster",
-              "kafkaHost": "xray-cluster-kafka-bootstrap",
-              "kafkaPort": 9092,
-              "subDomain": "nastel-2-915b3b336cabec458a7c7ec2aa7c625f-0000.us-south.containers.appdomain.cloud"
-            },
-            "storm": {
-              "enabled": true,
-              "fullnameOverride": "storm",
-              "name": "storm",
-              "nameOverride": "storm",
-              "nimbus": {
-                "image": {
-                  "pullPolicy": "Always",
-                  "repository": "registry.connect.redhat.com/nastel/nastel-storm"
-                },
-                "replicaCount": 1,
-                "resources": {},
-                "service": {
-                  "name": "nimbus",
-                  "port": 6627,
-                  "type": "ClusterIP"
-                }
-              },
-              "supervisor": {
-                "image": {
-                  "pullPolicy": "Always",
-                  "repository": "registry.connect.redhat.com/nastel/nastel-storm"
-                },
-                "replicaCount": 3,
-                "resources": {},
-                "service": {
-                  "name": "supervisor",
-                  "port": 6700
-                }
-              },
-              "ui": {
-                "enabled": true,
-                "image": {
-                  "pullPolicy": "Always",
-                  "repository": "registry.connect.redhat.com/nastel/nastel-storm"
-                },
-                "ingress": {
-                  "annotations": {},
-                  "enabled": true,
-                  "tls": []
-                },
-                "replicaCount": 1,
-                "resources": {},
-                "service": {
-                  "name": "ui",
-                  "port": 8080,
-                  "type": "ClusterIP"
-                }
-              },
-              "zookeeper": {
-                "enabled": false,
-                "fullnameOverride": "storm-keeper",
-                "port": 2181,
-                "replicaCount": 1,
-                "servers": [
-                  "storm-keeper"
-                ]
-              }
-            },
-            "storm-keeper": {
-              "image": "registry.connect.redhat.com/nastel/nastel-zookeeper",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "clientPort": 2181,
-                "electionPort": 3888,
-                "serverPort": 2888,
-                "type": "ClusterIP"
-              },
-              "storage": {
-                "accessMode": "ReadWriteOnce",
-                "capacity": "2Gi"
-              }
-            },
-            "xray-cep": {
-              "service": {
-                "cepServerPort": 3005,
-                "xRayDataPort": 6580
-              }
-            },
-            "xray-storm-topologies": {
-              "image": "registry.connect.redhat.com/nastel/xray-storm",
-              "replicaCount": 1,
-              "resources": {},
-              "service": {
-                "httpPort": 8080,
-                "thriftPort": 6627
-              }
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/nastel/xray-operator-bundle@sha256:492d79e202fa0e7c455a0a5a5b04eee060a726a32e3b1ac566bdb4250a8ada21",
-      "bundle_path_digest": "sha256:492d79e202fa0e7c455a0a5a5b04eee060a726a32e3b1ac566bdb4250a8ada21",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-10-11T09:42:17.290000+00:00",
-      "csv_description": "The operator deploys Nastel XRay component containers:\n  * Nastel Domain Server\n  * XRay Complex Event Processing (CEP)\n  * Solr indexing service\n  * Machine Learning (ML)\n  * XRay WebApp\n  * Storm Topologies (optional)\n\nin one go.\n\n[Nastel XRay](https://www.nastel.com/nastel-xray/) allows you to Track & Trace Transaction and Message Flows, Analyze, Visualize and Report your Big Data.\n",
-      "csv_display_name": "Nastel XRay Operator",
-      "csv_metadata_description": "Operator to deploy and run Nastel XRay",
-      "csv_name": "nastel-xray-operator.v1.330.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T11:24:05.855000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "nastel-xray-operator",
-      "provided_apis": [
-        {
-          "group": "xray.nastel.com",
-          "kind": "NastelXRayTopology",
-          "plural": "nastelxraytopologies",
-          "version": "v1alpha3"
-        },
-        {
-          "group": "xray.nastel.com",
-          "kind": "NastelXRay",
-          "plural": "nastelxrays",
-          "version": "v1alpha3"
-        }
-      ],
-      "provider": "Nastel",
-      "related_images": [
-        {
-          "digest": "sha256:e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1",
-          "image": "registry.connect.redhat.com/nastel/xray-operator@sha256:e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1",
-          "name": "xray-operator-e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1-annotation"
-        },
-        {
-          "digest": "sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:71527b0033776ac8a68e9c52937cbdac5909a56058105bcb6489c4a0cb9e4f4d",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1",
-          "image": "registry.connect.redhat.com/nastel/xray-operator@sha256:e402db7e91aa4ce06961ac5329ccba675e5e3c9911e71b901da49b26c9fbc8d1",
-          "name": "nastel-xray-operator"
-        },
-        {
-          "digest": "sha256:fd4f6d9dac97fac4e5e53689ea3e7e174d692eda6afff271d3e7e7e4b78a5f68",
-          "image": "registry.connect.redhat.com/nastel/nastel-ap-domain@sha256:fd4f6d9dac97fac4e5e53689ea3e7e174d692eda6afff271d3e7e7e4b78a5f68",
-          "name": "domain"
-        },
-        {
-          "digest": "sha256:854f8433c6138c829757a866273d8f18eef7bf61fcb95d04725f23721c24f022",
-          "image": "registry.connect.redhat.com/nastel/xray-cep@sha256:854f8433c6138c829757a866273d8f18eef7bf61fcb95d04725f23721c24f022",
-          "name": "cep"
-        },
-        {
-          "digest": "sha256:ddcfc764de7e9cfdecd255126fcf69775586c4d7c79c978bb44184a534c7c89a",
-          "image": "registry.redhat.io/openshift4/ose-cli@sha256:ddcfc764de7e9cfdecd255126fcf69775586c4d7c79c978bb44184a534c7c89a",
-          "name": "ose_cli"
-        },
-        {
-          "digest": "sha256:81b6e6b2dbbfc7a71c5d71c571a477950263c7debffbf006a0fd4d96517ac6a4",
-          "image": "registry.connect.redhat.com/nastel/xray-dbapi-solr@sha256:81b6e6b2dbbfc7a71c5d71c571a477950263c7debffbf006a0fd4d96517ac6a4",
-          "name": "solr_dbapi"
-        },
-        {
-          "digest": "sha256:2fdcab2efa8627b33ae9148b0d14f22171dbbd64ccdf00e0a65e234e3e09d2ae",
-          "image": "registry.connect.redhat.com/nastel/xray-ml@sha256:2fdcab2efa8627b33ae9148b0d14f22171dbbd64ccdf00e0a65e234e3e09d2ae",
-          "name": "ml"
-        },
-        {
-          "digest": "sha256:063de804be70b905000b18c635af6b5c6edff74654d44cff99515ee35e8c4f05",
-          "image": "registry.connect.redhat.com/nastel/xray-ui@sha256:063de804be70b905000b18c635af6b5c6edff74654d44cff99515ee35e8c4f05",
-          "name": "xray"
-        },
-        {
-          "digest": "sha256:fd8168d697ae40c5a3e1b7b5d0a23494381178929820de7d1cebb0e4d69cf9ec",
-          "image": "registry.connect.redhat.com/nastel/nastel-activemq@sha256:fd8168d697ae40c5a3e1b7b5d0a23494381178929820de7d1cebb0e4d69cf9ec",
-          "name": "active_mq"
-        },
-        {
-          "digest": "sha256:8e956cc9e631397128ef01b0a305a7c5b5fe3571b2077949c4e0849b1826188d",
-          "image": "registry.connect.redhat.com/nastel/nastel-zookeeper@sha256:8e956cc9e631397128ef01b0a305a7c5b5fe3571b2077949c4e0849b1826188d",
-          "name": "zookeeper"
-        },
-        {
-          "digest": "sha256:ec36c53f0a8ef88dfa357e3d4406032f6404ca6754ed874ba162436284d3e11c",
-          "image": "registry.connect.redhat.com/nastel/nastel-solr@sha256:ec36c53f0a8ef88dfa357e3d4406032f6404ca6754ed874ba162436284d3e11c",
-          "name": "solr"
-        },
-        {
-          "digest": "sha256:79b7ee65b9fd7e6ebe6c62e6a6c373ea54a745d09844972dcc61ae051d526a26",
-          "image": "registry.connect.redhat.com/nastel/nastel-storm@sha256:79b7ee65b9fd7e6ebe6c62e6a6c373ea54a745d09844972dcc61ae051d526a26",
-          "name": "storm"
-        },
-        {
-          "digest": "sha256:f743d6dbcfda7346b1a20f865511b7d6e0cd7407e8d15ab1fb5d8fe16472a982",
-          "image": "registry.connect.redhat.com/nastel/xray-storm@sha256:f743d6dbcfda7346b1a20f865511b7d6e0cd7407e8d15ab1fb5d8fe16472a982",
-          "name": "storm_topology"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.330.1",
-      "version_original": "1.330.1"
-    },
-    {
-      "_id": "616484bb90fb938ecf600c78",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "Xl",
-          "metadata": {
-            "name": "xl-release"
-          },
-          "spec": {
-            "global": {
-              "customImageNames": false,
-              "externalArangoDBName": "arangodb",
-              "repository": "registry.connect.redhat.com/turbonomic",
-              "tag": "8.3.4"
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:4940f574cf86b57084e35fff0cc6774dd457cec81156912470857cb4e344a11d",
-      "bundle_path_digest": "sha256:4940f574cf86b57084e35fff0cc6774dd457cec81156912470857cb4e344a11d",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-10-11T18:38:51.404000+00:00",
-      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
-      "csv_display_name": "Turbonomic Platform Operator",
-      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
-      "csv_name": "t8c-operator.v42.2.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T11:07:31.239000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "t8c-certified",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1alpha1"
-        },
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "Xl",
-          "plural": "xls",
-          "version": "v1"
-        }
-      ],
-      "provider": "Turbonomic, Inc.",
-      "related_images": [],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "42.2.0",
-      "version_original": "42.2.0"
-    },
-    {
       "_id": "6164f4ab5ac6c1250490274f",
       "alm_examples": [
         {
@@ -17119,304 +15686,6 @@
       "version_original": "2.3.0"
     },
     {
-      "_id": "616f9c118ebd9a62aec7b85e",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "OpenshiftArtifactoryHa",
-          "metadata": {
-            "name": "openshiftartifactoryha"
-          },
-          "spec": {
-            "artifactory-ha": {
-              "artifactory": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/artifactory-pro",
-                  "tag": "7.27.3-1"
-                },
-                "joinKey": "OVERRIDE",
-                "masterKey": "OVERRIDE",
-                "node": {
-                  "replicaCount": 2,
-                  "waitForPrimaryStartup": {
-                    "enabled": false
-                  }
-                },
-                "uid": "1000721030"
-              },
-              "database": {
-                "driver": "OVERRIDE",
-                "password": "OVERRIDE",
-                "type": "OVERRIDE",
-                "url": "OVERRIDE",
-                "user": "OVERRIDE"
-              },
-              "databaseUpgradeReady": true,
-              "initContainerImage": "registry.connect.redhat.com/jfrog/init@sha256:164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8",
-              "nginx": {
-                "gid": "1000720107",
-                "http": {
-                  "externalPort": 80,
-                  "internalPort": 8080
-                },
-                "https": {
-                  "externalPort": 443,
-                  "internalPort": 8443
-                },
-                "image": {
-                  "registry": "registry.redhat.io",
-                  "repository": "rhel8/nginx-116",
-                  "tag": "latest"
-                },
-                "service": {
-                  "ssloffload": false
-                },
-                "tlsSecretName": "OVERRIDE",
-                "uid": "1000720104"
-              },
-              "postgresql": {
-                "enabled": false
-              },
-              "waitForDatabase": true
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "quay.io/rhc4tp/artifactory-operator-bundle@sha256:b02ab81cc4b28116456ea9359c5241dc2522fbedb36e4d4ffd605773e8bd0c81",
-      "bundle_path_digest": "sha256:b02ab81cc4b28116456ea9359c5241dc2522fbedb36e4d4ffd605773e8bd0c81",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-10-20T04:33:21.444000+00:00",
-      "csv_description": " ## Breaking change\nPlease update to version 1.1.10 of the operator.\nVersion 1.1.8 and 1.1.9 have issues. Please skip these versions.\n\n## Overview\nOpenshift Operator to deploy JFrog Artifactory Enterprise into your Openshift cluster.\n## Security Context Constraints\nTo deploy this helm chart you will need to be a cluster admin w/ access to the anyuid scc and add the operator service account to the anyuid scc.\n```\noc adm policy add-scc-to-user anyuid -z artifactory-ha-operator -n openshift-operators\n```\nAdd the service account for the Artifactory chart to deploy successfully:\n``` oc adm policy add-scc-to-user anyuid -z openshiftartifactoryha-artifactory-ha -n artifactory ```\n### Usage\n\nAn external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it.\n\nSearch for JFrog and click JFrog Artifactory Enterprise Operator to install.\n\nGo to the Installed Operators.\n\nWait for the JFrog Artifactory Enterprise Operator to complete the installation.\n\nOpen the Operator and click on the provided API: Artifactory HA.\n\nClick Create New Instance and provide the following parameters for your DB configuration:\n\n```\nDATABASE_TYPE\nDATABASE_DRIVER\nDATABASE_URL\nDATABASE_USER\nDATABASE_PASSWORD\n```\nMaster key and Join key must be supplied. To generate a new key for each run the command below:\n\n```\n# Create a key\nexport JOIN_KEY=$(openssl rand -hex 32)\necho ${JOIN_KEY}\n```\n\nTo use TLS you will need to first create a k8s tls secret to store your .crt and .key file into.\nThen supply the value of this k8s secret into the TLS_SECRET field.\n``` oc create secret tls my_tls_secret --cert=tls.crt --key=tls.key --namespace=my_namespace ```\nClick Create for Artifactory Enterprise to deploy into OpenShift and connect to it on the external IP exposed by the load balancer.\n### Create a route\nTo expose Artifactory from Openshift we recommend you create a new route in Openshift.\nYou can either use the oc command line tool or the Openshift web console to generate a new route.\nDepending upon where you terminate TLS you will need to either specify pass through or edge.\nCommand Line (Edge):\n``` oc create route edge --service=openshiftartifactory-ha --cert=tls.crt --key=tls.key --ca-cert=ca.crt --hostname=www.example.com ```\nOr for more information visit the official Openshift documentation on routes here:\nhttps://docs.openshift.com/container-platform/4.6/networking/routes/route-configuration.html\n\n",
-      "csv_display_name": "JFrog Artifactory Enterprise Operator",
-      "csv_metadata_description": "JFrog Artifactory Enterprise deploys Artifactory in a high availability environment across multiple pods",
-      "csv_name": "artifactory-ha-operator.v1.1.20",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T10:55:24.660000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "openshiftartifactoryha-operator",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "OpenshiftArtifactoryHa",
-          "plural": "openshiftartifactoryhas",
-          "version": "v1"
-        }
-      ],
-      "provider": "JFrog",
-      "related_images": [
-        {
-          "digest": "sha256:29dad888f9b74b2c19f221aa6634c94dcd2144237dc039157056a77cbb0c74a4",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:29dad888f9b74b2c19f221aa6634c94dcd2144237dc039157056a77cbb0c74a4",
-          "name": "artifactory-operator-29dad888f9b74b2c19f221aa6634c94dcd2144237dc039157056a77cbb0c74a4-annotation"
-        },
-        {
-          "digest": "sha256:29dad888f9b74b2c19f221aa6634c94dcd2144237dc039157056a77cbb0c74a4",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:29dad888f9b74b2c19f221aa6634c94dcd2144237dc039157056a77cbb0c74a4",
-          "name": "artifactory-ha-operator"
-        },
-        {
-          "digest": "sha256:7289dde95d1e4d8e161a28cffd9c4a0cc96f92f7536d069ab63ec304a92254fd",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-pro@sha256:7289dde95d1e4d8e161a28cffd9c4a0cc96f92f7536d069ab63ec304a92254fd",
-          "name": "artifactory_image_repository"
-        },
-        {
-          "digest": "sha256:d71d368d6094a5777000a8d99164959ccb97fca355e855e24bd92c13a8df04f6",
-          "image": "registry.redhat.io/rhel8/nginx-116@sha256:d71d368d6094a5777000a8d99164959ccb97fca355e855e24bd92c13a8df04f6",
-          "name": "nginx_image_repository"
-        },
-        {
-          "digest": "sha256:164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8",
-          "image": "registry.connect.redhat.com/jfrog/init@sha256:164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8",
-          "name": "init-164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.1.20",
-      "version_original": "1.1.20"
-    },
-    {
-      "_id": "616f9c90ab7f3f3bb2365c0f",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1",
-          "kind": "OpenshiftArtifactoryHa",
-          "metadata": {
-            "name": "openshiftartifactoryha"
-          },
-          "spec": {
-            "artifactory-ha": {
-              "artifactory": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/artifactory-pro",
-                  "tag": "7.27.3-1"
-                },
-                "joinKey": "OVERRIDE",
-                "masterKey": "OVERRIDE",
-                "node": {
-                  "replicaCount": 2,
-                  "waitForPrimaryStartup": {
-                    "enabled": false
-                  }
-                },
-                "uid": "1000721030"
-              },
-              "database": {
-                "driver": "OVERRIDE",
-                "password": "OVERRIDE",
-                "type": "OVERRIDE",
-                "url": "OVERRIDE",
-                "user": "OVERRIDE"
-              },
-              "databaseUpgradeReady": true,
-              "initContainerImage": "registry.connect.redhat.com/jfrog/init@sha256:164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8",
-              "nginx": {
-                "gid": "1000720107",
-                "http": {
-                  "externalPort": 80,
-                  "internalPort": 8080
-                },
-                "https": {
-                  "externalPort": 443,
-                  "internalPort": 8443
-                },
-                "image": {
-                  "registry": "registry.redhat.io",
-                  "repository": "rhel8/nginx-116",
-                  "tag": "latest"
-                },
-                "service": {
-                  "ssloffload": false
-                },
-                "tlsSecretName": "OVERRIDE",
-                "uid": "1000720104"
-              },
-              "postgresql": {
-                "enabled": false
-              },
-              "waitForDatabase": true
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "quay.io/rhc4tp/artifactory-operator-bundle@sha256:b02ab81cc4b28116456ea9359c5241dc2522fbedb36e4d4ffd605773e8bd0c81",
-      "bundle_path_digest": "sha256:b02ab81cc4b28116456ea9359c5241dc2522fbedb36e4d4ffd605773e8bd0c81",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-10-20T04:35:28.177000+00:00",
-      "csv_description": " ## Breaking change\nPlease update to version 1.1.10 of the operator.\nVersion 1.1.8 and 1.1.9 have issues. Please skip these versions.\n\n## Overview\nOpenshift Operator to deploy JFrog Artifactory Enterprise into your Openshift cluster.\n## Security Context Constraints\nTo deploy this helm chart you will need to be a cluster admin w/ access to the anyuid scc and add the operator service account to the anyuid scc.\n```\noc adm policy add-scc-to-user anyuid -z artifactory-ha-operator -n openshift-operators\n```\nAdd the service account for the Artifactory chart to deploy successfully:\n``` oc adm policy add-scc-to-user anyuid -z openshiftartifactoryha-artifactory-ha -n artifactory ```\n### Usage\n\nAn external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it.\n\nSearch for JFrog and click JFrog Artifactory Enterprise Operator to install.\n\nGo to the Installed Operators.\n\nWait for the JFrog Artifactory Enterprise Operator to complete the installation.\n\nOpen the Operator and click on the provided API: Artifactory HA.\n\nClick Create New Instance and provide the following parameters for your DB configuration:\n\n```\nDATABASE_TYPE\nDATABASE_DRIVER\nDATABASE_URL\nDATABASE_USER\nDATABASE_PASSWORD\n```\nMaster key and Join key must be supplied. To generate a new key for each run the command below:\n\n```\n# Create a key\nexport JOIN_KEY=$(openssl rand -hex 32)\necho ${JOIN_KEY}\n```\n\nTo use TLS you will need to first create a k8s tls secret to store your .crt and .key file into.\nThen supply the value of this k8s secret into the TLS_SECRET field.\n``` oc create secret tls my_tls_secret --cert=tls.crt --key=tls.key --namespace=my_namespace ```\nClick Create for Artifactory Enterprise to deploy into OpenShift and connect to it on the external IP exposed by the load balancer.\n### Create a route\nTo expose Artifactory from Openshift we recommend you create a new route in Openshift.\nYou can either use the oc command line tool or the Openshift web console to generate a new route.\nDepending upon where you terminate TLS you will need to either specify pass through or edge.\nCommand Line (Edge):\n``` oc create route edge --service=openshiftartifactory-ha --cert=tls.crt --key=tls.key --ca-cert=ca.crt --hostname=www.example.com ```\nOr for more information visit the official Openshift documentation on routes here:\nhttps://docs.openshift.com/container-platform/4.6/networking/routes/route-configuration.html\n\n",
-      "csv_display_name": "JFrog Artifactory Enterprise Operator",
-      "csv_metadata_description": "JFrog Artifactory Enterprise deploys Artifactory in a high availability environment across multiple pods",
-      "csv_name": "artifactory-ha-operator.v1.1.20",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T11:45:59.204000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "openshiftartifactoryha-operator",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "OpenshiftArtifactoryHa",
-          "plural": "openshiftartifactoryhas",
-          "version": "v1"
-        }
-      ],
-      "provider": "JFrog",
-      "related_images": [
-        {
-          "digest": "sha256:29dad888f9b74b2c19f221aa6634c94dcd2144237dc039157056a77cbb0c74a4",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:29dad888f9b74b2c19f221aa6634c94dcd2144237dc039157056a77cbb0c74a4",
-          "name": "artifactory-operator-29dad888f9b74b2c19f221aa6634c94dcd2144237dc039157056a77cbb0c74a4-annotation"
-        },
-        {
-          "digest": "sha256:29dad888f9b74b2c19f221aa6634c94dcd2144237dc039157056a77cbb0c74a4",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:29dad888f9b74b2c19f221aa6634c94dcd2144237dc039157056a77cbb0c74a4",
-          "name": "artifactory-ha-operator"
-        },
-        {
-          "digest": "sha256:7289dde95d1e4d8e161a28cffd9c4a0cc96f92f7536d069ab63ec304a92254fd",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-pro@sha256:7289dde95d1e4d8e161a28cffd9c4a0cc96f92f7536d069ab63ec304a92254fd",
-          "name": "artifactory_image_repository"
-        },
-        {
-          "digest": "sha256:d71d368d6094a5777000a8d99164959ccb97fca355e855e24bd92c13a8df04f6",
-          "image": "registry.redhat.io/rhel8/nginx-116@sha256:d71d368d6094a5777000a8d99164959ccb97fca355e855e24bd92c13a8df04f6",
-          "name": "nginx_image_repository"
-        },
-        {
-          "digest": "sha256:164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8",
-          "image": "registry.connect.redhat.com/jfrog/init@sha256:164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8",
-          "name": "init-164b41720a37f75c6129c8a28d05cc56f821022313d44ff918cce4a2146d93e8-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.1.20",
-      "version_original": "1.1.20"
-    },
-    {
       "_id": "616f9cce8ebd9a62aec7b85f",
       "alm_examples": [
         {
@@ -24729,6 +22998,660 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "6.0.8-20",
       "version_original": "6.0.8-20"
+    },
+    {
+      "_id": "61931accf286970f08bf6663",
+      "alm_examples": [
+        {
+          "api_version": "nodered.com/v1alpha1",
+          "kind": "NodeRed",
+          "metadata": {
+            "name": "nodered"
+          },
+          "spec": {
+            "adminpassword": "$2a$08$zZWtXTja0fB1pzD4sHCMyOCMYz2Z6dNbM6tl8sJogENOMcxWV9DN.",
+            "persistentvolume": {
+              "accessmode": "ReadWriteMany",
+              "enabled": true,
+              "size": "100Mi",
+              "storageclass": "ibmc-file-silver-gid"
+            },
+            "secretkey": "c2VjcmV0",
+            "size": 1
+          }
+        },
+        {
+          "api_version": "nodered.com/v1alpha1",
+          "kind": "NodeRedBackup",
+          "metadata": {
+            "name": "noderedbackup"
+          },
+          "spec": {
+            "backup": {},
+            "ibm_s3": {}
+          }
+        },
+        {
+          "api_version": "nodered.com/v1alpha1",
+          "kind": "NodeRedRestore",
+          "metadata": {
+            "name": "noderedrestore"
+          },
+          "spec": {
+            "ibm_s3": {}
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ibm-edge/node-red-operator-bundle@sha256:90e253736a43421533bd8caf08b338ee3de81c188cb49cfa5b08a53a9ccf58d6",
+      "bundle_path_digest": "sha256:90e253736a43421533bd8caf08b338ee3de81c188cb49cfa5b08a53a9ccf58d6",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-11-16T02:43:24.288000+00:00",
+      "csv_description": "Node-RED is a flow-based programming tool, originally developed by IBM's Emerging Technology Services team and now a part of the JS Foundation.\n**How to get the Application Images from registry?**\n-----\n- First Login to redhat catalogue webpage using your credentials.\n- Search for the Operator.\n- Click on the Operator.\n- There is a description that redirects you (upon clicking) to page that explains how to create service accounts.\n- Create a Service Account. Refer page : <https://access.redhat.com/terms-based-registry/#/accounts>\n- Once a service account is created , you can click on it and then navigate to tab Openshift Secret to get the yaml file for your ImagePullSecret.\n- Download the Secret. Create the secret using command\n```sh\n    kubectl create -f <secretfile.yml> --namespace=NAMESPACEHERE\n```\n- Use the name of the created secret in the CR file.\n- For all the application images we would need the secret name to be passed in the CR Spec.\n\n----------\n\n**Node-RED CR Spec Details**\n-----\n  Spec                         |            Details\n-------------------------------|-----------------------------\nsize                           | Number of instances of Node-RED\nimagePullSecrets               | Secret if the image is private\npersistentvolume.enabled       | If volume is to be mounted at /data\npersistentvolume.storageclass  | Storage class of the Persistent Volume of type ReadWriteMany\npersistentvolume.accessmode    | The accessMode of the Persistent Volume. This should be of type ReadWriteMany.\npersistentvolume.size          | Size of the volume in Mi or Gi\nadminpassword                  | Default password is **password**.\n                               | To password protect the Node-RED editor and admin API.\n                               | Give the bcrypt hash of the password.\n                               | See http://nodered.org/docs/security.html#generating-the-password-hash\n                               |\nsecretkey                      | By default, credentials are encrypted in storage using a generated key.\n                               | To specify your own secret, set the following property in base64 encoding.\n                               | Note- the secret should not have a newline or whitespace.\n                               | If you want to disable encryption of credentials, set this property to 'false'.\n\n----------\n\n**NOTE** For Backup feature its required that the NodeRed is deployed with a Persistent Volume of type RedWriteMany.\n\n----------\n**Node-RED Backup CR Spec Details**\n-----\n  Spec                         |            Details\n-------------------------------|-----------------------------\nbackup.schedule                | Set this value based on the type of backup you opt.\n                               | There are two types of backup available:\n                               | 1. One Time Backup:\n                               |    For this type of backup the value of backup.schedule should be left empty or null.\n                               | 2. Scheduled Backup:\n                               |    For this type of backup provide Cronjob schedule expression\n                               |    (e.g. \"*/30 * * * *\" to take backup after every 30 minutes) as a value for backup.schedule\n                               |\nibm_s3.bucket_name             | IBM S3 storage bucket name\nibm_s3.endpoint                | Bucket endpoint\nibm_s3.api_key                 | Bucket API Key\nibm_s3.auth_endpoint           | Bucket Authentication Endpoint\nibm_s3.resource_crn            | Bucket Rescource\n\n----------\n\n\n**NOTE** For Restore feature its required that the NodeRed is deployed with a Persistent Volume of type RedWriteMany.\n\n----------\n\n**Node-RED Restore CR Spec Details**\n-----\n  Spec                         |            Details\n-------------------------------|-----------------------------\nrestore_file_name              | Name of the backup file in S3 bucket which needs to be restored\nibm_s3.bucket_name             | IBM S3 storage bucket name\nibm_s3.endpoint                | Bucket Endpoint\nibm_s3.api_key                 | Bucket API Key\nibm_s3.auth_endpoint           | Bucket Authentication Endpoint\nibm_s3.resource_crn            | Bucket Rescource\n\n----------\n\n\n**Logging into the Node-RED dashboard**\n-----\n\nOnce the Node-RED pod is ready, you can access the URL to the dashboard on the route path. The credentails to dashboard is admin and the password set in the \"adminpassword\" field.\n",
+      "csv_display_name": "Node-RED Operator",
+      "csv_metadata_description": "Node-RED is a programming tool for wiring together hardware devices, APIs and online services in new and interesting ways.",
+      "csv_name": "node-red-operator-certified.v0.0.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T11:14:59.099000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "node-red-operator-certified",
+      "provided_apis": [
+        {
+          "group": "nodered.com",
+          "kind": "NodeRedRestore",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "nodered.com",
+          "kind": "NodeRed",
+          "version": "v1alpha1"
+        },
+        {
+          "group": "nodered.com",
+          "kind": "NodeRedBackup",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "IBM-Edge",
+      "related_images": [
+        {
+          "digest": "sha256:a565b8a6a058d0040873cc820b1950074c7bbcc84a9971d64a523b122f95eff4",
+          "image": "registry.connect.redhat.com/ibm-edge/node-red@sha256:a565b8a6a058d0040873cc820b1950074c7bbcc84a9971d64a523b122f95eff4",
+          "name": "node-red-a565b8a6a058d0040873cc820b1950074c7bbcc84a9971d64a523b122f95eff4-annotation"
+        },
+        {
+          "digest": "sha256:c227acd24ce630310b752f4728330020e007bbeaad3d4df12ce5a70309997821",
+          "image": "registry.connect.redhat.com/ibm-edge/node-red-operator@sha256:c227acd24ce630310b752f4728330020e007bbeaad3d4df12ce5a70309997821",
+          "name": "node-red-operator"
+        },
+        {
+          "digest": "sha256:a565b8a6a058d0040873cc820b1950074c7bbcc84a9971d64a523b122f95eff4",
+          "image": "registry.connect.redhat.com/ibm-edge/node-red@sha256:a565b8a6a058d0040873cc820b1950074c7bbcc84a9971d64a523b122f95eff4",
+          "name": "nodered"
+        },
+        {
+          "digest": "sha256:9c4ef813daee4f06b5be3200cabc8dda43cd50ec11a9ff2c49ebfac8426df9ec",
+          "image": "registry.connect.redhat.com/ibm-edge/node-red-backup-restore@sha256:9c4ef813daee4f06b5be3200cabc8dda43cd50ec11a9ff2c49ebfac8426df9ec",
+          "name": "nodered_backup"
+        },
+        {
+          "digest": "sha256:9c4ef813daee4f06b5be3200cabc8dda43cd50ec11a9ff2c49ebfac8426df9ec",
+          "image": "registry.connect.redhat.com/ibm-edge/node-red-backup-restore@sha256:9c4ef813daee4f06b5be3200cabc8dda43cd50ec11a9ff2c49ebfac8426df9ec",
+          "name": "nodered_restore"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<0.0.4",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.4",
+      "version_original": "0.0.4"
+    },
+    {
+      "_id": "61931ada4b3c58bb75800416",
+      "alm_examples": [
+        {
+          "api_version": "app.redislabs.com/v1",
+          "kind": "RedisEnterpriseCluster",
+          "metadata": {
+            "name": "rec"
+          },
+          "spec": {
+            "persistentSpec": {
+              "enabled": true
+            },
+            "redisEnterpriseImageSpec": {
+              "imagePullPolicy": "IfNotPresent",
+              "repository": "redislabs/redis",
+              "versionTag": "5.4.14-31.rhel7-openshift"
+            },
+            "redisEnterpriseNodeResources": {
+              "limits": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              },
+              "requests": {
+                "cpu": "4000m",
+                "memory": "4Gi"
+              }
+            },
+            "size": 3,
+            "uiServiceType": "ClusterIP",
+            "username": "demo@redislabs.com"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:16da0c69f0e2585be8e44abe6e269dd35176771f5a1ecda3111c8a2f52c790a0",
+      "bundle_path_digest": "sha256:16da0c69f0e2585be8e44abe6e269dd35176771f5a1ecda3111c8a2f52c790a0",
+      "capabilities": [
+        "Deep Insights"
+      ],
+      "channel_name": "6.2.8",
+      "creation_date": "2021-11-16T02:43:38.933000+00:00",
+      "csv_description": "Redis Enterprise Software is enterprise grade, distributed, in-memory NoSQL database server, fully compatible with open source Redis by Redis Labs. Redis Enterprise Software extends open source Redis and delivers stable high performance, zero-downtime linear scaling and high availability, with significant operational savings.\nRedis Enterprise provides a flexible and cost-effective data platform so developers can focus on rapid, high-quality development for sophisticated use cases that meet the needs of a modern digital enterprise. With Redis Enterprise, you can:\n* Enjoy high performance and record-setting low latencies with minimal operational overhead\n* Develop highly scalable microservices-based and Kubernetes-orchestrated applications\n* Use versatile data structures for a variety of use cases, such as high-speed transactions, user session management, real-time analytics, caching and many more\n* Leverage enterprise-grade operational controls for high availability, security and seamless scale\n* Automate operational best practices for deploying and managing the Redis Enterprise data platform with built-in Kubernetes Operator support\n* Deploy, manage and move applications to and from any cloud for seamless portability\n\n### Core capabilities\n* **Speed application development and time to market** - Unburden developers from the complexity of infrastructure operations and empower them to manage data with maximum flexibility. This helps them build modern applications quickly, make changes rapidly and support a variety of different data tructures, models, relationships and use cases.\n* **Ensure business continuity with always-on data service** - Maintain service uptime and ensure failsafe high availability, instant failover and automatic recovery to protect your applications against unplanned downtime, outages and data loss.\n* **Design for performance and unmatched user experience** - Deliver the highest level of responsiveness and interactive customer experiences with best-inclass exceptional linear scaling high performance through a shared-nothing architecture and in-memory processing.\n* **Simplify operations with automated lifecycle management and layered orchestration** - Automate database provisioning, management and maintenance, and abstract away the complexities of high availability, seamless scale and zero-downtime upgrades with built-in support for Kubernetes and Operators.\n* **Enjoy multi-level robust security** - Provide granular control to meet self-imposed and regulatory compliance regulations and standards with built-in finegrained security controls and data encryption.\n* **Gain platform independence with flexible deployment options** - Ensure portability with multiple deployment options across any cloud of choice for multicloud and hybrid deployments and on-premises.\n* **Ensure success** - Leverage 24x7 enterprise-grade support backed by expertise in managing and scaling hundreds of thousands of Redis databases for thousands of enterprise customers worldwide.\n* **Future proof investments** - Use the most popular database amongst developers, built on open source innovation and entrenched firmly in the application landscape with over 1B downloads on Docker. Redis preserves your investment for years with easy extensibility and versatility through its Modules and support for over 50 different programming languages\n\n#### Prerequisites\nA minimum of 3 nodes which support the following requirements:\n* RAM - At least 3GB with 4GB recommended\n* Persistent Storage - At least 10GB of free space with 20GB recommended.\n* A kubernetes version of 1.9 or higher\n* For service broker - a k8s distribution that supports service catalog (see also: service-catalog)\n\n#### Recommendations/known issues\n\nChanging the name of the Redis Enterprise Cluster in the spec from the\ndefault requires running a command to grant permissions to the pods:\n\n\n> *oc adm policy add-scc-to-group redis-enterprise-scc\nsystem:serviceaccounts:my-project*\n\n\nReplace my-project withh the actual name of the project/namespace.",
+      "csv_display_name": "Redis Enterprise Operator",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v5.4.14-7",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T10:53:55.131000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Redis Labs",
+      "related_images": [
+        {
+          "digest": "sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
+          "image": "redislabs/operator@sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
+          "name": "operator-062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217-annotation"
+        },
+        {
+          "digest": "sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
+          "image": "registry.connect.redhat.com/redislabs/redis-enterprise-operator@sha256:062b478e4d49e263a99a87140a56919d204a00583113fcc2e9da00fe4dfb8217",
+          "name": "redis-enterprise-operator"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "5.4.14-7",
+      "version_original": "5.4.14-7"
+    },
+    {
+      "_id": "6197f58f172f7877a2a8f16b",
+      "alm_examples": [
+        {
+          "api_version": "datadoghq.com/v1alpha1",
+          "kind": "DatadogAgent",
+          "metadata": {
+            "name": "datadog"
+          },
+          "spec": {
+            "agent": {
+              "apm": {
+                "enabled": false
+              },
+              "log": {
+                "enabled": false,
+                "logsConfigContainerCollectAll": false
+              },
+              "process": {
+                "enabled": true,
+                "processCollection": false
+              },
+              "security": {
+                "compliance": {
+                  "enabled": false
+                },
+                "runtime": {
+                  "enabled": false
+                }
+              },
+              "systemProbe": {
+                "bpfDebugEnabled": false
+              }
+            },
+            "clusterAgent": {
+              "config": {
+                "admissionController": {
+                  "enabled": false
+                },
+                "clusterChecksEnabled": false,
+                "externalMetrics": {
+                  "enabled": false
+                }
+              },
+              "replicas": 2
+            },
+            "clusterChecksRunner": {
+              "replicas": 2
+            },
+            "clusterName": "<CLUSTER_NAME>",
+            "credentials": {
+              "apiKey": "<DATADOG_API_KEY>",
+              "appKey": "<DATADOG_APP_KEY>",
+              "token": "<DATADOG_CLUSTER_AGENT_TOKEN>"
+            }
+          }
+        },
+        {
+          "api_version": "datadoghq.com/v1alpha1",
+          "kind": "DatadogMetric",
+          "metadata": {
+            "name": "datadogmetric-sample"
+          },
+          "spec": {
+            "query": "avg:kubernetes.cpu.usage.total{app:foo}.rollup(avg,30)/(avg:kubernetes.cpu.limits{app:foo}.rollup(avg,30)*10000000)"
+          }
+        },
+        {
+          "api_version": "datadoghq.com/v1alpha1",
+          "kind": "DatadogMonitor",
+          "metadata": {
+            "name": "datadogmonitor-sample"
+          },
+          "spec": {
+            "message": "Something is wrong and we need to fix it.",
+            "query": "avg(last_15m):avg:foo{env:staging,service:bar} > 1",
+            "tags": [
+              "env:staging",
+              "service:bar"
+            ],
+            "title": "Latency is increasing on staging",
+            "type": "metric alert"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/datadog/operator-bundle@sha256:8294fd51406bb44cdc3eef4a999dac38d23deb4f32cec5b01f3675398072f765",
+      "bundle_path_digest": "sha256:8294fd51406bb44cdc3eef4a999dac38d23deb4f32cec5b01f3675398072f765",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-11-19T19:05:51.339000+00:00",
+      "csv_description": "Datadog provides a modern monitoring and analytics platform. Gather metrics, logs and traces for full observability of your Kubernetes cluster with Datadog Operator.",
+      "csv_display_name": "Datadog Operator",
+      "csv_metadata_description": "Datadog provides a modern monitoring and analytics platform. Gather metrics, logs and traces for full observability of your Kubernetes cluster with Datadog Operator.",
+      "csv_name": "datadog-operator.v0.7.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T11:24:32.429000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "datadog-operator-certified",
+      "provided_apis": [],
+      "provider": "Datadog",
+      "related_images": [
+        {
+          "digest": "sha256:6fb1b2daa4c73e6f34f76bd51598a6c82e13c8b5783dc0ee67ff1f81c71945ac",
+          "image": "registry.connect.redhat.com/datadog/operator@sha256:6fb1b2daa4c73e6f34f76bd51598a6c82e13c8b5783dc0ee67ff1f81c71945ac",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": "<0.7.2",
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.7.2",
+      "version_original": "0.7.2"
+    },
+    {
+      "_id": "61981f76172f7877a2a8f17c",
+      "alm_examples": [
+        {
+          "api_version": "operator.cert-manager.io/v1alpha1",
+          "kind": "CertManager",
+          "metadata": {
+            "name": "cert-manager",
+            "namespace": "cert-manager"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/jetstack/cert-manager-operator-bundle@sha256:7bff5bc7c3ec122f641f5b73adb1274ac0a5e0e5642270f74e91346e42c1c76c",
+      "bundle_path_digest": "sha256:7bff5bc7c3ec122f641f5b73adb1274ac0a5e0e5642270f74e91346e42c1c76c",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-11-19T22:04:38.980000+00:00",
+      "csv_description": "x509 certificate management for Kubernetes",
+      "csv_display_name": "cert-manager",
+      "csv_metadata_description": "x509 certificate management for Kubernetes",
+      "csv_name": "cert-manager-operator.v1.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T11:57:21.742000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "cert-manager-operator",
+      "provided_apis": [
+        {
+          "group": "operator.cert-manager.io",
+          "kind": "CertManager",
+          "plural": "certmanagers",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Jetstack",
+      "related_images": [
+        {
+          "digest": null,
+          "image": "registry.connect.redhat.com/jetstack/cert-manager-controller:v1.1.0-ubi",
+          "name": "cert-manager-controller"
+        },
+        {
+          "digest": null,
+          "image": "registry.connect.redhat.com/jetstack/cert-manager-acmesolver:v1.1.0-ubi",
+          "name": "cert-manager-acmesolver"
+        },
+        {
+          "digest": null,
+          "image": "registry.connect.redhat.com/jetstack/cert-manager-cainjector:v1.1.0-ubi",
+          "name": "cert-manager-cainjector"
+        },
+        {
+          "digest": null,
+          "image": "registry.connect.redhat.com/jetstack/cert-manager-webhook:v1.1.0-ubi",
+          "name": "cert-manager-webhook"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.1.0",
+      "version_original": "1.1.0"
+    },
+    {
+      "_id": "61982075172f7877a2a8f17e",
+      "alm_examples": [
+        {
+          "api_version": "operator.cert-manager.io/v1alpha1",
+          "kind": "CertManager",
+          "metadata": {
+            "name": "cert-manager",
+            "namespace": "cert-manager"
+          },
+          "spec": {}
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/jetstack/cert-manager-operator-bundle@sha256:7bff5bc7c3ec122f641f5b73adb1274ac0a5e0e5642270f74e91346e42c1c76c",
+      "bundle_path_digest": "sha256:7bff5bc7c3ec122f641f5b73adb1274ac0a5e0e5642270f74e91346e42c1c76c",
+      "capabilities": [
+        "Full Lifecycle"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-11-19T22:08:53.880000+00:00",
+      "csv_description": "x509 certificate management for Kubernetes",
+      "csv_display_name": "cert-manager",
+      "csv_metadata_description": "x509 certificate management for Kubernetes",
+      "csv_name": "cert-manager-operator.v1.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T11:18:35.009000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "cert-manager-operator",
+      "provided_apis": [
+        {
+          "group": "operator.cert-manager.io",
+          "kind": "CertManager",
+          "plural": "certmanagers",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Jetstack",
+      "related_images": [
+        {
+          "digest": null,
+          "image": "registry.connect.redhat.com/jetstack/cert-manager-controller:v1.1.0-ubi",
+          "name": "cert-manager-controller"
+        },
+        {
+          "digest": null,
+          "image": "registry.connect.redhat.com/jetstack/cert-manager-acmesolver:v1.1.0-ubi",
+          "name": "cert-manager-acmesolver"
+        },
+        {
+          "digest": null,
+          "image": "registry.connect.redhat.com/jetstack/cert-manager-cainjector:v1.1.0-ubi",
+          "name": "cert-manager-cainjector"
+        },
+        {
+          "digest": null,
+          "image": "registry.connect.redhat.com/jetstack/cert-manager-webhook:v1.1.0-ubi",
+          "name": "cert-manager-webhook"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "1.1.0",
+      "version_original": "1.1.0"
+    },
+    {
+      "_id": "619aad30172f7877a2a8f1c2",
+      "alm_examples": [
+        {
+          "api_version": "cache.omarg.net/v1alpha1",
+          "kind": "Memcached",
+          "metadata": {
+            "name": "memcached-sample"
+          },
+          "spec": {
+            "size": 3
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/ogaye/ogaye-operator-bundle@sha256:5fb22f02153f2609ec21fe1af3a14b7e6c3779cdde7f387a59179b8152528225",
+      "bundle_path_digest": "sha256:5fb22f02153f2609ec21fe1af3a14b7e6c3779cdde7f387a59179b8152528225",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-11-21T20:33:52.008000+00:00",
+      "csv_description": "Testing RH CI Pipeline",
+      "csv_display_name": "Omar Test Memcached Operator",
+      "csv_metadata_description": "",
+      "csv_name": "ogaye-operator.v0.0.2",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T11:24:35.397000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "ogaye-operator",
+      "provided_apis": [
+        {
+          "group": "cache.omarg.net",
+          "kind": "Memcached",
+          "plural": "memcacheds",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Omar Gaye, IBM",
+      "related_images": [
+        {
+          "digest": "sha256:7f6a280132b9746c51e44a4e795a0f861ec932c454d597a60a421b882ef924ff",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:7f6a280132b9746c51e44a4e795a0f861ec932c454d597a60a421b882ef924ff",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:07e569609319c4884acc8e6f4a0e10344109b5f392898b628996925e96fafc83",
+          "image": "quay.io/ogaye/ogaye-operator@sha256:07e569609319c4884acc8e6f4a0e10344109b5f392898b628996925e96fafc83",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.2",
+      "version_original": "0.0.2"
     }
   ]
 }

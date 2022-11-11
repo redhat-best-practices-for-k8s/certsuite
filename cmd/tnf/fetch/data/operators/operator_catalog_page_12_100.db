@@ -1,370 +1,6 @@
 {
   "data": [
     {
-      "_id": "60c24e56adf15566a5a97d60",
-      "alm_examples": [
-        {
-          "api_version": "operator.tigera.io/v1",
-          "kind": "Installation",
-          "metadata": {
-            "name": "default"
-          },
-          "spec": {
-            "variant": "Calico"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:27b53a6972c5accc17d20770828d782bcf6a76432b2231fd8fd4aef41919c8de",
-      "bundle_path_digest": "sha256:27b53a6972c5accc17d20770828d782bcf6a76432b2231fd8fd4aef41919c8de",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "release-v1.13",
-      "creation_date": "2021-06-10T17:39:34.329000+00:00",
-      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
-      "csv_display_name": "Tigera Operator",
-      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
-      "csv_name": "tigera-operator.v1.13.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-10-24T11:30:25.589000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "tigera-operator",
-      "provided_apis": [
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkPolicy",
-          "plural": "networkpolicies",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPConfiguration",
-          "plural": "bgpconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "FelixConfiguration",
-          "plural": "felixconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkSet",
-          "plural": "networksets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkPolicy",
-          "plural": "globalnetworkpolicies",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkSet",
-          "plural": "globalnetworksets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMBlock",
-          "plural": "ipamblocks",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMHandle",
-          "plural": "ipamhandles",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "ClusterInformation",
-          "plural": "clusterinformations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPPeer",
-          "plural": "bgppeers",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BlockAffinity",
-          "plural": "blockaffinities",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "KubeControllersConfiguration",
-          "plural": "kubecontrollersconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "Installation",
-          "plural": "installations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPPool",
-          "plural": "ippools",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "TigeraStatus",
-          "plural": "tigerastatuses",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "HostEndpoint",
-          "plural": "hostendpoints",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMConfig",
-          "plural": "ipamconfigs",
-          "version": "v1"
-        }
-      ],
-      "provider": "Tigera",
-      "related_images": [
-        {
-          "digest": "sha256:6ab4d69c6d88c90392f3366764bc59e3ae57f5da6271ab5e8ed92540707041d8",
-          "image": "quay.io/tigera/operator@sha256:6ab4d69c6d88c90392f3366764bc59e3ae57f5da6271ab5e8ed92540707041d8",
-          "name": "operator-6ab4d69c6d88c90392f3366764bc59e3ae57f5da6271ab5e8ed92540707041d8-annotation"
-        },
-        {
-          "digest": "sha256:6ab4d69c6d88c90392f3366764bc59e3ae57f5da6271ab5e8ed92540707041d8",
-          "image": "quay.io/tigera/operator@sha256:6ab4d69c6d88c90392f3366764bc59e3ae57f5da6271ab5e8ed92540707041d8",
-          "name": "tigera-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<1.13.3",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "1.13.3",
-      "version_original": "1.13.3"
-    },
-    {
-      "_id": "60c24e59ba99c76846ab4b53",
-      "alm_examples": [
-        {
-          "api_version": "operator.tigera.io/v1",
-          "kind": "Installation",
-          "metadata": {
-            "name": "default"
-          },
-          "spec": {
-            "variant": "Calico"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/tigera/operator@sha256:9ee5b5d0929502d609cc8fb5267293432f6b8963ce1187810d84979be2cb5edd",
-      "bundle_path_digest": "sha256:9ee5b5d0929502d609cc8fb5267293432f6b8963ce1187810d84979be2cb5edd",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "release-v1.17",
-      "creation_date": "2021-06-10T17:39:37.829000+00:00",
-      "csv_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift. Its goal is to make installation, upgrades, and ongoing lifecycle management of Calico and Calico Enterprise as simple and reliable as possible. **Important**: this operator should only be installed if the cluster was already provisioned with Calico.",
-      "csv_display_name": "Tigera Operator",
-      "csv_metadata_description": "An operator which manages the lifecycle of a Calico or Calico Enterprise installation on Kubernetes or OpenShift.",
-      "csv_name": "tigera-operator.v1.17.3",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-10-24T10:40:07.952000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "tigera-operator",
-      "provided_apis": [
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMConfig",
-          "plural": "ipamconfigs",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPPool",
-          "plural": "ippools",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "Installation",
-          "plural": "installations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkSet",
-          "plural": "globalnetworksets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "GlobalNetworkPolicy",
-          "plural": "globalnetworkpolicies",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMBlock",
-          "plural": "ipamblocks",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "KubeControllersConfiguration",
-          "plural": "kubecontrollersconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "TigeraStatus",
-          "plural": "tigerastatuses",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPPeer",
-          "plural": "bgppeers",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkPolicy",
-          "plural": "networkpolicies",
-          "version": "v1"
-        },
-        {
-          "group": "operator.tigera.io",
-          "kind": "ImageSet",
-          "plural": "imagesets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "ClusterInformation",
-          "plural": "clusterinformations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "HostEndpoint",
-          "plural": "hostendpoints",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "NetworkSet",
-          "plural": "networksets",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "IPAMHandle",
-          "plural": "ipamhandles",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BlockAffinity",
-          "plural": "blockaffinities",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "FelixConfiguration",
-          "plural": "felixconfigurations",
-          "version": "v1"
-        },
-        {
-          "group": "crd.projectcalico.org",
-          "kind": "BGPConfiguration",
-          "plural": "bgpconfigurations",
-          "version": "v1"
-        }
-      ],
-      "provider": "Tigera",
-      "related_images": [
-        {
-          "digest": "sha256:4b247cdd26bf4887dcddef5bea67283d9e19ac601588e7755aff41fce96d7d1d",
-          "image": "quay.io/tigera/operator@sha256:4b247cdd26bf4887dcddef5bea67283d9e19ac601588e7755aff41fce96d7d1d",
-          "name": "operator-4b247cdd26bf4887dcddef5bea67283d9e19ac601588e7755aff41fce96d7d1d-annotation"
-        },
-        {
-          "digest": "sha256:4b247cdd26bf4887dcddef5bea67283d9e19ac601588e7755aff41fce96d7d1d",
-          "image": "quay.io/tigera/operator@sha256:4b247cdd26bf4887dcddef5bea67283d9e19ac601588e7755aff41fce96d7d1d",
-          "name": "tigera-operator"
-        }
-      ],
-      "replaces": null,
-      "skip_range": "<1.17.3",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "1.17.3",
-      "version_original": "1.17.3"
-    },
-    {
       "_id": "60c3982347c96fe63ef4c4c4",
       "alm_examples": [
         {
@@ -17791,6 +17427,566 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
       "version": "1.1.0",
       "version_original": "1.1.0"
+    },
+    {
+      "_id": "60ea04fc8ce8053fa514bdde",
+      "alm_examples": [
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseCluster",
+          "metadata": {
+            "name": "cb-example"
+          },
+          "spec": {
+            "backup": {
+              "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+              "managed": false,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              },
+              "serviceAccountName": "couchbase-backup"
+            },
+            "buckets": {
+              "managed": true,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              }
+            },
+            "cluster": {
+              "analyticsServiceMemoryQuota": "1Gi",
+              "autoCompaction": {
+                "databaseFragmentationThreshold": {
+                  "percent": 30,
+                  "size": "1Gi"
+                },
+                "parallelCompaction": false,
+                "timeWindow": {
+                  "abortCompactionOutsideWindow": true,
+                  "end": "06:00",
+                  "start": "02:00"
+                },
+                "tombstonePurgeInterval": "72h",
+                "viewFragmentationThreshold": {
+                  "percent": 30,
+                  "size": "1Gi"
+                }
+              },
+              "autoFailoverMaxCount": 3,
+              "autoFailoverOnDataDiskIssues": true,
+              "autoFailoverOnDataDiskIssuesTimePeriod": "120s",
+              "autoFailoverServerGroup": false,
+              "autoFailoverTimeout": "120s",
+              "clusterName": "cb-example",
+              "dataServiceMemoryQuota": "256Mi",
+              "eventingServiceMemoryQuota": "256Mi",
+              "indexServiceMemoryQuota": "256Mi",
+              "indexStorageSetting": "memory_optimized",
+              "searchServiceMemoryQuota": "256Mi"
+            },
+            "enablePreviewScaling": false,
+            "hibernate": false,
+            "hibernationStrategy": "Immediate",
+            "image": "registry.connect.redhat.com/couchbase/server@sha256:c94326da3435265666a4e332c6c5e78ddf74777cb64e1e8728d237c6b5008c15",
+            "logRetentionCount": 20,
+            "logRetentionTime": "604800s",
+            "monitoring": {
+              "prometheus": {
+                "enabled": false,
+                "image": "registry.connect.redhat.com/couchbase/exporter@sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784"
+              }
+            },
+            "networking": {
+              "adminConsoleServiceType": "NodePort",
+              "adminConsoleServices": [
+                "data"
+              ],
+              "exposeAdminConsole": true,
+              "exposedFeatureServiceType": "NodePort",
+              "exposedFeatures": [
+                "xdcr"
+              ]
+            },
+            "recoveryPolicy": "PrioritizeDataIntegrity",
+            "security": {
+              "adminSecret": "cb-example-auth",
+              "rbac": {
+                "managed": true,
+                "selector": {
+                  "matchLabels": {
+                    "cluster": "cb-example"
+                  }
+                }
+              }
+            },
+            "servers": [
+              {
+                "name": "all_services",
+                "services": [
+                  "data",
+                  "index",
+                  "query",
+                  "search",
+                  "eventing",
+                  "analytics"
+                ],
+                "size": 3
+              }
+            ],
+            "upgradeStrategy": "RollingUpgrade",
+            "xdcr": {
+              "managed": false,
+              "selector": {
+                "matchLabels": {
+                  "cluster": "cb-example"
+                }
+              }
+            }
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "default"
+          },
+          "spec": {
+            "compressionMode": "passive",
+            "conflictResolution": "lww",
+            "enableFlush": false,
+            "enableIndexReplica": true,
+            "evictionPolicy": "valueOnly",
+            "ioPriority": "low",
+            "memoryQuota": "100Mi",
+            "replicas": 2
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseEphemeralBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "ephemeral-bucket"
+          },
+          "spec": {
+            "compressionMode": "passive",
+            "conflictResolution": "lww",
+            "enableFlush": false,
+            "evictionPolicy": "noEviction",
+            "ioPriority": "low",
+            "memoryQuota": "100Mi",
+            "replicas": 2
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseMemcachedBucket",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "memcached-bucket"
+          },
+          "spec": {
+            "enableFlush": false,
+            "memoryQuota": "100Mi"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseUser",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-user"
+          },
+          "spec": {
+            "authDomain": "local",
+            "authSecret": "cb-example-auth",
+            "fullName": "My User"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseGroup",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-group"
+          },
+          "spec": {
+            "roles": [
+              {
+                "bucket": "default",
+                "name": "bucket_admin"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseRoleBinding",
+          "metadata": {
+            "name": "my-role-binding"
+          },
+          "spec": {
+            "roleRef": {
+              "kind": "CouchbaseGroup",
+              "name": "my-group"
+            },
+            "subjects": [
+              {
+                "kind": "CouchbaseUser",
+                "name": "my-user"
+              }
+            ]
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseReplication",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "my-replication"
+          },
+          "spec": {
+            "bucket": "default",
+            "compressionType": "Snappy",
+            "filterExpression": "",
+            "paused": false,
+            "remoteBucket": "default"
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBackup",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "cb-backup"
+          },
+          "spec": {
+            "backOffLimit": 2,
+            "backupRetention": "24h",
+            "failedJobsHistoryLimit": 3,
+            "full": {
+              "schedule": "0 3 * * 6"
+            },
+            "incremental": {
+              "schedule": "0 3 * * 1-6"
+            },
+            "logRetention": "24h",
+            "size": "5Gi",
+            "strategy": "full_incremental",
+            "successfulJobsHistoryLimit": 1
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseBackupRestore",
+          "metadata": {
+            "labels": {
+              "cluster": "cb-example"
+            },
+            "name": "cb-restore"
+          },
+          "spec": {
+            "backOffLimit": 2,
+            "backup": "cb-backup",
+            "end": {
+              "int": 1
+            },
+            "logRetention": "24h",
+            "repo": "cb-example-2020-10-29T19_00_03",
+            "start": {
+              "int": 1
+            }
+          }
+        },
+        {
+          "api_version": "couchbase.com/v2",
+          "kind": "CouchbaseAutoscaler",
+          "metadata": {
+            "name": "do.not.create.internal.only"
+          },
+          "spec": {
+            "servers": "internal",
+            "size": 2
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [
+          "Disconnected"
+        ],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:69c9d29a8a5ba4eac037051a256a458d5772fca8b813c764ddbe02f80d89b76f",
+      "bundle_path_digest": "sha256:69c9d29a8a5ba4eac037051a256a458d5772fca8b813c764ddbe02f80d89b76f",
+      "capabilities": [
+        "Auto Pilot"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-07-10T20:37:16.211000+00:00",
+      "csv_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments on OpenShift. By installing this integration you will be able to deply Couchbase Server clusters with a single command.\n\n## Supported Features\n\n* **Automated cluster provisioning** - Deploying a Couchbase Cluster has never been easier. Fill out a Couchbase specific configuration and let the Couchbase Operator take care of provisioning nodes and setting up cluster to your exact specification.\n\n* **On-demand scalability** - Automatically scale your cluster up or down by changing a simple configuration parameter and let the Couchbase Operator handle provisioning of new nodes and joining them into the cluster.\n\n* **Auto-recovery** - Detect Couchbase node failures, rebalance out bad nodes, and bring the cluster back up to the desired capacity. Auto-recovery is completely automated so you can sleep easy through the night knowing that the Couchbase Operator will handle any failures.\n\n* **Geo-distribution** - Replicate your data between datacenters to move data closer to the users who consume it and protect against disaster scenarios where an entire datacenter becomes unavailable.\n\n* **Persistent storage** - Define persistent network-attached storage for each node in your cluster to allow pods to be recovered even if the node they were running on is no longer available.\n\n* **Rack/zone awareness** - Tell the Couchbase Operator about availability zones in your datacenter and let the operator take care of ensuring that nodes in your cluster are deployed equally across each zone.\n\n* **Supportability** - When things go wrong, use the cbopinfo tool provided with the Couchbase Operator to collect relevant data about your Couchbase deployment so that you can quickly address issues.\n\n* **Centralized configuration management** - Manage your configuration centrally with OpenShift. Updates to the configuration are watched by the Couchbase Operator and actions are taken to make the target cluster match the desired configuration.\n## Required Parameters\n* `authSecret` - provide the name of a secret that contains two keys for the `username` and `password` of the super user ([documentation](https://docs.couchbase.com/operator/1.2/couchbase-cluster-config.html))\n\n## About Couchbase Server\n\nBuilt on the most powerful NoSQL technology, Couchbase Server delivers unparalleled performance at scale, in any cloud. With features like memory-first architecture, geo-distributed deployments, and workload isolation, Couchbase Server excels at supporting mission-critical applications at scale while maintaining submillisecond latencies and 99.999% availability. Plus, with the most comprehensive SQL-compatible query language (N1QL), migrating from RDBMS to Couchbase Server is easy with ANSI joins.\n",
+      "csv_display_name": "Couchbase Operator",
+      "csv_metadata_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments",
+      "csv_name": "couchbase-operator.v2.2.0-1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T11:25:41.854000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "couchbase-enterprise-certified",
+      "provided_apis": [
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseCluster",
+          "plural": "couchbaseclusters",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseReplication",
+          "plural": "couchbasereplications",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseGroup",
+          "plural": "couchbasegroups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseRoleBinding",
+          "plural": "couchbaserolebindings",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseAutoscaler",
+          "plural": "couchbaseautoscalers",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackup",
+          "plural": "couchbasebackups",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBackupRestore",
+          "plural": "couchbasebackuprestores",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseBucket",
+          "plural": "couchbasebuckets",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseEphemeralBucket",
+          "plural": "couchbaseephemeralbuckets",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseMemcachedBucket",
+          "plural": "couchbasememcachedbuckets",
+          "version": "v2"
+        },
+        {
+          "group": "couchbase.com",
+          "kind": "CouchbaseUser",
+          "plural": "couchbaseusers",
+          "version": "v2"
+        }
+      ],
+      "provider": "Couchbase",
+      "related_images": [
+        {
+          "digest": "sha256:59c872ac4b19b5086a47ce95675f11df2925aa0c5d3dc0afda8df4599a8b0649",
+          "image": "registry.connect.redhat.com/couchbase/operator@sha256:59c872ac4b19b5086a47ce95675f11df2925aa0c5d3dc0afda8df4599a8b0649",
+          "name": "operator-59c872ac4b19b5086a47ce95675f11df2925aa0c5d3dc0afda8df4599a8b0649-annotation"
+        },
+        {
+          "digest": "sha256:59c872ac4b19b5086a47ce95675f11df2925aa0c5d3dc0afda8df4599a8b0649",
+          "image": "registry.connect.redhat.com/couchbase/operator@sha256:59c872ac4b19b5086a47ce95675f11df2925aa0c5d3dc0afda8df4599a8b0649",
+          "name": "couchbase-operator"
+        },
+        {
+          "digest": "sha256:187046a848f32233e7e92705c57fa864b1d373c2078a92b51c9706bec6e372e5",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:187046a848f32233e7e92705c57fa864b1d373c2078a92b51c9706bec6e372e5",
+          "name": "couchbase_server"
+        },
+        {
+          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "name": "couchbase_backup"
+        },
+        {
+          "digest": "sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784",
+          "name": "couchbase_metrics"
+        },
+        {
+          "digest": "sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784",
+          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784",
+          "name": "exporter-b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784-annotation"
+        },
+        {
+          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
+          "name": "operator-backup-c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76-annotation"
+        },
+        {
+          "digest": "sha256:c94326da3435265666a4e332c6c5e78ddf74777cb64e1e8728d237c6b5008c15",
+          "image": "registry.connect.redhat.com/couchbase/server@sha256:c94326da3435265666a4e332c6c5e78ddf74777cb64e1e8728d237c6b5008c15",
+          "name": "server-c94326da3435265666a4e332c6c5e78ddf74777cb64e1e8728d237c6b5008c15-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "2.2.0-1",
+      "version_original": "2.2.0-1"
+    },
+    {
+      "_id": "60ea054cba43af88444a400b",
+      "alm_examples": [
+        {
+          "api_version": "aps.appranix.com/v1",
+          "kind": "BackupStorageLocation",
+          "metadata": {
+            "labels": {
+              "component": "appranix"
+            },
+            "name": "default",
+            "namespace": "appranix"
+          },
+          "spec": {
+            "objectStorage": {
+              "bucket": "aps-bucket-store"
+            },
+            "provider": "gcp"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/appranix/apx-operator-bundle@sha256:126965743834b9d3fa15f354f41fe47618cea51c6f2ab88d3401b62b0362b1b6",
+      "bundle_path_digest": "sha256:126965743834b9d3fa15f354f41fe47618cea51c6f2ab88d3401b62b0362b1b6",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-07-10T20:38:36.612000+00:00",
+      "csv_description": "## About this Operator\n\nAppranix helps you to securely backup and restore, perform a disaster\nrecovery and migrate OpenShift cluster resources and persistent\nvolumes.\n\nThe operator works with Appranix to:\n\n- Install and initiate Appranix controller on your cluster\n\n- Take backups of your cluster and restore it in case of loss.\n\n- Migrate cluster resources to other clusters.\n\n- Replicate your production cluster to development and testing clusters.\n\n## Prerequisites\n\n- A storage bucket in GCP or AWS & credentials to access it\n- Appranix token generated for your cluster obtained from the Appranix console\n- A Configmap and Secret in your cluster for the bucket config and credentials\n\n#### Step 1: Creating a storage bucket\n\nNote: Currently only Google Storage bucket is supported, support for AWS S3 Bucket will be available in a future release.\n\n- You can create a bucket through the GCP console or by running the following command in [Google Cloud Shell](https://cloud.google.com/shell/)\n\n```shell\nAX_APS_BUCKET_NAME=<bucket_name>\ngsutil mb -b on gs://$AX_APS_BUCKET_NAME/\ngcloud iam service-accounts create appranix --display-name \"Appranix service account\"\nAX_SERVICE_ACCOUNT_EMAIL=$(gcloud iam service-accounts list --filter=\"displayName:Appranix service account\" --format 'value(email)')\ngsutil iam ch serviceAccount:$AX_SERVICE_ACCOUNT_EMAIL:objectAdmin gs://${AX_APS_BUCKET_NAME}\ngcloud iam service-accounts keys create ax_service_account.json --iam-account $AX_SERVICE_ACCOUNT_EMAIL\n```\n\nNote: You will require the ```ax_service_account.json``` created here in Step 3.\n\n\n#### Step 2: Obtaining the Appranix token for the cluster\n\n- Log in to your Appranix console and create a cluster connection. Upon connection creation copy the token generated for that cluster.\n\n#### Step 3: Creating the Configmap and Secret in the cluster\n\nA Configmap and Secret which contains the credetianls and bucket configuration has to be created before instaling the operator. It can be done by running the following command against your cluster.\n\nNote: Replace **token** wih the value obtained in Step 2.\n\n\n```shell\nAX_TOKEN=<token>\nAX_SERVICE_ACCOUNT=$(cat ax_service_account.json | base64 -w 0)\ncurl -Ls -H \"Content-Type: application/json\" https://us-central1-appranix-dev-07.cloudfunctions.net/operator-setup  -d '{\"token\": \"'$AX_TOKEN'\", \"secret\": \"'$AX_SERVICE_ACCOUNT'\"}' | oc apply -f -\n```\n\n#### Step 4: Deploying Operator from OperatorHub\n\n- Login to the OpenShift console and switch to ```appranix``` project\n\n- Search for Appranix in OperatorHub and install it.\n\n- Once installed go to the Appranix operator under Installed Operators and click on the BackupStorageLocation tab.\n\n- Now click on **Create BackupStorageLocation** and enter the bucket name under **Objectstorage** and click **Create**.\n\n- You can verify if the insallation is successful by checking the status in the Appranix console.",
+      "csv_display_name": "Appranix APS Operator",
+      "csv_metadata_description": "The Appranix operator enables you to back up and restore your OpenShift cluster resources and persistent volumes.",
+      "csv_name": "appranix-operator.v2.5.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T11:21:23.650000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "appranix-cps",
+      "provided_apis": [
+        {
+          "group": "aps.appranix.com",
+          "kind": "BackupStorageLocation",
+          "version": "v1"
+        }
+      ],
+      "provider": "Appranix",
+      "related_images": [
+        {
+          "digest": "sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
+          "image": "registry.connect.redhat.com/appranix/apx-operator@sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
+          "name": "apx-operator-b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08-annotation"
+        },
+        {
+          "digest": "sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
+          "image": "registry.connect.redhat.com/appranix/apx-operator@sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:78d3471a6152df1cb066a82f93904110cb80a18f7e576edb3cd3fd180161bab4",
+          "image": "registry.connect.redhat.com/appranix/apx-controller@sha256:78d3471a6152df1cb066a82f93904110cb80a18f7e576edb3cd3fd180161bab4",
+          "name": "controller"
+        },
+        {
+          "digest": "sha256:46ca904bb0c9b3f4628011b610de3dce2ff9abae52294c111e953dc7e6140cd4",
+          "image": "registry.connect.redhat.com/appranix/apx-manager@sha256:46ca904bb0c9b3f4628011b610de3dce2ff9abae52294c111e953dc7e6140cd4",
+          "name": "agent"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "2.5.0",
+      "version_original": "2.5.0"
     }
   ]
 }

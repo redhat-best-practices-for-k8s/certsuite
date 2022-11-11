@@ -1,561 +1,6 @@
 {
   "data": [
     {
-      "_id": "6125de5fbd674341b5c5f476",
-      "alm_examples": [
-        {
-          "api_version": "charts.operatorhub.io/v1",
-          "kind": "CcmNodeAgent",
-          "metadata": {
-            "name": "ccmnodeagent-sample"
-          },
-          "spec": {
-            "ccmJoinToken": {
-              "secretName": "ccm-join-token",
-              "token": ""
-            },
-            "fullnameOverride": "",
-            "image": {
-              "ccmNodeAgent": {
-                "pullPolicy": "Always",
-                "repository": "fortanix/ccm-node-agent-ubi7",
-                "tag": "3.5.475"
-              },
-              "ccmNodeAgentInit": {
-                "pullPolicy": "IfNotPresent",
-                "repository": "busybox",
-                "tag": "latest"
-              },
-              "sgxSoftwareInstaller": {
-                "pullPolicy": "Always",
-                "repository": "fortanix/sgx-software-installer-ubi7",
-                "tag": "3.5.475"
-              }
-            },
-            "log": {
-              "debug": false
-            },
-            "nameOverride": "",
-            "podAnnotations": {},
-            "ports": {
-              "containerPort": 9092,
-              "hostPort": 9092
-            },
-            "replicaCount": 1,
-            "resources": {
-              "limits": {
-                "cpu": "100m",
-                "memory": "128Mi"
-              },
-              "requests": {
-                "cpu": "100m",
-                "memory": "128Mi"
-              }
-            },
-            "serviceAccount": {
-              "annotations": {},
-              "create": true,
-              "name": ""
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/fortanix/ccm-node-agent-operator-bundle@sha256:8c697c066566c5bf5c0d4c776ec0f7950a6bba26565d20c58a0bca26dd15f3e6",
-      "bundle_path_digest": "sha256:8c697c066566c5bf5c0d4c776ec0f7950a6bba26565d20c58a0bca26dd15f3e6",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-08-25T06:08:31.549000+00:00",
-      "csv_description": "CCM Node Agent software enables registration of the compute nodes to Fortanix CCM when installed in the Openshift Cluster Nodes\u200b. \nIt also assists with application attestation and visibility for Fortanix CCM.\n\n## About this Operator\nThis Operator is based on a Helm chart for CCM Node Agent. It enrolls all the nodes in the openshift cluster to a particular CCM account. You have to provide the base64 encode of join token of CCM account while creating CcmNodeAgent resource.\n\n## Prerequisites\nAll the worker nodes in the cluster must have SGX capabilities.\n\n## Installation\n* Choose a namespace to install the Operator. Operator will be available in all namespaces.\n* Select Approval Strategy: Available options are Automatic or Manual. Automatic approval will automatically upgrade the running instance of your Operator without human intervention when a new version is available. In case of Manual approval, when a new version is available, OLM will create an update request. You must manually approve the request to update the Operator to a new version.\n* Generate your CCM Account Join Token: Please log in to https://ccm.fortanix.com, and in the Management Console tab, click the + ENROLL NODE button. In the ENROLL NODE screen, a Join Token will be generated in the text box for \"Get a join token to register an SGX compute node\". This Join Token is used by the compute node to authenticate itself.\n* Base64 encode the Join Token:\n```shell\necho -n <join-token> | openssl base64 -A\n```\n* Create an instance of CcmNodeAgent by setting the `spec.ccmJoinToken.Token` to the base64 encoded CCM account join token.\n* After CcmNodeAgent resource is installed successfully you should be able to see all the worker nodes of the cluster in your CCM account under Compute Node Tab.\n\n## Getting Started\nNow to run your application inside SGX enclaves on your cluster follow the [documentation](https://support.fortanix.com/hc/en-us/articles/360043527431-User-s-Guide-Add-and-Edit-an-Application).\n",
-      "csv_display_name": "CCM Node Agent Operator",
-      "csv_metadata_description": "CCM Node Agent software enables registration of the compute nodes to Fortanix CCM when installed in the Openshift Cluster Nodes",
-      "csv_name": "ccm-node-agent-operator.v0.0.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T11:20:53.304000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "ccm-node-agent-operator",
-      "provided_apis": [
-        {
-          "group": "charts.operatorhub.io",
-          "kind": "CcmNodeAgent",
-          "plural": "ccmnodeagents",
-          "version": "v1"
-        }
-      ],
-      "provider": "Fortanix Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
-          "image": "fortanix/ccm-node-agent-operator@sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
-          "name": "ccm-node-agent-operator-73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4-annotation"
-        },
-        {
-          "digest": "sha256:e30f7835cf52dbce9afdbaf55e5a93d8baf9c4b3a3ae488d1d42c1adba7f46af",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:e30f7835cf52dbce9afdbaf55e5a93d8baf9c4b3a3ae488d1d42c1adba7f46af",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
-          "image": "fortanix/ccm-node-agent-operator@sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "0.0.1",
-      "version_original": "0.0.1"
-    },
-    {
-      "_id": "6125dedceb34b736524930f0",
-      "alm_examples": [
-        {
-          "api_version": "charts.operatorhub.io/v1",
-          "kind": "CcmNodeAgent",
-          "metadata": {
-            "name": "ccmnodeagent-sample"
-          },
-          "spec": {
-            "ccmJoinToken": {
-              "secretName": "ccm-join-token",
-              "token": ""
-            },
-            "fullnameOverride": "",
-            "image": {
-              "ccmNodeAgent": {
-                "pullPolicy": "Always",
-                "repository": "fortanix/ccm-node-agent-ubi7",
-                "tag": "3.5.475"
-              },
-              "ccmNodeAgentInit": {
-                "pullPolicy": "IfNotPresent",
-                "repository": "busybox",
-                "tag": "latest"
-              },
-              "sgxSoftwareInstaller": {
-                "pullPolicy": "Always",
-                "repository": "fortanix/sgx-software-installer-ubi7",
-                "tag": "3.5.475"
-              }
-            },
-            "log": {
-              "debug": false
-            },
-            "nameOverride": "",
-            "podAnnotations": {},
-            "ports": {
-              "containerPort": 9092,
-              "hostPort": 9092
-            },
-            "replicaCount": 1,
-            "resources": {
-              "limits": {
-                "cpu": "100m",
-                "memory": "128Mi"
-              },
-              "requests": {
-                "cpu": "100m",
-                "memory": "128Mi"
-              }
-            },
-            "serviceAccount": {
-              "annotations": {},
-              "create": true,
-              "name": ""
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/fortanix/ccm-node-agent-operator-bundle@sha256:8c697c066566c5bf5c0d4c776ec0f7950a6bba26565d20c58a0bca26dd15f3e6",
-      "bundle_path_digest": "sha256:8c697c066566c5bf5c0d4c776ec0f7950a6bba26565d20c58a0bca26dd15f3e6",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-08-25T06:10:36.462000+00:00",
-      "csv_description": "CCM Node Agent software enables registration of the compute nodes to Fortanix CCM when installed in the Openshift Cluster Nodes\u200b. \nIt also assists with application attestation and visibility for Fortanix CCM.\n\n## About this Operator\nThis Operator is based on a Helm chart for CCM Node Agent. It enrolls all the nodes in the openshift cluster to a particular CCM account. You have to provide the base64 encode of join token of CCM account while creating CcmNodeAgent resource.\n\n## Prerequisites\nAll the worker nodes in the cluster must have SGX capabilities.\n\n## Installation\n* Choose a namespace to install the Operator. Operator will be available in all namespaces.\n* Select Approval Strategy: Available options are Automatic or Manual. Automatic approval will automatically upgrade the running instance of your Operator without human intervention when a new version is available. In case of Manual approval, when a new version is available, OLM will create an update request. You must manually approve the request to update the Operator to a new version.\n* Generate your CCM Account Join Token: Please log in to https://ccm.fortanix.com, and in the Management Console tab, click the + ENROLL NODE button. In the ENROLL NODE screen, a Join Token will be generated in the text box for \"Get a join token to register an SGX compute node\". This Join Token is used by the compute node to authenticate itself.\n* Base64 encode the Join Token:\n```shell\necho -n <join-token> | openssl base64 -A\n```\n* Create an instance of CcmNodeAgent by setting the `spec.ccmJoinToken.Token` to the base64 encoded CCM account join token.\n* After CcmNodeAgent resource is installed successfully you should be able to see all the worker nodes of the cluster in your CCM account under Compute Node Tab.\n\n## Getting Started\nNow to run your application inside SGX enclaves on your cluster follow the [documentation](https://support.fortanix.com/hc/en-us/articles/360043527431-User-s-Guide-Add-and-Edit-an-Application).\n",
-      "csv_display_name": "CCM Node Agent Operator",
-      "csv_metadata_description": "CCM Node Agent software enables registration of the compute nodes to Fortanix CCM when installed in the Openshift Cluster Nodes",
-      "csv_name": "ccm-node-agent-operator.v0.0.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T10:36:51.711000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "ccm-node-agent-operator",
-      "provided_apis": [
-        {
-          "group": "charts.operatorhub.io",
-          "kind": "CcmNodeAgent",
-          "plural": "ccmnodeagents",
-          "version": "v1"
-        }
-      ],
-      "provider": "Fortanix Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
-          "image": "fortanix/ccm-node-agent-operator@sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
-          "name": "ccm-node-agent-operator-73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4-annotation"
-        },
-        {
-          "digest": "sha256:e30f7835cf52dbce9afdbaf55e5a93d8baf9c4b3a3ae488d1d42c1adba7f46af",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:e30f7835cf52dbce9afdbaf55e5a93d8baf9c4b3a3ae488d1d42c1adba7f46af",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
-          "image": "fortanix/ccm-node-agent-operator@sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "0.0.1",
-      "version_original": "0.0.1"
-    },
-    {
-      "_id": "612608dedece23122b7a7e84",
-      "alm_examples": [
-        {
-          "api_version": "charts.operatorhub.io/v1",
-          "kind": "CcmNodeAgent",
-          "metadata": {
-            "name": "ccmnodeagent-sample"
-          },
-          "spec": {
-            "ccmJoinToken": {
-              "secretName": "ccm-join-token",
-              "token": ""
-            },
-            "fullnameOverride": "",
-            "image": {
-              "ccmNodeAgent": {
-                "pullPolicy": "Always",
-                "repository": "fortanix/ccm-node-agent-ubi7",
-                "tag": "3.5.475"
-              },
-              "ccmNodeAgentInit": {
-                "pullPolicy": "IfNotPresent",
-                "repository": "busybox",
-                "tag": "latest"
-              },
-              "sgxSoftwareInstaller": {
-                "pullPolicy": "Always",
-                "repository": "fortanix/sgx-software-installer-ubi7",
-                "tag": "3.5.475"
-              }
-            },
-            "log": {
-              "debug": false
-            },
-            "nameOverride": "",
-            "podAnnotations": {},
-            "ports": {
-              "containerPort": 9092,
-              "hostPort": 9092
-            },
-            "replicaCount": 1,
-            "resources": {
-              "limits": {
-                "cpu": "100m",
-                "memory": "128Mi"
-              },
-              "requests": {
-                "cpu": "100m",
-                "memory": "128Mi"
-              }
-            },
-            "serviceAccount": {
-              "annotations": {},
-              "create": true,
-              "name": ""
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/fortanix/ccm-node-agent-operator-bundle@sha256:8c697c066566c5bf5c0d4c776ec0f7950a6bba26565d20c58a0bca26dd15f3e6",
-      "bundle_path_digest": "sha256:8c697c066566c5bf5c0d4c776ec0f7950a6bba26565d20c58a0bca26dd15f3e6",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-08-25T09:09:50.757000+00:00",
-      "csv_description": "CCM Node Agent software enables registration of the compute nodes to Fortanix CCM when installed in the Openshift Cluster Nodes\u200b. \nIt also assists with application attestation and visibility for Fortanix CCM.\n\n## About this Operator\nThis Operator is based on a Helm chart for CCM Node Agent. It enrolls all the nodes in the openshift cluster to a particular CCM account. You have to provide the base64 encode of join token of CCM account while creating CcmNodeAgent resource.\n\n## Prerequisites\nAll the worker nodes in the cluster must have SGX capabilities.\n\n## Installation\n* Choose a namespace to install the Operator. Operator will be available in all namespaces.\n* Select Approval Strategy: Available options are Automatic or Manual. Automatic approval will automatically upgrade the running instance of your Operator without human intervention when a new version is available. In case of Manual approval, when a new version is available, OLM will create an update request. You must manually approve the request to update the Operator to a new version.\n* Generate your CCM Account Join Token: Please log in to https://ccm.fortanix.com, and in the Management Console tab, click the + ENROLL NODE button. In the ENROLL NODE screen, a Join Token will be generated in the text box for \"Get a join token to register an SGX compute node\". This Join Token is used by the compute node to authenticate itself.\n* Base64 encode the Join Token:\n```shell\necho -n <join-token> | openssl base64 -A\n```\n* Create an instance of CcmNodeAgent by setting the `spec.ccmJoinToken.Token` to the base64 encoded CCM account join token.\n* After CcmNodeAgent resource is installed successfully you should be able to see all the worker nodes of the cluster in your CCM account under Compute Node Tab.\n\n## Getting Started\nNow to run your application inside SGX enclaves on your cluster follow the [documentation](https://support.fortanix.com/hc/en-us/articles/360043527431-User-s-Guide-Add-and-Edit-an-Application).\n",
-      "csv_display_name": "CCM Node Agent Operator",
-      "csv_metadata_description": "CCM Node Agent software enables registration of the compute nodes to Fortanix CCM when installed in the Openshift Cluster Nodes",
-      "csv_name": "ccm-node-agent-operator.v0.0.1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T10:56:37.588000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.6",
-      "organization": "certified-operators",
-      "package": "ccm-node-agent-operator",
-      "provided_apis": [
-        {
-          "group": "charts.operatorhub.io",
-          "kind": "CcmNodeAgent",
-          "plural": "ccmnodeagents",
-          "version": "v1"
-        }
-      ],
-      "provider": "Fortanix Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
-          "image": "fortanix/ccm-node-agent-operator@sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
-          "name": "ccm-node-agent-operator-73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4-annotation"
-        },
-        {
-          "digest": "sha256:e30f7835cf52dbce9afdbaf55e5a93d8baf9c4b3a3ae488d1d42c1adba7f46af",
-          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:e30f7835cf52dbce9afdbaf55e5a93d8baf9c4b3a3ae488d1d42c1adba7f46af",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
-          "image": "fortanix/ccm-node-agent-operator@sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
-      "version": "0.0.1",
-      "version_original": "0.0.1"
-    },
-    {
-      "_id": "6127be69dece23122b7a8369",
-      "alm_examples": [
-        {
-          "api_version": "sonatype.com/v1alpha1",
-          "kind": "NexusIQ",
-          "metadata": {
-            "name": "example-nexusiq"
-          },
-          "spec": {
-            "deployment": {
-              "postStart": {},
-              "preStart": {}
-            },
-            "fullnameOverride": "",
-            "imagePullSecrets": [],
-            "ingress": {
-              "annotations": {},
-              "enabled": false,
-              "hosts": [],
-              "path": "/",
-              "tls": []
-            },
-            "iq": {
-              "adminPort": 8071,
-              "applicationPort": 8070,
-              "configYaml": {
-                "createSampleData": true,
-                "server": {
-                  "adminConnectors": [
-                    {
-                      "port": 8071,
-                      "type": "http"
-                    }
-                  ],
-                  "applicationConnectors": [
-                    {
-                      "port": 8070,
-                      "type": "http"
-                    }
-                  ]
-                },
-                "sonatypeWork": "/sonatype-work"
-              },
-              "imageName": "registry.connect.redhat.com/sonatype/nexus-iq-server@sha256:ce08dbabd686ab02f246b43dccb708e2c4d81d656a091965dd3b73123091f790",
-              "imagePullPolicy": "IfNotPresent",
-              "imagePullSecret": "",
-              "licenseSecret": "",
-              "memory": "1Gi",
-              "name": "nxiq"
-            },
-            "nameOverride": "",
-            "persistence": {
-              "accessMode": "ReadWriteOnce",
-              "storageSize": "1Gi"
-            },
-            "service": {
-              "annotations": {},
-              "enabled": false,
-              "labels": {},
-              "ports": [
-                {
-                  "name": "nexus-service",
-                  "port": 80,
-                  "targetPort": 80
-                }
-              ]
-            },
-            "serviceAccount": {
-              "create": true
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/sonatype/nxiq-operator-bundle@sha256:16ebccbf15157c2f7ba6d0873eead210f0c10fb4bce32e9f3fedcd1704fe7f30",
-      "bundle_path_digest": "sha256:16ebccbf15157c2f7ba6d0873eead210f0c10fb4bce32e9f3fedcd1704fe7f30",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-08-26T16:16:41.332000+00:00",
-      "csv_description": "Nexus Lifecycle is an open source governance platform that continuously identifies risk,\nautomatically enforces policy, and provides visibility throughout the entire SDLC.\nDevelopers leveraging open source require a solution that helps them make safer choices\nwhile still delivering at DevOps speed.\nNexus Lifecycle empowers developers and security teams to choose the best components\nand govern open source usage, ensuring organizations continue to innovate with less risk.\n\n## Core Capabilities\n\n* **Dependency Management**:\n  Generate a precise software bill of materials for all applications\n  to identify open source components and gather contextual direct\n  and transitive dependency information for faster action.\n* **One-Click Remediation**:\n  Upgrade to the best components and versions based on real-time intelligence.\n  Available in your preferred IDE or a GitHub pull request.\n* **Automated Open Source Policy Enforcement**:\n  Create custom security, license, and architectural policies based\n  on application type or organization and contextually enforce those policies\n  across every stage of the SDLC.\n* **Continuous Monitoring**:\n  Real-time notifications of newly discovered defects,\n  as well as vulnerabilities based on component,\n  risk level or application/container affected.\n\n## Extras\n\n* IDE Integrations: Eclipse, IntelliJ, and Visual Studio\n* Source Control Integrations: GitHub, GitLab, and Bitbucket\n* Chrome Browser Extension\n* Red Hat Clair for Container Scanning\n\n\n## Usage\n\nOnce the server instance is created by the operator and running,\nyou'll want to expose the service as you see fit:\n1. Create a Route to the new service for iq.applicationPort (8070).\n2. Visit the URL provided by the Route, login, and set new credentials.\n  The default credentials are `admin`/`admin123`.\n\nThe Nexus IQ Server can be further configured via the NexusIQ custom resource definition:\n\n| Parameter            | Description                                                  | Default           |\n| -------------------- | ------------------------------------------------------------ | ----------------- |\n| `iq.applicationPort` | Port of the application connector. Must match the value in the `configYaml` property | `8070`            |\n| `iq.adminPort`       | Port of the application connector. Must match the value in the `configYaml` property | `8071`            |\n| `iq.memory`          | The amount of RAM to allocate                                | `1Gi`             |\n| `iq.licenseSecret`   | The base-64 encoded license file to be installed at startup  | `\"\"`              |\n| `iq.configYaml`      | A YAML block which will be used as a configuration block for IQ Server. | See example YAML shown when creating a NexusIQ. |\n| `ingress.enabled`                           | Create an ingress for Nexus         | `true`                                  |\n| `ingress.annotations`                       | Annotations to enhance ingress configuration  | `{}`                          |\n| `ingress.tls.enabled`                       | Enable TLS                          | `true`                                 |\n| `ingress.tls.secretName`                    | Name of the secret storing TLS cert, `false` to use the Ingress' default certificate | `nexus-tls`                             |\n| `ingress.path`                              | Path for ingress rules. GCP users should set to `/*` | `/`                    |\n| `deployment.preStart.command`               | Command to run before starting the IQ Server container  | `nil`                   |\n| `deployment.postStart.command`              | Command to run after starting the IQ Server container  | `nil`                    |\n| `deployment.terminationGracePeriodSeconds` | Time to allow for clean shutdown                        | 120                      |\n| `persistence.storageClass` | The provisioner class                        | `-` (disables dynamic provisioning)            |\n| `persistence.storageSize` | The amount of drive space to allocate                        | `1Gi`             |\n| `persistence.accessMode` | Default access mode                        | `ReadWriteOnce`             |\n| `persistence.volumeConfiguration` | A YAML block to configure the persistent volume type. Defaults to `hostPath` which should not be used in production | `hostPath`             |\n\n## Configuring IQ Server\n\nYou can define the `config.yml` for IQ Server in your CRD on startup. \nIt is the `iq.configYaml` property. For more details, see the [Configuring IQ Server](https://help.sonatype.com/iqserver/configuring) help page.\n\n\n## Installing the License\n\nThe license file can be installed via the UI when IQ server is running, or it can be done as a part of the deploy. \nIf you leave the `licenseFile` field empty/commented, IQ Server will start and prompt you to manually install the license \nwhen you first enter the GUI.\n\n### Installing the License Automatically\nTo do it automatically, first encode your `.lic` file in Base 64 with no line breaks, eg:\n\n```bash\nbase64 --wrap=0 mylicense.lic > lic.base64\n```\n\nThen add this value to your CRD file as `iq.licenseSecret`, eg:\n\n```yaml\niq:\n  licenseSecret: bXkgc2FtcGxlIGxpY2Vuc2U=\n```\n\nSpecify the `licenseFile` path in `iq.configYaml` as:\n\n```yaml\niq:\n  configYaml:\n    server:\n      applicationConnectors:\n        - type: http\n          port: 8070\n      adminConnectors:\n        - type: http\n          port: 8071\n    createSampleData: true\n    sonatypeWork: /sonatype-work\n    # add this line and the `licenseSecret` above to autoconfigure licensing\n    licenseFile: /etc/nexus-iq-license/license_lic\n```",
-      "csv_display_name": "Nexus IQ Operator",
-      "csv_metadata_description": "Nexus Lifecycle is an open source governance platform that continuously identifies risk,\nautomatically enforces policy, and provides visibility throughout the entire SDLC.",
-      "csv_name": "nxiq-operator-certified.v1.121.0-1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T11:12:59.103000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.5",
-      "organization": "certified-operators",
-      "package": "nxiq-operator-certified",
-      "provided_apis": [
-        {
-          "group": "sonatype.com",
-          "kind": "NexusIQ",
-          "plural": "nexusiqs",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Sonatype",
-      "related_images": [
-        {
-          "digest": "sha256:f397acba37cb3a04cd7815491e0dff2f34d99f13cce82dc7c9522f5e26705ebc",
-          "image": "registry.connect.redhat.com/sonatype/nxiq-operator-certified@sha256:f397acba37cb3a04cd7815491e0dff2f34d99f13cce82dc7c9522f5e26705ebc",
-          "name": "nxiq-operator-certified-f397acba37cb3a04cd7815491e0dff2f34d99f13cce82dc7c9522f5e26705ebc-annotation"
-        },
-        {
-          "digest": "sha256:f397acba37cb3a04cd7815491e0dff2f34d99f13cce82dc7c9522f5e26705ebc",
-          "image": "registry.connect.redhat.com/sonatype/nxiq-operator-certified@sha256:f397acba37cb3a04cd7815491e0dff2f34d99f13cce82dc7c9522f5e26705ebc",
-          "name": "nxiq-operator-certified"
-        },
-        {
-          "digest": "sha256:ce08dbabd686ab02f246b43dccb708e2c4d81d656a091965dd3b73123091f790",
-          "image": "registry.connect.redhat.com/sonatype/nexus-iq-server@sha256:ce08dbabd686ab02f246b43dccb708e2c4d81d656a091965dd3b73123091f790",
-          "name": "iq"
-        },
-        {
-          "digest": "sha256:ce08dbabd686ab02f246b43dccb708e2c4d81d656a091965dd3b73123091f790",
-          "image": "registry.connect.redhat.com/sonatype/nexus-iq-server@sha256:ce08dbabd686ab02f246b43dccb708e2c4d81d656a091965dd3b73123091f790",
-          "name": "nexus-iq-server-ce08dbabd686ab02f246b43dccb708e2c4d81d656a091965dd3b73123091f790-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
-      "version": "1.121.0-1",
-      "version_original": "1.121.0-1"
-    },
-    {
       "_id": "6127d9b3dece23122b7a8392",
       "alm_examples": [
         {
@@ -13501,6 +12946,732 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "0.6.12",
       "version_original": "0.6.12"
+    },
+    {
+      "_id": "6154d0e069cb9f1af5ba7477",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1",
+          "kind": "Xl",
+          "metadata": {
+            "name": "xl-release"
+          },
+          "spec": {
+            "global": {
+              "customImageNames": false,
+              "externalArangoDBName": "arangodb",
+              "repository": "registry.connect.redhat.com/turbonomic",
+              "tag": "8.3.2"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/turbonomic/t8c-operator-bundle@sha256:072dc41461958a67d8eadc8e30843ac4dc187339e682c96d34af27e7a93529bb",
+      "bundle_path_digest": "sha256:072dc41461958a67d8eadc8e30843ac4dc187339e682c96d34af27e7a93529bb",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-09-29T20:47:28.705000+00:00",
+      "csv_description": "### Realtime Decision Automation for Multicloud Applications\nTurbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints:\n* Continuous placement of workload across multiple clouds both on-prem and public clouds providers.\n* Continuous scaling for applications and the underlying infrastructure.\n\nIt assures application performance by giving workloads the resources they need when they need them.\n\n### How does it work?\nTurbonomic uses a public APIs already exposed by application and infrastructure instrumentation to discover and monitor your environment.\nTurbonomic determines the right actions that drive continuous health, including continuous placement and continuous scaling for applications and the underlying cluster.\nTurbonomic leverages the built-on orchestration provided by the application and infrastructure deployment tools and automates the execution of these actions to continiously meet the respective service level objective of each application service.",
+      "csv_display_name": "Turbonomic Platform Operator",
+      "csv_metadata_description": "Turbonomic Workload Automation for Multicloud simultaneously optimizes performance, compliance, and cost in real-time. Workloads are precisely resourced, automatically, to perform while satisfying business constraints.",
+      "csv_name": "t8c-operator.v42.1.0",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": false,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T10:46:55.009000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "t8c-certified",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Xl",
+          "plural": "xls",
+          "version": "v1"
+        },
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "Xl",
+          "plural": "xls",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Turbonomic, Inc.",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "42.1.0",
+      "version_original": "42.1.0"
+    },
+    {
+      "_id": "6154d103bc74e0be7ca671f8",
+      "alm_examples": [
+        {
+          "api_version": "charts.helm.k8s.io/v1alpha1",
+          "kind": "OpenshiftArtifactoryHa",
+          "metadata": {
+            "name": "openshiftartifactoryha"
+          },
+          "spec": {
+            "artifactory-ha": {
+              "artifactory": {
+                "image": {
+                  "registry": "registry.connect.redhat.com",
+                  "repository": "jfrog/artifactory-pro",
+                  "tag": "7.25.7-2"
+                },
+                "joinKey": "OVERRIDE",
+                "masterKey": "OVERRIDE",
+                "node": {
+                  "replicaCount": 2,
+                  "waitForPrimaryStartup": {
+                    "enabled": false
+                  }
+                },
+                "uid": "1000721030"
+              },
+              "database": {
+                "driver": "OVERRIDE",
+                "password": "OVERRIDE",
+                "type": "OVERRIDE",
+                "url": "OVERRIDE",
+                "user": "OVERRIDE"
+              },
+              "databaseUpgradeReady": true,
+              "initContainerImage": "registry.connect.redhat.com/jfrog/init@sha256:175efbb8c51f0c50c4d32e876b20083b92ec5a04bab94e93cb3cb92d86164d03",
+              "nginx": {
+                "gid": "1000720107",
+                "http": {
+                  "externalPort": 80,
+                  "internalPort": 8080
+                },
+                "https": {
+                  "externalPort": 443,
+                  "internalPort": 8443
+                },
+                "image": {
+                  "registry": "registry.redhat.io",
+                  "repository": "rhel8/nginx-116",
+                  "tag": "latest"
+                },
+                "service": {
+                  "ssloffload": false
+                },
+                "tlsSecretName": "OVERRIDE",
+                "uid": "1000720104"
+              },
+              "postgresql": {
+                "enabled": false
+              },
+              "waitForDatabase": true
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/jfrog/artifactory-operator-bundle@sha256:55712df39fd00efa21711d24459e5a0610d9d2221af37a893fd80f7951838fab",
+      "bundle_path_digest": "sha256:55712df39fd00efa21711d24459e5a0610d9d2221af37a893fd80f7951838fab",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-09-29T20:48:03.970000+00:00",
+      "csv_description": " ## Breaking change\nPlease update to version 1.1.10 of the operator.\nVersion 1.1.8 and 1.1.9 have issues. Please skip these versions.\n\n## Overview\nOpenshift Operator to deploy JFrog Artifactory Enterprise into your Openshift cluster.\n## Security Context Constraints\nTo deploy this helm chart you will need to be a cluster admin w/ access to the anyuid scc and add the operator service account to the anyuid scc.\n```\noc adm policy add-scc-to-user anyuid -z artifactory-ha-operator -n openshift-operators\n```\nAdd the service account for the Artifactory chart to deploy successfully:\n``` oc adm policy add-scc-to-user anyuid -z openshiftartifactoryha-artifactory-ha -n artifactory ```\n### Usage\n\nAn external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it.\n\nSearch for JFrog and click JFrog Artifactory Enterprise Operator to install.\n\nGo to the Installed Operators.\n\nWait for the JFrog Artifactory Enterprise Operator to complete the installation.\n\nOpen the Operator and click on the provided API: Artifactory HA.\n\nClick Create New Instance and provide the following parameters for your DB configuration:\n\n```\nDATABASE_TYPE\nDATABASE_DRIVER\nDATABASE_URL\nDATABASE_USER\nDATABASE_PASSWORD\n```\nMaster key and Join key must be supplied. To generate a new key for each run the command below:\n\n```\n# Create a key\nexport JOIN_KEY=$(openssl rand -hex 32)\necho ${JOIN_KEY}\n```\n\nTo use TLS you will need to first create a k8s tls secret to store your .crt and .key file into.\nThen supply the value of this k8s secret into the TLS_SECRET field.\n``` oc create secret tls my_tls_secret --cert=tls.crt --key=tls.key --namespace=my_namespace ```\nClick Create for Artifactory Enterprise to deploy into OpenShift and connect to it on the external IP exposed by the load balancer.\n### Create a route\nTo expose Artifactory from Openshift we recommend you create a new route in Openshift.\nYou can either use the oc command line tool or the Openshift web console to generate a new route.\nDepending upon where you terminate TLS you will need to either specify pass through or edge.\nCommand Line (Edge):\n``` oc create route edge --service=openshiftartifactory-ha --cert=tls.crt --key=tls.key --ca-cert=ca.crt --hostname=www.example.com ```\nOr for more information visit the official Openshift documentation on routes here:\nhttps://docs.openshift.com/container-platform/4.6/networking/routes/route-configuration.html\n\n",
+      "csv_display_name": "JFrog Artifactory Enterprise Operator",
+      "csv_metadata_description": "JFrog Artifactory Enterprise deploys Artifactory in a high availability environment across multiple pods",
+      "csv_name": "artifactory-ha-operator.v1.1.15",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T11:01:41.407000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "openshiftartifactoryha-operator",
+      "provided_apis": [
+        {
+          "group": "charts.helm.k8s.io",
+          "kind": "OpenshiftArtifactoryHa",
+          "plural": "openshiftartifactoryhas",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "JFrog",
+      "related_images": [
+        {
+          "digest": "sha256:9b0b59194a052c63fa0d54d47220b7d2154ac38272694e54492cf2c029043cc4",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:9b0b59194a052c63fa0d54d47220b7d2154ac38272694e54492cf2c029043cc4",
+          "name": "artifactory-operator-9b0b59194a052c63fa0d54d47220b7d2154ac38272694e54492cf2c029043cc4-annotation"
+        },
+        {
+          "digest": "sha256:9b0b59194a052c63fa0d54d47220b7d2154ac38272694e54492cf2c029043cc4",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:9b0b59194a052c63fa0d54d47220b7d2154ac38272694e54492cf2c029043cc4",
+          "name": "artifactory-ha-operator"
+        },
+        {
+          "digest": "sha256:abd96a07bbeffcdcdf69b5998b9256b684e72bcecb9b94b9a623a0c02b276322",
+          "image": "registry.connect.redhat.com/jfrog/artifactory-pro@sha256:abd96a07bbeffcdcdf69b5998b9256b684e72bcecb9b94b9a623a0c02b276322",
+          "name": "artifactory_image_repository"
+        },
+        {
+          "digest": "sha256:d71d368d6094a5777000a8d99164959ccb97fca355e855e24bd92c13a8df04f6",
+          "image": "registry.redhat.io/rhel8/nginx-116@sha256:d71d368d6094a5777000a8d99164959ccb97fca355e855e24bd92c13a8df04f6",
+          "name": "nginx_image_repository"
+        },
+        {
+          "digest": "sha256:175efbb8c51f0c50c4d32e876b20083b92ec5a04bab94e93cb3cb92d86164d03",
+          "image": "registry.connect.redhat.com/jfrog/init@sha256:175efbb8c51f0c50c4d32e876b20083b92ec5a04bab94e93cb3cb92d86164d03",
+          "name": "init-175efbb8c51f0c50c4d32e876b20083b92ec5a04bab94e93cb3cb92d86164d03-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.1.15",
+      "version_original": "1.1.15"
+    },
+    {
+      "_id": "6154d11bd2c7f84a4d2edca7",
+      "alm_examples": [
+        {
+          "api_version": "operator.com/v1alpha1",
+          "kind": "Bigid",
+          "metadata": {
+            "name": "bigid-sample"
+          },
+          "spec": {
+            "global": {
+              "bigid": {
+                "bigidme": {
+                  "create": false
+                },
+                "clustering": {
+                  "create": true,
+                  "gateway": {
+                    "resources": {
+                      "limits": {
+                        "cpu": "2",
+                        "memory": "2Gi"
+                      },
+                      "requests": {
+                        "cpu": "500m",
+                        "memory": "500Mi"
+                      }
+                    }
+                  },
+                  "scheduler": {
+                    "resources": {
+                      "limits": {
+                        "cpu": "1",
+                        "memory": "2Gi"
+                      },
+                      "requests": {
+                        "cpu": "250m",
+                        "memory": "500Mi"
+                      }
+                    }
+                  },
+                  "worker": {
+                    "resources": {
+                      "limits": {
+                        "cpu": "3",
+                        "memory": "6Gi"
+                      },
+                      "requests": {
+                        "cpu": "500m",
+                        "memory": "500Mi"
+                      }
+                    }
+                  }
+                },
+                "configService": {
+                  "logLevel": "info"
+                },
+                "confluent": {
+                  "create": false
+                },
+                "correlator": {
+                  "correlatorReplicas": 1,
+                  "resources": {
+                    "limits": {
+                      "cpu": "3",
+                      "memory": "14Gi"
+                    },
+                    "requests": {
+                      "cpu": "3",
+                      "memory": "14Gi"
+                    }
+                  }
+                },
+                "labler": {
+                  "create": false
+                },
+                "ner": {
+                  "create": true,
+                  "nerReplicas": 1,
+                  "resources": {
+                    "limits": {
+                      "cpu": "4",
+                      "memory": "7Gi"
+                    },
+                    "requests": {
+                      "cpu": "2",
+                      "memory": "3Gi"
+                    }
+                  }
+                },
+                "reports": {
+                  "logLevel": "info"
+                },
+                "scanner": {
+                  "resources": {
+                    "limits": {
+                      "cpu": "7",
+                      "memory": "14Gi"
+                    },
+                    "requests": {
+                      "cpu": "7",
+                      "memory": "14Gi"
+                    }
+                  },
+                  "scannerJavaOpts": "-Xmx14g",
+                  "scannerReplicas": 1,
+                  "scannerUser": "bigid-scanner"
+                },
+                "web": {
+                  "AuditLogPersistentVolumes": false
+                }
+              },
+              "corrAffinity": {
+                "requiredDuringSchedulingIgnoredDuringExecution": [
+                  {
+                    "labelSelector": {
+                      "matchExpressions": [
+                        {
+                          "key": "app",
+                          "operator": "In",
+                          "values": [
+                            "bigid-corr-new"
+                          ]
+                        }
+                      ]
+                    },
+                    "topologyKey": "kubernetes.io/hostname"
+                  }
+                ]
+              },
+              "image": {
+                "pullPolicy": "Always"
+              },
+              "imageCredentials": {
+                "enabled": true
+              },
+              "ingress": {
+                "bigidHost": "ui.roks-mongodb-01-84282b3126c7c2503a14ceb9855c347b-0000.us-south.containers.appdomain.cloud",
+                "class": "nginx",
+                "rabbitmqHost": "mq.roks-mongodb-01-84282b3126c7c2503a14ceb9855c347b-0000.us-south.containers.appdomain.cloud",
+                "tlssecret": "bigid-tlssecret"
+              },
+              "mongodb": {
+                "externalIP": "172.21.43.224",
+                "image": "mongo:3.6",
+                "password": "password",
+                "port": 27017,
+                "user": "bigid"
+              },
+              "monitoring": {
+                "enabled": false
+              },
+              "namespace": "bigid",
+              "nerAffinity": {
+                "requiredDuringSchedulingIgnoredDuringExecution": [
+                  {
+                    "labelSelector": {
+                      "matchExpressions": [
+                        {
+                          "key": "app",
+                          "operator": "In",
+                          "values": [
+                            "bigid-ner"
+                          ]
+                        }
+                      ]
+                    },
+                    "topologyKey": "kubernetes.io/hostname"
+                  }
+                ]
+              },
+              "scannerAffinity": "podAntiAffinity:\n  requiredDuringSchedulingIgnoredDuringExecution:\n  - labelSelector:\n      matchExpressions:\n      - key: app\n        operator: In\n        values:\n        - bigid-scanner\n    topologyKey: kubernetes.io/hostname\n"
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/bigid/bigid-operator-bundle@sha256:8fdbb608a12ef1804f7a2ab752765964ebaa98d73a35203abb0bb73291ba7fbd",
+      "bundle_path_digest": "sha256:8fdbb608a12ef1804f7a2ab752765964ebaa98d73a35203abb0bb73291ba7fbd",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-09-29T20:48:27.959000+00:00",
+      "csv_description": "\"BigID is a data intelligence platform that scans your data repositories for sensitive and valuable information. BigID provides a wealth of analysis tools and configuration options that give you penetrating insight into the contents of your data stores, structured and unstructured, as well as integration capabilities with third-party data intelligence tools and even custom applications that you create yourself.\"",
+      "csv_display_name": "BigID Operator",
+      "csv_metadata_description": "",
+      "csv_name": "bigid-operator.v1.1.4",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T11:08:46.067000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "bigid-operator",
+      "provided_apis": [],
+      "provider": "BigID",
+      "related_images": [
+        {
+          "digest": "sha256:d1b17c96188a5f2748755f4de355a0f103e93b488108dbefb4c4b5714759f510",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:d1b17c96188a5f2748755f4de355a0f103e93b488108dbefb4c4b5714759f510",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:20af5b6b09098a1e0db77557f19a8728bcff99c80af947486b04d8163f97e04f",
+          "image": "registry.connect.redhat.com/bigid/bigid-operator@sha256:20af5b6b09098a1e0db77557f19a8728bcff99c80af947486b04d8163f97e04f",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:388c65b55244bfb30f7a9168a9f89d020672b6fca8d75e29a3af1c3663f3b053",
+          "image": "registry.connect.redhat.com/bigid/bigid-me-agent@sha256:388c65b55244bfb30f7a9168a9f89d020672b6fca8d75e29a3af1c3663f3b053",
+          "name": "bigid_bigidme"
+        },
+        {
+          "digest": "sha256:20f113d50e424d93e4fae15bc8f3dcea15a191ead9ee9ecf0d82e2e4f7931dd5",
+          "image": "registry.connect.redhat.com/bigid/bigid-ml@sha256:20f113d50e424d93e4fae15bc8f3dcea15a191ead9ee9ecf0d82e2e4f7931dd5",
+          "name": "bigid_clustering"
+        },
+        {
+          "digest": "sha256:7e00fa94d92bd1d8413861210c203dd1aae29ee6f76044f20a1644692ab1ff24",
+          "image": "registry.connect.redhat.com/bigid/bigid-config-service@sha256:7e00fa94d92bd1d8413861210c203dd1aae29ee6f76044f20a1644692ab1ff24",
+          "name": "bigid_configservice"
+        },
+        {
+          "digest": "sha256:fbbf9a234ea4200330c877244b7fe37055909b0df359615d1b1a75e3dfb3cc1a",
+          "image": "registry.connect.redhat.com/bigid/bigid-ner@sha256:fbbf9a234ea4200330c877244b7fe37055909b0df359615d1b1a75e3dfb3cc1a",
+          "name": "bigid_ner"
+        },
+        {
+          "digest": "sha256:688a8c2f8036f90fb77ec9a37ac68181853035d793a15ba14d4a01bc9fb1aac0",
+          "image": "registry.connect.redhat.com/bigid/bigid-reports@sha256:688a8c2f8036f90fb77ec9a37ac68181853035d793a15ba14d4a01bc9fb1aac0",
+          "name": "bigid_reports"
+        },
+        {
+          "digest": "sha256:0ff71223b92c6ef6cf61faed4f4c65de15d7d6512d2cd9b94de65201ec0b8af0",
+          "image": "registry.connect.redhat.com/bigid/bigid-corr-new@sha256:0ff71223b92c6ef6cf61faed4f4c65de15d7d6512d2cd9b94de65201ec0b8af0",
+          "name": "bigid_corr"
+        },
+        {
+          "digest": "sha256:db51c0b790fea3d211228bccf4b64f50878bc91bb1c2b3e840bd020e2994fcc6",
+          "image": "registry.connect.redhat.com/bigid/bigid-orch@sha256:db51c0b790fea3d211228bccf4b64f50878bc91bb1c2b3e840bd020e2994fcc6",
+          "name": "bigid_orch"
+        },
+        {
+          "digest": "sha256:234d8497ee3a8140a7e848b3ffa4f7aaa06863a33cf91bbfebdc6a31b6a97304",
+          "image": "registry.connect.redhat.com/bigid/bigid-rabbitmq@sha256:234d8497ee3a8140a7e848b3ffa4f7aaa06863a33cf91bbfebdc6a31b6a97304",
+          "name": "bigid_rabbitmq"
+        },
+        {
+          "digest": "sha256:f33c11f53c88112bcd1122c7f458bb42890f0fcdc49691fe0497c424e78df426",
+          "image": "registry.connect.redhat.com/bigid/bigid-scanner@sha256:f33c11f53c88112bcd1122c7f458bb42890f0fcdc49691fe0497c424e78df426",
+          "name": "bigid_scanner"
+        },
+        {
+          "digest": "sha256:f851e542e5d19be937604f668160e524c3f0d3a4ca60f7329f394fb5af9b3b75",
+          "image": "registry.connect.redhat.com/bigid/bigid-ui@sha256:f851e542e5d19be937604f668160e524c3f0d3a4ca60f7329f394fb5af9b3b75",
+          "name": "bigid_ui"
+        },
+        {
+          "digest": "sha256:367e2360b988583e76ce369f4159b07dd9b86b2d0d3ce5f4b1d71deeaacf0471",
+          "image": "registry.connect.redhat.com/bigid/bigid-web@sha256:367e2360b988583e76ce369f4159b07dd9b86b2d0d3ce5f4b1d71deeaacf0471",
+          "name": "bigid_web"
+        },
+        {
+          "digest": "sha256:4b00fb9c2158fd091ed0d33752ecf9e4c2c96a89ea8d5a5a8d5cce79670eed58",
+          "image": "registry.connect.redhat.com/bigid/bigid-data-catalog@sha256:4b00fb9c2158fd091ed0d33752ecf9e4c2c96a89ea8d5a5a8d5cce79670eed58",
+          "name": "bigid_datacatalog"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.1.4",
+      "version_original": "1.1.4"
+    },
+    {
+      "_id": "6154d143bc74e0be7ca671f9",
+      "alm_examples": [
+        {
+          "api_version": "can.avanseus.com/v1alpha1",
+          "kind": "CAN",
+          "metadata": {
+            "name": "can"
+          },
+          "spec": {
+            "can": {
+              "maxreplica": 4,
+              "minreplica": 1,
+              "resources": {
+                "limits": {
+                  "cpu": "1000m",
+                  "memory": "4Gi"
+                },
+                "requests": {
+                  "cpu": "1000m",
+                  "memory": "2Gi"
+                }
+              },
+              "tomcatoptions": "export JAVA_OPTS=\"$JAVA_OPTS -Xms1024m -Xmx4096m -Dmail.smtp.ssl.protocols=TLSv1.2\""
+            },
+            "cas": {
+              "resources": {
+                "limits": {
+                  "cpu": "1000m",
+                  "memory": "2Gi"
+                },
+                "requests": {
+                  "cpu": "1000m",
+                  "memory": "1Gi"
+                }
+              }
+            },
+            "imagepullpolicy": "Always",
+            "ldap": {
+              "resources": {
+                "limits": {
+                  "cpu": "1000m",
+                  "memory": "1Gi"
+                },
+                "requests": {
+                  "cpu": "1000m",
+                  "memory": "1Gi"
+                }
+              }
+            },
+            "memcached": {
+              "resources": {
+                "limits": {
+                  "cpu": "500m",
+                  "memory": "500Mi"
+                },
+                "requests": {
+                  "cpu": "500m",
+                  "memory": "500Mi"
+                }
+              }
+            },
+            "predictioncontroller": {
+              "resources": {
+                "limits": {
+                  "cpu": "1000m",
+                  "memory": "1Gi"
+                },
+                "requests": {
+                  "cpu": "1000m",
+                  "memory": "1Gi"
+                }
+              }
+            },
+            "predictionworker": {
+              "maxreplica": 3,
+              "minreplica": 1,
+              "resources": {
+                "limits": {
+                  "cpu": "2000m",
+                  "memory": "1Gi"
+                },
+                "requests": {
+                  "cpu": "1000m",
+                  "memory": "1Gi"
+                }
+              }
+            },
+            "serviceaccount": "avanseus",
+            "vbi": {
+              "resources": {
+                "limits": {
+                  "cpu": "1000m",
+                  "memory": "1Gi"
+                },
+                "requests": {
+                  "cpu": "1000m",
+                  "memory": "1Gi"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/can-avanseus/can@sha256:d9aa9485cd205456c1a4d96fb7a6e78af4cb2bc2e190857dbd5fe603a1b71ec6",
+      "bundle_path_digest": "sha256:d9aa9485cd205456c1a4d96fb7a6e78af4cb2bc2e190857dbd5fe603a1b71ec6",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-09-29T20:49:07.552000+00:00",
+      "csv_description": "# Overview\nThe Avanseus CAN operator deploys and manages the CAN (Cognitive assistant for networks)  predictive maintainence tool on any Kubernetes based cloud environment.\n\nAvanseus Cognitive Assistant for Networks (CAN), applies AI and machine learning to predict where a network is likely to fail next, and what to do before it happens.  CAN operator bundles CAN, CAS, LDAP, VBI, Prediction controller & Prediction worker applications.\n\nSupporting links:\n- [CAN operator prerequisite & configuration](https://avanseuscandev.com/releases/CAN/5.5/redhat/CAN_redhat_openshift_operator_installation.pdf): This is similar to the content mentioned from next section\n- [Password encryption](https://avanseuscandev.com/releases/CAN/5.5/redhat/CAN_password_encryption.pdf):  Utility guide for encrypting password texts\n- [CAN user manual](https://avanseuscandev.com/releases/CAN/5.5/Release/CAN_5.5_User_Manual.pdf)\n- [CAN operator installation video](https://avanseuscandev.com/releases/CAN/5.5/Videos/can-operator-openshift-installation-guide.mp4)\n\n# Operator installation\nMentioned below are the pre-requisites & configuration steps to be followed to install the CAN operator.\n### Before you start\n\n - A MongoDB instance must be available to connect to from the pods. This is usually provided by the \nenterprise customer. If not, then this has to be installed separately.\n - An initial MongoDB data dump needs to be loaded in the database. Please contact [Avanseus \ndelivery](mailto:support@avanseus.com).\n - In case, LDAP is not provided by the customer, [Avanseus delivery](mailto:support@avanseus.com) team can be requested to\n provide a LDAP image which is essential for Web dashboard authentication.\n - Binary files of applications does not come as part of the operator. These need to be requested from [Avanseus delivery](mailto:support@avanseus.com) team.\n - Create a project, service account & configure that service account using the below commands\n   \n   ```sh\n   \n   oc new-project <PROJECT_OR_NAMESPACE>\n   \n   oc create sa avanseus\n   \n   oc adm policy add-scc-to-user anyuid system:serviceaccount:<PROJECT_OR_NAMESPACE>:avanseus\n   \n   ```\n   \n   Replace `<PROJECT_OR_NAMESPACE>` with relevant namespace where the configurations provided in the `Configuration prerequisites` section below will be done & also where the operator would be installed.\n   \n   \n\nAvanseus delivery team can be contacted  at <support@avanseus.com>.\nMentioned below are the prerequisite configurations required for installing CAN operator. \n## Third party software pre-requisites\nTable shown below, specifies the supported versions of the third party software or protocol.\n<table><tr><th>Compatible software/protocol</th><th>Supported version</th></tr><tr><td>MongoDB</td><td>v4.4.5</td></tr><tr><td>LDAP protocol</td><td>Version-3</td></tr><tr><td>Memcached</td><td>1.5</td></tr></table>\n\n### Third party software availability\n- ***MongoDB with initial data***\n\n  For the CAN application to come up successfully, it needs some initial data in MongoDB.\n  However if it is not available, then [Avanseus delivery](mailto:support@avanseus.com) team needs \n  to be contacted for an initial data dump that needs to be imported to a MongoDB schema. MongoDB \n  can either be within the Openshift platform or outside. This MongoDB schema must be accessible from the \n  CAN operator pods preferably on port 27017. \n  \n- ***LDAP with initial user data***\n\n  For the CAN application, authentication is made possible using LDAP. Usually customers provide an LDAP connection for integration. However, if LDAP is not made available by the customer, then a LDAP\npod comes as part of operator installation by default with one initial user. [Avanseus delivery](mailto:support@avanseus.com) team needs to be requested to get the user access details. \n  If customer provides LDAP, then it can be other Openshift or within the cluster. The LDAP Host and port details must be configured in a ConfigMap.\n  \n- ***Memcached***\n\n  Memcached is used by CAN to cache small data for fast retrieval. This is also used for tomcat session replication. This application comes by default with the operator.\n\n\n## Configuration prerequisites\n\n### PersistenceVolumeClaim to copy WAR files\nBy default, the CAN operator does not come with CAN binary. [Avanseus delivery](mailto:support@avanseus.com) team must be requested to obtain the WAR files. Before deploying, the binaries in need to be obtained and put into a PersistentVolume. Mentioned below is a method to do this.\n\nThese binaries are:\n\n\n - CAN.war\n - CAS.war\n - PredictionController.war\n - universal\n\n\nCreate a PersistenceVolumeClaim \"tmp-data\". Mentioned below is an example configuration YAML\n```sh\nkind: PersistentVolumeClaim\napiVersion: v1\nmetadata:\n name: tmp-data\nspec:\n accessModes:\n - ReadWriteOnce\n resources:\n  requests:\n   storage: 1G\n\n```\nCreate a dummy application (Apache server) and mount the created PersistenceVolumeClaim. Mentioned below is the YAML content\n```sh\napiVersion: v1\nkind: Pod\nmetadata:\n name: pod-httpd\n labels:\n  app: apache_webserver\nspec:\n containers:\n - name: cntr-httpd\n   image: httpd:latest\n   ports:\n   - containerPort: 80\n   volumeMounts:\n   - mountPath: /mnt\n     name: tmp-data\n volumes:\n - name: tmp-data\n   persistentVolumeClaim:\n    claimName: tmp-data\n\n```\nChange directory to the place where WAR files are available. Copy the WAR files provided by Avanseus into the mount point \"/mnt\" using the rsync command.\n```sh\noc rsync . pod-httpd:/mnt\n```\nOnce this is done, the dummy application pod can be stopped. Remember that \"tmp-data\" PersistentVolume must not be deleted as this is used by Operator components to pull the binaries.\n### PersistenceVolumeClaim for CAN application\nCreate a PersistenceVolumeClaim named \"candatapvc\" & \"canlogpvc\". This is needed for the CAN application to write files.  YAML configuration is given below.\n```sh\nkind: PersistentVolumeClaim\napiVersion: v1\nmetadata:\n name: candatapvc\nspec:\n accessModes:\n - ReadWriteOnce\nresources:\n requests:\n  storage: 5G\n\n---\n\nkind: PersistentVolumeClaim\napiVersion: v1\nmetadata:\n name: canlogpvc\nspec:\n accessModes:\n - ReadWriteOnce\nresources:\n requests:\n  storage: 5G\n\n```\n### PesistentVolumeClaim for LDAP application\nCreate a PersistentVolumeClaim named \"ldap-storage\". This is needed for LDAP module to store the user DB data in a persistent location. YAML configuration is given is given below.\n```sh\nkind: PersistentVolumeClaim\napiVersion: v1\nmetadata:\n name: ldap-storage\nspec:\n accessModes:\n - ReadWriteOnce\nresources:\n requests:\n  storage: 5G\n\n```\n\n### Config Maps\nPods within the operator need configurations to startup the application. These configurations have to be stored in Config maps on Openshift platform.\nCAN operator comes with 5 applications which would run in 5 different pods:\n - CAN (Needs config map)\n - LDAP\n - VBI\n - Prediction controller (Needs config map)\n - Prediction worker\n\n### CAN config map (``canconfig``)\n\nMentioned below are the ConfigMap entries CAN application needs & hence create 3 files mentioned below:\n#### ``catalina.properties`` - Catalina file for tomcat:\n```sh\n# Licensed to the Apache Software Foundation (ASF) under one or more\n# contributor license agreements.  See the NOTICE file distributed with\n# this work for additional information regarding copyright ownership.\n# The ASF licenses this file to You under the Apache License, Version 2.0\n# (the \"License\"); you may not use this file except in compliance with\n# the License.  You may obtain a copy of the License at\n#\n#     http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing, software\n# distributed under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the specific language governing permissions and\n# limitations under the License.\n\n#\n# List of comma-separated packages that start with or equal this string\n# will cause a security exception to be thrown when\n# passed to checkPackageAccess unless the\n# corresponding RuntimePermission (\"accessClassInPackage.\"+package) has\n# been granted.\npackage.access=sun.,org.apache.catalina.,org.apache.coyote.,org.apache.jasper.,org.apache.tomcat.\n#\n# List of comma-separated packages that start with or equal this string\n# will cause a security exception to be thrown when\n# passed to checkPackageDefinition unless the\n# corresponding RuntimePermission (\"defineClassInPackage.\"+package) has\n# been granted.\n#\n# by default, no packages are restricted for definition, and none of\n# the class loaders supplied with the JDK call checkPackageDefinition.\n#\npackage.definition=sun.,java.,org.apache.catalina.,org.apache.coyote.,\\\norg.apache.jasper.,org.apache.naming.,org.apache.tomcat.\n\n\n#\n#\n# List of comma-separated paths defining the contents of the \"common\"\n# classloader. Prefixes should be used to define what is the repository type.\n# Path may be relative to the CATALINA_HOME or CATALINA_BASE path or absolute.\n# If left as blank,the JVM system loader will be used as Catalina's \"common\"\n# loader.\n# Examples:\n#     \"foo\": Add this folder as a class repository\n#     \"foo/*.jar\": Add all the JARs of the specified folder as class\n#                  repositories\n#     \"foo/bar.jar\": Add bar.jar as a class repository\n#\n# Note: Values are enclosed in double quotes (\"...\") in case either the\n#       ${catalina.base} path or the ${catalina.home} path contains a comma.\n#       Because double quotes are used for quoting, the double quote character\n#       may not appear in a path.\ncommon.loader=\"${catalina.base}/lib\",\"${catalina.base}/lib/*.jar\",\"${catalina.home}/lib\",\"${catalina.home}/lib/*.jar\"\n\n\n#\n# List of comma-separated paths defining the contents of the \"server\"\n# classloader. Prefixes should be used to define what is the repository type.\n# Path may be relative to the CATALINA_HOME or CATALINA_BASE path or absolute.\n# If left as blank, the \"common\" loader will be used as Catalina's \"server\"\n# loader.\n# Examples:\n#     \"foo\": Add this folder as a class repository\n#     \"foo/*.jar\": Add all the JARs of the specified folder as class\n#                  repositories\n#     \"foo/bar.jar\": Add bar.jar as a class repository\n#\n# Note: Values may be enclosed in double quotes (\"...\") in case either the\n#       ${catalina.base} path or the ${catalina.home} path contains a comma.\n#       Because double quotes are used for quoting, the double quote character\n#       may not appear in a path.\nserver.loader=\n\n\n#\n# List of comma-separated paths defining the contents of the \"shared\"\n# classloader. Prefixes should be used to define what is the repository type.\n# Path may be relative to the CATALINA_BASE path or absolute. If left as blank,\n# the \"common\" loader will be used as Catalina's \"shared\" loader.\n# Examples:\n#     \"foo\": Add this folder as a class repository\n#     \"foo/*.jar\": Add all the JARs of the specified folder as class\n#                  repositories\n#     \"foo/bar.jar\": Add bar.jar as a class repository\n# Please note that for single jars, e.g. bar.jar, you need the URL form\n# starting with file:.\n#\n# Note: Values may be enclosed in double quotes (\"...\") in case either the\n#       ${catalina.base} path or the ${catalina.home} path contains a comma.\n#       Because double quotes are used for quoting, the double quote character\n#       may not appear in a path.\nshared.loader=\n\n\n# Default list of JAR files that should not be scanned using the JarScanner\n# functionality. This is typically used to scan JARs for configuration\n# information. JARs that do not contain such information may be excluded from\n# the scan to speed up the scanning process. This is the default list. JARs on\n# this list are excluded from all scans. The list must be a comma separated list\n# of JAR file names.\n# The list of JARs to skip may be over-ridden at a Context level for individual\n# scan types by configuring a JarScanner with a nested JarScanFilter.\n# The JARs listed below include:\n# - Tomcat Bootstrap JARs\n# - Tomcat API JARs\n# - Catalina JARs\n# - Jasper JARs\n# - Tomcat JARs\n# - Common non-Tomcat JARs\n# - Test JARs (JUnit, Cobertura and dependencies)\ntomcat.util.scan.StandardJarScanFilter.jarsToSkip=\\\nannotations-api.jar,\\\nant-junit*.jar,\\\nant-launcher.jar,\\\nant.jar,\\\nasm-*.jar,\\\naspectj*.jar,\\\nbootstrap.jar,\\\ncatalina-ant.jar,\\\ncatalina-ha.jar,\\\ncatalina-jmx-remote.jar,\\\ncatalina-storeconfig.jar,\\\ncatalina-tribes.jar,\\\ncatalina-ws.jar,\\\ncatalina.jar,\\\ncglib-*.jar,\\\ncobertura-*.jar,\\\ncommons-beanutils*.jar,\\\ncommons-codec*.jar,\\\ncommons-collections*.jar,\\\ncommons-daemon.jar,\\\ncommons-dbcp*.jar,\\\ncommons-digester*.jar,\\\ncommons-fileupload*.jar,\\\ncommons-httpclient*.jar,\\\ncommons-io*.jar,\\\ncommons-lang*.jar,\\\ncommons-logging*.jar,\\\ncommons-math*.jar,\\\ncommons-pool*.jar,\\\ndom4j-*.jar,\\\neasymock-*.jar,\\\necj-*.jar,\\\nel-api.jar,\\\ngeronimo-spec-jaxrpc*.jar,\\\nh2*.jar,\\\nhamcrest-*.jar,\\\nhibernate*.jar,\\\nhttpclient*.jar,\\\nicu4j-*.jar,\\\njasper-el.jar,\\\njasper.jar,\\\njaspic-api.jar,\\\njaxb-*.jar,\\\njaxen-*.jar,\\\njdom-*.jar,\\\njetty-*.jar,\\\njmx-tools.jar,\\\njmx.jar,\\\njsp-api.jar,\\\njstl.jar,\\\njta*.jar,\\\njunit-*.jar,\\\njunit.jar,\\\nlog4j*.jar,\\\nmail*.jar,\\\nobjenesis-*.jar,\\\noraclepki.jar,\\\noro-*.jar,\\\nservlet-api-*.jar,\\\nservlet-api.jar,\\\nslf4j*.jar,\\\ntaglibs-standard-spec-*.jar,\\\ntagsoup-*.jar,\\\ntomcat-api.jar,\\\ntomcat-coyote.jar,\\\ntomcat-dbcp.jar,\\\ntomcat-i18n-*.jar,\\\ntomcat-jdbc.jar,\\\ntomcat-jni.jar,\\\ntomcat-juli-adapters.jar,\\\ntomcat-juli.jar,\\\ntomcat-util-scan.jar,\\\ntomcat-util.jar,\\\ntomcat-websocket.jar,\\\ntools.jar,\\\nwebsocket-api.jar,\\\nwsdl4j*.jar,\\\nxercesImpl.jar,\\\nxml-apis.jar,\\\nxmlParserAPIs-*.jar,\\\nxmlParserAPIs.jar,\\\nxom-*.jar\n\n\n# Default list of JAR files that should be scanned that overrides the default\n# jarsToSkip list above. This is typically used to include a specific JAR that\n# has been excluded by a broad file name pattern in the jarsToSkip list.\n# The list of JARs to scan may be over-ridden at a Context level for individual\n# scan types by configuring a JarScanner with a nested JarScanFilter.\ntomcat.util.scan.StandardJarScanFilter.jarsToScan=\\\nlog4j-taglib*.jar,\\\nlog4j-web*.jar,\\\nlog4javascript*.jar,\\\nslf4j-taglib*.jar\n\n# String cache configuration.\ntomcat.util.buf.StringCache.byte.enabled=true\n#tomcat.util.buf.StringCache.char.enabled=true\n#tomcat.util.buf.StringCache.trainThreshold=500000\n#tomcat.util.buf.StringCache.cacheSize=5000\n\n\n# This system property is deprecated. Use the relaxedPathChars relaxedQueryChars\n# attributes of the Connector instead. These attributes permit a wider range of\n# characters to be configured as valid.\n# Allow for changes to HTTP request validation\n# WARNING: Using this option may expose the server to CVE-2016-6816\n#tomcat.util.http.parser.HttpParser.requestTargetAllow=|\nPASSWORD_KEY=<AVANSEUS_PASSWORD_KEY>    \n\n```\n#### ``config.properties`` - Application configuration\n```sh\n#Domain details\navanseus.app.cas.domain=cas-<NAMESPACE>.<ROUTER_DEFAULT_HOSTNAME>\navanseus.app.can.domain=can-<NAMESPACE>.<ROUTER_DEFAULT_HOSTNAME>\n\n\navanseus.vbi.ip=vbi\navanseus.vbi.port=12001\n\n\n#Domain protocol\navanseus.protocol=https\n\n\n#Host details\navanseus.app.cas.host=canapp:2003\navanseus.app.can.host=canapp:2000\n\n\n#Memcached configuration\navanseus.memcached.url=memcached:11211\n\n\n#MongoDb configuration\navanseus.mongodb.ssl.enabled=<MONGODB_SSL_ENABLED>\navanseus.mongodb.validHostName=<MONGODB_VERIFY_HOST>\navanseus.mongodb.keystore.path=/data/workspace/pemfile/mongo.pkcs12\navanseus.mongodb.keystore.password=<MONGODB_KEYSTORE_PASSWORD>\navanseus.mongodb.ip=<MONGODB_IP_HOST>\navanseus.mongodb.port=<MONGODB_PORT>\navanseus.mongodb.username=<MONGODB_USERNAME>\navanseus.mongodb.password=<MONGODB_PASSWORD>\navanseus.mongodb.dbName=<MONGODB_SCHEMA_NAME>\n\n\navanseus.mongodb.admin.username=<MONGODB_ADMIN_USERNAME>\navanseus.mongodb.admin.password=<MONGODB_ADMIN_PASSWORD>\navanseus.mongodb.admin.dbName=<MONGODB_ADMIN_SCHEMA_NAME>\n\n\n#log configuration\navanseus.log.path=/data/workspace/logs/\navanseus.log.thread.poolsize=20\n\n\n#LDAP server configuration\navanseus.ldap.organisation=<LDAP_ORG>\navanseus.ldap.domain=<LDAP_DOMAIN>\navanseus.ldap.url1=ldap://<LDAP_URL1>:<LDAP_PORT1>\navanseus.ldap.url2=ldap://<LDAP_URL2>:<LDAP_PORT2>\navanseus.ldap.userDn=cn=Directory Manager\navanseus.ldap.password=<LDAP_PASSWORD>\n\n\navanseus.app.googleKey=<GOOGLE_MAP_KEY>\n#NAS path\navanseus.app.nas.path=/data/workspace/nasmount/\n\n\n#Email Config\navanseus.email.fromId=<EMAIL_FROM_ID>\navanseus.email.pwd=<EMAIL_PASSWORD>\navanseus.email.host=<EMAIL_SERVER>\navanseus.email.fromName=<EMAIL_SENDER_NAME>\navanseus.email.port=<EMAIL_PORT>\n\n\n#Cluster node configuration\navanseus.predictionNode.name=nodeA    \n```\n#### ``mongo.pkcs12`` - Use a valid key file if provided or create an empty file\n\nIn the above mentioned files, replace the text enclosed in `<>` with necessary information. Mentioned below are their details:\n\n - `<AVANSEUS_PASSWORD_KEY>` : Replace this with the password key to be used. Request the [Avanseus delivery](mailto:support@avanseus.com) team for this. This is very specific for a given DB dump.\n - `<NAMESPACE>` : Namespace where the operator and application would run.\n - `<ROUTER_DEFAULT_HOSTNAME>` : Replace this with the Openshift cluster default router hostname.\n - `<MONGODB_SSL_ENABLED>` : `true` when MongoDB is enabled with SSL. `false` otherwise.\n - `<MONGODB_VERIFY_HOST>` : `true` when MongoDB host name needs to be verified with SSL certificate. `false` otherwise.\n - `<MONGODB_KEYSTORE_PASSWORD>` : Encrypted password of MongoDB keystore. The encryption technique is defined [here](https://avanseuscandev.com/releases/CAN/5.0/redhat/CAN_password_encryption.pdf)\n - `<MONGODB_IP>` : Replace this with MongoDB IP/Host which is reachable from the pods. \n - `<MONGODB_PORT>` : Replace this with MongoDB Port which is reachable from the pods.\n - `<MONGODB_USERNAME>` : Replace this with MongoDB schema read/write username.\n - `<MONGODB_PASSWORD>` : Replace this with above username's password (Encrypted). The encryption technique is defined [here](https://avanseuscandev.com/releases/CAN/5.0/redhat/CAN_password_encryption.pdf)\n - `<MONGODB_SCHEMA_NAME>` : Replace this with DB schema name.\n - `<MONGODB_ADMIN_USERNAME>` : Replace this with MongoDB admin username\n - `<MONGODB_ADMIN_PASSWORD>` : Replace this with MongoDB admin password (Encrypted). The encryption technique is defined [here](https://avanseuscandev.com/releases/CAN/5.0/redhat/CAN_password_encryption.pdf)\n - `<MONGODB_ADMIN_SCHEMA_NAME>` : Replace this with the MongoDB admin schema name.\n - `<GOOGLE_MAP_KEY>` : Google map key.\n - `<LDAP_URL1>` : Replace this with LDAP URL 1. LDAP IP reachable from pods.\n - `<LDAP_URL2>` : Replace this with LDAP URL 2. Same as above if the customer does not provide failover LDAP URL.\n - `<LDAP_PORT1>` : Replace this with LDAP Port 1. LDAP port reachable from pods.\n - `<LDAP_PORT2>` : Replace this with LDAP Port 2. Same as above if the customer does not provide failover LDAP instance.\n - `<LDAP_PASSWORD>` : Replace this with LDAP password (Encrypted). The encryption technique is defined [here](https://avanseuscandev.com/releases/CAN/5.0/redhat/CAN_password_encryption.pdf)\n - `<LDAP_ORG>` : Replace this with LDAP organisation. Customers usually provide this or contact Avanseus support team for this.\n - `<LDAP_DOMAIN>` : Replace this with LDAP domain. Customers usually provide this or contact Avanseus support team for this.\n - `<EMAIL_FROM_ID>` : Replace this with Email ID of sender.\n - `<EMAIL_SENDER_NAME>` : Replace this with Email sender's name.\n - `<EMAIL_SERVER>` : Replace this with Email server host or domain.\n - `<EMAIL_PORT>` : Replace this with Email server port.\n - `<EMAIL_PASSWORD>` : Replace this with Email sender's password.\n\nThe last 5 entries must be filled up with relevant SMTP server or relay server information which is reachable from the Openshift cluster.\n\nIf you would use the Default LDAP server coming with the operator, then the LDAP configuration section can be as follows:\n```sh\n#LDAP server configuration\navanseus.ldap.organisation=employee\navanseus.ldap.domain=avanseus\navanseus.ldap.url1=ldap://ldap:1389\navanseus.ldap.url2=ldap://ldap:1389\navanseus.ldap.userDn=cn=Directory Manager\navanseus.ldap.password=r7qs0Kobh5s+q0Wtlj1JZbtkdqGxBdx/\n\n```\nFinally create the ConfigMap as follows:\n\n```sh\noc create configmap canconfig --from-file=catalina.properties --from-file=config.properties --from-file=mongo.pkcs12\n```\n### Prediction controller config map (``controllerconfig``)\nMentioned below is the ConfigMap entry Prediction controller application needs & hence create the file mentioned below:\n#### ``application.properties`` - Application configuration\n```sh\nserver.port=5052\nlogging.level.root = INFO\nspring.application.name=PredictionControllerApplication\npredictionworker.endpoint=http://avanseusworkernode:5050/PredictionWorker/\n#predictionworker.endpoint=http://localhost:5050/\n# Max file size.\nspring.servlet.multipart.max-file-size=40MB\n# Max request size.\nspring.servlet.multipart.max-request-size=50MB\n\n```\nFinally create the ConfigMap as follows:\n```sh\noc create configmap controllerconfig --from-file=application.properties\n```\n\n\n## Installation\nCAN Operator is available in the OperatorHub section. Mentioned below is a link to the video which shows how to install the CAN operator.\n\n[CAN operator installation video](https://avanseuscandev.com/releases/CAN/5.5/Videos/can-operator-openshift-installation-guide.mp4)\n\n## Post installation\nAfter installation, CAN application would be available on following URL:\n```sh\nhttps://can-<NAMESPACE>.<ROUTER_DEFAULT_HOSTNAME>/CAN/\n```\nIf CAN tool was integrated with LDAP on customer premise, then the user credentials would be known. If CAN tool was integrated with Avanseus's default LDAP, then request the [Avanseus delivery](mailto:support@avanseus.com) team for credentials.\n",
+      "csv_display_name": "can-operator",
+      "csv_metadata_description": "Avanseus Cognitive Assistant for Networks (CAN), applies AI and machine learning to predict where a network is likely to fail next, and what to do before it happens. CAN operator bundles CAN & VBI application.",
+      "csv_name": "can-operator.v0.0.8",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T11:00:28.348000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "can-operator",
+      "provided_apis": [],
+      "provider": "Avanseus Holdings Pte. Ltd.",
+      "related_images": [
+        {
+          "digest": "sha256:a2b42a998226427ba8c0c6b8579c5d57b71ae88e40c2e1a489014debe5615719",
+          "image": "docker-registry.apps.avanseus.avanseuscandev.com/release/5.5/can-operator@sha256:a2b42a998226427ba8c0c6b8579c5d57b71ae88e40c2e1a489014debe5615719",
+          "name": "5.5/can-operator-a2b42a998226427ba8c0c6b8579c5d57b71ae88e40c2e1a489014debe5615719-annotation"
+        },
+        {
+          "digest": "sha256:a2b42a998226427ba8c0c6b8579c5d57b71ae88e40c2e1a489014debe5615719",
+          "image": "registry.connect.redhat.com/can-avanseus/can-operator@sha256:a2b42a998226427ba8c0c6b8579c5d57b71ae88e40c2e1a489014debe5615719",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:bb9a0e72305c82b876245ac9ce4f63bdb7dceaab0ea9d944cc4fdc13268578c3",
+          "image": "registry.connect.redhat.com/can-avanseus/vbi@sha256:bb9a0e72305c82b876245ac9ce4f63bdb7dceaab0ea9d944cc4fdc13268578c3",
+          "name": "vbi"
+        },
+        {
+          "digest": "sha256:f74ff460fc7da4e2de483ccfaad4bba8a9dd5bf4eda2817989d116c096a77e43",
+          "image": "registry.connect.redhat.com/can-avanseus/ldap@sha256:f74ff460fc7da4e2de483ccfaad4bba8a9dd5bf4eda2817989d116c096a77e43",
+          "name": "ldap"
+        },
+        {
+          "digest": "sha256:4d324f8f950f384a9031313d57ed5f7ac65468ad3a1887b7760268fd1b0b8243",
+          "image": "registry.connect.redhat.com/can-avanseus/canapp@sha256:4d324f8f950f384a9031313d57ed5f7ac65468ad3a1887b7760268fd1b0b8243",
+          "name": "can"
+        },
+        {
+          "digest": "sha256:d09dbe842cae508e8ddf721c202f302b1a8ec0167ca308edc04ad314b2245803",
+          "image": "registry.connect.redhat.com/can-avanseus/casapp@sha256:d09dbe842cae508e8ddf721c202f302b1a8ec0167ca308edc04ad314b2245803",
+          "name": "cas"
+        },
+        {
+          "digest": "sha256:b9586a285245c2f3969041881c0f17dfb3504ca651a93cf42dc0c9917b9255e0",
+          "image": "registry.connect.redhat.com/can-avanseus/predictioncontroller@sha256:b9586a285245c2f3969041881c0f17dfb3504ca651a93cf42dc0c9917b9255e0",
+          "name": "can_controller"
+        },
+        {
+          "digest": "sha256:1c844e63803b91522fdea55638e6280d3a4ed663ef6f45993f9979d3a98ad534",
+          "image": "registry.connect.redhat.com/can-avanseus/predictionworker@sha256:1c844e63803b91522fdea55638e6280d3a4ed663ef6f45993f9979d3a98ad534",
+          "name": "can_worker"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.0.8",
+      "version_original": "0.0.8"
     }
   ]
 }
