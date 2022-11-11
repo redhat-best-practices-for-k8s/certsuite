@@ -1,566 +1,6 @@
 {
   "data": [
     {
-      "_id": "60ea04fc8ce8053fa514bdde",
-      "alm_examples": [
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseCluster",
-          "metadata": {
-            "name": "cb-example"
-          },
-          "spec": {
-            "backup": {
-              "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-              "managed": false,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              },
-              "serviceAccountName": "couchbase-backup"
-            },
-            "buckets": {
-              "managed": true,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              }
-            },
-            "cluster": {
-              "analyticsServiceMemoryQuota": "1Gi",
-              "autoCompaction": {
-                "databaseFragmentationThreshold": {
-                  "percent": 30,
-                  "size": "1Gi"
-                },
-                "parallelCompaction": false,
-                "timeWindow": {
-                  "abortCompactionOutsideWindow": true,
-                  "end": "06:00",
-                  "start": "02:00"
-                },
-                "tombstonePurgeInterval": "72h",
-                "viewFragmentationThreshold": {
-                  "percent": 30,
-                  "size": "1Gi"
-                }
-              },
-              "autoFailoverMaxCount": 3,
-              "autoFailoverOnDataDiskIssues": true,
-              "autoFailoverOnDataDiskIssuesTimePeriod": "120s",
-              "autoFailoverServerGroup": false,
-              "autoFailoverTimeout": "120s",
-              "clusterName": "cb-example",
-              "dataServiceMemoryQuota": "256Mi",
-              "eventingServiceMemoryQuota": "256Mi",
-              "indexServiceMemoryQuota": "256Mi",
-              "indexStorageSetting": "memory_optimized",
-              "searchServiceMemoryQuota": "256Mi"
-            },
-            "enablePreviewScaling": false,
-            "hibernate": false,
-            "hibernationStrategy": "Immediate",
-            "image": "registry.connect.redhat.com/couchbase/server@sha256:c94326da3435265666a4e332c6c5e78ddf74777cb64e1e8728d237c6b5008c15",
-            "logRetentionCount": 20,
-            "logRetentionTime": "604800s",
-            "monitoring": {
-              "prometheus": {
-                "enabled": false,
-                "image": "registry.connect.redhat.com/couchbase/exporter@sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784"
-              }
-            },
-            "networking": {
-              "adminConsoleServiceType": "NodePort",
-              "adminConsoleServices": [
-                "data"
-              ],
-              "exposeAdminConsole": true,
-              "exposedFeatureServiceType": "NodePort",
-              "exposedFeatures": [
-                "xdcr"
-              ]
-            },
-            "recoveryPolicy": "PrioritizeDataIntegrity",
-            "security": {
-              "adminSecret": "cb-example-auth",
-              "rbac": {
-                "managed": true,
-                "selector": {
-                  "matchLabels": {
-                    "cluster": "cb-example"
-                  }
-                }
-              }
-            },
-            "servers": [
-              {
-                "name": "all_services",
-                "services": [
-                  "data",
-                  "index",
-                  "query",
-                  "search",
-                  "eventing",
-                  "analytics"
-                ],
-                "size": 3
-              }
-            ],
-            "upgradeStrategy": "RollingUpgrade",
-            "xdcr": {
-              "managed": false,
-              "selector": {
-                "matchLabels": {
-                  "cluster": "cb-example"
-                }
-              }
-            }
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "default"
-          },
-          "spec": {
-            "compressionMode": "passive",
-            "conflictResolution": "lww",
-            "enableFlush": false,
-            "enableIndexReplica": true,
-            "evictionPolicy": "valueOnly",
-            "ioPriority": "low",
-            "memoryQuota": "100Mi",
-            "replicas": 2
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseEphemeralBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "ephemeral-bucket"
-          },
-          "spec": {
-            "compressionMode": "passive",
-            "conflictResolution": "lww",
-            "enableFlush": false,
-            "evictionPolicy": "noEviction",
-            "ioPriority": "low",
-            "memoryQuota": "100Mi",
-            "replicas": 2
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseMemcachedBucket",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "memcached-bucket"
-          },
-          "spec": {
-            "enableFlush": false,
-            "memoryQuota": "100Mi"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseUser",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-user"
-          },
-          "spec": {
-            "authDomain": "local",
-            "authSecret": "cb-example-auth",
-            "fullName": "My User"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseGroup",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-group"
-          },
-          "spec": {
-            "roles": [
-              {
-                "bucket": "default",
-                "name": "bucket_admin"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseRoleBinding",
-          "metadata": {
-            "name": "my-role-binding"
-          },
-          "spec": {
-            "roleRef": {
-              "kind": "CouchbaseGroup",
-              "name": "my-group"
-            },
-            "subjects": [
-              {
-                "kind": "CouchbaseUser",
-                "name": "my-user"
-              }
-            ]
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseReplication",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "my-replication"
-          },
-          "spec": {
-            "bucket": "default",
-            "compressionType": "Snappy",
-            "filterExpression": "",
-            "paused": false,
-            "remoteBucket": "default"
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBackup",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "cb-backup"
-          },
-          "spec": {
-            "backOffLimit": 2,
-            "backupRetention": "24h",
-            "failedJobsHistoryLimit": 3,
-            "full": {
-              "schedule": "0 3 * * 6"
-            },
-            "incremental": {
-              "schedule": "0 3 * * 1-6"
-            },
-            "logRetention": "24h",
-            "size": "5Gi",
-            "strategy": "full_incremental",
-            "successfulJobsHistoryLimit": 1
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseBackupRestore",
-          "metadata": {
-            "labels": {
-              "cluster": "cb-example"
-            },
-            "name": "cb-restore"
-          },
-          "spec": {
-            "backOffLimit": 2,
-            "backup": "cb-backup",
-            "end": {
-              "int": 1
-            },
-            "logRetention": "24h",
-            "repo": "cb-example-2020-10-29T19_00_03",
-            "start": {
-              "int": 1
-            }
-          }
-        },
-        {
-          "api_version": "couchbase.com/v2",
-          "kind": "CouchbaseAutoscaler",
-          "metadata": {
-            "name": "do.not.create.internal.only"
-          },
-          "spec": {
-            "servers": "internal",
-            "size": 2
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [
-          "Disconnected"
-        ],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/couchbase/operator-bundle@sha256:69c9d29a8a5ba4eac037051a256a458d5772fca8b813c764ddbe02f80d89b76f",
-      "bundle_path_digest": "sha256:69c9d29a8a5ba4eac037051a256a458d5772fca8b813c764ddbe02f80d89b76f",
-      "capabilities": [
-        "Auto Pilot"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-07-10T20:37:16.211000+00:00",
-      "csv_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments on OpenShift. By installing this integration you will be able to deply Couchbase Server clusters with a single command.\n\n## Supported Features\n\n* **Automated cluster provisioning** - Deploying a Couchbase Cluster has never been easier. Fill out a Couchbase specific configuration and let the Couchbase Operator take care of provisioning nodes and setting up cluster to your exact specification.\n\n* **On-demand scalability** - Automatically scale your cluster up or down by changing a simple configuration parameter and let the Couchbase Operator handle provisioning of new nodes and joining them into the cluster.\n\n* **Auto-recovery** - Detect Couchbase node failures, rebalance out bad nodes, and bring the cluster back up to the desired capacity. Auto-recovery is completely automated so you can sleep easy through the night knowing that the Couchbase Operator will handle any failures.\n\n* **Geo-distribution** - Replicate your data between datacenters to move data closer to the users who consume it and protect against disaster scenarios where an entire datacenter becomes unavailable.\n\n* **Persistent storage** - Define persistent network-attached storage for each node in your cluster to allow pods to be recovered even if the node they were running on is no longer available.\n\n* **Rack/zone awareness** - Tell the Couchbase Operator about availability zones in your datacenter and let the operator take care of ensuring that nodes in your cluster are deployed equally across each zone.\n\n* **Supportability** - When things go wrong, use the cbopinfo tool provided with the Couchbase Operator to collect relevant data about your Couchbase deployment so that you can quickly address issues.\n\n* **Centralized configuration management** - Manage your configuration centrally with OpenShift. Updates to the configuration are watched by the Couchbase Operator and actions are taken to make the target cluster match the desired configuration.\n## Required Parameters\n* `authSecret` - provide the name of a secret that contains two keys for the `username` and `password` of the super user ([documentation](https://docs.couchbase.com/operator/1.2/couchbase-cluster-config.html))\n\n## About Couchbase Server\n\nBuilt on the most powerful NoSQL technology, Couchbase Server delivers unparalleled performance at scale, in any cloud. With features like memory-first architecture, geo-distributed deployments, and workload isolation, Couchbase Server excels at supporting mission-critical applications at scale while maintaining submillisecond latencies and 99.999% availability. Plus, with the most comprehensive SQL-compatible query language (N1QL), migrating from RDBMS to Couchbase Server is easy with ANSI joins.\n",
-      "csv_display_name": "Couchbase Operator",
-      "csv_metadata_description": "The Couchbase Autonomous Operator allows users to easily deploy, manage, and maintain Couchbase deployments",
-      "csv_name": "couchbase-operator.v2.2.0-1",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T11:25:41.854000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "couchbase-enterprise-certified",
-      "provided_apis": [
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseCluster",
-          "plural": "couchbaseclusters",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseReplication",
-          "plural": "couchbasereplications",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseGroup",
-          "plural": "couchbasegroups",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseRoleBinding",
-          "plural": "couchbaserolebindings",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseAutoscaler",
-          "plural": "couchbaseautoscalers",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackup",
-          "plural": "couchbasebackups",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBackupRestore",
-          "plural": "couchbasebackuprestores",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseBucket",
-          "plural": "couchbasebuckets",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseEphemeralBucket",
-          "plural": "couchbaseephemeralbuckets",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseMemcachedBucket",
-          "plural": "couchbasememcachedbuckets",
-          "version": "v2"
-        },
-        {
-          "group": "couchbase.com",
-          "kind": "CouchbaseUser",
-          "plural": "couchbaseusers",
-          "version": "v2"
-        }
-      ],
-      "provider": "Couchbase",
-      "related_images": [
-        {
-          "digest": "sha256:59c872ac4b19b5086a47ce95675f11df2925aa0c5d3dc0afda8df4599a8b0649",
-          "image": "registry.connect.redhat.com/couchbase/operator@sha256:59c872ac4b19b5086a47ce95675f11df2925aa0c5d3dc0afda8df4599a8b0649",
-          "name": "operator-59c872ac4b19b5086a47ce95675f11df2925aa0c5d3dc0afda8df4599a8b0649-annotation"
-        },
-        {
-          "digest": "sha256:59c872ac4b19b5086a47ce95675f11df2925aa0c5d3dc0afda8df4599a8b0649",
-          "image": "registry.connect.redhat.com/couchbase/operator@sha256:59c872ac4b19b5086a47ce95675f11df2925aa0c5d3dc0afda8df4599a8b0649",
-          "name": "couchbase-operator"
-        },
-        {
-          "digest": "sha256:187046a848f32233e7e92705c57fa864b1d373c2078a92b51c9706bec6e372e5",
-          "image": "registry.connect.redhat.com/couchbase/server@sha256:187046a848f32233e7e92705c57fa864b1d373c2078a92b51c9706bec6e372e5",
-          "name": "couchbase_server"
-        },
-        {
-          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "name": "couchbase_backup"
-        },
-        {
-          "digest": "sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784",
-          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784",
-          "name": "couchbase_metrics"
-        },
-        {
-          "digest": "sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784",
-          "image": "registry.connect.redhat.com/couchbase/exporter@sha256:b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784",
-          "name": "exporter-b9ff3aec88f42f8e6164d61a1c5f845b4c3dd3f606ac552170d5c61311ce5784-annotation"
-        },
-        {
-          "digest": "sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "image": "registry.connect.redhat.com/couchbase/operator-backup@sha256:c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76",
-          "name": "operator-backup-c0ab51854294d117c4ecf867b541ed6dc67410294d72f560cc33b038d98e4b76-annotation"
-        },
-        {
-          "digest": "sha256:c94326da3435265666a4e332c6c5e78ddf74777cb64e1e8728d237c6b5008c15",
-          "image": "registry.connect.redhat.com/couchbase/server@sha256:c94326da3435265666a4e332c6c5e78ddf74777cb64e1e8728d237c6b5008c15",
-          "name": "server-c94326da3435265666a4e332c6c5e78ddf74777cb64e1e8728d237c6b5008c15-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2.2.0-1",
-      "version_original": "2.2.0-1"
-    },
-    {
-      "_id": "60ea054cba43af88444a400b",
-      "alm_examples": [
-        {
-          "api_version": "aps.appranix.com/v1",
-          "kind": "BackupStorageLocation",
-          "metadata": {
-            "labels": {
-              "component": "appranix"
-            },
-            "name": "default",
-            "namespace": "appranix"
-          },
-          "spec": {
-            "objectStorage": {
-              "bucket": "aps-bucket-store"
-            },
-            "provider": "gcp"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/appranix/apx-operator-bundle@sha256:126965743834b9d3fa15f354f41fe47618cea51c6f2ab88d3401b62b0362b1b6",
-      "bundle_path_digest": "sha256:126965743834b9d3fa15f354f41fe47618cea51c6f2ab88d3401b62b0362b1b6",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "stable",
-      "creation_date": "2021-07-10T20:38:36.612000+00:00",
-      "csv_description": "## About this Operator\n\nAppranix helps you to securely backup and restore, perform a disaster\nrecovery and migrate OpenShift cluster resources and persistent\nvolumes.\n\nThe operator works with Appranix to:\n\n- Install and initiate Appranix controller on your cluster\n\n- Take backups of your cluster and restore it in case of loss.\n\n- Migrate cluster resources to other clusters.\n\n- Replicate your production cluster to development and testing clusters.\n\n## Prerequisites\n\n- A storage bucket in GCP or AWS & credentials to access it\n- Appranix token generated for your cluster obtained from the Appranix console\n- A Configmap and Secret in your cluster for the bucket config and credentials\n\n#### Step 1: Creating a storage bucket\n\nNote: Currently only Google Storage bucket is supported, support for AWS S3 Bucket will be available in a future release.\n\n- You can create a bucket through the GCP console or by running the following command in [Google Cloud Shell](https://cloud.google.com/shell/)\n\n```shell\nAX_APS_BUCKET_NAME=<bucket_name>\ngsutil mb -b on gs://$AX_APS_BUCKET_NAME/\ngcloud iam service-accounts create appranix --display-name \"Appranix service account\"\nAX_SERVICE_ACCOUNT_EMAIL=$(gcloud iam service-accounts list --filter=\"displayName:Appranix service account\" --format 'value(email)')\ngsutil iam ch serviceAccount:$AX_SERVICE_ACCOUNT_EMAIL:objectAdmin gs://${AX_APS_BUCKET_NAME}\ngcloud iam service-accounts keys create ax_service_account.json --iam-account $AX_SERVICE_ACCOUNT_EMAIL\n```\n\nNote: You will require the ```ax_service_account.json``` created here in Step 3.\n\n\n#### Step 2: Obtaining the Appranix token for the cluster\n\n- Log in to your Appranix console and create a cluster connection. Upon connection creation copy the token generated for that cluster.\n\n#### Step 3: Creating the Configmap and Secret in the cluster\n\nA Configmap and Secret which contains the credetianls and bucket configuration has to be created before instaling the operator. It can be done by running the following command against your cluster.\n\nNote: Replace **token** wih the value obtained in Step 2.\n\n\n```shell\nAX_TOKEN=<token>\nAX_SERVICE_ACCOUNT=$(cat ax_service_account.json | base64 -w 0)\ncurl -Ls -H \"Content-Type: application/json\" https://us-central1-appranix-dev-07.cloudfunctions.net/operator-setup  -d '{\"token\": \"'$AX_TOKEN'\", \"secret\": \"'$AX_SERVICE_ACCOUNT'\"}' | oc apply -f -\n```\n\n#### Step 4: Deploying Operator from OperatorHub\n\n- Login to the OpenShift console and switch to ```appranix``` project\n\n- Search for Appranix in OperatorHub and install it.\n\n- Once installed go to the Appranix operator under Installed Operators and click on the BackupStorageLocation tab.\n\n- Now click on **Create BackupStorageLocation** and enter the bucket name under **Objectstorage** and click **Create**.\n\n- You can verify if the insallation is successful by checking the status in the Appranix console.",
-      "csv_display_name": "Appranix APS Operator",
-      "csv_metadata_description": "The Appranix operator enables you to back up and restore your OpenShift cluster resources and persistent volumes.",
-      "csv_name": "appranix-operator.v2.5.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T11:21:23.650000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "appranix-cps",
-      "provided_apis": [
-        {
-          "group": "aps.appranix.com",
-          "kind": "BackupStorageLocation",
-          "version": "v1"
-        }
-      ],
-      "provider": "Appranix",
-      "related_images": [
-        {
-          "digest": "sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
-          "image": "registry.connect.redhat.com/appranix/apx-operator@sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
-          "name": "apx-operator-b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08-annotation"
-        },
-        {
-          "digest": "sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
-          "image": "registry.connect.redhat.com/appranix/apx-operator@sha256:b2015405734f4949d0a8dedf5701f0398ff5645dfe4b461a312f3b96b2659a08",
-          "name": "manager"
-        },
-        {
-          "digest": "sha256:78d3471a6152df1cb066a82f93904110cb80a18f7e576edb3cd3fd180161bab4",
-          "image": "registry.connect.redhat.com/appranix/apx-controller@sha256:78d3471a6152df1cb066a82f93904110cb80a18f7e576edb3cd3fd180161bab4",
-          "name": "controller"
-        },
-        {
-          "digest": "sha256:46ca904bb0c9b3f4628011b610de3dce2ff9abae52294c111e953dc7e6140cd4",
-          "image": "registry.connect.redhat.com/appranix/apx-manager@sha256:46ca904bb0c9b3f4628011b610de3dce2ff9abae52294c111e953dc7e6140cd4",
-          "name": "agent"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2.5.0",
-      "version_original": "2.5.0"
-    },
-    {
       "_id": "60eaad45ba43af88444a4030",
       "alm_examples": [
         {
@@ -16875,144 +16315,6 @@
       "version_original": "1.2.8"
     },
     {
-      "_id": "611fbd60eb34b73652492dd1",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1alpha1",
-          "kind": "OpenshiftArtifactoryHa",
-          "metadata": {
-            "name": "openshiftartifactoryha"
-          },
-          "spec": {
-            "artifactory-ha": {
-              "artifactory": {
-                "image": {
-                  "repository": "registry.connect.redhat.com/jfrog/artifactory-pro",
-                  "version": "7.4.3"
-                },
-                "joinKey": "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE",
-                "masterKey": "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
-                "node": {
-                  "replicaCount": 2,
-                  "waitForPrimaryStartup": {
-                    "enabled": false
-                  }
-                }
-              },
-              "database": {
-                "driver": "OVERRIDE",
-                "password": "OVERRIDE",
-                "type": "OVERRIDE",
-                "url": "OVERRIDE",
-                "user": "OVERRIDE"
-              },
-              "initContainerImage": "registry.redhat.io/ubi8-minimal",
-              "nginx": {
-                "http": {
-                  "externalPort": 80,
-                  "internalPort": 8080
-                },
-                "https": {
-                  "externalPort": 443,
-                  "internalPort": 8443
-                },
-                "image": {
-                  "repository": "registry.redhat.io/rhel8/nginx-116",
-                  "version": "latest"
-                },
-                "service": {
-                  "ssloffload": false
-                },
-                "tlsSecretName": "OVERRIDE"
-              },
-              "postgresql": {
-                "enabled": false
-              },
-              "waitForDatabase": false
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/jfrog/artifactory-operator-bundle@sha256:5526e86dd60790139a6620e2464cb3450091dd0e6941600e9dab66a6fc79012e",
-      "bundle_path_digest": "sha256:5526e86dd60790139a6620e2464cb3450091dd0e6941600e9dab66a6fc79012e",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-08-20T14:34:08.391000+00:00",
-      "csv_description": "Openshift 4 Operator to deploy JFrog Artifactory Enterprise",
-      "csv_display_name": "JFrog Artifactory Enterprise Operator",
-      "csv_metadata_description": "JFrog Artifactory Enterprise deploys Artifactory in a high availability environment across multiple pods",
-      "csv_name": "artifactory-ha-operator.v1.0.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T10:55:13.198000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "openshiftartifactoryha-operator",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "OpenshiftArtifactoryHa",
-          "plural": "openshiftartifactoryhas",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "JFrog",
-      "related_images": [
-        {
-          "digest": "sha256:a5e9e99889cbe2c4ee96c80d908e80987371b66f9d99c6c6c6155583a9ef505a",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:a5e9e99889cbe2c4ee96c80d908e80987371b66f9d99c6c6c6155583a9ef505a",
-          "name": "artifactory-operator-a5e9e99889cbe2c4ee96c80d908e80987371b66f9d99c6c6c6155583a9ef505a-annotation"
-        },
-        {
-          "digest": "sha256:a5e9e99889cbe2c4ee96c80d908e80987371b66f9d99c6c6c6155583a9ef505a",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:a5e9e99889cbe2c4ee96c80d908e80987371b66f9d99c6c6c6155583a9ef505a",
-          "name": "artifactory-ha-operator"
-        },
-        {
-          "digest": "sha256:97eb6bd2639523ec5f8f7d7e87953ceda515244ef2e7ee4bef08f7eb19faa7ca",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-pro@sha256:97eb6bd2639523ec5f8f7d7e87953ceda515244ef2e7ee4bef08f7eb19faa7ca",
-          "name": "artifactory_image_repository"
-        },
-        {
-          "digest": "sha256:0ba76a7b26e5ffb95b4354243337ac2b3ff84ae8637c0782631084d1b2f99a33",
-          "image": "registry.redhat.io/rhel8/nginx-116@sha256:0ba76a7b26e5ffb95b4354243337ac2b3ff84ae8637c0782631084d1b2f99a33",
-          "name": "nginx_image_repository"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.0.0",
-      "version_original": "1.0.0"
-    },
-    {
       "_id": "611fbd69bd674341b5c5f10b",
       "alm_examples": [
         {
@@ -19999,154 +19301,6 @@
       "version_original": "1.1.0"
     },
     {
-      "_id": "611fbdd5bd674341b5c5f132",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1alpha1",
-          "kind": "OpenshiftArtifactoryHa",
-          "metadata": {
-            "name": "openshiftartifactoryha"
-          },
-          "spec": {
-            "artifactory-ha": {
-              "artifactory": {
-                "image": {
-                  "registry": "registry.connect.redhat.com",
-                  "repository": "jfrog/artifactory-pro",
-                  "tag": "7.9.0"
-                },
-                "joinKey": "OVERRIDE",
-                "masterKey": "OVERRIDE",
-                "node": {
-                  "replicaCount": 2,
-                  "waitForPrimaryStartup": {
-                    "enabled": false
-                  }
-                },
-                "uid": "1000721030"
-              },
-              "database": {
-                "driver": "OVERRIDE",
-                "password": "OVERRIDE",
-                "type": "OVERRIDE",
-                "url": "OVERRIDE",
-                "user": "OVERRIDE"
-              },
-              "initContainerImage": "registry.connect.redhat.com/jfrog/init@sha256:197f5a1e7a3dd934e72a03a106f0de83e992e6926a774e26483c06fa46faeee5",
-              "nginx": {
-                "gid": "1000720107",
-                "http": {
-                  "externalPort": 80,
-                  "internalPort": 8080
-                },
-                "https": {
-                  "externalPort": 443,
-                  "internalPort": 8443
-                },
-                "image": {
-                  "registry": "registry.redhat.io",
-                  "repository": "rhel8/nginx-116",
-                  "tag": "latest"
-                },
-                "service": {
-                  "ssloffload": false
-                },
-                "tlsSecretName": "OVERRIDE",
-                "uid": "1000720104"
-              },
-              "postgresql": {
-                "enabled": false
-              },
-              "waitForDatabase": true
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "quay.io/rhc4tp/artifactory-operator-bundle@sha256:95fd797214f4a3f2580d108287f225c1982af2741e4a96ffa787e29692073d20",
-      "bundle_path_digest": "sha256:95fd797214f4a3f2580d108287f225c1982af2741e4a96ffa787e29692073d20",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-08-20T14:36:05.878000+00:00",
-      "csv_description": "## Overview\nOpenshift Operator to deploy JFrog Artifactory Enterprise into your Openshift cluster.\n\n## Usage\n\nAn external DB is required. The operator will not deploy a DB but will require you to specify the configuration values to connect to it.\n\nSearch for JFrog and click JFrog Artifactory Enterprise Operator to install.\n\nGo to the Installed Operators.\n\nWait for the JFrog Artifactory Enterprise Operator to complete the installation.\n\nOpen the Operator and click on the provided API: Artifactory HA.\n\nClick Create New Instance and provide the following parameters for your DB configuration:\n\n```\nDATABASE_TYPE\nDATABASE_DRIVER\nDATABASE_URL\nDATABASE_USER\nDATABASE_PASSWORD\n```\nMaster key and Join key must be supplied. To generate a new key for each run the command below:\n``` # Create a key export JOIN_KEY=$(openssl rand -hex 32) echo ${JOIN_KEY} ```\nTo use TLS you will need to first create a k8s tls secret to store your .crt and .key file into.\nThen supply the value of this k8s secret into the TLS_SECRET field.\nClick Create for Artifactory Enterprise to deploy into OpenShift and connect to it on the external IP exposed by the load balancer.\n",
-      "csv_display_name": "JFrog Artifactory Enterprise Operator",
-      "csv_metadata_description": "JFrog Artifactory Enterprise deploys Artifactory in a high availability environment across multiple pods",
-      "csv_name": "artifactory-ha-operator.v1.1.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T10:55:19.712000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "openshiftartifactoryha-operator",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "OpenshiftArtifactoryHa",
-          "plural": "openshiftartifactoryhas",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "JFrog",
-      "related_images": [
-        {
-          "digest": "sha256:376f2922911113a0e217614e1f0d26672d62258170b7ae1dcad0fdd596e035a6",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:376f2922911113a0e217614e1f0d26672d62258170b7ae1dcad0fdd596e035a6",
-          "name": "artifactory-operator-376f2922911113a0e217614e1f0d26672d62258170b7ae1dcad0fdd596e035a6-annotation"
-        },
-        {
-          "digest": "sha256:376f2922911113a0e217614e1f0d26672d62258170b7ae1dcad0fdd596e035a6",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:376f2922911113a0e217614e1f0d26672d62258170b7ae1dcad0fdd596e035a6",
-          "name": "artifactory-ha-operator"
-        },
-        {
-          "digest": "sha256:f0b061c4126f58b70ddaf39a3c5cc009be21b75ac4530ec5088a40d1e6f50e3e",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-pro@sha256:f0b061c4126f58b70ddaf39a3c5cc009be21b75ac4530ec5088a40d1e6f50e3e",
-          "name": "artifactory_image_repository"
-        },
-        {
-          "digest": "sha256:0ba76a7b26e5ffb95b4354243337ac2b3ff84ae8637c0782631084d1b2f99a33",
-          "image": "registry.redhat.io/rhel8/nginx-116@sha256:0ba76a7b26e5ffb95b4354243337ac2b3ff84ae8637c0782631084d1b2f99a33",
-          "name": "nginx_image_repository"
-        },
-        {
-          "digest": "sha256:197f5a1e7a3dd934e72a03a106f0de83e992e6926a774e26483c06fa46faeee5",
-          "image": "registry.connect.redhat.com/jfrog/init@sha256:197f5a1e7a3dd934e72a03a106f0de83e992e6926a774e26483c06fa46faeee5",
-          "name": "init-197f5a1e7a3dd934e72a03a106f0de83e992e6926a774e26483c06fa46faeee5-annotation"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "1.1.0",
-      "version_original": "1.1.0"
-    },
-    {
       "_id": "611fbdf6bd674341b5c5f140",
       "alm_examples": [
         {
@@ -21660,6 +20814,561 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
       "version": "1.4.2",
       "version_original": "1.4.2"
+    },
+    {
+      "_id": "6125de5fbd674341b5c5f476",
+      "alm_examples": [
+        {
+          "api_version": "charts.operatorhub.io/v1",
+          "kind": "CcmNodeAgent",
+          "metadata": {
+            "name": "ccmnodeagent-sample"
+          },
+          "spec": {
+            "ccmJoinToken": {
+              "secretName": "ccm-join-token",
+              "token": ""
+            },
+            "fullnameOverride": "",
+            "image": {
+              "ccmNodeAgent": {
+                "pullPolicy": "Always",
+                "repository": "fortanix/ccm-node-agent-ubi7",
+                "tag": "3.5.475"
+              },
+              "ccmNodeAgentInit": {
+                "pullPolicy": "IfNotPresent",
+                "repository": "busybox",
+                "tag": "latest"
+              },
+              "sgxSoftwareInstaller": {
+                "pullPolicy": "Always",
+                "repository": "fortanix/sgx-software-installer-ubi7",
+                "tag": "3.5.475"
+              }
+            },
+            "log": {
+              "debug": false
+            },
+            "nameOverride": "",
+            "podAnnotations": {},
+            "ports": {
+              "containerPort": 9092,
+              "hostPort": 9092
+            },
+            "replicaCount": 1,
+            "resources": {
+              "limits": {
+                "cpu": "100m",
+                "memory": "128Mi"
+              },
+              "requests": {
+                "cpu": "100m",
+                "memory": "128Mi"
+              }
+            },
+            "serviceAccount": {
+              "annotations": {},
+              "create": true,
+              "name": ""
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/fortanix/ccm-node-agent-operator-bundle@sha256:8c697c066566c5bf5c0d4c776ec0f7950a6bba26565d20c58a0bca26dd15f3e6",
+      "bundle_path_digest": "sha256:8c697c066566c5bf5c0d4c776ec0f7950a6bba26565d20c58a0bca26dd15f3e6",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-08-25T06:08:31.549000+00:00",
+      "csv_description": "CCM Node Agent software enables registration of the compute nodes to Fortanix CCM when installed in the Openshift Cluster Nodes\u200b. \nIt also assists with application attestation and visibility for Fortanix CCM.\n\n## About this Operator\nThis Operator is based on a Helm chart for CCM Node Agent. It enrolls all the nodes in the openshift cluster to a particular CCM account. You have to provide the base64 encode of join token of CCM account while creating CcmNodeAgent resource.\n\n## Prerequisites\nAll the worker nodes in the cluster must have SGX capabilities.\n\n## Installation\n* Choose a namespace to install the Operator. Operator will be available in all namespaces.\n* Select Approval Strategy: Available options are Automatic or Manual. Automatic approval will automatically upgrade the running instance of your Operator without human intervention when a new version is available. In case of Manual approval, when a new version is available, OLM will create an update request. You must manually approve the request to update the Operator to a new version.\n* Generate your CCM Account Join Token: Please log in to https://ccm.fortanix.com, and in the Management Console tab, click the + ENROLL NODE button. In the ENROLL NODE screen, a Join Token will be generated in the text box for \"Get a join token to register an SGX compute node\". This Join Token is used by the compute node to authenticate itself.\n* Base64 encode the Join Token:\n```shell\necho -n <join-token> | openssl base64 -A\n```\n* Create an instance of CcmNodeAgent by setting the `spec.ccmJoinToken.Token` to the base64 encoded CCM account join token.\n* After CcmNodeAgent resource is installed successfully you should be able to see all the worker nodes of the cluster in your CCM account under Compute Node Tab.\n\n## Getting Started\nNow to run your application inside SGX enclaves on your cluster follow the [documentation](https://support.fortanix.com/hc/en-us/articles/360043527431-User-s-Guide-Add-and-Edit-an-Application).\n",
+      "csv_display_name": "CCM Node Agent Operator",
+      "csv_metadata_description": "CCM Node Agent software enables registration of the compute nodes to Fortanix CCM when installed in the Openshift Cluster Nodes",
+      "csv_name": "ccm-node-agent-operator.v0.0.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T11:20:53.304000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "ccm-node-agent-operator",
+      "provided_apis": [
+        {
+          "group": "charts.operatorhub.io",
+          "kind": "CcmNodeAgent",
+          "plural": "ccmnodeagents",
+          "version": "v1"
+        }
+      ],
+      "provider": "Fortanix Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
+          "image": "fortanix/ccm-node-agent-operator@sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
+          "name": "ccm-node-agent-operator-73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4-annotation"
+        },
+        {
+          "digest": "sha256:e30f7835cf52dbce9afdbaf55e5a93d8baf9c4b3a3ae488d1d42c1adba7f46af",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:e30f7835cf52dbce9afdbaf55e5a93d8baf9c4b3a3ae488d1d42c1adba7f46af",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
+          "image": "fortanix/ccm-node-agent-operator@sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "0.0.1",
+      "version_original": "0.0.1"
+    },
+    {
+      "_id": "6125dedceb34b736524930f0",
+      "alm_examples": [
+        {
+          "api_version": "charts.operatorhub.io/v1",
+          "kind": "CcmNodeAgent",
+          "metadata": {
+            "name": "ccmnodeagent-sample"
+          },
+          "spec": {
+            "ccmJoinToken": {
+              "secretName": "ccm-join-token",
+              "token": ""
+            },
+            "fullnameOverride": "",
+            "image": {
+              "ccmNodeAgent": {
+                "pullPolicy": "Always",
+                "repository": "fortanix/ccm-node-agent-ubi7",
+                "tag": "3.5.475"
+              },
+              "ccmNodeAgentInit": {
+                "pullPolicy": "IfNotPresent",
+                "repository": "busybox",
+                "tag": "latest"
+              },
+              "sgxSoftwareInstaller": {
+                "pullPolicy": "Always",
+                "repository": "fortanix/sgx-software-installer-ubi7",
+                "tag": "3.5.475"
+              }
+            },
+            "log": {
+              "debug": false
+            },
+            "nameOverride": "",
+            "podAnnotations": {},
+            "ports": {
+              "containerPort": 9092,
+              "hostPort": 9092
+            },
+            "replicaCount": 1,
+            "resources": {
+              "limits": {
+                "cpu": "100m",
+                "memory": "128Mi"
+              },
+              "requests": {
+                "cpu": "100m",
+                "memory": "128Mi"
+              }
+            },
+            "serviceAccount": {
+              "annotations": {},
+              "create": true,
+              "name": ""
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/fortanix/ccm-node-agent-operator-bundle@sha256:8c697c066566c5bf5c0d4c776ec0f7950a6bba26565d20c58a0bca26dd15f3e6",
+      "bundle_path_digest": "sha256:8c697c066566c5bf5c0d4c776ec0f7950a6bba26565d20c58a0bca26dd15f3e6",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-08-25T06:10:36.462000+00:00",
+      "csv_description": "CCM Node Agent software enables registration of the compute nodes to Fortanix CCM when installed in the Openshift Cluster Nodes\u200b. \nIt also assists with application attestation and visibility for Fortanix CCM.\n\n## About this Operator\nThis Operator is based on a Helm chart for CCM Node Agent. It enrolls all the nodes in the openshift cluster to a particular CCM account. You have to provide the base64 encode of join token of CCM account while creating CcmNodeAgent resource.\n\n## Prerequisites\nAll the worker nodes in the cluster must have SGX capabilities.\n\n## Installation\n* Choose a namespace to install the Operator. Operator will be available in all namespaces.\n* Select Approval Strategy: Available options are Automatic or Manual. Automatic approval will automatically upgrade the running instance of your Operator without human intervention when a new version is available. In case of Manual approval, when a new version is available, OLM will create an update request. You must manually approve the request to update the Operator to a new version.\n* Generate your CCM Account Join Token: Please log in to https://ccm.fortanix.com, and in the Management Console tab, click the + ENROLL NODE button. In the ENROLL NODE screen, a Join Token will be generated in the text box for \"Get a join token to register an SGX compute node\". This Join Token is used by the compute node to authenticate itself.\n* Base64 encode the Join Token:\n```shell\necho -n <join-token> | openssl base64 -A\n```\n* Create an instance of CcmNodeAgent by setting the `spec.ccmJoinToken.Token` to the base64 encoded CCM account join token.\n* After CcmNodeAgent resource is installed successfully you should be able to see all the worker nodes of the cluster in your CCM account under Compute Node Tab.\n\n## Getting Started\nNow to run your application inside SGX enclaves on your cluster follow the [documentation](https://support.fortanix.com/hc/en-us/articles/360043527431-User-s-Guide-Add-and-Edit-an-Application).\n",
+      "csv_display_name": "CCM Node Agent Operator",
+      "csv_metadata_description": "CCM Node Agent software enables registration of the compute nodes to Fortanix CCM when installed in the Openshift Cluster Nodes",
+      "csv_name": "ccm-node-agent-operator.v0.0.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T10:36:51.711000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "ccm-node-agent-operator",
+      "provided_apis": [
+        {
+          "group": "charts.operatorhub.io",
+          "kind": "CcmNodeAgent",
+          "plural": "ccmnodeagents",
+          "version": "v1"
+        }
+      ],
+      "provider": "Fortanix Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
+          "image": "fortanix/ccm-node-agent-operator@sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
+          "name": "ccm-node-agent-operator-73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4-annotation"
+        },
+        {
+          "digest": "sha256:e30f7835cf52dbce9afdbaf55e5a93d8baf9c4b3a3ae488d1d42c1adba7f46af",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:e30f7835cf52dbce9afdbaf55e5a93d8baf9c4b3a3ae488d1d42c1adba7f46af",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
+          "image": "fortanix/ccm-node-agent-operator@sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "0.0.1",
+      "version_original": "0.0.1"
+    },
+    {
+      "_id": "612608dedece23122b7a7e84",
+      "alm_examples": [
+        {
+          "api_version": "charts.operatorhub.io/v1",
+          "kind": "CcmNodeAgent",
+          "metadata": {
+            "name": "ccmnodeagent-sample"
+          },
+          "spec": {
+            "ccmJoinToken": {
+              "secretName": "ccm-join-token",
+              "token": ""
+            },
+            "fullnameOverride": "",
+            "image": {
+              "ccmNodeAgent": {
+                "pullPolicy": "Always",
+                "repository": "fortanix/ccm-node-agent-ubi7",
+                "tag": "3.5.475"
+              },
+              "ccmNodeAgentInit": {
+                "pullPolicy": "IfNotPresent",
+                "repository": "busybox",
+                "tag": "latest"
+              },
+              "sgxSoftwareInstaller": {
+                "pullPolicy": "Always",
+                "repository": "fortanix/sgx-software-installer-ubi7",
+                "tag": "3.5.475"
+              }
+            },
+            "log": {
+              "debug": false
+            },
+            "nameOverride": "",
+            "podAnnotations": {},
+            "ports": {
+              "containerPort": 9092,
+              "hostPort": 9092
+            },
+            "replicaCount": 1,
+            "resources": {
+              "limits": {
+                "cpu": "100m",
+                "memory": "128Mi"
+              },
+              "requests": {
+                "cpu": "100m",
+                "memory": "128Mi"
+              }
+            },
+            "serviceAccount": {
+              "annotations": {},
+              "create": true,
+              "name": ""
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/fortanix/ccm-node-agent-operator-bundle@sha256:8c697c066566c5bf5c0d4c776ec0f7950a6bba26565d20c58a0bca26dd15f3e6",
+      "bundle_path_digest": "sha256:8c697c066566c5bf5c0d4c776ec0f7950a6bba26565d20c58a0bca26dd15f3e6",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2021-08-25T09:09:50.757000+00:00",
+      "csv_description": "CCM Node Agent software enables registration of the compute nodes to Fortanix CCM when installed in the Openshift Cluster Nodes\u200b. \nIt also assists with application attestation and visibility for Fortanix CCM.\n\n## About this Operator\nThis Operator is based on a Helm chart for CCM Node Agent. It enrolls all the nodes in the openshift cluster to a particular CCM account. You have to provide the base64 encode of join token of CCM account while creating CcmNodeAgent resource.\n\n## Prerequisites\nAll the worker nodes in the cluster must have SGX capabilities.\n\n## Installation\n* Choose a namespace to install the Operator. Operator will be available in all namespaces.\n* Select Approval Strategy: Available options are Automatic or Manual. Automatic approval will automatically upgrade the running instance of your Operator without human intervention when a new version is available. In case of Manual approval, when a new version is available, OLM will create an update request. You must manually approve the request to update the Operator to a new version.\n* Generate your CCM Account Join Token: Please log in to https://ccm.fortanix.com, and in the Management Console tab, click the + ENROLL NODE button. In the ENROLL NODE screen, a Join Token will be generated in the text box for \"Get a join token to register an SGX compute node\". This Join Token is used by the compute node to authenticate itself.\n* Base64 encode the Join Token:\n```shell\necho -n <join-token> | openssl base64 -A\n```\n* Create an instance of CcmNodeAgent by setting the `spec.ccmJoinToken.Token` to the base64 encoded CCM account join token.\n* After CcmNodeAgent resource is installed successfully you should be able to see all the worker nodes of the cluster in your CCM account under Compute Node Tab.\n\n## Getting Started\nNow to run your application inside SGX enclaves on your cluster follow the [documentation](https://support.fortanix.com/hc/en-us/articles/360043527431-User-s-Guide-Add-and-Edit-an-Application).\n",
+      "csv_display_name": "CCM Node Agent Operator",
+      "csv_metadata_description": "CCM Node Agent software enables registration of the compute nodes to Fortanix CCM when installed in the Openshift Cluster Nodes",
+      "csv_name": "ccm-node-agent-operator.v0.0.1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T10:56:37.588000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.6",
+      "organization": "certified-operators",
+      "package": "ccm-node-agent-operator",
+      "provided_apis": [
+        {
+          "group": "charts.operatorhub.io",
+          "kind": "CcmNodeAgent",
+          "plural": "ccmnodeagents",
+          "version": "v1"
+        }
+      ],
+      "provider": "Fortanix Inc.",
+      "related_images": [
+        {
+          "digest": "sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
+          "image": "fortanix/ccm-node-agent-operator@sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
+          "name": "ccm-node-agent-operator-73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4-annotation"
+        },
+        {
+          "digest": "sha256:e30f7835cf52dbce9afdbaf55e5a93d8baf9c4b3a3ae488d1d42c1adba7f46af",
+          "image": "registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:e30f7835cf52dbce9afdbaf55e5a93d8baf9c4b3a3ae488d1d42c1adba7f46af",
+          "name": "kube-rbac-proxy"
+        },
+        {
+          "digest": "sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
+          "image": "fortanix/ccm-node-agent-operator@sha256:73309ff8e2ba77ec474dcfd19a29b624572bea6595990c64e6325e7987180ec4",
+          "name": "manager"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.6",
+      "version": "0.0.1",
+      "version_original": "0.0.1"
+    },
+    {
+      "_id": "6127be69dece23122b7a8369",
+      "alm_examples": [
+        {
+          "api_version": "sonatype.com/v1alpha1",
+          "kind": "NexusIQ",
+          "metadata": {
+            "name": "example-nexusiq"
+          },
+          "spec": {
+            "deployment": {
+              "postStart": {},
+              "preStart": {}
+            },
+            "fullnameOverride": "",
+            "imagePullSecrets": [],
+            "ingress": {
+              "annotations": {},
+              "enabled": false,
+              "hosts": [],
+              "path": "/",
+              "tls": []
+            },
+            "iq": {
+              "adminPort": 8071,
+              "applicationPort": 8070,
+              "configYaml": {
+                "createSampleData": true,
+                "server": {
+                  "adminConnectors": [
+                    {
+                      "port": 8071,
+                      "type": "http"
+                    }
+                  ],
+                  "applicationConnectors": [
+                    {
+                      "port": 8070,
+                      "type": "http"
+                    }
+                  ]
+                },
+                "sonatypeWork": "/sonatype-work"
+              },
+              "imageName": "registry.connect.redhat.com/sonatype/nexus-iq-server@sha256:ce08dbabd686ab02f246b43dccb708e2c4d81d656a091965dd3b73123091f790",
+              "imagePullPolicy": "IfNotPresent",
+              "imagePullSecret": "",
+              "licenseSecret": "",
+              "memory": "1Gi",
+              "name": "nxiq"
+            },
+            "nameOverride": "",
+            "persistence": {
+              "accessMode": "ReadWriteOnce",
+              "storageSize": "1Gi"
+            },
+            "service": {
+              "annotations": {},
+              "enabled": false,
+              "labels": {},
+              "ports": [
+                {
+                  "name": "nexus-service",
+                  "port": 80,
+                  "targetPort": 80
+                }
+              ]
+            },
+            "serviceAccount": {
+              "create": true
+            }
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/sonatype/nxiq-operator-bundle@sha256:16ebccbf15157c2f7ba6d0873eead210f0c10fb4bce32e9f3fedcd1704fe7f30",
+      "bundle_path_digest": "sha256:16ebccbf15157c2f7ba6d0873eead210f0c10fb4bce32e9f3fedcd1704fe7f30",
+      "capabilities": [
+        "Basic Install"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2021-08-26T16:16:41.332000+00:00",
+      "csv_description": "Nexus Lifecycle is an open source governance platform that continuously identifies risk,\nautomatically enforces policy, and provides visibility throughout the entire SDLC.\nDevelopers leveraging open source require a solution that helps them make safer choices\nwhile still delivering at DevOps speed.\nNexus Lifecycle empowers developers and security teams to choose the best components\nand govern open source usage, ensuring organizations continue to innovate with less risk.\n\n## Core Capabilities\n\n* **Dependency Management**:\n  Generate a precise software bill of materials for all applications\n  to identify open source components and gather contextual direct\n  and transitive dependency information for faster action.\n* **One-Click Remediation**:\n  Upgrade to the best components and versions based on real-time intelligence.\n  Available in your preferred IDE or a GitHub pull request.\n* **Automated Open Source Policy Enforcement**:\n  Create custom security, license, and architectural policies based\n  on application type or organization and contextually enforce those policies\n  across every stage of the SDLC.\n* **Continuous Monitoring**:\n  Real-time notifications of newly discovered defects,\n  as well as vulnerabilities based on component,\n  risk level or application/container affected.\n\n## Extras\n\n* IDE Integrations: Eclipse, IntelliJ, and Visual Studio\n* Source Control Integrations: GitHub, GitLab, and Bitbucket\n* Chrome Browser Extension\n* Red Hat Clair for Container Scanning\n\n\n## Usage\n\nOnce the server instance is created by the operator and running,\nyou'll want to expose the service as you see fit:\n1. Create a Route to the new service for iq.applicationPort (8070).\n2. Visit the URL provided by the Route, login, and set new credentials.\n  The default credentials are `admin`/`admin123`.\n\nThe Nexus IQ Server can be further configured via the NexusIQ custom resource definition:\n\n| Parameter            | Description                                                  | Default           |\n| -------------------- | ------------------------------------------------------------ | ----------------- |\n| `iq.applicationPort` | Port of the application connector. Must match the value in the `configYaml` property | `8070`            |\n| `iq.adminPort`       | Port of the application connector. Must match the value in the `configYaml` property | `8071`            |\n| `iq.memory`          | The amount of RAM to allocate                                | `1Gi`             |\n| `iq.licenseSecret`   | The base-64 encoded license file to be installed at startup  | `\"\"`              |\n| `iq.configYaml`      | A YAML block which will be used as a configuration block for IQ Server. | See example YAML shown when creating a NexusIQ. |\n| `ingress.enabled`                           | Create an ingress for Nexus         | `true`                                  |\n| `ingress.annotations`                       | Annotations to enhance ingress configuration  | `{}`                          |\n| `ingress.tls.enabled`                       | Enable TLS                          | `true`                                 |\n| `ingress.tls.secretName`                    | Name of the secret storing TLS cert, `false` to use the Ingress' default certificate | `nexus-tls`                             |\n| `ingress.path`                              | Path for ingress rules. GCP users should set to `/*` | `/`                    |\n| `deployment.preStart.command`               | Command to run before starting the IQ Server container  | `nil`                   |\n| `deployment.postStart.command`              | Command to run after starting the IQ Server container  | `nil`                    |\n| `deployment.terminationGracePeriodSeconds` | Time to allow for clean shutdown                        | 120                      |\n| `persistence.storageClass` | The provisioner class                        | `-` (disables dynamic provisioning)            |\n| `persistence.storageSize` | The amount of drive space to allocate                        | `1Gi`             |\n| `persistence.accessMode` | Default access mode                        | `ReadWriteOnce`             |\n| `persistence.volumeConfiguration` | A YAML block to configure the persistent volume type. Defaults to `hostPath` which should not be used in production | `hostPath`             |\n\n## Configuring IQ Server\n\nYou can define the `config.yml` for IQ Server in your CRD on startup. \nIt is the `iq.configYaml` property. For more details, see the [Configuring IQ Server](https://help.sonatype.com/iqserver/configuring) help page.\n\n\n## Installing the License\n\nThe license file can be installed via the UI when IQ server is running, or it can be done as a part of the deploy. \nIf you leave the `licenseFile` field empty/commented, IQ Server will start and prompt you to manually install the license \nwhen you first enter the GUI.\n\n### Installing the License Automatically\nTo do it automatically, first encode your `.lic` file in Base 64 with no line breaks, eg:\n\n```bash\nbase64 --wrap=0 mylicense.lic > lic.base64\n```\n\nThen add this value to your CRD file as `iq.licenseSecret`, eg:\n\n```yaml\niq:\n  licenseSecret: bXkgc2FtcGxlIGxpY2Vuc2U=\n```\n\nSpecify the `licenseFile` path in `iq.configYaml` as:\n\n```yaml\niq:\n  configYaml:\n    server:\n      applicationConnectors:\n        - type: http\n          port: 8070\n      adminConnectors:\n        - type: http\n          port: 8071\n    createSampleData: true\n    sonatypeWork: /sonatype-work\n    # add this line and the `licenseSecret` above to autoconfigure licensing\n    licenseFile: /etc/nexus-iq-license/license_lic\n```",
+      "csv_display_name": "Nexus IQ Operator",
+      "csv_metadata_description": "Nexus Lifecycle is an open source governance platform that continuously identifies risk,\nautomatically enforces policy, and provides visibility throughout the entire SDLC.",
+      "csv_name": "nxiq-operator-certified.v1.121.0-1",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-10-24T11:12:59.103000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.5",
+      "organization": "certified-operators",
+      "package": "nxiq-operator-certified",
+      "provided_apis": [
+        {
+          "group": "sonatype.com",
+          "kind": "NexusIQ",
+          "plural": "nexusiqs",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Sonatype",
+      "related_images": [
+        {
+          "digest": "sha256:f397acba37cb3a04cd7815491e0dff2f34d99f13cce82dc7c9522f5e26705ebc",
+          "image": "registry.connect.redhat.com/sonatype/nxiq-operator-certified@sha256:f397acba37cb3a04cd7815491e0dff2f34d99f13cce82dc7c9522f5e26705ebc",
+          "name": "nxiq-operator-certified-f397acba37cb3a04cd7815491e0dff2f34d99f13cce82dc7c9522f5e26705ebc-annotation"
+        },
+        {
+          "digest": "sha256:f397acba37cb3a04cd7815491e0dff2f34d99f13cce82dc7c9522f5e26705ebc",
+          "image": "registry.connect.redhat.com/sonatype/nxiq-operator-certified@sha256:f397acba37cb3a04cd7815491e0dff2f34d99f13cce82dc7c9522f5e26705ebc",
+          "name": "nxiq-operator-certified"
+        },
+        {
+          "digest": "sha256:ce08dbabd686ab02f246b43dccb708e2c4d81d656a091965dd3b73123091f790",
+          "image": "registry.connect.redhat.com/sonatype/nexus-iq-server@sha256:ce08dbabd686ab02f246b43dccb708e2c4d81d656a091965dd3b73123091f790",
+          "name": "iq"
+        },
+        {
+          "digest": "sha256:ce08dbabd686ab02f246b43dccb708e2c4d81d656a091965dd3b73123091f790",
+          "image": "registry.connect.redhat.com/sonatype/nexus-iq-server@sha256:ce08dbabd686ab02f246b43dccb708e2c4d81d656a091965dd3b73123091f790",
+          "name": "nexus-iq-server-ce08dbabd686ab02f246b43dccb708e2c4d81d656a091965dd3b73123091f790-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.5",
+      "version": "1.121.0-1",
+      "version_original": "1.121.0-1"
     }
   ]
 }

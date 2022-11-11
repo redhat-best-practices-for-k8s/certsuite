@@ -6857,144 +6857,6 @@
       "version_original": "1.4.1"
     },
     {
-      "_id": "609aafdf3048c1ac9a6feaea",
-      "alm_examples": [
-        {
-          "api_version": "charts.helm.k8s.io/v1alpha1",
-          "kind": "OpenshiftArtifactoryHa",
-          "metadata": {
-            "name": "openshiftartifactoryha"
-          },
-          "spec": {
-            "artifactory-ha": {
-              "artifactory": {
-                "image": {
-                  "repository": "registry.connect.redhat.com/jfrog/artifactory-pro",
-                  "version": "7.4.3"
-                },
-                "joinKey": "EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE",
-                "masterKey": "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
-                "node": {
-                  "replicaCount": 2,
-                  "waitForPrimaryStartup": {
-                    "enabled": false
-                  }
-                }
-              },
-              "database": {
-                "driver": "OVERRIDE",
-                "password": "OVERRIDE",
-                "type": "OVERRIDE",
-                "url": "OVERRIDE",
-                "user": "OVERRIDE"
-              },
-              "initContainerImage": "registry.redhat.io/ubi8-minimal",
-              "nginx": {
-                "http": {
-                  "externalPort": 80,
-                  "internalPort": 8080
-                },
-                "https": {
-                  "externalPort": 443,
-                  "internalPort": 8443
-                },
-                "image": {
-                  "repository": "registry.redhat.io/rhel8/nginx-116",
-                  "version": "latest"
-                },
-                "service": {
-                  "ssloffload": false
-                },
-                "tlsSecretName": "OVERRIDE"
-              },
-              "postgresql": {
-                "enabled": false
-              },
-              "waitForDatabase": false
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/jfrog/artifactory-operator-bundle@sha256:5526e86dd60790139a6620e2464cb3450091dd0e6941600e9dab66a6fc79012e",
-      "bundle_path_digest": "sha256:5526e86dd60790139a6620e2464cb3450091dd0e6941600e9dab66a6fc79012e",
-      "capabilities": [
-        "Basic Install"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2021-05-11T16:25:03.583000+00:00",
-      "csv_description": "Openshift 4 Operator to deploy JFrog Artifactory Enterprise",
-      "csv_display_name": "JFrog Artifactory Enterprise Operator",
-      "csv_metadata_description": "JFrog Artifactory Enterprise deploys Artifactory in a high availability environment across multiple pods",
-      "csv_name": "artifactory-ha-operator.v1.0.0",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T11:42:21.093000+00:00",
-      "latest_in_channel": false,
-      "ocp_version": "4.8",
-      "organization": "certified-operators",
-      "package": "openshiftartifactoryha-operator",
-      "provided_apis": [
-        {
-          "group": "charts.helm.k8s.io",
-          "kind": "OpenshiftArtifactoryHa",
-          "plural": "openshiftartifactoryhas",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "JFrog",
-      "related_images": [
-        {
-          "digest": "sha256:a5e9e99889cbe2c4ee96c80d908e80987371b66f9d99c6c6c6155583a9ef505a",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:a5e9e99889cbe2c4ee96c80d908e80987371b66f9d99c6c6c6155583a9ef505a",
-          "name": "artifactory-operator-a5e9e99889cbe2c4ee96c80d908e80987371b66f9d99c6c6c6155583a9ef505a-annotation"
-        },
-        {
-          "digest": "sha256:a5e9e99889cbe2c4ee96c80d908e80987371b66f9d99c6c6c6155583a9ef505a",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-operator@sha256:a5e9e99889cbe2c4ee96c80d908e80987371b66f9d99c6c6c6155583a9ef505a",
-          "name": "artifactory-ha-operator"
-        },
-        {
-          "digest": "sha256:97eb6bd2639523ec5f8f7d7e87953ceda515244ef2e7ee4bef08f7eb19faa7ca",
-          "image": "registry.connect.redhat.com/jfrog/artifactory-pro@sha256:97eb6bd2639523ec5f8f7d7e87953ceda515244ef2e7ee4bef08f7eb19faa7ca",
-          "name": "artifactory_image_repository"
-        },
-        {
-          "digest": "sha256:0ba76a7b26e5ffb95b4354243337ac2b3ff84ae8637c0782631084d1b2f99a33",
-          "image": "registry.redhat.io/rhel8/nginx-116@sha256:0ba76a7b26e5ffb95b4354243337ac2b3ff84ae8637c0782631084d1b2f99a33",
-          "name": "nginx_image_repository"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
-      "version": "1.0.0",
-      "version_original": "1.0.0"
-    },
-    {
       "_id": "609aafe1e2b160d361d25155",
       "alm_examples": [],
       "annotations": {
@@ -8932,6 +8794,56 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.8",
       "version": "1.2.0",
       "version_original": "1.2.0"
+    },
+    {
+      "_id": "609ab014e2b160d361d25175",
+      "alm_examples": [],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/redislabs/redis-enterprise-operator-bundle@sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "bundle_path_digest": "sha256:9ea442914977e8d29dc1f50a8d87d51363f729e2962a91ae993038b358916996",
+      "capabilities": [
+        ""
+      ],
+      "channel_name": "6.0.8",
+      "creation_date": "2021-05-11T16:25:56.719000+00:00",
+      "csv_description": "",
+      "csv_display_name": "",
+      "csv_metadata_description": "",
+      "csv_name": "redis-enterprise-operator.v6.0.6-6",
+      "in_index_img": true,
+      "install_modes": [],
+      "is_default_channel": false,
+      "last_update_date": "2022-10-24T11:19:22.796000+00:00",
+      "latest_in_channel": false,
+      "ocp_version": "4.7",
+      "organization": "certified-operators",
+      "package": "redis-enterprise-operator-cert",
+      "provided_apis": [
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1"
+        },
+        {
+          "group": "app.redislabs.com",
+          "kind": "RedisEnterpriseCluster",
+          "plural": "redisenterpriseclusters",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "",
+      "related_images": [],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
+      "version": "6.0.6-6",
+      "version_original": "6.0.6-6"
     }
   ]
 }
