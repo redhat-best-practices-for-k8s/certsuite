@@ -102,3 +102,13 @@ func filterDPDKRunningPods(pods []*Pod) []*Pod {
 	}
 	return filteredPods
 }
+
+func (env *TestEnvironment) GetShareProcessNamespacePods() []*Pod {
+	var filteredPods []*Pod
+	for _, p := range env.Pods {
+		if p.IsShareProcessNamespace() {
+			filteredPods = append(filteredPods, p)
+		}
+	}
+	return filteredPods
+}
