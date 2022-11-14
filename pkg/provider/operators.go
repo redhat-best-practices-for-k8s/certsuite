@@ -25,16 +25,16 @@ import (
 )
 
 type Operator struct {
-	Name             string                            `yaml:"name" json:"name"`
-	Namespace        string                            `yaml:"namespace" json:"namespace"`
-	Csv              *olmv1Alpha.ClusterServiceVersion `yaml:"csv" json:"csv"`
-	SubscriptionName string                            `yaml:"subscriptionName" json:"subscriptionName"`
-	InstallPlans     []CsvInstallPlan                  `yaml:"installPlans,omitempty" json:"installPlans,omitempty"`
-	Package          string                            `yaml:"package" json:"package"`
-	Org              string                            `yaml:"org" json:"org"`
-	Version          string                            `yaml:"version" json:"version"`
-	Channel          string                            `yaml:"channel" json:"channel"`
-	NameOnly         string                            `yaml:"NameOnly" json:"NameOnly"`
+	Name               string                            `yaml:"name" json:"name"`
+	Namespace          string                            `yaml:"namespace" json:"namespace"`
+	Csv                *olmv1Alpha.ClusterServiceVersion `yaml:"csv" json:"csv"`
+	SubscriptionName   string                            `yaml:"subscriptionName" json:"subscriptionName"`
+	InstallPlans       []CsvInstallPlan                  `yaml:"installPlans,omitempty" json:"installPlans,omitempty"`
+	Package            string                            `yaml:"package" json:"package"`
+	Org                string                            `yaml:"org" json:"org"`
+	Version            string                            `yaml:"version" json:"version"`
+	Channel            string                            `yaml:"channel" json:"channel"`
+	PackageFromCsvName string                            `yaml:"packagefromcsvname" json:"packagefromcsvname"`
 }
 
 type CsvInstallPlan struct {
@@ -67,7 +67,7 @@ func createOperators(csvs []olmv1Alpha.ClusterServiceVersion, subscriptions []ol
 		if len(packageAndVersion) == 0 {
 			continue
 		}
-		op.NameOnly = packageAndVersion[0]
+		op.PackageFromCsvName = packageAndVersion[0]
 		op.Version = csv.Spec.Version.String()
 
 		atLeastOneSubscription := false
@@ -156,7 +156,7 @@ func getSummaryAllOperators(operators []*Operator) (summary []string) {
 			targetNamespaces = value + " Single namespace"
 		}
 
-		summary = append(summary, string(o.Csv.Status.Phase)+" operator: "+o.NameOnly+" ver: "+o.Version+" in ns: "+o.Namespace+" ( "+targetNamespaces+" managed )")
+		summary = append(summary, string(o.Csv.Status.Phase)+" operator: "+o.PackageFromCsvName+" ver: "+o.Version+" in ns: "+o.Namespace+" ( "+targetNamespaces+" managed )")
 	}
 	return summary
 }
@@ -173,7 +173,7 @@ func getShortSummaryAllOperators(operators []*Operator) (summary []string) {
 			targetNamespaces = " in ns: " + o.Namespace + " ( Single namespace )"
 		}
 
-		operatorMap[string(o.Csv.Status.Phase)+" operator: "+o.NameOnly+" ver: "+o.Version+targetNamespaces] = true
+		operatorMap[string(o.Csv.Status.Phase)+" operator: "+o.PackageFromCsvName+" ver: "+o.Version+targetNamespaces] = true
 	}
 	for s := range operatorMap {
 		summary = append(summary, s)

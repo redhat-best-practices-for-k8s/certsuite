@@ -35,9 +35,9 @@ const (
 	istioNamespace = "istio-system"
 )
 
-func findIstioNamespace(allNs *[]string) bool {
-	for index := range *allNs {
-		if (*allNs)[index] == istioNamespace {
+func findIstioNamespace(allNs []string) bool {
+	for index := range allNs {
+		if allNs[index] == istioNamespace {
 			return true
 		}
 	}

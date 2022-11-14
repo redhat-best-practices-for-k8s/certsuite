@@ -151,7 +151,7 @@ func DoAutoDiscover() DiscoveredTestData {
 	if err != nil {
 		logrus.Fatalf("Cannot get the K8s version, error: %v", err)
 	}
-	data.Istio = findIstioNamespace(&data.AllNamespaces)
+	data.Istio = findIstioNamespace(data.AllNamespaces)
 	data.ValidProtocolNames = data.TestData.ValidProtocolNames
 
 	// Find the status of the OCP version (pre-ga, end-of-life, maintenance, or generally available)
