@@ -405,7 +405,7 @@ func testHighAvailability(env *provider.TestEnvironment) {
 
 		if st.Spec.Template.Spec.Affinity == nil ||
 			st.Spec.Template.Spec.Affinity.PodAntiAffinity == nil {
-			badDeployments = append(badDeployments, st.ToString())
+			badStatefulSet = append(badStatefulSet, st.ToString())
 			tnf.ClaimFilePrintf("StatefulSet found without valid high availability: %s", st.ToString())
 		}
 	}
