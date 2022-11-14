@@ -21,7 +21,6 @@ import (
 
 	"github.com/operator-framework/api/pkg/lib/version"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
-
 	"github.com/stretchr/testify/assert"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -317,4 +316,36 @@ func createCsv(name, namespace string, verMajor, verMinor, verPatch uint64) (aCs
 
 	aCsv.Spec.Version = aVersion
 	return aCsv
+}
+
+func Test_getCatalogSourceImageIndexFromInstallPlan(t *testing.T) {
+	type args struct {
+		installPlan       *olmv1Alpha.InstallPlan
+		allCatalogSources []*olmv1Alpha.CatalogSource
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    string
+		wantErr bool
+	}{
+		{
+			name:    "ok",
+			args:    args{installPlan: &ns1InstallPlan1, allCatalogSources: []*olmv1Alpha.CatalogSource{&catalogSource1}},
+			want:    "catalogSource1Image",
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := getCatalogSourceImageIndexFromInstallPlan(tt.args.installPlan, tt.args.allCatalogSources)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("getCatalogSourceImageIndexFromInstallPlan() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if got != tt.want {
+				t.Errorf("getCatalogSourceImageIndexFromInstallPlan() = %v, want %v", got, tt.want)
+			}
+		})
+	}
 }
