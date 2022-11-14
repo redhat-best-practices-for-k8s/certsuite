@@ -101,8 +101,8 @@ type TestEnvironment struct { // rename this with testTarget
 	ResourceQuotas       []corev1.ResourceQuota
 	PodDisruptionBudgets []policyv1.PodDisruptionBudget
 	NetworkPolicies      []networkingv1.NetworkPolicy
-	AllInstallPlans      []*olmv1Alpha.InstallPlan
-	AllCatalogSources    []*olmv1Alpha.CatalogSource
+	AllInstallPlans      []*olmv1Alpha.InstallPlan   `json:"AllInstallPlans"`
+	AllCatalogSources    []*olmv1Alpha.CatalogSource `json:"AllCatalogSources"`
 	IstioServiceMesh     bool
 	ValidProtocolNames   []string
 }
