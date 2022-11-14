@@ -188,7 +188,7 @@ func WaitForTestFinish(timeout time.Duration) bool {
 func IsChaosResultVerdictPass() bool {
 	oc := clientsholder.GetClientsHolder()
 	gvr := schema.GroupVersionResource{Group: "litmuschaos.io", Version: "v1alpha1", Resource: "chaosresults"}
-	crs, err := oc.DynamicClient.Resource(gvr).List(context.Background(), metav1.ListOptions{})
+	crs, err := oc.DynamicClient.Resource(gvr).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		logrus.Errorf("error getting : %v\n", err)
 		return false
@@ -215,7 +215,7 @@ func IsChaosResultVerdictPass() bool {
 func waitForResult() bool {
 	oc := clientsholder.GetClientsHolder()
 	gvr := schema.GroupVersionResource{Group: "litmuschaos.io", Version: "v1alpha1", Resource: "chaosengines"}
-	crs, err := oc.DynamicClient.Resource(gvr).List(context.Background(), metav1.ListOptions{})
+	crs, err := oc.DynamicClient.Resource(gvr).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		logrus.Errorf("error getting : %v\n", err)
 		return false
@@ -290,7 +290,7 @@ func createResource(decoder *yamlutil.YAMLOrJSONDecoder) error {
 			dri = dynamicClient.Resource(mapping.Resource)
 		}
 
-		if _, err := dri.Create(context.Background(), unstructuredObj, metav1.CreateOptions{}); err != nil {
+		if _, err := dri.Create(context.TODO(), unstructuredObj, metav1.CreateOptions{}); err != nil {
 			return err
 		}
 	}

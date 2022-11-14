@@ -65,7 +65,7 @@ func getCrsPerNamespaces(aCrd *apiextv1.CustomResourceDefinition) (crdNamespaces
 			Resource: aCrd.Spec.Names.Plural,
 		}
 		logrus.Debugf("Looking for CRs from CRD: %s api version:%s group:%s plural:%s", aCrd.Name, version.Name, aCrd.Spec.Group, aCrd.Spec.Names.Plural)
-		crs, err := oc.DynamicClient.Resource(gvr).List(context.Background(), metav1.ListOptions{})
+		crs, err := oc.DynamicClient.Resource(gvr).List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
 			logrus.Errorf("error getting %s: %v\n", aCrd.Name, err)
 			return crdNamespaces, err
