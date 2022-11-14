@@ -78,13 +78,13 @@ func createOperators(csvs []olmv1Alpha.ClusterServiceVersion, subscriptions []ol
 
 		csvInstallPlans, err := getCsvInstallPlans(csv.Namespace, csv.Name, installPlans)
 		if err != nil {
-			return nil, fmt.Errorf("failed to get installPlans for csv %s (ns %s), err: %s", csv.Name, csv.Namespace, err)
+			return nil, fmt.Errorf("failed to get installPlans for csv %s (ns %s), err: %v", csv.Name, csv.Namespace, err)
 		}
 
 		for _, installPlan := range csvInstallPlans {
 			indexImage, catalogErr := getCatalogSourceImageIndexFromInstallPlan(installPlan)
 			if catalogErr != nil {
-				return nil, fmt.Errorf("failed to get installPlan image index for csv %s (ns %s) installPlan %s, err: %s",
+				return nil, fmt.Errorf("failed to get installPlan image index for csv %s (ns %s) installPlan %s, err: %v",
 					csv.Name, csv.Namespace, installPlan.Name, catalogErr)
 			}
 
@@ -121,7 +121,7 @@ func getInstallPlansInNamespace(namespace string, clusterInstallPlans map[string
 	clients := clientsholder.GetClientsHolder()
 	installPlanList, err := clients.OlmClient.OperatorsV1alpha1().InstallPlans(namespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return nil, fmt.Errorf("unable get installplans in namespace %s, err: %s", namespace, err)
+		return nil, fmt.Errorf("unable get installplans in namespace %s, err: %v", namespace, err)
 	}
 
 	nsInstallPlans = installPlanList.Items

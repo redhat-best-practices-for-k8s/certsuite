@@ -154,13 +154,13 @@ func fillTemplate(file string, values map[string]interface{}) ([]byte, error) {
 	// parse the template
 	tmpl, err := template.ParseFiles(file)
 	if err != nil {
-		logrus.Errorf("error while parsing the yaml file: %s error: %s", file, err)
+		logrus.Errorf("error while parsing the yaml file: %s error: %v", file, err)
 		return nil, err
 	}
 	var buffer bytes.Buffer
 	writer := bufio.NewWriter(&buffer)
 	if err := tmpl.Execute(writer, values); err != nil {
-		logrus.Errorf("error while executing the template to the yaml file: %s error: %s", file, err)
+		logrus.Errorf("error while executing the template to the yaml file: %s error: %v", file, err)
 		return nil, err
 	}
 	writer.Flush() // write to the buffer

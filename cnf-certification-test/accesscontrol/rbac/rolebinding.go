@@ -30,7 +30,7 @@ func GetRoleBindings(podNamespace, serviceAccountName string) ([]string, error) 
 	clientsHolder := clientsholder.GetClientsHolder()
 	roleList, roleErr := clientsHolder.K8sClient.RbacV1().Roles("").List(context.TODO(), metav1.ListOptions{})
 	if roleErr != nil {
-		logrus.Errorf("executing rolebinding command failed with error: %s", roleErr)
+		logrus.Errorf("executing rolebinding command failed with error: %v", roleErr)
 		return nil, roleErr
 	}
 

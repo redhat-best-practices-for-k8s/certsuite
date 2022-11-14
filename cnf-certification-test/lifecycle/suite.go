@@ -435,19 +435,19 @@ func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 		err := podrecreation.CordonHelper(n, podrecreation.Cordon)
 		if err != nil {
 			logrus.Errorf("error cordoning the node: %s", n)
-			ginkgo.Fail(fmt.Sprintf("Cordoning node %s failed with err: %s. Test inconclusive, skipping", n, err))
+			ginkgo.Fail(fmt.Sprintf("Cordoning node %s failed with err: %v. Test inconclusive, skipping", n, err))
 		}
 		ginkgo.By(fmt.Sprintf("Draining and Cordoning node %s: ", n))
 		logrus.Debugf("node: %s cordoned", n)
 		count, err := podrecreation.CountPodsWithDelete(env.Pods, n, podrecreation.NoDelete)
 		if err != nil {
-			ginkgo.Fail(fmt.Sprintf("Getting pods list to drain in node %s failed with err: %s. Test inconclusive.", n, err))
+			ginkgo.Fail(fmt.Sprintf("Getting pods list to drain in node %s failed with err: %v. Test inconclusive.", n, err))
 		}
 		nodeTimeout := timeoutPodSetReady + timeoutPodRecreationPerPod*time.Duration(count)
 		logrus.Debugf("draining node: %s with timeout: %s", n, nodeTimeout.String())
 		_, err = podrecreation.CountPodsWithDelete(env.Pods, n, podrecreation.DeleteForeground)
 		if err != nil {
-			ginkgo.Fail(fmt.Sprintf("Draining node %s failed with err: %s. Test inconclusive", n, err))
+			ginkgo.Fail(fmt.Sprintf("Draining node %s failed with err: %v. Test inconclusive", n, err))
 		}
 
 		claimsLog, podsNotReady := podsets.WaitForAllPodSetReady(env, nodeTimeout)

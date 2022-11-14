@@ -30,7 +30,7 @@ func AutomountServiceAccountSetOnSA(serviceAccountName, podNamespace string) (*b
 	clientsHolder := clientsholder.GetClientsHolder()
 	sa, err := clientsHolder.K8sClient.CoreV1().ServiceAccounts(podNamespace).Get(context.TODO(), serviceAccountName, metav1.GetOptions{})
 	if err != nil {
-		logrus.Errorf("executing serviceaccount command failed with error: %s", err)
+		logrus.Errorf("executing serviceaccount command failed with error: %v", err)
 		return nil, err
 	}
 	return sa.AutomountServiceAccountToken, nil

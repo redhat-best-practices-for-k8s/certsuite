@@ -180,7 +180,7 @@ func FindRoguePodsListeningToPorts(pods []*provider.Pod, portsToTest map[int32]b
 
 		listeningPorts, err := netutil.GetListeningPorts(cut)
 		if err != nil {
-			tnf.ClaimFilePrintf("Failed to get the listening ports on %s, err: %s", cut, err)
+			tnf.ClaimFilePrintf("Failed to get the listening ports on %s, err: %v", cut, err)
 			failedContainers++
 			continue
 		}

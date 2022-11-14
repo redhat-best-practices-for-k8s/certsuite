@@ -160,7 +160,7 @@ func testUndeclaredContainerPortsUsage(env *provider.TestEnvironment) {
 		firstPodContainer := put.Containers[0]
 		listeningPorts, err := netutil.GetListeningPorts(firstPodContainer)
 		if err != nil {
-			tnf.ClaimFilePrintf("Failed to get the container's listening ports, err: %s", err)
+			tnf.ClaimFilePrintf("Failed to get the container's listening ports, err: %v", err)
 			failedPods = append(failedPods, put)
 			continue
 		}
@@ -327,7 +327,7 @@ func testIsConfigPresent(env *provider.TestEnvironment, name string) {
 	for _, cut := range env.Containers {
 		result, log, err := function(cut)
 		if err != nil {
-			tnf.ClaimFilePrintf("Could not check %s config on: %s, error: %s log: %s", name, cut, err, log)
+			tnf.ClaimFilePrintf("Could not check %s config on: %s, error: %v log: %s", name, cut, err, log)
 			errorContainers = append(errorContainers, cut)
 			continue
 		}
