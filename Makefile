@@ -95,9 +95,6 @@ build-catalog-json: build-tnf-tool
 build-catalog-md: build-tnf-tool
 	./tnf generate catalog markdown > CATALOG.md
 
-update-certified-catalog:
-	./tnf fetch --operator --container --helm
-
 # build the CNF test binary
 build-cnf-tests:
 	PATH=${PATH}:${GOBIN} ginkgo build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" ./cnf-certification-test
@@ -127,3 +124,13 @@ generate: install-moq
 
 update-rhcos-versions:
 	./script/rhcos_versions.sh
+
+OCT_IMAGE=quay.io/testnetworkfunction/oct:latest
+REPO_DIR=$(shell pwd)
+
+get-db:
+	mkdir -p ${REPO_DIR}/cmd/tnf/fetch
+	docker pull ${OCT_IMAGE}
+	docker run -v ${REPO_DIR}/cmd/tnf/fetch:/tmp/dump:Z --user $(shell id -u):$(shell id -g) --env OCT_DUMP_ONLY=true ${OCT_IMAGE}
+delete-db:
+	rm -rf ${REPO_DIR}/cmd/tnf/fetch
