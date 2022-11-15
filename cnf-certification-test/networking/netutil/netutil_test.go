@@ -59,3 +59,42 @@ func TestParseListeningPorts(t *testing.T) {
 		}
 	}
 }
+
+var nonZeroOpenshiftMachineConfigIPtables = `*filter
+:INPUT ACCEPT [876:9889]
+:FORWARD ACCEPT [333:0]
+:OUTPUT ACCEPT [0:999]
+-A FORWARD -p tcp -m tcp --dport 22623 --tcp-flags FIN,SYN,RST,ACK SYN -j REJECT --reject-with icmp-port-unreachable
+-A FORWARD -p tcp -m tcp --dport 22624 --tcp-flags FIN,SYN,RST,ACK SYN -j REJECT --reject-with icmp-port-unreachable
+-A FORWARD -d 169.254.169.254/32 -p tcp -m tcp ! --dport 53 -j REJECT --reject-with icmp-port-unreachable
+-A FORWARD -d 169.254.169.254/32 -p udp -m udp ! --dport 53 -j REJECT --reject-with icmp-port-unreachable
+-A OUTPUT -p tcp -m tcp --dport 22623 --tcp-flags FIN,SYN,RST,ACK SYN -j REJECT --reject-with icmp-port-unreachable
+-A OUTPUT -p tcp -m tcp --dport 22624 --tcp-flags FIN,SYN,RST,ACK SYN -j REJECT --reject-with icmp-port-unreachable
+-A OUTPUT -d 169.254.169.254/32 -p tcp -m tcp ! --dport 53 -j REJECT --reject-with icmp-port-unreachable
+-A OUTPUT -d 169.254.169.254/32 -p udp -m udp ! --dport 53 -j REJECT --reject-with icmp-port-unreachable
+COMMIT
+`
+
+func Test_zeroCounters(t *testing.T) {
+	type args struct {
+		in string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantOut string
+	}{
+		{
+			name:    "ok",
+			args:    args{in: stripSpaceTabLine(nonZeroOpenshiftMachineConfigIPtables)},
+			wantOut: stripSpaceTabLine(openshiftMachineConfigIPtables),
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if gotOut := zeroCounters(tt.args.in); gotOut != tt.wantOut {
+				t.Errorf("zeroCounters() = %v, want %v", gotOut, tt.wantOut)
+			}
+		})
+	}
+}
