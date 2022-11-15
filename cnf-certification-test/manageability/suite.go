@@ -74,6 +74,9 @@ func containerPortNameFormatCheck(portName string) bool {
 }
 
 func testContainerPortNameFormat(env *provider.TestEnvironment) {
+	for _, newProtocol := range env.ValidProtocolNames {
+		allowedProtocolNames[newProtocol] = true
+	}
 	badContainers := []string{}
 	for _, cut := range env.Containers {
 		for _, port := range cut.Ports {

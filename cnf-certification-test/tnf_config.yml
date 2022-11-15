@@ -28,3 +28,6 @@ skipScalingTestStatefulsets:
     namespace: tnf
 skipHelmChartList:
   - name: coredns
+validProtocolNames:
+  - "http3"
+  - "sctp"

@@ -79,3 +79,8 @@ to be checked for certification status on Red Hat catalogs.
 
 The CSV of the installed Operators can be tested by the `operator` and `affiliated-certification` specs are identified with the `test-network-function.com/operator=target`
 label. Any value is permitted here but `target` is used here for consistency with the other specs.
+
+# AllowedProtocolNames
+
+This name of protocols that allowed.
+if we want to add adtional name, we need just write the name in yaml file.

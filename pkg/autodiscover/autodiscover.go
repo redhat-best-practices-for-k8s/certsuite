@@ -75,6 +75,7 @@ type DiscoveredTestData struct {
 	OCPStatus              string
 	Nodes                  *corev1.NodeList
 	Istio                  bool
+	ValidProtocolNames     []string
 }
 
 var data = DiscoveredTestData{}
@@ -141,6 +142,7 @@ func DoAutoDiscover() DiscoveredTestData {
 		logrus.Fatalf("Cannot get the K8s version, error: %v", err)
 	}
 	data.Istio = findIstioNamespace(oc.K8sClient.CoreV1())
+	data.ValidProtocolNames = data.TestData.ValidProtocolNames
 
 	// Find the status of the OCP version (pre-ga, end-of-life, maintenance, or generally available)
 	data.OCPStatus = compatibility.DetermineOCPStatus(openshiftVersion, time.Now())
