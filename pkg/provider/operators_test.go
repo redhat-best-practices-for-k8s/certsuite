@@ -17,6 +17,7 @@
 package provider
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/operator-framework/api/pkg/lib/version"
@@ -345,6 +346,110 @@ func Test_getCatalogSourceImageIndexFromInstallPlan(t *testing.T) {
 			}
 			if got != tt.want {
 				t.Errorf("getCatalogSourceImageIndexFromInstallPlan() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func createOperator(phase, packageName, aVersion, namespace, targetNamespace string) *Operator {
+	aOperator := Operator{}
+	aOperator.PackageFromCsvName = packageName
+	aCsv := olmv1Alpha.ClusterServiceVersion{}
+	aCsv.Status.Phase = olmv1Alpha.ClusterServiceVersionPhase(phase)
+	aOperator.Csv = &aCsv
+	aOperator.Csv.ObjectMeta.Annotations = make(map[string]string)
+	aOperator.Csv.ObjectMeta.Annotations["olm.targetNamespaces"] = targetNamespace
+	aOperator.Namespace = namespace
+	aOperator.Version = aVersion
+	return &aOperator
+}
+
+func createOperatorList() []*Operator {
+	aOperatorList := []*Operator{}
+	aOperatorList = append(aOperatorList,
+		createOperator("Succeeded", "operator1", "0.0.1", "ns1", "ns1"),
+		createOperator("Succeeded", "operator2", "0.0.1", "ns2", "ns2"),
+		createOperator("Succeeded", "operator3", "1.0.1", "ns3", ""),
+		createOperator("Succeeded", "operator3", "0.0.1", "ns4", ""),
+		createOperator("InstallReady", "operator3", "0.0.1", "ns5", ""),
+		createOperator("Succeeded", "operator3", "0.0.1", "ns6", ""),
+		createOperator("Succeeded", "operator3", "0.0.1", "ns7", ""),
+		createOperator("Succeeded", "operator3", "0.0.1", "ns8", ""),
+		createOperator("Succeeded", "operator3", "0.0.1", "ns9", ""),
+		createOperator("Succeeded", "operator3", "0.0.1", "ns10", ""),
+		createOperator("Succeeded", "operator3", "0.0.1", "ns11", ""),
+		createOperator("Succeeded", "operator3", "0.0.1", "ns12", ""),
+		createOperator("Succeeded", "operator3", "0.0.1", "ns13", ""),
+		createOperator("Succeeded", "operator3", "0.0.1", "ns14", ""),
+		createOperator("Failed", "operator3", "0.0.1", "ns6", ""),
+		createOperator("Failed", "operator4", "0.0.1", "ns1", "ns1"))
+	return aOperatorList
+}
+
+func Test_getSummaryAllOperators(t *testing.T) {
+	type args struct {
+		operators []*Operator
+	}
+	tests := []struct {
+		name        string
+		args        args
+		wantSummary []string
+	}{
+		{
+			name: "ok",
+			args: args{operators: createOperatorList()},
+			wantSummary: []string{"Succeeded operator: operator1 ver: 0.0.1 in ns: ns1 ( ns1 Single namespace managed )",
+				"Succeeded operator: operator2 ver: 0.0.1 in ns: ns2 ( ns2 Single namespace managed )",
+				"Succeeded operator: operator3 ver: 1.0.1 in ns: ns3 ( All namespaces managed )",
+				"Succeeded operator: operator3 ver: 0.0.1 in ns: ns4 ( All namespaces managed )",
+				"InstallReady operator: operator3 ver: 0.0.1 in ns: ns5 ( All namespaces managed )",
+				"Succeeded operator: operator3 ver: 0.0.1 in ns: ns6 ( All namespaces managed )",
+				"Succeeded operator: operator3 ver: 0.0.1 in ns: ns7 ( All namespaces managed )",
+				"Succeeded operator: operator3 ver: 0.0.1 in ns: ns8 ( All namespaces managed )",
+				"Succeeded operator: operator3 ver: 0.0.1 in ns: ns9 ( All namespaces managed )",
+				"Succeeded operator: operator3 ver: 0.0.1 in ns: ns10 ( All namespaces managed )",
+				"Succeeded operator: operator3 ver: 0.0.1 in ns: ns11 ( All namespaces managed )",
+				"Succeeded operator: operator3 ver: 0.0.1 in ns: ns12 ( All namespaces managed )",
+				"Succeeded operator: operator3 ver: 0.0.1 in ns: ns13 ( All namespaces managed )",
+				"Succeeded operator: operator3 ver: 0.0.1 in ns: ns14 ( All namespaces managed )",
+				"Failed operator: operator3 ver: 0.0.1 in ns: ns6 ( All namespaces managed )",
+				"Failed operator: operator4 ver: 0.0.1 in ns: ns1 ( ns1 Single namespace managed )"},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if gotSummary := getSummaryAllOperators(tt.args.operators); !reflect.DeepEqual(gotSummary, tt.wantSummary) {
+				t.Errorf("getSummaryAllOperators() = %v, want %v", gotSummary, tt.wantSummary)
+			}
+		})
+	}
+}
+
+func Test_getShortSummaryAllOperators(t *testing.T) {
+	type args struct {
+		operators []*Operator
+	}
+	tests := []struct {
+		name        string
+		args        args
+		wantSummary []string
+	}{
+		{
+			name: "ok",
+			args: args{operators: createOperatorList()},
+			wantSummary: []string{"Failed operator: operator3 ver: 0.0.1 ( All namespaces managed )",
+				"Failed operator: operator4 ver: 0.0.1 in ns: ns1 ( Single namespace )",
+				"InstallReady operator: operator3 ver: 0.0.1 ( All namespaces managed )",
+				"Succeeded operator: operator1 ver: 0.0.1 in ns: ns1 ( Single namespace )",
+				"Succeeded operator: operator2 ver: 0.0.1 in ns: ns2 ( Single namespace )",
+				"Succeeded operator: operator3 ver: 0.0.1 ( All namespaces managed )",
+				"Succeeded operator: operator3 ver: 1.0.1 ( All namespaces managed )"},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if gotSummary := getShortSummaryAllOperators(tt.args.operators); !reflect.DeepEqual(gotSummary, tt.wantSummary) {
+				t.Errorf("getShortSummaryAllOperators() = %v, want %v", gotSummary, tt.wantSummary)
 			}
 		})
 	}

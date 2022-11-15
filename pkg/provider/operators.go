@@ -18,6 +18,7 @@ package provider
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
@@ -178,6 +179,7 @@ func getShortSummaryAllOperators(operators []*Operator) (summary []string) {
 	for s := range operatorMap {
 		summary = append(summary, s)
 	}
+	sort.Strings(summary)
 	return summary
 }
 
