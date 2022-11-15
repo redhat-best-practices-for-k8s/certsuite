@@ -16,6 +16,7 @@
 package offlinecheck
 
 import (
+	"fmt"
 	"os"
 
 	log "github.com/sirupsen/logrus"
@@ -23,14 +24,23 @@ import (
 
 type OfflineChecker struct{}
 
-func LoadCatalogs() {
+func LoadCatalogs() error {
 	path, err := os.Getwd()
 	if err != nil {
 		log.Println(err)
 	}
-	loadContainersCatalog(path)
-	loadHelmCatalog(path)
-	loadOperatorsCatalog(path)
+
+	if err = loadContainersCatalog(path); err != nil {
+		return fmt.Errorf("cannot load containers catalog, err: %v", err)
+	}
+	if err = loadHelmCatalog(path); err != nil {
+		return fmt.Errorf("cannot load helm charts catalog, err: %v", err)
+	}
+	if err = loadOperatorsCatalog(path); err != nil {
+		return fmt.Errorf("cannot load operators catalog, err: %v", err)
+	}
+
+	return nil
 }
 
 func (checker OfflineChecker) IsServiceReachable() bool {

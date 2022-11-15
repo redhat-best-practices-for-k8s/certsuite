@@ -33,7 +33,7 @@ func TestIsCertified(t *testing.T) {
 	if err != nil {
 		log.Println(err)
 	}
-	loadContainersCatalog(path + "/../../")
+	_ = loadContainersCatalog(path + "/../../")
 
 	// Note: This test cases might have to change periodically due to images coming/going from the offline database.
 	testCases := []struct {

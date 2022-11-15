@@ -493,7 +493,6 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 
 		// Worker nodes can either be RHEL or RHCOS
 		if node.IsWorkerNode() {
-			//nolint:gocritic
 			if node.IsRHCOS() {
 				// Get the short version from the node
 				shortVersion, err := node.GetRHCOSVersion()

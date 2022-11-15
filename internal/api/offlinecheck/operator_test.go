@@ -35,7 +35,7 @@ func TestIsOperatorCertified(t *testing.T) {
 	if err != nil {
 		log.Println(err)
 	}
-	loadOperatorsCatalog(path + "/../../")
+	_ = loadOperatorsCatalog(path + "/../../")
 	assert.True(t, checker.IsOperatorCertified(name, ocpversion, channel))
 	name = "falcon-alpha"
 	assert.False(t, checker.IsOperatorCertified(name, ocpversion, channel))

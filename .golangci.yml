@@ -18,6 +18,7 @@ linters-settings:
       - style
     disabled-checks:
       - whyNoLint
+      - ifElseChain
   gocyclo:
     min-complexity: 15
   goimports:

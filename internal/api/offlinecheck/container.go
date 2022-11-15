@@ -54,24 +54,26 @@ type ContainerPageCatalog struct {
 	Data     []ContainerCatalogEntry `json:"data"`
 }
 
-func loadContainersCatalog(pathToRoot string) {
+func loadContainersCatalog(pathToRoot string) error {
 	if containersLoaded {
-		return
+		return nil
 	}
 	containersLoaded = true
 	filename := fmt.Sprintf(containersRelativePath, pathToRoot)
 	f, err := os.Open(filename)
 	if err != nil {
-		logrus.Errorln("Cannot open file", filename, err)
+		return fmt.Errorf("cannot open file %s, err: %v", filename, err)
 	}
 	bytes, err := io.ReadAll(f)
 	if err != nil {
-		logrus.Error("Cannot process file", f.Name(), err, " trying to proceed")
+		return fmt.Errorf("cannot read file %s, err: %v", filename, err)
 	}
 	err = json.Unmarshal(bytes, &containerdb)
 	if err != nil {
-		logrus.Error("Cannot marshall file", filename, err, " trying to proceed")
+		return fmt.Errorf("cannot marshall file %s, err: %v", filename, err)
 	}
+
+	return nil
 }
 
 func LoadBinary(bytes []byte, db map[string]*ContainerCatalogEntry) (entries int, err error) {

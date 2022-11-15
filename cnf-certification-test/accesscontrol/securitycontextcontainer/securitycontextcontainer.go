@@ -217,7 +217,6 @@ func GetContainerSCC(cut *provider.Container, containerSCC ContainerSCC) Contain
 	return containerSCC
 }
 
-//nolint:gocritic
 func updateCapabilitiesFromContainer(cut *provider.Container, containerSCC *ContainerSCC) {
 	containerSCC.RequiredDropCapabilitiesPresent = NOK
 	if cut.SecurityContext != nil && cut.SecurityContext.Capabilities != nil {
