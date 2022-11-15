@@ -60,7 +60,7 @@ func TestGetHWJsonOutput(t *testing.T) {
 			execStderr: "this is an error",
 			execErr:    nil,
 
-			expectedErr:    errors.New("command does not matter failed with error err: %!s(<nil>) , stderr: this is an error"),
+			expectedErr:    errors.New("command does not matter failed with error err: <nil>, stderr: this is an error"),
 			expectedResult: TestingJSON{},
 		},
 		{
@@ -68,7 +68,7 @@ func TestGetHWJsonOutput(t *testing.T) {
 			execStderr: "this is an error",
 			execErr:    errors.New("this is an error2"),
 
-			expectedErr:    errors.New("command does not matter failed with error err: %!s(<nil>) , stderr: this is an error"),
+			expectedErr:    errors.New("command does not matter failed with error err: <nil>, stderr: this is an error"),
 			expectedResult: TestingJSON{},
 		},
 	}
@@ -123,7 +123,7 @@ func TestGetHWTextOutput(t *testing.T) {
 			execStderr: "this is an error",
 			execErr:    nil,
 
-			expectedErr:    errors.New("command lspci failed with error err: %!s(<nil>) , stderr: this is an error"),
+			expectedErr:    errors.New("command lspci failed with error err: <nil>, stderr: this is an error"),
 			expectedResult: nil,
 		},
 		{
@@ -131,7 +131,7 @@ func TestGetHWTextOutput(t *testing.T) {
 			execStderr: "this is an error",
 			execErr:    errors.New("this is an error2"),
 
-			expectedErr:    errors.New("command lspci failed with error err: %!s(<nil>) , stderr: this is an error"),
+			expectedErr:    errors.New("command lspci failed with error err: <nil>, stderr: this is an error"),
 			expectedResult: nil,
 		},
 	}

@@ -110,7 +110,7 @@ func getHWJsonOutput(debugPod *corev1.Pod, o clientsholder.Command, cmd string) 
 	ctx := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
 	outStr, errStr, err := o.ExecCommandContainer(ctx, cmd)
 	if err != nil || errStr != "" {
-		return out, fmt.Errorf("command %s failed with error err: %s , stderr: %s", cmd, err, errStr)
+		return out, fmt.Errorf("command %s failed with error err: %v, stderr: %s", cmd, err, errStr)
 	}
 	err = json.Unmarshal([]byte(outStr), &out)
 	if err != nil {
@@ -124,7 +124,7 @@ func getHWTextOutput(debugPod *corev1.Pod, o clientsholder.Command, cmd string) 
 	ctx := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
 	outStr, errStr, err := o.ExecCommandContainer(ctx, cmd)
 	if err != nil || errStr != "" {
-		return out, fmt.Errorf("command %s failed with error err: %s , stderr: %s", lspciCommand, err, errStr)
+		return out, fmt.Errorf("command %s failed with error err: %v, stderr: %s", lspciCommand, err, errStr)
 	}
 
 	return strings.Split(outStr, "\n"), nil
@@ -170,7 +170,7 @@ func GetCsiDriver() (out map[string]interface{}) {
 
 	err = json.Unmarshal(data, &out)
 	if err != nil {
-		logrus.Errorf("failed to marshall nodes json, err: %s", err)
+		logrus.Errorf("failed to marshall nodes json, err: %v", err)
 		return out
 	}
 	return out

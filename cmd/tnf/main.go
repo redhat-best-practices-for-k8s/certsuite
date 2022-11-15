@@ -11,7 +11,7 @@ import (
 var (
 	rootCmd = &cobra.Command{
 		Use:   "tnf",
-		Short: "A CLI for creating, validating , and test-network-function tests.",
+		Short: "A CLI for creating, validating, and test-network-function tests.",
 	}
 
 	generate = &cobra.Command{

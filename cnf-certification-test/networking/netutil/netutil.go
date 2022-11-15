@@ -58,7 +58,7 @@ func parseListeningPorts(cmdOut string) (map[PortInfo]bool, error) {
 
 		port, err := strconv.Atoi(s[len(s)-1])
 		if err != nil {
-			return nil, fmt.Errorf("string to int conversion error, err: %s", err)
+			return nil, fmt.Errorf("string to int conversion error, err: %v", err)
 		}
 		protocol := strings.ToUpper(fields[indexProtocol])
 		portInfo := PortInfo{port, protocol}
@@ -72,7 +72,7 @@ func parseListeningPorts(cmdOut string) (map[PortInfo]bool, error) {
 func GetListeningPorts(cut *provider.Container) (map[PortInfo]bool, error) {
 	outStr, errStr, err := crclient.ExecCommandContainerNSEnter(getListeningPortsCmd, cut)
 	if err != nil || errStr != "" {
-		return nil, fmt.Errorf("failed to execute command %s on %s, err: %s", getListeningPortsCmd, cut, err)
+		return nil, fmt.Errorf("failed to execute command %s on %s, err: %v", getListeningPortsCmd, cut, err)
 	}
 
 	return parseListeningPorts(outStr)
@@ -138,7 +138,7 @@ func stripSpaceTabLine(in string) string {
 func isIPOrNSTablesPresent(cut *provider.Container, command string) (bool, string, error) { //nolint:gocritic
 	outStr, errStr, err := crclient.ExecCommandContainerNSEnter(command, cut)
 	if err != nil || (errStr != "" && errStr != ipTablesLegacyWarning) {
-		return false, outStr, fmt.Errorf("failed to execute command %s on %s, err: %s, errStr: %s", command, cut, err, errStr)
+		return false, outStr, fmt.Errorf("failed to execute command %s on %s, err: %v, errStr: %s", command, cut, err, errStr)
 	}
 
 	if errStr == ipTablesLegacyWarning {

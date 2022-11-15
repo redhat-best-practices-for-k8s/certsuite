@@ -73,11 +73,11 @@ func UnmarshalClaim(claimFile []byte, claimRoot *claim.Root) {
 func ReadClaimFile(claimFileName string) (data []byte, err error) {
 	data, err = os.ReadFile(claimFileName)
 	if err != nil {
-		log.Errorf("ReadFile failed with err: %s", err)
+		log.Errorf("ReadFile failed with err: %v", err)
 	}
 	path, err := os.Getwd()
 	if err != nil {
-		log.Errorf("Getwd failed with err: %s", err)
+		log.Errorf("Getwd failed with err: %v", err)
 	}
 	log.Infof("Reading claim file at path: %s", path)
 	return data, nil
@@ -87,7 +87,7 @@ func ReadClaimFile(claimFileName string) (data []byte, err error) {
 func GetConfigurationFromClaimFile(claimFileName string) (env *provider.TestEnvironment, err error) {
 	data, err := ReadClaimFile(claimFileName)
 	if err != nil {
-		log.Errorf("ReadClaimFile failed with err: %s", err)
+		log.Errorf("ReadClaimFile failed with err: %v", err)
 		return env, err
 	}
 	var aRoot claim.Root

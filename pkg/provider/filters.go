@@ -93,7 +93,7 @@ func filterDPDKRunningPods(pods []*Pod) []*Pod {
 		findCommand := fmt.Sprintf("%s '%s'", findDeviceSubCommand, pod.MultusPCIs[0])
 		outStr, errStr, err := o.ExecCommandContainer(ctx, findCommand)
 		if err != nil || errStr != "" {
-			logrus.Errorf("Failed to execute command %s in debug %s, errStr: %s, err: %s", findCommand, pod.String(), errStr, err)
+			logrus.Errorf("Failed to execute command %s in debug %s, errStr: %s, err: %v", findCommand, pod.String(), errStr, err)
 			continue
 		}
 		if strings.Contains(outStr, dpdkDriver) {

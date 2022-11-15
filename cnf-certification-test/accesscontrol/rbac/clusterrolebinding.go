@@ -29,7 +29,7 @@ func GetClusterRoleBindings(serviceAccountName, podNamespace string) ([]string, 
 	clientsHolder := clientsholder.GetClientsHolder()
 	crbList, crbErr := clientsHolder.K8sClient.RbacV1().ClusterRoles().List(context.TODO(), metav1.ListOptions{})
 	if crbErr != nil {
-		logrus.Errorf("executing clusterrolebinding command failed with error: %s", crbErr)
+		logrus.Errorf("executing clusterrolebinding command failed with error: %v", crbErr)
 		return nil, crbErr
 	}
 

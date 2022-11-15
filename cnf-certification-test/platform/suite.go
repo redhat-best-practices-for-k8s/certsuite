@@ -343,7 +343,7 @@ func testIsSELinuxEnforcing(env *provider.TestEnvironment) {
 		ctx := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
 		outStr, errStr, err := o.ExecCommandContainer(ctx, getenforceCommand)
 		if err != nil || errStr != "" {
-			logrus.Errorf("Failed to execute command %s in debug %s, errStr: %s, err: %s", getenforceCommand, debugPod.String(), errStr, err)
+			logrus.Errorf("Failed to execute command %s in debug %s, errStr: %s, err: %v", getenforceCommand, debugPod.String(), errStr, err)
 			nodesError++
 			continue
 		}
@@ -426,7 +426,7 @@ func testSysctlConfigs(env *provider.TestEnvironment) {
 
 		sysctlSettings, err := sysctlconfig.GetSysctlSettings(env, cut.NodeName)
 		if err != nil {
-			tnf.ClaimFilePrintf("Could not get sysctl settings for node %s, error: %s", cut.NodeName, err)
+			tnf.ClaimFilePrintf("Could not get sysctl settings for node %s, error: %v", cut.NodeName, err)
 			badContainers = append(badContainers, cut.String())
 			continue
 		}
@@ -497,7 +497,7 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 				// Get the short version from the node
 				shortVersion, err := node.GetRHCOSVersion()
 				if err != nil {
-					tnf.ClaimFilePrintf("Node %s failed to gather RHCOS version. Error: %s", node.Data.Name, err.Error())
+					tnf.ClaimFilePrintf("Node %s failed to gather RHCOS version. Error: %v", node.Data.Name, err)
 					failedWorkerNodes = append(failedWorkerNodes, node.Data.Name)
 					continue
 				}
@@ -518,7 +518,7 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 				// Get the short version from the node
 				shortVersion, err := node.GetRHELVersion()
 				if err != nil {
-					tnf.ClaimFilePrintf("Node %s failed to gather RHEL version. Error: %s", node.Data.Name, err.Error())
+					tnf.ClaimFilePrintf("Node %s failed to gather RHEL version. Error: %v", node.Data.Name, err)
 					failedWorkerNodes = append(failedWorkerNodes, node.Data.Name)
 					continue
 				}

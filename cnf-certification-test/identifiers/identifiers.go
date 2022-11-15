@@ -535,12 +535,6 @@ var (
 		Url:     formTestURL(common.PlatformAlterationTestKey, "ocp-node-os-lifecycle"),
 		Version: VersionOne,
 	}
-	// TestScalingIdentifier ensures deployment scale in/out operations work correctly.
-	TestScalingIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
-		Url:     formTestURL(common.LifecycleTestKey, "scaling"),
-		Version: VersionOne,
-	}
 	// TestIsRedHatReleaseIdentifier ensures platform is defined
 	TestIsRedHatReleaseIdentifier = claim.Identifier{
 		Tags:    formTestTags(TagCommon),

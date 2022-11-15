@@ -70,7 +70,7 @@ func ExecCommandContainerNSEnter(command string,
 	// Get the container PID to build the nsenter command
 	containerPid, err := GetPidFromContainer(aContainer, ctx)
 	if err != nil {
-		return "", "", fmt.Errorf("cannot get PID from: %s, err: %s", aContainer, err)
+		return "", "", fmt.Errorf("cannot get PID from: %s, err: %v", aContainer, err)
 	}
 
 	// Add the container PID and the specific command to run with nsenter

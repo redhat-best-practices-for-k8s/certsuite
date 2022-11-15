@@ -47,12 +47,12 @@ func NewPod(aPod *corev1.Pod) (out Pod) {
 	out.MultusIPs = make(map[string][]string)
 	out.MultusIPs, err = GetPodIPsPerNet(aPod.GetAnnotations()[CniNetworksStatusKey])
 	if err != nil {
-		logrus.Errorf("Could not decode networks-status annotation, error: %s", err)
+		logrus.Errorf("Could not decode networks-status annotation, error: %v", err)
 	}
 
 	out.MultusPCIs, err = GetPciPerPod(aPod.GetAnnotations()[CniNetworksStatusKey])
 	if err != nil {
-		logrus.Errorf("Could not decode networks-status annotation, error: %s", err)
+		logrus.Errorf("Could not decode networks-status annotation, error: %v", err)
 	}
 
 	if _, ok := aPod.GetLabels()[skipConnectivityTestsLabel]; ok {
@@ -169,4 +169,13 @@ func (p *Pod) IsAffinityCompliant() (bool, error) {
 
 func (p *Pod) IsShareProcessNamespace() bool {
 	return p.Spec.ShareProcessNamespace != nil && *p.Spec.ShareProcessNamespace
+}
+
+func (p *Pod) ContainsIstioProxy() bool {
+	for _, container := range p.Containers {
+		if container.Name == "istio-proxy" {
+			return true
+		}
+	}
+	return false
 }

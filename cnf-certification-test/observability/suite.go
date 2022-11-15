@@ -83,7 +83,7 @@ func containerHasLoggingOutput(cut *provider.Container) (bool, error) {
 
 	podLogsReaderCloser, err := req.Stream(context.TODO())
 	if err != nil {
-		return false, fmt.Errorf("unable to get log streamer, err: %s", err)
+		return false, fmt.Errorf("unable to get log streamer, err: %v", err)
 	}
 
 	defer podLogsReaderCloser.Close()
@@ -91,7 +91,7 @@ func containerHasLoggingOutput(cut *provider.Container) (bool, error) {
 	buf := new(bytes.Buffer)
 	_, err = io.Copy(buf, podLogsReaderCloser)
 	if err != nil {
-		return false, fmt.Errorf("unable to get log data, err: %s", err)
+		return false, fmt.Errorf("unable to get log data, err: %v", err)
 	}
 
 	return buf.String() != "", nil
@@ -180,7 +180,7 @@ func testPodDisruptionBudgets(env *provider.TestEnvironment) {
 				if deployment.Spec.Template.Labels[pdbLabelKey] == pdbLabelValue {
 					if ok, err := checkPDBIsValid(pdb, deployment.Spec.Replicas); !ok {
 						failedPDBs = append(failedPDBs, pdb.Name)
-						tnf.ClaimFilePrintf("PDB %s is not valid for deployment %s, err: %s", pdb.Name, deployment.Name, err)
+						tnf.ClaimFilePrintf("PDB %s is not valid for deployment %s, err: %v", pdb.Name, deployment.Name, err)
 					}
 				}
 			}
@@ -188,7 +188,7 @@ func testPodDisruptionBudgets(env *provider.TestEnvironment) {
 				if statefulSet.Spec.Template.Labels[pdbLabelKey] == pdbLabelValue {
 					if ok, err := checkPDBIsValid(pdb, statefulSet.Spec.Replicas); !ok {
 						failedPDBs = append(failedPDBs, pdb.Name)
-						tnf.ClaimFilePrintf("PDB %s is not valid for statefulset %s, err: %s", pdb.Name, statefulSet.Name, err)
+						tnf.ClaimFilePrintf("PDB %s is not valid for statefulset %s, err: %v", pdb.Name, statefulSet.Name, err)
 					}
 				}
 			}

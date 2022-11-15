@@ -160,19 +160,41 @@ func FindRogueContainersDeclaringPorts(containers []*provider.Container, portsTo
 	return rogueContainers
 }
 
+var ReservedIstioPorts = map[int32]bool{
+	// https://istio.io/latest/docs/ops/deployment/requirements/#ports-used-by-istio
+	15090: true, // Envoy Prometheus telemetry
+	15053: true, // DNS port, if capture is enabled
+	15021: true, // Health checks
+	15020: true, // Merged Prometheus telemetry from Istio agent, Envoy, and application
+	15009: true, // HBONE port for secure networks
+	15008: true, // HBONE mTLS tunnel port
+	15006: true, // Envoy inbound
+	15004: true, // Debug port
+	15001: true, // Envoy outbound
+	15000: true, // Envoy admin port (commands/diagnostics)
+}
+
 func FindRoguePodsListeningToPorts(pods []*provider.Pod, portsToTest map[int32]bool) (roguePods []string, failedContainers int) {
 	for _, put := range pods {
 		cut := put.Containers[0]
 
 		listeningPorts, err := netutil.GetListeningPorts(cut)
 		if err != nil {
-			tnf.ClaimFilePrintf("Failed to get the listening ports on %s, err: %s", cut, err)
+			tnf.ClaimFilePrintf("Failed to get the listening ports on %s, err: %v", cut, err)
 			failedContainers++
 			continue
 		}
+
 		for port := range listeningPorts {
 			if portsToTest[int32(port.PortNumber)] {
-				tnf.ClaimFilePrintf("%s has one container listening on port %d that has been reserved", put, port.PortNumber)
+				// If pod contains an "istio-proxy" container, we need to make sure that the ports returned
+				// overlap with the known istio ports
+				if put.ContainsIstioProxy() && ReservedIstioPorts[int32(port.PortNumber)] {
+					tnf.ClaimFilePrintf("%s was found to be listening to port %d due to istio-proxy being present. Ignoring.", put, port.PortNumber)
+					continue
+				}
+
+				tnf.ClaimFilePrintf("%s has one container (%s) listening on port %d that has been reserved", put, cut.Name, port.PortNumber)
 				roguePods = append(roguePods, put.String())
 			}
 		}
