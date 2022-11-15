@@ -37,7 +37,7 @@ type CertifiedOperatorRequestInfo struct {
 	// Name is the name of the `operator bundle package name` that you want to check if exists in the RedHat catalog
 	Name string `yaml:"name" json:"name"`
 
-	// Organization as understood by the operator publisher , e.g. `redhat-marketplace`
+	// Organization as understood by the operator publisher, e.g. `redhat-marketplace`
 	Organization string `yaml:"organization" json:"organization"`
 }
 

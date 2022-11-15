@@ -458,14 +458,14 @@ func TestOneProcessPerContainer(env *provider.TestEnvironment) {
 		ocpContext := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
 		pid, err := crclient.GetPidFromContainer(cut, ocpContext)
 		if err != nil {
-			tnf.ClaimFilePrintf("Could not get PID for: %s, error: %s", cut, err)
+			tnf.ClaimFilePrintf("Could not get PID for: %s, error: %v", cut, err)
 			badContainers = append(badContainers, cut.String())
 			continue
 		}
 
 		nbProcesses, err := getNbOfProcessesInPidNamespace(ocpContext, pid, clientsholder.GetClientsHolder())
 		if err != nil {
-			tnf.ClaimFilePrintf("Could not get number of processes for: %s, error: %s", cut, err)
+			tnf.ClaimFilePrintf("Could not get number of processes for: %s, error: %v", cut, err)
 			badContainers = append(badContainers, cut.String())
 			continue
 		}
@@ -576,7 +576,7 @@ func TestNoSSHDaemonsAllowed(env *provider.TestEnvironment) {
 	for _, cut := range env.Containers {
 		stdout, stderr, err := o.ExecCommandContainer(clientsholder.NewContext(cut.Namespace, cut.Podname, cut.Name), listProcessesCmd)
 		if err != nil || stderr != "" {
-			tnf.ClaimFilePrintf("Could not list processes on: %s, error: %s", cut, err)
+			tnf.ClaimFilePrintf("Could not list processes on: %s, error: %v", cut, err)
 			errorContainers = append(errorContainers, cut.String())
 			continue
 		}
