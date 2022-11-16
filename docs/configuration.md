@@ -83,4 +83,6 @@ label. Any value is permitted here but `target` is used here for consistency wit
 # AllowedProtocolNames
 
 This name of protocols that allowed.
-if we want to add adtional name, we need just write the name in yaml file.
+If we want to add another name, we just need to write the name in the yaml file.
+
+for example: if we want to add new protocol - "http4", we add in "tnf_config.yml"  below "validProtocolNames" and then this protocol ("http4") add to map allowedProtocolNames and finally "http4"  will be allow protocol.
