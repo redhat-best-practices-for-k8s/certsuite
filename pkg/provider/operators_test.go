@@ -40,8 +40,9 @@ func TestOperatorString(t *testing.T) {
 		Name:             "test1",
 		Namespace:        "testNS",
 		SubscriptionName: "sub1",
+		TargetNamespace:  "",
 	}
-	assert.Equal(t, "csv: test1 ns:testNS subscription:sub1", o.String())
+	assert.Equal(t, "csv: test1 ns:testNS subscription:sub1 targetNamespace=", o.String())
 }
 
 //nolint:funlen
@@ -109,6 +110,7 @@ func TestCreateOperators(t *testing.T) {
 					Org:                "catalogSource1",
 					Version:            "1.0.1",
 					PackageFromCsvName: "op1",
+					TargetNamespace:    allns,
 				},
 			},
 		},
@@ -129,6 +131,7 @@ func TestCreateOperators(t *testing.T) {
 					Org:                "catalogSource1",
 					Version:            "1.0.1",
 					PackageFromCsvName: "op1",
+					TargetNamespace:    allns,
 				},
 			},
 		},
@@ -149,6 +152,7 @@ func TestCreateOperators(t *testing.T) {
 					Org:                "catalogSource1",
 					Version:            "1.0.1",
 					PackageFromCsvName: "op1",
+					TargetNamespace:    allns,
 				},
 			},
 		},
@@ -175,6 +179,7 @@ func TestCreateOperators(t *testing.T) {
 					Org:                "catalogSource1",
 					Version:            "1.0.1",
 					PackageFromCsvName: "op1",
+					TargetNamespace:    allns,
 				},
 				{
 					Name:             "op1.v1.0.1",
@@ -191,6 +196,7 @@ func TestCreateOperators(t *testing.T) {
 					Package:            "",
 					Version:            "1.0.1",
 					PackageFromCsvName: "op1",
+					TargetNamespace:    allns,
 				},
 			},
 		},
@@ -217,6 +223,7 @@ func TestCreateOperators(t *testing.T) {
 					Org:                "catalogSource1",
 					Version:            "1.0.1",
 					PackageFromCsvName: "op1",
+					TargetNamespace:    allns,
 				},
 				{
 					Name:             "op1.v1.0.1",
@@ -234,6 +241,7 @@ func TestCreateOperators(t *testing.T) {
 					Org:                "catalogSource2",
 					Version:            "1.0.1",
 					PackageFromCsvName: "op1",
+					TargetNamespace:    allns,
 				},
 			},
 		},
@@ -260,6 +268,7 @@ func TestCreateOperators(t *testing.T) {
 					Org:                "catalogSource1",
 					Version:            "1.0.1",
 					PackageFromCsvName: "op1",
+					TargetNamespace:    allns,
 				},
 				{
 					Name:             "op1.v1.0.1",
@@ -277,6 +286,7 @@ func TestCreateOperators(t *testing.T) {
 					Org:                "catalogSource2",
 					Version:            "1.0.1",
 					PackageFromCsvName: "op1",
+					TargetNamespace:    allns,
 				},
 
 				{
@@ -295,13 +305,14 @@ func TestCreateOperators(t *testing.T) {
 					Org:                "catalogSource3",
 					Version:            "2.0.2",
 					PackageFromCsvName: "op2",
+					TargetNamespace:    allns,
 				},
 			},
 		},
 	}
 
 	for _, tc := range testCases {
-		ops := createOperators(tc.csvs, tc.subscriptions, tc.installPlan, tc.catalogSource, true, false)
+		ops := createOperators(tc.csvs, tc.subscriptions, tc.installPlan, tc.catalogSource, true, false, true)
 		assert.Equal(t, tc.expectedOperators, ops)
 	}
 }
@@ -361,6 +372,8 @@ func createOperator(phase, packageName, aVersion, namespace, targetNamespace str
 	aOperator.Csv.ObjectMeta.Annotations["olm.targetNamespaces"] = targetNamespace
 	aOperator.Namespace = namespace
 	aOperator.Version = aVersion
+	aOperator.TargetNamespace = getTargetNamespace(&aCsv)
+	aOperator.Phase = olmv1Alpha.ClusterServiceVersionPhase(phase)
 	return &aOperator
 }
 
@@ -398,58 +411,19 @@ func Test_getSummaryAllOperators(t *testing.T) {
 		{
 			name: "ok",
 			args: args{operators: createOperatorList()},
-			wantSummary: []string{"Succeeded operator: operator1 ver: 0.0.1 in ns: ns1 ( ns1 Single namespace managed )",
-				"Succeeded operator: operator2 ver: 0.0.1 in ns: ns2 ( ns2 Single namespace managed )",
-				"Succeeded operator: operator3 ver: 1.0.1 in ns: ns3 ( All namespaces managed )",
-				"Succeeded operator: operator3 ver: 0.0.1 in ns: ns4 ( All namespaces managed )",
-				"InstallReady operator: operator3 ver: 0.0.1 in ns: ns5 ( All namespaces managed )",
-				"Succeeded operator: operator3 ver: 0.0.1 in ns: ns6 ( All namespaces managed )",
-				"Succeeded operator: operator3 ver: 0.0.1 in ns: ns7 ( All namespaces managed )",
-				"Succeeded operator: operator3 ver: 0.0.1 in ns: ns8 ( All namespaces managed )",
-				"Succeeded operator: operator3 ver: 0.0.1 in ns: ns9 ( All namespaces managed )",
-				"Succeeded operator: operator3 ver: 0.0.1 in ns: ns10 ( All namespaces managed )",
-				"Succeeded operator: operator3 ver: 0.0.1 in ns: ns11 ( All namespaces managed )",
-				"Succeeded operator: operator3 ver: 0.0.1 in ns: ns12 ( All namespaces managed )",
-				"Succeeded operator: operator3 ver: 0.0.1 in ns: ns13 ( All namespaces managed )",
-				"Succeeded operator: operator3 ver: 0.0.1 in ns: ns14 ( All namespaces managed )",
-				"Failed operator: operator3 ver: 0.0.1 in ns: ns6 ( All namespaces managed )",
-				"Failed operator: operator4 ver: 0.0.1 in ns: ns1 ( ns1 Single namespace managed )"},
+			wantSummary: []string{"Failed operator: operator3 ver: 0.0.1 ( All namespaces )",
+				"Failed operator: operator4 ver: 0.0.1 in ns: ns1 ( ns1 Single namespace )",
+				"InstallReady operator: operator3 ver: 0.0.1 ( All namespaces )",
+				"Succeeded operator: operator1 ver: 0.0.1 in ns: ns1 ( ns1 Single namespace )",
+				"Succeeded operator: operator2 ver: 0.0.1 in ns: ns2 ( ns2 Single namespace )",
+				"Succeeded operator: operator3 ver: 0.0.1 ( All namespaces )",
+				"Succeeded operator: operator3 ver: 1.0.1 ( All namespaces )"},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if gotSummary := getSummaryAllOperators(tt.args.operators); !reflect.DeepEqual(gotSummary, tt.wantSummary) {
 				t.Errorf("getSummaryAllOperators() = %v, want %v", gotSummary, tt.wantSummary)
-			}
-		})
-	}
-}
-
-func Test_getShortSummaryAllOperators(t *testing.T) {
-	type args struct {
-		operators []*Operator
-	}
-	tests := []struct {
-		name        string
-		args        args
-		wantSummary []string
-	}{
-		{
-			name: "ok",
-			args: args{operators: createOperatorList()},
-			wantSummary: []string{"Failed operator: operator3 ver: 0.0.1 ( All namespaces managed )",
-				"Failed operator: operator4 ver: 0.0.1 in ns: ns1 ( Single namespace )",
-				"InstallReady operator: operator3 ver: 0.0.1 ( All namespaces managed )",
-				"Succeeded operator: operator1 ver: 0.0.1 in ns: ns1 ( Single namespace )",
-				"Succeeded operator: operator2 ver: 0.0.1 in ns: ns2 ( Single namespace )",
-				"Succeeded operator: operator3 ver: 0.0.1 ( All namespaces managed )",
-				"Succeeded operator: operator3 ver: 1.0.1 ( All namespaces managed )"},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if gotSummary := getShortSummaryAllOperators(tt.args.operators); !reflect.DeepEqual(gotSummary, tt.wantSummary) {
-				t.Errorf("getShortSummaryAllOperators() = %v, want %v", gotSummary, tt.wantSummary)
 			}
 		})
 	}

@@ -145,25 +145,27 @@ func getHelmList(restConfig *rest.Config, namespaces []string) map[string][]*rel
 }
 
 // getAllInstallPlans is a helper function to get the all the installPlans in a cluster.
-func getAllInstallPlans(olmClient clientOlm.Interface) (out []*olmv1Alpha.InstallPlan, err error) {
+func getAllInstallPlans(olmClient clientOlm.Interface) (out []*olmv1Alpha.InstallPlan) {
 	installPlanList, err := olmClient.OperatorsV1alpha1().InstallPlans("").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return nil, fmt.Errorf("unable get installplans in cluster, err: %s", err)
+		logrus.Errorf("unable get installplans in cluster, err: %s", err)
+		return out
 	}
 	for index := range installPlanList.Items {
 		out = append(out, &installPlanList.Items[index])
 	}
-	return out, nil
+	return out
 }
 
 // getAllCatalogSources is a helper function to get the all the CatalogSources in a cluster.
-func getAllCatalogSources(olmClient clientOlm.Interface) (out []*olmv1Alpha.CatalogSource, err error) {
+func getAllCatalogSources(olmClient clientOlm.Interface) (out []*olmv1Alpha.CatalogSource) {
 	catalogSourcesList, err := olmClient.OperatorsV1alpha1().CatalogSources("").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		return nil, fmt.Errorf("unable get CatalogSources in cluster, err: %s", err)
+		logrus.Errorf("unable get CatalogSources in cluster, err: %s", err)
+		return out
 	}
 	for index := range catalogSourcesList.Items {
 		out = append(out, &catalogSourcesList.Items[index])
 	}
-	return out, nil
+	return out
 }
