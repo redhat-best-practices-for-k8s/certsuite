@@ -18,6 +18,7 @@ package netutil
 
 import (
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -137,6 +138,11 @@ func stripSpaceTabLine(in string) string {
 }
 func isIPOrNSTablesPresent(cut *provider.Container, command string) (bool, string, error) { //nolint:gocritic
 	outStr, errStr, err := crclient.ExecCommandContainerNSEnter(command, cut)
+
+	// Zero counters first
+	// See: https://bugzilla.redhat.com/show_bug.cgi?id=1512550
+	outStr = zeroCounters(outStr)
+
 	if err != nil || (errStr != "" && errStr != ipTablesLegacyWarning) {
 		return false, outStr, fmt.Errorf("failed to execute command %s on %s, err: %v, errStr: %s", command, cut, err, errStr)
 	}
@@ -163,4 +169,10 @@ func IsIPTablesPresent(cut *provider.Container) (bool, string, error) { //nolint
 
 func IsIP6TablesPresent(cut *provider.Container) (bool, string, error) { //nolint:gocritic
 	return isIPOrNSTablesPresent(cut, dumpIP6TablesCmd)
+}
+
+func zeroCounters(in string) (out string) {
+	m1 := regexp.MustCompile(`\[\d*:\d*\]`)
+	out = m1.ReplaceAllString(in, `[0:0]`)
+	return out
 }
