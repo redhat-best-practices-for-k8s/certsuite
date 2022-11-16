@@ -1,627 +1,6 @@
 {
   "data": [
     {
-      "_id": "634fe2f04b6c281902ea01ac",
-      "alm_examples": [
-        {
-          "api_version": "ca.broadcom.com/v1alpha1",
-          "kind": "UniversalMonitoringAgent",
-          "metadata": {
-            "name": "uma-monitor"
-          },
-          "spec": {
-            "agentManager": {
-              "credential": "",
-              "tenantID": "",
-              "url": "localhost:5001"
-            },
-            "cloudmonitoring": {
-              "aws": {
-                "accessKey": "",
-                "enabled": false,
-                "secretKey": "",
-                "servicesList": ""
-              }
-            },
-            "clusterName": "DevelopmentCluster",
-            "daemonset": {
-              "apmia": {
-                "epagent": {
-                  "port": 8889
-                }
-              },
-              "privileged": true
-            },
-            "monitor": {
-              "application": {
-                "autoattach": {
-                  "dotnet": {
-                    "enabled": true
-                  },
-                  "dynamicPropertyResolution": {
-                    "agentName": "",
-                    "hostName": "{k8s_deployment_name},{k8s_daemonset_name},{k8s_deploymentconfig_name},{k8s_pod_name},ContainerHost"
-                  },
-                  "filterType": "whitelist",
-                  "java": {
-                    "customJdkTools": {
-                      "enabled": false,
-                      "imageName": ""
-                    },
-                    "enabled": true
-                  },
-                  "probe": {
-                    "enabled": true,
-                    "manageAutoAttachWebhook": true,
-                    "webhookEnabled": true
-                  }
-                },
-                "jmx": {
-                  "enabled": true
-                },
-                "opentracing": {
-                  "correlation": {
-                    "enabled": false
-                  },
-                  "enabled": true,
-                  "grpc": {
-                    "hostport": ""
-                  }
-                },
-                "zipkinTracing": {
-                  "enabled": true,
-                  "zipkinServer": {}
-                }
-              },
-              "clusterPerformance": {
-                "dataReporter": {
-                  "vertex": {
-                    "refreshInterval": 360,
-                    "ttl": 720
-                  }
-                },
-                "enabled": true,
-                "node": {
-                  "noscheduleTaint": {
-                    "allowed": {
-                      "tolerations": ""
-                    },
-                    "skipMetricAggregation": {
-                      "enabled": true
-                    }
-                  }
-                }
-              },
-              "container": {
-                "dockerstats": {
-                  "enabled": true
-                },
-                "prometheus": {
-                  "backend": {
-                    "custom": {
-                      "promqlConfigMap": "custom-promql-config"
-                    },
-                    "enabled": false,
-                    "endPoint": {
-                      "configFiles": "",
-                      "metricAlias": "container_name=container,pod_name=pod",
-                      "password": "",
-                      "token": "",
-                      "url": "",
-                      "username": ""
-                    },
-                    "filter": {
-                      "name": "",
-                      "value": ""
-                    }
-                  },
-                  "exporter": {
-                    "enabled": true
-                  }
-                }
-              },
-              "events": {
-                "clamp": {
-                  "perDayLimit": 15000
-                },
-                "elasticDocTypeId": "itoa_events_apm",
-                "elasticDocTypeVersion": 1,
-                "elasticProduct": "ao",
-                "enabled": false,
-                "filter": {
-                  "fieldselector": "type!=Normal"
-                }
-              },
-              "httpCollector": {
-                "enabled": true,
-                "ingress": {
-                  "enabled": false,
-                  "ssl": {
-                    "enabled": false
-                  }
-                },
-                "memoryGrid": {},
-                "replicas": 1,
-                "server": {
-                  "host": "0.0.0.0",
-                  "maxMemory": "",
-                  "minMemory": "",
-                  "port": 8085
-                }
-              },
-              "kafka": {
-                "consumergroups": {
-                  "filter": "",
-                  "metrics": true
-                },
-                "debug": false,
-                "deployAsDaemonSet": false,
-                "enabled": false,
-                "jmx": {
-                  "MBeans": {
-                    "exclude": "",
-                    "include": ""
-                  },
-                  "modules": "kafka,jvm,memory"
-                },
-                "ssl": {
-                  "client": {
-                    "enabled": false,
-                    "endpointIdentificationEnabled": false,
-                    "keystoreKey": {
-                      "value": "",
-                      "valueFrom": {
-                        "secretKeyRef": {
-                          "key": "",
-                          "name": ""
-                        }
-                      }
-                    },
-                    "keystoreKeyPassword": {
-                      "value": ""
-                    },
-                    "keystorePassword": {
-                      "value": ""
-                    },
-                    "truststoreKey": {
-                      "value": "",
-                      "valueFrom": {
-                        "secretKeyRef": {
-                          "key": "",
-                          "name": ""
-                        }
-                      }
-                    },
-                    "truststorePassword": {
-                      "value": ""
-                    }
-                  },
-                  "jmx": {
-                    "enabled": false,
-                    "keystoreKey": {
-                      "value": "",
-                      "valueFrom": {
-                        "secretKeyRef": {
-                          "key": "",
-                          "name": ""
-                        }
-                      }
-                    },
-                    "keystorePassword": {
-                      "value": ""
-                    },
-                    "truststoreKey": {
-                      "value": "",
-                      "valueFrom": {
-                        "secretKeyRef": {
-                          "key": "",
-                          "name": ""
-                        }
-                      }
-                    },
-                    "truststorePassword": {
-                      "value": ""
-                    }
-                  }
-                }
-              },
-              "node": {
-                "enabled": true
-              }
-            },
-            "role": "common",
-            "type": "Openshift"
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/ca/uma-operator-bundle@sha256:2a0d1b693ec16a3c272185f6c24863d623724e92893f888bc3347f89b5074cdb",
-      "bundle_path_digest": "sha256:2a0d1b693ec16a3c272185f6c24863d623724e92893f888bc3347f89b5074cdb",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "alpha",
-      "creation_date": "2022-10-19T11:43:44.164000+00:00",
-      "csv_description": "The **DX APM Universal Monitoring Agent** for Kubernetes (UMA for Kubernetes) acts as a single deployment that automatically discovers and monitors cloud and container infrastructures and containerized application processes. UMA for Kubernetes discovers and monitors all the containers on a host. This capability allows to monitor both the Kubernetes Infrastructure ( like Node, Pods, Containers, Cluster Services etc ) and applications running on this infrastructure & correlate them together which can help the triager to isolate if the the problem is related to the application or infrastructure\n\n**Usage**:\n```\n apiVersion: ca.broadcom.com/v1alpha1\n kind: UniversalMonitoringAgent\n metadata:\n   name: uma-monitor\n spec:\n   agentManager:\n     url: localhost:5001\n     credential: \"\"\n     # tenantID is Cohort ID of DX SaaS tenant.\n     # After logging into DX SaaS, Cohort ID is available at \"Launch Pad -> Settings -> Connector Parameters\"\n     # tenantID is only required if Kubernetes/OpenShift events monitoring is enabled in UMA.\n     tenantID: \"\"\n\n   clusterName: DevelopmentCluster\n\n   type: Kubernetes\n   role: common\n   openshift311Support: false\n   monitor:\n     application:\n       autoattach:\n         filterType: whitelist\n         probe:\n           enabled: true\n           webhookEnabled: true\n           manageAutoAttachWebhook: true\n         # this feature leverages container metadata to resolve agent host name and agent name\n         dynamicPropertyResolution:\n           hostName: \"{k8s_deployment_name},{k8s_daemonset_name},{k8s_deploymentconfig_name},{k8s_pod_name},ContainerHost\"\n           agentName: \"\"\n         java:\n           enabled: true\n           propertiesOverride:\n           customJdkTools:\n             enabled: false\n             # Provide your custom created jdk tools jar image name below.\n             imageName: \"\"\n         dotnet:\n           enabled: true\n           propertiesOverride:\n       jmx:\n         enabled: true\n       opentracing:\n         enabled: true\n         grpc:\n           hostport: \"\"\n         correlation:\n           enabled: false\n       zipkinTracing:\n         enabled: true\n         zipkinServer:\n           hostport:\n     events:\n       enabled: false\n       filter:\n         # fieldselector property can be used to filter the Kubernetes events based on the value of one or more resource fields.\n         # Here are some examples of field selector queries: metadata.namespace!=default, metadata.name=my-service etc.\n         fieldselector: type!=Normal\n         namespace:\n       clamp:\n         perDayLimit: 15000\n       elasticDocTypeId: itoa_events_apm\n       elasticDocTypeVersion: 1\n       elasticProduct: ao\n     httpCollector:\n       enabled: true\n       replicas: 1\n       server:\n         host: 0.0.0.0\n         port: 8085\n         minMemory: \"\"\n         maxMemory: \"\"\n       memoryGrid:\n         enabled:\n       # Enable this ingress resource creation if there is Ingress Controller deployed\n       # It requires session affinity using HTTP Headers by LB Ingress Controller\n       ingress:\n         enabled: false\n         host:\n         ssl:\n           enabled: false\n     container:\n       prometheus:\n         exporter:\n           enabled: true\n         backend:\n           enabled: false\n           endPoint:\n             # Defines the URL endpoint of the Prometheus backend.\n             url: \"\"\n             # Username (if any) for connecting to the Prometheus backend URL.\n             username:\n             password: \"\"\n             # Token (if any) for connecting to the Prometheus backend URL.\n             token: \"\"\n             configFiles: \"\"\n             metricAlias: container_name=container,pod_name=pod\n           filter:\n             name: \"\"\n             value: \"\"\n           custom:\n             promqlConfigMap: custom-promql-config\n\n       dockerstats:\n         enabled: true\n     clusterPerformance:\n       enabled: true\n       node:\n         noscheduleTaint:\n           skipMetricAggregation:\n             enabled: true\n           allowed:\n             tolerations: \"\"\n       dataReporter:\n         vertex:\n           ttl: 720\n           refreshInterval: 360\n     node:\n       enabled: true\n     kafka:\n       enabled: false\n       consumergroups:\n         metrics: true\n         filter: \"\"\n       jmx:\n         modules: \"kafka,jvm,memory\"\n         MBeans:\n           # A semi-colon separated list of managed bean object names. JMX metrics will be automatically reported for matching beans.\n           include: \"\"\n           # A semi-colon separated list of managed bean object names. Matching beans will be ignored for Kafka JMX metrics reporting. This property overrides \"include\" configuration.\n           exclude: \"\"\n       deployAsDaemonSet: false\n       debug: false\n       ssl:\n         client:\n           enabled: false\n           truststoreKey:\n             value: \"\"\n             valueFrom:\n               secretKeyRef:\n                 name: \"\"\n                 key: \"\"\n           truststorePassword:\n             value: \"\"\n           keystoreKey:\n             value: \"\"\n             valueFrom:\n               secretKeyRef:\n                 name: \"\"\n                 key: \"\"\n           keystorePassword:\n             value: \"\"\n           keystoreKeyPassword:\n             value: \"\"\n           endpointIdentificationEnabled: false\n         jmx:\n           enabled: false\n           truststoreKey:\n             value: \"\"\n             valueFrom:\n               secretKeyRef:\n                 name: \"\"\n                 key: \"\"\n           truststorePassword:\n             value: \"\"\n           keystoreKey:\n             value: \"\"\n             valueFrom:\n               secretKeyRef:\n                 name: \"\"\n                 key: \"\"\n           keystorePassword:\n             value: \"\"\n\n   # Default epagent port of the UMA daemonset pod deployment (app-container-monitor)\n   daemonset:\n     privileged: true\n     apmia:\n       epagent:\n         port: 8889\n   cloudmonitoring:\n     aws:\n       enabled: false\n       accessKey: \"\"\n       secretKey: \"\"\n       # services supported are rds,ec2,ebs,lambda,dynamodb,s3,sns,ecs,sqs,kinesis,clb,nlb,alb,redshift,elasticache,autoScaling,billing,apiGateway\n       # provide comma separated services to monitor\n       servicesList: \"\"\n\n```\n",
-      "csv_display_name": "DX APM Universal Monitoring Agent",
-      "csv_metadata_description": "The Universal Monitoring Agent for Kubernetes (UMA for Kubernetes) acts as single deployment that automatically discovers and monitors cloud and container infrastructures and containerized application processes.",
-      "csv_name": "uma-operator.v2022.8.2-47",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": true,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": true,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": true,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": false,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": false,
-      "last_update_date": "2022-10-24T12:10:58.930000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.7",
-      "organization": "certified-operators",
-      "package": "uma-operator",
-      "provided_apis": [
-        {
-          "group": "ca.broadcom.com",
-          "kind": "UniversalMonitoringAgent",
-          "version": "v1alpha1"
-        }
-      ],
-      "provider": "Broadcom, Inc.",
-      "related_images": [
-        {
-          "digest": "sha256:ac74cf447f05b4d9fff8f5e0830b0373ae5fecf4fd05caff78a5ecd79e44b3ad",
-          "image": "registry.connect.redhat.com/ca/uma-operator@sha256:ac74cf447f05b4d9fff8f5e0830b0373ae5fecf4fd05caff78a5ecd79e44b3ad",
-          "name": "uma-operator-ac74cf447f05b4d9fff8f5e0830b0373ae5fecf4fd05caff78a5ecd79e44b3ad-annotation"
-        },
-        {
-          "digest": "sha256:ac74cf447f05b4d9fff8f5e0830b0373ae5fecf4fd05caff78a5ecd79e44b3ad",
-          "image": "registry.connect.redhat.com/ca/uma-operator@sha256:ac74cf447f05b4d9fff8f5e0830b0373ae5fecf4fd05caff78a5ecd79e44b3ad",
-          "name": "uma-operator"
-        },
-        {
-          "digest": "sha256:2bb8aed2e9f4c65e8fd26c061f18554352f2c5cd8faf3102e30bd6252b418eaf",
-          "image": "registry.connect.redhat.com/ca/universalmonitoragent@sha256:2bb8aed2e9f4c65e8fd26c061f18554352f2c5cd8faf3102e30bd6252b418eaf",
-          "name": "uma"
-        }
-      ],
-      "replaces": null,
-      "skip_range": ">=2022.1.0 <2022.8.2",
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.7",
-      "version": "2022.8.2-47",
-      "version_original": "2022.8.2-47"
-    },
-    {
-      "_id": "6350e98e9faf0354eea42795",
-      "alm_examples": [
-        {
-          "api_version": "eginnovations.com/v1beta1",
-          "kind": "EgUniversalAgent",
-          "metadata": {
-            "name": "eguniversalagent",
-            "namespace": "egagent"
-          },
-          "spec": {
-            "agent": {
-              "env": [
-                {
-                  "name": "EG_MANAGER",
-                  "value": "Replace with eG Manager IP"
-                },
-                {
-                  "name": "EG_MANAGER_PORT",
-                  "value": "Replace with eG Manager Port"
-                }
-              ]
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/eginnovations/universal-agent-operator@sha256:8bb137844077061a31c70209617527e837ca87222aa9f04a3d59015ce01241fc",
-      "bundle_path_digest": "sha256:8bb137844077061a31c70209617527e837ca87222aa9f04a3d59015ce01241fc",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-10-20T06:24:14.258000+00:00",
-      "csv_description": "eG Innovations\u2019 converged application and infrastructure performance monitoring capabilities provide end-to-end visibility and correlated analytics for every layer, every tier of your IT landscape.\n\nThe eG Enterprise Universal Agent Operator automatically configures a host agent on every Kubernetes worker node. The host agent auto-discovers the worker nodes and application containers running as Pods on each node and tracks their performance and utilization levels. In-depth monitoring of applications running on containers is also provided using the same host agent. No additional agents are required for the containers.\n\n### Capabilities\n  * Rolls out the eg Agent pod per node to monitor its pods and the node itself\n  * Automatic BTM profiler injection using webhook based injection for deep application monitoring and transection tracing.\n\n### Installation\n  1. Create the namespace \"egagent\" for installing eG Agent on kubernetes Cluster.\n\n     <br />``` $ kubectl create ns egagent ```\n  2. Install eG Innovations Universal Agent operator from [OperatorHub.io](https://operatorhub.io/) or [OpenShift Container Platform](https://www.openshift.com/).\n  3. Create the eG Universal Agent CRD (Custom Resource Definition)\n     a. Click \"View YAML Example\" and copy the yaml contents and save it to (filename).yaml on your host.\n     b. To apply the CRD run the following command\n\n     <br />``` $ kubectl apply -f (filename).yaml ```\n\n### Required Parameters\n  * EG\\_MANAGER, EG\\_MANAGER\\_PORT - provide the ip and port of your eG Manager Installation.\n\n### Advanced Options\n  * Disable Certificate Checking - disable any certificate validation that may interact poorly with proxies within your cluster\n  * Image Override - use a copy of the eG Iniversal Agent container image from a registry other that Docker's or Red Hat's\n  * Environment variables - define environment variables for the eG Universal Agent container of for APM profiler.\n  * Namespace Selectors- select a subset of namesapces to enable instrumentation for applications.\n\nFor complete list of supported parameters and the detailed documentation available in [eG Innovations Docs](https://docs.eginnovations.com)\n",
-      "csv_display_name": "eG Innovations Universal Agent Operator",
-      "csv_metadata_description": "",
-      "csv_name": "eginnovations-operator.v0.0.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T11:53:18.029000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.11",
-      "organization": "certified-operators",
-      "package": "eginnovations-operator",
-      "provided_apis": [
-        {
-          "group": "eginnovations.com",
-          "kind": "EgUniversalAgent",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "eG Innovations",
-      "related_images": [
-        {
-          "digest": "sha256:324a2f2bbb3b220a02ab85046d5e5e49fbe1cc14578882ef0bb22c07bc65be14",
-          "image": "docker.io/eginnovations/universal-agent-operator@sha256:324a2f2bbb3b220a02ab85046d5e5e49fbe1cc14578882ef0bb22c07bc65be14",
-          "name": "eginnovations-operator"
-        },
-        {
-          "digest": "sha256:324a2f2bbb3b220a02ab85046d5e5e49fbe1cc14578882ef0bb22c07bc65be14",
-          "image": "docker.io/eginnovations/universal-agent-operator@sha256:324a2f2bbb3b220a02ab85046d5e5e49fbe1cc14578882ef0bb22c07bc65be14",
-          "name": "universal-agent-operator-324a2f2bbb3b220a02ab85046d5e5e49fbe1cc14578882ef0bb22c07bc65be14-annotation"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:324a2f2bbb3b220a02ab85046d5e5e49fbe1cc14578882ef0bb22c07bc65be14",
-          "image": "docker.io/eginnovations/universal-agent-operator@sha256:324a2f2bbb3b220a02ab85046d5e5e49fbe1cc14578882ef0bb22c07bc65be14",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
-      "version": "0.0.2",
-      "version_original": "0.0.2"
-    },
-    {
-      "_id": "6350e9aa6e64cf2ee67abb84",
-      "alm_examples": [
-        {
-          "api_version": "eginnovations.com/v1beta1",
-          "kind": "EgUniversalAgent",
-          "metadata": {
-            "name": "eguniversalagent",
-            "namespace": "egagent"
-          },
-          "spec": {
-            "agent": {
-              "env": [
-                {
-                  "name": "EG_MANAGER",
-                  "value": "Replace with eG Manager IP"
-                },
-                {
-                  "name": "EG_MANAGER_PORT",
-                  "value": "Replace with eG Manager Port"
-                }
-              ]
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/eginnovations/universal-agent-operator@sha256:8bb137844077061a31c70209617527e837ca87222aa9f04a3d59015ce01241fc",
-      "bundle_path_digest": "sha256:8bb137844077061a31c70209617527e837ca87222aa9f04a3d59015ce01241fc",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-10-20T06:24:42.180000+00:00",
-      "csv_description": "eG Innovations\u2019 converged application and infrastructure performance monitoring capabilities provide end-to-end visibility and correlated analytics for every layer, every tier of your IT landscape.\n\nThe eG Enterprise Universal Agent Operator automatically configures a host agent on every Kubernetes worker node. The host agent auto-discovers the worker nodes and application containers running as Pods on each node and tracks their performance and utilization levels. In-depth monitoring of applications running on containers is also provided using the same host agent. No additional agents are required for the containers.\n\n### Capabilities\n  * Rolls out the eg Agent pod per node to monitor its pods and the node itself\n  * Automatic BTM profiler injection using webhook based injection for deep application monitoring and transection tracing.\n\n### Installation\n  1. Create the namespace \"egagent\" for installing eG Agent on kubernetes Cluster.\n\n     <br />``` $ kubectl create ns egagent ```\n  2. Install eG Innovations Universal Agent operator from [OperatorHub.io](https://operatorhub.io/) or [OpenShift Container Platform](https://www.openshift.com/).\n  3. Create the eG Universal Agent CRD (Custom Resource Definition)\n     a. Click \"View YAML Example\" and copy the yaml contents and save it to (filename).yaml on your host.\n     b. To apply the CRD run the following command\n\n     <br />``` $ kubectl apply -f (filename).yaml ```\n\n### Required Parameters\n  * EG\\_MANAGER, EG\\_MANAGER\\_PORT - provide the ip and port of your eG Manager Installation.\n\n### Advanced Options\n  * Disable Certificate Checking - disable any certificate validation that may interact poorly with proxies within your cluster\n  * Image Override - use a copy of the eG Iniversal Agent container image from a registry other that Docker's or Red Hat's\n  * Environment variables - define environment variables for the eG Universal Agent container of for APM profiler.\n  * Namespace Selectors- select a subset of namesapces to enable instrumentation for applications.\n\nFor complete list of supported parameters and the detailed documentation available in [eG Innovations Docs](https://docs.eginnovations.com)\n",
-      "csv_display_name": "eG Innovations Universal Agent Operator",
-      "csv_metadata_description": "",
-      "csv_name": "eginnovations-operator.v0.0.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T11:05:33.441000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.10",
-      "organization": "certified-operators",
-      "package": "eginnovations-operator",
-      "provided_apis": [
-        {
-          "group": "eginnovations.com",
-          "kind": "EgUniversalAgent",
-          "plural": "eguniversalagents",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "eG Innovations",
-      "related_images": [
-        {
-          "digest": "sha256:324a2f2bbb3b220a02ab85046d5e5e49fbe1cc14578882ef0bb22c07bc65be14",
-          "image": "docker.io/eginnovations/universal-agent-operator@sha256:324a2f2bbb3b220a02ab85046d5e5e49fbe1cc14578882ef0bb22c07bc65be14",
-          "name": "eginnovations-operator"
-        },
-        {
-          "digest": "sha256:324a2f2bbb3b220a02ab85046d5e5e49fbe1cc14578882ef0bb22c07bc65be14",
-          "image": "docker.io/eginnovations/universal-agent-operator@sha256:324a2f2bbb3b220a02ab85046d5e5e49fbe1cc14578882ef0bb22c07bc65be14",
-          "name": "universal-agent-operator-324a2f2bbb3b220a02ab85046d5e5e49fbe1cc14578882ef0bb22c07bc65be14-annotation"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:324a2f2bbb3b220a02ab85046d5e5e49fbe1cc14578882ef0bb22c07bc65be14",
-          "image": "docker.io/eginnovations/universal-agent-operator@sha256:324a2f2bbb3b220a02ab85046d5e5e49fbe1cc14578882ef0bb22c07bc65be14",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
-      "version": "0.0.2",
-      "version_original": "0.0.2"
-    },
-    {
-      "_id": "6350e9c63220db00984b85bc",
-      "alm_examples": [
-        {
-          "api_version": "eginnovations.com/v1beta1",
-          "kind": "EgUniversalAgent",
-          "metadata": {
-            "name": "eguniversalagent",
-            "namespace": "egagent"
-          },
-          "spec": {
-            "agent": {
-              "env": [
-                {
-                  "name": "EG_MANAGER",
-                  "value": "Replace with eG Manager IP"
-                },
-                {
-                  "name": "EG_MANAGER_PORT",
-                  "value": "Replace with eG Manager Port"
-                }
-              ]
-            }
-          }
-        }
-      ],
-      "annotations": {
-        "infrastructure_features": [],
-        "valid_subscription": []
-      },
-      "architectures": [],
-      "bundle_path": "registry.connect.redhat.com/eginnovations/universal-agent-operator@sha256:8bb137844077061a31c70209617527e837ca87222aa9f04a3d59015ce01241fc",
-      "bundle_path_digest": "sha256:8bb137844077061a31c70209617527e837ca87222aa9f04a3d59015ce01241fc",
-      "capabilities": [
-        "Seamless Upgrades"
-      ],
-      "channel_name": "beta",
-      "creation_date": "2022-10-20T06:25:10.271000+00:00",
-      "csv_description": "eG Innovations\u2019 converged application and infrastructure performance monitoring capabilities provide end-to-end visibility and correlated analytics for every layer, every tier of your IT landscape.\n\nThe eG Enterprise Universal Agent Operator automatically configures a host agent on every Kubernetes worker node. The host agent auto-discovers the worker nodes and application containers running as Pods on each node and tracks their performance and utilization levels. In-depth monitoring of applications running on containers is also provided using the same host agent. No additional agents are required for the containers.\n\n### Capabilities\n  * Rolls out the eg Agent pod per node to monitor its pods and the node itself\n  * Automatic BTM profiler injection using webhook based injection for deep application monitoring and transection tracing.\n\n### Installation\n  1. Create the namespace \"egagent\" for installing eG Agent on kubernetes Cluster.\n\n     <br />``` $ kubectl create ns egagent ```\n  2. Install eG Innovations Universal Agent operator from [OperatorHub.io](https://operatorhub.io/) or [OpenShift Container Platform](https://www.openshift.com/).\n  3. Create the eG Universal Agent CRD (Custom Resource Definition)\n     a. Click \"View YAML Example\" and copy the yaml contents and save it to (filename).yaml on your host.\n     b. To apply the CRD run the following command\n\n     <br />``` $ kubectl apply -f (filename).yaml ```\n\n### Required Parameters\n  * EG\\_MANAGER, EG\\_MANAGER\\_PORT - provide the ip and port of your eG Manager Installation.\n\n### Advanced Options\n  * Disable Certificate Checking - disable any certificate validation that may interact poorly with proxies within your cluster\n  * Image Override - use a copy of the eG Iniversal Agent container image from a registry other that Docker's or Red Hat's\n  * Environment variables - define environment variables for the eG Universal Agent container of for APM profiler.\n  * Namespace Selectors- select a subset of namesapces to enable instrumentation for applications.\n\nFor complete list of supported parameters and the detailed documentation available in [eG Innovations Docs](https://docs.eginnovations.com)\n",
-      "csv_display_name": "eG Innovations Universal Agent Operator",
-      "csv_metadata_description": "",
-      "csv_name": "eginnovations-operator.v0.0.2",
-      "in_index_img": true,
-      "install_modes": [
-        {
-          "supported": false,
-          "type": "OwnNamespace"
-        },
-        {
-          "supported": false,
-          "type": "SingleNamespace"
-        },
-        {
-          "supported": false,
-          "type": "MultiNamespace"
-        },
-        {
-          "supported": true,
-          "type": "AllNamespaces"
-        }
-      ],
-      "is_default_channel": true,
-      "last_update_date": "2022-10-24T11:02:49.848000+00:00",
-      "latest_in_channel": true,
-      "ocp_version": "4.9",
-      "organization": "certified-operators",
-      "package": "eginnovations-operator",
-      "provided_apis": [
-        {
-          "group": "eginnovations.com",
-          "kind": "EgUniversalAgent",
-          "plural": "eguniversalagents",
-          "version": "v1beta1"
-        }
-      ],
-      "provider": "eG Innovations",
-      "related_images": [
-        {
-          "digest": "sha256:324a2f2bbb3b220a02ab85046d5e5e49fbe1cc14578882ef0bb22c07bc65be14",
-          "image": "docker.io/eginnovations/universal-agent-operator@sha256:324a2f2bbb3b220a02ab85046d5e5e49fbe1cc14578882ef0bb22c07bc65be14",
-          "name": "eginnovations-operator"
-        },
-        {
-          "digest": "sha256:324a2f2bbb3b220a02ab85046d5e5e49fbe1cc14578882ef0bb22c07bc65be14",
-          "image": "docker.io/eginnovations/universal-agent-operator@sha256:324a2f2bbb3b220a02ab85046d5e5e49fbe1cc14578882ef0bb22c07bc65be14",
-          "name": "universal-agent-operator-324a2f2bbb3b220a02ab85046d5e5e49fbe1cc14578882ef0bb22c07bc65be14-annotation"
-        },
-        {
-          "digest": "sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "image": "gcr.io/kubebuilder/kube-rbac-proxy@sha256:db06cc4c084dd0253134f156dddaaf53ef1c3fb3cc809e5d81711baa4029ea4c",
-          "name": "kube-rbac-proxy"
-        },
-        {
-          "digest": "sha256:324a2f2bbb3b220a02ab85046d5e5e49fbe1cc14578882ef0bb22c07bc65be14",
-          "image": "docker.io/eginnovations/universal-agent-operator@sha256:324a2f2bbb3b220a02ab85046d5e5e49fbe1cc14578882ef0bb22c07bc65be14",
-          "name": "manager"
-        }
-      ],
-      "replaces": null,
-      "skip_range": null,
-      "skips": [],
-      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
-      "version": "0.0.2",
-      "version_original": "0.0.2"
-    },
-    {
       "_id": "6350ea274b6c281902ea532c",
       "alm_examples": [
         {
@@ -19045,6 +18424,360 @@
       "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
       "version": "8.0.110",
       "version_original": "8.0.110"
+    },
+    {
+      "_id": "636227c4b13b444bfbce5008",
+      "alm_examples": [
+        {
+          "api_version": "infoscale.veritas.com/v1",
+          "kind": "InfoScaleCluster",
+          "metadata": {
+            "name": "infoscalecluster-dev"
+          },
+          "spec": {
+            "clusterInfo": [
+              {},
+              {}
+            ],
+            "version": "8.0.110"
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/veritas-technologies/infoscale-sds-operator-bundle@sha256:e9e52fbb5918cd5fabac52e7c6fa26c984f72001fda26098dc2119825db0d167",
+      "bundle_path_digest": "sha256:e9e52fbb5918cd5fabac52e7c6fa26c984f72001fda26098dc2119825db0d167",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "stable",
+      "creation_date": "2022-11-02T08:18:12.600000+00:00",
+      "csv_description": "## InfoScale\u2122 SDS Operator\n\nInfoScale\u2122 SDS Operator manages the lifecycle of the InfoScale\u2122 cluster\n\n## Overview\n\n- Veritas InfoScale\u2122 delivers Infrastructure resiliency and persistent storage for your critical containerized applications for OpenShift\u00ae and Kubernetes Native deployments\n- Engineered to support stateful workloads generated for mission-critical containerized applications.\n\n---\n\n## Data Services & Benefits\n\n**1. Software-Defined Persistent Storage Volumes:** Enables customers to support multiple container application requirements leveraging existing SAN or DAS storage\n\n**2. CSI API Driver:** Facilitates static and dynamic provisioning for applications with RWX, RWO and ROX access modes\n\n**3. Life Cycle Management:** Enables automated deployment, configuration and upgrades of InfoScale Software-defined container images. Certified and Integrated with Red Hat OpenShift for a single-click deployment\n\n**4. Availability:** Provides scaling, mounting and/or movement of InfoScale persistent storage volumes on cluster nodes with minimal disruption\n\n**5. Data Integrity:** Prevents data corruption by allowing only the active cluster nodes to write to the volume. The I/O fencing feature recovers from cluster disruptions quickly by ensuring that application pods are moved to another node to continue normal operations\n\n**6. Point-in-Time Data Copies:** Create snapshots of Persistent Volumes for backup products, data analytics or forensic discovery and analysis\n\n**7. Disaster Recovery (DR) Tech Preview:** This DR feature provides the ability to test and validate disaster recovery capabilities by migrating Kubernetes cluster metadata and application components to peer cluster in case of a local or remote disaster\n\n---\n\n## Pre-requisites\n\n- [Please refer to pre-requisite section from official documentation](https://www.veritas.com/support/en_US/doc/151215298-151215302-0)\n\n\n## InfoScale Cluster custom resource\n\n```\napiVersion: infoscale.veritas.com/v1\nkind: InfoScaleCluster\nmetadata:\n  name:  < Infoscale Cluster Name >\n\nspec:\n  version: \"8.0.110\"\n\n  clusterID: < Optional - User provisioned ID for InfoScale cluster >\n\n  clusterInfo:\n  - nodeName: <Name of the first node>\n  ip:\n  - <Optional - First IP address of the first node >\n  - <Optional - Second IP address of the first node>\n  excludeDevice:\n  - <Optional - Device path of the disk on the node that you want to exclude from Infoscale disk group.>\n\n  - nodeName: <Name of the second node>\n  ip:\n  - <Optional - First IP address of the second node >\n  - <Optional - Second IP address of the second node>\n  excludeDevice:\n  - <Optional - Device path of the disk on the node that you want to exclude from Infoscale disk group.>\n\n  # You can add up to 16 nodes.\n\n  customImageRegistry: < Optional \u2013 Registry for Infoscale Container images>\n```\n\n#### Note\n\nYou can specify up to 16 worker nodes in CR. Although cluster configuration is allowed even with one Network Interface Card,\nVeritas recommends a minimum of two physical links for performance and High Availability (HA). Number of links for each network link must be same on all\nnodes. Optionally, you can enter node level IP addresses. If IP addresses are not provided, IP addresses of OpenShift cluster nodes are used.\n",
+      "csv_display_name": "InfoScale\u2122 SDS Operator",
+      "csv_metadata_description": "InfoScale\u2122 SDS Operator manages the lifecycle of the InfoScale\u2122 cluster",
+      "csv_name": "infoscale-sds-operator.v8.0.110",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": false,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": false,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-11-02T08:18:12.600000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.9",
+      "organization": "certified-operators",
+      "package": "infoscale-sds-operator",
+      "provided_apis": [
+        {
+          "group": "infoscale.veritas.com",
+          "kind": "InfoScaleCluster",
+          "plural": "infoscaleclusters",
+          "version": "v1"
+        }
+      ],
+      "provider": "Veritas Technologies LLC",
+      "related_images": [
+        {
+          "digest": "sha256:a36bf1501fc8dc269285d8777fbdabfcf2122a84663a9f6ac8e1cb7223c89aae",
+          "image": "registry.connect.redhat.com/veritas-technologies/infoscale-sds-operator@sha256:a36bf1501fc8dc269285d8777fbdabfcf2122a84663a9f6ac8e1cb7223c89aae",
+          "name": "manager"
+        },
+        {
+          "digest": "sha256:a36bf1501fc8dc269285d8777fbdabfcf2122a84663a9f6ac8e1cb7223c89aae",
+          "image": "registry.connect.redhat.com/veritas-technologies/infoscale-sds-operator@sha256:a36bf1501fc8dc269285d8777fbdabfcf2122a84663a9f6ac8e1cb7223c89aae",
+          "name": "pre-manager"
+        },
+        {
+          "digest": "sha256:a36bf1501fc8dc269285d8777fbdabfcf2122a84663a9f6ac8e1cb7223c89aae",
+          "image": "registry.connect.redhat.com/veritas-technologies/infoscale-sds-operator@sha256:a36bf1501fc8dc269285d8777fbdabfcf2122a84663a9f6ac8e1cb7223c89aae",
+          "name": "infoscale-sds-operator-a36bf1501fc8dc269285d8777fbdabfcf2122a84663a9f6ac8e1cb7223c89aae-annotation"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.9",
+      "version": "8.0.110",
+      "version_original": "8.0.110"
+    },
+    {
+      "_id": "636481606108810b73016ba1",
+      "alm_examples": [
+        {
+          "api_version": "app.joget.com/v1alpha1",
+          "kind": "JogetDX",
+          "metadata": {
+            "name": "example-joget"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:79c02d6d2ab87a38bcd4731f7ef9fa7de12df43e64f091e5799157eedf759035",
+      "bundle_path_digest": "sha256:79c02d6d2ab87a38bcd4731f7ef9fa7de12df43e64f091e5799157eedf759035",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-11-04T03:05:04.942000+00:00",
+      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
+      "csv_display_name": "Joget DX Operator",
+      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
+      "csv_name": "joget-dx-openshift-operator.v0.0.33",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-11-04T03:05:04.942000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.12",
+      "organization": "certified-operators",
+      "package": "joget-dx-operator",
+      "provided_apis": [
+        {
+          "group": "app.joget.com",
+          "kind": "JogetDX",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Joget, Inc",
+      "related_images": [
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
+        },
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:7c26ef72bd25b98e56cc57d4a89342274d2e62d808ed46c6f8278a3ebd17c868",
+          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:7c26ef72bd25b98e56cc57d4a89342274d2e62d808ed46c6f8278a3ebd17c868",
+          "name": "joget"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.12",
+      "version": "0.0.33",
+      "version_original": "0.0.33"
+    },
+    {
+      "_id": "636481a4855eb8e9cbc8b3c0",
+      "alm_examples": [
+        {
+          "api_version": "app.joget.com/v1alpha1",
+          "kind": "JogetDX",
+          "metadata": {
+            "name": "example-joget"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:79c02d6d2ab87a38bcd4731f7ef9fa7de12df43e64f091e5799157eedf759035",
+      "bundle_path_digest": "sha256:79c02d6d2ab87a38bcd4731f7ef9fa7de12df43e64f091e5799157eedf759035",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-11-04T03:06:12.885000+00:00",
+      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
+      "csv_display_name": "Joget DX Operator",
+      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
+      "csv_name": "joget-dx-openshift-operator.v0.0.33",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-11-04T03:06:12.885000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.11",
+      "organization": "certified-operators",
+      "package": "joget-dx-operator",
+      "provided_apis": [
+        {
+          "group": "app.joget.com",
+          "kind": "JogetDX",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Joget, Inc",
+      "related_images": [
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
+        },
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:7c26ef72bd25b98e56cc57d4a89342274d2e62d808ed46c6f8278a3ebd17c868",
+          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:7c26ef72bd25b98e56cc57d4a89342274d2e62d808ed46c6f8278a3ebd17c868",
+          "name": "joget"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.11",
+      "version": "0.0.33",
+      "version_original": "0.0.33"
+    },
+    {
+      "_id": "636481c589269a90eb58e79f",
+      "alm_examples": [
+        {
+          "api_version": "app.joget.com/v1alpha1",
+          "kind": "JogetDX",
+          "metadata": {
+            "name": "example-joget"
+          },
+          "spec": {
+            "size": 1
+          }
+        }
+      ],
+      "annotations": {
+        "infrastructure_features": [],
+        "valid_subscription": []
+      },
+      "architectures": [],
+      "bundle_path": "registry.connect.redhat.com/joget/joget-dx-operator-bundle@sha256:79c02d6d2ab87a38bcd4731f7ef9fa7de12df43e64f091e5799157eedf759035",
+      "bundle_path_digest": "sha256:79c02d6d2ab87a38bcd4731f7ef9fa7de12df43e64f091e5799157eedf759035",
+      "capabilities": [
+        "Seamless Upgrades"
+      ],
+      "channel_name": "alpha",
+      "creation_date": "2022-11-04T03:06:45.430000+00:00",
+      "csv_description": "Joget DX is the next generation open source no-code / low-code application platform that combines the best of Rapid Application Development, Business Process Automation and Workflow Management. \nJoget DX empowers business users, non-coders or coders with a single platform to easily build, deliver, monitor and maintain enterprise applications.\n\nThis operator installs a Joget DX cluster running on JBoss EAP 7.\n\n### Features\n* Build full-fledged apps e.g. CRM, HR, Healthcare, etc\n* Drag and drop forms, lists, UI\n* Add workflow to automate processes\n* Extend via plugins\n* Apps are mobile optimized and cloud ready\n* Download ready-made apps from the Joget Marketplace\n\n### Before You Start\nDeploy a [MySQL](https://docs.openshift.com/online/pro/using_images/db_images/mysql.html) or [MariaDB](https://docs.openshift.com/online/pro/using_images/db_images/mariadb.html) database.\n\n### Post Deployment\nAccess the service URL and complete the one-time [Database Setup](https://dev.joget.org/community/display/DX7/Setting+Up+Database)\n\n### More Information\nMore information about Joget DX on JBoss EAP 7 is available in the [Joget Knowledge Base](https://dev.joget.org/community/display/DX7/Automated+Deployment+on+Red+Hat+OpenShift+with+the+Joget+Operator)\n",
+      "csv_display_name": "Joget DX Operator",
+      "csv_metadata_description": "No-code/low-code application platform to visually build, run and maintain apps",
+      "csv_name": "joget-dx-openshift-operator.v0.0.33",
+      "in_index_img": true,
+      "install_modes": [
+        {
+          "supported": true,
+          "type": "OwnNamespace"
+        },
+        {
+          "supported": true,
+          "type": "SingleNamespace"
+        },
+        {
+          "supported": false,
+          "type": "MultiNamespace"
+        },
+        {
+          "supported": true,
+          "type": "AllNamespaces"
+        }
+      ],
+      "is_default_channel": true,
+      "last_update_date": "2022-11-04T03:06:45.430000+00:00",
+      "latest_in_channel": true,
+      "ocp_version": "4.10",
+      "organization": "certified-operators",
+      "package": "joget-dx-operator",
+      "provided_apis": [
+        {
+          "group": "app.joget.com",
+          "kind": "JogetDX",
+          "plural": "jogetdx",
+          "version": "v1alpha1"
+        }
+      ],
+      "provider": "Joget, Inc",
+      "related_images": [
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "joget-dx-operator-79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749-annotation"
+        },
+        {
+          "digest": "sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "image": "registry.connect.redhat.com/joget/joget-dx-operator@sha256:79856e88008da33fc0323e197819fec39fbd6b6bf2b03a0bf799b517bcf8e749",
+          "name": "operator"
+        },
+        {
+          "digest": "sha256:7c26ef72bd25b98e56cc57d4a89342274d2e62d808ed46c6f8278a3ebd17c868",
+          "image": "registry.connect.redhat.com/joget/joget-dx7-eap7@sha256:7c26ef72bd25b98e56cc57d4a89342274d2e62d808ed46c6f8278a3ebd17c868",
+          "name": "joget"
+        }
+      ],
+      "replaces": null,
+      "skip_range": null,
+      "skips": [],
+      "source_index_container_path": "registry.redhat.io/redhat/certified-operator-index:v4.10",
+      "version": "0.0.33",
+      "version_original": "0.0.33"
     }
   ]
 }
