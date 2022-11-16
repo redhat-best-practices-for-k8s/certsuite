@@ -75,17 +75,17 @@ func ExtractNameVersionFromName(operatorName string) (name, version string) {
 }
 
 //nolint:funlen
-func loadOperatorsCatalog(pathToRoot string) {
+func loadOperatorsCatalog(pathToRoot string) error {
 	if operatorLoaded {
 		log.Trace("operator catalog already loaded, return")
-		return
+		return nil
 	}
 	var fullCatalog OperatorCatalog
 	operatorLoaded = true
 	path := fmt.Sprintf(operatorsFilePath, pathToRoot)
 	files, err := os.ReadDir(path)
 	if err != nil {
-		log.Fatal(err)
+		return fmt.Errorf("cannot read dir %s, err: %v", path, err)
 	}
 	for _, file := range files {
 		filePath := fmt.Sprintf("%s/%s", path, file.Name())
@@ -100,6 +100,7 @@ func loadOperatorsCatalog(pathToRoot string) {
 		if err != nil {
 			f.Close()
 			log.Error("Cannot process file", file.Name(), err, " trying to proceed")
+			continue
 		}
 		err = json.Unmarshal(bytes, &fullCatalog)
 		if err != nil {
@@ -115,6 +116,8 @@ func loadOperatorsCatalog(pathToRoot string) {
 		}
 		f.Close()
 	}
+
+	return nil
 }
 
 // isOperatorCertified check the presence of operator name in certified operators db

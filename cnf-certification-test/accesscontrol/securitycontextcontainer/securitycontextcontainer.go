@@ -217,7 +217,6 @@ func GetContainerSCC(cut *provider.Container, containerSCC ContainerSCC) Contain
 	return containerSCC
 }
 
-//nolint:gocritic
 func updateCapabilitiesFromContainer(cut *provider.Container, containerSCC *ContainerSCC) {
 	containerSCC.RequiredDropCapabilitiesPresent = NOK
 	if cut.SecurityContext != nil && cut.SecurityContext.Capabilities != nil {
@@ -231,6 +230,7 @@ func updateCapabilitiesFromContainer(cut *provider.Container, containerSCC *Cont
 		if subslice(requiredDropCapabilities, sliceDropCapabilities) || reflect.DeepEqual(sliceDropCapabilities, dropAll) {
 			containerSCC.RequiredDropCapabilitiesPresent = OK
 		}
+		//nolint:gocritic
 		if len(cut.SecurityContext.Capabilities.Add) == 0 { // check if the len=0 this mean that is cat1
 			containerSCC.CapabilitiesCategory = CategoryID1
 		} else if checkContainCategory(cut.SecurityContext.Capabilities.Add, category2AddCapabilities) {

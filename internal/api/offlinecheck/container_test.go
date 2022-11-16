@@ -25,6 +25,7 @@ import (
 
 //nolint:funlen
 func TestIsCertified(t *testing.T) {
+	t.Skip() // TODO: Offline certification tests that need the DB should be moved to the OCT repo
 	checker := OfflineChecker{}
 	path, _ := os.Getwd()
 	log.Info(path)
@@ -32,7 +33,7 @@ func TestIsCertified(t *testing.T) {
 	if err != nil {
 		log.Println(err)
 	}
-	loadContainersCatalog(path + "/../../")
+	_ = loadContainersCatalog(path + "/../../")
 
 	// Note: This test cases might have to change periodically due to images coming/going from the offline database.
 	testCases := []struct {
