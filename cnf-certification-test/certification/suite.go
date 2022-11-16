@@ -155,12 +155,10 @@ func testHelmCertified(env *provider.TestEnvironment) {
 				helm.Chart.Metadata.Version,
 			)
 		} else {
-			logrus.Info(
-				fmt.Sprintf(
-					"Helm Chart %s version %s is certified.",
-					helm.Name,
-					helm.Chart.Metadata.Version,
-				),
+			logrus.Infof(
+				"Helm Chart %s version %s is certified.",
+				helm.Name,
+				helm.Chart.Metadata.Version,
 			)
 		}
 	}
