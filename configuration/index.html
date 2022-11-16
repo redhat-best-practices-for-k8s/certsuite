@@ -968,6 +968,10 @@ to be checked for certification status on Red Hat catalogs.</p>
 <h2 id="operators">Operators<a class="headerlink" href="#operators" title="Permanent link">&para;</a></h2>
 <p>The <abbr title="ClusterServiceVersion in Operator Lifecycle Manager">CSV</abbr> of the installed Operators can be tested by the <code>operator</code> and <code>affiliated-certification</code> specs are identified with the <code>test-network-function.com/operator=target</code>
 label. Any value is permitted here but <code>target</code> is used here for consistency with the other specs.</p>
+<h1 id="allowedprotocolnames">AllowedProtocolNames<a class="headerlink" href="#allowedprotocolnames" title="Permanent link">&para;</a></h1>
+<p>This name of protocols that allowed.
+If we want to add another name, we just need to write the name in the yaml file.</p>
+<p>for example: if we want to add new protocol - &ldquo;http4&rdquo;, we add in &ldquo;tnf_config.yml&rdquo;  below &ldquo;validProtocolNames&rdquo; and then this protocol (&ldquo;http4&rdquo;) add to map allowedProtocolNames and finally &ldquo;http4&rdquo;  will be allow protocol.</p>
 
 
 
