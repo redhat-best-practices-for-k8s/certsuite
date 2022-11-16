@@ -26,3 +26,6 @@ skipScalingTestDeployments:
 skipScalingTestStatefulSetNames:
   - name: "statefulset1"
     namespace: "tnf"
+validProtocolNames:
+  - "http3"
+  - "sctp"

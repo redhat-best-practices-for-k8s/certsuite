@@ -117,7 +117,8 @@ type TestConfiguration struct {
 	// SkipScalingTestStatefulSetNames
 	SkipScalingTestStatefulSets []SkipScalingTestStatefulSetsInfo `yaml:"skipScalingTestStatefulSets,omitempty" json:"skipScalingTestStatefulSets,omitempty"`
 	// CheckDiscoveredContainerCertificationStatus controls whether the container certification test will validate images used by autodiscovered containers, in addition to the configured image list
-	CheckDiscoveredContainerCertificationStatus bool `yaml:"checkDiscoveredContainerCertificationStatus" json:"checkDiscoveredContainerCertificationStatus"`
+	CheckDiscoveredContainerCertificationStatus bool     `yaml:"checkDiscoveredContainerCertificationStatus" json:"checkDiscoveredContainerCertificationStatus"`
+	ValidProtocolNames                          []string `yaml:"validProtocolNames" json:"validProtocolNames"`
 }
 
 type TestParameters struct {

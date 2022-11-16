@@ -98,6 +98,7 @@ type TestEnvironment struct { // rename this with testTarget
 	PodDisruptionBudgets []policyv1.PodDisruptionBudget
 	NetworkPolicies      []networkingv1.NetworkPolicy
 	IstioServiceMesh     bool
+	ValidProtocolNames   []string
 }
 
 type MachineConfig struct {
@@ -151,6 +152,10 @@ func buildTestEnvironment() { //nolint:funlen
 	env.variables = data.Env
 	env.Nodes = createNodes(data.Nodes.Items)
 	env.IstioServiceMesh = data.Istio
+	for i := range data.ValidProtocolNames {
+		// Adding to the array
+		env.ValidProtocolNames = append(env.ValidProtocolNames, data.ValidProtocolNames[i])
+	}
 	for i := range data.AbnormalEvents {
 		aEvent := NewEvent(&data.AbnormalEvents[i])
 		env.AbnormalEvents = append(env.AbnormalEvents, &aEvent)
