@@ -36,34 +36,37 @@ func LoadCatalog() error {
 }
 
 func IsContainerCertified(registry, repository, tag, digest string) bool {
-	if onlineClient.IsServiceReachable() {
+	switch {
+	case onlineClient.IsServiceReachable():
 		return onlineClient.IsContainerCertified(registry, repository, tag, digest)
-	} else if offlineDBLoaded {
+	case offlineDBLoaded:
 		logrus.Warnf("Online Catalog not available. Testing with offline db.")
 		return offlineClient.IsContainerCertified(registry, repository, tag, digest)
-	} else {
+	default:
 		logrus.Errorf("Neither the online catalog nor the offline DB are available. Cannot verify the container certification status.")
 		return false
 	}
 }
 func IsOperatorCertified(operatorName, ocpVersion, channel string) bool {
-	if onlineClient.IsServiceReachable() {
+	switch {
+	case onlineClient.IsServiceReachable():
 		return onlineClient.IsOperatorCertified(operatorName, ocpVersion, channel)
-	} else if offlineDBLoaded {
+	case offlineDBLoaded:
 		logrus.Warnf("Online Catalog not available. Testing with offline db.")
 		return offlineClient.IsOperatorCertified(operatorName, ocpVersion, channel)
-	} else {
+	default:
 		logrus.Errorf("Neither the online catalog nor the offline DB are available. Cannot verify the operator certification status.")
 		return false
 	}
 }
 func IsReleaseCertified(helm *release.Release, ourKubeVersion string) bool {
-	if onlineClient.IsServiceReachable() {
+	switch {
+	case onlineClient.IsServiceReachable():
 		return onlineClient.IsReleaseCertified(helm, ourKubeVersion)
-	} else if offlineDBLoaded {
+	case offlineDBLoaded:
 		logrus.Warnf("Online Catalog not available. Testing with offline db.")
 		return offlineClient.IsReleaseCertified(helm, ourKubeVersion)
-	} else {
+	default:
 		logrus.Errorf("Neither the online catalog nor the offline DB are available. Cannot verify the Helm chart certification status.")
 		return false
 	}
