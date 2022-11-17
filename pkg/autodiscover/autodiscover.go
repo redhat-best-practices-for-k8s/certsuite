@@ -60,8 +60,12 @@ type DiscoveredTestData struct {
 	NetworkPolicies        []networkingv1.NetworkPolicy
 	Crds                   []*apiextv1.CustomResourceDefinition
 	Namespaces             []string
+	AllNamespaces          []string
 	AbnormalEvents         []corev1.Event
 	Csvs                   []olmv1Alpha.ClusterServiceVersion
+	AllCsvs                []olmv1Alpha.ClusterServiceVersion
+	AllInstallPlans        []*olmv1Alpha.InstallPlan
+	AllCatalogSources      []*olmv1Alpha.CatalogSource
 	Deployments            []appsv1.Deployment
 	StatefulSet            []appsv1.StatefulSet
 	PersistentVolumes      []corev1.PersistentVolume
@@ -69,6 +73,7 @@ type DiscoveredTestData struct {
 	Services               []*corev1.Service
 	Hpas                   map[string]*scalingv1.HorizontalPodAutoscaler
 	Subscriptions          []olmv1Alpha.Subscription
+	AllSubscriptions       []olmv1Alpha.Subscription
 	HelmChartReleases      map[string][]*release.Release
 	K8sVersion             string
 	OpenshiftVersion       string
@@ -112,6 +117,11 @@ func DoAutoDiscover() DiscoveredTestData {
 		logrus.Fatalf("Cannot load configuration, error: %v", err)
 	}
 	oc := clientsholder.GetClientsHolder()
+	data.AllNamespaces, _ = getAllNamespaces(oc.K8sClient.CoreV1())
+	data.AllSubscriptions = findSubscriptions(oc.OlmClient, []string{""})
+	data.AllCsvs = getAllOperators(oc.OlmClient)
+	data.AllInstallPlans = getAllInstallPlans(oc.OlmClient)
+	data.AllCatalogSources = getAllCatalogSources(oc.OlmClient)
 	data.Namespaces = namespacesListToStringList(data.TestData.TargetNameSpaces)
 	data.Pods, data.AllPods = findPodsByLabel(oc.K8sClient.CoreV1(), data.TestData.TargetPodLabels, data.Namespaces)
 	data.AbnormalEvents = findAbnormalEvents(oc.K8sClient.CoreV1(), data.Namespaces)
@@ -141,7 +151,7 @@ func DoAutoDiscover() DiscoveredTestData {
 	if err != nil {
 		logrus.Fatalf("Cannot get the K8s version, error: %v", err)
 	}
-	data.Istio = findIstioNamespace(oc.K8sClient.CoreV1())
+	data.Istio = findIstioNamespace(data.AllNamespaces)
 	data.ValidProtocolNames = data.TestData.ValidProtocolNames
 
 	// Find the status of the OCP version (pre-ga, end-of-life, maintenance, or generally available)

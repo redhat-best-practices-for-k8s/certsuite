@@ -27,6 +27,7 @@ import (
 	"encoding/json"
 
 	mcv1 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1"
+	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
@@ -80,6 +81,8 @@ type TestEnvironment struct { // rename this with testTarget
 	// Note: Containers is a filtered list of objects based on a block list of disallowed container names.
 	Containers             []*Container `json:"testContainers"`
 	Operators              []*Operator  `json:"testOperators"`
+	AllOperators           []*Operator  `json:"AllOperators"`
+	AllOperatorsSummary    []string     `json:"AllOperatorsSummary"`
 	PersistentVolumes      []corev1.PersistentVolume
 	PersistentVolumeClaims []corev1.PersistentVolumeClaim
 
@@ -97,6 +100,8 @@ type TestEnvironment struct { // rename this with testTarget
 	ResourceQuotas       []corev1.ResourceQuota
 	PodDisruptionBudgets []policyv1.PodDisruptionBudget
 	NetworkPolicies      []networkingv1.NetworkPolicy
+	AllInstallPlans      []*olmv1Alpha.InstallPlan   `json:"-"`
+	AllCatalogSources    []*olmv1Alpha.CatalogSource `json:"-"`
 	IstioServiceMesh     bool
 	ValidProtocolNames   []string
 }
@@ -148,6 +153,10 @@ func buildTestEnvironment() { //nolint:funlen
 	data := autodiscover.DoAutoDiscover()
 	env.Config = data.TestData
 	env.Crds = data.Crds
+	env.AllInstallPlans = data.AllInstallPlans
+	env.AllCatalogSources = data.AllCatalogSources
+	env.AllOperators = createOperators(data.AllCsvs, data.AllSubscriptions, data.AllInstallPlans, data.AllCatalogSources, true, false, false)
+	env.AllOperatorsSummary = getSummaryAllOperators(env.AllOperators)
 	env.Namespaces = data.Namespaces
 	env.variables = data.Env
 	env.Nodes = createNodes(data.Nodes.Items)
@@ -208,10 +217,7 @@ func buildTestEnvironment() { //nolint:funlen
 	}
 	env.HorizontalScaler = data.Hpas
 
-	operators, err := createOperators(data.Csvs, data.Subscriptions)
-	if err != nil {
-		logrus.Errorf("Failed to get cluster operators: %s", err)
-	}
+	operators := createOperators(data.Csvs, data.Subscriptions, data.AllInstallPlans, data.AllCatalogSources, false, false, true)
 	env.Operators = operators
 	logrus.Infof("Operators found: %d", len(env.Operators))
 }
