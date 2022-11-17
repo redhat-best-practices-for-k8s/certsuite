@@ -48,7 +48,7 @@ const (
 // All actual test code belongs below here.  Utilities belong above.
 var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	logrus.Debugf("Entering %s suite", common.LifecycleTestKey)
-	var env provider.TestEnvironment
+	env := provider.GetTestEnvironment()
 	ginkgo.BeforeEach(func() {
 		env = provider.GetTestEnvironment()
 	})
@@ -114,17 +114,17 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		testPodNodeSelectorAndAffinityBestPractices(&env)
 	})
 
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodRecreationIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Deployments, env.StatefulSets)
-		if env.GetWorkerCount() < minWorkerNodesForLifecycle {
-			ginkgo.Skip("Skipping pod recreation scaling test because invalid number of available workers.")
-		}
-		// Testing pod re-creation for deployments
-		testPodsRecreation(&env)
-	})
-
 	if env.IsIntrusive() {
+		testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodRecreationIdentifier)
+		ginkgo.It(testID, ginkgo.Label(tags...), func() {
+			testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Deployments, env.StatefulSets)
+			if env.GetWorkerCount() < minWorkerNodesForLifecycle {
+				ginkgo.Skip("Skipping pod recreation scaling test because invalid number of available workers.")
+			}
+			// Testing pod re-creation for deployments
+			testPodsRecreation(&env)
+		})
+
 		testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestDeploymentScalingIdentifier)
 		ginkgo.It(testID, ginkgo.Label(tags...), func() {
 			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Deployments)
