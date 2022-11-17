@@ -130,10 +130,15 @@ func testAllOperatorCertified(env *provider.TestEnvironment) {
 		isCertified := api.IsOperatorCertified(name, ocpMinorVersion, channel)
 		if !isCertified {
 			testFailed = true
-			logrus.Info(fmt.Sprintf("Operator %s (channel %s) not certified for OpenShift %s .", name, channel, ocpMinorVersion))
+			logrus.Infof(
+				"Operator %s (channel %s) not certified for OpenShift %s.",
+				name,
+				channel,
+				ocpMinorVersion,
+			)
 			tnf.ClaimFilePrintf("Operator %s (channel %s) failed to be certified for OpenShift %s", name, channel, ocpMinorVersion)
 		} else {
-			logrus.Info(fmt.Sprintf("Operator %s (channel %s) certified OK.", name, channel))
+			logrus.Infof("Operator %s (channel %s) certified OK.", name, channel)
 		}
 	}
 	if testFailed {
