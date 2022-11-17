@@ -56,6 +56,8 @@ type CsvInstallPlan struct {
 func (op *Operator) String() string {
 	return fmt.Sprintf("csv: %s ns:%s subscription:%s targetNamespace=%s", op.Name, op.Namespace, op.SubscriptionName, op.TargetNamespace)
 }
+
+//nolint:funlen // adding 1 log 26 > 25
 func createOperators(csvs []olmv1Alpha.ClusterServiceVersion,
 	subscriptions []olmv1Alpha.Subscription,
 	allInstallPlans []*olmv1Alpha.InstallPlan,
@@ -80,6 +82,7 @@ func createOperators(csvs []olmv1Alpha.ClusterServiceVersion,
 		op.Phase = csv.Status.Phase
 		packageAndVersion := strings.SplitN(csv.Name, ".", maxSize)
 		if len(packageAndVersion) == 0 {
+			logrus.Tracef("Empty CSV Name (package.version), cannot extract a package or a version, skipping. Csv: %+v", *csv)
 			continue
 		}
 		op.PackageFromCsvName = packageAndVersion[0]
