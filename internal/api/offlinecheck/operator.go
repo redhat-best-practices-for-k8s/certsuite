@@ -32,7 +32,7 @@ const (
 
 var (
 	operatorLoaded    = false
-	operatorsFilePath = "%s/../cmd/tnf/fetch/data/operators/"
+	operatorsFilePath = "%s/data/operators/"
 	operatordb        = make(map[string][]OperatorOcpVersionMatch)
 )
 

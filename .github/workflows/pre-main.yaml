@@ -12,6 +12,7 @@ env:
   RELEASE_LEVEL: '4.11'
   TNF_IMAGE_NAME: testnetworkfunction/cnf-certification-test
   TNF_IMAGE_TAG: unstable
+  TNF_OFFLINE_DB: ${GITHUB_WORKSPACE}/offline-db
   OCT_IMAGE_NAME: testnetworkfunction/oct
   OCT_IMAGE_TAG: latest
   TNF_CONTAINER_CLIENT: docker
@@ -151,7 +152,8 @@ jobs:
       - name: Update the CNF DB
         run: |
           docker pull ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
-          docker run -v ${GITHUB_WORKSPACE}/cnf-certification-test/cmd/tnf/fetch:/tmp/dump:Z --env OCT_DUMP_ONLY=true ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
+          mkdir -p ${TNF_OFFLINE_DB}
+          docker run -v ${TNF_OFFLINE_DB}:/tmp/dump:Z --env OCT_DUMP_ONLY=true ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
 
       - name: Install ginkgo
         run: go install github.com/onsi/ginkgo/v2/ginkgo@v2.5.0

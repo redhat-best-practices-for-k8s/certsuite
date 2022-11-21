@@ -26,7 +26,7 @@ import (
 
 var (
 	containerdb            = make(map[string]*ContainerCatalogEntry)
-	containersRelativePath = "%s/../cmd/tnf/fetch/data/containers/containers.db"
+	containersRelativePath = "%s/data/containers/containers.db"
 	containersLoaded       = false
 )
 
@@ -54,12 +54,12 @@ type ContainerPageCatalog struct {
 	Data     []ContainerCatalogEntry `json:"data"`
 }
 
-func loadContainersCatalog(pathToRoot string) error {
+func loadContainersCatalog(offlineDBPath string) error {
 	if containersLoaded {
 		return nil
 	}
 	containersLoaded = true
-	filename := fmt.Sprintf(containersRelativePath, pathToRoot)
+	filename := fmt.Sprintf(containersRelativePath, offlineDBPath)
 	f, err := os.Open(filename)
 	if err != nil {
 		return fmt.Errorf("cannot open file %s, err: %v", filename, err)

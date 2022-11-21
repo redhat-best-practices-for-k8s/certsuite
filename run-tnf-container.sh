@@ -157,6 +157,14 @@ while [[ $1 == -* ]]; do
           fi       
           echo  "-t $LOCAL_TNF_CONFIG"
           ;;
+      -b) if (($# > 1)); then
+            export LOCAL_TNF_OFFLINE_DB=$2; shift
+          else
+            echo "-b requires an argument" 1>&2
+            exit 1
+          fi
+          echo  "-b $LOCAL_TNF_OFFLINE_DB"
+          ;;
       -o) if (($# > 1)); then
             export OUTPUT_LOC=$2; shift
           else
