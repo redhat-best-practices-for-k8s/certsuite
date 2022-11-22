@@ -98,11 +98,13 @@ You can find all the labels attached to the tests by running the following comma
 You can also check the [CATALOG.md](CATALOG.md) to find all test labels.
 
 #### Labels for offline environments
-Some tests do require connectivity to Redhat servers to validate certification status.
+Some tests do require connectivity to Red Hat servers to validate certification status.
 To run the tests in an offline environment, skip the tests using the `l` option.
 ```shell
 ./run-cnf-suites.sh -l '!online'
 ```
+
+Alternatively, if an offline DB for containers, helm charts and operators is available, there is no need to skip those tests if the environment variable `TNF_OFFLINE_DB` is set to the DB location. This DB can be generated using the [OCT tool](https://github.com/test-network-function/oct).
 
 ### Build + Test a CNF
 
