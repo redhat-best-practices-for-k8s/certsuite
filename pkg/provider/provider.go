@@ -365,6 +365,10 @@ func (env *TestEnvironment) IsIntrusive() bool {
 	return !env.variables.NonIntrusiveOnly
 }
 
+func (env *TestEnvironment) GetOfflineDBPath() string {
+	return env.variables.OfflineDB
+}
+
 func (env *TestEnvironment) GetWorkerCount() int {
 	workerCount := 0
 	for _, e := range env.Nodes {

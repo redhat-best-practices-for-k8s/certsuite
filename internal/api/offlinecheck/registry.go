@@ -17,15 +17,13 @@ package offlinecheck
 
 import (
 	"fmt"
-	"os"
 
 	log "github.com/sirupsen/logrus"
 )
 
 type OfflineChecker struct{}
 
-func LoadCatalogs() error {
-	offlineDBPath := os.Getenv("TNF_OFFLINE_DB")
+func LoadCatalogs(offlineDBPath string) error {
 	if offlineDBPath == "" {
 		return fmt.Errorf("no offline DB provided")
 	}

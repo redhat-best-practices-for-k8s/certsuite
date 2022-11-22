@@ -45,7 +45,7 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	var env provider.TestEnvironment
 	ginkgo.BeforeEach(func() {
 		env = provider.GetTestEnvironment()
-		err := api.LoadCatalog()
+		err := api.LoadCatalog(env.GetOfflineDBPath())
 		if err != nil {
 			logrus.Infof("Offline DB not available, err: %v", err)
 		}
