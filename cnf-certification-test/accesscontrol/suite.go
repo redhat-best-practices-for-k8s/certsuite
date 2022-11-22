@@ -574,13 +574,25 @@ func TestNoSSHDaemonsAllowed(env *provider.TestEnvironment) {
 	r := regexp.MustCompile(sshDaemonProcessName)
 
 	for _, cut := range env.Containers {
-		stdout, stderr, err := o.ExecCommandContainer(clientsholder.NewContext(cut.Namespace, cut.Podname, cut.Name), listProcessesCmd)
+		stdout, stderr, err :=
+			o.ExecCommandContainer(
+				clientsholder.NewContext(cut.Namespace, cut.Podname, cut.Name),
+				listProcessesCmd,
+			)
 		if err != nil || stderr != "" {
-			tnf.ClaimFilePrintf("Could not list processes on: %s, error: %v", cut, err)
+			var msg string
+			switch {
+			case stderr == "":
+				msg = fmt.Sprintf("error: %v", err)
+			case err == nil:
+				msg = fmt.Sprintf("stderr: %s", stderr)
+			default:
+				msg = fmt.Sprintf("error: %v, stderr: %s", err, stderr)
+			}
+			tnf.ClaimFilePrintf("Unable to list processes at %s, %s.", cut, msg)
 			errorContainers = append(errorContainers, cut.String())
 			continue
 		}
-
 		if r.MatchString(stdout) {
 			tnf.ClaimFilePrintf("Container %s is running an SSH daemon", cut)
 			badContainers = append(badContainers, cut.String())
