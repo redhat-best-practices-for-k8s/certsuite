@@ -953,6 +953,13 @@ In order to get the required information, the test suite does not <code>ssh</cod
 <p class="admonition-title">Note</p>
 <p>See the <a href="https://docs.docker.com/engine/reference/run/#network-settings">docker run &ndash;network parameter reference</a> for more information on how to configure network settings.</p>
 </div>
+<ul>
+<li><code>-b</code> to set an external offline DB that will be used to verify the certification status of containers, helm charts and operators. Defaults to the DB included in the <abbr title="Test Network Function">TNF</abbr> container image.</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>See the <a href="https://github.com/test-network-function/oct">OCT tool</a> for more information on how to create this DB.</p>
+</div>
 <p><strong>Command to run</strong></p>
 <div class="highlight"><pre><span></span><code>./run-tnf-container.sh -k ~/.kube/config -t ~/tnf/config
 -o ~/tnf/output -l <span class="s2">&quot;networking,access-control&quot;</span>

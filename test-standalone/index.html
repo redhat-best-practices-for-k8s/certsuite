@@ -952,10 +952,11 @@ a single test.</p>
 </code></pre></div></p>
 <p>You can also check the <a href="CATALOG.md">CATALOG.md</a> to find all test labels.</p>
 <h4 id="labels-for-offline-environments">Labels for offline environments<a class="headerlink" href="#labels-for-offline-environments" title="Permanent link">&para;</a></h4>
-<p>Some tests do require connectivity to Redhat servers to validate certification status.
+<p>Some tests do require connectivity to Red Hat servers to validate certification status.
 To run the tests in an offline environment, skip the tests using the <code>l</code> option.
 <div class="highlight"><pre><span></span><code>./run-cnf-suites.sh -l <span class="s1">&#39;!online&#39;</span>
 </code></pre></div></p>
+<p>Alternatively, if an offline DB for containers, helm charts and operators is available, there is no need to skip those tests if the environment variable <code>TNF_OFFLINE_DB</code> is set to the DB location. This DB can be generated using the <a href="https://github.com/test-network-function/oct">OCT tool</a>.</p>
 <h3 id="build-test-a-cnf">Build + Test a <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr><a class="headerlink" href="#build-test-a-cnf" title="Permanent link">&para;</a></h3>
 <p>Refer <a href="../developers/">Developers&rsquo; Guide</a></p>
 
