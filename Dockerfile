@@ -1,7 +1,4 @@
 FROM registry.access.redhat.com/ubi8/ubi:latest AS build
-ARG TNF_PARTNER_DIR=/usr/tnf-partner
-
-ENV TNF_PARTNER_SRC_DIR=$TNF_PARTNER_DIR/src
 
 ARG OPENSHIFT_VERSION
 ENV OPENSHIFT_VERSION=${OPENSHIFT_VERSION}
@@ -45,20 +42,10 @@ ARG TNF_VERSION
 ARG TNF_SRC_URL=$TNF_SRC_URL
 ARG GIT_CHECKOUT_TARGET=$TNF_VERSION
 
-# Git identifier to checkout for partner
-ARG TNF_PARTNER_VERSION
-ARG TNF_PARTNER_SRC_URL=https://github.com/test-network-function/cnf-certification-test-partner
-ARG GIT_PARTNER_CHECKOUT_TARGET=$TNF_PARTNER_VERSION
-
 # Clone the TNF source repository and checkout the target branch/tag/commit
 RUN git clone --no-single-branch --depth=1 ${TNF_SRC_URL} ${TNF_SRC_DIR}
 RUN git -C ${TNF_SRC_DIR} fetch origin ${GIT_CHECKOUT_TARGET}
 RUN git -C ${TNF_SRC_DIR} checkout ${GIT_CHECKOUT_TARGET}
-
-# Clone the partner source repository and checkout the target branch/tag/commit
-RUN git clone --no-single-branch --depth=1 ${TNF_PARTNER_SRC_URL} ${TNF_PARTNER_SRC_DIR}
-RUN git -C ${TNF_PARTNER_SRC_DIR} fetch origin ${GIT_PARTNER_CHECKOUT_TARGET}
-RUN git -C ${TNF_PARTNER_SRC_DIR} checkout ${GIT_PARTNER_CHECKOUT_TARGET}
 
 # Build TNF binary
 WORKDIR ${TNF_SRC_DIR}
@@ -71,8 +58,6 @@ RUN mkdir ${TNF_BIN_DIR} && \
 	cp run-cnf-suites.sh ${TNF_DIR} && \
     mkdir ${TNF_DIR}/script && \
     cp script/results.html ${TNF_DIR}/script && \
-    # copy helm/operator/container certification db
-    cp --parents `find -name \*.db*` ${TNF_DIR} && \
 	# copy all JSON files to allow tests to run
 	cp --parents `find -name \*.json*` ${TNF_DIR} && \
 	cp cnf-certification-test/cnf-certification-test.test ${TNF_BIN_DIR} && \
@@ -100,10 +85,10 @@ FROM quay.io/testnetworkfunction/oct:latest AS db
 
 # Copy the state into a new flattened image to reduce size.
 # TODO run as non-root
-FROM scratch
-ARG TNF_PARTNER_DIR=/usr/tnf-partner
+FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
 
-COPY --from=build / /
+ENV TNF_DIR=/usr/tnf
+COPY --from=build ${TNF_DIR} ${TNF_DIR}
 
 # Update the CNF containers, helm charts and operators DB
 ENV TNF_OFFLINE_DB=/usr/offline-db
@@ -112,8 +97,7 @@ COPY --from=db ${OCT_DB_PATH} ${TNF_OFFLINE_DB}
 
 ENV TNF_CONFIGURATION_PATH=/usr/tnf/config/tnf_config.yml
 ENV KUBECONFIG=/usr/tnf/kubeconfig/config
-ENV TNF_PARTNER_SRC_DIR=$TNF_PARTNER_DIR/src
 ENV PATH="/usr/local/oc/bin:${PATH}"
-WORKDIR /usr/tnf
+WORKDIR ${TNF_DIR}
 ENV SHELL=/bin/bash
 CMD ["./run-cnf-suites.sh", "-o", "claim", "-f", "diagnostic"]

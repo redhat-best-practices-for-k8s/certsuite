@@ -29,17 +29,6 @@ Likewise, to enable intrusive tests, set the following:
 export TNF_NON_INTRUSIVE_ONLY=false
 ```
 
-## Specify the location of the partner repo
-This env var is optional, but highly recommended if running the test suite from a clone of this github repo. It's not needed or used if running the tnf image.
-
-To set it, clone the partner [repo](https://github.com/test-network-function/cnf-certification-test-partner) and set TNF_PARTNER_SRC_DIR to point to it.
-
-```shell
-export TNF_PARTNER_SRC_DIR=/home/userid/code/cnf-certification-test-partner
-```
-
-When this variable is set, the run-cnf-suites.sh script will deploy/refresh the partner deployments/pods in the cluster before starting the test run.
-
 ## Disconnected environment
 In a disconnected environment, only specific versions of images are mirrored to the local repo. For those environments,
 the partner pod image `quay.io/testnetworkfunction/cnf-test-partner` and debug pod image `quay.io/testnetworkfunction/debug-partner` should be mirrored
