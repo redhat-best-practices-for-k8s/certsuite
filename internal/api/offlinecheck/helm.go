@@ -27,7 +27,7 @@ import (
 )
 
 const (
-	helmRelativePath = "%s/../cmd/tnf/fetch/data/helm/helm.db"
+	helmRelativePath = "%s/data/helm/helm.db"
 )
 
 type ChartEntry struct {
@@ -42,12 +42,12 @@ type ChartStruct struct {
 var chartsdb = make(map[string][]ChartEntry)
 var loaded = false
 
-func loadHelmCatalog(pathToRoot string) error {
+func loadHelmCatalog(offlineDBPath string) error {
 	if loaded {
 		return nil
 	}
 	loaded = true
-	filePath := fmt.Sprintf(helmRelativePath, pathToRoot)
+	filePath := fmt.Sprintf(helmRelativePath, offlineDBPath)
 	f, err := os.Open(filePath)
 	if err != nil {
 		return fmt.Errorf("cannot process file %s, err: %v", filePath, err)

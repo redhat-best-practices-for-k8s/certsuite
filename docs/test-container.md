@@ -64,6 +64,11 @@ In order to get the required information, the test suite does not `ssh` into nod
 
     See the [docker run --network parameter reference](https://docs.docker.com/engine/reference/run/#network-settings) for more information on how to configure network settings.
 
+* `-b` to set an external offline DB that will be used to verify the certification status of containers, helm charts and operators. Defaults to the DB included in the TNF container image.
+
+!!! note
+
+    See the [OCT tool](https://github.com/test-network-function/oct) for more information on how to create this DB.
 
 **Command to run**
 

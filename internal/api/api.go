@@ -25,8 +25,8 @@ func init() {
 	onlineClient = onlinecheck.NewOnlineValidator()
 	offlineClient = offlinecheck.OfflineChecker{}
 }
-func LoadCatalog() error {
-	err := offlinecheck.LoadCatalogs()
+func LoadCatalog(offlineDBPath string) error {
+	err := offlinecheck.LoadCatalogs(offlineDBPath)
 	if err != nil {
 		return err
 	}
