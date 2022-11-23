@@ -18,9 +18,7 @@ package accesscontrol
 
 import (
 	"fmt"
-	"regexp"
 	"strings"
-
 	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/namespace"
@@ -561,44 +559,29 @@ func TestPodTolerationBypass(env *provider.TestEnvironment) {
 	testhelper.AddTestResultLog("Non-compliant", podsWithRestrictedTolerationsNotDefault, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
-const (
-	listProcessesCmd     = "ls -l /proc/*/exe"
-	sshDaemonProcessName = "sshd"
-)
-
 func TestNoSSHDaemonsAllowed(env *provider.TestEnvironment) {
+	// The command prints yes to stdout in case sshd is running. ps is not
+	// available on ubi-minimal, iterates over /proc.
+	const isSshdCmd =
+		"ls -l /proc/*/exe 2>/dev/null | grep -q sshd && printf yes"
 	var badContainers []string
 	var errorContainers []string
-
 	o := clientsholder.GetClientsHolder()
-	r := regexp.MustCompile(sshDaemonProcessName)
-
 	for _, cut := range env.Containers {
-		stdout, stderr, err :=
-			o.ExecCommandContainer(
-				clientsholder.NewContext(cut.Namespace, cut.Podname, cut.Name),
-				listProcessesCmd,
-			)
-		if err != nil || stderr != "" {
-			var msg string
-			switch {
-			case stderr == "":
-				msg = fmt.Sprintf("error: %v", err)
-			case err == nil:
-				msg = fmt.Sprintf("stderr: %s", stderr)
-			default:
-				msg = fmt.Sprintf("error: %v, stderr: %s", err, stderr)
-			}
-			tnf.ClaimFilePrintf("Unable to list processes at %s, %s.", cut, msg)
+		out, _, err := o.ExecCommandContainer(
+			clientsholder.NewContext(cut.Namespace, cut.Podname, cut.Name),
+			isSshdCmd,
+		)
+		if err != nil {
+			tnf.ClaimFilePrintf("Unable to run %s at %s, %v.", isSshdCmd, cut, err)
 			errorContainers = append(errorContainers, cut.String())
 			continue
 		}
-		if r.MatchString(stdout) {
-			tnf.ClaimFilePrintf("Container %s is running an SSH daemon", cut)
+		if out == "yes" {
+			tnf.ClaimFilePrintf("Container %s is running an SSH daemon.", cut)
 			badContainers = append(badContainers, cut.String())
 		}
 	}
-
 	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 	testhelper.AddTestResultLog("Error", errorContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
