@@ -469,13 +469,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#specify-the-location-of-the-partner-repo" class="md-nav__link">
-    Specify the location of the partner repo
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#disconnected-environment" class="md-nav__link">
     Disconnected environment
   </a>
@@ -771,13 +764,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#specify-the-location-of-the-partner-repo" class="md-nav__link">
-    Specify the location of the partner repo
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#disconnected-environment" class="md-nav__link">
     Disconnected environment
   </a>
@@ -822,12 +808,6 @@ oc label namespace/default  pod-security.kubernetes.io/enforce-version<span cla
 <p>Likewise, to enable intrusive tests, set the following:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">TNF_NON_INTRUSIVE_ONLY</span><span class="o">=</span><span class="nb">false</span>
 </code></pre></div>
-<h2 id="specify-the-location-of-the-partner-repo">Specify the location of the partner repo<a class="headerlink" href="#specify-the-location-of-the-partner-repo" title="Permanent link">&para;</a></h2>
-<p>This env var is optional, but highly recommended if running the test suite from a clone of this github repo. It&rsquo;s not needed or used if running the tnf image.</p>
-<p>To set it, clone the partner <a href="https://github.com/test-network-function/cnf-certification-test-partner">repo</a> and set TNF_PARTNER_SRC_DIR to point to it.</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">TNF_PARTNER_SRC_DIR</span><span class="o">=</span>/home/userid/code/cnf-certification-test-partner
-</code></pre></div>
-<p>When this variable is set, the run-cnf-suites.sh script will deploy/refresh the partner deployments/pods in the cluster before starting the test run.</p>
 <h2 id="disconnected-environment">Disconnected environment<a class="headerlink" href="#disconnected-environment" title="Permanent link">&para;</a></h2>
 <p>In a disconnected environment, only specific versions of images are mirrored to the local repo. For those environments,
 the partner pod image <code>quay.io/testnetworkfunction/cnf-test-partner</code> and debug pod image <code>quay.io/testnetworkfunction/debug-partner</code> should be mirrored
