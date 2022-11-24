@@ -4,11 +4,6 @@ To test the newly added test / existing tests locally, follow the steps
 
 
 -  Clone the repo
-- Specify the location of the partner repo
-
-    ```shell
-    export TNF_PARTNER_SRC_DIR=/home/userid/code/cnf-certification-test-partner
-    ```
 
 - Set runtime environment variables, as per the requirement.
 
