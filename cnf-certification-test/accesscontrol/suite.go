@@ -562,15 +562,13 @@ func TestPodTolerationBypass(env *provider.TestEnvironment) {
 }
 
 const (
-	listProcessesCmd       = "ls -l /proc/*/exe"
-	sshDaemonProcessName   = "sshd"
 	sshServicePortNumber   = 22
 	sshServicePortProtocol = "TCP"
 )
 
 func TestNoSSHDaemonsAllowed(env *provider.TestEnvironment) {
 	var badPods []string
-	var errorPods []string
+	var errPods []string
 
 	sshPortInfo := netutil.PortInfo{PortNumber: sshServicePortNumber, Protocol: sshServicePortProtocol}
 
@@ -580,7 +578,7 @@ func TestNoSSHDaemonsAllowed(env *provider.TestEnvironment) {
 		listeningPorts, err := netutil.GetListeningPorts(cut)
 		if err != nil {
 			tnf.ClaimFilePrintf("Failed to get the listening ports on %s, err: %v", cut, err)
-			errorPods = append(errorPods, put.String())
+			errPods = append(errPods, put.String())
 			continue
 		}
 
@@ -591,7 +589,7 @@ func TestNoSSHDaemonsAllowed(env *provider.TestEnvironment) {
 	}
 
 	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
-	testhelper.AddTestResultLog("Error", errorPods, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultLog("Error", errPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testPodRequestsAndLimits(env *provider.TestEnvironment) {
