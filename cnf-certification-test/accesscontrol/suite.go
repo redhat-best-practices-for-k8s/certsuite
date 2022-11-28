@@ -18,7 +18,6 @@ package accesscontrol
 
 import (
 	"fmt"
-	"regexp"
 	"strings"
 
 	"github.com/onsi/ginkgo/v2"
@@ -30,6 +29,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/tolerations"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netutil"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
@@ -562,45 +562,34 @@ func TestPodTolerationBypass(env *provider.TestEnvironment) {
 }
 
 const (
-	listProcessesCmd     = "ls -l /proc/*/exe"
-	sshDaemonProcessName = "sshd"
+	sshServicePortNumber   = 22
+	sshServicePortProtocol = "TCP"
 )
 
 func TestNoSSHDaemonsAllowed(env *provider.TestEnvironment) {
-	var badContainers []string
-	var errorContainers []string
+	var badPods []string
+	var errPods []string
 
-	o := clientsholder.GetClientsHolder()
-	r := regexp.MustCompile(sshDaemonProcessName)
+	sshPortInfo := netutil.PortInfo{PortNumber: sshServicePortNumber, Protocol: sshServicePortProtocol}
 
-	for _, cut := range env.Containers {
-		stdout, stderr, err :=
-			o.ExecCommandContainer(
-				clientsholder.NewContext(cut.Namespace, cut.Podname, cut.Name),
-				listProcessesCmd,
-			)
-		if err != nil || stderr != "" {
-			var msg string
-			switch {
-			case stderr == "":
-				msg = fmt.Sprintf("error: %v", err)
-			case err == nil:
-				msg = fmt.Sprintf("stderr: %s", stderr)
-			default:
-				msg = fmt.Sprintf("error: %v, stderr: %s", err, stderr)
-			}
-			tnf.ClaimFilePrintf("Unable to list processes at %s, %s.", cut, msg)
-			errorContainers = append(errorContainers, cut.String())
+	for _, put := range env.Pods {
+		cut := put.Containers[0]
+
+		listeningPorts, err := netutil.GetListeningPorts(cut)
+		if err != nil {
+			tnf.ClaimFilePrintf("Failed to get the listening ports on %s, err: %v", cut, err)
+			errPods = append(errPods, put.String())
 			continue
 		}
-		if r.MatchString(stdout) {
-			tnf.ClaimFilePrintf("Container %s is running an SSH daemon", cut)
-			badContainers = append(badContainers, cut.String())
+
+		if _, ok := listeningPorts[sshPortInfo]; ok {
+			tnf.ClaimFilePrintf("Pod %s is running an SSH daemon", put)
+			badPods = append(badPods, put.String())
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
-	testhelper.AddTestResultLog("Error", errorContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultLog("Error", errPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testPodRequestsAndLimits(env *provider.TestEnvironment) {
