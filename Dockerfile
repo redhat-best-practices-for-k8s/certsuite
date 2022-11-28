@@ -90,6 +90,9 @@ FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
 ENV TNF_DIR=/usr/tnf
 COPY --from=build ${TNF_DIR} ${TNF_DIR}
 
+# Add go and oc binary directory to $PATH and copy OC exe
+COPY --from=build ${OC_BIN} ${OC_BIN}
+
 # Update the CNF containers, helm charts and operators DB
 ENV TNF_OFFLINE_DB=/usr/offline-db
 ENV OCT_DB_PATH=/usr/oct/cmd/tnf/fetch
