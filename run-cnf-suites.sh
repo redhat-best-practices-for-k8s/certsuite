@@ -22,6 +22,24 @@ usage_error() {
 	usage
 	exit 1
 }
+
+# Checks whether all commands exits. Loops over the arguments, each one is a
+# command name.
+cmd_exists() {
+	local arg ret=0
+	for arg do
+		if command -v "$arg" >/dev/null 2>&1; then
+			printf 'Command %s exists.\n' "$arg"
+		else
+			ret=1
+			printf >&2 'Command %s does not exist.\n' "$arg"
+		fi
+	done
+	return $ret
+}
+
+cmd_exists oc || exit 1
+
 TIMEOUT="24h0m0s"
 FOCUS=""
 SKIP=""
