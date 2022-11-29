@@ -91,6 +91,7 @@ ENV TNF_DIR=/usr/tnf
 COPY --from=build ${TNF_DIR} ${TNF_DIR}
 
 # Add go and oc binary directory to $PATH and copy OC exe
+ENV PATH=${PATH}:"/usr/local/go/bin":${GOPATH}/"bin"
 COPY --from=build ${OC_BIN} ${OC_BIN}
 
 # Update the CNF containers, helm charts and operators DB
