@@ -183,7 +183,7 @@ func GetVersionK8s() (out string) {
 
 func GetVersionOcp() (out string) {
 	env := provider.GetTestEnvironment()
-	if env.OpenshiftVersion == "" {
+	if !provider.IsOCPCluster() {
 		return "n/a, (non-OpenShift cluster)"
 	}
 	return env.OpenshiftVersion

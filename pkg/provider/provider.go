@@ -293,7 +293,7 @@ func GetTestEnvironment() TestEnvironment {
 }
 
 func IsOCPCluster() bool {
-	return env.OpenshiftVersion != ""
+	return env.OpenshiftVersion != autodiscover.NonOpenshiftClusterVersion
 }
 
 func buildContainerImageSource(url string) configuration.ContainerImageIdentifier {

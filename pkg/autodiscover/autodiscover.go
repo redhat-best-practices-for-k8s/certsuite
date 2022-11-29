@@ -41,10 +41,12 @@ import (
 )
 
 const (
-	tnfCsvTargetLabelName  = "operator"
-	tnfCsvTargetLabelValue = ""
-	tnfLabelPrefix         = "test-network-function.com"
-	labelTemplate          = "%s/%s"
+	// NonOpenshiftClusterVersion is a fake version number for non openshift clusters (kind/minikube)
+	NonOpenshiftClusterVersion = "0.0.0"
+	tnfCsvTargetLabelName      = "operator"
+	tnfCsvTargetLabelValue     = ""
+	tnfLabelPrefix             = "test-network-function.com"
+	labelTemplate              = "%s/%s"
 	// anyLabelValue is the value that will allow any value for a label when building the label query.
 	anyLabelValue = ""
 )
@@ -199,7 +201,7 @@ func getOpenshiftVersion(oClient clientconfigv1.ConfigV1Interface) (ver string, 
 		switch {
 		case kerrors.IsNotFound(err):
 			logrus.Warnf("Unable to get ClusterOperator CR from openshift-apiserver. Running in a non-OCP cluster.")
-			return "", nil
+			return NonOpenshiftClusterVersion, nil
 		default:
 			return "", err
 		}
