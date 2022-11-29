@@ -59,14 +59,6 @@ while [[ $1 == -* ]]; do
 	shift
 done
 
-# Check if the test cluster runs OCP
-res=`oc version | grep  Server`
-if [ -z "$res" ]
-then
-   echo "Standard Kubernetes cluster detected (not OCP)"
-   export TNF_NON_OCP_CLUSTER=true
-fi
-
 # List the specs (filtering by suite)
 if [ "$LIST" = true ] ; then
 	LABEL="$(echo -e "${LABEL}" | sed -e 's/^[[:space:]]*//')" # strip the leading whitespace

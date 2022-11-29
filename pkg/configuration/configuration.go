@@ -126,7 +126,6 @@ type TestParameters struct {
 	Kubeconfig        string `envconfig:"kubeconfig"`
 	ConfigurationPath string `split_words:"true" default:"tnf_config.yml"`
 	NonIntrusiveOnly  bool   `split_words:"true"`
-	NonOcpCluster     bool   `split_words:"true" default:"false"`
 	LogLevel          string `default:"debug" split_words:"true"`
 	OfflineDB         string `split_words:"true"`
 }

@@ -145,7 +145,12 @@ func DoAutoDiscover() DiscoveredTestData {
 	data.Csvs = findOperatorsByLabel(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, data.TestData.TargetNameSpaces)
 	data.Subscriptions = findSubscriptions(oc.OlmClient, data.Namespaces)
 	data.HelmChartReleases = getHelmList(oc.RestConfig, data.Namespaces)
-	openshiftVersion, _ := getOpenshiftVersion(oc.OcpClient)
+
+	openshiftVersion, err := getOpenshiftVersion(oc.OcpClient)
+	if err != nil {
+		logrus.Fatalf("Failed to get the OpenShift version: %v", err)
+	}
+
 	data.OpenshiftVersion = openshiftVersion
 	k8sVersion, err := oc.K8sClient.Discovery().ServerVersion()
 	if err != nil {
@@ -190,22 +195,23 @@ func namespacesListToStringList(namespaceList []configuration.Namespace) (string
 func getOpenshiftVersion(oClient clientconfigv1.ConfigV1Interface) (ver string, err error) {
 	var clusterOperator *configv1.ClusterOperator
 	clusterOperator, err = oClient.ClusterOperators().Get(context.TODO(), "openshift-apiserver", metav1.GetOptions{})
-	// error here indicates logged in as non-admin, log and move on
 	if err != nil {
 		switch {
-		case kerrors.IsForbidden(err), kerrors.IsNotFound(err):
-			logrus.Infof("OpenShift Version not found (must be logged in to cluster as admin): %v", err)
-			err = nil
+		case kerrors.IsNotFound(err):
+			logrus.Warnf("Unable to get ClusterOperator CR from openshift-apiserver. Running in a non-OCP cluster.")
+			return "", nil
+		default:
+			return "", err
 		}
 	}
-	if clusterOperator != nil {
-		for _, ver := range clusterOperator.Status.Versions {
-			if ver.Name == tnfCsvTargetLabelName {
-				// openshift-apiserver does not report version,
-				// clusteroperator/openshift-apiserver does, and only version number
-				return ver.Version, nil
-			}
+
+	for _, ver := range clusterOperator.Status.Versions {
+		if ver.Name == tnfCsvTargetLabelName {
+			// openshift-apiserver does not report version,
+			// clusteroperator/openshift-apiserver does, and only version number
+			return ver.Version, nil
 		}
 	}
-	return "", errors.New("could not get openshift version")
+
+	return "", errors.New("could not get openshift version from clusterOperator")
 }

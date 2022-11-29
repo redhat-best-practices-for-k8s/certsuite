@@ -151,6 +151,10 @@ func buildTestEnvironment() { //nolint:funlen
 	env = TestEnvironment{}
 
 	data := autodiscover.DoAutoDiscover()
+
+	// OpenshiftVersion needs to be set asap, as other helper functions will use it here.
+	env.OpenshiftVersion = data.OpenshiftVersion
+
 	env.Config = data.TestData
 	env.Crds = data.Crds
 	env.AllInstallPlans = data.AllInstallPlans
@@ -187,7 +191,6 @@ func buildTestEnvironment() { //nolint:funlen
 		env.DebugPods[nodeName] = &data.DebugPods[i]
 	}
 
-	env.OpenshiftVersion = data.OpenshiftVersion
 	env.OCPStatus = data.OCPStatus
 	env.K8sVersion = data.K8sVersion
 	env.ResourceQuotas = data.ResourceQuotaItems
@@ -290,7 +293,7 @@ func GetTestEnvironment() TestEnvironment {
 }
 
 func IsOCPCluster() bool {
-	return !env.variables.NonOcpCluster
+	return env.OpenshiftVersion != ""
 }
 
 func buildContainerImageSource(url string) configuration.ContainerImageIdentifier {
