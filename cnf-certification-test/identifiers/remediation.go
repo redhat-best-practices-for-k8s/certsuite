@@ -92,7 +92,7 @@ const (
 	TestIPTablesRemediation = `Do not configure iptables on any CNF container.`
 
 	NamespaceBestPracticesRemediation = `Ensure that your CNF utilizes namespaces declared in the yaml config file. Additionally,
-	the namespaces should not start with "default, openshift-, istio- or aspenmesh-", except in rare cases.`
+	the namespaces should not start with "default, openshift-, istio- or aspenmesh-".`
 
 	NonTaintedNodeKernelsRemediation = `Test failure indicates that the underlying Node's kernel is tainted.  Ensure that you have not altered underlying
 	Node(s) kernels in order to run the CNF.`
