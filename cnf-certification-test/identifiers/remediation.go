@@ -18,7 +18,7 @@ package identifiers
 
 const (
 	//nolint:gosec
-	AutomountServiceTokenRemediation = `Check that pod has automountServiceAccountToken set to false or pod is attached to service account which has automountServiceAccountToken set to false`
+	AutomountServiceTokenRemediation = `Check that pod has automountServiceAccountToken set to false or pod is attached to service account which has automountServiceAccountToken set to false, unless the pod needs access to the kubernetes API server.`
 
 	IsRedHatReleaseRemediation = `Build a new container image that is based on UBI (Red Hat Universal Base Image).`
 
