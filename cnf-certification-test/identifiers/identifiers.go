@@ -792,7 +792,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 	},
 	TestContainerHostPort: {
 		Identifier:  TestContainerHostPort,
-		Type:        InformativeResult,
+		Type:        NormativeResult,
 		Remediation: ContainerHostPortRemediation,
 		Description: formDescription(TestContainerHostPort,
 			`Verifies if containers define a hostPort.`),
@@ -1324,7 +1324,7 @@ that there are no changes to the following directories:
 	},
 	TestNamespaceResourceQuotaIdentifier: {
 		Identifier:            TestNamespaceResourceQuotaIdentifier,
-		Type:                  InformativeResult,
+		Type:                  NormativeResult,
 		Description:           formDescription(TestNamespaceResourceQuotaIdentifier, `Checks to see if CNF workload pods are running in namespaces that have resource quotas applied.`),
 		Remediation:           NamespaceResourceQuotaRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.8", // TODO Change this to v1.4 when available
