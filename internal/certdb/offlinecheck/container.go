@@ -92,7 +92,7 @@ func LoadBinary(bytes []byte, db map[string]*ContainerCatalogEntry) (entries int
 	return entries, nil
 }
 
-func (checker OfflineChecker) IsContainerCertified(registry, repository, tag, digest string) bool {
+func (validator OfflineValidator) IsContainerCertified(registry, repository, tag, digest string) bool {
 	const tagLatest = "latest"
 
 	if digest != "" {

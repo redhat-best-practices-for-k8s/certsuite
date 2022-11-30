@@ -19,7 +19,7 @@ package certtool
 import (
 	"time"
 
-	"github.com/test-network-function/cnf-certification-test/internal/api"
+	"github.com/test-network-function/cnf-certification-test/internal/certdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
@@ -30,7 +30,7 @@ const (
 )
 
 var (
-	CertAPIClient api.CertificationValidator
+	CertAPIClient certdb.ResourceCertificator
 )
 
 // getContainerCertificationRequestFunction returns function that will try to get the certification status (CCP) for a container.

@@ -27,7 +27,7 @@ import (
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/certification/certtool"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
-	api "github.com/test-network-function/cnf-certification-test/internal/api"
+	"github.com/test-network-function/cnf-certification-test/internal/certdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
@@ -43,11 +43,15 @@ const (
 var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	logrus.Debugf("Entering %s suite", common.AffiliatedCertTestKey)
 	var env provider.TestEnvironment
+	var certificator certdb.ResourceCertificator
 	ginkgo.BeforeEach(func() {
+		var err error
 		env = provider.GetTestEnvironment()
-		err := api.LoadCatalog(env.GetOfflineDBPath())
+		certificator, err = certdb.GetCertificator(env.GetOfflineDBPath())
 		if err != nil {
-			logrus.Infof("Offline DB not available, err: %v", err)
+			errMsg := fmt.Sprintf("Cannot access the certification DB, err: %v", err)
+			logrus.Errorf(errMsg)
+			ginkgo.Fail(errMsg)
 		}
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
@@ -55,39 +59,39 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	// Query API for certification status of listed containers
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testContainerCertificationStatus(&env)
+		testContainerCertificationStatus(&env, certificator)
 	})
 
 	// Query API for certification status of listed operators
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOperatorIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testAllOperatorCertified(&env)
+		testAllOperatorCertified(&env, certificator)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHelmIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testHelmCertified(&env)
+		testHelmCertified(&env, certificator)
 	})
 	// Query API for certification status by digest of listed containers
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedDigestIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testContainerCertificationStatusByDigest(&env)
+		testContainerCertificationStatusByDigest(&env, certificator)
 	})
 })
 
-func testContainerCertification(c configuration.ContainerImageIdentifier) bool {
+func testContainerCertification(c configuration.ContainerImageIdentifier, certificator certdb.ResourceCertificator) bool {
 	tag := c.Tag
 	digest := c.Digest
 	registryName := c.Repository
 	name := c.Name
-	ans := api.IsContainerCertified(registryName, name, tag, digest)
+	ans := certificator.IsContainerCertified(registryName, name, tag, digest)
 	if !ans {
 		tnf.ClaimFilePrintf("%s/%s:%s is not listed in certified containers", registryName, name, tag)
 	}
 	return ans
 }
 
-func testContainerCertificationStatus(env *provider.TestEnvironment) {
+func testContainerCertificationStatus(env *provider.TestEnvironment, certificator certdb.ResourceCertificator) {
 	containersToQuery := certtool.GetContainersToQuery(env)
 	testhelper.SkipIfEmptyAny(ginkgo.Skip, containersToQuery)
 	ginkgo.By(fmt.Sprintf("Getting certification status. Number of containers to check: %d", len(containersToQuery)))
@@ -99,7 +103,7 @@ func testContainerCertificationStatus(env *provider.TestEnvironment) {
 			continue
 		}
 		allContainersToQueryEmpty = false
-		if !testContainerCertification(c) {
+		if !testContainerCertification(c, certificator) {
 			failedContainers = append(failedContainers, c)
 		}
 	}
@@ -112,7 +116,7 @@ func testContainerCertificationStatus(env *provider.TestEnvironment) {
 	}
 }
 
-func testAllOperatorCertified(env *provider.TestEnvironment) {
+func testAllOperatorCertified(env *provider.TestEnvironment, certificator certdb.ResourceCertificator) {
 	operatorsUnderTest := env.Operators
 	testhelper.SkipIfEmptyAny(ginkgo.Skip, operatorsUnderTest)
 	ginkgo.By(fmt.Sprintf("Verify operator as certified. Number of operators to check: %d", len(operatorsUnderTest)))
@@ -127,7 +131,7 @@ func testAllOperatorCertified(env *provider.TestEnvironment) {
 	for i := range operatorsUnderTest {
 		name := operatorsUnderTest[i].Name
 		channel := operatorsUnderTest[i].Channel
-		isCertified := api.IsOperatorCertified(name, ocpMinorVersion, channel)
+		isCertified := certificator.IsOperatorCertified(name, ocpMinorVersion, channel)
 		if !isCertified {
 			testFailed = true
 			logrus.Infof(
@@ -146,13 +150,13 @@ func testAllOperatorCertified(env *provider.TestEnvironment) {
 	}
 }
 
-func testHelmCertified(env *provider.TestEnvironment) {
+func testHelmCertified(env *provider.TestEnvironment, certificator certdb.ResourceCertificator) {
 	helmchartsReleases := env.HelmChartReleases
 	testhelper.SkipIfEmptyAny(ginkgo.Skip, helmchartsReleases)
 	// Collect all of the failed helm charts
 	failedHelmCharts := [][]string{}
 	for _, helm := range helmchartsReleases {
-		if !api.IsReleaseCertified(helm, env.K8sVersion) {
+		if !certificator.IsHelmChartCertified(helm, env.K8sVersion) {
 			failedHelmCharts = append(failedHelmCharts, []string{helm.Chart.Metadata.Version, helm.Name})
 			tnf.ClaimFilePrintf(
 				"Helm Chart %s version %s is not certified.",
@@ -170,7 +174,7 @@ func testHelmCertified(env *provider.TestEnvironment) {
 	testhelper.AddTestResultLog("Non-compliant", failedHelmCharts, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
-func testContainerCertificationStatusByDigest(env *provider.TestEnvironment) {
+func testContainerCertificationStatusByDigest(env *provider.TestEnvironment, certificator certdb.ResourceCertificator) {
 	failedContainers := []configuration.ContainerImageIdentifier{}
 	for _, c := range env.Containers {
 		if c.ContainerImageIdentifier.Name == "" || c.ContainerImageIdentifier.Repository == "" {
@@ -180,7 +184,7 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment) {
 		if c.ContainerImageIdentifier.Digest == "" {
 			tnf.ClaimFilePrintf("%s is missing digest field, failing validation (repo=%s image=%s)", c, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Name)
 			failedContainers = append(failedContainers, c.ContainerImageIdentifier)
-		} else if !testContainerCertification(c.ContainerImageIdentifier) {
+		} else if !testContainerCertification(c.ContainerImageIdentifier, certificator) {
 			tnf.ClaimFilePrintf("%s digest not found in database, failing validation (repo=%s image=%s)", c, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Name)
 			failedContainers = append(failedContainers, c.ContainerImageIdentifier)
 		}
