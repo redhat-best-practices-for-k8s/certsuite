@@ -30,7 +30,7 @@ Test Case Label|access-control-container-host-port
 Unique ID|http://test-network-function.com/testcases/access-control/container-host-port
 Version|v1.0.0
 Description|http://test-network-function.com/testcases/access-control/container-host-port Verifies if containers define a hostPort.
-Result Type|informative
+Result Type|normative
 Suggested Remediation|Remove hostPort configuration from the container
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.6
 Exception Process|There is no documented exception process for this.
@@ -45,7 +45,7 @@ Unique ID|http://test-network-function.com/testcases/access-control/namespace
 Version|v1.0.0
 Description|http://test-network-function.com/testcases/access-control/namespace Tests that all CNF's resources (PUTs and CRs) belong to valid namespaces. A valid namespace meets the following conditions: (1) It was declared in the yaml config file under the targetNameSpaces tag. (2) It doesn't have any of the following prefixes: default, openshift-, istio- and aspenmesh-
 Result Type|normative
-Suggested Remediation|Ensure that your CNF utilizes namespaces declared in the yaml config file. Additionally, 	the namespaces should not start with "default, openshift-, istio- or aspenmesh-", except in rare cases.
+Suggested Remediation|Ensure that your CNF utilizes namespaces declared in the yaml config file. Additionally, 	the namespaces should not start with "default, openshift-, istio- or aspenmesh-".
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2, 16.3.8 and 16.3.9
 Exception Process|There is no documented exception process for this.
 Tags|common
@@ -58,7 +58,7 @@ Test Case Label|access-control-namespace-resource-quota
 Unique ID|http://test-network-function.com/testcases/access-control/namespace-resource-quota
 Version|v1.0.0
 Description|http://test-network-function.com/testcases/access-control/namespace-resource-quota Checks to see if CNF workload pods are running in namespaces that have resource quotas applied.
-Result Type|informative
+Result Type|normative
 Suggested Remediation|Apply a ResourceQuota to the namespace your CNF is running in
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.8
 Exception Process|There is no documented exception process for this.
