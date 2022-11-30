@@ -118,7 +118,7 @@ func testAllOperatorCertified(env *provider.TestEnvironment) {
 	ginkgo.By(fmt.Sprintf("Verify operator as certified. Number of operators to check: %d", len(operatorsUnderTest)))
 	testFailed := false
 	ocpMinorVersion := ""
-	if env.OpenshiftVersion != "" {
+	if provider.IsOCPCluster() {
 		// Converts	major.minor.patch version format to major.minor
 		const majorMinorPatchCount = 3
 		splitVersion := strings.SplitN(env.OpenshiftVersion, ".", majorMinorPatchCount)
