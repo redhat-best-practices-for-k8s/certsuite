@@ -211,6 +211,7 @@ func getOpenshiftVersion(oClient clientconfigv1.ConfigV1Interface) (ver string, 
 		if ver.Name == tnfCsvTargetLabelName {
 			// openshift-apiserver does not report version,
 			// clusteroperator/openshift-apiserver does, and only version number
+			logrus.Infof("OpenShift Version found: %v", ver.Version)
 			return ver.Version, nil
 		}
 	}
