@@ -43,11 +43,11 @@ const (
 var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	logrus.Debugf("Entering %s suite", common.AffiliatedCertTestKey)
 	var env provider.TestEnvironment
-	var certificator certdb.CertificationStatusValidator
+	var validator certdb.CertificationStatusValidator
 	ginkgo.BeforeEach(func() {
 		var err error
 		env = provider.GetTestEnvironment()
-		certificator, err = certdb.GetCertificator(env.GetOfflineDBPath())
+		validator, err = certdb.GetValidator(env.GetOfflineDBPath())
 		if err != nil {
 			errMsg := fmt.Sprintf("Cannot access the certification DB, err: %v", err)
 			ginkgo.Fail(errMsg)
@@ -58,39 +58,39 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	// Query API for certification status of listed containers
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testContainerCertificationStatus(&env, certificator)
+		testContainerCertificationStatus(&env, validator)
 	})
 
 	// Query API for certification status of listed operators
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOperatorIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testAllOperatorCertified(&env, certificator)
+		testAllOperatorCertified(&env, validator)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHelmIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testHelmCertified(&env, certificator)
+		testHelmCertified(&env, validator)
 	})
 	// Query API for certification status by digest of listed containers
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedDigestIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testContainerCertificationStatusByDigest(&env, certificator)
+		testContainerCertificationStatusByDigest(&env, validator)
 	})
 })
 
-func testContainerCertification(c configuration.ContainerImageIdentifier, certificator certdb.CertificationStatusValidator) bool {
+func testContainerCertification(c configuration.ContainerImageIdentifier, validator certdb.CertificationStatusValidator) bool {
 	tag := c.Tag
 	digest := c.Digest
 	registryName := c.Repository
 	name := c.Name
-	ans := certificator.IsContainerCertified(registryName, name, tag, digest)
+	ans := validator.IsContainerCertified(registryName, name, tag, digest)
 	if !ans {
 		tnf.ClaimFilePrintf("%s/%s:%s is not listed in certified containers", registryName, name, tag)
 	}
 	return ans
 }
 
-func testContainerCertificationStatus(env *provider.TestEnvironment, certificator certdb.CertificationStatusValidator) {
+func testContainerCertificationStatus(env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
 	containersToQuery := certtool.GetContainersToQuery(env)
 	testhelper.SkipIfEmptyAny(ginkgo.Skip, containersToQuery)
 	ginkgo.By(fmt.Sprintf("Getting certification status. Number of containers to check: %d", len(containersToQuery)))
@@ -102,7 +102,7 @@ func testContainerCertificationStatus(env *provider.TestEnvironment, certificato
 			continue
 		}
 		allContainersToQueryEmpty = false
-		if !testContainerCertification(c, certificator) {
+		if !testContainerCertification(c, validator) {
 			failedContainers = append(failedContainers, c)
 		}
 	}
@@ -115,7 +115,7 @@ func testContainerCertificationStatus(env *provider.TestEnvironment, certificato
 	}
 }
 
-func testAllOperatorCertified(env *provider.TestEnvironment, certificator certdb.CertificationStatusValidator) {
+func testAllOperatorCertified(env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
 	operatorsUnderTest := env.Operators
 	testhelper.SkipIfEmptyAny(ginkgo.Skip, operatorsUnderTest)
 	ginkgo.By(fmt.Sprintf("Verify operator as certified. Number of operators to check: %d", len(operatorsUnderTest)))
@@ -130,7 +130,7 @@ func testAllOperatorCertified(env *provider.TestEnvironment, certificator certdb
 	for i := range operatorsUnderTest {
 		name := operatorsUnderTest[i].Name
 		channel := operatorsUnderTest[i].Channel
-		isCertified := certificator.IsOperatorCertified(name, ocpMinorVersion, channel)
+		isCertified := validator.IsOperatorCertified(name, ocpMinorVersion, channel)
 		if !isCertified {
 			testFailed = true
 			logrus.Infof(
@@ -149,13 +149,13 @@ func testAllOperatorCertified(env *provider.TestEnvironment, certificator certdb
 	}
 }
 
-func testHelmCertified(env *provider.TestEnvironment, certificator certdb.CertificationStatusValidator) {
+func testHelmCertified(env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
 	helmchartsReleases := env.HelmChartReleases
 	testhelper.SkipIfEmptyAny(ginkgo.Skip, helmchartsReleases)
 	// Collect all of the failed helm charts
 	failedHelmCharts := [][]string{}
 	for _, helm := range helmchartsReleases {
-		if !certificator.IsHelmChartCertified(helm, env.K8sVersion) {
+		if !validator.IsHelmChartCertified(helm, env.K8sVersion) {
 			failedHelmCharts = append(failedHelmCharts, []string{helm.Chart.Metadata.Version, helm.Name})
 			tnf.ClaimFilePrintf(
 				"Helm Chart %s version %s is not certified.",
@@ -173,7 +173,7 @@ func testHelmCertified(env *provider.TestEnvironment, certificator certdb.Certif
 	testhelper.AddTestResultLog("Non-compliant", failedHelmCharts, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
-func testContainerCertificationStatusByDigest(env *provider.TestEnvironment, certificator certdb.CertificationStatusValidator) {
+func testContainerCertificationStatusByDigest(env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
 	failedContainers := []configuration.ContainerImageIdentifier{}
 	for _, c := range env.Containers {
 		if c.ContainerImageIdentifier.Name == "" || c.ContainerImageIdentifier.Repository == "" {
@@ -183,7 +183,7 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment, cer
 		if c.ContainerImageIdentifier.Digest == "" {
 			tnf.ClaimFilePrintf("%s is missing digest field, failing validation (repo=%s image=%s)", c, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Name)
 			failedContainers = append(failedContainers, c.ContainerImageIdentifier)
-		} else if !testContainerCertification(c.ContainerImageIdentifier, certificator) {
+		} else if !testContainerCertification(c.ContainerImageIdentifier, validator) {
 			tnf.ClaimFilePrintf("%s digest not found in database, failing validation (repo=%s image=%s)", c, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Name)
 			failedContainers = append(failedContainers, c.ContainerImageIdentifier)
 		}

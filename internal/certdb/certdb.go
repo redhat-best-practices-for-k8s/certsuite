@@ -15,7 +15,7 @@ type CertificationStatusValidator interface {
 	IsHelmChartCertified(helm *release.Release, ourKubeVersion string) bool
 }
 
-func GetCertificator(offlineDBPath string) (CertificationStatusValidator, error) {
+func GetValidator(offlineDBPath string) (CertificationStatusValidator, error) {
 	// use the online certificator by default
 	onlineValidator := onlinecheck.NewOnlineValidator()
 	if onlineValidator.IsServiceReachable() {
