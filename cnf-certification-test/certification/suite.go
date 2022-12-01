@@ -43,14 +43,13 @@ const (
 var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	logrus.Debugf("Entering %s suite", common.AffiliatedCertTestKey)
 	var env provider.TestEnvironment
-	var certificator certdb.ResourceCertificator
+	var certificator certdb.CertificationStatusValidator
 	ginkgo.BeforeEach(func() {
 		var err error
 		env = provider.GetTestEnvironment()
 		certificator, err = certdb.GetCertificator(env.GetOfflineDBPath())
 		if err != nil {
 			errMsg := fmt.Sprintf("Cannot access the certification DB, err: %v", err)
-			logrus.Errorf(errMsg)
 			ginkgo.Fail(errMsg)
 		}
 	})
@@ -79,7 +78,7 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	})
 })
 
-func testContainerCertification(c configuration.ContainerImageIdentifier, certificator certdb.ResourceCertificator) bool {
+func testContainerCertification(c configuration.ContainerImageIdentifier, certificator certdb.CertificationStatusValidator) bool {
 	tag := c.Tag
 	digest := c.Digest
 	registryName := c.Repository
@@ -91,7 +90,7 @@ func testContainerCertification(c configuration.ContainerImageIdentifier, certif
 	return ans
 }
 
-func testContainerCertificationStatus(env *provider.TestEnvironment, certificator certdb.ResourceCertificator) {
+func testContainerCertificationStatus(env *provider.TestEnvironment, certificator certdb.CertificationStatusValidator) {
 	containersToQuery := certtool.GetContainersToQuery(env)
 	testhelper.SkipIfEmptyAny(ginkgo.Skip, containersToQuery)
 	ginkgo.By(fmt.Sprintf("Getting certification status. Number of containers to check: %d", len(containersToQuery)))
@@ -116,7 +115,7 @@ func testContainerCertificationStatus(env *provider.TestEnvironment, certificato
 	}
 }
 
-func testAllOperatorCertified(env *provider.TestEnvironment, certificator certdb.ResourceCertificator) {
+func testAllOperatorCertified(env *provider.TestEnvironment, certificator certdb.CertificationStatusValidator) {
 	operatorsUnderTest := env.Operators
 	testhelper.SkipIfEmptyAny(ginkgo.Skip, operatorsUnderTest)
 	ginkgo.By(fmt.Sprintf("Verify operator as certified. Number of operators to check: %d", len(operatorsUnderTest)))
@@ -150,7 +149,7 @@ func testAllOperatorCertified(env *provider.TestEnvironment, certificator certdb
 	}
 }
 
-func testHelmCertified(env *provider.TestEnvironment, certificator certdb.ResourceCertificator) {
+func testHelmCertified(env *provider.TestEnvironment, certificator certdb.CertificationStatusValidator) {
 	helmchartsReleases := env.HelmChartReleases
 	testhelper.SkipIfEmptyAny(ginkgo.Skip, helmchartsReleases)
 	// Collect all of the failed helm charts
@@ -174,7 +173,7 @@ func testHelmCertified(env *provider.TestEnvironment, certificator certdb.Resour
 	testhelper.AddTestResultLog("Non-compliant", failedHelmCharts, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
-func testContainerCertificationStatusByDigest(env *provider.TestEnvironment, certificator certdb.ResourceCertificator) {
+func testContainerCertificationStatusByDigest(env *provider.TestEnvironment, certificator certdb.CertificationStatusValidator) {
 	failedContainers := []configuration.ContainerImageIdentifier{}
 	for _, c := range env.Containers {
 		if c.ContainerImageIdentifier.Name == "" || c.ContainerImageIdentifier.Repository == "" {

@@ -30,7 +30,7 @@ const (
 )
 
 var (
-	CertAPIClient certdb.ResourceCertificator
+	CertAPIClient certdb.CertificationStatusValidator
 )
 
 // getContainerCertificationRequestFunction returns function that will try to get the certification status (CCP) for a container.
