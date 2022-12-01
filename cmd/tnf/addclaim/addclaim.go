@@ -16,6 +16,8 @@ import (
 var (
 	Reportdir string
 	Claim     string
+	Claim1    string
+	Claim2    string
 
 	addclaim = &cobra.Command{
 		Use:   "claim",
@@ -27,11 +29,193 @@ var (
 		Short: "The test suite generates a \"claim\" file",
 		RunE:  claimUpdate,
 	}
+	claimCompareFiles = &cobra.Command{
+		Use:   "compare",
+		Short: "Compare 2 \"claim\" file",
+		RunE:  claimCompare,
+	}
 )
 
 const (
 	claimFilePermissions = 0o644
 )
+
+type cniplugin struct {
+	name   string
+	plugin interface{}
+}
+type Cni struct {
+	Claim struct {
+		Nodes struct {
+			CniPlugins map[string][]struct {
+				Name    string        `json:"name"`
+				Plugins []interface{} `json:"plugins"`
+			} `json:"cniPlugins"`
+		} `json:"nodes"`
+	} `json:"claim"`
+}
+type Csi struct {
+	Claim struct {
+		Nodes struct {
+			CsiDriver interface{} `json:"csiDriver"`
+		} `json:"nodes"`
+	} `json:"claim"`
+}
+
+type HwInfo struct {
+	Claim struct {
+		Nodes struct {
+			NodesHwInfo map[string]interface{} `json:"nodesHwInfo"`
+		} `json:"nodes"`
+	} `json:"claim"`
+}
+
+type RawResult struct {
+	Claim struct {
+		RawResults struct {
+			Cnfcertificationtest struct {
+				Testsuites struct {
+					Testsuite struct {
+						Testcase []struct {
+							Name   string `json:"-name"`
+							Status string `json:"-status"`
+						} `json:"testcase"`
+					} `json:"testsuite"`
+				} `json:"testsuites"`
+			} `json:"cnf-certification-test"`
+		} `json:"rawResults"`
+	} `json:"claim"`
+}
+
+func claimCompare(cmd *cobra.Command, args []string) error {
+	//var cnis []cniplugin
+	//var plugin interface{}
+	//var name string
+	var nodes, nodes2 []string
+	claimFileTextPtr := &Claim1
+	dat, err := os.ReadFile(*claimFileTextPtr)
+	if err != nil {
+		log.Fatalf("Error reading claim file :%v", err)
+	}
+	claimFileTextPtr2 := &Claim2
+	dat2, err2 := os.ReadFile(*claimFileTextPtr2)
+	if err != nil {
+		log.Fatalf("Error reading claim file2 :%v", err2)
+	}
+	// cniclaimRoot.Claim.RawResults
+	var cni2 Cni
+	err = json.Unmarshal(dat2, &cni2)
+	var cni Cni
+	err = json.Unmarshal(dat, &cni)
+	// csi
+	var csi, csi2 Csi
+	err = json.Unmarshal(dat2, &csi)
+	err = json.Unmarshal(dat2, &csi2)
+	// HwInfo
+	var hwinfo, hwinfo2 HwInfo
+	err = json.Unmarshal(dat, &hwinfo)
+	err = json.Unmarshal(dat2, &hwinfo2)
+	// rawResult
+	var rawResult, rawResult2 RawResult
+	err = json.Unmarshal(dat, &rawResult)
+	err = json.Unmarshal(dat2, &rawResult2)
+	for node, val := range cni.Claim.Nodes.CniPlugins {
+		for node2, val2 := range cni2.Claim.Nodes.CniPlugins {
+			if node == node2 {
+				c, s := compare2cnis(val, val2)
+				log.Info("node ", node2, "has diff plugins ", c, " and cni are not the same ", s)
+			}
+		}
+	}
+	for key := range hwinfo.Claim.Nodes.NodesHwInfo {
+		nodes = append(nodes, key)
+	}
+	for key := range hwinfo2.Claim.Nodes.NodesHwInfo {
+		nodes2 = append(nodes2, key)
+	}
+	fmt.Println("nodes2 and nodes diffs", missing(nodes2, nodes))
+	slist, r := compare2rawResult(rawResult.Claim.RawResults.Cnfcertificationtest.Testsuites.Testsuite.Testcase,
+		rawResult2.Claim.RawResults.Cnfcertificationtest.Testsuites.Testsuite.Testcase)
+	log.Info("calim1 and calim2 has diff RawResults ", slist)
+	log.Info("test name that claim1 has but claim 2 dont has", r)
+	return nil
+}
+
+type rawResult []struct {
+	Name   string `json:"-name"`
+	Status string `json:"-status"`
+}
+
+func compare2rawResult(rawresult1, rawresult2 rawResult) (rawResult, []string) {
+	var diffresult rawResult
+	var notFoundtest []string
+	for _, result1 := range rawresult1 {
+		findeName := false
+		for _, result2 := range rawresult2 {
+			if result2.Name == result1.Name {
+				findeName = true
+				if (result2.Status) != (result1.Status) {
+					diffresult = append(diffresult, result1)
+				}
+				break
+			}
+		}
+		if !findeName {
+			notFoundtest = append(notFoundtest, result1.Name)
+		}
+	}
+	return diffresult, notFoundtest
+}
+
+// empty struct (0 bytes)
+type void struct{}
+
+// missing compares two slices and returns slice of differences
+func missing(a, b []string) []string {
+	// create map with length of the 'a' slice
+	ma := make(map[string]void, len(a))
+	diffs := []string{}
+	// Convert first slice to map with empty struct (0 bytes)
+	for _, ka := range a {
+		ma[ka] = void{}
+	}
+	// find missing values in a
+	for _, kb := range b {
+		if _, ok := ma[kb]; !ok {
+			diffs = append(diffs, kb)
+		}
+	}
+	return diffs
+}
+
+type cnistruct []struct {
+	Name    string        "json:\"name\""
+	Plugins []interface{} "json:\"plugins\""
+}
+
+func compare2cnis(cni1, cni2 cnistruct) (cnistruct, []string) {
+	var diffplugins cnistruct
+	var notFoundNames []string
+	for _, plugin1 := range cni1 {
+		findeName := false
+		for _, plugin2 := range cni2 {
+			if plugin2.Name == plugin1.Name {
+				findeName = true
+				if plugin2.Plugins != nil {
+					if len(plugin2.Plugins) != len(plugin1.Plugins) {
+						diffplugins = append(diffplugins, plugin1)
+					}
+				}
+
+				break
+			}
+		}
+		if !findeName {
+			notFoundNames = append(notFoundNames, plugin1.Name)
+		}
+	}
+	return diffplugins, notFoundNames
+}
 
 //nolint:funlen
 func claimUpdate(cmd *cobra.Command, args []string) error {
@@ -108,5 +292,18 @@ func NewCommand() *cobra.Command {
 		return nil
 	}
 	addclaim.AddCommand(claimAddFile)
+	claimCompareFiles.Flags().StringVarP(
+		&Claim1, "claim1", "c", "",
+		"existing claim1 file. (Required) first file to compare",
+	)
+	claimCompareFiles.Flags().StringVarP(
+		&Claim2, "claim2", "s", "",
+		"existing claim2 file. (Required) seconed file to compare with",
+	)
+	err = claimAddFile.MarkFlagRequired("claim")
+	if err != nil {
+		return nil
+	}
+	addclaim.AddCommand(claimCompareFiles)
 	return addclaim
 }
