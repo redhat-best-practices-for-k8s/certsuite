@@ -17,19 +17,24 @@
 package provider
 
 import (
+	"context"
 	"fmt"
 	"strconv"
 	"strings"
 
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	corev1 "k8s.io/api/core/v1"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 const (
-	hugePages2Mi = "hugepages-2Mi"
-	hugePages1Gi = "hugepages-1Gi"
-	hugePages    = "hugepages"
+	hugePages2Mi          = "hugepages-2Mi"
+	hugePages1Gi          = "hugepages-1Gi"
+	hugePages             = "hugepages"
+	replicationController = "ReplicationController"
+	deploymentConfig      = "DeploymentConfig"
 )
 
 type Pod struct {
@@ -175,6 +180,25 @@ func (p *Pod) ContainsIstioProxy() bool {
 	for _, container := range p.Containers {
 		if container.Name == "istio-proxy" {
 			return true
+		}
+	}
+	return false
+}
+
+func (p *Pod) CreatedByDeploymentConfig() bool {
+	for _, data := range p.ObjectMeta.GetOwnerReferences() {
+		if data.Kind == replicationController {
+			oc := clientsholder.GetClientsHolder()
+			replicationControllers, err := oc.K8sClient.CoreV1().ReplicationControllers(p.Namespace).Get(context.TODO(), data.Name, v1.GetOptions{})
+			if err != nil {
+				logrus.Errorln("Error when listing pods in ns=", p.Namespace, " err: ", err)
+				continue
+			}
+			for _, x := range replicationControllers.GetOwnerReferences() {
+				if x.Name == data.Name && x.Kind == deploymentConfig {
+					return true
+				}
+			}
 		}
 	}
 	return false
