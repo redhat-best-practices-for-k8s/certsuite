@@ -802,7 +802,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 	},
 	TestPodHostNetwork: {
 		Identifier:  TestPodHostNetwork,
-		Type:        InformativeResult,
+		Type:        NormativeResult,
 		Remediation: PodHostNetworkRemediation,
 		Description: formDescription(TestPodHostNetwork,
 			`Verifies that the spec.HostNetwork parameter is set to false`),
@@ -812,7 +812,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 	},
 	TestPodHostPath: {
 		Identifier:  TestPodHostPath,
-		Type:        InformativeResult,
+		Type:        NormativeResult,
 		Remediation: PodHostNetworkRemediation,
 		Description: formDescription(TestPodHostPath,
 			`Verifies that the spec.HostPath parameter is not set (not present)`),
@@ -822,7 +822,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 	},
 	TestPodHostIPC: {
 		Identifier:  TestPodHostIPC,
-		Type:        InformativeResult,
+		Type:        NormativeResult,
 		Remediation: PodHostIPCRemediation,
 		Description: formDescription(TestPodHostIPC,
 			`Verifies that the spec.HostIpc parameter is set to false`),
@@ -832,7 +832,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 	},
 	TestPodHostPID: {
 		Identifier:  TestPodHostPID,
-		Type:        InformativeResult,
+		Type:        NormativeResult,
 		Remediation: PodHostPIDRemediation,
 		Description: formDescription(TestPodHostPID,
 			`Verifies that the spec.HostPid parameter is set to false`),
@@ -1233,11 +1233,11 @@ that there are no changes to the following directories:
 	},
 	TestPodAutomountServiceAccountIdentifier: {
 		Identifier: TestPodAutomountServiceAccountIdentifier,
-		Type:       NormativeResult,
+		Type:       InformativeResult,
 		Description: formDescription(TestPodAutomountServiceAccountIdentifier,
-			`Check that all pods under test have automountServiceAccountToken set to false`),
+			`Check that all pods under test have automountServiceAccountToken set to false. Only pods that require access to the kubernetes API server should have automountServiceAccountToken set to true`),
 		Remediation:           AutomountServiceTokenRemediation,
-		ExceptionProcess:      AutomountServiceTokenExceptionProcess,
+		ExceptionProcess:      NoDocumentedProcess,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 12.7",
 		Tags:                  TestPodAutomountServiceAccountIdentifier.Tags,
 	},

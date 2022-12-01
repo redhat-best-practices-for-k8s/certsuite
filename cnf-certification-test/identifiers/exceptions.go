@@ -26,9 +26,6 @@ const (
 
 	// Tests with exception processes
 	// TODO: Add more exception processes if/when we encounter more opportunities with partners
-	AutomountServiceTokenExceptionProcess = `Identify which Kubernetes APIs are required if you need to utilize automount service tokens.  Depending on
-												which APIs are utilized, Red Hat possibly might make those APIs available to use via OpenShift.`
-
 	IsRedHatReleaseExceptionProcess = `Document which containers are not able to meet the RHEL-based container 
 											requirement and if/when the base image can be updated.`
 

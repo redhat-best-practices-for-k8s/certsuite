@@ -99,11 +99,11 @@ Test Case Name|pod-automount-service-account-token
 Test Case Label|access-control-pod-automount-service-account-token
 Unique ID|http://test-network-function.com/testcases/access-control/pod-automount-service-account-token
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/access-control/pod-automount-service-account-token Check that all pods under test have automountServiceAccountToken set to false
-Result Type|normative
-Suggested Remediation|Check that pod has automountServiceAccountToken set to false or pod is attached to service account which has automountServiceAccountToken set to false
+Description|http://test-network-function.com/testcases/access-control/pod-automount-service-account-token Check that all pods under test have automountServiceAccountToken set to false. Only pods that require access to the kubernetes API server should have automountServiceAccountToken set to true
+Result Type|informative
+Suggested Remediation|Check that pod has automountServiceAccountToken set to false or pod is attached to service account which has automountServiceAccountToken set to false, unless the pod needs access to the kubernetes API server.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 12.7
-Exception Process|Identify which Kubernetes APIs are required if you need to utilize automount service tokens.  Depending on 												which APIs are utilized, Red Hat possibly might make those APIs available to use via OpenShift.
+Exception Process|There is no documented exception process for this.
 Tags|common
 #### pod-host-ipc
 
@@ -114,7 +114,7 @@ Test Case Label|access-control-pod-host-ipc
 Unique ID|http://test-network-function.com/testcases/access-control/pod-host-ipc
 Version|v1.0.0
 Description|http://test-network-function.com/testcases/access-control/pod-host-ipc Verifies that the spec.HostIpc parameter is set to false
-Result Type|informative
+Result Type|normative
 Suggested Remediation|Set the spec.HostIpc parameter to false in the pod configuration
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.6
 Exception Process|There is no documented exception process for this.
@@ -128,7 +128,7 @@ Test Case Label|access-control-pod-host-network
 Unique ID|http://test-network-function.com/testcases/access-control/pod-host-network
 Version|v1.0.0
 Description|http://test-network-function.com/testcases/access-control/pod-host-network Verifies that the spec.HostNetwork parameter is set to false
-Result Type|informative
+Result Type|normative
 Suggested Remediation|Set the spec.HostNetwork parameter to false in the pod configuration
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.6
 Exception Process|There is no documented exception process for this.
@@ -142,7 +142,7 @@ Test Case Label|access-control-pod-host-path
 Unique ID|http://test-network-function.com/testcases/access-control/pod-host-path
 Version|v1.0.0
 Description|http://test-network-function.com/testcases/access-control/pod-host-path Verifies that the spec.HostPath parameter is not set (not present)
-Result Type|informative
+Result Type|normative
 Suggested Remediation|Set the spec.HostNetwork parameter to false in the pod configuration
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.6
 Exception Process|There is no documented exception process for this.
@@ -156,7 +156,7 @@ Test Case Label|access-control-pod-host-pid
 Unique ID|http://test-network-function.com/testcases/access-control/pod-host-pid
 Version|v1.0.0
 Description|http://test-network-function.com/testcases/access-control/pod-host-pid Verifies that the spec.HostPid parameter is set to false
-Result Type|informative
+Result Type|normative
 Suggested Remediation|Set the spec.HostPid parameter to false in the pod configuration
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.6
 Exception Process|There is no documented exception process for this.
