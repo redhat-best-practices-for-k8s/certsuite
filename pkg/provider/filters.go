@@ -44,10 +44,10 @@ func (env *TestEnvironment) GetNonGuaranteedPods() []*Pod {
 	return filteredPods
 }
 
-func (env *TestEnvironment) GetNonGuaranteedPodsWithAntiAffinity() []*Pod {
+func (env *TestEnvironment) GetPodsWithoutAffinityRequiredLabel() []*Pod {
 	var filteredPods []*Pod
 	for _, p := range env.Pods {
-		if !p.IsPodGuaranteed() && !p.AffinityRequired() {
+		if !p.AffinityRequired() {
 			filteredPods = append(filteredPods, p)
 		}
 	}
