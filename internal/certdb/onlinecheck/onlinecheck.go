@@ -25,7 +25,7 @@ import (
 
 	"github.com/go-yaml/yaml"
 	log "github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/internal/api/offlinecheck"
+	"github.com/test-network-function/cnf-certification-test/internal/certdb/offlinecheck"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"helm.sh/helm/v3/pkg/release"
 )
@@ -71,11 +71,11 @@ func NewOnlineValidator() OnlineValidator {
 }
 
 // IsServiceReachable check if redhat catalog is reachable and its database is available to query
-func (checker OnlineValidator) IsServiceReachable() bool {
-	if _, err := checker.GetRequest(redhatCatalogPingURL); err != nil {
+func (validator OnlineValidator) IsServiceReachable() bool {
+	if _, err := validator.GetRequest(redhatCatalogPingURL); err != nil {
 		return false
 	}
-	if _, err := checker.GetRequest(redhatCatalogPingMongoDBURL); err != nil {
+	if _, err := validator.GetRequest(redhatCatalogPingMongoDBURL); err != nil {
 		return false
 	}
 	return true
@@ -84,11 +84,11 @@ func (checker OnlineValidator) IsServiceReachable() bool {
 // GetImageByID get container image Id using the digest.
 // return imageID if entry exists,
 // return empty string if entry does not exist
-func (checker OnlineValidator) getImageByDigest(digest string) (imageID string, err error) {
+func (validator OnlineValidator) getImageByDigest(digest string) (imageID string, err error) {
 	var responseData []byte
 	url := fmt.Sprintf(certifiedContainerCatalogDigestURL, digest)
 	log.Trace(url)
-	if responseData, err = checker.GetRequest(url); err != nil || len(responseData) == 0 {
+	if responseData, err = validator.GetRequest(url); err != nil || len(responseData) == 0 {
 		return imageID, nil
 	}
 	containerEntries := offlinecheck.ContainerPageCatalog{}
@@ -109,11 +109,11 @@ func (checker OnlineValidator) getImageByDigest(digest string) (imageID string, 
 // GetImageByID get container image Id using the tag.
 // return imageID if entry exists,
 // return empty string if entry does not exist
-func (checker OnlineValidator) getImageByTag(registry, repository, tag string) (imageID string, err error) {
+func (validator OnlineValidator) getImageByTag(registry, repository, tag string) (imageID string, err error) {
 	var responseData []byte
 	url := fmt.Sprintf(certifiedContainerCatalogTagURL, registry, repository, tag)
 	log.Trace(url)
-	if responseData, err = checker.GetRequest(url); err != nil || len(responseData) == 0 {
+	if responseData, err = validator.GetRequest(url); err != nil || len(responseData) == 0 {
 		return imageID, err
 	}
 	db := make(map[string]*offlinecheck.ContainerCatalogEntry)
@@ -136,13 +136,13 @@ func (checker OnlineValidator) getImageByTag(registry, repository, tag string) (
 // GetImageByID get container image Id using the tag.
 // return imageID if any of containers with same registry and repository is certified
 // return empty string if entry does not exist
-func (checker OnlineValidator) getImageByRepository(registry, repository string) (imageID string, err error) {
+func (validator OnlineValidator) getImageByRepository(registry, repository string) (imageID string, err error) {
 	var responseData []byte
 	url := fmt.Sprintf(certifiedContainerCatalogURL, registry, repository)
 	log.Trace(url)
-	if responseData, err = checker.GetRequest(url); err == nil {
+	if responseData, err = validator.GetRequest(url); err == nil {
 		fmt.Println(string(responseData))
-		imageID, _ = checker.getIDFromResponse(responseData)
+		imageID, _ = validator.getIDFromResponse(responseData)
 	}
 	db := make(map[string]*offlinecheck.ContainerCatalogEntry)
 	_, err = offlinecheck.LoadBinary(responseData, db)
@@ -164,20 +164,20 @@ func (checker OnlineValidator) getImageByRepository(registry, repository string)
 // IsContainerCertified get container image info by registry/repository [tag|digest]
 // returns true if the container is present and is certified.
 // returns false otherwise
-func (checker OnlineValidator) IsContainerCertified(registry, repository, tag, digest string) bool {
+func (validator OnlineValidator) IsContainerCertified(registry, repository, tag, digest string) bool {
 	if digest != "" {
-		if imageID, err := checker.getImageByDigest(digest); err != nil || imageID == "" {
+		if imageID, err := validator.getImageByDigest(digest); err != nil || imageID == "" {
 			return false
 		}
 		return true
 	}
 	if tag != "" {
-		if imageID, err := checker.getImageByTag(registry, repository, tag); err != nil || imageID == "" {
+		if imageID, err := validator.getImageByTag(registry, repository, tag); err != nil || imageID == "" {
 			return false
 		}
 		return true
 	}
-	if imageID, err := checker.getImageByRepository(registry, repository); err != nil || imageID == "" {
+	if imageID, err := validator.getImageByRepository(registry, repository); err != nil || imageID == "" {
 		return false
 	}
 	return true
@@ -185,14 +185,14 @@ func (checker OnlineValidator) IsContainerCertified(registry, repository, tag, d
 
 // IsOperatorCertified get operator bundle by csv name from the certified-operators org
 // If present then returns `true` if channel and ocp version match.
-func (checker OnlineValidator) IsOperatorCertified(csvName, ocpVersion, channel string) bool {
+func (validator OnlineValidator) IsOperatorCertified(csvName, ocpVersion, channel string) bool {
 	log.Tracef("Searching csv %s (channel %s) for ocp %q", csvName, channel, ocpVersion)
 	_, operatorVersion := offlinecheck.ExtractNameVersionFromName(csvName)
 	var responseData []byte
 	var err error
 	url := fmt.Sprintf(certifiedOperatorsCatalogURL, csvName, filterCertifiedOperatorsOrg)
 	log.Trace(url)
-	if responseData, err = checker.GetRequest(url); err != nil || len(responseData) == 0 {
+	if responseData, err = validator.GetRequest(url); err != nil || len(responseData) == 0 {
 		return false
 	}
 	operatorEntries := offlinecheck.OperatorCatalog{}
@@ -210,22 +210,22 @@ func (checker OnlineValidator) IsOperatorCertified(csvName, ocpVersion, channel 
 	return false
 }
 
-func (checker OnlineValidator) IsReleaseCertified(helm *release.Release, ourKubeVersion string) bool {
-	charts, err := checker.GetCertifiedCharts()
+func (validator OnlineValidator) IsHelmChartCertified(helm *release.Release, ourKubeVersion string) bool {
+	charts, err := validator.GetCertifiedCharts()
 	if err != nil {
 		return false
 	}
 	offlinecheck.LoadHelmCharts(charts)
-	return offlinecheck.OfflineChecker{}.IsReleaseCertified(helm, ourKubeVersion)
+	return offlinecheck.OfflineValidator{}.IsHelmChartCertified(helm, ourKubeVersion)
 }
 
 // getRequest a http call to rest api, returns byte array or error
-func (checker OnlineValidator) GetRequest(url string) (response []byte, err error) {
+func (validator OnlineValidator) GetRequest(url string) (response []byte, err error) {
 	req, err := http.NewRequest(http.MethodGet, url, http.NoBody)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := checker.Client.Do(req.WithContext(context.TODO()))
+	resp, err := validator.Client.Do(req.WithContext(context.TODO()))
 	if err != nil {
 		return
 	}
@@ -242,7 +242,7 @@ func (checker OnlineValidator) GetRequest(url string) (response []byte, err erro
 }
 
 // getIDFromResponse searches for first occurrence of id and return
-func (checker OnlineValidator) getIDFromResponse(response []byte) (id string, err error) {
+func (validator OnlineValidator) getIDFromResponse(response []byte) (id string, err error) {
 	var data interface{}
 	if err = json.Unmarshal(response, &data); err != nil {
 		log.Errorf("Error calling API Request %v", err.Error())
@@ -256,7 +256,7 @@ func (checker OnlineValidator) getIDFromResponse(response []byte) (id string, er
 			// from each element
 			if va, ok := v.([]interface{}); ok {
 				for _, a := range va {
-					if res, ok := checker.Find(a, idKey); ok {
+					if res, ok := validator.Find(a, idKey); ok {
 						id = fmt.Sprintf("%v", res)
 						break
 					}
@@ -269,7 +269,7 @@ func (checker OnlineValidator) getIDFromResponse(response []byte) (id string, er
 }
 
 // Find key in interface (recursively) and return value as interface
-func (checker OnlineValidator) Find(obj interface{}, key string) (interface{}, bool) {
+func (validator OnlineValidator) Find(obj interface{}, key string) (interface{}, bool) {
 	// if the argument is not a map, ignore it
 	mobj, ok := obj.(map[string]interface{})
 	if !ok {
@@ -282,7 +282,7 @@ func (checker OnlineValidator) Find(obj interface{}, key string) (interface{}, b
 		}
 		// if the value is a map, search recursively
 		if m, ok := v.(map[string]interface{}); ok {
-			if res, ok := checker.Find(m, key); ok {
+			if res, ok := validator.Find(m, key); ok {
 				return res, true
 			}
 		}
@@ -290,7 +290,7 @@ func (checker OnlineValidator) Find(obj interface{}, key string) (interface{}, b
 		// from each element
 		if va, ok := v.([]interface{}); ok {
 			for _, a := range va {
-				if res, ok := checker.Find(a, key); ok {
+				if res, ok := validator.Find(a, key); ok {
 					return res, true
 				}
 			}
@@ -299,9 +299,9 @@ func (checker OnlineValidator) Find(obj interface{}, key string) (interface{}, b
 	// element not found
 	return nil, false
 }
-func (checker OnlineValidator) GetCertifiedCharts() (offlinecheck.ChartStruct, error) {
+func (validator OnlineValidator) GetCertifiedCharts() (offlinecheck.ChartStruct, error) {
 	url := ("https://charts.openshift.io/index.yaml")
-	responseData, err := checker.GetRequest(url)
+	responseData, err := validator.GetRequest(url)
 	var charts offlinecheck.ChartStruct
 	if err != nil {
 		log.Error("error reading the helm certification list ", err)

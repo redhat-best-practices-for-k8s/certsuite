@@ -19,7 +19,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/internal/api/onlinecheck"
+	"github.com/test-network-function/cnf-certification-test/internal/certdb/onlinecheck"
 )
 
 func TestIsContainerCertified(t *testing.T) {

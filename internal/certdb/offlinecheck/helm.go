@@ -92,7 +92,7 @@ func CompareVersion(ver1, ver2 string) bool {
 	return false
 }
 
-func (checker OfflineChecker) IsReleaseCertified(helm *release.Release, ourKubeVersion string) bool {
+func (validator OfflineValidator) IsHelmChartCertified(helm *release.Release, ourKubeVersion string) bool {
 	for _, entryList := range chartsdb {
 		for _, entry := range entryList {
 			if entry.Name == helm.Chart.Metadata.Name && entry.Version == helm.Chart.Metadata.Version {

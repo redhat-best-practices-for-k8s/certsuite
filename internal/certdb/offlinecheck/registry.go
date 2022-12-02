@@ -16,29 +16,29 @@
 package offlinecheck
 
 import (
-	"os"
-	"testing"
+	"fmt"
 
 	log "github.com/sirupsen/logrus"
-	"github.com/stretchr/testify/assert"
 )
 
-func TestIsOperatorCertified(t *testing.T) {
-	t.Skip() // TODO: Offline certification tests that need the DB should be moved to the OCT repo
-	checker := OfflineChecker{}
-	name := "zoperator.v0.3.6"
-	ocpversion := "4.6"
-	channel := "alpha"
-	path, _ := os.Getwd()
-	log.Info(path)
-	path, err := os.Getwd()
-	if err != nil {
-		log.Println(err)
-	}
-	_ = loadOperatorsCatalog(path + "/../../")
-	assert.True(t, checker.IsOperatorCertified(name, ocpversion, channel))
-	name = "falcon-alpha"
-	assert.False(t, checker.IsOperatorCertified(name, ocpversion, channel))
+type OfflineValidator struct{}
 
-	assert.True(t, checker.IsOperatorCertified("artifactory-ha-operator.v1.2.0", "4.9", "alpha"))
+func LoadCatalogs(offlineDBPath string) error {
+	if offlineDBPath == "" {
+		return fmt.Errorf("no offline DB provided")
+	}
+
+	log.Infof("Offline DB location: %s", offlineDBPath)
+
+	if err := loadContainersCatalog(offlineDBPath); err != nil {
+		return fmt.Errorf("cannot load containers catalog, err: %v", err)
+	}
+	if err := loadHelmCatalog(offlineDBPath); err != nil {
+		return fmt.Errorf("cannot load helm charts catalog, err: %v", err)
+	}
+	if err := loadOperatorsCatalog(offlineDBPath); err != nil {
+		return fmt.Errorf("cannot load operators catalog, err: %v", err)
+	}
+
+	return nil
 }

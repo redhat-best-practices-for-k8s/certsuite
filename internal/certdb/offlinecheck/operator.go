@@ -123,7 +123,7 @@ func loadOperatorsCatalog(pathToRoot string) error {
 // isOperatorCertified check the presence of operator name in certified operators db
 // the operator name is the csv
 // ocpVersion is Major.Minor OCP version
-func (checker OfflineChecker) IsOperatorCertified(csvName, ocpVersion, channel string) bool {
+func (validator OfflineValidator) IsOperatorCertified(csvName, ocpVersion, channel string) bool {
 	name, operatorVersion := ExtractNameVersionFromName(csvName)
 	if v, ok := operatordb[name]; ok {
 		for _, version := range v {
