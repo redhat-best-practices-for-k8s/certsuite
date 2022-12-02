@@ -16,26 +16,84 @@
 package offlinecheck
 
 import (
-	"os"
+	"encoding/json"
+	"io"
+	"strings"
 	"testing"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 )
 
+const containersDBJSON = `{
+	"sha256:d2f388e163a5126f7112757f0475c8c4e036fe00c76ef8a7fd50848fafdcb96b":{
+	   "_id":"",
+	   "architecture":"amd64",
+	   "certified":false,
+	   "docker_image_digest":"sha256:d2f388e163a5126f7112757f0475c8c4e036fe00c76ef8a7fd50848fafdcb96b",
+	   "docker_image_id":"",
+	   "repositories":[
+		  {
+			 "registry":"quay.io",
+			 "repository":"fujitsu/fujitsu-enterprise-postgres-13-exporter",
+			 "tags":[
+				{
+				   "name":"ubi8-13-1.0-amd64"
+				}
+			 ]
+		  },
+		  {
+			 "registry":"registry.rhc4tp.openshift.com",
+			 "repository":"ospid-613f8666333748670463a91b/partner-build-service",
+			 "tags":[
+				{
+				   "name":"ubi8-13-1.0-amd64"
+				}
+			 ]
+		  }
+	   ]
+	},
+	"sha256:fa8f2136aed9daf4c5a805068a87dd274016b8dddae36bc0b02e18b391690493":{
+	   "_id":"",
+	   "architecture":"amd64",
+	   "certified":false,
+	   "docker_image_digest":"sha256:fa8f2136aed9daf4c5a805068a87dd274016b8dddae36bc0b02e18b391690493",
+	   "docker_image_id":"",
+	   "repositories":[
+		  {
+			 "registry":"registry.connect.redhat.com",
+			 "repository":"rocketchat/rocketchat",
+			 "tags":[
+				{
+				   "name":"0.56.0-1"
+				},
+				{
+				   "name":"latest"
+				}
+			 ]
+		  }
+	   ]
+	}
+ }`
+
+func loadContainersDB() error {
+	bytes, err := io.ReadAll(strings.NewReader(containersDBJSON))
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal(bytes, &containerdb)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 //nolint:funlen
 func TestIsCertified(t *testing.T) {
-	t.Skip() // TODO: Offline certification tests that need the DB should be moved to the OCT repo
 	validator := OfflineValidator{}
-	path, _ := os.Getwd()
-	log.Info(path)
-	path, err := os.Getwd()
-	if err != nil {
-		log.Println(err)
-	}
-	_ = loadContainersCatalog(path + "/../../")
 
-	// Note: This test cases might have to change periodically due to images coming/going from the offline database.
+	assert.NoError(t, loadContainersDB())
+
 	testCases := []struct {
 		registry                    string
 		repository                  string
@@ -47,7 +105,7 @@ func TestIsCertified(t *testing.T) {
 		{
 			registry:                    "quay.io",
 			repository:                  "fujitsu/fujitsu-enterprise-postgres-13-exporter",
-			tag:                         "ubi8-13-1.3-amd64",
+			tag:                         "ubi8-13-1.0-amd64",
 			digest:                      "",
 			expectedCertificationStatus: true,
 		},
@@ -71,7 +129,7 @@ func TestIsCertified(t *testing.T) {
 			registry:                    "registry.connect.redhat.com",
 			repository:                  "rocketchat/rocketchat",
 			tag:                         "",
-			digest:                      "sha256:03f7f2499233a302351821d6f78f0e813c3f749258184f4133144558097c57b0",
+			digest:                      "sha256:fa8f2136aed9daf4c5a805068a87dd274016b8dddae36bc0b02e18b391690493",
 			expectedCertificationStatus: true,
 		},
 		// Not existing image.
@@ -102,6 +160,6 @@ func TestIsCertified(t *testing.T) {
 
 	for _, tc := range testCases {
 		isCertified := validator.IsContainerCertified(tc.registry, tc.repository, tc.tag, tc.digest)
-		assert.Equal(t, isCertified, tc.expectedCertificationStatus)
+		assert.Equal(t, tc.expectedCertificationStatus, isCertified)
 	}
 }
