@@ -26,7 +26,7 @@ import (
 //nolint:funlen
 func TestIsCertified(t *testing.T) {
 	t.Skip() // TODO: Offline certification tests that need the DB should be moved to the OCT repo
-	checker := OfflineChecker{}
+	validator := OfflineValidator{}
 	path, _ := os.Getwd()
 	log.Info(path)
 	path, err := os.Getwd()
@@ -101,7 +101,7 @@ func TestIsCertified(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		isCertified := checker.IsContainerCertified(tc.registry, tc.repository, tc.tag, tc.digest)
+		isCertified := validator.IsContainerCertified(tc.registry, tc.repository, tc.tag, tc.digest)
 		assert.Equal(t, isCertified, tc.expectedCertificationStatus)
 	}
 }
