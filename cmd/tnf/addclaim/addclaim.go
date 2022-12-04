@@ -44,13 +44,14 @@ type cniplugin struct {
 	name   string
 	plugin interface{}
 }
+type cnistruct []struct {
+	Name    string        "json:\"name\""
+	Plugins []interface{} "json:\"plugins\""
+}
 type Cni struct {
 	Claim struct {
 		Nodes struct {
-			CniPlugins map[string][]struct {
-				Name    string        `json:"name"`
-				Plugins []interface{} `json:"plugins"`
-			} `json:"cniPlugins"`
+			CniPlugins map[string]cnistruct `json:"cniPlugins"`
 		} `json:"nodes"`
 	} `json:"claim"`
 }
@@ -76,10 +77,7 @@ type RawResult struct {
 			Cnfcertificationtest struct {
 				Testsuites struct {
 					Testsuite struct {
-						Testcase []struct {
-							Name   string `json:"-name"`
-							Status string `json:"-status"`
-						} `json:"testcase"`
+						Testcase testcase `json:"testcase"`
 					} `json:"testsuite"`
 				} `json:"testsuites"`
 			} `json:"cnf-certification-test"`
@@ -95,12 +93,12 @@ func claimCompare(cmd *cobra.Command, args []string) error {
 	claimFileTextPtr := &Claim1
 	dat, err := os.ReadFile(*claimFileTextPtr)
 	if err != nil {
-		log.Fatalf("Error reading claim file :%v", err)
+		log.Fatalf("Error reading claim1 file:%v", err)
 	}
 	claimFileTextPtr2 := &Claim2
 	dat2, err2 := os.ReadFile(*claimFileTextPtr2)
 	if err != nil {
-		log.Fatalf("Error reading claim file2 :%v", err2)
+		log.Fatalf("Error reading claim2 file :%v", err2)
 	}
 	// cniclaimRoot.Claim.RawResults
 	var cni2 Cni
@@ -123,7 +121,12 @@ func claimCompare(cmd *cobra.Command, args []string) error {
 		for node2, val2 := range cni2.Claim.Nodes.CniPlugins {
 			if node == node2 {
 				c, s := compare2cnis(val, val2)
-				log.Info("node ", node2, "has diff plugins ", c, " and cni are not the same ", s)
+				if len(s) != 0 {
+					log.Info("node ", node2, " cnis found in claim1 but not present in claim2: ", s)
+				}
+				if len(c) != 0 {
+					log.Info("node ", node2, " cnis present in both claim 1 and 2 but with different plugins: ", c)
+				}
 			}
 		}
 	}
@@ -134,24 +137,24 @@ func claimCompare(cmd *cobra.Command, args []string) error {
 		nodes2 = append(nodes2, key)
 	}
 	fmt.Println("nodes2 and nodes diffs", missing(nodes2, nodes))
-	slist, r := compare2rawResult(rawResult.Claim.RawResults.Cnfcertificationtest.Testsuites.Testsuite.Testcase,
+	slist, r := compare2TestCaseResults(rawResult.Claim.RawResults.Cnfcertificationtest.Testsuites.Testsuite.Testcase,
 		rawResult2.Claim.RawResults.Cnfcertificationtest.Testsuites.Testsuite.Testcase)
-	log.Info("calim1 and calim2 has diff RawResults ", slist)
+	log.Info("claim1 and claim2 has diff RawResults ", slist)
 	log.Info("test name that claim1 has but claim 2 dont has", r)
 	return nil
 }
 
-type rawResult []struct {
+type testcase []struct {
 	Name   string `json:"-name"`
 	Status string `json:"-status"`
 }
 
-func compare2rawResult(rawresult1, rawresult2 rawResult) (rawResult, []string) {
-	var diffresult rawResult
+func compare2TestCaseResults(testcaseResult1, testcaseResult2 testcase) (testcase, []string) {
+	var diffresult testcase
 	var notFoundtest []string
-	for _, result1 := range rawresult1 {
+	for _, result1 := range testcaseResult1 {
 		findeName := false
-		for _, result2 := range rawresult2 {
+		for _, result2 := range testcaseResult2 {
 			if result2.Name == result1.Name {
 				findeName = true
 				if (result2.Status) != (result1.Status) {
@@ -188,17 +191,12 @@ func missing(a, b []string) []string {
 	return diffs
 }
 
-type cnistruct []struct {
-	Name    string        "json:\"name\""
-	Plugins []interface{} "json:\"plugins\""
-}
-
-func compare2cnis(cni1, cni2 cnistruct) (cnistruct, []string) {
+func compare2cnis(cniList1, cniList2 cnistruct) (cnistruct, []string) {
 	var diffplugins cnistruct
 	var notFoundNames []string
-	for _, plugin1 := range cni1 {
+	for _, plugin1 := range cniList1 {
 		findeName := false
-		for _, plugin2 := range cni2 {
+		for _, plugin2 := range cniList2 {
 			if plugin2.Name == plugin1.Name {
 				findeName = true
 				if plugin2.Plugins != nil {
@@ -293,11 +291,11 @@ func NewCommand() *cobra.Command {
 	}
 	addclaim.AddCommand(claimAddFile)
 	claimCompareFiles.Flags().StringVarP(
-		&Claim1, "claim1", "c", "",
+		&Claim1, "claim1", "1", "",
 		"existing claim1 file. (Required) first file to compare",
 	)
 	claimCompareFiles.Flags().StringVarP(
-		&Claim2, "claim2", "s", "",
+		&Claim2, "claim2", "2", "",
 		"existing claim2 file. (Required) seconed file to compare with",
 	)
 	err = claimAddFile.MarkFlagRequired("claim")
