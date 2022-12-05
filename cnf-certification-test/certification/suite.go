@@ -25,7 +25,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/certification/certtool"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/internal/certdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
@@ -78,6 +77,19 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	})
 })
 
+func getContainersToQuery(env *provider.TestEnvironment) map[configuration.ContainerImageIdentifier]bool {
+	containersToQuery := make(map[configuration.ContainerImageIdentifier]bool)
+	for _, c := range env.Config.CertifiedContainerInfo {
+		containersToQuery[c] = true
+	}
+	if env.Config.CheckDiscoveredContainerCertificationStatus {
+		for _, cut := range env.Containers {
+			containersToQuery[cut.ContainerImageIdentifier] = true
+		}
+	}
+	return containersToQuery
+}
+
 func testContainerCertification(c configuration.ContainerImageIdentifier, validator certdb.CertificationStatusValidator) bool {
 	tag := c.Tag
 	digest := c.Digest
@@ -91,7 +103,7 @@ func testContainerCertification(c configuration.ContainerImageIdentifier, valida
 }
 
 func testContainerCertificationStatus(env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
-	containersToQuery := certtool.GetContainersToQuery(env)
+	containersToQuery := getContainersToQuery(env)
 	testhelper.SkipIfEmptyAny(ginkgo.Skip, containersToQuery)
 	ginkgo.By(fmt.Sprintf("Getting certification status. Number of containers to check: %d", len(containersToQuery)))
 	failedContainers := []configuration.ContainerImageIdentifier{}

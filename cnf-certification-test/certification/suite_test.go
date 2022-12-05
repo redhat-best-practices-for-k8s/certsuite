@@ -15,3 +15,68 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 package certification
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+)
+
+//nolint:funlen
+func TestGetContainersToQuery(t *testing.T) {
+	generateEnv := func(certStatus bool) *provider.TestEnvironment {
+		return &provider.TestEnvironment{
+			Config: configuration.TestConfiguration{
+				CheckDiscoveredContainerCertificationStatus: certStatus,
+				CertifiedContainerInfo: []configuration.ContainerImageIdentifier{
+					{
+						Name:       "test2",
+						Repository: "repo1",
+					},
+				},
+			},
+			Containers: []*provider.Container{
+				{
+					ContainerImageIdentifier: configuration.ContainerImageIdentifier{
+						Name:       "test1",
+						Repository: "repo1",
+					},
+				},
+			},
+		}
+	}
+
+	testCases := []struct {
+		testCertStatus bool
+		expectedOutput map[configuration.ContainerImageIdentifier]bool
+	}{
+		{
+			testCertStatus: true,
+			expectedOutput: map[configuration.ContainerImageIdentifier]bool{
+				{
+					Name:       "test1",
+					Repository: "repo1",
+				}: true,
+				{
+					Name:       "test2",
+					Repository: "repo1",
+				}: true,
+			},
+		},
+		{
+			testCertStatus: false,
+			expectedOutput: map[configuration.ContainerImageIdentifier]bool{
+				{
+					Name:       "test2",
+					Repository: "repo1",
+				}: true,
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedOutput, getContainersToQuery(generateEnv(tc.testCertStatus)))
+	}
+}
