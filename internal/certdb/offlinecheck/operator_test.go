@@ -16,29 +16,107 @@
 package offlinecheck
 
 import (
-	"os"
+	"encoding/json"
+	"io"
+	"strings"
 	"testing"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestIsOperatorCertified(t *testing.T) {
-	t.Skip() // TODO: Offline certification tests that need the DB should be moved to the OCT repo
-	validator := OfflineValidator{}
-	name := "zoperator.v0.3.6"
-	ocpversion := "4.6"
-	channel := "alpha"
-	path, _ := os.Getwd()
-	log.Info(path)
-	path, err := os.Getwd()
+const operatorDBJSON = `{
+	"data":[
+	   {
+		  "_id":"5f8f29d33b6621a763342f7c",
+		  "alm_examples":[
+			 
+		  ],
+		  "annotations":{
+			 "infrastructure_features":[
+				
+			 ],
+			 "valid_subscription":[
+				
+			 ]
+		  },
+		  "architectures":[
+			 
+		  ],
+		  "bundle_path":"registry.connect.redhat.com/ibm/ibm-spectrum-scale-csi-operator-bundle@sha256:70f310cb36f6f58221377ac77bfacce3ea80d11811b407131d9723507eaada42",
+		  "bundle_path_digest":"sha256:70f310cb36f6f58221377ac77bfacce3ea80d11811b407131d9723507eaada42",
+		  "capabilities":[
+			 ""
+		  ],
+		  "channel_name":"stable",
+		  "creation_date":"2020-10-20T18:17:55.675000+00:00",
+		  "csv_description":"",
+		  "csv_display_name":"",
+		  "csv_metadata_description":"",
+		  "csv_name":"ibm-spectrum-scale-csi-operator.v2.0.0",
+		  "in_index_img":true,
+		  "install_modes":[
+			 
+		  ],
+		  "is_default_channel":true,
+		  "last_update_date":"2022-10-24T11:20:28.738000+00:00",
+		  "latest_in_channel":false,
+		  "ocp_version":"4.6",
+		  "organization":"certified-operators",
+		  "package":"ibm-spectrum-scale-csi",
+		  "provided_apis":[
+			 {
+				"group":"csi.ibm.com",
+				"kind":"CSIScaleOperator",
+				"plural":"csiscaleoperators",
+				"version":"v1"
+			 }
+		  ],
+		  "provider":"",
+		  "related_images":[
+			 
+		  ],
+		  "replaces":null,
+		  "skip_range":null,
+		  "skips":[
+			 
+		  ],
+		  "source_index_container_path":"registry.redhat.io/redhat/certified-operator-index:v4.6",
+		  "version":"2.0.0",
+		  "version_original":"2.0.0"
+	   }
+	]
+ }`
+
+func loadOperatorsDB() error {
+	var fullCatalog OperatorCatalog
+	bytes, err := io.ReadAll(strings.NewReader(operatorDBJSON))
 	if err != nil {
-		log.Println(err)
+		return err
 	}
-	_ = loadOperatorsCatalog(path + "/../../")
+	err = json.Unmarshal(bytes, &fullCatalog)
+	if err != nil {
+		return err
+	}
+	for i := 0; i < len(fullCatalog.Data); i++ {
+		if opName, opV, ocpV, channel, err := buildOperatorKey(&fullCatalog.Data[i]); err == nil {
+			operatordb[opName] = append(operatordb[opName], OperatorOcpVersionMatch{ocpVersion: ocpV, operatorVersion: opV, channel: channel})
+		}
+	}
+
+	return nil
+}
+
+func TestIsOperatorCertified(t *testing.T) {
+	validator := OfflineValidator{}
+
+	assert.NoError(t, loadOperatorsDB())
+
+	name := "ibm-spectrum-scale-csi-operator.v2.0.0"
+	ocpversion := "4.6"
+	channel := "stable"
+
 	assert.True(t, validator.IsOperatorCertified(name, ocpversion, channel))
+
 	name = "falcon-alpha"
 	assert.False(t, validator.IsOperatorCertified(name, ocpversion, channel))
-
-	assert.True(t, validator.IsOperatorCertified("artifactory-ha-operator.v1.2.0", "4.9", "alpha"))
 }
