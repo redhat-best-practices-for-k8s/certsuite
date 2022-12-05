@@ -309,7 +309,7 @@ func NewCommand() *cobra.Command {
 	)
 	claimCompareFiles.Flags().StringVarP(
 		&Claim2, "claim2", "2", "",
-		"existing claim2 file. (Required) seconed file to compare with",
+		"existing claim2 file. (Required) second file to compare with",
 	)
 	err = claimAddFile.MarkFlagRequired("claim")
 	if err != nil {

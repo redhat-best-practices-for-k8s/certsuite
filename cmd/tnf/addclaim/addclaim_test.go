@@ -49,6 +49,7 @@ func TestNewCommand(t *testing.T) {
 	assert.Equal(t, "The test suite generates a \"claim\" file", result.Short)
 }
 
+//nolint:funlen
 func Test_compare2TestCaseResults(t *testing.T) {
 	type args struct {
 		testcaseResult1 testcase
