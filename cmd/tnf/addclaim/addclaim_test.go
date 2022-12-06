@@ -31,7 +31,6 @@ func TestReadClaim(t *testing.T) {
 				},
 			},
 		},
-		// Test Case 2 - Cannot test a failure to unmarshal because readClaim logs fatal
 	}
 
 	for _, tc := range testCases {
