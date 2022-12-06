@@ -98,7 +98,7 @@ func claimCompare(cmd *cobra.Command, args []string) error {
 	var cni1, cni2 Cni
 	errcni2 := json.Unmarshal(dat2, &cni2)
 	if errcni2 != nil {
-		log.Fatalf("Error in unmarshal the cni from cliam2 file  :%v", errcni2)
+		log.Fatalf("Error in unmarshal the cni from claim2 file  :%v", errcni2)
 	}
 	errcni1 := json.Unmarshal(dat, &cni1)
 	if errcni1 != nil {
