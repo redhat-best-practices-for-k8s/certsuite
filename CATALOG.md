@@ -469,7 +469,7 @@ Test Case Name|liveness-probe
 Test Case Label|lifecycle-liveness-probe
 Unique ID|http://test-network-function.com/testcases/lifecycle/liveness-probe
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/lifecycle/liveness-probe Check that all containers under test a have liveness probe defined
+Description|http://test-network-function.com/testcases/lifecycle/liveness-probe Check that all containers under test have liveness probe defined
 Result Type|normative
 Suggested Remediation|Add a liveness probe to deployed containers
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.16, 12.1 and 12.5
@@ -553,7 +553,7 @@ Test Case Name|readiness-probe
 Test Case Label|lifecycle-readiness-probe
 Unique ID|http://test-network-function.com/testcases/lifecycle/readiness-probe
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/lifecycle/readiness-probe Check that all containers under test a have readiness probe defined
+Description|http://test-network-function.com/testcases/lifecycle/readiness-probe Check that all containers under test have readiness probe defined
 Result Type|normative
 Suggested Remediation|Add a readiness probe to deployed containers
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.16, 12.1 and 12.5
@@ -567,7 +567,7 @@ Test Case Name|startup-probe
 Test Case Label|lifecycle-startup-probe
 Unique ID|http://test-network-function.com/testcases/lifecycle/startup-probe
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/lifecycle/startup-probe Check that all containers under test a have startup probe defined
+Description|http://test-network-function.com/testcases/lifecycle/startup-probe Check that all containers under test have startup probe defined
 Result Type|normative
 Suggested Remediation|Add a startup probe to deployed containers
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.12

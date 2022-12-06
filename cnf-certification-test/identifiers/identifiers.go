@@ -1244,7 +1244,7 @@ that there are no changes to the following directories:
 	TestLivenessProbeIdentifier: {
 		Identifier:            TestLivenessProbeIdentifier,
 		Type:                  NormativeResult,
-		Description:           formDescription(TestLivenessProbeIdentifier, `Check that all containers under test a have liveness probe defined`),
+		Description:           formDescription(TestLivenessProbeIdentifier, `Check that all containers under test have liveness probe defined`),
 		Remediation:           LivenessProbeRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.16, 12.1 and 12.5",
 		ExceptionProcess:      NoDocumentedProcess,
@@ -1253,7 +1253,7 @@ that there are no changes to the following directories:
 	TestReadinessProbeIdentifier: {
 		Identifier:            TestReadinessProbeIdentifier,
 		Type:                  NormativeResult,
-		Description:           formDescription(TestReadinessProbeIdentifier, `Check that all containers under test a have readiness probe defined`),
+		Description:           formDescription(TestReadinessProbeIdentifier, `Check that all containers under test have readiness probe defined`),
 		Remediation:           ReadinessProbeRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.16, 12.1 and 12.5",
 		ExceptionProcess:      NoDocumentedProcess,
@@ -1262,7 +1262,7 @@ that there are no changes to the following directories:
 	TestStartupProbeIdentifier: {
 		Identifier:            TestStartupProbeIdentifier,
 		Type:                  NormativeResult,
-		Description:           formDescription(TestStartupProbeIdentifier, `Check that all containers under test a have startup probe defined`),
+		Description:           formDescription(TestStartupProbeIdentifier, `Check that all containers under test have startup probe defined`),
 		Remediation:           StartupProbeRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.12", // TODO Change this to v1.4 when available
 		ExceptionProcess:      NoDocumentedProcess,
