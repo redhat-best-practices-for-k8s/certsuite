@@ -81,79 +81,47 @@ type RawResult struct {
 	} `json:"claim"`
 }
 
-//nolint:funlen,gocyclo
 func claimCompare(cmd *cobra.Command, args []string) error {
-	var nodes, nodes2 []string
-	claimFileTextPtr := &Claim1
-	dat, err := os.ReadFile(*claimFileTextPtr)
+	claimFileTextPtr := Claim1
+
+	claimFileTextPtr2 := Claim2
+	err := claimCompareFilesfunc(claimFileTextPtr, claimFileTextPtr2)
+	if err != nil {
+		log.Fatalf("Error rclaimCompareFilesfunc :%v", err)
+	}
+	return nil
+}
+
+type testcase []struct {
+	Name   string `json:"-name"`
+	Status string `json:"-status"`
+}
+
+func claimCompareFilesfunc(claim1, claim2 string) error {
+	// readfiles
+	calimdata1, err := os.ReadFile(claim1)
 	if err != nil {
 		log.Fatalf("Error reading claim1 file:%v", err)
 	}
-	claimFileTextPtr2 := &Claim2
-	dat2, err2 := os.ReadFile(*claimFileTextPtr2)
+	calimdata2, err2 := os.ReadFile(claim2)
 	if err != nil {
 		log.Fatalf("Error reading claim2 file :%v", err2)
 	}
-	// cniclaimRoot.Claim.RawResults
-	var cni1, cni2 Cni
-	errcni2 := json.Unmarshal(dat2, &cni2)
-	if errcni2 != nil {
-		log.Fatalf("Error in unmarshal the cni from claim2 file  :%v", errcni2)
+	// unmarshal the files
+	cni1, hwinfo1, rawResult1, err := unmarshalClaimFile(calimdata1)
+	if err != nil {
+		log.Fatalf("Error in unmarshal cliam1 file  :%v", err)
+		return err
 	}
-	errcni1 := json.Unmarshal(dat, &cni1)
-	if errcni1 != nil {
-		log.Fatalf("Error in unmarshal the cni from cliam1 file  :%v", errcni1)
+	cni2, hwinfo2, rawResult2, err := unmarshalClaimFile(calimdata2)
+	if err != nil {
+		log.Fatalf("Error in unmarshal cliam2 file  :%v", err)
+		return err
 	}
-	// csi
-	var csi1, csi2 Csi
-	errcsi1 := json.Unmarshal(dat2, &csi1)
-	if errcsi1 != nil {
-		log.Fatalf("Error in unmarshal the csi from cliam1 file  :%v", errcsi1)
-	}
-	errcsi2 := json.Unmarshal(dat2, &csi2)
-	if errcsi2 != nil {
-		log.Fatalf("Error in unmarshal the csi from cliam1 file  :%v", errcsi2)
-	}
-	// HwInfo
-	var hwinfo1, hwinfo2 HwInfo
-	errhwinfo1 := json.Unmarshal(dat, &hwinfo1)
-	if errhwinfo1 != nil {
-		log.Fatalf("Error in unmarshal the hwinfo from cliam1 file  :%v", errhwinfo1)
-	}
-	errhwinfo2 := json.Unmarshal(dat2, &hwinfo2)
-	if errcsi2 != nil {
-		log.Fatalf("Error in unmarshal the hwinfo from cliam2 file  :%v", errhwinfo2)
-	}
-	// rawResult
-	var rawResult1, rawResult2 RawResult
-	errrawResult1 := json.Unmarshal(dat, &rawResult1)
-	if errrawResult1 != nil {
-		log.Fatalf("Error in unmarshal the rawResult from cliam1 file  :%v", errrawResult1)
-	}
-	errrawResult2 := json.Unmarshal(dat2, &rawResult2)
-	if errcsi2 != nil {
-		log.Fatalf("Error in unmarshal the rawResult from cliam2 file  :%v", errrawResult2)
-	}
-	for node, val := range cni1.Claim.Nodes.CniPlugins {
-		for node2, val2 := range cni2.Claim.Nodes.CniPlugins {
-			if node == node2 {
-				c, s := compare2cnis(val, val2)
-				if len(s) != 0 {
-					log.Info("node ", node2, " cnis found in claim1 but not present in claim2: ", s)
-				}
-				if len(c) != 0 {
-					log.Info("node ", node2, " cnis present in both claim 1 and 2 but with different plugins: ", c)
-				}
-			}
-		}
-	}
-	for key := range hwinfo1.Claim.Nodes.NodesHwInfo {
-		nodes = append(nodes, key)
-	}
-	for key := range hwinfo2.Claim.Nodes.NodesHwInfo {
-		nodes2 = append(nodes2, key)
-	}
-	fmt.Println("nodes2 and nodes diffs", missing(nodes2, nodes))
+	// compares function
+	compare2cni(cni1.Claim.Nodes.CniPlugins, cni2.Claim.Nodes.CniPlugins)
+	compare2Hwinfo(hwinfo1.Claim.Nodes.NodesHwInfo, hwinfo2.Claim.Nodes.NodesHwInfo)
+
 	slist, r := compare2TestCaseResults(rawResult1.Claim.RawResults.Cnfcertificationtest.Testsuites.Testsuite.Testcase,
 		rawResult2.Claim.RawResults.Cnfcertificationtest.Testsuites.Testsuite.Testcase)
 	log.Info("claim1 and claim2 has diff RawResults ", slist)
@@ -161,9 +129,50 @@ func claimCompare(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-type testcase []struct {
-	Name   string `json:"-name"`
-	Status string `json:"-status"`
+func unmarshalClaimFile(calimdata []byte) (Cni, HwInfo, RawResult, error) {
+	var cni Cni
+	var hwinfo HwInfo
+	var rawResult RawResult
+
+	errcni := json.Unmarshal(calimdata, &cni)
+	if errcni != nil {
+		log.Fatalf("Error in unmarshal the cni from claim2 file  :%v", errcni)
+		return cni, hwinfo, rawResult, errcni
+	}
+	// csi
+	var csi Csi
+	errcsi := json.Unmarshal(calimdata, &csi)
+	if errcsi != nil {
+		log.Fatalf("Error in unmarshal the csi from cliam1 file  :%v", errcsi)
+		return cni, hwinfo, rawResult, errcsi
+	}
+
+	// HwInfo
+	errhwinfo := json.Unmarshal(calimdata, &hwinfo)
+	if errhwinfo != nil {
+		log.Fatalf("Error in unmarshal the hwinfo from cliam1 file  :%v", errhwinfo)
+		return cni, hwinfo, rawResult, errhwinfo
+	}
+
+	// rawResult
+	errrawResult := json.Unmarshal(calimdata, &rawResult)
+	if errrawResult != nil {
+		log.Fatalf("Error in unmarshal the rawResult from cliam1 file  :%v", errrawResult)
+		return cni, hwinfo, rawResult, errrawResult
+	}
+	return cni, hwinfo, rawResult, nil
+}
+
+func compare2Hwinfo(hwinfo1, hwinfo2 map[string]interface{}) {
+	var nodes1, nodes2 []string
+
+	for key := range hwinfo1 {
+		nodes1 = append(nodes1, key)
+	}
+	for key := range hwinfo2 {
+		nodes2 = append(nodes2, key)
+	}
+	fmt.Println("nodes2 and nodes diffs", missing(nodes2, nodes1))
 }
 
 func compare2TestCaseResults(testcaseResult1, testcaseResult2 testcase) (diffresult testcase, notFoundtest []string) {
@@ -206,7 +215,23 @@ func missing(a, b []string) []string {
 	return diffs
 }
 
-func compare2cnis(cniList1, cniList2 cnistruct) (diffplugins cnistruct, notFoundNames []string) {
+func compare2cni(cni1, cni2 map[string]cnistruct) {
+	for node, val := range cni1 {
+		for node2, val2 := range cni2 {
+			if node == node2 {
+				c, s := compare2cniHelper(val, val2)
+				if len(s) != 0 {
+					log.Info("node ", node2, " cnis found in claim1 but not present in claim2: ", s)
+				}
+				if len(c) != 0 {
+					log.Info("node ", node2, " cnis present in both claim 1 and 2 but with different plugins: ", c)
+				}
+			}
+		}
+	}
+}
+
+func compare2cniHelper(cniList1, cniList2 cnistruct) (diffplugins cnistruct, notFoundNames []string) {
 	for _, plugin1 := range cniList1 {
 		findeName := false
 		for _, plugin2 := range cniList2 {
