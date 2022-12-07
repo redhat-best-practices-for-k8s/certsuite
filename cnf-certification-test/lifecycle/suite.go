@@ -36,7 +36,7 @@ import (
 )
 
 const (
-	timeout                    = 60 * time.Second
+	timeout                    = 300 * time.Second
 	timeoutPodRecreationPerPod = time.Minute
 	timeoutPodSetReady         = 7 * time.Minute
 	minWorkerNodesForLifecycle = 2
