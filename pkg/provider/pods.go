@@ -185,21 +185,20 @@ func (p *Pod) ContainsIstioProxy() bool {
 	return false
 }
 
-func (p *Pod) CreatedByDeploymentConfig() bool {
-	for _, data := range p.ObjectMeta.GetOwnerReferences() {
-		if data.Kind == replicationController {
-			oc := clientsholder.GetClientsHolder()
-			replicationControllers, err := oc.K8sClient.CoreV1().ReplicationControllers(p.Namespace).Get(context.TODO(), data.Name, v1.GetOptions{})
+func (p *Pod) CreatedByDeploymentConfig() (bool, error) {
+	oc := clientsholder.GetClientsHolder()
+	for _, podOwner := range p.ObjectMeta.GetOwnerReferences() {
+		if podOwner.Kind == replicationController {
+			replicationControllers, err := oc.K8sClient.CoreV1().ReplicationControllers(p.Namespace).Get(context.TODO(), podOwner.Name, v1.GetOptions{})
 			if err != nil {
-				logrus.Errorln("Error when listing pods in ns=", p.Namespace, " err: ", err)
-				continue
+				return false, err
 			}
-			for _, x := range replicationControllers.GetOwnerReferences() {
-				if x.Name == data.Name && x.Kind == deploymentConfig {
-					return true
+			for _, rcOwner := range replicationControllers.GetOwnerReferences() {
+				if rcOwner.Name == podOwner.Name && rcOwner.Kind == deploymentConfig {
+					return true, err
 				}
 			}
 		}
 	}
-	return false
+	return false, nil
 }

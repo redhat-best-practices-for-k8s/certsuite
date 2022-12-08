@@ -224,9 +224,14 @@ func buildTestEnvironment() { //nolint:funlen
 	env.Operators = operators
 	logrus.Infof("Operators found: %d", len(env.Operators))
 	for _, pod := range env.Pods {
-		if pod.CreatedByDeploymentConfig() {
+		isCreatedByDeploymentConfig, err := pod.CreatedByDeploymentConfig()
+		if err != nil {
+			logrus.Warnf("Pod %s, err: %s", pod.String(), err)
+		}
+		if !isCreatedByDeploymentConfig {
 			logrus.Warnf("Pod %s has been deployed using a DeploymentConfig, please use Deployment or StatefulSet instead.", pod.String())
 		}
+
 	}
 }
 
