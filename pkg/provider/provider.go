@@ -231,7 +231,6 @@ func buildTestEnvironment() { //nolint:funlen
 		if !isCreatedByDeploymentConfig {
 			logrus.Warnf("Pod %s has been deployed using a DeploymentConfig, please use Deployment or StatefulSet instead.", pod.String())
 		}
-
 	}
 }
 
