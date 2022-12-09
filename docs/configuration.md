@@ -80,9 +80,24 @@ to be checked for certification status on Red Hat catalogs.
 The CSV of the installed Operators can be tested by the `operator` and `affiliated-certification` specs are identified with the `test-network-function.com/operator=target`
 label. Any value is permitted here but `target` is used here for consistency with the other specs.
 
-# AllowedProtocolNames
+## AllowedProtocolNames
 
 This name of protocols that allowed.
 If we want to add another name, we just need to write the name in the yaml file.
 
 for example: if we want to add new protocol - "http4", we add in "tnf_config.yml"  below "validProtocolNames" and then this protocol ("http4") add to map allowedProtocolNames and finally "http4"  will be allow protocol.
+
+## skipScalingTestDeployments and skipScalingTestStatefulSetNames
+
+This section of the TNF config allows the user to skip the scaling tests that potentially cause known problems with workloads that do not like being scaled up and scaled down.
+
+Example:
+
+``` { .yaml .annotate }
+skipScalingTestDeployments:
+  - name: "deployment1"
+    namespace: "tnf"
+skipScalingTestStatefulSetNames:
+  - name: "statefulset1"
+    namespace: "tnf"
+```
