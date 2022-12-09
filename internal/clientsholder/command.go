@@ -18,6 +18,7 @@ package clientsholder
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"strings"
 
@@ -59,7 +60,7 @@ func (clientsholder *ClientsHolder) ExecCommandContainer(
 		logrus.Error(err)
 		return stdout, stderr, err
 	}
-	err = exec.Stream(remotecommand.StreamOptions{
+	err = exec.StreamWithContext(context.TODO(), remotecommand.StreamOptions{
 		Stdout: &buffOut,
 		Stderr: &buffErr,
 	})
