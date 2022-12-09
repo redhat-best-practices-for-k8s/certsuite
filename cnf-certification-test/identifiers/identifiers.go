@@ -36,7 +36,6 @@ const (
 const (
 	TagCommon   = "common"
 	TagExtended = "extended"
-	TagOnline   = "online"
 )
 
 // TestCaseDescription describes a JUnit test case.
@@ -319,7 +318,7 @@ var (
 	}
 	// TestContainerIsCertifiedIdentifier tests whether the container has passed Container Certification.
 	TestContainerIsCertifiedIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon, TagOnline),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AffiliatedCertTestKey, "container-is-certified"),
 		Version: VersionOne,
 	}
@@ -391,12 +390,12 @@ var (
 	}
 	// TestOperatorIsCertifiedIdentifier tests that an Operator has passed Operator certification.
 	TestOperatorIsCertifiedIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon, TagOnline),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AffiliatedCertTestKey, "operator-is-certified"),
 		Version: VersionOne,
 	}
 	TestHelmIsCertifiedIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon, TagOnline),
+		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AffiliatedCertTestKey, "helmchart-is-certified"),
 		Version: VersionOne,
 	}
@@ -788,7 +787,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 			`Tests whether container images listed in the configuration file have passed the Red Hat Container Certification Program (CCP).`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.7",
 		ExceptionProcess:      NoDocumentedProcess,
-		Tags:                  TestContainerIsCertifiedDigestIdentifier.Tags,
+		Tags:                  TestContainerIsCertifiedIdentifier.Tags,
 	},
 	TestContainerHostPort: {
 		Identifier:  TestContainerHostPort,
@@ -1008,7 +1007,7 @@ with no resourceNames under its rules.`),
 
 	TestPodNodeSelectorAndAffinityBestPractices: {
 		Identifier:  TestPodNodeSelectorAndAffinityBestPractices,
-		Type:        InformativeResult,
+		Type:        NormativeResult,
 		Remediation: PodNodeSelectorAndAffinityBestPracticesRemediation,
 		Description: formDescription(TestPodNodeSelectorAndAffinityBestPractices,
 			`Ensures that CNF Pods do not specify nodeSelector or nodeAffinity.  In most cases, Pods should allow for

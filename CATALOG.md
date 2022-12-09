@@ -331,7 +331,7 @@ Result Type|normative
 Suggested Remediation|Ensure that your container has passed the Red Hat Container Certification Program (CCP).
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.7
 Exception Process|There is no documented exception process for this.
-Tags|
+Tags|common
 #### container-is-certified-digest
 
 Property|Description
@@ -359,7 +359,7 @@ Result Type|normative
 Suggested Remediation|Ensure that the helm charts under test passed the Red Hat's helm Certification Program (e.g. listed in https://charts.openshift.io/index.yaml).
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.12 and 5.3.3
 Exception Process|There is no documented exception process for this.
-Tags|common,online
+Tags|common
 #### operator-is-certified
 
 Property|Description
@@ -373,7 +373,7 @@ Result Type|normative
 Suggested Remediation|Ensure that your Operator has passed Red Hat's Operator Certification Program (OCP).
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.12 and 5.3.3
 Exception Process|There is no documented exception process for this.
-Tags|common,online
+Tags|common
 
 ### lifecycle
 
@@ -540,7 +540,7 @@ Test Case Label|lifecycle-pod-scheduling
 Unique ID|http://test-network-function.com/testcases/lifecycle/pod-scheduling
 Version|v1.0.0
 Description|http://test-network-function.com/testcases/lifecycle/pod-scheduling Ensures that CNF Pods do not specify nodeSelector or nodeAffinity.  In most cases, Pods should allow for instantiation on any underlying Node.
-Result Type|informative
+Result Type|normative
 Suggested Remediation|In most cases, Pod's should not specify their host Nodes through nodeSelector or nodeAffinity.  However, there are 	cases in which CNFs require specialized hardware specific to a particular class of Node.  As such, this test is purely 	informative, and will not prevent a CNF from being certified. However, one should have an appropriate justification as 	to why nodeSelector and/or nodeAffinity is utilized by a CNF.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
