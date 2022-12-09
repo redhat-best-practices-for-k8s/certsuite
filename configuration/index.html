@@ -522,6 +522,20 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#allowedprotocolnames" class="md-nav__link">
+    AllowedProtocolNames
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#skipscalingtestdeployments-and-skipscalingteststatefulsetnames" class="md-nav__link">
+    skipScalingTestDeployments and skipScalingTestStatefulSetNames
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -892,6 +906,20 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#allowedprotocolnames" class="md-nav__link">
+    AllowedProtocolNames
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#skipscalingtestdeployments-and-skipscalingteststatefulsetnames" class="md-nav__link">
+    skipScalingTestDeployments and skipScalingTestStatefulSetNames
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -968,10 +996,20 @@ to be checked for certification status on Red Hat catalogs.</p>
 <h2 id="operators">Operators<a class="headerlink" href="#operators" title="Permanent link">&para;</a></h2>
 <p>The <abbr title="ClusterServiceVersion in Operator Lifecycle Manager">CSV</abbr> of the installed Operators can be tested by the <code>operator</code> and <code>affiliated-certification</code> specs are identified with the <code>test-network-function.com/operator=target</code>
 label. Any value is permitted here but <code>target</code> is used here for consistency with the other specs.</p>
-<h1 id="allowedprotocolnames">AllowedProtocolNames<a class="headerlink" href="#allowedprotocolnames" title="Permanent link">&para;</a></h1>
+<h2 id="allowedprotocolnames">AllowedProtocolNames<a class="headerlink" href="#allowedprotocolnames" title="Permanent link">&para;</a></h2>
 <p>This name of protocols that allowed.
 If we want to add another name, we just need to write the name in the yaml file.</p>
 <p>for example: if we want to add new protocol - &ldquo;http4&rdquo;, we add in &ldquo;tnf_config.yml&rdquo;  below &ldquo;validProtocolNames&rdquo; and then this protocol (&ldquo;http4&rdquo;) add to map allowedProtocolNames and finally &ldquo;http4&rdquo;  will be allow protocol.</p>
+<h2 id="skipscalingtestdeployments-and-skipscalingteststatefulsetnames">skipScalingTestDeployments and skipScalingTestStatefulSetNames<a class="headerlink" href="#skipscalingtestdeployments-and-skipscalingteststatefulsetnames" title="Permanent link">&para;</a></h2>
+<p>This section of the <abbr title="Test Network Function">TNF</abbr> config allows the user to skip the scaling tests that potentially cause known problems with workloads that do not like being scaled up and scaled down.</p>
+<p>Example:</p>
+<div class="annotate highlight"><pre><span></span><code><span class="nt">skipScalingTestDeployments</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;deployment1&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tnf&quot;</span><span class="w"></span>
+<span class="nt">skipScalingTestStatefulSetNames</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;statefulset1&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tnf&quot;</span><span class="w"></span>
+</code></pre></div>
 
 
 
