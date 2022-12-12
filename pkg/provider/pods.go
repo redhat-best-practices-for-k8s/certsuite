@@ -17,19 +17,24 @@
 package provider
 
 import (
+	"context"
 	"fmt"
 	"strconv"
 	"strings"
 
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	corev1 "k8s.io/api/core/v1"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 const (
-	hugePages2Mi = "hugepages-2Mi"
-	hugePages1Gi = "hugepages-1Gi"
-	hugePages    = "hugepages"
+	hugePages2Mi          = "hugepages-2Mi"
+	hugePages1Gi          = "hugepages-1Gi"
+	hugePages             = "hugepages"
+	replicationController = "ReplicationController"
+	deploymentConfig      = "DeploymentConfig"
 )
 
 type Pod struct {
@@ -178,4 +183,22 @@ func (p *Pod) ContainsIstioProxy() bool {
 		}
 	}
 	return false
+}
+
+func (p *Pod) CreatedByDeploymentConfig() (bool, error) {
+	oc := clientsholder.GetClientsHolder()
+	for _, podOwner := range p.ObjectMeta.GetOwnerReferences() {
+		if podOwner.Kind == replicationController {
+			replicationControllers, err := oc.K8sClient.CoreV1().ReplicationControllers(p.Namespace).Get(context.TODO(), podOwner.Name, v1.GetOptions{})
+			if err != nil {
+				return false, err
+			}
+			for _, rcOwner := range replicationControllers.GetOwnerReferences() {
+				if rcOwner.Name == podOwner.Name && rcOwner.Kind == deploymentConfig {
+					return true, err
+				}
+			}
+		}
+	}
+	return false, nil
 }
