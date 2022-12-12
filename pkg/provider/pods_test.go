@@ -166,3 +166,39 @@ func TestPodString(t *testing.T) {
 	}
 	assert.Equal(t, "pod: test1 ns: testNS", p.String())
 }
+
+func TestContainsIstioProxy(t *testing.T) {
+	testCases := []struct {
+		testPod        Pod
+		expectedOutput bool
+	}{
+		{
+			testPod: Pod{
+				Containers: []*Container{
+					{
+						Container: &corev1.Container{
+							Name: "istio-proxy",
+						},
+					},
+				},
+			},
+			expectedOutput: true,
+		},
+		{
+			testPod: Pod{
+				Containers: []*Container{
+					{
+						Container: &corev1.Container{
+							Name: "not-istio-proxy",
+						},
+					},
+				},
+			},
+			expectedOutput: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedOutput, tc.testPod.ContainsIstioProxy())
+	}
+}
