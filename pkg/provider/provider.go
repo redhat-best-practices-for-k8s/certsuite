@@ -226,9 +226,11 @@ func buildTestEnvironment() { //nolint:funlen
 	for _, pod := range env.Pods {
 		isCreatedByDeploymentConfig, err := pod.CreatedByDeploymentConfig()
 		if err != nil {
-			logrus.Warnf("Pod %s, err: %s", pod.String(), err)
+			logrus.Warnf("Pod %s: failed to get parent resource: %v", pod.String(), err)
+			continue
 		}
-		if !isCreatedByDeploymentConfig {
+
+		if isCreatedByDeploymentConfig {
 			logrus.Warnf("Pod %s has been deployed using a DeploymentConfig, please use Deployment or StatefulSet instead.", pod.String())
 		}
 	}
