@@ -89,6 +89,13 @@ To select the test to be executed when running `run-cnf-suites.sh` with the foll
 
     The test labels work the same as the suite labels, so you can select more than one test with the filtering mechanism shown before.
 
+### Run all of the tests
+You can run all of the tests (including the intrusive tests and the extended suite) with the following commands:
+
+```shell
+./run-cnf-suites.sh -l common,extended
+```
+
 #### Run a subset
 You can find all the labels attached to the tests by running the following command:
 ```shell
