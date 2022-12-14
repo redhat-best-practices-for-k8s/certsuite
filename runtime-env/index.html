@@ -793,28 +793,34 @@
 <h1 id="runtime-environment-variables">Runtime environment variables<a class="headerlink" href="#runtime-environment-variables" title="Permanent link">&para;</a></h1>
 <p>To run the test suite, some runtime environment variables are to be set.</p>
 <h2 id="ocp-412-labels"><abbr title="OpenShift Container Platform">OCP</abbr> &gt;=4.12 Labels<a class="headerlink" href="#ocp-412-labels" title="Permanent link">&para;</a></h2>
-<p>The following labels need to be added to your default namespace in your cluster if you are running <abbr title="OpenShift Container Platform">OCP</abbr> &gt;=4.12:</p>
+<p>The following labels need to be added to your default namespace in your cluster
+if you are running <abbr title="OpenShift Container Platform">OCP</abbr> &gt;=4.12:
 <div class="highlight"><pre><span></span><code>pod-security.kubernetes.io/enforce: privileged
 pod-security.kubernetes.io/enforce-version: latest
-</code></pre></div>
+</code></pre></div></p>
 <p>You can manually label the namespace with:
-<div class="highlight"><pre><span></span><code>oc label namespace/default  pod-security.kubernetes.io/enforce<span class="o">=</span>privileged
-oc label namespace/default  pod-security.kubernetes.io/enforce-version<span class="o">=</span>latest
+<div class="highlight"><pre><span></span><code>oc label namespace/default pod-security.kubernetes.io/enforce<span class="o">=</span>privileged
+oc label namespace/default pod-security.kubernetes.io/enforce-version<span class="o">=</span>latest
 </code></pre></div></p>
 <h2 id="disable-intrusive-tests">Disable intrusive tests<a class="headerlink" href="#disable-intrusive-tests" title="Permanent link">&para;</a></h2>
-<p>To skip intrusive tests which may disrupt cluster operations, issue the following:</p>
+<p>To skip intrusive tests which may disrupt cluster operations, issue the
+following:
 <div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">TNF_NON_INTRUSIVE_ONLY</span><span class="o">=</span><span class="nb">true</span>
-</code></pre></div>
-<p>Likewise, to enable intrusive tests, set the following:</p>
+</code></pre></div></p>
+<p>Likewise, to enable intrusive tests, set the following:
 <div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">TNF_NON_INTRUSIVE_ONLY</span><span class="o">=</span><span class="nb">false</span>
 </code></pre></div>
+Intrusive tests are enabled by default.</p>
 <h2 id="disconnected-environment">Disconnected environment<a class="headerlink" href="#disconnected-environment" title="Permanent link">&para;</a></h2>
-<p>In a disconnected environment, only specific versions of images are mirrored to the local repo. For those environments,
-the partner pod image <code>quay.io/testnetworkfunction/cnf-test-partner</code> and debug pod image <code>quay.io/testnetworkfunction/debug-partner</code> should be mirrored
-and <code>TNF_PARTNER_REPO</code> should be set to the local repo, e.g.:</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">TNF_PARTNER_REPO</span><span class="o">=</span><span class="s2">&quot;registry.dfwt5g.lab:5000/testnetworkfunction&quot;</span>
-</code></pre></div>
-<p>Note that you can also specify the debug pod image to use with <code>SUPPORT_IMAGE</code> environment variable, default to <code>debug-partner:latest</code>.</p>
+<p>In a disconnected environment, only specific versions of images are mirrored to
+the local repo. For those environments, the partner pod image
+<code>quay.io/testnetworkfunction/cnf-test-partner</code> and debug pod image
+<code>quay.io/testnetworkfunction/debug-partner</code> should be mirrored and
+<code>TNF_PARTNER_REPO</code> should be set to the local repo, e.g.:
+<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">TNF_PARTNER_REPO</span><span class="o">=</span>registry.dfwt5g.lab:5000/testnetworkfunction
+</code></pre></div></p>
+<p>Note that you can also specify the debug pod image to use with <code>SUPPORT_IMAGE</code>
+environment variable, default to <code>debug-partner:latest</code>.</p>
 
 
 
