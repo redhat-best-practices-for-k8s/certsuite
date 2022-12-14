@@ -56,10 +56,11 @@ func Test_compare2TestCaseResults(t *testing.T) {
 		testcaseResult2 testcase
 	}
 	tests := []struct {
-		name             string
-		args             args
-		wantDiffresult   testcase
-		wantNotFoundtest []string
+		name              string
+		args              args
+		wantDiffresult    testcase
+		wantNotFoundtest  []string
+		wantNotFoundtest2 []string
 	}{
 		{
 			name: "test1",
@@ -83,7 +84,8 @@ func Test_compare2TestCaseResults(t *testing.T) {
 					Status: "skipped",
 				},
 			},
-			wantNotFoundtest: nil,
+			wantNotFoundtest:  []string{"[It] observability observability-container-logging [common, observability, observability-container-logging]"},
+			wantNotFoundtest2: []string{},
 		},
 		{
 			name: "test2",
@@ -111,17 +113,21 @@ func Test_compare2TestCaseResults(t *testing.T) {
 					Status: "skipped",
 				},
 			},
-			wantNotFoundtest: []string{"[It] observability observability-crd-status [common, observability, observability-crd-status]"},
+			wantNotFoundtest:  []string{"[It] observability observability-container-logging [common, observability, observability-container-logging]"},
+			wantNotFoundtest2: []string{},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotDiffresult, gotNotFoundtest := compare2TestCaseResults(tt.args.testcaseResult1, tt.args.testcaseResult2)
+			gotDiffresult, gotNotFoundtest, gotNotFoundtest2 := compare2TestCaseResults(tt.args.testcaseResult1, tt.args.testcaseResult2)
 			if !reflect.DeepEqual(gotDiffresult, tt.wantDiffresult) {
 				t.Errorf("compare2TestCaseResults() gotDiffresult = %v, want %v", gotDiffresult, tt.wantDiffresult)
 			}
 			if !reflect.DeepEqual(gotNotFoundtest, tt.wantNotFoundtest) {
 				t.Errorf("compare2TestCaseResults() gotNotFoundtest = %v, want %v", gotNotFoundtest, tt.wantNotFoundtest)
+			}
+			if !reflect.DeepEqual(gotNotFoundtest2, tt.wantNotFoundtest2) {
+				t.Errorf("compare2TestCaseResults() gotNotFoundtest2 = %v, want %v", gotNotFoundtest2, tt.wantNotFoundtest2)
 			}
 		})
 	}
@@ -133,10 +139,11 @@ func Test_compare2cnis(t *testing.T) {
 		cniList2 cnistruct
 	}
 	tests := []struct {
-		name              string
-		args              args
-		wantDiffplugins   cnistruct
-		wantNotFoundNames []string
+		name               string
+		args               args
+		wantDiffplugins    cnistruct
+		wantNotFoundNames  []string
+		wantNotFoundNames2 []string
 	}{
 		{
 			name: "test1",
@@ -158,18 +165,22 @@ func Test_compare2cnis(t *testing.T) {
 					},
 				},
 			},
-			wantDiffplugins:   nil,
-			wantNotFoundNames: []string{"crio"},
+			wantDiffplugins:    nil,
+			wantNotFoundNames:  []string{"crio"},
+			wantNotFoundNames2: []string{},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotDiffplugins, gotNotFoundNames := compare2cniHelper(tt.args.cniList1, tt.args.cniList2)
+			gotDiffplugins, gotNotFoundNames, gotNotFoundNames2 := compare2cniHelper(tt.args.cniList1, tt.args.cniList2)
 			if !reflect.DeepEqual(gotDiffplugins, tt.wantDiffplugins) {
 				t.Errorf("compare2cnis() gotDiffplugins = %v, want %v", gotDiffplugins, tt.wantDiffplugins)
 			}
 			if !reflect.DeepEqual(gotNotFoundNames, tt.wantNotFoundNames) {
 				t.Errorf("compare2cnis() gotNotFoundNames = %v, want %v", gotNotFoundNames, tt.wantNotFoundNames)
+			}
+			if !reflect.DeepEqual(gotNotFoundNames2, tt.wantNotFoundNames2) {
+				t.Errorf("compare2cnis() gotNotFoundNames2 = %v, want %v", gotNotFoundNames2, tt.wantNotFoundNames2)
 			}
 		})
 	}

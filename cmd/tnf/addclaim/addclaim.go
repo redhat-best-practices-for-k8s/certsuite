@@ -122,10 +122,12 @@ func claimCompareFilesfunc(claim1, claim2 string) error {
 	compare2cni(cni1.Claim.Nodes.CniPlugins, cni2.Claim.Nodes.CniPlugins)
 	compare2Hwinfo(hwinfo1.Claim.Nodes.NodesHwInfo, hwinfo2.Claim.Nodes.NodesHwInfo)
 
-	slist, r := compare2TestCaseResults(rawResult1.Claim.RawResults.Cnfcertificationtest.Testsuites.Testsuite.Testcase,
+	slist, r, r2 := compare2TestCaseResults(rawResult1.Claim.RawResults.Cnfcertificationtest.Testsuites.Testsuite.Testcase,
 		rawResult2.Claim.RawResults.Cnfcertificationtest.Testsuites.Testsuite.Testcase)
 	log.Info("claim1 and claim2 has diff RawResults ", slist)
 	log.Info("test name that claim1 has but claim 2 dont has", r)
+	log.Info("test name that claim2 has but claim 1 dont has", r2)
+
 	return nil
 }
 
@@ -164,93 +166,129 @@ func unmarshalClaimFile(calimdata []byte) (Cni, HwInfo, RawResult, error) {
 }
 
 func compare2Hwinfo(hwinfo1, hwinfo2 map[string]interface{}) {
-	var nodes1, nodes2 []string
+	var nodesIn1, nodesIn2 []string
 
 	for key := range hwinfo1 {
-		nodes1 = append(nodes1, key)
+		nodesIn1 = append(nodesIn1, key)
 	}
 	for key := range hwinfo2 {
-		nodes2 = append(nodes2, key)
+		nodesIn2 = append(nodesIn2, key)
 	}
-	fmt.Println("nodes2 and nodes diffs", missing(nodes2, nodes1))
+	missIn1, missIn2 := missing(nodesIn2, nodesIn1)
+	fmt.Println("nodes2 and nodes diffs ", missIn1, missIn2)
 }
 
-func compare2TestCaseResults(testcaseResult1, testcaseResult2 testcase) (diffresult testcase, notFoundtest []string) {
+func compare2TestCaseResults(testcaseResult1, testcaseResult2 testcase) (diffResult testcase, notFoundtestIn1, notFoundtestIn2 []string) {
+	var testcaseR1, testcaseR2 []string
 	for _, result1 := range testcaseResult1 {
-		findeName := false
 		for _, result2 := range testcaseResult2 {
 			if result2.Name == result1.Name {
-				findeName = true
 				if (result2.Status) != (result1.Status) {
-					diffresult = append(diffresult, result1)
+					diffResult = append(diffResult, result1)
 				}
 				break
 			}
+			testcaseR2 = append(testcaseR2, result2.Name)
+
 		}
-		if !findeName {
-			notFoundtest = append(notFoundtest, result1.Name)
-		}
+		testcaseR2 = append(testcaseR1, result1.Name)
+
 	}
-	return diffresult, notFoundtest
+	notFoundtestIn1, notFoundtestIn2 = missing(testcaseR1, testcaseR2)
+	return diffResult, removeDuplicateValues(notFoundtestIn1), removeDuplicateValues(notFoundtestIn2)
 }
 
 // empty struct (0 bytes)
 type void struct{}
 
 // missing compares two slices and returns slice of differences
-func missing(a, b []string) []string {
+func missing(a, b []string) ([]string, []string) {
 	// create map with length of the 'a' slice
 	ma := make(map[string]void, len(a))
-	diffs := []string{}
+	mb := make(map[string]void, len(b))
+
+	diffsAfromB := []string{}
+	diffsBfromA := []string{}
+
 	// Convert first slice to map with empty struct (0 bytes)
 	for _, ka := range a {
 		ma[ka] = void{}
 	}
-	// find missing values in a
+	// Convert first slice to map with empty struct (0 bytes)
+	for _, ka := range b {
+		mb[ka] = void{}
+	}
+	// find missing values in b
 	for _, kb := range b {
 		if _, ok := ma[kb]; !ok {
-			diffs = append(diffs, kb)
+			diffsAfromB = append(diffsAfromB, kb)
 		}
 	}
-	return diffs
+	for _, ka := range a {
+		if _, ok := mb[ka]; !ok {
+			diffsBfromA = append(diffsBfromA, ka)
+		}
+	}
+	return diffsAfromB, diffsBfromA
+
+}
+
+func removeDuplicateValues(intSlice []string) []string {
+	keys := make(map[string]bool)
+	list := []string{}
+
+	// If the key(values of the slice) is not equal
+	// to the already present value in new slice (list)
+	// then we append it. else we jump on another element.
+	for _, entry := range intSlice {
+		if _, value := keys[entry]; !value {
+			keys[entry] = true
+			list = append(list, entry)
+		}
+	}
+	return list
 }
 
 func compare2cni(cni1, cni2 map[string]cnistruct) {
 	for node, val := range cni1 {
 		for node2, val2 := range cni2 {
 			if node == node2 {
-				c, s := compare2cniHelper(val, val2)
+				c, s, e := compare2cniHelper(val, val2)
 				if len(s) != 0 {
-					log.Info("node ", node2, " cnis found in claim1 but not present in claim2: ", s)
+					log.Info("in node ", node2, " cnis found in claim1 but not present in claim2: ", s)
+				}
+				if len(e) != 0 {
+					log.Info("in node ", node2, " cnis found in claim2 but not present in claim1: ", e)
 				}
 				if len(c) != 0 {
-					log.Info("node ", node2, " cnis present in both claim 1 and 2 but with different plugins: ", c)
-				}
-			}
-		}
-	}
-}
-
-func compare2cniHelper(cniList1, cniList2 cnistruct) (diffplugins cnistruct, notFoundNames []string) {
-	for _, plugin1 := range cniList1 {
-		findeName := false
-		for _, plugin2 := range cniList2 {
-			if plugin2.Name == plugin1.Name {
-				findeName = true
-				if plugin2.Plugins != nil {
-					if len(plugin2.Plugins) != len(plugin1.Plugins) {
-						diffplugins = append(diffplugins, plugin1)
-					}
+					log.Info("in node ", node2, " cnis present in both claim 1 and 2 but with different plugins: ", c)
 				}
 
 				break
 			}
 		}
-		if !findeName {
-			notFoundNames = append(notFoundNames, plugin1.Name)
-		}
 	}
-	return diffplugins, notFoundNames
+}
+
+func compare2cniHelper(cniList1, cniList2 cnistruct) (diffPlugins cnistruct, notFoundNamesIn1, notFoundNamesIn2 []string) {
+	var cniList1Name, cniList2Name []string
+	for _, plugin1 := range cniList1 {
+		cniList1Name = append(cniList1Name, plugin1.Name)
+		for _, plugin2 := range cniList2 {
+			cniList2Name = append(cniList2Name, plugin2.Name)
+			if plugin2.Name == plugin1.Name {
+				if plugin2.Plugins != nil {
+					if len(plugin2.Plugins) != len(plugin1.Plugins) {
+						diffPlugins = append(diffPlugins, plugin1)
+					}
+				}
+				break
+			}
+		}
+
+	}
+	notFoundNamesIn1, notFoundNamesIn2 = missing(cniList2Name, cniList1Name)
+	return diffPlugins, removeDuplicateValues(notFoundNamesIn1), removeDuplicateValues(notFoundNamesIn2)
 }
 
 //nolint:funlen
