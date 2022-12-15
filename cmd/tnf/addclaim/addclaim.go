@@ -142,16 +142,16 @@ func compare2Hwinfo(hwinfo1, hwinfo2 map[string]interface{}) {
 func compare2TestCaseResults(testcaseResult1, testcaseResult2 []testCase) (diffResult []testCase, notFoundtestIn1, notFoundtestIn2 []string) {
 	var testcaseR1, testcaseR2 []string
 	for _, result1 := range testcaseResult1 {
+		testcaseR1 = append(testcaseR1, result1.Name)
 		for _, result2 := range testcaseResult2 {
+			testcaseR2 = append(testcaseR2, result2.Name)
 			if result2.Name == result1.Name {
 				if result2.Status != result1.Status {
 					diffResult = append(diffResult, result1)
 				}
 				break
 			}
-			testcaseR2 = append(testcaseR2, result2.Name)
 		}
-		testcaseR1 = append(testcaseR1, result1.Name)
 	}
 	notFoundtestIn1, notFoundtestIn2 = missing(testcaseR1, testcaseR2)
 	return diffResult, removeDuplicateValues(notFoundtestIn1), removeDuplicateValues(notFoundtestIn2)

@@ -84,7 +84,7 @@ func Test_compare2TestCaseResults(t *testing.T) {
 					Status: "skipped",
 				},
 			},
-			wantNotFoundtest:  []string{"[It] observability observability-container-logging [common, observability, observability-container-logging]"},
+			wantNotFoundtest:  []string{},
 			wantNotFoundtest2: []string{},
 		},
 		{
@@ -113,8 +113,8 @@ func Test_compare2TestCaseResults(t *testing.T) {
 					Status: "skipped",
 				},
 			},
-			wantNotFoundtest:  []string{"[It] observability observability-container-logging [common, observability, observability-container-logging]"},
-			wantNotFoundtest2: []string{},
+			wantNotFoundtest:  []string{},
+			wantNotFoundtest2: []string{"[It] observability observability-crd-status [common, observability, observability-crd-status]"},
 		},
 	}
 	for _, tt := range tests {
