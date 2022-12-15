@@ -163,3 +163,8 @@ cd ./cnf-certification-test || exit 1
 	${SKIP_STRING} \
 	"${LABEL_STRING}" \
 	${GINKGO_ARGS}
+
+if [[ ! -z "${REQUEST_CUSTOMER_FEEDBACK}" ]]; then
+  cd .. || exit 1
+  ./tnf feedback
+fi

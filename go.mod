@@ -43,6 +43,7 @@ require (
 	github.com/blang/semver/v4 v4.0.0 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/chai2010/gettext-go v1.0.2 // indirect
+	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
 	github.com/containerd/containerd v1.6.8 // indirect
 	github.com/cyphar/filepath-securejoin v0.2.3 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -157,6 +158,7 @@ require (
 require (
 	github.com/deckarep/golang-set/v2 v2.1.0
 	github.com/go-yaml/yaml v2.1.0+incompatible
+	github.com/manifoldco/promptui v0.9.0
 	github.com/openshift/machine-config-operator v0.0.0-00010101000000-000000000000
 	github.com/test-network-function/cnfextensions v0.0.0-20220908220149-566dd6fe6b0e
 	github.com/test-network-function/privileged-daemonset v0.0.6

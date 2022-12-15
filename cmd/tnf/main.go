@@ -5,6 +5,7 @@ import (
 	"github.com/spf13/cobra"
 
 	claim "github.com/test-network-function/cnf-certification-test/cmd/tnf/addclaim"
+	"github.com/test-network-function/cnf-certification-test/cmd/tnf/feedback"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/generate/catalog"
 )
 
@@ -24,6 +25,7 @@ func main() {
 	rootCmd.AddCommand(claim.NewCommand())
 	rootCmd.AddCommand(generate)
 	generate.AddCommand(catalog.NewCommand())
+	rootCmd.AddCommand(feedback.NewCommand())
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatal(err)
