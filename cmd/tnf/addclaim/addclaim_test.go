@@ -138,6 +138,7 @@ func Test_compare2cnis(t *testing.T) {
 	type args struct {
 		cniList1 cnistruct
 		cniList2 cnistruct
+		nodeName string
 	}
 	tests := []struct {
 		name               string
@@ -165,6 +166,7 @@ func Test_compare2cnis(t *testing.T) {
 						Plugins: nil,
 					},
 				},
+				nodeName: "master1",
 			},
 			wantDiffplugins:    nil,
 			wantNotFoundNames:  []string{"crio"},
@@ -189,15 +191,47 @@ func Test_compare2cnis(t *testing.T) {
 						Plugins: nil,
 					},
 				},
+				nodeName: "master1",
 			},
 			wantDiffplugins:    nil,
 			wantNotFoundNames:  []string{},
 			wantNotFoundNames2: []string{"crio"},
 		},
+		{
+			name: "test3",
+			args: args{
+				cniList1: nil,
+				cniList2: cnistruct{
+					{
+						Name:    "podman",
+						Plugins: nil,
+					},
+					{
+						Name:    "crio",
+						Plugins: nil,
+					},
+				},
+				nodeName: "master1",
+			},
+			wantDiffplugins:    nil,
+			wantNotFoundNames:  nil,
+			wantNotFoundNames2: nil,
+		},
+		{
+			name: "test4",
+			args: args{
+				cniList1: nil,
+				cniList2: nil,
+				nodeName: "master1",
+			},
+			wantDiffplugins:    nil,
+			wantNotFoundNames:  nil,
+			wantNotFoundNames2: nil,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotDiffplugins, gotNotFoundNames, gotNotFoundNames2 := compare2cniHelper(tt.args.cniList1, tt.args.cniList2)
+			gotDiffplugins, gotNotFoundNames, gotNotFoundNames2 := compare2cniHelper(tt.args.cniList1, tt.args.cniList2, tt.args.nodeName)
 			if !reflect.DeepEqual(gotDiffplugins, tt.wantDiffplugins) {
 				t.Errorf("compare2cnis() gotDiffplugins = %v, want %v", gotDiffplugins, tt.wantDiffplugins)
 			}

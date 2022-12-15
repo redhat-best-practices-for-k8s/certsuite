@@ -215,11 +215,11 @@ func compare2cni(cni1, cni2 map[string]cnistruct) {
 			if node != node2 {
 				continue
 			}
-			diffPlugIn, notFoundNamesIn1, notFoundNamesIn2 := compare2cniHelper(val, val2)
-			if len(notFoundNamesIn1) != 0 {
+			diffPlugIn, notFoundNamesIn1, notFoundNamesIn2 := compare2cniHelper(val, val2, node2)
+			if len(notFoundNamesIn1) != 0 && notFoundNamesIn1 != nil {
 				log.Info("in node ", node2, " cnis found in claim1 but not present in claim2: ", notFoundNamesIn1)
 			}
-			if len(notFoundNamesIn2) != 0 {
+			if len(notFoundNamesIn2) != 0 && notFoundNamesIn2 != nil {
 				log.Info("in node ", node2, " cnis found in claim2 but not present in claim1: ", notFoundNamesIn2)
 			}
 			if len(diffPlugIn) != 0 {
@@ -234,8 +234,16 @@ func compare2cni(cni1, cni2 map[string]cnistruct) {
 // 1. name of cni's that have same name but the plugin value are different - diffPlugins
 // 2. name of cni's that found on claim2 but not in claim1 - notFoundNamesIn1
 // 3. name of cni's that found on claim1 but not in claim2 - notFoundNamesIn3
-func compare2cniHelper(cniList1, cniList2 cnistruct) (diffPlugins cnistruct, notFoundNamesIn1, notFoundNamesIn2 []string) {
+func compare2cniHelper(cniList1, cniList2 cnistruct, node string) (diffPlugins cnistruct, notFoundNamesIn1, notFoundNamesIn2 []string) {
 	var cniList1Name, cniList2Name []string
+	if len(cniList1) == 0 {
+		log.Info("in node ", node, " cnis present in claim2 and on claim1 that node dont have cni values", cniList2)
+		return nil, nil, nil
+	}
+	if len(cniList2) == 0 {
+		log.Info("in node ", node, " cnis present in claim1 and on claim2 that node dont have cni values", cniList1)
+		return nil, nil, nil
+	}
 	for _, plugin1 := range cniList1 {
 		cniList1Name = append(cniList1Name, plugin1.Name)
 		for _, plugin2 := range cniList2 {
