@@ -40,35 +40,14 @@ const (
 	claimFilePermissions = 0o644
 )
 
-type cnistruct []struct {
-	Name    string        "json:\"name\""
-	Plugins []interface{} "json:\"plugins\""
-}
-type Cni struct {
+type claimFileStruct struct {
 	Claim struct {
 		Nodes struct {
-			CniPlugins map[string]cnistruct `json:"cniPlugins"`
-		} `json:"nodes"`
-	} `json:"claim"`
-}
-type Csi struct {
-	Claim struct {
-		Nodes struct {
-			CsiDriver interface{} `json:"csiDriver"`
-		} `json:"nodes"`
-	} `json:"claim"`
-}
-
-type HwInfo struct {
-	Claim struct {
-		Nodes struct {
+			CniPlugins  map[string]cnistruct   `json:"cniPlugins"`
 			NodesHwInfo map[string]interface{} `json:"nodesHwInfo"`
+			CsiDriver   interface{}            `json:"csiDriver"`
 		} `json:"nodes"`
-	} `json:"claim"`
-}
 
-type RawResult struct {
-	Claim struct {
 		RawResults struct {
 			Cnfcertificationtest struct {
 				Testsuites struct {
@@ -79,6 +58,10 @@ type RawResult struct {
 			} `json:"cnf-certification-test"`
 		} `json:"rawResults"`
 	} `json:"claim"`
+}
+type cnistruct []struct {
+	Name    string        "json:\"name\""
+	Plugins []interface{} "json:\"plugins\""
 }
 
 func claimCompare(cmd *cobra.Command, args []string) error {
@@ -108,22 +91,22 @@ func claimCompareFilesfunc(claim1, claim2 string) error {
 		log.Fatalf("Error reading claim2 file :%v", err2)
 	}
 	// unmarshal the files
-	cni1, hwinfo1, rawResult1, err := unmarshalClaimFile(calimdata1)
+	claimFile1Data, err := unmarshalClaimFile(calimdata1)
 	if err != nil {
 		log.Fatalf("Error in unmarshal claim1 file  :%v", err)
 		return err
 	}
-	cni2, hwinfo2, rawResult2, err := unmarshalClaimFile(calimdata2)
+	claimFile2Data, err := unmarshalClaimFile(calimdata2)
 	if err != nil {
 		log.Fatalf("Error in unmarshal cliam2 file  :%v", err)
 		return err
 	}
 	// compares function
-	compare2cni(cni1.Claim.Nodes.CniPlugins, cni2.Claim.Nodes.CniPlugins)
-	compare2Hwinfo(hwinfo1.Claim.Nodes.NodesHwInfo, hwinfo2.Claim.Nodes.NodesHwInfo)
+	compare2cni(claimFile1Data.Claim.Nodes.CniPlugins, claimFile2Data.Claim.Nodes.CniPlugins)
+	compare2Hwinfo(claimFile1Data.Claim.Nodes.NodesHwInfo, claimFile2Data.Claim.Nodes.NodesHwInfo)
 
-	slist, r, r2 := compare2TestCaseResults(rawResult1.Claim.RawResults.Cnfcertificationtest.Testsuites.Testsuite.Testcase,
-		rawResult2.Claim.RawResults.Cnfcertificationtest.Testsuites.Testsuite.Testcase)
+	slist, r, r2 := compare2TestCaseResults(claimFile1Data.Claim.RawResults.Cnfcertificationtest.Testsuites.Testsuite.Testcase,
+		claimFile2Data.Claim.RawResults.Cnfcertificationtest.Testsuites.Testsuite.Testcase)
 	log.Info("claim1 and claim2 has diff RawResults ", slist)
 	log.Info("test name that claim1 has but claim 2 dont has", r)
 	log.Info("test name that claim2 has but claim 1 dont has", r2)
@@ -131,38 +114,16 @@ func claimCompareFilesfunc(claim1, claim2 string) error {
 	return nil
 }
 
-func unmarshalClaimFile(calimdata []byte) (Cni, HwInfo, RawResult, error) {
-	var cni Cni
-	var hwinfo HwInfo
-	var rawResult RawResult
+func unmarshalClaimFile(calimdata []byte) (claimFileStruct, error) {
+	var claimDataResult claimFileStruct
 
-	errcni := json.Unmarshal(calimdata, &cni)
-	if errcni != nil {
-		log.Fatalf("Error in unmarshal the cni from claim2 file  :%v", errcni)
-		return cni, hwinfo, rawResult, errcni
+	errclaimDataResult := json.Unmarshal(calimdata, &claimDataResult)
+	if errclaimDataResult != nil {
+		log.Fatalf("Error in unmarshal the claim file :%v", errclaimDataResult)
+		return claimDataResult, errclaimDataResult
 	}
 	// csi
-	var csi Csi
-	errcsi := json.Unmarshal(calimdata, &csi)
-	if errcsi != nil {
-		log.Fatalf("Error in unmarshal the csi from claim1 file  :%v", errcsi)
-		return cni, hwinfo, rawResult, errcsi
-	}
-
-	// HwInfo
-	errhwinfo := json.Unmarshal(calimdata, &hwinfo)
-	if errhwinfo != nil {
-		log.Fatalf("Error in unmarshal the hwinfo from claim1 file  :%v", errhwinfo)
-		return cni, hwinfo, rawResult, errhwinfo
-	}
-
-	// rawResult
-	errrawResult := json.Unmarshal(calimdata, &rawResult)
-	if errrawResult != nil {
-		log.Fatalf("Error in unmarshal the rawResult from claim1 file  :%v", errrawResult)
-		return cni, hwinfo, rawResult, errrawResult
-	}
-	return cni, hwinfo, rawResult, nil
+	return claimDataResult, nil
 }
 
 func compare2Hwinfo(hwinfo1, hwinfo2 map[string]interface{}) {
@@ -189,10 +150,8 @@ func compare2TestCaseResults(testcaseResult1, testcaseResult2 []testCase) (diffR
 				break
 			}
 			testcaseR2 = append(testcaseR2, result2.Name)
-
 		}
-		testcaseR2 = append(testcaseR1, result1.Name)
-
+		testcaseR1 = append(testcaseR1, result1.Name)
 	}
 	notFoundtestIn1, notFoundtestIn2 = missing(testcaseR1, testcaseR2)
 	return diffResult, removeDuplicateValues(notFoundtestIn1), removeDuplicateValues(notFoundtestIn2)
@@ -202,14 +161,10 @@ func compare2TestCaseResults(testcaseResult1, testcaseResult2 []testCase) (diffR
 type void struct{}
 
 // missing compares two slices and returns slice of differences
-func missing(a, b []string) ([]string, []string) {
+func missing(a, b []string) (diffsAfromB, diffsBfromA []string) {
 	// create map with length of the 'a' slice
 	ma := make(map[string]void, len(a))
 	mb := make(map[string]void, len(b))
-
-	diffsAfromB := []string{}
-	diffsBfromA := []string{}
-
 	// Convert first slice to map with empty struct (0 bytes)
 	for _, ka := range a {
 		ma[ka] = void{}
@@ -230,13 +185,11 @@ func missing(a, b []string) ([]string, []string) {
 		}
 	}
 	return diffsAfromB, diffsBfromA
-
 }
 
 func removeDuplicateValues(intSlice []string) []string {
 	keys := make(map[string]bool)
 	list := []string{}
-
 	// If the key(values of the slice) is not equal
 	// to the already present value in new slice (list)
 	// then we append it. else we jump on another element.
@@ -252,20 +205,20 @@ func removeDuplicateValues(intSlice []string) []string {
 func compare2cni(cni1, cni2 map[string]cnistruct) {
 	for node, val := range cni1 {
 		for node2, val2 := range cni2 {
-			if node == node2 {
-				c, s, e := compare2cniHelper(val, val2)
-				if len(s) != 0 {
-					log.Info("in node ", node2, " cnis found in claim1 but not present in claim2: ", s)
-				}
-				if len(e) != 0 {
-					log.Info("in node ", node2, " cnis found in claim2 but not present in claim1: ", e)
-				}
-				if len(c) != 0 {
-					log.Info("in node ", node2, " cnis present in both claim 1 and 2 but with different plugins: ", c)
-				}
-
-				break
+			if node != node2 {
+				continue
 			}
+			c, s, e := compare2cniHelper(val, val2)
+			if len(s) != 0 {
+				log.Info("in node ", node2, " cnis found in claim1 but not present in claim2: ", s)
+			}
+			if len(e) != 0 {
+				log.Info("in node ", node2, " cnis found in claim2 but not present in claim1: ", e)
+			}
+			if len(c) != 0 {
+				log.Info("in node ", node2, " cnis present in both claim 1 and 2 but with different plugins: ", c)
+			}
+			break
 		}
 	}
 }
@@ -285,7 +238,6 @@ func compare2cniHelper(cniList1, cniList2 cnistruct) (diffPlugins cnistruct, not
 				break
 			}
 		}
-
 	}
 	notFoundNamesIn1, notFoundNamesIn2 = missing(cniList2Name, cniList1Name)
 	return diffPlugins, removeDuplicateValues(notFoundNamesIn1), removeDuplicateValues(notFoundNamesIn2)

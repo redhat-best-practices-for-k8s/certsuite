@@ -52,33 +52,33 @@ func TestNewCommand(t *testing.T) {
 //nolint:funlen
 func Test_compare2TestCaseResults(t *testing.T) {
 	type args struct {
-		testcaseResult1 testcase
-		testcaseResult2 testcase
+		testcaseResult1 []testCase
+		testcaseResult2 []testCase
 	}
 	tests := []struct {
 		name              string
 		args              args
-		wantDiffresult    testcase
+		wantDiffresult    []testCase
 		wantNotFoundtest  []string
 		wantNotFoundtest2 []string
 	}{
 		{
 			name: "test1",
 			args: args{
-				testcaseResult1: testcase{
+				testcaseResult1: []testCase{
 					{
 						Name:   "[It] observability observability-container-logging [common, observability, observability-container-logging]",
 						Status: "skipped",
 					},
 				},
-				testcaseResult2: testcase{
+				testcaseResult2: []testCase{
 					{
 						Name:   "[It] observability observability-container-logging [common, observability, observability-container-logging]",
 						Status: "failed",
 					},
 				},
 			},
-			wantDiffresult: testcase{
+			wantDiffresult: []testCase{
 				{
 					Name:   "[It] observability observability-container-logging [common, observability, observability-container-logging]",
 					Status: "skipped",
@@ -90,7 +90,7 @@ func Test_compare2TestCaseResults(t *testing.T) {
 		{
 			name: "test2",
 			args: args{
-				testcaseResult1: testcase{
+				testcaseResult1: []testCase{
 					{
 						Name:   "[It] observability observability-crd-status [common, observability, observability-crd-status]",
 						Status: "skipped",
@@ -100,14 +100,14 @@ func Test_compare2TestCaseResults(t *testing.T) {
 						Status: "skipped",
 					},
 				},
-				testcaseResult2: testcase{
+				testcaseResult2: []testCase{
 					{
 						Name:   "[It] observability observability-container-logging [common, observability, observability-container-logging]",
 						Status: "failed",
 					},
 				},
 			},
-			wantDiffresult: testcase{
+			wantDiffresult: []testCase{
 				{
 					Name:   "[It] observability observability-container-logging [common, observability, observability-container-logging]",
 					Status: "skipped",
