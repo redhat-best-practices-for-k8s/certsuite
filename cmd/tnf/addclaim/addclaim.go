@@ -73,7 +73,7 @@ type RawResult struct {
 			Cnfcertificationtest struct {
 				Testsuites struct {
 					Testsuite struct {
-						Testcase testcase `json:"testcase"`
+						Testcase []testCase `json:"testcase"`
 					} `json:"testsuite"`
 				} `json:"testsuites"`
 			} `json:"cnf-certification-test"`
@@ -92,7 +92,7 @@ func claimCompare(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-type testcase []struct {
+type testCase struct {
 	Name   string `json:"-name"`
 	Status string `json:"-status"`
 }
@@ -110,7 +110,7 @@ func claimCompareFilesfunc(claim1, claim2 string) error {
 	// unmarshal the files
 	cni1, hwinfo1, rawResult1, err := unmarshalClaimFile(calimdata1)
 	if err != nil {
-		log.Fatalf("Error in unmarshal cliam1 file  :%v", err)
+		log.Fatalf("Error in unmarshal claim1 file  :%v", err)
 		return err
 	}
 	cni2, hwinfo2, rawResult2, err := unmarshalClaimFile(calimdata2)
@@ -145,21 +145,21 @@ func unmarshalClaimFile(calimdata []byte) (Cni, HwInfo, RawResult, error) {
 	var csi Csi
 	errcsi := json.Unmarshal(calimdata, &csi)
 	if errcsi != nil {
-		log.Fatalf("Error in unmarshal the csi from cliam1 file  :%v", errcsi)
+		log.Fatalf("Error in unmarshal the csi from claim1 file  :%v", errcsi)
 		return cni, hwinfo, rawResult, errcsi
 	}
 
 	// HwInfo
 	errhwinfo := json.Unmarshal(calimdata, &hwinfo)
 	if errhwinfo != nil {
-		log.Fatalf("Error in unmarshal the hwinfo from cliam1 file  :%v", errhwinfo)
+		log.Fatalf("Error in unmarshal the hwinfo from claim1 file  :%v", errhwinfo)
 		return cni, hwinfo, rawResult, errhwinfo
 	}
 
 	// rawResult
 	errrawResult := json.Unmarshal(calimdata, &rawResult)
 	if errrawResult != nil {
-		log.Fatalf("Error in unmarshal the rawResult from cliam1 file  :%v", errrawResult)
+		log.Fatalf("Error in unmarshal the rawResult from claim1 file  :%v", errrawResult)
 		return cni, hwinfo, rawResult, errrawResult
 	}
 	return cni, hwinfo, rawResult, nil
@@ -178,12 +178,12 @@ func compare2Hwinfo(hwinfo1, hwinfo2 map[string]interface{}) {
 	fmt.Println("nodes2 and nodes diffs ", missIn1, missIn2)
 }
 
-func compare2TestCaseResults(testcaseResult1, testcaseResult2 testcase) (diffResult testcase, notFoundtestIn1, notFoundtestIn2 []string) {
+func compare2TestCaseResults(testcaseResult1, testcaseResult2 []testCase) (diffResult []testCase, notFoundtestIn1, notFoundtestIn2 []string) {
 	var testcaseR1, testcaseR2 []string
 	for _, result1 := range testcaseResult1 {
 		for _, result2 := range testcaseResult2 {
 			if result2.Name == result1.Name {
-				if (result2.Status) != (result1.Status) {
+				if result2.Status != result1.Status {
 					diffResult = append(diffResult, result1)
 				}
 				break
@@ -374,7 +374,11 @@ func NewCommand() *cobra.Command {
 		&Claim2, "claim2", "2", "",
 		"existing claim2 file. (Required) second file to compare with",
 	)
-	err = claimAddFile.MarkFlagRequired("claim")
+	err = claimCompareFiles.MarkFlagRequired("claim1")
+	if err != nil {
+		return nil
+	}
+	err = claimCompareFiles.MarkFlagRequired("claim2")
 	if err != nil {
 		return nil
 	}
