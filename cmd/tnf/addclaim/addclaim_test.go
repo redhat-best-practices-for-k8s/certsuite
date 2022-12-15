@@ -133,6 +133,7 @@ func Test_compare2TestCaseResults(t *testing.T) {
 	}
 }
 
+//nolint:funlen
 func Test_compare2cnis(t *testing.T) {
 	type args struct {
 		cniList1 cnistruct
@@ -168,6 +169,30 @@ func Test_compare2cnis(t *testing.T) {
 			wantDiffplugins:    nil,
 			wantNotFoundNames:  []string{"crio"},
 			wantNotFoundNames2: []string{},
+		},
+		{
+			name: "test2",
+			args: args{
+				cniList1: cnistruct{
+					{
+						Name:    "podman",
+						Plugins: nil,
+					},
+				},
+				cniList2: cnistruct{
+					{
+						Name:    "podman",
+						Plugins: nil,
+					},
+					{
+						Name:    "crio",
+						Plugins: nil,
+					},
+				},
+			},
+			wantDiffplugins:    nil,
+			wantNotFoundNames:  []string{},
+			wantNotFoundNames2: []string{"crio"},
 		},
 	}
 	for _, tt := range tests {

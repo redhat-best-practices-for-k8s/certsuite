@@ -108,8 +108,8 @@ func claimCompareFilesfunc(claim1, claim2 string) error {
 	slist, r, r2 := compare2TestCaseResults(claimFile1Data.Claim.RawResults.Cnfcertificationtest.Testsuites.Testsuite.Testcase,
 		claimFile2Data.Claim.RawResults.Cnfcertificationtest.Testsuites.Testsuite.Testcase)
 	log.Info("claim1 and claim2 has diff RawResults ", slist)
-	log.Info("test name that claim1 has but claim 2 dont has", r)
-	log.Info("test name that claim2 has but claim 1 dont has", r2)
+	log.Info("test name that claim1 has but claim 2 dont has", r2)
+	log.Info("test name that claim2 has but claim 1 dont has", r)
 
 	return nil
 }
@@ -145,11 +145,11 @@ func compare2TestCaseResults(testcaseResult1, testcaseResult2 []testCase) (diffR
 		testcaseR1 = append(testcaseR1, result1.Name)
 		for _, result2 := range testcaseResult2 {
 			testcaseR2 = append(testcaseR2, result2.Name)
-			if result2.Name == result1.Name {
-				if result2.Status != result1.Status {
-					diffResult = append(diffResult, result1)
-				}
-				break
+			if result2.Name != result1.Name {
+				continue
+			} // if they are the same name
+			if result2.Status != result1.Status {
+				diffResult = append(diffResult, result1)
 			}
 		}
 	}
@@ -229,13 +229,13 @@ func compare2cniHelper(cniList1, cniList2 cnistruct) (diffPlugins cnistruct, not
 		cniList1Name = append(cniList1Name, plugin1.Name)
 		for _, plugin2 := range cniList2 {
 			cniList2Name = append(cniList2Name, plugin2.Name)
-			if plugin2.Name == plugin1.Name {
-				if plugin2.Plugins != nil {
-					if len(plugin2.Plugins) != len(plugin1.Plugins) {
-						diffPlugins = append(diffPlugins, plugin1)
-					}
+			if plugin2.Name != plugin1.Name {
+				continue
+			}
+			if plugin2.Plugins != nil {
+				if len(plugin2.Plugins) != len(plugin1.Plugins) {
+					diffPlugins = append(diffPlugins, plugin1)
 				}
-				break
 			}
 		}
 	}
