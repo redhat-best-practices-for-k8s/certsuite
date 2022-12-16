@@ -26,7 +26,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/rbac"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/resources"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/securitycontextcontainer"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/tolerations"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netutil"
@@ -164,11 +163,6 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestNamespaceResourceQuota(&env)
-	})
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodTolerationBypassIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
-		TestPodTolerationBypass(&env)
 	})
 	// ssh daemons
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNoSSHDaemonsAllowedIdentifier)
@@ -542,23 +536,6 @@ func TestNamespaceResourceQuota(env *provider.TestEnvironment) {
 	}
 
 	testhelper.AddTestResultLog("Non-compliant", namespacesMissingQuotas, tnf.ClaimFilePrintf, ginkgo.Fail)
-}
-
-func TestPodTolerationBypass(env *provider.TestEnvironment) {
-	var podsWithRestrictedTolerationsNotDefault []string
-
-	for _, put := range env.Pods {
-		for _, t := range put.Spec.Tolerations {
-			// Check if the tolerations fall outside the 'default' and are modified versions
-			// Take also into account the qosClass applied to the pod
-			if tolerations.IsTolerationModified(t, put.Status.QOSClass) {
-				podsWithRestrictedTolerationsNotDefault = append(podsWithRestrictedTolerationsNotDefault, put.String())
-				tnf.ClaimFilePrintf("%s has been found with non-default toleration %s which is not allowed.", put.String(), t.Effect)
-			}
-		}
-	}
-
-	testhelper.AddTestResultLog("Non-compliant", podsWithRestrictedTolerationsNotDefault, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 const (

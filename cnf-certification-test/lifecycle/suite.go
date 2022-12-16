@@ -28,6 +28,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/podrecreation"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/podsets"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/scaling"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/tolerations"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/volumes"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
@@ -163,6 +164,12 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestAffinityRequiredPods)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testAffinityRequiredPods(&env)
+	})
+
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodTolerationBypassIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
+		TestPodTolerationBypass(&env)
 	})
 })
 
@@ -517,6 +524,7 @@ func testCPUIsolation(env *provider.TestEnvironment) {
 }
 
 func testAffinityRequiredPods(env *provider.TestEnvironment) {
+	ginkgo.By("Testing affinity required pods for ")
 	testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetAffinityRequiredPods())
 
 	var podsDesiringAffinityRequiredMissingLabel []*provider.Pod
@@ -529,4 +537,21 @@ func testAffinityRequiredPods(env *provider.TestEnvironment) {
 		}
 	}
 	testhelper.AddTestResultLog("Non-compliant", podsDesiringAffinityRequiredMissingLabel, tnf.ClaimFilePrintf, ginkgo.Fail)
+}
+
+func TestPodTolerationBypass(env *provider.TestEnvironment) {
+	var podsWithRestrictedTolerationsNotDefault []string
+
+	for _, put := range env.Pods {
+		for _, t := range put.Spec.Tolerations {
+			// Check if the tolerations fall outside the 'default' and are modified versions
+			// Take also into account the qosClass applied to the pod
+			if tolerations.IsTolerationModified(t, put.Status.QOSClass) {
+				podsWithRestrictedTolerationsNotDefault = append(podsWithRestrictedTolerationsNotDefault, put.String())
+				tnf.ClaimFilePrintf("%s has been found with non-default toleration %s/%s which is not allowed.", put.String(), t.Key, t.Effect)
+			}
+		}
+	}
+
+	testhelper.AddTestResultLog("Non-compliant", podsWithRestrictedTolerationsNotDefault, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
