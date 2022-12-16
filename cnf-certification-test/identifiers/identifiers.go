@@ -1154,7 +1154,7 @@ that there are no changes to the following directories:
 		Identifier: TestServiceMeshIdentifier,
 		Type:       NormativeResult,
 		Description: formDescription(TestServiceMeshIdentifier,
-			`verifies whether, if available, service mesh is actually being used by the CNF pods`),
+			`Checks if the istio namespace ("istio-system") is present. If it is present, checks that the istio sidecar is present in all pods under test.`),
 		Remediation:           ServiceMeshRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
