@@ -136,21 +136,21 @@ func Test_compare2TestCaseResults(t *testing.T) {
 //nolint:funlen
 func Test_compare2cnis(t *testing.T) {
 	type args struct {
-		cniList1 cnistruct
-		cniList2 cnistruct
+		cniList1 []Cni
+		cniList2 []Cni
 		nodeName string
 	}
 	tests := []struct {
 		name               string
 		args               args
-		wantDiffplugins    cnistruct
+		wantDiffplugins    []Cni
 		wantNotFoundNames  []string
 		wantNotFoundNames2 []string
 	}{
 		{
 			name: "test1",
 			args: args{
-				cniList1: cnistruct{
+				cniList1: []Cni{
 					{
 						Name:    "podman",
 						Plugins: nil,
@@ -160,7 +160,7 @@ func Test_compare2cnis(t *testing.T) {
 						Plugins: nil,
 					},
 				},
-				cniList2: cnistruct{
+				cniList2: []Cni{
 					{
 						Name:    "podman",
 						Plugins: nil,
@@ -175,13 +175,13 @@ func Test_compare2cnis(t *testing.T) {
 		{
 			name: "test2",
 			args: args{
-				cniList1: cnistruct{
+				cniList1: []Cni{
 					{
 						Name:    "podman",
 						Plugins: nil,
 					},
 				},
-				cniList2: cnistruct{
+				cniList2: []Cni{
 					{
 						Name:    "podman",
 						Plugins: nil,
@@ -201,7 +201,7 @@ func Test_compare2cnis(t *testing.T) {
 			name: "test3",
 			args: args{
 				cniList1: nil,
-				cniList2: cnistruct{
+				cniList2: []Cni{
 					{
 						Name:    "podman",
 						Plugins: nil,
@@ -222,6 +222,17 @@ func Test_compare2cnis(t *testing.T) {
 			args: args{
 				cniList1: nil,
 				cniList2: nil,
+				nodeName: "master1",
+			},
+			wantDiffplugins:    nil,
+			wantNotFoundNames:  nil,
+			wantNotFoundNames2: nil,
+		},
+		{
+			name: "test5",
+			args: args{
+				cniList1: []Cni{},
+				cniList2: []Cni{},
 				nodeName: "master1",
 			},
 			wantDiffplugins:    nil,
