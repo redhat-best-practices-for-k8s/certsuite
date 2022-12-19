@@ -2,7 +2,6 @@ FROM registry.access.redhat.com/ubi8/ubi:latest AS build
 
 ARG OPENSHIFT_VERSION
 ENV OPENSHIFT_VERSION=${OPENSHIFT_VERSION}
-
 ENV TNF_DIR=/usr/tnf
 ENV TNF_SRC_DIR=${TNF_DIR}/tnf-src
 ENV TNF_BIN_DIR=${TNF_DIR}/cnf-certification-test
@@ -14,20 +13,11 @@ ENV TEMP_DIR=/tmp
 # Install dependencies
 RUN yum install -y gcc make wget
 
-# Download oc binary
-ENV OC_BIN_TAR="openshift-client-linux.tar.gz"
-ENV OC_DL_URL="https://mirror.openshift.com/pub/openshift-v4/clients/ocp"/${OPENSHIFT_VERSION}/${OC_BIN_TAR}
-ENV OC_BIN="/usr/local/oc/bin"
-RUN wget --directory-prefix=${TEMP_DIR} ${OC_DL_URL} && \
-    mkdir -p ${OC_BIN} && \
-    tar -C ${OC_BIN} -xzf ${TEMP_DIR}/${OC_BIN_TAR} && \
-    chmod a+x ${OC_BIN}/oc
-
 # Download operator-sdk binary
-ENV OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.26.0
-ENV OSDK_BIN="/usr/local/osdk/bin"
+ENV OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.26.0 \
+    OSDK_BIN="/usr/local/osdk/bin"
 RUN mkdir -p ${OSDK_BIN} && \
-    curl -LO ${OPERATOR_SDK_DL_URL}/operator-sdk_linux_amd64 && \
+    curl --location --remote-name ${OPERATOR_SDK_DL_URL}/operator-sdk_linux_amd64 && \
     mv operator-sdk_linux_amd64 ${OSDK_BIN}/operator-sdk && \
     chmod +x ${OSDK_BIN}/operator-sdk
 
@@ -63,20 +53,17 @@ FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
 ENV TNF_DIR=/usr/tnf
 COPY --from=build ${TNF_DIR} ${TNF_DIR}
 
-# Add oc and operatorsdk binaries to image
-COPY --from=build ${OC_BIN} ${OC_BIN}
+# Add operatorsdk binary to image
 COPY --from=build ${OSDK_BIN} ${OSDK_BIN}
 
 # Update the CNF containers, helm charts and operators DB
-ENV TNF_OFFLINE_DB=/usr/offline-db
-ENV OCT_DB_PATH=/usr/oct/cmd/tnf/fetch
+ENV TNF_OFFLINE_DB=/usr/offline-db \
+    OCT_DB_PATH=/usr/oct/cmd/tnf/fetch
 COPY --from=db ${OCT_DB_PATH} ${TNF_OFFLINE_DB}
 
-ENV TNF_CONFIGURATION_PATH=/usr/tnf/config/tnf_config.yml
-ENV KUBECONFIG=/usr/tnf/kubeconfig/config
-
-# Adjust the PATH to include the oc and operator-sdk binaries
-ENV PATH="/usr/local/osdk/bin:/usr/local/oc/bin:${PATH}"
+ENV TNF_CONFIGURATION_PATH=/usr/tnf/config/tnf_config.yml \
+    KUBECONFIG=/usr/tnf/kubeconfig/config \
+    PATH="/usr/local/osdk/bin:${PATH}"
 WORKDIR ${TNF_DIR}
 ENV SHELL=/bin/bash
 CMD ["./run-cnf-suites.sh", "-o", "claim", "-f", "diagnostic"]

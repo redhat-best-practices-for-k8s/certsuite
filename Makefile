@@ -147,4 +147,4 @@ build-image-local: install-tools build-cnf-tests
 	docker build --no-cache \
 		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} \
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} \
-		--build-arg OPENSHIFT_VERSION=$(shell ./script/get-release-level.sh ${RELEASE_VERSION}) -f Dockerfile .
+		-f Dockerfile .
