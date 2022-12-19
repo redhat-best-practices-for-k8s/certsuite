@@ -15,3 +15,82 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 package lifecycle
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+)
+
+func TestNameInDeploymentSkipList(t *testing.T) {
+	testCases := []struct {
+		testName       string
+		testNamespace  string
+		testList       []configuration.SkipScalingTestDeploymentsInfo
+		expectedOutput bool
+	}{
+		{
+			testName:      "test1",
+			testNamespace: "tnf",
+			testList: []configuration.SkipScalingTestDeploymentsInfo{
+				{
+					Name:      "test1",
+					Namespace: "tnf",
+				},
+			},
+			expectedOutput: true,
+		},
+		{
+			testName:      "test2",
+			testNamespace: "tnf",
+			testList: []configuration.SkipScalingTestDeploymentsInfo{
+				{
+					Name:      "test1",
+					Namespace: "tnf",
+				},
+			},
+			expectedOutput: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedOutput, nameInDeploymentSkipList(tc.testName, tc.testNamespace, tc.testList))
+	}
+}
+
+func TestNameInStatefulSetSkipList(t *testing.T) {
+	testCases := []struct {
+		testName       string
+		testNamespace  string
+		testList       []configuration.SkipScalingTestStatefulSetsInfo
+		expectedOutput bool
+	}{
+		{
+			testName:      "test1",
+			testNamespace: "tnf",
+			testList: []configuration.SkipScalingTestStatefulSetsInfo{
+				{
+					Name:      "test1",
+					Namespace: "tnf",
+				},
+			},
+			expectedOutput: true,
+		},
+		{
+			testName:      "test2",
+			testNamespace: "tnf",
+			testList: []configuration.SkipScalingTestStatefulSetsInfo{
+				{
+					Name:      "test1",
+					Namespace: "tnf",
+				},
+			},
+			expectedOutput: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedOutput, nameInStatefulSetSkipList(tc.testName, tc.testNamespace, tc.testList))
+	}
+}

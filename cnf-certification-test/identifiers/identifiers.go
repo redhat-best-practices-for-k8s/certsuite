@@ -605,7 +605,7 @@ var (
 	}
 	TestPodTolerationBypassIdentifier = claim.Identifier{
 		Tags:    formTestTags(TagCommon),
-		Url:     formTestURL(common.AccessControlTestKey, "pod-toleration-bypass"),
+		Url:     formTestURL(common.LifecycleTestKey, "pod-toleration-bypass"),
 		Version: VersionOne,
 	}
 	TestPersistentVolumeReclaimPolicyIdentifier = claim.Identifier{
@@ -1341,7 +1341,7 @@ that there are no changes to the following directories:
 	},
 	TestPodTolerationBypassIdentifier: {
 		Identifier:            TestPodTolerationBypassIdentifier,
-		Type:                  InformativeResult,
+		Type:                  NormativeResult,
 		Description:           formDescription(TestPodTolerationBypassIdentifier, `Check that pods do not have NoExecute, PreferNoSchedule, or NoSchedule tolerations that have been modified from the default.`),
 		Remediation:           PodTolerationBypassRemediation,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 10.6",

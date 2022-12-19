@@ -189,20 +189,6 @@ Suggested Remediation|Ensure that the each CNF Pod is configured to use a valid 
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.3 and 5.2.7
 Exception Process|There is no documented exception process for this.
 Tags|common
-#### pod-toleration-bypass
-
-Property|Description
----|---
-Test Case Name|pod-toleration-bypass
-Test Case Label|access-control-pod-toleration-bypass
-Unique ID|http://test-network-function.com/testcases/access-control/pod-toleration-bypass
-Version|v1.0.0
-Description|http://test-network-function.com/testcases/access-control/pod-toleration-bypass Check that pods do not have NoExecute, PreferNoSchedule, or NoSchedule tolerations that have been modified from the default.
-Result Type|informative
-Suggested Remediation|Do not allow pods to bypass the NoExecute, PreferNoSchedule, or NoSchedule tolerations that are default applied by Kubernetes.
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 10.6
-Exception Process|There is no documented exception process for this.
-Tags|common
 #### requests-and-limits
 
 Property|Description
@@ -543,6 +529,20 @@ Description|http://test-network-function.com/testcases/lifecycle/pod-scheduling 
 Result Type|normative
 Suggested Remediation|In most cases, Pod's should not specify their host Nodes through nodeSelector or nodeAffinity.  However, there are 	cases in which CNFs require specialized hardware specific to a particular class of Node.  As such, this test is purely 	informative, and will not prevent a CNF from being certified. However, one should have an appropriate justification as 	to why nodeSelector and/or nodeAffinity is utilized by a CNF.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
+Exception Process|There is no documented exception process for this.
+Tags|common
+#### pod-toleration-bypass
+
+Property|Description
+---|---
+Test Case Name|pod-toleration-bypass
+Test Case Label|lifecycle-pod-toleration-bypass
+Unique ID|http://test-network-function.com/testcases/lifecycle/pod-toleration-bypass
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/lifecycle/pod-toleration-bypass Check that pods do not have NoExecute, PreferNoSchedule, or NoSchedule tolerations that have been modified from the default.
+Result Type|normative
+Suggested Remediation|Do not allow pods to bypass the NoExecute, PreferNoSchedule, or NoSchedule tolerations that are default applied by Kubernetes.
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 10.6
 Exception Process|There is no documented exception process for this.
 Tags|common
 #### readiness-probe
