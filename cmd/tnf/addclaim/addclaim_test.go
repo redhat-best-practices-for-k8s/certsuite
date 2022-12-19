@@ -239,6 +239,22 @@ func Test_compare2cnis(t *testing.T) {
 			wantNotFoundNames:  nil,
 			wantNotFoundNames2: nil,
 		},
+		{
+			name: "test6",
+			args: args{
+				cniList1: []Cni{
+					{
+						Name:    "podman",
+						Plugins: nil,
+					},
+				},
+				cniList2: []Cni{},
+				nodeName: "master1",
+			},
+			wantDiffplugins:    nil,
+			wantNotFoundNames:  nil,
+			wantNotFoundNames2: nil,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
