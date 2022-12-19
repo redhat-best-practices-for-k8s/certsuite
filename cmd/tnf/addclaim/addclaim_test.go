@@ -274,6 +274,21 @@ func Test_claimCompareFilesfunc(t *testing.T) {
 		},
 		wantErr: false,
 	},
+		{
+			name: "test2",
+			args: args{
+				claim1: "claim_test1.json",
+				claim2: "claim_test4.json",
+			},
+			wantErr: true,
+		}, {
+			name: "test3",
+			args: args{
+				claim1: "claim_test1.json",
+				claim2: "claim_test3.json",
+			},
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
