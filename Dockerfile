@@ -13,6 +13,21 @@ ENV TEMP_DIR=/tmp
 # Install dependencies
 RUN yum install -y gcc make wget
 
+# Install Go binary and set the PATH 
+ENV GO_DL_URL="https://golang.org/dl"
+ENV GO_BIN_TAR="go1.19.4.linux-amd64.tar.gz"
+ENV GO_BIN_URL_x86_64=${GO_DL_URL}/${GO_BIN_TAR}
+ENV GOPATH="/root/go"
+RUN if [[ "$(uname -m)" -eq "x86_64" ]] ; then \
+        wget --directory-prefix=${TEMP_DIR} ${GO_BIN_URL_x86_64} && \
+            rm -rf /usr/local/go && \
+            tar -C /usr/local -xzf ${TEMP_DIR}/${GO_BIN_TAR}; \
+     else \
+         echo "CPU architecture not supported" && exit 1; \
+     fi
+
+ENV PATH=${PATH}:"/usr/local/go/bin":${GOPATH}/"bin"
+
 # Download operator-sdk binary
 ENV OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.26.0 \
     OSDK_BIN="/usr/local/osdk/bin"
@@ -24,6 +39,9 @@ RUN mkdir -p ${OSDK_BIN} && \
 # Copy all of the files into the source directory and then switch contexts
 COPY . ${TNF_SRC_DIR}
 WORKDIR ${TNF_SRC_DIR}
+
+RUN make install-tools && \
+	make build-cnf-tests
 
 #  Extract what's needed to run at a seperate location
 RUN mkdir ${TNF_BIN_DIR} && \
@@ -42,6 +60,17 @@ RUN mkdir ${TNF_BIN_DIR} && \
 
 # Switch contexts back to the root TNF directory
 WORKDIR ${TNF_DIR}
+
+# Remove most of the build artefacts
+RUN yum remove -y gcc git wget && \
+	yum clean all && \
+	rm -rf ${TNF_SRC_DIR} && \
+	rm -rf ${TEMP_DIR} && \
+	rm -rf /root/.cache && \
+	rm -rf /root/go/pkg && \
+	rm -rf /root/go/src && \
+	rm -rf /usr/lib/golang/pkg && \
+	rm -rf /usr/lib/golang/src
 
 FROM quay.io/testnetworkfunction/oct:latest AS db
 

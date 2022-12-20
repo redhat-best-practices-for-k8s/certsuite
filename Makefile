@@ -143,7 +143,7 @@ get-db:
 delete-db:
 	rm -rf ${REPO_DIR}/cmd/tnf/fetch
 
-build-image-local: install-tools build-cnf-tests
+build-image-local:
 	docker build --no-cache \
 		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} \
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} \
