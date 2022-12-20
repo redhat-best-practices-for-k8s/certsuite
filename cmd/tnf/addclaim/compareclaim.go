@@ -35,7 +35,6 @@ type Cni struct {
 
 func claimCompare(cmd *cobra.Command, args []string) error {
 	claimFileTextPtr := Claim1
-
 	claimFileTextPtr2 := Claim2
 	err := claimCompareFilesfunc(claimFileTextPtr, claimFileTextPtr2)
 	if err != nil {
@@ -51,25 +50,25 @@ type testCase struct {
 
 func claimCompareFilesfunc(claim1, claim2 string) error {
 	// readfiles
-	calimdata1, err := os.ReadFile(claim1)
+	claimdata1, err := os.ReadFile(claim1)
 	if err != nil {
-		log.Info("Error reading claim1 file:", err)
+		log.Infof("Error reading claim1 file: %v", err)
 		return err
 	}
-	calimdata2, err2 := os.ReadFile(claim2)
+	claimdata2, err2 := os.ReadFile(claim2)
 	if err2 != nil {
-		log.Info("Error reading claim2 file :", err2)
+		log.Infof("Error reading claim2 file: %v", err2)
 		return err2
 	}
 	// unmarshal the files
-	claimFile1Data, err := unmarshalClaimFile(calimdata1)
+	claimFile1Data, err := unmarshalClaimFile(claimdata1)
 	if err != nil {
-		log.Info("Error in unmarshal claim1 file  :", err)
+		log.Infof("Error in unmarshal claim1 file: %v", err)
 		return err
 	}
-	claimFile2Data, err := unmarshalClaimFile(calimdata2)
+	claimFile2Data, err := unmarshalClaimFile(claimdata2)
 	if err != nil {
-		log.Info("Error in unmarshal cliam2 file  :", err)
+		log.Infof("Error in unmarshal cliam2 file: %v", err)
 		return err
 	}
 	// compares function
@@ -81,9 +80,9 @@ func claimCompareFilesfunc(claim1, claim2 string) error {
 
 	diffResultValue, notFoundTestIn1, notFoundTestIn2 := compare2TestCaseResults(claimFile1Data.Claim.RawResults.Cnfcertificationtest.Testsuites.Testsuite.Testcase,
 		claimFile2Data.Claim.RawResults.Cnfcertificationtest.Testsuites.Testsuite.Testcase)
-	log.Info("claim1 and claim2 has diff Results on tests: ", diffResultValue)
-	log.Info("test name that claim1 has but claim2 dont has ", notFoundTestIn2)
-	log.Info("test name that claim2 has but claim1 dont has ", notFoundTestIn1)
+	log.Infof("claim1 and claim2 has diff Results on tests: %v", diffResultValue)
+	log.Infof("test name that claim1 has but claim2 dont has %v", notFoundTestIn2)
+	log.Infof("test name that claim2 has but claim1 dont has %v", notFoundTestIn1)
 
 	return nil
 }
@@ -204,13 +203,13 @@ func compare2cni(cni1, cni2 map[string][]Cni) {
 			}
 			diffPlugIn, notFoundNamesIn1, notFoundNamesIn2 := compare2cniHelper(val, val2, node2)
 			if len(notFoundNamesIn1) != 0 && notFoundNamesIn1 != nil {
-				log.Info("in node ", node2, " cnis found in claim1 but not present in claim2: ", notFoundNamesIn1)
+				log.Infof("in node %s  cnis found in claim1 but not present in claim2: %v ", node2, notFoundNamesIn1)
 			}
 			if len(notFoundNamesIn2) != 0 && notFoundNamesIn2 != nil {
-				log.Info("in node ", node2, " cnis found in claim2 but not present in claim1: ", notFoundNamesIn2)
+				log.Infof("in node %s  cnis found in claim2 but not present in claim1: %v", node2, notFoundNamesIn2)
 			}
 			if len(diffPlugIn) != 0 {
-				log.Info("in node ", node2, " cnis present in both claim 1 and 2 but with different plugins: ", diffPlugIn)
+				log.Infof("in node %s  cnis present in both claim 1 and 2 but with different plugins: %v", node2, diffPlugIn)
 			}
 			break
 		}
@@ -224,11 +223,11 @@ func compare2cni(cni1, cni2 map[string][]Cni) {
 func compare2cniHelper(cniList1, cniList2 []Cni, node string) (diffPlugins []Cni, notFoundNamesIn1, notFoundNamesIn2 []string) {
 	var cniList1Name, cniList2Name []string
 	if len(cniList1) == 0 {
-		log.Info("in node ", node, " cnis present in claim2 and on claim1 that node dont have cni values", cniList2)
+		log.Infof("in node %s cnis present in claim2 and on claim1 that node dont have cni values: %v", node, cniList2)
 		return nil, nil, nil
 	}
 	if len(cniList2) == 0 {
-		log.Info("in node ", node, " cnis present in claim1 and on claim2 that node dont have cni values", cniList1)
+		log.Infof("in node %s cnis present in claim1 and on claim2 that node dont have cni values: %v", node, cniList1)
 		return nil, nil, nil
 	}
 	for _, plugin1 := range cniList1 {
