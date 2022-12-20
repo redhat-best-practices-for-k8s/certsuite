@@ -120,6 +120,10 @@ var (
 	TestStartupIdentifier                    claim.Identifier
 	TestShutdownIdentifier                   claim.Identifier
 	TestDpdkCPUPinningExecProbe              claim.Identifier
+	TestSysAdminIdentifier                   claim.Identifier
+	TestNetAdminIdentifier                   claim.Identifier
+	TestNetRawIdentifier                     claim.Identifier
+	TestIpcLockIdentifier                    claim.Identifier
 )
 
 //nolint:funlen
@@ -245,6 +249,50 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		TagExtended)
 
+	TestNetAdminIdentifier = AddCatalogEntry(
+		"net-admin-capability-check",
+		common.LifecycleTestKey,
+		`Ensures that containers do not use NET_ADMIN capability`,
+		SecConRemediation,
+		NormativeResult,
+		SecConCapabilitiesExceptionProcess,
+		VersionOne,
+		bestPracticeDocV1dot3URL+" Section 5.2",
+		TagCommon)
+
+	TestSysAdminIdentifier = AddCatalogEntry(
+		"sys-admin-capability-check",
+		common.LifecycleTestKey,
+		`Ensures that containers do not use SYS_ADMIN capability`,
+		SecConRemediation,
+		NormativeResult,
+		SecConCapabilitiesExceptionProcess,
+		VersionOne,
+		bestPracticeDocV1dot3URL+" Section 5.2",
+		TagCommon)
+
+	TestIpcLockIdentifier = AddCatalogEntry(
+		"ipc-lock-capability-check",
+		common.LifecycleTestKey,
+		`Ensures that containers do not use IPC_LOCK capability`,
+		SecConRemediation,
+		NormativeResult,
+		SecConCapabilitiesExceptionProcess,
+		VersionOne,
+		bestPracticeDocV1dot3URL+" Section 5.2",
+		TagCommon)
+
+	TestNetRawIdentifier = AddCatalogEntry(
+		"net-raw-capability-check",
+		common.LifecycleTestKey,
+		`Ensures that containers do not use NET_RAW capability`,
+		SecConRemediation,
+		NormativeResult,
+		SecConCapabilitiesExceptionProcess,
+		VersionOne,
+		bestPracticeDocV1dot3URL+" Section 5.2",
+		TagCommon)
+
 	return Catalog
 }
 
@@ -262,12 +310,6 @@ var (
 	// BaseDomain for the test cases
 	TestIDBaseDomain = url
 
-	// TestSecConCapabilitiesIdentifier tests for non compliant security context capabilities
-	TestSecConCapabilitiesIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
-		Url:     formTestURL(common.AccessControlTestKey, "security-context-capabilities-check"),
-		Version: VersionOne,
-	}
 	// TestSecConNonRootUserIdentifier tests that pods or containers are not running with root permissions
 	TestSecConNonRootUserIdentifier = claim.Identifier{
 		Tags:    formTestTags(TagCommon),
@@ -726,29 +768,6 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		Tags:                  TestStateFulSetScalingIdentifier.Tags,
 	},
-	TestSecConCapabilitiesIdentifier: {
-		Identifier:       TestSecConCapabilitiesIdentifier,
-		Type:             NormativeResult,
-		Remediation:      SecConCapabilitiesRemediation,
-		ExceptionProcess: SecConCapabilitiesExceptionProcess,
-		Description: formDescription(TestSecConCapabilitiesIdentifier,
-			`Tests that the following capabilities are not granted:
-			- NET_ADMIN
-			- SYS_ADMIN
-			- NET_RAW
-			- IPC_LOCK
-`),
-		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
-		Tags:                  TestSecConCapabilitiesIdentifier.Tags,
-	},
-	// TestPodDeleteIdentifier: {
-	// 	Identifier:  TestPodDeleteIdentifier,
-	// 	Type:        NormativeResult,
-	// 	Remediation: `Make sure that the pods can be recreated successfully after deleting them`,
-	// 	Description: formDescription(TestPodDeleteIdentifier,
-	// 		`Using the litmus chaos operator, this test checks that pods are recreated successfully after deleting them.`),
-	// 	BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
-	// },
 	TestSecConNonRootUserIdentifier: {
 		Identifier:       TestSecConNonRootUserIdentifier,
 		Type:             NormativeResult,
