@@ -977,19 +977,16 @@ client using <code>TNF_CONTAINER_CLIENT</code> can be configured. This is partic
 <h3 id="build-locally">Build locally<a class="headerlink" href="#build-locally" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>podman build -t cnf-certification-test:v4.1.2 <span class="se">\</span>
   --build-arg <span class="nv">TNF_VERSION</span><span class="o">=</span>v4.1.2 <span class="se">\</span>
-  --build-arg <span class="nv">OPENSHIFT_VERSION</span><span class="o">=</span><span class="m">4</span>.7.55 .
 </code></pre></div>
 <ul>
 <li><code>TNF_VERSION</code> value is set to a branch, a tag, or a hash of a commit that will be installed into the image</li>
-<li><code>OPENSHIFT_VERSION</code> value points to the <abbr title="OpenShift Container Platform">OCP</abbr> version of the cluster in which the workloads to be tested are deployed.</li>
 </ul>
 <h3 id="build-from-an-unofficial-source">Build from an unofficial source<a class="headerlink" href="#build-from-an-unofficial-source" title="Permanent link">&para;</a></h3>
 <p>The unofficial source could be a fork of the <abbr title="Test Network Function">TNF</abbr> repository.</p>
 <p>Use the <code>TNF_SRC_URL</code> build argument to override the URL to a source repository.</p>
 <div class="highlight"><pre><span></span><code>podman build -t cnf-certification-test:v4.1.2 <span class="se">\</span>
-  --build-arg <span class="nv">TNF_VERSION</span><span class="o">=</span>v1.0.5 <span class="se">\</span>
-  --build-arg <span class="nv">TNF_SRC_URL</span><span class="o">=</span>https://github.com/test-network-function/cnf-certification-test <span class="se">\</span>
-  --build-arg <span class="nv">OPENSHIFT_VERSION</span><span class="o">=</span><span class="m">4</span>.7.55 .
+  --build-arg <span class="nv">TNF_VERSION</span><span class="o">=</span>v4.1.2 <span class="se">\</span>
+  --build-arg <span class="nv">TNF_SRC_URL</span><span class="o">=</span>https://github.com/test-network-function/cnf-certification-test .
 </code></pre></div>
 <h3 id="run-the-tests_1">Run the tests<a class="headerlink" href="#run-the-tests_1" title="Permanent link">&para;</a></h3>
 <p>Specify the custom <abbr title="Test Network Function">TNF</abbr> image using the <code>-i</code> parameter.</p>
