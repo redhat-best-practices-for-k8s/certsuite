@@ -205,60 +205,33 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	})
 })
 
-func TestSysAdminCapability(env *provider.TestEnvironment) {
+func checkForbiddenCapability(containers []*provider.Container, capability string) []string {
 	var badContainers []string
-	for _, cut := range env.Containers {
+	for _, cut := range containers {
 		if cut.SecurityContext != nil && cut.SecurityContext.Capabilities != nil {
-			if strings.Contains(cut.SecurityContext.Capabilities.String(), "SYS_ADMIN") {
-				tnf.ClaimFilePrintf("Non compliant SYS_ADMIN capability detected in container %s. All container caps: %s", cut.String(), cut.SecurityContext.Capabilities.String())
+			if strings.Contains(cut.SecurityContext.Capabilities.String(), capability) {
+				tnf.ClaimFilePrintf("Non compliant %s capability detected in container %s. All container caps: %s", capability, cut.String(), cut.SecurityContext.Capabilities.String())
 				badContainers = append(badContainers, cut.String())
 			}
 		}
 	}
+	return badContainers
+}
 
-	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+func TestSysAdminCapability(env *provider.TestEnvironment) {
+	testhelper.AddTestResultLog("Non-compliant", checkForbiddenCapability(env.Containers, "SYS_ADMIN"), tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func TestNetAdminCapability(env *provider.TestEnvironment) {
-	var badContainers []string
-	for _, cut := range env.Containers {
-		if cut.SecurityContext != nil && cut.SecurityContext.Capabilities != nil {
-			if strings.Contains(cut.SecurityContext.Capabilities.String(), "NET_ADMIN") {
-				tnf.ClaimFilePrintf("Non compliant NET_ADMIN capability detected in container %s. All container caps: %s", cut.String(), cut.SecurityContext.Capabilities.String())
-				badContainers = append(badContainers, cut.String())
-			}
-		}
-	}
-
-	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultLog("Non-compliant", checkForbiddenCapability(env.Containers, "NET_ADMIN"), tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func TestNetRawCapability(env *provider.TestEnvironment) {
-	var badContainers []string
-	for _, cut := range env.Containers {
-		if cut.SecurityContext != nil && cut.SecurityContext.Capabilities != nil {
-			if strings.Contains(cut.SecurityContext.Capabilities.String(), "NET_RAW") {
-				tnf.ClaimFilePrintf("Non compliant NET_RAW capability detected in container %s. All container caps: %s", cut.String(), cut.SecurityContext.Capabilities.String())
-				badContainers = append(badContainers, cut.String())
-			}
-		}
-	}
-
-	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultLog("Non-compliant", checkForbiddenCapability(env.Containers, "NET_RAW"), tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func TestIpcLockCapability(env *provider.TestEnvironment) {
-	var badContainers []string
-	for _, cut := range env.Containers {
-		if cut.SecurityContext != nil && cut.SecurityContext.Capabilities != nil {
-			if strings.Contains(cut.SecurityContext.Capabilities.String(), "IPC_LOCK") {
-				tnf.ClaimFilePrintf("Non compliant IPC_LOCK capability detected in container %s. All container caps: %s", cut.String(), cut.SecurityContext.Capabilities.String())
-				badContainers = append(badContainers, cut.String())
-			}
-		}
-	}
-
-	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultLog("Non-compliant", checkForbiddenCapability(env.Containers, "IPC_LOCK"), tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // TestSecConRootUser verifies that the container is not running as root
