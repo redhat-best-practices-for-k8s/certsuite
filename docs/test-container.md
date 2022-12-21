@@ -100,11 +100,9 @@ export TNF_CONTAINER_CLIENT=docker
 ```shell
 podman build -t cnf-certification-test:v4.1.2 \
   --build-arg TNF_VERSION=v4.1.2 \
-  --build-arg OPENSHIFT_VERSION=4.7.55 .
 ```
 
   - `TNF_VERSION` value is set to a branch, a tag, or a hash of a commit that will be installed into the image
-  -  `OPENSHIFT_VERSION` value points to the OCP version of the cluster in which the workloads to be tested are deployed.
 
 
 ### Build from an unofficial source
@@ -115,9 +113,8 @@ Use the `TNF_SRC_URL` build argument to override the URL to a source repository.
 
 ```shell
 podman build -t cnf-certification-test:v4.1.2 \
-  --build-arg TNF_VERSION=v1.0.5 \
-  --build-arg TNF_SRC_URL=https://github.com/test-network-function/cnf-certification-test \
-  --build-arg OPENSHIFT_VERSION=4.7.55 .
+  --build-arg TNF_VERSION=v4.1.2 \
+  --build-arg TNF_SRC_URL=https://github.com/test-network-function/cnf-certification-test .
 ```
 
 ### Run the tests

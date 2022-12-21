@@ -1,18 +1,17 @@
 FROM registry.access.redhat.com/ubi8/ubi:latest AS build
 
-ARG OPENSHIFT_VERSION
-ENV OPENSHIFT_VERSION=${OPENSHIFT_VERSION}
-
 ENV TNF_DIR=/usr/tnf
 ENV TNF_SRC_DIR=${TNF_DIR}/tnf-src
 ENV TNF_BIN_DIR=${TNF_DIR}/cnf-certification-test
 
+RUN mkdir ${TNF_DIR}
+
 ENV TEMP_DIR=/tmp
 
 # Install dependencies
-RUN yum install -y gcc git jq make wget
+RUN yum install -y gcc make wget
 
-# Install Go binary
+# Install Go binary and set the PATH 
 ENV GO_DL_URL="https://golang.org/dl"
 ENV GO_BIN_TAR="go1.19.4.linux-amd64.tar.gz"
 ENV GO_BIN_URL_x86_64=${GO_DL_URL}/${GO_BIN_TAR}
@@ -25,33 +24,22 @@ RUN if [[ "$(uname -m)" -eq "x86_64" ]] ; then \
          echo "CPU architecture not supported" && exit 1; \
      fi
 
-# Install oc binary
-ENV OC_BIN_TAR="openshift-client-linux.tar.gz"
-ENV OC_DL_URL="https://mirror.openshift.com/pub/openshift-v4/clients/ocp"/${OPENSHIFT_VERSION}/${OC_BIN_TAR}
-ENV OC_BIN="/usr/local/oc/bin"
-RUN wget --directory-prefix=${TEMP_DIR} ${OC_DL_URL} && \
-    mkdir -p ${OC_BIN} && \
-    tar -C ${OC_BIN} -xzf ${TEMP_DIR}/${OC_BIN_TAR} && \
-    chmod a+x ${OC_BIN}/oc
-
-# Add go and oc binary directory to $PATH
 ENV PATH=${PATH}:"/usr/local/go/bin":${GOPATH}/"bin"
 
-# Git identifier to checkout
-ARG TNF_VERSION
-ARG TNF_SRC_URL=$TNF_SRC_URL
-ARG GIT_CHECKOUT_TARGET=$TNF_VERSION
+# Download operator-sdk binary
+ENV OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.26.0 \
+    OSDK_BIN="/usr/local/osdk/bin"
+RUN mkdir -p ${OSDK_BIN} && \
+    curl --location --remote-name ${OPERATOR_SDK_DL_URL}/operator-sdk_linux_amd64 && \
+    mv operator-sdk_linux_amd64 ${OSDK_BIN}/operator-sdk && \
+    chmod +x ${OSDK_BIN}/operator-sdk
 
-# Clone the TNF source repository and checkout the target branch/tag/commit
-RUN git clone --no-single-branch --depth=1 ${TNF_SRC_URL} ${TNF_SRC_DIR}
-RUN git -C ${TNF_SRC_DIR} fetch origin ${GIT_CHECKOUT_TARGET}
-RUN git -C ${TNF_SRC_DIR} checkout ${GIT_CHECKOUT_TARGET}
-
-# Build TNF binary
+# Copy all of the files into the source directory and then switch contexts
+COPY . ${TNF_SRC_DIR}
 WORKDIR ${TNF_SRC_DIR}
 
 RUN make install-tools && \
-	make build-cnf-tests-debug
+	make build-cnf-tests
 
 #  Extract what's needed to run at a seperate location
 RUN mkdir ${TNF_BIN_DIR} && \
@@ -68,6 +56,7 @@ RUN mkdir ${TNF_BIN_DIR} && \
     mkdir -p ${TNF_DIR}/cnf-certification-test/platform/operatingsystem/files && \
     cp cnf-certification-test/platform/operatingsystem/files/rhcos_version_map ${TNF_DIR}/cnf-certification-test/platform/operatingsystem/files/rhcos_version_map
 
+# Switch contexts back to the root TNF directory
 WORKDIR ${TNF_DIR}
 
 # Remove most of the build artefacts
@@ -87,21 +76,21 @@ FROM quay.io/testnetworkfunction/oct:latest AS db
 # TODO run as non-root
 FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
 
+# Copy all of the necessary files over from the TNF_DIR
 ENV TNF_DIR=/usr/tnf
 COPY --from=build ${TNF_DIR} ${TNF_DIR}
 
-# Add go and oc binary directory to $PATH and copy OC exe
-ENV PATH=${PATH}:"/usr/local/go/bin":${GOPATH}/"bin"
-COPY --from=build ${OC_BIN} ${OC_BIN}
+# Add operatorsdk binary to image
+COPY --from=build ${OSDK_BIN} ${OSDK_BIN}
 
 # Update the CNF containers, helm charts and operators DB
-ENV TNF_OFFLINE_DB=/usr/offline-db
-ENV OCT_DB_PATH=/usr/oct/cmd/tnf/fetch
+ENV TNF_OFFLINE_DB=/usr/offline-db \
+    OCT_DB_PATH=/usr/oct/cmd/tnf/fetch
 COPY --from=db ${OCT_DB_PATH} ${TNF_OFFLINE_DB}
 
-ENV TNF_CONFIGURATION_PATH=/usr/tnf/config/tnf_config.yml
-ENV KUBECONFIG=/usr/tnf/kubeconfig/config
-ENV PATH="/usr/local/oc/bin:${PATH}"
+ENV TNF_CONFIGURATION_PATH=/usr/tnf/config/tnf_config.yml \
+    KUBECONFIG=/usr/tnf/kubeconfig/config \
+    PATH="/usr/local/osdk/bin:${PATH}"
 WORKDIR ${TNF_DIR}
 ENV SHELL=/bin/bash
 CMD ["./run-cnf-suites.sh", "-o", "claim", "-f", "diagnostic"]

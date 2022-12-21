@@ -16,6 +16,13 @@
 
 GO_PACKAGES=$(shell go list ./... | grep -v vendor)
 
+# Default values
+REGISTRY_LOCAL?=localhost
+REGISTRY?=quay.io
+TNF_IMAGE_NAME?=cnf-certification-test
+TNF_IMAGE_TAG?=localtest
+RELEASE_VERSION?=4.11
+
 .PHONY:	build \
 	clean \
 	lint \
@@ -100,6 +107,7 @@ build-cnf-tests:
 	PATH=${PATH}:${GOBIN} ginkgo build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" ./cnf-certification-test
 	make build-catalog-md
 
+# build the CNF test binary with debug flags
 build-cnf-tests-debug:
 	PATH=${PATH}:${GOBIN} ginkgo build -gcflags "all=-N -l" -ldflags "${LINKER_TNF_RELEASE_FLAGS} -extldflags '-z relro -z now'" ./cnf-certification-test
 	make build-catalog-md
@@ -134,3 +142,9 @@ get-db:
 	docker run -v ${REPO_DIR}/cmd/tnf/fetch:/tmp/dump:Z --user $(shell id -u):$(shell id -g) --env OCT_DUMP_ONLY=true ${OCT_IMAGE}
 delete-db:
 	rm -rf ${REPO_DIR}/cmd/tnf/fetch
+
+build-image-local:
+	docker build --no-cache \
+		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} \
+		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} \
+		-f Dockerfile .
