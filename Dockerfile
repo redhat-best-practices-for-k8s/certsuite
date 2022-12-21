@@ -1,7 +1,5 @@
 FROM registry.access.redhat.com/ubi8/ubi:latest AS build
 
-ARG OPENSHIFT_VERSION
-ENV OPENSHIFT_VERSION=${OPENSHIFT_VERSION}
 ENV TNF_DIR=/usr/tnf
 ENV TNF_SRC_DIR=${TNF_DIR}/tnf-src
 ENV TNF_BIN_DIR=${TNF_DIR}/cnf-certification-test
