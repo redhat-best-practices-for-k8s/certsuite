@@ -137,11 +137,11 @@ OCT_IMAGE=quay.io/testnetworkfunction/oct:latest
 REPO_DIR=$(shell pwd)
 
 get-db:
-	mkdir -p ${REPO_DIR}/cmd/tnf/fetch
+	mkdir -p ${REPO_DIR}/offline-db
 	docker pull ${OCT_IMAGE}
-	docker run -v ${REPO_DIR}/cmd/tnf/fetch:/tmp/dump:Z --user $(shell id -u):$(shell id -g) --env OCT_DUMP_ONLY=true ${OCT_IMAGE}
+	docker run -v ${REPO_DIR}/offline-db:/tmp/dump:Z --user $(shell id -u):$(shell id -g) --env OCT_DUMP_ONLY=true ${OCT_IMAGE}
 delete-db:
-	rm -rf ${REPO_DIR}/cmd/tnf/fetch
+	rm -rf ${REPO_DIR}/offline-db
 
 build-image-local:
 	docker build --no-cache \
