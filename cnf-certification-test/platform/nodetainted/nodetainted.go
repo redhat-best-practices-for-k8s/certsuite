@@ -19,6 +19,7 @@ package nodetainted
 import (
 	"errors"
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/sirupsen/logrus"
@@ -53,15 +54,22 @@ func NewNodeTaintedTester(context *clientsholder.Context) *NodeTainted {
 	}
 }
 
-func (nt *NodeTainted) GetKernelTaintInfo() (string, error) {
+func (nt *NodeTainted) GetKernelTaintsMask() (uint64, error) {
 	output, err := runCommand(nt.ctx, `cat /proc/sys/kernel/tainted`)
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 	output = strings.ReplaceAll(output, "\n", "")
 	output = strings.ReplaceAll(output, "\r", "")
 	output = strings.ReplaceAll(output, "\t", "")
-	return output, nil
+
+	// Convert o number.
+	taintsMask, err := strconv.ParseUint(output, 10, 64) // base 10 and uint64
+	if err != nil {
+		return 0, fmt.Errorf("failed to decode taints mask %q: %w", output, err)
+	}
+
+	return taintsMask, nil
 }
 
 func (nt *NodeTainted) GetModulesFromNode() []string {
@@ -80,40 +88,45 @@ func (nt *NodeTainted) ModuleInTree(moduleName string) bool {
 	return !strings.Contains(cmdOutput, "O")
 }
 
-var kernelTaints = map[int]string{
+type KernelTaint struct {
+	Description string
+	Letters     string
+}
+
+var kernelTaints = map[int]KernelTaint{
 	// Linux standard kernel taints
-	0:  "proprietary module was loaded",
-	1:  "module was force loaded",
-	2:  "kernel running on an out of specification system",
-	3:  "module was force unloaded",
-	4:  "processor reported a Machine Check Exception (MCE)",
-	5:  "bad page referenced or some unexpected page flags",
-	6:  "taint requested by userspace application",
-	7:  "kernel died recently, i.e. there was an OOPS or BUG",
-	8:  "ACPI table overridden by user",
-	9:  "kernel issued warning",
-	10: "staging driver was loaded",
-	11: "workaround for bug in platform firmware applied",
-	12: "externally-built (“out-of-tree”) module was loaded",
-	13: "unsigned module was loaded",
-	14: "soft lockup occurred",
-	15: "kernel has been live patched",
-	16: "auxiliary taint, defined for and used by distros",
-	17: "kernel was built with the struct randomization plugin",
-	18: "an in-kernel test has been run",
+	0:  {"proprietary module was loaded", "GP"},
+	1:  {"module was force loaded", "F"},
+	2:  {"kernel running on an out of specification system", "S"},
+	3:  {"module was force unloaded", "R"},
+	4:  {"processor reported a Machine Check Exception (MCE)", "M"},
+	5:  {"bad page referenced or some unexpected page flags", "B"},
+	6:  {"taint requested by userspace application", "U"},
+	7:  {"kernel died recently, i.e. there was an OOPS or BUG", "D"},
+	8:  {"ACPI table overridden by user", "A"},
+	9:  {"kernel issued warning", "W"},
+	10: {"staging driver was loaded", "C"},
+	11: {"workaround for bug in platform firmware applied", "I"},
+	12: {"externally-built (“out-of-tree”) module was loaded", "O"},
+	13: {"unsigned module was loaded", "E"},
+	14: {"soft lockup occurred", "L"},
+	15: {"kernel has been live patched", "K"},
+	16: {"auxiliary taint, defined for and used by distros", "X"},
+	17: {"kernel was built with the struct randomization plugin", "T"},
+	18: {"an in-kernel test has been run", "N"},
 
 	// RedHat custom taints for RHEL/CoreOS
 	// https://access.redhat.com/solutions/40594
-	27: "Red Hat extension: Hardware for which support has been removed. / OMGZOMBIES easter egg",
-	28: "Red Hat extension: Unsupported hardware. Refer to \"UNSUPPORTED HARDWARE DEVICE:\" kernel log entry for details",
-	29: "Red Hat extension: Technology Preview code was loaded; cf. Technology Preview features support scope description. Refer to \"TECH PREVIEW:\" kernel log entry for details",
-	30: "Red Hat extension: reserved",
-	31: "Red Hat extension: reserved",
+	27: {"Red Hat extension: Hardware for which support has been removed. / OMGZOMBIES easter egg", "Zrh"},
+	28: {"Red Hat extension: Unsupported hardware. Refer to \"UNSUPPORTED HARDWARE DEVICE:\" kernel log entry for details", "H"},
+	29: {"Red Hat extension: Technology Preview code was loaded; cf. Technology Preview features support scope description. Refer to \"TECH PREVIEW:\" kernel log entry for details", "Tt"},
+	30: {"BPF syscall has either been configured or enabled for unprivileged users/programs", "u"},
+	31: {"BPF syscall has either been configured or enabled for unprivileged users/programs", "u"},
 }
 
 func getTaintMsg(bit int) string {
 	if taintMsg, exists := kernelTaints[bit]; exists {
-		return fmt.Sprintf("%s (tainted bit %d)", taintMsg, bit)
+		return fmt.Sprintf("%s (tainted bit %d)", taintMsg.Description, bit)
 	}
 
 	return fmt.Sprintf("reserved (tainted bit %d)", bit)
@@ -128,6 +141,98 @@ func DecodeKernelTaints(bitmap uint64) []string {
 		}
 	}
 	return taints
+}
+
+func GetBitPosFromLetter(letter string) (int, error) {
+	for bit, taint := range kernelTaints {
+		if strings.Contains(taint.Letters, letter) {
+			return bit, nil
+		}
+	}
+
+	return 0, fmt.Errorf("letter %s does not belong to any known kernel taint", letter)
+}
+
+// GetTaintedBitsByModules helper function to gets, for each module, the taint bits from its taint letters.
+func GetTaintedBitsByModules(tainters map[string]string) (map[int]bool, error) {
+	taintedBits := map[int]bool{}
+
+	for tainter, letters := range tainters {
+		// Save taint bits from this module.
+		for i := range letters {
+			letter := string(letters[i])
+			bit, err := GetBitPosFromLetter(letter)
+			if err != nil {
+				return nil, fmt.Errorf("module %s has invalid taint letter %s: %w", tainter, letter, err)
+			}
+
+			taintedBits[bit] = true
+		}
+	}
+
+	return taintedBits, nil
+}
+
+// GetOtherTaintedBits helper function to get the tainted bits that are not related to
+// any module.
+func GetOtherTaintedBits(taintsMask uint64, taintedBitsByModules map[int]bool) []int {
+	otherTaintedBits := []int{}
+	// Lastly, check that all kernel taint bits come from modules.
+	for i := 0; i < 64; i++ {
+		// helper var that is true if bit "i" is set.
+		bitIsSet := (taintsMask & (1 << i)) > 0
+
+		if bitIsSet && !taintedBitsByModules[i] {
+			otherTaintedBits = append(otherTaintedBits, i)
+		}
+	}
+
+	return otherTaintedBits
+}
+
+// GetTainterModules runs a command in the node to get all the modules that
+// have set a taint bit. The resturn value maps a module to a string of taint
+// letters. Each letter maps to a single bit in the taint mask.
+func (nt *NodeTainted) GetTainterModules() (map[string]string, error) {
+	const (
+		numFields       = 2
+		posModuleName   = 0
+		posModuleTaints = 1
+	)
+
+	command := "modules=`ls /sys/module`; for module_name in $modules; do taint_file=/sys/module/$module_name/taint; if [ -f $taint_file ]; then taints=`cat $taint_file`; if [[ ${#taints} -gt 0 ]]; then echo \"$module_name `cat $taint_file`\"; fi; fi; done"
+	cmdOutput, err := runCommand(nt.ctx, command)
+	if err != nil {
+		return nil, fmt.Errorf("failed to run command: %w", err)
+	}
+
+	lines := strings.Split(cmdOutput, "\n")
+
+	// Parse line by line: "module_name taints"
+	tainters := map[string]string{}
+
+	for _, line := range lines {
+		if line == "" {
+			continue
+		}
+
+		elems := strings.Split(line, " ")
+		if len(elems) != numFields {
+			return nil, fmt.Errorf("failed to parse line %q (output=%s)", line, cmdOutput)
+		}
+
+		moduleName := elems[posModuleName]
+		moduleTaints := elems[posModuleTaints]
+
+		if _, exist := tainters[moduleName]; exist {
+			return nil, fmt.Errorf("module %s (taints %s) has already been parsed", moduleName, moduleTaints)
+		}
+
+		logrus.Infof("module %s has taints %s", moduleName, moduleTaints)
+		tainters[moduleName] = moduleTaints
+	}
+
+	return tainters, nil
 }
 
 func (nt *NodeTainted) GetOutOfTreeModules(modules []string) []string {

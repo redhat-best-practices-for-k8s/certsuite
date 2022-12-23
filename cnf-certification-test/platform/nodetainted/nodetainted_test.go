@@ -103,14 +103,17 @@ func TestDecodeKernelTaints(t *testing.T) {
 
 		// Bits 0 and 18
 		{
-			taintsBitMask:  (1 << 0) | (1 << 18),
-			expectedTaints: []string{"proprietary module was loaded (tainted bit 0)", "an in-kernel test has been run (tainted bit 18)"},
+			taintsBitMask: (1 << 0) | (1 << 18),
+			expectedTaints: []string{"proprietary module was loaded (tainted bit 0)",
+				"an in-kernel test has been run (tainted bit 18)"},
 		},
 
 		// Bits 0, 24 and 30
 		{
-			taintsBitMask:  (1 << 0) | (1 << 24) | (1 << 30),
-			expectedTaints: []string{"proprietary module was loaded (tainted bit 0)", "reserved (tainted bit 24)", "Red Hat extension: reserved (tainted bit 30)"},
+			taintsBitMask: (1 << 0) | (1 << 24) | (1 << 30),
+			expectedTaints: []string{"proprietary module was loaded (tainted bit 0)",
+				"reserved (tainted bit 24)",
+				"BPF syscall has either been configured or enabled for unprivileged users/programs (tainted bit 30)"},
 		},
 
 		// RH's bit 29
@@ -122,7 +125,7 @@ func TestDecodeKernelTaints(t *testing.T) {
 		// RH's reserved bit 31
 		{
 			taintsBitMask:  1 << 31,
-			expectedTaints: []string{"Red Hat extension: reserved (tainted bit 31)"},
+			expectedTaints: []string{"BPF syscall has either been configured or enabled for unprivileged users/programs (tainted bit 31)"},
 		},
 	}
 
@@ -161,36 +164,49 @@ func TestGetOutOfTreeModules(t *testing.T) {
 	}
 }
 
+//nolint:funlen
 func TestGetKernelTaintInfo(t *testing.T) {
 	testCases := []struct {
-		runCommandOutput string
-		runCommandError  error
-		funcOutput       string
-		funcErr          error
+		runCommandOutput   string
+		runCommandError    error
+		expectedTaintsMask uint64
+		expectedError      error
 	}{
 		{
-			runCommandOutput: "test1",
-			runCommandError:  nil,
-			funcOutput:       "test1",
-			funcErr:          nil,
+			runCommandOutput:   "0",
+			runCommandError:    nil,
+			expectedTaintsMask: 0,
+			expectedError:      nil,
 		},
 		{
-			runCommandOutput: "test1\n",
-			runCommandError:  nil,
-			funcOutput:       "test1",
-			funcErr:          nil,
+			runCommandOutput:   "0\n",
+			runCommandError:    nil,
+			expectedTaintsMask: 0,
+			expectedError:      nil,
 		},
 		{
-			runCommandOutput: "test1\r\t",
-			runCommandError:  nil,
-			funcOutput:       "test1",
-			funcErr:          nil,
+			runCommandOutput:   "0\r\t",
+			runCommandError:    nil,
+			expectedTaintsMask: 0,
+			expectedError:      nil,
 		},
 		{
-			runCommandOutput: "test1",
-			runCommandError:  errors.New("this is an error"),
-			funcOutput:       "",
-			funcErr:          errors.New("this is an error"),
+			runCommandOutput:   "1024",
+			runCommandError:    nil,
+			expectedTaintsMask: 1024,
+			expectedError:      nil,
+		},
+		{
+			runCommandOutput:   "65536",
+			runCommandError:    nil,
+			expectedTaintsMask: 65536,
+			expectedError:      nil,
+		},
+		{
+			runCommandOutput:   "test1",
+			runCommandError:    errors.New("this is an error"),
+			expectedTaintsMask: 0,
+			expectedError:      errors.New("this is an error"),
 		},
 	}
 
@@ -200,9 +216,9 @@ func TestGetKernelTaintInfo(t *testing.T) {
 			return tc.runCommandOutput, tc.runCommandError
 		}
 		nt := NewNodeTaintedTester(nil)
-		result, err := nt.GetKernelTaintInfo()
-		assert.Equal(t, tc.funcOutput, result)
-		assert.Equal(t, tc.funcErr, err)
+		result, err := nt.GetKernelTaintsMask()
+		assert.Equal(t, tc.expectedTaintsMask, result)
+		assert.Equal(t, err, tc.expectedError)
 		runCommand = origFunc
 	}
 }
@@ -232,6 +248,53 @@ func TestGetModulesFromNode(t *testing.T) {
 		}
 		nt := NewNodeTaintedTester(nil)
 		assert.Equal(t, tc.expectedOutput, nt.GetModulesFromNode())
+
+		runCommand = origFunc
+	}
+}
+
+func TestGetTainterModules(t *testing.T) {
+	testCases := []struct {
+		runCommandOutput string
+		runCommandError  error
+		expectedOutput   map[string]string
+	}{
+		{
+			runCommandOutput: "module1 O",
+			runCommandError:  nil,
+			expectedOutput:   map[string]string{"module1": "O"},
+		},
+		{
+			runCommandOutput: "module1 O\nmodule2 E\n",
+			runCommandError:  nil,
+			expectedOutput:   map[string]string{"module1": "O", "module2": "E"},
+		},
+		{
+			runCommandOutput: "module1 OE\nmodule2 O\nmodule3 E",
+			runCommandError:  nil,
+			expectedOutput:   map[string]string{"module1": "OE", "module2": "O", "module3": "E"},
+		},
+		{
+			runCommandOutput: "",
+			runCommandError:  nil,
+			expectedOutput:   map[string]string{},
+		},
+		{
+			runCommandOutput: "\n",
+			runCommandError:  nil,
+			expectedOutput:   map[string]string{},
+		},
+	}
+
+	for _, tc := range testCases {
+		origFunc := runCommand
+		runCommand = func(ctx *clientsholder.Context, cmd string) (string, error) {
+			return tc.runCommandOutput, tc.runCommandError
+		}
+		nt := NewNodeTaintedTester(nil)
+		tainters, err := nt.GetTainterModules()
+		assert.Nil(t, err)
+		assert.Equal(t, tc.expectedOutput, tainters)
 
 		runCommand = origFunc
 	}
