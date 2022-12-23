@@ -204,7 +204,7 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 	}
 }
 
-//nolint:funlen
+//nolint:funlen,gocyclo
 func testTainted(env *provider.TestEnvironment) {
 	// errNodes has nodes that failed some operation while checking kernel taints.
 	errNodes := []string{}
@@ -264,7 +264,9 @@ func testTainted(env *provider.TestEnvironment) {
 		badNodeModules := []string{}
 		for tainter := range tainters {
 			// If module is not in the whitelist, mark it as offender.
-			if _, exist := whiteListedModules[tainter]; !exist {
+			if whiteListedModules[tainter] {
+				logrus.Infof("Node %s module %s is tainting the kernel but it has been whitelisted", nodeName, tainter)
+			} else {
 				badNodeModules = append(badNodeModules, tainter)
 			}
 		}
@@ -281,9 +283,13 @@ func testTainted(env *provider.TestEnvironment) {
 		}
 
 		// Lastly, check that all kernel taint bits come from modules.
-		otherTaints[nodeName] = nodetainted.GetOtherTaintedBits(taintsMask, taintedBitsByModules)
-		for _, taintedBit := range otherTaints[nodeName] {
+		otherKernelTaints := nodetainted.GetOtherTaintedBits(taintsMask, taintedBitsByModules)
+		for _, taintedBit := range otherKernelTaints {
 			tnf.ClaimFilePrintf("Node %s - taint bit %d is set but it's not caused by any module.", nodeName, taintedBit)
+		}
+
+		if len(otherKernelTaints) > 0 {
+			otherTaints[nodeName] = otherKernelTaints
 		}
 	}
 
