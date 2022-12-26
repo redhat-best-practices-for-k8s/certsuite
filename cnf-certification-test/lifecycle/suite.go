@@ -17,7 +17,6 @@
 package lifecycle
 
 import (
-	"context"
 	"fmt"
 	"time"
 
@@ -32,14 +31,12 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/tolerations"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/volumes"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/postmortem"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	corev1 "k8s.io/api/core/v1"
-	apiv1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 const (
@@ -584,23 +581,36 @@ func TestPodTolerationBypass(env *provider.TestEnvironment) {
 	testhelper.AddTestResultLog("Non-compliant", podsWithRestrictedTolerationsNotDefault, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 func testStorageRequiredPods(env *provider.TestEnvironment) {
-	oc := clientsholder.GetClientsHolder()
-	var nonCompliantPods []*provider.Pod
-	for _, pod := range env.Pods {
-		for _, podOwner := range pod.ObjectMeta.GetOwnerReferences() {
-			if podOwner.Kind != statefulSet {
+	var podsWithLocalStorage []string
+	var StorageClasses = env.StorageClasses
+	var Pvc = env.PersistentVolumeClaims
+	for _, put := range env.Pods {
+		for pvIndex := range put.Spec.Volumes {
+			// Skip any nil persistentClaims.
+			volume := put.Spec.Volumes[pvIndex]
+			if volume.PersistentVolumeClaim == nil {
 				continue
 			}
-			statefulset, err := oc.K8sClient.AppsV1().StatefulSets(pod.Namespace).Get(context.TODO(), podOwner.Name, apiv1.GetOptions{})
-			if err != nil {
-				tnf.ClaimFilePrintf(err.Error())
-				continue
-			}
-			if statefulset.Spec.ServiceName == localStorage {
-				nonCompliantPods = append(nonCompliantPods, pod)
-				continue
+			// We have the list of pods/volumes/claims.
+			// Look through the storageClass list for a match.
+			for i := range Pvc {
+				if Pvc[i].Name == put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName {
+					for j := range StorageClasses {
+						if Pvc[i].Spec.StorageClassName != nil && StorageClasses[j].Name == *Pvc[i].Spec.StorageClassName {
+							tnf.ClaimFilePrintf("%s has been found to use a local storage enabled storageClass.\n Pvc_name: %s, Storageclass_name : %s, Provisionner_name: %s", put.String(), put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName,
+								StorageClasses[j].Name, StorageClasses[j].Provisioner)
+							podsWithLocalStorage = append(podsWithLocalStorage, put.String())
+							break
+						}
+						tnf.ClaimFilePrintf("%s has been not found to use a local storage enabled storageClass.\n Pvc_name: %s, Storageclass_name : %s, Provisionner_name: %s", put.String(), put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName,
+							StorageClasses[j].Name, StorageClasses[j].Provisioner)
+					}
+				}
 			}
 		}
 	}
-	testhelper.AddTestResultLog("Non-compliant", nonCompliantPods, tnf.ClaimFilePrintf, ginkgo.Fail)
+
+	if n := len(podsWithLocalStorage); n > 0 {
+		testhelper.AddTestResultLog("Non-compliant", podsWithLocalStorage, tnf.ClaimFilePrintf, ginkgo.Fail)
+	}
 }

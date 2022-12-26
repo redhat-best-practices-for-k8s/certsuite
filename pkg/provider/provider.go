@@ -39,6 +39,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	networkingv1 "k8s.io/api/networking/v1"
 	policyv1 "k8s.io/api/policy/v1"
+	storagev1 "k8s.io/api/storage/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -108,6 +109,7 @@ type TestEnvironment struct { // rename this with testTarget
 	IstioServiceMesh       bool
 	ValidProtocolNames     []string
 	DaemonsetFailedToSpawn bool
+	StorageList            []string
 }
 
 type MachineConfig struct {
@@ -196,10 +198,8 @@ func buildTestEnvironment() { //nolint:funlen
 	}
 
 	data := autodiscover.DoAutoDiscover()
-
 	// OpenshiftVersion needs to be set asap, as other helper functions will use it here.
 	env.OpenshiftVersion = data.OpenshiftVersion
-
 	env.Config = data.TestData
 	env.Crds = data.Crds
 	env.AllInstallPlans = data.AllInstallPlans
@@ -261,6 +261,7 @@ func buildTestEnvironment() { //nolint:funlen
 		env.StatefulSets = append(env.StatefulSets, aNewStatefulSet)
 	}
 	env.HorizontalScaler = data.Hpas
+	env.StorageClasses = data.StorageClasses
 
 	operators := createOperators(data.Csvs, data.Subscriptions, data.AllInstallPlans, data.AllCatalogSources, false, false, true)
 	env.Operators = operators

@@ -19,7 +19,10 @@ package autodiscover
 import (
 	"context"
 
+	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	corev1 "k8s.io/api/core/v1"
+	storagev1 "k8s.io/api/storage/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 )
@@ -38,4 +41,14 @@ func getPersistentVolumeClaims(oc corev1client.CoreV1Interface) ([]corev1.Persis
 		return nil, err
 	}
 	return pvcs.Items, nil
+}
+
+func getAllStorageClasses() ([]storagev1.StorageClass, error) {
+	o := clientsholder.GetClientsHolder()
+	storageclasslist, err := o.K8sClient.StorageV1().StorageClasses().List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		logrus.Errorln("Error when listing", "err: ", err)
+		return nil, err
+	}
+	return storageclasslist.Items, nil
 }

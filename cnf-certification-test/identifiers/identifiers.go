@@ -255,6 +255,18 @@ The label value is not important, only its presence.`,
 		false,
 		TagExtended)
 
+	TestStorageRequiredPods = AddCatalogEntry(
+		"no-pvs-on-localstorage",
+		common.LifecycleTestKey,
+		`Checks that pods do not place persistent volumes on local storage.`,
+		StorageRequiredPods,
+		InformativeResult,
+		NoDocumentedProcess,
+		VersionOne,
+		bestPracticeDocV1dot4URL+" Section 4.6.24",
+		false,
+		TagExtended)
+
 	TestStartupIdentifier = AddCatalogEntry(
 		"container-startup",
 		common.LifecycleTestKey,

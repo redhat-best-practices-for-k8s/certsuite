@@ -35,6 +35,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	networkingv1 "k8s.io/api/networking/v1"
 	policyv1 "k8s.io/api/policy/v1"
+	storagev1 "k8s.io/api/storage/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -83,6 +84,7 @@ type DiscoveredTestData struct {
 	Nodes                  *corev1.NodeList
 	Istio                  bool
 	ValidProtocolNames     []string
+	StorageClasses         []storagev1.StorageClass
 	ServicesIgnoreList     []string
 }
 
@@ -120,6 +122,10 @@ func DoAutoDiscover() DiscoveredTestData {
 		logrus.Fatalf("Cannot load configuration, error: %v", err)
 	}
 	oc := clientsholder.GetClientsHolder()
+	data.StorageClasses, err = getAllStorageClasses()
+	if err != nil {
+		logrus.Fatalf("Failed to retrieve storageClasses - err: %v", err)
+	}
 	data.AllNamespaces, _ = getAllNamespaces(oc.K8sClient.CoreV1())
 	data.AllSubscriptions = findSubscriptions(oc.OlmClient, []string{""})
 	data.AllCsvs = getAllOperators(oc.OlmClient)
