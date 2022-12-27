@@ -570,16 +570,17 @@ func testStorageRequiredPods(env *provider.TestEnvironment) {
 	var nonCompliantPods []*provider.Pod
 	for _, pod := range env.Pods {
 		for _, podOwner := range pod.ObjectMeta.GetOwnerReferences() {
-			if podOwner.Kind == statefulSet {
-				statefulset, err := oc.K8sClient.AppsV1().StatefulSets(pod.Namespace).Get(context.TODO(), podOwner.Name, apiv1.GetOptions{})
-				if err != nil {
-					tnf.ClaimFilePrintf(err.Error())
-					continue
-				}
-				if statefulset.Spec.ServiceName == localStorage {
-					nonCompliantPods = append(nonCompliantPods, pod)
-					continue
-				}
+			if podOwner.Kind != statefulSet {
+				continue
+			}
+			statefulset, err := oc.K8sClient.AppsV1().StatefulSets(pod.Namespace).Get(context.TODO(), podOwner.Name, apiv1.GetOptions{})
+			if err != nil {
+				tnf.ClaimFilePrintf(err.Error())
+				continue
+			}
+			if statefulset.Spec.ServiceName == localStorage {
+				nonCompliantPods = append(nonCompliantPods, pod)
+				continue
 			}
 		}
 	}

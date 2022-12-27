@@ -213,7 +213,7 @@ The label value is not important, only its presence.`,
 	TestStorageRequiredPods = AddCatalogEntry(
 		"storage-required-pods",
 		common.LifecycleTestKey,
-		`Checks that pods not place persistent volumes on local storage.`,
+		`Checks that pods do not place persistent volumes on local storage.`,
 		StorageRequiredPods,
 		InformativeResult,
 		VersionOne,
