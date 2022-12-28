@@ -17,6 +17,7 @@
 package lifecycle
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -31,12 +32,14 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/tolerations"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/volumes"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/postmortem"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	corev1 "k8s.io/api/core/v1"
+	apiv1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 const (
@@ -44,6 +47,8 @@ const (
 	timeoutPodRecreationPerPod = time.Minute
 	timeoutPodSetReady         = 7 * time.Minute
 	minWorkerNodesForLifecycle = 2
+	statefulSet                = "StatefulSet"
+	localStorage               = "local-storage"
 )
 
 // All actual test code belongs below here.  Utilities belong above.
@@ -170,6 +175,11 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestPodTolerationBypass(&env)
+	})
+
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStorageRequiredPods)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testStorageRequiredPods(&env)
 	})
 })
 
@@ -554,4 +564,25 @@ func TestPodTolerationBypass(env *provider.TestEnvironment) {
 	}
 
 	testhelper.AddTestResultLog("Non-compliant", podsWithRestrictedTolerationsNotDefault, tnf.ClaimFilePrintf, ginkgo.Fail)
+}
+func testStorageRequiredPods(env *provider.TestEnvironment) {
+	oc := clientsholder.GetClientsHolder()
+	var nonCompliantPods []*provider.Pod
+	for _, pod := range env.Pods {
+		for _, podOwner := range pod.ObjectMeta.GetOwnerReferences() {
+			if podOwner.Kind != statefulSet {
+				continue
+			}
+			statefulset, err := oc.K8sClient.AppsV1().StatefulSets(pod.Namespace).Get(context.TODO(), podOwner.Name, apiv1.GetOptions{})
+			if err != nil {
+				tnf.ClaimFilePrintf(err.Error())
+				continue
+			}
+			if statefulset.Spec.ServiceName == localStorage {
+				nonCompliantPods = append(nonCompliantPods, pod)
+				continue
+			}
+		}
+	}
+	testhelper.AddTestResultLog("Non-compliant", nonCompliantPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }

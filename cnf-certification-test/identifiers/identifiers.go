@@ -124,6 +124,7 @@ var (
 	TestNetAdminIdentifier                   claim.Identifier
 	TestNetRawIdentifier                     claim.Identifier
 	TestIpcLockIdentifier                    claim.Identifier
+	TestStorageRequiredPods                  claim.Identifier
 )
 
 //nolint:funlen
@@ -205,6 +206,16 @@ The label value is not important, only its presence.`,
 		AffinityRequiredRemediation,
 		InformativeResult,
 		NoDocumentedProcess,
+		VersionOne,
+		bestPracticeDocV1dot4URL+" Section 4.6.24",
+		TagExtended)
+
+	TestStorageRequiredPods = AddCatalogEntry(
+		"storage-required-pods",
+		common.LifecycleTestKey,
+		`Checks that pods do not place persistent volumes on local storage.`,
+		StorageRequiredPods,
+		InformativeResult,
 		VersionOne,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		TagExtended)
