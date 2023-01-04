@@ -217,20 +217,6 @@ Suggested Remediation|Change the security context to be one of the 4 that are al
 Best Practice Reference|https://TODO Section 4.5
 Exception Process|If the contaier had the right configuration of the allowed category from the 4 list so the test will pass the  	list is on page 51 on the CNF Security Context Constraints (SCC) section 4.5(Allowed categories are category 1 and categorynoid0),  	Applications MUST use one of the approved Security Context Constraints.
 Tags|extended
-#### security-context-capabilities-check
-
-Property|Description
----|---
-Test Case Name|security-context-capabilities-check
-Test Case Label|access-control-security-context-capabilities-check
-Unique ID|http://test-network-function.com/testcases/access-control/security-context-capabilities-check
-Version|v1.0.0
-Description|http://test-network-function.com/testcases/access-control/security-context-capabilities-check Tests that the following capabilities are not granted: 			- NET_ADMIN 			- SYS_ADMIN 			- NET_RAW 			- IPC_LOCK 
-Result Type|normative
-Suggested Remediation|Remove the following capabilities from the container/pod definitions: NET_ADMIN SCC, SYS_ADMIN SCC, NET_RAW SCC, IPC_LOCK SCC
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
-Exception Process|Identify the pod that is needing special capabilities and document why  
-Tags|common
 #### security-context-non-root-user-check
 
 Property|Description
@@ -447,6 +433,20 @@ Suggested Remediation|Ensure that the containers under test are using IfNotPrese
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf  Section 12.6
 Exception Process|There is no documented exception process for this.
 Tags|common
+#### ipc-lock-capability-check
+
+Property|Description
+---|---
+Test Case Name|ipc-lock-capability-check
+Test Case Label|lifecycle-ipc-lock-capability-check
+Unique ID|http://test-network-function.com/testcases/lifecycle/ipc-lock-capability-check
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/lifecycle/ipc-lock-capability-check Ensures that containers do not use IPC_LOCK capability
+Result Type|normative
+Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
+Exception Process|Identify the pod that is needing special capabilities and document why  
+Tags|common
 #### liveness-probe
 
 Property|Description
@@ -460,6 +460,34 @@ Result Type|normative
 Suggested Remediation|Add a liveness probe to deployed containers
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.16, 12.1 and 12.5
 Exception Process|There is no documented exception process for this.
+Tags|common
+#### net-admin-capability-check
+
+Property|Description
+---|---
+Test Case Name|net-admin-capability-check
+Test Case Label|lifecycle-net-admin-capability-check
+Unique ID|http://test-network-function.com/testcases/lifecycle/net-admin-capability-check
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/lifecycle/net-admin-capability-check Ensures that containers do not use NET_ADMIN capability
+Result Type|normative
+Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
+Exception Process|Identify the pod that is needing special capabilities and document why  
+Tags|common
+#### net-raw-capability-check
+
+Property|Description
+---|---
+Test Case Name|net-raw-capability-check
+Test Case Label|lifecycle-net-raw-capability-check
+Unique ID|http://test-network-function.com/testcases/lifecycle/net-raw-capability-check
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/lifecycle/net-raw-capability-check Ensures that containers do not use NET_RAW capability
+Result Type|normative
+Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
+Exception Process|Identify the pod that is needing special capabilities and document why  
 Tags|common
 #### persistent-volume-reclaim-policy
 
@@ -586,6 +614,34 @@ Result Type|normative
 Suggested Remediation|Ensure CNF statefulsets/replica sets can scale in/out successfully.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
+Tags|common
+#### storage-required-pods
+
+Property|Description
+---|---
+Test Case Name|storage-required-pods
+Test Case Label|lifecycle-storage-required-pods
+Unique ID|http://test-network-function.com/testcases/lifecycle/storage-required-pods
+Version|https://TODO Section 4.6.24
+Description|http://test-network-function.com/testcases/lifecycle/storage-required-pods Checks that pods do not place persistent volumes on local storage.
+Result Type|informative
+Suggested Remediation|If the kind of pods is StatefulSet, so we need to make sure that servicename is not local-storage.
+Best Practice Reference|extended
+Exception Process|v1.0.0
+Tags|common
+#### sys-admin-capability-check
+
+Property|Description
+---|---
+Test Case Name|sys-admin-capability-check
+Test Case Label|lifecycle-sys-admin-capability-check
+Unique ID|http://test-network-function.com/testcases/lifecycle/sys-admin-capability-check
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/lifecycle/sys-admin-capability-check Ensures that containers do not use SYS_ADMIN capability
+Result Type|normative
+Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
+Exception Process|Identify the pod that is needing special capabilities and document why  
 Tags|common
 
 ### manageability
