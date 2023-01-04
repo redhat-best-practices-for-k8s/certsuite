@@ -8,8 +8,14 @@
       
       
       
+      
+        <link rel="prev" href="../configuration/">
+      
+      
+        <link rel="next" href="../test-container/">
+      
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.10">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.2">
     
     
       
@@ -17,11 +23,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.975780f9.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.f56500e0.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
-        
       
       
 
@@ -109,8 +114,6 @@
       <form class="md-header__option" data-md-component="palette">
         
           
-          
-          
           <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
           
             <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
@@ -118,8 +121,6 @@
             </label>
           
         
-          
-          
           
           <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
           
@@ -784,10 +785,9 @@
                 
                   
 
-  <a href="https://github.com/test-network-function/cnf-certification-test/edit/master/docs/runtime-env.md" title="Edit this page" class="md-content__button md-icon">
-    
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
-  </a>
+  
+  
+
 
 
 <h1 id="runtime-environment-variables">Runtime environment variables<a class="headerlink" href="#runtime-environment-variables" title="Permanent link">&para;</a></h1>
@@ -795,20 +795,20 @@
 <h2 id="ocp-412-labels"><abbr title="OpenShift Container Platform">OCP</abbr> &gt;=4.12 Labels<a class="headerlink" href="#ocp-412-labels" title="Permanent link">&para;</a></h2>
 <p>The following labels need to be added to your default namespace in your cluster
 if you are running <abbr title="OpenShift Container Platform">OCP</abbr> &gt;=4.12:
-<div class="highlight"><pre><span></span><code>pod-security.kubernetes.io/enforce: privileged
-pod-security.kubernetes.io/enforce-version: latest
+<div class="highlight"><pre><span></span><code>pod-security.kubernetes.io/enforce:<span class="w"> </span>privileged
+pod-security.kubernetes.io/enforce-version:<span class="w"> </span>latest
 </code></pre></div></p>
 <p>You can manually label the namespace with:
-<div class="highlight"><pre><span></span><code>oc label namespace/default pod-security.kubernetes.io/enforce<span class="o">=</span>privileged
-oc label namespace/default pod-security.kubernetes.io/enforce-version<span class="o">=</span>latest
+<div class="highlight"><pre><span></span><code>oc<span class="w"> </span>label<span class="w"> </span>namespace/default<span class="w"> </span>pod-security.kubernetes.io/enforce<span class="o">=</span>privileged
+oc<span class="w"> </span>label<span class="w"> </span>namespace/default<span class="w"> </span>pod-security.kubernetes.io/enforce-version<span class="o">=</span>latest
 </code></pre></div></p>
 <h2 id="disable-intrusive-tests">Disable intrusive tests<a class="headerlink" href="#disable-intrusive-tests" title="Permanent link">&para;</a></h2>
 <p>To skip intrusive tests which may disrupt cluster operations, issue the
 following:
-<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">TNF_NON_INTRUSIVE_ONLY</span><span class="o">=</span><span class="nb">true</span>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">TNF_NON_INTRUSIVE_ONLY</span><span class="o">=</span><span class="nb">true</span>
 </code></pre></div></p>
 <p>Likewise, to enable intrusive tests, set the following:
-<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">TNF_NON_INTRUSIVE_ONLY</span><span class="o">=</span><span class="nb">false</span>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">TNF_NON_INTRUSIVE_ONLY</span><span class="o">=</span><span class="nb">false</span>
 </code></pre></div>
 Intrusive tests are enabled by default.</p>
 <h2 id="disconnected-environment">Disconnected environment<a class="headerlink" href="#disconnected-environment" title="Permanent link">&para;</a></h2>
@@ -817,7 +817,7 @@ the local repo. For those environments, the partner pod image
 <code>quay.io/testnetworkfunction/cnf-test-partner</code> and debug pod image
 <code>quay.io/testnetworkfunction/debug-partner</code> should be mirrored and
 <code>TNF_PARTNER_REPO</code> should be set to the local repo, e.g.:
-<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">TNF_PARTNER_REPO</span><span class="o">=</span>registry.dfwt5g.lab:5000/testnetworkfunction
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">TNF_PARTNER_REPO</span><span class="o">=</span>registry.dfwt5g.lab:5000/testnetworkfunction
 </code></pre></div></p>
 <p>Note that you can also specify the debug pod image to use with <code>SUPPORT_IMAGE</code>
 environment variable, default to <code>debug-partner:latest</code>.</p>
@@ -842,42 +842,6 @@ environment variable, default to <code>debug-partner:latest</code>.</p>
       
         <footer class="md-footer">
   
-    
-    <nav class="md-footer__inner md-grid" aria-label="Footer" >
-      
-        
-        <a href="../configuration/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Test Configuration" rel="prev">
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
-          </div>
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              Test Configuration
-            </div>
-          </div>
-        </a>
-      
-      
-        
-        <a href="../test-container/" class="md-footer__link md-footer__link--next" aria-label="Next: Prebuilt container" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              Prebuilt container
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
-          </div>
-        </a>
-      
-    </nav>
-  
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
@@ -899,12 +863,11 @@ environment variable, default to <code>debug-partner:latest</code>.</p>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "content.tooltips", "content.code.annotate"], "search": "../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "content.tooltips", "content.code.annotate"], "search": "../assets/javascripts/workers/search.12658920.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.5a2dcb6a.min.js"></script>
+      <script src="../assets/javascripts/bundle.5cf534bf.min.js"></script>
       
-    
     
   </body>
 </html>
