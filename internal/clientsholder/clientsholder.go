@@ -55,6 +55,7 @@ type ClientsHolder struct {
 	K8sNetworkingClient  networkingv1.NetworkingV1Interface
 	MachineCfg           ocpMachine.Interface
 	MergedKubeConfigFile string
+	KubeConfig           []byte
 	ready                bool
 }
 
@@ -167,12 +168,20 @@ func createTempFile(prefix string) (file *os.File, err error) {
 	return file, nil
 }
 
+func createByteArrayKubeConfig(kubeConfig *clientcmdapi.Config) ([]byte, error) {
+	yamlBytes, err := clientcmd.Write(*kubeConfig)
+	if err != nil {
+		return []byte{}, fmt.Errorf("failed to generate yaml bytes from kubeconfig: %w", err)
+	}
+	return yamlBytes, nil
+}
+
 // createMergedKubeConfigFile creates a merged kube config file in the system's
 // temporary folder, e.g.: /tmp/tnf-merged-kubeconfig-730845179
 func createMergedKubeConfigFile(kubeConfig *clientcmdapi.Config) (filePath string, err error) {
-	yamlBytes, err := clientcmd.Write(*kubeConfig)
+	yamlBytes, err := createByteArrayKubeConfig(kubeConfig)
 	if err != nil {
-		return "", fmt.Errorf("failed to generate yaml bytes from kubeconfig: %w", err)
+		return "", err
 	}
 
 	file, err := createTempFile("tnf-merged-kubeconfig-*")
@@ -223,6 +232,11 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 		return nil, fmt.Errorf("failed to create merged kube config file: %w", err)
 	}
 	logrus.Infof("Merged kube config file: %s", clientsHolder.MergedKubeConfigFile)
+
+	clientsHolder.KubeConfig, err = createByteArrayKubeConfig(&kubeRawConfig)
+	if err != nil {
+		return nil, fmt.Errorf("failed to byte array kube config reference: %w", err)
+	}
 
 	DefaultTimeout := 10 * time.Second
 	clientsHolder.RestConfig.Timeout = DefaultTimeout
