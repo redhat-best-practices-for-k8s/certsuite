@@ -264,7 +264,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 
 	TestNetAdminIdentifier = AddCatalogEntry(
 		"net-admin-capability-check",
-		common.LifecycleTestKey,
+		common.AccessControlTestKey,
 		`Ensures that containers do not use NET_ADMIN capability`,
 		SecConRemediation,
 		NormativeResult,
@@ -275,7 +275,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 
 	TestSysAdminIdentifier = AddCatalogEntry(
 		"sys-admin-capability-check",
-		common.LifecycleTestKey,
+		common.AccessControlTestKey,
 		`Ensures that containers do not use SYS_ADMIN capability`,
 		SecConRemediation,
 		NormativeResult,
@@ -286,7 +286,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 
 	TestIpcLockIdentifier = AddCatalogEntry(
 		"ipc-lock-capability-check",
-		common.LifecycleTestKey,
+		common.AccessControlTestKey,
 		`Ensures that containers do not use IPC_LOCK capability`,
 		SecConRemediation,
 		NormativeResult,
@@ -297,7 +297,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 
 	TestNetRawIdentifier = AddCatalogEntry(
 		"net-raw-capability-check",
-		common.LifecycleTestKey,
+		common.AccessControlTestKey,
 		`Ensures that containers do not use NET_RAW capability`,
 		SecConRemediation,
 		NormativeResult,

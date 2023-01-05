@@ -35,6 +35,20 @@ Suggested Remediation|Remove hostPort configuration from the container
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.6
 Exception Process|There is no documented exception process for this.
 Tags|common
+#### ipc-lock-capability-check
+
+Property|Description
+---|---
+Test Case Name|ipc-lock-capability-check
+Test Case Label|access-control-ipc-lock-capability-check
+Unique ID|http://test-network-function.com/testcases/access-control/ipc-lock-capability-check
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/access-control/ipc-lock-capability-check Ensures that containers do not use IPC_LOCK capability
+Result Type|normative
+Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
+Exception Process|Identify the pod that is needing special capabilities and document why  
+Tags|common
 #### namespace
 
 Property|Description
@@ -63,6 +77,34 @@ Suggested Remediation|Apply a ResourceQuota to the namespace your CNF is running
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.8
 Exception Process|There is no documented exception process for this.
 Tags|common,telco
+#### net-admin-capability-check
+
+Property|Description
+---|---
+Test Case Name|net-admin-capability-check
+Test Case Label|access-control-net-admin-capability-check
+Unique ID|http://test-network-function.com/testcases/access-control/net-admin-capability-check
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/access-control/net-admin-capability-check Ensures that containers do not use NET_ADMIN capability
+Result Type|normative
+Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
+Exception Process|Identify the pod that is needing special capabilities and document why  
+Tags|common
+#### net-raw-capability-check
+
+Property|Description
+---|---
+Test Case Name|net-raw-capability-check
+Test Case Label|access-control-net-raw-capability-check
+Unique ID|http://test-network-function.com/testcases/access-control/net-raw-capability-check
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/access-control/net-raw-capability-check Ensures that containers do not use NET_RAW capability
+Result Type|normative
+Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
+Exception Process|Identify the pod that is needing special capabilities and document why  
+Tags|common
 #### no-1337-uid
 
 Property|Description
@@ -259,6 +301,20 @@ Suggested Remediation|Ensure that no SSH daemons are running inside a pod
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.12
 Exception Process|There is no documented exception process for this.
 Tags|common,telco
+#### sys-admin-capability-check
+
+Property|Description
+---|---
+Test Case Name|sys-admin-capability-check
+Test Case Label|access-control-sys-admin-capability-check
+Unique ID|http://test-network-function.com/testcases/access-control/sys-admin-capability-check
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/access-control/sys-admin-capability-check Ensures that containers do not use SYS_ADMIN capability
+Result Type|normative
+Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
+Exception Process|Identify the pod that is needing special capabilities and document why  
+Tags|common
 #### sys-nice-realtime-capability
 
 Property|Description
@@ -433,20 +489,6 @@ Suggested Remediation|Ensure that the containers under test are using IfNotPrese
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf  Section 12.6
 Exception Process|There is no documented exception process for this.
 Tags|common,telco
-#### ipc-lock-capability-check
-
-Property|Description
----|---
-Test Case Name|ipc-lock-capability-check
-Test Case Label|lifecycle-ipc-lock-capability-check
-Unique ID|http://test-network-function.com/testcases/lifecycle/ipc-lock-capability-check
-Version|v1.0.0
-Description|http://test-network-function.com/testcases/lifecycle/ipc-lock-capability-check Ensures that containers do not use IPC_LOCK capability
-Result Type|normative
-Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
-Exception Process|Identify the pod that is needing special capabilities and document why  
-Tags|common
 #### liveness-probe
 
 Property|Description
@@ -461,34 +503,6 @@ Suggested Remediation|Add a liveness probe to deployed containers
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.16, 12.1 and 12.5
 Exception Process|There is no documented exception process for this.
 Tags|common,telco
-#### net-admin-capability-check
-
-Property|Description
----|---
-Test Case Name|net-admin-capability-check
-Test Case Label|lifecycle-net-admin-capability-check
-Unique ID|http://test-network-function.com/testcases/lifecycle/net-admin-capability-check
-Version|v1.0.0
-Description|http://test-network-function.com/testcases/lifecycle/net-admin-capability-check Ensures that containers do not use NET_ADMIN capability
-Result Type|normative
-Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
-Exception Process|Identify the pod that is needing special capabilities and document why  
-Tags|common
-#### net-raw-capability-check
-
-Property|Description
----|---
-Test Case Name|net-raw-capability-check
-Test Case Label|lifecycle-net-raw-capability-check
-Unique ID|http://test-network-function.com/testcases/lifecycle/net-raw-capability-check
-Version|v1.0.0
-Description|http://test-network-function.com/testcases/lifecycle/net-raw-capability-check Ensures that containers do not use NET_RAW capability
-Result Type|normative
-Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
-Exception Process|Identify the pod that is needing special capabilities and document why  
-Tags|common
 #### persistent-volume-reclaim-policy
 
 Property|Description
@@ -628,20 +642,6 @@ Result Type|informative
 Suggested Remediation|If the kind of pods is StatefulSet, so we need to make sure that servicename is not local-storage.
 Best Practice Reference|extended
 Exception Process|v1.0.0
-Tags|common
-#### sys-admin-capability-check
-
-Property|Description
----|---
-Test Case Name|sys-admin-capability-check
-Test Case Label|lifecycle-sys-admin-capability-check
-Unique ID|http://test-network-function.com/testcases/lifecycle/sys-admin-capability-check
-Version|v1.0.0
-Description|http://test-network-function.com/testcases/lifecycle/sys-admin-capability-check Ensures that containers do not use SYS_ADMIN capability
-Result Type|normative
-Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
-Exception Process|Identify the pod that is needing special capabilities and document why  
 Tags|common
 
 ### manageability
