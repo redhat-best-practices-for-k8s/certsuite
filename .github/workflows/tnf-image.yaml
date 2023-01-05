@@ -112,9 +112,10 @@ jobs:
 
       - name: Build the `cnf-certification-test` image
         run: |
-          make build-image-local
+          make build-image-tnf
         env:
           TNF_VERSION: ${{ github.event.release.tag_name }}
+          IMAGE_TAG: ${IMAGE_TAG}
 
       # Create a minikube cluster for testing.
 

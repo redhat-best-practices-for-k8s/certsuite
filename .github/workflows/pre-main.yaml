@@ -200,7 +200,6 @@ jobs:
         run: |
           make build-image-local
         env:
-          TNF_VERSION: ${{ github.sha }}
           IMAGE_TAG: ${TNF_IMAGE_TAG}
 
       - name: Create required TNF config files and directories

@@ -144,7 +144,15 @@ get-db:
 delete-db:
 	rm -rf ${REPO_DIR}/offline-db
 
+# Builds local 'unstable' image in the CI
 build-image-local:
+	docker build --no-cache \
+		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
+		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
+		-f Dockerfile .
+
+# Builds 'latest' and current TNF version from tag in the CI
+build-image-tnf:
 	docker build --no-cache \
 		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
