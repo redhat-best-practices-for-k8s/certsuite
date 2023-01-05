@@ -20,7 +20,7 @@ Result Type|normative
 Suggested Remediation|In most cases, Pod's should not have ClusterRoleBindings.  The suggested remediation is to remove the need for 	ClusterRoleBindings, if possible.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.10 and 5.3.6
 Exception Process|There is no documented exception process for this.
-Tags|common
+Tags|common,telco
 #### container-host-port
 
 Property|Description
@@ -62,7 +62,7 @@ Result Type|normative
 Suggested Remediation|Apply a ResourceQuota to the namespace your CNF is running in
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.8
 Exception Process|There is no documented exception process for this.
-Tags|common
+Tags|common,telco
 #### no-1337-uid
 
 Property|Description
@@ -202,7 +202,7 @@ Result Type|informative
 Suggested Remediation|Add requests and limits to your container spec.  See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#requests-and-limits
 Best Practice Reference|https://TODO Section 4.6.11
 Exception Process|There is no documented exception process for this.
-Tags|common
+Tags|common,telco
 #### security-context
 
 Property|Description
@@ -258,7 +258,7 @@ Result Type|normative
 Suggested Remediation|Ensure that no SSH daemons are running inside a pod
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.12
 Exception Process|There is no documented exception process for this.
-Tags|common
+Tags|common,telco
 #### sys-nice-realtime-capability
 
 Property|Description
@@ -272,7 +272,7 @@ Result Type|informative
 Suggested Remediation|If pods are scheduled to realtime kernel nodes, they must add SYS_NICE capability to their spec.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 2.7.4
 Exception Process|There is no documented exception process for this.
-Tags|common
+Tags|common,telco
 #### sys-ptrace-capability
 
 Property|Description
@@ -286,7 +286,7 @@ Result Type|informative
 Suggested Remediation|Allow the SYS_PTRACE capability when enabling process namespace sharing for a Pod
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 2.7.5
 Exception Process|There is no documented exception process for this.
-Tags|common
+Tags|common,telco
 
 ### affiliated-certification
 
@@ -317,7 +317,7 @@ Result Type|normative
 Suggested Remediation|Ensure that your container has passed the Red Hat Container Certification Program (CCP).
 Best Practice Reference|https://TODO Section 5.3.7
 Exception Process|There is no documented exception process for this.
-Tags|extended
+Tags|extended,telco
 #### helmchart-is-certified
 
 Property|Description
@@ -362,7 +362,7 @@ Result Type|informative
 Suggested Remediation|If a pod/statefulset/deployment is required to use affinity rules, please add AffinityRequired: 'true' as a label
 Best Practice Reference|https://TODO Section 4.6.24
 Exception Process|There is no documented exception process for this.
-Tags|extended
+Tags|extended,telco
 #### container-shutdown
 
 Property|Description
@@ -376,7 +376,7 @@ Result Type|normative
 Suggested Remediation|The preStop can be used to gracefully stop the container and clean resources (e.g., DB connection). For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.1.3, 12.2 and 12.5
 Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.
-Tags|common
+Tags|common,telco
 #### container-startup
 
 Property|Description
@@ -390,7 +390,7 @@ Result Type|normative
 Suggested Remediation|PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.1.3, 12.2 and 12.5
 Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.
-Tags|common
+Tags|common,telco
 #### cpu-isolation
 
 Property|Description
@@ -404,7 +404,7 @@ Result Type|informative
 Suggested Remediation|CPU isolation testing is enabled.  Please ensure that all pods adhere to the CPU isolation requirements
 Best Practice Reference|https://TODO Section 3.5.5
 Exception Process|There is no documented exception process for this.
-Tags|common
+Tags|common,telco
 #### deployment-scaling
 
 Property|Description
@@ -432,7 +432,7 @@ Result Type|normative
 Suggested Remediation|Ensure that the containers under test are using IfNotPresent as Image Pull Policy.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf  Section 12.6
 Exception Process|There is no documented exception process for this.
-Tags|common
+Tags|common,telco
 #### ipc-lock-capability-check
 
 Property|Description
@@ -460,7 +460,7 @@ Result Type|normative
 Suggested Remediation|Add a liveness probe to deployed containers
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.16, 12.1 and 12.5
 Exception Process|There is no documented exception process for this.
-Tags|common
+Tags|common,telco
 #### net-admin-capability-check
 
 Property|Description
@@ -502,7 +502,7 @@ Result Type|informative
 Suggested Remediation|Ensure that all persistent volumes are using the reclaim policy: delete
 Best Practice Reference|https://TODO Section 3.3.4
 Exception Process|There is no documented exception process for this.
-Tags|common
+Tags|common,telco
 #### pod-high-availability
 
 Property|Description
@@ -530,7 +530,7 @@ Result Type|normative
 Suggested Remediation|Deploy the CNF using ReplicaSet/StatefulSet.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.3 and 5.3.8
 Exception Process|There is no documented exception process for this.
-Tags|common
+Tags|common,telco
 #### pod-recreation
 
 Property|Description
@@ -558,7 +558,7 @@ Result Type|normative
 Suggested Remediation|In most cases, Pod's should not specify their host Nodes through nodeSelector or nodeAffinity.  However, there are 	cases in which CNFs require specialized hardware specific to a particular class of Node.  As such, this test is purely 	informative, and will not prevent a CNF from being certified. However, one should have an appropriate justification as 	to why nodeSelector and/or nodeAffinity is utilized by a CNF.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
-Tags|common
+Tags|common,telco
 #### pod-toleration-bypass
 
 Property|Description
@@ -572,7 +572,7 @@ Result Type|normative
 Suggested Remediation|Do not allow pods to bypass the NoExecute, PreferNoSchedule, or NoSchedule tolerations that are default applied by Kubernetes.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 10.6
 Exception Process|There is no documented exception process for this.
-Tags|common
+Tags|common,telco
 #### readiness-probe
 
 Property|Description
@@ -586,7 +586,7 @@ Result Type|normative
 Suggested Remediation|Add a readiness probe to deployed containers
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.16, 12.1 and 12.5
 Exception Process|There is no documented exception process for this.
-Tags|common
+Tags|common,telco
 #### startup-probe
 
 Property|Description
@@ -600,7 +600,7 @@ Result Type|normative
 Suggested Remediation|Add a startup probe to deployed containers
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.12
 Exception Process|There is no documented exception process for this.
-Tags|common
+Tags|common,telco
 #### statefulset-scaling
 
 Property|Description
@@ -690,7 +690,7 @@ Result Type|informative
 Suggested Remediation|If the CNF is doing CPU pinning and running a DPDK process do not use exec probes (executing a command within the container) as it may pile up and block the node eventually.
 Best Practice Reference|https://TODO Section 4.6.24
 Exception Process|There is no documented exception process for this.
-Tags|extended
+Tags|extended,telco
 #### dual-stack-service
 
 Property|Description
@@ -704,7 +704,7 @@ Result Type|normative
 Suggested Remediation|Configure every CNF services with either a single stack ipv6 or dual stack (ipv4/ipv6) load balancer
 Best Practice Reference|https://TODO Section 3.5.7
 Exception Process|There is no documented exception process for this.
-Tags|common
+Tags|common,extended
 #### icmpv4-connectivity
 
 Property|Description
@@ -774,7 +774,7 @@ Result Type|normative
 Suggested Remediation|Do not configure iptables on any CNF container.
 Best Practice Reference|https://TODO Section 4.6.23
 Exception Process|There is no documented exception process for this.
-Tags|common
+Tags|common,extended
 #### network-policy-deny-all
 
 Property|Description
@@ -802,7 +802,7 @@ Result Type|normative
 Suggested Remediation|Do not configure nftables on any CNF container.
 Best Practice Reference|https://TODO Section 4.6.23
 Exception Process|There is no documented exception process for this.
-Tags|common
+Tags|common,extended
 #### ocp-reserved-ports-usage
 
 Property|Description
@@ -844,7 +844,7 @@ Result Type|normative
 Suggested Remediation|Ensure Services are not configured to use NodePort(s).
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.1
 Exception Process|There is no documented exception process for this.
-Tags|common
+Tags|common,telco
 #### undeclared-container-ports-usage
 
 Property|Description
@@ -858,7 +858,7 @@ Result Type|normative
 Suggested Remediation|Ensure the CNF apps do not listen on undeclared containers' ports
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 16.3.1.1
 Exception Process|There is no documented exception process for this.
-Tags|common
+Tags|common,telco
 
 ### observability
 
@@ -875,7 +875,7 @@ Result Type|informative
 Suggested Remediation|Ensure containers are not redirecting stdout/stderr
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 10.1
 Exception Process|There is no documented exception process for this.
-Tags|common
+Tags|common,telco
 #### crd-status
 
 Property|Description
@@ -889,7 +889,7 @@ Result Type|informative
 Suggested Remediation|Ensure that all the CRDs have a meaningful status specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties["status"]).
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
-Tags|common
+Tags|common,telco
 #### pod-disruption-budget
 
 Property|Description
@@ -903,7 +903,7 @@ Result Type|normative
 Suggested Remediation|Ensure minAvailable is not zero and maxUnavailable does not equal the number of pods in the replica
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.20
 Exception Process|There is no documented exception process for this.
-Tags|common
+Tags|common,telco
 #### termination-policy
 
 Property|Description

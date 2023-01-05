@@ -36,6 +36,8 @@ const (
 const (
 	TagCommon   = "common"
 	TagExtended = "extended"
+	TagTelco    = "telco"
+	TagFarEdge  = "faredge"
 )
 
 // TestCaseDescription describes a JUnit test case.
@@ -176,7 +178,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		VersionOne,
 		bestPracticeDocV1dot4URL+" Section 5.3.7",
-		TagExtended)
+		TagExtended, TagTelco)
 	TestPodHugePages2M = AddCatalogEntry(
 		"hugepages-2m-only",
 		common.PlatformAlterationTestKey,
@@ -208,7 +210,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		VersionOne,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
-		TagExtended)
+		TagExtended, TagTelco)
 
 	TestStorageRequiredPods = AddCatalogEntry(
 		"storage-required-pods",
@@ -234,7 +236,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		`Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.`,
 		VersionOne,
 		bestPracticeDocV1dot3URL+" Section 5.1.3, 12.2 and 12.5",
-		TagCommon)
+		TagCommon, TagTelco)
 
 	TestShutdownIdentifier = AddCatalogEntry(
 		"container-shutdown",
@@ -247,7 +249,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		`Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.`,
 		VersionOne,
 		bestPracticeDocV1dot3URL+" Section 5.1.3, 12.2 and 12.5",
-		TagCommon)
+		TagCommon, TagTelco)
 
 	TestDpdkCPUPinningExecProbe = AddCatalogEntry(
 		"dpdk-cpu-pinning-exec-probe",
@@ -258,7 +260,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		VersionOne,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
-		TagExtended)
+		TagExtended, TagTelco)
 
 	TestNetAdminIdentifier = AddCatalogEntry(
 		"net-admin-capability-check",
@@ -389,31 +391,31 @@ var (
 	}
 	// TestICMPv4ConnectivityIdentifier tests icmpv4 Multus connectivity.
 	TestICMPv4ConnectivityMultusIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagTelco),
 		Url:     formTestURL(common.NetworkingTestKey, "icmpv4-connectivity-multus"),
 		Version: VersionOne,
 	}
 	// TestICMPv6ConnectivityIdentifier tests icmpv6 Multus connectivity.
 	TestICMPv6ConnectivityMultusIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagTelco),
 		Url:     formTestURL(common.NetworkingTestKey, "icmpv6-connectivity-multus"),
 		Version: VersionOne,
 	}
 	// TestServiceDualStack verifies that all services under test are either ipv6 single stack or dual-stack
 	TestServiceDualStackIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagExtended),
 		Url:     formTestURL(common.NetworkingTestKey, "dual-stack-service"),
 		Version: VersionOne,
 	}
 	// TestNFTablesIdentifier verifies that there is no nftable configuration in any containers of the CNF
 	TestNFTablesIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagExtended),
 		Url:     formTestURL(common.NetworkingTestKey, "nftables"),
 		Version: VersionOne,
 	}
 	// TestIPTablesIdentifier verifies that there is no iptables configuration in any containers of the CNF
 	TestIPTablesIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagExtended),
 		Url:     formTestURL(common.NetworkingTestKey, "iptables"),
 		Version: VersionOne,
 	}
@@ -461,7 +463,7 @@ var (
 	// TestPodNodeSelectorAndAffinityBestPractices is the test ensuring nodeSelector and nodeAffinity are not used by a
 	// Pod.
 	TestPodNodeSelectorAndAffinityBestPractices = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagTelco),
 		Url:     formTestURL(common.LifecycleTestKey, "pod-scheduling"),
 		Version: VersionOne,
 	}
@@ -475,13 +477,13 @@ var (
 
 	// TestPodClusterRoleBindingsBestPracticesIdentifier ensures Pod crb best practices.
 	TestPodClusterRoleBindingsBestPracticesIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagTelco),
 		Url:     formTestURL(common.AccessControlTestKey, "cluster-role-bindings"),
 		Version: VersionOne,
 	}
 	// TestPodDeploymentBestPracticesIdentifier ensures a CNF follows best Deployment practices.
 	TestPodDeploymentBestPracticesIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagTelco),
 		Url:     formTestURL(common.LifecycleTestKey, "pod-owner-type"),
 		Version: VersionOne,
 	}
@@ -499,7 +501,7 @@ var (
 	}
 	// TestImagePullPolicyIdentifier ensures represent image pull policy practices.
 	TestImagePullPolicyIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagTelco),
 		Url:     formTestURL(common.LifecycleTestKey, "image-pull-policy"),
 		Version: VersionOne,
 	}
@@ -521,7 +523,7 @@ var (
 		Url:     formTestURL(common.AccessControlTestKey, "pod-service-account"),
 		Version: VersionOne,
 	}
-	//
+	// TestPodAutomountServiceAccountIdentifier
 	TestPodAutomountServiceAccountIdentifier = claim.Identifier{
 		Tags:    formTestTags(TagCommon),
 		Url:     formTestURL(common.AccessControlTestKey, "pod-automount-service-account-token"),
@@ -529,7 +531,7 @@ var (
 	}
 	// TestServicesDoNotUseNodeportsIdentifier ensures Services do not utilize NodePorts.
 	TestServicesDoNotUseNodeportsIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagTelco),
 		Url:     formTestURL(common.NetworkingTestKey, "service-type"),
 		Version: VersionOne,
 	}
@@ -547,7 +549,7 @@ var (
 	}
 	// TestLoggingIdentifier ensures stderr/stdout are used
 	TestLoggingIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagTelco),
 		Url:     formTestURL(common.ObservabilityTestKey, "container-logging"),
 		Version: VersionOne,
 	}
@@ -559,7 +561,7 @@ var (
 	}
 	// TestCrdsStatusSubresourceIdentifier ensures all CRDs have a valid status subresource
 	TestCrdsStatusSubresourceIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagTelco),
 		Url:     formTestURL(common.ObservabilityTestKey, "crd-status"),
 		Version: VersionOne,
 	}
@@ -600,7 +602,7 @@ var (
 		Version: VersionOne,
 	}
 	TestUndeclaredContainerPortsUsage = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagTelco),
 		Url:     formTestURL(common.NetworkingTestKey, "undeclared-container-ports-usage"),
 		Version: VersionOne,
 	}
@@ -610,17 +612,17 @@ var (
 		Version: VersionOne,
 	}
 	TestLivenessProbeIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagTelco),
 		Url:     formTestURL(common.LifecycleTestKey, "liveness-probe"),
 		Version: VersionOne,
 	}
 	TestReadinessProbeIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagTelco),
 		Url:     formTestURL(common.LifecycleTestKey, "readiness-probe"),
 		Version: VersionOne,
 	}
 	TestStartupProbeIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagTelco),
 		Url:     formTestURL(common.LifecycleTestKey, "startup-probe"),
 		Version: VersionOne,
 	}
@@ -631,38 +633,38 @@ var (
 		Version: VersionOne,
 	}
 	TestSYSNiceRealtimeCapabilityIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagTelco),
 		Url:     formTestURL(common.AccessControlTestKey, "sys-nice-realtime-capability"),
 		Version: VersionOne,
 	}
 	// TestSysPtraceCapabilityIdentifier ensures that if process namespace sharing is enabled then the SYS_PTRACE capability is allowed
 	TestSysPtraceCapabilityIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagTelco),
 		Url:     formTestURL(common.AccessControlTestKey, "sys-ptrace-capability"),
 		Version: VersionOne,
 	}
 	TestPodRequestsAndLimitsIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagTelco),
 		Url:     formTestURL(common.AccessControlTestKey, "requests-and-limits"),
 		Version: VersionOne,
 	}
 	TestNamespaceResourceQuotaIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagTelco),
 		Url:     formTestURL(common.AccessControlTestKey, "namespace-resource-quota"),
 		Version: VersionOne,
 	}
 	TestPodDisruptionBudgetIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagTelco),
 		Url:     formTestURL(common.ObservabilityTestKey, "pod-disruption-budget"),
 		Version: VersionOne,
 	}
 	TestPodTolerationBypassIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagTelco),
 		Url:     formTestURL(common.LifecycleTestKey, "pod-toleration-bypass"),
 		Version: VersionOne,
 	}
 	TestPersistentVolumeReclaimPolicyIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagTelco),
 		Url:     formTestURL(common.LifecycleTestKey, "persistent-volume-reclaim-policy"),
 		Version: VersionOne,
 	}
@@ -672,12 +674,12 @@ var (
 		Version: VersionOne,
 	}
 	TestNoSSHDaemonsAllowedIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagTelco),
 		Url:     formTestURL(common.AccessControlTestKey, "ssh-daemons"),
 		Version: VersionOne,
 	}
 	TestCPUIsolationIdentifier = claim.Identifier{
-		Tags:    formTestTags(TagCommon),
+		Tags:    formTestTags(TagCommon, TagTelco),
 		Url:     formTestURL(common.LifecycleTestKey, "cpu-isolation"),
 		Version: VersionOne,
 	}
