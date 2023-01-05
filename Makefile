@@ -20,7 +20,7 @@ GO_PACKAGES=$(shell go list ./... | grep -v vendor)
 REGISTRY_LOCAL?=localhost
 REGISTRY?=quay.io
 TNF_IMAGE_NAME?=testnetworkfunction/cnf-certification-test
-TNF_IMAGE_TAG?=localtest
+IMAGE_TAG?=localtest
 TNF_VERSION?=0.0.1
 RELEASE_VERSION?=4.11
 
@@ -147,6 +147,6 @@ delete-db:
 build-image-local:
 	docker build --no-cache \
 		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} \
-		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} \
+		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_VERSION} \
 		-f Dockerfile .
