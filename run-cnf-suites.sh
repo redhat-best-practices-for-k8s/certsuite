@@ -71,7 +71,7 @@ fi
 if [ "$LIST" = true ] ; then
 	FOCUS=${FOCUS%?}  # strip the trailing "|" from the concatenation
 	cd $BASEDIR/cnf-certification-test
-	./cnf-certification-test.test --ginkgo.dry-run --ginkgo.timeout=$TIMEOUT --ginkgo.v --ginkgo.label-filter="$LABEL"
+	./cnf-certification-test.test --ginkgo.dry-run --ginkgo.timeout=$TIMEOUT --ginkgo.v --ginkgo.label-filter="$LABEL" --ginkgo.focus="$FOCUS"
 	cd ..
 	exit 0;
 fi
