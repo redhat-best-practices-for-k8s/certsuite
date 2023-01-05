@@ -199,9 +199,8 @@ jobs:
       - name: Build the `cnf-certification-test` image
         run: |
           make build-image-local
-
         env:
-          COMMIT_SHA: ${{ github.sha }}
+          TNF_VERSION: ${{ github.sha }}
 
       - name: Create required TNF config files and directories
         run: |

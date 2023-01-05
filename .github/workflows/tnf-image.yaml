@@ -19,7 +19,7 @@ env:
   REGISTRY: quay.io
   REGISTRY_LOCAL: localhost
   RELEASE_LEVEL: '4.11'
-  IMAGE_NAME: testnetworkfunction/cnf-certification-test
+  TNF_IMAGE_NAME: testnetworkfunction/cnf-certification-test
   IMAGE_TAG: latest
   TNF_CONTAINER_CLIENT: docker
   TNF_NON_INTRUSIVE_ONLY: false
@@ -31,7 +31,7 @@ env:
   TNF_SRC_URL: 'https://github.com/${{ github.repository }}'
   PARTNER_REPO: test-network-function/cnf-certification-test-partner
   PARTNER_SRC_URL: 'https://github.com/${PARTNER_REPO}'
-  TESTING_CMD_PARAMS: '-n host -i ${REGISTRY_LOCAL}/${IMAGE_NAME}:${IMAGE_TAG} -t ${TNF_CONFIG_DIR} -o ${TNF_OUTPUT_DIR}'
+  TESTING_CMD_PARAMS: '-n host -i ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG} -t ${TNF_CONFIG_DIR} -o ${TNF_OUTPUT_DIR}'
   ON_DEMAND_DEBUG_PODS: false
 
 jobs:
@@ -114,6 +114,8 @@ jobs:
       - name: Build the `cnf-certification-test` image
         run: |
           make build-image-local
+        env:
+          TNF_VERSION: ${{ github.event.release.tag_name }}
 
       # Create a minikube cluster for testing.
 
@@ -157,4 +159,4 @@ jobs:
           password: ${{ secrets.QUAY_ROBOT_TOKEN }}
 
       - name: Push the newly built image to Quay.io
-        run: docker push --all-tags ${REGISTRY}/${IMAGE_NAME}
+        run: docker push --all-tags ${REGISTRY}/${TNF_IMAGE_NAME}
