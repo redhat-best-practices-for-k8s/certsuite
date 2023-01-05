@@ -26,6 +26,7 @@ env:
   TNF_MINIKUBE_ONLY: true
   TNF_DISABLE_CONFIG_AUTODISCOVER: false
   TNF_CONFIG_DIR: /tmp/tnf/config
+  TNF_IMAGE_TAG: latest
   TNF_OUTPUT_DIR: /tmp/tnf/output
   TNF_SRC_URL: 'https://github.com/${{ github.repository }}'
   PARTNER_REPO: test-network-function/cnf-certification-test-partner
@@ -88,8 +89,8 @@ jobs:
           echo "TNF_VERSION=${{ steps.set_tnf_version.outputs.version_number }}" >> $GITHUB_ENV
           echo "PARTNER_VERSION=${{ steps.set_partner_version.outputs.partner_version_number }}" >> $GITHUB_ENV
  
-      - name: Ensure $TNF_VERSION and $IMAGE_TAG are set
-        run: '[[ -n "$TNF_VERSION" ]] && [[ -n "$IMAGE_TAG" ]] && [[ -n "$PARTNER_VERSION" ]]'
+      - name: Ensure $TNF_VERSION, $IMAGE_TAG, and $TNF_IMAGE_TAG are set
+        run: '[[ -n "$TNF_VERSION" ]] && [[ -n "$IMAGE_TAG" ]] && [[ $TNF_IMAGE_TAG ]] && [[ -n "$PARTNER_VERSION" ]]'
 
       - name: Check whether the version tag exists on remote
         run: git ls-remote --exit-code $TNF_SRC_URL refs/tags/$TNF_VERSION
