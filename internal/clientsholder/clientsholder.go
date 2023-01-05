@@ -171,7 +171,7 @@ func createTempFile(prefix string) (file *os.File, err error) {
 func createByteArrayKubeConfig(kubeConfig *clientcmdapi.Config) ([]byte, error) {
 	yamlBytes, err := clientcmd.Write(*kubeConfig)
 	if err != nil {
-		return []byte{}, fmt.Errorf("failed to generate yaml bytes from kubeconfig: %w", err)
+		return nil, fmt.Errorf("failed to generate yaml bytes from kubeconfig: %w", err)
 	}
 	return yamlBytes, nil
 }
