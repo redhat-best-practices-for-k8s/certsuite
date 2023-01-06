@@ -1,4 +1,4 @@
-name: 'Publish the `cnf-certification-test` image (latest release only)'
+name: 'Publish the legacy `cnf-certification-test` images'
 on:
   # Run the workflow when a new legacy release gets published
   release:
