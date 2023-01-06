@@ -1,16 +1,8 @@
-name: 'Publish the `cnf-certification-test` image (latest release only)'
+name: 'Publish the legacy `cnf-certification-test` images'
 on:
-  # Run the workflow when a new release gets published
+  # Run the workflow when a new legacy release gets published
   release:
     types: [published]
-  # Run the workflow every day at 5 am UTC (1 am EST, 7am CET)
-  # This is useful for keeping the image up-to-date with security
-  # patches provided in the UBI.
-  # Disclaimer: There is no guarantee that scheduled workflows will
-  # run at the predefined time, if at all. The delay is usually
-  # around 10-30 minutes.
-  schedule:
-    - cron: '0 5 * * *'
   workflow_dispatch:
 defaults:
   run:
@@ -40,7 +32,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        branch: [4.0.x, main]
+        branch: [4.0.x] ## Add more versions when needed
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
@@ -55,17 +47,16 @@ jobs:
           ref: ${{ env.CURRENT_VERSION_GENERIC_BRANCH }}
           fetch-depth: '0'
 
-      - name: Get the latest TNF version from GIT
+      - name: Strip the suffix off of the branch (eg. 4.0.x --> 4.0)
+        run: |
+          MINOR_VERSION=${{ env.CURRENT_VERSION_GENERIC_BRANCH%".x" }}
+          echo "::set-output name=minor_version::$MINOR_VERSION"
+        id: set_minor_version
+
+      - name: Get the TNF version from git at the minor version level
         run: |
           GIT_RELEASE=$(git tag --points-at HEAD | head -n 1)
-          
-          if [[ ${{ env.CURRENT_VERSION_GENERIC_BRANCH }} != "main" ]]; then
-            MINOR_VERSION=${{ env.CURRENT_VERSION_GENERIC_BRANCH%".x" }}
-            GIT_PREVIOUS_RELEASE=$(git tag --no-contains HEAD --sort=v:refname | grep ${MINOR_VERSION} | tail -n 1)
-          else
-            GIT_PREVIOUS_RELEASE=$(git tag --no-contains HEAD --sort=v:refname | tail -n 1)
-          fi
-          
+          GIT_PREVIOUS_RELEASE=$(git tag --no-contains HEAD --sort=v:refname | grep ${{ steps.set_minor_version.outputs.minor_version }}| tail -n 1) 
           GIT_LATEST_RELEASE=$GIT_RELEASE
           if [ -z "$GIT_RELEASE" ]; then
             GIT_LATEST_RELEASE=$GIT_PREVIOUS_RELEASE
@@ -166,8 +157,4 @@ jobs:
           password: ${{ secrets.QUAY_ROBOT_TOKEN }}
 
       - name: Push the newly built image to Quay.io
-        run: |
-          if [[ ${{ env.CURRENT_VERSION_GENERIC_BRANCH }} == "main" ]]; then
-            docker push ${REGISTRY}/${TNF_IMAGE_NAME}:latest
-          fi
-          docker push ${REGISTRY}/${TNF_IMAGE_NAME}:${{ github.event.release.tag_name }}
+        run: docker push --all-tags ${REGISTRY}/${TNF_IMAGE_NAME}
