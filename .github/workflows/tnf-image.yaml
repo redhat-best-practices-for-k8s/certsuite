@@ -58,9 +58,8 @@ jobs:
         run: |
           GIT_RELEASE=$(git tag --points-at HEAD | head -n 1)
           
-          if (( ${{env.CURRENT_VERSION_GENERIC_BRANCH}} != "main" )); then
-            MINOR_VERSION=${{env.CURRENT_VERSION_GENERIC_BRANCH}}
-            MINOR_VERSION=$MINOR_VERSION%".x"
+          if (( ${{ env.CURRENT_VERSION_GENERIC_BRANCH }} != "main" )); then
+            MINOR_VERSION=${{ env.CURRENT_VERSION_GENERIC_BRANCH%".x" }}
             GIT_PREVIOUS_RELEASE=$(git tag --no-contains HEAD --sort=v:refname | grep ${MINOR_VERSION} | tail -n 1)
           else
             GIT_PREVIOUS_RELEASE=$(git tag --no-contains HEAD --sort=v:refname | tail -n 1)
