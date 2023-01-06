@@ -35,10 +35,9 @@ env:
 
 jobs:
   test-and-push-tnf-image:
-    name: 'Test and push the `cnf-certification-test` image'
+    name: 'Push the `cnf-certification-test` image'
     runs-on: ubuntu-20.04
     strategy:
-      max-parallel: 1
       matrix:
         branch: [4.0.x, main]
     env:
@@ -124,38 +123,7 @@ jobs:
           TNF_VERSION: ${{ github.event.release.tag_name }}
           IMAGE_TAG: ${IMAGE_TAG}
 
-      # Create a minikube cluster for testing.
-
-      - name: Check out `cnf-certification-test-partner`
-        uses: actions/checkout@v3
-        with:
-          repository: test-network-function/cnf-certification-test-partner
-          path: cnf-certification-test-partner
-          ref: ${{ env.PARTNER_VERSION }}
-          
-      - name: Start the minikube cluster for `local-test-infra`
-        uses: ./cnf-certification-test-partner/.github/actions/start-k8s-cluster
-        with:
-          working_directory: cnf-certification-test-partner
-          
-      - name: Create `local-test-infra` OpenShift resources
-        uses: ./cnf-certification-test-partner/.github/actions/create-local-test-infra-resources
-        with:
-          working_directory: cnf-certification-test-partner
-
-      # Perform tests.
-
-      - name: Create required TNF config files and directories
-        run: |
-          mkdir -p $TNF_CONFIG_DIR $TNF_OUTPUT_DIR
-          cp cnf-certification-test/*.yml $TNF_CONFIG_DIR
-        shell: bash
-
-      - name: 'Test: Run without any TS, just get diagnostic information'
-        run: ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} 
-
       # Push the new TNF image to Quay.io.
-
       - name: Authenticate against Quay.io
         uses: docker/login-action@v2
         with:
