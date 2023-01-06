@@ -40,7 +40,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        branch: [4.0.x, main]
+        branch: [main]
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
@@ -58,14 +58,7 @@ jobs:
       - name: Get the latest TNF version from GIT
         run: |
           GIT_RELEASE=$(git tag --points-at HEAD | head -n 1)
-          
-          if [[ ${{ env.CURRENT_VERSION_GENERIC_BRANCH }} != "main" ]]; then
-            MINOR_VERSION=${{ env.CURRENT_VERSION_GENERIC_BRANCH%".x" }}
-            GIT_PREVIOUS_RELEASE=$(git tag --no-contains HEAD --sort=v:refname | grep ${MINOR_VERSION} | tail -n 1)
-          else
-            GIT_PREVIOUS_RELEASE=$(git tag --no-contains HEAD --sort=v:refname | tail -n 1)
-          fi
-          
+          GIT_PREVIOUS_RELEASE=$(git tag --no-contains HEAD --sort=v:refname | tail -n 1)
           GIT_LATEST_RELEASE=$GIT_RELEASE
           if [ -z "$GIT_RELEASE" ]; then
             GIT_LATEST_RELEASE=$GIT_PREVIOUS_RELEASE
@@ -166,8 +159,4 @@ jobs:
           password: ${{ secrets.QUAY_ROBOT_TOKEN }}
 
       - name: Push the newly built image to Quay.io
-        run: |
-          if [[ ${{ env.CURRENT_VERSION_GENERIC_BRANCH }} == "main" ]]; then
-            docker push ${REGISTRY}/${TNF_IMAGE_NAME}:latest
-          fi
-          docker push ${REGISTRY}/${TNF_IMAGE_NAME}:${{ github.event.release.tag_name }}
+        run: docker push --all-tags ${REGISTRY}/${TNF_IMAGE_NAME}
