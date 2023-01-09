@@ -111,7 +111,6 @@ jobs:
           make build-image-tnf
         env:
           TNF_VERSION: ${{ github.event.release.tag_name }}
-          IMAGE_TAG: ${IMAGE_TAG}
 
       # Create a minikube cluster for testing.
 
@@ -232,9 +231,9 @@ jobs:
           VERSIONS=($(sudo curl -sH 'Accept: application/json' "https://api.openshift.com/api/upgrades_info/v1/graph?channel=stable-${RELEASE_LEVEL}&arch=amd64" | jq -r '.nodes[].version' | sort -t "." -k1,1n -k2,2n -k3,3n))
           OPENSHIFT_VERSION=${VERSIONS[${#VERSIONS[@]} - 1]}
           docker build --no-cache \
-            -t ${REGISTRY_LOCAL}/${IMAGE_NAME}:${IMAGE_TAG} \
-            -t ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} \
-            -t ${REGISTRY}/${IMAGE_NAME}:${TNF_VERSION} \
+            -t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
+            -t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
+            -t ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_VERSION} \
             --build-arg TNF_VERSION=${TNF_VERSION} \
             --build-arg TNF_SRC_URL=${TNF_SRC_URL} \
             --build-arg OPENSHIFT_VERSION=${OPENSHIFT_VERSION} .
@@ -280,4 +279,4 @@ jobs:
           password: ${{ secrets.QUAY_ROBOT_TOKEN }}
 
       - name: Push the newly built image to Quay.io
-        run: docker push --all-tags ${REGISTRY}/${IMAGE_NAME}
+        run: docker push --all-tags ${REGISTRY}/${TNF_IMAGE_NAME}
