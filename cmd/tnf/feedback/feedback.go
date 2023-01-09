@@ -52,7 +52,7 @@ func getFeedbackTopics() []string {
 		return nil
 	}
 
-	r, _ := regexp.Compile(`\[CQ#([^\]]+)`)
+	r := regexp.MustCompile(`\[CQ#([^\]]+)`)
 	matches := r.FindAllStringSubmatch(string(data), -1)
 
 	m := make(map[string]bool)
@@ -83,18 +83,23 @@ func prependCommentSign(s string, times int) string {
 	return strings.Join(commentedLines, "\n")
 }
 
+//nolint:funlen
 func requestFeedback(question string) (string, error) {
 	tmpFile, err := os.CreateTemp(os.TempDir(), "")
 	if err != nil {
 		return "", fmt.Errorf("error creating temp file: %v", err)
 	}
 
-	tmpFile.WriteString("\n" + prependCommentSign(question, 1))
+	_, err = tmpFile.WriteString("\n" + prependCommentSign(question, 1))
+	if err != nil {
+		return "", fmt.Errorf("could not write to temp file: %v", err)
+	}
 	tmpFile.Close()
 
 	editor := os.Getenv("EDITOR")
 	if editor == "" {
-		path, err := exec.LookPath("vi")
+		var path string
+		path, err = exec.LookPath("vi")
 		if err != nil {
 			return "", fmt.Errorf("vi is not available: %v", err)
 		}
@@ -147,8 +152,14 @@ func getFeedback(cmd *cobra.Command, args []string) error {
 			fmt.Printf("%s%s%s", colorGreen, "Answer saved.\n", colorReset)
 		}
 
-		answersFile.WriteString(prependCommentSign("["+topic+"]\n"+topicQuestion+"\n", 3))
-		answersFile.WriteString(topicAnswer + "\n")
+		_, err = answersFile.WriteString(prependCommentSign("["+topic+"]\n"+topicQuestion+"\n", 3)) //nolint:gomnd
+		if err != nil {
+			return fmt.Errorf("could not write to answers file, err: %v", err)
+		}
+		_, err = answersFile.WriteString(topicAnswer + "\n")
+		if err != nil {
+			return fmt.Errorf("could not write to answers file, err: %v", err)
+		}
 	}
 
 	return nil
