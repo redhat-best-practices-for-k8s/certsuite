@@ -52,9 +52,8 @@ type ClientsHolder struct {
 	K8sClient           kubernetes.Interface
 	K8sNetworkingClient networkingv1.NetworkingV1Interface
 	MachineCfg          ocpMachine.Interface
-	// MergedKubeConfigFile string
-	KubeConfig []byte
-	ready      bool
+	KubeConfig          []byte
+	ready               bool
 }
 
 var clientsHolder = ClientsHolder{}
