@@ -122,14 +122,6 @@ func getGitVersion() string {
 	return gitDisplayRelease + " ( " + GitCommit + " )"
 }
 
-func deleteMergedKubeConfigfile(file string) {
-	log.Infof("Deleting merged kube config file %s", file)
-	err := os.Remove(file)
-	if err != nil {
-		log.Errorf("Failed to delete merged kube config file %s: %s", file, err)
-	}
-}
-
 //nolint:funlen // TestTest invokes the CNF Certification Test Suite.
 func TestTest(t *testing.T) {
 	// When running unit tests, skip the suite
@@ -156,10 +148,7 @@ func TestTest(t *testing.T) {
 	}
 
 	// Set clientsholder singleton with the filenames from the env vars.
-	client := clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
-
-	// Make sure the temp file for the merged kube config is deleted at the end.
-	defer deleteMergedKubeConfigfile(client.MergedKubeConfigFile)
+	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
 
 	// Deploy the daemonset before getting the environment for the first time
 	err := daemonset.DeployPartnerTestDaemonset()
