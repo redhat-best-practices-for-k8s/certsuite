@@ -157,7 +157,7 @@ jobs:
       - name: Push the newly built image to Quay.io
         run: docker push --all-tags ${REGISTRY}/${TNF_IMAGE_NAME}
 
-  test-and-push-tnf-image-4.0.x:
+  test-and-push-tnf-image-40x:
     name: 'Test and push the 4.0.x `cnf-certification-test` image'
     runs-on: ubuntu-20.04
     env:
