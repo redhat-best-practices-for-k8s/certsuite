@@ -177,9 +177,7 @@ jobs:
       - name: Get the latest TNF version from GIT
         run: |
           GIT_RELEASE=$(git tag --points-at HEAD | head -n 1)
-          MINOR_VERSION=${{env.CURRENT_VERSION_GENERIC_BRANCH}}
-          MINOR_VERSION=$MINOR_VERSION%".x"
-          GIT_PREVIOUS_RELEASE=$(git tag --no-contains HEAD --sort=v:refname | grep ${MINOR_VERSION} | tail -n 1)
+          GIT_PREVIOUS_RELEASE=$(git tag --no-contains HEAD --sort=v:refname | grep 4.0 | tail -n 1)
           GIT_LATEST_RELEASE=$GIT_RELEASE
           if [ -z "$GIT_RELEASE" ]; then
             GIT_LATEST_RELEASE=$GIT_PREVIOUS_RELEASE
