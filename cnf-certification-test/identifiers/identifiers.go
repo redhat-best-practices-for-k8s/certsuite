@@ -117,6 +117,7 @@ var (
 	Test1337UIDIdentifier                    claim.Identifier
 	TestContainerIsCertifiedDigestIdentifier claim.Identifier
 	TestPodHugePages2M                       claim.Identifier
+	TestPodHugePages1G                       claim.Identifier
 	TestReservedExtendedPartnerPorts         claim.Identifier
 	TestAffinityRequiredPods                 claim.Identifier
 	TestStartupIdentifier                    claim.Identifier
@@ -179,6 +180,7 @@ The label value is not important, only its presence.`,
 		VersionOne,
 		bestPracticeDocV1dot4URL+" Section 5.3.7",
 		TagExtended, TagTelco)
+
 	TestPodHugePages2M = AddCatalogEntry(
 		"hugepages-2m-only",
 		common.PlatformAlterationTestKey,
@@ -189,6 +191,17 @@ The label value is not important, only its presence.`,
 		VersionOne,
 		bestPracticeDocV1dot4URL+" Section 3.5.4",
 		TagExtended)
+
+	TestPodHugePages1G = AddCatalogEntry(
+		"hugepages-1g-only",
+		common.PlatformAlterationTestKey,
+		`Check that pods using hugepages only use 1Gi size`,
+		"Modify pod to consume 1Gi hugepages only",
+		InformativeResult,
+		NoDocumentedProcess,
+		VersionOne,
+		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
+		TagFarEdge)
 
 	TestReservedExtendedPartnerPorts = AddCatalogEntry(
 		"reserved-partner-ports",

@@ -994,6 +994,20 @@ Suggested Remediation|Ensure that boot parameters are set directly through the M
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.13 and 5.2.14
 Exception Process|There is no documented exception process for this.
 Tags|common
+#### hugepages-1g-only
+
+Property|Description
+---|---
+Test Case Name|hugepages-1g-only
+Test Case Label|platform-alteration-hugepages-1g-only
+Unique ID|http://test-network-function.com/testcases/platform-alteration/hugepages-1g-only
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/platform-alteration/hugepages-1g-only Check that pods using hugepages only use 1Gi size
+Result Type|informative
+Suggested Remediation|Modify pod to consume 1Gi hugepages only
+Best Practice Reference|https://TODO
+Exception Process|There is no documented exception process for this.
+Tags|faredge
 #### hugepages-2m-only
 
 Property|Description

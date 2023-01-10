@@ -30,8 +30,8 @@ import (
 )
 
 const (
-	hugePages2Mi          = "hugepages-2Mi"
-	hugePages1Gi          = "hugepages-1Gi"
+	HugePages2Mi          = "hugepages-2Mi"
+	HugePages1Gi          = "hugepages-1Gi"
 	hugePages             = "hugepages"
 	replicationController = "ReplicationController"
 	deploymentConfig      = "DeploymentConfig"
@@ -138,7 +138,7 @@ func (p *Pod) HasHugepages() bool {
 	return false
 }
 
-func (p *Pod) CheckResourceOnly2MiHugePages() bool {
+func (p *Pod) CheckResourceHugePagesSize(size string) bool {
 	// check if hugepages configuration other than 2Mi is present
 	for _, cut := range p.Containers {
 		// Resources must be specified
@@ -146,12 +146,12 @@ func (p *Pod) CheckResourceOnly2MiHugePages() bool {
 			continue
 		}
 		for name := range cut.Resources.Requests {
-			if strings.Contains(name.String(), hugePages) && name != hugePages2Mi {
+			if strings.Contains(name.String(), hugePages) && name.String() != size {
 				return false
 			}
 		}
 		for name := range cut.Resources.Limits {
-			if strings.Contains(name.String(), hugePages) && name != hugePages2Mi {
+			if strings.Contains(name.String(), hugePages) && name.String() != size {
 				return false
 			}
 		}
