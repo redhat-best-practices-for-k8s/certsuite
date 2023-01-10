@@ -82,20 +82,6 @@ func init() {
 		"the path for the junit format report")
 }
 
-// setLogLevel sets the log level for logrus based on the "TNF_LOG_LEVEL" environment variable
-func setLogLevel() {
-	params := configuration.GetTestParameters()
-
-	var logLevel, err = log.ParseLevel(params.LogLevel)
-	if err != nil {
-		log.Error("TNF_LOG_LEVEL environment set with an invalid value, defaulting to DEBUG \n Valid values are:  trace, debug, info, warn, error, fatal, panic")
-		logLevel = log.DebugLevel
-	}
-
-	log.Info("Log level set to: ", logLevel)
-	log.SetLevel(logLevel)
-}
-
 func getK8sClientsConfigFileNames() []string {
 	params := configuration.GetTestParameters()
 	fileNames := []string{}
@@ -131,7 +117,32 @@ func TestTest(t *testing.T) {
 
 	// Set up logging params for logrus
 	loghelper.SetLogFormat()
-	setLogLevel()
+
+	// Delete execution log (if any) prior to run
+	logFile := "tnf-execution.log"
+	_, fileErr := os.Stat(logFile)
+	if os.IsExist(fileErr) {
+		e := os.Remove(logFile)
+		if e != nil {
+			panic(e)
+		}
+	}
+
+	// Setup logging to file
+	f, err := os.OpenFile(logFile, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0o644)
+	if err != nil {
+		log.Errorf("failed to create log file: %v", err)
+		panic(err)
+	}
+
+	defer f.Close()
+	log.SetOutput(f)
+
+	// Set hooks for logger
+	loghelper.SetHooks()
+
+	// Set logging level
+	loghelper.SetLogLevel()
 
 	ginkgoConfig, _ := ginkgo.GinkgoConfiguration()
 	log.Infof("TNF Version         : %v", getGitVersion())
@@ -151,7 +162,7 @@ func TestTest(t *testing.T) {
 	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
 
 	// Deploy the daemonset before getting the environment for the first time
-	err := daemonset.DeployPartnerTestDaemonset()
+	err = daemonset.DeployPartnerTestDaemonset()
 	if err != nil {
 		log.Errorf("Error deploying partner daemonset %s", err)
 
@@ -168,7 +179,7 @@ func TestTest(t *testing.T) {
 
 	configurations, err := claimhelper.MarshalConfigurations()
 	if err != nil {
-		log.Errorf("Configuration node missing because of: %s", err)
+		log.Errorf("Configuration node missing because of: %v", err)
 		t.FailNow()
 	}
 

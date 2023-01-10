@@ -18,12 +18,15 @@ package loghelper
 
 import (
 	"fmt"
+	"os"
 	"path"
 	"runtime"
 	"strconv"
 	"time"
 
 	"github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus/hooks/writer"
+	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 )
 
 // CuratedLogLines
@@ -62,4 +65,37 @@ func SetLogFormat() {
 		return strconv.Itoa(f.Line) + "]", fmt.Sprintf("[%s:", filename)
 	}
 	logrus.SetFormatter(customFormatter)
+}
+
+func SetHooks() {
+	logrus.AddHook(&writer.Hook{ // Send logs with level higher than warning to stderr
+		Writer: os.Stderr,
+		LogLevels: []logrus.Level{
+			logrus.PanicLevel,
+			logrus.FatalLevel,
+			logrus.ErrorLevel,
+			logrus.WarnLevel,
+		},
+	})
+	logrus.AddHook(&writer.Hook{ // Send info and debug logs to stdout
+		Writer: os.Stdout,
+		LogLevels: []logrus.Level{
+			logrus.InfoLevel,
+			logrus.DebugLevel,
+		},
+	})
+}
+
+// setLogLevel sets the log level for logrus based on the "TNF_LOG_LEVEL" environment variable
+func SetLogLevel() {
+	params := configuration.GetTestParameters()
+
+	var logLevel, err = logrus.ParseLevel(params.LogLevel)
+	if err != nil {
+		logrus.Error("TNF_LOG_LEVEL environment set with an invalid value, defaulting to DEBUG \n Valid values are:  trace, debug, info, warn, error, fatal, panic")
+		logLevel = logrus.DebugLevel
+	}
+
+	logrus.Info("Log level set to: ", logLevel)
+	logrus.SetLevel(logLevel)
 }

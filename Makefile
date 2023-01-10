@@ -72,6 +72,7 @@ clean:
 	rm -f ./cnf-certification-test/claimjson.js
 	rm -f ./cnf-certification-test/results.html
 	rm -f ./cnf-certification-test/cnf-certification-tests_junit.xml
+	rm -f ./cnf-certification-test/tnf-execution.log
 	rm -f ./tnf
 	rm -f latest-release-tag.txt
 	rm -f release-tag.txt
