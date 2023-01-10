@@ -204,21 +204,36 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 	}
 }
 
-//nolint:funlen,gocyclo
+//nolint:funlen
 func testTainted(env *provider.TestEnvironment) {
 	// errNodes has nodes that failed some operation while checking kernel taints.
 	errNodes := []string{}
 	// badModules maps node names to list of "bad"/offending modules.
-	badModules := map[string][]string{}
+
+	type badModuleTaints struct {
+		name   string
+		taints []string
+	}
+
+	badModules := map[string][]badModuleTaints{}
 	// otherTaints maps a node to a list of taint bits that haven't been set by any module.
 	otherTaints := map[string][]int{}
+
+	logrus.Infof("Modules whitelist: %+v", env.Config.AcceptedKernelTaints)
+	// helper map to make the checks easier.
+	whiteListedModules := map[string]bool{}
+	for _, module := range env.Config.AcceptedKernelTaints {
+		whiteListedModules[module.Module] = true
+	}
 
 	// Loop through the debug pods that are tied to each node.
 	for _, dp := range env.DebugPods {
 		nodeName := dp.Spec.NodeName
 
+		ginkgo.By(fmt.Sprintf("Checking kernel taints of node %s", nodeName))
+
 		ocpContext := clientsholder.NewContext(dp.Namespace, dp.Name, dp.Spec.Containers[0].Name)
-		tf := nodetainted.NewNodeTaintedTester(&ocpContext)
+		tf := nodetainted.NewNodeTaintedTester(&ocpContext, nodeName)
 
 		// Get the taints mask from the node kernel
 		taintsMask, err := tf.GetKernelTaintsMask()
@@ -230,66 +245,43 @@ func testTainted(env *provider.TestEnvironment) {
 
 		if taintsMask == 0 {
 			tnf.ClaimFilePrintf("Node %s has no kernel taints.", nodeName)
-			// This node has no taints.
 			continue
 		}
 
 		tnf.ClaimFilePrintf("Node %s kernel is tainted. Taints mask=%d - Decoded taints: %v",
-			nodeName, taintsMask, nodetainted.DecodeKernelTaints(taintsMask))
+			nodeName, taintsMask, nodetainted.DecodeKernelTaintsFromBitMask(taintsMask))
 
 		// Check the white list. If empty, mark this node as failed.
-		if len(env.Config.AcceptedKernelTaints) == 0 {
+		if len(whiteListedModules) == 0 {
 			errNodes = append(errNodes, nodeName)
 			continue
 		}
 
 		// White list check.
 		// Get the list of modules (tainters) that have set a taint bit.
-		//   - 1. Each module should appear in the white list.
-		//   - 2. All kernel taint bits (1 bit - 1 letter) should have been set by at least
-		//        one tainter module.
-		tainters, err := tf.GetTainterModules()
+		//   1. Each module should appear in the white list.
+		//   2. All kernel taint bits (one bit <-> one letter) should have been set by at least
+		//      one tainter module.
+		tainters, taintBitsByAllModules, err := tf.GetTainterModules(whiteListedModules)
 		if err != nil {
 			tnf.ClaimFilePrintf("failed to get tainter modules from node %s: %v", nodeName, err)
 			errNodes = append(errNodes, nodeName)
 			continue
 		}
 
-		// helper map to make the checks easier.
-		whiteListedModules := map[string]bool{}
-		for _, module := range env.Config.AcceptedKernelTaints {
-			whiteListedModules[module.Module] = true
-		}
+		// Save modules' names only.
+		for moduleName, taintsLetters := range tainters {
+			moduleTaints := nodetainted.DecodeKernelTaintsFromLetters(taintsLetters)
+			badModules[nodeName] = append(badModules[nodeName], badModuleTaints{name: moduleName, taints: moduleTaints})
 
-		badNodeModules := []string{}
-		for tainter := range tainters {
-			// If module is not in the whitelist, mark it as offender.
-			if whiteListedModules[tainter] {
-				logrus.Infof("Node %s module %s is tainting the kernel but it has been whitelisted", nodeName, tainter)
-			} else {
-				badNodeModules = append(badNodeModules, tainter)
-			}
-		}
-
-		if len(badNodeModules) > 0 {
-			badModules[nodeName] = badNodeModules
-		}
-
-		taintedBitsByModules, err := nodetainted.GetTaintedBitsByModules(tainters)
-		if err != nil {
-			tnf.ClaimFilePrintf("failed to get tainter modules from node %s: %v", nodeName, err)
-			errNodes = append(errNodes, nodeName)
-			continue
+			tnf.ClaimFilePrintf("Node %s - module %s taints kernel: %s", nodeName, moduleName, moduleTaints)
 		}
 
 		// Lastly, check that all kernel taint bits come from modules.
-		otherKernelTaints := nodetainted.GetOtherTaintedBits(taintsMask, taintedBitsByModules)
+		otherKernelTaints := nodetainted.GetOtherTaintedBits(taintsMask, taintBitsByAllModules)
 		for _, taintedBit := range otherKernelTaints {
 			tnf.ClaimFilePrintf("Node %s - taint bit %d is set but it's not caused by any module.", nodeName, taintedBit)
-		}
-
-		if len(otherKernelTaints) > 0 {
-			otherTaints[nodeName] = otherKernelTaints
+			otherTaints[nodeName] = append(otherTaints[nodeName], taintedBit)
 		}
 	}
 

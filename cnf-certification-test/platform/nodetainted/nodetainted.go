@@ -24,13 +24,13 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
-	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
+	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
 
 // NodeTainted holds information about tainted nodes.
 type NodeTainted struct {
-	ctx *clientsholder.Context
+	ctx  *clientsholder.Context
+	node string
 }
 
 var runCommand = func(ctx *clientsholder.Context, cmd string) (string, error) {
@@ -48,9 +48,10 @@ var runCommand = func(ctx *clientsholder.Context, cmd string) (string, error) {
 }
 
 // NewNodeTainted creates a new NodeTainted tester
-func NewNodeTaintedTester(context *clientsholder.Context) *NodeTainted {
+func NewNodeTaintedTester(context *clientsholder.Context, node string) *NodeTainted {
 	return &NodeTainted{
-		ctx: context,
+		ctx:  context,
+		node: node,
 	}
 }
 
@@ -63,29 +64,13 @@ func (nt *NodeTainted) GetKernelTaintsMask() (uint64, error) {
 	output = strings.ReplaceAll(output, "\r", "")
 	output = strings.ReplaceAll(output, "\t", "")
 
-	// Convert o number.
+	// Convert to number.
 	taintsMask, err := strconv.ParseUint(output, 10, 64) // base 10 and uint64
 	if err != nil {
 		return 0, fmt.Errorf("failed to decode taints mask %q: %w", output, err)
 	}
 
 	return taintsMask, nil
-}
-
-func (nt *NodeTainted) GetModulesFromNode() []string {
-	// Get the 1st column list of the modules running on the node.
-	// Split on the return/newline and get the list of the modules back.
-	command := `chroot /host lsmod | awk '{ print $1 }' | grep -v Module`
-	output, _ := runCommand(nt.ctx, command)
-	output = strings.ReplaceAll(output, "\t", "")
-	moduleList := strings.Split(strings.ReplaceAll(output, "\r\n", "\n"), "\n")
-	return stringhelper.RemoveEmptyStrings(moduleList)
-}
-
-func (nt *NodeTainted) ModuleInTree(moduleName string) bool {
-	command := `chroot /host cat /sys/module/` + moduleName + `/taint`
-	cmdOutput, _ := runCommand(nt.ctx, command)
-	return !strings.Contains(cmdOutput, "O")
 }
 
 type KernelTaint struct {
@@ -107,7 +92,7 @@ var kernelTaints = map[int]KernelTaint{
 	9:  {"kernel issued warning", "W"},
 	10: {"staging driver was loaded", "C"},
 	11: {"workaround for bug in platform firmware applied", "I"},
-	12: {"externally-built (“out-of-tree”) module was loaded", "O"},
+	12: {"externally-built (\"out-of-tree\") module was loaded", "O"},
 	13: {"unsigned module was loaded", "E"},
 	14: {"soft lockup occurred", "L"},
 	15: {"kernel has been live patched", "K"},
@@ -132,10 +117,10 @@ func getTaintMsg(bit int) string {
 	return fmt.Sprintf("reserved (tainted bit %d)", bit)
 }
 
-func DecodeKernelTaints(bitmap uint64) []string {
+func DecodeKernelTaintsFromBitMask(bitmask uint64) []string {
 	taints := []string{}
 	for i := 0; i < 64; i++ {
-		bit := (bitmap >> i) & 1
+		bit := (bitmask >> i) & 1
 		if bit == 1 {
 			taints = append(taints, getTaintMsg(i))
 		}
@@ -143,7 +128,39 @@ func DecodeKernelTaints(bitmap uint64) []string {
 	return taints
 }
 
-func GetBitPosFromLetter(letter string) (int, error) {
+func DecodeKernelTaintsFromLetters(letters string) []string {
+	taints := []string{}
+
+	for _, l := range letters {
+		taintLetter := string(l)
+		found := false
+
+		for i := range kernelTaints {
+			kernelTaint := kernelTaints[i]
+			if strings.Contains(kernelTaint.Letters, taintLetter) {
+				taints = append(taints, fmt.Sprintf("%s (taint letter:%s, bit:%d)",
+					kernelTaint.Description, taintLetter, i))
+				found = true
+				break
+			}
+		}
+
+		// The letter doesn't belong to any known (yet) taint...
+		if !found {
+			taints = append(taints, fmt.Sprintf("unknown taint (letter %s)", taintLetter))
+		}
+	}
+
+	return taints
+}
+
+// getBitPosFromLetter returns the kernel taint bit position (base index 0) of the letter that
+// represents a module's taint.
+func getBitPosFromLetter(letter string) (int, error) {
+	if letter == "" || len(letter) > 1 {
+		return 0, fmt.Errorf("input string must contain one letter")
+	}
+
 	for bit, taint := range kernelTaints {
 		if strings.Contains(taint.Letters, letter) {
 			return bit, nil
@@ -161,7 +178,7 @@ func GetTaintedBitsByModules(tainters map[string]string) (map[int]bool, error) {
 		// Save taint bits from this module.
 		for i := range letters {
 			letter := string(letters[i])
-			bit, err := GetBitPosFromLetter(letter)
+			bit, err := getBitPosFromLetter(letter)
 			if err != nil {
 				return nil, fmt.Errorf("module %s has invalid taint letter %s: %w", tainter, letter, err)
 			}
@@ -190,17 +207,17 @@ func GetOtherTaintedBits(taintsMask uint64, taintedBitsByModules map[int]bool) [
 	return otherTaintedBits
 }
 
-// GetTainterModules runs a command in the node to get all the modules that
-// have set a taint bit. The resturn value maps a module to a string of taint
-// letters. Each letter maps to a single bit in the taint mask.
-func (nt *NodeTainted) GetTainterModules() (map[string]string, error) {
+func (nt *NodeTainted) getAllTainterModules() (map[string]string, error) {
 	const (
+		command = "modules=`ls /sys/module`; for module_name in $modules; do taint_file=/sys/module/$module_name/taint; " +
+			"if [ -f $taint_file ]; then taints=`cat $taint_file`; " +
+			"if [[ ${#taints} -gt 0 ]]; then echo \"$module_name `cat $taint_file`\"; fi; fi; done"
+
 		numFields       = 2
 		posModuleName   = 0
 		posModuleTaints = 1
 	)
 
-	command := "modules=`ls /sys/module`; for module_name in $modules; do taint_file=/sys/module/$module_name/taint; if [ -f $taint_file ]; then taints=`cat $taint_file`; if [[ ${#taints} -gt 0 ]]; then echo \"$module_name `cat $taint_file`\"; fi; fi; done"
 	cmdOutput, err := runCommand(nt.ctx, command)
 	if err != nil {
 		return nil, fmt.Errorf("failed to run command: %w", err)
@@ -224,44 +241,50 @@ func (nt *NodeTainted) GetTainterModules() (map[string]string, error) {
 		moduleName := elems[posModuleName]
 		moduleTaints := elems[posModuleTaints]
 
-		if _, exist := tainters[moduleName]; exist {
-			return nil, fmt.Errorf("module %s (taints %s) has already been parsed", moduleName, moduleTaints)
+		// Save to the all tainters list.
+		if taints, exist := tainters[moduleName]; exist {
+			return nil, fmt.Errorf("module %s (taints %s) has already been parsed (taints %s)",
+				moduleName, moduleTaints, taints)
 		}
 
-		logrus.Infof("module %s has taints %s", moduleName, moduleTaints)
 		tainters[moduleName] = moduleTaints
 	}
 
 	return tainters, nil
 }
 
-func (nt *NodeTainted) GetOutOfTreeModules(modules []string) []string {
-	taintedModules := []string{}
-	for _, module := range modules {
-		logrus.Debug(fmt.Sprintf("Looking for module in tree: %s", module))
-		if !nt.ModuleInTree(module) {
-			taintedModules = append(taintedModules, module)
+// GetTainterModules runs a command in the node to get all the modules that
+// have set a kernel taint bit. Returns:
+//   - tainters: maps a module to a string of taints letters. Each letter maps
+//     to a single bit in the taint mask. Tainters that appear in the whitelist won't
+//     be added to this map.
+//   - taintBits: bits (pos) of kernel taints caused by all modules (included the whitelisted ones).
+func (nt *NodeTainted) GetTainterModules(whiteList map[string]bool) (tainters map[string]string, taintBits map[int]bool, err error) {
+	// First, get all the modules that are tainting the kernel in this node.
+	allTainters, err := nt.getAllTainterModules()
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to get tainter modules: %w", err)
+	}
+
+	filteredTainters := map[string]string{}
+	for moduleName, moduleTaintsLetters := range allTainters {
+		moduleTaints := DecodeKernelTaintsFromLetters(moduleTaintsLetters)
+		logrus.Debugf("%s: Module %s has taints (%s): %s", nt.node, moduleName, moduleTaintsLetters, moduleTaints)
+
+		// Apply whitelist.
+		if whiteList[moduleName] {
+			tnf.ClaimFilePrintf("%s module %s is tainting the kernel but it has been whitelisted (taints: %v)",
+				nt.node, moduleName, moduleTaints)
+		} else {
+			filteredTainters[moduleName] = moduleTaintsLetters
 		}
 	}
-	return taintedModules
-}
 
-func TaintsAccepted(confTaints []configuration.AcceptedKernelTaintsInfo, taintedModules []string) bool {
-	for _, taintedModule := range taintedModules {
-		found := false
-		logrus.Debug("Accepted Taints from Config: ", confTaints)
-		for _, confTaint := range confTaints {
-			logrus.Debug(fmt.Sprintf("Comparing confTaint: %s to taintedModule: %s", confTaint.Module, taintedModule))
-			if confTaint.Module == taintedModule {
-				found = true
-				break
-			}
-		}
-
-		if !found {
-			// Tainted modules were not found to be in the allow-list.
-			return false
-		}
+	// Finally, get all the bits that all the modules have set.
+	taintBits, err = GetTaintedBitsByModules(allTainters)
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to get taint bits by modules: %w", err)
 	}
-	return true
+
+	return filteredTainters, taintBits, nil
 }
