@@ -47,7 +47,7 @@ Description|http://test-network-function.com/testcases/access-control/ipc-lock-c
 Result Type|normative
 Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
-Exception Process|Identify the pod that is needing special capabilities and document why  
+Exception Process|Identify the pod that is needing special capabilities and document why
 Tags|common
 #### namespace
 
@@ -89,7 +89,7 @@ Description|http://test-network-function.com/testcases/access-control/net-admin-
 Result Type|normative
 Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
-Exception Process|Identify the pod that is needing special capabilities and document why  
+Exception Process|Identify the pod that is needing special capabilities and document why
 Tags|common
 #### net-raw-capability-check
 
@@ -103,7 +103,7 @@ Description|http://test-network-function.com/testcases/access-control/net-raw-ca
 Result Type|normative
 Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
-Exception Process|Identify the pod that is needing special capabilities and document why  
+Exception Process|Identify the pod that is needing special capabilities and document why
 Tags|common
 #### no-1337-uid
 
@@ -253,11 +253,11 @@ Test Case Name|security-context
 Test Case Label|access-control-security-context
 Unique ID|http://test-network-function.com/testcases/access-control/security-context
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/access-control/security-context Checks the security context is match one of the 4 categories
+Description|http://test-network-function.com/testcases/access-control/security-context Checks the security context matches one of the 4 categories
 Result Type|normative
 Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
 Best Practice Reference|https://TODO Section 4.5
-Exception Process|If the contaier had the right configuration of the allowed category from the 4 list so the test will pass the  	list is on page 51 on the CNF Security Context Constraints (SCC) section 4.5(Allowed categories are category 1 and categorynoid0),  	Applications MUST use one of the approved Security Context Constraints.
+Exception Process|If the container had the right configuration of the allowed category from the 4 list so the test will pass the  	list is on page 51 on the CNF Security Context Constraints (SCC) section 4.5(Allowed categories are category 1 and category 0),  	Applications MUST use one of the approved Security Context Constraints.
 Tags|extended
 #### security-context-non-root-user-check
 
@@ -313,7 +313,7 @@ Description|http://test-network-function.com/testcases/access-control/sys-admin-
 Result Type|normative
 Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
-Exception Process|Identify the pod that is needing special capabilities and document why  
+Exception Process|Identify the pod that is needing special capabilities and document why
 Tags|common
 #### sys-nice-realtime-capability
 
