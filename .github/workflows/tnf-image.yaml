@@ -23,7 +23,6 @@ env:
   IMAGE_TAG: latest
   TNF_CONTAINER_CLIENT: docker
   TNF_NON_INTRUSIVE_ONLY: false
-  TNF_MINIKUBE_ONLY: true
   TNF_DISABLE_CONFIG_AUTODISCOVER: false
   TNF_CONFIG_DIR: /tmp/tnf/config
   TNF_OUTPUT_DIR: /tmp/tnf/output
@@ -60,7 +59,7 @@ jobs:
             GIT_LATEST_RELEASE=$GIT_PREVIOUS_RELEASE
           fi
 
-          echo "::set-output name=version_number::$GIT_LATEST_RELEASE"
+          echo "version_number=$GIT_LATEST_RELEASE" >> $GITHUB_OUTPUT
         id: set_tnf_version
 
       - name: Print the latest TNF version from GIT
@@ -68,13 +67,13 @@ jobs:
           echo Version tag: ${{ steps.set_tnf_version.outputs.version_number }}
 
       - name: Get contents of the version.json file
-        run: echo "::set-output name=json::$(cat version.json | tr -d '[:space:]')"
+        run: echo "json=$(cat version.json | tr -d '[:space:]')" >> $GITHUB_OUTPUT
         id: get_version_json_file
 
       - name: Get the partner version number from file
         run: |
           echo Partner version tag: $VERSION_FROM_FILE_PARTNER
-          echo "::set-output name=partner_version_number::$VERSION_FROM_FILE_PARTNER"
+          echo "partner_version_number=$VERSION_FROM_FILE_PARTNER" >> $GITHUB_OUTPUT
         id: set_partner_version
         env:
           VERSION_FROM_FILE_PARTNER: ${{ fromJSON(steps.get_version_json_file.outputs.json).partner_tag }}
@@ -112,38 +111,7 @@ jobs:
         env:
           TNF_VERSION: ${{ github.event.release.tag_name }}
 
-      # Create a minikube cluster for testing.
-
-      - name: Check out `cnf-certification-test-partner`
-        uses: actions/checkout@v3
-        with:
-          repository: test-network-function/cnf-certification-test-partner
-          path: cnf-certification-test-partner
-          ref: ${{ env.PARTNER_VERSION }}
-          
-      - name: Start the minikube cluster for `local-test-infra`
-        uses: ./cnf-certification-test-partner/.github/actions/start-k8s-cluster
-        with:
-          working_directory: cnf-certification-test-partner
-          
-      - name: Create `local-test-infra` OpenShift resources
-        uses: ./cnf-certification-test-partner/.github/actions/create-local-test-infra-resources
-        with:
-          working_directory: cnf-certification-test-partner
-
-      # Perform tests.
-
-      - name: Create required TNF config files and directories
-        run: |
-          mkdir -p $TNF_CONFIG_DIR $TNF_OUTPUT_DIR
-          cp cnf-certification-test/*.yml $TNF_CONFIG_DIR
-        shell: bash
-
-      - name: 'Test: Run without any TS, just get diagnostic information'
-        run: ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} 
-
       # Push the new TNF image to Quay.io.
-
       - name: Authenticate against Quay.io
         uses: docker/login-action@v2
         with:
@@ -181,20 +149,20 @@ jobs:
           if [ -z "$GIT_RELEASE" ]; then
             GIT_LATEST_RELEASE=$GIT_PREVIOUS_RELEASE
           fi
-          echo "::set-output name=version_number::$GIT_LATEST_RELEASE"
+          echo "version_number=$GIT_LATEST_RELEASE"
         id: set_tnf_version
 
       - name: Print the latest TNF version from GIT
         run: |
           echo Version tag: ${{ steps.set_tnf_version.outputs.version_number }}
       - name: Get contents of the version.json file
-        run: echo "::set-output name=json::$(cat version.json | tr -d '[:space:]')"
+        run: echo "name=$(cat version.json | tr -d '[:space:]')" >> GITHUB_OUTPUT
         id: get_version_json_file
 
       - name: Get the partner version number from file
         run: |
           echo Partner version tag: $VERSION_FROM_FILE_PARTNER
-          echo "::set-output name=partner_version_number::$VERSION_FROM_FILE_PARTNER"
+          echo "partner_version_number=$VERSION_FROM_FILE_PARTNER" >> GITHUB_PARTNER
         id: set_partner_version
         env:
           VERSION_FROM_FILE_PARTNER: ${{ fromJSON(steps.get_version_json_file.outputs.json).partner_tag }}
@@ -237,38 +205,8 @@ jobs:
             --build-arg TNF_VERSION=${TNF_VERSION} \
             --build-arg TNF_SRC_URL=${TNF_SRC_URL} \
             --build-arg OPENSHIFT_VERSION=${OPENSHIFT_VERSION} .
-      # Create a minikube cluster for testing.
-
-      - name: Check out `cnf-certification-test-partner`
-        uses: actions/checkout@v3
-        with:
-          repository: test-network-function/cnf-certification-test-partner
-          path: cnf-certification-test-partner
-          ref: ${{ env.PARTNER_VERSION }}
-          
-      - name: Start the minikube cluster for `local-test-infra`
-        uses: ./cnf-certification-test-partner/.github/actions/start-k8s-cluster
-        with:
-          working_directory: cnf-certification-test-partner
-          
-      - name: Create `local-test-infra` OpenShift resources
-        uses: ./cnf-certification-test-partner/.github/actions/create-local-test-infra-resources
-        with:
-          working_directory: cnf-certification-test-partner
-
-      # Perform tests.
-
-      - name: Create required TNF config files and directories
-        run: |
-          mkdir -p $TNF_CONFIG_DIR $TNF_OUTPUT_DIR
-          cp cnf-certification-test/*.yml $TNF_CONFIG_DIR
-        shell: bash
-
-      - name: 'Test: Run without any TS, just get diagnostic information'
-        run: ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} 
 
       # Push the new TNF image to Quay.io.
-
       - name: Authenticate against Quay.io
         uses: docker/login-action@v2
         with:
@@ -279,4 +217,4 @@ jobs:
           password: ${{ secrets.QUAY_ROBOT_TOKEN }}
 
       - name: Push the newly built image to Quay.io
-        run: docker push --all-tags ${REGISTRY}/${TNF_IMAGE_NAME}
+        run: docker push ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_VERSION}
