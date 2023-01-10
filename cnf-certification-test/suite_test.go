@@ -136,10 +136,9 @@ func TestTest(t *testing.T) {
 	}
 
 	defer f.Close()
-	log.SetOutput(f)
 
 	// Set hooks for logger
-	loghelper.SetHooks()
+	loghelper.SetHooks(f)
 
 	// Set logging level
 	loghelper.SetLogLevel()

@@ -67,21 +67,17 @@ func SetLogFormat() {
 	logrus.SetFormatter(customFormatter)
 }
 
-func SetHooks() {
-	logrus.AddHook(&writer.Hook{ // Send logs with level higher than warning to stderr
-		Writer: os.Stderr,
+func SetHooks(f *os.File) {
+	logrus.AddHook(&writer.Hook{ // Send all logs to file
+		Writer: f,
 		LogLevels: []logrus.Level{
 			logrus.PanicLevel,
 			logrus.FatalLevel,
 			logrus.ErrorLevel,
 			logrus.WarnLevel,
-		},
-	})
-	logrus.AddHook(&writer.Hook{ // Send info and debug logs to stdout
-		Writer: os.Stdout,
-		LogLevels: []logrus.Level{
 			logrus.InfoLevel,
 			logrus.DebugLevel,
+			logrus.TraceLevel,
 		},
 	})
 }
