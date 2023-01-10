@@ -4,16 +4,16 @@
 # TNF_CONTAINER_CLIENT environment variable, then that value is utilized.  Otherwise, "podman" is used by default.
 # This is particularly useful for Operating Systems which do not readily support "podman", and "docker" must be used.
 function configure_tnf_container_client() {
-  PODMAN_EXECUTABLE="podman"
-  DEFAULT_CONTAINER_EXECUTABLE="${PODMAN_EXECUTABLE}"
+	PODMAN_EXECUTABLE="podman"
+	DEFAULT_CONTAINER_EXECUTABLE="${PODMAN_EXECUTABLE}"
 
-  if [ "" == "${TNF_CONTAINER_CLIENT}" ]
-  then
-    echo "The \$TNF_CONTAINER_CLIENT environment variable is not set; defaulting to use: ${DEFAULT_CONTAINER_EXECUTABLE}"
-    export TNF_CONTAINER_CLIENT="${DEFAULT_CONTAINER_EXECUTABLE}"
-  else
-    echo "\$TNF_CONTAINER_CLIENT is set;  using: ${TNF_CONTAINER_CLIENT}"
-  fi
+	if [ "" == "${TNF_CONTAINER_CLIENT}" ]
+	then
+		echo "The \$TNF_CONTAINER_CLIENT environment variable is not set; defaulting to use: ${DEFAULT_CONTAINER_EXECUTABLE}"
+		export TNF_CONTAINER_CLIENT="${DEFAULT_CONTAINER_EXECUTABLE}"
+	else
+		echo "\$TNF_CONTAINER_CLIENT is set;  using: ${TNF_CONTAINER_CLIENT}"
+	fi
 }
 
 # call the function to configure "podman" or something else if specified by TNF_CONTAINER_CLIENT
@@ -38,8 +38,8 @@ get_container_tnf_kubeconfig_path_from_index() {
 	# - /usr/tnf/kubeconfig/config
 	# - /usr/tnf/kubeconfig/config.2
 	# - /usr/tnf/kubeconfig/config.3
-	if (($local_path_index > 0)); then
-		kubeconfig_index=$(($local_path_index + 1))
+	if ((local_path_index > 0)); then
+		kubeconfig_index=$((local_path_index + 1))
 		kubeconfig_path="$kubeconfig_path.$kubeconfig_index"
 	fi
 	echo $kubeconfig_path
@@ -57,12 +57,13 @@ display_config_summary() {
 }
 
 join_paths() {
-	local IFS=':'; echo "$*"
+	local IFS=:; echo "$*"
 }
 
 # Explode loaded KUBECONFIG (e.g. /kubeconfig/path1:/kubeconfig/path2:...)
 # into an array of individual paths to local kubeconfigs.
-IFS=":" read -a local_kubeconfig_paths <<< $LOCAL_KUBECONFIG
+# shellcheck disable=SC2162 # Read without -r will mangle backslashes.
+IFS=: read -a local_kubeconfig_paths <<< "$LOCAL_KUBECONFIG"
 
 declare -a container_tnf_kubeconfig_paths
 declare -a container_tnf_kubeconfig_volume_bindings
@@ -70,9 +71,9 @@ declare -a container_tnf_kubeconfig_volume_bindings
 # Assign a file in the TNF container for each provided local kubeconfig
 for local_path_index in "${!local_kubeconfig_paths[@]}"; do
 	local_path=${local_kubeconfig_paths[$local_path_index]}
-	container_path=$(get_container_tnf_kubeconfig_path_from_index $local_path_index)
+	container_path=$(get_container_tnf_kubeconfig_path_from_index "$local_path_index")
 
-	container_tnf_kubeconfig_paths+=($container_path)
+	container_tnf_kubeconfig_paths+=("$container_path")
 	container_tnf_kubeconfig_volume_bindings+=("$local_path:$container_path:Z")
 done
 
@@ -86,24 +87,25 @@ display_config_summary
 
 # Construct new $KUBECONFIG env variable containing all paths to kubeconfigs mounted to the container.
 # This environment variable is passed to the TNF container and is made available for use by oc/kubectl.
-CONTAINER_TNF_KUBECONFIG=$(join_paths ${container_tnf_kubeconfig_paths[@]})
+CONTAINER_TNF_KUBECONFIG=$(join_paths "${container_tnf_kubeconfig_paths[@]}")
 
 container_tnf_kubeconfig_volumes_cmd_args=$(printf -- "-v %s " "${container_tnf_kubeconfig_volume_bindings[@]}")
 
-if [ ! -z "${LOCAL_TNF_CONFIG}" ]; then
+if [ -n "${LOCAL_TNF_CONFIG}" ]; then
 	CONFIG_VOLUME_MOUNT_ARG="-v $LOCAL_TNF_CONFIG:$CONTAINER_TNF_DIR/config:Z"
 fi
 
-if [ ! -z "${LOCAL_TNF_OFFLINE_DB}" ]; then
+if [ -n "${LOCAL_TNF_OFFLINE_DB}" ]; then
 	CONTAINER_TNF_OFFLINE_DB_DIR=/usr/offline-db-ext
 	TNF_OFFLINE_DB_MOUNT_ARG="-v $LOCAL_TNF_OFFLINE_DB:$CONTAINER_TNF_OFFLINE_DB_DIR:Z"
 fi
 
-if [ ! -z "${DNS_ARG}" ]; then
+if [ -n "${DNS_ARG}" ]; then
 	DNS_ARG="--dns $DNS_ARG"
 fi
 
 set -x
+# shellcheck disable=SC2068,SC2086 # Double quote array expansions.
 ${TNF_CONTAINER_CLIENT} run --rm $DNS_ARG \
 	--network $CONTAINER_NETWORK_MODE \
 	${container_tnf_kubeconfig_volumes_cmd_args[@]} \
