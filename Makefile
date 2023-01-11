@@ -80,6 +80,7 @@ clean:
 	rm -f test-out.json
 	rm -f cover.out
 	rm -f claim.json
+	rm -f tnf-execution.log
 	rm -f all-releases.txt
 
 # Run configured linters

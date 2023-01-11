@@ -191,6 +191,7 @@ jobs:
             cnf-certification-test/claim.json
             cnf-certification-test/claimjson.js
             cnf-certification-test/results.html
+            cnf-certification-test/tnf-execution.log
 
       # Perform smoke tests using a TNF container.
 
@@ -222,6 +223,7 @@ jobs:
             ${{ env.TNF_OUTPUT_DIR }}/claim.json
             ${{ env.TNF_OUTPUT_DIR }}/claimjson.js
             ${{ env.TNF_OUTPUT_DIR }}/results.html
+            ${{ env.TNF_OUTPUT_DIR }}/tnf-execution.log
 
       # Push the new unstable TNF image to Quay.io.
       - name: (if on main and upstream) Authenticate against Quay.io

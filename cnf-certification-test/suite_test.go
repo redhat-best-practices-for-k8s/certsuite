@@ -50,18 +50,22 @@ import (
 const (
 	claimFileName                 = "claim.json"
 	claimPathFlagKey              = "claimloc"
+	executionLogPathFlagKey       = "execlogloc"
 	CnfCertificationTestSuiteName = "CNF Certification Test Suite"
 	defaultClaimPath              = ".."
+	defaultExecutionLogPath       = ".."
 	defaultCliArgValue            = ""
 	junitFlagKey                  = "junit"
 	TNFJunitXMLFileName           = "cnf-certification-tests_junit.xml"
 	TNFReportKey                  = "cnf-certification-test"
 	extraInfoKey                  = "testsExtraInfo"
+	execLogFile                   = "tnf-execution.log"
 )
 
 var (
-	claimPath *string
-	junitPath *string
+	claimPath   *string
+	junitPath   *string
+	execLogPath *string
 	// GitCommit is the latest commit in the current git branch
 	GitCommit string
 	// GitRelease is the list of tags (if any) applied to the latest commit
@@ -80,6 +84,8 @@ func init() {
 		"the path where the claimfile will be output")
 	junitPath = flag.String(junitFlagKey, defaultCliArgValue,
 		"the path for the junit format report")
+	execLogPath = flag.String(executionLogPathFlagKey, defaultExecutionLogPath,
+		"the path for the execution log")
 }
 
 func getK8sClientsConfigFileNames() []string {
@@ -119,9 +125,8 @@ func TestTest(t *testing.T) {
 	loghelper.SetLogFormat()
 
 	// Delete execution log (if any) prior to run
-	logFile := "tnf-execution.log"
-	_, fileErr := os.Stat(logFile)
-	if os.IsExist(fileErr) {
+	logFile := filepath.Join(*execLogPath, execLogFile)
+	if _, fileErr := os.Stat(logFile); os.IsExist(fileErr) {
 		e := os.Remove(logFile)
 		if e != nil {
 			panic(e)

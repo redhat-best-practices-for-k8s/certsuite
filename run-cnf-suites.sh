@@ -96,6 +96,7 @@ GINKGO_ARGS="\
 --ginkgo.timeout=$TIMEOUT \
 -junit $OUTPUT_LOC \
 -claimloc $OUTPUT_LOC \
+-execlogloc $OUTPUT_LOC \
 --ginkgo.junit-report $OUTPUT_LOC/cnf-certification-tests_junit.xml \
 -ginkgo.v \
 -test.v\

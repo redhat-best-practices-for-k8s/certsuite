@@ -3,7 +3,7 @@
 To test the newly added test / existing tests locally, follow the steps
 
 
--  Clone the repo
+- Clone the repo
 
 - Set runtime environment variables, as per the requirement.
 
@@ -31,3 +31,11 @@ export TNF_NON_INTRUSIVE_ONLY=true
     ```shell
     ./script/development.sh networking
     ```
+
+- Modify the logging levels to show trace level with the following:
+
+    ```shell
+    TNF_LOG_LEVEL=trace
+    ```
+
+    The choices are: trace, debug, info, warn, error, fatal, panic.  The default is debug.
