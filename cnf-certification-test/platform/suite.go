@@ -138,7 +138,15 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		if provider.IsOCPCluster() {
 			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetHugepagesPods())
-			testPodHugePages2M(&env)
+			testPodHugePagesSize(&env, provider.HugePages2Mi)
+		}
+	})
+
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHugePages1G)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		if provider.IsOCPCluster() {
+			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetHugepagesPods())
+			testPodHugePagesSize(&env, provider.HugePages1Gi)
 		}
 	})
 
@@ -553,10 +561,10 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 	}
 }
 
-func testPodHugePages2M(env *provider.TestEnvironment) {
+func testPodHugePagesSize(env *provider.TestEnvironment, size string) {
 	var badPods []*provider.Pod
 	for _, put := range env.GetHugepagesPods() {
-		result := put.CheckResourceOnly2MiHugePages()
+		result := put.CheckResourceHugePagesSize(size)
 		if !result {
 			badPods = append(badPods, put)
 		}
