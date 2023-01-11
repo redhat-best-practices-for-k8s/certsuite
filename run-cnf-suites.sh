@@ -115,15 +115,6 @@ trap html_output EXIT
 FOCUS=${FOCUS%?}
 SKIP=${SKIP%?}
 
-# Run cnf-feature-deploy test container if not running inside a container
-# cgroup file doesn't exist on MacOS. Consider that as not running in container
-# as well
-if [[ ! -f /proc/1/cgroup ]] || grep -q init\.scope /proc/1/cgroup; then
-	cd script || exit 1
-	./run-cfd-container.sh
-	cd ..
-fi
-
 echo "Running with focus '$FOCUS'"
 echo "Running with skip '$SKIP'"
 echo "Running with label filter '$LABEL'"
