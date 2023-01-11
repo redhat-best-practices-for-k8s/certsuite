@@ -797,7 +797,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		Remediation:      SecConRemediation,
 		ExceptionProcess: SecConExceptionProcess,
 		Description: formDescription(TestSecContextIdentifier,
-			`Checks the security context is match one of the 4 categories`),
+			`Checks the security context matches one of the 4 categories`),
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 4.5",
 		Tags:                  TestSecContextIdentifier.Tags,
 	},
