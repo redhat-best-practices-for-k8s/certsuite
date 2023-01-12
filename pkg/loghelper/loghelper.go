@@ -88,8 +88,8 @@ func SetLogLevel() {
 
 	var logLevel, err = logrus.ParseLevel(params.LogLevel)
 	if err != nil {
-		logrus.Error("TNF_LOG_LEVEL environment set with an invalid value, defaulting to debug \n Valid values are: trace, debug, info, warn, error, fatal, panic")
-		logLevel = logrus.DebugLevel
+		logrus.Error("TNF_LOG_LEVEL environment set with an invalid value, defaulting to info \n Valid values are: trace, debug, info, warn, error, fatal, panic")
+		logLevel = logrus.InfoLevel
 	}
 
 	logrus.Infof("Log level set to: %v", logLevel)

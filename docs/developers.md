@@ -38,4 +38,4 @@ export TNF_NON_INTRUSIVE_ONLY=true
     TNF_LOG_LEVEL=trace
     ```
 
-    The choices are: trace, debug, info, warn, error, fatal, panic.  The default is debug.
+    The choices are: trace, debug, info, warn, error, fatal, panic.  The default is info.
