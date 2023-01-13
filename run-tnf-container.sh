@@ -242,7 +242,4 @@ display_kubeconfig_autodiscovery_summary
 check_required_vars
 
 cd script
-
-./run-cfd-container.sh
-
 ./run-container.sh  "$@"
