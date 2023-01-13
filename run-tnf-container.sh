@@ -14,9 +14,10 @@
 #   KUBECONFIG=/usr/tnf/kubeconfig/config:/usr/tnf/kubeconfig/config.2
 
 export REQUIRED_NUM_OF_ARGS=5
-export REQUIRED_VARS=('LOCAL_KUBECONFIG' 'LOCAL_TNF_CONFIG' 'OUTPUT_LOC')
+export REQUIRED_VARS=('LOCAL_KUBECONFIG' 'LOCAL_TNF_CONFIG' 'OUTPUT_LOC' 'LOCAL_DOCKERCFG')
 export REQUIRED_VARS_ERROR_MESSAGES=(
 	'KUBECONFIG is invalid or not given. Use the -k option to provide path to one or more kubeconfig files.'
+	'DOCKERCFG is invalid or not given. Use the -c option to provide path to one or more dockercfg files.'
 	'TNFCONFIG is required. Use the -t option to specify the directory containing the TNF configuration files.'
 	'OUTPUT_LOC is required. Use the -o option to specify the output location for the test results.'
 )
@@ -35,7 +36,7 @@ export CONTAINER_NETWORK_MODE='host'
 usage() {
 	# shellcheck disable=SC2162 # Read without -r will mangle backslashes.
 	read -d '' usage_prompt <<- EOF
-	Usage: $0 -t TNFCONFIG -o OUTPUT_LOC [-i IMAGE] [-k KUBECONFIG] [-n NETWORK_MODE] [-d DNS_RESOLVER_ADDRESS] [-l LABEL]
+	Usage: $0 -t TNFCONFIG -o OUTPUT_LOC [-i IMAGE] [-k KUBECONFIG] [-n NETWORK_MODE] [-d DNS_RESOLVER_ADDRESS] [-l LABEL] [-c DOCKERCFG]
 
 	Configure and run the containerised TNF test offering.
 
@@ -48,10 +49,13 @@ usage() {
 	  -k: set path to one or more local kubeconfigs, separated by a colon.
 	      The -k option takes precedence, overwriting the results of local kubeconfig autodiscovery.
 	      See the 'Kubeconfig lookup order' section below for more details.
+	  -c: set path to one or more local dockercfgs, separated by a colon.
+	      The -c option takes precedence, overwriting the results of local dockercfg autodiscovery.
+	      See the 'DockerCfg lookup order' section below for more details.
 	  -n: set the network mode of the container.
 	  -d: set the DNS resolver address for the test containers started by docker, may be required with 
 	      certain docker version if the kubeconfig contains host names
-      -l: Set the test labels that should be tested
+	  -l: Set the test labels that should be tested
 
 	Kubeconfig lookup order
 	  1. If -k is specified, use the paths provided with the -k option.
@@ -125,9 +129,27 @@ perform_kubeconfig_autodiscovery() {
 	fi
 }
 
+perform_dockercfg_autodiscovery() {
+  # See the openshift-preflight documentation about environment variables
+  # https://github.com/redhat-openshift-ecosystem/openshift-preflight/blob/main/docs/CONFIG.md#container-policy-configuration
+  if [[ -n "$PFLT_DOCKERCONFIG" ]]; then
+		export LOCAL_DOCKERCFG=$PFLT_DOCKERCONFIG
+		dockercfg_autodiscovery_source='$PFLT_DOCKERCONFIG'
+	elif [[ -f "$HOME/.docker/config.json" ]]; then
+		export LOCAL_DOCKERCFG=$HOME/.docker/config.json
+		dockercfg_autodiscovery_source="\$HOME/.docker/config.json ($HOME/.docker/config.json)"
+	fi
+}
+
 display_kubeconfig_autodiscovery_summary() {
 	if [[ -n "$kubeconfig_autodiscovery_source" ]]; then
 		echo "Kubeconfig Autodiscovery: configuration loaded from $kubeconfig_autodiscovery_source"
+	fi
+}
+
+display_dockercfg_autodiscovery_summary() {
+	if [[ -n "$dockercfg_autodiscovery_source" ]]; then
+		echo "DockerCfg Autodiscovery: configuration loaded from $dockercfg_autodiscovery_source"
 	fi
 }
 
@@ -135,7 +157,10 @@ if [ -n "${REQUIRED_NUM_OF_ARGS}" ]; then
 	check_cli_required_num_of_args "$@"
 fi
 
+echo "Performing KUBECONFIG autodiscovery"
 perform_kubeconfig_autodiscovery
+echo "Performing DOCKERCFG autodiscovery"
+perform_dockercfg_autodiscovery
 
 # Parge args beginning with -
 while [[ $1 == -* ]]; do
@@ -151,6 +176,17 @@ while [[ $1 == -* ]]; do
 				exit 1
 			fi
 			echo "-k $LOCAL_KUBECONFIG"
+			;;
+		-c)
+			if (($# > 1)); then
+				export LOCAL_DOCKERCFG=$2
+				unset dockercfg_autodiscovery_source
+				shift
+			else
+				echo "-c requires an argument" 1>&2
+				exit 1
+			fi
+			echo "-c $LOCAL_DOCKERCFG"
 			;;
 		-t)
 			if (($# > 1)); then
@@ -259,6 +295,7 @@ while [[ $1 == -* ]]; do
 done
 
 display_kubeconfig_autodiscovery_summary
+display_dockercfg_autodiscovery_summary
 check_required_vars
 cd script || exit 1
 ./run-container.sh  "$@"
