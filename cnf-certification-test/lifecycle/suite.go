@@ -280,8 +280,8 @@ func testPodsOwnerReference(env *provider.TestEnvironment) {
 func testPodNodeSelectorAndAffinityBestPractices(testPods []*provider.Pod) {
 	var badPods []*corev1.Pod
 	for _, put := range testPods {
-		if len(put.Spec.NodeSelector) != 0 {
-			tnf.ClaimFilePrintf("ERROR: %s has a node selector clause. Node selector: %v", put, &put.Spec.NodeSelector)
+		if put.HasNodeAssignment() {
+			tnf.ClaimFilePrintf("ERROR: %s has a node assignment. Node selector: %v Node Name: %s", put, &put.Spec.NodeSelector, put.Spec.NodeName)
 			badPods = append(badPods, put.Pod)
 		}
 		if put.Spec.Affinity != nil && put.Spec.Affinity.NodeAffinity != nil {
@@ -448,6 +448,21 @@ func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 		tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
 		ginkgo.Fail("Some deployments or stateful sets are not in a good initial state. Cannot perform test.")
 	}
+
+	// Filter out pods with Node Assignments present and FAIL them.
+	// We run into problems with this test when there are nodeSelectors or node names assigned affecting where
+	// pods are scheduled.  Also, they are not allowed in general, see the node-selector test case.
+	var podsWithNodeAssignement []*provider.Pod
+	for _, put := range env.Pods {
+		if put.HasNodeAssignment() {
+			podsWithNodeAssignement = append(podsWithNodeAssignement, put)
+		}
+	}
+	if len(podsWithNodeAssignement) > 0 {
+		logrus.Errorf("Pod(s) have been found to contain a node assignment and cannot perform the pod-recreation test: %v", podsWithNodeAssignement)
+		testhelper.AddTestResultLog("Non-compliant", podsWithNodeAssignement, tnf.ClaimFilePrintf, ginkgo.Fail)
+	}
+
 	for n := range podsets.GetAllNodesForAllPodSets(env.Pods) {
 		defer podrecreation.CordonCleanup(n) //nolint:gocritic // The defer in loop is intentional, calling the cleanup function once per node
 		err := podrecreation.CordonHelper(n, podrecreation.Cordon)

@@ -202,3 +202,8 @@ func (p *Pod) CreatedByDeploymentConfig() (bool, error) {
 	}
 	return false, nil
 }
+
+func (p *Pod) HasNodeAssignment() bool {
+	// Checks whether or not the pod has a nodeSelector or a NodeName supplied
+	return p.Spec.NodeSelector != nil || p.Spec.NodeName != ""
+}
