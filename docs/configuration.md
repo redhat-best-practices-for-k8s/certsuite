@@ -87,6 +87,10 @@ If we want to add another name, we just need to write the name in the yaml file.
 
 for example: if we want to add new protocol - "http4", we add in "tnf_config.yml"  below "validProtocolNames" and then this protocol ("http4") add to map allowedProtocolNames and finally "http4"  will be allow protocol.
 
+## ServicesIgnoreList
+
+This is a list of service names present in the namespace under test and that should not be tested.
+
 ## skipScalingTestDeployments and skipScalingTestStatefulSetNames
 
 This section of the TNF config allows the user to skip the scaling tests that potentially cause known problems with workloads that do not like being scaled up and scaled down.

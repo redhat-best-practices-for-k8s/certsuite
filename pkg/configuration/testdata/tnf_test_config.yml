@@ -29,3 +29,6 @@ skipScalingTestStatefulSetNames:
 validProtocolNames:
   - "http3"
   - "sctp"
+ServicesIgnoreList:
+  - "hazelcast-platform-controller-manager-service"
+  - "hazelcast-platform-webhook-service"
