@@ -203,6 +203,12 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		Test1337UIDs(&env)
 	})
+
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestExclusiveCPUPoolIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
+		testExclusiveCPUPool(&env)
+	})
 })
 
 func checkForbiddenCapability(containers []*provider.Container, capability string) []string {
@@ -658,4 +664,28 @@ func testContainerSCC(env *provider.TestEnvironment) {
 	tnf.ClaimFilePrintf("List of containers that are Category1 or CategoryNoUID0 %+v \n", goodContainer)
 	logrus.Infof("List of non-compliant containers that are not from Category1 or CategoryNoUID0 - %+v", badContainer)
 	testhelper.AddTestResultLog("List of non-compliant containers that are not from Category1 or CategoryNoUID0 - ", badContainer, tnf.ClaimFilePrintf, ginkgo.Fail)
+}
+
+func testExclusiveCPUPool(env *provider.TestEnvironment) {
+	var badPods []string
+
+	for _, put := range env.Pods {
+		nBExclusiveCPUPoolContainers := 0
+		nBSharedCPUPoolContainers := 0
+		for _, cut := range put.Containers {
+			if resources.HasExclusiveCPUsAssigned(cut) {
+				nBExclusiveCPUPoolContainers++
+			} else {
+				nBSharedCPUPoolContainers++
+			}
+		}
+
+		if nBExclusiveCPUPoolContainers > 0 && nBSharedCPUPoolContainers > 0 {
+			tnf.ClaimFilePrintf("Pod: %s has containers whose CPUs belong to different pools. Containers in the shared cpu pool: %d "+
+				"Containers in the exclusive cpu pool: %d", put.String(), nBSharedCPUPoolContainers, nBExclusiveCPUPoolContainers)
+			badPods = append(badPods, put.String())
+		}
+	}
+
+	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }

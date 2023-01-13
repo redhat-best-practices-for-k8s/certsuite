@@ -83,3 +83,78 @@ func TestHasRequestsAndLimitsSet(t *testing.T) {
 		assert.Equal(t, tc.expectedResult, HasRequestsAndLimitsSet(tc.testContainer))
 	}
 }
+
+func TestHasExclusiveCPUsAssigned(t *testing.T) {
+	testCases := []struct {
+		testContainer  *provider.Container
+		expectedResult bool
+	}{
+		{ // Test Case #1 - Exclusive CPU pool selected
+			testContainer: &provider.Container{
+				Container: &corev1.Container{
+					Resources: corev1.ResourceRequirements{
+						Requests: corev1.ResourceList{
+							"cpu": resource.MustParse("2"),
+						},
+						Limits: corev1.ResourceList{
+							"cpu": resource.MustParse("2"),
+						},
+					},
+				},
+			},
+			expectedResult: true,
+		},
+		{ // Test Case #2 - Shared CPU pool selected (requests and limits are not equal)
+			testContainer: &provider.Container{
+				Container: &corev1.Container{
+					Resources: corev1.ResourceRequirements{
+						Requests: corev1.ResourceList{
+							"cpu": resource.MustParse("1"),
+						},
+						Limits: corev1.ResourceList{
+							"cpu": resource.MustParse("2"),
+						},
+					},
+				},
+			},
+			expectedResult: false,
+		},
+		{ // Test Case #3 - Shared CPU pool selected (requests and limits quantities are not an integer)
+			testContainer: &provider.Container{
+				Container: &corev1.Container{
+					Resources: corev1.ResourceRequirements{
+						Requests: corev1.ResourceList{
+							"cpu": resource.MustParse("512m"),
+						},
+						Limits: corev1.ResourceList{
+							"cpu": resource.MustParse("512m"),
+						},
+					},
+				},
+			},
+			expectedResult: false,
+		},
+		{ // Test Case #4 - Shared CPU pool selected (no requests or limits set)
+			testContainer: &provider.Container{
+				Container: &corev1.Container{},
+			},
+			expectedResult: false,
+		},
+		{ // Test Case #5 - Exclusive CPU selected (requests defaults to limits)
+			testContainer: &provider.Container{
+				Container: &corev1.Container{
+					Resources: corev1.ResourceRequirements{
+						Limits: corev1.ResourceList{
+							"cpu": resource.MustParse("2"),
+						},
+					},
+				},
+			},
+			expectedResult: true,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedResult, HasExclusiveCPUsAssigned(tc.testContainer))
+	}
+}
