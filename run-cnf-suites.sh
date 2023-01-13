@@ -153,4 +153,7 @@ cd ./cnf-certification-test || exit 1
 	${FOCUS_STRING} \
 	${SKIP_STRING} \
 	"${LABEL_STRING}" \
-	${GINKGO_ARGS}
+	${GINKGO_ARGS} |& tee $OUTPUT_LOC/tnf-execution.log
+
+# preserving the exit status
+exit ${PIPESTATUS[0]}
