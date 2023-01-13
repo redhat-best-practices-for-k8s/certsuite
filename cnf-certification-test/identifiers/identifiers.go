@@ -1492,7 +1492,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 3.5.5",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestCPUIsolationIdentifier.Tags,
-		Qe:                    false,
+		Qe:                    true,
 	},
 	TestContainerPortNameFormat: {
 		Identifier:            TestContainerPortNameFormat,
