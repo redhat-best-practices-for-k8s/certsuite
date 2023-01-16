@@ -146,6 +146,12 @@ fi
 
 cd ./cnf-certification-test || exit 1
 
+# configuring special pipeline mode
+# The exit status of a pipeline is the exit status of the last command in the pipeline, unless the pipefail option
+# is enabled (see The Set Builtin). If pipefail is enabled, the pipeline's return status is the value of the last (rightmost) 
+# command to exit with a non-zero status, or zero if all commands exit successfully.
+set -o pipefail
+
 # Do not double quote.
 # SC2086: Double quote to prevent globbing and word splitting.
 # shellcheck disable=SC2086
@@ -156,4 +162,10 @@ cd ./cnf-certification-test || exit 1
 	${GINKGO_ARGS} |& tee $OUTPUT_LOC/tnf-execution.log
 
 # preserving the exit status
-exit ${PIPESTATUS[0]}
+RESULT=$?
+
+# revert to normal mode
+set +o pipefail
+
+# exit with retrieved exit status
+exit $RESULT
