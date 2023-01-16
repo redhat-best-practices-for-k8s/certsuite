@@ -27,7 +27,7 @@ import (
 func (env *TestEnvironment) GetGuaranteedPodsWithExlusiveCPUs() []*Pod {
 	var filteredPods []*Pod
 	for _, p := range env.Pods {
-		if p.IsPodGuaranteedWithExlusiveCPUs() {
+		if p.IsPodGuaranteedWithExclusiveCPUs() {
 			filteredPods = append(filteredPods, p)
 		}
 	}
@@ -37,7 +37,7 @@ func (env *TestEnvironment) GetGuaranteedPodsWithExlusiveCPUs() []*Pod {
 func (env *TestEnvironment) GetNonGuaranteedPods() []*Pod {
 	var filteredPods []*Pod
 	for _, p := range env.Pods {
-		if !p.IsPodGuaranteedWithExlusiveCPUs() {
+		if !p.IsPodGuaranteedWithExclusiveCPUs() {
 			filteredPods = append(filteredPods, p)
 		}
 	}
