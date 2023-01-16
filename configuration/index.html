@@ -532,6 +532,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#servicesignorelist" class="md-nav__link">
+    ServicesIgnoreList
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#skipscalingtestdeployments-and-skipscalingteststatefulsetnames" class="md-nav__link">
     skipScalingTestDeployments and skipScalingTestStatefulSetNames
   </a>
@@ -919,6 +926,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#servicesignorelist" class="md-nav__link">
+    ServicesIgnoreList
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#skipscalingtestdeployments-and-skipscalingteststatefulsetnames" class="md-nav__link">
     skipScalingTestDeployments and skipScalingTestStatefulSetNames
   </a>
@@ -1004,6 +1018,8 @@ label. Any value is permitted here but <code>target</code> is used here for cons
 <p>This name of protocols that allowed.
 If we want to add another name, we just need to write the name in the yaml file.</p>
 <p>for example: if we want to add new protocol - &ldquo;http4&rdquo;, we add in &ldquo;tnf_config.yml&rdquo;  below &ldquo;validProtocolNames&rdquo; and then this protocol (&ldquo;http4&rdquo;) add to map allowedProtocolNames and finally &ldquo;http4&rdquo;  will be allow protocol.</p>
+<h2 id="servicesignorelist">ServicesIgnoreList<a class="headerlink" href="#servicesignorelist" title="Permanent link">&para;</a></h2>
+<p>This is a list of service names present in the namespace under test and that should not be tested.</p>
 <h2 id="skipscalingtestdeployments-and-skipscalingteststatefulsetnames">skipScalingTestDeployments and skipScalingTestStatefulSetNames<a class="headerlink" href="#skipscalingtestdeployments-and-skipscalingteststatefulsetnames" title="Permanent link">&para;</a></h2>
 <p>This section of the <abbr title="Test Network Function">TNF</abbr> config allows the user to skip the scaling tests that potentially cause known problems with workloads that do not like being scaled up and scaled down.</p>
 <p>Example:</p>
