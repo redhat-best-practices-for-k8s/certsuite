@@ -83,34 +83,22 @@ func prependCommentSign(s string, times int) string {
 	return strings.Join(commentedLines, "\n")
 }
 
-//nolint:funlen
-func requestFeedback(question string) (string, error) {
-	tmpFile, err := os.CreateTemp(os.TempDir(), "")
-	if err != nil {
-		return "", fmt.Errorf("error creating temp file: %v", err)
-	}
-
-	_, err = tmpFile.WriteString("\n" + prependCommentSign(question, 1))
-	if err != nil {
-		return "", fmt.Errorf("could not write to temp file: %v", err)
-	}
-	tmpFile.Close()
-
+func readUserInputFile(inputFile *os.File) (string, error) {
 	editor := os.Getenv("EDITOR")
 	if editor == "" {
 		var path string
-		path, err = exec.LookPath("vi")
+		path, err := exec.LookPath("vi")
 		if err != nil {
 			return "", fmt.Errorf("vi is not available: %v", err)
 		}
 		editor = path
 	}
-	cmd := exec.Command(editor, tmpFile.Name())
+	cmd := exec.Command(editor, inputFile.Name())
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
-	err = cmd.Start()
+	err := cmd.Start()
 	if err != nil {
 		return "", fmt.Errorf("error running command %s: %v", cmd.String(), err)
 	}
@@ -119,12 +107,32 @@ func requestFeedback(question string) (string, error) {
 		return "", fmt.Errorf("error waiting for command %s: %v", cmd.String(), err)
 	}
 
-	data, err := os.ReadFile(tmpFile.Name())
+	data, err := os.ReadFile(inputFile.Name())
 	if err != nil {
-		return "", fmt.Errorf("error reading file %s: %v", tmpFile.Name(), err)
+		return "", fmt.Errorf("error reading file %s: %v", inputFile.Name(), err)
 	}
 
-	return strings.Split(string(data), "#")[0], nil
+	return string(data), nil
+}
+
+func requestFeedback(question string) (string, error) {
+	tmpFile, err := os.CreateTemp(os.TempDir(), "")
+	if err != nil {
+		return "", fmt.Errorf("error creating temp file: %v", err)
+	}
+	defer tmpFile.Close()
+
+	_, err = tmpFile.WriteString("\n" + prependCommentSign(question, 1))
+	if err != nil {
+		return "", fmt.Errorf("could not write to temp file: %v", err)
+	}
+
+	userInput, err := readUserInputFile(tmpFile)
+	if err != nil {
+		return "", err
+	}
+
+	return strings.Split(userInput, "#")[0], nil
 }
 
 func getFeedback(cmd *cobra.Command, args []string) error {
