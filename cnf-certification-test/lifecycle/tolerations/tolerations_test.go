@@ -114,6 +114,26 @@ func TestIsTolerationModified(t *testing.T) {
 			expectedOutput: true,
 			qosClass:       corev1.PodQOSGuaranteed,
 		},
+		{ // Test Case #9 - not-ready toleration added with 301 (not default) toleration seconds
+			testToleration: corev1.Toleration{
+				Key:               "node.kubernetes.io/not-ready",
+				Operator:          corev1.TolerationOpExists,
+				Effect:            corev1.TaintEffectNoExecute,
+				TolerationSeconds: getInt64Pointer(301),
+			},
+			expectedOutput: true,
+			qosClass:       corev1.PodQOSGuaranteed,
+		},
+		{ // Test Case #10 - default not-ready toleration with unset toleration seconds, modified from default so failure
+			testToleration: corev1.Toleration{
+				Key:      "node.kubernetes.io/not-ready",
+				Operator: corev1.TolerationOpExists,
+				Effect:   corev1.TaintEffectNoExecute,
+				// TolerationSeconds: getInt64Pointer(300),
+			},
+			expectedOutput: true,
+			qosClass:       corev1.PodQOSGuaranteed,
+		},
 	}
 
 	for _, tc := range testCases {
