@@ -45,33 +45,31 @@ func HasRequestsAndLimitsSet(cut *provider.Container) bool {
 func HasExclusiveCPUsAssigned(cut *provider.Container) bool {
 	cpuLimits := cut.Resources.Limits.Cpu()
 	cpuRequests := cut.Resources.Requests.Cpu()
-	// if no cpu limits are specified the container will run in the shared cpu pool
-	if cpuLimits.IsZero() {
+	memLimits := cut.Resources.Limits.Memory()
+	memRequests := cut.Resources.Requests.Memory()
+
+	// if no cpu or memory limits are specified the container will run in the shared cpu pool
+	if cpuLimits.IsZero() || memLimits.IsZero() {
+		tnf.ClaimFilePrintf("Container has been found missing cpu/memory resource limits: %s", cut.String())
 		return false
 	}
 
 	// if the cpu limits quantity is not an integer the container will run in the shared cpu pool
 	cpuLimitsVal, isInteger := cpuLimits.AsInt64()
 	if !isInteger {
+		tnf.ClaimFilePrintf("Container's cpu resource limit is not an integer: %s", cut.String())
 		return false
 	}
 
-	// if the cpu requests are not specified they are set equal to limits, so the container will run in the exclusive cpu pool
-	if cpuRequests.IsZero() {
-		return true
-	}
-
-	// if the cpu requests quantity is not an integer the container will run the shared cpu pool
-	cpuRequestsVal, isInteger := cpuRequests.AsInt64()
-	if !isInteger {
-		return false
-	}
-
-	// if the cpu limits and requests are integers and equal the container will run in the exclusive cpu pool
-	if cpuLimitsVal == cpuRequestsVal {
+	// if the cpu and memory limits and requests are equal to each other the container will run in the exclusive cpu pool
+	cpuRequestsVal, _ := cpuRequests.AsInt64()
+	memRequestsVal, _ := memRequests.AsInt64()
+	memLimitsVal, _ := memLimits.AsInt64()
+	if cpuLimitsVal == cpuRequestsVal && memLimitsVal == memRequestsVal {
 		return true
 	}
 
 	// if the cpu limits and request are different, the container will run in the shared cpu pool
+	tnf.ClaimFilePrintf("Container's cpu/memory resources and limits are not equal to each other: %s", cut.String())
 	return false
 }

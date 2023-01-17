@@ -94,10 +94,12 @@ func TestHasExclusiveCPUsAssigned(t *testing.T) {
 				Container: &corev1.Container{
 					Resources: corev1.ResourceRequirements{
 						Requests: corev1.ResourceList{
-							"cpu": resource.MustParse("2"),
+							"cpu":    resource.MustParse("2"),
+							"memory": resource.MustParse("512Mi"),
 						},
 						Limits: corev1.ResourceList{
-							"cpu": resource.MustParse("2"),
+							"cpu":    resource.MustParse("2"),
+							"memory": resource.MustParse("512Mi"),
 						},
 					},
 				},
@@ -109,10 +111,12 @@ func TestHasExclusiveCPUsAssigned(t *testing.T) {
 				Container: &corev1.Container{
 					Resources: corev1.ResourceRequirements{
 						Requests: corev1.ResourceList{
-							"cpu": resource.MustParse("1"),
+							"cpu":    resource.MustParse("1"),
+							"memory": resource.MustParse("512Mi"),
 						},
 						Limits: corev1.ResourceList{
-							"cpu": resource.MustParse("2"),
+							"cpu":    resource.MustParse("2"),
+							"memory": resource.MustParse("512Mi"),
 						},
 					},
 				},
@@ -124,10 +128,12 @@ func TestHasExclusiveCPUsAssigned(t *testing.T) {
 				Container: &corev1.Container{
 					Resources: corev1.ResourceRequirements{
 						Requests: corev1.ResourceList{
-							"cpu": resource.MustParse("512m"),
+							"cpu":    resource.MustParse("512m"),
+							"memory": resource.MustParse("512Mi"),
 						},
 						Limits: corev1.ResourceList{
-							"cpu": resource.MustParse("512m"),
+							"cpu":    resource.MustParse("512m"),
+							"memory": resource.MustParse("512Mi"),
 						},
 					},
 				},
@@ -140,17 +146,37 @@ func TestHasExclusiveCPUsAssigned(t *testing.T) {
 			},
 			expectedResult: false,
 		},
-		{ // Test Case #5 - Exclusive CPU selected (requests defaults to limits)
+		{ // Test Case #5 - Shared CPU pool selected (memory requests and limits are not equal)
 			testContainer: &provider.Container{
 				Container: &corev1.Container{
 					Resources: corev1.ResourceRequirements{
+						Requests: corev1.ResourceList{
+							"cpu":    resource.MustParse("2"),
+							"memory": resource.MustParse("512Mi"),
+						},
+						Limits: corev1.ResourceList{
+							"cpu":    resource.MustParse("2"),
+							"memory": resource.MustParse("256Mi"),
+						},
+					},
+				},
+			},
+			expectedResult: false,
+		},
+		{ // Test Case #6 - Shared CPU pool selected (no memory limits specified)
+			testContainer: &provider.Container{
+				Container: &corev1.Container{
+					Resources: corev1.ResourceRequirements{
+						Requests: corev1.ResourceList{
+							"cpu": resource.MustParse("2"),
+						},
 						Limits: corev1.ResourceList{
 							"cpu": resource.MustParse("2"),
 						},
 					},
 				},
 			},
-			expectedResult: true,
+			expectedResult: false,
 		},
 	}
 
