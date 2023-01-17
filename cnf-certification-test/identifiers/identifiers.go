@@ -210,6 +210,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		VersionOne,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
+		false,
 		TagFarEdge)
 
 	TestReservedExtendedPartnerPorts = AddCatalogEntry(
