@@ -23,6 +23,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 const (
@@ -48,6 +49,27 @@ var WaitForDeploymentSetReady = func(ns, name string, timeout time.Duration) boo
 		time.Sleep(time.Second)
 	}
 	logrus.Error("deployment ", ns, ":", name, " is not ready ")
+	return false
+}
+
+var WaitForScalingToComplete = func(ns, name string, timeout time.Duration, groupResourceSchema schema.GroupResource) bool {
+	logrus.Trace("check if scale object for crs ", ns, ":", name, " is ready ")
+	clients := clientsholder.GetClientsHolder()
+	start := time.Now()
+	for time.Since(start) < timeout {
+		crScale, err := provider.GetUpdatedCrObject(clients.ScalingClient, ns, name, groupResourceSchema)
+		if err != nil {
+			logrus.Errorf("error while getting the scaling fileds %e", err)
+		} else if !crScale.IsScaleObjectReady() {
+			logrus.Errorf("%s is not ready yet", crScale.ToString())
+		} else {
+			logrus.Tracef("%s is ready!", crScale.ToString())
+			return true
+		}
+
+		time.Sleep(time.Second)
+	}
+	logrus.Error("timeout waiting for cr ", ns, ":", name, " scaling to be complete")
 	return false
 }
 

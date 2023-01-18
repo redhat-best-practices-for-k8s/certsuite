@@ -379,6 +379,17 @@ Suggested Remediation|CPU isolation testing is enabled.  Please ensure that all 
 Best Practice Reference|https://TODO Section 3.5.5
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,lifecycle
+#### lifecycle-crd-scaling
+
+Property|Description
+---|---
+Unique ID|lifecycle-crd-scaling
+Description|Tests that CNF crd support scale in/out operations. 				First, The test starts getting the current replicaCount (N) of the crd/s with the Pod Under Test. Then, it executes the 				scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the crd/s. 				In case of crd that are managed by HPA the test is changing the min and max value to crd Replica - 1 during scale-in and the 				original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the crd/s
+Result Type|normative
+Suggested Remediation|Ensure CNF crd/replica sets can scale in/out successfully.
+Best Practice Reference|https://TODO Section 4.6.20
+Exception Process|There is no documented exception process for this.
+Tags|common,lifecycle
 #### lifecycle-deployment-scaling
 
 Property|Description

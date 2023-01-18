@@ -62,7 +62,13 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
 		testContainersPreStop(&env)
 	})
-
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCrdScalingIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Crds)
+		// Note: We skip this test because 'testHighAvailability' in the lifecycle suite is already
+		// testing the replicas and antiaffinity rules that should already be in place for crd.
+		testScaleCrd(&env, timeout)
+	})
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStartupIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
@@ -313,6 +319,15 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration)
 	defer env.SetNeedsRefresh()
 	failedDeployments := []string{}
 	for i := range env.Deployments {
+		if scaling.IsManaged(env.Deployments[i].Name, env.Config.ManagedDeployments) {
+			if !scaling.CheckOwnerReference(env.Deployments[i].GetOwnerReferences(), env.Config.CrdFilters) {
+				failedDeployments = append(failedDeployments, env.Deployments[i].ToString())
+				tnf.ClaimFilePrintf("%s is scaling failed due to OwnerReferences that are not scalable", env.Deployments[i].String())
+			} else {
+				logrus.Infof("%s is scaling skipped due to scalable OwnerReferences, test will run on te cr scaling", env.Deployments[i].String())
+			}
+			continue
+		}
 		// Skip deployment if it is allowed by config
 		if nameInDeploymentSkipList(env.Deployments[i].Name, env.Deployments[i].Namespace, env.Config.SkipScalingTestDeployments) {
 			tnf.ClaimFilePrintf("%s is being skipped due to configuration setting", env.Deployments[i].String())
@@ -322,8 +337,7 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration)
 		// TestDeploymentScaling test scaling of deployment
 		// This is the entry point for deployment scaling tests
 		ns, name := env.Deployments[i].Namespace, env.Deployments[i].Name
-		key := ns + name
-		if hpa, ok := env.HorizontalScaler[key]; ok {
+		if hpa := scaling.GetResourceHPA(env.HorizontalScaler, name, ns, "Deployment"); hpa != nil {
 			// if the deployment is controller by
 			// horizontal scaler, then test that scaler
 			// can scale the deployment
@@ -344,12 +358,43 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration)
 	testhelper.AddTestResultLog("Non-compliant", failedDeployments, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
+func testScaleCrd(env *provider.TestEnvironment, timeout time.Duration) {
+	ginkgo.By("Testing deployment scaling")
+	defer env.SetNeedsRefresh()
+	failedcrd := []string{}
+	for i := range env.ScaleCrUndetTest {
+		groupResourceSchema := env.ScaleCrUndetTest[i].GroupResourceSchema
+		scaleCr := env.ScaleCrUndetTest[i].Scale
+		if hpa := scaling.GetResourceHPA(env.HorizontalScaler, scaleCr.Name, scaleCr.Namespace, scaleCr.Kind); hpa != nil {
+			if !scaling.TestScaleHPACrd(&scaleCr, hpa, groupResourceSchema, timeout) {
+				tnf.ClaimFilePrintf("cr found to have failed the scaling test: %s", scaleCr.GetName())
+				failedcrd = append(failedcrd, scaleCr.ToString())
+			}
+			continue
+		}
+		if !scaling.TestScaleCrd(&scaleCr, groupResourceSchema, timeout) {
+			failedcrd = append(failedcrd, scaleCr.ToString())
+			tnf.ClaimFilePrintf("CR has failed the non-HPA scale test: %s", scaleCr.GetName())
+		}
+	}
+	testhelper.AddTestResultLog("Non-compliant", failedcrd, tnf.ClaimFilePrintf, ginkgo.Fail)
+}
+
 //nolint:dupl
 func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration) {
 	ginkgo.By("Testing statefulset scaling")
 	defer env.SetNeedsRefresh()
 	failedStatefulSets := []string{}
 	for i := range env.StatefulSets {
+		if scaling.IsManaged(env.StatefulSets[i].Name, env.Config.ManagedStatefulsets) {
+			if !scaling.CheckOwnerReference(env.StatefulSets[i].GetOwnerReferences(), env.Config.CrdFilters) {
+				failedStatefulSets = append(failedStatefulSets, env.StatefulSets[i].ToString())
+				tnf.ClaimFilePrintf("%s is scaling failed due to OwnerReferences that are not scalable", env.Deployments[i].String())
+			} else {
+				logrus.Infof("%s is scaling skipped due to scalable OwnerReferences, test will run on te cr scaling", env.StatefulSets[i].String())
+			}
+			continue
+		}
 		// Skip statefulset if it is allowed by config
 		if nameInStatefulSetSkipList(env.StatefulSets[i].Name, env.StatefulSets[i].Namespace, env.Config.SkipScalingTestStatefulSets) {
 			tnf.ClaimFilePrintf("%s is being skipped due to configuration setting", env.StatefulSets[i].String())
@@ -359,8 +404,7 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 		// TeststatefulsetScaling test scaling of statefulset
 		// This is the entry point for statefulset scaling tests
 		ns, name := env.StatefulSets[i].Namespace, env.StatefulSets[i].Name
-		key := ns + name
-		if hpa, ok := env.HorizontalScaler[key]; ok {
+		if hpa := scaling.GetResourceHPA(env.HorizontalScaler, name, ns, "StatefulSet"); hpa != nil {
 			// if the statefulset is controller by
 			// horizontal scaler, then test that scaler
 			// can scale the statefulset
