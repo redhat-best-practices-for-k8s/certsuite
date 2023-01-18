@@ -162,7 +162,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCPUIsolationIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetGuaranteedPods())
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetGuaranteedPodsWithExlusiveCPUs())
 		testCPUIsolation(&env)
 	})
 
@@ -524,7 +524,7 @@ func testCPUIsolation(env *provider.TestEnvironment) {
 
 	podsMissingIsolationRequirements := make(map[string]bool)
 
-	for _, put := range env.GetGuaranteedPods() {
+	for _, put := range env.GetGuaranteedPodsWithExlusiveCPUs() {
 		if !put.IsCPUIsolationCompliant() {
 			podsMissingIsolationRequirements[put.Name] = true
 		}

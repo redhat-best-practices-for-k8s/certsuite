@@ -1,5 +1,6 @@
+---
 name: 'Publish the `cnf-certification-test` image (latest release only)'
-on:
+"on":
   # Run the workflow when a new release gets published
   release:
     types: [published]
@@ -18,7 +19,7 @@ defaults:
 env:
   REGISTRY: quay.io
   REGISTRY_LOCAL: localhost
-  RELEASE_LEVEL: '4.11'
+  RELEASE_LEVEL: 4.11
   TNF_IMAGE_NAME: testnetworkfunction/cnf-certification-test
   IMAGE_TAG: latest
   TNF_CONTAINER_CLIENT: docker
@@ -77,12 +78,12 @@ jobs:
         id: set_partner_version
         env:
           VERSION_FROM_FILE_PARTNER: ${{ fromJSON(steps.get_version_json_file.outputs.json).partner_tag }}
-          
+
       - name: Update env variables
         run: |
           echo "TNF_VERSION=${{ steps.set_tnf_version.outputs.version_number }}" >> $GITHUB_ENV
           echo "PARTNER_VERSION=${{ steps.set_partner_version.outputs.partner_version_number }}" >> $GITHUB_ENV
- 
+
       - name: Ensure $TNF_VERSION and $IMAGE_TAG are set
         run: '[[ -n "$TNF_VERSION" ]] && [[ -n "$IMAGE_TAG" ]] && [[ -n "$PARTNER_VERSION" ]]'
 
@@ -166,12 +167,12 @@ jobs:
         id: set_partner_version
         env:
           VERSION_FROM_FILE_PARTNER: ${{ fromJSON(steps.get_version_json_file.outputs.json).partner_tag }}
-          
+
       - name: Update env variables
         run: |
           echo "TNF_VERSION=${{ steps.set_tnf_version.outputs.version_number }}" >> $GITHUB_ENV
           echo "PARTNER_VERSION=${{ steps.set_partner_version.outputs.partner_version_number }}" >> $GITHUB_ENV
- 
+
       - name: Ensure $TNF_VERSION and $IMAGE_TAG are set
         run: '[[ -n "$TNF_VERSION" ]] && [[ -n "$IMAGE_TAG" ]] && [[ -n "$PARTNER_VERSION" ]]'
 

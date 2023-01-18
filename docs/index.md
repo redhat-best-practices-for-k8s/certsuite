@@ -21,7 +21,7 @@ The purpose of the tests and the framework is to test the interaction of CNF wit
 
 **Features**
 
-* The framework generates a report (named `claim.json`) as the end of test execution.
+* The test suite generates a report (`claim.json`) and saves the test execution log (`tnf-execution.log`) in a configurable output directory.
 
 * The catalog of the existing test cases and test building blocks are available in [CATALOG.md](https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md)
 

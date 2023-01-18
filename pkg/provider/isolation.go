@@ -23,9 +23,9 @@ import (
 func AreResourcesIdentical(p *Pod) bool {
 	// Pods may contain more than one container.  All containers must conform to the CPU isolation requirements.
 	for _, cut := range p.Containers {
-		// Resources must be specified
-		if len(cut.Resources.Requests) == 0 || len(cut.Resources.Limits) == 0 {
-			logrus.Debugf("%s has been found with undefined requests or limits.", cut.String())
+		// At least limits must be specified (requests default to limits if not specified)
+		if len(cut.Resources.Limits) == 0 {
+			logrus.Debugf("%s has been found with undefined limits.", cut.String())
 			return false
 		}
 

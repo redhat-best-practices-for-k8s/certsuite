@@ -48,3 +48,6 @@ For more details on the contents of the claim file
 
 * [schema](https://github.com/test-network-function/test-network-function-claim/blob/main/schemas/claim.schema.json).  
 * [Guide](https://redhat-connect.gitbook.io/openshift-badges/badges/cloud-native-network-functions-cnf).
+
+## Execution logs
+The test suite also saves a copy of the execution logs at <test output directory>/tnf-execution.log

@@ -78,7 +78,7 @@ func ConvertArrayPods(pods []*corev1.Pod) (out []*Pod) {
 	return out
 }
 
-func (p *Pod) IsPodGuaranteed() bool {
+func (p *Pod) IsPodGuaranteedWithExclusiveCPUs() bool {
 	return AreCPUResourcesWholeUnits(p) && AreResourcesIdentical(p)
 }
 
