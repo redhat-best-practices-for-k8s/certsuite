@@ -119,6 +119,7 @@ type TestConfiguration struct {
 	// CheckDiscoveredContainerCertificationStatus controls whether the container certification test will validate images used by autodiscovered containers, in addition to the configured image list
 	CheckDiscoveredContainerCertificationStatus bool     `yaml:"checkDiscoveredContainerCertificationStatus" json:"checkDiscoveredContainerCertificationStatus"`
 	ValidProtocolNames                          []string `yaml:"validProtocolNames" json:"validProtocolNames"`
+	ServicesIgnoreList                          []string `yaml:"servicesignorelist" json:"servicesignorelist"`
 }
 
 type TestParameters struct {

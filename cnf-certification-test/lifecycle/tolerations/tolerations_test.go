@@ -104,9 +104,63 @@ func TestIsTolerationModified(t *testing.T) {
 			expectedOutput: true,
 			qosClass:       corev1.PodQOSBestEffort,
 		},
+		{ // Test Case #8 - Custom toleration - fails due to using a NoExecute taint
+			testToleration: corev1.Toleration{
+				Key:               "custom-toleration/test1",
+				Operator:          corev1.TolerationOpExists,
+				Effect:            corev1.TaintEffectNoExecute,
+				TolerationSeconds: getInt64Pointer(300),
+			},
+			expectedOutput: true,
+			qosClass:       corev1.PodQOSGuaranteed,
+		},
+		{ // Test Case #9 - not-ready toleration added with 301 (not default) toleration seconds
+			testToleration: corev1.Toleration{
+				Key:               "node.kubernetes.io/not-ready",
+				Operator:          corev1.TolerationOpExists,
+				Effect:            corev1.TaintEffectNoExecute,
+				TolerationSeconds: getInt64Pointer(301),
+			},
+			expectedOutput: true,
+			qosClass:       corev1.PodQOSGuaranteed,
+		},
+		{ // Test Case #10 - default not-ready toleration with unset toleration seconds, modified from default so failure
+			testToleration: corev1.Toleration{
+				Key:      "node.kubernetes.io/not-ready",
+				Operator: corev1.TolerationOpExists,
+				Effect:   corev1.TaintEffectNoExecute,
+				// TolerationSeconds: getInt64Pointer(300),
+			},
+			expectedOutput: true,
+			qosClass:       corev1.PodQOSGuaranteed,
+		},
 	}
 
 	for _, tc := range testCases {
 		assert.Equal(t, tc.expectedOutput, IsTolerationModified(tc.testToleration, tc.qosClass))
+	}
+}
+
+func TestIsTolerationDefault(t *testing.T) {
+	testCases := []struct {
+		testToleration corev1.Toleration
+		expectedOutput bool
+	}{
+		{
+			testToleration: corev1.Toleration{
+				Key: "node.kubernetes.io/test1",
+			},
+			expectedOutput: true,
+		},
+		{
+			testToleration: corev1.Toleration{
+				Key: "this.is.a.test/test1",
+			},
+			expectedOutput: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedOutput, IsTolerationDefault(tc.testToleration))
 	}
 }

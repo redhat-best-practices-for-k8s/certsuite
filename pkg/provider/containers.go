@@ -88,3 +88,7 @@ func (c *Container) HasIgnoredContainerName() bool {
 	}
 	return false
 }
+
+func (c *Container) IsIstioProxy() bool {
+	return c.Name == "istio-proxy" //nolint:goconst
+}

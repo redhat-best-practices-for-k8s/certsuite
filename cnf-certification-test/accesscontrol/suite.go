@@ -26,7 +26,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/rbac"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/resources"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/securitycontextcontainer"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/tolerations"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netutil"
@@ -40,7 +39,6 @@ import (
 )
 
 var (
-	nonCompliantCapabilities = []string{"NET_ADMIN", "SYS_ADMIN", "NET_RAW", "IPC_LOCK"}
 	invalidNamespacePrefixes = []string{
 		"default",
 		"openshift-",
@@ -62,13 +60,34 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
 		testContainerSCC(&env)
 	})
-	// Security Context: non-compliant capabilities
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSecConCapabilitiesIdentifier)
+
+	// Security Context: non-compliant capabilities (SYS_ADMIN)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSysAdminIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
-		TestSecConCapabilities(&env)
+		TestSysAdminCapability(&env)
 	})
-	// container security context: check if it match one of the 4 categories
+
+	// Security Context: non-compliant capabilities (NET_ADMIN)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNetAdminIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
+		TestNetAdminCapability(&env)
+	})
+
+	// Security Context: non-compliant capabilities (NET_RAW)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNetRawIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
+		TestNetRawCapability(&env)
+	})
+
+	// Security Context: non-compliant capabilities (IPC_LOCK)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIpcLockIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
+		TestIpcLockCapability(&env)
+	})
 
 	// container security context: non-root user
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSecConNonRootUserIdentifier)
@@ -165,11 +184,6 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		TestNamespaceResourceQuota(&env)
 	})
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodTolerationBypassIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
-		TestPodTolerationBypass(&env)
-	})
 	// ssh daemons
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNoSSHDaemonsAllowedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
@@ -191,21 +205,33 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	})
 })
 
-// TestSecConCapabilities verifies that non compliant capabilities are not present
-func TestSecConCapabilities(env *provider.TestEnvironment) {
+func checkForbiddenCapability(containers []*provider.Container, capability string) []string {
 	var badContainers []string
-	for _, cut := range env.Containers {
+	for _, cut := range containers {
 		if cut.SecurityContext != nil && cut.SecurityContext.Capabilities != nil {
-			for _, ncc := range nonCompliantCapabilities {
-				if strings.Contains(cut.SecurityContext.Capabilities.String(), ncc) {
-					tnf.ClaimFilePrintf("Non compliant %s capability detected in container %s. All container caps: %s", ncc, cut.String(), cut.SecurityContext.Capabilities.String())
-					badContainers = append(badContainers, cut.String())
-				}
+			if strings.Contains(cut.SecurityContext.Capabilities.String(), capability) {
+				tnf.ClaimFilePrintf("Non compliant %s capability detected in container %s. All container caps: %s", capability, cut.String(), cut.SecurityContext.Capabilities.String())
+				badContainers = append(badContainers, cut.String())
 			}
 		}
 	}
+	return badContainers
+}
 
-	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+func TestSysAdminCapability(env *provider.TestEnvironment) {
+	testhelper.AddTestResultLog("Non-compliant", checkForbiddenCapability(env.Containers, "SYS_ADMIN"), tnf.ClaimFilePrintf, ginkgo.Fail)
+}
+
+func TestNetAdminCapability(env *provider.TestEnvironment) {
+	testhelper.AddTestResultLog("Non-compliant", checkForbiddenCapability(env.Containers, "NET_ADMIN"), tnf.ClaimFilePrintf, ginkgo.Fail)
+}
+
+func TestNetRawCapability(env *provider.TestEnvironment) {
+	testhelper.AddTestResultLog("Non-compliant", checkForbiddenCapability(env.Containers, "NET_RAW"), tnf.ClaimFilePrintf, ginkgo.Fail)
+}
+
+func TestIpcLockCapability(env *provider.TestEnvironment) {
+	testhelper.AddTestResultLog("Non-compliant", checkForbiddenCapability(env.Containers, "IPC_LOCK"), tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // TestSecConRootUser verifies that the container is not running as root
@@ -542,23 +568,6 @@ func TestNamespaceResourceQuota(env *provider.TestEnvironment) {
 	}
 
 	testhelper.AddTestResultLog("Non-compliant", namespacesMissingQuotas, tnf.ClaimFilePrintf, ginkgo.Fail)
-}
-
-func TestPodTolerationBypass(env *provider.TestEnvironment) {
-	var podsWithRestrictedTolerationsNotDefault []string
-
-	for _, put := range env.Pods {
-		for _, t := range put.Spec.Tolerations {
-			// Check if the tolerations fall outside the 'default' and are modified versions
-			// Take also into account the qosClass applied to the pod
-			if tolerations.IsTolerationModified(t, put.Status.QOSClass) {
-				podsWithRestrictedTolerationsNotDefault = append(podsWithRestrictedTolerationsNotDefault, put.String())
-				tnf.ClaimFilePrintf("%s has been found with non-default toleration %s which is not allowed.", put.String(), t.Effect)
-			}
-		}
-	}
-
-	testhelper.AddTestResultLog("Non-compliant", podsWithRestrictedTolerationsNotDefault, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 const (

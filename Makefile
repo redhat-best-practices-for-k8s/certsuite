@@ -16,6 +16,14 @@
 
 GO_PACKAGES=$(shell go list ./... | grep -v vendor)
 
+# Default values
+REGISTRY_LOCAL?=localhost
+REGISTRY?=quay.io
+TNF_IMAGE_NAME?=testnetworkfunction/cnf-certification-test
+IMAGE_TAG?=localtest
+TNF_VERSION?=0.0.1
+RELEASE_VERSION?=4.11
+
 .PHONY:	build \
 	clean \
 	lint \
@@ -100,13 +108,14 @@ build-cnf-tests:
 	PATH=${PATH}:${GOBIN} ginkgo build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" ./cnf-certification-test
 	make build-catalog-md
 
+# build the CNF test binary with debug flags
 build-cnf-tests-debug:
 	PATH=${PATH}:${GOBIN} ginkgo build -gcflags "all=-N -l" -ldflags "${LINKER_TNF_RELEASE_FLAGS} -extldflags '-z relro -z now'" ./cnf-certification-test
 	make build-catalog-md
 
 # Install build tools and other required software.
 install-tools:
-	go install github.com/onsi/ginkgo/v2/ginkgo@v2.5.1
+	go install github.com/onsi/ginkgo/v2/ginkgo@v2.7.0
 
 # Install golangci-lint	
 install-lint:
@@ -129,8 +138,21 @@ OCT_IMAGE=quay.io/testnetworkfunction/oct:latest
 REPO_DIR=$(shell pwd)
 
 get-db:
-	mkdir -p ${REPO_DIR}/cmd/tnf/fetch
+	mkdir -p ${REPO_DIR}/offline-db
 	docker pull ${OCT_IMAGE}
-	docker run -v ${REPO_DIR}/cmd/tnf/fetch:/tmp/dump:Z --user $(shell id -u):$(shell id -g) --env OCT_DUMP_ONLY=true ${OCT_IMAGE}
+	docker run -v ${REPO_DIR}/offline-db:/tmp/dump:Z --user $(shell id -u):$(shell id -g) --env OCT_DUMP_ONLY=true ${OCT_IMAGE}
 delete-db:
-	rm -rf ${REPO_DIR}/cmd/tnf/fetch
+	rm -rf ${REPO_DIR}/offline-db
+
+build-image-local:
+	docker build --no-cache \
+		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
+		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
+		-f Dockerfile .
+
+build-image-tnf:
+	docker build --no-cache \
+		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
+		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
+		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_VERSION} \
+		-f Dockerfile .

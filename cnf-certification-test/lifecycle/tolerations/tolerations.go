@@ -17,6 +17,8 @@
 package tolerations
 
 import (
+	"strings"
+
 	corev1 "k8s.io/api/core/v1"
 )
 
@@ -25,6 +27,7 @@ var (
 	tolerationSecondsDefault = 300
 )
 
+//nolint:funlen
 func IsTolerationModified(t corev1.Toleration, qosClass corev1.PodQOSClass) bool {
 	const (
 		notReadyStr       = "node.kubernetes.io/not-ready"
@@ -46,10 +49,21 @@ func IsTolerationModified(t corev1.Toleration, qosClass corev1.PodQOSClass) bool
 	//   key: node.kubernetes.io/memory-pressure
 	//   operator: Exists
 
+	// Short circuit.  Anything that is not 'node.kubernetes.io' is considered a modified toleration immediately.
+	if !IsTolerationDefault(t) {
+		return true
+	}
+
+	// Happy Path - This is detecting a default toleration
 	if t.Effect == corev1.TaintEffectNoExecute {
-		if t.Key == notReadyStr || t.Key == unreachableStr &&
-			(t.Operator == corev1.TolerationOpExists && t.TolerationSeconds != nil && *t.TolerationSeconds == int64(tolerationSecondsDefault)) {
-			return false
+		if t.Key == notReadyStr || t.Key == unreachableStr {
+			// 300 seconds is the default, return false for not modified
+			if t.Operator == corev1.TolerationOpExists && t.TolerationSeconds != nil && *t.TolerationSeconds == int64(tolerationSecondsDefault) {
+				return false
+			}
+
+			// Toleration seconds has been modified, return true.
+			return true
 		}
 	} else if t.Effect == corev1.TaintEffectNoSchedule {
 		// If toleration is NoSchedule - node.kubernetes.io/memory-pressure - Exists and the QoS class for
@@ -69,4 +83,8 @@ func IsTolerationModified(t corev1.Toleration, qosClass corev1.PodQOSClass) bool
 	}
 
 	return false
+}
+
+func IsTolerationDefault(t corev1.Toleration) bool {
+	return strings.Contains(t.Key, "node.kubernetes.io")
 }

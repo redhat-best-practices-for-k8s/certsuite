@@ -17,19 +17,24 @@
 package provider
 
 import (
+	"context"
 	"fmt"
 	"strconv"
 	"strings"
 
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	corev1 "k8s.io/api/core/v1"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 const (
-	hugePages2Mi = "hugepages-2Mi"
-	hugePages1Gi = "hugepages-1Gi"
-	hugePages    = "hugepages"
+	HugePages2Mi          = "hugepages-2Mi"
+	HugePages1Gi          = "hugepages-1Gi"
+	hugePages             = "hugepages"
+	replicationController = "ReplicationController"
+	deploymentConfig      = "DeploymentConfig"
 )
 
 type Pod struct {
@@ -73,7 +78,7 @@ func ConvertArrayPods(pods []*corev1.Pod) (out []*Pod) {
 	return out
 }
 
-func (p *Pod) IsPodGuaranteed() bool {
+func (p *Pod) IsPodGuaranteedWithExclusiveCPUs() bool {
 	return AreCPUResourcesWholeUnits(p) && AreResourcesIdentical(p)
 }
 
@@ -133,7 +138,7 @@ func (p *Pod) HasHugepages() bool {
 	return false
 }
 
-func (p *Pod) CheckResourceOnly2MiHugePages() bool {
+func (p *Pod) CheckResourceHugePagesSize(size string) bool {
 	// check if hugepages configuration other than 2Mi is present
 	for _, cut := range p.Containers {
 		// Resources must be specified
@@ -141,12 +146,12 @@ func (p *Pod) CheckResourceOnly2MiHugePages() bool {
 			continue
 		}
 		for name := range cut.Resources.Requests {
-			if strings.Contains(name.String(), hugePages) && name != hugePages2Mi {
+			if strings.Contains(name.String(), hugePages) && name.String() != size {
 				return false
 			}
 		}
 		for name := range cut.Resources.Limits {
-			if strings.Contains(name.String(), hugePages) && name != hugePages2Mi {
+			if strings.Contains(name.String(), hugePages) && name.String() != size {
 				return false
 			}
 		}
@@ -178,4 +183,22 @@ func (p *Pod) ContainsIstioProxy() bool {
 		}
 	}
 	return false
+}
+
+func (p *Pod) CreatedByDeploymentConfig() (bool, error) {
+	oc := clientsholder.GetClientsHolder()
+	for _, podOwner := range p.ObjectMeta.GetOwnerReferences() {
+		if podOwner.Kind == replicationController {
+			replicationControllers, err := oc.K8sClient.CoreV1().ReplicationControllers(p.Namespace).Get(context.TODO(), podOwner.Name, v1.GetOptions{})
+			if err != nil {
+				return false, err
+			}
+			for _, rcOwner := range replicationControllers.GetOwnerReferences() {
+				if rcOwner.Name == podOwner.Name && rcOwner.Kind == deploymentConfig {
+					return true, err
+				}
+			}
+		}
+	}
+	return false, nil
 }

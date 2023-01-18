@@ -116,7 +116,7 @@ func (validator OfflineValidator) IsContainerCertified(registry, repository, tag
 			if repo.Registry == registry && repo.Repository == repository {
 				for _, t := range repo.Tags {
 					if t.Name == tag {
-						logrus.Trace(fmt.Sprintf("container is not certified %s/%s:%s %s", registry, repository, tag, digest))
+						logrus.Trace(fmt.Sprintf("container is certified %s/%s:%s %s", registry, repository, tag, digest))
 						return true
 					}
 				}

@@ -48,9 +48,37 @@ func TestPod_CheckResourceOnly2MiHugePages(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			p := tt.aPod
-			got := p.CheckResourceOnly2MiHugePages()
+			got := p.CheckResourceHugePagesSize(HugePages2Mi)
 			if got != tt.want {
-				t.Errorf("Pod.CheckResourceOnly2MiHugePages() = %v, want %v", got, tt.want)
+				t.Errorf("Pod.CheckResourceHugePagesSize() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestPod_CheckResourceOnly1GiHugePages(t *testing.T) {
+	tests := []struct {
+		name string
+		aPod Pod
+		want bool
+	}{
+		{
+			name: "pass",
+			aPod: *generatePod(0, 0, 1, 1),
+			want: true,
+		},
+		{
+			name: "fail",
+			aPod: *generatePod(10, 10, 1, 1),
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			p := tt.aPod
+			got := p.CheckResourceHugePagesSize(HugePages1Gi)
+			if got != tt.want {
+				t.Errorf("Pod.CheckResourceHugePagesSize() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -71,20 +99,20 @@ func generatePod(requestsValue2M, limitsValue2M, requestsValue1G, limitsValue1G 
 	var aQuantity v1.Quantity
 	if requestsValue2M != 0 {
 		aQuantity.Set(requestsValue2M)
-		aPod.Containers[0].Resources.Requests[hugePages2Mi] = aQuantity
+		aPod.Containers[0].Resources.Requests[HugePages2Mi] = aQuantity
 	}
 	if limitsValue2M != 0 {
 		aQuantity.Set(limitsValue2M)
-		aPod.Containers[0].Resources.Limits[hugePages2Mi] = aQuantity
+		aPod.Containers[0].Resources.Limits[HugePages2Mi] = aQuantity
 	}
 
 	if requestsValue1G != 0 {
 		aQuantity.Set(requestsValue1G)
-		aPod.Containers[0].Resources.Requests[hugePages1Gi] = aQuantity
+		aPod.Containers[0].Resources.Requests[HugePages1Gi] = aQuantity
 	}
 	if limitsValue1G != 0 {
 		aQuantity.Set(limitsValue1G)
-		aPod.Containers[0].Resources.Limits[hugePages1Gi] = aQuantity
+		aPod.Containers[0].Resources.Limits[HugePages1Gi] = aQuantity
 	}
 	return &aPod
 }
@@ -165,4 +193,40 @@ func TestPodString(t *testing.T) {
 		},
 	}
 	assert.Equal(t, "pod: test1 ns: testNS", p.String())
+}
+
+func TestContainsIstioProxy(t *testing.T) {
+	testCases := []struct {
+		testPod        Pod
+		expectedOutput bool
+	}{
+		{
+			testPod: Pod{
+				Containers: []*Container{
+					{
+						Container: &corev1.Container{
+							Name: "istio-proxy",
+						},
+					},
+				},
+			},
+			expectedOutput: true,
+		},
+		{
+			testPod: Pod{
+				Containers: []*Container{
+					{
+						Container: &corev1.Container{
+							Name: "not-istio-proxy",
+						},
+					},
+				},
+			},
+			expectedOutput: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedOutput, tc.testPod.ContainsIstioProxy())
+	}
 }

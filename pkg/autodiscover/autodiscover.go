@@ -83,6 +83,7 @@ type DiscoveredTestData struct {
 	Nodes                  *corev1.NodeList
 	Istio                  bool
 	ValidProtocolNames     []string
+	ServicesIgnoreList     []string
 }
 
 var data = DiscoveredTestData{}
@@ -160,6 +161,7 @@ func DoAutoDiscover() DiscoveredTestData {
 	}
 	data.Istio = findIstioNamespace(data.AllNamespaces)
 	data.ValidProtocolNames = data.TestData.ValidProtocolNames
+	data.ServicesIgnoreList = data.TestData.ServicesIgnoreList
 
 	// Find the status of the OCP version (pre-ga, end-of-life, maintenance, or generally available)
 	data.OCPStatus = compatibility.DetermineOCPStatus(openshiftVersion, time.Now())
@@ -180,7 +182,7 @@ func DoAutoDiscover() DiscoveredTestData {
 	if err != nil {
 		logrus.Fatalf("Cannot get list of persistent volume claims, error: %v", err)
 	}
-	data.Services, err = getServices(oc.K8sClient.CoreV1(), data.Namespaces)
+	data.Services, err = getServices(oc.K8sClient.CoreV1(), data.Namespaces, data.ServicesIgnoreList)
 	if err != nil {
 		logrus.Fatalf("Cannot get list of services, error: %v", err)
 	}

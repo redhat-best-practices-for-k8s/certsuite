@@ -43,10 +43,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/nodetainted"
 )
 
-const (
-	istioContainerName = "istio-proxy"
-)
-
 // All actual test code belongs below here.  Utilities belong above.
 var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 	logrus.Debugf("Entering %s suite", common.PlatformAlterationTestKey)
@@ -142,7 +138,15 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		if provider.IsOCPCluster() {
 			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetHugepagesPods())
-			testPodHugePages2M(&env)
+			testPodHugePagesSize(&env, provider.HugePages2Mi)
+		}
+	})
+
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHugePages1G)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		if provider.IsOCPCluster() {
+			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetHugepagesPods())
+			testPodHugePagesSize(&env, provider.HugePages1Gi)
 		}
 	})
 
@@ -160,7 +164,7 @@ func TestServiceMesh(env *provider.TestEnvironment) {
 	for _, put := range env.Pods {
 		istioProxyFound := false
 		for _, cut := range put.Containers {
-			if cut.Status.Name == istioContainerName {
+			if cut.IsIstioProxy() {
 				tnf.ClaimFilePrintf("Istio proxy container found on %s", put)
 				istioProxyFound = true
 				break
@@ -557,10 +561,10 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 	}
 }
 
-func testPodHugePages2M(env *provider.TestEnvironment) {
+func testPodHugePagesSize(env *provider.TestEnvironment, size string) {
 	var badPods []*provider.Pod
 	for _, put := range env.GetHugepagesPods() {
-		result := put.CheckResourceOnly2MiHugePages()
+		result := put.CheckResourceHugePagesSize(size)
 		if !result {
 			badPods = append(badPods, put)
 		}

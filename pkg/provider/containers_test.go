@@ -15,3 +15,38 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 package provider
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+	v1 "k8s.io/api/core/v1"
+)
+
+func TestIsIstioProxy(t *testing.T) {
+	testCases := []struct {
+		testContainer  Container
+		expectedOutput bool
+	}{
+		{
+			testContainer: Container{
+				Container: &v1.Container{
+					Name: "istio-proxy",
+				},
+			},
+			expectedOutput: true,
+		},
+		{
+			testContainer: Container{
+				Container: &v1.Container{
+					Name: "not-istio-proxy",
+				},
+			},
+			expectedOutput: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedOutput, tc.testContainer.IsIstioProxy())
+	}
+}

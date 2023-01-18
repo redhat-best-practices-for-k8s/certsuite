@@ -34,7 +34,7 @@ jobs:
       - name: Set up Go 1.19
         uses: actions/setup-go@v3
         with:
-          go-version: 1.19.4
+          go-version: 1.19.5
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -61,12 +61,10 @@ jobs:
       - uses: actions/checkout@v3
       - name: Run ShellCheck
         uses: ludeeus/action-shellcheck@master
-        env:
-          SHELLCHECK_OPTS: -e SC2068
         with:
-          scandir: './script'
-          severity: error
-  
+          ignore_names: results.html
+          scandir: ./script
+          severity: style
   yamllint:
     runs-on: ubuntu-20.04
     steps:
@@ -94,7 +92,7 @@ jobs:
       - name: Set up Go 1.19
         uses: actions/setup-go@v3
         with:
-          go-version: 1.19.4
+          go-version: 1.19.5
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -133,10 +131,10 @@ jobs:
       KUBECONFIG: '/home/runner/.kube/config'
 
     steps:
-      - name: Set up Go 1.19.4
+      - name: Set up Go 1.19.5
         uses: actions/setup-go@v3
         with:
-          go-version: 1.19.4
+          go-version: 1.19.5
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -155,7 +153,7 @@ jobs:
           docker run -v ${GITHUB_WORKSPACE}/offline-db:/tmp/dump:Z --env OCT_DUMP_ONLY=true ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
 
       - name: Install ginkgo
-        run: go install github.com/onsi/ginkgo/v2/ginkgo@v2.5.1
+        run: make install-tools
 
       - name: Execute `make build`
         run: make build
@@ -193,21 +191,16 @@ jobs:
             cnf-certification-test/claim.json
             cnf-certification-test/claimjson.js
             cnf-certification-test/results.html
+            cnf-certification-test/tnf-execution.log
+            
 
       # Perform smoke tests using a TNF container.
 
       - name: Build the `cnf-certification-test` image
         run: |
-          VERSIONS=($(sudo curl -sH 'Accept: application/json' "https://api.openshift.com/api/upgrades_info/v1/graph?channel=stable-${RELEASE_LEVEL}&arch=amd64" | jq -r '.nodes[].version' | sort -t "." -k1,1n -k2,2n -k3,3n))
-          OPENSHIFT_VERSION=${VERSIONS[${#VERSIONS[@]} - 1]}
-          docker build --no-cache \
-            -t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} \
-            -t ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} \
-            --build-arg TNF_VERSION=${COMMIT_SHA} \
-            --build-arg TNF_SRC_URL=${TNF_SRC_URL} \
-            --build-arg OPENSHIFT_VERSION=${OPENSHIFT_VERSION} .
+          make build-image-local
         env:
-          COMMIT_SHA: ${{ github.sha }}
+          IMAGE_TAG: ${TNF_IMAGE_TAG}
 
       - name: Create required TNF config files and directories
         run: |
@@ -231,6 +224,7 @@ jobs:
             ${{ env.TNF_OUTPUT_DIR }}/claim.json
             ${{ env.TNF_OUTPUT_DIR }}/claimjson.js
             ${{ env.TNF_OUTPUT_DIR }}/results.html
+            ${{ env.TNF_OUTPUT_DIR }}/tnf-execution.log
 
       # Push the new unstable TNF image to Quay.io.
       - name: (if on main and upstream) Authenticate against Quay.io
