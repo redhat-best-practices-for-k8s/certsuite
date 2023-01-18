@@ -84,6 +84,7 @@ func TestHasRequestsAndLimitsSet(t *testing.T) {
 	}
 }
 
+//nolint:funlen
 func TestHasExclusiveCPUsAssigned(t *testing.T) {
 	testCases := []struct {
 		testContainer  *provider.Container
