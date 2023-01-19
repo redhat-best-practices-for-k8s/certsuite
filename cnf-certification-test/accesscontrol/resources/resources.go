@@ -44,9 +44,7 @@ func HasRequestsAndLimitsSet(cut *provider.Container) bool {
 // For more info on cpu mgmt polcies see https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/.
 func HasExclusiveCPUsAssigned(cut *provider.Container) bool {
 	cpuLimits := cut.Resources.Limits.Cpu()
-	cpuRequests := cut.Resources.Requests.Cpu()
 	memLimits := cut.Resources.Limits.Memory()
-	memRequests := cut.Resources.Requests.Memory()
 
 	// if no cpu or memory limits are specified the container will run in the shared cpu pool
 	if cpuLimits.IsZero() || memLimits.IsZero() {
@@ -62,8 +60,8 @@ func HasExclusiveCPUsAssigned(cut *provider.Container) bool {
 	}
 
 	// if the cpu and memory limits and requests are equal to each other the container will run in the exclusive cpu pool
-	cpuRequestsVal, _ := cpuRequests.AsInt64()
-	memRequestsVal, _ := memRequests.AsInt64()
+	cpuRequestsVal, _ := cut.Resources.Requests.Cpu().AsInt64()
+	memRequestsVal, _ := cut.Resources.Requests.Memory().AsInt64()
 	memLimitsVal, _ := memLimits.AsInt64()
 	if cpuLimitsVal == cpuRequestsVal && memLimitsVal == memRequestsVal {
 		return true

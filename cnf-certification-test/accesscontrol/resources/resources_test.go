@@ -129,11 +129,11 @@ func TestHasExclusiveCPUsAssigned(t *testing.T) {
 				Container: &corev1.Container{
 					Resources: corev1.ResourceRequirements{
 						Requests: corev1.ResourceList{
-							"cpu":    resource.MustParse("512m"),
+							"cpu":    resource.MustParse("500m"),
 							"memory": resource.MustParse("512Mi"),
 						},
 						Limits: corev1.ResourceList{
-							"cpu":    resource.MustParse("512m"),
+							"cpu":    resource.MustParse("500m"),
 							"memory": resource.MustParse("512Mi"),
 						},
 					},
@@ -141,13 +141,30 @@ func TestHasExclusiveCPUsAssigned(t *testing.T) {
 			},
 			expectedResult: false,
 		},
-		{ // Test Case #4 - Shared CPU pool selected (no requests or limits set)
+		{ // Test Case #4 - Shared CPU pool selected (requests and limits quantities specified as a fractional value)
+			testContainer: &provider.Container{
+				Container: &corev1.Container{
+					Resources: corev1.ResourceRequirements{
+						Requests: corev1.ResourceList{
+							"cpu":    resource.MustParse("1.5"),
+							"memory": resource.MustParse("512Mi"),
+						},
+						Limits: corev1.ResourceList{
+							"cpu":    resource.MustParse("1.5"),
+							"memory": resource.MustParse("512Mi"),
+						},
+					},
+				},
+			},
+			expectedResult: false,
+		},
+		{ // Test Case #5 - Shared CPU pool selected (no requests or limits set)
 			testContainer: &provider.Container{
 				Container: &corev1.Container{},
 			},
 			expectedResult: false,
 		},
-		{ // Test Case #5 - Shared CPU pool selected (memory requests and limits are not equal)
+		{ // Test Case #6 - Shared CPU pool selected (memory requests and limits are not equal)
 			testContainer: &provider.Container{
 				Container: &corev1.Container{
 					Resources: corev1.ResourceRequirements{
@@ -164,7 +181,7 @@ func TestHasExclusiveCPUsAssigned(t *testing.T) {
 			},
 			expectedResult: false,
 		},
-		{ // Test Case #6 - Shared CPU pool selected (no memory limits specified)
+		{ // Test Case #7 - Shared CPU pool selected (no memory limits specified)
 			testContainer: &provider.Container{
 				Container: &corev1.Container{
 					Resources: corev1.ResourceRequirements{
