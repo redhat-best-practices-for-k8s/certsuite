@@ -92,7 +92,7 @@ func (p *Pod) IsCPUIsolationCompliant() bool {
 		isCPUIsolated = false
 	}
 
-	if !IsRuntimeClassNameSpecified(p) {
+	if !p.IsRuntimeClassNameSpecified() {
 		errMsg := fmt.Sprintf("%s has been found to not have runtimeClassName specified.", p.String())
 		logrus.Debugf(errMsg)
 		tnf.ClaimFilePrintf(errMsg)
@@ -209,4 +209,8 @@ func (p *Pod) HasNodeSelector() bool {
 		return false
 	}
 	return true
+}
+
+func (p *Pod) IsRuntimeClassNameSpecified() bool {
+	return p.Spec.RuntimeClassName != nil
 }

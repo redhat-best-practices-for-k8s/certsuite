@@ -452,9 +452,11 @@ func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 	// Filter out pods with Node Assignments present and FAIL them.
 	// We run into problems with this test when there are nodeSelectors assigned affecting where
 	// pods are scheduled.  Also, they are not allowed in general, see the node-selector test case.
+	// Skip the safeguard for any pods that are using a runtimeClassName.  This is potentially
+	// because pods that are derived from a performance profile might have a built-in nodeSelector.
 	var podsWithNodeAssignement []*provider.Pod
 	for _, put := range env.Pods {
-		if put.HasNodeSelector() {
+		if !put.IsRuntimeClassNameSpecified() && put.HasNodeSelector() {
 			podsWithNodeAssignement = append(podsWithNodeAssignement, put)
 			logrus.Errorf("%s has been found with node selector(s): %v", put.String(), put.Spec.NodeSelector)
 		}
