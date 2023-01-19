@@ -33,6 +33,7 @@ export LABEL_ARG="-l"
 export CONTAINER_NETWORK_MODE='host'
 
 usage() {
+	# shellcheck disable=SC2162 # Read without -r will mangle backslashes.
 	read -d '' usage_prompt <<- EOF
 	Usage: $0 -t TNFCONFIG -o OUTPUT_LOC [-i IMAGE] [-k KUBECONFIG] [-n NETWORK_MODE] [-d DNS_RESOLVER_ADDRESS] [-l LABEL]
 
@@ -61,7 +62,7 @@ usage() {
 	Examples
 	  $0 -t ~/tnf/config -o ~/tnf/output -f networking access-control -s access-control-host-resource-PRIVILEGED_POD
 
-	  Because -k is omitted, $(basename $0) will first try to autodiscover local kubeconfig files.
+	  Because -k is omitted, $(basename "$0") will first try to autodiscover local kubeconfig files.
 	  If it succeeds, the networking and access-control tests will be run using the autodiscovered configuration.
 	  The test results will be saved to the '~/tnf/output' directory on the host.
 
@@ -108,7 +109,7 @@ check_required_vars() {
 }
 
 check_cli_required_num_of_args() {
-	if (($# < $REQUIRED_NUM_OF_ARGS)); then
+	if (($# < REQUIRED_NUM_OF_ARGS)); then
 		usage_error
 	fi;
 }
@@ -116,6 +117,7 @@ check_cli_required_num_of_args() {
 perform_kubeconfig_autodiscovery() {
 	if [[ -n "$KUBECONFIG" ]]; then
 		export LOCAL_KUBECONFIG=$KUBECONFIG
+		# shellcheck disable=SC2016 # Use double quotes.
 		kubeconfig_autodiscovery_source='$KUBECONFIG'
 	elif [[ -f "$HOME/.kube/config" ]]; then
 		export LOCAL_KUBECONFIG=$HOME/.kube/config
@@ -129,117 +131,134 @@ display_kubeconfig_autodiscovery_summary() {
 	fi
 }
 
-if [ ! -z "${REQUIRED_NUM_OF_ARGS}" ]; then
-	check_cli_required_num_of_args $@
+if [ -n "${REQUIRED_NUM_OF_ARGS}" ]; then
+	check_cli_required_num_of_args "$@"
 fi
 
 perform_kubeconfig_autodiscovery
 
 # Parge args beginning with -
 while [[ $1 == -* ]]; do
-    case "$1" in
-      -h|--help|-\?) usage; exit 0;;
-      -k) if (($# > 1)); then
-            export LOCAL_KUBECONFIG=$2
-            unset kubeconfig_autodiscovery_source
-            shift
-          else
-            echo "-k requires an argument" 1>&2
-            exit 1
-          fi
-          echo "-k $LOCAL_KUBECONFIG"
-          ;;
-      -t) if (($# > 1)); then
-            export LOCAL_TNF_CONFIG=$2; shift
-          else
-            echo "-t requires an argument" 1>&2
-            exit 1
-          fi       
-          echo  "-t $LOCAL_TNF_CONFIG"
-          ;;
-      -b) if (($# > 1)); then
-            export LOCAL_TNF_OFFLINE_DB=$2; shift
-          else
-            echo "-b requires an argument" 1>&2
-            exit 1
-          fi
-          echo  "-b $LOCAL_TNF_OFFLINE_DB"
-          ;;
-      -o) if (($# > 1)); then
-            export OUTPUT_LOC=$2; shift
-          else
-            echo "-o requires an argument" 1>&2
-            exit 1
-          fi
-          echo "-o $OUTPUT_LOC"
-          ;;
-      -i) if (($# > 1)); then
-            export TNF_IMAGE=$2; shift
-          else
-            echo "-i requires an argument" 1>&2
-            exit 1
-          fi
-          echo "-i $TNF_IMAGE"
-          ;;
-      -n) if (($# > 1)); then
-            export CONTAINER_NETWORK_MODE=$2; shift
-          else
-            echo "-n requires an argument" 1>&2
-            exit 1
-          fi
-          echo "-n $CONTAINER_NETWORK_MODE"
-          ;;
-      -d) if (($# > 1)); then
-            export DNS_ARG=$2; shift
-          else
-            echo "-d requires an argument" 1>&2
-            exit 1
-          fi
-          echo "-d $DNS_ARGS"
-          ;;
-      -s)
-        ONCE=true
-        while (( "$#" >= 2 )) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]] ; do
-          if [ $ONCE = true ]; then
-            TNF_SKIP_SUITES="$2"
-            ONCE=false
-          fi
-          TNF_SKIP_SUITES="$TNF_SKIP_SUITES $2"
-          shift
-        done
-        export TNF_SKIP_SUITES
-        echo "-s $TNF_SKIP_SUITES"
-        ;;
-      -f)
-        ONCE=true
-        while (( "$#" >= 2 )) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]] ; do
-          if [ $ONCE = true ]; then
-            TNF_FOCUS_SUITES="$2"
-            ONCE=false
-          fi
-          TNF_FOCUS_SUITES="$TNF_FOCUS_SUITES $2"
-          shift
-        done
-        export TNF_FOCUS_SUITES
-        echo "-f $TNF_FOCUS_SUITES"
-        ;;
-      -l)
-        while (( "$#" >= 2 )) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]] ; do
-          TNF_LABEL="$TNF_LABEL $2"
-          shift
-        done
-        TNF_LABEL="$(echo -e "${TNF_LABEL}" | sed -e 's/^[[:space:]]*//')" # strip the leading whitespace
-        export TNF_LABEL
-        echo "-l $TNF_LABEL"
-        ;;
-      --) shift; break;;
-      -*) echo "invalid option: $1" 1>&2; usage_error;;
-    esac
-  shift
+	case "$1" in
+		-h|--help|-\?) usage; exit 0;;
+		-k)
+			if (($# > 1)); then
+				export LOCAL_KUBECONFIG=$2
+				unset kubeconfig_autodiscovery_source
+				shift
+			else
+				echo "-k requires an argument" 1>&2
+				exit 1
+			fi
+			echo "-k $LOCAL_KUBECONFIG"
+			;;
+		-t)
+			if (($# > 1)); then
+				export LOCAL_TNF_CONFIG=$2; shift
+			else
+				echo "-t requires an argument" 1>&2
+				exit 1
+			fi
+			echo  "-t $LOCAL_TNF_CONFIG"
+			;;
+		-b)
+			if (($# > 1)); then
+				export LOCAL_TNF_OFFLINE_DB=$2
+				shift
+			else
+				echo "-b requires an argument" 1>&2
+				exit 1
+			fi
+			echo  "-b $LOCAL_TNF_OFFLINE_DB"
+			;;
+		-o)
+			if (($# > 1)); then
+				export OUTPUT_LOC=$2
+				shift
+			else
+				echo "-o requires an argument" 1>&2
+				exit 1
+			fi
+			echo "-o $OUTPUT_LOC"
+			;;
+		-i)
+			if (($# > 1)); then
+				export TNF_IMAGE=$2
+				shift
+			else
+				echo "-i requires an argument" 1>&2
+				exit 1
+			fi
+			echo "-i $TNF_IMAGE"
+			;;
+		-n)
+			if (($# > 1)); then
+				export CONTAINER_NETWORK_MODE=$2
+				shift
+			else
+				echo "-n requires an argument" 1>&2
+				exit 1
+			fi
+			echo "-n $CONTAINER_NETWORK_MODE"
+			;;
+		-d)
+			if (($# > 1)); then
+				export DNS_ARG=$2
+				shift
+			else
+				echo "-d requires an argument" 1>&2
+				exit 1
+			fi
+			echo "-d $DNS_ARG"
+			;;
+		-s)
+			ONCE=true
+			while (( "$#" >= 2 )) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]] ; do
+				if [ $ONCE = true ]; then
+					TNF_SKIP_SUITES="$2"
+					ONCE=false
+				fi
+				TNF_SKIP_SUITES="$TNF_SKIP_SUITES $2"
+				shift
+			done
+			export TNF_SKIP_SUITES
+			echo "-s $TNF_SKIP_SUITES"
+			;;
+		-f)
+			ONCE=true
+			while (( "$#" >= 2 )) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]] ; do
+				if [ $ONCE = true ]; then
+					TNF_FOCUS_SUITES="$2"
+					ONCE=false
+				fi
+				TNF_FOCUS_SUITES="$TNF_FOCUS_SUITES $2"
+				shift
+			done
+			export TNF_FOCUS_SUITES
+			echo "-f $TNF_FOCUS_SUITES"
+			;;
+		-l)
+			while (( "$#" >= 2 )) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]] ; do
+				TNF_LABEL="$TNF_LABEL $2"
+				shift
+			done
+			TNF_LABEL="$(echo -e "${TNF_LABEL}" | sed -e 's/^[[:space:]]*//')" # strip the leading whitespace
+			export TNF_LABEL
+			echo "-l $TNF_LABEL"
+			;;
+		--)
+			shift
+			break
+			;;
+		-*)
+			echo "invalid option: $1" 1>&2
+			usage_error
+			;;
+	esac
+	shift
 done
 
 display_kubeconfig_autodiscovery_summary
 check_required_vars
-
-cd script
+cd script || exit 1
 ./run-container.sh  "$@"

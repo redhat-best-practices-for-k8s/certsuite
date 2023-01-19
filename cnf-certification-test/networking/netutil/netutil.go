@@ -107,6 +107,24 @@ const (
 		}
 	}
 	`
+	openshiftMachineConfigIP6Nft = `table ip6 filter {
+		chain INPUT {
+			type filter hook input priority filter; policy accept;
+		}
+  
+		chain FORWARD {
+			type filter hook forward priority filter; policy accept;
+			meta l4proto tcp tcp dport 22623 tcp flags & (fin|syn|rst|ack) == syn counter packets 0 bytes 0 reject
+			meta l4proto tcp tcp dport 22624 tcp flags & (fin|syn|rst|ack) == syn counter packets 0 bytes 0 reject
+		}
+  
+		chain OUTPUT {
+			type filter hook output priority filter; policy accept;
+			meta l4proto tcp tcp dport 22623 tcp flags & (fin|syn|rst|ack) == syn counter packets 0 bytes 0 reject
+			meta l4proto tcp tcp dport 22624 tcp flags & (fin|syn|rst|ack) == syn counter packets 0 bytes 0 reject
+		}
+	}
+	`
 	// https://bugzilla.redhat.com/show_bug.cgi?id=1915027
 	openshiftMachineConfigIPtables = `*filter
 	:INPUT ACCEPT [0:0]
@@ -151,6 +169,7 @@ func isIPOrNSTablesPresent(cut *provider.Container, command string) (bool, strin
 		return true, outStr, nil
 	}
 	if strings.Contains(stripSpaceTabLine(outStr), stripSpaceTabLine(openshiftMachineConfigNft)) ||
+		strings.Contains(stripSpaceTabLine(outStr), stripSpaceTabLine(openshiftMachineConfigIP6Nft)) ||
 		strings.Contains(stripSpaceTabLine(outStr), stripSpaceTabLine(openshiftMachineConfigIPtables)) ||
 		strings.Contains(stripSpaceTabLine(outStr), stripSpaceTabLine(openshiftMachineConfigIP6tables)) {
 		return false, outStr, nil

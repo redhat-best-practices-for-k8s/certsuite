@@ -650,13 +650,13 @@ Property|Description
 Test Case Name|storage-required-pods
 Test Case Label|lifecycle-storage-required-pods
 Unique ID|http://test-network-function.com/testcases/lifecycle/storage-required-pods
-Version|https://TODO Section 4.6.24
+Version|v1.0.0
 Description|http://test-network-function.com/testcases/lifecycle/storage-required-pods Checks that pods do not place persistent volumes on local storage.
 Result Type|informative
 Suggested Remediation|If the kind of pods is StatefulSet, so we need to make sure that servicename is not local-storage.
-Best Practice Reference|extended
-Exception Process|v1.0.0
-Tags|common
+Best Practice Reference|https://TODO Section 4.6.24
+Exception Process|There is no documented exception process for this.
+Tags|extended
 
 ### manageability
 

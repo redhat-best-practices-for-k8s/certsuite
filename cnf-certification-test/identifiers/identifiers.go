@@ -62,6 +62,9 @@ type TestCaseDescription struct {
 
 	// Tags will show all of the ginkgo tags that the test case applies to
 	Tags string `json:"tags,omitempty" yaml:"tags,omitempty"`
+
+	// Whether or not automated tests exist for the test case. Not to be rendered.
+	Qe bool `json:"qe" yaml:"qe"`
 }
 
 func init() {
@@ -76,7 +79,7 @@ func formTestTags(tags ...string) string {
 	return strings.Join(tags, ",")
 }
 
-func AddCatalogEntry(testID, suiteName, description, remediation, testType, exception, version, reference string, tags ...string) (aID claim.Identifier) {
+func AddCatalogEntry(testID, suiteName, description, remediation, testType, exception, version, reference string, qe bool, tags ...string) (aID claim.Identifier) {
 	// Default Values (if missing)
 	if strings.TrimSpace(exception) == "" {
 		exception = NoDocumentedProcess
@@ -105,6 +108,7 @@ func AddCatalogEntry(testID, suiteName, description, remediation, testType, exce
 	aTCDescription.ExceptionProcess = exception
 	aTCDescription.BestPracticeReference = reference
 	aTCDescription.Tags = strings.Join(tags, ",")
+	aTCDescription.Qe = qe
 
 	Catalog[aID] = aTCDescription
 
@@ -146,6 +150,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		VersionOne,
 		bestPracticeDocV1dot3URL+" Section 5.2",
+		true,
 		TagCommon)
 
 	TestNetworkPolicyDenyAllIdentifier = AddCatalogEntry(
@@ -157,6 +162,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		VersionOne,
 		bestPracticeDocV1dot3URL+" Section 10.6",
+		false,
 		TagCommon)
 
 	Test1337UIDIdentifier = AddCatalogEntry(
@@ -168,6 +174,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		VersionOne,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
+		true,
 		TagExtended)
 
 	// TestContainerIsCertifiedDigestIdentifier tests whether the container has passed Container Certification.
@@ -180,6 +187,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		VersionOne,
 		bestPracticeDocV1dot4URL+" Section 5.3.7",
+		false,
 		TagExtended, TagTelco)
 
 	TestPodHugePages2M = AddCatalogEntry(
@@ -191,6 +199,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		VersionOne,
 		bestPracticeDocV1dot4URL+" Section 3.5.4",
+		true,
 		TagExtended)
 
 	TestPodHugePages1G = AddCatalogEntry(
@@ -202,6 +211,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		VersionOne,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
+		false,
 		TagFarEdge)
 
 	TestReservedExtendedPartnerPorts = AddCatalogEntry(
@@ -213,6 +223,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		VersionOne,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
+		false,
 		TagExtended)
 
 	TestAffinityRequiredPods = AddCatalogEntry(
@@ -224,6 +235,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		VersionOne,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
+		true,
 		TagExtended, TagTelco)
 
 	TestStorageRequiredPods = AddCatalogEntry(
@@ -232,8 +244,10 @@ The label value is not important, only its presence.`,
 		`Checks that pods do not place persistent volumes on local storage.`,
 		StorageRequiredPods,
 		InformativeResult,
+		NoDocumentedProcess,
 		VersionOne,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
+		false,
 		TagExtended)
 
 	TestStartupIdentifier = AddCatalogEntry(
@@ -250,6 +264,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		`Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.`,
 		VersionOne,
 		bestPracticeDocV1dot3URL+" Section 5.1.3, 12.2 and 12.5",
+		true,
 		TagCommon, TagTelco)
 
 	TestShutdownIdentifier = AddCatalogEntry(
@@ -263,6 +278,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		`Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.`,
 		VersionOne,
 		bestPracticeDocV1dot3URL+" Section 5.1.3, 12.2 and 12.5",
+		true,
 		TagCommon, TagTelco)
 
 	TestDpdkCPUPinningExecProbe = AddCatalogEntry(
@@ -274,6 +290,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		VersionOne,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
+		false,
 		TagExtended, TagTelco)
 
 	TestNetAdminIdentifier = AddCatalogEntry(
@@ -285,6 +302,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		SecConCapabilitiesExceptionProcess,
 		VersionOne,
 		bestPracticeDocV1dot3URL+" Section 5.2",
+		false,
 		TagCommon)
 
 	TestSysAdminIdentifier = AddCatalogEntry(
@@ -296,6 +314,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		SecConCapabilitiesExceptionProcess,
 		VersionOne,
 		bestPracticeDocV1dot3URL+" Section 5.2",
+		false,
 		TagCommon)
 
 	TestIpcLockIdentifier = AddCatalogEntry(
@@ -307,6 +326,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		SecConCapabilitiesExceptionProcess,
 		VersionOne,
 		bestPracticeDocV1dot3URL+" Section 5.2",
+		false,
 		TagCommon)
 
 	TestNetRawIdentifier = AddCatalogEntry(
@@ -318,6 +338,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		SecConCapabilitiesExceptionProcess,
 		VersionOne,
 		bestPracticeDocV1dot3URL+" Section 5.2",
+		false,
 		TagCommon)
 
 	TestExclusiveCPUPoolIdentifier = AddCatalogEntry(
@@ -766,6 +787,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		ExceptionProcess:      NoDocumentedProcess,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 7.9",
 		Tags:                  TestNodeOperatingSystemIdentifier.Tags,
+		Qe:                    true,
 	},
 
 	TestOCPLifecycleIdentifier: {
@@ -776,6 +798,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		ExceptionProcess:      NoDocumentedProcess,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 7.9",
 		Tags:                  TestOCPLifecycleIdentifier.Tags,
+		Qe:                    true,
 	},
 
 	TestDeploymentScalingIdentifier: {
@@ -791,6 +814,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		ExceptionProcess:      NoDocumentedProcess,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		Tags:                  TestDeploymentScalingIdentifier.Tags,
+		Qe:                    true,
 	},
 	TestStateFulSetScalingIdentifier: {
 		Identifier: TestStateFulSetScalingIdentifier,
@@ -805,6 +829,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		ExceptionProcess:      NoDocumentedProcess,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		Tags:                  TestStateFulSetScalingIdentifier.Tags,
+		Qe:                    true,
 	},
 	TestSecConNonRootUserIdentifier: {
 		Identifier:       TestSecConNonRootUserIdentifier,
@@ -815,6 +840,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 			`Checks the security context runAsUser parameter in pods and containers to make sure it is not set to uid root(0)`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		Tags:                  TestSecConNonRootUserIdentifier.Tags,
+		Qe:                    false,
 	},
 	TestSecContextIdentifier: {
 		Identifier:       TestSecContextIdentifier,
@@ -825,6 +851,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 			`Checks the security context matches one of the 4 categories`),
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 4.5",
 		Tags:                  TestSecContextIdentifier.Tags,
+		Qe:                    false,
 	},
 	TestSecConPrivilegeEscalation: {
 		Identifier:       TestSecConPrivilegeEscalation,
@@ -835,6 +862,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 			`Checks if privileged escalation is enabled (AllowPrivilegeEscalation=true)`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		Tags:                  TestSecConPrivilegeEscalation.Tags,
+		Qe:                    false,
 	},
 	TestContainerIsCertifiedIdentifier: {
 		Identifier:  TestContainerIsCertifiedIdentifier,
@@ -845,6 +873,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.7",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestContainerIsCertifiedIdentifier.Tags,
+		Qe:                    true,
 	},
 	TestContainerHostPort: {
 		Identifier:  TestContainerHostPort,
@@ -855,6 +884,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.6",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestContainerHostPort.Tags,
+		Qe:                    false,
 	},
 	TestPodHostNetwork: {
 		Identifier:  TestPodHostNetwork,
@@ -865,6 +895,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.6",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestPodHostNetwork.Tags,
+		Qe:                    true,
 	},
 	TestPodHostPath: {
 		Identifier:  TestPodHostPath,
@@ -875,6 +906,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.6",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestPodHostPath.Tags,
+		Qe:                    false,
 	},
 	TestPodHostIPC: {
 		Identifier:  TestPodHostIPC,
@@ -885,6 +917,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.6",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestPodHostIPC.Tags,
+		Qe:                    true,
 	},
 	TestPodHostPID: {
 		Identifier:  TestPodHostPID,
@@ -895,6 +928,7 @@ var Catalog = map[claim.Identifier]TestCaseDescription{
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.6",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestPodHostIPC.Tags,
+		Qe:                    true,
 	},
 	TestHugepagesNotManuallyManipulated: {
 		Identifier:  TestHugepagesNotManuallyManipulated,
@@ -909,6 +943,7 @@ they are the same.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestHugepagesNotManuallyManipulated.Tags,
+		Qe:                    true,
 	},
 	TestICMPv6ConnectivityIdentifier: {
 		Identifier:  TestICMPv6ConnectivityIdentifier,
@@ -920,6 +955,7 @@ test case requires the Deployment of the debug daemonset.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestICMPv6ConnectivityIdentifier.Tags,
+		Qe:                    false,
 	},
 
 	TestICMPv4ConnectivityMultusIdentifier: {
@@ -932,6 +968,7 @@ test case requires the Deployment of the debug daemonset.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestICMPv4ConnectivityIdentifier.Tags,
+		Qe:                    true,
 	},
 
 	TestICMPv6ConnectivityMultusIdentifier: {
@@ -944,6 +981,7 @@ test case requires the Deployment of the debug daemonset.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestICMPv6ConnectivityIdentifier.Tags,
+		Qe:                    false,
 	},
 
 	TestServiceDualStackIdentifier: {
@@ -956,6 +994,7 @@ test case requires the deployment of the debug daemonset.`),
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 3.5.7",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestServiceDualStackIdentifier.Tags,
+		Qe:                    false,
 	},
 
 	TestNFTablesIdentifier: {
@@ -967,6 +1006,7 @@ test case requires the deployment of the debug daemonset.`),
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 4.6.23",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestNFTablesIdentifier.Tags,
+		Qe:                    false,
 	},
 
 	TestIPTablesIdentifier: {
@@ -978,6 +1018,7 @@ test case requires the deployment of the debug daemonset.`),
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 4.6.23",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestIPTablesIdentifier.Tags,
+		Qe:                    false,
 	},
 
 	TestNamespaceBestPracticesIdentifier: {
@@ -991,6 +1032,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2, 16.3.8 and 16.3.9",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestNamespaceBestPracticesIdentifier.Tags,
+		Qe:                    false,
 	},
 
 	TestNonTaintedNodeKernelsIdentifier: {
@@ -1004,6 +1046,7 @@ the same hacks.'`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.14",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestNonTaintedNodeKernelsIdentifier.Tags,
+		Qe:                    true,
 	},
 
 	TestOperatorInstallStatusSucceededIdentifier: {
@@ -1015,6 +1058,7 @@ the same hacks.'`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.12 and 5.3.3",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestOperatorInstallStatusSucceededIdentifier.Tags,
+		Qe:                    false,
 	},
 
 	TestOperatorNoPrivileges: {
@@ -1027,6 +1071,7 @@ with no resourceNames under its rules.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.12 and 5.3.3",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestOperatorNoPrivileges.Tags,
+		Qe:                    false,
 	},
 
 	TestOperatorIsCertifiedIdentifier: {
@@ -1038,6 +1083,7 @@ with no resourceNames under its rules.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.12 and 5.3.3",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestOperatorIsCertifiedIdentifier.Tags,
+		Qe:                    true,
 	},
 
 	TestHelmIsCertifiedIdentifier: {
@@ -1049,6 +1095,7 @@ with no resourceNames under its rules.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.12 and 5.3.3",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestHelmIsCertifiedIdentifier.Tags,
+		Qe:                    false,
 	},
 
 	TestOperatorIsInstalledViaOLMIdentifier: {
@@ -1060,6 +1107,7 @@ with no resourceNames under its rules.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.12 and 5.3.3",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestOperatorIsInstalledViaOLMIdentifier.Tags,
+		Qe:                    false,
 	},
 
 	TestPodNodeSelectorAndAffinityBestPractices: {
@@ -1072,6 +1120,7 @@ instantiation on any underlying Node.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestPodNodeSelectorAndAffinityBestPractices.Tags,
+		Qe:                    true,
 	},
 
 	TestPodHighAvailabilityBestPractices: {
@@ -1083,6 +1132,7 @@ instantiation on any underlying Node.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestPodHighAvailabilityBestPractices.Tags,
+		Qe:                    true,
 	},
 
 	TestPodClusterRoleBindingsBestPracticesIdentifier: {
@@ -1094,6 +1144,7 @@ instantiation on any underlying Node.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.10 and 5.3.6",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestPodClusterRoleBindingsBestPracticesIdentifier.Tags,
+		Qe:                    false,
 	},
 
 	TestPodDeploymentBestPracticesIdentifier: {
@@ -1105,6 +1156,7 @@ instantiation on any underlying Node.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.3 and 5.3.8",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestPodDeploymentBestPracticesIdentifier.Tags,
+		Qe:                    true,
 	},
 	TestImagePullPolicyIdentifier: {
 		Identifier:  TestImagePullPolicyIdentifier,
@@ -1115,6 +1167,7 @@ instantiation on any underlying Node.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + "  Section 12.6",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestImagePullPolicyIdentifier.Tags,
+		Qe:                    true,
 	},
 
 	TestPodRoleBindingsBestPracticesIdentifier: {
@@ -1126,6 +1179,7 @@ instantiation on any underlying Node.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.3 and 5.3.5",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestPodRoleBindingsBestPracticesIdentifier.Tags,
+		Qe:                    false,
 	},
 
 	TestPodServiceAccountBestPracticesIdentifier: {
@@ -1137,6 +1191,7 @@ instantiation on any underlying Node.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.3 and 5.2.7",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestPodServiceAccountBestPracticesIdentifier.Tags,
+		Qe:                    false,
 	},
 
 	TestServicesDoNotUseNodeportsIdentifier: {
@@ -1148,6 +1203,7 @@ instantiation on any underlying Node.`),
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.3.1",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestServicesDoNotUseNodeportsIdentifier.Tags,
+		Qe:                    true,
 	},
 
 	TestUnalteredBaseImageIdentifier: {
@@ -1170,6 +1226,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.1.4",
 		ExceptionProcess:      UnalteredBaseImageExceptionProcess,
 		Tags:                  TestUnalteredBaseImageIdentifier.Tags,
+		Qe:                    true,
 	},
 
 	TestUnalteredStartupBootParamsIdentifier: {
@@ -1181,6 +1238,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.13 and 5.2.14",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestUnalteredStartupBootParamsIdentifier.Tags,
+		Qe:                    true,
 	},
 	TestPodRecreationIdentifier: {
 		Identifier: TestPodRecreationIdentifier,
@@ -1194,6 +1252,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestPodRecreationIdentifier.Tags,
+		Qe:                    true,
 	},
 	TestSysctlConfigsIdentifier: {
 		Identifier: TestSysctlConfigsIdentifier,
@@ -1206,6 +1265,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestSysctlConfigsIdentifier.Tags,
+		Qe:                    true,
 	},
 	TestServiceMeshIdentifier: {
 		Identifier: TestServiceMeshIdentifier,
@@ -1216,6 +1276,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestServiceMeshIdentifier.Tags,
+		Qe:                    true,
 	},
 	TestIsRedHatReleaseIdentifier: {
 		Identifier: TestIsRedHatReleaseIdentifier,
@@ -1226,6 +1287,7 @@ that there are no changes to the following directories:
 		ExceptionProcess:      IsRedHatReleaseExceptionProcess,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		Tags:                  TestIsRedHatReleaseIdentifier.Tags,
+		Qe:                    true,
 	},
 	TestIsSELinuxEnforcingIdentifier: {
 		Identifier: TestIsSELinuxEnforcingIdentifier,
@@ -1236,6 +1298,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 10.3 Pod Security",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestIsSELinuxEnforcingIdentifier.Tags,
+		Qe:                    true,
 	},
 	TestUndeclaredContainerPortsUsage: {
 		Identifier: TestUndeclaredContainerPortsUsage,
@@ -1246,6 +1309,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 16.3.1.1",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestUndeclaredContainerPortsUsage.Tags,
+		Qe:                    false,
 	},
 	TestOCPReservedPortsUsage: {
 		Identifier: TestOCPReservedPortsUsage,
@@ -1256,6 +1320,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 3.5.9",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestOCPReservedPortsUsage.Tags,
+		Qe:                    false,
 	},
 	TestCrdsStatusSubresourceIdentifier: {
 		Identifier: TestCrdsStatusSubresourceIdentifier,
@@ -1266,6 +1331,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestCrdsStatusSubresourceIdentifier.Tags,
+		Qe:                    true,
 	},
 	TestLoggingIdentifier: {
 		Identifier: TestLoggingIdentifier,
@@ -1276,6 +1342,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 10.1",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestLoggingIdentifier.Tags,
+		Qe:                    true,
 	},
 	TestTerminationMessagePolicyIdentifier: {
 		Identifier: TestTerminationMessagePolicyIdentifier,
@@ -1286,6 +1353,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 12.1",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestTerminationMessagePolicyIdentifier.Tags,
+		Qe:                    true,
 	},
 	TestPodAutomountServiceAccountIdentifier: {
 		Identifier: TestPodAutomountServiceAccountIdentifier,
@@ -1296,6 +1364,7 @@ that there are no changes to the following directories:
 		ExceptionProcess:      NoDocumentedProcess,
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 12.7",
 		Tags:                  TestPodAutomountServiceAccountIdentifier.Tags,
+		Qe:                    true,
 	},
 	TestLivenessProbeIdentifier: {
 		Identifier:            TestLivenessProbeIdentifier,
@@ -1305,6 +1374,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.16, 12.1 and 12.5",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestLivenessProbeIdentifier.Tags,
+		Qe:                    true,
 	},
 	TestReadinessProbeIdentifier: {
 		Identifier:            TestReadinessProbeIdentifier,
@@ -1314,6 +1384,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 5.2.16, 12.1 and 12.5",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestReadinessProbeIdentifier.Tags,
+		Qe:                    true,
 	},
 	TestStartupProbeIdentifier: {
 		Identifier:            TestStartupProbeIdentifier,
@@ -1323,6 +1394,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.12", // TODO Change this to v1.4 when available
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestStartupProbeIdentifier.Tags,
+		Qe:                    true,
 	},
 	TestOneProcessPerContainerIdentifier: {
 		Identifier:            TestOneProcessPerContainerIdentifier,
@@ -1332,6 +1404,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 10.8.3",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestOneProcessPerContainerIdentifier.Tags,
+		Qe:                    false,
 	},
 	TestSYSNiceRealtimeCapabilityIdentifier: {
 		Identifier:            TestSYSNiceRealtimeCapabilityIdentifier,
@@ -1341,6 +1414,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 2.7.4",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestSYSNiceRealtimeCapabilityIdentifier.Tags,
+		Qe:                    false,
 	},
 	TestSysPtraceCapabilityIdentifier: {
 		Identifier:            TestSysPtraceCapabilityIdentifier,
@@ -1350,6 +1424,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 2.7.5",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestSysPtraceCapabilityIdentifier.Tags,
+		Qe:                    true,
 	},
 	TestPodRequestsAndLimitsIdentifier: {
 		Identifier:            TestPodRequestsAndLimitsIdentifier,
@@ -1359,6 +1434,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 4.6.11",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestPodRequestsAndLimitsIdentifier.Tags,
+		Qe:                    true,
 	},
 	TestPersistentVolumeReclaimPolicyIdentifier: {
 		Identifier:            TestPersistentVolumeReclaimPolicyIdentifier,
@@ -1368,6 +1444,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 3.3.4",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestPersistentVolumeReclaimPolicyIdentifier.Tags,
+		Qe:                    true,
 	},
 	TestContainersImageTag: {
 		Identifier:            TestContainersImageTag,
@@ -1377,6 +1454,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 4.6.12",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestContainersImageTag.Tags,
+		Qe:                    false,
 	},
 	TestNamespaceResourceQuotaIdentifier: {
 		Identifier:            TestNamespaceResourceQuotaIdentifier,
@@ -1386,6 +1464,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.8", // TODO Change this to v1.4 when available
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestNamespaceResourceQuotaIdentifier.Tags,
+		Qe:                    true,
 	},
 	TestPodDisruptionBudgetIdentifier: {
 		Identifier:            TestPodDisruptionBudgetIdentifier,
@@ -1395,6 +1474,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.20", // TODO Change this to v1.4 when available
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestPodDisruptionBudgetIdentifier.Tags,
+		Qe:                    true,
 	},
 	TestPodTolerationBypassIdentifier: {
 		Identifier:            TestPodTolerationBypassIdentifier,
@@ -1404,6 +1484,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 10.6",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestPodTolerationBypassIdentifier.Tags,
+		Qe:                    false,
 	},
 	TestNoSSHDaemonsAllowedIdentifier: {
 		Identifier:            TestNoSSHDaemonsAllowedIdentifier,
@@ -1413,6 +1494,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 4.6.12", // TODO Change this to v1.4 when available
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestNoSSHDaemonsAllowedIdentifier.Tags,
+		Qe:                    false,
 	},
 	TestCPUIsolationIdentifier: {
 		Identifier: TestCPUIsolationIdentifier,
@@ -1423,6 +1505,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 3.5.5",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestCPUIsolationIdentifier.Tags,
+		Qe:                    true,
 	},
 	TestContainerPortNameFormat: {
 		Identifier:            TestContainerPortNameFormat,
@@ -1432,5 +1515,6 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot4URL + " Section 4.6.20",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestContainerPortNameFormat.Tags,
+		Qe:                    false,
 	},
 }
