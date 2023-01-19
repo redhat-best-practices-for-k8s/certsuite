@@ -1472,7 +1472,7 @@ that there are no changes to the following directories:
 		BestPracticeReference: bestPracticeDocV1dot3URL + " Section 10.6",
 		ExceptionProcess:      NoDocumentedProcess,
 		Tags:                  TestPodTolerationBypassIdentifier.Tags,
-		Qe:                    false,
+		Qe:                    true,
 	},
 	TestNoSSHDaemonsAllowedIdentifier: {
 		Identifier:            TestNoSSHDaemonsAllowedIdentifier,
