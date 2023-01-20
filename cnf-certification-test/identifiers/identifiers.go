@@ -132,6 +132,7 @@ var (
 	TestNetRawIdentifier                     claim.Identifier
 	TestIpcLockIdentifier                    claim.Identifier
 	TestStorageRequiredPods                  claim.Identifier
+	TestExclusiveCPUPoolIdentifier           claim.Identifier
 )
 
 //nolint:funlen
@@ -339,6 +340,18 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
 		TagCommon)
+
+	TestExclusiveCPUPoolIdentifier = AddCatalogEntry(
+		"exclusive-cpu-pool",
+		common.AccessControlTestKey,
+		`Ensures that if one container in a Pod selects an exclusive CPU pool the rest select the same type of CPU pool`,
+		ExclusiveCPUPoolRemediation,
+		NormativeResult,
+		NoDocumentedProcess,
+		VersionOne,
+		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
+		false,
+		TagFarEdge)
 
 	return Catalog
 }

@@ -193,4 +193,6 @@ const (
 	DpdkCPUPinningExecProbeRemediation = "If the CNF is doing CPU pinning and running a DPDK process do not use exec probes (executing a command within the container) as it may pile up and block the node eventually."
 
 	StorageRequiredPods = "If the kind of pods is StatefulSet, so we need to make sure that servicename is not local-storage."
+
+	ExclusiveCPUPoolRemediation = `Ensure that if one container in a Pod selects an exclusive CPU pool the rest also select this type of CPU pool`
 )
