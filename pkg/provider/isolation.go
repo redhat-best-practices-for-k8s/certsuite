@@ -80,10 +80,6 @@ func AreCPUResourcesWholeUnits(p *Pod) bool {
 	return true
 }
 
-func IsRuntimeClassNameSpecified(p *Pod) bool {
-	return p.Spec.RuntimeClassName != nil
-}
-
 func LoadBalancingDisabled(p *Pod) bool {
 	const (
 		disableVar = "disable"

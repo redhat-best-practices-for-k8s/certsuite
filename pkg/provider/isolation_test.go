@@ -224,7 +224,7 @@ func TestCPUIsolation(t *testing.T) {
 	for _, tc := range testCases {
 		assert.Equal(t, tc.resourcesIdenticalResult, AreResourcesIdentical(tc.testPod))
 		assert.Equal(t, tc.wholeUnitsResult, AreCPUResourcesWholeUnits(tc.testPod))
-		assert.Equal(t, tc.runtimeClassNameResult, IsRuntimeClassNameSpecified(tc.testPod))
+		assert.Equal(t, tc.runtimeClassNameResult, tc.testPod.IsRuntimeClassNameSpecified())
 		assert.Equal(t, tc.loadBalancingResult, LoadBalancingDisabled(tc.testPod))
 	}
 }
