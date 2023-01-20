@@ -10,12 +10,8 @@ import (
 )
 
 const (
-	validCPULimit    = "1"
-	validMemLimit    = "512Mi"
-	invalidCPULimit1 = "0.5"
-	invalidMemLimit1 = "64.5"
-	invalidCPULimit2 = "2"
-	invalidMemLimit2 = "65"
+	validCPULimit = "1"
+	validMemLimit = "512Mi"
 )
 
 //nolint:funlen

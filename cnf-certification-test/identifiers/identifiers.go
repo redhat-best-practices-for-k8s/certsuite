@@ -350,6 +350,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		VersionOne,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
+		false,
 		TagFarEdge)
 
 	return Catalog
