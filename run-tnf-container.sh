@@ -75,6 +75,16 @@ usage() {
 	  run the access-control and networking tests, and save the test results into the '~/tnf/output' directory
 	  on the host.
 
+	  Because -c is omitted, $(basename "$0") will first try to autodiscover local docker config files.
+	  If it succeeds, the networking and access-control tests will be run using the autodiscovered configuration.
+	  The test results will be saved to the '~/tnf/output' directory on the host.
+
+	  $0 -c ~/.docker/conf1:~/.docker/conf2 -t ~/tnf/config -o ~/tnf/output -l "access-control,networking"
+
+	  The command will bind two docker config files (~/.docker/conf1 and ~/.docker/conf2) to the TNF container,
+	  run the access-control and networking tests, and save the test results into the '~/tnf/output' directory
+	  on the host.
+
 	  $0 -i custom-tnf-image:v1.2-dev -t ~/tnf/config -o ~/tnf/output -l "access-control,networking"
 
 	  The command will run the access-control and networking tests as implemented in the custom-tnf-image:v1.2-dev
