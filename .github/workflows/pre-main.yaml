@@ -132,6 +132,7 @@ jobs:
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
+      PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
 
     steps:
       - name: Set up Go 1.19.5
