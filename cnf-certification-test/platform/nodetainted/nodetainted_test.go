@@ -22,48 +22,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 )
-
-func TestTaintsAccepted(t *testing.T) {
-	testCases := []struct {
-		confTaints     []configuration.AcceptedKernelTaintsInfo
-		taintedModules []string
-		expected       bool
-	}{
-		{
-			confTaints: []configuration.AcceptedKernelTaintsInfo{
-				{
-					Module: "taint1",
-				},
-			},
-			taintedModules: []string{
-				"taint1",
-			},
-			expected: true,
-		},
-		{
-			confTaints: []configuration.AcceptedKernelTaintsInfo{}, // no accepted modules
-			taintedModules: []string{
-				"taint1",
-			},
-			expected: false,
-		},
-		{ // We have no tainted modules, so the configuration does not matter.
-			confTaints: []configuration.AcceptedKernelTaintsInfo{
-				{
-					Module: "taint1",
-				},
-			},
-			taintedModules: []string{},
-			expected:       true,
-		},
-	}
-
-	for _, tc := range testCases {
-		assert.Equal(t, tc.expected, TaintsAccepted(tc.confTaints, tc.taintedModules))
-	}
-}
 
 //nolint:funlen
 func TestDecodeKernelTaints(t *testing.T) {
@@ -103,14 +62,17 @@ func TestDecodeKernelTaints(t *testing.T) {
 
 		// Bits 0 and 18
 		{
-			taintsBitMask:  (1 << 0) | (1 << 18),
-			expectedTaints: []string{"proprietary module was loaded (tainted bit 0)", "an in-kernel test has been run (tainted bit 18)"},
+			taintsBitMask: (1 << 0) | (1 << 18),
+			expectedTaints: []string{"proprietary module was loaded (tainted bit 0)",
+				"an in-kernel test has been run (tainted bit 18)"},
 		},
 
 		// Bits 0, 24 and 30
 		{
-			taintsBitMask:  (1 << 0) | (1 << 24) | (1 << 30),
-			expectedTaints: []string{"proprietary module was loaded (tainted bit 0)", "reserved (tainted bit 24)", "Red Hat extension: reserved (tainted bit 30)"},
+			taintsBitMask: (1 << 0) | (1 << 24) | (1 << 30),
+			expectedTaints: []string{"proprietary module was loaded (tainted bit 0)",
+				"reserved (tainted bit 24)",
+				"BPF syscall has either been configured or enabled for unprivileged users/programs (tainted bit 30)"},
 		},
 
 		// RH's bit 29
@@ -122,117 +84,396 @@ func TestDecodeKernelTaints(t *testing.T) {
 		// RH's reserved bit 31
 		{
 			taintsBitMask:  1 << 31,
-			expectedTaints: []string{"Red Hat extension: reserved (tainted bit 31)"},
+			expectedTaints: []string{"BPF syscall has either been configured or enabled for unprivileged users/programs (tainted bit 31)"},
 		},
 	}
 
 	for _, tc := range tcs {
-		taints := DecodeKernelTaints(tc.taintsBitMask)
+		taints := DecodeKernelTaintsFromBitMask(tc.taintsBitMask)
 		assert.Equal(t, tc.expectedTaints, taints)
 	}
 }
 
-func TestGetOutOfTreeModules(t *testing.T) {
+func TestDecodeKernelTaintsFromLetters(t *testing.T) {
 	testCases := []struct {
-		testModules            []string
-		expectedTaintedModules []string
-		runCommandOutput       string
+		letters           string
+		expectedTaintBits []string
 	}{
-		{ // output is O
-			testModules:            []string{"module1"},
-			expectedTaintedModules: []string{"module1"},
-			runCommandOutput:       "O", // O means out-of-tree
+		{
+			letters:           "G",
+			expectedTaintBits: []string{"proprietary module was loaded (taint letter:G, bit:0)"},
 		},
-		{ // output is 1 (could be anything)
-			testModules:            []string{"module2"},
-			expectedTaintedModules: []string{},
-			runCommandOutput:       "1",
+		{
+			letters:           "E",
+			expectedTaintBits: []string{"unsigned module was loaded (taint letter:E, bit:13)"},
+		},
+		{
+			letters: "OX",
+			expectedTaintBits: []string{"externally-built (\"out-of-tree\") module was loaded (taint letter:O, bit:12)",
+				"auxiliary taint, defined for and used by distros (taint letter:X, bit:16)"},
+		},
+		// Unknown letter
+		{
+			letters:           "n",
+			expectedTaintBits: []string{"unknown taint (letter n)"},
+		},
+	}
+
+	for _, tc := range testCases {
+		bits := DecodeKernelTaintsFromLetters(tc.letters)
+		assert.Equal(t, tc.expectedTaintBits, bits)
+	}
+}
+
+func TestGetBitPosFromLetter(t *testing.T) {
+	testCases := []struct {
+		letter        string
+		expectedPos   int
+		expectedError string
+	}{
+		{
+			letter:      "G",
+			expectedPos: 0,
+		},
+		{
+			letter:      "E",
+			expectedPos: 13,
+		},
+		{
+			letter:      "O",
+			expectedPos: 12,
+		},
+		{
+			letter:        "OE",
+			expectedError: "input string must contain one letter",
+		},
+		{
+			letter:        "",
+			expectedError: "input string must contain one letter",
+		},
+	}
+
+	for _, tc := range testCases {
+		bitPos, err := getBitPosFromLetter(tc.letter)
+		if err != nil {
+			assert.Equal(t, tc.expectedError, err.Error())
+		} else {
+			assert.Equal(t, tc.expectedError, "")
+		}
+		assert.Equal(t, tc.expectedPos, bitPos)
+	}
+}
+
+//nolint:funlen
+func TestGetKernelTaintsMask(t *testing.T) {
+	testCases := []struct {
+		runCommandOutput   string
+		runCommandError    error
+		expectedTaintsMask uint64
+		expectedErrorMsg   string
+	}{
+		{
+			runCommandOutput:   "0",
+			runCommandError:    nil,
+			expectedTaintsMask: 0,
+		},
+		{
+			runCommandOutput:   "0\n",
+			runCommandError:    nil,
+			expectedTaintsMask: 0,
+		},
+		{
+			runCommandOutput:   "0\r\t",
+			runCommandError:    nil,
+			expectedTaintsMask: 0,
+		},
+		{
+			runCommandOutput:   "1024",
+			runCommandError:    nil,
+			expectedTaintsMask: 1024,
+		},
+		{
+			runCommandOutput:   "65536",
+			runCommandError:    nil,
+			expectedTaintsMask: 65536,
+		},
+		{
+			runCommandOutput:   "test1",
+			runCommandError:    errors.New("this is an error"),
+			expectedTaintsMask: 0,
+			expectedErrorMsg:   "this is an error",
+		},
+		{
+			runCommandOutput:   "-1",
+			runCommandError:    nil,
+			expectedTaintsMask: 0,
+			expectedErrorMsg:   "failed to decode taints mask \"-1\": strconv.ParseUint: parsing \"-1\": invalid syntax",
 		},
 	}
 
 	for _, tc := range testCases {
 		origFunc := runCommand
 		runCommand = func(ctx *clientsholder.Context, cmd string) (string, error) {
+			return tc.runCommandOutput, tc.runCommandError
+		}
+		nt := NewNodeTaintedTester(nil, "fake-node-name")
+		result, err := nt.GetKernelTaintsMask()
+		assert.Equal(t, tc.expectedTaintsMask, result)
+		if err != nil {
+			assert.Equal(t, tc.expectedErrorMsg, err.Error())
+		} else {
+			assert.Equal(t, tc.expectedErrorMsg, "")
+		}
+
+		runCommand = origFunc
+	}
+}
+
+//nolint:funlen
+func TestGetAllTainterModules(t *testing.T) {
+	testCases := []struct {
+		runCommandOutput string
+		runCommandError  error
+		expectedTainters map[string]string
+		expectedErrorMsg string
+	}{
+		{
+			runCommandOutput: "module1 O",
+			expectedTainters: map[string]string{"module1": "O"},
+		},
+		{
+			runCommandOutput: "module1 O\nmodule2 E",
+			expectedTainters: map[string]string{"module1": "O", "module2": "E"},
+		},
+		{
+			runCommandOutput: "module1 OE\nmodule2 E",
+			expectedTainters: map[string]string{"module1": "OE", "module2": "E"},
+		},
+		{
+			runCommandOutput: "\n",
+			expectedTainters: map[string]string{},
+		},
+		{
+			runCommandOutput: "",
+			expectedTainters: map[string]string{},
+		},
+		{
+			runCommandOutput: "module1",
+			expectedErrorMsg: "failed to parse line \"module1\" (output=module1)",
+		},
+		{
+			runCommandOutput: "moduleAppearsTwice E\nmoduleAppearsTwice O",
+			expectedErrorMsg: "module moduleAppearsTwice (taints O) has already been parsed (taints E)",
+		},
+		{
+			runCommandError:  errors.New("fake error running command in container"),
+			expectedErrorMsg: "failed to run command: fake error running command in container",
+		},
+	}
+
+	for _, tc := range testCases {
+		origFunc := runCommand
+		runCommand = func(ctx *clientsholder.Context, cmd string) (string, error) {
+			return tc.runCommandOutput, tc.runCommandError
+		}
+		nt := NewNodeTaintedTester(nil, "fake-node-name")
+		tainters, err := nt.getAllTainterModules()
+		if err != nil {
+			assert.Equal(t, tc.expectedErrorMsg, err.Error())
+		} else {
+			assert.Equal(t, tc.expectedErrorMsg, "")
+		}
+		assert.Equal(t, tc.expectedTainters, tainters)
+
+		runCommand = origFunc
+	}
+}
+
+//nolint:funlen
+func TestGetTainterModules(t *testing.T) {
+	testCases := []struct {
+		runCommandOutput  string
+		whiteList         map[string]bool
+		expectedTainters  map[string]string
+		expectedTaintBits map[int]bool
+		expectedErrorMsg  string
+	}{
+		{
+			runCommandOutput:  "module1 O",
+			expectedTainters:  map[string]string{"module1": "O"},
+			expectedTaintBits: map[int]bool{12: true},
+		},
+		{
+			runCommandOutput:  "module1 O\nmodule2 E\n",
+			expectedTainters:  map[string]string{"module1": "O", "module2": "E"},
+			expectedTaintBits: map[int]bool{12: true, 13: true},
+		},
+		{
+			runCommandOutput:  "module1 OE\nmodule2 O\nmodule3 E",
+			expectedTainters:  map[string]string{"module1": "OE", "module2": "O", "module3": "E"},
+			expectedTaintBits: map[int]bool{12: true, 13: true},
+		},
+		{
+			runCommandOutput:  "module1 OE\nmodule2 O\nmodule3 E",
+			expectedTainters:  map[string]string{"module1": "OE", "module2": "O", "module3": "E"},
+			expectedTaintBits: map[int]bool{12: true, 13: true},
+		},
+		// Whitelist usage 1
+		{
+			runCommandOutput:  "module1 OE\nmodule2 O\nmodule3 E",
+			whiteList:         map[string]bool{"module2": true},
+			expectedTainters:  map[string]string{"module1": "OE", "module3": "E"},
+			expectedTaintBits: map[int]bool{12: true, 13: true},
+		},
+		// Whitelist usage 2
+		{
+			runCommandOutput:  "module2 O\nmodule3 E",
+			whiteList:         map[string]bool{"module2": true, "module3": true},
+			expectedTainters:  map[string]string{},
+			expectedTaintBits: map[int]bool{12: true, 13: true},
+		},
+		{
+			runCommandOutput:  "",
+			expectedTainters:  map[string]string{},
+			expectedTaintBits: map[int]bool{},
+		},
+		{
+			runCommandOutput:  "\n",
+			expectedTainters:  map[string]string{},
+			expectedTaintBits: map[int]bool{},
+		},
+		// Error checking
+		{
+			runCommandOutput: "module1",
+			expectedErrorMsg: "failed to get tainter modules: failed to parse line \"module1\" (output=module1)",
+		},
+		{
+			runCommandOutput: "module1 E\nmodule2 J",
+			expectedErrorMsg: "failed to get taint bits by modules: module module2 has invalid taint letter J: letter J does not belong to any known kernel taint",
+		},
+	}
+
+	for _, tc := range testCases {
+		origFunc := runCommand
+		runCommand = func(ctx *clientsholder.Context, cmd string) (string, error) {
+			// Make the command to never return error.
 			return tc.runCommandOutput, nil
 		}
-		nt := NewNodeTaintedTester(nil)
-		assert.Equal(t, tc.expectedTaintedModules, nt.GetOutOfTreeModules(tc.testModules))
+		nt := NewNodeTaintedTester(nil, "fake-node-name")
+		tainters, taintBitsByAllModules, err := nt.GetTainterModules(tc.whiteList)
+		if err != nil {
+			assert.Equal(t, tc.expectedErrorMsg, err.Error())
+		} else {
+			assert.Equal(t, tc.expectedErrorMsg, "")
+		}
+		assert.Equal(t, tc.expectedTainters, tainters)
+		assert.Equal(t, tc.expectedTaintBits, taintBitsByAllModules)
+
 		runCommand = origFunc
 	}
 }
 
-func TestGetKernelTaintInfo(t *testing.T) {
+//nolint:funlen
+func TestGetTaintedBitsByModules(t *testing.T) {
 	testCases := []struct {
-		runCommandOutput string
-		runCommandError  error
-		funcOutput       string
-		funcErr          error
+		modules           map[string]string
+		expectedTaintBits map[int]bool
+		expectedError     string
 	}{
+		// Bit 0 (G)
 		{
-			runCommandOutput: "test1",
-			runCommandError:  nil,
-			funcOutput:       "test1",
-			funcErr:          nil,
+			modules:           map[string]string{"module1": "G"},
+			expectedTaintBits: map[int]bool{0: true},
 		},
 		{
-			runCommandOutput: "test1\n",
-			runCommandError:  nil,
-			funcOutput:       "test1",
-			funcErr:          nil,
+			modules:           map[string]string{"module1": "P"},
+			expectedTaintBits: map[int]bool{0: true},
 		},
+		// Bit 12 (O)
 		{
-			runCommandOutput: "test1\r\t",
-			runCommandError:  nil,
-			funcOutput:       "test1",
-			funcErr:          nil,
+			modules:           map[string]string{"module1": "O"},
+			expectedTaintBits: map[int]bool{12: true},
 		},
+		// Bits 0 & 12
 		{
-			runCommandOutput: "test1",
-			runCommandError:  errors.New("this is an error"),
-			funcOutput:       "",
-			funcErr:          errors.New("this is an error"),
+			modules:           map[string]string{"module1": "GO"},
+			expectedTaintBits: map[int]bool{0: true, 12: true},
+		},
+		// Bits 0 & 12 from two modules.
+		{
+			modules:           map[string]string{"module1": "GO", "module2": "O"},
+			expectedTaintBits: map[int]bool{0: true, 12: true},
+		},
+		// Bits 0 & 12 from two modules, plus bit 15 (K)
+		{
+			modules:           map[string]string{"module1": "GO", "module2": "O", "module3": "K"},
+			expectedTaintBits: map[int]bool{0: true, 12: true, 15: true},
+		},
+		// Unknown letter.
+		{
+			modules:           map[string]string{"module1": "n"},
+			expectedTaintBits: nil,
+			expectedError:     "module module1 has invalid taint letter n: letter n does not belong to any known kernel taint",
+		},
+		// RH's tech preview bit 29 (T)
+		{
+			modules:           map[string]string{"rhModule": "H"},
+			expectedTaintBits: map[int]bool{28: true},
 		},
 	}
 
 	for _, tc := range testCases {
-		origFunc := runCommand
-		runCommand = func(ctx *clientsholder.Context, cmd string) (string, error) {
-			return tc.runCommandOutput, tc.runCommandError
+		bits, err := GetTaintedBitsByModules(tc.modules)
+		if err != nil {
+			assert.Equal(t, tc.expectedError, err.Error())
+		} else {
+			assert.Equal(t, tc.expectedError, "")
 		}
-		nt := NewNodeTaintedTester(nil)
-		result, err := nt.GetKernelTaintInfo()
-		assert.Equal(t, tc.funcOutput, result)
-		assert.Equal(t, tc.funcErr, err)
-		runCommand = origFunc
+		assert.Equal(t, tc.expectedTaintBits, bits)
 	}
 }
 
-func TestGetModulesFromNode(t *testing.T) {
+func TestGetOtherTaintedBits(t *testing.T) {
 	testCases := []struct {
-		runCommandOutput string
-		runCommandError  error
-		expectedOutput   []string
+		taintsMask           uint64
+		taintedBitsByModules map[int]bool
+		expectedBits         []int
 	}{
 		{
-			runCommandOutput: "module1\nmodule2\nmodule3",
-			runCommandError:  nil,
-			expectedOutput:   []string{"module1", "module2", "module3"},
+			taintsMask:           0,
+			taintedBitsByModules: map[int]bool{},
+			expectedBits:         []int{},
 		},
 		{
-			runCommandOutput: "\tmodule1\nmodule2",
-			runCommandError:  nil,
-			expectedOutput:   []string{"module1", "module2"},
+			taintsMask:           1 << 0,
+			taintedBitsByModules: map[int]bool{0: true},
+			expectedBits:         []int{},
+		},
+		// Bits tainted by modules: 0
+		// Bits not tainted by modules: 1
+		{
+			taintsMask:           (1 << 0) | (1 << 1),
+			taintedBitsByModules: map[int]bool{0: true},
+			expectedBits:         []int{1},
+		},
+		// Bits tainted by modules: 0, 1
+		// Bits not tainted by modules: 2
+		{
+			taintsMask:           (1 << 0) | (1 << 1) | (1 << 2),
+			taintedBitsByModules: map[int]bool{0: true, 1: true},
+			expectedBits:         []int{2},
+		},
+		// Bits tainted by modules: none
+		// Bits not tainted by modules: 0, 1, 2
+		{
+			taintsMask:           (1 << 0) | (1 << 1) | (1 << 2),
+			taintedBitsByModules: map[int]bool{},
+			expectedBits:         []int{0, 1, 2},
 		},
 	}
 
 	for _, tc := range testCases {
-		origFunc := runCommand
-		runCommand = func(ctx *clientsholder.Context, cmd string) (string, error) {
-			return tc.runCommandOutput, tc.runCommandError
-		}
-		nt := NewNodeTaintedTester(nil)
-		assert.Equal(t, tc.expectedOutput, nt.GetModulesFromNode())
-
-		runCommand = origFunc
+		bits := GetOtherTaintedBits(tc.taintsMask, tc.taintedBitsByModules)
+		assert.Equal(t, tc.expectedBits, bits)
 	}
 }
