@@ -92,3 +92,9 @@ func (c *Container) HasIgnoredContainerName() bool {
 func (c *Container) IsIstioProxy() bool {
 	return c.Name == "istio-proxy" //nolint:goconst
 }
+
+func (c *Container) HasExecProbes() bool {
+	return c.LivenessProbe != nil && c.LivenessProbe.Exec != nil ||
+		c.ReadinessProbe != nil && c.ReadinessProbe.Exec != nil ||
+		c.StartupProbe != nil && c.StartupProbe.Exec != nil
+}

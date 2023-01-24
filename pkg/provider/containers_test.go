@@ -21,6 +21,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	v1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/util/intstr"
 )
 
 func TestIsIstioProxy(t *testing.T) {
@@ -48,5 +49,94 @@ func TestIsIstioProxy(t *testing.T) {
 
 	for _, tc := range testCases {
 		assert.Equal(t, tc.expectedOutput, tc.testContainer.IsIstioProxy())
+	}
+}
+
+func TestHasExecProbes(t *testing.T) {
+	testCases := []struct {
+		testContainer  Container
+		expectedOutput bool
+	}{
+		{ // Test Case #1 - Container defines a LivenessProbe with Exec mechanism
+			testContainer: Container{
+				Container: &v1.Container{
+					LivenessProbe: &v1.Probe{
+						ProbeHandler: v1.ProbeHandler{
+							Exec: &v1.ExecAction{
+								Command: []string{"/bin/sh -c sleep 300"},
+							},
+						},
+					},
+				},
+			},
+			expectedOutput: true,
+		},
+		{ // Test Case #2 - Container defines a LivenessProbe with HTTP mechanism
+			testContainer: Container{
+				Container: &v1.Container{
+					LivenessProbe: &v1.Probe{
+						ProbeHandler: v1.ProbeHandler{
+							HTTPGet: &v1.HTTPGetAction{
+								Port: intstr.FromInt(10002),
+							},
+						},
+					},
+				},
+			},
+			expectedOutput: false,
+		},
+		{ // Test Case #3 - Container defines a LivenessProbe with HTTP and a ReadinessProbe with Exec
+			testContainer: Container{
+				Container: &v1.Container{
+					LivenessProbe: &v1.Probe{
+						ProbeHandler: v1.ProbeHandler{
+							HTTPGet: &v1.HTTPGetAction{
+								Port: intstr.FromInt(10002),
+							},
+						},
+					},
+					ReadinessProbe: &v1.Probe{
+						ProbeHandler: v1.ProbeHandler{
+							Exec: &v1.ExecAction{
+								Command: []string{"/bin/sh -c sleep 300"},
+							},
+						},
+					},
+				},
+			},
+			expectedOutput: true,
+		},
+		{ // Test Case #4 - Container defines a LivenessProbe and a ReadinessProble with HTTP and a StartupProbe with Exec
+			testContainer: Container{
+				Container: &v1.Container{
+					LivenessProbe: &v1.Probe{
+						ProbeHandler: v1.ProbeHandler{
+							HTTPGet: &v1.HTTPGetAction{
+								Port: intstr.FromInt(10002),
+							},
+						},
+					},
+					ReadinessProbe: &v1.Probe{
+						ProbeHandler: v1.ProbeHandler{
+							HTTPGet: &v1.HTTPGetAction{
+								Port: intstr.FromInt(10005),
+							},
+						},
+					},
+					StartupProbe: &v1.Probe{
+						ProbeHandler: v1.ProbeHandler{
+							Exec: &v1.ExecAction{
+								Command: []string{"/bin/sh -c sleep 300"},
+							},
+						},
+					},
+				},
+			},
+			expectedOutput: true,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedOutput, tc.testContainer.HasExecProbes())
 	}
 }
