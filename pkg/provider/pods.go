@@ -121,8 +121,8 @@ func (p *Pod) AffinityRequired() bool {
 	return false
 }
 
+// returns true if at least one container in the pod has a resource name containing "hugepage", return false otherwise
 func (p *Pod) HasHugepages() bool {
-	// Pods may contain more than one container.  All containers must conform to the CPU isolation requirements.
 	for _, cut := range p.Containers {
 		for name := range cut.Resources.Requests {
 			if strings.Contains(name.String(), hugePages) {
