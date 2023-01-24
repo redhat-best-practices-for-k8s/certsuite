@@ -9,7 +9,6 @@ on:
 env:
   REGISTRY: quay.io
   REGISTRY_LOCAL: localhost
-  RELEASE_LEVEL: '4.11'
   TNF_IMAGE_NAME: testnetworkfunction/cnf-certification-test
   TNF_IMAGE_TAG: unstable
   OCT_IMAGE_NAME: testnetworkfunction/oct
