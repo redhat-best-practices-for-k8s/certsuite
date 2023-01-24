@@ -52,6 +52,7 @@ func TestIsIstioProxy(t *testing.T) {
 	}
 }
 
+//nolint:funlen
 func TestHasExecProbes(t *testing.T) {
 	testCases := []struct {
 		testContainer  Container
