@@ -40,6 +40,7 @@ jobs:
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
+      PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
       CURRENT_VERSION_GENERIC_BRANCH: main
       TNF_VERSION: ""
       PARTNER_VERSION: ""
