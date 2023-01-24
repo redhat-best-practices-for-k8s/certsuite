@@ -194,5 +194,6 @@ const (
 
 	StorageRequiredPods = "If the kind of pods is StatefulSet, so we need to make sure that servicename is not local-storage."
 
-	ExclusiveCPUPoolRemediation = `Ensure that if one container in a Pod selects an exclusive CPU pool the rest also select this type of CPU pool`
+	ExclusiveCPUPoolRemediation      = `Ensure that if one container in a Pod selects an exclusive CPU pool the rest also select this type of CPU pool`
+	RTCpuSchedulingPolicyRemediation = `Ensure that the workload running in an application-isolated exclusive CPU pool selects a RT CPU scheduling policy (such as SCHED_FIFO/SCHED_RR)`
 )

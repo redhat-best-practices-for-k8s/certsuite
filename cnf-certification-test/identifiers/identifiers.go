@@ -133,6 +133,7 @@ var (
 	TestIpcLockIdentifier                    claim.Identifier
 	TestStorageRequiredPods                  claim.Identifier
 	TestExclusiveCPUPoolIdentifier           claim.Identifier
+	TestRTCpuSchedulingPolicyIdentifier      claim.Identifier
 )
 
 //nolint:funlen
@@ -346,6 +347,18 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		common.AccessControlTestKey,
 		`Ensures that if one container in a Pod selects an exclusive CPU pool the rest select the same type of CPU pool`,
 		ExclusiveCPUPoolRemediation,
+		NormativeResult,
+		NoDocumentedProcess,
+		VersionOne,
+		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
+		false,
+		TagFarEdge)
+
+	TestRTCpuSchedulingPolicyIdentifier = AddCatalogEntry(
+		"rt-cpu-scheduling-policy",
+		common.ManageabilityTestKey,
+		`Ensures that a workload running in an application-isolated exclusive CPU pool selects a RT CPU scheduling policy`,
+		RTCpuSchedulingPolicyRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
 		VersionOne,
