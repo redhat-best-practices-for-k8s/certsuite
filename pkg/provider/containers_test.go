@@ -20,7 +20,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	v1 "k8s.io/api/core/v1"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
 )
 
@@ -31,7 +31,7 @@ func TestIsIstioProxy(t *testing.T) {
 	}{
 		{
 			testContainer: Container{
-				Container: &v1.Container{
+				Container: &corev1.Container{
 					Name: "istio-proxy",
 				},
 			},
@@ -39,7 +39,7 @@ func TestIsIstioProxy(t *testing.T) {
 		},
 		{
 			testContainer: Container{
-				Container: &v1.Container{
+				Container: &corev1.Container{
 					Name: "not-istio-proxy",
 				},
 			},
@@ -60,10 +60,10 @@ func TestHasExecProbes(t *testing.T) {
 	}{
 		{ // Test Case #1 - Container defines a LivenessProbe with Exec mechanism
 			testContainer: Container{
-				Container: &v1.Container{
-					LivenessProbe: &v1.Probe{
-						ProbeHandler: v1.ProbeHandler{
-							Exec: &v1.ExecAction{
+				Container: &corev1.Container{
+					LivenessProbe: &corev1.Probe{
+						ProbeHandler: corev1.ProbeHandler{
+							Exec: &corev1.ExecAction{
 								Command: []string{"/bin/sh -c sleep 300"},
 							},
 						},
@@ -74,10 +74,10 @@ func TestHasExecProbes(t *testing.T) {
 		},
 		{ // Test Case #2 - Container defines a LivenessProbe with HTTP mechanism
 			testContainer: Container{
-				Container: &v1.Container{
-					LivenessProbe: &v1.Probe{
-						ProbeHandler: v1.ProbeHandler{
-							HTTPGet: &v1.HTTPGetAction{
+				Container: &corev1.Container{
+					LivenessProbe: &corev1.Probe{
+						ProbeHandler: corev1.ProbeHandler{
+							HTTPGet: &corev1.HTTPGetAction{
 								Port: intstr.FromInt(10002),
 							},
 						},
@@ -88,17 +88,17 @@ func TestHasExecProbes(t *testing.T) {
 		},
 		{ // Test Case #3 - Container defines a LivenessProbe with HTTP and a ReadinessProbe with Exec
 			testContainer: Container{
-				Container: &v1.Container{
-					LivenessProbe: &v1.Probe{
-						ProbeHandler: v1.ProbeHandler{
-							HTTPGet: &v1.HTTPGetAction{
+				Container: &corev1.Container{
+					LivenessProbe: &corev1.Probe{
+						ProbeHandler: corev1.ProbeHandler{
+							HTTPGet: &corev1.HTTPGetAction{
 								Port: intstr.FromInt(10002),
 							},
 						},
 					},
-					ReadinessProbe: &v1.Probe{
-						ProbeHandler: v1.ProbeHandler{
-							Exec: &v1.ExecAction{
+					ReadinessProbe: &corev1.Probe{
+						ProbeHandler: corev1.ProbeHandler{
+							Exec: &corev1.ExecAction{
 								Command: []string{"/bin/sh -c sleep 300"},
 							},
 						},
@@ -109,24 +109,24 @@ func TestHasExecProbes(t *testing.T) {
 		},
 		{ // Test Case #4 - Container defines a LivenessProbe and a ReadinessProble with HTTP and a StartupProbe with Exec
 			testContainer: Container{
-				Container: &v1.Container{
-					LivenessProbe: &v1.Probe{
-						ProbeHandler: v1.ProbeHandler{
-							HTTPGet: &v1.HTTPGetAction{
+				Container: &corev1.Container{
+					LivenessProbe: &corev1.Probe{
+						ProbeHandler: corev1.ProbeHandler{
+							HTTPGet: &corev1.HTTPGetAction{
 								Port: intstr.FromInt(10002),
 							},
 						},
 					},
-					ReadinessProbe: &v1.Probe{
-						ProbeHandler: v1.ProbeHandler{
-							HTTPGet: &v1.HTTPGetAction{
+					ReadinessProbe: &corev1.Probe{
+						ProbeHandler: corev1.ProbeHandler{
+							HTTPGet: &corev1.HTTPGetAction{
 								Port: intstr.FromInt(10005),
 							},
 						},
 					},
-					StartupProbe: &v1.Probe{
-						ProbeHandler: v1.ProbeHandler{
-							Exec: &v1.ExecAction{
+					StartupProbe: &corev1.Probe{
+						ProbeHandler: corev1.ProbeHandler{
+							Exec: &corev1.ExecAction{
 								Command: []string{"/bin/sh -c sleep 300"},
 							},
 						},
