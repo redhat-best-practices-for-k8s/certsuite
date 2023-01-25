@@ -14,19 +14,4 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package common
-
-// Constants shared by multiple test suite packages
-const (
-	defaultTimeoutSeconds     = 10
-	AccessControlTestKey      = "access-control"
-	LifecycleTestKey          = "lifecycle"
-	ManageabilityTestKey      = "manageability"
-	ChaosTesting              = "chaostesting"
-	AffiliatedCertTestKey     = "affiliated-certification"
-	NetworkingTestKey         = "networking"
-	ObservabilityTestKey      = "observability"
-	OperatorTestKey           = "operator"
-	PlatformAlterationTestKey = "platform-alteration"
-	PerformanceTestKey        = "performance"
-)
+package performance

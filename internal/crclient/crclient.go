@@ -21,6 +21,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
@@ -51,6 +52,57 @@ func GetPidFromContainer(cut *provider.Container, ctx clientsholder.Context) (in
 	}
 
 	return strconv.Atoi(strings.TrimSuffix(outStr, "\n"))
+}
+
+// To get the pid namespace of the container
+func GetContainerPidNamespace(testContainer *provider.Container, env *provider.TestEnvironment) (string, error) {
+	// Get the container pid
+	nodeName := testContainer.NodeName
+	debugPod := env.DebugPods[nodeName]
+	if debugPod == nil {
+		ginkgo.Fail(fmt.Sprintf("Debug pod not found on Node: %s", nodeName))
+	}
+	ocpContext := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
+	pid, err := GetPidFromContainer(testContainer, ocpContext)
+	if err != nil {
+		return "", fmt.Errorf("unable to get container process id due to: %v", err)
+	}
+	logrus.Infof("obtained process id for %s is %d", testContainer, pid)
+
+	command := fmt.Sprintf("lsns -p %d -t pid -n", pid)
+	stdout, stderr, err := ExecCommandContainerNSEnter(command, testContainer)
+	if err != nil || stderr != "" {
+		return "", fmt.Errorf("unable to run nsenter due to : %v", err)
+	}
+	return strings.Fields(stdout)[0], nil
+}
+
+// To get pid of all processes running in the pid namespace from the target container
+func GetPidsFromPidNamespace(pidNamespace string, container *provider.Container) []int {
+	const newLine = "\n"
+	const command = "ps -e -o pidns,pid,args"
+
+	stdout, stderr, err := ExecCommandContainerNSEnter(command, container)
+	if err != nil || stderr != "" {
+		logrus.Errorf("unable to run nsenter due to : %v", err)
+	}
+
+	var pids []int
+	for _, line := range strings.Split(strings.TrimSuffix(stdout, newLine), newLine) {
+		if line == "" {
+			continue
+		}
+		tokens := strings.Fields(line)
+		if tokens[0] == pidNamespace {
+			pid, err := strconv.Atoi(tokens[1])
+			if err != nil {
+				logrus.Errorf("err converting %s by strconv %v", tokens[1], err)
+			}
+			pids = append(pids, pid)
+		}
+	}
+
+	return pids
 }
 
 // ExecCommandContainerNSEnter executes a command in the specified container namespace using nsenter
