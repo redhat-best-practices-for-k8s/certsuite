@@ -133,6 +133,7 @@ var (
 	TestIpcLockIdentifier                    claim.Identifier
 	TestStorageRequiredPods                  claim.Identifier
 	TestExclusiveCPUPoolIdentifier           claim.Identifier
+	TestRtAppNoExecProbeIdentifier           claim.Identifier
 )
 
 //nolint:funlen
@@ -346,6 +347,18 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		common.AccessControlTestKey,
 		`Ensures that if one container in a Pod selects an exclusive CPU pool the rest select the same type of CPU pool`,
 		ExclusiveCPUPoolRemediation,
+		NormativeResult,
+		NoDocumentedProcess,
+		VersionOne,
+		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
+		false,
+		TagFarEdge)
+
+	TestRtAppNoExecProbeIdentifier = AddCatalogEntry(
+		"rt-apps-exec-probe",
+		common.ManageabilityTestKey,
+		`Ensures that if one container runs a real time application exec probes are not used`,
+		RtAppNoExecProbeRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
 		VersionOne,

@@ -50,6 +50,12 @@ var _ = ginkgo.Describe(common.ManageabilityTestKey, func() {
 		testContainerPortNameFormat(&env)
 	})
 
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestRtAppNoExecProbeIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
+		testRtAppNoExecProbe(&env)
+	})
+
 })
 
 func testContainersImageTag(env *provider.TestEnvironment) {
@@ -91,4 +97,15 @@ func testContainerPortNameFormat(env *provider.TestEnvironment) {
 		tnf.ClaimFilePrintf("Containers declaring ports whose names do not follow the partner naming conventions: %v", badContainers)
 		ginkgo.Fail("Number of containers with port names that do not follow the partner naming conventions: %d", len(badContainers))
 	}
+}
+
+func testRtAppNoExecProbe(env *provider.TestEnvironment) {
+	badContainers := []string{}
+	for _, cut := range env.Containers {
+		if cut.HasExecProbes() { // TODO: add check for RT app
+			badContainers = append(badContainers, cut.String())
+			tnf.ClaimFilePrintf("Container %s is running a RT app and using exec probes", cut.String())
+		}
+	}
+	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }

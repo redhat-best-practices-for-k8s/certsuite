@@ -195,4 +195,6 @@ const (
 	StorageRequiredPods = "If the kind of pods is StatefulSet, so we need to make sure that servicename is not local-storage."
 
 	ExclusiveCPUPoolRemediation = `Ensure that if one container in a Pod selects an exclusive CPU pool the rest also select this type of CPU pool`
+
+	RtAppNoExecProbeRemediation = `Ensure that if one container runs a real time application exec probes are not used`
 )
