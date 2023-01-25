@@ -250,7 +250,7 @@ func getPodContainers(aPod *corev1.Pod, useIgnoreList bool) (containerList []*Co
 			NodeName: aPod.Spec.NodeName, Container: cut, Status: status, Runtime: aRuntime, UID: uid,
 			ContainerImageIdentifier: buildContainerImageSource(aPod.Spec.Containers[j].Image)}
 
-		// Warn if readiness probe didn't succeeded yet.
+		// Warn if readiness probe did not succeeded yet.
 		if !status.Ready {
 			logrus.Warnf("%s is not ready yet.", &container)
 		}

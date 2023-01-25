@@ -50,25 +50,25 @@ func TestScaleDeployment(deployment *appsv1.Deployment, timeout time.Duration) b
 		// scale up
 		replicas++
 		if !scaleDeploymentHelper(clients, deployment, replicas, timeout, true) {
-			logrus.Error("can't scale deployment =", deployment.Namespace, ":", deployment.Name)
+			logrus.Error("can not scale deployment =", deployment.Namespace, ":", deployment.Name)
 			return false
 		}
 		// scale down
 		replicas--
 		if !scaleDeploymentHelper(clients, deployment, replicas, timeout, false) {
-			logrus.Error("can't scale deployment =", deployment.Namespace, ":", deployment.Name)
+			logrus.Error("can not scale deployment =", deployment.Namespace, ":", deployment.Name)
 			return false
 		}
 	} else {
 		// scale down
 		replicas--
 		if !scaleDeploymentHelper(clients, deployment, replicas, timeout, false) {
-			logrus.Error("can't scale deployment =", deployment.Namespace, ":", deployment.Name)
+			logrus.Error("can not scale deployment =", deployment.Namespace, ":", deployment.Name)
 			return false
 		} // scale up
 		replicas++
 		if !scaleDeploymentHelper(clients, deployment, replicas, timeout, true) {
-			logrus.Error("can't scale deployment =", deployment.Namespace, ":", deployment.Name)
+			logrus.Error("can not scale deployment =", deployment.Namespace, ":", deployment.Name)
 			return false
 		}
 	}
@@ -93,17 +93,17 @@ func scaleDeploymentHelper(clients *clientsholder.ClientsHolder, deployment *app
 		dp.Spec.Replicas = &replicas
 		_, err = clients.K8sClient.AppsV1().Deployments(deployment.Namespace).Update(context.TODO(), dp, v1machinery.UpdateOptions{})
 		if err != nil {
-			logrus.Error("can't update deployment ", deployment.Namespace, ":", deployment.Name)
+			logrus.Error("can not update deployment ", deployment.Namespace, ":", deployment.Name)
 			return err
 		}
 		if !podsets.WaitForDeploymentSetReady(deployment.Namespace, deployment.Name, timeout) {
-			logrus.Error("can't update deployment ", deployment.Namespace, ":", deployment.Name)
-			return errors.New("can't update deployment")
+			logrus.Error("can not update deployment ", deployment.Namespace, ":", deployment.Name)
+			return errors.New("can not update deployment")
 		}
 		return nil
 	})
 	if retryErr != nil {
-		logrus.Error("can't scale deployment ", deployment.Namespace, ":", deployment.Name, " error=", retryErr)
+		logrus.Error("can not scale deployment ", deployment.Namespace, ":", deployment.Name, " error=", retryErr)
 		return false
 	}
 	return true
@@ -156,22 +156,21 @@ func TestScaleHpaDeployment(deployment *provider.Deployment, hpa *v1autoscaling.
 	}
 	// back the min and the max value of the hpa
 	logrus.Trace("back HPA ", deployment.Namespace, ":", hpa.Name, "To min=", min, " max=", max)
-	pass := scaleHpaDeploymentHelper(hpscaler, hpa.Name, deployment.Name, deployment.Namespace, min, max, timeout)
-	return pass
+	return scaleHpaDeploymentHelper(hpscaler, hpa.Name, deployment.Name, deployment.Namespace, min, max, timeout)
 }
 
 func scaleHpaDeploymentHelper(hpscaler hps.HorizontalPodAutoscalerInterface, hpaName, deploymentName, namespace string, min, max int32, timeout time.Duration) bool {
 	retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() error {
 		hpa, err := hpscaler.Get(context.TODO(), hpaName, v1machinery.GetOptions{})
 		if err != nil {
-			logrus.Error("can't Update autoscaler to scale ", namespace, ":", deploymentName, " error=", err)
+			logrus.Error("can not Update autoscaler to scale ", namespace, ":", deploymentName, " error=", err)
 			return err
 		}
 		hpa.Spec.MinReplicas = &min
 		hpa.Spec.MaxReplicas = max
 		_, err = hpscaler.Update(context.TODO(), hpa, v1machinery.UpdateOptions{})
 		if err != nil {
-			logrus.Error("can't Update autoscaler to scale ", namespace, ":", deploymentName, " error=", err)
+			logrus.Error("can not Update autoscaler to scale ", namespace, ":", deploymentName, " error=", err)
 			return err
 		}
 		if !podsets.WaitForDeploymentSetReady(namespace, deploymentName, timeout) {
@@ -180,7 +179,7 @@ func scaleHpaDeploymentHelper(hpscaler hps.HorizontalPodAutoscalerInterface, hpa
 		return nil
 	})
 	if retryErr != nil {
-		logrus.Error("can't scale hpa ", namespace, ":", hpaName, " error=", retryErr)
+		logrus.Error("can not scale hpa ", namespace, ":", hpaName, " error=", retryErr)
 		return false
 	}
 	return true

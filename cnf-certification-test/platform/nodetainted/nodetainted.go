@@ -37,7 +37,7 @@ var runCommand = func(ctx *clientsholder.Context, cmd string) (string, error) {
 	ch := clientsholder.GetClientsHolder()
 	output, outerr, err := ch.ExecCommandContainer(*ctx, cmd)
 	if err != nil {
-		logrus.Errorln("can't execute command on container ", err)
+		logrus.Errorln("can not execute command on container ", err)
 		return "", err
 	}
 	if outerr != "" {
