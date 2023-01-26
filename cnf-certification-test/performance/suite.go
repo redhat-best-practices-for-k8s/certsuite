@@ -17,8 +17,6 @@
 package performance
 
 import (
-	"fmt"
-
 	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
@@ -29,11 +27,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/scheduling"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
-)
-
-const (
-	SharedCPUScheduling    = "SHARED_CPU_SCHEDULING"
-	ExclusiveCPUScheduling = "EXCLUSIVE_CPU_SCHEDULING"
 )
 
 // All actual test code belongs below here.  Utilities belong above.
@@ -56,7 +49,7 @@ var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
 func testSchedOtherPolicyInSharedCPUPool(env *provider.TestEnvironment,
 	nonGuaranteedPodContainers []*provider.Container) {
 	nonCompliantContainers := make(map[*provider.Container][]int)
-
+	var compliantContainers []*provider.Container
 	for _, testContainer := range nonGuaranteedPodContainers {
 		logrus.Infof("Processing %v", testContainer)
 
@@ -71,57 +64,12 @@ func testSchedOtherPolicyInSharedCPUPool(env *provider.TestEnvironment,
 		pids := crclient.GetPidsFromPidNamespace(pidNamespace, testContainer)
 
 		// Check for the specified priority for each processes running in that pid namespace
-		processPidsCPUScheduling(pids, testContainer, nonCompliantContainers, SharedCPUScheduling)
-		logrus.Infof("Processed %v", testContainer)
+		if scheduling.ProcessPidsCPUScheduling(pids, testContainer, nonCompliantContainers, scheduling.SharedCPUScheduling) {
+			compliantContainers = append(compliantContainers, testContainer)
+		}
+		logrus.Debugf("Processed %v", testContainer)
 	}
 	if len(nonCompliantContainers) != 0 {
 		testhelper.AddTestResultLog("Non-compliant", nonCompliantContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 	}
-}
-
-func processPidsCPUScheduling(pids []int, testContainer *provider.Container, nonCompliantContainers map[*provider.Container][]int, check string) {
-	for _, pid := range pids {
-		_, schedulePriority, err := getProcessCPUScheduling(pid, testContainer)
-		if err != nil {
-			logrus.Errorf("error getting the scheduling policy and priority : %v", err)
-		}
-
-		var result bool
-		switch check {
-		case SharedCPUScheduling:
-			result = schedulePriority == 0
-		case ExclusiveCPUScheduling:
-			result = schedulePriority < 10
-		}
-
-		if !result {
-			nonCompliantProcessIds, ok := nonCompliantContainers[testContainer]
-			if !ok {
-				nonCompliantContainers[testContainer] = []int{}
-			} else {
-				nonCompliantProcessIds = append(nonCompliantProcessIds, pid)
-				nonCompliantContainers[testContainer] = nonCompliantProcessIds
-			}
-		}
-		logrus.Debugf("Non-compliant containers for pid=%d are : %v", pid, nonCompliantContainers)
-	}
-}
-
-func getProcessCPUScheduling(pid int, testContainer *provider.Container) (schedulePolicy string, schedulePriority int, err error) {
-	logrus.Infof("Checking the scheduling policy/priority in %v for pid=%d", testContainer, pid)
-
-	command := fmt.Sprintf("chrt -p %d", pid)
-
-	stdout, stderr, err := crclient.ExecCommandContainerNSEnter(command, testContainer)
-	if err != nil || stderr != "" {
-		return schedulePolicy, schedulePriority, fmt.Errorf("unable to run nsenter for %v due to : %v", testContainer, err)
-	}
-
-	schedulePolicy, schedulePriority, err = scheduling.GetSchedulingPolicyAndPriority(stdout)
-	if err != nil {
-		return schedulePolicy, schedulePriority, fmt.Errorf("error getting the scheduling policy and priority for %v : %v", testContainer, err)
-	}
-	logrus.Infof("pid %d in %v has the cpu scheduling policy %s, scheduling priority %d", pid, testContainer, schedulePolicy, schedulePriority)
-
-	return schedulePolicy, schedulePriority, err
 }

@@ -6,38 +6,102 @@ import (
 	"strings"
 
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/crclient"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
 
 const (
-	SucessChrtCommandOutputLines = 2
+	CurrentSchedulingPolicy   = "current scheduling policy"
+	CurrentSchedulingPriority = "current scheduling priority"
+	newLineCharacter          = "\n"
+
+	SharedCPUScheduling    = "SHARED_CPU_SCHEDULING"
+	ExclusiveCPUScheduling = "EXCLUSIVE_CPU_SCHEDULING"
+
+	InvalidPriority = -1
 )
 
-func GetSchedulingPolicyAndPriority(chrtCommandOutput string) (schedPolicy string, schedPriority int, err error) {
+var (
+	CrcClientExecCommandContainerNSEnter = crclient.ExecCommandContainerNSEnter
+	GetProcessCPUSchedulingFn            = GetProcessCPUScheduling
+)
+
+func parseSchedulingPolicyAndPriority(chrtCommandOutput string) (schedPolicy string, schedPriority int, err error) {
 	/*	Sample output:
 		pid 476's current scheduling policy: SCHED_OTHER
 		pid 476's current scheduling priority: 0*/
 
-	lines := strings.Split(chrtCommandOutput, "\n")
+	lines := strings.Split(chrtCommandOutput, newLineCharacter)
 
-	if len(lines) != SucessChrtCommandOutputLines {
-		return schedPolicy, schedPriority, fmt.Errorf("error in parsing %s", chrtCommandOutput)
+	for _, line := range lines {
+		if line == "" {
+			continue
+		}
+
+		tokens := strings.Fields(line)
+		lastToken := tokens[len(tokens)-1]
+
+		switch {
+		case strings.Contains(line, CurrentSchedulingPolicy):
+			schedPolicy = lastToken
+		case strings.Contains(line, CurrentSchedulingPriority):
+			schedPriority, err = strconv.Atoi(lastToken)
+			if err != nil {
+				logrus.Errorf("Error obtained during strconv %v", err)
+				return schedPolicy, InvalidPriority, err
+			}
+		default:
+			return schedPolicy, InvalidPriority, fmt.Errorf("invalid: %s", line)
+		}
 	}
-
-	policyStr := lines[0]
-	prioritySubstr := lines[1]
-	// Get policy value
-	policyTokens := strings.Fields(policyStr)
-	schedPolicy = policyTokens[len(policyTokens)-1]
-	logrus.Infof("Obtained scheduling policy = %s", schedPolicy)
-
-	// Get priority value
-	priorityTokens := strings.Fields(prioritySubstr)
-	schedPriority, err = strconv.Atoi(priorityTokens[len(priorityTokens)-1])
-	if err != nil {
-		logrus.Errorf("Error obtained during strconv %v", err)
-		return schedPolicy, schedPriority, err
-	}
-	logrus.Infof("Obtained scheduling priority = %d", schedPriority)
-
 	return schedPolicy, schedPriority, nil
+}
+
+func ProcessPidsCPUScheduling(pids []int, testContainer *provider.Container, nonCompliantContainers map[*provider.Container][]int, check string) (hasCPUSchedulingConditionSuccess bool) {
+	for _, pid := range pids {
+		schedulePolicy, schedulePriority, err := GetProcessCPUSchedulingFn(pid, testContainer)
+		if err != nil {
+			logrus.Errorf("error getting the scheduling policy and priority : %v", err)
+			return hasCPUSchedulingConditionSuccess
+		}
+
+		switch check {
+		case SharedCPUScheduling:
+			hasCPUSchedulingConditionSuccess = schedulePriority == 0
+		case ExclusiveCPUScheduling:
+			hasCPUSchedulingConditionSuccess = schedulePriority < 10
+		}
+
+		if !hasCPUSchedulingConditionSuccess {
+			tnf.ClaimFilePrintf("pid=%d in %v with cpu scheduling policy=%s, priority=%s did not satisfy cpu scheduling requirements", pid, testContainer, schedulePolicy, schedulePriority)
+			nonCompliantProcessIds, ok := nonCompliantContainers[testContainer]
+			if !ok {
+				nonCompliantContainers[testContainer] = []int{}
+			} else {
+				nonCompliantProcessIds = append(nonCompliantProcessIds, pid)
+				nonCompliantContainers[testContainer] = nonCompliantProcessIds
+			}
+		}
+	}
+	return hasCPUSchedulingConditionSuccess
+}
+
+func GetProcessCPUScheduling(pid int, testContainer *provider.Container) (schedulePolicy string, schedulePriority int, err error) {
+	logrus.Infof("Checking the scheduling policy/priority in %v for pid=%d", testContainer, pid)
+
+	command := fmt.Sprintf("chrt -p %d", pid)
+
+	stdout, stderr, err := CrcClientExecCommandContainerNSEnter(command, testContainer)
+	if err != nil || stderr != "" {
+		return schedulePolicy, InvalidPriority, fmt.Errorf("unable to run nsenter for %v due to : %v", testContainer, err)
+	}
+
+	schedulePolicy, schedulePriority, err = parseSchedulingPolicyAndPriority(stdout)
+	if err != nil {
+		return schedulePolicy, InvalidPriority, fmt.Errorf("error getting the scheduling policy and priority for %v : %v", testContainer, err)
+	}
+	logrus.Infof("pid %d in %v has the cpu scheduling policy %s, scheduling priority %d", pid, testContainer, schedulePolicy, schedulePriority)
+
+	return schedulePolicy, schedulePriority, err
 }

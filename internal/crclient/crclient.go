@@ -67,7 +67,7 @@ func GetContainerPidNamespace(testContainer *provider.Container, env *provider.T
 	if err != nil {
 		return "", fmt.Errorf("unable to get container process id due to: %v", err)
 	}
-	logrus.Infof("obtained process id for %s is %d", testContainer, pid)
+	logrus.Debugf("Obtained process id for %s is %d", testContainer, pid)
 
 	command := fmt.Sprintf("lsns -p %d -t pid -n", pid)
 	stdout, stderr, err := ExecCommandContainerNSEnter(command, testContainer)
