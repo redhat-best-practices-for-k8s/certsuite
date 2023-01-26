@@ -89,8 +89,8 @@ func TestGetProcessCPUScheduling(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		CrcClientExecCommandContainerNSEnter = tc.mockCrcClientExecCommandContainerNSEnter
-
 		policy, priority, err := GetProcessCPUScheduling(testPid, tc.testContainer)
+
 		assert.Equal(t, policy, tc.expectedPolicy)
 		assert.Equal(t, priority, tc.expectedPriority)
 		if err != nil {

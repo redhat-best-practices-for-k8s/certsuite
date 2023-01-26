@@ -97,6 +97,7 @@ func GetPidsFromPidNamespace(pidNamespace string, container *provider.Container)
 			pid, err := strconv.Atoi(tokens[1])
 			if err != nil {
 				logrus.Errorf("err converting %s by strconv %v", tokens[1], err)
+				continue
 			}
 			pids = append(pids, pid)
 		}

@@ -57,6 +57,8 @@ func testSchedOtherPolicyInSharedCPUPool(env *provider.TestEnvironment,
 		pidNamespace, err := crclient.GetContainerPidNamespace(testContainer, env)
 		if err != nil {
 			logrus.Errorf("unable to get pid namespace due to: %v", err)
+			tnf.ClaimFilePrintf("Failed", "Incomplete processing for %v while getting pid namespace err %v", testContainer, err)
+			continue
 		}
 		logrus.Debugf("Obtained pidNamespace for %s is %s", testContainer, pidNamespace)
 
@@ -72,4 +74,5 @@ func testSchedOtherPolicyInSharedCPUPool(env *provider.TestEnvironment,
 	if len(nonCompliantContainers) != 0 {
 		testhelper.AddTestResultLog("Non-compliant", nonCompliantContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 	}
+	tnf.ClaimFilePrintf("Compliant", compliantContainers)
 }
