@@ -31,7 +31,7 @@ func getNbOfProcessesInPidNamespace(ctx clientsholder.Context, targetPid int, ch
 
 	outStr, errStr, err := ch.ExecCommandContainer(ctx, cmd)
 	if err != nil {
-		return 0, fmt.Errorf("can't execute command: \" %s \", err:%s", cmd, err)
+		return 0, fmt.Errorf("can not execute command: \" %s \", err:%s", cmd, err)
 	}
 	if errStr != "" {
 		return 0, fmt.Errorf("cmd: \" %s \" returned %s", cmd, errStr)

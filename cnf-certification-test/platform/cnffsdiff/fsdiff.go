@@ -90,7 +90,7 @@ func intersectTargetFolders(src []string) []string {
 func (f *FsDiff) RunTest(ctx clientsholder.Context, containerUID string) {
 	output, outerr, err := f.ClientHolder.ExecCommandContainer(ctx, fmt.Sprintf("chroot /host podman diff --format json %s", containerUID))
 	if err != nil {
-		f.Error = fmt.Errorf("can't execute command on container: %w", err)
+		f.Error = fmt.Errorf("can not execute command on container: %w", err)
 		f.result = testhelper.ERROR
 		return
 	}
