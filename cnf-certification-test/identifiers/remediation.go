@@ -196,7 +196,7 @@ const (
 
 	SharedCPUPoolSchedulingRemediation = `Ensure that the workload running in Application shared CPU pool should choose non-RT CPU schedule policy, like SCHED _OTHER to always share the CPU with other applications and kernel threads.`
 
-	ExlusiveCPUPoolSchedulingRemediation = `Ensure that the workload running in Application exclusive CPU pool can choose RT CPU scheduling policy, but should set priority less than 10`
+	ExclusiveCPUPoolSchedulingRemediation = `Ensure that the workload running in Application exclusive CPU pool can choose RT CPU scheduling policy, but should set priority less than 10`
 
 	ExclusiveCPUPoolRemediation = `Ensure that if one container in a Pod selects an exclusive CPU pool the rest also select this type of CPU pool`
 )
