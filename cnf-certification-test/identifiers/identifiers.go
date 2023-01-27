@@ -133,6 +133,7 @@ var (
 	TestIpcLockIdentifier                    claim.Identifier
 	TestStorageRequiredPods                  claim.Identifier
 	TestExclusiveCPUPoolIdentifier           claim.Identifier
+	TestSharedCPUPoolSchedulingPolicy        claim.Identifier
 )
 
 //nolint:funlen
@@ -346,6 +347,18 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		common.AccessControlTestKey,
 		`Ensures that if one container in a Pod selects an exclusive CPU pool the rest select the same type of CPU pool`,
 		ExclusiveCPUPoolRemediation,
+		NormativeResult,
+		NoDocumentedProcess,
+		VersionOne,
+		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
+		false,
+		TagFarEdge)
+
+	TestSharedCPUPoolSchedulingPolicy = AddCatalogEntry(
+		"shared-cpu-pool-non-rt-scheduling-policy",
+		common.PerformanceTestKey,
+		`Ensures that if application workload runs in shared CPU pool, it chooses non-RT CPU schedule policy to always ahre the CPU with other applications and kernel threads.`,
+		SharedCPUPoolSchedulingRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
 		VersionOne,

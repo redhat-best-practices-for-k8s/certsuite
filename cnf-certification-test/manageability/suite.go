@@ -49,7 +49,6 @@ var _ = ginkgo.Describe(common.ManageabilityTestKey, func() {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
 		testContainerPortNameFormat(&env)
 	})
-
 })
 
 func testContainersImageTag(env *provider.TestEnvironment) {
