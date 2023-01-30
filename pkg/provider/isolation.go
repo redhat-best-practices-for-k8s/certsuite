@@ -36,13 +36,13 @@ func AreResourcesIdentical(p *Pod) bool {
 		memoryLimits := cut.Resources.Limits.Memory()
 
 		// Check for mismatches
-		if cpuRequests.Value() != cpuLimits.Value() {
-			logrus.Debugf("%s has CPU requests %d and limits %d that do not match.", cut.String(), cpuRequests.Value(), cpuLimits.Value())
+		if !cpuRequests.Equal(*cpuLimits) {
+			logrus.Debugf("%s has CPU requests %f and limits %f that do not match.", cut.String(), cpuRequests.AsApproximateFloat64(), cpuLimits.AsApproximateFloat64())
 			return false
 		}
 
-		if memoryRequests.Value() != memoryLimits.Value() {
-			logrus.Debugf("%s has memory requests %d and limits %d that do not match.", cut.String(), memoryRequests.Value(), memoryLimits.Value())
+		if !memoryRequests.Equal(*memoryLimits) {
+			logrus.Debugf("%s has memory requests %f and limits %f that do not match.", cut.String(), memoryRequests.AsApproximateFloat64(), memoryLimits.AsApproximateFloat64())
 			return false
 		}
 	}
