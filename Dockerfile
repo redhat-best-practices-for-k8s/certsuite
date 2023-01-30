@@ -9,7 +9,7 @@ RUN mkdir ${TNF_DIR}
 ENV TEMP_DIR=/tmp
 
 # Install dependencies
-RUN yum install -y gcc make wget
+RUN yum install -y gcc git jq make wget
 
 # Install Go binary and set the PATH 
 ENV GO_DL_URL="https://golang.org/dl"

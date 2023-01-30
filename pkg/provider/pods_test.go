@@ -230,3 +230,48 @@ func TestContainsIstioProxy(t *testing.T) {
 		assert.Equal(t, tc.expectedOutput, tc.testPod.ContainsIstioProxy())
 	}
 }
+
+func TestHasNodeSelector(t *testing.T) {
+	testCases := []struct {
+		testPod        Pod
+		expectedOutput bool
+	}{
+		{ // Test #1 - Has a nil node selector and no NodeName, pass
+			testPod: Pod{
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
+						NodeSelector: nil,
+						NodeName:     "",
+					},
+				},
+			},
+			expectedOutput: false,
+		},
+		{ // Test #2 - Has a nodeSelector, fail
+			testPod: Pod{
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
+						NodeSelector: map[string]string{
+							"test1": "value1",
+						},
+					},
+				},
+			},
+			expectedOutput: true,
+		},
+		{ // Test #3 - Has a nodeSelector initialized but it is empty, pass
+			testPod: Pod{
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
+						NodeSelector: map[string]string{},
+					},
+				},
+			},
+			expectedOutput: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedOutput, tc.testPod.HasNodeSelector())
+	}
+}

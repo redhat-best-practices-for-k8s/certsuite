@@ -55,7 +55,6 @@ var _ = ginkgo.Describe(common.ManageabilityTestKey, func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetGuaranteedPodsWithExlusiveCPUs())
 		testRTCpuSchedulingPolicy(&env)
 	})
-
 })
 
 func testContainersImageTag(env *provider.TestEnvironment) {

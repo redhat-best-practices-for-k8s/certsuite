@@ -78,6 +78,10 @@ func ConvertArrayPods(pods []*corev1.Pod) (out []*Pod) {
 	return out
 }
 
+func (p *Pod) IsPodGuaranteed() bool {
+	return AreResourcesIdentical(p)
+}
+
 func (p *Pod) IsPodGuaranteedWithExclusiveCPUs() bool {
 	return AreCPUResourcesWholeUnits(p) && AreResourcesIdentical(p)
 }
@@ -92,7 +96,7 @@ func (p *Pod) IsCPUIsolationCompliant() bool {
 		isCPUIsolated = false
 	}
 
-	if !IsRuntimeClassNameSpecified(p) {
+	if !p.IsRuntimeClassNameSpecified() {
 		errMsg := fmt.Sprintf("%s has been found to not have runtimeClassName specified.", p.String())
 		logrus.Debugf(errMsg)
 		tnf.ClaimFilePrintf(errMsg)
@@ -121,8 +125,8 @@ func (p *Pod) AffinityRequired() bool {
 	return false
 }
 
+// returns true if at least one container in the pod has a resource name containing "hugepage", return false otherwise
 func (p *Pod) HasHugepages() bool {
-	// Pods may contain more than one container.  All containers must conform to the CPU isolation requirements.
 	for _, cut := range p.Containers {
 		for name := range cut.Resources.Requests {
 			if strings.Contains(name.String(), hugePages) {
@@ -201,4 +205,16 @@ func (p *Pod) CreatedByDeploymentConfig() (bool, error) {
 		}
 	}
 	return false, nil
+}
+
+func (p *Pod) HasNodeSelector() bool {
+	// Checks whether or not the pod has a nodeSelector or a NodeName supplied
+	if p.Spec.NodeSelector == nil || len(p.Spec.NodeSelector) == 0 {
+		return false
+	}
+	return true
+}
+
+func (p *Pod) IsRuntimeClassNameSpecified() bool {
+	return p.Spec.RuntimeClassName != nil
 }

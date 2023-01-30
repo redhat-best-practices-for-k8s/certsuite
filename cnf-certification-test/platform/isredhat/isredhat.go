@@ -69,7 +69,7 @@ func IsRHEL(output string) bool {
 func (b *BaseImageInfo) runCommand(cmd string) (string, error) {
 	output, outerr, err := b.ClientHolder.ExecCommandContainer(b.OCPContext, cmd)
 	if err != nil {
-		logrus.Errorln("can't execute command on container ", err)
+		logrus.Errorln("can not execute command on container ", err)
 		return "", err
 	}
 	if outerr != "" {
