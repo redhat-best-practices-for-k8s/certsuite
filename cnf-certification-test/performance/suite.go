@@ -42,15 +42,21 @@ var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		var nonGuaranteedPodContainers = env.GetNonGuaranteedPodContainers()
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, nonGuaranteedPodContainers)
-		testSchedOtherPolicyInSharedCPUPool(&env, nonGuaranteedPodContainers)
+		testSchedulingPolicyInCPUPool(&env, nonGuaranteedPodContainers, scheduling.SharedCPUScheduling)
+	})
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestExclusiveCPUPoolSchedulingPolicy)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		var guaranteedPodContainersWithExclusiveCPUs = env.GetGuaranteedPodContainersWithExlusiveCPUs()
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, guaranteedPodContainersWithExclusiveCPUs)
+		testSchedulingPolicyInCPUPool(&env, guaranteedPodContainersWithExclusiveCPUs, scheduling.ExclusiveCPUScheduling)
 	})
 })
 
-func testSchedOtherPolicyInSharedCPUPool(env *provider.TestEnvironment,
-	nonGuaranteedPodContainers []*provider.Container) {
+func testSchedulingPolicyInCPUPool(env *provider.TestEnvironment,
+	podContainers []*provider.Container, schedulingType string) {
 	nonCompliantContainers := make(map[*provider.Container][]int)
 	var compliantContainers []*provider.Container
-	for _, testContainer := range nonGuaranteedPodContainers {
+	for _, testContainer := range podContainers {
 		logrus.Infof("Processing %v", testContainer)
 
 		// Get the pid namespace
@@ -66,7 +72,7 @@ func testSchedOtherPolicyInSharedCPUPool(env *provider.TestEnvironment,
 		pids := crclient.GetPidsFromPidNamespace(pidNamespace, testContainer)
 
 		// Check for the specified priority for each processes running in that pid namespace
-		if scheduling.ProcessPidsCPUScheduling(pids, testContainer, nonCompliantContainers, scheduling.SharedCPUScheduling) {
+		if scheduling.ProcessPidsCPUScheduling(pids, testContainer, nonCompliantContainers, schedulingType) {
 			compliantContainers = append(compliantContainers, testContainer)
 		}
 		logrus.Debugf("Processed %v", testContainer)
