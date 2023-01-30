@@ -96,6 +96,14 @@ func (env *TestEnvironment) GetNonGuaranteedPodContainers() []*Container {
 	return nonGuaranteedPodContainers
 }
 
+func (env *TestEnvironment) GetGuaranteedPodContainersWithExlusiveCPUs() []*Container {
+	var guaranteedPodContainersWithExlusiveCPUs []*Container
+	for _, pod := range env.GetGuaranteedPodsWithExlusiveCPUs() {
+		guaranteedPodContainersWithExlusiveCPUs = append(guaranteedPodContainersWithExlusiveCPUs, pod.Containers...)
+	}
+	return guaranteedPodContainersWithExlusiveCPUs
+}
+
 func filterDPDKRunningPods(pods []*Pod) []*Pod {
 	var filteredPods []*Pod
 	const (

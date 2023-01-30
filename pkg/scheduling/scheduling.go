@@ -19,6 +19,9 @@ const (
 	SharedCPUScheduling    = "SHARED_CPU_SCHEDULING"
 	ExclusiveCPUScheduling = "EXCLUSIVE_CPU_SCHEDULING"
 
+	SchedulingRoundRobin      = "SCHED_RR"
+	SchedulingFirstInFirstOut = "SCHED_FIFO"
+
 	InvalidPriority = -1
 )
 
@@ -70,7 +73,7 @@ func ProcessPidsCPUScheduling(pids []int, testContainer *provider.Container, non
 		case SharedCPUScheduling:
 			hasCPUSchedulingConditionSuccess = schedulePriority == 0
 		case ExclusiveCPUScheduling:
-			hasCPUSchedulingConditionSuccess = schedulePriority < 10
+			hasCPUSchedulingConditionSuccess = schedulePriority < 10 && (schedulePolicy == SchedulingRoundRobin || schedulePolicy == SchedulingFirstInFirstOut)
 		}
 
 		if !hasCPUSchedulingConditionSuccess {
