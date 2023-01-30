@@ -143,6 +143,7 @@ var (
 )
 
 func buildTestEnvironment() { //nolint:funlen
+	start := time.Now()
 	// Wait for the debug pods to be ready before the autodiscovery starts.
 	err := k8sPriviledgedDs.WaitDaemonsetReady(DaemonSetNamespace, DaemonSetName, debugPodsTimeout)
 	if err != nil {
@@ -234,6 +235,7 @@ func buildTestEnvironment() { //nolint:funlen
 			logrus.Warnf("Pod %s has been deployed using a DeploymentConfig, please use Deployment or StatefulSet instead.", pod.String())
 		}
 	}
+	logrus.Infof("Completed the test environment build process in %.2f seconds", time.Since(start).Seconds())
 }
 
 func getPodContainers(aPod *corev1.Pod, useIgnoreList bool) (containerList []*Container) {
