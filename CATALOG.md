@@ -980,6 +980,20 @@ Tags|common
 
 ### performance
 
+#### exclusive-cpu-pool-rt-scheduling-policy
+
+Property|Description
+---|---
+Test Case Name|exclusive-cpu-pool-rt-scheduling-policy
+Test Case Label|performance-exclusive-cpu-pool-rt-scheduling-policy
+Unique ID|http://test-network-function.com/testcases/performance/exclusive-cpu-pool-rt-scheduling-policy
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/performance/exclusive-cpu-pool-rt-scheduling-policy Ensures that if application workload runs in exclusive CPU pool, it chooses RT CPU schedule policy and set the priority less than 10.
+Result Type|normative
+Suggested Remediation|Ensure that the workload running in Application exclusive CPU pool can choose RT CPU scheduling policy, but should set priority less than 10
+Best Practice Reference|https://TODO
+Exception Process|There is no documented exception process for this.
+Tags|faredge
 #### shared-cpu-pool-non-rt-scheduling-policy
 
 Property|Description
@@ -988,7 +1002,7 @@ Test Case Name|shared-cpu-pool-non-rt-scheduling-policy
 Test Case Label|performance-shared-cpu-pool-non-rt-scheduling-policy
 Unique ID|http://test-network-function.com/testcases/performance/shared-cpu-pool-non-rt-scheduling-policy
 Version|v1.0.0
-Description|http://test-network-function.com/testcases/performance/shared-cpu-pool-non-rt-scheduling-policy Ensures that if application workload runs in shared CPU pool, it chooses non-RT CPU schedule policy to always ahre the CPU with other applications and kernel threads.
+Description|http://test-network-function.com/testcases/performance/shared-cpu-pool-non-rt-scheduling-policy Ensures that if application workload runs in shared CPU pool, it chooses non-RT CPU schedule policy to always share the CPU with other applications and kernel threads.
 Result Type|normative
 Suggested Remediation|Ensure that the workload running in Application shared CPU pool should choose non-RT CPU schedule policy, like SCHED _OTHER to always share the CPU with other applications and kernel threads.
 Best Practice Reference|https://TODO
