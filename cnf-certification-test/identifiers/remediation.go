@@ -203,4 +203,6 @@ const (
 	IsolatedCPUPoolSchedulingPolicyRemediation = `Ensure that the workload running in an application-isolated exclusive CPU pool selects a RT CPU scheduling policy (such as SCHED_FIFO/SCHED_RR)`
 
 	RtAppNoExecProbesRemediation = `Ensure that if one container runs a real time application exec probes are not used`
+
+	SRIOVPodsRestartOnRebootLabelRemediation = `Ensure that the label restart-on-reboot exists on pods that use SRIOV network interfaces.`
 )

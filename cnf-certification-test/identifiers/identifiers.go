@@ -137,6 +137,7 @@ var (
 	TestExclusiveCPUPoolSchedulingPolicy     claim.Identifier
 	TestIsolatedCPUPoolSchedulingPolicy      claim.Identifier
 	TestRtAppNoExecProbes                    claim.Identifier
+	TestRestartOnRebootLabelOnPodsUsingSRIOV claim.Identifier
 )
 
 //nolint:funlen
@@ -398,6 +399,18 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		common.PerformanceTestKey,
 		`Ensures that if one container runs a real time application exec probes are not used`,
 		RtAppNoExecProbesRemediation,
+		NormativeResult,
+		NoDocumentedProcess,
+		VersionOne,
+		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
+		false,
+		TagFarEdge)
+
+	TestRestartOnRebootLabelOnPodsUsingSRIOV = AddCatalogEntry(
+		"restart-on-reboot-sriov-pod",
+		common.NetworkingTestKey,
+		`Ensures that the label restart-on-reboot exists on pods that use SRIOV network interfaces.`,
+		SRIOVPodsRestartOnRebootLabelRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
 		VersionOne,
