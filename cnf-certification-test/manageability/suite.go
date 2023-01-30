@@ -49,12 +49,6 @@ var _ = ginkgo.Describe(common.ManageabilityTestKey, func() {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
 		testContainerPortNameFormat(&env)
 	})
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestRTCpuSchedulingPolicyIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetGuaranteedPodsWithExlusiveCPUs())
-		testRTCpuSchedulingPolicy(&env)
-	})
 })
 
 func testContainersImageTag(env *provider.TestEnvironment) {
@@ -96,16 +90,4 @@ func testContainerPortNameFormat(env *provider.TestEnvironment) {
 		tnf.ClaimFilePrintf("Containers declaring ports whose names do not follow the partner naming conventions: %v", badContainers)
 		ginkgo.Fail("Number of containers with port names that do not follow the partner naming conventions: %d", len(badContainers))
 	}
-}
-
-func testRTCpuSchedulingPolicy(env *provider.TestEnvironment) {
-	podsMissingRTCpuSchedPolicyRequirements := make(map[string]bool)
-
-	for _, put := range env.GetGuaranteedPodsWithExlusiveCPUs() {
-		if put.IsCPUIsolationCompliant() { // TODO: add check for RT CPU sched policy
-			podsMissingRTCpuSchedPolicyRequirements[put.Name] = true
-		}
-	}
-
-	testhelper.AddTestResultLog("Non-compliant", podsMissingRTCpuSchedPolicyRequirements, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
