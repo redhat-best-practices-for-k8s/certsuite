@@ -51,7 +51,7 @@ func testPodDelete(env *provider.TestEnvironment) {
 		var label string
 		var err error
 		if label, err = poddelete.GetLabelDeploymentValue(env, dep.Spec.Template.Labels); err != nil {
-			logrus.Errorf("didn't find a match label for the deployment %s ", dep.ToString())
+			logrus.Errorf("did not find a match label for the deployment %s ", dep.ToString())
 			ginkgo.Fail(fmt.Sprintf("There is no label for the deployment %s ", dep.ToString()))
 		}
 		if err := poddelete.ApplyAndCreatePodDeleteResources(label, deployment, dep.Namespace); err != nil {

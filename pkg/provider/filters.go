@@ -34,10 +34,20 @@ func (env *TestEnvironment) GetGuaranteedPodsWithExlusiveCPUs() []*Pod {
 	return filteredPods
 }
 
+func (env *TestEnvironment) GetGuaranteedPods() []*Pod {
+	var filteredPods []*Pod
+	for _, p := range env.Pods {
+		if p.IsPodGuaranteed() {
+			filteredPods = append(filteredPods, p)
+		}
+	}
+	return filteredPods
+}
+
 func (env *TestEnvironment) GetNonGuaranteedPods() []*Pod {
 	var filteredPods []*Pod
 	for _, p := range env.Pods {
-		if !p.IsPodGuaranteedWithExclusiveCPUs() {
+		if !p.IsPodGuaranteed() {
 			filteredPods = append(filteredPods, p)
 		}
 	}
@@ -76,6 +86,22 @@ func (env *TestEnvironment) GetHugepagesPods() []*Pod {
 
 func (env *TestEnvironment) GetCPUPinningPodsWithDpdk() []*Pod {
 	return filterDPDKRunningPods(env.GetGuaranteedPodsWithExlusiveCPUs())
+}
+
+func (env *TestEnvironment) GetNonGuaranteedPodContainers() []*Container {
+	var nonGuaranteedPodContainers []*Container
+	for _, pod := range env.GetNonGuaranteedPods() {
+		nonGuaranteedPodContainers = append(nonGuaranteedPodContainers, pod.Containers...)
+	}
+	return nonGuaranteedPodContainers
+}
+
+func (env *TestEnvironment) GetGuaranteedPodContainersWithExlusiveCPUs() []*Container {
+	var guaranteedPodContainersWithExlusiveCPUs []*Container
+	for _, pod := range env.GetGuaranteedPodsWithExlusiveCPUs() {
+		guaranteedPodContainersWithExlusiveCPUs = append(guaranteedPodContainersWithExlusiveCPUs, pod.Containers...)
+	}
+	return guaranteedPodContainersWithExlusiveCPUs
 }
 
 func filterDPDKRunningPods(pods []*Pod) []*Pod {

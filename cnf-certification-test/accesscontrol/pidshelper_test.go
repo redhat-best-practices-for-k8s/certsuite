@@ -59,7 +59,7 @@ func TestGetNbOfProcessesInPidNamespace(t *testing.T) {
 		},
 		{ // Test Case #3 - Failure - Error performing exec
 			testPID:        1337,
-			expectedErr:    errors.New("can't execute command: \" lsns -p 1337 -t pid -n \", err:this is an error"),
+			expectedErr:    errors.New("can not execute command: \" lsns -p 1337 -t pid -n \", err:this is an error"),
 			expectedResult: 0,
 
 			execOutStr:            "8080 8081 8082",

@@ -67,7 +67,7 @@ func CordonHelper(name, operation string) error {
 		return err
 	})
 	if retryErr != nil {
-		logrus.Error("can't ", operation, " node: ", name, " error=", retryErr)
+		logrus.Error("can not ", operation, " node: ", name, " error=", retryErr)
 	}
 	return retryErr
 }

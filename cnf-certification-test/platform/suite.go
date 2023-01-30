@@ -177,7 +177,7 @@ func TestServiceMesh(env *provider.TestEnvironment) {
 	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
-// testContainersFsDiff test that all CUT didn't install new packages are starting
+// testContainersFsDiff test that all CUT did not install new packages are starting
 func testContainersFsDiff(env *provider.TestEnvironment) {
 	var badContainers []string
 	var errContainers []string
