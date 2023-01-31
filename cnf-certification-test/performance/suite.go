@@ -44,11 +44,19 @@ var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, nonGuaranteedPodContainers)
 		testSchedulingPolicyInCPUPool(&env, nonGuaranteedPodContainers, scheduling.SharedCPUScheduling)
 	})
+
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestExclusiveCPUPoolSchedulingPolicy)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		var guaranteedPodContainersWithExclusiveCPUs = env.GetGuaranteedPodContainersWithExlusiveCPUs()
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, guaranteedPodContainersWithExclusiveCPUs)
 		testSchedulingPolicyInCPUPool(&env, guaranteedPodContainersWithExclusiveCPUs, scheduling.ExclusiveCPUScheduling)
+	})
+
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestRtAppNoExecProbes)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		var guaranteedPodContainersWithExclusiveCPUs = env.GetGuaranteedPodContainersWithExlusiveCPUs()
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, guaranteedPodContainersWithExclusiveCPUs)
+		testRtAppsNoExecProbes(&env, guaranteedPodContainersWithExclusiveCPUs)
 	})
 })
 
@@ -81,4 +89,30 @@ func testSchedulingPolicyInCPUPool(env *provider.TestEnvironment,
 		testhelper.AddTestResultLog("Non-compliant", nonCompliantContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 	}
 	tnf.ClaimFilePrintf("Compliant", compliantContainers)
+}
+
+func testRtAppsNoExecProbes(env *provider.TestEnvironment, cuts []*provider.Container) {
+	badContainers := []string{}
+	for _, cut := range cuts {
+		pids, err := crclient.GetContainerPids(cut, env)
+		if err != nil {
+			badContainers = append(badContainers, cut.String())
+			tnf.ClaimFilePrintf("Could not determine the processes pids for container %s, err: %v", cut, err)
+			break
+		}
+		for _, pid := range pids {
+			schedPolicy, _, err := scheduling.GetProcessCPUScheduling(pid, cut)
+			if err != nil {
+				badContainers = append(badContainers, cut.String())
+				tnf.ClaimFilePrintf("Could not determine the scheduling policy for container %s (pid=%v), err: %v", cut, pid, err)
+				break
+			}
+			if scheduling.PolicyIsRT(schedPolicy) && cut.HasExecProbes() {
+				badContainers = append(badContainers, cut.String())
+				tnf.ClaimFilePrintf("Container %s defines exec probes while having a RT scheduling policy", cut)
+				break
+			}
+		}
+	}
+	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }

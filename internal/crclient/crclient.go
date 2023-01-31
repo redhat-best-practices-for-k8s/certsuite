@@ -106,6 +106,15 @@ func GetPidsFromPidNamespace(pidNamespace string, container *provider.Container)
 	return pids
 }
 
+func GetContainerPids(container *provider.Container, env *provider.TestEnvironment) ([]int, error) {
+	pidNs, err := GetContainerPidNamespace(container, env)
+	if err != nil {
+		return nil, fmt.Errorf("could not get the containers' pid namespace, err: %v", err)
+	}
+
+	return GetPidsFromPidNamespace(pidNs, container), nil
+}
+
 // ExecCommandContainerNSEnter executes a command in the specified container namespace using nsenter
 func ExecCommandContainerNSEnter(command string,
 	aContainer *provider.Container) (outStr, errStr string, err error) {

@@ -135,7 +135,7 @@ var (
 	TestExclusiveCPUPoolIdentifier           claim.Identifier
 	TestSharedCPUPoolSchedulingPolicy        claim.Identifier
 	TestExclusiveCPUPoolSchedulingPolicy     claim.Identifier
-	TestRtAppNoExecProbeIdentifier           claim.Identifier
+	TestRtAppNoExecProbes                    claim.Identifier
 )
 
 //nolint:funlen
@@ -380,11 +380,11 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		false,
 		TagFarEdge)
 
-	TestRtAppNoExecProbeIdentifier = AddCatalogEntry(
-		"rt-apps-exec-probe",
-		common.ManageabilityTestKey,
+	TestRtAppNoExecProbes = AddCatalogEntry(
+		"rt-apps-no-exec-probes",
+		common.PerformanceTestKey,
 		`Ensures that if one container runs a real time application exec probes are not used`,
-		RtAppNoExecProbeRemediation,
+		RtAppNoExecProbesRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
 		VersionOne,
