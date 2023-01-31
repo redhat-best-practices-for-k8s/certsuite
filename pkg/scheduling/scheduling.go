@@ -77,7 +77,7 @@ func ProcessPidsCPUScheduling(pids []int, testContainer *provider.Container, non
 		}
 
 		if !hasCPUSchedulingConditionSuccess {
-			tnf.ClaimFilePrintf("pid=%d in %v with cpu scheduling policy=%s, priority=%s did not satisfy cpu scheduling requirements", pid, testContainer, schedulePolicy, schedulePriority)
+			tnf.ClaimFilePrintf("pid %d in %v with cpu scheduling policy %s, priority %d did not satisfy cpu scheduling requirements", pid, testContainer, schedulePolicy, schedulePriority)
 			nonCompliantProcessIds, ok := nonCompliantContainers[testContainer]
 			if !ok {
 				nonCompliantContainers[testContainer] = []int{pid}
