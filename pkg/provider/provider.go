@@ -447,7 +447,7 @@ func createNodes(nodes []corev1.Node) map[string]Node {
 		if !IsOCPCluster() {
 			// Avoid getting Mc info for non ocp clusters.
 			wrapperNodes[node.Name] = Node{Data: node}
-			logrus.Warnf("Non OCP cluster detected. MachineConfig retrieval for node %s skipped.", node.Name)
+			logrus.Warnf("Non-OCP cluster detected. MachineConfig retrieval for node %s skipped.", node.Name)
 			continue
 		}
 
