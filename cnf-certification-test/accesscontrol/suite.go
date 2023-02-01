@@ -406,7 +406,8 @@ func TestPodRoleBindings(env *provider.TestEnvironment) {
 	for _, put := range env.Pods {
 		ginkgo.By(fmt.Sprintf("Testing role binding for pod: %s namespace: %s", put.Name, put.Namespace))
 		if put.Spec.ServiceAccountName == "" {
-			ginkgo.Skip("Can not test when serviceAccountName is empty. Please check previous tests for failures")
+			logrus.Infof("%s has an empty serviceAccountName, skipping.", put.String())
+			continue
 		}
 
 		// Get any rolebindings that do not belong to the pod namespace.
@@ -434,7 +435,8 @@ func TestPodClusterRoleBindings(env *provider.TestEnvironment) {
 	for _, put := range env.Pods {
 		ginkgo.By(fmt.Sprintf("Testing cluster role binding for pod: %s namespace: %s", put.Name, put.Namespace))
 		if put.Spec.ServiceAccountName == "" {
-			ginkgo.Skip("Can not test when serviceAccountName is empty. Please check previous tests for failures")
+			logrus.Infof("%s has an empty serviceAccountName, skipping.", put.String())
+			continue
 		}
 
 		// Get any clusterrolebindings that do not belong to the pod namespace.

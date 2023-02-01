@@ -53,18 +53,17 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUnalteredBaseImageIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if provider.IsOCPCluster() {
-			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
-			testContainersFsDiff(&env)
-		} else {
-			ginkgo.Skip(" non ocp cluster ")
+		if !provider.IsOCPCluster() {
+			ginkgo.Skip("Non-OCP cluster found, skipping testContainersFsDiff")
 		}
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
+		testContainersFsDiff(&env)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNonTaintedNodeKernelsIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
-		testTainted(&env) // minikube tainted kernels are allowed via config
+		testTainted(&env) // Kind tainted kernels are allowed via config
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsRedHatReleaseIdentifier)
@@ -75,42 +74,38 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsSELinuxEnforcingIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if provider.IsOCPCluster() {
-			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
-			testIsSELinuxEnforcing(&env)
-		} else {
-			ginkgo.Skip(" non ocp cluster ")
+		if !provider.IsOCPCluster() {
+			ginkgo.Skip("Non-OCP cluster found, skipping testIsSELinuxEnforcing")
 		}
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+		testIsSELinuxEnforcing(&env)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHugepagesNotManuallyManipulated)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if provider.IsOCPCluster() {
-			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
-			testHugepages(&env)
-		} else {
-			ginkgo.Skip(" non ocp cluster ")
+		if !provider.IsOCPCluster() {
+			ginkgo.Skip("Non-OCP cluster found, skipping testHugepages")
 		}
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+		testHugepages(&env)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUnalteredStartupBootParamsIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if provider.IsOCPCluster() {
-			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
-			testUnalteredBootParams(&env)
-		} else {
-			ginkgo.Skip(" non ocp cluster ")
+		if !provider.IsOCPCluster() {
+			ginkgo.Skip("Non-OCP cluster found, skipping testUnalteredBootParams")
 		}
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+		testUnalteredBootParams(&env)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSysctlConfigsIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if provider.IsOCPCluster() {
-			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
-			testSysctlConfigs(&env)
-		} else {
-			ginkgo.Skip(" non ocp cluster ")
+		if !provider.IsOCPCluster() {
+			ginkgo.Skip("Non-OCP cluster found, skipping testSysctlConfigs")
 		}
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+		testSysctlConfigs(&env)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServiceMeshIdentifier)
@@ -121,32 +116,36 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOCPLifecycleIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if provider.IsOCPCluster() {
-			testOCPStatus(&env)
+		if !provider.IsOCPCluster() {
+			ginkgo.Skip("Non-OCP cluster found, skipping testOCPStatus")
 		}
+		testOCPStatus(&env)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNodeOperatingSystemIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if provider.IsOCPCluster() {
-			testNodeOperatingSystemStatus(&env)
+		if !provider.IsOCPCluster() {
+			ginkgo.Skip("Non-OCP cluster found, skipping testNodeOperatingSystemStatus")
 		}
+		testNodeOperatingSystemStatus(&env)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHugePages2M)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if provider.IsOCPCluster() {
-			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetHugepagesPods())
-			testPodHugePagesSize(&env, provider.HugePages2Mi)
+		if !provider.IsOCPCluster() {
+			ginkgo.Skip("Non-OCP cluster found, skipping testPodHugePagesSize2M")
 		}
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetHugepagesPods())
+		testPodHugePagesSize(&env, provider.HugePages2Mi)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHugePages1G)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if provider.IsOCPCluster() {
-			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetHugepagesPods())
-			testPodHugePagesSize(&env, provider.HugePages1Gi)
+		if !provider.IsOCPCluster() {
+			ginkgo.Skip("Non-OCP cluster found, skipping testPodHugePagesSize1G")
 		}
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetHugepagesPods())
+		testPodHugePagesSize(&env, provider.HugePages1Gi)
 	})
 
 })
