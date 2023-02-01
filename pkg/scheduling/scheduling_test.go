@@ -9,6 +9,8 @@ import (
 )
 
 // Monkey patching is used here
+//
+//nolint:funlen
 func TestProcessPidsCPUScheduling(t *testing.T) {
 	testPids := []int{101, 102}
 	testContainer := &provider.Container{}
