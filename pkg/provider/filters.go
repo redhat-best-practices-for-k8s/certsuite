@@ -24,7 +24,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 )
 
-func (env *TestEnvironment) GetGuaranteedPodsWithExlusiveCPUs() []*Pod {
+func (env *TestEnvironment) GetGuaranteedPodsWithExclusiveCPUs() []*Pod {
 	var filteredPods []*Pod
 	for _, p := range env.Pods {
 		if p.IsPodGuaranteedWithExclusiveCPUs() {
@@ -95,7 +95,7 @@ func (env *TestEnvironment) GetHugepagesPods() []*Pod {
 }
 
 func (env *TestEnvironment) GetCPUPinningPodsWithDpdk() []*Pod {
-	return filterDPDKRunningPods(env.GetGuaranteedPodsWithExlusiveCPUs())
+	return filterDPDKRunningPods(env.GetGuaranteedPodsWithExclusiveCPUs())
 }
 
 func (env *TestEnvironment) GetNonGuaranteedPodContainers() []*Container {
@@ -108,7 +108,7 @@ func (env *TestEnvironment) GetNonGuaranteedPodContainers() []*Container {
 
 func (env *TestEnvironment) GetGuaranteedPodContainersWithExlusiveCPUs() []*Container {
 	var guaranteedPodContainersWithExlusiveCPUs []*Container
-	for _, pod := range env.GetGuaranteedPodsWithExlusiveCPUs() {
+	for _, pod := range env.GetGuaranteedPodsWithExclusiveCPUs() {
 		guaranteedPodContainersWithExlusiveCPUs = append(guaranteedPodContainersWithExlusiveCPUs, pod.Containers...)
 	}
 	return guaranteedPodContainersWithExlusiveCPUs
