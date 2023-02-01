@@ -381,7 +381,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		TagFarEdge)
 
 	TestIsolatedCPUPoolSchedulingPolicy = AddCatalogEntry(
-		"isolated-cpu-pool-scheduling-policy",
+		"isolated-cpu-pool-rt-scheduling-policy",
 		common.PerformanceTestKey,
 		`Ensures that a workload running in an application-isolated exclusive CPU pool selects a RT CPU scheduling policy`,
 		IsolatedCPUPoolSchedulingPolicyRemediation,
