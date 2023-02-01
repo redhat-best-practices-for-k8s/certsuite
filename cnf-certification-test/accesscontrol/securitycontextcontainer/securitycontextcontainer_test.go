@@ -9,7 +9,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-//nolint:funlen
 func TestCheckPod(t *testing.T) {
 	runAs := int64(20000)
 	runAs2 := int64(1000)
@@ -206,7 +205,6 @@ func createPod2Containers(runAs int64, runAsNonRootParam, allowPrivilegeEscalati
 	}
 }
 
-//nolint:funlen
 func TestAllVolumeAllowed(t *testing.T) {
 	type args struct {
 		volumes []corev1.Volume

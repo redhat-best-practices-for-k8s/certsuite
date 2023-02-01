@@ -24,7 +24,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-//nolint:funlen
 func TestIsPodVolumeReclaimPolicyDelete(t *testing.T) {
 	testCases := []struct {
 		testVolume     corev1.Volume

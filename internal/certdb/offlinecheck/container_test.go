@@ -88,7 +88,6 @@ func loadContainersDB() error {
 	return nil
 }
 
-//nolint:funlen
 func TestIsCertified(t *testing.T) {
 	validator := OfflineValidator{}
 

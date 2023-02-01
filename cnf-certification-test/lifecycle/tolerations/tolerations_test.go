@@ -23,7 +23,6 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
-//nolint:funlen
 func TestIsTolerationModified(t *testing.T) {
 	getInt64Pointer := func(val int64) *int64 {
 		return &val

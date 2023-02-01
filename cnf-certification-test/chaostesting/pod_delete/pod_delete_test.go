@@ -25,7 +25,6 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
-//nolint:funlen
 func TestGetLabelDeploymentValue(t *testing.T) {
 	generateEnv := func(name, prefix, value string) *provider.TestEnvironment {
 		return &provider.TestEnvironment{

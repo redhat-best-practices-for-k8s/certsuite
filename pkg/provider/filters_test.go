@@ -26,7 +26,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-//nolint:funlen
 func TestGetGuaranteedPodsWithExclusiveCPUs(t *testing.T) {
 	generateEnv := func(cpuLimit, cpuRequest, memLimit, memRequest, podName string) *TestEnvironment {
 		return &TestEnvironment{
@@ -230,7 +229,6 @@ func TestGetShareProcessNamespacePods(t *testing.T) {
 	}
 }
 
-//nolint:funlen
 func TestGetHugepagesPods(t *testing.T) {
 	generateEnv := func(podName string, resources, limits bool) *TestEnvironment {
 		testEnv := &TestEnvironment{

@@ -30,7 +30,6 @@ const (
 	operatorOrg       = "community-operators"
 )
 
-//nolint:funlen
 func TestLoadConfiguration(t *testing.T) {
 	env, err := configuration.LoadConfiguration(filePath)
 	assert.Nil(t, err)

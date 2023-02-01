@@ -109,7 +109,6 @@ func TestGetUID(t *testing.T) {
 	}
 }
 
-//nolint:funlen
 func TestConvertArrayPods(t *testing.T) {
 	testCases := []struct {
 		testPods     []*corev1.Pod
@@ -283,7 +282,6 @@ func TestContainerStringFuncs(t *testing.T) {
 	}
 }
 
-//nolint:funlen
 func TestIsWorkerNode(t *testing.T) {
 	testCases := []struct {
 		node           *corev1.Node
@@ -339,7 +337,6 @@ func TestIsWorkerNode(t *testing.T) {
 	}
 }
 
-//nolint:funlen
 func TestIsMasterNode(t *testing.T) {
 	testCases := []struct {
 		node           *corev1.Node
