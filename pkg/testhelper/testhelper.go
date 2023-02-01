@@ -17,8 +17,12 @@
 package testhelper
 
 import (
+	"encoding/json"
 	"fmt"
 	"reflect"
+
+	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
 const (
@@ -26,6 +30,73 @@ const (
 	FAILURE
 	ERROR
 )
+
+type ObjectOut struct {
+	ObjectType   string
+	ObjectFields map[string]string
+}
+
+type FailureReasonOut struct {
+	CompliantObjectsOut    []*ObjectOut
+	NonCompliantObjectsOut []*ObjectOut
+}
+
+const (
+	Namespace              = "Namespace"
+	PodName                = "PodName"
+	ContainerName          = "ContainerName"
+	ProcessID              = "ProcessID"
+	ProcessCommandLine     = "ProcessCommandLine"
+	SchedulingPolicy       = "SchedulingPolicy"
+	SchedulingPriority     = "SchedulingPriority"
+	ReasonForNonCompliance = "ReasonForNonCompliance"
+	ReasonForCompliance    = "ReasonForCompliance"
+)
+
+const (
+	PodType              = "Pod"
+	ContainerType        = "Container"
+	ContainerProcessType = "ContainerProcess"
+)
+
+func NewProcessObjectOut(aContainer *ObjectOut, aPolicy, aPriority, aCommandLine string) (out *ObjectOut) {
+	out = aContainer
+	out.ObjectType = ContainerProcessType
+	out.ObjectFields[ProcessCommandLine] = aCommandLine
+	out.ObjectFields[SchedulingPolicy] = aPolicy
+	out.ObjectFields[SchedulingPriority] = aPriority
+	return out
+}
+
+func NewContainerObjectOut(aContainer *provider.Container, aReason string, isCompliant bool) (out *ObjectOut) {
+	out = &ObjectOut{}
+	out.ObjectType = ContainerType
+	out.ObjectFields = make(map[string]string)
+	out.ObjectFields[Namespace] = aContainer.Namespace
+	out.ObjectFields[PodName] = aContainer.Podname
+	out.ObjectFields[ContainerName] = aContainer.Name
+	if isCompliant {
+		out.ObjectFields[ReasonForCompliance] = aReason
+	} else {
+		out.ObjectFields[ReasonForNonCompliance] = aReason
+	}
+
+	return out
+}
+
+func NewPodObjectOut(aPod *provider.Pod, aReason string, isCompliant bool) (out *ObjectOut) {
+	out = &ObjectOut{}
+	out.ObjectType = PodType
+	out.ObjectFields = make(map[string]string)
+	out.ObjectFields[Namespace] = aPod.Namespace
+	out.ObjectFields[PodName] = aPod.Name
+	if isCompliant {
+		out.ObjectFields[ReasonForCompliance] = aReason
+	} else {
+		out.ObjectFields[ReasonForNonCompliance] = aReason
+	}
+	return out
+}
 
 func ResultToString(result int) (str string) {
 	switch result {
@@ -80,5 +151,19 @@ func AddTestResultLog(prefix string, object interface{}, log func(string, ...int
 	if s.Len() > 0 {
 		log(fmt.Sprintf("%s %s: %v", prefix, reflect.TypeOf(object), object))
 		fail(fmt.Sprintf("Number of %s %s = %d", prefix, reflect.TypeOf(object), s.Len()))
+	}
+}
+
+func AddTestResultReason(compliantObject, nonCompliantObject []*ObjectOut, fail func(string, ...int)) {
+	var aReason FailureReasonOut
+	aReason.CompliantObjectsOut = compliantObject
+	aReason.NonCompliantObjectsOut = nonCompliantObject
+	bytes, err := json.Marshal(aReason)
+	if err != nil {
+		logrus.Errorf("Could not Marshall FailureReason object, err=%s", err)
+	}
+	logrus.Info(string(bytes))
+	if len(aReason.NonCompliantObjectsOut) > 0 {
+		fail(string(bytes))
 	}
 }

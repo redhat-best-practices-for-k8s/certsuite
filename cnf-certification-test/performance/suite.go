@@ -17,6 +17,8 @@
 package performance
 
 import (
+	"fmt"
+
 	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/resources"
@@ -100,9 +102,8 @@ func testExclusiveCPUPool(env *provider.TestEnvironment) {
 
 func testSchedulingPolicyInCPUPool(env *provider.TestEnvironment,
 	podContainers []*provider.Container, schedulingType string) {
-	var compliantContainers []*provider.Container
-	nonCompliantContainerMap := make(map[*provider.Container][]int)
-
+	var compliantContainersPids []*testhelper.ReportObject
+	var nonCompliantContainersPids []*testhelper.ReportObject
 	for _, testContainer := range podContainers {
 		logrus.Infof("Processing %v", testContainer)
 
@@ -116,43 +117,44 @@ func testSchedulingPolicyInCPUPool(env *provider.TestEnvironment,
 		logrus.Debugf("Obtained pidNamespace for %s is %s", testContainer, pidNamespace)
 
 		// Get the list of process ids running in the pid namespace
-		pids := crclient.GetPidsFromPidNamespace(pidNamespace, testContainer)
+		processes, err := crclient.GetPidsFromPidNamespace(pidNamespace, testContainer)
 
-		// Check for the specified priority for each processes running in that pid namespace
-		if scheduling.ProcessPidsCPUScheduling(pids, testContainer, nonCompliantContainerMap, schedulingType) {
-			compliantContainers = append(compliantContainers, testContainer)
+		if err != nil {
+			nonCompliantContainersPids = append(nonCompliantContainersPids,
+				testhelper.NewContainerObjectOut(testContainer, fmt.Sprintf("Internal error, err=%s", err), false))
 		}
+
+		compliantPids, nonCompliantPids := scheduling.ProcessPidsCPUScheduling(processes, testContainer, schedulingType)
+		// Check for the specified priority for each processes running in that pid namespace
+
+		compliantContainersPids = append(compliantContainersPids, compliantPids...)
+		nonCompliantContainersPids = append(nonCompliantContainersPids, nonCompliantPids...)
+
 		logrus.Debugf("Processed %v", testContainer)
 	}
-	tnf.ClaimFilePrintf("Compliant", compliantContainers)
-	if len(nonCompliantContainerMap) != 0 {
-		nonCompliantContainers := []*provider.Container{}
-		for k := range nonCompliantContainerMap {
-			nonCompliantContainers = append(nonCompliantContainers, k)
-		}
-		testhelper.AddTestResultLog("Non-compliant", nonCompliantContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
-	}
+
+	testhelper.AddTestResultReason(compliantContainersPids, nonCompliantContainersPids, ginkgo.Fail)
 }
 
 func testRtAppsNoExecProbes(env *provider.TestEnvironment, cuts []*provider.Container) {
 	badContainers := []string{}
 	for _, cut := range cuts {
 		nonCompliantCut := false
-		pids, err := crclient.GetContainerPids(cut, env)
+		processes, err := crclient.GetContainerProcesses(cut, env)
 		if err != nil {
 			badContainers = append(badContainers, cut.String())
 			tnf.ClaimFilePrintf("Could not determine the processes pids for container %s, err: %v", cut, err)
 			break
 		}
-		for _, pid := range pids {
-			schedPolicy, _, err := scheduling.GetProcessCPUScheduling(pid, cut)
+		for _, p := range processes {
+			schedPolicy, _, err := scheduling.GetProcessCPUScheduling(p.Pid, cut)
 			if err != nil {
-				tnf.ClaimFilePrintf("Could not determine the scheduling policy for container %s (pid=%v), err: %v", cut, pid, err)
+				tnf.ClaimFilePrintf("Could not determine the scheduling policy for container %s (pid=%v), err: %v", cut, p.Pid, err)
 				nonCompliantCut = true
 				break
 			}
 			if scheduling.PolicyIsRT(schedPolicy) && cut.HasExecProbes() {
-				tnf.ClaimFilePrintf("Pod %s/Container %s defines exec probes while having a RT scheduling policy for pid %d", cut.Podname, cut, pid)
+				tnf.ClaimFilePrintf("Pod %s/Container %s defines exec probes while having a RT scheduling policy for pid %d", cut.Podname, cut, p.Pid)
 				nonCompliantCut = true
 			}
 		}
