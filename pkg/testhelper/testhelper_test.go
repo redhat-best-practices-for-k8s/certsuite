@@ -39,7 +39,6 @@ func TestResultToString(t *testing.T) {
 	}
 }
 
-//nolint:funlen
 func TestSkipIfEmptyFuncs(t *testing.T) {
 	testCases := []struct {
 		map1, slice1           interface{}

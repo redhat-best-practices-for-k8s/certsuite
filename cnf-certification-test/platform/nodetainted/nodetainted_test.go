@@ -24,7 +24,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 )
 
-//nolint:funlen
 func TestDecodeKernelTaints(t *testing.T) {
 	tcs := []struct {
 		taintsBitMask  uint64
@@ -164,7 +163,6 @@ func TestGetBitPosFromLetter(t *testing.T) {
 	}
 }
 
-//nolint:funlen
 func TestGetKernelTaintsMask(t *testing.T) {
 	testCases := []struct {
 		runCommandOutput   string
@@ -229,7 +227,6 @@ func TestGetKernelTaintsMask(t *testing.T) {
 	}
 }
 
-//nolint:funlen
 func TestGetAllTainterModules(t *testing.T) {
 	testCases := []struct {
 		runCommandOutput string
@@ -289,7 +286,6 @@ func TestGetAllTainterModules(t *testing.T) {
 	}
 }
 
-//nolint:funlen
 func TestGetTainterModules(t *testing.T) {
 	testCases := []struct {
 		runCommandOutput  string
@@ -373,7 +369,6 @@ func TestGetTainterModules(t *testing.T) {
 	}
 }
 
-//nolint:funlen
 func TestGetTaintedBitsByModules(t *testing.T) {
 	testCases := []struct {
 		modules           map[string]string

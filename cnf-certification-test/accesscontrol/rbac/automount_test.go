@@ -87,7 +87,6 @@ func TestAutomountServiceAccountSetOnSA(t *testing.T) {
 	}
 }
 
-//nolint:funlen
 func TestEvaluateAutomountTokens(t *testing.T) {
 	falseVar := false
 	trueVar := true

@@ -34,7 +34,6 @@ const (
 	invalidMemLimit2 = "65"
 )
 
-//nolint:funlen
 func TestCPUIsolation(t *testing.T) {
 	testClassName := "testRuntimeClassName"
 	testCases := []struct {

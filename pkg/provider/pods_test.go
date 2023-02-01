@@ -117,7 +117,6 @@ func generatePod(requestsValue2M, limitsValue2M, requestsValue1G, limitsValue1G 
 	return &aPod
 }
 
-//nolint:funlen
 func TestIsAffinityCompliantPods(t *testing.T) {
 	testCases := []struct {
 		testPod      Pod

@@ -30,7 +30,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func Test_parsePingResult(t *testing.T) { //nolint:funlen
+func Test_parsePingResult(t *testing.T) {
 	type args struct {
 		stdout string
 		stderr string
@@ -189,7 +189,7 @@ func Test_parsePingResult(t *testing.T) { //nolint:funlen
 	}
 }
 
-func TestProcessContainerIpsPerNet(t *testing.T) { //nolint:funlen
+func TestProcessContainerIpsPerNet(t *testing.T) {
 	type args struct {
 		containerID       *provider.Container
 		netKey            string
@@ -272,7 +272,7 @@ func TestProcessContainerIpsPerNet(t *testing.T) { //nolint:funlen
 	}
 }
 
-func TestBuildNetTestContext(t *testing.T) { //nolint:funlen
+func TestBuildNetTestContext(t *testing.T) {
 	type args struct {
 		pods       []*provider.Pod
 		aIPVersion netcommons.IPVersion
@@ -653,7 +653,7 @@ var (
 	}
 )
 
-func TestRunNetworkingTests(t *testing.T) { //nolint:funlen
+func TestRunNetworkingTests(t *testing.T) {
 	type args struct {
 		netsUnderTest map[string]netcommons.NetTestContext
 		count         int
