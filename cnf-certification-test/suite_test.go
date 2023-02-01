@@ -42,7 +42,6 @@ import (
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/performance"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	daemonset "github.com/test-network-function/cnf-certification-test/internal/daemonset"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/diagnostics"
 	_ "github.com/test-network-function/cnfextensions"
@@ -150,15 +149,6 @@ func TestTest(t *testing.T) {
 
 	// Set clientsholder singleton with the filenames from the env vars.
 	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
-
-	// Deploy the daemonset before getting the environment for the first time
-	err := daemonset.DeployPartnerTestDaemonset()
-	if err != nil {
-		log.Errorf("Error deploying partner daemonset %s", err)
-
-		// Finish execution and return with error status.
-		t.FailNow()
-	}
 
 	// Initialize the claim with the start time, tnf version, etc.
 	claimRoot := claimhelper.CreateClaimRoot()

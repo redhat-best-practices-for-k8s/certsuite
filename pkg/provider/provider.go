@@ -18,6 +18,7 @@ package provider
 
 import (
 	"context"
+	"os"
 	"time"
 
 	"errors"
@@ -44,15 +45,17 @@ import (
 
 const (
 	AffinityRequiredKey              = "AffinityRequired"
+	containerName                    = "container-00"
 	DaemonSetNamespace               = "default"
 	DaemonSetName                    = "debug"
 	debugPodsTimeout                 = 5 * time.Minute
-	debugPodsRetryInterval           = 5 * time.Second
 	CniNetworksStatusKey             = "k8s.v1.cni.cncf.io/networks-status"
 	skipConnectivityTestsLabel       = "test-network-function.com/skip_connectivity_tests"
 	skipMultusConnectivityTestsLabel = "test-network-function.com/skip_multus_connectivity_tests"
 	rhcosName                        = "Red Hat Enterprise Linux CoreOS"
 	rhelName                         = "Red Hat Enterprise Linux"
+	tnfPartnerRepoDef                = "quay.io/testnetworkfunction"
+	supportImageDef                  = "debug-partner:latest"
 )
 
 // Node's roles labels. Node is role R if it has **any** of the labels of each list.
@@ -90,20 +93,21 @@ type TestEnvironment struct { // rename this with testTarget
 	variables configuration.TestParameters
 	Crds      []*apiextv1.CustomResourceDefinition `json:"testCrds"`
 
-	HorizontalScaler     map[string]*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
-	Services             []*corev1.Service                             `json:"testServices"`
-	Nodes                map[string]Node                               `json:"-"`
-	K8sVersion           string                                        `json:"-"`
-	OpenshiftVersion     string                                        `json:"-"`
-	OCPStatus            string                                        `json:"-"`
-	HelmChartReleases    []*release.Release                            `json:"testHelmChartReleases"`
-	ResourceQuotas       []corev1.ResourceQuota
-	PodDisruptionBudgets []policyv1.PodDisruptionBudget
-	NetworkPolicies      []networkingv1.NetworkPolicy
-	AllInstallPlans      []*olmv1Alpha.InstallPlan   `json:"-"`
-	AllCatalogSources    []*olmv1Alpha.CatalogSource `json:"-"`
-	IstioServiceMesh     bool
-	ValidProtocolNames   []string
+	HorizontalScaler       map[string]*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
+	Services               []*corev1.Service                             `json:"testServices"`
+	Nodes                  map[string]Node                               `json:"-"`
+	K8sVersion             string                                        `json:"-"`
+	OpenshiftVersion       string                                        `json:"-"`
+	OCPStatus              string                                        `json:"-"`
+	HelmChartReleases      []*release.Release                            `json:"testHelmChartReleases"`
+	ResourceQuotas         []corev1.ResourceQuota
+	PodDisruptionBudgets   []policyv1.PodDisruptionBudget
+	NetworkPolicies        []networkingv1.NetworkPolicy
+	AllInstallPlans        []*olmv1Alpha.InstallPlan   `json:"-"`
+	AllCatalogSources      []*olmv1Alpha.CatalogSource `json:"-"`
+	IstioServiceMesh       bool
+	ValidProtocolNames     []string
+	DaemonsetFailedToSpawn bool
 }
 
 type MachineConfig struct {
@@ -142,14 +146,41 @@ var (
 	loaded = false
 )
 
-func buildTestEnvironment() { //nolint:funlen
+// Build image with version based on environment variables if provided, else use a default value
+func buildImageWithVersion() string {
+	tnfPartnerRepo := os.Getenv("TNF_PARTNER_REPO")
+	if tnfPartnerRepo == "" {
+		tnfPartnerRepo = tnfPartnerRepoDef
+	}
+	supportImage := os.Getenv("SUPPORT_IMAGE")
+	if supportImage == "" {
+		supportImage = supportImageDef
+	}
+
+	return tnfPartnerRepo + "/" + supportImage
+}
+
+func buildTestEnvironment() { //nolint:funlen,gocyclo
 	start := time.Now()
+	env = TestEnvironment{}
 	// Wait for the debug pods to be ready before the autodiscovery starts.
-	err := k8sPriviledgedDs.WaitDaemonsetReady(DaemonSetNamespace, DaemonSetName, debugPodsTimeout)
+	oc := clientsholder.GetClientsHolder()
+	k8sPriviledgedDs.SetDaemonSetClient(oc.K8sClient)
+	matchLabels := make(map[string]string)
+	matchLabels["name"] = DaemonSetName
+	matchLabels["test-network-function.com/app"] = DaemonSetName
+	_, err := k8sPriviledgedDs.CreateDaemonSet(DaemonSetName, DaemonSetNamespace, containerName, buildImageWithVersion(), matchLabels, debugPodsTimeout)
+	if err != nil {
+		logrus.Errorf("Error deploying partner daemonset %s", err)
+	}
+	err = k8sPriviledgedDs.WaitDaemonsetReady(DaemonSetNamespace, DaemonSetName, debugPodsTimeout)
 	if err != nil {
 		logrus.Errorf("Debug daemonset failure: %s", err)
+
+		// Because of this failure, we are only able to run a certain amount of tests that do not rely
+		// on the existence of the daemonset debug pods.
+		env.DaemonsetFailedToSpawn = true
 	}
-	env = TestEnvironment{}
 
 	data := autodiscover.DoAutoDiscover()
 
