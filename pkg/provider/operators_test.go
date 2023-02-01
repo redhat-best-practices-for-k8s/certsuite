@@ -45,7 +45,6 @@ func TestOperatorString(t *testing.T) {
 	assert.Equal(t, "csv: test1 ns:testNS subscription:sub1 targetNamespace=", o.String())
 }
 
-//nolint:funlen
 func TestCreateOperators(t *testing.T) {
 	// op1 in namespace ns1
 	op1Ns1 := createCsv("op1.v1.0.1", "ns1", 1, 0, 1)

@@ -107,7 +107,7 @@ func TestIsStatefulSetReady(t *testing.T) {
 	}
 }
 
-func TestGetPodSetNodes(t *testing.T) { //nolint:funlen
+func TestGetPodSetNodes(t *testing.T) {
 	type args struct {
 		pods    []*corev1.Pod
 		ssName  string

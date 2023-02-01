@@ -24,7 +24,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-//nolint:funlen
 func TestIsNetworkPolicyCompliant(t *testing.T) {
 	testCases := []struct {
 		testNP                networkingv1.NetworkPolicy

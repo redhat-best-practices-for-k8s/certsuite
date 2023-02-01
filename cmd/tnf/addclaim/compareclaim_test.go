@@ -5,7 +5,6 @@ import (
 	"testing"
 )
 
-//nolint:funlen
 func Test_compare2TestCaseResults(t *testing.T) {
 	type args struct {
 		testcaseResult1 []testCase
@@ -89,7 +88,6 @@ func Test_compare2TestCaseResults(t *testing.T) {
 	}
 }
 
-//nolint:funlen
 func Test_compare2cnis(t *testing.T) {
 	type args struct {
 		cniList1 []Cni

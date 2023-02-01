@@ -37,7 +37,6 @@ func (o ClientHoldersMock) ExecCommandContainer(ctx clientsholder.Context, comma
 	return stdout, stderr, err
 }
 
-//nolint:funlen
 func TestRunTest(t *testing.T) {
 	testCases := []struct {
 		clientErr      error

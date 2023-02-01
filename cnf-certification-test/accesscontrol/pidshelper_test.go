@@ -24,7 +24,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 )
 
-//nolint:funlen
 func TestGetNbOfProcessesInPidNamespace(t *testing.T) {
 	testCases := []struct {
 		testPID               int

@@ -123,7 +123,7 @@ func getGitVersion() string {
 	return gitDisplayRelease + " ( " + GitCommit + " )"
 }
 
-//nolint:funlen // TestTest invokes the CNF Certification Test Suite.
+// TestTest invokes the CNF Certification Test Suite.
 func TestTest(t *testing.T) {
 	// When running unit tests, skip the suite
 	if os.Getenv("UNIT_TEST") != "" {

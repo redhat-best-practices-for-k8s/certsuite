@@ -14,7 +14,6 @@ const (
 	validMemLimit = "512Mi"
 )
 
-//nolint:funlen
 func TestHasRequestsAndLimitsSet(t *testing.T) {
 	testCases := []struct {
 		testContainer  *provider.Container
@@ -80,7 +79,6 @@ func TestHasRequestsAndLimitsSet(t *testing.T) {
 	}
 }
 
-//nolint:funlen
 func TestHasExclusiveCPUsAssigned(t *testing.T) {
 	testCases := []struct {
 		testContainer  *provider.Container

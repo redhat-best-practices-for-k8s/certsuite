@@ -28,7 +28,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 )
 
-//nolint:funlen
 func TestFindPodsByLabel(t *testing.T) {
 	generatePod := func(podname, namespace, label string) *corev1.Pod {
 		return &corev1.Pod{
