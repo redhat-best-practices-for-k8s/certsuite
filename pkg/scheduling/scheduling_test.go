@@ -9,6 +9,8 @@ import (
 )
 
 // Monkey patching is used here
+//
+//nolint:funlen
 func TestProcessPidsCPUScheduling(t *testing.T) {
 	testPids := []int{101, 102}
 	testContainer := &provider.Container{}
@@ -44,6 +46,27 @@ func TestProcessPidsCPUScheduling(t *testing.T) {
 				return "SCHED_FIFO", 11, nil
 			},
 			check:                                 ExclusiveCPUScheduling,
+			expectedCPUSchedulingConditionSuccess: false,
+		},
+		{
+			mockGetProcessCPUScheduling: func(pid int, container *provider.Container) (string, int, error) {
+				return "SCHED_FIFO", 50, nil
+			},
+			check:                                 IsolatedCPUScheduling,
+			expectedCPUSchedulingConditionSuccess: true,
+		},
+		{
+			mockGetProcessCPUScheduling: func(pid int, container *provider.Container) (string, int, error) {
+				return "SCHED_RR", 99, nil
+			},
+			check:                                 IsolatedCPUScheduling,
+			expectedCPUSchedulingConditionSuccess: true,
+		},
+		{
+			mockGetProcessCPUScheduling: func(pid int, container *provider.Container) (string, int, error) {
+				return "SCHED_OTHER", 0, nil
+			},
+			check:                                 IsolatedCPUScheduling,
 			expectedCPUSchedulingConditionSuccess: false,
 		},
 	}
