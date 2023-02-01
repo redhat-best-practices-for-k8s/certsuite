@@ -43,7 +43,6 @@ const (
 	twoMB = 2 * 1024    // 2M: also RHEL's default hugepages size
 )
 
-//nolint:funlen
 func Test_hugepagesFromKernelArgsFunc(t *testing.T) {
 	testCases := []struct {
 		expectedHugepagesDefSize int
@@ -148,7 +147,6 @@ func (client *fakeK8sClient) ExecCommandContainer(context clientsholder.Context,
 	return client.execCommandFunctionMocker()
 }
 
-//nolint:funlen
 func TestPositiveMachineConfigSystemdHugepages(t *testing.T) {
 	// helper pod, so the hugepages struct doesnt crash when accessing the debug container.
 	fakeDebugPod := &corev1.Pod{
@@ -315,7 +313,6 @@ func TestPositiveMachineConfigSystemdHugepages(t *testing.T) {
 	}
 }
 
-//nolint:funlen
 func TestNegativeMachineConfigSystemdHugepages(t *testing.T) {
 	// helper pod, so the hugepages struct doesnt crash when accessing the debug container.
 	fakeDebugPod := &corev1.Pod{
@@ -487,7 +484,6 @@ func TestNegativeMachineConfigSystemdHugepages(t *testing.T) {
 	}
 }
 
-//nolint:funlen
 func TestPositiveMachineConfigKernelArgsHugepages(t *testing.T) {
 	// helper pod, so the hugepages test won't crash when accessing the debug container.
 	fakeDebugPod := &corev1.Pod{
@@ -610,7 +606,6 @@ func TestPositiveMachineConfigKernelArgsHugepages(t *testing.T) {
 	}
 }
 
-//nolint:funlen
 func TestNegativeMachineConfigKernelArgsHugepages(t *testing.T) {
 	// helper pod, so the hugepages test won't crash when accessing the debug container.
 	fakeDebugPod := &corev1.Pod{

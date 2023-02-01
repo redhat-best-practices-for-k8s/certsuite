@@ -31,7 +31,6 @@ func TestGetVersionOcClient(t *testing.T) {
 	assert.Equal(t, "n/a, (not using oc or kubectl client)", GetVersionOcClient())
 }
 
-//nolint:funlen
 func TestGetHWJsonOutput(t *testing.T) {
 	type TestingJSON struct {
 		Testing string `json:"testing"`
@@ -100,7 +99,6 @@ func TestGetHWJsonOutput(t *testing.T) {
 	}
 }
 
-//nolint:funlen
 func TestGetHWTextOutput(t *testing.T) {
 	testCases := []struct {
 		execStdout string

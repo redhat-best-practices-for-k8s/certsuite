@@ -58,6 +58,20 @@ var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, guaranteedPodContainersWithExclusiveCPUs)
 		testRtAppsNoExecProbes(&env, guaranteedPodContainersWithExclusiveCPUs)
 	})
+
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsolatedCPUPoolSchedulingPolicy)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		var guaranteedPodContainersWithIsolatedCPUs = env.GetGuaranteedPodContainersWithIsolatedCPUs()
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, guaranteedPodContainersWithIsolatedCPUs)
+		testSchedulingPolicyInCPUPool(&env, guaranteedPodContainersWithIsolatedCPUs, scheduling.IsolatedCPUScheduling)
+	})
+
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestRtAppNoExecProbes)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		var guaranteedPodContainersWithExclusiveCPUs = env.GetGuaranteedPodContainersWithExlusiveCPUs()
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, guaranteedPodContainersWithExclusiveCPUs)
+		testRtAppsNoExecProbes(&env, guaranteedPodContainersWithExclusiveCPUs)
+	})
 })
 
 func testSchedulingPolicyInCPUPool(env *provider.TestEnvironment,

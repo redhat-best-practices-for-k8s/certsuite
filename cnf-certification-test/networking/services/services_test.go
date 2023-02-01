@@ -23,7 +23,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 )
 
-func TestGetServiceIPVersion(t *testing.T) { //nolint:funlen
+func TestGetServiceIPVersion(t *testing.T) {
 	type args struct {
 		aService *corev1.Service
 	}

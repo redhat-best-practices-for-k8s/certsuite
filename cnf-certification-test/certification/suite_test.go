@@ -24,7 +24,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
-//nolint:funlen
 func TestGetContainersToQuery(t *testing.T) {
 	generateEnv := func(certStatus bool) *provider.TestEnvironment {
 		return &provider.TestEnvironment{

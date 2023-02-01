@@ -23,7 +23,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-//nolint:funlen
 func TestDetermineOCPStatus(t *testing.T) {
 	testCases := []struct {
 		testDate       time.Time
@@ -91,7 +90,6 @@ func TestDetermineOCPStatus(t *testing.T) {
 	}
 }
 
-//nolint:funlen
 func TestIsRHELCompatible(t *testing.T) {
 	testCases := []struct {
 		testMachineVersion string

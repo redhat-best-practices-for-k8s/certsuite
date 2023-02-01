@@ -994,6 +994,20 @@ Suggested Remediation|Ensure that the workload running in Application exclusive 
 Best Practice Reference|https://TODO
 Exception Process|There is no documented exception process for this.
 Tags|faredge
+#### isolated-cpu-pool-scheduling-policy
+
+Property|Description
+---|---
+Test Case Name|isolated-cpu-pool-scheduling-policy
+Test Case Label|performance-isolated-cpu-pool-scheduling-policy
+Unique ID|http://test-network-function.com/testcases/performance/isolated-cpu-pool-scheduling-policy
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/performance/isolated-cpu-pool-scheduling-policy Ensures that a workload running in an application-isolated exclusive CPU pool selects a RT CPU scheduling policy
+Result Type|normative
+Suggested Remediation|Ensure that the workload running in an application-isolated exclusive CPU pool selects a RT CPU scheduling policy (such as SCHED_FIFO/SCHED_RR)
+Best Practice Reference|https://TODO
+Exception Process|There is no documented exception process for this.
+Tags|faredge
 #### rt-apps-no-exec-probes
 
 Property|Description

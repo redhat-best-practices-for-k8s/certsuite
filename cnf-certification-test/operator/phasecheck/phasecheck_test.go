@@ -23,7 +23,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func Test_isOperatorSucceeded(t *testing.T) { //nolint:funlen
+func Test_isOperatorSucceeded(t *testing.T) {
 	type args struct {
 		csv *v1alpha1.ClusterServiceVersion
 	}

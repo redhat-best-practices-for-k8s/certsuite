@@ -24,10 +24,20 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 )
 
-func (env *TestEnvironment) GetGuaranteedPodsWithExlusiveCPUs() []*Pod {
+func (env *TestEnvironment) GetGuaranteedPodsWithExclusiveCPUs() []*Pod {
 	var filteredPods []*Pod
 	for _, p := range env.Pods {
 		if p.IsPodGuaranteedWithExclusiveCPUs() {
+			filteredPods = append(filteredPods, p)
+		}
+	}
+	return filteredPods
+}
+
+func (env *TestEnvironment) GetGuaranteedPodsWithIsolatedCPUs() []*Pod {
+	var filteredPods []*Pod
+	for _, p := range env.Pods {
+		if p.IsPodGuaranteedWithExclusiveCPUs() && p.IsCPUIsolationCompliant() {
 			filteredPods = append(filteredPods, p)
 		}
 	}
@@ -85,7 +95,7 @@ func (env *TestEnvironment) GetHugepagesPods() []*Pod {
 }
 
 func (env *TestEnvironment) GetCPUPinningPodsWithDpdk() []*Pod {
-	return filterDPDKRunningPods(env.GetGuaranteedPodsWithExlusiveCPUs())
+	return filterDPDKRunningPods(env.GetGuaranteedPodsWithExclusiveCPUs())
 }
 
 func (env *TestEnvironment) GetNonGuaranteedPodContainers() []*Container {
@@ -98,10 +108,18 @@ func (env *TestEnvironment) GetNonGuaranteedPodContainers() []*Container {
 
 func (env *TestEnvironment) GetGuaranteedPodContainersWithExlusiveCPUs() []*Container {
 	var guaranteedPodContainersWithExlusiveCPUs []*Container
-	for _, pod := range env.GetGuaranteedPodsWithExlusiveCPUs() {
+	for _, pod := range env.GetGuaranteedPodsWithExclusiveCPUs() {
 		guaranteedPodContainersWithExlusiveCPUs = append(guaranteedPodContainersWithExlusiveCPUs, pod.Containers...)
 	}
 	return guaranteedPodContainersWithExlusiveCPUs
+}
+
+func (env *TestEnvironment) GetGuaranteedPodContainersWithIsolatedCPUs() []*Container {
+	var guaranteedPodContainersWithIsolatedCPUs []*Container
+	for _, pod := range env.GetGuaranteedPodsWithIsolatedCPUs() {
+		guaranteedPodContainersWithIsolatedCPUs = append(guaranteedPodContainersWithIsolatedCPUs, pod.Containers...)
+	}
+	return guaranteedPodContainersWithIsolatedCPUs
 }
 
 func filterDPDKRunningPods(pods []*Pod) []*Pod {

@@ -29,7 +29,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
-//nolint:funlen
 func TestScaleDeploymentFunc(t *testing.T) {
 	generateDeployment := func(name string, replicas *int32) *v1app.Deployment {
 		return &v1app.Deployment{

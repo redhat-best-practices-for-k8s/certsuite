@@ -15,3 +15,24 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 package provider
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+func TestNewEvent(t *testing.T) {
+	testEvent := corev1.Event{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: "testEvent",
+		},
+		Reason: "this is a test",
+	}
+
+	outputEvent := NewEvent(&testEvent)
+	assert.Equal(t, "testEvent", outputEvent.Name)
+	assert.Contains(t, outputEvent.String(), "reason=this is a test")
+}

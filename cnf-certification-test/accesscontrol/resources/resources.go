@@ -12,12 +12,12 @@ func HasRequestsAndLimitsSet(cut *provider.Container) bool {
 		tnf.ClaimFilePrintf("Container has been found missing resource limits: %s", cut.String())
 		passed = false
 	} else {
-		if cut.Resources.Limits.Cpu().Value() == 0 {
+		if cut.Resources.Limits.Cpu().IsZero() {
 			tnf.ClaimFilePrintf("Container has been found missing CPU limits: %s", cut.String())
 			passed = false
 		}
 
-		if cut.Resources.Limits.Memory().Value() == 0 {
+		if cut.Resources.Limits.Memory().IsZero() {
 			tnf.ClaimFilePrintf("Container has been found missing memory limits: %s", cut.String())
 			passed = false
 		}
@@ -28,12 +28,12 @@ func HasRequestsAndLimitsSet(cut *provider.Container) bool {
 		tnf.ClaimFilePrintf("Container has been found missing resource requests: %s", cut.String())
 		passed = false
 	} else {
-		if cut.Resources.Requests.Cpu().Value() == 0 {
+		if cut.Resources.Requests.Cpu().IsZero() {
 			tnf.ClaimFilePrintf("Container has been found missing CPU requests: %s", cut.String())
 			passed = false
 		}
 
-		if cut.Resources.Requests.Memory().Value() == 0 {
+		if cut.Resources.Requests.Memory().IsZero() {
 			tnf.ClaimFilePrintf("Container has been found missing memory requests: %s", cut.String())
 			passed = false
 		}
@@ -41,7 +41,7 @@ func HasRequestsAndLimitsSet(cut *provider.Container) bool {
 	return passed
 }
 
-// For more info on cpu mgmt polcies see https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/.
+// For more info on cpu management policies see https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/.
 func HasExclusiveCPUsAssigned(cut *provider.Container) bool {
 	cpuLimits := cut.Resources.Limits.Cpu()
 	memLimits := cut.Resources.Limits.Memory()

@@ -24,7 +24,6 @@ import (
 
 type otherString string
 
-//nolint:funlen
 func TestStringInSlice(t *testing.T) {
 	testCases := []struct {
 		testSlice       []string
@@ -79,7 +78,6 @@ func TestStringInSlice(t *testing.T) {
 	}
 }
 
-//nolint:funlen
 func TestStringInSlice_other(t *testing.T) {
 	testCases := []struct {
 		testSlice       []otherString

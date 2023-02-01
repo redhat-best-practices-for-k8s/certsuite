@@ -135,6 +135,7 @@ var (
 	TestExclusiveCPUPoolIdentifier           claim.Identifier
 	TestSharedCPUPoolSchedulingPolicy        claim.Identifier
 	TestExclusiveCPUPoolSchedulingPolicy     claim.Identifier
+	TestIsolatedCPUPoolSchedulingPolicy      claim.Identifier
 	TestRtAppNoExecProbes                    claim.Identifier
 )
 
@@ -360,7 +361,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		"shared-cpu-pool-non-rt-scheduling-policy",
 		common.PerformanceTestKey,
 		`Ensures that if application workload runs in shared CPU pool, it chooses non-RT CPU schedule policy to always share the CPU with other applications and kernel threads.`,
-		SharedCPUPoolSchedulingRemediation,
+		SharedCPUPoolSchedulingPolicyRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
 		VersionOne,
@@ -372,7 +373,19 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		"exclusive-cpu-pool-rt-scheduling-policy",
 		common.PerformanceTestKey,
 		`Ensures that if application workload runs in exclusive CPU pool, it chooses RT CPU schedule policy and set the priority less than 10.`,
-		ExclusiveCPUPoolSchedulingRemediation,
+		ExclusiveCPUPoolSchedulingPolicyRemediation,
+		NormativeResult,
+		NoDocumentedProcess,
+		VersionOne,
+		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
+		false,
+		TagFarEdge)
+
+	TestIsolatedCPUPoolSchedulingPolicy = AddCatalogEntry(
+		"isolated-cpu-pool-rt-scheduling-policy",
+		common.PerformanceTestKey,
+		`Ensures that a workload running in an application-isolated exclusive CPU pool selects a RT CPU scheduling policy`,
+		IsolatedCPUPoolSchedulingPolicyRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
 		VersionOne,
