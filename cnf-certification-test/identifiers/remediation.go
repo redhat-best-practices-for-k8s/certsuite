@@ -201,4 +201,6 @@ const (
 	ExclusiveCPUPoolSchedulingPolicyRemediation = `Ensure that the workload running in Application exclusive CPU pool can choose RT CPU scheduling policy, but should set priority less than 10`
 
 	IsolatedCPUPoolSchedulingPolicyRemediation = `Ensure that the workload running in an application-isolated exclusive CPU pool selects a RT CPU scheduling policy (such as SCHED_FIFO/SCHED_RR)`
+
+	RtAppNoExecProbesRemediation = `Ensure that if one container runs a real time application exec probes are not used`
 )
