@@ -111,3 +111,7 @@ func GetProcessCPUScheduling(pid int, testContainer *provider.Container) (schedu
 
 	return schedulePolicy, schedulePriority, err
 }
+
+func PolicyIsRT(schedPolicy string) bool {
+	return schedPolicy == SchedulingFirstInFirstOut || schedPolicy == SchedulingRoundRobin
+}

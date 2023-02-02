@@ -136,6 +136,7 @@ var (
 	TestSharedCPUPoolSchedulingPolicy        claim.Identifier
 	TestExclusiveCPUPoolSchedulingPolicy     claim.Identifier
 	TestIsolatedCPUPoolSchedulingPolicy      claim.Identifier
+	TestRtAppNoExecProbes                    claim.Identifier
 )
 
 //nolint:funlen
@@ -385,6 +386,18 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		common.PerformanceTestKey,
 		`Ensures that a workload running in an application-isolated exclusive CPU pool selects a RT CPU scheduling policy`,
 		IsolatedCPUPoolSchedulingPolicyRemediation,
+		NormativeResult,
+		NoDocumentedProcess,
+		VersionOne,
+		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
+		false,
+		TagFarEdge)
+
+	TestRtAppNoExecProbes = AddCatalogEntry(
+		"rt-apps-no-exec-probes",
+		common.PerformanceTestKey,
+		`Ensures that if one container runs a real time application exec probes are not used`,
+		RtAppNoExecProbesRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
 		VersionOne,
