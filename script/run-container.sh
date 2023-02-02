@@ -125,6 +125,11 @@ container_tnf_kubeconfig_volumes_cmd_args=$(printf -- "-v %s " "${container_tnf_
 CONTAINER_TNF_DOCKERCFG=$(join_paths "${container_tnf_dockercfg_paths[@]}")
 container_tnf_dockercfg_volumes_cmd_args=$(printf -- "-v %s " "${container_tnf_dockercfg_volume_bindings[@]}")
 
+# Safeguard against an empty variable
+if [ -z "$CONTAINER_TNF_DOCKERCFG" ]; then
+	CONTAINER_TNF_DOCKERCFG=NA
+fi
+
 if [ -n "${LOCAL_TNF_CONFIG}" ]; then
 	CONFIG_VOLUME_MOUNT_ARG="-v $LOCAL_TNF_CONFIG:$CONTAINER_TNF_DIR/config:Z"
 fi
