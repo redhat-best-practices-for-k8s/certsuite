@@ -8,7 +8,7 @@ require (
 	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/cobra v1.6.1
 	github.com/stretchr/testify v1.8.1
-	github.com/test-network-function/test-network-function-claim v1.0.9
+	github.com/test-network-function/test-network-function-claim v1.0.12
 	github.com/xeipuuv/gojsonschema v1.2.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
@@ -158,7 +158,6 @@ require (
 	github.com/go-yaml/yaml v2.1.0+incompatible
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/openshift/machine-config-operator v0.0.0-00010101000000-000000000000
-	github.com/test-network-function/cnfextensions v0.0.0-20230117151237-387530df5a0a
 	github.com/test-network-function/privileged-daemonset v0.0.8
 	gopkg.in/yaml.v3 v3.0.1
 	k8s.io/kubectl v0.26.1

@@ -44,7 +44,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/diagnostics"
-	_ "github.com/test-network-function/cnfextensions"
 )
 
 const (

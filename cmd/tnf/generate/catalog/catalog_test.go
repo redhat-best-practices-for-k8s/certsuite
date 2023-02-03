@@ -93,10 +93,12 @@ func TestGetSuitesFromIdentifiers(t *testing.T) {
 		{
 			testKeys: []claim.Identifier{
 				{
-					Url: "http://test-network-function.com/testcases/helloworld/test",
+					Id:    "helloworld/test",
+					Suite: "helloworld",
 				},
 				{
-					Url: "http://test-network-function.com/testcases/helloworld2/test2",
+					Id:    "helloworld2/test2",
+					Suite: "helloworld2",
 				},
 			},
 			expectedSuites: []string{"helloworld", "helloworld2"},

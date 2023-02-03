@@ -64,7 +64,6 @@ var (
 
 type catalogElement struct {
 	testName   string
-	testLabel  string
 	identifier claim.Identifier // {url and version}
 }
 
@@ -97,11 +96,8 @@ func createPrintableCatalogFromIdentifiers(keys []claim.Identifier) map[string][
 	catalog := make(map[string][]catalogElement)
 	// we need the list of suite's names
 	for _, i := range keys {
-		suiteName, testName := identifiers.GetSuiteAndTestFromIdentifier(i)
-		testLabel := suiteName + "-" + testName
-		catalog[suiteName] = append(catalog[suiteName], catalogElement{
-			testName:   testName,
-			testLabel:  testLabel,
+		catalog[i.Suite] = append(catalog[i.Suite], catalogElement{
+			testName:   i.Id,
 			identifier: i,
 		})
 	}
@@ -110,12 +106,9 @@ func createPrintableCatalogFromIdentifiers(keys []claim.Identifier) map[string][
 
 func getSuitesFromIdentifiers(keys []claim.Identifier) []string {
 	var suites []string
-
 	for _, i := range keys {
-		suiteName, _ := identifiers.GetSuiteAndTestFromIdentifier(i)
-		suites = append(suites, suiteName)
+		suites = append(suites, i.Suite)
 	}
-
 	return Unique(suites)
 }
 
@@ -135,8 +128,6 @@ func Unique(slice []string) []string {
 }
 
 // outputTestCases outputs the Markdown representation for test cases from the catalog to stdout.
-//
-//nolint:funlen
 func outputTestCases() {
 	// Building a separate data structure to store the key order for the map
 	keys := make([]claim.Identifier, 0, len(identifiers.Catalog))
@@ -144,9 +135,9 @@ func outputTestCases() {
 		keys = append(keys, k)
 	}
 
-	// Sorting the map by identifier URL
+	// Sorting the map by identifier ID
 	sort.Slice(keys, func(i, j int) bool {
-		return keys[i].Url < keys[j].Url
+		return keys[i].Id < keys[j].Id
 	})
 
 	catalog := createPrintableCatalogFromIdentifiers(keys)
@@ -163,19 +154,20 @@ func outputTestCases() {
 	for _, suite := range suites {
 		fmt.Fprintf(os.Stdout, "\n### %s\n\n", suite)
 		for _, k := range catalog[suite] {
+			// Add the suite to the comma separate list of tags shown.  The tags are also modified in the:
+			// GetGinkgoTestIDAndLabels function for usage by Ginkgo.
+			tags := strings.ReplaceAll(identifiers.Catalog[k.identifier].Tags, "\n", " ") + "," + k.identifier.Suite
+
 			fmt.Fprintf(os.Stdout, "#### %s\n\n", k.testName)
 			fmt.Println("Property|Description")
 			fmt.Println("---|---")
-			fmt.Fprintf(os.Stdout, "Test Case Name|%s\n", k.testName)
-			fmt.Fprintf(os.Stdout, "Test Case Label|%s\n", k.testLabel)
-			fmt.Fprintf(os.Stdout, "Unique ID|%s\n", k.identifier.Url)
-			fmt.Fprintf(os.Stdout, "Version|%s\n", k.identifier.Version)
+			fmt.Fprintf(os.Stdout, "Unique ID|%s\n", k.identifier.Id)
 			fmt.Fprintf(os.Stdout, "Description|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].Description, "\n", " "))
 			fmt.Fprintf(os.Stdout, "Result Type|%s\n", identifiers.Catalog[k.identifier].Type)
 			fmt.Fprintf(os.Stdout, "Suggested Remediation|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].Remediation, "\n", " "))
 			fmt.Fprintf(os.Stdout, "Best Practice Reference|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].BestPracticeReference, "\n", " "))
 			fmt.Fprintf(os.Stdout, "Exception Process|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].ExceptionProcess, "\n", " "))
-			fmt.Fprintf(os.Stdout, "Tags|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].Tags, "\n", " "))
+			fmt.Fprintf(os.Stdout, "Tags|%s\n", tags)
 		}
 	}
 	fmt.Println()
