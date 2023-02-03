@@ -423,7 +423,6 @@ func testRestartOnRebootLabelOnPodsUsingSriov(sriovPods []*provider.Pod) {
 		if labelValue != "true" {
 			tnf.ClaimFilePrintf("Pod %s is using SRIOV but the %s label value is not true.", pod, restartOnRebootLabel)
 			nonCompliantPods = append(nonCompliantPods, pod.String())
-			continue
 		}
 	}
 
