@@ -31,6 +31,7 @@ import (
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 
+	cncfNetworkAttachmentv1 "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/client/clientset/versioned/typed/k8s.cni.cncf.io/v1"
 	ocpMachine "github.com/openshift/machine-config-operator/pkg/generated/clientset/versioned"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -44,16 +45,17 @@ import (
 )
 
 type ClientsHolder struct {
-	RestConfig          *rest.Config
-	DynamicClient       dynamic.Interface
-	APIExtClient        apiextv1.Interface
-	OlmClient           olmClient.Interface
-	OcpClient           clientconfigv1.ConfigV1Interface
-	K8sClient           kubernetes.Interface
-	K8sNetworkingClient networkingv1.NetworkingV1Interface
-	MachineCfg          ocpMachine.Interface
-	KubeConfig          []byte
-	ready               bool
+	RestConfig           *rest.Config
+	DynamicClient        dynamic.Interface
+	APIExtClient         apiextv1.Interface
+	OlmClient            olmClient.Interface
+	OcpClient            clientconfigv1.ConfigV1Interface
+	K8sClient            kubernetes.Interface
+	K8sNetworkingClient  networkingv1.NetworkingV1Interface
+	CNCFNetworkingClient cncfNetworkAttachmentv1.K8sCniCncfIoV1Interface
+	MachineCfg           ocpMachine.Interface
+	KubeConfig           []byte
+	ready                bool
 }
 
 var clientsHolder = ClientsHolder{}
@@ -212,6 +214,11 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	if err != nil {
 		return nil, fmt.Errorf("cannot instantiate k8s networking client: %s", err)
 	}
+	clientsHolder.CNCFNetworkingClient, err = cncfNetworkAttachmentv1.NewForConfig(clientsHolder.RestConfig)
+	if err != nil {
+		return nil, fmt.Errorf("cannot instantiate CNCF networking client")
+	}
+
 	clientsHolder.ready = true
 	return &clientsHolder, nil
 }

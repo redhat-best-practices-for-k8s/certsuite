@@ -156,3 +156,18 @@ func (env *TestEnvironment) GetShareProcessNamespacePods() []*Pod {
 	}
 	return filteredPods
 }
+
+func (env *TestEnvironment) GetPodsUsingSRIOV() ([]*Pod, error) {
+	var filteredPods []*Pod
+	for _, p := range env.Pods {
+		usesSRIOV, err := p.IsUsingSRIOV()
+		if err != nil {
+			return nil, fmt.Errorf("failed to check sriov usage for pod %s: %v", p, err)
+		}
+
+		if usesSRIOV {
+			filteredPods = append(filteredPods, p)
+		}
+	}
+	return filteredPods, nil
+}

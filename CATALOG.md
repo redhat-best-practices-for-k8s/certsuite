@@ -845,6 +845,20 @@ Suggested Remediation|Ensure ports are not being used that are reserved by our p
 Best Practice Reference|https://TODO Section 4.6.24
 Exception Process|There is no documented exception process for this.
 Tags|extended
+#### restart-on-reboot-sriov-pod
+
+Property|Description
+---|---
+Test Case Name|restart-on-reboot-sriov-pod
+Test Case Label|networking-restart-on-reboot-sriov-pod
+Unique ID|http://test-network-function.com/testcases/networking/restart-on-reboot-sriov-pod
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/networking/restart-on-reboot-sriov-pod Ensures that the label restart-on-reboot exists on pods that use SRIOV network interfaces.
+Result Type|normative
+Suggested Remediation|Ensure that the label restart-on-reboot exists on pods that use SRIOV network interfaces.
+Best Practice Reference|https://TODO
+Exception Process|There is no documented exception process for this.
+Tags|faredge
 #### service-type
 
 Property|Description

@@ -18,6 +18,7 @@ package provider
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
@@ -217,4 +218,164 @@ func (p *Pod) HasNodeSelector() bool {
 
 func (p *Pod) IsRuntimeClassNameSpecified() bool {
 	return p.Spec.RuntimeClassName != nil
+}
+
+// Helper function to parse CNCF's networks annotation, retrieving
+// the names only. It's a custom and simplified version of:
+// https://github.com/k8snetworkplumbingwg/multus-cni/blob/e692127d19623c8bdfc4d391224ea542658b584c/pkg/k8sclient/k8sclient.go#L185
+//
+// The cncf netwoks annotation has two different formats:
+//
+//	  a) list of network names: k8s.v1.cni.cncf.io/networks: <network>[,<network>,...]
+//	  b) json array of network objects:
+//	    k8s.v1.cni.cncf.io/networks: |-
+//			[
+//				{
+//				"name": "<network>",
+//				"namespace": "<namespace>",
+//				"default-route": ["<default-route>"]
+//				}
+//			]
+func getCNCFNetworksNamesFromPodAnnotation(networksAnnotation string) []string {
+	// Each CNCF network has many more fields, but here we only need to unmarshal the name.
+	// See https://github.com/k8snetworkplumbingwg/multus-cni/blob/e692127d19623c8bdfc4d391224ea542658b584c/pkg/types/types.go#L127
+	type CNCFNetwork struct {
+		Name string `json:"name"`
+	}
+
+	networkObjects := []CNCFNetwork{}
+	networkNames := []string{}
+
+	// Let's start trying to unmarshal a json array of objects.
+	// We won't care about bad-formatted/invalid annotation value. If that's the case,
+	// the pod wouldn't have been deployed or wouldn't be in running state.
+	if err := json.Unmarshal([]byte(networksAnnotation), &networkObjects); err == nil {
+		for _, network := range networkObjects {
+			networkNames = append(networkNames, network.Name)
+		}
+		return networkNames
+	}
+
+	// If the previous unmarshaling didn't work, let's try with parsing the comma separated names list.
+	networks := strings.TrimSpace(networksAnnotation)
+
+	// First, avoid empty strings (unlikely).
+	if networks == "" {
+		return []string{}
+	}
+
+	for _, networkName := range strings.Split(networks, ",") {
+		networkNames = append(networkNames, strings.TrimSpace(networkName))
+	}
+	return networkNames
+}
+
+// isNetworkAttachmentDefinitionConfigTypeSRIOV is a helper function to check whether a CNI
+// config string has any config for sriov plugin.
+// CNI config has two modes: single CNI plugin, or multi-plugins:
+// Single CNI plugin config sample:
+//
+//	{
+//		"cniVersion": "0.4.0",
+//		"name": "sriov-network",
+//		"type": "sriov",
+//		...
+//	}
+//
+// Multi-plugin CNI config sample:
+//
+//	{
+//		"cniVersion": "0.4.0",
+//		"name": "sriov-network",
+//		"plugins": [
+//			{
+//				"type": "sriov",
+//				"device": "eth1",
+//				...
+//			},
+//			{
+//				"type": "firewall"
+//				...
+//			}
+//		]
+func isNetworkAttachmentDefinitionConfigTypeSRIOV(nadConfig string) (bool, error) {
+	const (
+		typeSriov = "sriov"
+	)
+
+	type CNIConfig struct {
+		CniVersion string  `json:"cniVersion"`
+		Name       string  `json:"name"`
+		Type       *string `json:"type,omitempty"`
+		Plugins    *[]struct {
+			Type string `json:"type"`
+		} `json:"plugins,omitempty"`
+	}
+
+	cniConfig := CNIConfig{}
+	if err := json.Unmarshal([]byte(nadConfig), &cniConfig); err != nil {
+		return false, fmt.Errorf("failed to unmarshal cni config %s: %v", nadConfig, err)
+	}
+
+	// If type is found, it's a single plugin CNI config.
+	if cniConfig.Type != nil {
+		logrus.Tracef("Single plugin config type found: %+v, type=%s", cniConfig, *cniConfig.Type)
+		return *cniConfig.Type == typeSriov, nil
+	}
+
+	if cniConfig.Plugins == nil {
+		return false, fmt.Errorf("invalid multi-plugins cni config: %s", nadConfig)
+	}
+
+	logrus.Tracef("CNI plugins: %+v", *cniConfig.Plugins)
+	for i := range *cniConfig.Plugins {
+		plugin := (*cniConfig.Plugins)[i]
+		if plugin.Type == typeSriov {
+			return true, nil
+		}
+	}
+
+	// No sriov plugin type found.
+	return false, nil
+}
+
+// IsUsingSRIOV returns true if any of the pod's interfaces is a sriov one.
+// First, it retrives the list of networks names from the CNFC annotation and then
+// checks the config of the corresponding network-attachment definition (NAD).
+func (p *Pod) IsUsingSRIOV() (bool, error) {
+	const (
+		cncfNetworksAnnotation = "k8s.v1.cni.cncf.io/networks"
+	)
+
+	cncfNetworks, exist := p.Annotations[cncfNetworksAnnotation]
+	if !exist {
+		return false, nil
+	}
+
+	// Get all CNCF network names
+	cncfNetworkNames := getCNCFNetworksNamesFromPodAnnotation(cncfNetworks)
+
+	// For each CNCF network, get its network attachment definition and check
+	// whether its config's type is "sriov"
+	oc := clientsholder.GetClientsHolder()
+
+	for _, networkName := range cncfNetworkNames {
+		logrus.Tracef("%s: Reviewing network-attachment definition %q", p, networkName)
+		nad, err := oc.CNCFNetworkingClient.NetworkAttachmentDefinitions(p.Namespace).Get(context.TODO(), networkName, v1.GetOptions{})
+		if err != nil {
+			return false, fmt.Errorf("failed to get NetworkAttachment %s: %v", networkName, err)
+		}
+
+		isSRIOV, err := isNetworkAttachmentDefinitionConfigTypeSRIOV(nad.Spec.Config)
+		if err != nil {
+			return false, fmt.Errorf("failed to know if network-attachment %s is sriov: %v", networkName, err)
+		}
+
+		logrus.Tracef("%s: NAD config: %s", p, nad.Spec.Config)
+		if isSRIOV {
+			return true, nil
+		}
+	}
+
+	return false, nil
 }

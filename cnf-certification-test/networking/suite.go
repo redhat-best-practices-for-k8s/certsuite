@@ -127,6 +127,15 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, dpdkPods)
 		testExecProbDenyAtCPUPinning(dpdkPods)
 	})
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestRestartOnRebootLabelOnPodsUsingSRIOV)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		sriovPods, err := env.GetPodsUsingSRIOV()
+		if err != nil {
+			ginkgo.Fail(fmt.Sprintf("Failure getting pods using SRIOV: %v", err))
+		}
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, sriovPods)
+		testRestartOnRebootLabelOnPodsUsingSriov(sriovPods)
+	})
 })
 
 func testExecProbDenyAtCPUPinning(dpdkPods []*provider.Pod) {
@@ -393,4 +402,29 @@ func testNetworkPolicyDenyAll(env *provider.TestEnvironment) {
 	}
 
 	testhelper.AddTestResultLog("Non-compliant", podsMissingDenyAllDefaultPolicies, tnf.ClaimFilePrintf, ginkgo.Fail)
+}
+
+func testRestartOnRebootLabelOnPodsUsingSriov(sriovPods []*provider.Pod) {
+	const (
+		restartOnRebootLabel = "restart-on-reboot"
+	)
+
+	nonCompliantPods := []string{}
+	for _, pod := range sriovPods {
+		logrus.Debugf("Pod %s uses SRIOV network/s. Checking label %s existence & value.", pod, restartOnRebootLabel)
+
+		labelValue, exist := pod.GetLabels()[restartOnRebootLabel]
+		if !exist {
+			tnf.ClaimFilePrintf("Pod %s is using SRIOV but the label %s was not found.", pod, restartOnRebootLabel)
+			nonCompliantPods = append(nonCompliantPods, pod.String())
+			continue
+		}
+
+		if labelValue != "true" {
+			tnf.ClaimFilePrintf("Pod %s is using SRIOV but the %s label value is not true.", pod, restartOnRebootLabel)
+			nonCompliantPods = append(nonCompliantPods, pod.String())
+		}
+	}
+
+	testhelper.AddTestResultLog("Non-compliant", nonCompliantPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
