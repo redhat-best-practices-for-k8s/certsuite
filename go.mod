@@ -156,6 +156,7 @@ require (
 require (
 	github.com/deckarep/golang-set/v2 v2.1.0
 	github.com/go-yaml/yaml v2.1.0+incompatible
+	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/openshift/machine-config-operator v0.0.0-00010101000000-000000000000
 	github.com/test-network-function/cnfextensions v0.0.0-20230117151237-387530df5a0a
 	github.com/test-network-function/privileged-daemonset v0.0.7

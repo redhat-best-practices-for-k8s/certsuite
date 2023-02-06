@@ -274,3 +274,72 @@ func TestHasNodeSelector(t *testing.T) {
 		assert.Equal(t, tc.expectedOutput, tc.testPod.HasNodeSelector())
 	}
 }
+
+func TestGetSRIOVNetworksNamesFromCNCFNetworks(t *testing.T) {
+	testCases := []struct {
+		networksAnnotation   string
+		expectedNetworkNames []string
+	}{
+		{
+			networksAnnotation:   "",
+			expectedNetworkNames: []string{},
+		},
+		{
+			networksAnnotation:   "net1,net2",
+			expectedNetworkNames: []string{"net1", "net2"},
+		},
+		{
+			networksAnnotation:   "   net1,       net2  ,net3",
+			expectedNetworkNames: []string{"net1", "net2", "net3"},
+		},
+		{
+			networksAnnotation:   `[{"name": "net1", "otherField" : "otherFieldValue1"}, {"name": "net2"}]`,
+			expectedNetworkNames: []string{"net1", "net2"},
+		},
+	}
+
+	for _, tc := range testCases {
+		netNames := getCNCFNetworksNamesFromPodAnnotation(tc.networksAnnotation)
+		assert.Equal(t, tc.expectedNetworkNames, netNames)
+	}
+}
+
+func TestIssNetworkAttachmentDefinitionConfigTypeSRIOV(t *testing.T) {
+	testCases := []struct {
+		networkAttachmentDefinition string
+		expectedNadTypeSriov        bool
+		expectedErrorMsg            string
+	}{
+		// Single plugin mode:
+		{
+			networkAttachmentDefinition: "",
+			expectedErrorMsg:            "failed to unmarshal cni config : unexpected end of JSON input",
+		},
+		{
+			networkAttachmentDefinition: `{"cniVersion" : "0.4.0", "type" : "macvlan", "otherField": "true"}`,
+			expectedNadTypeSriov:        false,
+		},
+		{
+			networkAttachmentDefinition: `{"cniVersion" : "0.4.0", "type" : "sriov", "otherField": "true"}`,
+			expectedNadTypeSriov:        true,
+		},
+		// Multi-plugin mode:
+		{
+			networkAttachmentDefinition: `{"cniVersion" : "0.4.0", "plugins" : [{"type": "mcvlan", "otherField": "true"}, {"type": "firewall"}]}`,
+			expectedNadTypeSriov:        false,
+		},
+		{
+			networkAttachmentDefinition: `{"cniVersion" : "0.4.0", "plugins" : [{"type": "mcvlan", "otherField": "true"}, {"type": "sriov", "otherfield": "false"}]}`,
+			expectedNadTypeSriov:        true,
+		},
+	}
+
+	for _, tc := range testCases {
+		isTypeSriov, err := isNetworkAttachmentDefinitionConfigTypeSRIOV(tc.networkAttachmentDefinition)
+		if err != nil {
+			assert.Equal(t, tc.expectedErrorMsg, err.Error())
+		} else {
+			assert.Equal(t, tc.expectedNadTypeSriov, isTypeSriov)
+		}
+	}
+}
