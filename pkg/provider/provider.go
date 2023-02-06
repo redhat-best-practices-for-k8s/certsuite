@@ -166,10 +166,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.variables = data.Env
 	env.Nodes = createNodes(data.Nodes.Items)
 	env.IstioServiceMesh = data.Istio
-	for i := range data.ValidProtocolNames {
-		// Adding to the array
-		env.ValidProtocolNames = append(env.ValidProtocolNames, data.ValidProtocolNames[i])
-	}
+	env.ValidProtocolNames = append(env.ValidProtocolNames, data.ValidProtocolNames...)
 	for i := range data.AbnormalEvents {
 		aEvent := NewEvent(&data.AbnormalEvents[i])
 		env.AbnormalEvents = append(env.AbnormalEvents, &aEvent)
