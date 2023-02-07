@@ -19,6 +19,7 @@ package performance
 import (
 	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/resources"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
@@ -38,7 +39,13 @@ var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
 
-	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSharedCPUPoolSchedulingPolicy)
+	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestExclusiveCPUPoolIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
+		testExclusiveCPUPool(&env)
+	})
+
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSharedCPUPoolSchedulingPolicy)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		var nonGuaranteedPodContainers = env.GetNonGuaranteedPodContainers()
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, nonGuaranteedPodContainers)
@@ -73,6 +80,30 @@ var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
 		testRtAppsNoExecProbes(&env, guaranteedPodContainersWithExclusiveCPUs)
 	})
 })
+
+func testExclusiveCPUPool(env *provider.TestEnvironment) {
+	var badPods []string
+
+	for _, put := range env.Pods {
+		nBExclusiveCPUPoolContainers := 0
+		nBSharedCPUPoolContainers := 0
+		for _, cut := range put.Containers {
+			if resources.HasExclusiveCPUsAssigned(cut) {
+				nBExclusiveCPUPoolContainers++
+			} else {
+				nBSharedCPUPoolContainers++
+			}
+		}
+
+		if nBExclusiveCPUPoolContainers > 0 && nBSharedCPUPoolContainers > 0 {
+			tnf.ClaimFilePrintf("Pod: %s has containers whose CPUs belong to different pools. Containers in the shared cpu pool: %d "+
+				"Containers in the exclusive cpu pool: %d", put.String(), nBSharedCPUPoolContainers, nBExclusiveCPUPoolContainers)
+			badPods = append(badPods, put.String())
+		}
+	}
+
+	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
+}
 
 func testSchedulingPolicyInCPUPool(env *provider.TestEnvironment,
 	podContainers []*provider.Container, schedulingType string) {
