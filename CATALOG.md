@@ -35,20 +35,6 @@ Suggested Remediation|Remove hostPort configuration from the container
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.6
 Exception Process|There is no documented exception process for this.
 Tags|common
-#### exclusive-cpu-pool
-
-Property|Description
----|---
-Test Case Name|exclusive-cpu-pool
-Test Case Label|access-control-exclusive-cpu-pool
-Unique ID|http://test-network-function.com/testcases/access-control/exclusive-cpu-pool
-Version|v1.0.0
-Description|http://test-network-function.com/testcases/access-control/exclusive-cpu-pool Ensures that if one container in a Pod selects an exclusive CPU pool the rest select the same type of CPU pool
-Result Type|normative
-Suggested Remediation|Ensure that if one container in a Pod selects an exclusive CPU pool the rest also select this type of CPU pool
-Best Practice Reference|https://TODO
-Exception Process|There is no documented exception process for this.
-Tags|faredge
 #### ipc-lock-capability-check
 
 Property|Description
@@ -980,6 +966,20 @@ Tags|common
 
 ### performance
 
+#### exclusive-cpu-pool
+
+Property|Description
+---|---
+Test Case Name|exclusive-cpu-pool
+Test Case Label|performance-exclusive-cpu-pool
+Unique ID|http://test-network-function.com/testcases/performance/exclusive-cpu-pool
+Version|v1.0.0
+Description|http://test-network-function.com/testcases/performance/exclusive-cpu-pool Ensures that if one container in a Pod selects an exclusive CPU pool the rest select the same type of CPU pool
+Result Type|normative
+Suggested Remediation|Ensure that if one container in a Pod selects an exclusive CPU pool the rest also select this type of CPU pool
+Best Practice Reference|https://TODO
+Exception Process|There is no documented exception process for this.
+Tags|faredge
 #### exclusive-cpu-pool-rt-scheduling-policy
 
 Property|Description
