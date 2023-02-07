@@ -57,12 +57,18 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 			ginkgo.Skip("Non-OCP cluster found, skipping testContainersFsDiff")
 		}
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
+		if env.DaemonsetFailedToSpawn {
+			ginkgo.Skip("Debug Daemonset failed to spawn skipping testContainersFsDiff")
+		}
 		testContainersFsDiff(&env)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNonTaintedNodeKernelsIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+		if env.DaemonsetFailedToSpawn {
+			ginkgo.Skip("Debug Daemonset failed to spawn skipping testTainted")
+		}
 		testTainted(&env) // Kind tainted kernels are allowed via config
 	})
 
@@ -78,6 +84,9 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 			ginkgo.Skip("Non-OCP cluster found, skipping testIsSELinuxEnforcing")
 		}
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+		if env.DaemonsetFailedToSpawn {
+			ginkgo.Skip("Debug Daemonset failed to spawn skipping testIsSELinuxEnforcing")
+		}
 		testIsSELinuxEnforcing(&env)
 	})
 
@@ -87,6 +96,9 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 			ginkgo.Skip("Non-OCP cluster found, skipping testHugepages")
 		}
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+		if env.DaemonsetFailedToSpawn {
+			ginkgo.Skip("Debug Daemonset failed to spawn skipping testHugepages")
+		}
 		testHugepages(&env)
 	})
 
@@ -96,6 +108,9 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 			ginkgo.Skip("Non-OCP cluster found, skipping testUnalteredBootParams")
 		}
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+		if env.DaemonsetFailedToSpawn {
+			ginkgo.Skip("Debug Daemonset failed to spawn skipping testUnalteredBootParams")
+		}
 		testUnalteredBootParams(&env)
 	})
 
@@ -105,6 +120,9 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 			ginkgo.Skip("Non-OCP cluster found, skipping testSysctlConfigs")
 		}
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+		if env.DaemonsetFailedToSpawn {
+			ginkgo.Skip("Debug Daemonset failed to spawn skipping testSysctlConfigs")
+		}
 		testSysctlConfigs(&env)
 	})
 
