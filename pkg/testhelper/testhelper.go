@@ -51,9 +51,12 @@ const (
 	SchedulingPriority     = "SchedulingPriority"
 	ReasonForNonCompliance = "ReasonForNonCompliance"
 	ReasonForCompliance    = "ReasonForCompliance"
+	Category               = "Category"
 )
 
 const (
+	UndefinedType        = "Undefined Type"
+	CnfType              = "Cnf"
 	PodType              = "Pod"
 	ContainerType        = "Container"
 	ContainerProcessType = "ContainerProcess"
@@ -69,33 +72,47 @@ func NewProcessObjectOut(aContainer *ObjectOut, aPolicy, aPriority, aCommandLine
 }
 
 func NewContainerObjectOut(aContainer *provider.Container, aReason string, isCompliant bool) (out *ObjectOut) {
-	out = &ObjectOut{}
-	out.ObjectType = ContainerType
-	out.ObjectFields = make(map[string]string)
-	out.ObjectFields[Namespace] = aContainer.Namespace
-	out.ObjectFields[PodName] = aContainer.Podname
-	out.ObjectFields[ContainerName] = aContainer.Name
-	if isCompliant {
-		out.ObjectFields[ReasonForCompliance] = aReason
-	} else {
-		out.ObjectFields[ReasonForNonCompliance] = aReason
-	}
+	return NewContainerObjectOutBase(aContainer.Namespace, aContainer.Podname, aContainer.Name, aReason, isCompliant)
+}
 
+func NewContainerObjectOutBase(aNamespace, aPodName, aContainerName, aReason string, isCompliant bool) (out *ObjectOut) {
+	out = New(aReason, isCompliant)
+	out.ObjectType = ContainerType
+	out.ObjectFields[Namespace] = aNamespace
+	out.ObjectFields[PodName] = aPodName
+	out.ObjectFields[ContainerName] = aContainerName
 	return out
 }
 
-func NewPodObjectOut(aPod *provider.Pod, aReason string, isCompliant bool) (out *ObjectOut) {
-	out = &ObjectOut{}
+func NewPodObjectOut(aPod *provider.Pod, aCategory, aReason string, isCompliant bool) (out *ObjectOut) {
+	out = New(aReason, isCompliant)
 	out.ObjectType = PodType
-	out.ObjectFields = make(map[string]string)
 	out.ObjectFields[Namespace] = aPod.Namespace
 	out.ObjectFields[PodName] = aPod.Name
+	out.ObjectFields[Category] = aCategory
+	return out
+}
+
+func New(aReason string, isCompliant bool) (out *ObjectOut) {
+	out = &ObjectOut{}
+	out.ObjectType = UndefinedType
+	out.ObjectFields = make(map[string]string)
 	if isCompliant {
 		out.ObjectFields[ReasonForCompliance] = aReason
 	} else {
 		out.ObjectFields[ReasonForNonCompliance] = aReason
 	}
 	return out
+}
+
+func (obj *ObjectOut) AddField(aKey, aString string) (out *ObjectOut) {
+	obj.ObjectFields[aKey] = aString
+	return obj
+}
+
+func (obj *ObjectOut) SetType(aType string) (out *ObjectOut) {
+	obj.ObjectType = aType
+	return obj
 }
 
 func ResultToString(result int) (str string) {

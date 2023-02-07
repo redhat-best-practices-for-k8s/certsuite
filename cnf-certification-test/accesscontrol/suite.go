@@ -648,26 +648,25 @@ func test1337UIDs(env *provider.TestEnvironment) {
 // an allowed one will pass the test
 
 func testContainerSCC(env *provider.TestEnvironment) {
-	var badContainer []securitycontextcontainer.PodListcategory
-	var goodContainer []securitycontextcontainer.PodListcategory
+	var compliantObjects []*testhelper.ObjectOut
+	var nonCompliantObjects []*testhelper.ObjectOut
 	highLevelCat := securitycontextcontainer.CategoryID1
 	for _, pod := range env.Pods {
 		listCategory := securitycontextcontainer.CheckPod(pod)
 		for _, cat := range listCategory {
 			if cat.Category > securitycontextcontainer.CategoryID1NoUID0 {
-				badContainer = append(badContainer, cat)
+				aContainerOut := testhelper.NewContainerObjectOutBase(cat.NameSpace, cat.Podname, cat.Containername, "container category is NOT category 1 or category NoUID0", false).AddField(testhelper.Category, cat.Category.String())
+				nonCompliantObjects = append(nonCompliantObjects, aContainerOut)
 			} else {
-				goodContainer = append(goodContainer, cat)
+				aContainerOut := testhelper.NewContainerObjectOutBase(cat.NameSpace, cat.Podname, cat.Containername, "container category is category 1 or category NoUID0", false).AddField(testhelper.Category, cat.Category.String())
+				compliantObjects = append(compliantObjects, aContainerOut)
 			}
 			if cat.Category > highLevelCat {
 				highLevelCat = cat.Category
 			}
 		}
 	}
-	logrus.Infof("CNF category (highest container category across all containers):  %s \n", highLevelCat)
-	tnf.ClaimFilePrintf("CNF category (highest container category across all containers):  %s \n", highLevelCat)
-	logrus.Infof("List of containers that are Category1 or CategoryNoUID0 %+v \n", goodContainer)
-	tnf.ClaimFilePrintf("List of containers that are Category1 or CategoryNoUID0 %+v \n", goodContainer)
-	logrus.Infof("List of non-compliant containers that are not from Category1 or CategoryNoUID0 - %+v", badContainer)
-	testhelper.AddTestResultLog("List of non-compliant containers that are not from Category1 or CategoryNoUID0 - ", badContainer, tnf.ClaimFilePrintf, ginkgo.Fail)
+	aCNFOut := testhelper.New("Overall Pod category", false).SetType(testhelper.CnfType).AddField(testhelper.Category, highLevelCat.String())
+	compliantObjects = append(compliantObjects, aCNFOut)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, ginkgo.Fail)
 }
