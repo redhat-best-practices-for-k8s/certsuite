@@ -348,7 +348,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 
 	TestExclusiveCPUPoolIdentifier = AddCatalogEntry(
 		"exclusive-cpu-pool",
-		common.AccessControlTestKey,
+		common.PerformanceTestKey,
 		`Ensures that if one container in a Pod selects an exclusive CPU pool the rest select the same type of CPU pool`,
 		ExclusiveCPUPoolRemediation,
 		NormativeResult,
