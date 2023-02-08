@@ -162,3 +162,32 @@ func testRtAppsNoExecProbes(env *provider.TestEnvironment, cuts []*provider.Cont
 	}
 	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
+
+func testRtAppsNoExecProbes(env *provider.TestEnvironment, cuts []*provider.Container) {
+	badContainers := []string{}
+	for _, cut := range cuts {
+		nonCompliantCut := false
+		pids, err := crclient.GetContainerPids(cut, env)
+		if err != nil {
+			badContainers = append(badContainers, cut.String())
+			tnf.ClaimFilePrintf("Could not determine the processes pids for container %s, err: %v", cut, err)
+			break
+		}
+		for _, pid := range pids {
+			schedPolicy, _, err := scheduling.GetProcessCPUScheduling(pid, cut)
+			if err != nil {
+				tnf.ClaimFilePrintf("Could not determine the scheduling policy for container %s (pid=%v), err: %v", cut, pid, err)
+				nonCompliantCut = true
+				break
+			}
+			if scheduling.PolicyIsRT(schedPolicy) && cut.HasExecProbes() {
+				tnf.ClaimFilePrintf("Pod %s/Container %s defines exec probes while having a RT scheduling policy for pid %d", cut.Podname, cut, pid)
+				nonCompliantCut = true
+			}
+		}
+		if nonCompliantCut {
+			badContainers = append(badContainers, cut.String())
+		}
+	}
+	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+}
