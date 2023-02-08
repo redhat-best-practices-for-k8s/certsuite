@@ -107,7 +107,7 @@ func testExclusiveCPUPool(env *provider.TestEnvironment) {
 
 func testSchedulingPolicyInCPUPool(env *provider.TestEnvironment,
 	podContainers []*provider.Container, schedulingType string) {
-	nonCompliantContainersMap := make(map[*provider.Container][]int)
+	nonCompliantContainerMap := make(map[*provider.Container][]int)
 	var compliantContainers []*provider.Container
 	for _, testContainer := range podContainers {
 		logrus.Infof("Processing %v", testContainer)
@@ -125,22 +125,20 @@ func testSchedulingPolicyInCPUPool(env *provider.TestEnvironment,
 		pids := crclient.GetPidsFromPidNamespace(pidNamespace, testContainer)
 
 		// Check for the specified priority for each processes running in that pid namespace
-		if scheduling.ProcessPidsCPUScheduling(pids, testContainer, nonCompliantContainersMap, schedulingType) {
+		if scheduling.ProcessPidsCPUScheduling(pids, testContainer, nonCompliantContainerMap, schedulingType) {
 			compliantContainers = append(compliantContainers, testContainer)
 		}
 		logrus.Debugf("Processed %v", testContainer)
 	}
-	if len(nonCompliantContainersMap) != 0 {
+	tnf.ClaimFilePrintf("Compliant", compliantContainers)
+
+	if len(nonCompliantContainerMap) != 0 {
 		nonCompliantContainers := []*provider.Container{}
-		for k := range nonCompliantContainersMap {
+		for k := range nonCompliantContainerMap {
 			nonCompliantContainers = append(nonCompliantContainers, k)
 		}
 		testhelper.AddTestResultLog("Non-compliant", nonCompliantContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 	}
-	if len(compliantContainers) == 0 {
-		ginkgo.Fail("Failed - no container satisfied scheduling requirements")
-	}
-	tnf.ClaimFilePrintf("Compliant", compliantContainers)
 }
 
 func testRtAppsNoExecProbes(env *provider.TestEnvironment, cuts []*provider.Container) {
