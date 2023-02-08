@@ -109,7 +109,7 @@ type TestEnvironment struct { // rename this with testTarget
 	IstioServiceMesh       bool
 	ValidProtocolNames     []string
 	DaemonsetFailedToSpawn bool
-	StorageList            []string
+	StorageList            []storagev1.StorageClass
 }
 
 type MachineConfig struct {
@@ -261,7 +261,7 @@ func buildTestEnvironment() { //nolint:funlen
 		env.StatefulSets = append(env.StatefulSets, aNewStatefulSet)
 	}
 	env.HorizontalScaler = data.Hpas
-	env.StorageClasses = data.StorageClasses
+	env.StorageList = data.StorageClasses
 
 	operators := createOperators(data.Csvs, data.Subscriptions, data.AllInstallPlans, data.AllCatalogSources, false, false, true)
 	env.Operators = operators

@@ -582,7 +582,7 @@ func TestPodTolerationBypass(env *provider.TestEnvironment) {
 }
 func testStorageRequiredPods(env *provider.TestEnvironment) {
 	var podsWithLocalStorage []string
-	var StorageClasses = env.StorageClasses
+	var StorageClasses = env.StorageList
 	var Pvc = env.PersistentVolumeClaims
 	for _, put := range env.Pods {
 		for pvIndex := range put.Spec.Volumes {

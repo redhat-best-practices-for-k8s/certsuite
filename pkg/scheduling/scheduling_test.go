@@ -8,14 +8,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
-// Monkey patching is used here
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-//
->>>>>>> 2d68348 (Adding more details about the pods and removed the boolean variable)
-=======
->>>>>>> 963e22f (Fixed the file scheduling_test.go to be gofmt)
 func TestProcessPidsCPUScheduling(t *testing.T) {
 	testPids := []int{101, 102}
 	testContainer := &provider.Container{}
