@@ -74,9 +74,9 @@ func ProcessPidsCPUScheduling(pids []int, testContainer *provider.Container, non
 		case SharedCPUScheduling:
 			hasCPUSchedulingConditionSuccess = schedulePriority == 0
 		case ExclusiveCPUScheduling:
-			hasCPUSchedulingConditionSuccess = schedulePriority < 10 && (schedulePolicy == SchedulingRoundRobin || schedulePolicy == SchedulingFirstInFirstOut)
+			hasCPUSchedulingConditionSuccess = schedulePriority == 0 || (schedulePriority < 10 && (schedulePolicy == SchedulingRoundRobin || schedulePolicy == SchedulingFirstInFirstOut))
 		case IsolatedCPUScheduling:
-			hasCPUSchedulingConditionSuccess = schedulePolicy == SchedulingRoundRobin || schedulePolicy == SchedulingFirstInFirstOut
+			hasCPUSchedulingConditionSuccess = schedulePriority >= 10 && (schedulePolicy == SchedulingRoundRobin || schedulePolicy == SchedulingFirstInFirstOut)
 		}
 
 		if !hasCPUSchedulingConditionSuccess {
