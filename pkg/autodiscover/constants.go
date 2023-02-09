@@ -19,5 +19,5 @@ const (
 	defaultNamespace = "default"
 	debugLabelPrefix = "test-network-function.com"
 	debugLabelName   = "app"
-	debugLabelValue  = "debug"
+	debugLabelValue  = "tnf-debug"
 )

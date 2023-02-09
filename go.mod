@@ -159,7 +159,7 @@ require (
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/openshift/machine-config-operator v0.0.0-00010101000000-000000000000
 	github.com/test-network-function/cnfextensions v0.0.0-20230117151237-387530df5a0a
-	github.com/test-network-function/privileged-daemonset v0.0.7
+	github.com/test-network-function/privileged-daemonset v0.0.8
 	gopkg.in/yaml.v3 v3.0.1
 	k8s.io/kubectl v0.26.1
 )
