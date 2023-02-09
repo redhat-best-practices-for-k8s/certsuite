@@ -160,7 +160,7 @@ func buildImageWithVersion() string {
 	return tnfPartnerRepo + "/" + supportImage
 }
 
-func buildTestEnvironment() { //nolint:funlen,gocyclo
+func buildTestEnvironment() { //nolint:funlen
 	start := time.Now()
 	env = TestEnvironment{}
 	// Wait for the debug pods to be ready before the autodiscovery starts.
