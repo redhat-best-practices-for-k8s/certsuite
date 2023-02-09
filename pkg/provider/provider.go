@@ -109,7 +109,7 @@ type TestEnvironment struct { // rename this with testTarget
 	IstioServiceMesh       bool
 	ValidProtocolNames     []string
 	DaemonsetFailedToSpawn bool
-	StorageClassList             []storagev1.StorageClass
+	StorageClassList       []storagev1.StorageClass
 }
 
 type MachineConfig struct {
