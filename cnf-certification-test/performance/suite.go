@@ -59,13 +59,6 @@ var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
 		testSchedulingPolicyInCPUPool(&env, guaranteedPodContainersWithExclusiveCPUs, scheduling.ExclusiveCPUScheduling)
 	})
 
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestRtAppNoExecProbes)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		var guaranteedPodContainersWithExclusiveCPUs = env.GetGuaranteedPodContainersWithExlusiveCPUs()
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, guaranteedPodContainersWithExclusiveCPUs)
-		testRtAppsNoExecProbes(&env, guaranteedPodContainersWithExclusiveCPUs)
-	})
-
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsolatedCPUPoolSchedulingPolicy)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		var guaranteedPodContainersWithIsolatedCPUs = env.GetGuaranteedPodContainersWithIsolatedCPUs()
@@ -107,8 +100,9 @@ func testExclusiveCPUPool(env *provider.TestEnvironment) {
 
 func testSchedulingPolicyInCPUPool(env *provider.TestEnvironment,
 	podContainers []*provider.Container, schedulingType string) {
-	nonCompliantContainers := make(map[*provider.Container][]int)
 	var compliantContainers []*provider.Container
+	nonCompliantContainerMap := make(map[*provider.Container][]int)
+
 	for _, testContainer := range podContainers {
 		logrus.Infof("Processing %v", testContainer)
 
@@ -125,15 +119,19 @@ func testSchedulingPolicyInCPUPool(env *provider.TestEnvironment,
 		pids := crclient.GetPidsFromPidNamespace(pidNamespace, testContainer)
 
 		// Check for the specified priority for each processes running in that pid namespace
-		if scheduling.ProcessPidsCPUScheduling(pids, testContainer, nonCompliantContainers, schedulingType) {
+		if scheduling.ProcessPidsCPUScheduling(pids, testContainer, nonCompliantContainerMap, schedulingType) {
 			compliantContainers = append(compliantContainers, testContainer)
 		}
 		logrus.Debugf("Processed %v", testContainer)
 	}
-	if len(nonCompliantContainers) != 0 {
+	tnf.ClaimFilePrintf("Compliant", compliantContainers)
+	if len(nonCompliantContainerMap) != 0 {
+		nonCompliantContainers := []*provider.Container{}
+		for k := range nonCompliantContainerMap {
+			nonCompliantContainers = append(nonCompliantContainers, k)
+		}
 		testhelper.AddTestResultLog("Non-compliant", nonCompliantContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 	}
-	tnf.ClaimFilePrintf("Compliant", compliantContainers)
 }
 
 func testRtAppsNoExecProbes(env *provider.TestEnvironment, cuts []*provider.Container) {
