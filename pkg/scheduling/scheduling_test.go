@@ -8,7 +8,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
-// Monkey patching is used here
 func TestProcessPidsCPUScheduling(t *testing.T) {
 	testPids := []int{101, 102}
 	testContainer := &provider.Container{}
