@@ -594,7 +594,7 @@ func testStorageRequiredPods(env *provider.TestEnvironment) {
 			// We have the list of pods/volumes/claims.
 			// Look through the storageClass list for a match.
 			for i := range Pvc {
-				if Pvc[i].Name == put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName {
+				if Pvc[i].Name == put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName && Pvc[i].Namespace == put.Namespace {
 					for j := range StorageClasses {
 						if Pvc[i].Spec.StorageClassName != nil && StorageClasses[j].Name == *Pvc[i].Spec.StorageClassName {
 							tnf.ClaimFilePrintf("%s has been found to use a local storage enabled storageClass.\n Pvc_name: %s, Storageclass_name : %s, Provisionner_name: %s", put.String(), put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName,
