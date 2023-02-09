@@ -582,7 +582,7 @@ func TestPodTolerationBypass(env *provider.TestEnvironment) {
 }
 func testStorageRequiredPods(env *provider.TestEnvironment) {
 	var podsWithLocalStorage []string
-	var StorageClasses = env.StorageList
+	var StorageClasses = env.StorageClassList
 	var Pvc = env.PersistentVolumeClaims
 	for _, put := range env.Pods {
 		for pvIndex := range put.Spec.Volumes {
@@ -597,12 +597,12 @@ func testStorageRequiredPods(env *provider.TestEnvironment) {
 				if Pvc[i].Name == put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName && Pvc[i].Namespace == put.Namespace {
 					for j := range StorageClasses {
 						if Pvc[i].Spec.StorageClassName != nil && StorageClasses[j].Name == *Pvc[i].Spec.StorageClassName {
-							tnf.ClaimFilePrintf("%s has been found to use a local storage enabled storageClass.\n Pvc_name: %s, Storageclass_name : %s, Provisionner_name: %s", put.String(), put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName,
+							tnf.ClaimFilePrintf("%s has been found to use a local storage enabled storageClass.\n Pvc_name: %s, Storageclass_name : %s, Provisioner_name: %s", put.String(), put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName,
 								StorageClasses[j].Name, StorageClasses[j].Provisioner)
 							podsWithLocalStorage = append(podsWithLocalStorage, put.String())
 							break
 						}
-						tnf.ClaimFilePrintf("%s has been not found to use a local storage enabled storageClass.\n Pvc_name: %s, Storageclass_name : %s, Provisionner_name: %s", put.String(), put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName,
+						tnf.ClaimFilePrintf("%s has been not found to use a local storage enabled storageClass.\n Pvc_name: %s, Storageclass_name : %s, Provisioner_name: %s", put.String(), put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName,
 							StorageClasses[j].Name, StorageClasses[j].Provisioner)
 					}
 				}
