@@ -47,7 +47,7 @@ const (
 	AffinityRequiredKey              = "AffinityRequired"
 	containerName                    = "container-00"
 	DaemonSetNamespace               = "default"
-	DaemonSetName                    = "debug"
+	DaemonSetName                    = "tnf-debug"
 	debugPodsTimeout                 = 5 * time.Minute
 	CniNetworksStatusKey             = "k8s.v1.cni.cncf.io/networks-status"
 	skipConnectivityTestsLabel       = "test-network-function.com/skip_connectivity_tests"
@@ -160,23 +160,36 @@ func buildImageWithVersion() string {
 	return tnfPartnerRepo + "/" + supportImage
 }
 
-func buildTestEnvironment() { //nolint:funlen
-	start := time.Now()
-	env = TestEnvironment{}
-	// Wait for the debug pods to be ready before the autodiscovery starts.
-	oc := clientsholder.GetClientsHolder()
-	k8sPriviledgedDs.SetDaemonSetClient(oc.K8sClient)
+func deployDaemonSet() error {
+	k8sPriviledgedDs.SetDaemonSetClient(clientsholder.GetClientsHolder().K8sClient)
+	dsImage := buildImageWithVersion()
+
+	if k8sPriviledgedDs.IsDaemonSetReady(DaemonSetName, DaemonSetNamespace, dsImage) {
+		return nil
+	}
+
 	matchLabels := make(map[string]string)
 	matchLabels["name"] = DaemonSetName
 	matchLabels["test-network-function.com/app"] = DaemonSetName
-	_, err := k8sPriviledgedDs.CreateDaemonSet(DaemonSetName, DaemonSetNamespace, containerName, buildImageWithVersion(), matchLabels, debugPodsTimeout)
+	_, err := k8sPriviledgedDs.CreateDaemonSet(DaemonSetName, DaemonSetNamespace, containerName, dsImage, matchLabels, debugPodsTimeout)
 	if err != nil {
-		logrus.Errorf("Error deploying partner daemonset %s", err)
+		return fmt.Errorf("could not deploy tnf daemonset, err=%v", err)
 	}
 	err = k8sPriviledgedDs.WaitDaemonsetReady(DaemonSetNamespace, DaemonSetName, debugPodsTimeout)
 	if err != nil {
-		logrus.Errorf("Debug daemonset failure: %s", err)
+		return fmt.Errorf("timed out waiting for tnf daemonset, err=%v", err)
+	}
 
+	return nil
+}
+
+func buildTestEnvironment() { //nolint:funlen
+	start := time.Now()
+	env = TestEnvironment{}
+
+	// Wait for the debug pods to be ready before the autodiscovery starts.
+	if err := deployDaemonSet(); err != nil {
+		logrus.Errorf("The TNF daemonset could not be deployed, err=%v", err)
 		// Because of this failure, we are only able to run a certain amount of tests that do not rely
 		// on the existence of the daemonset debug pods.
 		env.DaemonsetFailedToSpawn = true
