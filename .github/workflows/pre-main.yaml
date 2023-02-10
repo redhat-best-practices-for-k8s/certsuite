@@ -29,8 +29,18 @@ jobs:
   lint:
     name: Run Linter and Vet
     runs-on: ubuntu-20.04
+    env:
+      SHELL: /bin/bash
+      KUBECONFIG: '/home/runner/.kube/config'
+      PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
 
     steps:
+      - name: Write temporary docker file
+        run: |
+          mkdir -p /home/runner/.docker
+          touch ${PFLT_DOCKERCONFIG}
+          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
+
       - name: Set up Go 1.19
         uses: actions/setup-go@v3
         with:
@@ -90,8 +100,18 @@ jobs:
   unit-tests:
     name: Run Unit Tests
     runs-on: ubuntu-20.04
+    env:
+      SHELL: /bin/bash
+      KUBECONFIG: '/home/runner/.kube/config'
+      PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
 
     steps:
+      - name: Write temporary docker file
+        run: |
+          mkdir -p /home/runner/.docker
+          touch ${PFLT_DOCKERCONFIG}
+          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
+
       - name: Set up Go 1.19
         uses: actions/setup-go@v3
         with:

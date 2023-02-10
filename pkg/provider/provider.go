@@ -433,6 +433,10 @@ func (env *TestEnvironment) IsPreflightInsecureAllowed() bool {
 	return env.variables.AllowPreflightInsecure
 }
 
+func (env *TestEnvironment) GetDockerConfigFile() string {
+	return env.variables.PfltDockerconfig
+}
+
 func (env *TestEnvironment) GetOfflineDBPath() string {
 	return env.variables.OfflineDB
 }

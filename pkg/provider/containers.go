@@ -69,43 +69,47 @@ func (c *Container) GetUID() (string, error) {
 	return uid, nil
 }
 
-func (c *Container) SetPreflightResults(preflightImageCache map[string]plibRuntime.Results, allowInsecure bool) error {
-	var results plibRuntime.Results
-	if _, exists := preflightImageCache[c.Image]; !exists {
-		opts := []plibContainer.Option{}
-
-		// Check to make sure that the environment variable is set
-		if val := os.Getenv("PFLT_DOCKERCONFIG"); len(val) > 0 {
-			opts = append(opts, plibContainer.WithDockerConfigJSONFromFile(val))
-		} else {
-			logrus.Errorf("Container func SetPreflightResults has failed due to missing PFLT_DOCKERCONFIG environment variable")
-			return nil
-		}
-		if allowInsecure {
-			logrus.Info("Insecure connections are being allowed to preflight")
-			opts = append(opts, plibContainer.WithInsecureConnection())
-		}
-
-		check := plibContainer.NewCheck(c.Image, opts...)
-
-		// Create artifacts handler
-		artifactsWriter, err := artifacts.NewMapWriter()
-		if err != nil {
-			return err
-		}
-		ctx := artifacts.ContextWithWriter(context.Background(), artifactsWriter)
-		var runtimeErr error
-		results, runtimeErr = check.Run(ctx)
-		logrus.StandardLogger().Out = os.Stderr
-
-		if runtimeErr != nil {
-			logrus.Error(runtimeErr)
-			return runtimeErr
-		}
-		preflightImageCache[c.Image] = results
+func (c *Container) SetPreflightResults(preflightImageCache map[string]plibRuntime.Results, env *TestEnvironment) error {
+	// Short circuit if the image already exists in the cache
+	if _, exists := preflightImageCache[c.Image]; exists {
+		c.PreflightResults = preflightImageCache[c.Image]
+		return nil
 	}
 
-	// Store the result into the cache
+	var results plibRuntime.Results
+	opts := []plibContainer.Option{}
+
+	// Check to make sure that the environment variable is set
+	if len(env.GetDockerConfigFile()) > 0 {
+		opts = append(opts, plibContainer.WithDockerConfigJSONFromFile(env.GetDockerConfigFile()))
+	} else {
+		logrus.Errorf("Container func SetPreflightResults has failed due to missing PFLT_DOCKERCONFIG environment variable")
+		return nil
+	}
+	if env.IsPreflightInsecureAllowed() {
+		logrus.Info("Insecure connections are being allowed to preflight")
+		opts = append(opts, plibContainer.WithInsecureConnection())
+	}
+
+	check := plibContainer.NewCheck(c.Image, opts...)
+
+	// Create artifacts handler
+	artifactsWriter, err := artifacts.NewMapWriter()
+	if err != nil {
+		return err
+	}
+	ctx := artifacts.ContextWithWriter(context.Background(), artifactsWriter)
+	var runtimeErr error
+	results, runtimeErr = check.Run(ctx)
+	logrus.StandardLogger().Out = os.Stderr
+
+	if runtimeErr != nil {
+		logrus.Error(runtimeErr)
+		return runtimeErr
+	}
+
+	// Store the result into the cache and store the Results into the container's PreflightResults var.
+	preflightImageCache[c.Image] = results
 	c.PreflightResults = preflightImageCache[c.Image]
 	return nil
 }

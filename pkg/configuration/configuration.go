@@ -130,4 +130,5 @@ type TestParameters struct {
 	LogLevel               string `default:"debug" split_words:"true"`
 	OfflineDB              string `split_words:"true"`
 	AllowPreflightInsecure bool   `split_words:"true"`
+	PfltDockerconfig       string `split_words:"true" required:"true" envconfig:"PFLT_DOCKERCONFIG"`
 }

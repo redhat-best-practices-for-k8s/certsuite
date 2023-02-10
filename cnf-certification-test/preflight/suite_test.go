@@ -15,3 +15,15 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 package preflight
+
+import (
+	"testing"
+)
+
+func TestGetUniqueTestEntriesFromContainerResults(t *testing.T) {
+	// Note: preflight lib does not expose their underlying plibRuntime.Result struct vars so I can not write unit tests for this
+}
+
+func TestGetUniqueTestEntriesFromOperatorResults(t *testing.T) {
+	// Note: preflight lib does not expose their underlying plibRuntime.Result struct vars so I can not write unit tests for this
+}

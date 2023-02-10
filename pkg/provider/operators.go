@@ -64,7 +64,7 @@ func (op *Operator) String() string {
 	return fmt.Sprintf("csv: %s ns:%s subscription:%s targetNamespace=%s", op.Name, op.Namespace, op.SubscriptionName, op.TargetNamespace)
 }
 
-func (op *Operator) SetPreflightResults(allowInsecure bool) error {
+func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
 	bundleImage := op.InstallPlans[0].BundleImage
 	indexImage := op.InstallPlans[0].IndexImage
 	oc := clientsholder.GetClientsHolder()
@@ -75,17 +75,16 @@ func (op *Operator) SetPreflightResults(allowInsecure bool) error {
 		return err
 	}
 	ctx := artifacts.ContextWithWriter(context.Background(), artifactsWriter)
-
 	opts := []plibOperator.Option{}
 
 	// Check to make sure that the environment variable is set
-	if val := os.Getenv("PFLT_DOCKERCONFIG"); len(val) > 0 {
-		opts = append(opts, plibOperator.WithDockerConfigJSONFromFile(val))
+	if len(env.GetDockerConfigFile()) > 0 {
+		opts = append(opts, plibOperator.WithDockerConfigJSONFromFile(env.GetDockerConfigFile()))
 	} else {
 		logrus.Errorf("Operator func SetPreflightResults has failed due to missing PFLT_DOCKERCONFIG environment variable")
 		return nil
 	}
-	if allowInsecure {
+	if env.IsPreflightInsecureAllowed() {
 		logrus.Info("Insecure connections are being allowed to preflight")
 		opts = append(opts, plibOperator.WithInsecureConnection())
 	}
