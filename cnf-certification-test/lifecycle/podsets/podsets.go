@@ -39,7 +39,7 @@ var WaitForDeploymentSetReady = func(ns, name string, timeout time.Duration) boo
 		if err != nil {
 			logrus.Errorf("Error while getting deployment %s (ns: %s), err: %v", name, ns, err)
 		} else if !dp.IsDeploymentReady() {
-			logrus.Errorf("%s is not ready yet", dp.ToString())
+			logrus.Infof("%s is not ready yet", dp.ToString())
 		} else {
 			logrus.Tracef("%s is ready!", dp.ToString())
 			return true
