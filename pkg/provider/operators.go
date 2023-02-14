@@ -68,6 +68,7 @@ func (op *Operator) String() string {
 	return fmt.Sprintf("csv: %s ns:%s subscription:%s targetNamespace=%s", op.Name, op.Namespace, op.SubscriptionName, op.TargetNamespace)
 }
 
+//nolint:funlen
 func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
 	bundleImage := op.InstallPlans[0].BundleImage
 	indexImage := op.InstallPlans[0].IndexImage

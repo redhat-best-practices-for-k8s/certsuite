@@ -73,6 +73,7 @@ func (c *Container) GetUID() (string, error) {
 	return uid, nil
 }
 
+//nolint:funlen
 func (c *Container) SetPreflightResults(preflightImageCache map[string]plibRuntime.Results, env *TestEnvironment) error {
 	logrus.Infof("Running preflight container test against image: %s with name: %s", c.Image, c.Name)
 
