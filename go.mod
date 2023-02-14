@@ -208,7 +208,6 @@ require (
 	github.com/deckarep/golang-set/v2 v2.1.0
 	github.com/go-logr/logr v1.2.3
 	github.com/go-logr/stdr v1.2.2
-	github.com/go-yaml/yaml v2.1.0+incompatible
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/openshift/machine-config-operator v0.0.0-00010101000000-000000000000
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-00010101000000-000000000000
