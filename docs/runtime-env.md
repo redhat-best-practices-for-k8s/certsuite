@@ -28,6 +28,24 @@ export TNF_NON_INTRUSIVE_ONLY=false
 ```
 Intrusive tests are enabled by default.
 
+## Preflight Integration
+When running the `preflight` suite of tests, there are a few environment variables that
+will need to be set:
+
+`PFLT_DOCKERCONFIG` is a required variable for running the preflight test suite.  This 
+provides credentials to the underlying preflight library for being able to pull/manipulate
+images and image bundles for testing.
+
+When running as a container, the docker config is mounted to the container via volume mount.
+
+When running as a standalone binary, the environment variables are consumed directly from your local machine.
+
+See more about this variable [here](https://github.com/redhat-openshift-ecosystem/openshift-preflight/blob/main/docs/CONFIG.md).
+
+`TNF_ALLOW_PREFLIGHT_INSECURE` (default: false) is required set to `true` if you are running
+against a private container registry that has self-signed certificates.
+
+
 ## Disconnected environment
 In a disconnected environment, only specific versions of images are mirrored to
 the local repo. For those environments, the partner pod image

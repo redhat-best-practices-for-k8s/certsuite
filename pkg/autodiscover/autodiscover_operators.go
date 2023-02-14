@@ -112,7 +112,7 @@ func findSubscriptions(olmClient clientOlm.Interface, namespaces []string) []olm
 		subscriptions = append(subscriptions, subscription.Items...)
 	}
 
-	logrus.Infof("Found %d subscriptions in the target namespaces:", len(subscriptions))
+	logrus.Infof("Found %d subscriptions in the target namespaces", len(subscriptions))
 	for i := range subscriptions {
 		logrus.Infof(" Subscriptions name: %s (ns: %s)", subscriptions[i].Name, subscriptions[i].Namespace)
 	}

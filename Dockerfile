@@ -90,6 +90,7 @@ COPY --from=db ${OCT_DB_PATH} ${TNF_OFFLINE_DB}
 
 ENV TNF_CONFIGURATION_PATH=/usr/tnf/config/tnf_config.yml \
     KUBECONFIG=/usr/tnf/kubeconfig/config \
+    PFLT_DOCKERCONFIG=/usr/tnf/dockercfg/config.json \
     PATH="/usr/local/osdk/bin:${PATH}"
 WORKDIR ${TNF_DIR}
 ENV SHELL=/bin/bash
