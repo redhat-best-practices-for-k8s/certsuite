@@ -17,12 +17,16 @@
 package provider
 
 import (
+	"bytes"
 	"context"
 	"fmt"
+	"log"
 	"os"
 	"sort"
 	"strings"
 
+	"github.com/go-logr/logr"
+	"github.com/go-logr/stdr"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
 	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
@@ -89,11 +93,21 @@ func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
 		opts = append(opts, plibOperator.WithInsecureConnection())
 	}
 
+	// Add logger output to the context
+	logbytes := bytes.NewBuffer([]byte{})
+	checklogger := log.Default()
+	checklogger.SetOutput(logbytes)
+	logger := stdr.New(checklogger)
+	ctx = logr.NewContext(ctx, logger)
+
 	check := plibOperator.NewCheck(bundleImage, indexImage, oc.KubeConfig, opts...)
 	results, err := check.Run(ctx)
 	if err != nil {
 		return err
 	}
+
+	// Take all of the preflight logs and stick them into logrus.
+	logrus.Info(logbytes.String())
 
 	e := os.RemoveAll("artifacts/")
 	if e != nil {
