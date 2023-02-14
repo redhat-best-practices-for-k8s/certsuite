@@ -9,6 +9,8 @@ targetCrdFilters:
     scalable: false
   - nameSuffix: "test-network-function.com"
     scalable: false
+  - nameSuffix: "tutorial.my.domain"
+    scalable: true 
 managedDeployments:
   - name: jack
 managedStatefulsets:

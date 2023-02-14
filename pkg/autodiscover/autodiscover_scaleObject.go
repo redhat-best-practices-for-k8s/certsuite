@@ -2,6 +2,7 @@ package autodiscover
 
 import (
 	"context"
+	"strings"
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
@@ -24,7 +25,7 @@ func GetscaleCrUndetTest(namespaces []string, crds []*apiextv1.CustomResourceDef
 	clients := clientsholder.GetClientsHolder()
 	for _, aCrd := range crds {
 		for _, crdFilter := range testData {
-			if crdFilter.NameSuffix == aCrd.Name {
+			if strings.HasSuffix(aCrd.Name, crdFilter.NameSuffix) {
 				for _, version := range aCrd.Spec.Versions {
 					gvr := schema.GroupVersionResource{
 						Group:    aCrd.Spec.Group,

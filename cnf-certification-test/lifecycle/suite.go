@@ -320,11 +320,11 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration)
 	failedDeployments := []string{}
 	for i := range env.Deployments {
 		if scaling.IsManaged(env.Deployments[i].Name, env.Config.ManagedDeployments) {
-			if !scaling.CheckOwnerReference(env.Deployments[i].GetOwnerReferences(), env.Config.CrdFilters) {
+			if !scaling.CheckOwnerReference(env.Deployments[i].GetOwnerReferences(), env.Config.CrdFilters, env.Crds) {
 				failedDeployments = append(failedDeployments, env.Deployments[i].ToString())
-				tnf.ClaimFilePrintf("%s is scaling failed due to OwnerReferences that are not scalable", env.Deployments[i].String())
+				tnf.ClaimFilePrintf("%s is scaling failed due to OwnerReferences that are not scalable", env.Deployments[i].ToString())
 			} else {
-				logrus.Infof("%s is scaling skipped due to scalable OwnerReferences, test will run on te cr scaling", env.Deployments[i].String())
+				logrus.Infof("%s is scaling skipped due to scalable OwnerReferences, test will run on te cr scaling", env.Deployments[i].ToString())
 			}
 			continue
 		}
@@ -387,11 +387,11 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 	failedStatefulSets := []string{}
 	for i := range env.StatefulSets {
 		if scaling.IsManaged(env.StatefulSets[i].Name, env.Config.ManagedStatefulsets) {
-			if !scaling.CheckOwnerReference(env.StatefulSets[i].GetOwnerReferences(), env.Config.CrdFilters) {
+			if !scaling.CheckOwnerReference(env.StatefulSets[i].GetOwnerReferences(), env.Config.CrdFilters, env.Crds) {
 				failedStatefulSets = append(failedStatefulSets, env.StatefulSets[i].ToString())
-				tnf.ClaimFilePrintf("%s is scaling failed due to OwnerReferences that are not scalable", env.Deployments[i].String())
+				tnf.ClaimFilePrintf("%s is scaling failed due to OwnerReferences that are not scalable", env.Deployments[i].ToString())
 			} else {
-				logrus.Infof("%s is scaling skipped due to scalable OwnerReferences, test will run on te cr scaling", env.StatefulSets[i].String())
+				logrus.Infof("%s is scaling skipped due to scalable OwnerReferences, test will run on te cr scaling", env.StatefulSets[i].ToString())
 			}
 			continue
 		}
