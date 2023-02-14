@@ -1,5 +1,4 @@
-
-# CNF Certification Test ![build](https://github.com/test-network-function/cnf-certification-test/actions/workflows/merge.yaml/badge.svg) [![Go Report Card](https://goreportcard.com/badge/github.com/test-network-function/test-network-function)](https://goreportcard.com/report/github.com/test-network-function/cnf-certification-test) [![LICENSE](https://img.shields.io/github/license/test-network-function/cnf-certification-test.svg)](https://github.com/test-network-function/cnf-certification-test/blob/main/LICENSE) [![go-doc](https://godoc.org/github.com/test-network-function/cnf-certification-test?status.svg)](https://godoc.org/github.com/test-network-function/cnf-certification-test)
+# CNF Certification Test ![build](https://github.com/test-network-function/cnf-certification-test/actions/workflows/merge.yaml/badge.svg) [![Go Report Card](https://goreportcard.com/badge/github.com/test-network-function/test-network-function)](https://goreportcard.com/report/github.com/test-network-function/cnf-certification-test) [![license](https://img.shields.io/badge/license-Apache%202-blue?color=blue&labelColor=gray&logo=apache&logoColor=lightgray&style=flat)](https://github.com/test-network-function/cnf-certification-test/blob/main/LICENSE) [![go-doc](https://godoc.org/github.com/test-network-function/cnf-certification-test?status.svg)](https://godoc.org/github.com/test-network-function/cnf-certification-test)
 
 ## Objective
 
@@ -26,3 +25,8 @@ for deployment on Red Hat OpenShift clusters are followed.
 ## Language
 
 Golang
+
+## License
+CNF Certification Test is copyright [Red Hat, Inc.](https://www.redhat.com) and available
+under an
+[Apache 2 license](https://github.com/test-network-function/cnf-certification-test/blob/main/LICENSE).
