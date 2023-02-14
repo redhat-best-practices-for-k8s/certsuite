@@ -471,6 +471,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#preflight-integration" class="md-nav__link">
+    Preflight Integration
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#disconnected-environment" class="md-nav__link">
     Disconnected environment
   </a>
@@ -769,6 +776,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#preflight-integration" class="md-nav__link">
+    Preflight Integration
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#disconnected-environment" class="md-nav__link">
     Disconnected environment
   </a>
@@ -815,6 +829,17 @@ following:
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">TNF_NON_INTRUSIVE_ONLY</span><span class="o">=</span><span class="nb">false</span>
 </code></pre></div>
 Intrusive tests are enabled by default.</p>
+<h2 id="preflight-integration">Preflight Integration<a class="headerlink" href="#preflight-integration" title="Permanent link">&para;</a></h2>
+<p>When running the <code>preflight</code> suite of tests, there are a few environment variables that
+will need to be set:</p>
+<p><code>PFLT_DOCKERCONFIG</code> is a required variable for running the preflight test suite.  This 
+provides credentials to the underlying preflight library for being able to pull/manipulate
+images and image bundles for testing.</p>
+<p>When running as a container, the docker config is mounted to the container via volume mount.</p>
+<p>When running as a standalone binary, the environment variables are consumed directly from your local machine.</p>
+<p>See more about this variable <a href="https://github.com/redhat-openshift-ecosystem/openshift-preflight/blob/main/docs/CONFIG.md">here</a>.</p>
+<p><code>TNF_ALLOW_PREFLIGHT_INSECURE</code> (default: false) is required set to <code>true</code> if you are running
+against a private container registry that has self-signed certificates.</p>
 <h2 id="disconnected-environment">Disconnected environment<a class="headerlink" href="#disconnected-environment" title="Permanent link">&para;</a></h2>
 <p>In a disconnected environment, only specific versions of images are mirrored to
 the local repo. For those environments, the partner pod image
