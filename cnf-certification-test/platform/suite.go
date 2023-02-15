@@ -170,7 +170,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 
 func TestServiceMesh(env *provider.TestEnvironment) {
 	// check if istio is installed
-	if !env.IstioServiceMesh {
+	if !env.IstioServiceMeshFound {
 		tnf.ClaimFilePrintf("Istio is not installed")
 		ginkgo.Skip("No service mesh detected.")
 	}
