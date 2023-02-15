@@ -7,7 +7,7 @@ on:
 jobs:
   update-certification:
     name: Update offline mapping of RHCOS to OCP version
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       SHELL: /bin/bash        
 
