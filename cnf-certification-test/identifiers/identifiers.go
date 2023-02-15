@@ -1173,10 +1173,8 @@ var (
 func GetGinkgoTestIDAndLabels(identifier claim.Identifier) (testID string, tags []string) {
 	tags = strings.Split(identifier.Tags, ",")
 	tags = append(tags, identifier.Id, identifier.Suite)
-
-	TestIDToClaimID[testID] = identifier
-
-	return testID, tags
+	TestIDToClaimID[identifier.Id] = identifier
+	return identifier.Id, tags
 }
 
 // Catalog is the JUnit testcase catalog of tests.
