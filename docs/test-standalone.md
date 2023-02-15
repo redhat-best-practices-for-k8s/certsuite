@@ -27,7 +27,7 @@ make install-tools
 Dependency|Minimum Version
 ---|---
 [GoLang](https://golang.org/dl/)|1.19
-[golangci-lint](https://golangci-lint.run/usage/install/)|1.51.0
+[golangci-lint](https://golangci-lint.run/usage/install/)|1.51.1
 [jq](https://stedolan.github.io/jq/)|1.6
 [OpenShift Client](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/)|4.11
 
