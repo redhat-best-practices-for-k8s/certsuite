@@ -37,7 +37,7 @@ env:
 jobs:
   test-and-push-tnf-image-main:
     name: 'Test and push the `cnf-certification-test` image'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
@@ -135,7 +135,7 @@ jobs:
 
   test-and-push-tnf-image-40x:
     name: 'Test and push the 4.0.x `cnf-certification-test` image'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'

@@ -28,7 +28,7 @@ env:
 jobs:
   lint:
     name: Run Linter and Vet
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
@@ -66,7 +66,7 @@ jobs:
         run: make vet
   shellcheck:
     name: Shellcheck
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - name: Run ShellCheck
@@ -79,7 +79,7 @@ jobs:
           scandir: script
           severity: style
   yamllint:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - name: yaml-lint
@@ -99,7 +99,7 @@ jobs:
 
   unit-tests:
     name: Run Unit Tests
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
@@ -148,7 +148,7 @@ jobs:
 
   smoke-tests:
     name: Run Smoke Tests
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
