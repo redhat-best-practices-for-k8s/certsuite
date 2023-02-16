@@ -86,14 +86,7 @@ func (c *Container) SetPreflightResults(preflightImageCache map[string]plibRunti
 
 	var results plibRuntime.Results
 	opts := []plibContainer.Option{}
-
-	// Check to make sure that the environment variable is set
-	if len(env.GetDockerConfigFile()) > 0 {
-		opts = append(opts, plibContainer.WithDockerConfigJSONFromFile(env.GetDockerConfigFile()))
-	} else {
-		logrus.Errorf("Container func SetPreflightResults has failed due to missing PFLT_DOCKERCONFIG environment variable")
-		return nil
-	}
+	opts = append(opts, plibContainer.WithDockerConfigJSONFromFile(env.GetDockerConfigFile()))
 	if env.IsPreflightInsecureAllowed() {
 		logrus.Info("Insecure connections are being allowed to preflight")
 		opts = append(opts, plibContainer.WithInsecureConnection())

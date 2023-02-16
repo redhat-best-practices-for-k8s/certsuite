@@ -81,14 +81,7 @@ func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
 	}
 	ctx := artifacts.ContextWithWriter(context.Background(), artifactsWriter)
 	opts := []plibOperator.Option{}
-
-	// Check to make sure that the environment variable is set
-	if len(env.GetDockerConfigFile()) > 0 {
-		opts = append(opts, plibOperator.WithDockerConfigJSONFromFile(env.GetDockerConfigFile()))
-	} else {
-		logrus.Errorf("Operator func SetPreflightResults has failed due to missing PFLT_DOCKERCONFIG environment variable")
-		return nil
-	}
+	opts = append(opts, plibOperator.WithDockerConfigJSONFromFile(env.GetDockerConfigFile()))
 	if env.IsPreflightInsecureAllowed() {
 		logrus.Info("Insecure connections are being allowed to preflight")
 		opts = append(opts, plibOperator.WithInsecureConnection())

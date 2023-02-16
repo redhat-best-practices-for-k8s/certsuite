@@ -14,10 +14,9 @@
 #   KUBECONFIG=/usr/tnf/kubeconfig/config:/usr/tnf/kubeconfig/config.2
 
 export REQUIRED_NUM_OF_ARGS=5
-export REQUIRED_VARS=('LOCAL_KUBECONFIG' 'LOCAL_TNF_CONFIG' 'OUTPUT_LOC' 'LOCAL_DOCKERCFG')
+export REQUIRED_VARS=('LOCAL_KUBECONFIG' 'LOCAL_TNF_CONFIG' 'OUTPUT_LOC')
 export REQUIRED_VARS_ERROR_MESSAGES=(
 	'KUBECONFIG is invalid or not given. Use the -k option to provide path to one or more kubeconfig files.'
-	'DOCKERCFG is invalid or not given. Use the -c option to provide path to one or more dockercfg files.'
 	'TNFCONFIG is required. Use the -t option to specify the directory containing the TNF configuration files.'
 	'OUTPUT_LOC is required. Use the -o option to specify the output location for the test results.'
 )

@@ -36,6 +36,12 @@ var _ = ginkgo.Describe(common.PreflightTestKey, func() {
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
 
+	// Add safeguard against running the tests if the docker config doesn't exist.
+	if env.GetDockerConfigFile() == "" {
+		logrus.Debug("Skipping the preflight suite because the Docker Config file is not provided.")
+		return
+	}
+
 	testPreflightContainers(&env)
 	if provider.IsOCPCluster() {
 		logrus.Debugf("OCP cluster detected, allowing operator tests to run")
