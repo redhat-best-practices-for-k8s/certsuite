@@ -24,25 +24,45 @@ import (
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	clientOlm "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned"
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	"helm.sh/helm/v3/pkg/release"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 	"k8s.io/client-go/rest"
 )
 
 const (
 	istioNamespace = "istio-system"
+	istioCR        = "installed-state"
 )
 
-func findIstioNamespace(allNs []string) bool {
-	for index := range allNs {
-		if allNs[index] == istioNamespace {
-			return true
-		}
+func isIstioServiceMeshInstalled(allNs []string) bool {
+	// the Istio namespace must be present
+	if !stringhelper.StringInSlice(allNs, istioNamespace, false) {
+		return false
 	}
-	return false
+
+	// the Istio CR used for installation must be present
+	oc := clientsholder.GetClientsHolder()
+	gvr := schema.GroupVersionResource{Group: "install.istio.io", Version: "v1alpha1", Resource: "istiooperators"}
+	cr, err := oc.DynamicClient.Resource(gvr).Namespace(istioNamespace).Get(context.TODO(), istioCR, metav1.GetOptions{})
+	if err != nil {
+		logrus.Errorf("failed when checking the Istio CR, err: %v", err)
+		return false
+	}
+	if cr == nil {
+		logrus.Warnf("The Istio installation CR is missing (but the Istio namespace exists)")
+		return false
+	}
+
+	logrus.Infof("Istio Service Mesh detected")
+
+	return true
 }
+
 func findOperatorsByLabel(olmClient clientOlm.Interface, labels []configuration.Label, namespaces []configuration.Namespace) []olmv1Alpha.ClusterServiceVersion {
 	csvs := []olmv1Alpha.ClusterServiceVersion{}
 	for _, ns := range namespaces {

@@ -106,7 +106,7 @@ type TestEnvironment struct { // rename this with testTarget
 	NetworkPolicies        []networkingv1.NetworkPolicy
 	AllInstallPlans        []*olmv1Alpha.InstallPlan   `json:"-"`
 	AllCatalogSources      []*olmv1Alpha.CatalogSource `json:"-"`
-	IstioServiceMesh       bool
+	IstioServiceMeshFound  bool
 	ValidProtocolNames     []string
 	DaemonsetFailedToSpawn bool
 	StorageClassList       []storagev1.StorageClass
@@ -209,7 +209,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.Namespaces = data.Namespaces
 	env.variables = data.Env
 	env.Nodes = createNodes(data.Nodes.Items)
-	env.IstioServiceMesh = data.Istio
+	env.IstioServiceMeshFound = data.IstioServiceMeshFound
 	env.ValidProtocolNames = append(env.ValidProtocolNames, data.ValidProtocolNames...)
 	for i := range data.AbnormalEvents {
 		aEvent := NewEvent(&data.AbnormalEvents[i])

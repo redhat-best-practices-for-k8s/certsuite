@@ -82,7 +82,7 @@ type DiscoveredTestData struct {
 	OpenshiftVersion       string
 	OCPStatus              string
 	Nodes                  *corev1.NodeList
-	Istio                  bool
+	IstioServiceMeshFound  bool
 	ValidProtocolNames     []string
 	StorageClasses         []storagev1.StorageClass
 	ServicesIgnoreList     []string
@@ -165,7 +165,7 @@ func DoAutoDiscover() DiscoveredTestData {
 	if err != nil {
 		logrus.Fatalf("Cannot get the K8s version, error: %v", err)
 	}
-	data.Istio = findIstioNamespace(data.AllNamespaces)
+	data.IstioServiceMeshFound = isIstioServiceMeshInstalled(data.AllNamespaces)
 	data.ValidProtocolNames = data.TestData.ValidProtocolNames
 	data.ServicesIgnoreList = data.TestData.ServicesIgnoreList
 
