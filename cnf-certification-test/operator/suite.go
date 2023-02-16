@@ -17,9 +17,6 @@
 package operator
 
 import (
-	"context"
-	"fmt"
-
 	"github.com/onsi/ginkgo/v2"
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/sirupsen/logrus"
@@ -27,12 +24,9 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator/phasecheck"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
-
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // All actual test code belongs below here.  Utilities belong above.
@@ -67,6 +61,13 @@ func testOperatorInstallationPhaseSucceeded(env *provider.TestEnvironment) {
 	badOperators := []string{}
 	for i := range env.Operators {
 		csv := env.Operators[i].Csv
+		if phasecheck.IsOperatorPhaseSucceeded(csv) {
+			continue
+		}
+
+		// Operator is not ready, but we need to take into account that its pods
+		// could have been deleted by some of the lifecycle test cases, so they
+		// could be restarting. Let's give it some time before declaring it failed.
 		phase := phasecheck.WaitOperatorReady(csv)
 		if phase != v1alpha1.CSVPhaseSucceeded {
 			badOperators = append(badOperators, env.Operators[i].String())
@@ -95,7 +96,7 @@ func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
 			for ruleIndex := range permission.Rules {
 				if n := len(permission.Rules[ruleIndex].ResourceNames); n > 0 {
 					tnf.ClaimFilePrintf("%s: cluster permission (service account %s) has %d resource names (rule index %d).",
-						&env.Operators[i], permission.ServiceAccountName, n, ruleIndex)
+						env.Operators[i], permission.ServiceAccountName, n, ruleIndex)
 					// Keep reviewing other permissions' rules so we can log all the failing ones in the claim file.
 					badRuleFound = true
 				}
@@ -111,30 +112,15 @@ func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
 }
 
 func testOperatorOlmSubscription(env *provider.TestEnvironment) {
-	badCsvs := []string{}
-	ocpClient := clientsholder.GetClientsHolder()
-	for i := range env.Operators {
-		csv := env.Operators[i].Csv
-		ginkgo.By(fmt.Sprintf("Checking OLM subscription for %s", provider.CsvToString(csv)))
-		subscriptions, err := ocpClient.OlmClient.OperatorsV1alpha1().Subscriptions(csv.Namespace).List(context.TODO(), metav1.ListOptions{})
-		if err != nil {
-			ginkgo.Fail(fmt.Sprintf("Failed to get subscription for %s: %s", provider.CsvToString(csv), err))
-		}
+	nonCompliantCsvs := []string{}
 
-		// Iterate through namespace's subscriptions to get the installed CSV one.
-		subscriptionFound := false
-		for i := range subscriptions.Items {
-			if subscriptions.Items[i].Status.InstalledCSV == csv.Name {
-				logrus.Infof("OLM subscription %s found for %s", subscriptions.Items[i].Name, provider.CsvToString(csv))
-				subscriptionFound = true
-				break
-			}
-		}
-		if !subscriptionFound {
-			tnf.ClaimFilePrintf("OLM subscription not found for operator %s", provider.CsvToString(csv))
-			badCsvs = append(badCsvs, provider.CsvToString(csv))
+	for i := range env.Operators {
+		operator := env.Operators[i]
+		if operator.SubscriptionName == "" {
+			tnf.ClaimFilePrintf("OLM subscription not found for operator from csv %s", provider.CsvToString(operator.Csv))
+			nonCompliantCsvs = append(nonCompliantCsvs, provider.CsvToString(operator.Csv))
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", badCsvs, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultLog("Non-compliant", nonCompliantCsvs, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
