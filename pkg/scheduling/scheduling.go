@@ -83,7 +83,7 @@ var schedulingRequirements = map[string]string{SharedCPUScheduling: "SHARED_CPU_
 	ExclusiveCPUScheduling: "EXCLUSIVE_CPU_SCHEDULING: scheduling priority < 10 and scheduling policy == SCHED_RR or SCHED_FIFO",
 	IsolatedCPUScheduling:  "ISOLATED_CPU_SCHEDULING: scheduling policy == SCHED_RR or SCHED_FIFO"}
 
-func ProcessPidsCPUScheduling(processes []*crclient.Process, testContainer *provider.Container, check string) (compliantContainerPids, nonCompliantContainerPids []*testhelper.ObjectOut) {
+func ProcessPidsCPUScheduling(processes []*crclient.Process, testContainer *provider.Container, check string) (compliantContainerPids, nonCompliantContainerPids []*testhelper.ReportObject) {
 	hasCPUSchedulingConditionSuccess := false
 	for _, process := range processes {
 		schedulePolicy, schedulePriority, err := GetProcessCPUSchedulingFn(process.Pid, testContainer)
@@ -103,12 +103,14 @@ func ProcessPidsCPUScheduling(processes []*crclient.Process, testContainer *prov
 
 		if !hasCPUSchedulingConditionSuccess {
 			tnf.ClaimFilePrintf("pid=%d in %s with cpu scheduling policy=%s, priority=%s did not satisfy cpu scheduling requirements", process.Pid, testContainer, schedulePolicy, schedulePriority)
-			aPidOut := testhelper.NewProcessObjectOut(testhelper.NewContainerObjectOut(testContainer, "process does not satisfy: "+schedulingRequirements[check], false), schedulePolicy, fmt.Sprint(schedulePriority), process.Args)
+			aPidOut := testhelper.NewContainerReportObject(testContainer.Namespace, testContainer.Podname, testContainer.Name, "process does not satisfy: "+schedulingRequirements[check], false).
+				SetContainerProcessValues(schedulePolicy, fmt.Sprint(schedulePriority), process.Args)
 			nonCompliantContainerPids = append(nonCompliantContainerPids, aPidOut)
 			continue
 		}
 		tnf.ClaimFilePrintf("pid=%d in %s with cpu scheduling policy=%s, priority=%s satisfies cpu scheduling requirements", process.Pid, testContainer, schedulePolicy, schedulePriority)
-		aPidOut := testhelper.NewProcessObjectOut(testhelper.NewContainerObjectOut(testContainer, "process satisfies: "+schedulingRequirements[check], true), schedulePolicy, fmt.Sprint(schedulePriority), process.Args)
+		aPidOut := testhelper.NewContainerReportObject(testContainer.Namespace, testContainer.Podname, testContainer.Name, "process satisfies: "+schedulingRequirements[check], true).
+			SetContainerProcessValues(schedulePolicy, fmt.Sprint(schedulePriority), process.Args)
 		compliantContainerPids = append(compliantContainerPids, aPidOut)
 	}
 	return compliantContainerPids, nonCompliantContainerPids

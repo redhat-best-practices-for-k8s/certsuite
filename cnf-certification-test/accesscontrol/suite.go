@@ -648,17 +648,19 @@ func test1337UIDs(env *provider.TestEnvironment) {
 // an allowed one will pass the test
 
 func testContainerSCC(env *provider.TestEnvironment) {
-	var compliantObjects []*testhelper.ObjectOut
-	var nonCompliantObjects []*testhelper.ObjectOut
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	highLevelCat := securitycontextcontainer.CategoryID1
 	for _, pod := range env.Pods {
 		listCategory := securitycontextcontainer.CheckPod(pod)
 		for _, cat := range listCategory {
 			if cat.Category > securitycontextcontainer.CategoryID1NoUID0 {
-				aContainerOut := testhelper.NewContainerObjectOutBase(cat.NameSpace, cat.Podname, cat.Containername, "container category is NOT category 1 or category NoUID0", false).AddField(testhelper.Category, cat.Category.String())
+				aContainerOut := testhelper.NewContainerReportObject(cat.NameSpace, cat.Podname, cat.Containername, "container category is NOT category 1 or category NoUID0", false).
+					SetType(testhelper.ContainerCategory).
+					AddField(testhelper.Category, cat.Category.String())
 				nonCompliantObjects = append(nonCompliantObjects, aContainerOut)
 			} else {
-				aContainerOut := testhelper.NewContainerObjectOutBase(cat.NameSpace, cat.Podname, cat.Containername, "container category is category 1 or category NoUID0", false).AddField(testhelper.Category, cat.Category.String())
+				aContainerOut := testhelper.NewContainerReportObject(cat.NameSpace, cat.Podname, cat.Containername, "container category is category 1 or category NoUID0", false).AddField(testhelper.Category, cat.Category.String())
 				compliantObjects = append(compliantObjects, aContainerOut)
 			}
 			if cat.Category > highLevelCat {
@@ -666,7 +668,7 @@ func testContainerSCC(env *provider.TestEnvironment) {
 			}
 		}
 	}
-	aCNFOut := testhelper.New("Overall Pod category", false).SetType(testhelper.CnfType).AddField(testhelper.Category, highLevelCat.String())
+	aCNFOut := testhelper.NewReportObject("Overall CNF category", testhelper.CnfType, false).AddField(testhelper.Category, highLevelCat.String())
 	compliantObjects = append(compliantObjects, aCNFOut)
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, ginkgo.Fail)
 }

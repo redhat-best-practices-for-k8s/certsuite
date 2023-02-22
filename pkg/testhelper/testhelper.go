@@ -22,7 +22,6 @@ import (
 	"reflect"
 
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
 const (
@@ -31,14 +30,14 @@ const (
 	ERROR
 )
 
-type ObjectOut struct {
+type ReportObject struct {
 	ObjectType   string
 	ObjectFields map[string]string
 }
 
 type FailureReasonOut struct {
-	CompliantObjectsOut    []*ObjectOut
-	NonCompliantObjectsOut []*ObjectOut
+	CompliantObjectsOut    []*ReportObject
+	NonCompliantObjectsOut []*ReportObject
 }
 
 const (
@@ -60,42 +59,35 @@ const (
 	PodType              = "Pod"
 	ContainerType        = "Container"
 	ContainerProcessType = "ContainerProcess"
+	ContainerCategory    = "ContainerCategory"
 )
 
-func NewProcessObjectOut(aContainer *ObjectOut, aPolicy, aPriority, aCommandLine string) (out *ObjectOut) {
-	out = aContainer
-	out.ObjectType = ContainerProcessType
-	out.ObjectFields[ProcessCommandLine] = aCommandLine
-	out.ObjectFields[SchedulingPolicy] = aPolicy
-	out.ObjectFields[SchedulingPriority] = aPriority
-	return out
+func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {
+	obj.ObjectType = ContainerProcessType
+	obj.ObjectFields[ProcessCommandLine] = aCommandLine
+	obj.ObjectFields[SchedulingPolicy] = aPolicy
+	obj.ObjectFields[SchedulingPriority] = aPriority
+	return obj
 }
 
-func NewContainerObjectOut(aContainer *provider.Container, aReason string, isCompliant bool) (out *ObjectOut) {
-	return NewContainerObjectOutBase(aContainer.Namespace, aContainer.Podname, aContainer.Name, aReason, isCompliant)
-}
-
-func NewContainerObjectOutBase(aNamespace, aPodName, aContainerName, aReason string, isCompliant bool) (out *ObjectOut) {
-	out = New(aReason, isCompliant)
-	out.ObjectType = ContainerType
+func NewContainerReportObject(aNamespace, aPodName, aContainerName, aReason string, isCompliant bool) (out *ReportObject) {
+	out = NewReportObject(aReason, ContainerType, isCompliant)
 	out.ObjectFields[Namespace] = aNamespace
 	out.ObjectFields[PodName] = aPodName
 	out.ObjectFields[ContainerName] = aContainerName
 	return out
 }
 
-func NewPodObjectOut(aPod *provider.Pod, aCategory, aReason string, isCompliant bool) (out *ObjectOut) {
-	out = New(aReason, isCompliant)
-	out.ObjectType = PodType
-	out.ObjectFields[Namespace] = aPod.Namespace
-	out.ObjectFields[PodName] = aPod.Name
-	out.ObjectFields[Category] = aCategory
+func NewPodReportObject(aNamespace, aPodName, aReason string, isCompliant bool) (out *ReportObject) {
+	out = NewReportObject(aReason, PodType, isCompliant)
+	out.ObjectFields[Namespace] = aNamespace
+	out.ObjectFields[PodName] = aPodName
 	return out
 }
 
-func New(aReason string, isCompliant bool) (out *ObjectOut) {
-	out = &ObjectOut{}
-	out.ObjectType = UndefinedType
+func NewReportObject(aReason, aType string, isCompliant bool) (out *ReportObject) {
+	out = &ReportObject{}
+	out.ObjectType = aType
 	out.ObjectFields = make(map[string]string)
 	if isCompliant {
 		out.ObjectFields[ReasonForCompliance] = aReason
@@ -105,12 +97,12 @@ func New(aReason string, isCompliant bool) (out *ObjectOut) {
 	return out
 }
 
-func (obj *ObjectOut) AddField(aKey, aString string) (out *ObjectOut) {
+func (obj *ReportObject) AddField(aKey, aString string) (out *ReportObject) {
 	obj.ObjectFields[aKey] = aString
 	return obj
 }
 
-func (obj *ObjectOut) SetType(aType string) (out *ObjectOut) {
+func (obj *ReportObject) SetType(aType string) (out *ReportObject) {
 	obj.ObjectType = aType
 	return obj
 }
@@ -171,7 +163,7 @@ func AddTestResultLog(prefix string, object interface{}, log func(string, ...int
 	}
 }
 
-func AddTestResultReason(compliantObject, nonCompliantObject []*ObjectOut, fail func(string, ...int)) {
+func AddTestResultReason(compliantObject, nonCompliantObject []*ReportObject, fail func(string, ...int)) {
 	var aReason FailureReasonOut
 	aReason.CompliantObjectsOut = compliantObject
 	aReason.NonCompliantObjectsOut = nonCompliantObject

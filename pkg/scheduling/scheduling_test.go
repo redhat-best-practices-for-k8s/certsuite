@@ -35,14 +35,14 @@ func TestProcessPidsCPUScheduling(t *testing.T) {
 	testCases := []struct {
 		mockGetProcessCPUScheduling func(int, *provider.Container) (string, int, error)
 		check                       string
-		compliant, nonCompliant     []testhelper.ObjectOut
+		compliant, nonCompliant     []testhelper.ReportObject
 	}{
 		{
 			mockGetProcessCPUScheduling: func(pid int, container *provider.Container) (string, int, error) {
 				return "SCHED_OTHER", 0, nil
 			},
 			check: SharedCPUScheduling,
-			compliant: []testhelper.ObjectOut{
+			compliant: []testhelper.ReportObject{
 				{
 					ObjectType: "ContainerProcess",
 					ObjectFields: map[string]string{
@@ -65,14 +65,14 @@ func TestProcessPidsCPUScheduling(t *testing.T) {
 				},
 			},
 
-			nonCompliant: []testhelper.ObjectOut{},
+			nonCompliant: []testhelper.ReportObject{},
 		},
 		{
 			mockGetProcessCPUScheduling: func(pid int, container *provider.Container) (string, int, error) {
 				return "SCHED_RR", 90, nil
 			},
 			check: SharedCPUScheduling,
-			nonCompliant: []testhelper.ObjectOut{
+			nonCompliant: []testhelper.ReportObject{
 				{
 					ObjectType: "ContainerProcess",
 					ObjectFields: map[string]string{
@@ -95,13 +95,13 @@ func TestProcessPidsCPUScheduling(t *testing.T) {
 				},
 			},
 
-			compliant: []testhelper.ObjectOut{}},
+			compliant: []testhelper.ReportObject{}},
 		{
 			mockGetProcessCPUScheduling: func(pid int, container *provider.Container) (string, int, error) {
 				return "SCHED_FIFO", 9, nil
 			},
 			check: ExclusiveCPUScheduling,
-			compliant: []testhelper.ObjectOut{
+			compliant: []testhelper.ReportObject{
 				{
 					ObjectType: "ContainerProcess",
 					ObjectFields: map[string]string{
@@ -124,13 +124,13 @@ func TestProcessPidsCPUScheduling(t *testing.T) {
 				},
 			},
 
-			nonCompliant: []testhelper.ObjectOut{}},
+			nonCompliant: []testhelper.ReportObject{}},
 		{
 			mockGetProcessCPUScheduling: func(pid int, container *provider.Container) (string, int, error) {
 				return "SCHED_FIFO", 11, nil
 			},
 			check: ExclusiveCPUScheduling,
-			nonCompliant: []testhelper.ObjectOut{
+			nonCompliant: []testhelper.ReportObject{
 				{
 					ObjectType: "ContainerProcess",
 					ObjectFields: map[string]string{
@@ -153,13 +153,13 @@ func TestProcessPidsCPUScheduling(t *testing.T) {
 				},
 			},
 
-			compliant: []testhelper.ObjectOut{}},
+			compliant: []testhelper.ReportObject{}},
 		{
 			mockGetProcessCPUScheduling: func(pid int, container *provider.Container) (string, int, error) {
 				return "SCHED_FIFO", 50, nil
 			},
 			check: IsolatedCPUScheduling,
-			compliant: []testhelper.ObjectOut{
+			compliant: []testhelper.ReportObject{
 				{
 					ObjectType: "ContainerProcess",
 					ObjectFields: map[string]string{
@@ -182,13 +182,13 @@ func TestProcessPidsCPUScheduling(t *testing.T) {
 				},
 			},
 
-			nonCompliant: []testhelper.ObjectOut{}},
+			nonCompliant: []testhelper.ReportObject{}},
 		{
 			mockGetProcessCPUScheduling: func(pid int, container *provider.Container) (string, int, error) {
 				return "SCHED_RR", 99, nil
 			},
 			check: IsolatedCPUScheduling,
-			compliant: []testhelper.ObjectOut{
+			compliant: []testhelper.ReportObject{
 				{
 					ObjectType: "ContainerProcess",
 					ObjectFields: map[string]string{
@@ -211,13 +211,13 @@ func TestProcessPidsCPUScheduling(t *testing.T) {
 				},
 			},
 
-			nonCompliant: []testhelper.ObjectOut{}},
+			nonCompliant: []testhelper.ReportObject{}},
 		{
 			mockGetProcessCPUScheduling: func(pid int, container *provider.Container) (string, int, error) {
 				return "SCHED_OTHER", 0, nil
 			},
 			check: IsolatedCPUScheduling,
-			nonCompliant: []testhelper.ObjectOut{
+			nonCompliant: []testhelper.ReportObject{
 				{
 					ObjectType: "ContainerProcess",
 					ObjectFields: map[string]string{
@@ -240,7 +240,7 @@ func TestProcessPidsCPUScheduling(t *testing.T) {
 				},
 			},
 
-			compliant: []testhelper.ObjectOut{}},
+			compliant: []testhelper.ReportObject{}},
 	}
 	for _, tc := range testCases {
 		GetProcessCPUSchedulingFn = tc.mockGetProcessCPUScheduling

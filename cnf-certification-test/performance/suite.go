@@ -121,7 +121,7 @@ func testSchedulingPolicyInCPUPool(env *provider.TestEnvironment,
 
 		if err != nil {
 			nonCompliantContainersPids = append(nonCompliantContainersPids,
-				testhelper.NewContainerObjectOut(testContainer, fmt.Sprintf("Internal error, err=%s", err), false))
+				testhelper.NewContainerReportObject(testContainer.Namespace, testContainer.Podname, testContainer.Name, fmt.Sprintf("Internal error, err=%s", err), false))
 		}
 
 		compliantPids, nonCompliantPids := scheduling.ProcessPidsCPUScheduling(processes, testContainer, schedulingType)
