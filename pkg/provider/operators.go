@@ -113,6 +113,8 @@ func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
 	return nil
 }
 
+// getUniqueCsvListByName returns a CSV list with unique names from a list which may contain
+// more than one CSV with the same name. The output CSV list is sorted by CSV name.
 func getUniqueCsvListByName(csvs []*olmv1Alpha.ClusterServiceVersion) []*olmv1Alpha.ClusterServiceVersion {
 	uniqueCsvsMap := map[string]*olmv1Alpha.ClusterServiceVersion{}
 	for _, csv := range csvs {
@@ -126,6 +128,8 @@ func getUniqueCsvListByName(csvs []*olmv1Alpha.ClusterServiceVersion) []*olmv1Al
 		uniqueCsvsList = append(uniqueCsvsList, csv)
 	}
 
+	// Sort by name: (1) creates a deterministic output, (2) makes UT easier.
+	sort.Slice(uniqueCsvsList, func(i, j int) bool { return uniqueCsvsList[i].Name < uniqueCsvsList[j].Name })
 	return uniqueCsvsList
 }
 

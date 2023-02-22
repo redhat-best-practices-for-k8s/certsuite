@@ -262,7 +262,6 @@ func TestCreateOperators(t *testing.T) {
 					PackageFromCsvName: "op1",
 					TargetNamespaces:   []string{"ns2"},
 				},
-
 				{
 					Name:                  "op2.v2.0.2",
 					Namespace:             "ns2",
@@ -404,5 +403,53 @@ func Test_getSummaryAllOperators(t *testing.T) {
 				t.Errorf("getSummaryAllOperators() = %v, want %v", gotSummary, tt.wantSummary)
 			}
 		})
+	}
+}
+
+func TestGetUniqueCsvListByName(t *testing.T) {
+	// CSVs from 3 different fake operators:
+	//  Namespace ns1: csv1 (op1) & csv2 (op2)
+	//  Namespace ns2: csv3 (op1) & csv4 (op2)
+	//  Namespace ns3: csv5 (op3)
+	csv1 := createCsv("op1.v1.0.1", "ns1", 1, 0, 1)
+	csv2 := createCsv("op1.v1.0.1", "ns2", 1, 0, 1)
+	csv3 := createCsv("op2.v2.2.2", "ns1", 2, 2, 2)
+	csv4 := createCsv("op2.v2.2.2", "ns2", 2, 2, 2)
+	csv5 := createCsv("op3.v1.0.0", "ns3", 2, 0, 2)
+
+	tcs := []struct {
+		csvs               []*olmv1Alpha.ClusterServiceVersion
+		expectedUniqueCsvs []*olmv1Alpha.ClusterServiceVersion
+	}{
+		{
+			csvs:               []*olmv1Alpha.ClusterServiceVersion{&csv1},
+			expectedUniqueCsvs: []*olmv1Alpha.ClusterServiceVersion{&csv1},
+		},
+		{
+			csvs:               []*olmv1Alpha.ClusterServiceVersion{&csv1, &csv2, &csv3},
+			expectedUniqueCsvs: []*olmv1Alpha.ClusterServiceVersion{&csv2, &csv3},
+		},
+		{
+			csvs:               []*olmv1Alpha.ClusterServiceVersion{&csv1, &csv2, &csv3, &csv4},
+			expectedUniqueCsvs: []*olmv1Alpha.ClusterServiceVersion{&csv2, &csv4},
+		},
+		{
+			csvs:               []*olmv1Alpha.ClusterServiceVersion{&csv1, &csv2, &csv3, &csv4, &csv5},
+			expectedUniqueCsvs: []*olmv1Alpha.ClusterServiceVersion{&csv2, &csv4, &csv5},
+		},
+	}
+
+	for _, tc := range tcs {
+		runtimeObjects := []runtime.Object{}
+		for _, opGroup := range tc.csvs {
+			runtimeObjects = append(runtimeObjects, opGroup)
+		}
+
+		// Reinstantiate fake client and load runtimeObjects to OLM.
+		_ = clientsholder.GetTestClientsHolder(nil)
+		clientsholder.SetupFakeOlmClient(runtimeObjects)
+
+		uniqueCsvs := getUniqueCsvListByName(tc.csvs)
+		assert.Equal(t, tc.expectedUniqueCsvs, uniqueCsvs)
 	}
 }
