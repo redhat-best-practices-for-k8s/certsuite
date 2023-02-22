@@ -422,6 +422,14 @@ func TestGetUniqueCsvListByName(t *testing.T) {
 		expectedUniqueCsvs []*olmv1Alpha.ClusterServiceVersion
 	}{
 		{
+			csvs:               nil,
+			expectedUniqueCsvs: []*olmv1Alpha.ClusterServiceVersion{},
+		},
+		{
+			csvs:               []*olmv1Alpha.ClusterServiceVersion{},
+			expectedUniqueCsvs: []*olmv1Alpha.ClusterServiceVersion{},
+		},
+		{
 			csvs:               []*olmv1Alpha.ClusterServiceVersion{&csv1},
 			expectedUniqueCsvs: []*olmv1Alpha.ClusterServiceVersion{&csv1},
 		},
