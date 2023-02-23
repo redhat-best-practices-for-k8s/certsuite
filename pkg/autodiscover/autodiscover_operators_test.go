@@ -42,12 +42,10 @@ func TestGetAllNamespaces(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		var testRuntimeObjects []runtime.Object
-
 		// Generate the namespaces for the test
-		namespacesToTest := generateNamespaces(tc.testNamespaces)
-		for i := range namespacesToTest {
-			testRuntimeObjects = append(testRuntimeObjects, namespacesToTest[i])
+		var testRuntimeObjects []runtime.Object
+		for _, n := range generateNamespaces(tc.testNamespaces) {
+			testRuntimeObjects = append(testRuntimeObjects, n)
 		}
 
 		clientSet := fake.NewSimpleClientset(testRuntimeObjects...)
