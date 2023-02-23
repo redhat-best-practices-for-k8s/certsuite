@@ -157,7 +157,7 @@ func Test_isOperatorSucceeded(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotIsReady := isOperatorSucceeded(tt.args.csv); gotIsReady != tt.wantIsReady {
+			if gotIsReady := IsOperatorPhaseSucceeded(tt.args.csv); gotIsReady != tt.wantIsReady {
 				t.Errorf("isOperatorSucceeded() = %v, want %v", gotIsReady, tt.wantIsReady)
 			}
 		})

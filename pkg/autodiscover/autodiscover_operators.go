@@ -63,8 +63,8 @@ func isIstioServiceMeshInstalled(allNs []string) bool {
 	return true
 }
 
-func findOperatorsByLabel(olmClient clientOlm.Interface, labels []configuration.Label, namespaces []configuration.Namespace) []olmv1Alpha.ClusterServiceVersion {
-	csvs := []olmv1Alpha.ClusterServiceVersion{}
+func findOperatorsByLabel(olmClient clientOlm.Interface, labels []configuration.Label, namespaces []configuration.Namespace) []*olmv1Alpha.ClusterServiceVersion {
+	csvs := []*olmv1Alpha.ClusterServiceVersion{}
 	for _, ns := range namespaces {
 		logrus.Debugf("Searching CSVs in namespace %s", ns)
 		for _, label := range labels {
@@ -77,7 +77,10 @@ func findOperatorsByLabel(olmClient clientOlm.Interface, labels []configuration.
 				logrus.Errorln("error when listing csvs in ns=", ns, " label=", label)
 				continue
 			}
-			csvs = append(csvs, csvList.Items...)
+
+			for i := range csvList.Items {
+				csvs = append(csvs, &csvList.Items[i])
+			}
 		}
 	}
 
@@ -99,15 +102,17 @@ func getAllNamespaces(oc corev1client.CoreV1Interface) (allNs []string, err erro
 	}
 	return allNs, nil
 }
-func getAllOperators(olmClient clientOlm.Interface) []olmv1Alpha.ClusterServiceVersion {
-	csvs := []olmv1Alpha.ClusterServiceVersion{}
+func getAllOperators(olmClient clientOlm.Interface) []*olmv1Alpha.ClusterServiceVersion {
+	csvs := []*olmv1Alpha.ClusterServiceVersion{}
 
 	logrus.Debugf("Searching CSVs in namespace All")
 	csvList, err := olmClient.OperatorsV1alpha1().ClusterServiceVersions("").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		logrus.Errorln("error when listing csvs in all namespaces")
 	}
-	csvs = append(csvs, csvList.Items...)
+	for i := range csvList.Items {
+		csvs = append(csvs, &csvList.Items[i])
+	}
 
 	logrus.Infof("Found %d CSVs:", len(csvs))
 	for i := range csvs {

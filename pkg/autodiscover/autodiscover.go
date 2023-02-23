@@ -65,8 +65,8 @@ type DiscoveredTestData struct {
 	Namespaces             []string
 	AllNamespaces          []string
 	AbnormalEvents         []corev1.Event
-	Csvs                   []olmv1Alpha.ClusterServiceVersion
-	AllCsvs                []olmv1Alpha.ClusterServiceVersion
+	Csvs                   []*olmv1Alpha.ClusterServiceVersion
+	AllCsvs                []*olmv1Alpha.ClusterServiceVersion
 	AllInstallPlans        []*olmv1Alpha.InstallPlan
 	AllCatalogSources      []*olmv1Alpha.CatalogSource
 	Deployments            []appsv1.Deployment

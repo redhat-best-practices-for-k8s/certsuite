@@ -21,9 +21,12 @@ import (
 	"testing"
 
 	"github.com/operator-framework/api/pkg/lib/version"
+	olmv1 "github.com/operator-framework/api/pkg/operators/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/stretchr/testify/assert"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 )
 
 func TestCsvToString(t *testing.T) {
@@ -40,9 +43,9 @@ func TestOperatorString(t *testing.T) {
 		Name:             "test1",
 		Namespace:        "testNS",
 		SubscriptionName: "sub1",
-		TargetNamespace:  "",
+		TargetNamespaces: []string{},
 	}
-	assert.Equal(t, "csv: test1 ns:testNS subscription:sub1 targetNamespace=", o.String())
+	assert.Equal(t, "csv: test1 ns:testNS subscription:sub1 targetNamespaces=[]", o.String())
 }
 
 func TestCreateOperators(t *testing.T) {
@@ -70,34 +73,47 @@ func TestCreateOperators(t *testing.T) {
 		Status:     olmv1Alpha.SubscriptionStatus{InstalledCSV: "op2.v2.0.2"},
 	}
 
+	operatorGroupNs1 := olmv1.OperatorGroup{
+		ObjectMeta: metav1.ObjectMeta{Name: "op1", Namespace: "ns1"},
+		Spec:       olmv1.OperatorGroupSpec{TargetNamespaces: []string{"ns1"}},
+	}
+	operatorGroupNs2 := olmv1.OperatorGroup{
+		ObjectMeta: metav1.ObjectMeta{Name: "op1", Namespace: "ns2"},
+		Spec:       olmv1.OperatorGroupSpec{TargetNamespaces: []string{"ns2"}},
+	}
+
 	testCases := []struct {
-		csvs              []olmv1Alpha.ClusterServiceVersion
+		csvs              []*olmv1Alpha.ClusterServiceVersion
 		subscriptions     []olmv1Alpha.Subscription
 		installPlan       []*olmv1Alpha.InstallPlan
 		catalogSource     []*olmv1Alpha.CatalogSource
+		operatorGroups    []*olmv1.OperatorGroup
 		expectedOperators []*Operator
 		expectedErrorStr  string
 	}{
 		// ns1: csv1/subs1
 		{
-			csvs:              []olmv1Alpha.ClusterServiceVersion{},
+			csvs:              []*olmv1Alpha.ClusterServiceVersion{},
 			subscriptions:     []olmv1Alpha.Subscription{subscription1},
 			installPlan:       []*olmv1Alpha.InstallPlan{&ns1InstallPlan1},
 			catalogSource:     []*olmv1Alpha.CatalogSource{&catalogSource1},
+			operatorGroups:    []*olmv1.OperatorGroup{&operatorGroupNs1},
 			expectedOperators: []*Operator{},
 		},
 		// ns1: csv1/subs1
 		{
-			csvs:          []olmv1Alpha.ClusterServiceVersion{op1Ns1},
-			subscriptions: []olmv1Alpha.Subscription{subscription1},
-			installPlan:   []*olmv1Alpha.InstallPlan{&ns1InstallPlan1},
-			catalogSource: []*olmv1Alpha.CatalogSource{&catalogSource1},
+			csvs:           []*olmv1Alpha.ClusterServiceVersion{&op1Ns1},
+			subscriptions:  []olmv1Alpha.Subscription{subscription1},
+			installPlan:    []*olmv1Alpha.InstallPlan{&ns1InstallPlan1},
+			catalogSource:  []*olmv1Alpha.CatalogSource{&catalogSource1},
+			operatorGroups: []*olmv1.OperatorGroup{&operatorGroupNs1},
 			expectedOperators: []*Operator{
 				{
-					Name:             "op1.v1.0.1",
-					Namespace:        "ns1",
-					Csv:              &op1Ns1,
-					SubscriptionName: "subs1",
+					Name:                  "op1.v1.0.1",
+					Namespace:             "ns1",
+					Csv:                   &op1Ns1,
+					SubscriptionName:      "subs1",
+					SubscriptionNamespace: "ns1",
 					InstallPlans: []CsvInstallPlan{
 						{
 							Name:        "ns1Plan1",
@@ -109,64 +125,72 @@ func TestCreateOperators(t *testing.T) {
 					Org:                "catalogSource1",
 					Version:            "1.0.1",
 					PackageFromCsvName: "op1",
-					TargetNamespace:    allns,
+					TargetNamespaces:   []string{"ns1"},
 				},
 			},
 		},
 		// ns1: csv1/subs1 - installPlan not found.
 		{
-			csvs:          []olmv1Alpha.ClusterServiceVersion{op1Ns1},
-			subscriptions: []olmv1Alpha.Subscription{subscription1},
-			installPlan:   []*olmv1Alpha.InstallPlan{},
-			catalogSource: []*olmv1Alpha.CatalogSource{},
+			csvs:           []*olmv1Alpha.ClusterServiceVersion{&op1Ns1},
+			subscriptions:  []olmv1Alpha.Subscription{subscription1},
+			installPlan:    []*olmv1Alpha.InstallPlan{},
+			catalogSource:  []*olmv1Alpha.CatalogSource{},
+			operatorGroups: []*olmv1.OperatorGroup{&operatorGroupNs1},
 			expectedOperators: []*Operator{
 				{
-					Name:               "op1.v1.0.1",
-					Namespace:          "ns1",
-					Csv:                &op1Ns1,
-					SubscriptionName:   "subs1",
-					InstallPlans:       nil,
-					Package:            "op1",
-					Org:                "catalogSource1",
-					Version:            "1.0.1",
-					PackageFromCsvName: "op1",
-					TargetNamespace:    allns,
+					Name:                  "op1.v1.0.1",
+					Namespace:             "ns1",
+					Csv:                   &op1Ns1,
+					SubscriptionName:      "subs1",
+					SubscriptionNamespace: "ns1",
+					InstallPlans:          nil,
+					Package:               "op1",
+					Org:                   "catalogSource1",
+					Version:               "1.0.1",
+					PackageFromCsvName:    "op1",
+					TargetNamespaces:      []string{"ns1"},
 				},
 			},
 		},
 		// ns1: csv1/subs1 - bundleImage not found.
 		{
-			csvs:          []olmv1Alpha.ClusterServiceVersion{op1Ns1},
-			subscriptions: []olmv1Alpha.Subscription{subscription1},
-			installPlan:   []*olmv1Alpha.InstallPlan{&ns1InstallPlan1},
-			catalogSource: []*olmv1Alpha.CatalogSource{},
+			csvs:           []*olmv1Alpha.ClusterServiceVersion{&op1Ns1},
+			subscriptions:  []olmv1Alpha.Subscription{subscription1},
+			installPlan:    []*olmv1Alpha.InstallPlan{&ns1InstallPlan1},
+			catalogSource:  []*olmv1Alpha.CatalogSource{},
+			operatorGroups: []*olmv1.OperatorGroup{&operatorGroupNs1},
 			expectedOperators: []*Operator{
 				{
-					Name:               "op1.v1.0.1",
-					Namespace:          "ns1",
-					Csv:                &op1Ns1,
-					SubscriptionName:   "subs1",
-					InstallPlans:       nil,
-					Package:            "op1",
-					Org:                "catalogSource1",
-					Version:            "1.0.1",
-					PackageFromCsvName: "op1",
-					TargetNamespace:    allns,
+					Name:                  "op1.v1.0.1",
+					Namespace:             "ns1",
+					Csv:                   &op1Ns1,
+					SubscriptionName:      "subs1",
+					SubscriptionNamespace: "ns1",
+					InstallPlans:          nil,
+					Package:               "op1",
+					Org:                   "catalogSource1",
+					Version:               "1.0.1",
+					PackageFromCsvName:    "op1",
+					TargetNamespaces:      []string{"ns1"},
 				},
 			},
 		},
-		// ns1: csv1/subs1, ns2: csv2 (without subscription)
+		// ns1: csv1/subs1, ns2: csv2 (without subscription). The second csv
+		// is he last which is added to the unique CSV names list, so that's
+		// the one which will be bound to the operator struct.
 		{
-			csvs:          []olmv1Alpha.ClusterServiceVersion{op1Ns1, op1Ns2},
-			subscriptions: []olmv1Alpha.Subscription{subscription1},
-			installPlan:   []*olmv1Alpha.InstallPlan{&ns1InstallPlan1, &ns2InstallPlan1},
-			catalogSource: []*olmv1Alpha.CatalogSource{&catalogSource1, &catalogSource2},
+			csvs:           []*olmv1Alpha.ClusterServiceVersion{&op1Ns1, &op1Ns2},
+			subscriptions:  []olmv1Alpha.Subscription{subscription1},
+			installPlan:    []*olmv1Alpha.InstallPlan{&ns1InstallPlan1, &ns2InstallPlan1},
+			catalogSource:  []*olmv1Alpha.CatalogSource{&catalogSource1, &catalogSource2},
+			operatorGroups: []*olmv1.OperatorGroup{&operatorGroupNs1, &operatorGroupNs2},
 			expectedOperators: []*Operator{
 				{
-					Name:             "op1.v1.0.1",
-					Namespace:        "ns1",
-					Csv:              &op1Ns1,
-					SubscriptionName: "subs1",
+					Name:                  "op1.v1.0.1",
+					Namespace:             "ns2",
+					Csv:                   &op1Ns2,
+					SubscriptionName:      "subs1",
+					SubscriptionNamespace: "ns1",
 					InstallPlans: []CsvInstallPlan{
 						{
 							Name:        "ns1Plan1",
@@ -178,57 +202,24 @@ func TestCreateOperators(t *testing.T) {
 					Org:                "catalogSource1",
 					Version:            "1.0.1",
 					PackageFromCsvName: "op1",
-					TargetNamespace:    allns,
-				},
-				{
-					Name:             "op1.v1.0.1",
-					Namespace:        "ns2",
-					Csv:              &op1Ns2,
-					SubscriptionName: "",
-					InstallPlans: []CsvInstallPlan{
-						{
-							Name:        "ns2Plan1",
-							BundleImage: "lookuppath2",
-							IndexImage:  "catalogSource2Image",
-						},
-					},
-					Package:            "",
-					Version:            "1.0.1",
-					PackageFromCsvName: "op1",
-					TargetNamespace:    allns,
+					TargetNamespaces:   []string{"ns1"},
 				},
 			},
 		},
-		// ns1: csv1/subs1, ns2: csv2/subs2
+		// ns1: csv1, ns2: csv2/subs2. OperatorGroup in ns2 has ns1 as targetNamespace.
 		{
-			csvs:          []olmv1Alpha.ClusterServiceVersion{op1Ns1, op1Ns2},
-			subscriptions: []olmv1Alpha.Subscription{subscription1, subscription2},
-			installPlan:   []*olmv1Alpha.InstallPlan{&ns1InstallPlan1, &ns2InstallPlan1},
-			catalogSource: []*olmv1Alpha.CatalogSource{&catalogSource1, &catalogSource2},
+			csvs:           []*olmv1Alpha.ClusterServiceVersion{&op1Ns1, &op1Ns2},
+			subscriptions:  []olmv1Alpha.Subscription{subscription2},
+			installPlan:    []*olmv1Alpha.InstallPlan{&ns1InstallPlan1, &ns2InstallPlan1},
+			catalogSource:  []*olmv1Alpha.CatalogSource{&catalogSource1, &catalogSource2},
+			operatorGroups: []*olmv1.OperatorGroup{&operatorGroupNs2},
 			expectedOperators: []*Operator{
 				{
-					Name:             "op1.v1.0.1",
-					Namespace:        "ns1",
-					Csv:              &op1Ns1,
-					SubscriptionName: "subs1",
-					InstallPlans: []CsvInstallPlan{
-						{
-							Name:        "ns1Plan1",
-							BundleImage: "lookuppath1",
-							IndexImage:  "catalogSource1Image",
-						},
-					},
-					Package:            "op1",
-					Org:                "catalogSource1",
-					Version:            "1.0.1",
-					PackageFromCsvName: "op1",
-					TargetNamespace:    allns,
-				},
-				{
-					Name:             "op1.v1.0.1",
-					Namespace:        "ns2",
-					Csv:              &op1Ns2,
-					SubscriptionName: "subs2",
+					Name:                  "op1.v1.0.1",
+					Namespace:             "ns2",
+					Csv:                   &op1Ns2,
+					SubscriptionName:      "subs2",
+					SubscriptionNamespace: "ns2",
 					InstallPlans: []CsvInstallPlan{
 						{
 							Name:        "ns2Plan1",
@@ -240,40 +231,24 @@ func TestCreateOperators(t *testing.T) {
 					Org:                "catalogSource2",
 					Version:            "1.0.1",
 					PackageFromCsvName: "op1",
-					TargetNamespace:    allns,
+					TargetNamespaces:   []string{"ns2"},
 				},
 			},
 		},
-		// ns1: csv1/subs1, ns2: csv2/subs2 + csv3/subs3
+		// ns1: csv1, ns2: csv2/subs2 + csv3/subs3
 		{
-			csvs:          []olmv1Alpha.ClusterServiceVersion{op1Ns1, op1Ns2, op2Ns2},
-			subscriptions: []olmv1Alpha.Subscription{subscription1, subscription2, subscription3},
-			installPlan:   []*olmv1Alpha.InstallPlan{&ns1InstallPlan1, &ns2InstallPlan1, &ns2InstallPlan2},
-			catalogSource: []*olmv1Alpha.CatalogSource{&catalogSource1, &catalogSource2, &catalogSource3},
+			csvs:           []*olmv1Alpha.ClusterServiceVersion{&op1Ns1, &op1Ns2, &op2Ns2},
+			subscriptions:  []olmv1Alpha.Subscription{subscription2, subscription3},
+			installPlan:    []*olmv1Alpha.InstallPlan{&ns1InstallPlan1, &ns2InstallPlan1, &ns2InstallPlan2},
+			catalogSource:  []*olmv1Alpha.CatalogSource{&catalogSource1, &catalogSource2, &catalogSource3},
+			operatorGroups: []*olmv1.OperatorGroup{&operatorGroupNs1, &operatorGroupNs2},
 			expectedOperators: []*Operator{
 				{
-					Name:             "op1.v1.0.1",
-					Namespace:        "ns1",
-					Csv:              &op1Ns1,
-					SubscriptionName: "subs1",
-					InstallPlans: []CsvInstallPlan{
-						{
-							Name:        "ns1Plan1",
-							BundleImage: "lookuppath1",
-							IndexImage:  "catalogSource1Image",
-						},
-					},
-					Package:            "op1",
-					Org:                "catalogSource1",
-					Version:            "1.0.1",
-					PackageFromCsvName: "op1",
-					TargetNamespace:    allns,
-				},
-				{
-					Name:             "op1.v1.0.1",
-					Namespace:        "ns2",
-					Csv:              &op1Ns2,
-					SubscriptionName: "subs2",
+					Name:                  "op1.v1.0.1",
+					Namespace:             "ns2",
+					Csv:                   &op1Ns2,
+					SubscriptionName:      "subs2",
+					SubscriptionNamespace: "ns2",
 					InstallPlans: []CsvInstallPlan{
 						{
 							Name:        "ns2Plan1",
@@ -285,14 +260,14 @@ func TestCreateOperators(t *testing.T) {
 					Org:                "catalogSource2",
 					Version:            "1.0.1",
 					PackageFromCsvName: "op1",
-					TargetNamespace:    allns,
+					TargetNamespaces:   []string{"ns2"},
 				},
-
 				{
-					Name:             "op2.v2.0.2",
-					Namespace:        "ns2",
-					Csv:              &op2Ns2,
-					SubscriptionName: "subs3",
+					Name:                  "op2.v2.0.2",
+					Namespace:             "ns2",
+					Csv:                   &op2Ns2,
+					SubscriptionName:      "subs3",
+					SubscriptionNamespace: "ns2",
 					InstallPlans: []CsvInstallPlan{
 						{
 							Name:        "ns2Plan2",
@@ -304,14 +279,24 @@ func TestCreateOperators(t *testing.T) {
 					Org:                "catalogSource3",
 					Version:            "2.0.2",
 					PackageFromCsvName: "op2",
-					TargetNamespace:    allns,
+					TargetNamespaces:   []string{"ns2"},
 				},
 			},
 		},
 	}
 
 	for _, tc := range testCases {
-		ops := createOperators(tc.csvs, tc.subscriptions, tc.installPlan, tc.catalogSource, true, false, true)
+		// Create runtime objects from operatorGroups for the fake OLM client.
+		runtimeObjects := []runtime.Object{}
+		for _, opGroup := range tc.operatorGroups {
+			runtimeObjects = append(runtimeObjects, opGroup)
+		}
+
+		// Reinstantiate fake client and load runtimeObjects to OLM.
+		_ = clientsholder.GetTestClientsHolder(nil)
+		clientsholder.SetupFakeOlmClient(runtimeObjects)
+
+		ops := createOperators(tc.csvs, tc.subscriptions, tc.installPlan, tc.catalogSource, false, true)
 		assert.Equal(t, tc.expectedOperators, ops)
 	}
 }
@@ -361,40 +346,33 @@ func Test_getCatalogSourceImageIndexFromInstallPlan(t *testing.T) {
 	}
 }
 
-func createOperator(phase, packageName, aVersion, namespace, targetNamespace string) *Operator {
+func createOperator(phase, packageName, aVersion, namespace string, targetNamespaces []string, isClusterWide bool) *Operator {
 	aOperator := Operator{}
 	aOperator.PackageFromCsvName = packageName
 	aCsv := olmv1Alpha.ClusterServiceVersion{}
 	aCsv.Status.Phase = olmv1Alpha.ClusterServiceVersionPhase(phase)
 	aOperator.Csv = &aCsv
-	aOperator.Csv.ObjectMeta.Annotations = make(map[string]string)
-	aOperator.Csv.ObjectMeta.Annotations["olm.targetNamespaces"] = targetNamespace
 	aOperator.Namespace = namespace
 	aOperator.Version = aVersion
-	aOperator.TargetNamespace = getTargetNamespace(&aCsv)
+	aOperator.TargetNamespaces = targetNamespaces
 	aOperator.Phase = olmv1Alpha.ClusterServiceVersionPhase(phase)
+	aOperator.IsClusterWide = isClusterWide
 	return &aOperator
 }
 
 func createOperatorList() []*Operator {
 	aOperatorList := []*Operator{}
 	aOperatorList = append(aOperatorList,
-		createOperator("Succeeded", "operator1", "0.0.1", "ns1", "ns1"),
-		createOperator("Succeeded", "operator2", "0.0.1", "ns2", "ns2"),
-		createOperator("Succeeded", "operator3", "1.0.1", "ns3", ""),
-		createOperator("Succeeded", "operator3", "0.0.1", "ns4", ""),
-		createOperator("InstallReady", "operator3", "0.0.1", "ns5", ""),
-		createOperator("Succeeded", "operator3", "0.0.1", "ns6", ""),
-		createOperator("Succeeded", "operator3", "0.0.1", "ns7", ""),
-		createOperator("Succeeded", "operator3", "0.0.1", "ns8", ""),
-		createOperator("Succeeded", "operator3", "0.0.1", "ns9", ""),
-		createOperator("Succeeded", "operator3", "0.0.1", "ns10", ""),
-		createOperator("Succeeded", "operator3", "0.0.1", "ns11", ""),
-		createOperator("Succeeded", "operator3", "0.0.1", "ns12", ""),
-		createOperator("Succeeded", "operator3", "0.0.1", "ns13", ""),
-		createOperator("Succeeded", "operator3", "0.0.1", "ns14", ""),
-		createOperator("Failed", "operator3", "0.0.1", "ns6", ""),
-		createOperator("Failed", "operator4", "0.0.1", "ns1", "ns1"))
+		createOperator("Succeeded", "operator1", "0.0.1", "ns1", []string{"ns1"}, false),
+		createOperator("Succeeded", "operator2", "0.0.1", "ns2", []string{"ns2"}, false),
+		createOperator("Succeeded", "operator3", "1.0.1", "ns3", nil, true),
+		createOperator("Succeeded", "operator3", "0.0.1", "ns4", nil, true),
+		createOperator("InstallReady", "operator3", "0.0.1", "ns5", nil, true),
+		createOperator("Succeeded", "operator3", "0.0.1", "ns6", nil, true),
+		createOperator("Succeeded", "operator3", "0.0.1", "ns7", nil, true),
+		createOperator("Succeeded", "operator3", "0.0.1", "ns8", nil, true),
+		createOperator("Failed", "operator3", "0.0.1", "ns6", nil, true),
+		createOperator("Failed", "operator4", "0.0.1", "ns1", []string{"ns1"}, false))
 	return aOperatorList
 }
 
@@ -410,13 +388,13 @@ func Test_getSummaryAllOperators(t *testing.T) {
 		{
 			name: "ok",
 			args: args{operators: createOperatorList()},
-			wantSummary: []string{"Failed operator: operator3 ver: 0.0.1 ( All namespaces )",
-				"Failed operator: operator4 ver: 0.0.1 in ns: ns1 ( ns1 Single namespace )",
-				"InstallReady operator: operator3 ver: 0.0.1 ( All namespaces )",
-				"Succeeded operator: operator1 ver: 0.0.1 in ns: ns1 ( ns1 Single namespace )",
-				"Succeeded operator: operator2 ver: 0.0.1 in ns: ns2 ( ns2 Single namespace )",
-				"Succeeded operator: operator3 ver: 0.0.1 ( All namespaces )",
-				"Succeeded operator: operator3 ver: 1.0.1 ( All namespaces )"},
+			wantSummary: []string{"Failed operator: operator3 ver: 0.0.1 (all namespaces)",
+				"Failed operator: operator4 ver: 0.0.1 in ns: [ns1]",
+				"InstallReady operator: operator3 ver: 0.0.1 (all namespaces)",
+				"Succeeded operator: operator1 ver: 0.0.1 in ns: [ns1]",
+				"Succeeded operator: operator2 ver: 0.0.1 in ns: [ns2]",
+				"Succeeded operator: operator3 ver: 0.0.1 (all namespaces)",
+				"Succeeded operator: operator3 ver: 1.0.1 (all namespaces)"},
 		},
 	}
 	for _, tt := range tests {
@@ -425,5 +403,61 @@ func Test_getSummaryAllOperators(t *testing.T) {
 				t.Errorf("getSummaryAllOperators() = %v, want %v", gotSummary, tt.wantSummary)
 			}
 		})
+	}
+}
+
+func TestGetUniqueCsvListByName(t *testing.T) {
+	// CSVs from 3 different fake operators:
+	//  Namespace ns1: csv1 (op1) & csv2 (op2)
+	//  Namespace ns2: csv3 (op1) & csv4 (op2)
+	//  Namespace ns3: csv5 (op3)
+	csv1 := createCsv("op1.v1.0.1", "ns1", 1, 0, 1)
+	csv2 := createCsv("op1.v1.0.1", "ns2", 1, 0, 1)
+	csv3 := createCsv("op2.v2.2.2", "ns1", 2, 2, 2)
+	csv4 := createCsv("op2.v2.2.2", "ns2", 2, 2, 2)
+	csv5 := createCsv("op3.v1.0.0", "ns3", 2, 0, 2)
+
+	tcs := []struct {
+		csvs               []*olmv1Alpha.ClusterServiceVersion
+		expectedUniqueCsvs []*olmv1Alpha.ClusterServiceVersion
+	}{
+		{
+			csvs:               nil,
+			expectedUniqueCsvs: []*olmv1Alpha.ClusterServiceVersion{},
+		},
+		{
+			csvs:               []*olmv1Alpha.ClusterServiceVersion{},
+			expectedUniqueCsvs: []*olmv1Alpha.ClusterServiceVersion{},
+		},
+		{
+			csvs:               []*olmv1Alpha.ClusterServiceVersion{&csv1},
+			expectedUniqueCsvs: []*olmv1Alpha.ClusterServiceVersion{&csv1},
+		},
+		{
+			csvs:               []*olmv1Alpha.ClusterServiceVersion{&csv1, &csv2, &csv3},
+			expectedUniqueCsvs: []*olmv1Alpha.ClusterServiceVersion{&csv2, &csv3},
+		},
+		{
+			csvs:               []*olmv1Alpha.ClusterServiceVersion{&csv1, &csv2, &csv3, &csv4},
+			expectedUniqueCsvs: []*olmv1Alpha.ClusterServiceVersion{&csv2, &csv4},
+		},
+		{
+			csvs:               []*olmv1Alpha.ClusterServiceVersion{&csv1, &csv2, &csv3, &csv4, &csv5},
+			expectedUniqueCsvs: []*olmv1Alpha.ClusterServiceVersion{&csv2, &csv4, &csv5},
+		},
+	}
+
+	for _, tc := range tcs {
+		runtimeObjects := []runtime.Object{}
+		for _, opGroup := range tc.csvs {
+			runtimeObjects = append(runtimeObjects, opGroup)
+		}
+
+		// Reinstantiate fake client and load runtimeObjects to OLM.
+		_ = clientsholder.GetTestClientsHolder(nil)
+		clientsholder.SetupFakeOlmClient(runtimeObjects)
+
+		uniqueCsvs := getUniqueCsvListByName(tc.csvs)
+		assert.Equal(t, tc.expectedUniqueCsvs, uniqueCsvs)
 	}
 }

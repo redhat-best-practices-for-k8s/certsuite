@@ -42,7 +42,7 @@ func WaitOperatorReady(csv *v1alpha1.ClusterServiceVersion) v1alpha1.ClusterServ
 		if err != nil {
 			logrus.Errorf("error getting %s", provider.CsvToString(freshCsv))
 		}
-		isReady = isOperatorSucceeded(freshCsv)
+		isReady = IsOperatorPhaseSucceeded(freshCsv)
 		logrus.Debugf("Waiting for %s to be in Succeeded phase: %s", provider.CsvToString(freshCsv), freshCsv.Status.Phase)
 		time.Sleep(time.Second)
 	}
@@ -55,6 +55,7 @@ func WaitOperatorReady(csv *v1alpha1.ClusterServiceVersion) v1alpha1.ClusterServ
 	return freshCsv.Status.Phase
 }
 
-func isOperatorSucceeded(csv *v1alpha1.ClusterServiceVersion) (isReady bool) {
+func IsOperatorPhaseSucceeded(csv *v1alpha1.ClusterServiceVersion) (isReady bool) {
+	logrus.Tracef("Checking status phase for csv %s (ns %s). Phase: %v", csv.Name, csv.Namespace, csv.Status.Phase)
 	return csv.Status.Phase == v1alpha1.CSVPhaseSucceeded
 }

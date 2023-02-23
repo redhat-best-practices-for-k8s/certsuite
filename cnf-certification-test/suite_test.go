@@ -41,7 +41,8 @@ import (
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/performance"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform"
-	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/preflight"
+
+	// _ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/preflight"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/diagnostics"

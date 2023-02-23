@@ -204,7 +204,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.Crds = data.Crds
 	env.AllInstallPlans = data.AllInstallPlans
 	env.AllCatalogSources = data.AllCatalogSources
-	env.AllOperators = createOperators(data.AllCsvs, data.AllSubscriptions, data.AllInstallPlans, data.AllCatalogSources, true, false, false)
+	env.AllOperators = createOperators(data.AllCsvs, data.AllSubscriptions, data.AllInstallPlans, data.AllCatalogSources, false, false)
 	env.AllOperatorsSummary = getSummaryAllOperators(env.AllOperators)
 	env.Namespaces = data.Namespaces
 	env.variables = data.Env
@@ -263,7 +263,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.HorizontalScaler = data.Hpas
 	env.StorageClassList = data.StorageClasses
 
-	operators := createOperators(data.Csvs, data.Subscriptions, data.AllInstallPlans, data.AllCatalogSources, false, false, true)
+	operators := createOperators(data.Csvs, data.Subscriptions, data.AllInstallPlans, data.AllCatalogSources, false, true)
 	env.Operators = operators
 	logrus.Infof("Operators found: %d", len(env.Operators))
 	for _, pod := range env.Pods {
