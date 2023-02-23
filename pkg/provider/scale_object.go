@@ -18,7 +18,7 @@ type CrScale struct {
 
 func (crScale CrScale) IsScaleObjectReady() bool {
 	replicas := (crScale.Spec.Replicas)
-	logrus.Infof("replicas is %s status replica is %s", replicas, crScale.Status.Replicas)
+	logrus.Infof("replicas is %d status replica is %d", replicas, crScale.Status.Replicas)
 	return crScale.Status.Replicas == replicas
 }
 
