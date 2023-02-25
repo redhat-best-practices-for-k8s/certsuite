@@ -69,15 +69,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
-      - name: Run ShellCheck
-        uses: ludeeus/action-shellcheck@master
-        with:
-          additional_files: >-
-            run-cnf-suites.sh
-            run-tnf-container.sh
-          ignore_names: results.html
-          scandir: script
-          severity: style
+      - uses: ludeeus/action-shellcheck@master
   yamllint:
     runs-on: ubuntu-22.04
     steps:
