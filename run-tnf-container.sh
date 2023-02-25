@@ -145,6 +145,8 @@ perform_dockercfg_autodiscovery() {
 	# https://github.com/redhat-openshift-ecosystem/openshift-preflight/blob/main/docs/CONFIG.md#container-policy-configuration
 	if [[ -n "$PFLT_DOCKERCONFIG" ]]; then
 		export LOCAL_DOCKERCFG=$PFLT_DOCKERCONFIG
+
+		# shellcheck disable=SC2016 # Don't expand in single quotes.
 		dockercfg_autodiscovery_source='$PFLT_DOCKERCONFIG'
 	elif [[ -f "$HOME/.docker/config.json" ]]; then
 		export LOCAL_DOCKERCFG=$HOME/.docker/config.json
