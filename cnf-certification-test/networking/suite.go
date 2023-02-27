@@ -125,6 +125,9 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 		if env.DaemonsetFailedToSpawn {
 			ginkgo.Skip("Debug Daemonset failed to spawn skipping testIsNFTablesConfigPresent")
 		}
+		if env.IstioServiceMeshFound {
+			ginkgo.Skip("Skipping testIsNFTablesConfigPresent due to the presence of the Istio Service Mesh")
+		}
 		testIsNFTablesConfigPresent(&env)
 	})
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIPTablesIdentifier)
