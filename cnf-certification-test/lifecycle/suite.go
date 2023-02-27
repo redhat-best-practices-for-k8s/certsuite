@@ -171,7 +171,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodTolerationBypassIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
-		TestPodTolerationBypass(&env)
+		testPodTolerationBypass(&env)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStorageRequiredPods)
@@ -564,7 +564,7 @@ func testAffinityRequiredPods(env *provider.TestEnvironment) {
 	testhelper.AddTestResultLog("Non-compliant", podsDesiringAffinityRequiredMissingLabel, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
-func TestPodTolerationBypass(env *provider.TestEnvironment) {
+func testPodTolerationBypass(env *provider.TestEnvironment) {
 	var podsWithRestrictedTolerationsNotDefault []string
 
 	for _, put := range env.Pods {
