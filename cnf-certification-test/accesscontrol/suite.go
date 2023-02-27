@@ -485,7 +485,7 @@ func TestOneProcessPerContainer(env *provider.TestEnvironment) {
 	var badContainers []string
 
 	for _, cut := range env.Containers {
-		// the Istio sidecar container "istio-proxy" lauches two processes: "pilot-agent" and "envoy"
+		// the Istio sidecar container "istio-proxy" launches two processes: "pilot-agent" and "envoy"
 		if cut.IsIstioProxy() {
 			continue
 		}
