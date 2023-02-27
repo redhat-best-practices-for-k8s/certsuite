@@ -27,7 +27,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	corev1 "k8s.io/api/core/v1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 const (
@@ -194,7 +194,7 @@ func (p *Pod) CreatedByDeploymentConfig() (bool, error) {
 	oc := clientsholder.GetClientsHolder()
 	for _, podOwner := range p.ObjectMeta.GetOwnerReferences() {
 		if podOwner.Kind == replicationController {
-			replicationControllers, err := oc.K8sClient.CoreV1().ReplicationControllers(p.Namespace).Get(context.TODO(), podOwner.Name, v1.GetOptions{})
+			replicationControllers, err := oc.K8sClient.CoreV1().ReplicationControllers(p.Namespace).Get(context.TODO(), podOwner.Name, metav1.GetOptions{})
 			if err != nil {
 				return false, err
 			}
@@ -361,7 +361,7 @@ func (p *Pod) IsUsingSRIOV() (bool, error) {
 
 	for _, networkName := range cncfNetworkNames {
 		logrus.Tracef("%s: Reviewing network-attachment definition %q", p, networkName)
-		nad, err := oc.CNCFNetworkingClient.NetworkAttachmentDefinitions(p.Namespace).Get(context.TODO(), networkName, v1.GetOptions{})
+		nad, err := oc.CNCFNetworkingClient.NetworkAttachmentDefinitions(p.Namespace).Get(context.TODO(), networkName, metav1.GetOptions{})
 		if err != nil {
 			return false, fmt.Errorf("failed to get NetworkAttachment %s: %v", networkName, err)
 		}
