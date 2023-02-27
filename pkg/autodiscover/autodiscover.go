@@ -74,7 +74,7 @@ type DiscoveredTestData struct {
 	PersistentVolumes      []corev1.PersistentVolume
 	PersistentVolumeClaims []corev1.PersistentVolumeClaim
 	Services               []*corev1.Service
-	Hpas                   map[string]*scalingv1.HorizontalPodAutoscaler
+	Hpas                   []*scalingv1.HorizontalPodAutoscaler
 	Subscriptions          []olmv1Alpha.Subscription
 	AllSubscriptions       []olmv1Alpha.Subscription
 	HelmChartReleases      map[string][]*release.Release
@@ -86,6 +86,7 @@ type DiscoveredTestData struct {
 	ValidProtocolNames     []string
 	StorageClasses         []storagev1.StorageClass
 	ServicesIgnoreList     []string
+	ScaleCrUndetTest       []Scaleobject
 }
 
 var data = DiscoveredTestData{}
@@ -151,6 +152,7 @@ func DoAutoDiscover() DiscoveredTestData {
 		logrus.Fatalln("Cannot get network policies")
 	}
 	data.Crds = FindTestCrdNames(data.TestData.CrdFilters)
+	data.ScaleCrUndetTest = GetscaleCrUndetTest(data.Namespaces, data.Crds, data.TestData.CrdFilters)
 	data.Csvs = findOperatorsByLabel(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, data.TestData.TargetNameSpaces)
 	data.Subscriptions = findSubscriptions(oc.OlmClient, data.Namespaces)
 	data.HelmChartReleases = getHelmList(oc.RestConfig, data.Namespaces)

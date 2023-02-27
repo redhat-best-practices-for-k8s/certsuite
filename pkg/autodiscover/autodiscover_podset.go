@@ -24,8 +24,10 @@ import (
 	scalingv1 "k8s.io/api/autoscaling/v1"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/kubernetes"
 	appv1client "k8s.io/client-go/kubernetes/typed/apps/v1"
+	"k8s.io/client-go/scale"
 )
 
 func FindDeploymentByNameByNamespace(appClient appv1client.AppsV1Interface, namespace, name string) (*appsv1.Deployment, error) {
@@ -43,6 +45,15 @@ func FindStatefulsetByNameByNamespace(appClient appv1client.AppsV1Interface, nam
 		return nil, err
 	}
 	return ss, nil
+}
+
+func FindCrObjectByNameByNamespace(scalesGetter scale.ScalesGetter, ns, name string, groupResourceSchema schema.GroupResource) (*scalingv1.Scale, error) {
+	crScale, err := scalesGetter.Scales(ns).Get(context.TODO(), groupResourceSchema, name, metav1.GetOptions{})
+	if err != nil {
+		logrus.Error("Cannot retrieve deployment in ns=", ns, " name=", name)
+		return nil, err
+	}
+	return crScale, nil
 }
 
 //nolint:dupl
@@ -113,8 +124,8 @@ func findStatefulSetByLabel(
 	return statefulsets
 }
 
-func findHpaControllers(cs kubernetes.Interface, namespaces []string) map[string]*scalingv1.HorizontalPodAutoscaler {
-	m := make(map[string]*scalingv1.HorizontalPodAutoscaler)
+func findHpaControllers(cs kubernetes.Interface, namespaces []string) []*scalingv1.HorizontalPodAutoscaler {
+	var m []*scalingv1.HorizontalPodAutoscaler
 	for _, ns := range namespaces {
 		hpas, err := cs.AutoscalingV1().HorizontalPodAutoscalers(ns).List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
@@ -122,8 +133,7 @@ func findHpaControllers(cs kubernetes.Interface, namespaces []string) map[string
 			return m
 		}
 		for i := 0; i < len(hpas.Items); i++ {
-			name := ns + hpas.Items[i].Name
-			m[name] = &hpas.Items[i]
+			m = append(m, &hpas.Items[i])
 		}
 	}
 	if len(m) == 0 {

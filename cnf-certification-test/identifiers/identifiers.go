@@ -144,7 +144,7 @@ var (
 	TestNoSSHDaemonsAllowedIdentifier                 claim.Identifier
 	TestCPUIsolationIdentifier                        claim.Identifier
 	TestContainerPortNameFormat                       claim.Identifier
-
+	TestCrdScalingIdentifier                          claim.Identifier
 	// Chaos Testing
 	TestPodDeleteIdentifier claim.Identifier
 )
@@ -1148,6 +1148,22 @@ that there are no changes to the following directories:
 		bestPracticeDocV1dot4URL+" Section 4.6.20",
 		false,
 		TagExtended)
+
+	TestCrdScalingIdentifier = AddCatalogEntry(
+		"crd-scaling",
+		common.LifecycleTestKey,
+		`Tests that CNF crd support scale in/out operations.
+				First, The test starts getting the current replicaCount (N) of the crd/s with the Pod Under Test. Then, it executes the
+				scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the crd/s.
+				In case of crd that are managed by HPA the test is changing the min and max value to crd Replica - 1 during scale-in and the
+				original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the crd/s`,
+		CrdScalingRemediation,
+		NormativeResult,
+		NoDocumentedProcess,
+		bestPracticeDocV1dot4URL+" Section 4.6.20",
+		false,
+		TagCommon,
+	)
 
 	TestPodDeleteIdentifier = AddCatalogEntry(
 		"pod-delete",

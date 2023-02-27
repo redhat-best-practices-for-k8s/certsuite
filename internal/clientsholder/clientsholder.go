@@ -28,8 +28,11 @@ import (
 	apiextv1c "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/client-go/discovery"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/restmapper"
+	"k8s.io/client-go/scale"
 
 	cncfNetworkAttachmentv1 "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/client/clientset/versioned/typed/k8s.cni.cncf.io/v1"
 	ocpMachine "github.com/openshift/machine-config-operator/pkg/generated/clientset/versioned"
@@ -47,6 +50,7 @@ import (
 type ClientsHolder struct {
 	RestConfig           *rest.Config
 	DynamicClient        dynamic.Interface
+	ScalingClient        scale.ScalesGetter
 	APIExtClient         apiextv1.Interface
 	OlmClient            olmClient.Interface
 	OcpClient            clientconfigv1.ConfigV1Interface
@@ -148,7 +152,7 @@ func createByteArrayKubeConfig(kubeConfig *clientcmdapi.Config) ([]byte, error) 
 }
 
 // GetClientsHolder instantiate an ocp client
-func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:funlen // this is a special function with lots of assignments
+func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:funlen,gocyclo // this is a special function with lots of assignments
 	logrus.Infof("Creating k8s go-clients holder.")
 	loadingRules := clientcmd.NewDefaultClientConfigLoadingRules()
 
@@ -214,6 +218,23 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	if err != nil {
 		return nil, fmt.Errorf("cannot instantiate k8s networking client: %s", err)
 	}
+
+	discoveryClient, err := discovery.NewDiscoveryClientForConfig(clientsHolder.RestConfig)
+	if err != nil {
+		return nil, fmt.Errorf("cannot instantiate discoveryClient: %s", err)
+	}
+	resolver := scale.NewDiscoveryScaleKindResolver(discoveryClient)
+	gr, err := restmapper.GetAPIGroupResources(clientsHolder.K8sClient.Discovery())
+	if err != nil {
+		return nil, fmt.Errorf("cannot instantiate GetAPIGroupResources: %s", err)
+	}
+
+	mapper := restmapper.NewDiscoveryRESTMapper(gr)
+	clientsHolder.ScalingClient, err = scale.NewForConfig(clientsHolder.RestConfig, mapper, dynamic.LegacyAPIPathResolverFunc, resolver)
+	if err != nil {
+		return nil, fmt.Errorf("cannot instantiate ScalesGetter: %s", err)
+	}
+
 	clientsHolder.CNCFNetworkingClient, err = cncfNetworkAttachmentv1.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
 		return nil, fmt.Errorf("cannot instantiate CNCF networking client")

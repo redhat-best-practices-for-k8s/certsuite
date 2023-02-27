@@ -6,7 +6,15 @@ targetPodLabels:
     value: target
 targetCrdFilters:
   - nameSuffix: "group1.test.com"
+    scalable: false
   - nameSuffix: "test-network-function.com"
+    scalable: false
+  - nameSuffix: "tutorial.my.domain"
+    scalable: true 
+managedDeployments:
+  - name: jack
+managedStatefulsets:
+  - name: jack
 certifiedcontainerinfo:
   - name: rocketchat/rocketchat
     repository: registry.connect.redhat.com
