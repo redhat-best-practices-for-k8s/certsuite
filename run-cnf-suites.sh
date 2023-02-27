@@ -103,6 +103,7 @@ GINKGO_ARGS="\
 
 # Make sure the HTML output is copied to the output directory,
 # even in case of a test failure.
+# shellcheck disable=SC2317 # Command appears to be unreachable.
 html_output() {
 	if [ -f "${OUTPUT_LOC}"/claim.json ]; then
 		echo -n 'var initialjson=' > "${OUTPUT_LOC}"/claimjson.js
