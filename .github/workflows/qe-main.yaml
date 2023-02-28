@@ -1,0 +1,197 @@
+# https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
+
+name: CRC Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+env:
+  REGISTRY: quay.io
+  REGISTRY_LOCAL: localhost
+  TNF_IMAGE_NAME: testnetworkfunction/cnf-certification-test
+  TNF_IMAGE_TAG: unstable
+  OCT_IMAGE_NAME: testnetworkfunction/oct
+  OCT_IMAGE_TAG: latest
+  TNF_CONTAINER_CLIENT: docker
+  TNF_NON_INTRUSIVE_ONLY: false
+  TNF_ALLOW_PREFLIGHT_INSECURE: false
+  TNF_DISABLE_CONFIG_AUTODISCOVER: false
+  TNF_CONFIG_DIR: /tmp/tnf/config
+  TNF_OUTPUT_DIR: /tmp/tnf/output
+  TNF_SRC_URL: 'https://github.com/${{ github.repository }}'
+  TESTING_CMD_PARAMS: '-n host -i ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} -t ${TNF_CONFIG_DIR} -o ${TNF_OUTPUT_DIR}'
+  TNF_SMOKE_TESTS_LOG_LEVEL: trace
+  ON_DEMAND_DEBUG_PODS: false
+  TERM: xterm-color
+
+jobs:
+  smoke-tests:
+    name: Run Smoke Tests Against OpenShift Local
+    runs-on: macos-latest
+    env:
+      SHELL: /bin/bash
+      KUBECONFIG: '/Users/runner/.crc/machines/crc/kubeconfig'
+      PFLT_DOCKERCONFIG: '/Users/runner/.docker/config'
+      OCP_CLUSTER_OVERRIDE: 'true'
+
+    steps:
+      - name: Write temporary docker file
+        run: |
+          mkdir -p /Users/runner/.docker
+          touch ${PFLT_DOCKERCONFIG}
+          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
+
+      - name: Set up Go 1.20.2
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.20.2
+
+      - name: Install brew binaries
+        run: |
+          brew update
+          brew install coreutils
+          brew install operator-sdk --ignore-dependencies
+          brew install bash
+          brew install openshift-cli
+          brew install kubernetes-cli
+          brew install gnu-sed
+          brew install watch
+          brew install helm
+
+      - name: Adjust PATH for gnu-sed
+        run: |
+          echo "/usr/local/opt/gnu-sed/libexec/gnubin" >> $GITHUB_PATH
+
+      - name: Disable default go problem matcher
+        run: echo "::remove-matcher owner=go::"
+
+      - name: Check out code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.sha }}
+
+      - name: check if CRC_PULL_SECRET exists
+        env: 
+          super_secret: ${{ secrets.CRC_PULL_SECRET }}
+        if: ${{ env.super_secret == '' }}
+        run: 'echo the secret \"CRC_PULL_SECRET\" has not been made; echo please go to \"settings \> secrets \> actions\" to create it'
+
+      - name: Write the pull secret to json file
+        run: |
+          echo $CRC_PULL_SECRET > temp-ps.json
+          cat temp-ps.json
+        env:
+          CRC_PULL_SECRET: ${{ secrets.CRC_PULL_SECRET }}
+        shell: bash
+
+      # Create a OpenShift Local Cluster for testing
+      - name: Curl the CRC binary
+        run: |
+          wget -O crc-macos-installer.pkg https://storage.googleapis.com/crc-bundle-github-ci/crc-microshift/crc-macos-installer.pkg
+
+      - name: Install CRC
+        run: |
+          sudo installer -pkg crc-macos-installer.pkg -target /
+
+      - name: Set Microshift Preset
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          command: crc config set preset microshift
+
+      - name: Set Memory
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          command: crc config set memory 14000
+
+      - name: Set Telemetry
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          command: crc config set consent-telemetry yes
+
+      - name: Run CRC Setup
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 15
+          max_attempts: 3
+          command: crc setup
+
+      - name: Run CRC Start
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 15
+          max_attempts: 3
+          command: crc start --pull-secret-file temp-ps.json --log-level debug
+          on_retry_command: crc delete -f
+
+      - name: Set the adm policy
+        run: |
+          oc adm policy add-scc-to-user privileged user
+
+      - name: Run oc version
+        run: |
+          eval $(crc oc-env)
+          oc version
+
+      - name: Check out `cnf-certification-test-partner`
+        uses: actions/checkout@v3
+        with:
+          repository: test-network-function/cnf-certification-test-partner
+          path: cnf-certification-test-partner
+          ref: ocp_support
+
+      - name: Create `local-test-infra` OpenShift resources
+        uses: ./cnf-certification-test-partner/.github/actions/create-local-ocp-test-infra-resources
+        with:
+          working_directory: cnf-certification-test-partner
+
+      # Update the CNF containers, helm charts and operators DB
+
+      # - name: Update the CNF DB
+      #   run: |
+      #     docker pull ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
+      #     mkdir -p ${GITHUB_WORKSPACE}/offline-db
+      #     docker run -v ${GITHUB_WORKSPACE}/offline-db:/tmp/dump:Z --env OCT_DUMP_ONLY=true ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
+      #   shell: bash
+
+      - name: Install ginkgo
+        run: make install-tools
+
+      - name: Execute `make build`
+        run: make build
+
+      # Perform smoke tests.
+      - name: 'Test: Run test suites'
+        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "common"
+
+      - name: Upload smoke test results as an artifact
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: smoke-tests
+          path: |
+            cnf-certification-test/*.xml
+            cnf-certification-test/claim.json
+            cnf-certification-test/claimjson.js
+            cnf-certification-test/results.html
+            cnf-certification-test/tnf-execution.log
+
+      - name: Upload container test results as an artifact
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: smoke-tests-container
+          path: |
+            ${{ env.TNF_OUTPUT_DIR }}/*.xml
+            ${{ env.TNF_OUTPUT_DIR }}/claim.json
+            ${{ env.TNF_OUTPUT_DIR }}/claimjson.js
+            ${{ env.TNF_OUTPUT_DIR }}/results.html
+            ${{ env.TNF_OUTPUT_DIR }}/tnf-execution.log
