@@ -485,6 +485,10 @@ func testOneProcessPerContainer(env *provider.TestEnvironment) {
 	var badContainers []string
 
 	for _, cut := range env.Containers {
+		// the Istio sidecar container "istio-proxy" launches two processes: "pilot-agent" and "envoy"
+		if cut.IsIstioProxy() {
+			continue
+		}
 		debugPod := env.DebugPods[cut.NodeName]
 		if debugPod == nil {
 			ginkgo.Fail(fmt.Sprintf("Debug pod not found on Node: %s", cut.NodeName))
