@@ -138,8 +138,8 @@ jobs:
               exit 1
           fi
 
-  smoke-tests:
-    name: Run Smoke Tests
+  smoke-tests-local:
+    name: Run Local Smoke Tests
     runs-on: ubuntu-22.04
     env:
       SHELL: /bin/bash
@@ -181,7 +181,6 @@ jobs:
         run: make build
 
       # Create a Kind cluster for testing.
-
       - name: Check out `cnf-certification-test-partner`
         uses: actions/checkout@v3
         with:
@@ -199,7 +198,6 @@ jobs:
           working_directory: cnf-certification-test-partner
 
       # Perform smoke tests.
-
       - name: 'Test: Run test suites'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "common"
 
@@ -214,9 +212,38 @@ jobs:
             cnf-certification-test/claimjson.js
             cnf-certification-test/results.html
             cnf-certification-test/tnf-execution.log
+
+  smoke-tests-container:
+    name: Run Container Smoke Tests
+    runs-on: ubuntu-22.04
+    env:
+      SHELL: /bin/bash
+      KUBECONFIG: '/home/runner/.kube/config'
+      PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
+
+      # Create a Kind cluster for testing.
+      - name: Check out `cnf-certification-test-partner`
+        uses: actions/checkout@v3
+        with:
+          repository: test-network-function/cnf-certification-test-partner
+          path: cnf-certification-test-partner
+
+      - name: Start the Kind cluster for `local-test-infra`
+        uses: ./cnf-certification-test-partner/.github/actions/start-k8s-cluster
+        with:
+          working_directory: cnf-certification-test-partner
+
+      - name: Create `local-test-infra` OpenShift resources
+        uses: ./cnf-certification-test-partner/.github/actions/create-local-test-infra-resources
+        with:
+          working_directory: cnf-certification-test-partner
             
 
       # Perform smoke tests using a TNF container.
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.sha }}
 
       - name: Build the `cnf-certification-test` image
         run: |
