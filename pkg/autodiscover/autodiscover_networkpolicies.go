@@ -20,12 +20,12 @@ import (
 	"context"
 
 	networkingv1 "k8s.io/api/networking/v1"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	networkingv1client "k8s.io/client-go/kubernetes/typed/networking/v1"
 )
 
 func getNetworkPolicies(oc networkingv1client.NetworkingV1Interface) ([]networkingv1.NetworkPolicy, error) {
-	nps, err := oc.NetworkPolicies("").List(context.TODO(), v1.ListOptions{})
+	nps, err := oc.NetworkPolicies("").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		return nil, err
 	}

@@ -34,7 +34,7 @@ import (
 	plibOperator "github.com/redhat-openshift-ecosystem/openshift-preflight/operator"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 type Operator struct {
@@ -293,7 +293,7 @@ func getCatalogSourceImageIndexFromInstallPlan(installPlan *olmv1Alpha.InstallPl
 func getOperatorTargetNamespaces(namespace string) ([]string, error) {
 	client := clientsholder.GetClientsHolder()
 
-	list, err := client.OlmClient.OperatorsV1().OperatorGroups(namespace).List(context.TODO(), v1.ListOptions{})
+	list, err := client.OlmClient.OperatorsV1().OperatorGroups(namespace).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		return nil, err
 	}

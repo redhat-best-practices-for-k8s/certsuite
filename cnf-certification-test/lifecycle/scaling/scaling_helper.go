@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
-	v1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apiv1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	scalingv1 "k8s.io/api/autoscaling/v1"
@@ -27,7 +27,7 @@ func IsManaged(podSetName string, managedPodSet []configuration.ManagedDeploymen
 	return false
 }
 
-func CheckOwnerReference(ownerReference []apiv1.OwnerReference, crdFilter []configuration.CrdFilter, crds []*v1.CustomResourceDefinition) bool {
+func CheckOwnerReference(ownerReference []apiv1.OwnerReference, crdFilter []configuration.CrdFilter, crds []*apiextv1.CustomResourceDefinition) bool {
 	for _, owner := range ownerReference {
 		for _, aCrd := range crds {
 			if aCrd.Spec.Names.Kind == owner.Kind {
