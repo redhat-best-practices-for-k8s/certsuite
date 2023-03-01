@@ -38,6 +38,7 @@ import (
 	ocpMachine "github.com/openshift/machine-config-operator/pkg/generated/clientset/versioned"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
+	policyv1 "k8s.io/api/policy/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	apiextv1fake "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/fake"
 	k8sFakeClient "k8s.io/client-go/kubernetes/fake"
@@ -104,11 +105,15 @@ func GetTestClientsHolder(k8sMockObjects []runtime.Object, filenames ...string) 
 			k8sClientObjects = append(k8sClientObjects, v)
 		case *appsv1.Deployment:
 			k8sClientObjects = append(k8sClientObjects, v)
+		case *appsv1.StatefulSet:
+			k8sClientObjects = append(k8sClientObjects, v)
 		case *corev1.ResourceQuota:
 			k8sClientObjects = append(k8sClientObjects, v)
 		case *corev1.PersistentVolume:
 			k8sClientObjects = append(k8sClientObjects, v)
 		case *corev1.PersistentVolumeClaim:
+			k8sClientObjects = append(k8sClientObjects, v)
+		case *policyv1.PodDisruptionBudget:
 			k8sClientObjects = append(k8sClientObjects, v)
 
 		// K8s Extension Client Objects
