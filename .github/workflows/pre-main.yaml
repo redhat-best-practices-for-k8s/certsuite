@@ -221,6 +221,7 @@ jobs:
       KUBECONFIG: '/home/runner/.kube/config'
       PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
 
+    steps:
       # Create a Kind cluster for testing.
       - name: Check out `cnf-certification-test-partner`
         uses: actions/checkout@v3
