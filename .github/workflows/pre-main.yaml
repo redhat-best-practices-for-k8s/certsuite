@@ -222,6 +222,12 @@ jobs:
       PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
 
     steps:
+      - name: Write temporary docker file
+        run: |
+          mkdir -p /home/runner/.docker
+          touch ${PFLT_DOCKERCONFIG}
+          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
+
       # Create a Kind cluster for testing.
       - name: Check out `cnf-certification-test-partner`
         uses: actions/checkout@v3
