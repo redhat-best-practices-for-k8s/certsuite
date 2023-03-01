@@ -15,3 +15,53 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 package autodiscover
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	policyv1 "k8s.io/api/policy/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+)
+
+func TestGetPodDisruptionBudgets(t *testing.T) {
+	generatePodDisruptionBudget := func(name, namespace string) *policyv1.PodDisruptionBudget {
+		return &policyv1.PodDisruptionBudget{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      name,
+				Namespace: namespace,
+			},
+			Spec: policyv1.PodDisruptionBudgetSpec{},
+		}
+	}
+
+	testCases := []struct {
+		pdbName      string
+		pdbNamespace string
+		expectedPDBs []policyv1.PodDisruptionBudget
+	}{
+		{
+			pdbName:      "testPdb",
+			pdbNamespace: "tnf",
+			expectedPDBs: []policyv1.PodDisruptionBudget{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "testPdb",
+						Namespace: "tnf",
+					},
+				},
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		var testRuntimeObjects []runtime.Object
+		testRuntimeObjects = append(testRuntimeObjects, generatePodDisruptionBudget(tc.pdbName, tc.pdbNamespace))
+		oc := clientsholder.GetTestClientsHolder(testRuntimeObjects)
+		pdbs, err := getPodDisruptionBudgets(oc.K8sClient.PolicyV1(), []string{tc.pdbNamespace})
+		assert.Nil(t, err)
+		assert.Equal(t, tc.expectedPDBs, pdbs)
+	}
+}

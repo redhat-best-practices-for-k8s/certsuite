@@ -14,3 +14,176 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 package autodiscover
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+	appsv1 "k8s.io/api/apps/v1"
+	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+)
+
+func TestFindDeploymentByLabel(t *testing.T) {
+	generateDeployment := func(name, namespace, label string) *appsv1.Deployment {
+		return &appsv1.Deployment{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      name,
+				Namespace: namespace,
+			},
+			Spec: appsv1.DeploymentSpec{
+				Template: corev1.PodTemplateSpec{
+					ObjectMeta: metav1.ObjectMeta{
+						Labels: map[string]string{
+							"testLabel": label,
+						},
+					},
+				},
+			},
+		}
+	}
+
+	testCases := []struct {
+		testNamespaces          []string
+		expectedResults         []appsv1.Deployment
+		testDeploymentName      string
+		testDeploymentNamespace string
+		testDeploymentLabel     string
+		queryLabel              string
+	}{
+		{ // Test Case #1 - Happy path, labels found
+			testDeploymentName:      "testName",
+			testDeploymentNamespace: "testNamespace",
+			testDeploymentLabel:     "mylabel",
+			queryLabel:              "mylabel",
+
+			expectedResults: []appsv1.Deployment{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "testName",
+						Namespace: "testNamespace",
+					},
+					Spec: appsv1.DeploymentSpec{
+						Template: corev1.PodTemplateSpec{
+							ObjectMeta: metav1.ObjectMeta{
+								Labels: map[string]string{
+									"testLabel": "mylabel",
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		{ // Test Case #2 - Invalid label
+			testDeploymentName:      "testName",
+			testDeploymentNamespace: "testNamespace",
+			testDeploymentLabel:     "testLabel",
+			queryLabel:              "badlabel",
+
+			expectedResults: []appsv1.Deployment{},
+		},
+	}
+
+	for _, tc := range testCases {
+		testLabel := []configuration.Label{
+			{
+				Name:  "testLabel",
+				Value: tc.testDeploymentLabel,
+			},
+		}
+		testNamespaces := []string{
+			tc.testDeploymentNamespace,
+		}
+		var testRuntimeObjects []runtime.Object
+		testRuntimeObjects = append(testRuntimeObjects, generateDeployment(tc.testDeploymentName, tc.testDeploymentNamespace, tc.queryLabel))
+		oc := clientsholder.GetTestClientsHolder(testRuntimeObjects)
+
+		deployments := findDeploymentByLabel(oc.K8sClient.AppsV1(), testLabel, testNamespaces)
+		assert.Equal(t, tc.expectedResults, deployments)
+	}
+}
+
+func TestFindStatefulSetByLabel(t *testing.T) {
+	generateStatefulSet := func(name, namespace, label string) *appsv1.StatefulSet {
+		return &appsv1.StatefulSet{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      name,
+				Namespace: namespace,
+			},
+			Spec: appsv1.StatefulSetSpec{
+				Template: corev1.PodTemplateSpec{
+					ObjectMeta: metav1.ObjectMeta{
+						Labels: map[string]string{
+							"testLabel": label,
+						},
+					},
+				},
+			},
+		}
+	}
+
+	testCases := []struct {
+		testNamespaces           []string
+		expectedResults          []appsv1.StatefulSet
+		testStatefulSetName      string
+		testStatefulSetNamespace string
+		testStatefulSetLabel     string
+		queryLabel               string
+	}{
+		{ // Test Case #1 - Happy path, labels found
+			testStatefulSetName:      "testName",
+			testStatefulSetNamespace: "testNamespace",
+			testStatefulSetLabel:     "mylabel",
+			queryLabel:               "mylabel",
+
+			expectedResults: []appsv1.StatefulSet{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "testName",
+						Namespace: "testNamespace",
+					},
+					Spec: appsv1.StatefulSetSpec{
+						Template: corev1.PodTemplateSpec{
+							ObjectMeta: metav1.ObjectMeta{
+								Labels: map[string]string{
+									"testLabel": "mylabel",
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		{ // Test Case #2 - Invalid label
+			testStatefulSetName:      "testName",
+			testStatefulSetNamespace: "testNamespace",
+			testStatefulSetLabel:     "testLabel",
+			queryLabel:               "badlabel",
+
+			expectedResults: []appsv1.StatefulSet{},
+		},
+	}
+
+	for _, tc := range testCases {
+		testLabel := []configuration.Label{
+			{
+				Name:  "testLabel",
+				Value: tc.testStatefulSetLabel,
+			},
+		}
+		testNamespaces := []string{
+			tc.testStatefulSetNamespace,
+		}
+		var testRuntimeObjects []runtime.Object
+		testRuntimeObjects = append(testRuntimeObjects, generateStatefulSet(tc.testStatefulSetName, tc.testStatefulSetNamespace, tc.queryLabel))
+		oc := clientsholder.GetTestClientsHolder(testRuntimeObjects)
+
+		statefulSets := findStatefulSetByLabel(oc.K8sClient.AppsV1(), testLabel, testNamespaces)
+		assert.Equal(t, tc.expectedResults, statefulSets)
+	}
+}
