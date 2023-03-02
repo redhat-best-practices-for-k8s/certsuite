@@ -219,8 +219,7 @@ func TestFindHpaControllers(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		var testRuntimeObjects []runtime.Object
-		testRuntimeObjects = append(testRuntimeObjects, generateHpa(tc.testHpaName, tc.testHpaNamespace))
+		testRuntimeObjects := [...]runtime.Object{generateHpa(tc.testHpaName, tc.testHpaNamespace)}
 		oc := clientsholder.GetTestClientsHolder(testRuntimeObjects)
 
 		hpas := findHpaControllers(oc.K8sClient, []string{tc.testHpaNamespace})
