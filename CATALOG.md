@@ -67,7 +67,7 @@ Tags|common,telco,access-control
 Property|Description
 ---|---
 Unique ID|access-control-net-admin-capability-check
-Description|Ensures that containers do not use NET_ADMIN capability
+Description|Ensures that containers do not use NET_ADMIN capability.  Note: this test ensures iptables and nftables are not configured by CNF pods: - NET_ADMIN and NET_RAW are required to modify nftables (namespaced) which is not desired inside pods.  nftables should be configured by an administrator outside the scope of the CNF. nftables are usually configured  by operators, for instance the Performance Addon Operator (PAO) or istio. - Privileged container are required to modify host iptables, which is not safe to perform inside pods. nftables  should be configured by an administrator outside the scope of the CNF. iptables are usually configured by operators,  for instance the Performance Addon Operator (PAO) or istio.
 Result Type|normative
 Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
@@ -78,7 +78,7 @@ Tags|common,access-control
 Property|Description
 ---|---
 Unique ID|access-control-net-raw-capability-check
-Description|Ensures that containers do not use NET_RAW capability
+Description|Ensures that containers do not use NET_RAW capability.  Note: this test ensures iptables and nftables are not configured by CNF pods: - NET_ADMIN and NET_RAW are required to modify nftables (namespaced) which is not desired inside pods.  nftables should be configured by an administrator outside the scope of the CNF. nftables are usually configured  by operators, for instance the Performance Addon Operator (PAO) or istio. - Privileged container are required to modify host iptables, which is not safe to perform inside pods. nftables  should be configured by an administrator outside the scope of the CNF. iptables are usually configured by operators,  for instance the Performance Addon Operator (PAO) or istio.
 Result Type|normative
 Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
@@ -638,17 +638,6 @@ Suggested Remediation|Ensure that the CNF is able to communicate via the Multus 
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,networking
-#### networking-iptables
-
-Property|Description
----|---
-Unique ID|networking-iptables
-Description|Checks that the output of "iptables-save" is empty, e.g. there is no iptables configuration on any CNF containers.
-Result Type|normative
-Suggested Remediation|Do not configure iptables on any CNF container.
-Best Practice Reference|https://TODO Section 4.6.23
-Exception Process|There is no documented exception process for this.
-Tags|common,extended,networking
 #### networking-network-policy-deny-all
 
 Property|Description
@@ -660,17 +649,6 @@ Suggested Remediation|Ensure that a NetworkPolicy with a default deny-all is app
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 10.6
 Exception Process|There is no documented exception process for this.
 Tags|common,networking
-#### networking-nftables
-
-Property|Description
----|---
-Unique ID|networking-nftables
-Description|Checks that the output of "nft list ruleset" is empty, e.g. there is no nftables configuration on any CNF containers.
-Result Type|normative
-Suggested Remediation|Do not configure nftables on any CNF container.
-Best Practice Reference|https://TODO Section 4.6.23
-Exception Process|There is no documented exception process for this.
-Tags|common,extended,networking
 #### networking-ocp-reserved-ports-usage
 
 Property|Description

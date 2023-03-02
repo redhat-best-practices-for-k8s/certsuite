@@ -30,6 +30,17 @@ const (
 	bestPracticeDocV1dot4URL = "https://TODO" // TODO: Fill in this variable with the new v1.4 document when available.
 )
 
+// shared description text
+const (
+	iptablesNftablesImplicitCheck = ` Note: this test ensures iptables and nftables are not configured by CNF pods:
+- NET_ADMIN and NET_RAW are required to modify nftables (namespaced) which is not desired inside pods. 
+nftables should be configured by an administrator outside the scope of the CNF. nftables are usually configured 
+by operators, for instance the Performance Addon Operator (PAO) or istio.
+- Privileged container are required to modify host iptables, which is not safe to perform inside pods. nftables 
+should be configured by an administrator outside the scope of the CNF. iptables are usually configured by operators, 
+for instance the Performance Addon Operator (PAO) or istio.`
+)
+
 const (
 	TagCommon   = "common"
 	TagExtended = "extended"
@@ -95,8 +106,6 @@ var (
 	TestICMPv4ConnectivityMultusIdentifier            claim.Identifier
 	TestICMPv6ConnectivityMultusIdentifier            claim.Identifier
 	TestServiceDualStackIdentifier                    claim.Identifier
-	TestNFTablesIdentifier                            claim.Identifier
-	TestIPTablesIdentifier                            claim.Identifier
 	TestNamespaceBestPracticesIdentifier              claim.Identifier
 	TestNonTaintedNodeKernelsIdentifier               claim.Identifier
 	TestOperatorInstallStatusSucceededIdentifier      claim.Identifier
@@ -309,7 +318,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 	TestNetAdminIdentifier = AddCatalogEntry(
 		"net-admin-capability-check",
 		common.AccessControlTestKey,
-		`Ensures that containers do not use NET_ADMIN capability`,
+		`Ensures that containers do not use NET_ADMIN capability. `+iptablesNftablesImplicitCheck,
 		SecConRemediation,
 		NormativeResult,
 		SecConCapabilitiesExceptionProcess,
@@ -342,7 +351,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 	TestNetRawIdentifier = AddCatalogEntry(
 		"net-raw-capability-check",
 		common.AccessControlTestKey,
-		`Ensures that containers do not use NET_RAW capability`,
+		`Ensures that containers do not use NET_RAW capability. `+iptablesNftablesImplicitCheck,
 		SecConRemediation,
 		NormativeResult,
 		SecConCapabilitiesExceptionProcess,
@@ -575,28 +584,6 @@ test case requires the deployment of the debug daemonset.`,
 		NormativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 3.5.7",
-		false,
-		TagCommon, TagExtended)
-
-	TestNFTablesIdentifier = AddCatalogEntry(
-		"nftables",
-		common.NetworkingTestKey,
-		`Checks that the output of "nft list ruleset" is empty, e.g. there is no nftables configuration on any CNF containers.`,
-		TestNFTablesRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
-		bestPracticeDocV1dot4URL+" Section 4.6.23",
-		false,
-		TagCommon, TagExtended)
-
-	TestIPTablesIdentifier = AddCatalogEntry(
-		"iptables",
-		common.NetworkingTestKey,
-		`Checks that the output of "iptables-save" is empty, e.g. there is no iptables configuration on any CNF containers.`,
-		TestIPTablesRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
-		bestPracticeDocV1dot4URL+" Section 4.6.23",
 		false,
 		TagCommon, TagExtended)
 
