@@ -39,7 +39,7 @@ skipHelmChartList:
 validProtocolNames:
   - "http3"
   - "sctp"
-ServicesIgnoreList:
+servicesignorelist:
   - "hazelcast-platform-controller-manager-service"
   - "hazelcast-platform-webhook-service"
   - "new-pro-controller-manager-metrics-service"
