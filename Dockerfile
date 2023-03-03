@@ -13,7 +13,7 @@ RUN yum install -y gcc git jq make wget
 
 # Install Go binary and set the PATH 
 ENV GO_DL_URL="https://golang.org/dl"
-ENV GO_BIN_TAR="go1.19.5.linux-amd64.tar.gz"
+ENV GO_BIN_TAR="go1.20.1.linux-amd64.tar.gz"
 ENV GO_BIN_URL_x86_64=${GO_DL_URL}/${GO_BIN_TAR}
 ENV GOPATH="/root/go"
 RUN if [[ "$(uname -m)" -eq "x86_64" ]] ; then \
@@ -90,6 +90,7 @@ COPY --from=db ${OCT_DB_PATH} ${TNF_OFFLINE_DB}
 
 ENV TNF_CONFIGURATION_PATH=/usr/tnf/config/tnf_config.yml \
     KUBECONFIG=/usr/tnf/kubeconfig/config \
+    PFLT_DOCKERCONFIG=/usr/tnf/dockercfg/config.json \
     PATH="/usr/local/osdk/bin:${PATH}"
 WORKDIR ${TNF_DIR}
 ENV SHELL=/bin/bash

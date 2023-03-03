@@ -23,10 +23,10 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/go-yaml/yaml"
 	log "github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/certdb/offlinecheck"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	yaml "gopkg.in/yaml.v3"
 	"helm.sh/helm/v3/pkg/release"
 )
 

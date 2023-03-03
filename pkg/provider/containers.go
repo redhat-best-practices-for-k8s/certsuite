@@ -17,13 +17,23 @@
 package provider
 
 import (
+	"bytes"
+	"context"
 	"errors"
 	"fmt"
+	"log"
+	"os"
 	"strings"
 
+	"github.com/go-logr/logr"
+	"github.com/go-logr/stdr"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	corev1 "k8s.io/api/core/v1"
+
+	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
+	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
+	plibContainer "github.com/redhat-openshift-ecosystem/openshift-preflight/container"
 )
 
 var (
@@ -40,6 +50,7 @@ type Container struct {
 	Runtime                  string
 	UID                      string
 	ContainerImageIdentifier configuration.ContainerImageIdentifier
+	PreflightResults         plibRuntime.Results
 }
 
 func NewContainer() *Container {
@@ -60,6 +71,58 @@ func (c *Container) GetUID() (string, error) {
 	}
 	logrus.Debugln(fmt.Sprintf("uid of %s/%s/%s=%s\n", c.Namespace, c.Podname, c.Name, uid))
 	return uid, nil
+}
+
+//nolint:funlen
+func (c *Container) SetPreflightResults(preflightImageCache map[string]plibRuntime.Results, env *TestEnvironment) error {
+	logrus.Infof("Running preflight container test against image: %s with name: %s", c.Image, c.Name)
+
+	// Short circuit if the image already exists in the cache
+	if _, exists := preflightImageCache[c.Image]; exists {
+		logrus.Infof("Container image: %s exists in the cache. Skipping this run.", c.Image)
+		c.PreflightResults = preflightImageCache[c.Image]
+		return nil
+	}
+
+	var results plibRuntime.Results
+	opts := []plibContainer.Option{}
+	opts = append(opts, plibContainer.WithDockerConfigJSONFromFile(env.GetDockerConfigFile()))
+	if env.IsPreflightInsecureAllowed() {
+		logrus.Info("Insecure connections are being allowed to preflight")
+		opts = append(opts, plibContainer.WithInsecureConnection())
+	}
+
+	check := plibContainer.NewCheck(c.Image, opts...)
+
+	// Create artifacts handler
+	artifactsWriter, err := artifacts.NewMapWriter()
+	if err != nil {
+		return err
+	}
+	ctx := artifacts.ContextWithWriter(context.Background(), artifactsWriter)
+
+	// Add logger output to the context
+	logbytes := bytes.NewBuffer([]byte{})
+	checklogger := log.Default()
+	checklogger.SetOutput(logbytes)
+	logger := stdr.New(checklogger)
+	ctx = logr.NewContext(ctx, logger)
+
+	var runtimeErr error
+	results, runtimeErr = check.Run(ctx)
+	logrus.StandardLogger().Out = os.Stderr
+	if runtimeErr != nil {
+		logrus.Error(runtimeErr)
+		return runtimeErr
+	}
+
+	// Take all of the preflight logs and stick them into logrus.
+	logrus.Info(logbytes.String())
+
+	// Store the result into the cache and store the Results into the container's PreflightResults var.
+	preflightImageCache[c.Image] = results
+	c.PreflightResults = preflightImageCache[c.Image]
+	return nil
 }
 
 func (c *Container) StringLong() string {

@@ -15,6 +15,7 @@ env:
   OCT_IMAGE_TAG: latest
   TNF_CONTAINER_CLIENT: docker
   TNF_NON_INTRUSIVE_ONLY: false
+  TNF_ALLOW_PREFLIGHT_INSECURE: false
   TNF_DISABLE_CONFIG_AUTODISCOVER: false
   TNF_CONFIG_DIR: /tmp/tnf/config
   TNF_OUTPUT_DIR: /tmp/tnf/output
@@ -27,13 +28,23 @@ env:
 jobs:
   lint:
     name: Run Linter and Vet
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
+    env:
+      SHELL: /bin/bash
+      KUBECONFIG: '/home/runner/.kube/config'
+      PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
 
     steps:
-      - name: Set up Go 1.19
+      - name: Write temporary docker file
+        run: |
+          mkdir -p /home/runner/.docker
+          touch ${PFLT_DOCKERCONFIG}
+          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
+
+      - name: Set up Go 1.20
         uses: actions/setup-go@v3
         with:
-          go-version: 1.19.5
+          go-version: 1.20.1
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -55,20 +66,12 @@ jobs:
         run: make vet
   shellcheck:
     name: Shellcheck
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
-      - name: Run ShellCheck
-        uses: ludeeus/action-shellcheck@master
-        with:
-          additional_files: >-
-            run-cnf-suites.sh
-            run-tnf-container.sh
-          ignore_names: results.html
-          scandir: script
-          severity: style
+      - uses: ludeeus/action-shellcheck@master
   yamllint:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - name: yaml-lint
@@ -88,13 +91,23 @@ jobs:
 
   unit-tests:
     name: Run Unit Tests
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
+    env:
+      SHELL: /bin/bash
+      KUBECONFIG: '/home/runner/.kube/config'
+      PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
 
     steps:
-      - name: Set up Go 1.19
+      - name: Write temporary docker file
+        run: |
+          mkdir -p /home/runner/.docker
+          touch ${PFLT_DOCKERCONFIG}
+          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
+
+      - name: Set up Go 1.20
         uses: actions/setup-go@v3
         with:
-          go-version: 1.19.5
+          go-version: 1.20.1
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -125,19 +138,25 @@ jobs:
               exit 1
           fi
 
-  smoke-tests:
-    name: Run Smoke Tests
-    runs-on: ubuntu-20.04
+  smoke-tests-local:
+    name: Run Local Smoke Tests
+    runs-on: ubuntu-22.04
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
       PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
 
     steps:
-      - name: Set up Go 1.19.5
+      - name: Write temporary docker file
+        run: |
+          mkdir -p /home/runner/.docker
+          touch ${PFLT_DOCKERCONFIG}
+          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
+
+      - name: Set up Go 1.20.1
         uses: actions/setup-go@v3
         with:
-          go-version: 1.19.5
+          go-version: 1.20.1
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -162,7 +181,6 @@ jobs:
         run: make build
 
       # Create a Kind cluster for testing.
-
       - name: Check out `cnf-certification-test-partner`
         uses: actions/checkout@v3
         with:
@@ -180,9 +198,8 @@ jobs:
           working_directory: cnf-certification-test-partner
 
       # Perform smoke tests.
-
       - name: 'Test: Run test suites'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "common,cnfextensions"
+        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "common"
 
       - name: Upload smoke test results as an artifact
         uses: actions/upload-artifact@v3
@@ -195,9 +212,45 @@ jobs:
             cnf-certification-test/claimjson.js
             cnf-certification-test/results.html
             cnf-certification-test/tnf-execution.log
+
+  smoke-tests-container:
+    name: Run Container Smoke Tests
+    runs-on: ubuntu-22.04
+    env:
+      SHELL: /bin/bash
+      KUBECONFIG: '/home/runner/.kube/config'
+      PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
+
+    steps:
+      - name: Write temporary docker file
+        run: |
+          mkdir -p /home/runner/.docker
+          touch ${PFLT_DOCKERCONFIG}
+          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
+
+      # Create a Kind cluster for testing.
+      - name: Check out `cnf-certification-test-partner`
+        uses: actions/checkout@v3
+        with:
+          repository: test-network-function/cnf-certification-test-partner
+          path: cnf-certification-test-partner
+
+      - name: Start the Kind cluster for `local-test-infra`
+        uses: ./cnf-certification-test-partner/.github/actions/start-k8s-cluster
+        with:
+          working_directory: cnf-certification-test-partner
+
+      - name: Create `local-test-infra` OpenShift resources
+        uses: ./cnf-certification-test-partner/.github/actions/create-local-test-infra-resources
+        with:
+          working_directory: cnf-certification-test-partner
             
 
       # Perform smoke tests using a TNF container.
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.sha }}
 
       - name: Build the `cnf-certification-test` image
         run: |
@@ -215,7 +268,7 @@ jobs:
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }}
           
       - name: 'Test: Run Smoke Tests in a TNF container'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "common,cnfextensions"
+        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "common"
 
       - name: Upload container test results as an artifact
         uses: actions/upload-artifact@v3

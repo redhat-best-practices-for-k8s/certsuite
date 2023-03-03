@@ -79,6 +79,10 @@ type Namespace struct {
 // CrdFilter defines a CustomResourceDefinition config filter.
 type CrdFilter struct {
 	NameSuffix string `yaml:"nameSuffix" json:"nameSuffix"`
+	Scalable   bool   `yaml:"scalable" json:"scalable"`
+}
+type ManagedDeploymentsStatefulsets struct {
+	Name string `yaml:"name" json:"name"`
 }
 
 // Tag and Digest should not be populated at the same time. Digest takes precedence if both are populated
@@ -108,7 +112,10 @@ type TestConfiguration struct {
 	// CertifiedOperatorInfo is list of operator bundle names that are queried for certification status.
 	CertifiedOperatorInfo []CertifiedOperatorRequestInfo `yaml:"certifiedoperatorinfo,omitempty" json:"certifiedoperatorinfo,omitempty"`
 	// CRDs section.
-	CrdFilters []CrdFilter `yaml:"targetCrdFilters" json:"targetCrdFilters"`
+	CrdFilters          []CrdFilter                      `yaml:"targetCrdFilters" json:"targetCrdFilters"`
+	ManagedDeployments  []ManagedDeploymentsStatefulsets `yaml:"managedDeployments" json:"managedDeployments"`
+	ManagedStatefulsets []ManagedDeploymentsStatefulsets `yaml:"managedStatefulsets" json:"managedStatefulsets"`
+
 	// AcceptedKernelTaints
 	AcceptedKernelTaints []AcceptedKernelTaintsInfo `yaml:"acceptedKernelTaints,omitempty" json:"acceptedKernelTaints,omitempty"`
 	SkipHelmChartList    []SkipHelmChartList        `yaml:"skipHelmChartList" json:"skipHelmChartList"`
@@ -123,10 +130,12 @@ type TestConfiguration struct {
 }
 
 type TestParameters struct {
-	Home              string `envconfig:"home"`
-	Kubeconfig        string `envconfig:"kubeconfig"`
-	ConfigurationPath string `split_words:"true" default:"tnf_config.yml"`
-	NonIntrusiveOnly  bool   `split_words:"true"`
-	LogLevel          string `default:"debug" split_words:"true"`
-	OfflineDB         string `split_words:"true"`
+	Home                   string `envconfig:"home"`
+	Kubeconfig             string `envconfig:"kubeconfig"`
+	ConfigurationPath      string `split_words:"true" default:"tnf_config.yml"`
+	NonIntrusiveOnly       bool   `split_words:"true"`
+	LogLevel               string `default:"debug" split_words:"true"`
+	OfflineDB              string `split_words:"true"`
+	AllowPreflightInsecure bool   `split_words:"true"`
+	PfltDockerconfig       string `split_words:"true" envconfig:"PFLT_DOCKERCONFIG"`
 }

@@ -28,13 +28,17 @@ import (
 	apiextv1c "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/client-go/discovery"
 	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/restmapper"
+	"k8s.io/client-go/scale"
 
 	cncfNetworkAttachmentv1 "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/client/clientset/versioned/typed/k8s.cni.cncf.io/v1"
 	ocpMachine "github.com/openshift/machine-config-operator/pkg/generated/clientset/versioned"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
+	policyv1 "k8s.io/api/policy/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	apiextv1fake "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/fake"
 	k8sFakeClient "k8s.io/client-go/kubernetes/fake"
@@ -47,6 +51,7 @@ import (
 type ClientsHolder struct {
 	RestConfig           *rest.Config
 	DynamicClient        dynamic.Interface
+	ScalingClient        scale.ScalesGetter
 	APIExtClient         apiextv1.Interface
 	OlmClient            olmClient.Interface
 	OcpClient            clientconfigv1.ConfigV1Interface
@@ -71,7 +76,7 @@ func SetupFakeOlmClient(olmMockObjects []runtime.Object) {
 // For other (OLM, )
 // runtime mocking objects loading, use the proper clientset mocking function.
 //
-//nolint:funlen
+//nolint:funlen,gocyclo
 func GetTestClientsHolder(k8sMockObjects []runtime.Object, filenames ...string) *ClientsHolder {
 	// Build slices of different objects depending on what client
 	// is supposed to expect them.
@@ -100,11 +105,15 @@ func GetTestClientsHolder(k8sMockObjects []runtime.Object, filenames ...string) 
 			k8sClientObjects = append(k8sClientObjects, v)
 		case *appsv1.Deployment:
 			k8sClientObjects = append(k8sClientObjects, v)
+		case *appsv1.StatefulSet:
+			k8sClientObjects = append(k8sClientObjects, v)
 		case *corev1.ResourceQuota:
 			k8sClientObjects = append(k8sClientObjects, v)
 		case *corev1.PersistentVolume:
 			k8sClientObjects = append(k8sClientObjects, v)
 		case *corev1.PersistentVolumeClaim:
+			k8sClientObjects = append(k8sClientObjects, v)
+		case *policyv1.PodDisruptionBudget:
 			k8sClientObjects = append(k8sClientObjects, v)
 
 		// K8s Extension Client Objects
@@ -148,7 +157,7 @@ func createByteArrayKubeConfig(kubeConfig *clientcmdapi.Config) ([]byte, error) 
 }
 
 // GetClientsHolder instantiate an ocp client
-func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:funlen // this is a special function with lots of assignments
+func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:funlen,gocyclo // this is a special function with lots of assignments
 	logrus.Infof("Creating k8s go-clients holder.")
 	loadingRules := clientcmd.NewDefaultClientConfigLoadingRules()
 
@@ -214,6 +223,23 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	if err != nil {
 		return nil, fmt.Errorf("cannot instantiate k8s networking client: %s", err)
 	}
+
+	discoveryClient, err := discovery.NewDiscoveryClientForConfig(clientsHolder.RestConfig)
+	if err != nil {
+		return nil, fmt.Errorf("cannot instantiate discoveryClient: %s", err)
+	}
+	resolver := scale.NewDiscoveryScaleKindResolver(discoveryClient)
+	gr, err := restmapper.GetAPIGroupResources(clientsHolder.K8sClient.Discovery())
+	if err != nil {
+		return nil, fmt.Errorf("cannot instantiate GetAPIGroupResources: %s", err)
+	}
+
+	mapper := restmapper.NewDiscoveryRESTMapper(gr)
+	clientsHolder.ScalingClient, err = scale.NewForConfig(clientsHolder.RestConfig, mapper, dynamic.LegacyAPIPathResolverFunc, resolver)
+	if err != nil {
+		return nil, fmt.Errorf("cannot instantiate ScalesGetter: %s", err)
+	}
+
 	clientsHolder.CNCFNetworkingClient, err = cncfNetworkAttachmentv1.NewForConfig(clientsHolder.RestConfig)
 	if err != nil {
 		return nil, fmt.Errorf("cannot instantiate CNCF networking client")

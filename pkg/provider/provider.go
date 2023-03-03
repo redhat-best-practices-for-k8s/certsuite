@@ -42,6 +42,7 @@ import (
 	storagev1 "k8s.io/api/storage/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 const (
@@ -78,7 +79,6 @@ type TestEnvironment struct { // rename this with testTarget
 
 	// Deployment Groupings
 	Deployments []*Deployment `json:"testDeployments"`
-
 	// StatefulSet Groupings
 	StatefulSets []*StatefulSet `json:"testStatefulSets"`
 
@@ -94,21 +94,22 @@ type TestEnvironment struct { // rename this with testTarget
 	variables configuration.TestParameters
 	Crds      []*apiextv1.CustomResourceDefinition `json:"testCrds"`
 
-	HorizontalScaler       map[string]*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
-	Services               []*corev1.Service                             `json:"testServices"`
-	Nodes                  map[string]Node                               `json:"-"`
-	K8sVersion             string                                        `json:"-"`
-	OpenshiftVersion       string                                        `json:"-"`
-	OCPStatus              string                                        `json:"-"`
-	HelmChartReleases      []*release.Release                            `json:"testHelmChartReleases"`
+	HorizontalScaler       []*scalingv1.HorizontalPodAutoscaler `json:"testHorizontalScaler"`
+	Services               []*corev1.Service                    `json:"testServices"`
+	Nodes                  map[string]Node                      `json:"-"`
+	K8sVersion             string                               `json:"-"`
+	OpenshiftVersion       string                               `json:"-"`
+	OCPStatus              string                               `json:"-"`
+	HelmChartReleases      []*release.Release                   `json:"testHelmChartReleases"`
 	ResourceQuotas         []corev1.ResourceQuota
 	PodDisruptionBudgets   []policyv1.PodDisruptionBudget
 	NetworkPolicies        []networkingv1.NetworkPolicy
 	AllInstallPlans        []*olmv1Alpha.InstallPlan   `json:"-"`
 	AllCatalogSources      []*olmv1Alpha.CatalogSource `json:"-"`
-	IstioServiceMesh       bool
+	IstioServiceMeshFound  bool
 	ValidProtocolNames     []string
 	DaemonsetFailedToSpawn bool
+	ScaleCrUndetTest       []Scaleobject
 	StorageClassList       []storagev1.StorageClass
 }
 
@@ -131,6 +132,11 @@ type cniNetworkInterface struct {
 	Default    bool                   `json:"default"`
 	DNS        map[string]interface{} `json:"dns"`
 	DeviceInfo deviceInfo             `json:"device-info"`
+}
+
+type Scaleobject struct {
+	Scale               CrScale
+	GroupResourceSchema schema.GroupResource
 }
 
 type deviceInfo struct {
@@ -204,12 +210,13 @@ func buildTestEnvironment() { //nolint:funlen
 	env.Crds = data.Crds
 	env.AllInstallPlans = data.AllInstallPlans
 	env.AllCatalogSources = data.AllCatalogSources
-	env.AllOperators = createOperators(data.AllCsvs, data.AllSubscriptions, data.AllInstallPlans, data.AllCatalogSources, true, false, false)
+	env.AllOperators = createOperators(data.AllCsvs, data.AllSubscriptions, data.AllInstallPlans, data.AllCatalogSources, false, false)
 	env.AllOperatorsSummary = getSummaryAllOperators(env.AllOperators)
 	env.Namespaces = data.Namespaces
+
 	env.variables = data.Env
 	env.Nodes = createNodes(data.Nodes.Items)
-	env.IstioServiceMesh = data.Istio
+	env.IstioServiceMeshFound = data.IstioServiceMeshFound
 	env.ValidProtocolNames = append(env.ValidProtocolNames, data.ValidProtocolNames...)
 	for i := range data.AbnormalEvents {
 		aEvent := NewEvent(&data.AbnormalEvents[i])
@@ -260,10 +267,12 @@ func buildTestEnvironment() { //nolint:funlen
 		}
 		env.StatefulSets = append(env.StatefulSets, aNewStatefulSet)
 	}
+
+	env.ScaleCrUndetTest = updateCrUnderTest(data.ScaleCrUndetTest)
 	env.HorizontalScaler = data.Hpas
 	env.StorageClassList = data.StorageClasses
 
-	operators := createOperators(data.Csvs, data.Subscriptions, data.AllInstallPlans, data.AllCatalogSources, false, false, true)
+	operators := createOperators(data.Csvs, data.Subscriptions, data.AllInstallPlans, data.AllCatalogSources, false, true)
 	env.Operators = operators
 	logrus.Infof("Operators found: %d", len(env.Operators))
 	for _, pod := range env.Pods {
@@ -278,6 +287,16 @@ func buildTestEnvironment() { //nolint:funlen
 		}
 	}
 	logrus.Infof("Completed the test environment build process in %.2f seconds", time.Since(start).Seconds())
+}
+
+func updateCrUnderTest(scaleCrUndetTest []autodiscover.Scaleobject) []Scaleobject {
+	var scaleCrUndetTesttTemp []Scaleobject
+	for i := range scaleCrUndetTest {
+		aNewScaleCrUndetTest := Scaleobject{Scale: CrScale{scaleCrUndetTest[i].Scale},
+			GroupResourceSchema: scaleCrUndetTest[i].GroupResourceSchema}
+		scaleCrUndetTesttTemp = append(scaleCrUndetTesttTemp, aNewScaleCrUndetTest)
+	}
+	return scaleCrUndetTesttTemp
 }
 
 func getPodContainers(aPod *corev1.Pod, useIgnoreList bool) (containerList []*Container) {
@@ -427,6 +446,14 @@ func (env *TestEnvironment) SetNeedsRefresh() {
 
 func (env *TestEnvironment) IsIntrusive() bool {
 	return !env.variables.NonIntrusiveOnly
+}
+
+func (env *TestEnvironment) IsPreflightInsecureAllowed() bool {
+	return env.variables.AllowPreflightInsecure
+}
+
+func (env *TestEnvironment) GetDockerConfigFile() string {
+	return env.variables.PfltDockerconfig
 }
 
 func (env *TestEnvironment) GetOfflineDBPath() string {

@@ -29,4 +29,5 @@ const (
 	OperatorTestKey           = "operator"
 	PlatformAlterationTestKey = "platform-alteration"
 	PerformanceTestKey        = "performance"
+	PreflightTestKey          = "preflight"
 )

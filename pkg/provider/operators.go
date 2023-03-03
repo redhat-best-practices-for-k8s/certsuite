@@ -17,31 +17,42 @@
 package provider
 
 import (
+	"bytes"
+	"context"
+	"errors"
 	"fmt"
+	"log"
+	"os"
 	"sort"
 	"strings"
 
+	"github.com/go-logr/logr"
+	"github.com/go-logr/stdr"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
+	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
+	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
+	plibOperator "github.com/redhat-openshift-ecosystem/openshift-preflight/operator"
 	"github.com/sirupsen/logrus"
-)
-
-const (
-	allns = "All namespaces"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 type Operator struct {
-	Name               string                                `yaml:"name" json:"name"`
-	Namespace          string                                `yaml:"namespace" json:"namespace"`
-	TargetNamespace    string                                `yaml:"targetnamespace" json:"targetnamespace"`
-	Csv                *olmv1Alpha.ClusterServiceVersion     `yaml:"csv,omitempty" json:"csv,omitempty"`
-	Phase              olmv1Alpha.ClusterServiceVersionPhase `yaml:"csvphase" json:"csvphase"`
-	SubscriptionName   string                                `yaml:"subscriptionName" json:"subscriptionName"`
-	InstallPlans       []CsvInstallPlan                      `yaml:"installPlans,omitempty" json:"installPlans,omitempty"`
-	Package            string                                `yaml:"package" json:"package"`
-	Org                string                                `yaml:"org" json:"org"`
-	Version            string                                `yaml:"version" json:"version"`
-	Channel            string                                `yaml:"channel" json:"channel"`
-	PackageFromCsvName string                                `yaml:"packagefromcsvname" json:"packagefromcsvname"`
+	Name                  string                                `yaml:"name" json:"name"`
+	Namespace             string                                `yaml:"namespace" json:"namespace"`
+	TargetNamespaces      []string                              `yaml:"targetNamespaces" json:"targetNamespaces,omitempty"`
+	IsClusterWide         bool                                  `yaml:"isClusterWide" json:"isClusterWide"`
+	Csv                   *olmv1Alpha.ClusterServiceVersion     `yaml:"csv,omitempty" json:"csv,omitempty"`
+	Phase                 olmv1Alpha.ClusterServiceVersionPhase `yaml:"csvphase" json:"csvphase"`
+	SubscriptionName      string                                `yaml:"subscriptionName" json:"subscriptionName"`
+	SubscriptionNamespace string                                `yaml:"subscriptionNamespace" json:"subscriptionNamespace"`
+	InstallPlans          []CsvInstallPlan                      `yaml:"installPlans,omitempty" json:"installPlans,omitempty"`
+	Package               string                                `yaml:"package" json:"package"`
+	Org                   string                                `yaml:"org" json:"org"`
+	Version               string                                `yaml:"version" json:"version"`
+	Channel               string                                `yaml:"channel" json:"channel"`
+	PackageFromCsvName    string                                `yaml:"packagefromcsvname" json:"packagefromcsvname"`
+	PreflightResults      plibRuntime.Results
 }
 
 type CsvInstallPlan struct {
@@ -54,15 +65,78 @@ type CsvInstallPlan struct {
 }
 
 func (op *Operator) String() string {
-	return fmt.Sprintf("csv: %s ns:%s subscription:%s targetNamespace=%s", op.Name, op.Namespace, op.SubscriptionName, op.TargetNamespace)
+	return fmt.Sprintf("csv: %s ns:%s subscription:%s targetNamespaces=%v", op.Name, op.Namespace, op.SubscriptionName, op.TargetNamespaces)
 }
 
-//nolint:funlen // adding 1 log 26 > 25
-func createOperators(csvs []olmv1Alpha.ClusterServiceVersion,
+//nolint:funlen
+func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
+	bundleImage := op.InstallPlans[0].BundleImage
+	indexImage := op.InstallPlans[0].IndexImage
+	oc := clientsholder.GetClientsHolder()
+
+	// Create artifacts handler
+	artifactsWriter, err := artifacts.NewMapWriter()
+	if err != nil {
+		return err
+	}
+	ctx := artifacts.ContextWithWriter(context.Background(), artifactsWriter)
+	opts := []plibOperator.Option{}
+	opts = append(opts, plibOperator.WithDockerConfigJSONFromFile(env.GetDockerConfigFile()))
+	if env.IsPreflightInsecureAllowed() {
+		logrus.Info("Insecure connections are being allowed to preflight")
+		opts = append(opts, plibOperator.WithInsecureConnection())
+	}
+
+	// Add logger output to the context
+	logbytes := bytes.NewBuffer([]byte{})
+	checklogger := log.Default()
+	checklogger.SetOutput(logbytes)
+	logger := stdr.New(checklogger)
+	ctx = logr.NewContext(ctx, logger)
+
+	check := plibOperator.NewCheck(bundleImage, indexImage, oc.KubeConfig, opts...)
+	results, err := check.Run(ctx)
+	if err != nil {
+		return err
+	}
+
+	// Take all of the preflight logs and stick them into logrus.
+	logrus.Info(logbytes.String())
+
+	e := os.RemoveAll("artifacts/")
+	if e != nil {
+		logrus.Fatal(e)
+	}
+
+	logrus.Infof("Storing operator preflight results into object for %s", bundleImage)
+	op.PreflightResults = results
+	return nil
+}
+
+// getUniqueCsvListByName returns a CSV list with unique names from a list which may contain
+// more than one CSV with the same name. The output CSV list is sorted by CSV name.
+func getUniqueCsvListByName(csvs []*olmv1Alpha.ClusterServiceVersion) []*olmv1Alpha.ClusterServiceVersion {
+	uniqueCsvsMap := map[string]*olmv1Alpha.ClusterServiceVersion{}
+	for _, csv := range csvs {
+		uniqueCsvsMap[csv.Name] = csv
+	}
+
+	uniqueCsvsList := []*olmv1Alpha.ClusterServiceVersion{}
+	logrus.Infof("Found %d unique CSVs", len(uniqueCsvsMap))
+	for name, csv := range uniqueCsvsMap {
+		logrus.Infof("  CSV: %s", name)
+		uniqueCsvsList = append(uniqueCsvsList, csv)
+	}
+
+	// Sort by name: (1) creates a deterministic output, (2) makes UT easier.
+	sort.Slice(uniqueCsvsList, func(i, j int) bool { return uniqueCsvsList[i].Name < uniqueCsvsList[j].Name })
+	return uniqueCsvsList
+}
+
+func createOperators(csvs []*olmv1Alpha.ClusterServiceVersion,
 	subscriptions []olmv1Alpha.Subscription,
 	allInstallPlans []*olmv1Alpha.InstallPlan,
 	allCatalogSources []*olmv1Alpha.CatalogSource,
-	catalogSourceNotRequired,
 	succeededRequired,
 	keepCsvDetails bool) []*Operator {
 	const (
@@ -70,8 +144,12 @@ func createOperators(csvs []olmv1Alpha.ClusterServiceVersion,
 	)
 
 	operators := []*Operator{}
-	for i := range csvs {
-		csv := &csvs[i]
+
+	// Make map with unique csv names to original index in the env.Csvs slice.
+	// Otherwise, cluster-wide operators info will be repeated unnecessarily.
+	uniqueCsvs := getUniqueCsvListByName(csvs)
+
+	for _, csv := range uniqueCsvs {
 		if !(csv.Status.Phase == olmv1Alpha.CSVPhaseSucceeded || !succeededRequired) {
 			continue
 		}
@@ -82,24 +160,26 @@ func createOperators(csvs []olmv1Alpha.ClusterServiceVersion,
 		op.Phase = csv.Status.Phase
 		packageAndVersion := strings.SplitN(csv.Name, ".", maxSize)
 		if len(packageAndVersion) == 0 {
-			logrus.Tracef("Empty CSV Name (package.version), cannot extract a package or a version, skipping. Csv: %+v", *csv)
+			logrus.Tracef("Empty CSV Name (package.version), cannot extract a package or a version, skipping. Csv: %+v", csv)
 			continue
 		}
 		op.PackageFromCsvName = packageAndVersion[0]
 		op.Version = csv.Spec.Version.String()
-		// Get at least one subscription and update the Operator object with them. Not needed for operator tests to pass or to be part of properly installed cluster operators.
-		if !getAtLeastOneSubscription(op, csv, subscriptions) {
-			logrus.Tracef("Subscription not found for csv %s (ns %s) This Operator will not receive updates.", csv.Name, csv.Namespace)
+		// Get at least one subscription and update the Operator object with it.
+		if getAtLeastOneSubscription(op, csv, subscriptions) {
+			targetNamespaces, err := getOperatorTargetNamespaces(op.SubscriptionNamespace)
+			if err != nil {
+				logrus.Errorf("Failed to get target namespaces for operator %s: %v", csv.Name, err)
+			} else {
+				op.TargetNamespaces = targetNamespaces
+				op.IsClusterWide = len(targetNamespaces) == 0
+			}
+		} else {
+			logrus.Warnf("Subscription not found for CSV: %s (ns %s)", csv.Name, csv.Namespace)
 		}
-		// Get at least one Install Plan and update the Operator object with them. Needed to pass tests (including catalog source) but not needed to be part of properly installed cluster operators.
-		atLeastOneInstallPlan := getAtLeastOneInstallPlan(op, csv, allInstallPlans, allCatalogSources)
-		if !atLeastOneInstallPlan {
-			logrus.Tracef("InstallPlan with BundleLookups not found for csv %s (ns %s) not present. Catalog source not available", csv.Name, csv.Namespace)
-		}
-		if !(atLeastOneInstallPlan || catalogSourceNotRequired) {
-			continue
-		}
-		op.TargetNamespace = getTargetNamespace(csv)
+		logrus.Infof("Getting installplans for op %s (subs %s ns %s)", op.Name, op.SubscriptionName, op.SubscriptionNamespace)
+		// Get at least one Install Plan and update the Operator object with it.
+		getAtLeastOneInstallPlan(op, csv, allInstallPlans, allCatalogSources)
 		operators = append(operators, op)
 	}
 	return operators
@@ -109,11 +189,12 @@ func getAtLeastOneSubscription(op *Operator, csv *olmv1Alpha.ClusterServiceVersi
 	atLeastOneSubscription = false
 	for s := range subscriptions {
 		subscription := &subscriptions[s]
-		if subscription.Status.InstalledCSV != csv.Name || subscription.Namespace != csv.Namespace {
+		if subscription.Status.InstalledCSV != csv.Name {
 			continue
 		}
 
 		op.SubscriptionName = subscription.Name
+		op.SubscriptionNamespace = subscription.Namespace
 		op.Package = subscription.Spec.Package
 		op.Org = subscription.Spec.CatalogSource
 		op.Channel = subscription.Spec.Channel
@@ -143,7 +224,7 @@ func getAtLeastOneCsv(csv *olmv1Alpha.ClusterServiceVersion, installPlan *olmv1A
 func getAtLeastOneInstallPlan(op *Operator, csv *olmv1Alpha.ClusterServiceVersion, allInstallPlans []*olmv1Alpha.InstallPlan, allCatalogSources []*olmv1Alpha.CatalogSource) (atLeastOneInstallPlan bool) {
 	atLeastOneInstallPlan = false
 	for _, installPlan := range allInstallPlans {
-		if installPlan.Namespace != csv.Namespace {
+		if installPlan.Namespace != op.SubscriptionNamespace {
 			continue
 		}
 
@@ -179,12 +260,15 @@ func CsvToString(csv *olmv1Alpha.ClusterServiceVersion) string {
 func getSummaryAllOperators(operators []*Operator) (summary []string) {
 	operatorMap := map[string]bool{}
 	for _, o := range operators {
-		if o.TargetNamespace == allns {
-			operatorMap[string(o.Phase)+" operator: "+o.PackageFromCsvName+" ver: "+o.Version+" ( "+o.TargetNamespace+" )"] = true
+		key := fmt.Sprintf("%s operator: %s ver: %s", o.Phase, o.PackageFromCsvName, o.Version)
+		if o.IsClusterWide {
+			key += " (all namespaces)"
 		} else {
-			operatorMap[string(o.Phase)+" operator: "+o.PackageFromCsvName+" ver: "+o.Version+" in ns: "+o.Namespace+" ( "+o.TargetNamespace+" )"] = true
+			key += fmt.Sprintf(" in ns: %v", o.TargetNamespaces)
 		}
+		operatorMap[key] = true
 	}
+
 	for s := range operatorMap {
 		summary = append(summary, s)
 	}
@@ -206,13 +290,17 @@ func getCatalogSourceImageIndexFromInstallPlan(installPlan *olmv1Alpha.InstallPl
 	return "", fmt.Errorf("failed to get catalogsource: not found")
 }
 
-func getTargetNamespace(csv *olmv1Alpha.ClusterServiceVersion) (targetNamespaces string) {
-	value, ok := csv.ObjectMeta.Annotations["olm.targetNamespaces"]
+func getOperatorTargetNamespaces(namespace string) ([]string, error) {
+	client := clientsholder.GetClientsHolder()
 
-	if !ok || value == "" {
-		targetNamespaces = allns
-	} else {
-		targetNamespaces = value + " Single namespace"
+	list, err := client.OlmClient.OperatorsV1().OperatorGroups(namespace).List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		return nil, err
 	}
-	return targetNamespaces
+
+	if len(list.Items) == 0 {
+		return nil, errors.New("no OperatorGroup found")
+	}
+
+	return list.Items[0].Spec.TargetNamespaces, nil
 }

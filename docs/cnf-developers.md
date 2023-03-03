@@ -12,7 +12,7 @@ please contact [Red Hat](https://redhat-connect.gitbook.io/red-hat-partner-conne
 
 ### To add private test cases
 
-Refer this documention
+Refer this documentation
 https://github.com/test-network-function/cnfextensions
 
 **Reference**

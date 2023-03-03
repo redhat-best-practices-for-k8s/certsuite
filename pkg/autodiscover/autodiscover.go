@@ -65,8 +65,8 @@ type DiscoveredTestData struct {
 	Namespaces             []string
 	AllNamespaces          []string
 	AbnormalEvents         []corev1.Event
-	Csvs                   []olmv1Alpha.ClusterServiceVersion
-	AllCsvs                []olmv1Alpha.ClusterServiceVersion
+	Csvs                   []*olmv1Alpha.ClusterServiceVersion
+	AllCsvs                []*olmv1Alpha.ClusterServiceVersion
 	AllInstallPlans        []*olmv1Alpha.InstallPlan
 	AllCatalogSources      []*olmv1Alpha.CatalogSource
 	Deployments            []appsv1.Deployment
@@ -74,7 +74,7 @@ type DiscoveredTestData struct {
 	PersistentVolumes      []corev1.PersistentVolume
 	PersistentVolumeClaims []corev1.PersistentVolumeClaim
 	Services               []*corev1.Service
-	Hpas                   map[string]*scalingv1.HorizontalPodAutoscaler
+	Hpas                   []*scalingv1.HorizontalPodAutoscaler
 	Subscriptions          []olmv1Alpha.Subscription
 	AllSubscriptions       []olmv1Alpha.Subscription
 	HelmChartReleases      map[string][]*release.Release
@@ -82,10 +82,11 @@ type DiscoveredTestData struct {
 	OpenshiftVersion       string
 	OCPStatus              string
 	Nodes                  *corev1.NodeList
-	Istio                  bool
+	IstioServiceMeshFound  bool
 	ValidProtocolNames     []string
 	StorageClasses         []storagev1.StorageClass
 	ServicesIgnoreList     []string
+	ScaleCrUndetTest       []Scaleobject
 }
 
 var data = DiscoveredTestData{}
@@ -151,6 +152,7 @@ func DoAutoDiscover() DiscoveredTestData {
 		logrus.Fatalln("Cannot get network policies")
 	}
 	data.Crds = FindTestCrdNames(data.TestData.CrdFilters)
+	data.ScaleCrUndetTest = GetscaleCrUndetTest(data.Namespaces, data.Crds, data.TestData.CrdFilters)
 	data.Csvs = findOperatorsByLabel(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, data.TestData.TargetNameSpaces)
 	data.Subscriptions = findSubscriptions(oc.OlmClient, data.Namespaces)
 	data.HelmChartReleases = getHelmList(oc.RestConfig, data.Namespaces)
@@ -165,7 +167,7 @@ func DoAutoDiscover() DiscoveredTestData {
 	if err != nil {
 		logrus.Fatalf("Cannot get the K8s version, error: %v", err)
 	}
-	data.Istio = findIstioNamespace(data.AllNamespaces)
+	data.IstioServiceMeshFound = isIstioServiceMeshInstalled(data.AllNamespaces)
 	data.ValidProtocolNames = data.TestData.ValidProtocolNames
 	data.ServicesIgnoreList = data.TestData.ServicesIgnoreList
 

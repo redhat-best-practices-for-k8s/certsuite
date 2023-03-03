@@ -139,12 +139,14 @@ perform_kubeconfig_autodiscovery() {
 }
 
 perform_dockercfg_autodiscovery() {
-  # As of now, the Docker Config is an optional variable to be supplied as the only test suite that
-  # requires it is the preflight suite.
-  # See the openshift-preflight documentation about environment variables
-  # https://github.com/redhat-openshift-ecosystem/openshift-preflight/blob/main/docs/CONFIG.md#container-policy-configuration
-  if [[ -n "$PFLT_DOCKERCONFIG" ]]; then
+	# As of now, the Docker Config is an optional variable to be supplied as the only test suite that
+	# requires it is the preflight suite.
+	# See the openshift-preflight documentation about environment variables
+	# https://github.com/redhat-openshift-ecosystem/openshift-preflight/blob/main/docs/CONFIG.md#container-policy-configuration
+	if [[ -n "$PFLT_DOCKERCONFIG" ]]; then
 		export LOCAL_DOCKERCFG=$PFLT_DOCKERCONFIG
+
+		# shellcheck disable=SC2016 # Don't expand in single quotes.
 		dockercfg_autodiscovery_source='$PFLT_DOCKERCONFIG'
 	elif [[ -f "$HOME/.docker/config.json" ]]; then
 		export LOCAL_DOCKERCFG=$HOME/.docker/config.json

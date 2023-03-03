@@ -45,6 +45,7 @@ const (
 	OCPLifecycleRemediation = `Please update your cluster to a version that is generally available.`
 
 	DeploymentScalingRemediation = `Ensure CNF deployments/replica sets can scale in/out successfully.`
+	CrdScalingRemediation        = `Ensure CNF crd/replica sets can scale in/out successfully.`
 
 	StatefulSetScalingRemediation = `Ensure CNF statefulsets/replica sets can scale in/out successfully.`
 
@@ -174,7 +175,7 @@ const (
 
 	PersistentVolumeReclaimPolicyRemediation = `Ensure that all persistent volumes are using the reclaim policy: delete`
 
-	ContainersImageTag = `Ensure that all the container images are tagged`
+	ContainersImageTagRemediation = `Ensure that all the container images are tagged`
 
 	NoSSHDaemonsAllowedRemediation = `Ensure that no SSH daemons are running inside a pod`
 

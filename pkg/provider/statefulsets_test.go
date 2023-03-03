@@ -1,4 +1,4 @@
-// Copyright (C) 2022 Red Hat, Inc.
+// Copyright (C) 2022-2023 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -35,4 +35,60 @@ func TestStatefulsetToString(t *testing.T) {
 	}
 
 	assert.Equal(t, "statefulset: test1 ns: testNS", ss.ToString())
+}
+
+func TestIsStatefulSetReady(t *testing.T) {
+	generateSS := func(specReplicas *int32, statusReadyReplicas, statusCurrentReplicas, statusUpdatedReplicas int32) *StatefulSet {
+		return &StatefulSet{
+			StatefulSet: &appsv1.StatefulSet{
+				Spec: appsv1.StatefulSetSpec{
+					Replicas: specReplicas,
+				},
+				Status: appsv1.StatefulSetStatus{
+					ReadyReplicas:   statusReadyReplicas,
+					UpdatedReplicas: statusUpdatedReplicas,
+					CurrentReplicas: statusCurrentReplicas,
+				},
+			},
+		}
+	}
+
+	toInt32Ptr := func(num int32) *int32 {
+		return &num
+	}
+
+	testCases := []struct {
+		testSpecReplicas          *int32
+		testReadyStatusReplicas   int32
+		testUpdatedStatusReplicas int32
+		testCurrentStatusReplicas int32
+		expectedOutput            bool
+	}{
+		{
+			testSpecReplicas:          toInt32Ptr(10),
+			testReadyStatusReplicas:   10,
+			testUpdatedStatusReplicas: 10,
+			testCurrentStatusReplicas: 10,
+			expectedOutput:            true,
+		},
+		{
+			testSpecReplicas:          nil,
+			testReadyStatusReplicas:   10,
+			testUpdatedStatusReplicas: 10,
+			testCurrentStatusReplicas: 10,
+			expectedOutput:            false,
+		},
+		{
+			testSpecReplicas:          toInt32Ptr(0),
+			testReadyStatusReplicas:   0,
+			testUpdatedStatusReplicas: 0,
+			testCurrentStatusReplicas: 0,
+			expectedOutput:            true,
+		},
+	}
+
+	for _, tc := range testCases {
+		testSS := generateSS(tc.testSpecReplicas, tc.testReadyStatusReplicas, tc.testCurrentStatusReplicas, tc.testUpdatedStatusReplicas)
+		assert.Equal(t, tc.expectedOutput, testSS.IsStatefulSetReady())
+	}
 }

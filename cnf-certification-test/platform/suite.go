@@ -129,7 +129,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServiceMeshIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
-		TestServiceMesh(&env)
+		testServiceMesh(&env)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOCPLifecycleIdentifier)
@@ -168,9 +168,9 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 
 })
 
-func TestServiceMesh(env *provider.TestEnvironment) {
+func testServiceMesh(env *provider.TestEnvironment) {
 	// check if istio is installed
-	if !env.IstioServiceMesh {
+	if !env.IstioServiceMeshFound {
 		tnf.ClaimFilePrintf("Istio is not installed")
 		ginkgo.Skip("No service mesh detected.")
 	}

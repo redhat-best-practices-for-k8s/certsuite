@@ -1,5 +1,4 @@
-
-# CNF Certification Test ![build](https://github.com/test-network-function/cnf-certification-test/actions/workflows/merge.yaml/badge.svg) [![Go Report Card](https://goreportcard.com/badge/github.com/test-network-function/test-network-function)](https://goreportcard.com/report/github.com/test-network-function/cnf-certification-test) [![LICENSE](https://img.shields.io/github/license/test-network-function/cnf-certification-test.svg)](https://github.com/test-network-function/cnf-certification-test/blob/main/LICENSE) [![go-doc](https://godoc.org/github.com/test-network-function/cnf-certification-test?status.svg)](https://godoc.org/github.com/test-network-function/cnf-certification-test)
+# CNF Certification Test ![build](https://github.com/test-network-function/cnf-certification-test/actions/workflows/merge.yaml/badge.svg) [![go report](https://goreportcard.com/badge/github.com/test-network-function/test-network-function)](https://goreportcard.com/report/github.com/test-network-function/cnf-certification-test) [![go-doc](https://godoc.org/github.com/test-network-function/cnf-certification-test?status.svg)](https://godoc.org/github.com/test-network-function/cnf-certification-test) [![release)](https://img.shields.io/github/v/release/test-network-function/cnf-certification-test?color=blue&label=%20&logo=semver&logoColor=white&style=flat)](https://github.com/test-network-function/cnf-certification-test/releases) [![red hat](https://img.shields.io/badge/red%20hat---?color=gray&logo=redhat&logoColor=red&style=flat)](https://www.redhat.com) [![license](https://img.shields.io/github/license/test-network-function/cnf-certification-test?color=blue&labelColor=gray&logo=apache&logoColor=lightgray&style=flat)](https://github.com/test-network-function/cnf-certification-test/blob/main/LICENSE)
 
 ## Objective
 
@@ -26,3 +25,8 @@ for deployment on Red Hat OpenShift clusters are followed.
 ## Language
 
 Golang
+
+## License
+CNF Certification Test is copyright [Red Hat, Inc.](https://www.redhat.com) and available
+under an
+[Apache 2 license](https://github.com/test-network-function/cnf-certification-test/blob/main/LICENSE).
