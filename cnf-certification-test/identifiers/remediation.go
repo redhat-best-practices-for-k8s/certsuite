@@ -88,10 +88,6 @@ const (
 
 	TestServiceDualStackRemediation = `Configure every CNF services with either a single stack ipv6 or dual stack (ipv4/ipv6) load balancer`
 
-	TestNFTablesRemediation = `Do not configure nftables on any CNF container.`
-
-	TestIPTablesRemediation = `Do not configure iptables on any CNF container.`
-
 	NamespaceBestPracticesRemediation = `Ensure that your CNF utilizes namespaces declared in the yaml config file. Additionally,
 	the namespaces should not start with "default, openshift-, istio- or aspenmesh-".`
 

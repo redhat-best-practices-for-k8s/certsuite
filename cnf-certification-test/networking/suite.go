@@ -119,28 +119,6 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Services)
 		testDualStackServices(&env)
 	})
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNFTablesIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
-		if env.DaemonsetFailedToSpawn {
-			ginkgo.Skip("Debug Daemonset failed to spawn skipping testIsNFTablesConfigPresent")
-		}
-		if env.IstioServiceMeshFound {
-			ginkgo.Skip("Skipping testIsNFTablesConfigPresent due to the presence of the Istio Service Mesh")
-		}
-		testIsNFTablesConfigPresent(&env)
-	})
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIPTablesIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
-		if env.DaemonsetFailedToSpawn {
-			ginkgo.Skip("Debug Daemonset failed to spawn skipping testIsIPTablesConfigPresent")
-		}
-		if env.IstioServiceMeshFound {
-			ginkgo.Skip("Skipping testIsIPTablesConfigPresent due to the presence of the Istio Service Mesh")
-		}
-		testIsIPTablesConfigPresent(&env)
-	})
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNetworkPolicyDenyAllIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
@@ -345,50 +323,6 @@ func testDualStackServices(env *provider.TestEnvironment) {
 		tnf.ClaimFilePrintf("Services in error:\n %s", services.ToStringSlice(errorServices))
 		ginkgo.Fail(fmt.Sprintf("Found %d services in error, check error log for details", len(errorServices)))
 	}
-}
-
-const (
-	nfTables  = "nftables"
-	ipTables  = "iptables"
-	ip6Tables = "ip6tables"
-)
-
-func testIsConfigPresent(env *provider.TestEnvironment, name string) {
-	var badContainers, errorContainers []*provider.Container
-	var function func(cut *provider.Container) (bool, string, error)
-	switch name {
-	case nfTables:
-		function = netutil.IsNFTablesPresent
-	case ipTables:
-		function = netutil.IsIPTablesPresent
-	case ip6Tables:
-		function = netutil.IsIP6TablesPresent
-	default:
-		ginkgo.Fail(fmt.Sprintf("Internal error: configuration %s is not supported", name))
-	}
-	for _, cut := range env.Containers {
-		result, log, err := function(cut)
-		if err != nil {
-			tnf.ClaimFilePrintf("Could not check %s config on: %s, error: %v log: %s", name, cut, err, log)
-			errorContainers = append(errorContainers, cut)
-			continue
-		}
-		if result {
-			tnf.ClaimFilePrintf("Non-compliant %s config on: %s log: %s", name, cut, log)
-			badContainers = append(badContainers, cut)
-		}
-	}
-	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
-	testhelper.AddTestResultLog("Error", errorContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
-}
-
-func testIsNFTablesConfigPresent(env *provider.TestEnvironment) {
-	testIsConfigPresent(env, nfTables)
-}
-
-func testIsIPTablesConfigPresent(env *provider.TestEnvironment) {
-	testIsConfigPresent(env, ipTables)
-	testIsConfigPresent(env, ip6Tables)
 }
 
 func testNetworkPolicyDenyAll(env *provider.TestEnvironment) {
