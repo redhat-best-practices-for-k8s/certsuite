@@ -503,20 +503,6 @@ Suggested Remediation|Add a liveness probe to deployed containers
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.16, 12.1 and 12.5
 Exception Process|There is no documented exception process for this.
 Tags|common,telco
-#### no-pvs-on-localstorage
-
-Property|Description
----|---
-Test Case Name|no-pvs-on-localstorage
-Test Case Label|lifecycle-no-pvs-on-localstorage
-Unique ID|http://test-network-function.com/testcases/lifecycle/no-pvs-on-localstorage
-Version|v1.0.0
-Description|http://test-network-function.com/testcases/lifecycle/no-pvs-on-localstorage Checks that pods do not place persistent volumes on local storage.
-Result Type|informative
-Suggested Remediation|If the kind of pods is StatefulSet, so we need to make sure that servicename is not local-storage.
-Best Practice Reference|https://TODO Section 4.6.24
-Exception Process|There is no documented exception process for this.
-Tags|extended
 #### persistent-volume-reclaim-policy
 
 Property|Description
