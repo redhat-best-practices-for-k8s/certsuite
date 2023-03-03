@@ -18,6 +18,7 @@ package autodiscover
 import (
 	"context"
 
+	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
@@ -30,12 +31,10 @@ func getServices(oc corev1client.CoreV1Interface, namespaces, ignoreList []strin
 			return allServices, err
 		}
 		for i := range s.Items {
-			for _, aService := range ignoreList {
-				if aService == s.Items[i].Name {
-					continue
-				}
-				allServices = append(allServices, &s.Items[i])
+			if stringhelper.StringInSlice(ignoreList, s.Items[i].Name, false) {
+				continue
 			}
+			allServices = append(allServices, &s.Items[i])
 		}
 	}
 	return allServices, nil
