@@ -174,7 +174,7 @@ The label value is not important, only its presence.`,
 		InformativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 10.6",
-		false,
+		true,
 		TagCommon)
 
 	Test1337UIDIdentifier = AddCatalogEntry(
