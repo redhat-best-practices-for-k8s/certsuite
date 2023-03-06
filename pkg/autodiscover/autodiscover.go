@@ -152,7 +152,7 @@ func DoAutoDiscover() DiscoveredTestData {
 		logrus.Fatalln("Cannot get network policies")
 	}
 	data.Crds = FindTestCrdNames(data.TestData.CrdFilters)
-	data.ScaleCrUndetTest = GetscaleCrUndetTest(data.Namespaces, data.Crds, data.TestData.CrdFilters)
+	data.ScaleCrUndetTest = GetScaleCrUnderTest(data.Namespaces, data.Crds, data.TestData.CrdFilters)
 	data.Csvs = findOperatorsByLabel(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, data.TestData.TargetNameSpaces)
 	data.Subscriptions = findSubscriptions(oc.OlmClient, data.Namespaces)
 	data.HelmChartReleases = getHelmList(oc.RestConfig, data.Namespaces)

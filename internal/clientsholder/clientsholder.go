@@ -37,6 +37,7 @@ import (
 	cncfNetworkAttachmentv1 "github.com/k8snetworkplumbingwg/network-attachment-definition-client/pkg/client/clientset/versioned/typed/k8s.cni.cncf.io/v1"
 	ocpMachine "github.com/openshift/machine-config-operator/pkg/generated/clientset/versioned"
 	appsv1 "k8s.io/api/apps/v1"
+	scalingv1 "k8s.io/api/autoscaling/v1"
 	corev1 "k8s.io/api/core/v1"
 	policyv1 "k8s.io/api/policy/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
@@ -116,6 +117,8 @@ func GetTestClientsHolder(k8sMockObjects []runtime.Object, filenames ...string) 
 		case *corev1.PersistentVolumeClaim:
 			k8sClientObjects = append(k8sClientObjects, v)
 		case *policyv1.PodDisruptionBudget:
+			k8sClientObjects = append(k8sClientObjects, v)
+		case *scalingv1.HorizontalPodAutoscaler:
 			k8sClientObjects = append(k8sClientObjects, v)
 
 		// K8s Extension Client Objects

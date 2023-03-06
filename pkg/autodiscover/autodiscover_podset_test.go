@@ -20,6 +20,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	appsv1 "k8s.io/api/apps/v1"
+	scalingv1 "k8s.io/api/autoscaling/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -185,5 +186,44 @@ func TestFindStatefulSetByLabel(t *testing.T) {
 
 		statefulSets := findStatefulSetByLabel(oc.K8sClient.AppsV1(), testLabel, testNamespaces)
 		assert.Equal(t, tc.expectedResults, statefulSets)
+	}
+}
+
+func TestFindHpaControllers(t *testing.T) {
+	generateHpa := func(name, namespace string) *scalingv1.HorizontalPodAutoscaler {
+		return &scalingv1.HorizontalPodAutoscaler{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      name,
+				Namespace: namespace,
+			},
+		}
+	}
+
+	testCases := []struct {
+		testHpaName      string
+		testHpaNamespace string
+		expectedResults  []*scalingv1.HorizontalPodAutoscaler
+	}{
+		{
+			testHpaName:      "testName",
+			testHpaNamespace: "testNamespace",
+			expectedResults: []*scalingv1.HorizontalPodAutoscaler{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "testName",
+						Namespace: "testNamespace",
+					},
+				},
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		var testRuntimeObjects []runtime.Object
+		testRuntimeObjects = append(testRuntimeObjects, generateHpa(tc.testHpaName, tc.testHpaNamespace))
+		oc := clientsholder.GetTestClientsHolder(testRuntimeObjects)
+
+		hpas := findHpaControllers(oc.K8sClient, []string{tc.testHpaNamespace})
+		assert.Equal(t, tc.expectedResults, hpas)
 	}
 }

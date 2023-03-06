@@ -20,7 +20,7 @@ type Scaleobject struct {
 	GroupResourceSchema schema.GroupResource
 }
 
-func GetscaleCrUndetTest(namespaces []string, crds []*apiextv1.CustomResourceDefinition, testData []configuration.CrdFilter) []Scaleobject {
+func GetScaleCrUnderTest(namespaces []string, crds []*apiextv1.CustomResourceDefinition, testData []configuration.CrdFilter) []Scaleobject {
 	var scalableItems []Scaleobject
 	clients := clientsholder.GetClientsHolder()
 	for _, aCrd := range crds {
