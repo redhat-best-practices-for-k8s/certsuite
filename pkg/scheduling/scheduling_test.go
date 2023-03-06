@@ -21,72 +21,239 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/test-network-function/cnf-certification-test/internal/crclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
+	corev1 "k8s.io/api/core/v1"
 )
 
 func TestProcessPidsCPUScheduling(t *testing.T) {
-	testPids := []int{101, 102}
+	testPids := []*crclient.Process{{PidNs: 2, Pid: 101, Args: "tbd command line"}, {PidNs: 3, Pid: 102, Args: "tbd command line"}}
 	testContainer := &provider.Container{}
+	testContainer.Container = &corev1.Container{}
 
 	testCases := []struct {
-		mockGetProcessCPUScheduling           func(int, *provider.Container) (string, int, error)
-		check                                 string
-		expectedCPUSchedulingConditionSuccess bool
+		mockGetProcessCPUScheduling func(int, *provider.Container) (string, int, error)
+		check                       string
+		compliant, nonCompliant     []testhelper.ReportObject
 	}{
 		{
 			mockGetProcessCPUScheduling: func(pid int, container *provider.Container) (string, int, error) {
 				return "SCHED_OTHER", 0, nil
 			},
-			check:                                 SharedCPUScheduling,
-			expectedCPUSchedulingConditionSuccess: true,
+			check: SharedCPUScheduling,
+			compliant: []testhelper.ReportObject{
+				{
+					ObjectType: "ContainerProcess",
+					ObjectFields: map[string]string{
+						"ContainerName":       "",
+						"Namespace":           "",
+						"PodName":             "",
+						"ReasonForCompliance": "process satisfies: SHARED_CPU_SCHEDULING: scheduling priority == 0",
+						"SchedulingPolicy":    "SCHED_OTHER", "SchedulingPriority": "0", "ProcessCommandLine": "tbd command line",
+					},
+				},
+				{
+					ObjectType: "ContainerProcess",
+					ObjectFields: map[string]string{
+						"ContainerName":       "",
+						"Namespace":           "",
+						"PodName":             "",
+						"ReasonForCompliance": "process satisfies: SHARED_CPU_SCHEDULING: scheduling priority == 0",
+						"SchedulingPolicy":    "SCHED_OTHER", "SchedulingPriority": "0", "ProcessCommandLine": "tbd command line",
+					},
+				},
+			},
+
+			nonCompliant: []testhelper.ReportObject{},
 		},
 		{
 			mockGetProcessCPUScheduling: func(pid int, container *provider.Container) (string, int, error) {
 				return "SCHED_RR", 90, nil
 			},
-			check:                                 SharedCPUScheduling,
-			expectedCPUSchedulingConditionSuccess: false,
-		},
+			check: SharedCPUScheduling,
+			nonCompliant: []testhelper.ReportObject{
+				{
+					ObjectType: "ContainerProcess",
+					ObjectFields: map[string]string{
+						"ContainerName":          "",
+						"Namespace":              "",
+						"PodName":                "",
+						"ReasonForNonCompliance": "process does not satisfy: SHARED_CPU_SCHEDULING: scheduling priority == 0",
+						"SchedulingPolicy":       "SCHED_RR", "SchedulingPriority": "90", "ProcessCommandLine": "tbd command line",
+					},
+				},
+				{
+					ObjectType: "ContainerProcess",
+					ObjectFields: map[string]string{
+						"ContainerName":          "",
+						"Namespace":              "",
+						"PodName":                "",
+						"ReasonForNonCompliance": "process does not satisfy: SHARED_CPU_SCHEDULING: scheduling priority == 0",
+						"SchedulingPolicy":       "SCHED_RR", "SchedulingPriority": "90", "ProcessCommandLine": "tbd command line",
+					},
+				},
+			},
+
+			compliant: []testhelper.ReportObject{}},
 		{
 			mockGetProcessCPUScheduling: func(pid int, container *provider.Container) (string, int, error) {
 				return "SCHED_FIFO", 9, nil
 			},
-			check:                                 ExclusiveCPUScheduling,
-			expectedCPUSchedulingConditionSuccess: true,
-		},
+			check: ExclusiveCPUScheduling,
+			compliant: []testhelper.ReportObject{
+				{
+					ObjectType: "ContainerProcess",
+					ObjectFields: map[string]string{
+						"ContainerName":       "",
+						"Namespace":           "",
+						"PodName":             "",
+						"ReasonForCompliance": "process satisfies: EXCLUSIVE_CPU_SCHEDULING: scheduling priority < 10 and scheduling policy == SCHED_RR or SCHED_FIFO",
+						"SchedulingPolicy":    "SCHED_FIFO", "SchedulingPriority": "9", "ProcessCommandLine": "tbd command line",
+					},
+				},
+				{
+					ObjectType: "ContainerProcess",
+					ObjectFields: map[string]string{
+						"ContainerName":       "",
+						"Namespace":           "",
+						"PodName":             "",
+						"ReasonForCompliance": "process satisfies: EXCLUSIVE_CPU_SCHEDULING: scheduling priority < 10 and scheduling policy == SCHED_RR or SCHED_FIFO",
+						"SchedulingPolicy":    "SCHED_FIFO", "SchedulingPriority": "9", "ProcessCommandLine": "tbd command line",
+					},
+				},
+			},
+
+			nonCompliant: []testhelper.ReportObject{}},
 		{
 			mockGetProcessCPUScheduling: func(pid int, container *provider.Container) (string, int, error) {
 				return "SCHED_FIFO", 11, nil
 			},
-			check:                                 ExclusiveCPUScheduling,
-			expectedCPUSchedulingConditionSuccess: false,
-		},
+			check: ExclusiveCPUScheduling,
+			nonCompliant: []testhelper.ReportObject{
+				{
+					ObjectType: "ContainerProcess",
+					ObjectFields: map[string]string{
+						"ContainerName":          "",
+						"Namespace":              "",
+						"PodName":                "",
+						"ReasonForNonCompliance": "process does not satisfy: EXCLUSIVE_CPU_SCHEDULING: scheduling priority < 10 and scheduling policy == SCHED_RR or SCHED_FIFO",
+						"SchedulingPolicy":       "SCHED_FIFO", "SchedulingPriority": "11", "ProcessCommandLine": "tbd command line",
+					},
+				},
+				{
+					ObjectType: "ContainerProcess",
+					ObjectFields: map[string]string{
+						"ContainerName":          "",
+						"Namespace":              "",
+						"PodName":                "",
+						"ReasonForNonCompliance": "process does not satisfy: EXCLUSIVE_CPU_SCHEDULING: scheduling priority < 10 and scheduling policy == SCHED_RR or SCHED_FIFO",
+						"SchedulingPolicy":       "SCHED_FIFO", "SchedulingPriority": "11", "ProcessCommandLine": "tbd command line",
+					},
+				},
+			},
+
+			compliant: []testhelper.ReportObject{}},
 		{
 			mockGetProcessCPUScheduling: func(pid int, container *provider.Container) (string, int, error) {
 				return "SCHED_FIFO", 50, nil
 			},
-			check:                                 IsolatedCPUScheduling,
-			expectedCPUSchedulingConditionSuccess: true,
-		},
+			check: IsolatedCPUScheduling,
+			compliant: []testhelper.ReportObject{
+				{
+					ObjectType: "ContainerProcess",
+					ObjectFields: map[string]string{
+						"ContainerName":       "",
+						"Namespace":           "",
+						"PodName":             "",
+						"ReasonForCompliance": "process satisfies: ISOLATED_CPU_SCHEDULING: scheduling policy == SCHED_RR or SCHED_FIFO",
+						"SchedulingPolicy":    "SCHED_FIFO", "SchedulingPriority": "50", "ProcessCommandLine": "tbd command line",
+					},
+				},
+				{
+					ObjectType: "ContainerProcess",
+					ObjectFields: map[string]string{
+						"ContainerName":       "",
+						"Namespace":           "",
+						"PodName":             "",
+						"ReasonForCompliance": "process satisfies: ISOLATED_CPU_SCHEDULING: scheduling policy == SCHED_RR or SCHED_FIFO",
+						"SchedulingPolicy":    "SCHED_FIFO", "SchedulingPriority": "50", "ProcessCommandLine": "tbd command line",
+					},
+				},
+			},
+
+			nonCompliant: []testhelper.ReportObject{}},
 		{
 			mockGetProcessCPUScheduling: func(pid int, container *provider.Container) (string, int, error) {
 				return "SCHED_RR", 99, nil
 			},
-			check:                                 IsolatedCPUScheduling,
-			expectedCPUSchedulingConditionSuccess: true,
-		},
+			check: IsolatedCPUScheduling,
+			compliant: []testhelper.ReportObject{
+				{
+					ObjectType: "ContainerProcess",
+					ObjectFields: map[string]string{
+						"ContainerName":       "",
+						"Namespace":           "",
+						"PodName":             "",
+						"ReasonForCompliance": "process satisfies: ISOLATED_CPU_SCHEDULING: scheduling policy == SCHED_RR or SCHED_FIFO",
+						"SchedulingPolicy":    "SCHED_RR", "SchedulingPriority": "99", "ProcessCommandLine": "tbd command line",
+					},
+				},
+				{
+					ObjectType: "ContainerProcess",
+					ObjectFields: map[string]string{
+						"ContainerName":       "",
+						"Namespace":           "",
+						"PodName":             "",
+						"ReasonForCompliance": "process satisfies: ISOLATED_CPU_SCHEDULING: scheduling policy == SCHED_RR or SCHED_FIFO",
+						"SchedulingPolicy":    "SCHED_RR", "SchedulingPriority": "99", "ProcessCommandLine": "tbd command line",
+					},
+				},
+			},
+
+			nonCompliant: []testhelper.ReportObject{}},
 		{
 			mockGetProcessCPUScheduling: func(pid int, container *provider.Container) (string, int, error) {
 				return "SCHED_OTHER", 0, nil
 			},
-			check:                                 IsolatedCPUScheduling,
-			expectedCPUSchedulingConditionSuccess: false,
-		},
+			check: IsolatedCPUScheduling,
+			nonCompliant: []testhelper.ReportObject{
+				{
+					ObjectType: "ContainerProcess",
+					ObjectFields: map[string]string{
+						"ContainerName":          "",
+						"Namespace":              "",
+						"PodName":                "",
+						"ReasonForNonCompliance": "process does not satisfy: ISOLATED_CPU_SCHEDULING: scheduling policy == SCHED_RR or SCHED_FIFO",
+						"SchedulingPolicy":       "SCHED_OTHER", "SchedulingPriority": "0", "ProcessCommandLine": "tbd command line",
+					},
+				},
+				{
+					ObjectType: "ContainerProcess",
+					ObjectFields: map[string]string{
+						"ContainerName":          "",
+						"Namespace":              "",
+						"PodName":                "",
+						"ReasonForNonCompliance": "process does not satisfy: ISOLATED_CPU_SCHEDULING: scheduling policy == SCHED_RR or SCHED_FIFO",
+						"SchedulingPolicy":       "SCHED_OTHER", "SchedulingPriority": "0", "ProcessCommandLine": "tbd command line",
+					},
+				},
+			},
+
+			compliant: []testhelper.ReportObject{}},
 	}
 	for _, tc := range testCases {
 		GetProcessCPUSchedulingFn = tc.mockGetProcessCPUScheduling
-		isCheckSuccessful := ProcessPidsCPUScheduling(testPids, testContainer, make(map[*provider.Container][]int), tc.check)
-		assert.Equal(t, isCheckSuccessful, tc.expectedCPUSchedulingConditionSuccess)
+		compliant, nonCompliant := ProcessPidsCPUScheduling(testPids, testContainer, tc.check)
+
+		assert.Equal(t, len(compliant), len(tc.compliant))
+		assert.Equal(t, len(nonCompliant), len(tc.nonCompliant))
+		for i := range compliant {
+			assert.Equal(t, tc.compliant[i], *compliant[i])
+		}
+		for i := range nonCompliant {
+			assert.Equal(t, tc.nonCompliant[i], *nonCompliant[i])
+		}
 	}
 }
 

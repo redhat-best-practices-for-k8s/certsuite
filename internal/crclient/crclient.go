@@ -18,6 +18,7 @@ package crclient
 
 import (
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -26,6 +27,13 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
+
+const PsRegex = `(?m)^(\d+?)\s+?(\d+?)\s+?(.*?)$`
+
+type Process struct {
+	PidNs, Pid int
+	Args       string
+}
 
 func GetPidFromContainer(cut *provider.Container, ctx clientsholder.Context) (int, error) {
 	var pidCmd string
@@ -77,42 +85,13 @@ func GetContainerPidNamespace(testContainer *provider.Container, env *provider.T
 	return strings.Fields(stdout)[0], nil
 }
 
-// To get pid of all processes running in the pid namespace from the target container
-func GetPidsFromPidNamespace(pidNamespace string, container *provider.Container) []int {
-	const newLine = "\n"
-	const command = "ps -e -o pidns,pid,args"
-
-	stdout, stderr, err := ExecCommandContainerNSEnter(command, container)
-	if err != nil || stderr != "" {
-		logrus.Errorf("unable to run nsenter due to : %v", err)
-	}
-
-	var pids []int
-	for _, line := range strings.Split(strings.TrimSuffix(stdout, newLine), newLine) {
-		if line == "" {
-			continue
-		}
-		tokens := strings.Fields(line)
-		if tokens[0] == pidNamespace {
-			pid, err := strconv.Atoi(tokens[1])
-			if err != nil {
-				logrus.Errorf("err converting %s by strconv %v", tokens[1], err)
-				continue
-			}
-			pids = append(pids, pid)
-		}
-	}
-
-	return pids
-}
-
-func GetContainerPids(container *provider.Container, env *provider.TestEnvironment) ([]int, error) {
+func GetContainerProcesses(container *provider.Container, env *provider.TestEnvironment) ([]*Process, error) {
 	pidNs, err := GetContainerPidNamespace(container, env)
 	if err != nil {
 		return nil, fmt.Errorf("could not get the containers' pid namespace, err: %v", err)
 	}
 
-	return GetPidsFromPidNamespace(pidNs, container), nil
+	return GetPidsFromPidNamespace(pidNs, container)
 }
 
 // ExecCommandContainerNSEnter executes a command in the specified container namespace using nsenter
@@ -144,4 +123,35 @@ func ExecCommandContainerNSEnter(command string,
 		return "", "", fmt.Errorf("cannot execute command: \" %s \"  on %s err:%s", command, aContainer, err)
 	}
 	return outStr, errStr, err
+}
+
+func GetPidsFromPidNamespace(pidNamespace string, container *provider.Container) (p []*Process, err error) {
+	const command = "ps -e -o pidns,pid,args"
+
+	stdout, stderr, err := ExecCommandContainerNSEnter(command, container)
+	if err != nil || stderr != "" {
+		err = fmt.Errorf("unable to run nsenter due to : %v", err)
+		return p, err
+	}
+	re := regexp.MustCompile(PsRegex)
+	matches := re.FindAllStringSubmatch(stdout, -1)
+	// If we do not find a successful log, we fail
+	for _, v := range matches {
+		// Matching only the right PidNs
+		if pidNamespace != v[1] {
+			continue
+		}
+		aPidNs, err := strconv.Atoi(v[1])
+		if err != nil {
+			logrus.Errorf("could not convert string %s to integer, err=%s", v[1], err)
+			continue
+		}
+		aPid, err := strconv.Atoi(v[2])
+		if err != nil {
+			logrus.Errorf("could not convert string %s to integer, err=%s", v[2], err)
+			continue
+		}
+		p = append(p, &Process{PidNs: aPidNs, Pid: aPid, Args: v[3]})
+	}
+	return p, nil
 }

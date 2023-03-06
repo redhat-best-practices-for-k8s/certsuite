@@ -24,6 +24,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
 
@@ -78,12 +79,17 @@ func parseSchedulingPolicyAndPriority(chrtCommandOutput string) (schedPolicy str
 	return schedPolicy, schedPriority, nil
 }
 
-func ProcessPidsCPUScheduling(pids []int, testContainer *provider.Container, nonCompliantContainers map[*provider.Container][]int, check string) (hasCPUSchedulingConditionSuccess bool) {
-	for _, pid := range pids {
-		schedulePolicy, schedulePriority, err := GetProcessCPUSchedulingFn(pid, testContainer)
+var schedulingRequirements = map[string]string{SharedCPUScheduling: "SHARED_CPU_SCHEDULING: scheduling priority == 0",
+	ExclusiveCPUScheduling: "EXCLUSIVE_CPU_SCHEDULING: scheduling priority < 10 and scheduling policy == SCHED_RR or SCHED_FIFO",
+	IsolatedCPUScheduling:  "ISOLATED_CPU_SCHEDULING: scheduling policy == SCHED_RR or SCHED_FIFO"}
+
+func ProcessPidsCPUScheduling(processes []*crclient.Process, testContainer *provider.Container, check string) (compliantContainerPids, nonCompliantContainerPids []*testhelper.ReportObject) {
+	hasCPUSchedulingConditionSuccess := false
+	for _, process := range processes {
+		schedulePolicy, schedulePriority, err := GetProcessCPUSchedulingFn(process.Pid, testContainer)
 		if err != nil {
 			logrus.Errorf("error getting the scheduling policy and priority : %v", err)
-			return hasCPUSchedulingConditionSuccess
+			return compliantContainerPids, nonCompliantContainerPids
 		}
 
 		switch check {
@@ -96,17 +102,18 @@ func ProcessPidsCPUScheduling(pids []int, testContainer *provider.Container, non
 		}
 
 		if !hasCPUSchedulingConditionSuccess {
-			tnf.ClaimFilePrintf("pid=%d in %v with cpu scheduling policy=%s, priority=%s did not satisfy cpu scheduling requirements", pid, testContainer, schedulePolicy, schedulePriority)
-			nonCompliantProcessIds, ok := nonCompliantContainers[testContainer]
-			if !ok {
-				nonCompliantContainers[testContainer] = []int{pid}
-			} else {
-				nonCompliantProcessIds = append(nonCompliantProcessIds, pid)
-				nonCompliantContainers[testContainer] = nonCompliantProcessIds
-			}
+			tnf.ClaimFilePrintf("pid=%d in %s with cpu scheduling policy=%s, priority=%s did not satisfy cpu scheduling requirements", process.Pid, testContainer, schedulePolicy, schedulePriority)
+			aPidOut := testhelper.NewContainerReportObject(testContainer.Namespace, testContainer.Podname, testContainer.Name, "process does not satisfy: "+schedulingRequirements[check], false).
+				SetContainerProcessValues(schedulePolicy, fmt.Sprint(schedulePriority), process.Args)
+			nonCompliantContainerPids = append(nonCompliantContainerPids, aPidOut)
+			continue
 		}
+		tnf.ClaimFilePrintf("pid=%d in %s with cpu scheduling policy=%s, priority=%s satisfies cpu scheduling requirements", process.Pid, testContainer, schedulePolicy, schedulePriority)
+		aPidOut := testhelper.NewContainerReportObject(testContainer.Namespace, testContainer.Podname, testContainer.Name, "process satisfies: "+schedulingRequirements[check], true).
+			SetContainerProcessValues(schedulePolicy, fmt.Sprint(schedulePriority), process.Args)
+		compliantContainerPids = append(compliantContainerPids, aPidOut)
 	}
-	return hasCPUSchedulingConditionSuccess
+	return compliantContainerPids, nonCompliantContainerPids
 }
 
 func GetProcessCPUScheduling(pid int, testContainer *provider.Container) (schedulePolicy string, schedulePriority int, err error) {

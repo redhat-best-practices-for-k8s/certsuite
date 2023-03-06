@@ -17,8 +17,11 @@
 package testhelper
 
 import (
+	"encoding/json"
 	"fmt"
 	"reflect"
+
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -26,6 +29,83 @@ const (
 	FAILURE
 	ERROR
 )
+
+type ReportObject struct {
+	ObjectType   string
+	ObjectFields map[string]string
+}
+
+type FailureReasonOut struct {
+	CompliantObjectsOut    []*ReportObject
+	NonCompliantObjectsOut []*ReportObject
+}
+
+const (
+	Namespace              = "Namespace"
+	PodName                = "PodName"
+	ContainerName          = "ContainerName"
+	ProcessID              = "ProcessID"
+	ProcessCommandLine     = "ProcessCommandLine"
+	SchedulingPolicy       = "SchedulingPolicy"
+	SchedulingPriority     = "SchedulingPriority"
+	ReasonForNonCompliance = "ReasonForNonCompliance"
+	ReasonForCompliance    = "ReasonForCompliance"
+	Category               = "Category"
+)
+
+const (
+	UndefinedType        = "Undefined Type"
+	CnfType              = "Cnf"
+	PodType              = "Pod"
+	ContainerType        = "Container"
+	ContainerProcessType = "ContainerProcess"
+	ContainerCategory    = "ContainerCategory"
+)
+
+func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {
+	obj.ObjectType = ContainerProcessType
+	obj.ObjectFields[ProcessCommandLine] = aCommandLine
+	obj.ObjectFields[SchedulingPolicy] = aPolicy
+	obj.ObjectFields[SchedulingPriority] = aPriority
+	return obj
+}
+
+func NewContainerReportObject(aNamespace, aPodName, aContainerName, aReason string, isCompliant bool) (out *ReportObject) {
+	out = NewReportObject(aReason, ContainerType, isCompliant)
+	out.ObjectFields[Namespace] = aNamespace
+	out.ObjectFields[PodName] = aPodName
+	out.ObjectFields[ContainerName] = aContainerName
+	return out
+}
+
+func NewPodReportObject(aNamespace, aPodName, aReason string, isCompliant bool) (out *ReportObject) {
+	out = NewReportObject(aReason, PodType, isCompliant)
+	out.ObjectFields[Namespace] = aNamespace
+	out.ObjectFields[PodName] = aPodName
+	return out
+}
+
+func NewReportObject(aReason, aType string, isCompliant bool) (out *ReportObject) {
+	out = &ReportObject{}
+	out.ObjectType = aType
+	out.ObjectFields = make(map[string]string)
+	if isCompliant {
+		out.ObjectFields[ReasonForCompliance] = aReason
+	} else {
+		out.ObjectFields[ReasonForNonCompliance] = aReason
+	}
+	return out
+}
+
+func (obj *ReportObject) AddField(aKey, aString string) (out *ReportObject) {
+	obj.ObjectFields[aKey] = aString
+	return obj
+}
+
+func (obj *ReportObject) SetType(aType string) (out *ReportObject) {
+	obj.ObjectType = aType
+	return obj
+}
 
 func ResultToString(result int) (str string) {
 	switch result {
@@ -80,5 +160,19 @@ func AddTestResultLog(prefix string, object interface{}, log func(string, ...int
 	if s.Len() > 0 {
 		log(fmt.Sprintf("%s %s: %v", prefix, reflect.TypeOf(object), object))
 		fail(fmt.Sprintf("Number of %s %s = %d", prefix, reflect.TypeOf(object), s.Len()))
+	}
+}
+
+func AddTestResultReason(compliantObject, nonCompliantObject []*ReportObject, fail func(string, ...int)) {
+	var aReason FailureReasonOut
+	aReason.CompliantObjectsOut = compliantObject
+	aReason.NonCompliantObjectsOut = nonCompliantObject
+	bytes, err := json.Marshal(aReason)
+	if err != nil {
+		logrus.Errorf("Could not Marshall FailureReason object, err=%s", err)
+	}
+	logrus.Info(string(bytes))
+	if len(aReason.NonCompliantObjectsOut) > 0 {
+		fail(string(bytes))
 	}
 }
