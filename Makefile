@@ -104,12 +104,12 @@ build-catalog-md: build-tnf-tool
 	./tnf generate catalog markdown > CATALOG.md
 
 # build the CNF test binary
-build-cnf-tests:
+build-cnf-tests: install-tools
 	PATH=${PATH}:${GOBIN} ginkgo build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" ./cnf-certification-test
 	make build-catalog-md
 
 # build the CNF test binary with debug flags
-build-cnf-tests-debug:
+build-cnf-tests-debug: install-tools
 	PATH=${PATH}:${GOBIN} ginkgo build -gcflags "all=-N -l" -ldflags "${LINKER_TNF_RELEASE_FLAGS} -extldflags '-z relro -z now'" ./cnf-certification-test
 	make build-catalog-md
 
