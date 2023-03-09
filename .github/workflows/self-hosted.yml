@@ -1,4 +1,4 @@
-name: Test Incoming Changes
+name: Self Hosted Incoming Changes
 
 on:
   push:
@@ -28,11 +28,11 @@ env:
 jobs:
   lint:
     name: Run Linter and Vet
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     env:
       SHELL: /bin/bash
-      KUBECONFIG: '/home/runner/.kube/config'
-      PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
+      KUBECONFIG: '/home/tnf/.kube/config'
+      PFLT_DOCKERCONFIG: '/home/tnf/.docker/config'
 
     steps:
       - name: Check out code into the Go module directory
@@ -56,16 +56,14 @@ jobs:
 
       - name: make vet
         run: make vet
-  shell-linters:
-    name: Shellcheck and shfmt
-    runs-on: ubuntu-22.04
+  shellcheck:
+    name: Shellcheck
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
       - uses: ludeeus/action-shellcheck@master
-      - uses: mfinelli/setup-shfmt@v2
-      - run: shfmt -d *.sh script
   yamllint:
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
       - name: yaml-lint
@@ -85,11 +83,11 @@ jobs:
 
   unit-tests:
     name: Run Unit Tests
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     env:
       SHELL: /bin/bash
-      KUBECONFIG: '/home/runner/.kube/config'
-      PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
+      KUBECONFIG: '/home/tnf/.kube/config'
+      PFLT_DOCKERCONFIG: '/home/tnf/.docker/config'
 
     steps:
       - name: Check out code into the Go module directory
@@ -123,11 +121,11 @@ jobs:
 
   smoke-tests-local:
     name: Run Local Smoke Tests
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     env:
       SHELL: /bin/bash
-      KUBECONFIG: '/home/runner/.kube/config'
-      PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
+      KUBECONFIG: '/home/tnf/.kube/config'
+      PFLT_DOCKERCONFIG: '/home/tnf/.docker/config'
 
     steps:
       - name: Check out code into the Go module directory
@@ -139,7 +137,6 @@ jobs:
         uses: ./.github/actions/setup
 
       # Update the CNF containers, helm charts and operators DB
-
       - name: Update the CNF DB
         run: |
           docker pull ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
@@ -159,15 +156,17 @@ jobs:
           repository: test-network-function/cnf-certification-test-partner
           path: cnf-certification-test-partner
 
-      - name: Start the Kind cluster for `local-test-infra`
-        uses: ./cnf-certification-test-partner/.github/actions/start-k8s-cluster
-        with:
-          working_directory: cnf-certification-test-partner
+      - name: Bootstrap the Kind and OC/Kubectl binaries for the `local-test-infra`
+        run: make bootstrap-cluster-fedora-local
+        working-directory: cnf-certification-test-partner
 
       - name: Create `local-test-infra` OpenShift resources
-        uses: ./cnf-certification-test-partner/.github/actions/create-local-test-infra-resources
-        with:
-          working_directory: cnf-certification-test-partner
+        run: make rebuild-cluster
+        working-directory: cnf-certification-test-partner
+
+      - name: Install partner resources
+        run: make install
+        working-directory: cnf-certification-test-partner
 
       # Perform smoke tests.
       - name: 'Test: Run test suites'
@@ -187,21 +186,13 @@ jobs:
 
   smoke-tests-container:
     name: Run Container Smoke Tests
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     env:
       SHELL: /bin/bash
-      KUBECONFIG: '/home/runner/.kube/config'
-      PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
+      KUBECONFIG: '/home/tnf/.kube/config'
+      PFLT_DOCKERCONFIG: '/home/tnf/.docker/config'
 
     steps:
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.sha }}
-
-      - name: Run initial setup
-        uses: ./.github/actions/setup
-
       # Create a Kind cluster for testing.
       - name: Check out `cnf-certification-test-partner`
         uses: actions/checkout@v3
@@ -209,22 +200,25 @@ jobs:
           repository: test-network-function/cnf-certification-test-partner
           path: cnf-certification-test-partner
 
-      - name: Start the Kind cluster for `local-test-infra`
-        uses: ./cnf-certification-test-partner/.github/actions/start-k8s-cluster
-        with:
-          working_directory: cnf-certification-test-partner
+      - name: Bootstrap the Kind and OC/Kubectl binaries for the `local-test-infra`
+        run: make bootstrap-cluster-fedora-local
+        working-directory: cnf-certification-test-partner
 
       - name: Create `local-test-infra` OpenShift resources
-        uses: ./cnf-certification-test-partner/.github/actions/create-local-test-infra-resources
-        with:
-          working_directory: cnf-certification-test-partner
-            
+        run: make rebuild-cluster
+        working-directory: cnf-certification-test-partner
 
-      # Perform smoke tests using a TNF container.
+      - name: Install partner resources
+        run: make install
+        working-directory: cnf-certification-test-partner
+            
       - name: Check out code into the Go module directory
         uses: actions/checkout@v3
         with:
           ref: ${{ github.sha }}
+
+      - name: Run initial setup
+        uses: ./.github/actions/setup
 
       - name: Build the `cnf-certification-test` image
         run: |
