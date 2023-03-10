@@ -24,7 +24,7 @@ IMAGE_TAG?=localtest
 TNF_VERSION?=0.0.1
 RELEASE_VERSION?=4.11
 
-.PHONY:	build \
+.PHONY: build \
 	clean \
 	lint \
 	test \
@@ -40,9 +40,9 @@ RELEASE_VERSION?=4.11
 # Get default value of $GOBIN if not explicitly set
 GO_PATH=$(shell go env GOPATH)
 ifeq (,$(shell go env GOBIN))
-  GOBIN=${GO_PATH}/bin
+	GOBIN=${GO_PATH}/bin
 else
-  GOBIN=$(shell go env GOBIN)
+	GOBIN=$(shell go env GOBIN)
 endif
 
 COMMON_GO_ARGS=-race
@@ -58,7 +58,6 @@ LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification
 build:
 	make test
 	make build-cnf-tests
-
 
 build-tnf-tool:
 	go build -o tnf -v cmd/tnf/main.go
@@ -84,6 +83,7 @@ clean:
 # Run configured linters
 lint:
 	golangci-lint run --timeout 10m0s
+	shfmt -d *.sh script
 
 # Build and run unit tests
 test:
@@ -117,9 +117,10 @@ build-cnf-tests-debug: install-tools
 install-tools:
 	go install "$$(awk '/ginkgo/ {printf "%s/ginkgo@%s", $$1, $$2}' go.mod)"
 
-# Install golangci-lint	
+# Install linters
 install-lint:
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b ${GO_PATH}/bin ${GOLANGCI_VERSION}
+	go install mvdan.cc/sh/v3/cmd/shfmt@latest
 
 vet:
 	go vet ${GO_PACKAGES}
