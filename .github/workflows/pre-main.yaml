@@ -64,12 +64,14 @@ jobs:
 
       - name: make vet
         run: make vet
-  shellcheck:
-    name: Shellcheck
+  shell-linters:
+    name: Shellcheck and shfmt
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - uses: ludeeus/action-shellcheck@master
+      - uses: mfinelli/setup-shfmt@v2
+      - run: shfmt -d *.sh script
   yamllint:
     runs-on: ubuntu-22.04
     steps:
