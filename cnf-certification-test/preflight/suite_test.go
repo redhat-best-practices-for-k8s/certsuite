@@ -18,6 +18,10 @@ package preflight
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 )
 
 func TestGetUniqueTestEntriesFromContainerResults(t *testing.T) {
@@ -26,4 +30,37 @@ func TestGetUniqueTestEntriesFromContainerResults(t *testing.T) {
 
 func TestGetUniqueTestEntriesFromOperatorResults(t *testing.T) {
 	// Note: preflight lib does not expose their underlying plibRuntime.Result struct vars so I can not write unit tests for this
+}
+
+func TestLabelsAllowTestRun(t *testing.T) {
+	testCases := []struct {
+		testLabelFilter   string
+		testAllowedLabels []string
+		expectedOutput    bool
+	}{
+		{ // Test Case #1 - Label filter is empty, nothing to test, test cases not allowed
+			testLabelFilter:   "",
+			testAllowedLabels: []string{common.PreflightTestKey, identifiers.TagCommon},
+			expectedOutput:    false,
+		},
+		{ // Test Case #2 - Label filter matches other suite's test, test cases not allowed
+			testLabelFilter:   "platform-alteration-isredhat-release",
+			testAllowedLabels: []string{common.PreflightTestKey, identifiers.TagCommon},
+			expectedOutput:    false,
+		},
+		{ // Test Case #3 - Label filter is a preflight test, test is allowed
+			testLabelFilter:   "preflight-IsRedhatRelease",
+			testAllowedLabels: []string{common.PreflightTestKey, identifiers.TagCommon},
+			expectedOutput:    true,
+		},
+		{ // Test Case #3 - Label filter is a preflight test, test not allowed because missing allowed label
+			testLabelFilter:   "preflight-IsRedhatRelease",
+			testAllowedLabels: []string{identifiers.TagCommon},
+			expectedOutput:    false,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedOutput, labelsAllowTestRun(tc.testLabelFilter, tc.testAllowedLabels))
+	}
 }
