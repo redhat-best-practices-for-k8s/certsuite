@@ -461,7 +461,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 	TestPodHostNetwork = AddCatalogEntry(
 		"pod-host-network",
 		common.AccessControlTestKey,
-		`Verifies that the spec.HostPath parameter is not set (not present)`,
+		`Verifies that the spec.HostNetwork parameter is not set (not present)`,
 		PodHostNetworkRemediation,
 		NormativeResult,
 		NoDocumentedProcess,

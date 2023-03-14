@@ -133,7 +133,7 @@ Tags|common,access-control
 Property|Description
 ---|---
 Unique ID|access-control-pod-host-network
-Description|Verifies that the spec.HostPath parameter is not set (not present)
+Description|Verifies that the spec.HostNetwork parameter is not set (not present)
 Result Type|normative
 Suggested Remediation|Set the spec.HostNetwork parameter to false in the pod configuration
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.6
