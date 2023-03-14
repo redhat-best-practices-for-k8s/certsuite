@@ -7,8 +7,7 @@ function configure_tnf_container_client() {
 	PODMAN_EXECUTABLE="podman"
 	DEFAULT_CONTAINER_EXECUTABLE="${PODMAN_EXECUTABLE}"
 
-	if [ "" == "${TNF_CONTAINER_CLIENT}" ]
-	then
+	if [ "" == "${TNF_CONTAINER_CLIENT}" ]; then
 		echo "The \$TNF_CONTAINER_CLIENT environment variable is not set; defaulting to use: ${DEFAULT_CONTAINER_EXECUTABLE}"
 		export TNF_CONTAINER_CLIENT="${DEFAULT_CONTAINER_EXECUTABLE}"
 	else
@@ -72,13 +71,14 @@ display_config_summary() {
 }
 
 join_paths() {
-	local IFS=:; echo "$*"
+	local IFS=:
+	echo "$*"
 }
 
 # Explode loaded KUBECONFIG (e.g. /kubeconfig/path1:/kubeconfig/path2:...)
 # into an array of individual paths to local kubeconfigs.
 # shellcheck disable=SC2162 # Read without -r will mangle backslashes.
-IFS=: read -a local_kubeconfig_paths <<< "$LOCAL_KUBECONFIG"
+IFS=: read -a local_kubeconfig_paths <<<"$LOCAL_KUBECONFIG"
 
 declare -a container_tnf_kubeconfig_paths
 declare -a container_tnf_kubeconfig_volume_bindings
@@ -94,7 +94,7 @@ done
 
 # Explode loaded DOCKERCFG
 # shellcheck disable=SC2162 # Read without -r will mangle backslashes.
-IFS=: read -a local_dockercfg_paths <<< "$LOCAL_DOCKERCFG"
+IFS=: read -a local_dockercfg_paths <<<"$LOCAL_DOCKERCFG"
 
 declare -a container_tnf_dockercfg_paths
 declare -a container_tnf_dockercfg_volume_bindings

@@ -34,44 +34,44 @@ BASEDIR=$(dirname "$(realpath "$0")")
 # Parse args beginning with "-".
 while [[ $1 == -* ]]; do
 	case "$1" in
-		-h|--help|-\?)
-			usage
-			exit 0
-			;;
-		-L|--list)
-			LIST=true
-			;;
-		-o)
-			if (($# > 1)); then
-				OUTPUT_LOC=$2
-				shift
-			else
-				echo >&2 '-o requires an argument'
-				exit 1
-			fi
-			;;
-		-s|--skip)
-			while (( "$#" >= 2 )) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]]; do
-				SKIP="$2|$SKIP"
-				shift
-			done
-			;;
-		-f|--focus)
-			while (( "$#" >= 2 )) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]]; do
-				FOCUS="$2|$FOCUS"
-				shift
-			done
-			;;
-		-l|--label)
-			while (( "$#" >= 2 )) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]]; do
-				LABEL="$LABEL $2"
-				shift
-			done
-			;;
-		-*)
-			echo >&2 "invalid option: $1"
-			usage_error
-			;;
+	-h | --help | -\?)
+		usage
+		exit 0
+		;;
+	-L | --list)
+		LIST=true
+		;;
+	-o)
+		if (($# > 1)); then
+			OUTPUT_LOC=$2
+			shift
+		else
+			echo >&2 '-o requires an argument'
+			exit 1
+		fi
+		;;
+	-s | --skip)
+		while (("$#" >= 2)) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]]; do
+			SKIP="$2|$SKIP"
+			shift
+		done
+		;;
+	-f | --focus)
+		while (("$#" >= 2)) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]]; do
+			FOCUS="$2|$FOCUS"
+			shift
+		done
+		;;
+	-l | --label)
+		while (("$#" >= 2)) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]]; do
+			LABEL="$LABEL $2"
+			shift
+		done
+		;;
+	-*)
+		echo >&2 "invalid option: $1"
+		usage_error
+		;;
 	esac
 	shift
 done
@@ -80,7 +80,7 @@ done
 LABEL="$(echo -e "${LABEL}" | sed -e 's/^[[:space:]]*//')"
 
 # List the specs (filtering by suite).
-if [ "$LIST" = true ] ; then
+if [ "$LIST" = true ]; then
 	cd "$BASEDIR"/cnf-certification-test || exit 1
 	./cnf-certification-test.test \
 		--ginkgo.dry-run \
@@ -106,8 +106,8 @@ GINKGO_ARGS="\
 # shellcheck disable=SC2317 # Command appears to be unreachable.
 html_output() {
 	if [ -f "${OUTPUT_LOC}"/claim.json ]; then
-		echo -n 'var initialjson=' > "${OUTPUT_LOC}"/claimjson.js
-		cat "${OUTPUT_LOC}"/claim.json >> "${OUTPUT_LOC}"/claimjson.js
+		echo -n 'var initialjson=' >"${OUTPUT_LOC}"/claimjson.js
+		cat "${OUTPUT_LOC}"/claim.json >>"${OUTPUT_LOC}"/claimjson.js
 	fi
 	cp "${BASEDIR}"/script/results.html "${OUTPUT_LOC}"
 }
@@ -149,7 +149,7 @@ cd ./cnf-certification-test || exit 1
 
 # configuring special pipeline mode
 # The exit status of a pipeline is the exit status of the last command in the pipeline, unless the pipefail option
-# is enabled (see The Set Builtin). If pipefail is enabled, the pipeline's return status is the value of the last (rightmost) 
+# is enabled (see The Set Builtin). If pipefail is enabled, the pipeline's return status is the value of the last (rightmost)
 # command to exit with a non-zero status, or zero if all commands exit successfully.
 set -o pipefail
 
