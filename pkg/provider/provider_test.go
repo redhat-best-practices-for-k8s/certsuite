@@ -618,7 +618,7 @@ func TestGetCSCOSVersion(t *testing.T) {
 		},
 		{
 			testImageName:  "Red Hat Enterprise Linux CoreOS 410.84.202205031645-0 (Ootpa)",
-			expectedOutput: "4.10.14",
+			expectedOutput: "",
 			expectedErr:    errors.New("invalid OS type: Red Hat Enterprise Linux CoreOS 410.84.202205031645-0 (Ootpa)"),
 		},
 		{
