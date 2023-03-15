@@ -543,7 +543,6 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 				// OCP RC/GA versions, so for the moment, we cannot compare the
 				// version with the OCP one, or retrieve it on the internal database
 				tnf.ClaimFilePrintf("Node %s is using CentOS Stream CoreOS %s, which is not being used yet in any OCP RC/GA version. Relaxing the conditions to check the OS as a result", node.Data.Name, shortVersion)
-
 			} else if node.IsRHEL() {
 				// Get the short version from the node
 				shortVersion, err := node.GetRHELVersion()
