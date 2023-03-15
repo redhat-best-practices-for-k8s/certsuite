@@ -3,7 +3,13 @@
   <head>
     <meta charset=utf-8>
     <title>TNF claim.json parser</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" >
+    <style type="text/css">
+      li.dropdown-menu {
+          background-color: white;
+      }
+      </style>
   </head>
   <body>
     <nav class="navbar navbar-dark bg-dark">
@@ -18,22 +24,46 @@
 
     <ul class="nav nav-tabs">
       <li class="nav-item">
-        <button class="nav-link active" id="config-tab" data-bs-toggle="tab" data-bs-target="#config" type="button" role="tab" aria-controls="config" aria-selected="true">Configuration</button>
+        <button class="nav-link active" id="config-tab" data-bs-toggle="tab" data-bs-target="#config" type="button" role="tab" aria-controls="config" aria-selected="true" onclick="disableButton2()">Configuration</button>
       </li>
       <li class="nav-item">
-        <button class="nav-link" id="metadata-tab" data-bs-toggle="tab" data-bs-target="#metadata" type="button" role="tab" aria-controls="metadata" aria-selected="false">Metadata</button>
+        <button class="nav-link" id="metadata-tab" data-bs-toggle="tab" data-bs-target="#metadata" type="button" role="tab" aria-controls="metadata" aria-selected="false" onclick="disableButton2()">Metadata</button>
       </li>
       <li class="nav-item">
-        <button class="nav-link" id="nodes-tab" data-bs-toggle="tab" data-bs-target="#nodes" type="button" role="tab" aria-controls="nodes" aria-selected="false">Nodes</button>
+        <button class="nav-link" id="nodes-tab" data-bs-toggle="tab" data-bs-target="#nodes" type="button" role="tab" aria-controls="nodes" aria-selected="false" onclick="disableButton2()" >Nodes</button>
+      </li>
+   
+            <button type="button" class="nav-link" data-bs-toggle="dropdown" aria-selected="false" id="results-buttons"  >Results</button>
+            <li class="dropdown-menu">
+              <button class="dropdown-item" data-bs-toggle="tab" id="results-tab" data-bs-target="#results" onclick="disableButton2()">Results All </button>
+              <button class="dropdown-item" data-bs-toggle="tab" id="results-tab-farEdge" data-bs-target="#results-farEdge"onclick="enableButton1()" >Results Far Edge </button>
+              <button class="dropdown-item" data-bs-toggle="tab" id="results-tab-telco"  data-bs-target="#results-telco" onclick="enableButton2()">Results Far Telco</button> 
+              <button class="dropdown-item"  data-bs-toggle="tab" id="results-tab-NonTelco"  data-bs-target="#results-NonTelco" onclick="enableButton3()">Results Far Non Telco </button> 
+            </li>
+      <li class="nav-item">
+        <button class="nav-link" id="versions-tab" data-bs-toggle="tab" data-bs-target="#versions" type="button" role="tab" aria-controls="versions" aria-selected="false" onclick="disableButton2()" >Versions</button>
       </li>
       <li class="nav-item">
-        <button class="nav-link" id="results-tab" data-bs-toggle="tab" data-bs-target="#results" type="button" role="tab" aria-controls="results" aria-selected="false">Results</button>
+        <button class="nav-link" id="feedback-tab" data-bs-toggle="tab" data-bs-target="#feedback" type="button" role="tab" aria-controls="feedback" aria-selected="false" >Feedback</button>
       </li>
-      <li class="nav-item">
-        <button class="nav-link" id="versions-tab" data-bs-toggle="tab" data-bs-target="#versions" type="button" role="tab" aria-controls="versions" aria-selected="false">Versions</button>
-      </li>
-    </ul>
-
+        </ul>
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <label  id="myCheck1" for="optional-tab" hidden="hidden" >Show Optional Results for that category</label> 
+            <input type="checkbox"  id="optional-tab"  data-bs-target="#results-optional" data-bs-toggle="tab" role="tab"   onclick="myFunction()" hidden="hidden" >
+            <label  id="myCheck2" for="optional-tab-non-telco" hidden="hidden" >Show Optional Results for that category</label> 
+            <input type="checkbox"  id="optional-tab-non-telco"  data-bs-target="#results-optional-non-telco" data-bs-toggle="tab" role="tab"    onclick="myFunction2()" hidden="hidden" >   
+            <label  id="myCheck3" for="optional-tab-telco" hidden="hidden" >Show Optional Results for that category</label> 
+            <input type="checkbox"  id="optional-tab-telco"  data-bs-target="#results-optional-telco" data-bs-toggle="tab" role="tab"  onclick="myFunction3()" hidden="hidden" >   
+            <label  id="myCheck5" for="Mendatory-tab" hidden="hidden" >Show Mendatory Results for that category</label> 
+            <input type="checkbox"  id="Mendatory-tab"  data-bs-target="#results-farEdge" data-bs-toggle="tab" role="tab"   onclick="myFunction4()" hidden="hidden" >
+            <label  id="myCheck6" for="Mendatory-tab-non-telco" hidden="hidden" >Show Mendatory Results for that category</label> 
+            <input type="checkbox"  id="Mendatory-tab-non-telco"  data-bs-target="#results-NonTelco" data-bs-toggle="tab" role="tab"    onclick="myFunction5()" hidden="hidden" >   
+            <label  id="myCheck7" for="Mendatory-tab-telco" hidden="hidden" >Show Mendatory Results for that category</label> 
+            <input type="checkbox"  id="Mendatory-tab-telco"  data-bs-target="#results-Telco" data-bs-toggle="tab" role="tab"  onclick="myFunction6()" hidden="hidden" >  
+          </li>
+ 
+      </ul>
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="config" role="tabpanel" aria-labelledby="config-tab">
         <table class="table table-hover table-bordered" id="config-table">
@@ -51,8 +81,44 @@
         <table class="table table-hover table-bordered" id="results-table">
         </table>
       </div>
+      <div class="tab-pane fade" id="results_button" role="tabpanel" aria-labelledby="results-button">
+      </div>
+      <div class="tab-pane fade" id="results-farEdge" role="tabpanel" aria-labelledby="optional-tab">
+        <table class="table table-hover table-bordered" id="results-far-edge-table">
+        </table>
+      </div>
+      <div class="tab-pane fade" id="results-telco" role="tabpanel" aria-labelledby="optional-tab-telco">
+        <table class="table table-hover table-bordered" id="results-telco-table">
+        </table>
+      </div>
+      <div class="tab-pane fade" id="results-NonTelco" role="tabpanel" aria-labelledby="optional-tab-non-telco">
+        <table class="table table-hover table-bordered" id="results-NonTelco-table">
+        </table>
+      </div>
       <div class="tab-pane fade" id="versions" role="tabpanel" aria-labelledby="versions-tab">
         <table class="table table-hover table-bordered" id="versions-table">
+        </table>
+      </div>
+      <div class="tab-pane fade" id="feedback" role="tabpanel" aria-labelledby="feedback-tab">
+        <table class="table table-hover table-bordered" id="feedback-table">
+        </table>
+      </div>
+      <div class="tab-pane fade" id="results-optional" role="tabpanel" aria-labelledby="optional-tab">
+        <table class="table table-hover table-bordered" id="optional-table" hidden="hidden">
+        </table>
+      </div>
+
+      <div class="tab-pane fade" id="results-farEdge" role="tabpanel" aria-labelledby="Mendatory-tab">
+        <table class="table table-hover table-bordered" id="Mendatory-table" hidden="hidden">
+        </table>
+      </div>
+
+      <div class="tab-pane fade" id="results-optional-non-telco" role="tabpanel" aria-labelledby="optional-tab-non-telco">
+        <table class="table table-hover table-bordered" id="optional-table-non-telco" hidden="hidden">
+        </table>
+      </div>
+      <div class="tab-pane fade" id="results-optional-telco" role="tabpanel" aria-labelledby="optional-tab-telco">
+        <table class="table table-hover table-bordered" id="optional-table-telco" hidden="hidden">
         </table>
       </div>
     </div>
@@ -63,6 +129,109 @@
     <!-- We should extract the javascript code to a separate file, but if we include it here we can just use a single file HTMl, which is handy -->
     <!--    <script src="./utils.js"></script> -->
     <script>
+function myFunction() {
+  var checkBox = document.getElementById("optional-tab");
+  if (checkBox.checked == true){
+    document.getElementById("optional-table").removeAttribute("hidden");
+    document.getElementById("results-far-edge-table").setAttribute("hidden", "hidden");
+
+  } else {
+    document.getElementById("results-far-edge-table").removeAttribute("hidden");
+    document.getElementById("optional-table").setAttribute("hidden", "hidden");
+  }
+}
+
+function myFunction4() {
+  var checkBox = document.getElementById("Mendatory-tab");
+  if (checkBox.checked == true){
+    document.getElementById("results-far-edge-table").removeAttribute("hidden");
+
+  } else {
+    document.getElementById("results-far-edge-table").setAttribute("hidden", "hidden");
+
+  }
+}
+
+function myFunction2() {
+  var checkBox = document.getElementById("optional-tab-non-telco");
+  if (checkBox.checked == true){
+    document.getElementById("optional-table-non-telco").removeAttribute("hidden");
+
+
+  } else {
+    document.getElementById("optional-table-non-telco").setAttribute("hidden", "hidden");
+  }
+}
+
+function myFunction3() {
+  var checkBox = document.getElementById("optional-tab-telco");
+  if (checkBox.checked == true){
+    document.getElementById("optional-table-telco").removeAttribute("hidden");
+
+  } else {
+    document.getElementById("optional-table-telco").setAttribute("hidden", "hidden");
+  }
+}
+        function enableButton2() {
+          document.getElementById("myCheck3").removeAttribute("hidden");
+          document.getElementById("myCheck7").removeAttribute("hidden");
+
+          
+          document.getElementById("optional-tab-telco").removeAttribute("hidden");
+          document.getElementById("Mendatory-tab-telco").removeAttribute("hidden");
+          document.getElementById("myCheck1").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck2").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck5").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck7").setAttribute("hidden", "hidden");
+          document.getElementById("optional-tab-non-telco").setAttribute("hidden", "hidden");
+          document.getElementById("optional-tab").setAttribute("hidden", "hidden");
+          document.getElementById("Mendatory-tab-non-telco").setAttribute("hidden", "hidden");
+          document.getElementById("Mendatory-tab").setAttribute("hidden", "hidden");
+        }
+        function enableButton1() {
+          document.getElementById("results-far-edge-table").removeAttribute("hidden");
+          document.getElementById("myCheck1").removeAttribute("hidden");
+          document.getElementById("myCheck2").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck3").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck5").removeAttribute("hidden");
+          document.getElementById("myCheck6").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck7").setAttribute("hidden", "hidden");
+
+            document.getElementById("optional-tab").removeAttribute("hidden");
+            document.getElementById("Mendatory-tab").removeAttribute("hidden");
+
+            document.getElementById("optional-tab-non-telco").setAttribute("hidden", "hidden");
+            document.getElementById("Mendatory-tab-non-telco").setAttribute("hidden", "hidden");
+
+            document.getElementById("optional-tab-telco").setAttribute("hidden", "hidden");
+            document.getElementById("Mendatory-tab-telco").setAttribute("hidden", "hidden");
+
+        }
+        function enableButton3() {
+          document.getElementById("myCheck1").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck2").removeAttribute("hidden");
+          document.getElementById("myCheck3").setAttribute("hidden", "hidden");
+
+            document.getElementById("optional-tab-non-telco").removeAttribute("hidden");
+            document.getElementById("optional-tab-telco").setAttribute("hidden", "hidden");
+            document.getElementById("optional-tab").setAttribute("hidden", "hidden");
+        }
+        function disableButton2() {
+          document.getElementById("myCheck1").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck2").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck3").setAttribute("hidden", "hidden");
+          document.getElementById("optional-tab-non-telco").setAttribute("hidden", "hidden");
+          document.getElementById("optional-tab-telco").setAttribute("hidden", "hidden");
+          document.getElementById("optional-tab").setAttribute("hidden", "hidden");
+            
+
+          document.getElementById("myCheck5").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck6").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck7").setAttribute("hidden", "hidden");
+          document.getElementById("Mendatory-tab-non-telco").setAttribute("hidden", "hidden");
+          document.getElementById("Mendatory-tab-telco").setAttribute("hidden", "hidden");
+          document.getElementById("Mendatory-tab").setAttribute("hidden", "hidden");
+        }
         function fillVersions(input, element) {
             $(element).empty()
 
@@ -153,8 +322,10 @@
             $(text).appendTo($(element))
         }
 
-        function fillResults(input, element) {
+        function fillResults(input, input2, element, element2,tableName) {
             $(element).empty()
+            $(element2).empty()
+
             // The results object is composed of multiple objects, 1 per test
             // Inside the object we have an array of results
             id = 1
@@ -164,7 +335,6 @@
             tests_passed = 0
             tests_skipped = 0
             tests_failed = 0
-
             // Compute number of passed/skipped/failed results
             for (const key in input) {
                 for (const item of input[key]) {
@@ -180,13 +350,34 @@
                     }
                 }
             }
+ 
 
-            // First we will have a left column in the table with the summarized results
-            text ='<thead><tr><th scope="col">Test summary</th><th scope="col">Test results</th></tr></thead><tbody>'
-            text += '<tr><td class="align-top"><b>Total:</b> ' + tests_total + '<br><b>Passed:</b> ' + tests_passed + '<br><b>Skipped:</b> ' + tests_skipped + '<br><b>Failed:</b> ' + tests_failed + '</td><td>'
-            text += '<div class="accordion" id="results-accordion">'
 
-            for (const key in input) {
+             // First we will have a left column in the table with the summarized results
+            text2 ='<thead><tr><th scope="col">Test summary</th><th scope="col">Test results</th></tr></thead><tbody>'
+            text2 += '<tr><td class="align-top"><b>Total:</b> ' + tests_total + '<br><b>Passed:</b> ' + tests_passed + '<br><b>Skipped:</b> ' + tests_skipped + '<br><b>Failed:</b> ' + tests_failed + '</td><td>'
+            text2 += '<div class="accordion" id="results-accordion">'
+             // First we will have a left column in the table with the summarized results
+            text3 ='<thead><tr><th scope="col">Test summary</th><th scope="col">Test results</th></tr></thead><tbody>'
+            text3 += '<tr><td class="align-top"><b>Total:</b> ' + tests_total + '<br><b>Passed:</b> ' + tests_passed + '<br><b>Skipped:</b> ' + tests_skipped + '<br><b>Failed:</b> ' + tests_failed + '</td><td>'
+            text3 += '<div class="accordion" id="results-accordion">'
+              for (const key in input) {
+            //  console.log("key =",key)
+            for (const key2 in input2){      
+              
+                eqData=input2[key2][0].FarEdge
+              
+              if (tableName == "Telco"){
+                eqData=input2[key2][0].ForTelco
+
+              }
+              if (tableName == "NonTelco"){
+                eqData=input2[key2][0].ForNonTelco
+              }
+
+              if (key==key2 ){
+                
+                text=''
                 // NOTE: we are assuming the test result is determined by the passed/failed state of the first item
                 status = input[key][0].state
                 if (status === "passed") {
@@ -215,22 +406,213 @@
                 // Note we are skipping some columns for now
                 // And 1 row per test
                 for (const item of input[key]) {
+                  testName = item.testID.url.split('http://test-network-function.com/testcases/')[1].replaceAll('/', '-')
                     text += '<tr><td>' + item.testID.url + '" version: ' + item.testID.version + '</td>'
                     text += '<td>' + item.testText.replace(/\n/g, '<br>') + '</td>'
                     text += '<td>' + item.duration + '</td>'
                     text += '<td>' + item.state + '</td>'
                     text += '<td>' + ansi_up.ansi_to_html(item.CapturedTestOutput).replace(/\n/g, '<br>') + '</td></tr>'
+
+                  }
+
+                id = id + 1
+                if (eqData=="Optional" && tableName != "ALL" ){
+                        text2 +=text
+                        text2 += '</tbody></table>'
+                        text2 += '</div></div></div>'
+                    }else{
+                        text3 +=text
+                        text3 += '</tbody></table>'
+                        text3 += '</div></div></div>'
+                    }  
+            }
+          
+          }
+        }
+
+            text2 += '</div></td></tr></tbody>'
+            text3 += '</div></td></tr></tbody>'
+
+            $(text3).appendTo($(element))    
+            $(text2).appendTo($(element2))    
+
+        }
+
+
+        function copyData(sourceId, targetId) {
+          console.log("source=",sourceId)
+          console.log("dest=",targetId)
+            var data = document.getElementById(sourceId).value;
+            document.getElementById(targetId).value = data;
+        }
+        function generateFeedbackPage(input, element) {
+            $(element).empty()
+            // The results object is composed of multiple objects, 1 per test
+            // Inside the object we have an array of results
+            id = 1
+            var ansi_up = new AnsiUp;
+
+            tests_total = 0
+            tests_passed = 0
+            tests_skipped = 0
+            tests_failed = 0
+
+            // Compute number of passed/skipped/failed results
+            for (const key in input) {
+                for (const item of input[key]) {
+                    if (item.state == 'passed') {
+                        tests_total++
+                        tests_passed++
+                    } else if (item.state == 'skipped') {
+                        tests_total++
+                        tests_skipped++
+                    } else if (item.state == 'failed') {
+                        tests_total++
+                        tests_failed++
+                    }
                 }
-                text += '</tbody></table>'
+            }
+
+            // First we will have a left column in the table with the summarized results
+            text ='<thead><tr><th scope="col">Test summary</th><th scope="col">Test feedback</th></tr></thead><tbody>'
+            text += '<tr><td class="align-top"><b>Total:</b> ' + tests_total + '<br><b>Passed:</b> ' + tests_passed + '<br><b>Skipped:</b> ' + tests_skipped + '<br><b>Failed:</b> ' + tests_failed + '</td><td>'
+            text += '<div class="accordion" id="feedback-accordion">'
+
+            for (const key in input) {
+                // NOTE: we are assuming the test result is determined by the passed/failed state of the first item
+                status = input[key][0].state
+                if (status === "passed") {
+                    buttontype = 'bg-success text-white'
+                } else if (status === "skipped") {
+                    buttontype = 'bg-warning text-black'
+                } else {
+                    buttontype = 'bg-danger text-white'
+                }   
+
+                itemid = 'collapse' + id
+                headingid = 'heading' + id
+                text += '<div class="accordion-item"><h2 class="accordion-header" id="' + headingid + '"><button class="accordion-button collapsed ' + buttontype + '" type="button" data-bs-toggle="collapse" data-bs-target="#' + itemid + '" aria-expanded="true" aria-controls="' + itemid +'">'
+                text += key + '</button></h2>'
+                // Now we should populate the item contents
+                text += '<div id="' + itemid + '" class="accordion-collapse collapse" aria-labelledby="' + headingid + '" data-bs-parent="' + element + '">'
+                text += '<div class="accordion-body">'
+                // Inside the accordion, 1 table with the following colummns
+
+                for (const item of input[key]) {
+                testName = item.testID.url.split('http://test-network-function.com/testcases/')[1].replaceAll('/', '-')
+                console.log(testName)
+                text += '<input id="source-'+testName+ '" type="text" />'
+                }
+                
+                // Note we are skipping some columns for now
+                // And 1 row per test
                 text += '</div></div></div>'
                 id = id + 1
             }
-            text += '</div></td></tr></tbody>'
+            text += '</div></td></tr>'
+            text+='</tbody>'
             $(text).appendTo($(element))    
+            
+            temp=generateHiddenForm(input)
+            document.body.innerHTML+=temp
+
+            text += temp
         }
+
+        function generateHiddenForm(input){
+          var strdata = input
+          console.log("strdata is",strdata)
+
+          console.log("input is",input)
+
+          for (const key in input) {
+            for (const item of input[key]) {
+                testName = item.testID.url.split('http://test-network-function.com/testcases/')[1].replaceAll('/', '-')
+                console.log("my test",testName)
+                
+            }
+          }
+          text1=""
+          text1+='<button type="submit" onclick=download(this)>Download</button>'
+          text1+='<button type="submit" onclick=sendMail(this)>sendMail</button>'
+            tmp=""
+            for (const key in input) {
+            for (const item of input[key]) {
+                testName = item.testID.url.split('http://test-network-function.com/testcases/')[1].replaceAll('/', '-')
+                console.log(testName)
+                
+            }
+          }
+            text1+=tmp
+
+            return text1
+        }
+
+        function download(get) {
+          text=""
+          console.log("js jsjsj ",this.json.claim)
+          console.log("js jsjsj ",this.json.claim.results)
+          for (const key in this.json.claim.results) {
+            var data = document.getElementById('source-'+key)
+            console.log("dataaaa is ",data)
+            if (data != null){
+              text+=key + ": "
+              text+=data.value + "\n"
+              console.log("dataaaa is ",data.value)
+            }
+          }
+  
+  var pom = document.createElement('a');
+  pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + 
+
+encodeURIComponent(text));
+  pom.setAttribute('download', "feedback");
+
+  pom.style.display = 'none';
+  document.body.appendChild(pom);
+
+  pom.click();
+
+  document.body.removeChild(pom);
+}
+
+function sendMail() {
+  text="Feed back for every test case \n"
+  for (const key in this.json.claim.results) {
+            var data = document.getElementById('source-'+key)
+            console.log("dataaaa is ",data)
+            if (data != null){
+              text+=key + ": "
+              text+=data.value + "\n"
+              console.log("dataaaa is ",data.value)
+            }
+          }
+
+    var link = "mailto:me@example.com"
+             + "?cc="
+             + "&subject=" + encodeURIComponent("Feed Back for Results")
+             + "&body=" + encodeURIComponent(text)
+    ;
+    
+    window.location.href = link;
+}
+
+
+function addTextHTML()
+{
+    document.addtext.name.value = document.addtext.name.value + ".html"
+}
+
+function addTextTXT()
+{
+    document.addtext.name.value = document.addtext.name.value + ".txt"
+}
+
     </script>
     <!-- This will load the initial JSON file, if present. It may fail. -->
     <script src="./claimjson.js"></script>
+    <script src="./class.js"></script>
+
     <script>
         // Load initial json, if available
         if (typeof initialjson !== 'undefined') {
@@ -238,7 +620,10 @@
             fillConfig(initialjson.claim.nodes, '#nodes-table')
             fillMetadata(initialjson.claim.metadata, '#metadata-table')
             fillVersions(initialjson.claim.versions, '#versions-table')
-            fillResults(initialjson.claim.results, '#results-table')
+            fillResults(initialjson.claim.results, '#results-table','#optional-table',"ALL")
+            fillResults(initialjson.claim.results, classification.classification,'#results-far-edge-table','#optional-table',"FarEdge")
+
+            generateFeedbackPage(initialjson.claim.results, '#feedback-table')
         }
         const inputElement = document.getElementById("formFile");
         inputElement.addEventListener("change", handleFiles, false);
@@ -254,7 +639,11 @@
                    fillConfig(json.claim.nodes, '#nodes-table')
                    fillMetadata(json.claim.metadata, '#metadata-table')
                    fillVersions(json.claim.versions, '#versions-table')
-                   fillResults(json.claim.results, '#results-table')
+                   fillResults(json.claim.results,  classification.classification,'#results-table','#optional-',"ALL")
+                   fillResults(json.claim.results,  classification.classification,'#results-far-edge-table','#optional-table',"FarEdge")
+                   fillResults(json.claim.results,  classification.classification,'#results-telco-table','#optional-table-telco',"Telco")
+                   fillResults(json.claim.results,  classification.classification,'#results-NonTelco-table','#optional-table-non-telco',"NonTelco")
+                   generateFeedbackPage(json.claim.results, '#feedback-table')
                  });
                  fileUploaded.readAsText(fileList[0]);
             }
@@ -262,4 +651,3 @@
     </script>
   </body>
 </html>
-
