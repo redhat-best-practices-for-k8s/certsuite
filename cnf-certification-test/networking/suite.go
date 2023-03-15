@@ -235,7 +235,8 @@ func testNetworkConnectivity(env *provider.TestEnvironment, aIPVersion netcommon
 	}
 	if n := len(badNets); n > 0 {
 		logrus.Debugf("Failed nets: %+v", badNets)
-		ginkgo.Fail(fmt.Sprintf("%d nets failed the %s network %s ping test.", n, aType, aIPVersion))
+		tnf.ClaimFilePrintf("%d nets failed the %s network %s ping test.", n, aType, aIPVersion)
+		testhelper.AddTestResultLog("Non-compliant", badNets, tnf.ClaimFilePrintf, ginkgo.Fail)
 	}
 }
 
