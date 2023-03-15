@@ -647,7 +647,6 @@ func TestGetCSCOSVersion(t *testing.T) {
 		result, err := node.GetCSCOSVersion()
 		assert.Equal(t, tc.expectedErr, err)
 		assert.Equal(t, tc.expectedOutput, result)
-		rhcosRelativePath = origValue
 	}
 }
 
