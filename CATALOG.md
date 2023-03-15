@@ -1,9 +1,10 @@
-# cnf-certification-test catalog
+generator tool for various tnf artifacts.
 
-The catalog for cnf-certification-test contains a variety of `Test Cases`, which are traditional JUnit testcases specified internally using `Ginkgo.It`.
-## Test Case Catalog
+Usage:
+  tnf generate [command]
 
-Test Cases are the specifications used to perform a meaningful test.  Test cases may run once, or several times against several targets.  CNF Certification includes a number of normative and informative tests to ensure CNFs follow best practices.  Here is the list of available Test Cases:
+Available Commands:
+  generateClassification Generates class
 
 ### access-control
 
@@ -969,4 +970,7 @@ Suggested Remediation|Test failure indicates that the underlying Node's kernel i
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.14
 Exception Process|There is no documented exception process for this.
 Tags|common,platform-alteration
+Flags:
+  -h, --help   help for generate
 
+Use "tnf generate [command] --help" for more information about a command.

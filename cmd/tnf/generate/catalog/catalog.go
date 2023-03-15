@@ -25,6 +25,7 @@ import (
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
+	//"github.com/aabughosh/test-network-function-claim/tree/calssification"
 
 	"github.com/spf13/cobra"
 )
@@ -52,6 +53,17 @@ var (
 	generateCmd = &cobra.Command{
 		Use:   "catalog",
 		Short: "Generates the test catalog",
+	}
+
+	generateClassification = &cobra.Command{
+		Use:   "generateClassification",
+		Short: "Generates classification js file",
+	}
+
+	markdownGenerateClassification = &cobra.Command{
+		Use:   "markdown",
+		Short: "Generates java script file for classification catagory",
+		RunE:  generateJS,
 	}
 
 	// markdownGenerateCmd is used to generate a markdown formatted catalog to stdout.
@@ -173,6 +185,62 @@ func outputTestCases() {
 	fmt.Println()
 }
 
+func outputJS() { 
+	// Building a separate data structure to store the key order for the map
+	keys := make([]claim.Identifier, 0, len(identifiers.Catalog))
+	for k := range identifiers.Catalog {
+		keys = append(keys, k)
+	}
+
+	// Sorting the map by identifier ID
+	sort.Slice(keys, func(i, j int) bool {
+		return keys[i].Id < keys[j].Id
+	})
+
+	catalog := createPrintableCatalogFromIdentifiers(keys)
+	if catalog == nil {
+		return
+	}
+	// we need the list of suite's names
+	suites := getSuitesFromIdentifiers(keys)
+
+	// Iterating the map by test and suite names
+	fmt.Fprintf(os.Stdout, "classification = {\n")
+	fmt.Fprintf(os.Stdout, "\"classification\" : {\n")
+	for _, suite := range suites {
+		for _, k := range catalog[suite] {
+			// Add the suite to the comma separate list of tags shown.  The tags are also modified in the:
+			// GetGinkgoTestIDAndLabels function for usage by Ginkgo.
+
+			fmt.Fprintf(os.Stdout, "\"%s\":[\n\t", k.identifier.Id)
+			fmt.Fprintf(os.Stdout, "{\n")
+			fmt.Fprintf(os.Stdout, "\"ForTelco\": \"%s\",\n", identifiers.Catalog[k.identifier].CategoryClassification[identifiers.Telco])
+			fmt.Fprintf(os.Stdout, "\"ForNonTelco\": \"%s\",\n", identifiers.Catalog[k.identifier].CategoryClassification[identifiers.NonTelco])
+			fmt.Fprintf(os.Stdout, "\"ForExtended\": \"%s\",\n", identifiers.Catalog[k.identifier].CategoryClassification[identifiers.Extended])
+			fmt.Fprintf(os.Stdout, "\"ForFarEdge\": \"%s\"\n", identifiers.Catalog[k.identifier].CategoryClassification[identifiers.FarEdge])
+			fmt.Fprintf(os.Stdout, "\n\t}\n")
+			fmt.Fprintf(os.Stdout, "],")
+
+		}
+	}
+	fmt.Fprintf(os.Stdout, "\n}")
+	fmt.Fprintf(os.Stdout, "\n}")
+	fmt.Println()
+}
+func generateJS(_ *cobra.Command, _ []string) error {
+		// static introductory generation
+		/*if err := emitTextFromFile(introMDFile); err != nil {
+			return err
+		}
+		if err := emitTextFromFile(tccFile); err != nil {
+			return err
+		}*/
+	
+		// process the test cases
+		outputJS()
+	
+		return nil
+}
 // runGenerateMarkdownCmd generates a markdown test catalog.
 func runGenerateMarkdownCmd(_ *cobra.Command, _ []string) error {
 	// static introductory generation
@@ -189,6 +257,10 @@ func runGenerateMarkdownCmd(_ *cobra.Command, _ []string) error {
 	return nil
 }
 
+func NewCommandclassification() *cobra.Command {
+	generateClassification.AddCommand(markdownGenerateClassification)
+	return generateClassification
+}
 // Execute executes the "catalog" CLI.
 func NewCommand() *cobra.Command {
 	generateCmd.AddCommand(markdownGenerateCmd)
