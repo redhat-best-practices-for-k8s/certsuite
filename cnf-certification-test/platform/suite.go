@@ -530,6 +530,15 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 					failedWorkerNodes = append(failedWorkerNodes, node.Data.Name)
 					continue
 				}
+			} else if node.IsCSCOS() {
+				// Get the short version from the node
+				shortVersion, err := node.GetCSCOSVersion()
+				if err != nil {
+					tnf.ClaimFilePrintf("Node %s failed to gather CentOS Stream CoreOS version. Error: %v", node.Data.Name, err)
+					failedWorkerNodes = append(failedWorkerNodes, node.Data.Name)
+					continue
+				}
+
 			} else if node.IsRHEL() {
 				// Get the short version from the node
 				shortVersion, err := node.GetRHELVersion()

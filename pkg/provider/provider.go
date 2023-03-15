@@ -45,6 +45,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
+// CentOS Stream CoreOS starts being used instead of rhcos from OCP 4.13 latest.
 const (
 	AffinityRequiredKey              = "AffinityRequired"
 	containerName                    = "container-00"
@@ -55,6 +56,7 @@ const (
 	skipConnectivityTestsLabel       = "test-network-function.com/skip_connectivity_tests"
 	skipMultusConnectivityTestsLabel = "test-network-function.com/skip_multus_connectivity_tests"
 	rhcosName                        = "Red Hat Enterprise Linux CoreOS"
+	cscosName                        = "CentOS Stream CoreOS"
 	rhelName                         = "Red Hat Enterprise Linux"
 	tnfPartnerRepoDef                = "quay.io/testnetworkfunction"
 	supportImageDef                  = "debug-partner:latest"
