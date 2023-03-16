@@ -530,6 +530,23 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 					failedWorkerNodes = append(failedWorkerNodes, node.Data.Name)
 					continue
 				}
+			} else if node.IsCSCOS() {
+				// Get the short version from the node
+				shortVersion, err := node.GetCSCOSVersion()
+				if err != nil {
+					tnf.ClaimFilePrintf("Node %s failed to gather CentOS Stream CoreOS version. Error: %v", node.Data.Name, err)
+					failedWorkerNodes = append(failedWorkerNodes, node.Data.Name)
+					continue
+				}
+
+				// Warning: CentOS Stream CoreOS has not been released yet in any
+				// OCP RC/GA versions, so for the moment, we cannot compare the
+				// version with the OCP one, or retrieve it on the internal database
+				msg := `
+					Node %s is using CentOS Stream CoreOS %s, which is not being used yet in any
+					OCP RC/GA version. Relaxing the conditions to check the OS as a result.
+					`
+				tnf.ClaimFilePrintf(msg, node.Data.Name, shortVersion)
 			} else if node.IsRHEL() {
 				// Get the short version from the node
 				shortVersion, err := node.GetRHELVersion()

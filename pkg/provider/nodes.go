@@ -58,6 +58,10 @@ func (node *Node) IsRHCOS() bool {
 	return strings.Contains(strings.TrimSpace(node.Data.Status.NodeInfo.OSImage), rhcosName)
 }
 
+func (node *Node) IsCSCOS() bool {
+	return strings.Contains(strings.TrimSpace(node.Data.Status.NodeInfo.OSImage), cscosName)
+}
+
 func (node *Node) IsRHEL() bool {
 	return strings.Contains(strings.TrimSpace(node.Data.Status.NodeInfo.OSImage), rhelName)
 }
@@ -91,6 +95,19 @@ func (node *Node) GetRHCOSVersion() (string, error) {
 	}
 
 	return shortVersion, nil
+}
+
+func (node *Node) GetCSCOSVersion() (string, error) {
+	// Check if the node is running CoreOS or not
+	if !node.IsCSCOS() {
+		return "", fmt.Errorf("invalid OS type: %s", node.Data.Status.NodeInfo.OSImage)
+	}
+
+	// CentOS Stream CoreOS 413.92.202303061740-0 (Plow) --> 413.92.202303061740-0
+	splitStr := strings.Split(node.Data.Status.NodeInfo.OSImage, cscosName)
+	longVersionSplit := strings.Split(strings.TrimSpace(splitStr[1]), " ")
+
+	return longVersionSplit[0], nil
 }
 
 func (node *Node) GetRHELVersion() (string, error) {

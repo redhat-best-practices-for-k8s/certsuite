@@ -605,6 +605,51 @@ func TestGetRHCOSVersion(t *testing.T) {
 	}
 }
 
+func TestGetCSCOSVersion(t *testing.T) {
+	testCases := []struct {
+		testImageName  string
+		expectedOutput string
+		expectedErr    error
+	}{
+		{
+			testImageName:  "CentOS Stream CoreOS 413.92.202303061740-0 (Plow)",
+			expectedOutput: "413.92.202303061740-0",
+			expectedErr:    nil,
+		},
+		{
+			testImageName:  "Red Hat Enterprise Linux CoreOS 410.84.202205031645-0 (Ootpa)",
+			expectedOutput: "",
+			expectedErr:    errors.New("invalid OS type: Red Hat Enterprise Linux CoreOS 410.84.202205031645-0 (Ootpa)"),
+		},
+		{
+			testImageName:  "Ubuntu 20.04",
+			expectedOutput: "",
+			expectedErr:    errors.New("invalid OS type: Ubuntu 20.04"),
+		},
+		{
+			testImageName:  "Ubuntu 21.10",
+			expectedOutput: "",
+			expectedErr:    errors.New("invalid OS type: Ubuntu 21.10"),
+		},
+	}
+
+	for _, tc := range testCases {
+		node := Node{
+			Data: &corev1.Node{
+				Status: corev1.NodeStatus{
+					NodeInfo: corev1.NodeSystemInfo{
+						OSImage: tc.testImageName,
+					},
+				},
+			},
+		}
+
+		result, err := node.GetCSCOSVersion()
+		assert.Equal(t, tc.expectedErr, err)
+		assert.Equal(t, tc.expectedOutput, result)
+	}
+}
+
 func TestGetRHELVersion(t *testing.T) {
 	testCases := []struct {
 		testImageName  string
