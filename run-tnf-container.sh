@@ -151,6 +151,9 @@ perform_dockercfg_autodiscovery() {
 	elif [[ -f "$HOME/.docker/config.json" ]]; then
 		export LOCAL_DOCKERCFG=$HOME/.docker/config.json
 		dockercfg_autodiscovery_source="\$HOME/.docker/config.json ($HOME/.docker/config.json)"
+	else
+		# Default Case: Set the variable to NA (Not Applicable)
+		export LOCAL_DOCKERCFG=NA
 	fi
 }
 
@@ -163,6 +166,11 @@ display_kubeconfig_autodiscovery_summary() {
 display_dockercfg_autodiscovery_summary() {
 	if [[ -n "$dockercfg_autodiscovery_source" ]]; then
 		echo "DockerCfg Autodiscovery: configuration loaded from $dockercfg_autodiscovery_source"
+	fi
+
+	# Let the user know that the LOCAL_DOCKERCFG is set to NA
+	if [[ $LOCAL_DOCKERCFG == 'NA' ]]; then
+		echo "LOCAL_DOCKERCFG being set to 'NA' because PFLT_DOCKERCONFIG is not set and HOME/.docker/config.json does not exist."
 	fi
 }
 
