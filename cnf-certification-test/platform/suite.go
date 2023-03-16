@@ -497,10 +497,10 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 		// Get the OSImage which should tell us what version of operating system the node is running.
 		logrus.Debug(fmt.Sprintf("Node %s is running operating system: %s", node.Data.Name, node.Data.Status.NodeInfo.OSImage))
 
-		// Control plane nodes must be RHCOS.
+		// Control plane nodes must be RHCOS (also CentOS Stream starting in OCP 4.13)
 		// Per the release notes from OCP documentation:
 		// "You must use RHCOS machines for the control plane, and you can use either RHCOS or RHEL for compute machines."
-		if node.IsMasterNode() && !node.IsRHCOS() {
+		if node.IsMasterNode() && (!node.IsRHCOS() || !node.IsCSCOS()) {
 			tnf.ClaimFilePrintf("Master Node %s has been found to be running an incompatible operating system: %s", node.Data.Name, node.Data.Status.NodeInfo.OSImage)
 			failedControlPlaneNodes = append(failedControlPlaneNodes, node.Data.Name)
 			continue
