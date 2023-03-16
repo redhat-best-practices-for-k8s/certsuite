@@ -97,7 +97,7 @@ done
 
 # Explode loaded DOCKERCFG
 # shellcheck disable=SC2162 # Read without -r will mangle backslashes.
-if [[ $LOCAL_DOCKERCFG != 'NA' ]]; then
+if [[ $LOCAL_DOCKERCFG != NA ]]; then
 	IFS=: read -a local_dockercfg_paths <<<"$LOCAL_DOCKERCFG"
 
 	declare -a container_tnf_dockercfg_paths
@@ -129,7 +129,7 @@ container_tnf_kubeconfig_volumes_cmd_args=$(printf -- "-v %s " "${container_tnf_
 
 # Construct new $DOCKERCFG env variable containing all paths to dockercfgs mounted to the container.
 # This environment variable is passed to the TNF container
-if [[ $LOCAL_DOCKERCFG != 'NA' ]]; then
+if [[ $LOCAL_DOCKERCFG != NA ]]; then
 	CONTAINER_TNF_DOCKERCFG=$(join_paths "${container_tnf_dockercfg_paths[@]}")
 	container_tnf_dockercfg_volumes_cmd_args=$(printf -- "-v %s " "${container_tnf_dockercfg_volume_bindings[@]}")
 fi
