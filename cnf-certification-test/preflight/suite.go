@@ -17,6 +17,8 @@
 package preflight
 
 import (
+	"strings"
+
 	"github.com/onsi/ginkgo/v2"
 	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
 	"github.com/sirupsen/logrus"
@@ -42,6 +44,13 @@ var _ = ginkgo.Describe(common.PreflightTestKey, func() {
 		return
 	}
 
+	// Safeguard against running the preflight tests if we are specifically targeting a certain label eg. in QE.
+	ginkgoConfig, _ := ginkgo.GinkgoConfiguration()
+	if !labelsAllowTestRun(ginkgoConfig.LabelFilter, []string{common.PreflightTestKey, identifiers.TagCommon}) {
+		logrus.Warn("LabelFilter is set but 'preflight' or 'common' tests are not targeted. Skipping the preflight tests.")
+		return
+	}
+
 	testPreflightContainers(&env)
 	if provider.IsOCPCluster() {
 		logrus.Debugf("OCP cluster detected, allowing operator tests to run")
@@ -50,6 +59,15 @@ var _ = ginkgo.Describe(common.PreflightTestKey, func() {
 		logrus.Debugf("Skipping the preflight operators test because it requires an OCP cluster to run against")
 	}
 })
+
+func labelsAllowTestRun(labelFilter string, allowedLabels []string) bool {
+	for _, label := range allowedLabels {
+		if strings.Contains(labelFilter, label) {
+			return true
+		}
+	}
+	return false
+}
 
 func testPreflightOperators(env *provider.TestEnvironment) {
 	// Loop through all of the operators, run preflight, and set their results into their respective object
