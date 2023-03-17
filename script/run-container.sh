@@ -60,8 +60,11 @@ display_config_summary() {
 	printf "Mounting %d kubeconfig volume(s):\n" "${#container_tnf_kubeconfig_volume_bindings[@]}"
 	printf -- "-v %s\n" "${container_tnf_kubeconfig_volume_bindings[@]}"
 
-	printf "Mounting %d dockercfg volume(s):\n" "${#container_tnf_dockercfg_volume_bindings[@]}"
-	printf -- "-v %s\n" "${container_tnf_dockercfg_volume_bindings[@]}"
+	# Only display this -v line if the variable is set.
+	if [ -n "${container_tnf_dockercfg_volume_bindings}" ]; then
+		printf "Mounting %d dockercfg volume(s):\n" "${#container_tnf_dockercfg_volume_bindings[@]}"
+		printf -- "-v %s\n" "${container_tnf_dockercfg_volume_bindings[@]}"
+	fi
 
 	# Checks whether a prefix of the selected image path matches the address of the official TNF repository
 	if [[ "$TNF_IMAGE" != $TNF_OFFICIAL_ORG* ]]; then
@@ -94,19 +97,21 @@ done
 
 # Explode loaded DOCKERCFG
 # shellcheck disable=SC2162 # Read without -r will mangle backslashes.
-IFS=: read -a local_dockercfg_paths <<<"$LOCAL_DOCKERCFG"
+if [[ $LOCAL_DOCKERCFG != NA ]]; then
+	IFS=: read -a local_dockercfg_paths <<<"$LOCAL_DOCKERCFG"
 
-declare -a container_tnf_dockercfg_paths
-declare -a container_tnf_dockercfg_volume_bindings
+	declare -a container_tnf_dockercfg_paths
+	declare -a container_tnf_dockercfg_volume_bindings
 
-# Assign a file in the TNF container for each provided local dockercfg
-for local_path_index in "${!local_dockercfg_paths[@]}"; do
-	local_path=${local_dockercfg_paths[$local_path_index]}
-	container_path=$(get_container_tnf_dockercfg_path_from_index "$local_path_index")
+	# Assign a file in the TNF container for each provided local dockercfg
+	for local_path_index in "${!local_dockercfg_paths[@]}"; do
+		local_path=${local_dockercfg_paths[$local_path_index]}
+		container_path=$(get_container_tnf_dockercfg_path_from_index "$local_path_index")
 
-	container_tnf_dockercfg_paths+=("$container_path")
-	container_tnf_dockercfg_volume_bindings+=("$local_path:$container_path:Z")
-done
+		container_tnf_dockercfg_paths+=("$container_path")
+		container_tnf_dockercfg_volume_bindings+=("$local_path:$container_path:Z")
+	done
+fi
 
 TNF_IMAGE="${TNF_IMAGE:-$TNF_OFFICIAL_IMAGE}"
 CONTAINER_NETWORK_MODE="${CONTAINER_NETWORK_MODE:-$CONTAINER_DEFAULT_NETWORK_MODE}"
@@ -124,8 +129,10 @@ container_tnf_kubeconfig_volumes_cmd_args=$(printf -- "-v %s " "${container_tnf_
 
 # Construct new $DOCKERCFG env variable containing all paths to dockercfgs mounted to the container.
 # This environment variable is passed to the TNF container
-CONTAINER_TNF_DOCKERCFG=$(join_paths "${container_tnf_dockercfg_paths[@]}")
-container_tnf_dockercfg_volumes_cmd_args=$(printf -- "-v %s " "${container_tnf_dockercfg_volume_bindings[@]}")
+if [[ $LOCAL_DOCKERCFG != NA ]]; then
+	CONTAINER_TNF_DOCKERCFG=$(join_paths "${container_tnf_dockercfg_paths[@]}")
+	container_tnf_dockercfg_volumes_cmd_args=$(printf -- "-v %s " "${container_tnf_dockercfg_volume_bindings[@]}")
+fi
 
 # Safeguard against an empty variable
 if [ -z "$CONTAINER_TNF_DOCKERCFG" ]; then
