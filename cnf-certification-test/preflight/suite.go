@@ -47,7 +47,7 @@ var _ = ginkgo.Describe(common.PreflightTestKey, func() {
 	// Safeguard against running the preflight tests if we are specifically targeting a certain label eg. in QE.
 	ginkgoConfig, _ := ginkgo.GinkgoConfiguration()
 	if !labelsAllowTestRun(ginkgoConfig.LabelFilter, []string{common.PreflightTestKey, identifiers.TagCommon}) {
-		logrus.Debug("LabelFilter is set but 'preflight' or 'common' tests are not targeted.  Issuing skip.")
+		logrus.Warn("LabelFilter is set but 'preflight' or 'common' tests are not targeted. Skipping the preflight tests.")
 		return
 	}
 
