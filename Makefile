@@ -83,6 +83,7 @@ clean:
 # Run configured linters
 lint:
 	golangci-lint run --timeout 10m0s
+	hadolint Dockerfile
 	shfmt -d *.sh script
 
 # Build and run unit tests
@@ -120,7 +121,7 @@ install-tools:
 # Install linters
 install-lint:
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b ${GO_PATH}/bin ${GOLANGCI_VERSION}
-	
+
 install-shfmt:
 	go install mvdan.cc/sh/v3/cmd/shfmt@latest
 

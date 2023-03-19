@@ -59,6 +59,14 @@ jobs:
       - name: Install golangci-lint
         run: make install-lint
 
+      - name: Install hadolint
+        run: |
+          curl \
+            --location \
+            --output /usr/local/bin/hadolint \
+            https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
+          chmod +x /usr/local/bin/hadolint
+
       - name: Install shfmt
         run: make install-shfmt
 
@@ -68,10 +76,14 @@ jobs:
       - name: make vet
         run: make vet
   shell-linters:
-    name: Shellcheck and shfmt
+    name: Hadolint, shellcheck and shfmt
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
+          recursive: true
       - uses: ludeeus/action-shellcheck@master
       - uses: mfinelli/setup-shfmt@v2
       - run: shfmt -d *.sh script
