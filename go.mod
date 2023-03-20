@@ -177,8 +177,8 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	k8s.io/apiserver v0.26.2 // indirect
-	k8s.io/cli-runtime v0.26.2 // indirect
-	k8s.io/component-base v0.26.2 // indirect
+	k8s.io/cli-runtime v0.26.3 // indirect
+	k8s.io/component-base v0.26.3 // indirect
 	k8s.io/kube-openapi v0.0.0-20230308215209-15aac26d736a // indirect
 	k8s.io/utils v0.0.0-20230313181309-38a27ef9d749 // indirect
 	lukechampine.com/uint128 v1.1.1 // indirect
@@ -215,7 +215,7 @@ require (
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230315171834-74b910774f52
 	github.com/test-network-function/privileged-daemonset v1.0.1
 	gopkg.in/yaml.v3 v3.0.1
-	k8s.io/kubectl v0.26.2
+	k8s.io/kubectl v0.26.3
 )
 
 replace github.com/openshift/machine-config-operator => github.com/openshift/machine-config-operator v0.0.1-0.20200913004441-7eba765c69c9
