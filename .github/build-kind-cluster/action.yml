@@ -1,0 +1,20 @@
+name: build-kind-cluster
+description: A shared action that builds and deploys our Kind cluster
+
+runs:
+  steps:
+    - name: Check out `cnf-certification-test-partner`
+      uses: actions/checkout@v3
+      with:
+        repository: test-network-function/cnf-certification-test-partner
+        path: cnf-certification-test-partner
+
+    - name: Start the Kind cluster for `local-test-infra`
+      uses: ./cnf-certification-test-partner/.github/actions/start-k8s-cluster
+      with:
+        working_directory: cnf-certification-test-partner
+
+    - name: Create `local-test-infra` OpenShift resources
+      uses: ./cnf-certification-test-partner/.github/actions/create-local-test-infra-resources
+      with:
+        working_directory: cnf-certification-test-partner
