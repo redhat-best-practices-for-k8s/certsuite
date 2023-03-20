@@ -52,7 +52,7 @@ func init() {
 	InitCatalog()
 }
 
-func AddCatalogEntry(testID, suiteName, description, remediation, testType, exception, reference string, qe bool, categoryclassification claim.Categoryclassification, tags ...string) (aID claim.Identifier) {
+func AddCatalogEntry(testID, suiteName, description, remediation, testType, exception, reference string, qe bool, categoryclassification claim.CategoryClassification, tags ...string) (aID claim.Identifier) {
 	// Default Values (if missing)
 	if strings.TrimSpace(exception) == "" {
 		exception = NoDocumentedProcess
@@ -173,7 +173,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -190,7 +190,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 10.6",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Optional",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -207,7 +207,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Optional",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -225,7 +225,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 5.3.7",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -242,7 +242,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 3.5.4",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Optional",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -259,7 +259,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -276,7 +276,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -293,7 +293,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Optional",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -310,7 +310,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -349,7 +349,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		`Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.`,
 		bestPracticeDocV1dot3URL+" Section 5.1.3, 12.2 and 12.5",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Optional",
@@ -368,7 +368,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		`Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.`,
 		bestPracticeDocV1dot3URL+" Section 5.1.3, 12.2 and 12.5",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Optional",
@@ -385,7 +385,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Optional",
@@ -402,7 +402,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		SecConCapabilitiesExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Optional",
@@ -419,7 +419,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		SecConCapabilitiesExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -436,7 +436,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		SecConCapabilitiesExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Optional",
@@ -453,7 +453,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		SecConCapabilitiesExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Optional",
@@ -470,7 +470,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -487,7 +487,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -504,7 +504,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -521,7 +521,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -538,7 +538,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -555,7 +555,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -572,7 +572,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		SecConNonRootUserExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Optional",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -589,7 +589,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		SecConExceptionProcess,
 		bestPracticeDocV1dot4URL+" Section 4.5",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Optional",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -606,7 +606,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Optional",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -623,7 +623,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Optional",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -640,7 +640,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -657,7 +657,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -674,7 +674,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -691,7 +691,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -708,7 +708,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.7",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -729,7 +729,7 @@ they are the same.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -747,7 +747,7 @@ test case requires the Deployment of the debug daemonset.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Optional",
@@ -765,7 +765,7 @@ test case requires the Deployment of the debug daemonset.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Optional",
@@ -783,7 +783,7 @@ test case requires the Deployment of the debug daemonset.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Optional",
@@ -801,7 +801,7 @@ test case requires the deployment of the debug daemonset.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 3.5.7",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Optional",
@@ -820,7 +820,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2, 16.3.8 and 16.3.9",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -839,7 +839,7 @@ the same hacks.'`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.14",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -856,7 +856,7 @@ the same hacks.'`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -874,7 +874,7 @@ with no resourceNames under its rules.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -891,7 +891,7 @@ with no resourceNames under its rules.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -908,7 +908,7 @@ with no resourceNames under its rules.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -925,7 +925,7 @@ with no resourceNames under its rules.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -943,7 +943,7 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Optional",
@@ -960,7 +960,7 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -977,7 +977,7 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.10 and 5.3.6",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Optional",
@@ -994,7 +994,7 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.3 and 5.3.8",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Optional",
@@ -1015,7 +1015,7 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Optional",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -1036,7 +1036,7 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Optional",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -1053,7 +1053,7 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+"  Section 12.6",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Optional",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -1073,7 +1073,7 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -1090,7 +1090,7 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.3 and 5.3.5",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -1107,7 +1107,7 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.3 and 5.2.7",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -1124,7 +1124,7 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 12.7",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Optional",
@@ -1141,7 +1141,7 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.1",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -1169,7 +1169,7 @@ that there are no changes to the following directories:
 		UnalteredBaseImageExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.1.4",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -1186,7 +1186,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.13 and 5.2.14",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -1203,7 +1203,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 10.1",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Optional",
@@ -1220,7 +1220,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 12.1",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Optional",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -1237,7 +1237,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -1256,7 +1256,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -1273,7 +1273,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Optional",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -1290,7 +1290,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 7.9",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -1308,7 +1308,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 7.9",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -1325,7 +1325,7 @@ that there are no changes to the following directories:
 		IsRedHatReleaseExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -1342,7 +1342,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 10.3 Pod Security",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -1359,7 +1359,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 16.3.1.1",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Optional",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -1376,7 +1376,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 3.5.9",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -1393,7 +1393,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.16, 12.1 and 12.5",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Optional",
@@ -1410,7 +1410,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.16, 12.1 and 12.5",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Optional",
@@ -1427,7 +1427,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 4.6.12", // TODO Change this to v1.4 when available
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -1444,7 +1444,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 10.8.3",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Optional",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -1461,7 +1461,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 2.7.4",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Optional",
@@ -1478,7 +1478,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 2.7.5",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Optional",
@@ -1495,7 +1495,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.11",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Optional",
@@ -1512,7 +1512,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 4.6.8", // TODO Change this to v1.4 when available
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Optional",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -1529,7 +1529,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 4.6.20", // TODO Change this to v1.4 when available
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -1546,7 +1546,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 10.6",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Optional",
@@ -1563,7 +1563,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 3.3.4",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Optional",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -1580,7 +1580,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.12",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Optional",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -1597,7 +1597,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 4.6.12", // TODO Change this to v1.4 when available
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Optional",
@@ -1615,7 +1615,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 3.5.5",
 		true,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Mandatory",
 			Telco:     "Mandatory",
 			NoneTelco: "Optional",
@@ -1632,7 +1632,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.20",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Optional",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
@@ -1653,7 +1653,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.20",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Optional",
 			Telco:     "Mandatory",
 			NoneTelco: "Mandatory",
@@ -1671,7 +1671,7 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		"",
 		false,
-		claim.Categoryclassification{
+		claim.CategoryClassification{
 			FarEdge:   "Optional",
 			Telco:     "Optional",
 			NoneTelco: "Optional",
