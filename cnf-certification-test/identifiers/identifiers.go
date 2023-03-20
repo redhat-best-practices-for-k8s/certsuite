@@ -48,11 +48,18 @@ const (
 	TagFarEdge  = "faredge"
 )
 
+type CatagoryClassification struct {
+	FarEdge   string
+	Telco     string
+	NoneTelco string
+	Extended  string
+}
+
 func init() {
 	InitCatalog()
 }
 
-func AddCatalogEntry(testID, suiteName, description, remediation, testType, exception, reference string, qe bool, tags ...string) (aID claim.Identifier) {
+func AddCatalogEntry(testID, suiteName, description, remediation, testType, exception, reference string, qe bool, catagoryclassification CatagoryClassification, tags ...string) (aID claim.Identifier) {
 	// Default Values (if missing)
 	if strings.TrimSpace(exception) == "" {
 		exception = NoDocumentedProcess
@@ -64,7 +71,7 @@ func AddCatalogEntry(testID, suiteName, description, remediation, testType, exce
 		tags = append(tags, TagCommon)
 	}
 
-	tcDescription, aID := claim.BuildTestCaseDescription(testID, suiteName, description, remediation, testType, exception, reference, qe, tags...)
+	tcDescription, aID := claim.BuildTestCaseDescription(testID, suiteName, description, remediation, testType, exception, reference, qe, catagoryclassification, tags...)
 	Catalog[aID] = tcDescription
 	return aID
 }
@@ -173,6 +180,12 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestNetworkPolicyDenyAllIdentifier = AddCatalogEntry(
@@ -183,7 +196,13 @@ The label value is not important, only its presence.`,
 		InformativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 10.6",
-		true,
+		false,
+		CatagoryClassification{
+			FarEdge:   "Optional",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Optional",
+		},
 		TagCommon)
 
 	Test1337UIDIdentifier = AddCatalogEntry(
@@ -195,6 +214,12 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Optional",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagExtended)
 
 	// TestContainerIsCertifiedDigestIdentifier tests whether the container has passed Container Certification.
@@ -207,6 +232,12 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 5.3.7",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagExtended, TagTelco)
 
 	TestPodHugePages2M = AddCatalogEntry(
@@ -218,6 +249,12 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 3.5.4",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Optional",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagExtended)
 
 	TestPodHugePages1G = AddCatalogEntry(
@@ -229,6 +266,12 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Optional",
+		},
 		TagFarEdge)
 
 	TestReservedExtendedPartnerPorts = AddCatalogEntry(
@@ -240,6 +283,12 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagExtended)
 
 	TestAffinityRequiredPods = AddCatalogEntry(
@@ -251,6 +300,12 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Optional",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagExtended, TagTelco)
 
 	TestStorageRequiredPods = AddCatalogEntry(
@@ -262,6 +317,29 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
+		TagExtended)
+
+	TestStorageRequiredPods = AddCatalogEntry(
+		"no-pvs-on-localstorage",
+		common.LifecycleTestKey,
+		`Checks that pods do not place persistent volumes on local storage.`,
+		StorageRequiredPods,
+		InformativeResult,
+		NoDocumentedProcess,
+		bestPracticeDocV1dot4URL+" Section 4.6.24",
+		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Optional",
+		},
 		TagExtended)
 
 	TestStartupIdentifier = AddCatalogEntry(
@@ -278,6 +356,12 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		`Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.`,
 		bestPracticeDocV1dot3URL+" Section 5.1.3, 12.2 and 12.5",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagTelco)
 
 	TestShutdownIdentifier = AddCatalogEntry(
@@ -291,6 +375,12 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		`Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.`,
 		bestPracticeDocV1dot3URL+" Section 5.1.3, 12.2 and 12.5",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagTelco)
 
 	TestDpdkCPUPinningExecProbe = AddCatalogEntry(
@@ -302,6 +392,12 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagExtended, TagTelco)
 
 	TestNetAdminIdentifier = AddCatalogEntry(
@@ -313,6 +409,12 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		SecConCapabilitiesExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestSysAdminIdentifier = AddCatalogEntry(
@@ -324,6 +426,12 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		SecConCapabilitiesExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestIpcLockIdentifier = AddCatalogEntry(
@@ -335,6 +443,12 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		SecConCapabilitiesExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestNetRawIdentifier = AddCatalogEntry(
@@ -346,6 +460,12 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		SecConCapabilitiesExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestExclusiveCPUPoolIdentifier = AddCatalogEntry(
@@ -357,6 +477,12 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagFarEdge)
 
 	TestSharedCPUPoolSchedulingPolicy = AddCatalogEntry(
@@ -368,6 +494,12 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Optional",
+		},
 		TagFarEdge)
 
 	TestExclusiveCPUPoolSchedulingPolicy = AddCatalogEntry(
@@ -379,6 +511,12 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Optional",
+		},
 		TagFarEdge)
 
 	TestIsolatedCPUPoolSchedulingPolicy = AddCatalogEntry(
@@ -390,6 +528,12 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Optional",
+		},
 		TagFarEdge)
 
 	TestRtAppNoExecProbes = AddCatalogEntry(
@@ -401,6 +545,12 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Optional",
+		},
 		TagFarEdge)
 
 	TestRestartOnRebootLabelOnPodsUsingSRIOV = AddCatalogEntry(
@@ -412,6 +562,12 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagFarEdge)
 
 	TestSecConNonRootUserIdentifier = AddCatalogEntry(
@@ -423,6 +579,12 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		SecConNonRootUserExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Optional",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Optional",
+		},
 		TagCommon)
 
 	TestSecContextIdentifier = AddCatalogEntry(
@@ -434,6 +596,12 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		SecConExceptionProcess,
 		bestPracticeDocV1dot4URL+" Section 4.5",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Optional",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Optional",
+		},
 		TagExtended)
 
 	TestSecConPrivilegeEscalation = AddCatalogEntry(
@@ -445,6 +613,12 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Optional",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Optional",
+		},
 		TagCommon)
 
 	TestContainerHostPort = AddCatalogEntry(
@@ -456,6 +630,12 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Optional",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Optional",
+		},
 		TagCommon)
 
 	TestPodHostNetwork = AddCatalogEntry(
@@ -467,6 +647,12 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestPodHostPath = AddCatalogEntry(
@@ -478,6 +664,12 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestPodHostIPC = AddCatalogEntry(
@@ -489,6 +681,12 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestPodHostPID = AddCatalogEntry(
@@ -500,6 +698,12 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestContainerIsCertifiedIdentifier = AddCatalogEntry(
@@ -511,6 +715,12 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.7",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestHugepagesNotManuallyManipulated = AddCatalogEntry(
@@ -526,6 +736,12 @@ they are the same.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestICMPv6ConnectivityIdentifier = AddCatalogEntry(
@@ -538,6 +754,12 @@ test case requires the Deployment of the debug daemonset.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagTelco)
 
 	TestICMPv4ConnectivityMultusIdentifier = AddCatalogEntry(
@@ -550,6 +772,12 @@ test case requires the Deployment of the debug daemonset.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagTelco)
 
 	TestICMPv6ConnectivityMultusIdentifier = AddCatalogEntry(
@@ -562,6 +790,12 @@ test case requires the Deployment of the debug daemonset.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagTelco)
 
 	TestServiceDualStackIdentifier = AddCatalogEntry(
@@ -574,6 +808,12 @@ test case requires the deployment of the debug daemonset.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 3.5.7",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagExtended)
 
 	TestNamespaceBestPracticesIdentifier = AddCatalogEntry(
@@ -587,6 +827,12 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2, 16.3.8 and 16.3.9",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestNonTaintedNodeKernelsIdentifier = AddCatalogEntry(
@@ -600,6 +846,12 @@ the same hacks.'`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.14",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestOperatorInstallStatusSucceededIdentifier = AddCatalogEntry(
@@ -611,6 +863,12 @@ the same hacks.'`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestOperatorNoPrivileges = AddCatalogEntry(
@@ -623,6 +881,12 @@ with no resourceNames under its rules.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestOperatorIsCertifiedIdentifier = AddCatalogEntry(
@@ -634,6 +898,12 @@ with no resourceNames under its rules.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestHelmIsCertifiedIdentifier = AddCatalogEntry(
@@ -645,6 +915,12 @@ with no resourceNames under its rules.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestOperatorIsInstalledViaOLMIdentifier = AddCatalogEntry(
@@ -656,6 +932,12 @@ with no resourceNames under its rules.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestPodNodeSelectorAndAffinityBestPractices = AddCatalogEntry(
@@ -668,6 +950,12 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagTelco)
 
 	TestPodHighAvailabilityBestPractices = AddCatalogEntry(
@@ -679,6 +967,12 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestPodClusterRoleBindingsBestPracticesIdentifier = AddCatalogEntry(
@@ -690,6 +984,12 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.10 and 5.3.6",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagTelco)
 
 	TestPodDeploymentBestPracticesIdentifier = AddCatalogEntry(
@@ -701,36 +1001,54 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.3 and 5.3.8",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagTelco)
 
 	TestDeploymentScalingIdentifier = AddCatalogEntry(
 		"deployment-scaling",
 		common.LifecycleTestKey,
 		`Tests that CNF deployments support scale in/out operations.
-			First, The test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the
-			scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s.
-		    In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the
-			original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the deployment/s`,
+            First, The test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the
+            scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s.
+            In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the
+            original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the deployment/s`,
 		DeploymentScalingRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Optional",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestStateFulSetScalingIdentifier = AddCatalogEntry(
 		"statefulset-scaling",
 		common.LifecycleTestKey,
 		`Tests that CNF statefulsets support scale in/out operations.
-			First, The test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the
-			scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the statefulset/s.
-			In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the
-			original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the statefulset/s`,
+            First, The test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the
+            scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the statefulset/s.
+            In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the
+            original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the statefulset/s`,
 		StatefulSetScalingRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Optional",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestImagePullPolicyIdentifier = AddCatalogEntry(
@@ -742,20 +1060,32 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+"  Section 12.6",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Optional",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Optional",
+		},
 		TagCommon, TagTelco)
 
 	TestPodRecreationIdentifier = AddCatalogEntry(
 		"pod-recreation",
 		common.LifecycleTestKey,
 		`Tests that a CNF is configured to support High Availability.
-			First, this test cordons and drains a Node that hosts the CNF Pod.
-			Next, the test ensures that OpenShift can re-instantiate the Pod on another Node,
-			and that the actual replica count matches the desired replica count.`,
+            First, this test cordons and drains a Node that hosts the CNF Pod.
+            Next, the test ensures that OpenShift can re-instantiate the Pod on another Node,
+            and that the actual replica count matches the desired replica count.`,
 		PodRecreationRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestPodRoleBindingsBestPracticesIdentifier = AddCatalogEntry(
@@ -767,6 +1097,12 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.3 and 5.3.5",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestPodServiceAccountBestPracticesIdentifier = AddCatalogEntry(
@@ -778,6 +1114,12 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.3 and 5.2.7",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestPodAutomountServiceAccountIdentifier = AddCatalogEntry(
@@ -789,6 +1131,12 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 12.7",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestServicesDoNotUseNodeportsIdentifier = AddCatalogEntry(
@@ -800,6 +1148,12 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.1",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagTelco)
 
 	TestUnalteredBaseImageIdentifier = AddCatalogEntry(
@@ -822,6 +1176,12 @@ that there are no changes to the following directories:
 		UnalteredBaseImageExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.1.4",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestUnalteredStartupBootParamsIdentifier = AddCatalogEntry(
@@ -833,6 +1193,12 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.13 and 5.2.14",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestLoggingIdentifier = AddCatalogEntry(
@@ -844,6 +1210,12 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 10.1",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagTelco)
 
 	TestTerminationMessagePolicyIdentifier = AddCatalogEntry(
@@ -855,6 +1227,12 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 12.1",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Optional",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Optional",
+		},
 		TagCommon)
 
 	TestCrdsStatusSubresourceIdentifier = AddCatalogEntry(
@@ -866,19 +1244,31 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagTelco)
 
 	TestSysctlConfigsIdentifier = AddCatalogEntry(
 		"sysctl-config",
 		common.PlatformAlterationTestKey,
 		`Tests that no one has changed the node's sysctl configs after the node
-			was created, the tests works by checking if the sysctl configs are consistent with the
-			MachineConfig CR which defines how the node should be configured`,
+            was created, the tests works by checking if the sysctl configs are consistent with the
+            MachineConfig CR which defines how the node should be configured`,
 		SysctlConfigsRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestServiceMeshIdentifier = AddCatalogEntry(
@@ -890,6 +1280,12 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Optional",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Optional",
+		},
 		TagCommon)
 
 	TestOCPLifecycleIdentifier = AddCatalogEntry(
@@ -901,18 +1297,30 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 7.9",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestNodeOperatingSystemIdentifier = AddCatalogEntry(
 		"ocp-node-os-lifecycle",
 		common.PlatformAlterationTestKey,
 		`Tests that the nodes running in the cluster have operating systems
-			that are compatible with the deployed version of OpenShift.`,
+            that are compatible with the deployed version of OpenShift.`,
 		NodeOperatingSystemRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 7.9",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestIsRedHatReleaseIdentifier = AddCatalogEntry(
@@ -924,6 +1332,12 @@ that there are no changes to the following directories:
 		IsRedHatReleaseExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestIsSELinuxEnforcingIdentifier = AddCatalogEntry(
@@ -935,6 +1349,12 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 10.3 Pod Security",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestUndeclaredContainerPortsUsage = AddCatalogEntry(
@@ -946,6 +1366,12 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 16.3.1.1",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Optional",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagTelco)
 
 	TestOCPReservedPortsUsage = AddCatalogEntry(
@@ -957,6 +1383,12 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 3.5.9",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon)
 
 	TestLivenessProbeIdentifier = AddCatalogEntry(
@@ -968,6 +1400,12 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.16, 12.1 and 12.5",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagTelco)
 
 	TestReadinessProbeIdentifier = AddCatalogEntry(
@@ -979,6 +1417,12 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.16, 12.1 and 12.5",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagTelco)
 
 	TestStartupProbeIdentifier = AddCatalogEntry(
@@ -990,6 +1434,12 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 4.6.12", // TODO Change this to v1.4 when available
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagTelco)
 
 	TestOneProcessPerContainerIdentifier = AddCatalogEntry(
@@ -1001,6 +1451,12 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 10.8.3",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Optional",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Optional",
+		},
 		TagCommon)
 
 	TestSYSNiceRealtimeCapabilityIdentifier = AddCatalogEntry(
@@ -1012,6 +1468,12 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 2.7.4",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagTelco)
 
 	TestSysPtraceCapabilityIdentifier = AddCatalogEntry(
@@ -1023,6 +1485,12 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 2.7.5",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagTelco)
 
 	TestPodRequestsAndLimitsIdentifier = AddCatalogEntry(
@@ -1034,6 +1502,12 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.11",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagTelco)
 
 	TestNamespaceResourceQuotaIdentifier = AddCatalogEntry(
@@ -1045,6 +1519,12 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 4.6.8", // TODO Change this to v1.4 when available
 		true,
+		CatagoryClassification{
+			FarEdge:   "Optional",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagTelco)
 
 	TestPodDisruptionBudgetIdentifier = AddCatalogEntry(
@@ -1056,6 +1536,12 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 4.6.20", // TODO Change this to v1.4 when available
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagTelco)
 
 	TestPodTolerationBypassIdentifier = AddCatalogEntry(
@@ -1067,6 +1553,12 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 10.6",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagTelco)
 
 	TestPersistentVolumeReclaimPolicyIdentifier = AddCatalogEntry(
@@ -1078,6 +1570,12 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 3.3.4",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Optional",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Optional",
+		},
 		TagCommon, TagTelco)
 
 	TestContainersImageTag = AddCatalogEntry(
@@ -1089,6 +1587,12 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.12",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Optional",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Optional",
+		},
 		TagExtended)
 
 	TestNoSSHDaemonsAllowedIdentifier = AddCatalogEntry(
@@ -1100,18 +1604,30 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 4.6.12", // TODO Change this to v1.4 when available
 		false,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagTelco)
 
 	TestCPUIsolationIdentifier = AddCatalogEntry(
 		"cpu-isolation",
 		common.LifecycleTestKey,
 		`CPU isolation requires: For each container within the pod, resource requests and limits must be identical.
-		Request and Limits are in the form of whole CPUs. The runTimeClassName must be specified. Annotations required disabling CPU and IRQ load-balancing.`,
+        Request and Limits are in the form of whole CPUs. The runTimeClassName must be specified. Annotations required disabling CPU and IRQ load-balancing.`,
 		CPUIsolationRemediation,
 		InformativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 3.5.5",
 		true,
+		CatagoryClassification{
+			FarEdge:   "Mandatory",
+			Telco:     "Mandatory",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagCommon, TagTelco)
 
 	TestContainerPortNameFormat = AddCatalogEntry(
@@ -1123,21 +1639,33 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.20",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Optional",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Mandatory",
+		},
 		TagExtended)
 
 	TestCrdScalingIdentifier = AddCatalogEntry(
 		"crd-scaling",
 		common.LifecycleTestKey,
 		`Tests that CNF crd support scale in/out operations.
-				First, The test starts getting the current replicaCount (N) of the crd/s with the Pod Under Test. Then, it executes the
-				scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the crd/s.
-				In case of crd that are managed by HPA the test is changing the min and max value to crd Replica - 1 during scale-in and the
-				original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the crd/s`,
+                First, The test starts getting the current replicaCount (N) of the crd/s with the Pod Under Test. Then, it executes the
+                scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the crd/s.
+                In case of crd that are managed by HPA the test is changing the min and max value to crd Replica - 1 during scale-in and the
+                original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the crd/s`,
 		CrdScalingRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.20",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Optional",
+			Telco:     "Mandatory",
+			NoneTelco: "Mandatory",
+			Extended:  "Mandatory",
+		},
 		TagCommon,
 	)
 
@@ -1150,6 +1678,12 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		"",
 		false,
+		CatagoryClassification{
+			FarEdge:   "Optional",
+			Telco:     "Optional",
+			NoneTelco: "Optional",
+			Extended:  "Optionalx",
+		},
 		TagCommon)
 
 	return Catalog
