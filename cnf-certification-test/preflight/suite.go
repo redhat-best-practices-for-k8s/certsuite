@@ -121,7 +121,7 @@ func generatePreflightContainerGinkgoTest(testName, description, suggestion stri
 
 	// Store the test names into the Catalog map for results to be dynamically printed
 	aID := identifiers.AddCatalogEntry(testName, common.PreflightTestKey, description, suggestion, "", "", "", false, claim.CategoryClassification{
-		FarEdge:  "Mandatory",
+		FarEdge:  "Optional",
 		Telco:    "Optional",
 		NonTelco: "Optional",
 		Extended: "Optional",
@@ -165,7 +165,7 @@ func generatePreflightOperatorGinkgoTest(testName, description, suggestion strin
 
 	// Store the test names into the Catalog map for results to be dynamically printed
 	aID := identifiers.AddCatalogEntry(testName, common.PreflightTestKey, description, suggestion, "", "", "", false, claim.CategoryClassification{
-		FarEdge:  "Mandatory",
+		FarEdge:  "Optional",
 		Telco:    "Optional",
 		NonTelco: "Optional",
 		Extended: "Optional",
