@@ -28,6 +28,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
+	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
 var _ = ginkgo.Describe(common.PreflightTestKey, func() {
@@ -119,7 +120,12 @@ func generatePreflightContainerGinkgoTest(testName, description, suggestion stri
 	// Brute force-ish type of method.
 
 	// Store the test names into the Catalog map for results to be dynamically printed
-	aID := identifiers.AddCatalogEntry(testName, common.PreflightTestKey, description, suggestion, "", "", "", false, identifiers.TagCommon)
+	aID := identifiers.AddCatalogEntry(testName, common.PreflightTestKey, description, suggestion, "", "", "", false, claim.CategoryClassification{
+		FarEdge:  "Mandatory",
+		Telco:    "Optional",
+		NonTelco: "Optional",
+		Extended: "Optional",
+	}, identifiers.TagCommon)
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(aID)
 
 	// Start the ginkgo It block
@@ -158,7 +164,12 @@ func generatePreflightOperatorGinkgoTest(testName, description, suggestion strin
 	// Brute force-ish type of method.
 
 	// Store the test names into the Catalog map for results to be dynamically printed
-	aID := identifiers.AddCatalogEntry(testName, common.PreflightTestKey, description, suggestion, "", "", "", false, identifiers.TagCommon)
+	aID := identifiers.AddCatalogEntry(testName, common.PreflightTestKey, description, suggestion, "", "", "", false, claim.CategoryClassification{
+		FarEdge:  "Mandatory",
+		Telco:    "Optional",
+		NonTelco: "Optional",
+		Extended: "Optional",
+	}, identifiers.TagCommon)
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(aID)
 
 	// Start the ginkgo It block

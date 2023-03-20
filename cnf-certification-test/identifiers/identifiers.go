@@ -327,7 +327,7 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		false,
-		CatagoryClassification{
+		claim.CategoryClassification{
 			FarEdge:  "Mandatory",
 			Telco:    "Optional",
 			NonTelco: "Optional",
