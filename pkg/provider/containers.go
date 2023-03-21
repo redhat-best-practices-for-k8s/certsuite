@@ -84,15 +84,12 @@ func (c *Container) SetPreflightResults(preflightImageCache map[string]plibRunti
 		return nil
 	}
 
-	var results plibRuntime.Results
 	opts := []plibContainer.Option{}
 	opts = append(opts, plibContainer.WithDockerConfigJSONFromFile(env.GetDockerConfigFile()))
 	if env.IsPreflightInsecureAllowed() {
 		logrus.Info("Insecure connections are being allowed to preflight")
 		opts = append(opts, plibContainer.WithInsecureConnection())
 	}
-
-	check := plibContainer.NewCheck(c.Image, opts...)
 
 	// Create artifacts handler
 	artifactsWriter, err := artifacts.NewMapWriter()
@@ -108,8 +105,8 @@ func (c *Container) SetPreflightResults(preflightImageCache map[string]plibRunti
 	logger := stdr.New(checklogger)
 	ctx = logr.NewContext(ctx, logger)
 
-	var runtimeErr error
-	results, runtimeErr = check.Run(ctx)
+	check := plibContainer.NewCheck(c.Image, opts...)
+	results, runtimeErr := check.Run(ctx)
 	logrus.StandardLogger().Out = os.Stderr
 	if runtimeErr != nil {
 		logrus.Error(runtimeErr)

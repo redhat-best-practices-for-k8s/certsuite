@@ -70,6 +70,11 @@ func (op *Operator) String() string {
 
 //nolint:funlen
 func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
+	if len(op.InstallPlans) == 0 {
+		logrus.Warnf("%s has no InstallPlans. Skipping setting preflight results", op.String())
+		return nil
+	}
+
 	bundleImage := op.InstallPlans[0].BundleImage
 	indexImage := op.InstallPlans[0].IndexImage
 	oc := clientsholder.GetClientsHolder()
@@ -95,9 +100,10 @@ func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
 	ctx = logr.NewContext(ctx, logger)
 
 	check := plibOperator.NewCheck(bundleImage, indexImage, oc.KubeConfig, opts...)
-	results, err := check.Run(ctx)
-	if err != nil {
-		return err
+	results, runtimeErr := check.Run(ctx)
+	if runtimeErr != nil {
+		logrus.Error(runtimeErr)
+		return runtimeErr
 	}
 
 	// Take all of the preflight logs and stick them into logrus.

@@ -80,6 +80,8 @@ func testPreflightOperators(env *provider.TestEnvironment) {
 		}
 	}
 
+	logrus.Infof("Completed running preflight operator tests for %d operators", len(env.Operators))
+
 	// Handle Operator-based preflight tests
 	// Note: We only care about the `testEntry` variable below because we need its 'Description' and 'Suggestion' variables.
 	for testName, testEntry := range getUniqueTestEntriesFromOperatorResults(env.Operators) {
@@ -100,6 +102,8 @@ func testPreflightContainers(env *provider.TestEnvironment) {
 			logrus.Fatalf("failed running preflight on image: %s error: %v", cut.Image, err)
 		}
 	}
+
+	logrus.Infof("Completed running preflight container tests for %d containers", len(env.Containers))
 
 	// Handle Container-based preflight tests
 	// Note: We only care about the `testEntry` variable below because we need its 'Description' and 'Suggestion' variables.
