@@ -1,8 +1,11 @@
-# dependabot config
-
+---
 version: 2
 updates:
-  - package-ecosystem: "gomod"
-    directory: "/"
+  - package-ecosystem: gomod
+    directory: /
     schedule:
-      interval: "daily"
+      interval: daily
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: daily
