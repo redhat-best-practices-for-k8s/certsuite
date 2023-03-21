@@ -46,6 +46,12 @@ const (
 	TagExtended = "extended"
 	TagTelco    = "telco"
 	TagFarEdge  = "faredge"
+	FarEdge     = "FarEdge"
+	Telco       = "Telco"
+	NonTelco    = "NonTelco"
+	Extended    = "Extended"
+	Optional    = "Optional"
+	Mandatory   = "Mandatory"
 )
 
 func init() {
@@ -173,11 +179,11 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -190,11 +196,11 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 10.6",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Optional",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Optional",
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagCommon)
 
@@ -207,11 +213,11 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Optional",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagExtended)
 
@@ -225,11 +231,11 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 5.3.7",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagExtended, TagTelco)
 
@@ -242,11 +248,11 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 3.5.4",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Optional",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagExtended)
 
@@ -259,11 +265,11 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Optional",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagFarEdge)
 
@@ -276,11 +282,11 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagExtended)
 
@@ -293,11 +299,11 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Optional",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagExtended, TagTelco)
 
@@ -310,11 +316,11 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagExtended)
 
@@ -327,11 +333,11 @@ The label value is not important, only its presence.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Optional",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagExtended)
 
@@ -349,11 +355,11 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		`Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.`,
 		bestPracticeDocV1dot3URL+" Section 5.1.3, 12.2 and 12.5",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon, TagTelco)
 
@@ -368,11 +374,11 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		`Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.`,
 		bestPracticeDocV1dot3URL+" Section 5.1.3, 12.2 and 12.5",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon, TagTelco)
 
@@ -385,11 +391,11 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagExtended, TagTelco)
 
@@ -402,11 +408,11 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		SecConCapabilitiesExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -419,11 +425,11 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		SecConCapabilitiesExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -436,11 +442,11 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		SecConCapabilitiesExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -453,11 +459,11 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		SecConCapabilitiesExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -470,11 +476,11 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagFarEdge)
 
@@ -487,11 +493,11 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Optional",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagFarEdge)
 
@@ -504,11 +510,11 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Optional",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagFarEdge)
 
@@ -521,11 +527,11 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Optional",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagFarEdge)
 
@@ -538,11 +544,11 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Optional",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagFarEdge)
 
@@ -555,11 +561,11 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagFarEdge)
 
@@ -572,11 +578,11 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		SecConNonRootUserExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Optional",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Optional",
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagCommon)
 
@@ -589,11 +595,11 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		SecConExceptionProcess,
 		bestPracticeDocV1dot4URL+" Section 4.5",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Optional",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Optional",
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagExtended)
 
@@ -606,11 +612,11 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Optional",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Optional",
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagCommon)
 
@@ -623,11 +629,11 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Optional",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Optional",
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagCommon)
 
@@ -640,11 +646,11 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -657,11 +663,11 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -674,11 +680,11 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -691,11 +697,11 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -708,11 +714,11 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.7",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -729,11 +735,11 @@ they are the same.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -747,11 +753,11 @@ test case requires the Deployment of the debug daemonset.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon, TagTelco)
 
@@ -765,11 +771,11 @@ test case requires the Deployment of the debug daemonset.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon, TagTelco)
 
@@ -783,11 +789,11 @@ test case requires the Deployment of the debug daemonset.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon, TagTelco)
 
@@ -801,11 +807,11 @@ test case requires the deployment of the debug daemonset.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 3.5.7",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon, TagExtended)
 
@@ -820,11 +826,11 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2, 16.3.8 and 16.3.9",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -839,11 +845,11 @@ the same hacks.'`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.14",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -856,11 +862,11 @@ the same hacks.'`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -874,11 +880,11 @@ with no resourceNames under its rules.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -891,11 +897,11 @@ with no resourceNames under its rules.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -908,11 +914,11 @@ with no resourceNames under its rules.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -925,11 +931,11 @@ with no resourceNames under its rules.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -943,11 +949,11 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon, TagTelco)
 
@@ -960,11 +966,11 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -977,11 +983,11 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.10 and 5.3.6",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon, TagTelco)
 
@@ -994,11 +1000,11 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.3 and 5.3.8",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon, TagTelco)
 
@@ -1015,11 +1021,11 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Optional",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -1036,11 +1042,11 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Optional",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -1053,11 +1059,11 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+"  Section 12.6",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Optional",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Optional",
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagCommon, TagTelco)
 
@@ -1073,11 +1079,11 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -1090,11 +1096,11 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.3 and 5.3.5",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -1107,11 +1113,11 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.3 and 5.2.7",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -1124,11 +1130,11 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 12.7",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -1141,11 +1147,11 @@ instantiation on any underlying Node.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.3.1",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon, TagTelco)
 
@@ -1169,11 +1175,11 @@ that there are no changes to the following directories:
 		UnalteredBaseImageExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.1.4",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -1186,11 +1192,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.13 and 5.2.14",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -1203,11 +1209,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 10.1",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon, TagTelco)
 
@@ -1220,11 +1226,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 12.1",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Optional",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Optional",
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagCommon)
 
@@ -1237,11 +1243,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon, TagTelco)
 
@@ -1256,11 +1262,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -1273,11 +1279,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Optional",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Optional",
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagCommon)
 
@@ -1290,11 +1296,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 7.9",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -1308,11 +1314,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 7.9",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -1325,11 +1331,11 @@ that there are no changes to the following directories:
 		IsRedHatReleaseExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -1342,11 +1348,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 10.3 Pod Security",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -1359,11 +1365,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 16.3.1.1",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Optional",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon, TagTelco)
 
@@ -1376,11 +1382,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 3.5.9",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon)
 
@@ -1393,11 +1399,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.16, 12.1 and 12.5",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon, TagTelco)
 
@@ -1410,11 +1416,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.16, 12.1 and 12.5",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon, TagTelco)
 
@@ -1427,11 +1433,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 4.6.12", // TODO Change this to v1.4 when available
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon, TagTelco)
 
@@ -1444,11 +1450,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 10.8.3",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Optional",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Optional",
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagCommon)
 
@@ -1461,11 +1467,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 2.7.4",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon, TagTelco)
 
@@ -1478,11 +1484,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 2.7.5",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon, TagTelco)
 
@@ -1495,11 +1501,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.11",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon, TagTelco)
 
@@ -1512,11 +1518,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 4.6.8", // TODO Change this to v1.4 when available
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Optional",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon, TagTelco)
 
@@ -1529,11 +1535,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 4.6.20", // TODO Change this to v1.4 when available
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon, TagTelco)
 
@@ -1546,11 +1552,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 10.6",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon, TagTelco)
 
@@ -1563,11 +1569,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 3.3.4",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Optional",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Optional",
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagCommon, TagTelco)
 
@@ -1580,11 +1586,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.12",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Optional",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Optional",
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagExtended)
 
@@ -1597,11 +1603,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 4.6.12", // TODO Change this to v1.4 when available
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon, TagTelco)
 
@@ -1615,11 +1621,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 3.5.5",
 		true,
-		claim.CategoryClassification{
-			FarEdge:  "Mandatory",
-			Telco:    "Mandatory",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagCommon, TagTelco)
 
@@ -1632,11 +1638,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.20",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Optional",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Mandatory,
 		},
 		TagExtended)
 
@@ -1653,11 +1659,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.20",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Optional",
-			Telco:    "Mandatory",
-			NonTelco: "Mandatory",
-			Extended: "Mandatory",
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
 		},
 		TagCommon,
 	)
@@ -1671,11 +1677,11 @@ that there are no changes to the following directories:
 		NoDocumentedProcess,
 		"",
 		false,
-		claim.CategoryClassification{
-			FarEdge:  "Optional",
-			Telco:    "Optional",
-			NonTelco: "Optional",
-			Extended: "Optionalx",
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
 		},
 		TagCommon)
 
