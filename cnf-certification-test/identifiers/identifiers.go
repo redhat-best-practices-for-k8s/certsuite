@@ -58,7 +58,7 @@ func init() {
 	InitCatalog()
 }
 
-func AddCatalogEntry(testID, suiteName, description, remediation, testType, exception, reference string, qe bool, categoryclassification claim.CategoryClassification, tags ...string) (aID claim.Identifier) {
+func AddCatalogEntry(testID, suiteName, description, remediation, testType, exception, reference string, qe bool, categoryclassification map[string]string, tags ...string) (aID claim.Identifier) {
 	// Default Values (if missing)
 	if strings.TrimSpace(exception) == "" {
 		exception = NoDocumentedProcess
