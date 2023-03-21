@@ -32,7 +32,7 @@ type ClientHoldersMock struct {
 	err    error
 }
 
-func (o ClientHoldersMock) ExecCommandContainer(ctx clientsholder.Context, command string) (stdout, stderr string, err error) {
+func (o ClientHoldersMock) ExecCommandContainer(_ clientsholder.Context, _ string) (stdout, stderr string, err error) {
 	stdout, stderr, err = o.stdout, o.stderr, o.err
 	return stdout, stderr, err
 }

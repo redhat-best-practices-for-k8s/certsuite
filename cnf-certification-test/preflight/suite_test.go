@@ -24,11 +24,11 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 )
 
-func TestGetUniqueTestEntriesFromContainerResults(t *testing.T) {
+func TestGetUniqueTestEntriesFromContainerResults(_ *testing.T) {
 	// Note: preflight lib does not expose their underlying plibRuntime.Result struct vars so I can not write unit tests for this
 }
 
-func TestGetUniqueTestEntriesFromOperatorResults(t *testing.T) {
+func TestGetUniqueTestEntriesFromOperatorResults(_ *testing.T) {
 	// Note: preflight lib does not expose their underlying plibRuntime.Result struct vars so I can not write unit tests for this
 }
 

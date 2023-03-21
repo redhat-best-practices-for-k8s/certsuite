@@ -340,9 +340,8 @@ func getPodContainers(aPod *corev1.Pod, useIgnoreList bool) (containerList []*Co
 		// Build slices of containers based on whether or not we are "ignoring" them or not.
 		if useIgnoreList && container.HasIgnoredContainerName() {
 			continue
-		} else {
-			containerList = append(containerList, &container)
 		}
+		containerList = append(containerList, &container)
 	}
 	return containerList
 }

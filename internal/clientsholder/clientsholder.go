@@ -78,7 +78,7 @@ func SetupFakeOlmClient(olmMockObjects []runtime.Object) {
 // runtime mocking objects loading, use the proper clientset mocking function.
 //
 //nolint:funlen,gocyclo
-func GetTestClientsHolder(k8sMockObjects []runtime.Object, filenames ...string) *ClientsHolder {
+func GetTestClientsHolder(k8sMockObjects []runtime.Object) *ClientsHolder {
 	// Build slices of different objects depending on what client
 	// is supposed to expect them.
 	var k8sClientObjects []runtime.Object

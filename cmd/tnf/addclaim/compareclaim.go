@@ -33,7 +33,7 @@ type Cni struct {
 	Plugins []interface{} "json:\"plugins\""
 }
 
-func claimCompare(cmd *cobra.Command, args []string) error {
+func claimCompare(_ *cobra.Command, _ []string) error {
 	claimFileTextPtr := Claim1
 	claimFileTextPtr2 := Claim2
 	err := claimCompareFilesfunc(claimFileTextPtr, claimFileTextPtr2)

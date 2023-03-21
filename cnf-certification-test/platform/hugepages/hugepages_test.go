@@ -143,7 +143,7 @@ type fakeK8sClient struct {
 	execCommandFunctionMocker func() (stdout string, stderr string, err error)
 }
 
-func (client *fakeK8sClient) ExecCommandContainer(context clientsholder.Context, cmd string) (stdout, stderr string, err error) {
+func (client *fakeK8sClient) ExecCommandContainer(_ clientsholder.Context, _ string) (stdout, stderr string, err error) {
 	return client.execCommandFunctionMocker()
 }
 
