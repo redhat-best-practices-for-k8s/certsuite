@@ -119,7 +119,12 @@ func generatePreflightContainerGinkgoTest(testName, description, suggestion stri
 	// Brute force-ish type of method.
 
 	// Store the test names into the Catalog map for results to be dynamically printed
-	aID := identifiers.AddCatalogEntry(testName, common.PreflightTestKey, description, suggestion, "", "", "", false, identifiers.TagCommon)
+	aID := identifiers.AddCatalogEntry(testName, common.PreflightTestKey, description, suggestion, "", "", "", false, map[string]string{
+		identifiers.FarEdge:  identifiers.Optional,
+		identifiers.Telco:    identifiers.Optional,
+		identifiers.NonTelco: identifiers.Optional,
+		identifiers.Extended: identifiers.Optional,
+	}, identifiers.TagCommon)
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(aID)
 
 	// Start the ginkgo It block
@@ -158,7 +163,12 @@ func generatePreflightOperatorGinkgoTest(testName, description, suggestion strin
 	// Brute force-ish type of method.
 
 	// Store the test names into the Catalog map for results to be dynamically printed
-	aID := identifiers.AddCatalogEntry(testName, common.PreflightTestKey, description, suggestion, "", "", "", false, identifiers.TagCommon)
+	aID := identifiers.AddCatalogEntry(testName, common.PreflightTestKey, description, suggestion, "", "", "", false, map[string]string{
+		identifiers.FarEdge:  identifiers.Optional,
+		identifiers.Telco:    identifiers.Optional,
+		identifiers.NonTelco: identifiers.Optional,
+		identifiers.Extended: identifiers.Optional,
+	}, identifiers.TagCommon)
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(aID)
 
 	// Start the ginkgo It block
