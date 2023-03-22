@@ -11,12 +11,20 @@ rm -f ./cnf-certification-test/platform/operatingsystem/files/rhcos_version_map 
 for i in "${CHANNELS[@]}"; do
 	for j in "${CHANNEL_TYPES[@]}"; do
 		VERSIONS=$(curl -sH 'Accept: application/json' "https://api.openshift.com/api/upgrades_info/v1/graph?channel=${j}-${i}" | jq '.nodes[].version' -r)
-
 		for VERSION in ${VERSIONS}; do
 			# Look up the release version using oc adm.
-			RHCOSVERSION="$(oc adm release info "${VERSION}" -o 'jsonpath={.displayVersions.machine-os.Version}')"
-			if [[ -n ${RHCOSVERSION} ]]; then
-				echo "$VERSION / $RHCOSVERSION" | tee -a ./cnf-certification-test/platform/operatingsystem/files/rhcos_version_map
+			if RHCOSVERSION="$(
+				oc adm release \
+					info "${VERSION}" \
+					-o 'jsonpath={.displayVersions.machine-os.Version}' \
+					2>&1
+			)"; then
+				if [[ -n ${RHCOSVERSION} ]]; then
+					echo "$VERSION / $RHCOSVERSION" |
+						tee -a ./cnf-certification-test/platform/operatingsystem/files/rhcos_version_map
+				fi
+			else
+				printf 'Continue with the error %s.\n' "$RHCOSVERSION"
 			fi
 		done
 	done
