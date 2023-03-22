@@ -41,7 +41,7 @@ const (
 )
 
 //nolint:funlen
-func claimUpdate(cmd *cobra.Command, args []string) error {
+func claimUpdate(_ *cobra.Command, _ []string) error {
 	claimFileTextPtr := &Claim
 	reportFilesTextPtr := &Reportdir
 	fileUpdated := false
