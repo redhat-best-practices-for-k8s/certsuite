@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/ubi:8.7 AS build
+FROM registry.access.redhat.com/ubi8/ubi:8.7-1090.1679482075 AS build
 ENV TNF_DIR=/usr/tnf
 ENV TNF_SRC_DIR=${TNF_DIR}/tnf-src
 ENV TNF_BIN_DIR=${TNF_DIR}/cnf-certification-test
