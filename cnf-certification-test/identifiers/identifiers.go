@@ -324,23 +324,6 @@ The label value is not important, only its presence.`,
 		},
 		TagExtended)
 
-	TestStorageRequiredPods = AddCatalogEntry(
-		"no-pvs-on-localstorage",
-		common.LifecycleTestKey,
-		`Checks that pods do not place persistent volumes on local storage.`,
-		StorageRequiredPods,
-		InformativeResult,
-		NoDocumentedProcess,
-		bestPracticeDocV1dot4URL+" Section 4.6.24",
-		false,
-		map[string]string{
-			FarEdge:  Mandatory,
-			Telco:    Optional,
-			NonTelco: Optional,
-			Extended: Optional,
-		},
-		TagExtended)
-
 	TestStartupIdentifier = AddCatalogEntry(
 		"container-startup",
 		common.LifecycleTestKey,

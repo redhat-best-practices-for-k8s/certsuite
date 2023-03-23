@@ -373,7 +373,7 @@ Tags|common,telco,lifecycle
 Property|Description
 ---|---
 Unique ID|lifecycle-cpu-isolation
-Description|CPU isolation requires: For each container within the pod, resource requests and limits must be identical. 		Request and Limits are in the form of whole CPUs. The runTimeClassName must be specified. Annotations required disabling CPU and IRQ load-balancing.
+Description|CPU isolation requires: For each container within the pod, resource requests and limits must be identical.         Request and Limits are in the form of whole CPUs. The runTimeClassName must be specified. Annotations required disabling CPU and IRQ load-balancing.
 Result Type|informative
 Suggested Remediation|CPU isolation testing is enabled.  Please ensure that all pods adhere to the CPU isolation requirements
 Best Practice Reference|https://TODO Section 3.5.5
@@ -384,7 +384,7 @@ Tags|common,telco,lifecycle
 Property|Description
 ---|---
 Unique ID|lifecycle-crd-scaling
-Description|Tests that CNF crd support scale in/out operations. 				First, The test starts getting the current replicaCount (N) of the crd/s with the Pod Under Test. Then, it executes the 				scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the crd/s. 				In case of crd that are managed by HPA the test is changing the min and max value to crd Replica - 1 during scale-in and the 				original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the crd/s
+Description|Tests that CNF crd support scale in/out operations.                 First, The test starts getting the current replicaCount (N) of the crd/s with the Pod Under Test. Then, it executes the                 scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the crd/s.                 In case of crd that are managed by HPA the test is changing the min and max value to crd Replica - 1 during scale-in and the                 original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the crd/s
 Result Type|normative
 Suggested Remediation|Ensure CNF crd/replica sets can scale in/out successfully.
 Best Practice Reference|https://TODO Section 4.6.20
@@ -395,7 +395,7 @@ Tags|common,lifecycle
 Property|Description
 ---|---
 Unique ID|lifecycle-deployment-scaling
-Description|Tests that CNF deployments support scale in/out operations. 			First, The test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the 			scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s. 		    In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the 			original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the deployment/s
+Description|Tests that CNF deployments support scale in/out operations.             First, The test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the             scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s.             In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the             original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the deployment/s
 Result Type|normative
 Suggested Remediation|Ensure CNF deployments/replica sets can scale in/out successfully.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
@@ -461,7 +461,7 @@ Tags|common,telco,lifecycle
 Property|Description
 ---|---
 Unique ID|lifecycle-pod-recreation
-Description|Tests that a CNF is configured to support High Availability. 			First, this test cordons and drains a Node that hosts the CNF Pod. 			Next, the test ensures that OpenShift can re-instantiate the Pod on another Node, 			and that the actual replica count matches the desired replica count.
+Description|Tests that a CNF is configured to support High Availability.             First, this test cordons and drains a Node that hosts the CNF Pod.             Next, the test ensures that OpenShift can re-instantiate the Pod on another Node,             and that the actual replica count matches the desired replica count.
 Result Type|normative
 Suggested Remediation|Ensure that CNF Pod(s) utilize a configuration that supports High Availability.   	Additionally, ensure that there are available Nodes in the OpenShift cluster that can be utilized in the event that a host Node fails.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
@@ -516,7 +516,7 @@ Tags|common,telco,lifecycle
 Property|Description
 ---|---
 Unique ID|lifecycle-statefulset-scaling
-Description|Tests that CNF statefulsets support scale in/out operations. 			First, The test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the 			scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the statefulset/s. 			In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the 			original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the statefulset/s
+Description|Tests that CNF statefulsets support scale in/out operations.             First, The test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the             scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the statefulset/s.             In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the             original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the statefulset/s
 Result Type|normative
 Suggested Remediation|Ensure CNF statefulsets/replica sets can scale in/out successfully.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
@@ -930,7 +930,7 @@ Tags|common,platform-alteration
 Property|Description
 ---|---
 Unique ID|platform-alteration-ocp-node-os-lifecycle
-Description|Tests that the nodes running in the cluster have operating systems 			that are compatible with the deployed version of OpenShift.
+Description|Tests that the nodes running in the cluster have operating systems             that are compatible with the deployed version of OpenShift.
 Result Type|normative
 Suggested Remediation|Please update your workers to a version that is supported by your version of OpenShift
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 7.9
@@ -952,7 +952,7 @@ Tags|common,platform-alteration
 Property|Description
 ---|---
 Unique ID|platform-alteration-sysctl-config
-Description|Tests that no one has changed the node's sysctl configs after the node 			was created, the tests works by checking if the sysctl configs are consistent with the 			MachineConfig CR which defines how the node should be configured
+Description|Tests that no one has changed the node's sysctl configs after the node             was created, the tests works by checking if the sysctl configs are consistent with the             MachineConfig CR which defines how the node should be configured
 Result Type|normative
 Suggested Remediation|You should recreate the node or change the sysctls, recreating is recommended because there might be other unknown changes
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
