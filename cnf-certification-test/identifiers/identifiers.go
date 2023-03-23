@@ -325,7 +325,7 @@ The label value is not important, only its presence.`,
 		TagExtended)
 
 	TestStorageRequiredPods = AddCatalogEntry(
-		"no-pvs-on-localstorage",
+		"storage-required-pods",
 		common.LifecycleTestKey,
 		`Checks that pods do not place persistent volumes on local storage.`,
 		StorageRequiredPods,
