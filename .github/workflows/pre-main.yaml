@@ -35,13 +35,24 @@ jobs:
       PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
 
     steps:
+      - name: Write temporary docker file
+        run: |
+          mkdir -p /home/runner/.docker
+          touch ${PFLT_DOCKERCONFIG}
+          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
+
+      - name: Set up Go 1.20
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.20.2
+
+      - name: Disable default go problem matcher
+        run: echo "::remove-matcher owner=go::"
+
       - name: Check out code into the Go module directory
         uses: actions/checkout@v3
         with:
           ref: ${{ github.sha }}
-
-      - name: Run initial setup
-        uses: ./.github/actions/setup
 
       # TODO: golangci-lint team recommends using a GitHub Action to perform golangci-lint responsibilities.  However
       # there does not appear to be a way to honor our existing .golangci.yml.  For now, mimic developer behavior.
@@ -104,13 +115,24 @@ jobs:
       PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
 
     steps:
+      - name: Write temporary docker file
+        run: |
+          mkdir -p /home/runner/.docker
+          touch ${PFLT_DOCKERCONFIG}
+          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
+
+      - name: Set up Go 1.20
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.20.2
+
+      - name: Disable default go problem matcher
+        run: echo "::remove-matcher owner=go::"
+
       - name: Check out code into the Go module directory
         uses: actions/checkout@v3
         with:
           ref: ${{ github.sha }}
-
-      - name: Run initial setup
-        uses: ./.github/actions/setup
 
       - name: Run Tests
         run: make test
@@ -142,13 +164,24 @@ jobs:
       PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
 
     steps:
+      - name: Write temporary docker file
+        run: |
+          mkdir -p /home/runner/.docker
+          touch ${PFLT_DOCKERCONFIG}
+          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
+
+      - name: Set up Go 1.20
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.20.2
+
+      - name: Disable default go problem matcher
+        run: echo "::remove-matcher owner=go::"
+
       - name: Check out code into the Go module directory
         uses: actions/checkout@v3
         with:
           ref: ${{ github.sha }}
-
-      - name: Run initial setup
-        uses: ./.github/actions/setup
 
       # Update the CNF containers, helm charts and operators DB
 
@@ -206,13 +239,11 @@ jobs:
       PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
 
     steps:
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.sha }}
-
-      - name: Run initial setup
-        uses: ./.github/actions/setup
+      - name: Write temporary docker file
+        run: |
+          mkdir -p /home/runner/.docker
+          touch ${PFLT_DOCKERCONFIG}
+          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
 
       # Create a Kind cluster for testing.
       - name: Check out `cnf-certification-test-partner`

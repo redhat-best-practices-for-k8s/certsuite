@@ -48,15 +48,17 @@ jobs:
       PARTNER_VERSION: ""
     steps:
 
+      - name: Write temporary docker file
+        run: |
+          mkdir -p /home/runner/.docker
+          touch ${PFLT_DOCKERCONFIG}
+          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
 
       - name: Checkout generic working branch of the current version
         uses: actions/checkout@v3
         with:
           ref: ${{ env.CURRENT_VERSION_GENERIC_BRANCH }}
           fetch-depth: '0'
-
-      - name: Run initial setup
-        uses: ./.github/actions/setup
 
       - name: Get the latest TNF version from GIT
         run: |
