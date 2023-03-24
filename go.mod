@@ -18,7 +18,7 @@ require k8s.io/client-go v0.26.3
 require (
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/mittwald/go-helm-client v0.11.5
-	github.com/onsi/ginkgo/v2 v2.9.1
+	github.com/onsi/ginkgo/v2 v2.9.2
 	github.com/openshift/api v0.0.0-20230223193310-d964c7a58d75
 	github.com/openshift/client-go v0.0.0-20230120202327-72f107311084
 	github.com/operator-framework/api v0.17.3
@@ -69,7 +69,7 @@ require (
 	github.com/go-openapi/jsonpointer v0.19.6 // indirect
 	github.com/go-openapi/jsonreference v0.20.2 // indirect
 	github.com/go-openapi/swag v0.22.3 // indirect
-	github.com/go-task/slim-sprig v0.0.0-20210107165309-348f09dbbbc0 // indirect
+	github.com/go-task/slim-sprig v0.0.0-20230315185526-52ccab3ef572 // indirect
 	github.com/gobwas/glob v0.2.3 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
@@ -80,7 +80,7 @@ require (
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/go-containerregistry v0.13.0 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
-	github.com/google/pprof v0.0.0-20210407192527-94a9f03dee38 // indirect
+	github.com/google/pprof v0.0.0-20230323073829-e72429f035bd // indirect
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
@@ -212,10 +212,12 @@ require (
 	github.com/go-logr/stdr v1.2.2
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/openshift/machine-config-operator v0.0.0-00010101000000-000000000000
-	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230315171834-74b910774f52
+	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-00010101000000-000000000000
 	github.com/test-network-function/privileged-daemonset v1.0.1
 	gopkg.in/yaml.v3 v3.0.1
 	k8s.io/kubectl v0.26.3
 )
 
 replace github.com/openshift/machine-config-operator => github.com/openshift/machine-config-operator v0.0.1-0.20200913004441-7eba765c69c9
+
+replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230315171834-74b910774f52
