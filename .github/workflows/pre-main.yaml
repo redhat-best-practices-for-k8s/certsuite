@@ -28,7 +28,7 @@ env:
 jobs:
   lint:
     name: Run Linter and Vet
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-22.04-16core
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
@@ -66,7 +66,7 @@ jobs:
         run: make vet
   shell-linters:
     name: Hadolint, shellcheck and shfmt
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-22.04-16core
     steps:
       - uses: actions/checkout@v3
       - uses: hadolint/hadolint-action@v3.1.0
@@ -77,7 +77,7 @@ jobs:
       - uses: mfinelli/setup-shfmt@v2
       - run: shfmt -d *.sh script
   yamllint:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-22.04-16core
     steps:
       - uses: actions/checkout@v3
       - name: yaml-lint
@@ -97,7 +97,7 @@ jobs:
 
   unit-tests:
     name: Run Unit Tests
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-22.04-16core
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
@@ -135,7 +135,7 @@ jobs:
 
   smoke-tests-local:
     name: Run Local Smoke Tests
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-22.04-16core
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
@@ -199,7 +199,7 @@ jobs:
 
   smoke-tests-container:
     name: Run Container Smoke Tests
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-22.04-16core
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
