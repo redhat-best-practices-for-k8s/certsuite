@@ -75,8 +75,8 @@ jobs:
 
       - name: make vet
         run: make vet
-  shell-linters:
-    name: Hadolint, shellcheck and shfmt
+  action-linters:
+    name: Hadolint, markdownlint, shellcheck, shfmt, yamllint
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
@@ -84,15 +84,13 @@ jobs:
         with:
           dockerfile: Dockerfile
           recursive: true
+      - uses: nosborn/github-action-markdown-cli@v3.2.0
+        with:
+          files: README.md
       - uses: ludeeus/action-shellcheck@master
       - uses: mfinelli/setup-shfmt@v2
       - run: shfmt -d *.sh script
-  yamllint:
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v3
-      - name: yaml-lint
-        uses: ibiqlik/action-yamllint@v3
+      - uses: ibiqlik/action-yamllint@v3
         with:
           config_data: |
             extends: default
@@ -105,7 +103,6 @@ jobs:
                 level: warning
               empty-lines:
                 level: warning
-
   unit-tests:
     name: Run Unit Tests
     runs-on: ubuntu-22.04
