@@ -160,3 +160,6 @@ build-image-tnf:
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_VERSION} \
 		-f Dockerfile .
+classification-js:
+	./tnf generate generateClassification markdown >> script/classification.js
+
