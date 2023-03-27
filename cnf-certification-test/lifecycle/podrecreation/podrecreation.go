@@ -48,7 +48,7 @@ const (
 func CordonHelper(name, operation string) error {
 	clients := clientsholder.GetClientsHolder()
 
-	logrus.Infof("Performing %q operation on node %s", operation, name)
+	logrus.Infof("Performing %s operation on node %s", operation, name)
 	retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() error {
 		// Fetch node object
 		node, err := clients.K8sClient.CoreV1().Nodes().Get(context.TODO(), name, metav1.GetOptions{})
