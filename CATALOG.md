@@ -1,10 +1,9 @@
-generator tool for various tnf artifacts.
+# cnf-certification-test catalog
 
-Usage:
-  tnf generate [command]
+The catalog for cnf-certification-test contains a variety of `Test Cases`, which are traditional JUnit testcases specified internally using `Ginkgo.It`.
+## Test Case Catalog
 
-Available Commands:
-  generateClassification Generates class
+Test Cases are the specifications used to perform a meaningful test.  Test cases may run once, or several times against several targets.  CNF Certification includes a number of normative and informative tests to ensure CNFs follow best practices.  Here is the list of available Test Cases:
 
 ### access-control
 
@@ -424,6 +423,17 @@ Suggested Remediation|Add a liveness probe to deployed containers
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.16, 12.1 and 12.5
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,lifecycle
+#### lifecycle-no-pvs-on-localstorage
+
+Property|Description
+---|---
+Unique ID|lifecycle-no-pvs-on-localstorage
+Description|Checks that pods do not place persistent volumes on local storage.
+Result Type|informative
+Suggested Remediation|If the kind of pods is StatefulSet, so we need to make sure that servicename is not local-storage.
+Best Practice Reference|https://TODO Section 4.6.24
+Exception Process|There is no documented exception process for this.
+Tags|extended,lifecycle
 #### lifecycle-persistent-volume-reclaim-policy
 
 Property|Description
@@ -970,7 +980,4 @@ Suggested Remediation|Test failure indicates that the underlying Node's kernel i
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.14
 Exception Process|There is no documented exception process for this.
 Tags|common,platform-alteration
-Flags:
-  -h, --help   help for generate
 
-Use "tnf generate [command] --help" for more information about a command.
