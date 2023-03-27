@@ -213,7 +213,7 @@ require (
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/openshift/machine-config-operator v0.0.0-00010101000000-000000000000
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-00010101000000-000000000000
-	github.com/test-network-function/privileged-daemonset v1.0.1
+	github.com/test-network-function/privileged-daemonset v1.0.2
 	gopkg.in/yaml.v3 v3.0.1
 	k8s.io/kubectl v0.26.3
 )
