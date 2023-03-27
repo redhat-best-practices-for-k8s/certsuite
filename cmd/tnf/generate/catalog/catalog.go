@@ -25,7 +25,6 @@ import (
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
-	//"github.com/aabughosh/test-network-function-claim/tree/calssification"
 
 	"github.com/spf13/cobra"
 )
@@ -62,7 +61,7 @@ var (
 
 	markdownGenerateClassification = &cobra.Command{
 		Use:   "javaScript",
-		Short: "Generates java script file for classification catagory",
+		Short: "Generates java script file for classification",
 		RunE:  generateJS,
 	}
 
@@ -185,7 +184,7 @@ func outputTestCases() {
 	fmt.Println()
 }
 
-func outputJS() { 
+func outputJS() {
 	// Building a separate data structure to store the key order for the map
 	keys := make([]claim.Identifier, 0, len(identifiers.Catalog))
 	for k := range identifiers.Catalog {
@@ -220,7 +219,6 @@ func outputJS() {
 			fmt.Fprintf(os.Stdout, "\"ForFarEdge\": \"%s\"\n", identifiers.Catalog[k.identifier].CategoryClassification[identifiers.FarEdge])
 			fmt.Fprintf(os.Stdout, "\n\t}\n")
 			fmt.Fprintf(os.Stdout, "],")
-
 		}
 	}
 	fmt.Fprintf(os.Stdout, "\n}")
@@ -228,19 +226,12 @@ func outputJS() {
 	fmt.Println()
 }
 func generateJS(_ *cobra.Command, _ []string) error {
-		// static introductory generation
-		/*if err := emitTextFromFile(introMDFile); err != nil {
-			return err
-		}
-		if err := emitTextFromFile(tccFile); err != nil {
-			return err
-		}*/
-	
-		// process the test cases
-		outputJS()
-	
-		return nil
+	// process the test cases
+	outputJS()
+
+	return nil
 }
+
 // runGenerateMarkdownCmd generates a markdown test catalog.
 func runGenerateMarkdownCmd(_ *cobra.Command, _ []string) error {
 	// static introductory generation
@@ -261,6 +252,7 @@ func NewCommandclassification() *cobra.Command {
 	generateClassification.AddCommand(markdownGenerateClassification)
 	return generateClassification
 }
+
 // Execute executes the "catalog" CLI.
 func NewCommand() *cobra.Command {
 	generateCmd.AddCommand(markdownGenerateCmd)
