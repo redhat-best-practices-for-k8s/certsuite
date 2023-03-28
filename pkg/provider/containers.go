@@ -142,7 +142,7 @@ func (c *Container) String() string {
 
 func (c *Container) HasIgnoredContainerName() bool {
 	for _, ign := range ignoredContainerNames {
-		if strings.Contains(c.Name, ign) {
+		if c.IsIstioProxy() || strings.Contains(c.Name, ign) {
 			return true
 		}
 	}
