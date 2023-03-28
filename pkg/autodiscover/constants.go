@@ -16,7 +16,6 @@
 package autodiscover
 
 const (
-	defaultNamespace = "default"
 	debugLabelPrefix = "test-network-function.com"
 	debugLabelName   = "app"
 	debugLabelValue  = "tnf-debug"

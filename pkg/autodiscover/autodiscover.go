@@ -114,30 +114,26 @@ func buildLabelKeyValue(label configuration.Label) (key, value string) {
 // DoAutoDiscover finds objects under test
 //
 //nolint:funlen
-func DoAutoDiscover() DiscoveredTestData {
-	data.Env = *configuration.GetTestParameters()
+func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData {
+	oc := clientsholder.GetClientsHolder()
 
 	var err error
-	data.TestData, err = configuration.LoadConfiguration(data.Env.ConfigurationPath)
-	if err != nil {
-		logrus.Fatalf("Cannot load configuration, error: %v", err)
-	}
-	oc := clientsholder.GetClientsHolder()
 	data.StorageClasses, err = getAllStorageClasses()
 	if err != nil {
 		logrus.Fatalf("Failed to retrieve storageClasses - err: %v", err)
 	}
+
 	data.AllNamespaces, _ = getAllNamespaces(oc.K8sClient.CoreV1())
 	data.AllSubscriptions = findSubscriptions(oc.OlmClient, []string{""})
 	data.AllCsvs = getAllOperators(oc.OlmClient)
 	data.AllInstallPlans = getAllInstallPlans(oc.OlmClient)
 	data.AllCatalogSources = getAllCatalogSources(oc.OlmClient)
-	data.Namespaces = namespacesListToStringList(data.TestData.TargetNameSpaces)
-	data.Pods, data.AllPods = findPodsByLabel(oc.K8sClient.CoreV1(), data.TestData.TargetPodLabels, data.Namespaces)
+	data.Namespaces = namespacesListToStringList(config.TargetNameSpaces)
+	data.Pods, data.AllPods = findPodsByLabel(oc.K8sClient.CoreV1(), config.TargetPodLabels, data.Namespaces)
 	data.AbnormalEvents = findAbnormalEvents(oc.K8sClient.CoreV1(), data.Namespaces)
 	debugLabel := configuration.Label{Prefix: debugLabelPrefix, Name: debugLabelName, Value: debugLabelValue}
 	debugLabels := []configuration.Label{debugLabel}
-	debugNS := []string{defaultNamespace}
+	debugNS := []string{config.DebugDaemonSetNamespace}
 	data.DebugPods, _ = findPodsByLabel(oc.K8sClient.CoreV1(), debugLabels, debugNS)
 	data.ResourceQuotaItems, err = getResourceQuotas(oc.K8sClient.CoreV1())
 	if err != nil {
@@ -151,9 +147,9 @@ func DoAutoDiscover() DiscoveredTestData {
 	if err != nil {
 		logrus.Fatalln("Cannot get network policies")
 	}
-	data.Crds = FindTestCrdNames(data.TestData.CrdFilters)
-	data.ScaleCrUndetTest = GetScaleCrUnderTest(data.Namespaces, data.Crds, data.TestData.CrdFilters)
-	data.Csvs = findOperatorsByLabel(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, data.TestData.TargetNameSpaces)
+	data.Crds = FindTestCrdNames(config.CrdFilters)
+	data.ScaleCrUndetTest = GetScaleCrUnderTest(data.Namespaces, data.Crds, config.CrdFilters)
+	data.Csvs = findOperatorsByLabel(oc.OlmClient, []configuration.Label{{Name: tnfCsvTargetLabelName, Prefix: tnfLabelPrefix, Value: tnfCsvTargetLabelValue}}, config.TargetNameSpaces)
 	data.Subscriptions = findSubscriptions(oc.OlmClient, data.Namespaces)
 	data.HelmChartReleases = getHelmList(oc.RestConfig, data.Namespaces)
 
@@ -168,15 +164,15 @@ func DoAutoDiscover() DiscoveredTestData {
 		logrus.Fatalf("Cannot get the K8s version, error: %v", err)
 	}
 	data.IstioServiceMeshFound = isIstioServiceMeshInstalled(data.AllNamespaces)
-	data.ValidProtocolNames = data.TestData.ValidProtocolNames
-	data.ServicesIgnoreList = data.TestData.ServicesIgnoreList
+	data.ValidProtocolNames = config.ValidProtocolNames
+	data.ServicesIgnoreList = config.ServicesIgnoreList
 
 	// Find the status of the OCP version (pre-ga, end-of-life, maintenance, or generally available)
 	data.OCPStatus = compatibility.DetermineOCPStatus(openshiftVersion, time.Now())
 
 	data.K8sVersion = k8sVersion.GitVersion
-	data.Deployments = findDeploymentByLabel(oc.K8sClient.AppsV1(), data.TestData.TargetPodLabels, data.Namespaces)
-	data.StatefulSet = findStatefulSetByLabel(oc.K8sClient.AppsV1(), data.TestData.TargetPodLabels, data.Namespaces)
+	data.Deployments = findDeploymentByLabel(oc.K8sClient.AppsV1(), config.TargetPodLabels, data.Namespaces)
+	data.StatefulSet = findStatefulSetByLabel(oc.K8sClient.AppsV1(), config.TargetPodLabels, data.Namespaces)
 	data.Hpas = findHpaControllers(oc.K8sClient, data.Namespaces)
 	data.Nodes, err = oc.K8sClient.CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {

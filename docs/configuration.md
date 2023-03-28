@@ -105,3 +105,9 @@ skipScalingTestStatefulSetNames:
   - name: "statefulset1"
     namespace: "tnf"
 ```
+## debugDaemonSetNamespace
+This is an optional field with the name of the namespace where a privileged DaemonSet will be deployed. The namespace will be created in case it does not exist. In case this field is not set, the default namespace for this DaemonSet is "cnf-suite".
+```
+debugDaemonSetNamespace: cnf-cert
+```
+This DaemonSet, called "tnf-debug" is deployed and used internally by the CNF Certification tool to issue some shell commands that are needed in certain test cases. Some of these test cases might fail or be skipped in case it wasn't deployed correctly.
