@@ -17,14 +17,13 @@ var (
 	generate = &cobra.Command{
 		Use:   "generate",
 		Short: "generator tool for various tnf artifacts.",
-	}
+	} 
 )
 
 func main() {
 	rootCmd.AddCommand(claim.NewCommand())
 	rootCmd.AddCommand(generate)
 	generate.AddCommand(catalog.NewCommand())
-	generate.AddCommand(catalog.NewCommandclassification())
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatal(err)

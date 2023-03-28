@@ -248,13 +248,15 @@ func runGenerateMarkdownCmd(_ *cobra.Command, _ []string) error {
 	return nil
 }
 
-func NewCommandclassification() *cobra.Command {
+/*func NewCommandclassification() *cobra.Command {
 	generateClassification.AddCommand(markdownGenerateClassification)
 	return generateClassification
-}
+}*/
 
 // Execute executes the "catalog" CLI.
 func NewCommand() *cobra.Command {
 	generateCmd.AddCommand(markdownGenerateCmd)
+	
+	generateCmd.AddCommand(markdownGenerateClassification)
 	return generateCmd
 }
