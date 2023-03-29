@@ -17,7 +17,7 @@ var (
 	generate = &cobra.Command{
 		Use:   "generate",
 		Short: "generator tool for various tnf artifacts.",
-	} 
+	}
 )
 
 func main() {

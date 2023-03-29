@@ -17,12 +17,14 @@
 package catalog
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"path"
 	"sort"
 	"strings"
 
+	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 
@@ -52,11 +54,6 @@ var (
 	generateCmd = &cobra.Command{
 		Use:   "catalog",
 		Short: "Generates the test catalog",
-	}
-
-	generateClassification = &cobra.Command{
-		Use:   "classification",
-		Short: "Generates classification js file",
 	}
 
 	markdownGenerateClassification = &cobra.Command{
@@ -185,45 +182,12 @@ func outputTestCases() {
 }
 
 func outputJS() {
-	// Building a separate data structure to store the key order for the map
-	keys := make([]claim.Identifier, 0, len(identifiers.Catalog))
-	for k := range identifiers.Catalog {
-		keys = append(keys, k)
-	}
-
-	// Sorting the map by identifier ID
-	sort.Slice(keys, func(i, j int) bool {
-		return keys[i].Id < keys[j].Id
-	})
-
-	catalog := createPrintableCatalogFromIdentifiers(keys)
-	if catalog == nil {
+	out, err := json.MarshalIndent(identifiers.Classification, "", "  ")
+	if err != nil {
+		logrus.Errorf("could not Marshall classification, err=%s", err)
 		return
 	}
-	// we need the list of suite's names
-	suites := getSuitesFromIdentifiers(keys)
-
-	// Iterating the map by test and suite names
-	fmt.Fprintf(os.Stdout, "classification = {\n")
-	fmt.Fprintf(os.Stdout, "\"classification\" : {\n")
-	for _, suite := range suites {
-		for _, k := range catalog[suite] {
-			// Add the suite to the comma separate list of tags shown.  The tags are also modified in the:
-			// GetGinkgoTestIDAndLabels function for usage by Ginkgo.
-
-			fmt.Fprintf(os.Stdout, "\"%s\":[\n\t", k.identifier.Id)
-			fmt.Fprintf(os.Stdout, "{\n")
-			fmt.Fprintf(os.Stdout, "\"ForTelco\": \"%s\",\n", identifiers.Catalog[k.identifier].CategoryClassification[identifiers.Telco])
-			fmt.Fprintf(os.Stdout, "\"ForNonTelco\": \"%s\",\n", identifiers.Catalog[k.identifier].CategoryClassification[identifiers.NonTelco])
-			fmt.Fprintf(os.Stdout, "\"ForExtended\": \"%s\",\n", identifiers.Catalog[k.identifier].CategoryClassification[identifiers.Extended])
-			fmt.Fprintf(os.Stdout, "\"ForFarEdge\": \"%s\"\n", identifiers.Catalog[k.identifier].CategoryClassification[identifiers.FarEdge])
-			fmt.Fprintf(os.Stdout, "\n\t}\n")
-			fmt.Fprintf(os.Stdout, "],")
-		}
-	}
-	fmt.Fprintf(os.Stdout, "\n}")
-	fmt.Fprintf(os.Stdout, "\n}")
-	fmt.Println()
+	fmt.Printf("window.classification= JSON.Parse ( %s )", out)
 }
 func generateJS(_ *cobra.Command, _ []string) error {
 	// process the test cases
@@ -256,7 +220,7 @@ func runGenerateMarkdownCmd(_ *cobra.Command, _ []string) error {
 // Execute executes the "catalog" CLI.
 func NewCommand() *cobra.Command {
 	generateCmd.AddCommand(markdownGenerateCmd)
-	
+
 	generateCmd.AddCommand(markdownGenerateClassification)
 	return generateCmd
 }
