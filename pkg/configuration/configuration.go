@@ -16,6 +16,10 @@
 
 package configuration
 
+const (
+	defaultDebugDaemonSetNamespace = "cnf-suite"
+)
+
 // CertifiedContainerRequestInfo contains all certified images request info
 type CertifiedContainerRequestInfo struct {
 	// Name is the name of the `operator bundle package name` or `image-version` that you want to check if exists in the RedHat catalog
@@ -127,6 +131,7 @@ type TestConfiguration struct {
 	CheckDiscoveredContainerCertificationStatus bool     `yaml:"checkDiscoveredContainerCertificationStatus" json:"checkDiscoveredContainerCertificationStatus"`
 	ValidProtocolNames                          []string `yaml:"validProtocolNames" json:"validProtocolNames"`
 	ServicesIgnoreList                          []string `yaml:"servicesignorelist" json:"servicesignorelist"`
+	DebugDaemonSetNamespace                     string   `yaml:"debugDaemonSetNamespace" json:"debugDaemonSetNamespace"`
 }
 
 type TestParameters struct {

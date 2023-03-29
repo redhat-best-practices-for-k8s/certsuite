@@ -46,7 +46,7 @@ func LoadConfiguration(filePath string) (TestConfiguration, error) {
 		log.Debug("config file already loaded, return previous element")
 		return configuration, nil
 	}
-	confLoaded = true
+
 	log.Info("Loading config from file: ", filePath)
 	contents, err := os.ReadFile(filePath)
 	if err != nil {
@@ -57,6 +57,16 @@ func LoadConfiguration(filePath string) (TestConfiguration, error) {
 	if err != nil {
 		return configuration, err
 	}
+
+	// Set default namespace for the debug daemonset pods, in case it was not set.
+	if configuration.DebugDaemonSetNamespace == "" {
+		log.Warnf("No namespace configured for the debug DaemonSet. Defaulting to namespace %s", defaultDebugDaemonSetNamespace)
+		configuration.DebugDaemonSetNamespace = defaultDebugDaemonSetNamespace
+	} else {
+		log.Infof("Namespace for debug DaemonSet: %s", configuration.DebugDaemonSetNamespace)
+	}
+
+	confLoaded = true
 	return configuration, nil
 }
 
