@@ -17,6 +17,7 @@
 package provider
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -99,12 +100,19 @@ func TestIsStatefulSetReady(t *testing.T) {
 func TestGetUpdatedStatefulset(t *testing.T) {
 	testCases := []struct {
 		testNamespace string
+		funcErr       error
 	}{
 		{ // Test Case #1 - Test with valid namespace 'testNS1'
 			testNamespace: "testNS1",
+			funcErr:       nil,
 		},
 		{ // Test Case #2 - Test with valid namespace 'testNS2'
 			testNamespace: "testNS2",
+			funcErr:       nil,
+		},
+		{ // Test Case #3 - Test with valid namespace 'testNS2', but error returned
+			testNamespace: "testNS3",
+			funcErr:       errors.New("this is an error"),
 		},
 	}
 
@@ -117,13 +125,15 @@ func TestGetUpdatedStatefulset(t *testing.T) {
 					Name:      "testPod",
 					Namespace: tc.testNamespace,
 				},
-			}, nil
+			}, tc.funcErr
 		})
 
 		// Run the function to be tested.
 		result, err := GetUpdatedStatefulset(client.AppsV1(), tc.testNamespace, "testPod")
-		assert.Nil(t, err)
-		assert.Equal(t, tc.testNamespace, result.Namespace)
-		assert.Equal(t, "testPod", result.Name)
+		assert.Equal(t, tc.funcErr, err)
+		if err == nil {
+			assert.Equal(t, tc.testNamespace, result.Namespace)
+			assert.Equal(t, "testPod", result.Name)
+		}
 	}
 }
