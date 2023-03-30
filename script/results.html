@@ -867,27 +867,64 @@ if (checkBox.checked == true){
             tests_passed = 0
             tests_skipped = 0
             tests_failed = 0
+            tests_total_optional = 0
+            tests_passed_optional = 0
+            tests_skipped_optional = 0
+            tests_failed_optional = 0
             // Compute number of passed/skipped/failed results
             for (const key in input) {
+
                 for (const item of input[key]) {
+                  for (const key2 in input2){      
+              
+                  eqData=input2[key2][0].ForFarEdge
+                
+                if (tableName == "telco"){
+                  eqData=input2[key2][0].ForTelco
+
+                }
+                if (tableName == "nontelco"){
+                  eqData=input2[key2][0].ForNonTelco
+                }
+
+            if (key==key2 ){
                     if (item.state == 'passed') {
+                      if (eqData=="Mandatory"||tableName=="all"){
                         tests_total++
                         tests_passed++
+                      }else{
+                        tests_total_optional++
+                        tests_passed_optional++
+                      }
+         
                     } else if (item.state == 'skipped') {
+                      if (eqData=="Mandatory"||tableName=="all"){
                         tests_total++
                         tests_skipped++
+                      }else{
+                        tests_total_optional++
+                        tests_skipped_optional++
+                      }
+          
                     } else if (item.state == 'failed') {
+                      if (eqData=="Mandatory"||tableName=="all"){
                         tests_total++
-                        tests_failed++
+                        tests_skipped++
+                      }else{
+                        tests_total_optional++
+                        tests_failed_optional++
+                      }
                     }
                 }
             }
+          } 
+        }
  
 
 
              // First we will have a left column in the table with the summarized results
             text2 ='<thead><tr><th scope="col">Test summary</th><th scope="col">Test results</th></tr></thead><tbody>'
-            text2 += '<tr><td class="align-top"><b>Total:</b> ' + tests_total + '<br><b>Passed:</b> ' + tests_passed + '<br><b>Skipped:</b> ' + tests_skipped + '<br><b>Failed:</b> ' + tests_failed + '</td><td>'
+            text2 += '<tr><td class="align-top"><b>Total:</b> ' + tests_total_optional + '<br><b>Passed:</b> ' + tests_passed_optional + '<br><b>Skipped:</b> ' + tests_skipped_optional  + '<br><b>Failed:</b> ' + tests_failed_optional  + '</td><td>'
             text2 += '<div class="accordion" id="results-accordion">'
              // First we will have a left column in the table with the summarized results
             text3 ='<thead><tr><th scope="col">Test summary</th><th scope="col">Test results</th></tr></thead><tbody>'
@@ -981,22 +1018,58 @@ if (checkBox.checked == true){
             tests_passed = 0
             tests_skipped = 0
             tests_failed = 0
-
+            tests_total_optional = 0
+            tests_passed_optional = 0
+            tests_skipped_optional = 0
+            tests_failed_optional = 0
             // Compute number of passed/skipped/failed results
             for (const key in input) {
+
                 for (const item of input[key]) {
+                  for (const key2 in input2){      
+              
+                  eqData=input2[key2][0].ForFarEdge
+                
+                if (tableName == "telco"){
+                  eqData=input2[key2][0].ForTelco
+
+                }
+                if (tableName == "nontelco"){
+                  eqData=input2[key2][0].ForNonTelco
+                }
+
+            if (key==key2 ){
                     if (item.state == 'passed') {
+                      if (eqData=="Mandatory"||tableName=="all"){
                         tests_total++
                         tests_passed++
+                      }else{
+                        tests_total_optional++
+                        tests_passed_optional++
+                      }
+         
                     } else if (item.state == 'skipped') {
+                      if (eqData=="Mandatory"||tableName=="all"){
                         tests_total++
                         tests_skipped++
+                      }else{
+                        tests_total_optional++
+                        tests_skipped_optional++
+                      }
+          
                     } else if (item.state == 'failed') {
+                      if (eqData=="Mandatory"||tableName=="all"){
                         tests_total++
-                        tests_failed++
+                        tests_skipped++
+                      }else{
+                        tests_total_optional++
+                        tests_failed_optional++
+                      }
                     }
                 }
             }
+          } 
+        }
 
             // First we will have a left column in the table with the summarized results
             text2 ='<thead><tr><th scope="col">Test summary</th><th scope="col">Test feedback</th></tr></thead><tbody>'
@@ -1005,7 +1078,7 @@ if (checkBox.checked == true){
 
                           // First we will have a left column in the table with the summarized results
             text3 ='<thead><tr><th scope="col">Test summary</th><th scope="col">Test feedback</th></tr></thead><tbody>'
-            text3 += '<tr><td class="align-top"><b>Total:</b> ' + tests_total + '<br><b>Passed:</b> ' + tests_passed + '<br><b>Skipped:</b> ' + tests_skipped + '<br><b>Failed:</b> ' + tests_failed + '</td><td>'
+            text3 += '<tr><td class="align-top"><b>Total:</b> ' + tests_total_optional + '<br><b>Passed:</b> ' + tests_passed_optional + '<br><b>Skipped:</b> ' + tests_skipped_optional + '<br><b>Failed:</b> ' + tests_failed_optional + '</td><td>'
             text3 += '<div class="accordion" id="feedback-accordion">'
 
             for (const key in input) {
