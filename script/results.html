@@ -253,7 +253,14 @@ function changeFunc() {
   }
 
   function enableoptionbutton(){
-
+    document.getElementById("send-all").setAttribute("hidden", "hidden");
+  document.getElementById("download-all").setAttribute("hidden", "hidden");
+  document.getElementById("download-NonTelco").setAttribute("hidden", "hidden");
+  document.getElementById("send-NonTelco").setAttribute("hidden", "hidden");
+  document.getElementById("send-FarEdge").setAttribute("hidden", "hidden");
+  document.getElementById("download-FarEdge").setAttribute("hidden", "hidden");
+  document.getElementById("send-Telco").setAttribute("hidden", "hidden");
+  document.getElementById("download-Telco").setAttribute("hidden", "hidden");
   buttonElementId = "result-tab"
     var selectBox = document.getElementById("selectBox");
     var selectedValue = selectBox.options[selectBox.selectedIndex].value;
