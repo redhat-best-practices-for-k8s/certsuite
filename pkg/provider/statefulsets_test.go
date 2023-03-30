@@ -17,11 +17,15 @@
 package provider
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	appsv1 "k8s.io/api/apps/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/client-go/kubernetes/fake"
+	k8stesting "k8s.io/client-go/testing"
 )
 
 func TestStatefulsetToString(t *testing.T) {
@@ -90,5 +94,46 @@ func TestIsStatefulSetReady(t *testing.T) {
 	for _, tc := range testCases {
 		testSS := generateSS(tc.testSpecReplicas, tc.testReadyStatusReplicas, tc.testCurrentStatusReplicas, tc.testUpdatedStatusReplicas)
 		assert.Equal(t, tc.expectedOutput, testSS.IsStatefulSetReady())
+	}
+}
+
+func TestGetUpdatedStatefulset(t *testing.T) {
+	testCases := []struct {
+		testNamespace string
+		funcErr       error
+	}{
+		{ // Test Case #1 - Test with valid namespace 'testNS1'
+			testNamespace: "testNS1",
+			funcErr:       nil,
+		},
+		{ // Test Case #2 - Test with valid namespace 'testNS2'
+			testNamespace: "testNS2",
+			funcErr:       nil,
+		},
+		{ // Test Case #3 - Test with valid namespace 'testNS2', but error returned
+			testNamespace: "testNS3",
+			funcErr:       errors.New("this is an error"),
+		},
+	}
+
+	for _, tc := range testCases {
+		// Create a fake client to mock API calls.
+		client := &fake.Clientset{}
+		client.Fake.AddReactor("get", "statefulsets", func(action k8stesting.Action) (handled bool, ret runtime.Object, err error) {
+			return true, &appsv1.StatefulSet{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "testPod",
+					Namespace: tc.testNamespace,
+				},
+			}, tc.funcErr
+		})
+
+		// Run the function to be tested.
+		result, err := GetUpdatedStatefulset(client.AppsV1(), tc.testNamespace, "testPod")
+		assert.Equal(t, tc.funcErr, err)
+		if err == nil {
+			assert.Equal(t, tc.testNamespace, result.Namespace)
+			assert.Equal(t, "testPod", result.Name)
+		}
 	}
 }
