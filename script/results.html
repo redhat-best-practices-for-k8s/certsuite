@@ -23,8 +23,6 @@ table td {
   <body>
     <nav class="navbar navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Test Network Function result parser</a>
-
-
           <div class="mb-3">
               <label for="formFile" class="form-label text-light">Upload claim.json file</label>
               <input class="form-control" type="file" id="formFile">
@@ -36,18 +34,11 @@ table td {
                 <option  value="telco"> Telco</option>
                 <option   value="nontelco"> Non Telco</option>
               </select>
-
-            
-          </div>
-      
+          </div>  
     </nav>
 
-    <button class="w3-button w3-right w3-light-grey" id ="download" type="submit" onclick=download() hidden="hidden">Download</button>
-
-
-  
+    <button class="w3-button w3-right w3-light-grey" id ="download" type="submit" onclick=download() hidden="hidden">Download</button> 
     <button class="w3-button w3-right w3-light-grey"  id ="send" type="submit" onclick=sendMail() hidden="hidden">sendMail</button>
-
 
     <ul class="nav nav-tabs">
       <li class="nav-item">
@@ -68,26 +59,19 @@ table td {
       <li class="nav-item">
         <button class="nav-link" id="feedback-tab" data-bs-toggle="tab" data-bs-target="#feedback" type="button" role="tab" aria-controls="nodes" aria-selected="false" onclick="enableoptionbuttonFeedback()" >Feedback</button>
       </li>
-
-
         </ul>
         <ul class="nav nav-tabs">
           <li class="nav-item">
             <label  id="myCheck-result" for="optional-tab" hidden="hidden" >Show Optional Results for that scenario</label> 
             <input type="checkbox"  id="optional-tab"  data-bs-target="#results" data-bs-toggle="tab" role="tab"    onclick="showoptResults()" hidden="hidden" >  
-
             <label  id="myCheck-feedback" for="optional-tab-feedback" hidden="hidden" >Show Optional feedback for that scenario</label> 
             <input type="checkbox"  id="optional-tab-feedback"  data-bs-target="#feedback" data-bs-toggle="tab" role="tab"    onclick="showoptFeedback()" hidden="hidden" >  
-       
-
-              <label  id="myCheck-mandatory" for="mandatory-tab" hidden="hidden" >Show Mandatory Results for that scenario</label> 
-              <input type="checkbox"  id="mandatory-tab"  data-bs-target="#results" data-bs-toggle="tab" role="tab"   checked onclick="showmaResults()" hidden="hidden" >  
-               <label  id="myCheck-feedback-mandatory" for="mandatory-tab-feedback" hidden="hidden" >Show Mandatory feedback for that scenario</label> 
-                <input type="checkbox"  id="mandatory-tab-feedback"  data-bs-target="#feedback" data-bs-toggle="tab" role="tab" checked   onclick="showmaFeedback()" hidden="hidden" >  
-
+            <label  id="myCheck-mandatory" for="mandatory-tab" hidden="hidden" >Show Mandatory Results for that scenario</label> 
+            <input type="checkbox"  id="mandatory-tab"  data-bs-target="#results" data-bs-toggle="tab" role="tab"   checked onclick="showmaResults()" hidden="hidden" >  
+            <label  id="myCheck-feedback-mandatory" for="mandatory-tab-feedback" hidden="hidden" >Show Mandatory feedback for that scenario</label> 
+            <input type="checkbox"  id="mandatory-tab-feedback"  data-bs-target="#feedback" data-bs-toggle="tab" role="tab" checked   onclick="showmaFeedback()" hidden="hidden" >  
             </li>
       </ul>
-
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="config" role="tabpanel" aria-labelledby="config-tab">
         <table class="table table-hover table-bordered" id="config-table">
@@ -170,248 +154,264 @@ var buttonElementId="non"
 
 
 
-function showoptFeedback(){
-  var checkBox = document.getElementById("optional-tab-feedback");
-  var selectBox = document.getElementById("selectBox");
-  var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-  console.log(selectedValue)
-  console.log(checkBox.checked)
-if (selectedValue=="faredge"){
-  if (checkBox.checked == true){
-    document.getElementById("optional-faredge-feedback").removeAttribute("hidden");
+        function showoptFeedback(){
+          var checkBox = document.getElementById("optional-tab-feedback");
+          var selectBox = document.getElementById("selectBox");
+          var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+          console.log(selectedValue)
+          console.log(checkBox.checked)
+        if (selectedValue=="faredge"){
+          if (checkBox.checked == true){
+            document.getElementById("optional-faredge-feedback").removeAttribute("hidden");
 
-  } else {
+          } else {
+            document.getElementById("optional-faredge-feedback").setAttribute("hidden", "hidden");
+          }
+
+        }
+
+        if  (selectedValue=="nontelco"){
+          if (checkBox.checked == true){
+              document.getElementById("optional-table-non-telco-feedback").removeAttribute("hidden");
+
+
+          } else {
+            document.getElementById("optional-table-non-telco-feedback").setAttribute("hidden", "hidden");
+          }
+        }
+
+
+        if  (selectedValue=="telco"){
+          if (checkBox.checked == true){
+              document.getElementById("optional-table-telco-feedback").removeAttribute("hidden");
+
+
+          } else {
+            document.getElementById("optional-table-telco-feedback").setAttribute("hidden", "hidden");
+          }
+        }
+
+        }
+
+
+
+        function showmaFeedback(){
+          var checkBox = document.getElementById("mandatory-tab-feedback");
+          var selectBox = document.getElementById("selectBox");
+          var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+        if (selectedValue=="faredge"){
+          if (checkBox.checked == true){
+            document.getElementById("feedback-table-faredge").removeAttribute("hidden");
+            
+
+          } else {
+            document.getElementById("feedback-table-faredge").setAttribute("hidden", "hidden");
+          }
+
+        }
+
+        if  (selectedValue=="nontelco"){
+          if (checkBox.checked == true){
+              document.getElementById("feedback-table-non-telco").removeAttribute("hidden");;
+
+
+          } else {
+            document.getElementById("feedback-table-non-telco").setAttribute("hidden", "hidden");
+          }
+        }
+
+
+        if  (selectedValue=="telco"){
+          if (checkBox.checked == true){
+              document.getElementById("feedback-table-telco").removeAttribute("hidden");
+
+
+          } else {
+            document.getElementById("feedback-table-telco").setAttribute("hidden", "hidden");
+          }
+        }
+
+        }
+
+
+
+        function enableoptionbuttonFeedback(){
+          disableButton2() 
+          buttonElementId = "feedback-tab"
+          enableSendDownload()
+
+          var selectBox = document.getElementById("selectBox");
+            var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+            console.log(selectedValue)
+            if (selectedValue=="all"){
+              showAll()
+            }
+            else{
+              document.getElementById("feedback-all").setAttribute("hidden", "hidden");
+
+            document.getElementById("myCheck-feedback").removeAttribute("hidden");
+          document.getElementById("optional-tab-feedback").removeAttribute("hidden");
+          document.getElementById("myCheck-feedback-mandatory").removeAttribute("hidden");
+          document.getElementById("mandatory-tab-feedback").removeAttribute("hidden");
+            }
+            showmaFeedback()
+            showoptFeedback()
+
+        }
+
+        function changeFunc() {
+            var selectBox = document.getElementById("selectBox");
+            var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+
+            console.log("click on ",buttonElementId)
+
+            if (buttonElementId=="feedback-tab"){
+              enableoptionbuttonFeedback()
+
+
+              }
+              if (buttonElementId=="result-tab"){
+                console.log("click on result ")
+                enableoptionbutton()
+              }
+          }
+
+        function enableoptionbutton(){
+            disableButton2() 
+            buttonElementId = "result-tab"
+            var selectBox = document.getElementById("selectBox");
+            var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+            console.log(selectedValue)
+            if (selectedValue=="all"){
+              showAll()
+            }
+            else{
+              document.getElementById("results-table").setAttribute("hidden", "hidden");
+            document.getElementById("myCheck-result").removeAttribute("hidden");
+            document.getElementById("optional-tab").removeAttribute("hidden");
+            document.getElementById("myCheck-mandatory").removeAttribute("hidden");
+            document.getElementById("mandatory-tab").removeAttribute("hidden");
+            }
+            showoptResults()
+            showmaResults()
+          }
+        
+        function showoptResults() {
+          var checkBox = document.getElementById("optional-tab");
+          var selectBox = document.getElementById("selectBox");
+          var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+          if (selectedValue=="faredge"){
+            if (checkBox.checked == true){
+            document.getElementById("optional-table").removeAttribute("hidden");
+            } else{
+              document.getElementById("optional-table").setAttribute("hidden", "hidden");
+            }
+          }
+          if (selectedValue=="telco"){
+            if (checkBox.checked == true){
+              document.getElementById("optional-table-telco").removeAttribute("hidden");
+            } else{
+            document.getElementById("optional-table-telco").setAttribute("hidden", "hidden");
+            }
+          }
+          if (selectedValue=="nontelco"){
+            if (checkBox.checked == true){
+              document.getElementById("optional-table-non-telco").removeAttribute("hidden");
+            } else{
+            document.getElementById("optional-table-non-telco").setAttribute("hidden", "hidden");
+            }
+          }
+        }
+
+        function showmaResults(){
+        var checkBox = document.getElementById("mandatory-tab");
+          var selectBox = document.getElementById("selectBox");
+          var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+          if (selectedValue=="faredge"){
+            if (checkBox.checked == true){
+            document.getElementById("results-far-edge-table").removeAttribute("hidden");
+            } else{
+              document.getElementById("results-far-edge-table").setAttribute("hidden", "hidden");
+            }
+          }
+          if (selectedValue=="telco"){
+            if (checkBox.checked == true){
+              document.getElementById("results-telco-table").removeAttribute("hidden");
+            } else{
+              document.getElementById("results-telco-table").setAttribute("hidden", "hidden");
+            }
+          }
+          if (selectedValue=="nontelco"){
+            if (checkBox.checked == true){
+              document.getElementById("results-NonTelco-table").removeAttribute("hidden");
+            } else{
+              document.getElementById("results-NonTelco-table").setAttribute("hidden", "hidden");
+            }
+          }
+
+        }
+
+        function showAll(){
+          console.log("in show all")
+
+                  document.getElementById("results-far-edge-table").setAttribute("hidden", "hidden");
+                  document.getElementById("results-telco-table").setAttribute("hidden", "hidden");
+                  document.getElementById("results-NonTelco-table").setAttribute("hidden", "hidden");
+
+                  document.getElementById("optional-table").setAttribute("hidden", "hidden");
+                  document.getElementById("optional-table-telco").setAttribute("hidden", "hidden");
+                  document.getElementById("optional-table-non-telco").setAttribute("hidden", "hidden");
+
+                  document.getElementById("feedback-table-faredge").setAttribute("hidden", "hidden");
+                  document.getElementById("feedback-table-non-telco").setAttribute("hidden", "hidden");
+                  document.getElementById("feedback-table-telco").setAttribute("hidden", "hidden");
+                
+                  document.getElementById("optional-faredge-feedback").setAttribute("hidden", "hidden");
+                  document.getElementById("optional-table-non-telco-feedback").setAttribute("hidden", "hidden");
+                  document.getElementById("optional-table-telco-feedback").setAttribute("hidden", "hidden");
+
+
+
+                  document.getElementById("results-table").removeAttribute("hidden");
+                  document.getElementById("feedback-all").removeAttribute("hidden");
+        }
+
+        function enableSendDownload(){
+          document.getElementById("download").removeAttribute("hidden");
+          document.getElementById("send").removeAttribute("hidden");
+
+        }
+
+
+        function disableButton2() {
+    buttonElementId = "non"
     document.getElementById("optional-faredge-feedback").setAttribute("hidden", "hidden");
-  }
-
-}
-
-if  (selectedValue=="nontelco"){
-  if (checkBox.checked == true){
-      document.getElementById("optional-table-non-telco-feedback").removeAttribute("hidden");
-
-
-  } else {
     document.getElementById("optional-table-non-telco-feedback").setAttribute("hidden", "hidden");
-  }
-}
-
-
-if  (selectedValue=="telco"){
-  if (checkBox.checked == true){
-      document.getElementById("optional-table-telco-feedback").removeAttribute("hidden");
-
-
-  } else {
     document.getElementById("optional-table-telco-feedback").setAttribute("hidden", "hidden");
-  }
-}
 
-}
-
-
-
-function showmaFeedback(){
-  var checkBox = document.getElementById("mandatory-tab-feedback");
-  var selectBox = document.getElementById("selectBox");
-  var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-if (selectedValue=="faredge"){
-  if (checkBox.checked == true){
-    document.getElementById("feedback-table-faredge").removeAttribute("hidden");
-    
-
-  } else {
-    document.getElementById("feedback-table-faredge").setAttribute("hidden", "hidden");
-  }
-
-}
-
-if  (selectedValue=="nontelco"){
-  if (checkBox.checked == true){
-      document.getElementById("feedback-table-non-telco").removeAttribute("hidden");;
-
-
-  } else {
     document.getElementById("feedback-table-non-telco").setAttribute("hidden", "hidden");
-  }
-}
-
-
-if  (selectedValue=="telco"){
-  if (checkBox.checked == true){
-      document.getElementById("feedback-table-telco").removeAttribute("hidden");
-
-
-  } else {
     document.getElementById("feedback-table-telco").setAttribute("hidden", "hidden");
+    document.getElementById("feedback-table-faredge").setAttribute("hidden", "hidden");
+
+    document.getElementById("results-far-edge-table").setAttribute("hidden", "hidden");
+    document.getElementById("results-NonTelco-table").setAttribute("hidden", "hidden");
+    document.getElementById("results-telco-table").setAttribute("hidden", "hidden");
+
+    document.getElementById("optional-table").setAttribute("hidden", "hidden");
+    document.getElementById("optional-table-non-telco").setAttribute("hidden", "hidden");
+    document.getElementById("optional-table-telco").setAttribute("hidden", "hidden");
+
+    document.getElementById("optional-tab").setAttribute("hidden", "hidden");
+    document.getElementById("mandatory-tab").setAttribute("hidden", "hidden");
+    document.getElementById("optional-tab-feedback").setAttribute("hidden", "hidden");
+    document.getElementById("send").setAttribute("hidden", "hidden");
+    document.getElementById("download").setAttribute("hidden", "hidden");
+    document.getElementById("myCheck-result").setAttribute("hidden", "hidden");
+    document.getElementById("myCheck-feedback").setAttribute("hidden", "hidden");
+    document.getElementById("myCheck-mandatory").setAttribute("hidden", "hidden");
+    document.getElementById("myCheck-feedback-mandatory").setAttribute("hidden", "hidden");
+    document.getElementById("mandatory-tab-feedback").setAttribute("hidden", "hidden");
   }
-}
-
-}
-
-
-
-function enableoptionbuttonFeedback(){
-  disableButton2() 
-  buttonElementId = "feedback-tab"
-  enableSendDownload()
-
-  var selectBox = document.getElementById("selectBox");
-    var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-    console.log(selectedValue)
-    if (selectedValue=="all"){
-      showAll()
-    }
-    else{
-      document.getElementById("feedback-all").setAttribute("hidden", "hidden");
-
-    document.getElementById("myCheck-feedback").removeAttribute("hidden");
-  document.getElementById("optional-tab-feedback").removeAttribute("hidden");
-  document.getElementById("myCheck-feedback-mandatory").removeAttribute("hidden");
-  document.getElementById("mandatory-tab-feedback").removeAttribute("hidden");
-    }
-    showmaFeedback()
-    showoptFeedback()
-
-}
-
-function changeFunc() {
-    var selectBox = document.getElementById("selectBox");
-    var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-
-    console.log("click on ",buttonElementId)
-
-    if (buttonElementId=="feedback-tab"){
-      enableoptionbuttonFeedback()
-
-
-      }
-      if (buttonElementId=="result-tab"){
-        console.log("click on result ")
-        enableoptionbutton()
-      }
-  }
-
-  function enableoptionbutton(){
-    disableButton2() 
-    buttonElementId = "result-tab"
-    var selectBox = document.getElementById("selectBox");
-    var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-    console.log(selectedValue)
-    if (selectedValue=="all"){
-      showAll()
-    }
-    else{
-      document.getElementById("results-table").setAttribute("hidden", "hidden");
-    document.getElementById("myCheck-result").removeAttribute("hidden");
-    document.getElementById("optional-tab").removeAttribute("hidden");
-    document.getElementById("myCheck-mandatory").removeAttribute("hidden");
-    document.getElementById("mandatory-tab").removeAttribute("hidden");
-    }
-    showoptResults()
-    showmaResults()
-  }
- 
-function showoptResults() {
-  var checkBox = document.getElementById("optional-tab");
-  var selectBox = document.getElementById("selectBox");
-  var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-  if (selectedValue=="faredge"){
-    if (checkBox.checked == true){
-    document.getElementById("optional-table").removeAttribute("hidden");
-    } else{
-      document.getElementById("optional-table").setAttribute("hidden", "hidden");
-    }
-  }
-  if (selectedValue=="telco"){
-    if (checkBox.checked == true){
-      document.getElementById("optional-table-telco").removeAttribute("hidden");
-    } else{
-     document.getElementById("optional-table-telco").setAttribute("hidden", "hidden");
-    }
-  }
-  if (selectedValue=="nontelco"){
-    if (checkBox.checked == true){
-      document.getElementById("optional-table-non-telco").removeAttribute("hidden");
-    } else{
-     document.getElementById("optional-table-non-telco").setAttribute("hidden", "hidden");
-    }
-  }
-}
-
-function showmaResults(){
-var checkBox = document.getElementById("mandatory-tab");
-  var selectBox = document.getElementById("selectBox");
-  var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-  if (selectedValue=="faredge"){
-    if (checkBox.checked == true){
-    document.getElementById("results-far-edge-table").removeAttribute("hidden");
-    } else{
-      document.getElementById("results-far-edge-table").setAttribute("hidden", "hidden");
-    }
-  }
-  if (selectedValue=="telco"){
-    if (checkBox.checked == true){
-      document.getElementById("results-telco-table").removeAttribute("hidden");
-    } else{
-      document.getElementById("results-telco-table").setAttribute("hidden", "hidden");
-    }
-  }
-  if (selectedValue=="nontelco"){
-    if (checkBox.checked == true){
-      document.getElementById("results-NonTelco-table").removeAttribute("hidden");
-    } else{
-      document.getElementById("results-NonTelco-table").setAttribute("hidden", "hidden");
-    }
-  }
-
-}
-
-function showAll(){
-  console.log("in show all")
-
-          document.getElementById("results-far-edge-table").setAttribute("hidden", "hidden");
-          document.getElementById("results-telco-table").setAttribute("hidden", "hidden");
-          document.getElementById("results-NonTelco-table").setAttribute("hidden", "hidden");
-
-          document.getElementById("optional-table").setAttribute("hidden", "hidden");
-          document.getElementById("optional-table-telco").setAttribute("hidden", "hidden");
-          document.getElementById("optional-table-non-telco").setAttribute("hidden", "hidden");
-
-          document.getElementById("feedback-table-faredge").setAttribute("hidden", "hidden");
-          document.getElementById("feedback-table-non-telco").setAttribute("hidden", "hidden");
-          document.getElementById("feedback-table-telco").setAttribute("hidden", "hidden");
-         
-          document.getElementById("optional-faredge-feedback").setAttribute("hidden", "hidden");
-          document.getElementById("optional-table-non-telco-feedback").setAttribute("hidden", "hidden");
-          document.getElementById("optional-table-telco-feedback").setAttribute("hidden", "hidden");
-
-
-
-          document.getElementById("results-table").removeAttribute("hidden");
-          document.getElementById("feedback-all").removeAttribute("hidden");
-}
-
-function enableSendDownload(){
-  document.getElementById("download").removeAttribute("hidden");
-  document.getElementById("send").removeAttribute("hidden");
-
-}
-
-
-function disableButton2() {
-  buttonElementId = "non"
-  document.getElementById("optional-tab").setAttribute("hidden", "hidden");
-  document.getElementById("mandatory-tab").setAttribute("hidden", "hidden");
-  document.getElementById("optional-tab-feedback").setAttribute("hidden", "hidden");
-  document.getElementById("send").setAttribute("hidden", "hidden");
-  document.getElementById("download").setAttribute("hidden", "hidden");
-  document.getElementById("myCheck-result").setAttribute("hidden", "hidden");
-  document.getElementById("myCheck-feedback").setAttribute("hidden", "hidden");
-  document.getElementById("myCheck-mandatory").setAttribute("hidden", "hidden");
-  document.getElementById("myCheck-feedback-mandatory").setAttribute("hidden", "hidden");
-  document.getElementById("mandatory-tab-feedback").setAttribute("hidden", "hidden");
-}
         function fillVersions(input, element) {
             $(element).empty()
 
@@ -1031,7 +1031,7 @@ encodeURIComponent(text));
   document.body.removeChild(pom);
 }
 
-function sendMail() {
+        function sendMail() {
 
   text="Feed back for every test case \n"
   var selectBox = document.getElementById("selectBox");
@@ -1058,16 +1058,6 @@ function sendMail() {
     window.location.href = link;
 }
 
-
-function addTextHTML()
-{
-    document.addtext.name.value = document.addtext.name.value + ".html"
-}
-
-function addTextTXT()
-{
-    document.addtext.name.value = document.addtext.name.value + ".txt"
-}
 
     </script>
     <!-- This will load the initial JSON file, if present. It may fail. -->
