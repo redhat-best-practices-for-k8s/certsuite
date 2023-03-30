@@ -1,5 +1,5 @@
+<!-- markdownlint-disable line-length no-bare-urls -->
 # Test Specifications
-
 
 ## Available Test Specs
 
@@ -12,7 +12,7 @@ These tests are designed to test any commodity CNF running on OpenShift, and inc
 
 - **CNF-Specific**
 
-These tests are designed to test some unique aspects of the CNF under test are behaving correctly.  This could
+These tests are designed to test some unique aspects of the CNF under test are behaving correctly. This could
 include specifications such as issuing a `GET` request to a web server, or passing traffic through an IPSEC tunnel.
 
 ### General tests
@@ -20,10 +20,9 @@ include specifications such as issuing a `GET` request to a web server, or passi
 These tests belong to multiple suites that can be run in any combination as is
 appropriate for the CNFs under test.
 
-!!! info
+! info
 
     Test suites group tests by the topic areas.
-
 
 Suite|Test Spec Description|Minimum OpenShift Version
 ---|---|---
@@ -35,10 +34,10 @@ Suite|Test Spec Description|Minimum OpenShift Version
 `platform-alteration`| verifies that key platform configuration is not modified by the CNF under test|4.6.0
 `observability`|  the observability test suite contains tests that check CNF logging is following best practices and that CRDs have status fields|4.6.0
 
-!!! info
+! info
 
     Please refer [CATALOG.md](CATALOG.md) for more details.
 
-
 ### CNF-specific tests
+
 TODO

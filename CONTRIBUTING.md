@@ -1,3 +1,4 @@
+<!-- markdownlint-disable line-length -->
 # Contributing
 
 All contributions are valued and welcomed, whether they come in the form of code, documentation, ideas or discussion.
@@ -7,14 +8,14 @@ conduct themselves in a professional and respectful manner.
 ## Peer review
 
 Although this is an open source project, an approval is required from at least two of the
-[CNF Cert team members with write privileges]https://github.com/orgs/test-network-function/teams/cnfcert/members)
+[CNF Cert team members with write privileges](https://github.com/orgs/test-network-function/teams/cnfcert/members)
 prior to merging a Pull Request.
 
-*No Self Review is allowed.*  Each Pull Request will be peer reviewed prior to merge.
+*No Self Review is allowed.* Each Pull Request will be peer reviewed prior to merge.
 
 ## Workflow
 
-If you have a problem with the tools or want to suggest a new addition, The first thing to do is create an
+If you have a problem with the tools or want to suggest a new addition, the first thing to do is create an
 [Issue](https://github.com/test-network-function/cnf-certification-test/issues) for discussion.
 
 When you have a change you want us to include in the main codebase, please open a
@@ -23,7 +24,7 @@ associated issue(s).
 
 ### Fork and Pull
 
-This project uses the "Fork and Pull" approach for contributions.  In short, this means that collaborators make changes
+This project uses the "Fork and Pull" approach for contributions. In short, this means that collaborators make changes
 on their own fork of the repository, then create a Pull Request asking for their changes to be merged into this
 repository once they meet our guidelines.
 
@@ -32,9 +33,9 @@ How to create and update your own fork is outside the scope of this document but
 [instructions](https://reflectoring.io/github-fork-and-pull/) explaining how to go about this.
 
 Once a change is implemented, tested, documented, and passing all the checks then submit a Pull Request for it to be
-reviewed by the maintainers listed above.  A good Pull Request will be focussed on a single change and broken into
-multiple small commits where possible.  As always, you should ensure that tests should pass prior to submitting a Pull
-Request.  To run the unit tests issue the following command:
+reviewed by the maintainers listed above. A good Pull Request will be focused on a single change and broken into
+multiple small commits where possible. As always, you should ensure that tests should pass prior to submitting a Pull
+Request. To run the unit tests issue the following command:
 
 ```bash
 make test
@@ -48,34 +49,31 @@ the next section.
 A good commit does a *single* thing, does it completely, and describes *why*.
 
 The commit message should explain both what is being changed, and in the case of anything non-obvious why that change
-was made.  Commit messages are again something that has been widely written about, so need not be discussed in detail
+was made. Commit messages are again something that has been widely written about, so need not be discussed in detail
 here.
 
 Contributors should follow [these seven rules](https://chris.beams.io/posts/git-commit/#seven-rules) and keep individual
 commits focused (`git add -p` will help with this).
 
-## Test Implementation guidelines
-
-TODO: After the recent refactor we need to re-write the developer's guide.
-
 ### Unit Testing Tests
 
-Each `tnf.Tester` implementation must have unit tests.  Ideally, it should strive for 100% line coverage when possible.  For some examples of existing unit tests, consult:
+Each `tnf.Tester` implementation must have unit tests. Ideally, it should strive for 100% line coverage when possible. For some examples of existing unit tests, consult:
 
 * pkg/tnf/handlers/base/version_test.go
 * pkg/tnf/handlers/hostname/hostname_test.go
 * pkg/tnf/handlers/ipaddr/ipaddr_test.go
 * pkg/tnf/handlers/ping/ping_test.go
 
-As always, you should ensure that tests should pass prior to submitting a Pull Request.  To run the unit tests issue the
+As always, you should ensure that tests should pass prior to submitting a Pull Request. To run the unit tests issue the
 following command:
 
 ```bash
 make test
 ```
+
 ## Configuration guidelines
 
-Many Tests will require some form of extra configuration.  To maintain reproducibility and auditability outcomes this
+Many Tests will require some form of extra configuration. To maintain reproducibility and auditability outcomes this
 configuration must be included in a claim file. For all current configuration approaches (see the `generic` test spec)
 this will be done automatically provided the `config` structure for the Test implements or inherits a working `MarshalJSON` and `UnmarshalJSON`
 interface so it can be included in a
@@ -87,11 +85,11 @@ All configuration must adhere to these two requirements will automatically be in
 
 Each exported API, global variable or constant must have proper documentation which adheres to `gofmt`.
 
-Each non-test `package` must have a package comment.  Package comments must be block comments (`/* */`), unless they are
+Each non-test `package` must have a package comment. Package comments must be block comments (`/* */`), unless they are
 short enough to fit on a single line when a line comment is allowed.
 
-Changes must also include updates to affected documentation.  This means both in-code documentation and the accompanying
-files such as this one.  If a change introduces a new behaviour, interface or capability then it is even more important
+Changes must also include updates to affected documentation. This means both in-code documentation and the accompanying
+files such as this one. If a change introduces a new behaviour, interface or capability then it is even more important
 that the accompanying documentation and guides are updated to include that information.
 
 ## Style guidelines
@@ -99,9 +97,9 @@ that the accompanying documentation and guides are updated to include that infor
 Ensure `goimports` has been run against all Pull Requests prior to submission.
 
 In addition, the `test-network-function` project committers expect all Pull Requests have no linting errors when the
-configured linters are used.  Please ensure you run `make lint` and resolve any issues in your changes before submitting
-your PR.  Disabled linting must be justified.
+configured linters are used. Please ensure you run `make lint` and resolve any issues in your changes before submitting
+your PR. Disabled linting must be justified.
 
 Finally, all contributions should follow the guidance of [Effective Go](https://golang.org/doc/effective_go.html)
-unless there is a clear and considered reason not to.  Contributions are more likely to be accepted quickly if any
+unless there is a clear and considered reason not to. Contributions are more likely to be accepted quickly if any
 divergence from the guidelines is justified before someone has to ask about it.

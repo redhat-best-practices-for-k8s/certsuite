@@ -86,7 +86,7 @@ jobs:
           recursive: true
       - uses: nosborn/github-action-markdown-cli@v3.3.0
         with:
-          files: README.md
+          files: .
       - uses: ludeeus/action-shellcheck@master
       - uses: mfinelli/setup-shfmt@v2
       - run: shfmt -d *.sh script
