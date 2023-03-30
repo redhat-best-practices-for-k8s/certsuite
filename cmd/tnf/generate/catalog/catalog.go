@@ -187,7 +187,7 @@ func outputJS() {
 		logrus.Errorf("could not Marshall classification, err=%s", err)
 		return
 	}
-	fmt.Printf("window.classification= JSON.Parse ( %s )", out)
+	fmt.Printf("classification=  %s ", out)
 }
 func generateJS(_ *cobra.Command, _ []string) error {
 	// process the test cases
