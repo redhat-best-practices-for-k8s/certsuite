@@ -213,7 +213,7 @@ func buildTestEnvironment() { //nolint:funlen
 	data := autodiscover.DoAutoDiscover(&config)
 	// OpenshiftVersion needs to be set asap, as other helper functions will use it here.
 	env.OpenshiftVersion = data.OpenshiftVersion
-	env.Config = data.TestData
+	env.Config = config
 	env.Crds = data.Crds
 	env.AllInstallPlans = data.AllInstallPlans
 	env.AllCatalogSources = data.AllCatalogSources
@@ -255,7 +255,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.NetworkPolicies = data.NetworkPolicies
 	for _, nsHelmChartReleases := range data.HelmChartReleases {
 		for _, helmChartRelease := range nsHelmChartReleases {
-			if !isSkipHelmChart(helmChartRelease.Name, data.TestData.SkipHelmChartList) {
+			if !isSkipHelmChart(helmChartRelease.Name, config.SkipHelmChartList) {
 				env.HelmChartReleases = append(env.HelmChartReleases, helmChartRelease)
 			}
 		}

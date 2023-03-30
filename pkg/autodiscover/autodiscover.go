@@ -54,7 +54,6 @@ const (
 
 type DiscoveredTestData struct {
 	Env                    configuration.TestParameters
-	TestData               configuration.TestConfiguration
 	Pods                   []corev1.Pod
 	AllPods                []corev1.Pod
 	DebugPods              []corev1.Pod
