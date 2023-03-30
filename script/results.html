@@ -62,15 +62,17 @@ table td {
         </ul>
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <label  id="myCheck-result" for="optional-tab" hidden="hidden" >Show Optional Results for that scenario</label> 
-            <input type="checkbox"  id="optional-tab"  data-bs-target="#results" data-bs-toggle="tab" role="tab"    onclick="showoptResults()" hidden="hidden" >  
-            <label  id="myCheck-feedback" for="optional-tab-feedback" hidden="hidden" >Show Optional feedback for that scenario</label> 
-            <input type="checkbox"  id="optional-tab-feedback"  data-bs-target="#feedback" data-bs-toggle="tab" role="tab"    onclick="showoptFeedback()" hidden="hidden" >  
             <label  id="myCheck-mandatory" for="mandatory-tab" hidden="hidden" >Show Mandatory Results for that scenario</label> 
             <input type="checkbox"  id="mandatory-tab"  data-bs-target="#results" data-bs-toggle="tab" role="tab"   checked onclick="showmaResults()" hidden="hidden" >  
             <label  id="myCheck-feedback-mandatory" for="mandatory-tab-feedback" hidden="hidden" >Show Mandatory feedback for that scenario</label> 
             <input type="checkbox"  id="mandatory-tab-feedback"  data-bs-target="#feedback" data-bs-toggle="tab" role="tab" checked   onclick="showmaFeedback()" hidden="hidden" >  
-            </li>
+            
+            <label  id="myCheck-result" for="optional-tab" hidden="hidden" >Show Optional Results for that scenario</label> 
+            <input type="checkbox"  id="optional-tab"  data-bs-target="#results" data-bs-toggle="tab" role="tab"    onclick="showoptResults()" hidden="hidden" >  
+            <label  id="myCheck-feedback" for="optional-tab-feedback" hidden="hidden" >Show Optional feedback for that scenario</label> 
+            <input type="checkbox"  id="optional-tab-feedback"  data-bs-target="#feedback" data-bs-toggle="tab" role="tab"    onclick="showoptFeedback()" hidden="hidden" >  
+
+          </li>
       </ul>
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="config" role="tabpanel" aria-labelledby="config-tab">
