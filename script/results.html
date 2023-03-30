@@ -5,7 +5,9 @@
     <title>TNF claim.json parser</title>
     <meta charset="utf-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" >
-    <style type="text/css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+  <style type="text/css">
       li.dropdown-menu {
           background-color: white;
       }
@@ -21,13 +23,35 @@ table td {
   <body>
     <nav class="navbar navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Test Network Function result parser</a>
-        <form class="form-inline">
+
+
           <div class="mb-3">
               <label for="formFile" class="form-label text-light">Upload claim.json file</label>
               <input class="form-control" type="file" id="formFile">
+              <label for="selectBox" class="form-label text-light">
+                Choose a scenario:</label>
+              <select name="class" id="selectBox" onchange="changeFunc()">
+                <option   value="all"> All</option>
+                <option   value="faredge" > Far Edge</option>
+                <option  value="telco"> Telco</option>
+                <option   value="nontelco"> Non Telco</option>
+              </select>
+
+            
           </div>
-        </form>
+      
     </nav>
+
+    <button class="w3-button w3-right w3-light-grey" id ="download-FarEdge" type="submit" onclick=download() hidden="hidden">Download</button>
+    <button class="w3-button w3-right w3-light-grey" id ="download-Telco" type="submit" onclick=download() hidden="hidden">Download</button>
+    <button class="w3-button w3-right w3-light-grey" id ="download-NonTelco" type="submit" onclick=download() hidden="hidden">Download</button>
+    <button class="w3-button w3-right w3-light-grey" id ="download-all" type="submit" onclick=download() hidden="hidden">Download</button>
+
+  
+    <button class="w3-button w3-right w3-light-grey"  id ="send-FarEdge" type="submit" onclick=sendMail() hidden="hidden">sendMail</button>
+    <button class="w3-button w3-right w3-light-grey"  id ="send-Telco" type="submit" onclick=sendMail() hidden="hidden">sendMail</button>
+    <button class="w3-button w3-right w3-light-grey"  id ="send-NonTelco" type="submit" onclick=sendMail() hidden="hidden">sendMail</button>
+    <button class="w3-button w3-right w3-light-grey"  id ="send-all" type="submit" onclick=sendMail() hidden="hidden">sendMail</button>
 
     <ul class="nav nav-tabs">
       <li class="nav-item">
@@ -39,37 +63,35 @@ table td {
       <li class="nav-item">
         <button class="nav-link" id="nodes-tab" data-bs-toggle="tab" data-bs-target="#nodes" type="button" role="tab" aria-controls="nodes" aria-selected="false" onclick="disableButton2()" >Nodes</button>
       </li>
-   
-            <button type="button" class="nav-link" data-bs-toggle="dropdown" aria-selected="false" id="results-buttons"  >Results</button>
-            <li class="dropdown-menu">
-              <button class="dropdown-item" data-bs-toggle="tab" id="results-tab" data-bs-target="#results" onclick="disableButton2()">Results All </button>
-              <button class="dropdown-item" data-bs-toggle="tab" id="results-tab-farEdge" data-bs-target="#results-farEdge"  onclick="enableButton1()" >Results Far Edge </button>
-              <button class="dropdown-item" data-bs-toggle="tab" id="results-tab-telco"  data-bs-target="#results-telco" onclick="enableButton2()">Results Far Telco</button> 
-              <button class="dropdown-item"  data-bs-toggle="tab" id="results-tab-NonTelco"  data-bs-target="#results-NonTelco" onclick="enableButton3()">Results Far Non Telco </button> 
-            </li>
+      <li class="nav-item">
+        <button class="nav-link" id="result-tab" data-bs-toggle="tab" data-bs-target="#results" type="button" role="tab" aria-controls="nodes" aria-selected="false" onclick="enableoptionbutton()">Results</button>
+      </li>
       <li class="nav-item">
         <button class="nav-link" id="versions-tab" data-bs-toggle="tab" data-bs-target="#versions" type="button" role="tab" aria-controls="versions" aria-selected="false" onclick="disableButton2()" >Versions</button>
       </li>
-      <button type="button" class="nav-link" data-bs-toggle="dropdown" aria-selected="false" id="feedback-button"  >Feedback</button>
-      <li class="dropdown-menu">
-        <button class="dropdown-item" id="feedback-faredge-tab" data-bs-toggle="tab" data-bs-target="#feedback-faredge" type="button" role="tab" aria-selected="false" onclick="enableSendDownload('FarEdge')">Feedback Far Edge</button>
-        <button class="dropdown-item" id="feedback-telco-telcodge-tab" data-bs-toggle="tab" data-bs-target="#feedback-telco" type="button" role="tab" aria-selected="false"  onclick="enableSendDownload('Telco')">Feedback Telco</button>
-        <button class="dropdown-item" id="feedback-non-telco-tab" data-bs-toggle="tab" data-bs-target="#feedback-non-telco" type="button" role="tab" aria-selected="false"  onclick="enableSendDownload('NonTelco')">Feedback Non Telco</button>
-
+      <li class="nav-item">
+        <button class="nav-link" id="feedback-tab" data-bs-toggle="tab" data-bs-target="#feedback" type="button" role="tab" aria-controls="nodes" aria-selected="false" onclick="enableoptionbuttonFeedback()" >Feedback</button>
       </li>
+
 
         </ul>
         <ul class="nav nav-tabs">
           <li class="nav-item">
             <label  id="myCheck1" for="optional-tab" hidden="hidden" >Show Optional Results for that category</label> 
-            <input type="checkbox"  id="optional-tab"  data-bs-target="#results-farEdge" data-bs-toggle="tab" role="tab"    onclick="myFunction()" hidden="hidden" >  
+            <input type="checkbox"  id="optional-tab"  data-bs-target="#results" data-bs-toggle="tab" role="tab"    onclick="myFunction()" hidden="hidden" >  
             <label  id="myCheck2" for="optional-tab-non-telco" hidden="hidden" >Show Optional Results for that category</label> 
-            <input type="checkbox"  id="optional-tab-non-telco"  data-bs-target="#results-NonTelco" data-bs-toggle="tab" role="tab"    onclick="myFunction2()" hidden="hidden" >   
+            <input type="checkbox"  id="optional-tab-non-telco"  data-bs-target="#results" data-bs-toggle="tab" role="tab"    onclick="myFunction2()" hidden="hidden" >   
             <label  id="myCheck3" for="optional-tab-telco" hidden="hidden" >Show Optional Results for that category</label> 
-            <input type="checkbox"  id="optional-tab-telco"   data-bs-target="#results-telco" data-bs-toggle="tab" role="tab"  onclick="myFunction3()" hidden="hidden" >   
+            <input type="checkbox"  id="optional-tab-telco"   data-bs-target="#results" data-bs-toggle="tab" role="tab"  onclick="myFunction3()" hidden="hidden" >   
+              <label  id="myCheck1-feedback" for="optional-tab-feedback" hidden="hidden" >Show Optional feedback for that category</label> 
+              <input type="checkbox"  id="optional-tab-feedback"  data-bs-target="#feedback" data-bs-toggle="tab" role="tab"    onclick="myFunction4()" hidden="hidden" >  
+              <label  id="myCheck2-feedback" for="optional-tab-non-telco-feedback" hidden="hidden" >Show Optional feedback for that category</label> 
+              <input type="checkbox"  id="optional-tab-non-telco-feedback"  data-bs-target="#feedback" data-bs-toggle="tab" role="tab"    onclick="myFunction5()" hidden="hidden" >   
+              <label  id="myCheck3-feedback" for="optional-tab-telco-feedback" hidden="hidden" >Show Optional feedback for that category</label> 
+              <input type="checkbox"  id="optional-tab-telco-feedback"   data-bs-target="#feedback" data-bs-toggle="tab" role="tab"  onclick="myFunction6()" hidden="hidden" >   
           </li>
- 
       </ul>
+
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="config" role="tabpanel" aria-labelledby="config-tab">
         <table class="table table-hover table-bordered" id="config-table">
@@ -83,49 +105,46 @@ table td {
         <table class="table table-hover table-bordered" id="nodes-table">
         </table>
       </div>
-      <div class="tab-pane fade" id="results" role="tabpanel" aria-labelledby="results-tab">
-        <table class="table table-hover table-bordered" id="results-table">
+      
+      <div class="tab-pane fade" id="results" role="tabpanel" aria-labelledby="result-tab">
+        <table class="table table-hover table-bordered" id="results-table" hidden="hidden">
         </table>
-      </div>
-      <div class="tab-pane fade" id="results_button" role="tabpanel" aria-labelledby="results-button">
-      </div>
-      <div class="tab-pane fade" id="results-farEdge" role="tabpanel">
-        <table class="table table-hover table-bordered" id="results-far-edge-table">
+        <table class="table table-hover table-bordered" id="results-far-edge-table" hidden="hidden">
         </table>
         <table class="table table-hover table-bordered" id="optional-table" hidden="hidden">
         </table>
-      </div>
-    
-      <div class="tab-pane fade" id="results-telco" role="tabpanel" aria-labelledby="optional-tab-telco">
-        <table class="table table-hover table-bordered" id="results-telco-table">
+        <table class="table table-hover table-bordered" id="results-telco-table" hidden="hidden">
         </table>
         <table class="table table-hover table-bordered" id="optional-table-telco" hidden="hidden">
         </table>
-      </div>
-      <div class="tab-pane fade" id="results-NonTelco" role="tabpanel" aria-labelledby="optional-tab-non-telco">
-        <table class="table table-hover table-bordered" id="results-NonTelco-table">
+        <table class="table table-hover table-bordered" id="results-NonTelco-table" hidden="hidden">
         </table>
         <table class="table table-hover table-bordered" id="optional-table-non-telco" hidden="hidden">
         </table>
       </div>
+
+    
       <div class="tab-pane fade" id="versions" role="tabpanel" aria-labelledby="versions-tab">
         <table class="table table-hover table-bordered" id="versions-table">
         </table>
       </div>
-      <div class="tab-pane fade" id="feedback-faredge" role="tabpanel" aria-labelledby="feedback-faredge-tab">
-        <table class="table table-hover table-bordered" id="feedback-table-faredge">
+      <div class="tab-pane fade" id="feedback" role="tabpanel" aria-labelledby="feedback-tab">
+        <table class="table table-hover table-bordered" id="feedback-table-faredge" hidden="hidden">
+        </table>
+        <table class="table table-hover table-bordered" id="feedback-table-non-telco" hidden="hidden">
+        </table>
+        <table class="table table-hover table-bordered" id="feedback-table-telco" hidden="hidden">
+        </table>
+        <table class="table table-hover table-bordered" id="feedback-all" hidden="hidden">
+        </table>
+        <table class="table table-hover table-bordered" id="optional-table-telco-feedback" hidden="hidden">
         </table>
       </div>
-      <div class="tab-pane fade" id="feedback-non-telco" role="tabpanel" aria-labelledby="feedback-non-telco-tab">
-        <table class="table table-hover table-bordered" id="feedback-table-non-telco">
-        </table>
-      </div>
-      <div class="tab-pane fade" id="feedback-telco" role="tabpanel" aria-labelledby="feedback-telco-tab">
-        <table class="table table-hover table-bordered" id="feedback-table-telco">
-        </table>
-      </div>
-      
-
+      <table class="table table-hover table-bordered" id="optional-table-non-telco-feedback" hidden="hidden">
+      </table>
+      <table class="table table-hover table-bordered" id="optional-faredge-feedback" hidden="hidden">
+      </table>
+    </div>
     </div>
     <div class="tab-pane fade" id="metadata" role="tabpanel" aria-labelledby="metadata-tab">
       <table class="table table-hover table-bordered" id="metadata-table">
@@ -151,26 +170,255 @@ table td {
     <!-- We should extract the javascript code to a separate file, but if we include it here we can just use a single file HTMl, which is handy -->
     <!--    <script src="./utils.js"></script> -->
     <script>
+var buttonElementId="non"
 
 
-function enableSendDownload(tableName){
+function enableoptionbuttonFeedback(){
+  document.getElementById("send-all").setAttribute("hidden", "hidden");
+  document.getElementById("download-all").setAttribute("hidden", "hidden");
+  document.getElementById("download-NonTelco").setAttribute("hidden", "hidden");
+  document.getElementById("send-NonTelco").setAttribute("hidden", "hidden");
+  document.getElementById("send-FarEdge").setAttribute("hidden", "hidden");
+  document.getElementById("download-FarEdge").setAttribute("hidden", "hidden");
+  document.getElementById("send-Telco").setAttribute("hidden", "hidden");
+  document.getElementById("download-Telco").setAttribute("hidden", "hidden");
+  buttonElementId = "feedback-tab"
+  enableSendDownload()
+  document.getElementById("optional-tab").setAttribute("hidden", "hidden");
+  document.getElementById("optional-tab-telco").setAttribute("hidden", "hidden");
+  document.getElementById("optional-tab-non-telco").setAttribute("hidden", "hidden");
   document.getElementById("myCheck1").setAttribute("hidden", "hidden");
-          document.getElementById("myCheck2").setAttribute("hidden", "hidden");
-          document.getElementById("myCheck3").setAttribute("hidden", "hidden");
+  document.getElementById("myCheck2").setAttribute("hidden", "hidden");
+  document.getElementById("myCheck3").setAttribute("hidden", "hidden");
+  var selectBox = document.getElementById("selectBox");
+    var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+    if (selectedValue=="all"){
+      showAll()
+    }
+    if (selectedValue=="faredge"){
+          document.getElementById("myCheck1-feedback").removeAttribute("hidden");
+          document.getElementById("optional-tab-feedback").removeAttribute("hidden");
+          document.getElementById("myCheck2-feedback").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck3-feedback").setAttribute("hidden", "hidden");
+          document.getElementById("optional-tab-non-telco-feedback").setAttribute("hidden", "hidden");
+          document.getElementById("optional-tab-telco-feedback").setAttribute("hidden", "hidden");
+          showFarEdge()
+
+    }
+    if (selectedValue=="telco"){
+      document.getElementById("myCheck1-feedback").setAttribute("hidden", "hidden");
+          document.getElementById("optional-tab-feedback").setAttribute("hidden", "hidden");
+          document.getElementById("optional-tab-non-telco-feedback").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck3-feedback").setAttribute("hidden", "hidden");
+          document.getElementById("optional-tab-non-telco-feedback").setAttribute("hidden", "hidden");
+
+          document.getElementById("myCheck2-feedback").setAttribute("hidden", "hidden");
+          document.getElementById("optional-faredge-feedback").setAttribute("hidden", "hidden");
+
+        showTelco()
+
+
+          document.getElementById("myCheck3-feedback").removeAttribute("hidden");
+          document.getElementById("optional-tab-telco-feedback").removeAttribute("hidden");
+
+    }
+    if (selectedValue=="nontelco"){
+          document.getElementById("myCheck3-feedback").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck1-feedback").setAttribute("hidden", "hidden");
+          document.getElementById("optional-tab-feedback").setAttribute("hidden", "hidden");
+          document.getElementById("optional-tab-telco-feedback").setAttribute("hidden", "hidden");
+
+          document.getElementById("myCheck2-feedback").removeAttribute("hidden");
+          document.getElementById("optional-tab-non-telco-feedback").removeAttribute("hidden");
+          showNonTelco()
+    }
+}
+
+function changeFunc() {
+    var selectBox = document.getElementById("selectBox");
+    var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+
+    console.log("click on ",buttonElementId)
+
+    if (buttonElementId=="feedback-tab"){
+      enableoptionbuttonFeedback()
+
+      }
+      if (buttonElementId=="result-tab"){
+        console.log("click on result ")
+
+        enableoptionbutton()
+
+      }
+  }
+
+  function enableoptionbutton(){
+
+  buttonElementId = "result-tab"
+    var selectBox = document.getElementById("selectBox");
+    var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+    console.log(selectedValue)
+    if (selectedValue=="all"){
+      showAll()
+    }
+    document.getElementById("optional-tab-feedback").setAttribute("hidden", "hidden");
+    document.getElementById("optional-tab-telco-feedback").setAttribute("hidden", "hidden");
+    document.getElementById("optional-tab-non-telco-feedback").setAttribute("hidden", "hidden");
+    document.getElementById("myCheck1-feedback").setAttribute("hidden", "hidden");
+    document.getElementById("myCheck2-feedback").setAttribute("hidden", "hidden");
+    document.getElementById("myCheck3-feedback").setAttribute("hidden", "hidden");
+    if (selectedValue=="faredge"){
+          document.getElementById("myCheck1").removeAttribute("hidden");
+          document.getElementById("optional-tab").removeAttribute("hidden");
+
           document.getElementById("optional-tab-non-telco").setAttribute("hidden", "hidden");
           document.getElementById("optional-tab-telco").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck2").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck3").setAttribute("hidden", "hidden");
+          showFarEdge()
+
+
+
+    }
+    if (selectedValue=="telco"){
+          document.getElementById("myCheck1").setAttribute("hidden", "hidden");
           document.getElementById("optional-tab").setAttribute("hidden", "hidden");
-          if (tableName =='Telco'){
+          document.getElementById("optional-tab-non-telco").setAttribute("hidden", "hidden");
+
+          document.getElementById("myCheck2").setAttribute("hidden", "hidden");
+          document.getElementById("optional-table").setAttribute("hidden", "hidden");
+          document.getElementById("optional-table-non-telco").setAttribute("hidden", "hidden");
+
+          document.getElementById("results-NonTelco-table").setAttribute("hidden", "hidden")
+          document.getElementById("results-far-edge-table").setAttribute("hidden", "hidden");
+          document.getElementById("results-table").setAttribute("hidden", "hidden");
+
+          document.getElementById("optional-tab-telco").removeAttribute("hidden");
+          document.getElementById("myCheck3").removeAttribute("hidden");
+
+
+          showTelco()
+
+
+    }
+    if (selectedValue=="nontelco"){
+          document.getElementById("myCheck3").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck1").setAttribute("hidden", "hidden");
+          document.getElementById("optional-tab").setAttribute("hidden", "hidden");
+          document.getElementById("optional-tab-telco").setAttribute("hidden", "hidden");
+          document.getElementById("optional-table").setAttribute("hidden", "hidden");
+
+          document.getElementById("optional-tab-non-telco").removeAttribute("hidden");
+          document.getElementById("myCheck2").removeAttribute("hidden");
+          
+          showNonTelco()
+
+
+    }
+  }
+ 
+function showFarEdge(){
+
+          document.getElementById("feedback-table-telco").setAttribute("hidden", "hidden");
+          document.getElementById("feedback-table-non-telco").setAttribute("hidden", "hidden");
+          document.getElementById("feedback-table-faredge").removeAttribute("hidden");
+          document.getElementById("feedback-all").setAttribute("hidden", "hidden");
+
+          document.getElementById("results-far-edge-table").removeAttribute("hidden");
+          document.getElementById("results-NonTelco-table").setAttribute("hidden", "hidden");
+          document.getElementById("results-telco-table").setAttribute("hidden", "hidden");
+          document.getElementById("results-table").setAttribute("hidden", "hidden");
+
+
+}
+function showTelco(){
+          document.getElementById("feedback-table-faredge").setAttribute("hidden", "hidden");
+          document.getElementById("feedback-table-non-telco").setAttribute("hidden", "hidden");
+          document.getElementById("feedback-all").setAttribute("hidden", "hidden")
+
+          document.getElementById("results-NonTelco-table").setAttribute("hidden", "hidden")
+          document.getElementById("results-far-edge-table").setAttribute("hidden", "hidden");
+          document.getElementById("results-table").setAttribute("hidden", "hidden");
+
+          document.getElementById("results-telco-table").removeAttribute("hidden");
+          document.getElementById("feedback-table-telco").removeAttribute("hidden");
+
+
+}
+
+function showNonTelco(){
+          document.getElementById("results-table").setAttribute("hidden", "hidden");
+          document.getElementById("results-telco-table").setAttribute("hidden", "hidden");
+          document.getElementById("results-far-edge-table").setAttribute("hidden", "hidden");
+
+          document.getElementById("feedback-table-faredge").setAttribute("hidden", "hidden");
+          document.getElementById("feedback-table-telco").setAttribute("hidden", "hidden");
+          document.getElementById("feedback-all").setAttribute("hidden", "hidden");
+
+          document.getElementById("feedback-table-non-telco").removeAttribute("hidden");
+          document.getElementById("results-NonTelco-table").removeAttribute("hidden");
+
+
+          
+}
+
+function showAll(){
+  console.log("in show all")
+          document.getElementById("myCheck1").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck2").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck3").setAttribute("hidden", "hidden");
+
+          document.getElementById("myCheck1-feedback").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck2-feedback").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck3-feedback").setAttribute("hidden", "hidden");
+
+          document.getElementById("results-far-edge-table").setAttribute("hidden", "hidden");
+          document.getElementById("results-telco-table").setAttribute("hidden", "hidden");
+          document.getElementById("results-NonTelco-table").setAttribute("hidden", "hidden");
+
+          document.getElementById("feedback-table-faredge").setAttribute("hidden", "hidden");
+          document.getElementById("feedback-table-non-telco").setAttribute("hidden", "hidden");
+          document.getElementById("feedback-table-telco").setAttribute("hidden", "hidden");
+
+
+          document.getElementById("optional-table").setAttribute("hidden", "hidden");
+          document.getElementById("optional-table-telco").setAttribute("hidden", "hidden");
+          document.getElementById("optional-table-non-telco").setAttribute("hidden", "hidden");
+
+          document.getElementById("results-table").removeAttribute("hidden");
+          document.getElementById("feedback-all").removeAttribute("hidden");
+
+          
+
+          document.getElementById("optional-tab").setAttribute("hidden", "hidden");
+          document.getElementById("optional-tab-telco").setAttribute("hidden", "hidden");
+          document.getElementById("optional-tab-non-telco").setAttribute("hidden", "hidden");
+          document.getElementById("optional-tab-feedback").setAttribute("hidden", "hidden");
+          document.getElementById("optional-tab-telco-feedback").setAttribute("hidden", "hidden");
+          document.getElementById("optional-tab-non-telco-feedback").setAttribute("hidden", "hidden");
+          
+}
+
+function enableSendDownload(){
+  var selectBox = document.getElementById("selectBox");
+    var tableName = selectBox.options[selectBox.selectedIndex].value;
+          if (tableName =='telco'){
+
             document.getElementById("download-Telco").removeAttribute("hidden");
             document.getElementById("send-Telco").removeAttribute("hidden");
+
             document.getElementById("send-NonTelco").setAttribute("hidden", "hidden");
+            document.getElementById("send-all").setAttribute("hidden", "hidden");
+            document.getElementById("download-all").setAttribute("hidden", "hidden");
+
             document.getElementById("download-NonTelco").setAttribute("hidden", "hidden");
             document.getElementById("send-FarEdge").setAttribute("hidden", "hidden");
             document.getElementById("download-FarEdge").setAttribute("hidden", "hidden");
 
           }
-          if (tableName =='FarEdge'){
-            console.log("faredge ",document.getElementById("download-FarEdge"))
+          if (tableName =='faredge'){
+            document.getElementById("send-all").setAttribute("hidden", "hidden");
+            document.getElementById("download-all").setAttribute("hidden", "hidden");
             document.getElementById("download-FarEdge").removeAttribute("hidden");
             document.getElementById("send-FarEdge").removeAttribute("hidden");
             document.getElementById("send-NonTelco").setAttribute("hidden", "hidden");
@@ -179,7 +427,9 @@ function enableSendDownload(tableName){
             document.getElementById("download-Telco").setAttribute("hidden", "hidden");
 
           }
-          if (tableName =='NonTelco'){
+          if (tableName =='nontelco'){
+            document.getElementById("send-all").setAttribute("hidden", "hidden");
+            document.getElementById("download-all").setAttribute("hidden", "hidden");
             document.getElementById("download-NonTelco").removeAttribute("hidden");
             document.getElementById("send-NonTelco").removeAttribute("hidden");
             document.getElementById("send-FarEdge").setAttribute("hidden", "hidden");
@@ -188,8 +438,35 @@ function enableSendDownload(tableName){
             document.getElementById("download-Telco").setAttribute("hidden", "hidden");
 
           }
+          if (tableName =='all'){
+            document.getElementById("send-all").removeAttribute("hidden");
+            document.getElementById("download-all").removeAttribute("hidden");
+            document.getElementById("download-NonTelco").setAttribute("hidden", "hidden");
+            document.getElementById("send-NonTelco").setAttribute("hidden", "hidden");
+            document.getElementById("send-FarEdge").setAttribute("hidden", "hidden");
+            document.getElementById("download-FarEdge").setAttribute("hidden", "hidden");
+            document.getElementById("send-Telco").setAttribute("hidden", "hidden");
+            document.getElementById("download-Telco").setAttribute("hidden", "hidden");
+
+          }
+}
+
+function enableoptional() {
+
+var checkBox = document.getElementById("optional-tab");
+if (checkBox.checked == true){
+  document.getElementById("optional-table").removeAttribute("hidden");
+  document.getElementById("results-far-edge-table").setAttribute("hidden", "hidden");
+  
+
+} else {
+  document.getElementById("results-far-edge-table").removeAttribute("hidden");
+
+  document.getElementById("optional-table").setAttribute("hidden", "hidden");
+}
 
 }
+
 function myFunction() {
 
   var checkBox = document.getElementById("optional-tab");
@@ -234,54 +511,77 @@ function myFunction3() {
 
   }
 }
-        function enableButton2() {
-          document.getElementById("myCheck3").removeAttribute("hidden");
-
-          
-          document.getElementById("optional-tab-telco").removeAttribute("hidden");
-          document.getElementById("myCheck1").setAttribute("hidden", "hidden");
-          document.getElementById("myCheck2").setAttribute("hidden", "hidden");
-          document.getElementById("optional-tab-non-telco").setAttribute("hidden", "hidden");
-          document.getElementById("optional-tab").setAttribute("hidden", "hidden");
-        }
-        function enableButton1() {
-          document.getElementById("myCheck1").removeAttribute("hidden");
-          document.getElementById("myCheck2").setAttribute("hidden", "hidden");
-          document.getElementById("myCheck3").setAttribute("hidden", "hidden");
-
-            document.getElementById("optional-tab").removeAttribute("hidden");
-
-            document.getElementById("optional-tab-non-telco").setAttribute("hidden", "hidden");
 
 
-        }
-        function enableButton3() {
-          document.getElementById("myCheck1").setAttribute("hidden", "hidden");
-          document.getElementById("myCheck2").removeAttribute("hidden");
-          document.getElementById("myCheck3").setAttribute("hidden", "hidden");
 
-            document.getElementById("optional-tab-non-telco").removeAttribute("hidden");
-            document.getElementById("optional-tab-telco").setAttribute("hidden", "hidden");
-            document.getElementById("optional-tab").setAttribute("hidden", "hidden");
-        }
+
+function myFunction4() {
+
+var checkBox = document.getElementById("optional-tab-feedback");
+if (checkBox.checked == true){
+  document.getElementById("optional-faredge-feedback").removeAttribute("hidden");
+  document.getElementById("feedback-table-faredge").setAttribute("hidden", "hidden");
+  
+
+} else {
+  document.getElementById("feedback-table-faredge").removeAttribute("hidden");
+
+  document.getElementById("optional-faredge-feedback").setAttribute("hidden", "hidden");
+}
+
+}
+
+
+
+function myFunction5() {
+
+var checkBox = document.getElementById("optional-tab-non-telco-feedback");
+if (checkBox.checked == true){
+          document.getElementById("optional-table-non-telco-feedback").removeAttribute("hidden");
+  document.getElementById("feedback-table-non-telco").setAttribute("hidden", "hidden");
+
+
+} else {
+  document.getElementById("feedback-table-non-telco").removeAttribute("hidden");
+  document.getElementById("optional-table-non-telco-feedback").setAttribute("hidden", "hidden");
+}
+}
+
+function myFunction6() {
+var checkBox = document.getElementById("optional-tab-telco-feedback");
+if (checkBox.checked == true){
+  document.getElementById("optional-table-telco-feedback").removeAttribute("hidden");
+  document.getElementById("feedback-table-telco").setAttribute("hidden", "hidden");
+
+} else {
+  document.getElementById("optional-table-telco-feedback").setAttribute("hidden", "hidden");
+  document.getElementById("feedback-table-telco").removeAttribute("hidden");
+
+}
+}
+
         function disableButton2() {
+          buttonElementId = "non"
+          document.getElementById("send-all").setAttribute("hidden", "hidden");
+          document.getElementById("download-all").setAttribute("hidden", "hidden");
+          document.getElementById("download-NonTelco").setAttribute("hidden", "hidden");
+          document.getElementById("send-NonTelco").setAttribute("hidden", "hidden");
+          document.getElementById("send-FarEdge").setAttribute("hidden", "hidden");
+          document.getElementById("download-FarEdge").setAttribute("hidden", "hidden");
+          document.getElementById("send-Telco").setAttribute("hidden", "hidden");
+          document.getElementById("download-Telco").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck1-feedback").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck2-feedback").setAttribute("hidden", "hidden");
+          document.getElementById("myCheck3-feedback").setAttribute("hidden", "hidden");
           document.getElementById("myCheck1").setAttribute("hidden", "hidden");
           document.getElementById("myCheck2").setAttribute("hidden", "hidden");
           document.getElementById("myCheck3").setAttribute("hidden", "hidden");
           document.getElementById("optional-tab-non-telco").setAttribute("hidden", "hidden");
           document.getElementById("optional-tab-telco").setAttribute("hidden", "hidden");
           document.getElementById("optional-tab").setAttribute("hidden", "hidden");
-          document.getElementById("send-FarEdge").setAttribute("hidden", "hidden");
-          document.getElementById("send-NonTelco").setAttribute("hidden", "hidden");
-          document.getElementById("send-Telco").setAttribute("hidden", "hidden");
-
-          document.getElementById("download-FarEdge").setAttribute("hidden", "hidden");
-          document.getElementById("download-NonTelco").setAttribute("hidden", "hidden");
-          document.getElementById("download-Telco").setAttribute("hidden", "hidden");
-
-          
-            
-
+          document.getElementById("optional-tab-non-telco-feedback").setAttribute("hidden", "hidden");
+          document.getElementById("optional-tab-telco-feedback").setAttribute("hidden", "hidden");
+          document.getElementById("optional-tab-feedback").setAttribute("hidden", "hidden");
         }
         function fillVersions(input, element) {
             $(element).empty()
@@ -585,11 +885,11 @@ function myFunction3() {
               
                 eqData=input2[key2][0].FarEdge
               
-              if (tableName == "Telco"){
+              if (tableName == "telco"){
                 eqData=input2[key2][0].ForTelco
 
               }
-              if (tableName == "NonTelco"){
+              if (tableName == "nontelco"){
                 eqData=input2[key2][0].ForNonTelco
               }
 
@@ -624,7 +924,7 @@ function myFunction3() {
                 // Note we are skipping some columns for now
                 // And 1 row per test
                 for (const item of input[key]) {
-                  testName = item.testID.url.split('http://test-network-function.com/testcases/')[1].replaceAll('/', '-')
+                  testName = item.testID.id
                     text += '<tr><td>' + item.testID.url + '" version: ' + item.testID.version + '</td>'
                     text += '<td>' + item.testText.replace(/\n/g, '<br>') + '</td>'
                     text += '<td>' + item.duration + '</td>'
@@ -634,7 +934,7 @@ function myFunction3() {
                   }
 
                 id = id + 1
-                if (eqData=="Optional" && tableName != "ALL" ){
+                if (eqData=="Optional" && tableName != "all" ){
                         text2 +=text
                         text2 += '</tbody></table>'
                         text2 += '</div></div></div>'
@@ -656,7 +956,7 @@ function myFunction3() {
 
         }
 
-        function generateFeedbackPage(input, input2, element,tableName) {
+        function generateFeedbackPage(input, input2, element,element2,tableName) {
             $(element).empty()
             // The results object is composed of multiple objects, 1 per test
             // Inside the object we have an array of results
@@ -685,24 +985,30 @@ function myFunction3() {
             }
 
             // First we will have a left column in the table with the summarized results
-            text ='<thead><tr><th scope="col">Test summary</th><th scope="col">Test feedback</th></tr></thead><tbody>'
-            text += '<tr><td class="align-top"><b>Total:</b> ' + tests_total + '<br><b>Passed:</b> ' + tests_passed + '<br><b>Skipped:</b> ' + tests_skipped + '<br><b>Failed:</b> ' + tests_failed + '</td><td>'
-            text += '<div class="accordion" id="feedback-accordion">'
+            text2 ='<thead><tr><th scope="col">Test summary</th><th scope="col">Test feedback</th></tr></thead><tbody>'
+            text2 += '<tr><td class="align-top"><b>Total:</b> ' + tests_total + '<br><b>Passed:</b> ' + tests_passed + '<br><b>Skipped:</b> ' + tests_skipped + '<br><b>Failed:</b> ' + tests_failed + '</td><td>'
+            text2 += '<div class="accordion" id="feedback-accordion">'
+
+                          // First we will have a left column in the table with the summarized results
+            text3 ='<thead><tr><th scope="col">Test summary</th><th scope="col">Test feedback</th></tr></thead><tbody>'
+            text3 += '<tr><td class="align-top"><b>Total:</b> ' + tests_total + '<br><b>Passed:</b> ' + tests_passed + '<br><b>Skipped:</b> ' + tests_skipped + '<br><b>Failed:</b> ' + tests_failed + '</td><td>'
+            text3 += '<div class="accordion" id="feedback-accordion">'
 
             for (const key in input) {
               for (const key2 in input2){      
               
               eqData=input2[key2][0].FarEdge
             
-            if (tableName == "Telco"){
+            if (tableName == "telco"){
               eqData=input2[key2][0].ForTelco
 
             }
-            if (tableName == "NonTelco"){
+            if (tableName == "nontelco"){
               eqData=input2[key2][0].ForNonTelco
             }
 
-            if (key==key2 && eqData=="Mandatory"){
+            if (key==key2 ){
+              text=''
                 // NOTE: we are assuming the test result is determined by the passed/failed state of the first item
                 status = input[key][0].state
                 if (status === "passed") {
@@ -723,26 +1029,37 @@ function myFunction3() {
                 // Inside the accordion, 1 table with the following colummns
 
                 for (const item of input[key]) {
-                testName = item.testID.url.split('http://test-network-function.com/testcases/')[1].replaceAll('/', '-')
-                console.log(testName)
+                testName = item.testID.id  
+                 console.log(testName)
                 text += '<input id="source-'+tableName+'-'+testName+ '" type="text" />'
                 }
-                
+                if (eqData=="Optional" && tableName != "all" ){
+                  text3+=text
+                }else{
+                  text2+=text
+
+                }
                 // Note we are skipping some columns for now
                 // And 1 row per test
-                text += '</div></div></div>'
+                text2 += '</div></div></div>'
+                text3 += '</div></div></div>'
                 id = id + 1
             }
           }
         }
-            text += '</div></td></tr>'
-            text+='</tbody>'
-            $(text).appendTo($(element))    
-            
+            text2 += '</div></td></tr>'
+            text2+='</tbody>'
+            text3 += '</div></td></tr>'
+            text3+='</tbody>'
+            $(text2).appendTo($(element))    
+            $(text3).appendTo($(element2))    
+
             temp=generateHiddenForm(input,tableName)
             document.body.innerHTML+=temp
 
-            text += temp
+            text2 += temp
+            text3 += temp
+
         }
 
         function generateHiddenForm(input,tableName){
@@ -753,19 +1070,17 @@ function myFunction3() {
 
           for (const key in input) {
             for (const item of input[key]) {
-                testName = item.testID.url.split('http://test-network-function.com/testcases/')[1].replaceAll('/', '-')
-                console.log("my test",testName)
+              testName = item.testID.id
+                              console.log("my test",testName)
                 
             }
           }
           text1=""
-          text1+='<button id ="download-'+ tableName + '"type="submit" onclick=download(this) hidden="hidden">Download</button>'
-          text1+='<button id ="send-'+ tableName + '"type="submit" onclick=sendMail(this) hidden="hidden">sendMail</button>'
             tmp=""
             for (const key in input) {
             for (const item of input[key]) {
-                testName = item.testID.url.split('http://test-network-function.com/testcases/')[1].replaceAll('/', '-')
-                console.log(testName)
+              testName = item.testID.id
+                              console.log(testName)
                 
             }
           }
@@ -774,39 +1089,17 @@ function myFunction3() {
             return text1
         }
 
-        function download(get) {
+        function download() {
           text=""
-          var send =document.getElementById("send-FarEdge").getAttribute("hidden");
-          if (document.getElementById("send-FarEdge").getAttribute("hidden")!="hidden"){
-            tableName = "FarEdge"
-            console.log("FarEdge is ")
-
-          }
-          if (document.getElementById("send-Telco").getAttribute("hidden")!="hidden"){
-            tableName = "Telco"
-            console.log("Telco is ")
-
-                 }
-                 if (document.getElementById("send-NonTelco").getAttribute("hidden")!="hidden"){
-            tableName = "NonTelco"
-            console.log("NonTelco is ")
-
-                 }
+          var selectBox = document.getElementById("selectBox");
+    var tableName = selectBox.options[selectBox.selectedIndex].value;
 
           for (const key in this.json.claim.results) {
             for (const key2 in this.classification.classification){      
               
-              eqData=this.classification.classification[key2][0].FarEdge
             
-            if (tableName == "Telco"){
-              eqData=this.classification.classification[key2][0].ForTelco
 
-            }
-            if (tableName == "NonTelco"){
-              eqData=this.classification.classification[key2][0].ForNonTelco
-            }
-
-            if (key==key2&& eqData=="Mandatory"){
+            if (key==key2){
             var data = document.getElementById('source-'+tableName+'-'+key)
             if (data != null){
               text+=key + ": "
@@ -832,37 +1125,15 @@ encodeURIComponent(text));
 function sendMail() {
 
   text="Feed back for every test case \n"
-  var send =document.getElementById("send-FarEdge").getAttribute("hidden");
-          if (document.getElementById("send-FarEdge").getAttribute("hidden")!="hidden"){
-            tableName = "FarEdge"
-            console.log("FarEdge is ")
-
-          }
-          if (document.getElementById("send-Telco").getAttribute("hidden")!="hidden"){
-            tableName = "Telco"
-            console.log("Telco is ")
-
-                 }
-                 if (document.getElementById("send-NonTelco").getAttribute("hidden")!="hidden"){
-            tableName = "NonTelco"
-            console.log("NonTelco is ")
-
-                 }
+  var selectBox = document.getElementById("selectBox");
+    var tableName = selectBox.options[selectBox.selectedIndex].value;
 
           for (const key in this.json.claim.results) {
             for (const key2 in this.classification.classification){      
               
-              eqData=this.classification.classification[key2][0].FarEdge
             
-            if (tableName == "Telco"){
-              eqData=this.classification.classification[key2][0].ForTelco
 
-            }
-            if (tableName == "NonTelco"){
-              eqData=this.classification.classification[key2][0].ForNonTelco
-            }
-
-            if (key==key2&& eqData=="Mandatory"){
+            if (key==key2){
             var data = document.getElementById('source-'+tableName+'-'+key)
             if (data != null){
               text+=key + ": "
@@ -923,13 +1194,18 @@ function addTextTXT()
                    fillConfig(json.claim.nodes, '#nodes-table')
                    fillMetadata(json.claim.metadata, '#metadata-table')
                    fillVersions(json.claim.versions, '#versions-table')
-                   fillResults(json.claim.results,  classification.classification,'#results-table','#optional-',"ALL")
-                   fillResults(json.claim.results,  classification.classification,'#results-far-edge-table','#optional-table',"FarEdge")
-                   fillResults(json.claim.results,  classification.classification,'#results-telco-table','#optional-table-telco',"Telco")
-                   fillResults(json.claim.results,  classification.classification,'#results-NonTelco-table','#optional-table-non-telco',"NonTelco")
-                   generateFeedbackPage(json.claim.results, classification.classification,'#feedback-table-faredge',"FarEdge")
-                   generateFeedbackPage(json.claim.results, classification.classification,'#feedback-table-non-telco',"NonTelco")
-                   generateFeedbackPage(json.claim.results, classification.classification,'#feedback-table-telco',"Telco")
+                   fillResults(json.claim.results,  classification.classification,'#results-table','#optional-',"all")
+                   fillResults(json.claim.results,  classification.classification,'#results-far-edge-table','#optional-table',"faredge")
+                   fillResults(json.claim.results,  classification.classification,'#results-telco-table','#optional-table-telco',"telco")
+                   fillResults(json.claim.results,  classification.classification,'#results-NonTelco-table','#optional-table-non-telco',"nontelco")
+                   generateFeedbackPage(json.claim.results, classification.classification,'#feedback-all','#optional-',"all")
+                   generateFeedbackPage(json.claim.results, classification.classification,'#feedback-table-faredge','#optional-faredge-feedback',"faredge")
+                   generateFeedbackPage(json.claim.results, classification.classification,'#feedback-table-non-telco','#optional-table-non-telco-feedback',"nontelco")
+                   generateFeedbackPage(json.claim.results, classification.classification,'#feedback-table-telco','#optional-table-telco-feedback',"telco")
+                  //generateFeedbackPage(json.claim.results, classification.classification,'#feedback-all',"ALL")
+                 //  generateFeedbackPage(json.claim.results, classification.classification,'#feedback-table-faredge',"FarEdge")
+                  // generateFeedbackPage(json.claim.results, classification.classification,'#feedback-table-non-telco',"NonTelco")
+                 // generateFeedbackPage(json.claim.results, classification.classification,'#feedback-table-telco',"Telco")
 
                  });
                  fileUploaded.readAsText(fileList[0]);
