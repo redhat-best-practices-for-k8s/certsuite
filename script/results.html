@@ -267,6 +267,13 @@ function changeFunc() {
     document.getElementById("myCheck1-feedback").setAttribute("hidden", "hidden");
     document.getElementById("myCheck2-feedback").setAttribute("hidden", "hidden");
     document.getElementById("myCheck3-feedback").setAttribute("hidden", "hidden");
+    document.getElementById("send-all").setAttribute("hidden", "hidden");
+          document.getElementById("download-all").setAttribute("hidden", "hidden");
+          document.getElementById("download-NonTelco").setAttribute("hidden", "hidden");
+          document.getElementById("send-NonTelco").setAttribute("hidden", "hidden");
+          document.getElementById("send-FarEdge").setAttribute("hidden", "hidden");
+          document.getElementById("download-FarEdge").setAttribute("hidden", "hidden");
+          document.getElementById("send-Telco").setAttribute("hidden", "hidden");
     if (selectedValue=="faredge"){
           document.getElementById("myCheck1").removeAttribute("hidden");
           document.getElementById("optional-tab").removeAttribute("hidden");
@@ -883,7 +890,7 @@ if (checkBox.checked == true){
             //  console.log("key =",key)
             for (const key2 in input2){      
               
-                eqData=input2[key2][0].FarEdge
+                eqData=input2[key2][0].ForFarEdge
               
               if (tableName == "telco"){
                 eqData=input2[key2][0].ForTelco
@@ -997,7 +1004,7 @@ if (checkBox.checked == true){
             for (const key in input) {
               for (const key2 in input2){      
               
-              eqData=input2[key2][0].FarEdge
+              eqData=input2[key2][0].ForFarEdge
             
             if (tableName == "telco"){
               eqData=input2[key2][0].ForTelco
@@ -1166,7 +1173,7 @@ function addTextTXT()
     </script>
     <!-- This will load the initial JSON file, if present. It may fail. -->
     <script src="./claimjson.js"></script>
-    <script src="./class.js"></script>
+    <script src="./classification.js"></script>
 
     <script>
         // Load initial json, if available
