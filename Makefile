@@ -162,5 +162,5 @@ build-image-tnf:
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_VERSION} \
 		-f Dockerfile .
 classification-js:
-	./tnf generate catalog javaScript > script/classification.js
+	./tnf generate catalog javascript > script/classification.js
 

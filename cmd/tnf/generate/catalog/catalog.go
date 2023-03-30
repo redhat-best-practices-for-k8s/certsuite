@@ -57,7 +57,7 @@ var (
 	}
 
 	markdownGenerateClassification = &cobra.Command{
-		Use:   "javaScript",
+		Use:   "javascript",
 		Short: "Generates java script file for classification",
 		RunE:  generateJS,
 	}

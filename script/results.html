@@ -1087,7 +1087,6 @@ encodeURIComponent(text));
                  let fileUploaded = new FileReader();
                  fileUploaded.addEventListener("load", e => {
                    json = JSON.parse(fileUploaded.result)
-                   //console.log(json)
                    fillConfig(json.claim.configurations, '#config-table')
                    fillConfig(json.claim.nodes, '#nodes-table')
                    fillMetadata(json.claim.metadata, '#metadata-table')
