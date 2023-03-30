@@ -374,14 +374,19 @@ function showAll(){
           document.getElementById("results-telco-table").setAttribute("hidden", "hidden");
           document.getElementById("results-NonTelco-table").setAttribute("hidden", "hidden");
 
-          document.getElementById("feedback-table-faredge").setAttribute("hidden", "hidden");
-          document.getElementById("feedback-table-non-telco").setAttribute("hidden", "hidden");
-          document.getElementById("feedback-table-telco").setAttribute("hidden", "hidden");
-
-
           document.getElementById("optional-table").setAttribute("hidden", "hidden");
           document.getElementById("optional-table-telco").setAttribute("hidden", "hidden");
           document.getElementById("optional-table-non-telco").setAttribute("hidden", "hidden");
+          
+          document.getElementById("feedback-table-faredge").setAttribute("hidden", "hidden");
+          document.getElementById("feedback-table-non-telco").setAttribute("hidden", "hidden");
+          document.getElementById("feedback-table-telco").setAttribute("hidden", "hidden");
+         
+          document.getElementById("optional-faredge-feedback").setAttribute("hidden", "hidden");
+          document.getElementById("optional-table-non-telco-feedback").setAttribute("hidden", "hidden");
+          document.getElementById("optional-table-telco-feedback").setAttribute("hidden", "hidden");
+
+
 
           document.getElementById("results-table").removeAttribute("hidden");
           document.getElementById("feedback-all").removeAttribute("hidden");
@@ -1034,9 +1039,6 @@ function sendMail() {
 
           for (const key in this.json.claim.results) {
             for (const key2 in this.classification){      
-              
-            
-
             if (key==key2){
             var data = document.getElementById('source-'+tableName+'-'+key)
             if (data != null){
