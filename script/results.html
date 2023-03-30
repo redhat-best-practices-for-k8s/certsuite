@@ -82,7 +82,7 @@ table td {
 
               <label  id="myCheck-mandatory" for="mandatory-tab" hidden="hidden" >Show Mandatory Results for that scenario</label> 
               <input type="checkbox"  id="mandatory-tab"  data-bs-target="#results" data-bs-toggle="tab" role="tab"   checked onclick="showmaResults()" hidden="hidden" >  
-               <label  id="myCheck-feedback-mandatory" for="mandatory-tab-feedback" hidden="hidden" >Show all feedback for that scenario</label> 
+               <label  id="myCheck-feedback-mandatory" for="mandatory-tab-feedback" hidden="hidden" >Show Mandatory feedback for that scenario</label> 
                 <input type="checkbox"  id="mandatory-tab-feedback"  data-bs-target="#feedback" data-bs-toggle="tab" role="tab" checked   onclick="showmaFeedback()" hidden="hidden" >  
 
             </li>
@@ -377,7 +377,7 @@ function showAll(){
           document.getElementById("optional-table").setAttribute("hidden", "hidden");
           document.getElementById("optional-table-telco").setAttribute("hidden", "hidden");
           document.getElementById("optional-table-non-telco").setAttribute("hidden", "hidden");
-          
+
           document.getElementById("feedback-table-faredge").setAttribute("hidden", "hidden");
           document.getElementById("feedback-table-non-telco").setAttribute("hidden", "hidden");
           document.getElementById("feedback-table-telco").setAttribute("hidden", "hidden");
