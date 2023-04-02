@@ -42,35 +42,35 @@ table td {
 
     <ul class="nav nav-tabs">
       <li class="nav-item">
-        <button class="nav-link active" id="config-tab" data-bs-toggle="tab" data-bs-target="#config" type="button" role="tab" aria-controls="config" aria-selected="true" onclick="disableButton2()">Configuration</button>
+        <button class="nav-link active" id="config-tab" data-bs-toggle="tab" data-bs-target="#config" type="button" role="tab" aria-controls="config" aria-selected="true" onclick="disableAllButton()">Configuration</button>
       </li>
       <li class="nav-item">
-        <button class="nav-link" id="metadata-tab" data-bs-toggle="tab" data-bs-target="#metadata" type="button" role="tab" aria-controls="metadata" aria-selected="false" onclick="disableButton2()">Metadata</button>
+        <button class="nav-link" id="metadata-tab" data-bs-toggle="tab" data-bs-target="#metadata" type="button" role="tab" aria-controls="metadata" aria-selected="false" onclick="disableAllButton()">Metadata</button>
       </li>
       <li class="nav-item">
-        <button class="nav-link" id="nodes-tab" data-bs-toggle="tab" data-bs-target="#nodes" type="button" role="tab" aria-controls="nodes" aria-selected="false" onclick="disableButton2()" >Nodes</button>
+        <button class="nav-link" id="nodes-tab" data-bs-toggle="tab" data-bs-target="#nodes" type="button" role="tab" aria-controls="nodes" aria-selected="false" onclick="disableAllButton()" >Nodes</button>
       </li>
       <li class="nav-item">
-        <button class="nav-link" id="result-tab" data-bs-toggle="tab" data-bs-target="#results" type="button" role="tab" aria-controls="nodes" aria-selected="false" onclick="enableoptionbutton()">Results</button>
+        <button class="nav-link" id="result-tab" data-bs-toggle="tab" data-bs-target="#results" type="button" role="tab" aria-controls="nodes" aria-selected="false" onclick="enableOptionButton()">Results</button>
       </li>
       <li class="nav-item">
-        <button class="nav-link" id="versions-tab" data-bs-toggle="tab" data-bs-target="#versions" type="button" role="tab" aria-controls="versions" aria-selected="false" onclick="disableButton2()" >Versions</button>
+        <button class="nav-link" id="versions-tab" data-bs-toggle="tab" data-bs-target="#versions" type="button" role="tab" aria-controls="versions" aria-selected="false" onclick="disableAllButton()" >Versions</button>
       </li>
       <li class="nav-item">
-        <button class="nav-link" id="feedback-tab" data-bs-toggle="tab" data-bs-target="#feedback" type="button" role="tab" aria-controls="nodes" aria-selected="false" onclick="enableoptionbuttonFeedback()" >Feedback</button>
+        <button class="nav-link" id="feedback-tab" data-bs-toggle="tab" data-bs-target="#feedback" type="button" role="tab" aria-controls="nodes" aria-selected="false" onclick="enableOptionButtonFeedback()" >Feedback</button>
       </li>
         </ul>
         <ul class="nav nav-tabs">
           <li class="nav-item">
             <label  id="myCheck-mandatory" for="mandatory-tab" hidden="hidden" >Show Mandatory Results for that scenario</label> 
-            <input type="checkbox"  id="mandatory-tab"  data-bs-target="#results" data-bs-toggle="tab" role="tab"   checked onclick="showmaResults()" hidden="hidden" >  
+            <input type="checkbox"  id="mandatory-tab"  data-bs-target="#results" data-bs-toggle="tab" role="tab"   checked onclick="showMandatoryResults()" hidden="hidden" >  
             <label  id="myCheck-feedback-mandatory" for="mandatory-tab-feedback" hidden="hidden" >Show Mandatory feedback for that scenario</label> 
-            <input type="checkbox"  id="mandatory-tab-feedback"  data-bs-target="#feedback" data-bs-toggle="tab" role="tab" checked   onclick="showmaFeedback()" hidden="hidden" >  
+            <input type="checkbox"  id="mandatory-tab-feedback"  data-bs-target="#feedback" data-bs-toggle="tab" role="tab" checked   onclick="showMandatoryFeedback()" hidden="hidden" >  
             
             <label  id="myCheck-result" for="optional-tab" hidden="hidden" >Show Optional Results for that scenario</label> 
-            <input type="checkbox"  id="optional-tab"  data-bs-target="#results" data-bs-toggle="tab" role="tab"    onclick="showoptResults()" hidden="hidden" >  
+            <input type="checkbox"  id="optional-tab"  data-bs-target="#results" data-bs-toggle="tab" role="tab"    onclick="showOptionalResults()" hidden="hidden" >  
             <label  id="myCheck-feedback" for="optional-tab-feedback" hidden="hidden" >Show Optional feedback for that scenario</label> 
-            <input type="checkbox"  id="optional-tab-feedback"  data-bs-target="#feedback" data-bs-toggle="tab" role="tab"    onclick="showoptFeedback()" hidden="hidden" >  
+            <input type="checkbox"  id="optional-tab-feedback"  data-bs-target="#feedback" data-bs-toggle="tab" role="tab"    onclick="showOptionalFeedback()" hidden="hidden" >  
 
           </li>
       </ul>
@@ -156,7 +156,7 @@ var buttonElementId="non"
 
 
 
-        function showoptFeedback(){
+        function showOptionalFeedback(){
           var checkBox = document.getElementById("optional-tab-feedback");
           var selectBox = document.getElementById("selectBox");
           var selectedValue = selectBox.options[selectBox.selectedIndex].value;
@@ -197,7 +197,7 @@ var buttonElementId="non"
 
 
 
-        function showmaFeedback(){
+        function showMandatoryFeedback(){
           var checkBox = document.getElementById("mandatory-tab-feedback");
           var selectBox = document.getElementById("selectBox");
           var selectedValue = selectBox.options[selectBox.selectedIndex].value;
@@ -237,8 +237,8 @@ var buttonElementId="non"
 
 
 
-        function enableoptionbuttonFeedback(){
-          disableButton2() 
+        function enableOptionButtonFeedback(){
+          disableAllButton() 
           buttonElementId = "feedback-tab"
           enableSendDownload()
 
@@ -256,8 +256,8 @@ var buttonElementId="non"
           document.getElementById("myCheck-feedback-mandatory").removeAttribute("hidden");
           document.getElementById("mandatory-tab-feedback").removeAttribute("hidden");
             }
-            showmaFeedback()
-            showoptFeedback()
+            showMandatoryFeedback()
+            showOptionalFeedback()
 
         }
 
@@ -268,18 +268,18 @@ var buttonElementId="non"
             console.log("click on ",buttonElementId)
 
             if (buttonElementId=="feedback-tab"){
-              enableoptionbuttonFeedback()
+              enableOptionButtonFeedback()
 
 
               }
               if (buttonElementId=="result-tab"){
                 console.log("click on result ")
-                enableoptionbutton()
+                enableOptionButton()
               }
           }
 
-        function enableoptionbutton(){
-            disableButton2() 
+        function enableOptionButton(){
+          disableAllButton() 
             buttonElementId = "result-tab"
             var selectBox = document.getElementById("selectBox");
             var selectedValue = selectBox.options[selectBox.selectedIndex].value;
@@ -294,11 +294,11 @@ var buttonElementId="non"
             document.getElementById("myCheck-mandatory").removeAttribute("hidden");
             document.getElementById("mandatory-tab").removeAttribute("hidden");
             }
-            showoptResults()
-            showmaResults()
+            showOptionalResults()
+            showMandatoryResults()
           }
         
-        function showoptResults() {
+        function showOptionalResults() {
           var checkBox = document.getElementById("optional-tab");
           var selectBox = document.getElementById("selectBox");
           var selectedValue = selectBox.options[selectBox.selectedIndex].value;
@@ -325,7 +325,7 @@ var buttonElementId="non"
           }
         }
 
-        function showmaResults(){
+        function showMandatoryResults(){
         var checkBox = document.getElementById("mandatory-tab");
           var selectBox = document.getElementById("selectBox");
           var selectedValue = selectBox.options[selectBox.selectedIndex].value;
@@ -385,7 +385,7 @@ var buttonElementId="non"
         }
 
 
-        function disableButton2() {
+        function disableAllButton() {
     buttonElementId = "non"
     document.getElementById("optional-faredge-feedback").setAttribute("hidden", "hidden");
     document.getElementById("optional-table-non-telco-feedback").setAttribute("hidden", "hidden");
@@ -794,8 +794,7 @@ var buttonElementId="non"
                 // Note we are skipping some columns for now
                 // And 1 row per test
                 for (const item of input[key]) {
-                  testName = item.testID.id
-                    text += '<tr><td>' + item.testID.url + '" version: ' + item.testID.version + '</td>'
+                    text += '<tr><td>' + item.testID.id + '</td>'
                     text += '<td>' + item.testText.replace(/\n/g, '<br>') + '</td>'
                     text += '<td>' + item.duration + '</td>'
                     text += '<td>' + item.state + '</td>'
@@ -933,8 +932,8 @@ var buttonElementId="non"
                 itemid = 'collapse' + id
                 headingid = 'heading' + id
                 text += '<div class="accordion-item"><h2 class="accordion-header" id="' + headingid + '"><button class="accordion-button collapsed ' + buttontype + '" type="button" data-bs-toggle="collapse" data-bs-target="#' + itemid + '" aria-expanded="true" aria-controls="' + itemid +'">'
-                text += key + '</button></h2>'
-                // Now we should populate the item contents
+                text += 'Feedback for '+key + ' </button></h2>'
+                 // Now we should populate the item contents
                 text += '<div id="' + itemid + '" class="accordion-collapse collapse" aria-labelledby="' + headingid + '" data-bs-parent="' + element + '">'
                 text += '<div class="accordion-body">'
                 // Inside the accordion, 1 table with the following colummns
@@ -942,7 +941,7 @@ var buttonElementId="non"
                 for (const item of input[key]) {
                 testName = item.testID.id  
                  console.log(testName)
-                text += '<input id="source-'+tableName+'-'+testName+ '" type="text" />'
+                 text += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-'+tableName+'-'+testName+ '" type="text" ></textarea>'
                 }
                 if (eqData=="Optional" && tableName != "all" ){
                   text3+=text
@@ -965,39 +964,6 @@ var buttonElementId="non"
             $(text2).appendTo($(element))    
             $(text3).appendTo($(element2))    
 
-            temp=generateHiddenForm(input,tableName)
-            document.body.innerHTML+=temp
-
-            text2 += temp
-            text3 += temp
-
-        }
-
-        function generateHiddenForm(input,tableName){
-          var strdata = input
-          console.log("strdata is",strdata)
-
-          console.log("input is",input)
-
-          for (const key in input) {
-            for (const item of input[key]) {
-              testName = item.testID.id
-                              console.log("my test",testName)
-                
-            }
-          }
-          text1=""
-            tmp=""
-            for (const key in input) {
-            for (const item of input[key]) {
-              testName = item.testID.id
-                              console.log(testName)
-                
-            }
-          }
-            text1+=tmp
-
-            return text1
         }
 
         function download() {
