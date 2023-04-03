@@ -27,12 +27,12 @@ const (
 	InformativeResult        = "informative"
 	NormativeResult          = "normative"
 	bestPracticeDocV1dot3URL = "https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf"
-	bestPracticeDocV1dot4URL = "https://TODO" // TODO: Fill in this variable with the new v1.4 document when available.
+	bestPracticeDocV1dot4URL = "https://to-be-done" // TODO: Fill in this variable with the new v1.4 document when available.
 )
 
 // shared description text
 const (
-	iptablesNftablesImplicitCheck = ` Note: this test ensures iptables and nftables are not configured by CNF pods:
+	iptablesNftablesImplicitCheck = `Note: this test ensures iptables and nftables are not configured by CNF pods:
 - NET_ADMIN and NET_RAW are required to modify nftables (namespaced) which is not desired inside pods. 
 nftables should be configured by an administrator outside the scope of the CNF. nftables are usually configured 
 by operators, for instance the Performance Addon Operator (PAO) or istio.
@@ -169,12 +169,8 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestICMPv4ConnectivityIdentifier = AddCatalogEntry(
 		"icmpv4-connectivity",
 		common.NetworkingTestKey,
-		`Checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network.
-This test case requires the Deployment of the debug daemonset.`,
-		`Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases,
-CNFs may require routing table changes in order to communicate over the Default network. To exclude
-a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it.
-The label value is not important, only its presence.`,
+		`Checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset.`,
+		`Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence.`,
 		NormativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
@@ -328,12 +324,7 @@ The label value is not important, only its presence.`,
 		"container-startup",
 		common.LifecycleTestKey,
 		`Ensure that the containers lifecycle postStart management feature is configured.`,
-		`PostStart is normally used to configure the container, set up dependencies, and
-record the new creation. You could use this event to check that a required
-API is available before the container’s main work begins. Kubernetes will
-not change the container’s state to Running until the PostStart script has
-executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and
-https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
+		`PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NormativeResult,
 		`Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.`,
 		bestPracticeDocV1dot3URL+" Section 5.1.3, 12.2 and 12.5",
@@ -350,9 +341,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		"container-shutdown",
 		common.LifecycleTestKey,
 		`Ensure that the containers lifecycle preStop management feature is configured.`,
-		`The preStop can be used to gracefully stop the container and clean resources (e.g., DB connection).
-For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and
-https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
+		`The preStop can be used to gracefully stop the container and clean resources (e.g., DB connection). For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 		NormativeResult,
 		`Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.`,
 		bestPracticeDocV1dot3URL+" Section 5.1.3, 12.2 and 12.5",
@@ -708,11 +697,7 @@ https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`,
 	TestHugepagesNotManuallyManipulated = AddCatalogEntry(
 		"hugepages-config",
 		common.PlatformAlterationTestKey,
-		`Checks to see that HugePage settings have been configured through MachineConfig, and not manually on the
-underlying Node.  This test case applies only to Nodes that are configured with the "worker" MachineConfigSet.  First,
-the "worker" MachineConfig is polled, and the Hugepage settings are extracted.  Next, the underlying Nodes are polled
-for configured HugePages through inspection of /proc/meminfo.  The results are compared, and the test passes only if
-they are the same.`,
+		`Checks to see that HugePage settings have been configured through MachineConfig, and not manually on the underlying Node. This test case applies only to Nodes that are configured with the "worker" MachineConfigSet. First, the "worker" MachineConfig is polled, and the Hugepage settings are extracted. Next, the underlying Nodes are polled for configured HugePages through inspection of /proc/meminfo. The results are compared, and the test passes only if they are the same.`,
 		HugepagesNotManuallyManipulatedRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
@@ -729,8 +714,7 @@ they are the same.`,
 	TestICMPv6ConnectivityIdentifier = AddCatalogEntry(
 		"icmpv6-connectivity",
 		common.NetworkingTestKey,
-		`Checks that each CNF Container is able to communicate via ICMPv6 on the Default OpenShift network.  This
-test case requires the Deployment of the debug daemonset.`,
+		`Checks that each CNF Container is able to communicate via ICMPv6 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset.`,
 		ICMPv6ConnectivityRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
@@ -747,7 +731,7 @@ test case requires the Deployment of the debug daemonset.`,
 	TestICMPv4ConnectivityMultusIdentifier = AddCatalogEntry(
 		"icmpv4-connectivity-multus",
 		common.NetworkingTestKey,
-		`Checks that each CNF Container is able to communicate via ICMPv4 on the Multus network(s).  This
+		`Checks that each CNF Container is able to communicate via ICMPv4 on the Multus network(s). This
 test case requires the Deployment of the debug daemonset.`,
 		ICMPv4ConnectivityMultusRemediation,
 		NormativeResult,
@@ -765,7 +749,7 @@ test case requires the Deployment of the debug daemonset.`,
 	TestICMPv6ConnectivityMultusIdentifier = AddCatalogEntry(
 		"icmpv6-connectivity-multus",
 		common.NetworkingTestKey,
-		`Checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s).  This
+		`Checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s). This
 test case requires the Deployment of the debug daemonset.`,
 		ICMPv6ConnectivityMultusRemediation,
 		NormativeResult,
@@ -820,9 +804,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 	TestNonTaintedNodeKernelsIdentifier = AddCatalogEntry(
 		"tainted-node-kernel",
 		common.PlatformAlterationTestKey,
-		`Ensures that the Node(s) hosting CNFs do not utilize tainted kernels. This test case is especially important
-to support Highly Available CNFs, since when a CNF is re-instantiated on a backup Node, that Node's kernel may not have
-the same hacks.'`,
+		`Ensures that the Node(s) hosting CNFs do not utilize tainted kernels. This test case is especially important to support Highly Available CNFs, since when a CNF is re-instantiated on a backup Node, that Node's kernel may not have the same hacks.'`,
 		NonTaintedNodeKernelsRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
@@ -856,8 +838,7 @@ the same hacks.'`,
 	TestOperatorNoPrivileges = AddCatalogEntry(
 		"install-status-no-privileges",
 		common.OperatorTestKey,
-		`The operator is not installed with privileged rights. Test passes if clusterPermissions is not present in the CSV manifest or is present
-with no resourceNames under its rules.`,
+		`The operator is not installed with privileged rights. Test passes if clusterPermissions is not present in the CSV manifest or is present with no resourceNames under its rules.`,
 		OperatorNoPrivilegesRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
@@ -925,8 +906,7 @@ with no resourceNames under its rules.`,
 	TestPodNodeSelectorAndAffinityBestPractices = AddCatalogEntry(
 		"pod-scheduling",
 		common.LifecycleTestKey,
-		`Ensures that CNF Pods do not specify nodeSelector or nodeAffinity.  In most cases, Pods should allow for
-instantiation on any underlying Node.`,
+		`Ensures that CNF Pods do not specify nodeSelector or nodeAffinity. In most cases, Pods should allow for instantiation on any underlying Node.`,
 		PodNodeSelectorAndAffinityBestPracticesRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
@@ -994,11 +974,7 @@ instantiation on any underlying Node.`,
 	TestDeploymentScalingIdentifier = AddCatalogEntry(
 		"deployment-scaling",
 		common.LifecycleTestKey,
-		`Tests that CNF deployments support scale in/out operations.
-            First, The test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the
-            scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s.
-            In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the
-            original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the deployment/s`,
+		`Tests that CNF deployments support scale in/out operations. First, the test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s. In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the deployment/s`,
 		DeploymentScalingRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
@@ -1015,11 +991,7 @@ instantiation on any underlying Node.`,
 	TestStateFulSetScalingIdentifier = AddCatalogEntry(
 		"statefulset-scaling",
 		common.LifecycleTestKey,
-		`Tests that CNF statefulsets support scale in/out operations.
-            First, The test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the
-            scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the statefulset/s.
-            In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the
-            original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the statefulset/s`,
+		`Tests that CNF statefulsets support scale in/out operations. First, the test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the statefulset/s. In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the statefulset/s`,
 		StatefulSetScalingRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
@@ -1053,10 +1025,7 @@ instantiation on any underlying Node.`,
 	TestPodRecreationIdentifier = AddCatalogEntry(
 		"pod-recreation",
 		common.LifecycleTestKey,
-		`Tests that a CNF is configured to support High Availability.
-            First, this test cordons and drains a Node that hosts the CNF Pod.
-            Next, the test ensures that OpenShift can re-instantiate the Pod on another Node,
-            and that the actual replica count matches the desired replica count.`,
+		`Tests that a CNF is configured to support High Availability. First, this test cordons and drains a Node that hosts the CNF Pod. Next, the test ensures that OpenShift can re-instantiate the Pod on another Node, and that the actual replica count matches the desired replica count.`,
 		PodRecreationRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
@@ -1141,18 +1110,7 @@ instantiation on any underlying Node.`,
 	TestUnalteredBaseImageIdentifier = AddCatalogEntry(
 		"base-image",
 		common.PlatformAlterationTestKey,
-		`Ensures that the Container Base Image is not altered post-startup.  This test is a heuristic, and ensures
-that there are no changes to the following directories:
-1) /var/lib/rpm
-2) /var/lib/dpkg
-3) /bin
-4) /sbin
-5) /lib
-6) /lib64
-7) /usr/bin
-8) /usr/sbin
-9) /usr/lib
-10) /usr/lib64`,
+		`Ensures that the Container Base Image is not altered post-startup. This test is a heuristic, and ensures that there are no changes to the following directories: 1) /var/lib/rpm 2) /var/lib/dpkg 3) /bin 4) /sbin 5) /lib 6) /lib64 7) /usr/bin 8) /usr/sbin 9) /usr/lib 10) /usr/lib64`,
 		UnalteredBaseImageRemediation,
 		NormativeResult,
 		UnalteredBaseImageExceptionProcess,
@@ -1220,7 +1178,7 @@ that there are no changes to the following directories:
 	TestCrdsStatusSubresourceIdentifier = AddCatalogEntry(
 		"crd-status",
 		common.ObservabilityTestKey,
-		`Checks that all CRDs have a status subresource specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties["status"]).`,
+		`Checks that all CRDs have a status subresource specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties[“status”]).`,
 		CrdsStatusSubresourceRemediation,
 		InformativeResult,
 		NoDocumentedProcess,
@@ -1237,9 +1195,7 @@ that there are no changes to the following directories:
 	TestSysctlConfigsIdentifier = AddCatalogEntry(
 		"sysctl-config",
 		common.PlatformAlterationTestKey,
-		`Tests that no one has changed the node's sysctl configs after the node
-            was created, the tests works by checking if the sysctl configs are consistent with the
-            MachineConfig CR which defines how the node should be configured`,
+		`Tests that no one has changed the node's sysctl configs after the node was created, the tests works by checking if the sysctl configs are consistent with the MachineConfig CR which defines how the node should be configured`,
 		SysctlConfigsRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
@@ -1290,8 +1246,7 @@ that there are no changes to the following directories:
 	TestNodeOperatingSystemIdentifier = AddCatalogEntry(
 		"ocp-node-os-lifecycle",
 		common.PlatformAlterationTestKey,
-		`Tests that the nodes running in the cluster have operating systems
-            that are compatible with the deployed version of OpenShift.`,
+		`Tests that the nodes running in the cluster have operating systems that are compatible with the deployed version of OpenShift.`,
 		NodeOperatingSystemRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
@@ -1597,8 +1552,7 @@ that there are no changes to the following directories:
 	TestCPUIsolationIdentifier = AddCatalogEntry(
 		"cpu-isolation",
 		common.LifecycleTestKey,
-		`CPU isolation requires: For each container within the pod, resource requests and limits must be identical.
-        Request and Limits are in the form of whole CPUs. The runTimeClassName must be specified. Annotations required disabling CPU and IRQ load-balancing.`,
+		`CPU isolation requires: For each container within the pod, resource requests and limits must be identical. Request and Limits are in the form of whole CPUs. The runTimeClassName must be specified. Annotations required disabling CPU and IRQ load-balancing.`,
 		CPUIsolationRemediation,
 		InformativeResult,
 		NoDocumentedProcess,
@@ -1632,11 +1586,7 @@ that there are no changes to the following directories:
 	TestCrdScalingIdentifier = AddCatalogEntry(
 		"crd-scaling",
 		common.LifecycleTestKey,
-		`Tests that CNF crd support scale in/out operations.
-                First, The test starts getting the current replicaCount (N) of the crd/s with the Pod Under Test. Then, it executes the
-                scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the crd/s.
-                In case of crd that are managed by HPA the test is changing the min and max value to crd Replica - 1 during scale-in and the
-                original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the crd/s`,
+		`Tests that CNF crd support scale in/out operations. First, the test starts getting the current replicaCount (N) of the crd/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the crd/s. In case of crd that are managed by HPA the test is changing the min and max value to crd Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the crd/s`,
 		CrdScalingRemediation,
 		NormativeResult,
 		NoDocumentedProcess,

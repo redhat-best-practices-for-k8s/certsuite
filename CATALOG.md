@@ -101,7 +101,7 @@ Unique ID|access-control-no-1337-uid
 Description|Checks that all pods are not using the securityContext UID 1337
 Result Type|informative
 Suggested Remediation|Use another process UID that is not 1337
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.24
+Best Practice Reference|https://to-be-done Section 4.6.24
 Exception Process|There is no documented exception process for this.
 Tags|extended,access-control
 
@@ -209,7 +209,7 @@ Unique ID|access-control-requests-and-limits
 Description|Check that containers have resource requests and limits specified in their spec.
 Result Type|informative
 Suggested Remediation|Add requests and limits to your container spec. See: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#requests-and-limits
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.11
+Best Practice Reference|https://to-be-done Section 4.6.11
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,access-control
 
@@ -221,7 +221,7 @@ Unique ID|access-control-security-context
 Description|Checks the security context matches one of the 4 categories
 Result Type|normative
 Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.5
+Best Practice Reference|https://to-be-done Section 4.5
 Exception Process|If the container had the right configuration of the allowed category from the 4 list so the test will pass the list is on page 51 on the CNF Security Context Constraints (SCC) section 4.5(Allowed categories are category 1 and category 0), Applications MUST use one of the approved Security Context Constraints.
 Tags|extended,access-control
 
@@ -319,7 +319,7 @@ Unique ID|affiliated-certification-container-is-certified-digest
 Description|Tests whether container images that are autodiscovered have passed the Red Hat Container Certification Program by their digest(CCP).
 Result Type|normative
 Suggested Remediation|Ensure that your container has passed the Red Hat Container Certification Program (CCP).
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.7
+Best Practice Reference|https://to-be-done Section 5.3.7
 Exception Process|There is no documented exception process for this.
 Tags|extended,telco,affiliated-certification
 
@@ -371,7 +371,7 @@ Unique ID|lifecycle-affinity-required-pods
 Description|Checks that affinity rules are in place if AffinityRequired: 'true' labels are set on Pods.
 Result Type|informative
 Suggested Remediation|If a pod/statefulset/deployment is required to use affinity rules, please add AffinityRequired: 'true' as a label
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.24
+Best Practice Reference|https://to-be-done Section 4.6.24
 Exception Process|There is no documented exception process for this.
 Tags|extended,telco,lifecycle
 
@@ -407,7 +407,7 @@ Unique ID|lifecycle-cpu-isolation
 Description|CPU isolation requires: For each container within the pod, resource requests and limits must be identical. Request and Limits are in the form of whole CPUs. The runTimeClassName must be specified. Annotations required disabling CPU and IRQ load-balancing.
 Result Type|informative
 Suggested Remediation|CPU isolation testing is enabled. Please ensure that all pods adhere to the CPU isolation requirements
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 3.5.5
+Best Practice Reference|https://to-be-done Section 3.5.5
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,lifecycle
 
@@ -416,10 +416,10 @@ Tags|common,telco,lifecycle
 Property|Description
 ---|---
 Unique ID|lifecycle-crd-scaling
-Description|Tests that CNF crd support scale in/out operations. First, The test starts getting the current replicaCount (N) of the crd/s with the Pod Under Test. Then, it executes the                 scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the crd/s. In case of crd that are managed by HPA the test is changing the min and max value to crd Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the crd/s
+Description|Tests that CNF crd support scale in/out operations. First, the test starts getting the current replicaCount (N) of the crd/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the crd/s. In case of crd that are managed by HPA the test is changing the min and max value to crd Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the crd/s
 Result Type|normative
 Suggested Remediation|Ensure CNF crd/replica sets can scale in/out successfully.
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.20
+Best Practice Reference|https://to-be-done Section 4.6.20
 Exception Process|There is no documented exception process for this.
 Tags|common,lifecycle
 
@@ -428,7 +428,7 @@ Tags|common,lifecycle
 Property|Description
 ---|---
 Unique ID|lifecycle-deployment-scaling
-Description|Tests that CNF deployments support scale in/out operations. First, The test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the          scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s. In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. lastly its restoring the original min/max replica of the deployment/s
+Description|Tests that CNF deployments support scale in/out operations. First, the test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s. In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the deployment/s
 Result Type|normative
 Suggested Remediation|Ensure CNF deployments/replica sets can scale in/out successfully.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
@@ -467,7 +467,7 @@ Unique ID|lifecycle-persistent-volume-reclaim-policy
 Description|Check that the persistent volumes the CNF pods are using have a reclaim policy of delete.
 Result Type|informative
 Suggested Remediation|Ensure that all persistent volumes are using the reclaim policy: delete
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 3.3.4
+Best Practice Reference|https://to-be-done Section 3.3.4
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,lifecycle
 
@@ -560,7 +560,7 @@ Tags|common,telco,lifecycle
 Property|Description
 ---|---
 Unique ID|lifecycle-statefulset-scaling
-Description|Tests that CNF statefulsets support scale in/out operations. First, The test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the statefulset/s. In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the statefulset/s
+Description|Tests that CNF statefulsets support scale in/out operations. First, the test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the statefulset/s. In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the statefulset/s
 Result Type|normative
 Suggested Remediation|Ensure CNF statefulsets/replica sets can scale in/out successfully.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
@@ -575,7 +575,7 @@ Unique ID|lifecycle-storage-required-pods
 Description|Checks that pods do not place persistent volumes on local storage.
 Result Type|informative
 Suggested Remediation|If the kind of pods is StatefulSet, so we need to make sure that servicename is not local-storage.
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.24
+Best Practice Reference|https://to-be-done Section 4.6.24
 Exception Process|There is no documented exception process for this.
 Tags|extended,lifecycle
 
@@ -589,7 +589,7 @@ Unique ID|manageability-container-port-name-format
 Description|Check that the container's ports name follow the naming conventions.
 Result Type|normative
 Suggested Remediation|Ensure that the container's ports name follow our partner naming conventions
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.20
+Best Practice Reference|https://to-be-done Section 4.6.20
 Exception Process|There is no documented exception process for this.
 Tags|extended,manageability
 
@@ -601,7 +601,7 @@ Unique ID|manageability-containers-image-tag
 Description|Check that image tag exists on containers.
 Result Type|informative
 Suggested Remediation|Ensure that all the container images are tagged
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.12
+Best Practice Reference|https://to-be-done Section 4.6.12
 Exception Process|There is no documented exception process for this.
 Tags|extended,manageability
 
@@ -615,7 +615,7 @@ Unique ID|networking-dpdk-cpu-pinning-exec-probe
 Description|If a CNF is doing CPI pinning, exec probes may not be used.
 Result Type|informative
 Suggested Remediation|If the CNF is doing CPU pinning and running a DPDK process do not use exec probes (executing a command within the container) as it may pile up and block the node eventually.
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.24
+Best Practice Reference|https://to-be-done Section 4.6.24
 Exception Process|There is no documented exception process for this.
 Tags|extended,telco,networking
 
@@ -627,7 +627,7 @@ Unique ID|networking-dual-stack-service
 Description|Checks that all services in namespaces under test are either ipv6 single stack or dual stack. This test case requires the deployment of the debug daemonset.
 Result Type|normative
 Suggested Remediation|Configure every CNF services with either a single stack ipv6 or dual stack (ipv4/ipv6) load balancer
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 3.5.7
+Best Practice Reference|https://to-be-done Section 3.5.7
 Exception Process|There is no documented exception process for this.
 Tags|common,extended,networking
 
@@ -638,7 +638,7 @@ Property|Description
 Unique ID|networking-icmpv4-connectivity
 Description|Checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset.
 Result Type|normative
-Suggested Remediation|Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trifling, only its presence.
+Suggested Remediation|Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
 Tags|common,networking
@@ -650,7 +650,7 @@ Property|Description
 Unique ID|networking-icmpv4-connectivity-multus
 Description|Checks that each CNF Container is able to communicate via ICMPv4 on the Multus network(s). This test case requires the Deployment of the debug daemonset.
 Result Type|normative
-Suggested Remediation|Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trifling, only its presence.
+Suggested Remediation|Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,networking
@@ -662,7 +662,7 @@ Property|Description
 Unique ID|networking-icmpv6-connectivity
 Description|Checks that each CNF Container is able to communicate via ICMPv6 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset.
 Result Type|normative
-Suggested Remediation|Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trifling, only its presence.
+Suggested Remediation|Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,networking
@@ -674,7 +674,7 @@ Property|Description
 Unique ID|networking-icmpv6-connectivity-multus
 Description|Checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s). This test case requires the Deployment of the debug daemonset.
 Result Type|normative
-Suggested Remediation|Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it.The label value is trifling, only its presence.
+Suggested Remediation|Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it.The label value is trivial, only its presence.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,networking
@@ -699,7 +699,7 @@ Unique ID|networking-ocp-reserved-ports-usage
 Description|Check that containers do not listen on ports that are reserved by OpenShift
 Result Type|normative
 Suggested Remediation|Ensure that CNF apps do not listen on ports that are reserved by OpenShift
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 3.5.9
+Best Practice Reference|https://to-be-done Section 3.5.9
 Exception Process|There is no documented exception process for this.
 Tags|common,networking
 
@@ -711,7 +711,7 @@ Unique ID|networking-reserved-partner-ports
 Description|Checks that pods and containers are not consuming ports designated as reserved by partner
 Result Type|informative
 Suggested Remediation|Ensure ports are not being used that are reserved by our partner
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.24
+Best Practice Reference|https://to-be-done Section 4.6.24
 Exception Process|There is no documented exception process for this.
 Tags|extended,networking
 
@@ -723,7 +723,7 @@ Unique ID|networking-restart-on-reboot-sriov-pod
 Description|Ensures that the label restart-on-reboot exists on pods that use SRIOV network interfaces.
 Result Type|normative
 Suggested Remediation|Ensure that the label restart-on-reboot exists on pods that use SRIOV network interfaces.
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf
+Best Practice Reference|https://to-be-done
 Exception Process|There is no documented exception process for this.
 Tags|faredge,networking
 
@@ -849,7 +849,7 @@ Unique ID|performance-exclusive-cpu-pool
 Description|Ensures that if one container in a Pod selects an exclusive CPU pool the rest select the same type of CPU pool
 Result Type|normative
 Suggested Remediation|Ensure that if one container in a Pod selects an exclusive CPU pool the rest also select this type of CPU pool
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf
+Best Practice Reference|https://to-be-done
 Exception Process|There is no documented exception process for this.
 Tags|faredge,performance
 
@@ -861,7 +861,7 @@ Unique ID|performance-exclusive-cpu-pool-rt-scheduling-policy
 Description|Ensures that if application workload runs in exclusive CPU pool, it chooses RT CPU schedule policy and set the priority less than 10.
 Result Type|normative
 Suggested Remediation|Ensure that the workload running in Application exclusive CPU pool can choose RT CPU scheduling policy, but should set priority less than 10
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf
+Best Practice Reference|https://to-be-done
 Exception Process|There is no documented exception process for this.
 Tags|faredge,performance
 
@@ -873,7 +873,7 @@ Unique ID|performance-isolated-cpu-pool-rt-scheduling-policy
 Description|Ensures that a workload running in an application-isolated exclusive CPU pool selects a RT CPU scheduling policy
 Result Type|normative
 Suggested Remediation|Ensure that the workload running in an application-isolated exclusive CPU pool selects a RT CPU scheduling policy (such as SCHED_FIFO/SCHED_RR)
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf
+Best Practice Reference|https://to-be-done
 Exception Process|There is no documented exception process for this.
 Tags|faredge,performance
 
@@ -885,7 +885,7 @@ Unique ID|performance-rt-apps-no-exec-probes
 Description|Ensures that if one container runs a real time application exec probes are not used
 Result Type|normative
 Suggested Remediation|Ensure that if one container runs a real time application exec probes are not used
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf
+Best Practice Reference|https://to-be-done
 Exception Process|There is no documented exception process for this.
 Tags|faredge,performance
 
@@ -897,7 +897,7 @@ Unique ID|performance-shared-cpu-pool-non-rt-scheduling-policy
 Description|Ensures that if application workload runs in shared CPU pool, it chooses non-RT CPU schedule policy to always share the CPU with other applications and kernel threads.
 Result Type|normative
 Suggested Remediation|Ensure that the workload running in Application shared CPU pool should choose non-RT CPU schedule policy, like SCHED _OTHER to always share the CPU with other applications and kernel threads.
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf
+Best Practice Reference|https://to-be-done
 Exception Process|There is no documented exception process for this.
 Tags|faredge,performance
 
@@ -935,7 +935,7 @@ Unique ID|platform-alteration-hugepages-1g-only
 Description|Check that pods using hugepages only use 1Gi size
 Result Type|informative
 Suggested Remediation|Modify pod to consume 1Gi hugepages only
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf
+Best Practice Reference|https://to-be-done
 Exception Process|There is no documented exception process for this.
 Tags|faredge,platform-alteration
 
@@ -947,7 +947,7 @@ Unique ID|platform-alteration-hugepages-2m-only
 Description|Check that pods using hugepages only use 2Mi size
 Result Type|normative
 Suggested Remediation|Modify pod to consume 2Mi hugepages only
-Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 3.5.4
+Best Practice Reference|https://to-be-done Section 3.5.4
 Exception Process|There is no documented exception process for this.
 Tags|extended,platform-alteration
 
@@ -1004,7 +1004,7 @@ Tags|common,platform-alteration
 Property|Description
 ---|---
 Unique ID|platform-alteration-ocp-node-os-lifecycle
-Description|Tests that the nodes running in the cluster have operating systems             that are compatible with the deployed version of OpenShift.
+Description|Tests that the nodes running in the cluster have operating systems that are compatible with the deployed version of OpenShift.
 Result Type|normative
 Suggested Remediation|Please update your workers to a version that is supported by your version of OpenShift
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 7.9
@@ -1028,7 +1028,7 @@ Tags|common,platform-alteration
 Property|Description
 ---|---
 Unique ID|platform-alteration-sysctl-config
-Description|Tests that no one has changed the node's sysctl configs after the node             was created, the tests works by checking if the sysctl configs are consistent with the             MachineConfig CR which defines how the node should be configured
+Description|Tests that no one has changed the node's sysctl configs after the node was created, the tests works by checking if the sysctl configs are consistent with the MachineConfig CR which defines how the node should be configured
 Result Type|normative
 Suggested Remediation|You should recreate the node or change the sysctls, recreating is recommended because there might be other unknown changes
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
