@@ -11,14 +11,6 @@
 <body>
   <nav class="navbar navbar-dark bg-dark">
     <a class="navbar-brand" href="#">Test Network Function result parser</a>
-<<<<<<< HEAD
-    <form class="form-inline">
-      <div class="mb-3">
-        <label for="formFile" class="form-label text-light">Upload claim.json file</label>
-        <input class="form-control" type="file" id="formFile">
-      </div>
-    </form>
-=======
     <div class="mb-3">
       <label for="formFile" class="form-label text-light">Upload claim.json file</label>
       <input class="form-control" type="file" id="formFile">
@@ -31,7 +23,6 @@
         <option value="nontelco"> Non Telco</option>
       </select>
     </div>
->>>>>>> 727eef4 (reformating)
   </nav>
 
   <ul class="nav nav-tabs">
@@ -69,10 +60,6 @@
       <table class="table table-hover table-bordered" id="nodes-table">
       </table>
     </div>
-<<<<<<< HEAD
-    <div class="tab-pane fade" id="results" role="tabpanel" aria-labelledby="results-tab">
-      <table class="table table-hover table-bordered" id="results-table">
-=======
 
     <div class="tab-pane fade" id="results" role="tabpanel" aria-labelledby="result-tab">
       <table class="table table-hover table-bordered" id="results-table" hidden="hidden">
@@ -88,7 +75,6 @@
       <table class="table table-hover table-bordered" id="results-NonTelco-table" hidden="hidden">
       </table>
       <table class="table table-hover table-bordered" id="optional-table-non-telco" hidden="hidden">
->>>>>>> 727eef4 (reformating)
       </table>
     </div>
     <div class="tab-pane fade" id="versions" role="tabpanel" aria-labelledby="versions-tab">
@@ -281,14 +267,10 @@
       fillConfig(initialjson.claim.nodes, '#nodes-table')
       fillMetadata(initialjson.claim.metadata, '#metadata-table')
       fillVersions(initialjson.claim.versions, '#versions-table')
-<<<<<<< HEAD
-      fillResults(initialjson.claim.results, '#results-table')
-=======
       fillResults(initialjson.claim.results, '#results-table', '#optional-table', "ALL")
       fillResults(initialjson.claim.results, classification.classification, '#results-far-edge-table', '#optional-table', "FarEdge")
 
       generateFeedbackPage(initialjson.claim.results, classification.classification, '#feedback-table-faredge', "FarEdge")
->>>>>>> 727eef4 (reformating)
     }
     const inputElement = document.getElementById("formFile");
     inputElement.addEventListener("change", handleFiles, false);
@@ -299,17 +281,10 @@
         let fileUploaded = new FileReader();
         fileUploaded.addEventListener("load", e => {
           json = JSON.parse(fileUploaded.result)
-<<<<<<< HEAD
-          //console.log(json)
-=======
->>>>>>> 727eef4 (reformating)
           fillConfig(json.claim.configurations, '#config-table')
           fillConfig(json.claim.nodes, '#nodes-table')
           fillMetadata(json.claim.metadata, '#metadata-table')
           fillVersions(json.claim.versions, '#versions-table')
-<<<<<<< HEAD
-          fillResults(json.claim.results, '#results-table')
-=======
           fillResults(json.claim.results, classification, '#results-table', '#optional-', "all")
           fillResults(json.claim.results, classification, '#results-far-edge-table', '#optional-table', "faredge")
           fillResults(json.claim.results, classification, '#results-telco-table', '#optional-table-telco', "telco")
@@ -319,7 +294,6 @@
           generateFeedbackPage(json.claim.results, classification, '#feedback-table-non-telco', '#optional-table-non-telco-feedback', "nontelco")
           generateFeedbackPage(json.claim.results, classification, '#feedback-table-telco', '#optional-table-telco-feedback', "telco")
 
->>>>>>> 727eef4 (reformating)
         });
         fileUploaded.readAsText(fileList[0]);
       }
