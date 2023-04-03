@@ -29,7 +29,7 @@ const (
 	IsRedHatReleaseExceptionProcess = `Document which containers are not able to meet the RHEL-based container requirement and if/when the base image can be updated.`
 
 	SecConNonRootUserExceptionProcess = `If your application needs root user access, please document why your application cannot be ran as non-root and supply the reasoning for exception.`
-	SecConExceptionProcess = `If the container had the right configuration of the allowed category from the 4 list so the test will pass the list is on page 51 on the CNF Security Context Constraints (SCC) section 4.5(Allowed categories are category 1 and category 0), Applications MUST use one of the approved Security Context Constraints.`
+	SecConExceptionProcess            = `If the container had the right configuration of the allowed category from the 4 list so the test will pass the list is on page 51 on the CNF Security Context Constraints (SCC) section 4.5(Allowed categories are category 1 and category 0), Applications MUST use one of the approved Security Context Constraints.`
 
 	SecConCapabilitiesExceptionProcess = `Identify the pod that is needing special capabilities and document why`
 
