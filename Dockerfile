@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/ubi:8.7-1090.1679482075 AS build
+FROM registry.access.redhat.com/ubi8/ubi:8.7-1112 AS build
 ENV TNF_DIR=/usr/tnf
 ENV \
 	TNF_SRC_DIR=${TNF_DIR}/tnf-src \
