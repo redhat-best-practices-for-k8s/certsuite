@@ -34,7 +34,7 @@
     }
 
     tgy {
-	    background-color : 	#6c757d;
+	    background-color : 	#a7aeb3;
     }
   </style>
 </head>
@@ -52,36 +52,15 @@
         <option value="faredge"> Far Edge</option>
         <option value="telco"> Telco</option>
         <option value="nontelco"> Non Telco</option>
+        <option value="extanded"> Extanded</option>
+
       </select>
-      <table>
-        <tr>
-          <td>
-            <tred>Failed Madatory</tred>
-          </td>
-        </tr>
-        <tr>
-          <td>
-          <ty>Failed Optional</ty>
-          </td>
-        </tr>
-        <tr>
-          <td>
-          <tgy>Skip</tgy>
-          </td>
-        </tr>
-        <tr>
-          <td>
-          <tg>Pass</tg>
-          </td>
-        </tr>
-      </table>
     </div>
   </nav>
 
   <button class="w3-button w3-right w3-light-grey" id="download" type="submit" onclick=download()
-    hidden="hidden">Download</button>
-  <button class="w3-button w3-right w3-light-grey" id="send" type="submit" onclick=sendMail()
-    hidden="hidden">sendMail</button>
+    hidden="hidden">Download Results</button>
+
 
   <ul class="nav nav-tabs">
     <li class="nav-item">
@@ -149,6 +128,9 @@
       <table class="table table-hover table-bordered" id="mandatory-non-telco-table" hidden="hidden">
       </table>
       <table class="table table-hover table-bordered" id="optional-non-telco-table" hidden="hidden">
+        <table class="table table-hover table-bordered" id="mandatory-extanded-table" hidden="hidden">
+        </table>
+        <table class="table table-hover table-bordered" id="optional-extanded-table" hidden="hidden">
       </table>
     </div>
 
@@ -178,11 +160,9 @@
       var selectBox = document.getElementById("selectBox");
       var selectedValue = selectBox.options[selectBox.selectedIndex].value;
 
-      console.log("click on ", buttonElementId)
 
       if (buttonElementId == "result-tab") {
 
-        console.log("click on result ")
         enableOptionButton()
 
       }
@@ -194,7 +174,6 @@
       buttonElementId = "result-tab"
       var selectBox = document.getElementById("selectBox");
       var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-      console.log(selectedValue)
       if (selectedValue == "all") {
         showAll()
       }
@@ -234,26 +213,33 @@
           document.getElementById(optionalMandatory + "-non-telco-table").setAttribute("hidden", "hidden");
         }
       }
+      if (selectedValue == "extanded") {
+        if (checkBox.checked == true) {
+          document.getElementById(optionalMandatory + "-extanded-table").removeAttribute("hidden");
+        } else {
+          document.getElementById(optionalMandatory + "-extanded-table").setAttribute("hidden", "hidden");
+        }
+      }
     }
 
 
     function showAll() {
-      console.log("in show all")
 
       document.getElementById("mandatory-far-edge-table").setAttribute("hidden", "hidden");
       document.getElementById("mandatory-telco-table").setAttribute("hidden", "hidden");
       document.getElementById("mandatory-non-telco-table").setAttribute("hidden", "hidden");
+      document.getElementById("mandatory-extanded-table").setAttribute("hidden", "hidden");
 
       document.getElementById("optional-far-edge-table").setAttribute("hidden", "hidden");
       document.getElementById("optional-telco-table").setAttribute("hidden", "hidden");
       document.getElementById("optional-non-telco-table").setAttribute("hidden", "hidden");
+      document.getElementById("optional-extanded-table").setAttribute("hidden", "hidden");
 
       document.getElementById("results-table").removeAttribute("hidden");
     }
 
     function enableSendDownload() {
       document.getElementById("download").removeAttribute("hidden");
-      document.getElementById("send").removeAttribute("hidden");
 
     }
 
@@ -263,16 +249,18 @@
 
       document.getElementById("mandatory-far-edge-table").setAttribute("hidden", "hidden");
       document.getElementById("mandatory-non-telco-table").setAttribute("hidden", "hidden");
+      document.getElementById("mandatory-extanded-table").setAttribute("hidden", "hidden");
       document.getElementById("mandatory-telco-table").setAttribute("hidden", "hidden");
 
       document.getElementById("optional-far-edge-table").setAttribute("hidden", "hidden");
       document.getElementById("optional-non-telco-table").setAttribute("hidden", "hidden");
+      document.getElementById("optional-extanded-table").setAttribute("hidden", "hidden");
+
       document.getElementById("optional-telco-table").setAttribute("hidden", "hidden");
 
       document.getElementById("optional-tab").setAttribute("hidden", "hidden");
       document.getElementById("mandatory-tab").setAttribute("hidden", "hidden");
 
-      document.getElementById("send").setAttribute("hidden", "hidden");
       document.getElementById("download").setAttribute("hidden", "hidden");
       document.getElementById("myCheck-result").setAttribute("hidden", "hidden");
 
@@ -401,6 +389,9 @@
             if (tableName == "nontelco") {
               eqData = input2[key2].NonTelco
             }
+            if (tableName == "extanded") {
+              eqData = input2[key2].Extended
+            }
 
             if (key == key2) {
               if (item.state == 'passed') {
@@ -434,21 +425,26 @@
           }
         }
       }
-
+      text += '<th scope="col" class="th-sm">Test ID</th>'
 
       if (tableName == "all") {
         text3 = '<thead><tr><th scope="col">Test summary (' + tableName + ')</th><th scope="col">Test feedback</th></tr></thead><tbody>'
-      } else {
+        } else {
         text3 = '<thead><tr><th scope="col">Mandatory Test  summary (' + tableName + ')</th><th scope="col">Test feedback</th></tr></thead><tbody>'
       }
+      //text3 += '<table><tr><td><tred>Failed Madatory</tred></td></tr><tr><td><ty>Failed Optional</ty></td></tr><tr><td><tgy>Skip</tgy></td></tr><tr><td><tg>Pass</tg></td></tr></table>'
+
       text2 = '<thead><tr><th scope="col">Optional Test summary (' + tableName + ')</th><th scope="col">Test results</th></tr></thead><tbody>'
-      text2 += '<tr><td class="align-top"><b>Total:</b> ' + tests_total_optional + '<br><b>Passed:</b> ' + tests_passed_optional + '<br><b>Skipped:</b> ' + tests_skipped_optional + '<br><b>Failed:</b> ' + tests_failed_optional + '</td><td>'
-      text2 += '<div class="accordion" id="results-accordion">'
+    //  text2 += '<table><tr><td><tred>Failed Madatory</tred></td></tr><tr><td><ty>Failed Optional</ty></td></tr><tr><td><tgy>Skip</tgy></td></tr><tr><td><tg>Pass</tg></td></tr></table>'
+      text2 += '<tr><td class="align-top"><b>Total:</b> ' + tests_total_optional + '<br><b><tg>Passed:</tg></b> ' + tests_passed_optional + '<br><b><tgy>Skipped:</tgy></b> ' + tests_skipped_optional + '<br><b><ty>Failed:</ty></b> ' + tests_failed_optional 
+      text2+='</td><td>'
+        text2 += '<div class="accordion" id="results-accordion">'
       // First we will have a left column in the table with the summarized results
-      text3 += '<tr><td class="align-top"><b>Total:</b> ' + tests_total + '<br><b>Passed:</b> ' + tests_passed + '<br><b>Skipped:</b> ' + tests_skipped + '<br><b>Failed:</b> ' + tests_failed + '</td><td>'
-      text3 += '<div class="accordion" id="results-accordion">'
+      text3 += '<tr><td class="align-top"><b>Total:</b> ' + tests_total + '<br><b><tg>Passed:</tg></b> ' + tests_passed + '<br><b><tgy>Skipped:</tgy></b> '  + tests_skipped + '<br><b><tred>Failed:</tred></b> ' + tests_failed 
+      text3+='</td><td>'
+
+        text3 += '<div class="accordion" id="results-accordion">'
       for (const key in input) {
-        //  console.log("key =",key)
         for (const key2 in input2) {
 
           eqData = input2[key2].FarEdge
@@ -459,6 +455,9 @@
           }
           if (tableName == "nontelco") {
             eqData = input2[key2].NonTelco
+          }
+          if (tableName == "extanded") {
+            eqData = input2[key2].Extended
           }
 
           if (key == key2) {
@@ -543,25 +542,11 @@
       var sourceId = 'source-' +tableName+ '-' +key
       var data = document.getElementById(sourceId).value;
       document.getElementById(sourceId).textContent=data
+      document.getElementById(sourceId).readOnly = true;
+
 
         }
-    function sendMail() {
-      for (const key in this.json.claim.results) {
-      for (const key2 in this.classification) {
-       if (key == key2){
-         copyData(key2)
-        }
-          }
-        }
-      var text = "Feed back for every test case \n"
-      var htmlText = getHtmlResults()
-      var selectBox = document.getElementById("selectBox");
-      var tableName = selectBox.options[selectBox.selectedIndex].value;
-      var subject = "CNF test Results for " + tableName
 
-      window.location = "mailto:yourmail@domain.com?subject=" + subject + "&body=" + htmlText;
-
-    }
 
 
   </script>
@@ -596,6 +581,8 @@
           fillResults(json.claim.results, classification, '#mandatory-far-edge-table', '#optional-far-edge-table', "faredge")
           fillResults(json.claim.results, classification, '#mandatory-telco-table', '#optional-telco-table', "telco")
           fillResults(json.claim.results, classification, '#mandatory-non-telco-table', '#optional-non-telco-table', "nontelco")
+          fillResults(json.claim.results, classification, '#mandatory-extanded-table', '#optional-extanded-table', "extanded")
+
         });
         fileUploaded.readAsText(fileList[0]);
       }
@@ -604,7 +591,6 @@
     function linkToStyle(link) {
       var css = [];
       var sheet = link.sheet;
-      console.log(sheet)
       var rules
       try {
         rules = sheet.cssRules || sheet.rules;
@@ -615,7 +601,6 @@
 
       for (var i = 0; i < rules.length; ++i) {
         var rule = rules[i];
-        console.log(rules[i])
         if (rules[i].selectorText == ".collapse:not(.show)") {
           continue
         }
@@ -637,7 +622,6 @@
       doc = document.implementation.createHTMLDocument()
       head = doc.head;
       body = doc.body
-      console.log(body)
       var selectBox = document.getElementById("selectBox");
       insertResults(body, "mandatory")
       insertResults(body, "optional")
@@ -647,12 +631,17 @@
           head.insertBefore(style, head.firstChild);
         }
 
-
+      });
+      document.querySelectorAll("style").forEach(function (style) {
+        const clonedStyle = style.cloneNode(true);
+        head.insertBefore(clonedStyle, head.firstChild);
       });
       return doc.documentElement.outerHTML
     }
 
     function download() {
+      var selectBox = document.getElementById("selectBox");
+      var tableName = selectBox.options[selectBox.selectedIndex].value;
       for (const key in this.json.claim.results) {
       for (const key2 in this.classification) {
        if (key == key2){
@@ -660,8 +649,16 @@
         }
           }
         }
-      htmlText = getHtmlResults()
 
+      htmlText = getHtmlResults()
+      for (const key in this.json.claim.results) {
+      for (const key2 in this.classification) {
+       if (key == key2){
+        var sourceId = 'source-' +tableName+ '-' +key
+        document.getElementById(sourceId).readOnly = false;
+        }
+          }
+        }
       var pom = document.createElement('a');
       pom.setAttribute('href', 'data:text/html;charset=UTF-8,' + encodeURIComponent(htmlText));
       pom.setAttribute('download', "results");
@@ -694,7 +691,11 @@
           table = document.getElementById(optionalMandatory + "-non-telco-table");
         }
       }
-      console.log(table)
+      if (selectedValue == "extanded") {
+        if (checkBox.checked == true) {
+          table = document.getElementById(optionalMandatory + "-extanded-table");
+        }
+      }
       const clonedTable = table.cloneNode(true);
       body.appendChild(clonedTable);
     }
