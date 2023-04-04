@@ -28,19 +28,14 @@ env:
 jobs:
   lint:
     name: Run Linter and Vet
-    runs-on: ubuntu-22.04
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, macos-latest]
     env:
       SHELL: /bin/bash
-      KUBECONFIG: '/home/runner/.kube/config'
-      PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
 
     steps:
-      - name: Write temporary docker file
-        run: |
-          mkdir -p /home/runner/.docker
-          touch ${PFLT_DOCKERCONFIG}
-          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
-
       - name: Set up Go 1.20
         uses: actions/setup-go@v4
         with:
@@ -66,6 +61,12 @@ jobs:
             --output /usr/local/bin/hadolint \
             https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
           chmod +x /usr/local/bin/hadolint
+        if: runner.os == 'Linux'
+
+      - name: Install hadolint
+        run: |
+          brew install hadolint
+        if: runner.os == 'macOS'
 
       - name: Install shfmt
         run: make install-shfmt
@@ -105,19 +106,14 @@ jobs:
                 level: warning
   unit-tests:
     name: Run Unit Tests
-    runs-on: ubuntu-22.04
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, macos-latest]
     env:
       SHELL: /bin/bash
-      KUBECONFIG: '/home/runner/.kube/config'
-      PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
 
     steps:
-      - name: Write temporary docker file
-        run: |
-          mkdir -p /home/runner/.docker
-          touch ${PFLT_DOCKERCONFIG}
-          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
-
       - name: Set up Go 1.20
         uses: actions/setup-go@v4
         with:

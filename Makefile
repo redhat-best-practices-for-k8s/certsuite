@@ -120,7 +120,7 @@ install-tools:
 
 # Install linters
 install-lint:
-	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b ${GO_PATH}/bin ${GOLANGCI_VERSION}
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@${GOLANGCI_VERSION}
 
 install-shfmt:
 	go install mvdan.cc/sh/v3/cmd/shfmt@latest
