@@ -428,13 +428,13 @@
       text += '<th scope="col" class="th-sm">Test ID</th>'
 
       if (tableName == "all") {
-        text3 = '<thead><tr><th scope="col">Test summary (' + tableName + ')</th><th scope="col">Test feedback</th></tr></thead><tbody>'
+        text3 = '<thead><tr><th style="width:10%" scope="col">Test summary (' + tableName + ')</th><th scope="col">Test feedback</th></tr></thead><tbody>'
         } else {
-        text3 = '<thead><tr><th scope="col">Mandatory Test  summary (' + tableName + ')</th><th scope="col">Test feedback</th></tr></thead><tbody>'
+        text3 = '<thead><tr><th style="width:10%" scope="col">Mandatory Test  summary (' + tableName + ')</th><th scope="col">Test feedback</th></tr></thead><tbody>'
       }
       //text3 += '<table><tr><td><tred>Failed Madatory</tred></td></tr><tr><td><ty>Failed Optional</ty></td></tr><tr><td><tgy>Skip</tgy></td></tr><tr><td><tg>Pass</tg></td></tr></table>'
 
-      text2 = '<thead><tr><th scope="col">Optional Test summary (' + tableName + ')</th><th scope="col">Test results</th></tr></thead><tbody>'
+      text2 = '<thead><tr><th style="width:10%" scope="col">Optional Test summary (' + tableName + ')</th><th scope="col">Test results</th></tr></thead><tbody>'
     //  text2 += '<table><tr><td><tred>Failed Madatory</tred></td></tr><tr><td><ty>Failed Optional</ty></td></tr><tr><td><tgy>Skip</tgy></td></tr><tr><td><tg>Pass</tg></td></tr></table>'
       text2 += '<tr><td class="align-top"><b>Total:</b> ' + tests_total_optional + '<br><b><tg>Passed:</tg></b> ' + tests_passed_optional + '<br><b><tgy>Skipped:</tgy></b> ' + tests_skipped_optional + '<br><b><ty>Failed:</ty></b> ' + tests_failed_optional 
       text2+='</td><td>'
@@ -510,7 +510,7 @@
               text2 += text
               text2 += '</tbody></table>'
               for (const item of input[key]) {
-                  text2 += '<label >write your Feedback '+ item.testID.id +' test case</label>'
+                  text2 += '<label >write your Feedback for '+ item.testID.id +' test case</label>'
                   text2 += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-' + tableName + '-' + item.testID.id + '" type="text" ></textarea>' 
                 }
               text2 += '</div></div></div>'
@@ -518,7 +518,7 @@
               text3 += text
               text3 += '</tbody></table>'
               for (const item of input[key]) {
-                  text3 += '<label >write your Feedback '+ item.testID.id +' test case</label>'
+                  text3 += '<label >write your Feedback for '+ item.testID.id +' test case</label>'
                   text3 += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-' + tableName + '-' + item.testID.id + '" type="text"></textarea>' 
                 }
               text3 += '</div></div></div>'
