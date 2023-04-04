@@ -71,8 +71,8 @@ The autodiscovery mechanism will attempt to identify the default network device 
 
 - The `k8s.v1.cni.cncf.io/networks-status` annotation is checked and the `interface` from the first entry found with `“default”=true` is used. This annotation is automatically managed in OpenShift but may not be present in K8s.
 
-The label `test-network-function.com/skip_connectivity_tests` excludes pods from all connectivity tests. The label value is trifling, only its presence.
-The label `test-network-function.com/skip_multus_connectivity_tests` excludes pods from [Multus](https://github.com/k8snetworkplumbingwg/multus-cni) connectivity tests. Tests on default interface are still done. The label value is trifling, but its presence.
+The label `test-network-function.com/skip_connectivity_tests` excludes pods from all connectivity tests. The label value is trivial, only its presence.
+The label `test-network-function.com/skip_multus_connectivity_tests` excludes pods from [Multus](https://github.com/k8snetworkplumbingwg/multus-cni) connectivity tests. Tests on default interface are still done. The label value is trivial, but its presence.
 
 ## AffinityRequired
 
