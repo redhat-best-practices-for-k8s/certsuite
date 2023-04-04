@@ -469,9 +469,12 @@
             if (status === "passed") {
               buttontype = 'bg-success text-white'
             } else if (status === "skipped") {
-              buttontype = 'bg-warning text-black'
+              buttontype = 'bg-secondary text-black'
             } else {
-              buttontype = 'bg-danger text-white'
+              buttontype = 'bg-warning text-white' 
+               if (eqData != "Optional" || tableName == "all") {
+                buttontype = 'bg-danger text-white'
+              }
             }
             itemid = 'collapse' + id
             headingid = 'heading' + id
@@ -481,7 +484,7 @@
             text += '<div id="' + itemid + '" class="accordion-collapse collapse" aria-labelledby="' + headingid + '">'
             text += '<div class="accordion-body">'
             // Inside the accordion, 1 table with the following colummns
-            text += '<table class="table table-bordered table-fixed"><thead><tr>'
+            text += '<table id="myTable-'+ key+'"class="table table-bordered table-fixed"><thead><tr>'
             text += '<th scope="col" class="th-sm">Test ID</th>'
             text += '<th scope="col" class="th-sm">Test Text</th>'
             text += '<th scope="col" class="th-sm">Duration</th>'
@@ -500,7 +503,7 @@
               text += '<td>' + item.testText.replace(/\n/g, '<br>') + '</td>'
               text += '<td>' + formattedDuration + '</td>'
               text += '<td>' + item.state + '</td>'
-              text += '<td>' + ansi_up.ansi_to_html(item.CapturedTestOutput).replace(/\n/g, '<br>') + '</td></tr>'
+              text += '<td>' + ansi_up.ansi_to_html(item.CapturedTestOutput).replace(/\n/g, '<br>') + '</td></tr>' 
             }
 
             id = id + 1
@@ -508,11 +511,8 @@
               text2 += text
               text2 += '</tbody></table>'
               for (const item of input[key]) {
-                  text2 += '<label >Feedback for that test case</label>'
-                  text2 += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-' + tableName + '-' + item.testID.id + '" type="text" oninput="copyData(\'source-'+ tableName + '-' + item.testID.id + '\', \'target-'+ tableName + '-' + item.testID.id + '\')"></textarea>' 
-                
-                  text2+='<label for="target-' + tableName + '-' + item.testID.id + '">Feedback for '+item.testID.id + ':</label><br>'
-                  text2+='<input type="text" id="target-' + tableName + '-' + item.testID.id + '" name="target-' + tableName + '-' + item.testID.id+ '" value=""><br>'
+                  text2 += '<label >write your Feedback '+ item.testID.id +' test case</label>'
+                  text2 += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-' + tableName + '-' + item.testID.id + '" type="text" ></textarea>' 
                 }
               text2 += '</div></div></div>'
             } else {
@@ -520,10 +520,7 @@
               text3 += '</tbody></table>'
               for (const item of input[key]) {
                   text3 += '<label >write your Feedback '+ item.testID.id +' test case</label>'
-                  text3 += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-' + tableName + '-' + item.testID.id + '" type="text" oninput="copyData(\'source-'+ tableName + '-' + item.testID.id + '\', \'target-'+ tableName + '-' + item.testID.id + '\')"></textarea>' 
-                  text3+='<label for="target-' + tableName + '-' + item.testID.id + '">Feedback for '+item.testID.id + ':</label><br>'
-                  text3+='<input type="text" id="target-' + tableName + '-' + item.testID.id + '" name="target-' + tableName + '-' + item.testID.id+ '" value=""><br>'
-
+                  text3 += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-' + tableName + '-' + item.testID.id + '" type="text"></textarea>' 
                 }
               text3 += '</div></div></div>'
             }
@@ -540,14 +537,22 @@
 
 
     }
-    function copyData(sourceId, targetId) {
-          console.log("source=",sourceId)
-          console.log("dest=",targetId)
-            var data = document.getElementById(sourceId).value;
-            document.getElementById(targetId).value = data;
+    function copyData(key) {
+      var selectBox = document.getElementById("selectBox");
+      var tableName = selectBox.options[selectBox.selectedIndex].value;
+      var sourceId = 'source-' +tableName+ '-' +key
+      var data = document.getElementById(sourceId).value;
+      document.getElementById(sourceId).textContent=data
+
         }
     function sendMail() {
-
+      for (const key in this.json.claim.results) {
+      for (const key2 in this.classification) {
+       if (key == key2){
+         copyData(key2)
+        }
+          }
+        }
       var text = "Feed back for every test case \n"
       var htmlText = getHtmlResults()
       var selectBox = document.getElementById("selectBox");
@@ -648,6 +653,13 @@
     }
 
     function download() {
+      for (const key in this.json.claim.results) {
+      for (const key2 in this.classification) {
+       if (key == key2){
+         copyData(key2)
+        }
+          }
+        }
       htmlText = getHtmlResults()
 
       var pom = document.createElement('a');
