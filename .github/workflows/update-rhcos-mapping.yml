@@ -20,6 +20,11 @@ jobs:
       - name: Execute `make update-rhcos-versions`
         run: make update-rhcos-versions
 
+        # This prevents any failures due to the updated rhcos_versions_map file from
+        # making it into the PR phase.
+      - name: Run unit tests
+        run: make test
+
       - name: Create PR
         uses: peter-evans/create-pull-request@v4
         env:
