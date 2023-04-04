@@ -22,6 +22,7 @@ import (
 
 	gv "github.com/hashicorp/go-version"
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 )
 
 /* Notes for this package
@@ -49,6 +50,7 @@ type VersionInfo struct {
 }
 
 var (
+	ocpBetaVersions   = []string{"4.13", "4.14"}
 	ocpLifeCycleDates = map[string]VersionInfo{
 		// TODO: Adjust all of these periodically to make sure they are up to date with the lifecycle
 		// update documentation.
@@ -174,6 +176,19 @@ func GetLifeCycleDates() map[string]VersionInfo {
 	return ocpLifeCycleDates
 }
 
+func BetaRHCOSVersionsFoundToMatch(machineVersion, ocpVersion string) bool {
+	ocpVersion = FindMajorMinor(ocpVersion)
+	machineVersion = FindMajorMinor(machineVersion)
+
+	// Check if the versions exist in the beta list
+	if !stringhelper.StringInSlice(ocpBetaVersions, ocpVersion, false) || !stringhelper.StringInSlice(ocpBetaVersions, machineVersion, false) {
+		return false
+	}
+
+	// Check if the versions match
+	return ocpVersion == machineVersion
+}
+
 func IsRHELCompatible(machineVersion, ocpVersion string) bool {
 	if machineVersion == "" || ocpVersion == "" {
 		return false
@@ -201,14 +216,23 @@ func IsRHELCompatible(machineVersion, ocpVersion string) bool {
 	return false
 }
 
+func FindMajorMinor(version string) string {
+	splitVersion := strings.Split(version, ".")
+	return splitVersion[0] + "." + splitVersion[1]
+}
+
 func IsRHCOSCompatible(machineVersion, ocpVersion string) bool {
 	if machineVersion == "" || ocpVersion == "" {
 		return false
 	}
 
+	// Exception for beta versions
+	if BetaRHCOSVersionsFoundToMatch(machineVersion, ocpVersion) {
+		return true
+	}
+
 	// Split the incoming version on the "." and make sure we are only looking at major.minor.
-	splitVersion := strings.Split(ocpVersion, ".")
-	ocpVersion = splitVersion[0] + "." + splitVersion[1]
+	ocpVersion = FindMajorMinor(ocpVersion)
 
 	lifecycleInfo := GetLifeCycleDates()
 	if entry, ok := lifecycleInfo[ocpVersion]; ok {
