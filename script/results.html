@@ -21,10 +21,47 @@
     table td {
       border: 1px solid #000;
     }
+    tg {
+      background-color: #90EE90;
+    }
+
+    tred {
+	    background-color : #FF0000;
+    }
+
+    ty {
+	    background-color : #FFFF00;
+    }
+
+    tgy {
+	    background-color : 	#BEBEBE;
+    }
   </style>
 </head>
 
 <body>
+  <table>
+    <tr>
+      <td>
+        <tred>Failed Madatory</tred>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <ty>Fail Oprional</ty>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <tgy>Skip</tgy>
+      </td>
+    </tr>
+    <tr>
+      <td>
+      <tg>Pass</tg>
+      </td>
+    </tr>
+  </table>
   <nav class="navbar navbar-dark bg-dark">
     <a class="navbar-brand" href="#">Test Network Function result parser</a>
     <div class="mb-3">
@@ -67,27 +104,20 @@
       <button class="nav-link" id="versions-tab" data-bs-toggle="tab" data-bs-target="#versions" type="button"
         role="tab" aria-controls="versions" aria-selected="false" onclick="disableAllButton()">Versions</button>
     </li>
-    <li class="nav-item">
-      <button class="nav-link" id="feedback-tab" data-bs-toggle="tab" data-bs-target="#feedback" type="button"
-        role="tab" aria-controls="nodes" aria-selected="false" onclick="enableOptionButtonFeedback()">Feedback</button>
-    </li>
+
   </ul>
   <ul class="nav nav-tabs">
     <li class="nav-item">
       <label id="myCheck-mandatory" for="mandatory-tab" hidden="hidden">Show Mandatory Results for that scenario</label>
-      <input type="checkbox" id="mandatory-tab" data-bs-target="#results" data-bs-toggle="tab" role="tab" checked onclick="showMandatoryResults()" hidden="hidden">
-      <label id="myCheck-feedback-mandatory" for="mandatory-tab-feedback" hidden="hidden">Show Mandatory feedback for
-that scenario</label>
-      <input type="checkbox" id="mandatory-tab-feedback" data-bs-target="#feedback" data-bs-toggle="tab" role="tab"
-        checked onclick="showMandatoryFeedback()" hidden="hidden">
+      <input type="checkbox" id="mandatory-tab" data-bs-target="#results" data-bs-toggle="tab" role="tab" checked
+        onclick="showResults('mandatory')" hidden="hidden">
+
+
 
       <label id="myCheck-result" for="optional-tab" hidden="hidden">Show Optional Results for that scenario</label>
       <input type="checkbox" id="optional-tab" data-bs-target="#results" data-bs-toggle="tab" role="tab"
-        onclick="showOptionalResults()" hidden="hidden">
-      <label id="myCheck-feedback" for="optional-tab-feedback" hidden="hidden">Show Optional feedback for that
-        scenario</label>
-      <input type="checkbox" id="optional-tab-feedback" data-bs-target="#feedback" data-bs-toggle="tab" role="tab"
-        onclick="showOptionalFeedback()" hidden="hidden">
+        onclick="showResults('optional')" hidden="hidden">
+
 
     </li>
   </ul>
@@ -108,17 +138,17 @@ that scenario</label>
     <div class="tab-pane fade" id="results" role="tabpanel" aria-labelledby="result-tab">
       <table class="table table-hover table-bordered" id="results-table" hidden="hidden">
       </table>
-      <table class="table table-hover table-bordered" id="results-far-edge-table" hidden="hidden">
+      <table class="table table-hover table-bordered" id="mandatory-far-edge-table" hidden="hidden">
       </table>
-      <table class="table table-hover table-bordered" id="optional-table" hidden="hidden">
+      <table class="table table-hover table-bordered" id="optional-far-edge-table" hidden="hidden">
       </table>
-      <table class="table table-hover table-bordered" id="results-telco-table" hidden="hidden">
+      <table class="table table-hover table-bordered" id="mandatory-telco-table" hidden="hidden">
       </table>
-      <table class="table table-hover table-bordered" id="optional-table-telco" hidden="hidden">
+      <table class="table table-hover table-bordered" id="optional-telco-table" hidden="hidden">
       </table>
-      <table class="table table-hover table-bordered" id="results-NonTelco-table" hidden="hidden">
+      <table class="table table-hover table-bordered" id="mandatory-non-telco-table" hidden="hidden">
       </table>
-      <table class="table table-hover table-bordered" id="optional-table-non-telco" hidden="hidden">
+      <table class="table table-hover table-bordered" id="optional-non-telco-table" hidden="hidden">
       </table>
     </div>
 
@@ -127,24 +157,10 @@ that scenario</label>
       <table class="table table-hover table-bordered" id="versions-table">
       </table>
     </div>
-    <div class="tab-pane fade" id="feedback" role="tabpanel" aria-labelledby="feedback-tab">
-      <table class="table table-hover table-bordered" id="feedback-table-faredge" hidden="hidden">
-      </table>
-      <table class="table table-hover table-bordered" id="feedback-table-non-telco" hidden="hidden">
-      </table>
-      <table class="table table-hover table-bordered" id="feedback-table-telco" hidden="hidden">
-      </table>
-      <table class="table table-hover table-bordered" id="feedback-all" hidden="hidden">
-      </table>
-      <table class="table table-hover table-bordered" id="optional-table-telco-feedback" hidden="hidden">
-      </table>
-    </div>
-    <table class="table table-hover table-bordered" id="optional-table-non-telco-feedback" hidden="hidden">
-    </table>
-    <table class="table table-hover table-bordered" id="optional-faredge-feedback" hidden="hidden">
-    </table>
   </div>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.4/dayjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.4/plugin/duration.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
     integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
@@ -158,131 +174,23 @@ that scenario</label>
     var buttonElementId = "non"
 
 
-
-    function showOptionalFeedback() {
-      var checkBox = document.getElementById("optional-tab-feedback");
-      var selectBox = document.getElementById("selectBox");
-      var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-      console.log(selectedValue)
-      console.log(checkBox.checked)
-      if (selectedValue == "faredge") {
-        if (checkBox.checked == true) {
-          document.getElementById("optional-faredge-feedback").removeAttribute("hidden");
-
-        } else {
-          document.getElementById("optional-faredge-feedback").setAttribute("hidden", "hidden");
-        }
-
-      }
-
-      if (selectedValue == "nontelco") {
-        if (checkBox.checked == true) {
-          document.getElementById("optional-table-non-telco-feedback").removeAttribute("hidden");
-
-
-        } else {
-          document.getElementById("optional-table-non-telco-feedback").setAttribute("hidden", "hidden");
-        }
-      }
-
-
-      if (selectedValue == "telco") {
-        if (checkBox.checked == true) {
-          document.getElementById("optional-table-telco-feedback").removeAttribute("hidden");
-
-
-        } else {
-          document.getElementById("optional-table-telco-feedback").setAttribute("hidden", "hidden");
-        }
-      }
-
-    }
-
-
-
-    function showMandatoryFeedback() {
-      var checkBox = document.getElementById("mandatory-tab-feedback");
-      var selectBox = document.getElementById("selectBox");
-      var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-      if (selectedValue == "faredge") {
-        if (checkBox.checked == true) {
-          document.getElementById("feedback-table-faredge").removeAttribute("hidden");
-
-
-        } else {
-          document.getElementById("feedback-table-faredge").setAttribute("hidden", "hidden");
-        }
-
-      }
-
-      if (selectedValue == "nontelco") {
-        if (checkBox.checked == true) {
-          document.getElementById("feedback-table-non-telco").removeAttribute("hidden");;
-
-
-        } else {
-          document.getElementById("feedback-table-non-telco").setAttribute("hidden", "hidden");
-        }
-      }
-
-
-      if (selectedValue == "telco") {
-        if (checkBox.checked == true) {
-          document.getElementById("feedback-table-telco").removeAttribute("hidden");
-
-
-        } else {
-          document.getElementById("feedback-table-telco").setAttribute("hidden", "hidden");
-        }
-      }
-
-    }
-
-
-
-    function enableOptionButtonFeedback() {
-      disableAllButton()
-      buttonElementId = "feedback-tab"
-      enableSendDownload()
-
-      var selectBox = document.getElementById("selectBox");
-      var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-      console.log(selectedValue)
-      if (selectedValue == "all") {
-        showAll()
-      }
-      else {
-        document.getElementById("feedback-all").setAttribute("hidden", "hidden");
-
-        document.getElementById("myCheck-feedback").removeAttribute("hidden");
-        document.getElementById("optional-tab-feedback").removeAttribute("hidden");
-        document.getElementById("myCheck-feedback-mandatory").removeAttribute("hidden");
-        document.getElementById("mandatory-tab-feedback").removeAttribute("hidden");
-      }
-      showMandatoryFeedback()
-      showOptionalFeedback()
-
-    }
-
     function changeFunc() {
       var selectBox = document.getElementById("selectBox");
       var selectedValue = selectBox.options[selectBox.selectedIndex].value;
 
       console.log("click on ", buttonElementId)
 
-      if (buttonElementId == "feedback-tab") {
-        enableOptionButtonFeedback()
-
-
-      }
       if (buttonElementId == "result-tab") {
+
         console.log("click on result ")
         enableOptionButton()
+
       }
     }
 
     function enableOptionButton() {
       disableAllButton()
+      enableSendDownload()
       buttonElementId = "result-tab"
       var selectBox = document.getElementById("selectBox");
       var selectedValue = selectBox.options[selectBox.selectedIndex].value;
@@ -297,88 +205,50 @@ that scenario</label>
         document.getElementById("myCheck-mandatory").removeAttribute("hidden");
         document.getElementById("mandatory-tab").removeAttribute("hidden");
       }
-      showOptionalResults()
-      showMandatoryResults()
+      showResults("optional")
+      showResults("mandatory")
     }
 
-    function showOptionalResults() {
-      var checkBox = document.getElementById("optional-tab");
+    function showResults(optionalMandatory) {
+      var checkBox = document.getElementById(optionalMandatory + "-tab");
       var selectBox = document.getElementById("selectBox");
       var selectedValue = selectBox.options[selectBox.selectedIndex].value;
       if (selectedValue == "faredge") {
         if (checkBox.checked == true) {
-          document.getElementById("optional-table").removeAttribute("hidden");
+          document.getElementById(optionalMandatory + "-far-edge-table").removeAttribute("hidden");
         } else {
-          document.getElementById("optional-table").setAttribute("hidden", "hidden");
+          document.getElementById(optionalMandatory + "-far-edge-table").setAttribute("hidden", "hidden");
         }
       }
       if (selectedValue == "telco") {
         if (checkBox.checked == true) {
-          document.getElementById("optional-table-telco").removeAttribute("hidden");
+          document.getElementById(optionalMandatory + "-telco-table").removeAttribute("hidden");
         } else {
-          document.getElementById("optional-table-telco").setAttribute("hidden", "hidden");
+          document.getElementById(optionalMandatory + "-telco-table").setAttribute("hidden", "hidden");
         }
       }
       if (selectedValue == "nontelco") {
         if (checkBox.checked == true) {
-          document.getElementById("optional-table-non-telco").removeAttribute("hidden");
+          document.getElementById(optionalMandatory + "-non-telco-table").removeAttribute("hidden");
         } else {
-          document.getElementById("optional-table-non-telco").setAttribute("hidden", "hidden");
+          document.getElementById(optionalMandatory + "-non-telco-table").setAttribute("hidden", "hidden");
         }
       }
     }
 
-    function showMandatoryResults() {
-      var checkBox = document.getElementById("mandatory-tab");
-      var selectBox = document.getElementById("selectBox");
-      var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-      if (selectedValue == "faredge") {
-        if (checkBox.checked == true) {
-          document.getElementById("results-far-edge-table").removeAttribute("hidden");
-        } else {
-          document.getElementById("results-far-edge-table").setAttribute("hidden", "hidden");
-        }
-      }
-      if (selectedValue == "telco") {
-        if (checkBox.checked == true) {
-          document.getElementById("results-telco-table").removeAttribute("hidden");
-        } else {
-          document.getElementById("results-telco-table").setAttribute("hidden", "hidden");
-        }
-      }
-      if (selectedValue == "nontelco") {
-        if (checkBox.checked == true) {
-          document.getElementById("results-NonTelco-table").removeAttribute("hidden");
-        } else {
-          document.getElementById("results-NonTelco-table").setAttribute("hidden", "hidden");
-        }
-      }
-
-    }
 
     function showAll() {
       console.log("in show all")
 
-      document.getElementById("results-far-edge-table").setAttribute("hidden", "hidden");
-      document.getElementById("results-telco-table").setAttribute("hidden", "hidden");
-      document.getElementById("results-NonTelco-table").setAttribute("hidden", "hidden");
+      document.getElementById("mandatory-far-edge-table").setAttribute("hidden", "hidden");
+      document.getElementById("mandatory-telco-table").setAttribute("hidden", "hidden");
+      document.getElementById("mandatory-non-telco-table").setAttribute("hidden", "hidden");
 
-      document.getElementById("optional-table").setAttribute("hidden", "hidden");
-      document.getElementById("optional-table-telco").setAttribute("hidden", "hidden");
-      document.getElementById("optional-table-non-telco").setAttribute("hidden", "hidden");
-
-      document.getElementById("feedback-table-faredge").setAttribute("hidden", "hidden");
-      document.getElementById("feedback-table-non-telco").setAttribute("hidden", "hidden");
-      document.getElementById("feedback-table-telco").setAttribute("hidden", "hidden");
-
-      document.getElementById("optional-faredge-feedback").setAttribute("hidden", "hidden");
-      document.getElementById("optional-table-non-telco-feedback").setAttribute("hidden", "hidden");
-      document.getElementById("optional-table-telco-feedback").setAttribute("hidden", "hidden");
-
-
+      document.getElementById("optional-far-edge-table").setAttribute("hidden", "hidden");
+      document.getElementById("optional-telco-table").setAttribute("hidden", "hidden");
+      document.getElementById("optional-non-telco-table").setAttribute("hidden", "hidden");
 
       document.getElementById("results-table").removeAttribute("hidden");
-      document.getElementById("feedback-all").removeAttribute("hidden");
     }
 
     function enableSendDownload() {
@@ -390,32 +260,24 @@ that scenario</label>
 
     function disableAllButton() {
       buttonElementId = "non"
-      document.getElementById("optional-faredge-feedback").setAttribute("hidden", "hidden");
-      document.getElementById("optional-table-non-telco-feedback").setAttribute("hidden", "hidden");
-      document.getElementById("optional-table-telco-feedback").setAttribute("hidden", "hidden");
 
-      document.getElementById("feedback-table-non-telco").setAttribute("hidden", "hidden");
-      document.getElementById("feedback-table-telco").setAttribute("hidden", "hidden");
-      document.getElementById("feedback-table-faredge").setAttribute("hidden", "hidden");
+      document.getElementById("mandatory-far-edge-table").setAttribute("hidden", "hidden");
+      document.getElementById("mandatory-non-telco-table").setAttribute("hidden", "hidden");
+      document.getElementById("mandatory-telco-table").setAttribute("hidden", "hidden");
 
-      document.getElementById("results-far-edge-table").setAttribute("hidden", "hidden");
-      document.getElementById("results-NonTelco-table").setAttribute("hidden", "hidden");
-      document.getElementById("results-telco-table").setAttribute("hidden", "hidden");
-
-      document.getElementById("optional-table").setAttribute("hidden", "hidden");
-      document.getElementById("optional-table-non-telco").setAttribute("hidden", "hidden");
-      document.getElementById("optional-table-telco").setAttribute("hidden", "hidden");
+      document.getElementById("optional-far-edge-table").setAttribute("hidden", "hidden");
+      document.getElementById("optional-non-telco-table").setAttribute("hidden", "hidden");
+      document.getElementById("optional-telco-table").setAttribute("hidden", "hidden");
 
       document.getElementById("optional-tab").setAttribute("hidden", "hidden");
       document.getElementById("mandatory-tab").setAttribute("hidden", "hidden");
-      document.getElementById("optional-tab-feedback").setAttribute("hidden", "hidden");
+
       document.getElementById("send").setAttribute("hidden", "hidden");
       document.getElementById("download").setAttribute("hidden", "hidden");
       document.getElementById("myCheck-result").setAttribute("hidden", "hidden");
-      document.getElementById("myCheck-feedback").setAttribute("hidden", "hidden");
+
       document.getElementById("myCheck-mandatory").setAttribute("hidden", "hidden");
-      document.getElementById("myCheck-feedback-mandatory").setAttribute("hidden", "hidden");
-      document.getElementById("mandatory-tab-feedback").setAttribute("hidden", "hidden");
+
     }
     function fillVersions(input, element) {
       $(element).empty()
@@ -575,11 +437,11 @@ that scenario</label>
 
 
       if (tableName == "all") {
-        text3 = '<thead><tr><th scope="col">All Test  summary</th><th scope="col">Test feedback</th></tr></thead><tbody>'
+        text3 = '<thead><tr><th scope="col">Test summary (' + tableName + ')</th><th scope="col">Test feedback</th></tr></thead><tbody>'
       } else {
-        text3 = '<thead><tr><th scope="col">Mandatory Test  summary</th><th scope="col">Test feedback</th></tr></thead><tbody>'
+        text3 = '<thead><tr><th scope="col">Mandatory Test  summary (' + tableName + ')</th><th scope="col">Test feedback</th></tr></thead><tbody>'
       }
-      text2 = '<thead><tr><th scope="col">Optional Test summary</th><th scope="col">Test results</th></tr></thead><tbody>'
+      text2 = '<thead><tr><th scope="col">Optional Test summary (' + tableName + ')</th><th scope="col">Test results</th></tr></thead><tbody>'
       text2 += '<tr><td class="align-top"><b>Total:</b> ' + tests_total_optional + '<br><b>Passed:</b> ' + tests_passed_optional + '<br><b>Skipped:</b> ' + tests_skipped_optional + '<br><b>Failed:</b> ' + tests_failed_optional + '</td><td>'
       text2 += '<div class="accordion" id="results-accordion">'
       // First we will have a left column in the table with the summarized results
@@ -611,7 +473,6 @@ that scenario</label>
             } else {
               buttontype = 'bg-danger text-white'
             }
-
             itemid = 'collapse' + id
             headingid = 'heading' + id
             text += '<div class="accordion-item"><h2 class="accordion-header" id="' + headingid + '"><button class="accordion-button collapsed ' + buttontype + '" type="button" data-bs-toggle="collapse" data-bs-target="#' + itemid + '" aria-expanded="true" aria-controls="' + itemid + '">'
@@ -627,25 +488,43 @@ that scenario</label>
             text += '<th scope="col" class="th-sm">State</th>'
             text += '<th scope="col" class="th-lg">Test output</th>'
             text += '</tr></thead><tbody>'
+
             // Note we are skipping some columns for now
             // And 1 row per test
+            dayjs.extend(window.dayjs_plugin_duration);
             for (const item of input[key]) {
+
+              const duration = dayjs.duration(item.duration / 1000000)
+              formattedDuration = duration.format('D[d] H[h] m[m] s[s] SSS[ms]')
               text += '<tr><td>' + item.testID.id + '</td>'
               text += '<td>' + item.testText.replace(/\n/g, '<br>') + '</td>'
-              text += '<td>' + item.duration + '</td>'
+              text += '<td>' + formattedDuration + '</td>'
               text += '<td>' + item.state + '</td>'
               text += '<td>' + ansi_up.ansi_to_html(item.CapturedTestOutput).replace(/\n/g, '<br>') + '</td></tr>'
-
             }
 
             id = id + 1
             if (eqData == "Optional" && tableName != "all") {
               text2 += text
               text2 += '</tbody></table>'
+              for (const item of input[key]) {
+                  text2 += '<label >Feedback for that test case</label>'
+                  text2 += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-' + tableName + '-' + item.testID.id + '" type="text" oninput="copyData(\'source-'+ tableName + '-' + item.testID.id + '\', \'target-'+ tableName + '-' + item.testID.id + '\')"></textarea>' 
+                
+                  text2+='<label for="target-' + tableName + '-' + item.testID.id + '">Feedback for '+item.testID.id + ':</label><br>'
+                  text2+='<input type="text" id="target-' + tableName + '-' + item.testID.id + '" name="target-' + tableName + '-' + item.testID.id+ '" value=""><br>'
+                }
               text2 += '</div></div></div>'
             } else {
               text3 += text
               text3 += '</tbody></table>'
+              for (const item of input[key]) {
+                  text3 += '<label >write your Feedback '+ item.testID.id +' test case</label>'
+                  text3 += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-' + tableName + '-' + item.testID.id + '" type="text" oninput="copyData(\'source-'+ tableName + '-' + item.testID.id + '\', \'target-'+ tableName + '-' + item.testID.id + '\')"></textarea>' 
+                  text3+='<label for="target-' + tableName + '-' + item.testID.id + '">Feedback for '+item.testID.id + ':</label><br>'
+                  text3+='<input type="text" id="target-' + tableName + '-' + item.testID.id + '" name="target-' + tableName + '-' + item.testID.id+ '" value=""><br>'
+
+                }
               text3 += '</div></div></div>'
             }
           }
@@ -659,207 +538,24 @@ that scenario</label>
       $(text3).appendTo($(element))
       $(text2).appendTo($(element2))
 
-    }
-
-    function generateFeedbackPage(input, input2, element, element2, tableName) {
-      $(element).empty()
-      // The results object is composed of multiple objects, 1 per test
-      // Inside the object we have an array of results
-      id = 1
-      var ansi_up = new AnsiUp;
-
-      tests_total = 0
-      tests_passed = 0
-      tests_skipped = 0
-      tests_failed = 0
-      tests_total_optional = 0
-      tests_passed_optional = 0
-      tests_skipped_optional = 0
-      tests_failed_optional = 0
-      // Compute number of passed/skipped/failed results
-      for (const key in input) {
-
-        for (const item of input[key]) {
-          for (const key2 in input2) {
-
-            eqData = input2[key2].FarEdge
-
-            if (tableName == "telco") {
-              eqData = input2[key2].Telco
-
-            }
-            if (tableName == "nontelco") {
-              eqData = input2[key2].NonTelco
-            }
-
-            if (key == key2) {
-              if (item.state == 'passed') {
-                if (eqData == "Mandatory" || tableName == "all") {
-                  tests_total++
-                  tests_passed++
-                } else {
-                  tests_total_optional++
-                  tests_passed_optional++
-                }
-
-              } else if (item.state == 'skipped') {
-                if (eqData == "Mandatory" || tableName == "all") {
-                  tests_total++
-                  tests_skipped++
-                } else {
-                  tests_total_optional++
-                  tests_skipped_optional++
-                }
-
-              } else if (item.state == 'failed') {
-                if (eqData == "Mandatory" || tableName == "all") {
-                  tests_total++
-                  tests_failed++
-                } else {
-                  tests_total_optional++
-                  tests_failed_optional++
-                }
-              }
-            }
-          }
-        }
-      }
-
-      // First we will have a left column in the table with the summarized results
-      if (tableName == "all") {
-        text2 = '<thead><tr><th scope="col">All Test  summary</th><th scope="col">Test feedback</th></tr></thead><tbody>'
-
-      } else {
-        text2 = '<thead><tr><th scope="col">Mandatory Test  summary</th><th scope="col">Test feedback</th></tr></thead><tbody>'
-      }
-      text2 += '<tr><td class="align-top"><b>Total:</b> ' + tests_total + '<br><b>Passed:</b> ' + tests_passed + '<br><b>Skipped:</b> ' + tests_skipped + '<br><b>Failed:</b> ' + tests_failed + '</td><td>'
-      text2 += '<div class="accordion" id="feedback-accordion">'
-
-      // First we will have a left column in the table with the summarized results
-      text3 = '<thead><tr><th scope="col">Optional Test summary</th><th scope="col">Test feedback</th></tr></thead><tbody>'
-      text3 += '<tr><td class="align-top"><b>Total:</b> ' + tests_total_optional + '<br><b>Passed:</b> ' + tests_passed_optional + '<br><b>Skipped:</b> ' + tests_skipped_optional + '<br><b>Failed:</b> ' + tests_failed_optional + '</td><td>'
-      text3 += '<div class="accordion" id="feedback-accordion">'
-
-      for (const key in input) {
-        for (const key2 in input2) {
-
-          eqData = input2[key2].FarEdge
-
-          if (tableName == "telco") {
-            eqData = input2[key2].Telco
-
-          }
-          if (tableName == "nontelco") {
-            eqData = input2[key2].NonTelco
-          }
-
-          if (key == key2) {
-            text = ''
-            // NOTE: we are assuming the test result is determined by the passed/failed state of the first item
-            status = input[key][0].state
-            if (status === "passed") {
-              buttontype = 'bg-success text-white'
-            } else if (status === "skipped") {
-              buttontype = 'bg-warning text-black'
-            } else {
-              buttontype = 'bg-danger text-white'
-            }
-
-            itemid = 'collapse' + id
-            headingid = 'heading' + id
-            text += '<div class="accordion-item"><h2 class="accordion-header" id="' + headingid + '"><button class="accordion-button collapsed ' + buttontype + '" type="button" data-bs-toggle="collapse" data-bs-target="#' + itemid + '" aria-expanded="true" aria-controls="' + itemid + '">'
-            text += 'Feedback for ' + key + ' </button></h2>'
-            // Now we should populate the item contents
-            text += '<div id="' + itemid + '" class="accordion-collapse collapse" aria-labelledby="' + headingid + '" data-bs-parent="' + element + '">'
-            text += '<div class="accordion-body">'
-            // Inside the accordion, 1 table with the following colummns
-
-            for (const item of input[key]) {
-              testName = item.testID.id
-              console.log(testName)
-              text += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-' + tableName + '-' + testName + '" type="text" ></textarea>'
-            }
-            if (eqData == "Optional" && tableName != "all") {
-              text3 += text
-            } else {
-              text2 += text
-
-            }
-            // Note we are skipping some columns for now
-            // And 1 row per test
-            text2 += '</div></div></div>'
-            text3 += '</div></div></div>'
-            id = id + 1
-          }
-        }
-      }
-      text2 += '</div></td></tr>'
-      text2 += '</tbody>'
-      text3 += '</div></td></tr>'
-      text3 += '</tbody>'
-      $(text2).appendTo($(element))
-      $(text3).appendTo($(element2))
 
     }
-
-    function download() {
-      text = ""
-      var selectBox = document.getElementById("selectBox");
-      var tableName = selectBox.options[selectBox.selectedIndex].value;
-
-      for (const key in this.json.claim.results) {
-        for (const key2 in this.classification) {
-
-
-
-          if (key == key2) {
-            var data = document.getElementById('source-' + tableName + '-' + key)
-            if (data != null) {
-              text += key + ": "
-              text += data.value + "\n"
-            }
-          }
+    function copyData(sourceId, targetId) {
+          console.log("source=",sourceId)
+          console.log("dest=",targetId)
+            var data = document.getElementById(sourceId).value;
+            document.getElementById(targetId).value = data;
         }
-      }
-      var pom = document.createElement('a');
-      pom.setAttribute('href', 'data:text/plain;charset=utf-8,' +
-
-        encodeURIComponent(text));
-      pom.setAttribute('download', "feedback");
-
-      pom.style.display = 'none';
-      document.body.appendChild(pom);
-
-      pom.click();
-
-      document.body.removeChild(pom);
-    }
-
     function sendMail() {
 
-      text = "Feed back for every test case \n"
+      var text = "Feed back for every test case \n"
+      var htmlText = getHtmlResults()
       var selectBox = document.getElementById("selectBox");
       var tableName = selectBox.options[selectBox.selectedIndex].value;
+      var subject = "CNF test Results for " + tableName
 
-      for (const key in this.json.claim.results) {
-        for (const key2 in this.classification) {
-          if (key == key2) {
-            var data = document.getElementById('source-' + tableName + '-' + key)
-            if (data != null) {
-              text += key + ": "
-              text += data.value + "\n"
-            }
-          }
-        }
-      }
+      window.location = "mailto:yourmail@domain.com?subject=" + subject + "&body=" + htmlText;
 
-      var link = "mailto:me@example.com"
-        + "?cc="
-        + "&subject=" + encodeURIComponent("Feed Back for Results")
-        + "&body=" + encodeURIComponent(text)
-        ;
-
-      window.location.href = link;
     }
 
 
@@ -875,10 +571,8 @@ that scenario</label>
       fillConfig(initialjson.claim.nodes, '#nodes-table')
       fillMetadata(initialjson.claim.metadata, '#metadata-table')
       fillVersions(initialjson.claim.versions, '#versions-table')
-      fillResults(initialjson.claim.results, '#results-table', '#optional-table', "ALL")
-      fillResults(initialjson.claim.results, classification.classification, '#results-far-edge-table', '#optional-table', "FarEdge")
-
-      generateFeedbackPage(initialjson.claim.results, classification.classification, '#feedback-table-faredge', "FarEdge")
+      fillResults(initialjson.claim.results, '#results-table', '#optional-far-edge-table', "ALL")
+      fillResults(initialjson.claim.results, classification.classification, '#mandatory-far-edge-table', '#optional-far-edge-table', "FarEdge")
     }
     const inputElement = document.getElementById("formFile");
     inputElement.addEventListener("change", handleFiles, false);
@@ -894,18 +588,105 @@ that scenario</label>
           fillMetadata(json.claim.metadata, '#metadata-table')
           fillVersions(json.claim.versions, '#versions-table')
           fillResults(json.claim.results, classification, '#results-table', '#optional-', "all")
-          fillResults(json.claim.results, classification, '#results-far-edge-table', '#optional-table', "faredge")
-          fillResults(json.claim.results, classification, '#results-telco-table', '#optional-table-telco', "telco")
-          fillResults(json.claim.results, classification, '#results-NonTelco-table', '#optional-table-non-telco', "nontelco")
-          generateFeedbackPage(json.claim.results, classification, '#feedback-all', '#optional-', "all")
-          generateFeedbackPage(json.claim.results, classification, '#feedback-table-faredge', '#optional-faredge-feedback', "faredge")
-          generateFeedbackPage(json.claim.results, classification, '#feedback-table-non-telco', '#optional-table-non-telco-feedback', "nontelco")
-          generateFeedbackPage(json.claim.results, classification, '#feedback-table-telco', '#optional-table-telco-feedback', "telco")
-
+          fillResults(json.claim.results, classification, '#mandatory-far-edge-table', '#optional-far-edge-table', "faredge")
+          fillResults(json.claim.results, classification, '#mandatory-telco-table', '#optional-telco-table', "telco")
+          fillResults(json.claim.results, classification, '#mandatory-non-telco-table', '#optional-non-telco-table', "nontelco")
         });
         fileUploaded.readAsText(fileList[0]);
       }
     }
+
+    function linkToStyle(link) {
+      var css = [];
+      var sheet = link.sheet;
+      console.log(sheet)
+      var rules
+      try {
+        rules = sheet.cssRules || sheet.rules;
+      } catch (error) {
+        console.log(error);
+        return null
+      }
+
+      for (var i = 0; i < rules.length; ++i) {
+        var rule = rules[i];
+        console.log(rules[i])
+        if (rules[i].selectorText == ".collapse:not(.show)") {
+          continue
+        }
+        css.push(rule.cssText);
+      }
+      var style = document.createElement("style");
+      style.type = "text/css";
+      style.appendChild(
+        document.createTextNode(css.join("\r\n"))
+      );
+      return style;
+    }
+
+    function getHtmlResults() {
+      text = ""
+      var selectBox = document.getElementById("selectBox");
+      var tableName = selectBox.options[selectBox.selectedIndex].value;
+
+      doc = document.implementation.createHTMLDocument()
+      head = doc.head;
+      body = doc.body
+      console.log(body)
+      var selectBox = document.getElementById("selectBox");
+      insertResults(body, "mandatory")
+      insertResults(body, "optional")
+      document.querySelectorAll("link[rel=stylesheet]").forEach(function (link) {
+        var style = linkToStyle(link);
+        if (style != null) {
+          head.insertBefore(style, head.firstChild);
+        }
+
+
+      });
+      return doc.documentElement.outerHTML
+    }
+
+    function download() {
+      htmlText = getHtmlResults()
+
+      var pom = document.createElement('a');
+      pom.setAttribute('href', 'data:text/html;charset=UTF-8,' + encodeURIComponent(htmlText));
+      pom.setAttribute('download', "results");
+
+      pom.style.display = 'none';
+      document.body.appendChild(pom);
+
+      pom.click();
+
+      document.body.removeChild(pom);
+    }
+
+    function insertResults(body, optionalMandatory) {
+      var checkBox = document.getElementById(optionalMandatory + "-tab");
+      var selectBox = document.getElementById("selectBox");
+      var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+      var table = document.getElementById("results-table")
+      if (selectedValue == "faredge") {
+        if (checkBox.checked == true) {
+          table = document.getElementById(optionalMandatory + "-far-edge-table");
+        }
+      }
+      if (selectedValue == "telco") {
+        if (checkBox.checked == true) {
+          table = document.getElementById(optionalMandatory + "-telco-table");
+        }
+      }
+      if (selectedValue == "nontelco") {
+        if (checkBox.checked == true) {
+          table = document.getElementById(optionalMandatory + "-non-telco-table");
+        }
+      }
+      console.log(table)
+      const clonedTable = table.cloneNode(true);
+      body.appendChild(clonedTable);
+    }
+
   </script>
 </body>
 
