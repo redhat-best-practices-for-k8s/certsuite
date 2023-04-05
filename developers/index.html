@@ -200,7 +200,7 @@
 
   <li class="md-tabs__item">
     <a href=".." class="md-tabs__link">
-      Overview
+      Home
     </a>
   </li>
 
@@ -360,7 +360,7 @@
   
     <li class="md-nav__item">
       <a href=".." class="md-nav__link">
-        Overview
+        Home
       </a>
     </li>
   
@@ -719,24 +719,25 @@
   
 
 
+<!-- markdownlint-disable line-length no-bare-urls -->
 <h1 id="steps">Steps<a class="headerlink" href="#steps" title="Permanent link">&para;</a></h1>
 <p>To test the newly added test / existing tests locally, follow the steps</p>
 <ul>
-<li>
-<p>Clone the repo</p>
-</li>
+<li>Clone the repo</li>
 <li>
 <p>Set runtime environment variables, as per the requirement.</p>
-<p>For example, to deploy partner deployments in a custom namespace in the test config.
+<p>For example, to deploy partner deployments in a custom namespace in the test config.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">targetNameSpaces</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mynamespace</span>
-</code></pre></div></p>
+</code></pre></div>
 </li>
 <li>
-<p>Also, skip intrusive tests
-<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">TNF_NON_INTRUSIVE_ONLY</span><span class="o">=</span><span class="nb">true</span>
-</code></pre></div></p>
+<p>Also, skip intrusive tests</p>
 </li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">TNF_NON_INTRUSIVE_ONLY</span><span class="o">=</span><span class="nb">true</span>
+</code></pre></div>
+<ul>
 <li>
 <p>Set K8s config of the cluster where test pods are running</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">KUBECONFIG</span><span class="o">=</span>&lt;&lt;mypath/.kube/config&gt;&gt;
@@ -749,6 +750,7 @@
 </code></pre></div>
 </li>
 </ul>
+<h1 id="abbreviations">Abbreviations<a class="headerlink" href="#abbreviations" title="Permanent link">&para;</a></h1>
 
 
 

@@ -200,7 +200,7 @@
 
   <li class="md-tabs__item">
     <a href=".." class="md-tabs__link">
-      Overview
+      Home
     </a>
   </li>
 
@@ -360,7 +360,7 @@
   
     <li class="md-nav__item">
       <a href=".." class="md-nav__link">
-        Overview
+        Home
       </a>
     </li>
   
@@ -971,10 +971,13 @@
   
 
 
+<!-- markdownlint-disable line-length no-bare-urls -->
 <h1 id="test-configuration">Test configuration<a class="headerlink" href="#test-configuration" title="Permanent link">&para;</a></h1>
 <p>The certification test suite supports autodiscovery using labels and annotations.</p>
-<p>These can be configured through the following config file.
-  - <code>tnf_config.yml</code></p>
+<p>These can be configured through the following config file.</p>
+<ul>
+<li><code>tnf_config.yml</code></li>
+</ul>
 <p><a href="https://github.com/test-network-function/cnf-certification-test/blob/main/cnf-certification-test/tnf_config.yml">Sample</a></p>
 <p>As per the requirement the following fields can be changed.</p>
 <h2 id="targetnamespaces">targetNameSpaces<a class="headerlink" href="#targetnamespaces" title="Permanent link">&para;</a></h2>
@@ -985,18 +988,16 @@
 </code></pre></div>
 <h2 id="targetpodlabels">targetPodLabels<a class="headerlink" href="#targetpodlabels" title="Permanent link">&para;</a></h2>
 <p>The goal of this section is to specify the labels to be used to identify the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> resources under test.</p>
-<div class="admonition note">
-<p class="admonition-title">Highly recommended</p>
+<p>! note &ldquo;Highly recommended&rdquo;</p>
 <p>The labels should be defined in pod definition rather than added after pod is created, as labels added later on will be lost in case the pod gets rescheduled. In case of pods defined as part of a deployment, it&rsquo;s best to use the same label as the one defined in the <code>spec.selector.matchLabels</code> section of the deployment yaml. The prefix field can be used to avoid naming collision with other labels.</p>
-</div>
 <div class="annotate highlight"><pre><span></span><code><span class="nt">targetPodLabels</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">prefix</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test-network-function.com</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generic</span>
 <span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">target</span>
 </code></pre></div>
-<p>The corresponding pod label used to match pods is:
+<p>The corresponding pod label used to match pods is:</p>
 <div class="annotate highlight"><pre><span></span><code><span class="nt">test-network-function.com/generic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">target</span>
-</code></pre></div></p>
+</code></pre></div>
 <p>Once the pods are found, all of their containers are also added to the target container list. A target deployment list will also be created with all the deployments which the test pods belong to.</p>
 <h2 id="targetcrds">targetCrds<a class="headerlink" href="#targetcrds" title="Permanent link">&para;</a></h2>
 <p>In order to autodiscover the CRDs to be tested, an array of search filters can be set under the &ldquo;targetCrdFilters&rdquo; label. The autodiscovery mechanism will iterate through all the filters to look for all the CRDs that match it. Currently, filters only work by name suffix.</p>
@@ -1015,12 +1016,12 @@
 </ul>
 <h4 id="network-interfaces">Network Interfaces<a class="headerlink" href="#network-interfaces" title="Permanent link">&para;</a></h4>
 <ul>
-<li>The <code>k8s.v1.cni.cncf.io/networks-status</code> annotation is checked and the <code>interface</code> from the first entry found with <code>"default"=true</code> is used. This annotation is automatically managed in OpenShift but may not be present in K8s.</li>
+<li>The <code>k8s.v1.cni.cncf.io/networks-status</code> annotation is checked and the <code>interface</code> from the first entry found with <code>“default”=true</code> is used. This annotation is automatically managed in OpenShift but may not be present in K8s.</li>
 </ul>
-<p>The label <code>test-network-function.com/skip_connectivity_tests</code> excludes pods from all connectivity tests. The label value is not important, only its presence.
-The label <code>test-network-function.com/skip_multus_connectivity_tests</code> excludes pods from <a href="https://github.com/k8snetworkplumbingwg/multus-cni">Multus</a> connectivity tests. Tests on default interface are still done. The label value is not important, but its presence.</p>
+<p>The label <code>test-network-function.com/skip_connectivity_tests</code> excludes pods from all connectivity tests. The label value is trivial, only its presence.
+The label <code>test-network-function.com/skip_multus_connectivity_tests</code> excludes pods from <a href="https://github.com/k8snetworkplumbingwg/multus-cni">Multus</a> connectivity tests. Tests on default interface are still done. The label value is trivial, but its presence.</p>
 <h2 id="affinityrequired">AffinityRequired<a class="headerlink" href="#affinityrequired" title="Permanent link">&para;</a></h2>
-<p>For <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> workloads that require pods to use Pod or Node Affinity rules, the label <code>AffinityRequired: true</code> must be included on the Pod YAML.  This will prevent any tests for anti-affinity to fail as well as test your workloads for affinity rules that support your <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>&lsquo;s use-case.</p>
+<p>For <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> workloads that require pods to use Pod or Node Affinity rules, the label <code>AffinityRequired: true</code> must be included on the Pod YAML. This will prevent any tests for anti-affinity to fail as well as test your workloads for affinity rules that support your <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>&lsquo;s use-case.</p>
 <h2 id="certifiedcontainerinfo">certifiedcontainerinfo<a class="headerlink" href="#certifiedcontainerinfo" title="Permanent link">&para;</a></h2>
 <p>The <code>certifiedcontainerinfo</code> section contains information about <abbr title="Cloud-Native Network Functions">CNFs</abbr> containers that are
 to be checked for certification status on Red Hat catalogs.</p>
@@ -1044,10 +1045,11 @@ If we want to add another name, we just need to write the name in the yaml file.
 <span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tnf&quot;</span>
 </code></pre></div>
 <h2 id="debugdaemonsetnamespace">debugDaemonSetNamespace<a class="headerlink" href="#debugdaemonsetnamespace" title="Permanent link">&para;</a></h2>
-<p>This is an optional field with the name of the namespace where a privileged DaemonSet will be deployed. The namespace will be created in case it does not exist. In case this field is not set, the default namespace for this DaemonSet is &ldquo;cnf-suite&rdquo;.
-<div class="highlight"><pre><span></span><code>debugDaemonSetNamespace: cnf-cert
+<p>This is an optional field with the name of the namespace where a privileged DaemonSet will be deployed. The namespace will be created in case it does not exist. In case this field is not set, the default namespace for this DaemonSet is &ldquo;cnf-suite&rdquo;.</p>
+<div class="highlight"><pre><span></span><code>debugDaemonSetNamespace:<span class="w"> </span>cnf-cert
 </code></pre></div>
-This DaemonSet, called &ldquo;tnf-debug&rdquo; is deployed and used internally by the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification tool to issue some shell commands that are needed in certain test cases. Some of these test cases might fail or be skipped in case it wasn&rsquo;t deployed correctly.</p>
+<p>This DaemonSet, called &ldquo;tnf-debug&rdquo; is deployed and used internally by the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification tool to issue some shell commands that are needed in certain test cases. Some of these test cases might fail or be skipped in case it wasn&rsquo;t deployed correctly.</p>
+<h1 id="abbreviations">Abbreviations<a class="headerlink" href="#abbreviations" title="Permanent link">&para;</a></h1>
 
 
 

@@ -102,7 +102,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Overview
+              Home
             
           </span>
         </div>
@@ -200,7 +200,7 @@
 
   <li class="md-tabs__item">
     <a href="." class="md-tabs__link md-tabs__link--active">
-      Overview
+      Home
     </a>
   </li>
 
@@ -367,12 +367,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          Overview
+          Home
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="." class="md-nav__link md-nav__link--active">
-        Overview
+        Home
       </a>
       
         
@@ -761,22 +761,23 @@
   
 
 
+<!-- markdownlint-disable line-length no-bare-urls no-emphasis-as-heading -->
 <h1 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h1>
 <p>This repository provides a set of Cloud-Native Network Functions (<abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>) test cases and the framework to add more test cases.</p>
-<div class="admonition tip">
-<p class="admonition-title"><abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr></p>
-<p>The app (containers/pods/operators) we want to certify according Telco partner/Red Hat&rsquo;s best practices.</p>
-</div>
-<div class="admonition tip">
-<p class="admonition-title"><abbr title="Test Network Function">TNF</abbr>/Certification Test Suite</p>
-<p>The tool we use to certify a <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>.</p>
-</div>
+<p>! tip &ldquo;<abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>&ldquo;</p>
+<div class="codehilite"><pre><span></span><code>The app (containers/pods/operators) we want to certify according Telco partner/Red Hat&#39;s best practices.
+</code></pre></div>
+
+<p>! tip &ldquo;<abbr title="Test Network Function">TNF</abbr>/Certification Test Suite&rdquo;</p>
+<div class="codehilite"><pre><span></span><code><span class="n">The</span><span class="w"> </span><span class="k">tool</span><span class="w"> </span><span class="n">we</span><span class="w"> </span><span class="n">use</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">certify</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">CNF</span><span class="o">.</span>
+</code></pre></div>
+
 <p>The purpose of the tests and the framework is to test the interaction of <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> with OpenShift Container Platform (<abbr title="OpenShift Container Platform">OCP</abbr>).  </p>
-<div class="admonition info">
-<p class="admonition-title">Info</p>
-<p>This test suite is provided for the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Developers to test their <abbr title="Cloud-Native Network Functions">CNFs</abbr> readiness for certification.
-Please see &ldquo;<abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Developers&rdquo; for more information.</p>
-</div>
+<p>! info</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">This</span><span class="w"> </span><span class="nv">test</span><span class="w"> </span><span class="nv">suite</span><span class="w"> </span><span class="nv">is</span><span class="w"> </span><span class="nv">provided</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">CNF</span><span class="w"> </span><span class="nv">Developers</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">test</span><span class="w"> </span><span class="nv">their</span><span class="w"> </span><span class="nv">CNFs</span><span class="w"> </span><span class="nv">readiness</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">certification</span>.
+<span class="nv">Please</span><span class="w"> </span><span class="nv">see</span><span class="w"> </span><span class="s2">&quot;CNF Developers&quot;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">more</span><span class="w"> </span><span class="nv">information</span>.
+</code></pre></div>
+
 <p><strong>Features</strong></p>
 <ul>
 <li>
@@ -800,6 +801,7 @@ Please see &ldquo;<abbr title="Cloud-Native Network Function or Containerised Ne
 <p>the <code>Debug</code> pods are part of a Kubernetes daemonset responsible to run various <strong>privileged commands</strong> on kubernetes nodes. Debug pods are useful to run platform tests and test commands (e.g. ping) in container namespaces without changing the container image content. The debug daemonset is instantiated via the <a href="https://github.com/test-network-function/cnf-certification-test-partner">cnf-certification-test-partner</a> repository.</p>
 </li>
 </ul>
+<h1 id="abbreviations">Abbreviations<a class="headerlink" href="#abbreviations" title="Permanent link">&para;</a></h1>
 
 
 

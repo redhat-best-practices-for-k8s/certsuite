@@ -71,7 +71,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#with-quay-test-container-image" class="md-skip">
+        <a href="#test" class="md-skip">
           Skip to content
         </a>
       
@@ -200,7 +200,7 @@
 
   <li class="md-tabs__item">
     <a href=".." class="md-tabs__link">
-      Overview
+      Home
     </a>
   </li>
 
@@ -360,7 +360,7 @@
   
     <li class="md-nav__item">
       <a href=".." class="md-nav__link">
-        Overview
+        Home
       </a>
     </li>
   
@@ -484,6 +484,8 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
+        
+      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
           Prebuilt container
@@ -499,6 +501,8 @@
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
+  
+    
   
   
     <label class="md-nav__title" for="__toc">
@@ -571,8 +575,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#run-the-tests_1" class="md-nav__link">
-    Run the tests
+  <a href="#run-the-tests-2" class="md-nav__link">
+    Run the tests 2
   </a>
   
 </li>
@@ -795,6 +799,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -866,8 +872,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#run-the-tests_1" class="md-nav__link">
-    Run the tests
+  <a href="#run-the-tests-2" class="md-nav__link">
+    Run the tests 2
   </a>
   
 </li>
@@ -895,8 +901,8 @@
   
 
 
-  <h1>Prebuilt container</h1>
-
+<!-- markdownlint-disable line-length no-bare-urls no-emphasis-as-heading -->
+<h1 id="test">Test<a class="headerlink" href="#test" title="Permanent link">&para;</a></h1>
 <p>The tests can be run within a prebuilt container in the <abbr title="OpenShift Container Platform">OCP</abbr> cluster.</p>
 <p><strong>Prerequisites for the <abbr title="OpenShift Container Platform">OCP</abbr> cluster</strong></p>
 <ul>
@@ -910,12 +916,10 @@ The image can be pulled using :</p>
 </code></pre></div>
 <h3 id="check-cluster-resources">Check cluster resources<a class="headerlink" href="#check-cluster-resources" title="Permanent link">&para;</a></h3>
 <p>Some tests suites such as <code>platform-alteration</code> require node access to get node configuration like <code>hugepage</code>.
-In order to get the required information, the test suite does not <code>ssh</code> into nodes, but instead rely on <a href="https://docs.openshift.com/container-platform/3.7/cli_reference/basic_cli_operations.html#debug">oc debug tools </a>. This tool makes it easier to fetch information from nodes and also to debug running pods.</p>
+In order to get the required information, the test suite does not <code>ssh</code> into nodes, but instead rely on <a href="https://docs.openshift.com/container-platform/3.7/cli_reference/basic_cli_operations.html#debug">oc debug tools</a>. This tool makes it easier to fetch information from nodes and also to debug running pods.</p>
 <p><code>oc debug tool</code> will launch a new container ending with <strong>-debug</strong> suffix, and the container will be destroyed once the debug session is done. Ensure that the cluster should have enough resources to create debug pod, otherwise those tests would fail.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
+<p>! note</p>
 <p>It&rsquo;s <strong>recommended</strong> to clean up disk space and make sure there&rsquo;s enough resources to deploy another container image in every node before starting the tests.</p>
-</div>
 <h3 id="run-the-tests">Run the tests<a class="headerlink" href="#run-the-tests" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>./run-tnf-container.sh
 </code></pre></div>
@@ -924,18 +928,14 @@ In order to get the required information, the test suite does not <code>ssh</cod
 <li><code>-t</code> to provide the path of the local directory that contains tnf config files</li>
 <li><code>-o</code> to provide the path of the local directory where test results (claim.json) and execution logs (tnf-execution.log) will be available from after the container exits.</li>
 </ul>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
+<p>! warning</p>
 <p>This directory must exist in order for the claim file to be written.</p>
-</div>
 <p><strong>Optional arguments</strong></p>
 <ul>
 <li><code>-l</code> to list the labels to be run. See <a href="https://onsi.github.io/ginkgo/#spec-labels">Ginkgo Spec Labels</a> for more information on how to filter tests with labels.</li>
 </ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If <code>-l</code> is not specified, the tnf will run in &lsquo;diagnostic&rsquo; mode. In this mode, no test case will run: it will only get information from the cluster (PUTs, CRDs, nodes info, etc&hellip;) to save it in the claim file. This can be used to make sure the configuration was properly set and the autodiscovery found the right pods/crds&hellip;</p>
-</div>
+<p>! note</p>
+<p>If <code>-l</code> is not specified, the tnf will run in &lsquo;diagnostic&rsquo; mode. In this mode, no test case will run: it will only get information from the cluster (PUTs, CRDs, nodes info, etc…) to save it in the claim file. This can be used to make sure the configuration was properly set and the autodiscovery found the right pods/crds…</p>
 <ul>
 <li>
 <p><code>-i</code> to provide a name to a custom <abbr title="Test Network Function">TNF</abbr> container image. Supports local images, as well as images from external registries.</p>
@@ -944,25 +944,19 @@ In order to get the required information, the test suite does not <code>ssh</cod
 <p><code>-k</code> to set a path to one or more kubeconfig files to be used by the container to authenticate with the cluster. Paths must be separated by a colon.</p>
 </li>
 </ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
+<p>! note</p>
 <p>If <code>-k</code> is not specified, autodiscovery is performed.</p>
 <p>The autodiscovery first looks for paths in the <code>$KUBECONFIG</code> environment variable on the host system, and if the variable is not set or is empty, the default configuration stored in <code>$HOME/.kube/config</code> is checked.</p>
-</div>
 <ul>
 <li><code>-n</code> to give the network mode of the container. Defaults set to <code>host</code>, which requires selinux to be disabled. Alternatively, <code>bridge</code> mode can be used with selinux if TNF_CONTAINER_CLIENT is set to <code>docker</code> or running the test as root.</li>
 </ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
+<p>! note</p>
 <p>See the <a href="https://docs.docker.com/engine/reference/run/#network-settings">docker run &ndash;network parameter reference</a> for more information on how to configure network settings.</p>
-</div>
 <ul>
 <li><code>-b</code> to set an external offline DB that will be used to verify the certification status of containers, helm charts and operators. Defaults to the DB included in the <abbr title="Test Network Function">TNF</abbr> container image.</li>
 </ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
+<p>! note</p>
 <p>See the <a href="https://github.com/test-network-function/oct">OCT tool</a> for more information on how to create this DB.</p>
-</div>
 <p><strong>Command to run</strong></p>
 <div class="highlight"><pre><span></span><code>./run-tnf-container.sh<span class="w"> </span>-k<span class="w"> </span>~/.kube/config<span class="w"> </span>-t<span class="w"> </span>~/tnf/config
 -o<span class="w"> </span>~/tnf/output<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;networking,access-control&quot;</span>
@@ -991,12 +985,13 @@ client using <code>TNF_CONTAINER_CLIENT</code> can be configured. This is partic
 <span class="w">  </span>--build-arg<span class="w"> </span><span class="nv">TNF_VERSION</span><span class="o">=</span>v4.1.7<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--build-arg<span class="w"> </span><span class="nv">TNF_SRC_URL</span><span class="o">=</span>https://github.com/test-network-function/cnf-certification-test<span class="w"> </span>.
 </code></pre></div>
-<h3 id="run-the-tests_1">Run the tests<a class="headerlink" href="#run-the-tests_1" title="Permanent link">&para;</a></h3>
+<h3 id="run-the-tests-2">Run the tests 2<a class="headerlink" href="#run-the-tests-2" title="Permanent link">&para;</a></h3>
 <p>Specify the custom <abbr title="Test Network Function">TNF</abbr> image using the <code>-i</code> parameter.</p>
-<p><div class="highlight"><pre><span></span><code>./run-tnf-container.sh<span class="w"> </span>-i<span class="w"> </span>cnf-certification-test:v4.1.7
+<div class="highlight"><pre><span></span><code>./run-tnf-container.sh<span class="w"> </span>-i<span class="w"> </span>cnf-certification-test:v4.1.7
 -t<span class="w"> </span>~/tnf/config<span class="w"> </span>-o<span class="w"> </span>~/tnf/output<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;networking,access-control&quot;</span>
 </code></pre></div>
- Note: see <a href="../test-spec/#general-tests">General tests</a> for a list of available keywords.</p>
+<p>Note: see <a href="../test-spec/#general-tests">General tests</a> for a list of available keywords.</p>
+<h1 id="abbreviations">Abbreviations<a class="headerlink" href="#abbreviations" title="Permanent link">&para;</a></h1>
 
 
 
