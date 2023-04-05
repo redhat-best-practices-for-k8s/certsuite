@@ -3,10 +3,9 @@
 
 <head>
   <meta charset=utf-8>
-  <title>TNF claim.json parser</title>
+  <title>CNF Certification Test Results</title>
   <meta charset="utf-8">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
   <style type="text/css">
@@ -21,27 +20,28 @@
     table td {
       border: 1px solid #000;
     }
+
     tg {
       background-color: #28a745;
     }
 
     tred {
-	    background-color : #dc3545;
+      background-color: #dc3545;
     }
 
     ty {
-	    background-color : #ffc107;
+      background-color: #ffc107;
     }
 
     tgy {
-	    background-color : 	#a7aeb3;
+      background-color: #ced4da;
     }
   </style>
 </head>
 
 <body>
   <nav class="navbar navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Test Network Function result parser</a>
+    <a class="navbar-brand" href="#">CNF Certification Test Results</a>
     <div class="mb-3">
       <label for="formFile" class="form-label text-light">Upload claim.json file</label>
       <input class="form-control" type="file" id="formFile">
@@ -49,10 +49,10 @@
         Choose a scenario:</label>
       <select name="class" id="selectBox" onchange="changeFunc()">
         <option value="all"> All</option>
-        <option value="faredge"> Far Edge</option>
+        <option value="faredge"> Far-Edge</option>
         <option value="telco"> Telco</option>
-        <option value="nontelco"> Non Telco</option>
-        <option value="extanded"> Extanded</option>
+        <option value="nontelco"> Non-Telco</option>
+        <option value="extended"> Extended</option>
 
       </select>
     </div>
@@ -128,10 +128,10 @@
       <table class="table table-hover table-bordered" id="mandatory-non-telco-table" hidden="hidden">
       </table>
       <table class="table table-hover table-bordered" id="optional-non-telco-table" hidden="hidden">
-        <table class="table table-hover table-bordered" id="mandatory-extanded-table" hidden="hidden">
+        <table class="table table-hover table-bordered" id="mandatory-extended-table" hidden="hidden">
         </table>
-        <table class="table table-hover table-bordered" id="optional-extanded-table" hidden="hidden">
-      </table>
+        <table class="table table-hover table-bordered" id="optional-extended-table" hidden="hidden">
+        </table>
     </div>
 
 
@@ -213,11 +213,11 @@
           document.getElementById(optionalMandatory + "-non-telco-table").setAttribute("hidden", "hidden");
         }
       }
-      if (selectedValue == "extanded") {
+      if (selectedValue == "extended") {
         if (checkBox.checked == true) {
-          document.getElementById(optionalMandatory + "-extanded-table").removeAttribute("hidden");
+          document.getElementById(optionalMandatory + "-extended-table").removeAttribute("hidden");
         } else {
-          document.getElementById(optionalMandatory + "-extanded-table").setAttribute("hidden", "hidden");
+          document.getElementById(optionalMandatory + "-extended-table").setAttribute("hidden", "hidden");
         }
       }
     }
@@ -228,12 +228,12 @@
       document.getElementById("mandatory-far-edge-table").setAttribute("hidden", "hidden");
       document.getElementById("mandatory-telco-table").setAttribute("hidden", "hidden");
       document.getElementById("mandatory-non-telco-table").setAttribute("hidden", "hidden");
-      document.getElementById("mandatory-extanded-table").setAttribute("hidden", "hidden");
+      document.getElementById("mandatory-extended-table").setAttribute("hidden", "hidden");
 
       document.getElementById("optional-far-edge-table").setAttribute("hidden", "hidden");
       document.getElementById("optional-telco-table").setAttribute("hidden", "hidden");
       document.getElementById("optional-non-telco-table").setAttribute("hidden", "hidden");
-      document.getElementById("optional-extanded-table").setAttribute("hidden", "hidden");
+      document.getElementById("optional-extended-table").setAttribute("hidden", "hidden");
 
       document.getElementById("results-table").removeAttribute("hidden");
     }
@@ -249,12 +249,12 @@
 
       document.getElementById("mandatory-far-edge-table").setAttribute("hidden", "hidden");
       document.getElementById("mandatory-non-telco-table").setAttribute("hidden", "hidden");
-      document.getElementById("mandatory-extanded-table").setAttribute("hidden", "hidden");
+      document.getElementById("mandatory-extended-table").setAttribute("hidden", "hidden");
       document.getElementById("mandatory-telco-table").setAttribute("hidden", "hidden");
 
       document.getElementById("optional-far-edge-table").setAttribute("hidden", "hidden");
       document.getElementById("optional-non-telco-table").setAttribute("hidden", "hidden");
-      document.getElementById("optional-extanded-table").setAttribute("hidden", "hidden");
+      document.getElementById("optional-extended-table").setAttribute("hidden", "hidden");
 
       document.getElementById("optional-telco-table").setAttribute("hidden", "hidden");
 
@@ -389,7 +389,7 @@
             if (tableName == "nontelco") {
               eqData = input2[key2].NonTelco
             }
-            if (tableName == "extanded") {
+            if (tableName == "extended") {
               eqData = input2[key2].Extended
             }
 
@@ -426,24 +426,30 @@
         }
       }
       text += '<th scope="col" class="th-sm">Test ID</th>'
-
+      tableNameMap = {
+        "faredge": "Far-Edge",
+        "telco": "Telco",
+        "nontelco": "Non-Telco",
+        "extended": "Extended",
+        "all": "All"
+      }
       if (tableName == "all") {
-        text3 = '<thead><tr><th style="width:10%" scope="col">Test summary (' + tableName + ')</th><th scope="col">Test feedback</th></tr></thead><tbody>'
-        } else {
-        text3 = '<thead><tr><th style="width:10%" scope="col">Mandatory Test  summary (' + tableName + ')</th><th scope="col">Test feedback</th></tr></thead><tbody>'
+        text3 = '<thead><tr><th style="width:10%" scope="col">Test summary (' + tableNameMap[tableName] + ')</th><th scope="col">Test feedback</th></tr></thead><tbody>'
+      } else {
+        text3 = '<thead><tr><th style="width:10%" scope="col">Mandatory Test  summary (' + tableNameMap[tableName] + ')</th><th scope="col">Test feedback</th></tr></thead><tbody>'
       }
       //text3 += '<table><tr><td><tred>Failed Madatory</tred></td></tr><tr><td><ty>Failed Optional</ty></td></tr><tr><td><tgy>Skip</tgy></td></tr><tr><td><tg>Pass</tg></td></tr></table>'
 
-      text2 = '<thead><tr><th style="width:10%" scope="col">Optional Test summary (' + tableName + ')</th><th scope="col">Test results</th></tr></thead><tbody>'
-    //  text2 += '<table><tr><td><tred>Failed Madatory</tred></td></tr><tr><td><ty>Failed Optional</ty></td></tr><tr><td><tgy>Skip</tgy></td></tr><tr><td><tg>Pass</tg></td></tr></table>'
-      text2 += '<tr><td class="align-top"><b>Total:</b> ' + tests_total_optional + '<br><b><tg>Passed:</tg></b> ' + tests_passed_optional + '<br><b><tgy>Skipped:</tgy></b> ' + tests_skipped_optional + '<br><b><ty>Failed:</ty></b> ' + tests_failed_optional 
-      text2+='</td><td>'
-        text2 += '<div class="accordion" id="results-accordion">'
+      text2 = '<thead><tr><th style="width:10%" scope="col">Optional Test summary (' + tableNameMap[tableName] + ')</th><th scope="col">Test results</th></tr></thead><tbody>'
+      //  text2 += '<table><tr><td><tred>Failed Madatory</tred></td></tr><tr><td><ty>Failed Optional</ty></td></tr><tr><td><tgy>Skip</tgy></td></tr><tr><td><tg>Pass</tg></td></tr></table>'
+      text2 += '<tr><td class="align-top"><b>Total:</b> ' + tests_total_optional + '<br><b><tg>Passed:</tg></b> ' + tests_passed_optional + '<br><b><tgy>Skipped:</tgy></b> ' + tests_skipped_optional + '<br><b><ty>Failed:</ty></b> ' + tests_failed_optional
+      text2 += '</td><td>'
+      text2 += '<div class="accordion" id="results-accordion">'
       // First we will have a left column in the table with the summarized results
-      text3 += '<tr><td class="align-top"><b>Total:</b> ' + tests_total + '<br><b><tg>Passed:</tg></b> ' + tests_passed + '<br><b><tgy>Skipped:</tgy></b> '  + tests_skipped + '<br><b><tred>Failed:</tred></b> ' + tests_failed 
-      text3+='</td><td>'
+      text3 += '<tr><td class="align-top"><b>Total:</b> ' + tests_total + '<br><b><tg>Passed:</tg></b> ' + tests_passed + '<br><b><tgy>Skipped:</tgy></b> ' + tests_skipped + '<br><b><tred>Failed:</tred></b> ' + tests_failed
+      text3 += '</td><td>'
 
-        text3 += '<div class="accordion" id="results-accordion">'
+      text3 += '<div class="accordion" id="results-accordion">'
       for (const key in input) {
         for (const key2 in input2) {
 
@@ -456,7 +462,7 @@
           if (tableName == "nontelco") {
             eqData = input2[key2].NonTelco
           }
-          if (tableName == "extanded") {
+          if (tableName == "extended") {
             eqData = input2[key2].Extended
           }
 
@@ -468,10 +474,10 @@
             if (status === "passed") {
               buttontype = 'bg-success text-white'
             } else if (status === "skipped") {
-              buttontype = 'bg-secondary text-black'
+              buttontype = 'bg-dark-subtle text-black'
             } else {
-              buttontype = 'bg-warning text-white' 
-               if (eqData != "Optional" || tableName == "all") {
+              buttontype = 'bg-warning text-white'
+              if (eqData != "Optional" || tableName == "all") {
                 buttontype = 'bg-danger text-white'
               }
             }
@@ -483,7 +489,7 @@
             text += '<div id="' + itemid + '" class="accordion-collapse collapse" aria-labelledby="' + headingid + '">'
             text += '<div class="accordion-body">'
             // Inside the accordion, 1 table with the following colummns
-            text += '<table id="myTable-'+ key+'"class="table table-bordered table-fixed"><thead><tr>'
+            text += '<table id="myTable-' + key + '"class="table table-bordered table-fixed"><thead><tr>'
             text += '<th scope="col" class="th-sm">Test ID</th>'
             text += '<th scope="col" class="th-sm">Test Text</th>'
             text += '<th scope="col" class="th-sm">Duration</th>'
@@ -502,7 +508,7 @@
               text += '<td>' + item.testText.replace(/\n/g, '<br>') + '</td>'
               text += '<td>' + formattedDuration + '</td>'
               text += '<td>' + item.state + '</td>'
-              text += '<td>' + ansi_up.ansi_to_html(item.CapturedTestOutput).replace(/\n/g, '<br>') + '</td></tr>' 
+              text += '<td>' + ansi_up.ansi_to_html(item.CapturedTestOutput).replace(/\n/g, '<br>') + '</td></tr>'
             }
 
             id = id + 1
@@ -510,17 +516,17 @@
               text2 += text
               text2 += '</tbody></table>'
               for (const item of input[key]) {
-                  text2 += '<label >write your Feedback for '+ item.testID.id +' test case</label>'
-                  text2 += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-' + tableName + '-' + item.testID.id + '" type="text" ></textarea>' 
-                }
+                text2 += '<label >write your Feedback for ' + item.testID.id + ' test case</label>'
+                text2 += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-' + tableName + '-' + item.testID.id + '" type="text" ></textarea>'
+              }
               text2 += '</div></div></div>'
             } else {
               text3 += text
               text3 += '</tbody></table>'
               for (const item of input[key]) {
-                  text3 += '<label >write your Feedback for '+ item.testID.id +' test case</label>'
-                  text3 += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-' + tableName + '-' + item.testID.id + '" type="text"></textarea>' 
-                }
+                text3 += '<label >write your Feedback for ' + item.testID.id + ' test case</label>'
+                text3 += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-' + tableName + '-' + item.testID.id + '" type="text"></textarea>'
+              }
               text3 += '</div></div></div>'
             }
           }
@@ -539,13 +545,13 @@
     function copyData(key) {
       var selectBox = document.getElementById("selectBox");
       var tableName = selectBox.options[selectBox.selectedIndex].value;
-      var sourceId = 'source-' +tableName+ '-' +key
+      var sourceId = 'source-' + tableName + '-' + key
       var data = document.getElementById(sourceId).value;
-      document.getElementById(sourceId).textContent=data
+      document.getElementById(sourceId).textContent = data
       document.getElementById(sourceId).readOnly = true;
 
 
-        }
+    }
 
 
 
@@ -581,7 +587,7 @@
           fillResults(json.claim.results, classification, '#mandatory-far-edge-table', '#optional-far-edge-table', "faredge")
           fillResults(json.claim.results, classification, '#mandatory-telco-table', '#optional-telco-table', "telco")
           fillResults(json.claim.results, classification, '#mandatory-non-telco-table', '#optional-non-telco-table', "nontelco")
-          fillResults(json.claim.results, classification, '#mandatory-extanded-table', '#optional-extanded-table', "extanded")
+          fillResults(json.claim.results, classification, '#mandatory-extended-table', '#optional-extended-table', "extended")
 
         });
         fileUploaded.readAsText(fileList[0]);
@@ -643,22 +649,22 @@
       var selectBox = document.getElementById("selectBox");
       var tableName = selectBox.options[selectBox.selectedIndex].value;
       for (const key in this.json.claim.results) {
-      for (const key2 in this.classification) {
-       if (key == key2){
-         copyData(key2)
-        }
+        for (const key2 in this.classification) {
+          if (key == key2) {
+            copyData(key2)
           }
         }
+      }
 
       htmlText = getHtmlResults()
       for (const key in this.json.claim.results) {
-      for (const key2 in this.classification) {
-       if (key == key2){
-        var sourceId = 'source-' +tableName+ '-' +key
-        document.getElementById(sourceId).readOnly = false;
-        }
+        for (const key2 in this.classification) {
+          if (key == key2) {
+            var sourceId = 'source-' + tableName + '-' + key
+            document.getElementById(sourceId).readOnly = false;
           }
         }
+      }
       var pom = document.createElement('a');
       pom.setAttribute('href', 'data:text/html;charset=UTF-8,' + encodeURIComponent(htmlText));
       pom.setAttribute('download', "results");
@@ -691,9 +697,9 @@
           table = document.getElementById(optionalMandatory + "-non-telco-table");
         }
       }
-      if (selectedValue == "extanded") {
+      if (selectedValue == "extended") {
         if (checkBox.checked == true) {
-          table = document.getElementById(optionalMandatory + "-extanded-table");
+          table = document.getElementById(optionalMandatory + "-extended-table");
         }
       }
       const clonedTable = table.cloneNode(true);
