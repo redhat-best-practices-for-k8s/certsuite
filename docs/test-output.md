@@ -1,3 +1,4 @@
+<!-- markdownlint-disable line-length no-bare-urls no-emphasis-as-heading -->
 # Test Output
 
 ## Claim File
@@ -20,13 +21,10 @@ When submitting results back to Red Hat for certification, please include the ab
 go run cmd/tools/cmd/main.go claim-add --claimfile=claim.json
 --reportdir=/home/$USER/reports
 ```
- **Args**:  
-`
---claimfile is an existing claim.json file`
 
-`
---repordir :path to test results that you want to include.
-`
+ **Args**:
+`--claimfile is an existing claim.json file`
+`--repordir :path to test results that you want to include.`
 
  The tests result files from the given report dir will be appended under the result section of the claim file using file name as the key/value pair.
  The tool will ignore the test result, if the key name is already present under result section of the claim file.
@@ -50,4 +48,5 @@ For more details on the contents of the claim file
 * [Guide](https://redhat-connect.gitbook.io/openshift-badges/badges/cloud-native-network-functions-cnf).
 
 ## Execution logs
-The test suite also saves a copy of the execution logs at <test output directory>/tnf-execution.log
+
+The test suite also saves a copy of the execution logs at [test output directory]/tnf-execution.log

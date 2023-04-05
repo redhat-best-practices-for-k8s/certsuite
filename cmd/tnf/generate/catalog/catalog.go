@@ -160,13 +160,14 @@ func outputTestCases() {
 
 	// Iterating the map by test and suite names
 	for _, suite := range suites {
-		fmt.Fprintf(os.Stdout, "\n### %s\n\n", suite)
+		fmt.Fprintf(os.Stdout, "\n### %s\n", suite)
 		for _, k := range catalog[suite] {
 			// Add the suite to the comma separate list of tags shown.  The tags are also modified in the:
 			// GetGinkgoTestIDAndLabels function for usage by Ginkgo.
 			tags := strings.ReplaceAll(identifiers.Catalog[k.identifier].Tags, "\n", " ") + "," + k.identifier.Suite
 
-			fmt.Fprintf(os.Stdout, "#### %s\n\n", k.testName)
+			// Every paragraph starts with a new line.
+			fmt.Fprintf(os.Stdout, "\n#### %s\n\n", k.testName)
 			fmt.Println("Property|Description")
 			fmt.Println("---|---")
 			fmt.Fprintf(os.Stdout, "Unique ID|%s\n", k.identifier.Id)
@@ -178,7 +179,6 @@ func outputTestCases() {
 			fmt.Fprintf(os.Stdout, "Tags|%s\n", tags)
 		}
 	}
-	fmt.Println()
 }
 
 func outputJS() {
