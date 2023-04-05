@@ -72,6 +72,8 @@ func AddCatalogEntry(testID, suiteName, description, remediation, testType, exce
 
 	tcDescription, aID := claim.BuildTestCaseDescription(testID, suiteName, description, remediation, testType, exception, reference, qe, categoryclassification, tags...)
 	Catalog[aID] = tcDescription
+	Classification[aID.Id] = categoryclassification
+
 	return aID
 }
 
@@ -1687,3 +1689,4 @@ func GetGinkgoTestIDAndLabels(identifier claim.Identifier) (testID string, tags 
 
 // Catalog is the JUnit testcase catalog of tests.
 var Catalog = map[claim.Identifier]claim.TestCaseDescription{}
+var Classification = map[string]map[string]string{}

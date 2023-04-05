@@ -17,12 +17,14 @@
 package catalog
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"path"
 	"sort"
 	"strings"
 
+	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 
@@ -52,6 +54,12 @@ var (
 	generateCmd = &cobra.Command{
 		Use:   "catalog",
 		Short: "Generates the test catalog",
+	}
+
+	markdownGenerateClassification = &cobra.Command{
+		Use:   "javascript",
+		Short: "Generates java script file for classification",
+		RunE:  generateJS,
 	}
 
 	// markdownGenerateCmd is used to generate a markdown formatted catalog to stdout.
@@ -173,6 +181,21 @@ func outputTestCases() {
 	fmt.Println()
 }
 
+func outputJS() {
+	out, err := json.MarshalIndent(identifiers.Classification, "", "  ")
+	if err != nil {
+		logrus.Errorf("could not Marshall classification, err=%s", err)
+		return
+	}
+	fmt.Printf("classification=  %s ", out)
+}
+func generateJS(_ *cobra.Command, _ []string) error {
+	// process the test cases
+	outputJS()
+
+	return nil
+}
+
 // runGenerateMarkdownCmd generates a markdown test catalog.
 func runGenerateMarkdownCmd(_ *cobra.Command, _ []string) error {
 	// static introductory generation
@@ -189,8 +212,15 @@ func runGenerateMarkdownCmd(_ *cobra.Command, _ []string) error {
 	return nil
 }
 
+/*func NewCommandclassification() *cobra.Command {
+	generateClassification.AddCommand(markdownGenerateClassification)
+	return generateClassification
+}*/
+
 // Execute executes the "catalog" CLI.
 func NewCommand() *cobra.Command {
 	generateCmd.AddCommand(markdownGenerateCmd)
+
+	generateCmd.AddCommand(markdownGenerateClassification)
 	return generateCmd
 }

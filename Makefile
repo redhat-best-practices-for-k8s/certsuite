@@ -108,6 +108,7 @@ build-catalog-md: build-tnf-tool
 build-cnf-tests: install-tools
 	PATH=${PATH}:${GOBIN} ginkgo build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" ./cnf-certification-test
 	make build-catalog-md
+	make classification-js
 
 # build the CNF test binary with debug flags
 build-cnf-tests-debug: install-tools
@@ -160,3 +161,6 @@ build-image-tnf:
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_VERSION} \
 		-f Dockerfile .
+classification-js:
+	./tnf generate catalog javascript > script/classification.js
+
