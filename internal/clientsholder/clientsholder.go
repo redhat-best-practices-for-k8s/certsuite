@@ -135,6 +135,11 @@ func GetTestClientsHolder(k8sMockObjects []runtime.Object) *ClientsHolder {
 	return &clientsHolder
 }
 
+func SetTestK8sClientsHolder(k8sClient kubernetes.Interface) {
+	clientsHolder.K8sClient = k8sClient
+	clientsHolder.ready = true
+}
+
 func ClearTestClientsHolder() {
 	clientsHolder.K8sClient = nil
 	clientsHolder.ready = false
