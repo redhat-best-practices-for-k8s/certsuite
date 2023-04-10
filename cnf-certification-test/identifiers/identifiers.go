@@ -42,16 +42,17 @@ for instance the Performance Addon Operator (PAO) or istio.`
 )
 
 const (
-	TagCommon   = "common"
-	TagExtended = "extended"
-	TagTelco    = "telco"
-	TagFarEdge  = "faredge"
-	FarEdge     = "FarEdge"
-	Telco       = "Telco"
-	NonTelco    = "NonTelco"
-	Extended    = "Extended"
-	Optional    = "Optional"
-	Mandatory   = "Mandatory"
+	TagCommon    = "common"
+	TagExtended  = "extended"
+	TagTelco     = "telco"
+	TagFarEdge   = "faredge"
+	FarEdge      = "FarEdge"
+	Telco        = "Telco"
+	NonTelco     = "NonTelco"
+	Extended     = "Extended"
+	Optional     = "Optional"
+	Mandatory    = "Mandatory"
+	TagPreflight = "preflight"
 )
 
 func init() {
