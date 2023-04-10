@@ -44,10 +44,10 @@ var _ = ginkgo.Describe(common.PreflightTestKey, func() {
 		return
 	}
 
-	// Safeguard against running the preflight tests if we are specifically targeting a certain label eg. in QE.
+	// Safeguard against running the preflight tests if the label filter is set but does not include the preflight label
 	ginkgoConfig, _ := ginkgo.GinkgoConfiguration()
-	if !labelsAllowTestRun(ginkgoConfig.LabelFilter, []string{common.PreflightTestKey, identifiers.TagCommon}) {
-		logrus.Warn("LabelFilter is set but 'preflight' or 'common' tests are not targeted. Skipping the preflight tests.")
+	if !labelsAllowTestRun(ginkgoConfig.LabelFilter, []string{common.PreflightTestKey, identifiers.TagPreflight}) {
+		logrus.Warn("LabelFilter is set but 'preflight' tests are not targeted. Skipping the preflight tests.")
 		return
 	}
 
@@ -124,7 +124,7 @@ func generatePreflightContainerGinkgoTest(testName, description, suggestion stri
 		identifiers.Telco:    identifiers.Optional,
 		identifiers.NonTelco: identifiers.Optional,
 		identifiers.Extended: identifiers.Optional,
-	}, identifiers.TagCommon)
+	}, identifiers.TagPreflight)
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(aID)
 
 	// Start the ginkgo It block
@@ -168,7 +168,7 @@ func generatePreflightOperatorGinkgoTest(testName, description, suggestion strin
 		identifiers.Telco:    identifiers.Optional,
 		identifiers.NonTelco: identifiers.Optional,
 		identifiers.Extended: identifiers.Optional,
-	}, identifiers.TagCommon)
+	}, identifiers.TagPreflight)
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(aID)
 
 	// Start the ginkgo It block
