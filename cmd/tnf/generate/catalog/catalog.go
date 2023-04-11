@@ -135,8 +135,24 @@ func Unique(slice []string) []string {
 	return uniqSlice
 }
 
+func ScenarioIDToText(id string) (text string) {
+	switch id {
+	case identifiers.FarEdge:
+		text = "Far-Edge"
+	case identifiers.Telco:
+		text = "Telco"
+	case identifiers.NonTelco:
+		text = "Non-Telco"
+	case identifiers.Extended:
+		text = "Extended"
+	default:
+		text = "Unknown Scenario"
+	}
+	return text
+}
+
 // outputTestCases outputs the Markdown representation for test cases from the catalog to stdout.
-func outputTestCases() {
+func outputTestCases() { //nolint:funlen
 	// Building a separate data structure to store the key order for the map
 	keys := make([]claim.Identifier, 0, len(identifiers.Catalog))
 	for k := range identifiers.Catalog {
@@ -165,7 +181,10 @@ func outputTestCases() {
 			// Add the suite to the comma separate list of tags shown.  The tags are also modified in the:
 			// GetGinkgoTestIDAndLabels function for usage by Ginkgo.
 			tags := strings.ReplaceAll(identifiers.Catalog[k.identifier].Tags, "\n", " ") + "," + k.identifier.Suite
-
+			classificationString := "|**Scenario**|**Optional/Mandatory**|\n"
+			for index, value := range identifiers.Catalog[k.identifier].CategoryClassification {
+				classificationString += "|" + ScenarioIDToText(index) + "|" + value + "|\n"
+			}
 			// Every paragraph starts with a new line.
 			fmt.Fprintf(os.Stdout, "\n#### %s\n\n", k.testName)
 			fmt.Println("Property|Description")
@@ -177,6 +196,7 @@ func outputTestCases() {
 			fmt.Fprintf(os.Stdout, "Best Practice Reference|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].BestPracticeReference, "\n", " "))
 			fmt.Fprintf(os.Stdout, "Exception Process|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].ExceptionProcess, "\n", " "))
 			fmt.Fprintf(os.Stdout, "Tags|%s\n", tags)
+			fmt.Fprintf(os.Stdout, "%s", classificationString)
 		}
 	}
 }
