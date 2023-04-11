@@ -135,6 +135,22 @@ func Unique(slice []string) []string {
 	return uniqSlice
 }
 
+func ScenarioIDToText(id string) (text string) {
+	switch id {
+	case identifiers.FarEdge:
+		text = "Far-Edge"
+	case identifiers.Telco:
+		text = "Telco"
+	case identifiers.NonTelco:
+		text = "Non-Telco"
+	case identifiers.Extended:
+		text = "Extended"
+	default:
+		text = "Unknown Scenario"
+	}
+	return text
+}
+
 // outputTestCases outputs the Markdown representation for test cases from the catalog to stdout.
 func outputTestCases() { //nolint:funlen
 	// Building a separate data structure to store the key order for the map
@@ -167,7 +183,7 @@ func outputTestCases() { //nolint:funlen
 			tags := strings.ReplaceAll(identifiers.Catalog[k.identifier].Tags, "\n", " ") + "," + k.identifier.Suite
 			classificationString := "|**Scenario**|**Optional/Mandatory**|\n"
 			for index, value := range identifiers.Catalog[k.identifier].CategoryClassification {
-				classificationString += "|" + index + "|" + value + "|\n"
+				classificationString += "|" + ScenarioIDToText(index) + "|" + value + "|\n"
 			}
 			// Every paragraph starts with a new line.
 			fmt.Fprintf(os.Stdout, "\n#### %s\n\n", k.testName)

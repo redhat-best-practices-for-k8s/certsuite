@@ -21,10 +21,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,access-control
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Mandatory|
+|Far-Edge|Mandatory|
 
 #### access-control-container-host-port
 
@@ -38,10 +38,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Optional|
-|Telco|Optional|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Optional|
+|Far-Edge|Optional|
+|Telco|Optional|
 
 #### access-control-ipc-lock-capability-check
 
@@ -55,10 +55,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|Identify the pod that is needing special capabilities and document why
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Mandatory|
+|Far-Edge|Mandatory|
 
 #### access-control-namespace
 
@@ -72,10 +72,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
-|Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Telco|Mandatory|
 
 #### access-control-namespace-resource-quota
 
@@ -89,9 +89,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,access-control
 |**Scenario**|**Optional/Mandatory**|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Mandatory|
-|FarEdge|Optional|
+|Far-Edge|Optional|
 |Telco|Optional|
 
 #### access-control-net-admin-capability-check
@@ -106,9 +106,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|Identify the pod that is needing special capabilities and document why
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Mandatory|
 
 #### access-control-net-raw-capability-check
@@ -123,9 +123,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|Identify the pod that is needing special capabilities and document why
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Mandatory|
 
 #### access-control-no-1337-uid
@@ -140,10 +140,10 @@ Best Practice Reference|https://to-be-done Section 4.6.24
 Exception Process|There is no documented exception process for this.
 Tags|extended,access-control
 |**Scenario**|**Optional/Mandatory**|
-|NonTelco|Optional|
-|Extended|Mandatory|
-|FarEdge|Optional|
 |Telco|Optional|
+|Non-Telco|Optional|
+|Extended|Mandatory|
+|Far-Edge|Optional|
 
 #### access-control-one-process-per-container
 
@@ -157,9 +157,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Optional|
+|Far-Edge|Optional|
 |Telco|Optional|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Optional|
 
 #### access-control-pod-automount-service-account-token
@@ -174,9 +174,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Mandatory|
 
 #### access-control-pod-host-ipc
@@ -191,9 +191,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
 
 #### access-control-pod-host-network
@@ -208,10 +208,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
-|Telco|Mandatory|
-|NonTelco|Mandatory|
 |Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Telco|Mandatory|
+|Non-Telco|Mandatory|
 
 #### access-control-pod-host-path
 
@@ -225,9 +225,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
 
 #### access-control-pod-host-pid
@@ -242,9 +242,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
 
 #### access-control-pod-role-bindings
@@ -259,10 +259,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
+|Far-Edge|Mandatory|
 
 #### access-control-pod-service-account
 
@@ -276,10 +276,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
-|NonTelco|Mandatory|
-|Extended|Mandatory|
-|FarEdge|Mandatory|
 |Telco|Mandatory|
+|Non-Telco|Mandatory|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
 
 #### access-control-requests-and-limits
 
@@ -293,10 +293,10 @@ Best Practice Reference|https://to-be-done Section 4.6.11
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,access-control
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
-|Telco|Mandatory|
-|NonTelco|Optional|
 |Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Telco|Mandatory|
+|Non-Telco|Optional|
 
 #### access-control-security-context
 
@@ -310,9 +310,9 @@ Best Practice Reference|https://to-be-done Section 4.5
 Exception Process|If the container had the right configuration of the allowed category from the 4 list so the test will pass the list is on page 51 on the CNF Security Context Constraints (SCC) section 4.5(Allowed categories are category 1 and category 0), Applications MUST use one of the approved Security Context Constraints.
 Tags|extended,access-control
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Optional|
+|Far-Edge|Optional|
 |Telco|Optional|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Optional|
 
 #### access-control-security-context-non-root-user-check
@@ -327,9 +327,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|If your application needs root user access, please document why your application cannot be ran as non-root and supply the reasoning for exception.
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Optional|
+|Far-Edge|Optional|
 |Telco|Optional|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Optional|
 
 #### access-control-security-context-privilege-escalation
@@ -344,9 +344,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Optional|
+|Far-Edge|Optional|
 |Telco|Optional|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Optional|
 
 #### access-control-ssh-daemons
@@ -361,9 +361,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,access-control
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Mandatory|
 
 #### access-control-sys-admin-capability-check
@@ -378,10 +378,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|Identify the pod that is needing special capabilities and document why
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
-|Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Telco|Mandatory|
 
 #### access-control-sys-nice-realtime-capability
 
@@ -395,9 +395,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,access-control
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Mandatory|
 
 #### access-control-sys-ptrace-capability
@@ -412,9 +412,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,access-control
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Mandatory|
 
 ### affiliated-certification
@@ -431,10 +431,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,affiliated-certification
 |**Scenario**|**Optional/Mandatory**|
-|NonTelco|Mandatory|
 |Extended|Mandatory|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
+|Non-Telco|Mandatory|
 
 #### affiliated-certification-container-is-certified-digest
 
@@ -448,10 +448,10 @@ Best Practice Reference|https://to-be-done Section 5.3.7
 Exception Process|There is no documented exception process for this.
 Tags|extended,telco,affiliated-certification
 |**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
+|Extended|Mandatory|
 
 #### affiliated-certification-helmchart-is-certified
 
@@ -465,9 +465,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,affiliated-certification
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
 
 #### affiliated-certification-operator-is-certified
@@ -482,10 +482,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,affiliated-certification
 |**Scenario**|**Optional/Mandatory**|
-|NonTelco|Mandatory|
-|Extended|Mandatory|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
+|Non-Telco|Mandatory|
+|Extended|Mandatory|
 
 ### chaostesting
 
@@ -501,10 +501,10 @@ Best Practice Reference|No Reference Document Specified
 Exception Process|There is no documented exception process for this.
 Tags|common,chaostesting
 |**Scenario**|**Optional/Mandatory**|
-|NonTelco|Optional|
-|Extended|Optional|
-|FarEdge|Optional|
 |Telco|Optional|
+|Non-Telco|Optional|
+|Extended|Optional|
+|Far-Edge|Optional|
 
 ### lifecycle
 
@@ -520,9 +520,9 @@ Best Practice Reference|https://to-be-done Section 4.6.24
 Exception Process|There is no documented exception process for this.
 Tags|extended,telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Optional|
+|Far-Edge|Optional|
 |Telco|Optional|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Mandatory|
 
 #### lifecycle-container-shutdown
@@ -537,10 +537,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.
 Tags|common,telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Optional|
+|Non-Telco|Optional|
+|Extended|Mandatory|
 
 #### lifecycle-container-startup
 
@@ -554,9 +554,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.
 Tags|common,telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Mandatory|
 
 #### lifecycle-cpu-isolation
@@ -571,10 +571,10 @@ Best Practice Reference|https://to-be-done Section 3.5.5
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
-|NonTelco|Optional|
-|Extended|Mandatory|
-|FarEdge|Mandatory|
 |Telco|Mandatory|
+|Non-Telco|Optional|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
 
 #### lifecycle-crd-scaling
 
@@ -588,10 +588,10 @@ Best Practice Reference|https://to-be-done Section 4.6.20
 Exception Process|There is no documented exception process for this.
 Tags|common,lifecycle
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Optional|
-|Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
+|Far-Edge|Optional|
+|Telco|Mandatory|
 
 #### lifecycle-deployment-scaling
 
@@ -605,10 +605,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,lifecycle
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Optional|
-|Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
+|Far-Edge|Optional|
+|Telco|Mandatory|
 
 #### lifecycle-image-pull-policy
 
@@ -622,9 +622,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Optional|
+|Far-Edge|Optional|
 |Telco|Optional|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Optional|
 
 #### lifecycle-liveness-probe
@@ -639,10 +639,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
-|Telco|Mandatory|
-|NonTelco|Optional|
 |Extended|Mandatory|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
+|Telco|Mandatory|
+|Non-Telco|Optional|
 
 #### lifecycle-persistent-volume-reclaim-policy
 
@@ -656,10 +656,10 @@ Best Practice Reference|https://to-be-done Section 3.3.4
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
-|Extended|Optional|
-|FarEdge|Optional|
+|Far-Edge|Optional|
 |Telco|Optional|
-|NonTelco|Optional|
+|Non-Telco|Optional|
+|Extended|Optional|
 
 #### lifecycle-pod-high-availability
 
@@ -673,10 +673,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,lifecycle
 |**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
+|Extended|Mandatory|
 
 #### lifecycle-pod-owner-type
 
@@ -690,10 +690,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
-|Telco|Mandatory|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Telco|Mandatory|
 
 #### lifecycle-pod-recreation
 
@@ -707,9 +707,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,lifecycle
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
 
 #### lifecycle-pod-scheduling
@@ -724,9 +724,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Mandatory|
 
 #### lifecycle-pod-toleration-bypass
@@ -741,9 +741,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Mandatory|
 
 #### lifecycle-readiness-probe
@@ -758,9 +758,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Mandatory|
 
 #### lifecycle-startup-probe
@@ -775,10 +775,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
-|FarEdge|Mandatory|
 
 #### lifecycle-statefulset-scaling
 
@@ -792,9 +792,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,lifecycle
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Optional|
+|Far-Edge|Optional|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
 
 #### lifecycle-storage-required-pods
@@ -809,9 +809,9 @@ Best Practice Reference|https://to-be-done Section 4.6.24
 Exception Process|There is no documented exception process for this.
 Tags|extended,lifecycle
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
 
 ### manageability
@@ -828,9 +828,9 @@ Best Practice Reference|https://to-be-done Section 4.6.20
 Exception Process|There is no documented exception process for this.
 Tags|extended,manageability
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Optional|
+|Far-Edge|Optional|
 |Telco|Optional|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Mandatory|
 
 #### manageability-containers-image-tag
@@ -846,9 +846,9 @@ Exception Process|There is no documented exception process for this.
 Tags|extended,manageability
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
-|FarEdge|Optional|
+|Far-Edge|Optional|
 |Telco|Optional|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 
 ### networking
 
@@ -864,10 +864,10 @@ Best Practice Reference|https://to-be-done Section 4.6.24
 Exception Process|There is no documented exception process for this.
 Tags|extended,telco,networking
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Mandatory|
+|Far-Edge|Mandatory|
 
 #### networking-dual-stack-service
 
@@ -881,10 +881,10 @@ Best Practice Reference|https://to-be-done Section 3.5.7
 Exception Process|There is no documented exception process for this.
 Tags|common,extended,networking
 |**Scenario**|**Optional/Mandatory**|
-|Telco|Mandatory|
-|NonTelco|Optional|
 |Extended|Mandatory|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
+|Telco|Mandatory|
+|Non-Telco|Optional|
 
 #### networking-icmpv4-connectivity
 
@@ -898,9 +898,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,networking
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
 
 #### networking-icmpv4-connectivity-multus
@@ -915,9 +915,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,networking
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Mandatory|
 
 #### networking-icmpv6-connectivity
@@ -932,10 +932,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,networking
 |**Scenario**|**Optional/Mandatory**|
-|Telco|Mandatory|
-|NonTelco|Optional|
 |Extended|Mandatory|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
+|Telco|Mandatory|
+|Non-Telco|Optional|
 
 #### networking-icmpv6-connectivity-multus
 
@@ -949,10 +949,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,networking
 |**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Optional|
+|Non-Telco|Optional|
+|Extended|Mandatory|
 
 #### networking-network-policy-deny-all
 
@@ -966,10 +966,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,networking
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Optional|
-|Telco|Optional|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Optional|
+|Far-Edge|Optional|
+|Telco|Optional|
 
 #### networking-ocp-reserved-ports-usage
 
@@ -983,10 +983,10 @@ Best Practice Reference|https://to-be-done Section 3.5.9
 Exception Process|There is no documented exception process for this.
 Tags|common,networking
 |**Scenario**|**Optional/Mandatory**|
-|NonTelco|Mandatory|
-|Extended|Mandatory|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
+|Non-Telco|Mandatory|
+|Extended|Mandatory|
 
 #### networking-reserved-partner-ports
 
@@ -1000,10 +1000,10 @@ Best Practice Reference|https://to-be-done Section 4.6.24
 Exception Process|There is no documented exception process for this.
 Tags|extended,networking
 |**Scenario**|**Optional/Mandatory**|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
-|FarEdge|Mandatory|
 
 #### networking-restart-on-reboot-sriov-pod
 
@@ -1017,10 +1017,10 @@ Best Practice Reference|https://to-be-done
 Exception Process|There is no documented exception process for this.
 Tags|faredge,networking
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
-|Telco|Optional|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Telco|Optional|
 
 #### networking-service-type
 
@@ -1034,10 +1034,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,networking
 |**Scenario**|**Optional/Mandatory**|
-|NonTelco|Mandatory|
-|Extended|Mandatory|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
+|Non-Telco|Mandatory|
+|Extended|Mandatory|
 
 #### networking-undeclared-container-ports-usage
 
@@ -1051,10 +1051,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,networking
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Optional|
-|Telco|Optional|
-|NonTelco|Optional|
 |Extended|Mandatory|
+|Far-Edge|Optional|
+|Telco|Optional|
+|Non-Telco|Optional|
 
 ### observability
 
@@ -1070,10 +1070,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,observability
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Mandatory|
+|Far-Edge|Mandatory|
 
 #### observability-crd-status
 
@@ -1087,9 +1087,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,observability
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
 
 #### observability-pod-disruption-budget
@@ -1104,9 +1104,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,observability
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
 
 #### observability-termination-policy
@@ -1121,10 +1121,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,observability
 |**Scenario**|**Optional/Mandatory**|
-|Extended|Optional|
-|FarEdge|Optional|
+|Far-Edge|Optional|
 |Telco|Optional|
-|NonTelco|Optional|
+|Non-Telco|Optional|
+|Extended|Optional|
 
 ### operator
 
@@ -1140,9 +1140,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,operator
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
 
 #### operator-install-status-no-privileges
@@ -1157,9 +1157,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,operator
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
 
 #### operator-install-status-succeeded
@@ -1174,9 +1174,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,operator
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
 
 ### performance
@@ -1193,10 +1193,10 @@ Best Practice Reference|https://to-be-done
 Exception Process|There is no documented exception process for this.
 Tags|faredge,performance
 |**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Optional|
-|NonTelco|Optional|
+|Non-Telco|Optional|
+|Extended|Mandatory|
 
 #### performance-exclusive-cpu-pool-rt-scheduling-policy
 
@@ -1210,9 +1210,9 @@ Best Practice Reference|https://to-be-done
 Exception Process|There is no documented exception process for this.
 Tags|faredge,performance
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Optional|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Optional|
 
 #### performance-isolated-cpu-pool-rt-scheduling-policy
@@ -1227,10 +1227,10 @@ Best Practice Reference|https://to-be-done
 Exception Process|There is no documented exception process for this.
 Tags|faredge,performance
 |**Scenario**|**Optional/Mandatory**|
-|Extended|Optional|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Optional|
-|NonTelco|Optional|
+|Non-Telco|Optional|
+|Extended|Optional|
 
 #### performance-rt-apps-no-exec-probes
 
@@ -1244,10 +1244,10 @@ Best Practice Reference|https://to-be-done
 Exception Process|There is no documented exception process for this.
 Tags|faredge,performance
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
 |Telco|Optional|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Optional|
+|Far-Edge|Mandatory|
 
 #### performance-shared-cpu-pool-non-rt-scheduling-policy
 
@@ -1261,9 +1261,9 @@ Best Practice Reference|https://to-be-done
 Exception Process|There is no documented exception process for this.
 Tags|faredge,performance
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Optional|
-|NonTelco|Optional|
+|Non-Telco|Optional|
 |Extended|Optional|
 
 ### platform-alteration
@@ -1280,10 +1280,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|Images should not be changed during runtime. There is no exception process for this.
 Tags|common,platform-alteration
 |**Scenario**|**Optional/Mandatory**|
-|NonTelco|Mandatory|
-|Extended|Mandatory|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
+|Non-Telco|Mandatory|
+|Extended|Mandatory|
 
 #### platform-alteration-boot-params
 
@@ -1297,9 +1297,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,platform-alteration
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
 
 #### platform-alteration-hugepages-1g-only
@@ -1314,10 +1314,10 @@ Best Practice Reference|https://to-be-done
 Exception Process|There is no documented exception process for this.
 Tags|faredge,platform-alteration
 |**Scenario**|**Optional/Mandatory**|
-|Extended|Optional|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Optional|
-|NonTelco|Optional|
+|Non-Telco|Optional|
+|Extended|Optional|
 
 #### platform-alteration-hugepages-2m-only
 
@@ -1331,10 +1331,10 @@ Best Practice Reference|https://to-be-done Section 3.5.4
 Exception Process|There is no documented exception process for this.
 Tags|extended,platform-alteration
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Optional|
-|Telco|Optional|
-|NonTelco|Optional|
 |Extended|Mandatory|
+|Far-Edge|Optional|
+|Telco|Optional|
+|Non-Telco|Optional|
 
 #### platform-alteration-hugepages-config
 
@@ -1348,9 +1348,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,platform-alteration
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
 
 #### platform-alteration-is-selinux-enforcing
@@ -1365,9 +1365,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,platform-alteration
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
 
 #### platform-alteration-isredhat-release
@@ -1382,9 +1382,9 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|Document which containers are not able to meet the RHEL-based container requirement and if/when the base image can be updated.
 Tags|common,platform-alteration
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
 
 #### platform-alteration-ocp-lifecycle
@@ -1399,10 +1399,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,platform-alteration
 |**Scenario**|**Optional/Mandatory**|
-|FarEdge|Mandatory|
-|Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Telco|Mandatory|
 
 #### platform-alteration-ocp-node-os-lifecycle
 
@@ -1416,10 +1416,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,platform-alteration
 |**Scenario**|**Optional/Mandatory**|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
 |Extended|Mandatory|
-|FarEdge|Mandatory|
 
 #### platform-alteration-service-mesh-usage
 
@@ -1433,10 +1433,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,platform-alteration
 |**Scenario**|**Optional/Mandatory**|
-|NonTelco|Optional|
 |Extended|Optional|
-|FarEdge|Optional|
+|Far-Edge|Optional|
 |Telco|Optional|
+|Non-Telco|Optional|
 
 #### platform-alteration-sysctl-config
 
@@ -1450,10 +1450,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,platform-alteration
 |**Scenario**|**Optional/Mandatory**|
-|NonTelco|Mandatory|
-|Extended|Mandatory|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
+|Non-Telco|Mandatory|
+|Extended|Mandatory|
 
 #### platform-alteration-tainted-node-kernel
 
@@ -1467,7 +1467,7 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|There is no documented exception process for this.
 Tags|common,platform-alteration
 |**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|FarEdge|Mandatory|
+|Far-Edge|Mandatory|
 |Telco|Mandatory|
-|NonTelco|Mandatory|
+|Non-Telco|Mandatory|
+|Extended|Mandatory|
