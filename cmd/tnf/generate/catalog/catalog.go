@@ -181,10 +181,18 @@ func outputTestCases() { //nolint:funlen
 			// Add the suite to the comma separate list of tags shown.  The tags are also modified in the:
 			// GetGinkgoTestIDAndLabels function for usage by Ginkgo.
 			tags := strings.ReplaceAll(identifiers.Catalog[k.identifier].Tags, "\n", " ") + "," + k.identifier.Suite
-			classificationString := "|**Scenario**|**Optional/Mandatory**|\n"
-			for index, value := range identifiers.Catalog[k.identifier].CategoryClassification {
-				classificationString += "|" + ScenarioIDToText(index) + "|" + value + "|\n"
+
+			keys := make([]string, 0, len(identifiers.Catalog[k.identifier].CategoryClassification))
+
+			for j := range identifiers.Catalog[k.identifier].CategoryClassification {
+				keys = append(keys, j)
 			}
+			sort.Strings(keys)
+			classificationString := "|**Scenario**|**Optional/Mandatory**|\n"
+			for _, j := range keys {
+				classificationString += "|" + ScenarioIDToText(j) + "|" + identifiers.Catalog[k.identifier].CategoryClassification[j] + "|\n"
+			}
+
 			// Every paragraph starts with a new line.
 			fmt.Fprintf(os.Stdout, "\n#### %s\n\n", k.testName)
 			fmt.Println("Property|Description")
