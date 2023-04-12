@@ -135,7 +135,7 @@ func Unique(slice []string) []string {
 	return uniqSlice
 }
 
-func ScenarioIDToText(id string) (text string) {
+func scenarioIDToText(id string) (text string) {
 	switch id {
 	case identifiers.FarEdge:
 		text = "Far-Edge"
@@ -190,7 +190,7 @@ func outputTestCases() { //nolint:funlen
 			sort.Strings(keys)
 			classificationString := "|**Scenario**|**Optional/Mandatory**|\n"
 			for _, j := range keys {
-				classificationString += "|" + ScenarioIDToText(j) + "|" + identifiers.Catalog[k.identifier].CategoryClassification[j] + "|\n"
+				classificationString += "|" + scenarioIDToText(j) + "|" + identifiers.Catalog[k.identifier].CategoryClassification[j] + "|\n"
 			}
 
 			// Every paragraph starts with a new line.
