@@ -55,7 +55,7 @@ func TestEmitTextFromFile(t *testing.T) {
 }
 
 func TestRunGenerateMarkdownCmd(t *testing.T) {
-	assert.NotNil(t, runGenerateMarkdownCmd(nil, nil))
+	assert.Nil(t, runGenerateMarkdownCmd(nil, nil))
 }
 
 func TestUnique(t *testing.T) {

@@ -1,11 +1,57 @@
 <!-- markdownlint-disable line-length no-bare-urls -->
+
 # cnf-certification-test catalog
 
-The catalog for cnf-certification-test contains a variety of `Test Cases`, which are traditional JUnit testcases specified internally using `Ginkgo.It`.
+The catalog for cnf-certification-test contains a list of test cases aiming at testing CNF best practices in various areas. Test suites are defined in 10 areas : `platform-alteration`, `access-control`, `affiliated-certification`, `chaostesting`, `lifecycle`, `manageability`,`networking`, `observability`, `operator`, and `performance.`
 
-## Test Case Catalog
+Depending on the CNF type, not all tests are required to pass to satisfy best practice requirements. The scenario section indicates which tests are mandatory or optional depending on the scenario. The following CNF types / scenarios are defined: `Telco`, `Non-Telco`, `Far-Edge`, `Extended`.
 
-Test Cases are the specifications used to perform a meaningful test. Test cases may run once, or several times against several targets. CNF Certification includes a number of normative and informative tests to ensure CNFs follow best practices. Here is the list of available Test Cases:
+## Test cases summary
+
+### Total test cases: 85
+
+### Total suites: 10
+
+|Suite|Tests per suite|
+|---|---|
+|access-control|24|
+|affiliated-certification|4|
+|chaostesting|1|
+|lifecycle|18|
+|manageability|2|
+|networking|12|
+|observability|4|
+|operator|3|
+|performance|5|
+|platform-alteration|12|
+
+### Extended specific tests only: 11
+
+|Mandatory|Optional|
+|---|---|
+|9|2|
+
+### Far-Edge specific tests only: 7
+
+|Mandatory|Optional|
+|---|---|
+|7|0|
+
+### Non-Telco specific tests only: 42
+
+|Mandatory|Optional|
+|---|---|
+|30|12|
+
+### Telco specific tests only: 28
+
+|Mandatory|Optional|
+|---|---|
+|23|5|
+
+## Test Case list
+
+Test Cases are the specifications used to perform a meaningful test.Test cases may run once, or several times against several targets. CNF Certification includesa number of normative and informative tests to ensure CNFs follow best practices.Here is the list of available Test Cases:
 
 ### access-control
 
