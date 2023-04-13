@@ -101,19 +101,16 @@ build-catalog-json: build-tnf-tool
 	./tnf generate catalog json > catalog.json
 
 # generate the test catalog in Markdown
-build-catalog-md: build-tnf-tool
+build-catalog-md: build-tnf-tool classification-js
 	./tnf generate catalog markdown > CATALOG.md
 
 # build the CNF test binary
-build-cnf-tests: install-tools
+build-cnf-tests:
 	PATH=${PATH}:${GOBIN} ginkgo build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" ./cnf-certification-test
-	make build-catalog-md
-	make classification-js
 
 # build the CNF test binary with debug flags
-build-cnf-tests-debug: install-tools
+build-cnf-tests-debug:
 	PATH=${PATH}:${GOBIN} ginkgo build -gcflags "all=-N -l" -ldflags "${LINKER_TNF_RELEASE_FLAGS} -extldflags '-z relro -z now'" ./cnf-certification-test
-	make build-catalog-md
 
 # Install build tools and other required software.
 install-tools:
@@ -161,6 +158,7 @@ build-image-tnf:
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_VERSION} \
 		-f Dockerfile .
+
 classification-js:
 	./tnf generate catalog javascript > script/classification.js
 
