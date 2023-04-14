@@ -33,25 +33,26 @@ const (
 // shared description text
 const (
 	iptablesNftablesImplicitCheck = `Note: this test ensures iptables and nftables are not configured by CNF pods:
-- NET_ADMIN and NET_RAW are required to modify nftables (namespaced) which is not desired inside pods. 
-nftables should be configured by an administrator outside the scope of the CNF. nftables are usually configured 
+- NET_ADMIN and NET_RAW are required to modify nftables (namespaced) which is not desired inside pods.
+nftables should be configured by an administrator outside the scope of the CNF. nftables are usually configured
 by operators, for instance the Performance Addon Operator (PAO) or istio.
-- Privileged container are required to modify host iptables, which is not safe to perform inside pods. nftables 
-should be configured by an administrator outside the scope of the CNF. iptables are usually configured by operators, 
+- Privileged container are required to modify host iptables, which is not safe to perform inside pods. nftables
+should be configured by an administrator outside the scope of the CNF. iptables are usually configured by operators,
 for instance the Performance Addon Operator (PAO) or istio.`
 )
 
 const (
-	TagCommon   = "common"
-	TagExtended = "extended"
-	TagTelco    = "telco"
-	TagFarEdge  = "faredge"
-	FarEdge     = "FarEdge"
-	Telco       = "Telco"
-	NonTelco    = "NonTelco"
-	Extended    = "Extended"
-	Optional    = "Optional"
-	Mandatory   = "Mandatory"
+	TagCommon    = "common"
+	TagExtended  = "extended"
+	TagTelco     = "telco"
+	TagFarEdge   = "faredge"
+	FarEdge      = "FarEdge"
+	Telco        = "Telco"
+	NonTelco     = "NonTelco"
+	Extended     = "Extended"
+	Optional     = "Optional"
+	Mandatory    = "Mandatory"
+	TagPreflight = "preflight"
 )
 
 func init() {
@@ -449,7 +450,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		NormativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Optional,
