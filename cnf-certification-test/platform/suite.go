@@ -214,7 +214,7 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 			tnf.ClaimFilePrintf("%s - changed folders: %v, deleted folders: %v", cut, fsDiffTester.ChangedFolders, fsDiffTester.DeletedFolders)
 			badContainers = append(badContainers, cut.Name)
 		case testhelper.ERROR:
-			tnf.ClaimFilePrintf("%s - error while running fs-diff: %v: ", cut, fsDiffTester.Error)
+			tnf.ClaimFilePrintf("%s - error while running fs-diff: %v", cut, fsDiffTester.Error)
 			errContainers = append(errContainers, cut.Name)
 		}
 	}

@@ -18,6 +18,7 @@ package cnffsdiff
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	mapset "github.com/deckarep/golang-set/v2"
@@ -32,6 +33,8 @@ const (
 )
 
 var (
+	nodeTmpMountFolder = "/host" + tmpMountDestFolder
+
 	// targetFolders stores all the targetFolders that shouldn't have been
 	// modified in the container. All of them exist on UBI.
 	targetFolders = mapset.NewSet(
@@ -107,7 +110,7 @@ func (f *FsDiff) runPodmanDiff(containerUID string) (string, error) {
 }
 
 func (f *FsDiff) RunTest(containerUID string) {
-	err := f.mountCustomPodman()
+	err := f.installCustomPodman()
 	if err != nil {
 		f.Error = err
 		f.result = testhelper.ERROR
@@ -116,6 +119,7 @@ func (f *FsDiff) RunTest(containerUID string) {
 
 	defer f.unmountCustomPodman()
 
+	logrus.Infof("Running \"podman diff\" for container id %s", containerUID)
 	output, err := f.runPodmanDiff(containerUID)
 	if err != nil {
 		f.Error = err
@@ -146,66 +150,74 @@ func (f *FsDiff) GetResults() int {
 	return f.result
 }
 
-func (f *FsDiff) mountCustomPodman() error {
-	nodeTmpMountFolder := "/host" + tmpMountDestFolder
-
-	// We need to create the destination folder first.
-	logrus.Infof("Creating temp folder %s", nodeTmpMountFolder)
-	output, outerr, err := f.clientHolder.ExecCommandContainer(f.ctxt, fmt.Sprintf("mkdir %s", nodeTmpMountFolder))
-	if err != nil {
-		return fmt.Errorf("failed to create folder %s: %v", nodeTmpMountFolder, err)
+// Generic helper function to execute a command inside the corresponding debug pod of the
+// container under test. Whatever output in stdout or stderr is considered a failure, so it will
+// return the concatenation of the given errorStr with those stdout, stderr and the error string.
+func (f *FsDiff) execCommandContainer(cmd, errorStr string) error {
+	output, outerr, err := f.clientHolder.ExecCommandContainer(f.ctxt, cmd)
+	if err != nil || output != "" || outerr != "" {
+		return errors.New(errorStr + fmt.Sprintf(" Stderr: %s, Stdout: %s, Err: %s", output, outerr, err))
 	}
 
-	if output != "" || outerr != "" {
-		return fmt.Errorf("unexpected output when creating folder %s. Stdout: %s - StdErr: %s",
-			nodeTmpMountFolder, output, outerr)
+	return nil
+}
+
+func (f *FsDiff) createNodeFolder() error {
+	return f.execCommandContainer(fmt.Sprintf("mkdir %s", nodeTmpMountFolder),
+		fmt.Sprintf("failed or unexpected output when creating folder %s.", nodeTmpMountFolder))
+}
+
+func (f *FsDiff) deleteNodeFolder() error {
+	return f.execCommandContainer(fmt.Sprintf("rmdir %s", nodeTmpMountFolder),
+		fmt.Sprintf("failed or unexpected output when deleting folder %s.", nodeTmpMountFolder))
+}
+
+func (f *FsDiff) mountDebugPartnerPodmanFolder() error {
+	return f.execCommandContainer(fmt.Sprintf("mount --bind %s %s", partnerPodmanFolder, nodeTmpMountFolder),
+		fmt.Sprintf("failed or unexpected output when mounting %s into %s.", partnerPodmanFolder, nodeTmpMountFolder))
+}
+
+func (f *FsDiff) unmountDebugPartnerPodmanFolder() error {
+	return f.execCommandContainer(fmt.Sprintf("umount %s", nodeTmpMountFolder),
+		fmt.Sprintf("failed or unexpected output when umounting %s.", nodeTmpMountFolder))
+}
+
+func (f *FsDiff) installCustomPodman() error {
+	// We need to create the destination folder first.
+	logrus.Infof("Creating temp folder %s", nodeTmpMountFolder)
+	if err := f.createNodeFolder(); err != nil {
+		return err
 	}
 
 	// Mount podman from partner debug pod into /host/tmp/...
 	logrus.Infof("Mouting %s into %s", partnerPodmanFolder, nodeTmpMountFolder)
-	output, outerr, err = f.clientHolder.ExecCommandContainer(f.ctxt, fmt.Sprintf("mount --bind %s %s", partnerPodmanFolder, nodeTmpMountFolder))
-	if err != nil {
-		return fmt.Errorf("failed to mount %s into %s: %v", partnerPodmanFolder, nodeTmpMountFolder, err)
-	}
+	if mountErr := f.mountDebugPartnerPodmanFolder(); mountErr != nil {
+		// We need to delete the temp folder previosly created as mount point.
+		if deleteErr := f.deleteNodeFolder(); deleteErr != nil {
+			return fmt.Errorf("failed mount folder %s: %s, failed to delete %s: %s",
+				partnerPodmanFolder, mountErr, nodeTmpMountFolder, deleteErr)
+		}
 
-	if output != "" || outerr != "" {
-		return fmt.Errorf("unexpected output when mounting %s into %s. Stdout: %s - StdErr: %s",
-			partnerPodmanFolder, nodeTmpMountFolder, output, outerr)
+		return mountErr
 	}
 
 	return nil
 }
 
 func (f *FsDiff) unmountCustomPodman() {
-	nodeTmpMountFolder := "/host" + tmpMountDestFolder
-
 	// Unmount podman folder from host.
 	logrus.Infof("Unmounting folder %s", nodeTmpMountFolder)
-	output, outerr, err := f.clientHolder.ExecCommandContainer(f.ctxt, fmt.Sprintf("umount %s", nodeTmpMountFolder))
-	if err != nil {
-		f.Error = fmt.Errorf("failed to unmount %s: %v", nodeTmpMountFolder, err)
-		f.result = testhelper.ERROR
-		return
-	}
-
-	if output != "" || outerr != "" {
-		f.Error = fmt.Errorf("unexpected output when unmounting %s. Stdout: %s - StdErr: %s",
-			nodeTmpMountFolder, output, outerr)
+	if err := f.unmountDebugPartnerPodmanFolder(); err != nil {
+		// Here, there's no point on trying to remove the temp folder used as mount point, as
+		// that probably won't work either.
+		f.Error = err
 		f.result = testhelper.ERROR
 		return
 	}
 
 	logrus.Infof("Deleting folder %s", nodeTmpMountFolder)
-	output, outerr, err = f.clientHolder.ExecCommandContainer(f.ctxt, fmt.Sprintf("rmdir %s", nodeTmpMountFolder))
-	if err != nil {
-		f.Error = fmt.Errorf("failed to delete folder %s: %v", nodeTmpMountFolder, err)
-		f.result = testhelper.ERROR
-		return
-	}
-
-	if output != "" || outerr != "" {
-		f.Error = fmt.Errorf("unexpected output when deleting folder %s. Stdout: %s - StdErr: %s",
-			nodeTmpMountFolder, output, outerr)
+	if err := f.deleteNodeFolder(); err != nil {
+		f.Error = err
 		f.result = testhelper.ERROR
 	}
 }
