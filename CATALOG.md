@@ -16,9 +16,9 @@ Property|Description
 Unique ID|access-control-cluster-role-bindings
 Description|Tests that a Pod does not specify ClusterRoleBindings.
 Result Type|normative
-Suggested Remediation|In most cases, Pod's should not have ClusterRoleBindings. The suggested remediation is to remove the need for ClusterRoleBindings, if possible.
+Suggested Remediation|In most cases, Pod's should not have ClusterRoleBindings. The suggested remediation is to remove the need for ClusterRoleBindings, if possible. Cluster roles and cluster role bindings discouraged unless absolutely needed by CNF (often reserved for cluster admin only).
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2.10 and 5.3.6
-Exception Process|There is no documented exception process for this.
+Exception Process|Reserved for cluster admin, exceptions possible
 Tags|common,telco,access-control
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
@@ -33,9 +33,9 @@ Property|Description
 Unique ID|access-control-container-host-port
 Description|Verifies if containers define a hostPort.
 Result Type|normative
-Suggested Remediation|Remove hostPort configuration from the container
+Suggested Remediation|Remove hostPort configuration from the container. CNF should avoid accessing host resources - containers should not configure HostPort.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.6
-Exception Process|There is no documented exception process for this.
+Exception Process|Please elaborate why it's needed and explain how it's used
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
@@ -48,9 +48,9 @@ Tags|common,access-control
 Property|Description
 ---|---
 Unique ID|access-control-ipc-lock-capability-check
-Description|Ensures that containers do not use IPC_LOCK capability
+Description|Ensures that containers do not use IPC_LOCK capability. CNF should avoid accessing host resources - spec.HostIpc should be false.
 Result Type|normative
-Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
+Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5. Should adhere to minimum privilege principle and avoid access escalation unless absolutely necessary.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|Identify the pod that is needing special capabilities and document why
 Tags|common,access-control
@@ -84,7 +84,7 @@ Property|Description
 Unique ID|access-control-namespace-resource-quota
 Description|Checks to see if CNF workload pods are running in namespaces that have resource quotas applied.
 Result Type|normative
-Suggested Remediation|Apply a ResourceQuota to the namespace your CNF is running in
+Suggested Remediation|Apply a ResourceQuota to the namespace your CNF is running in. The CNF namespace should have resource quota defined.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.8
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,access-control
@@ -101,7 +101,7 @@ Property|Description
 Unique ID|access-control-net-admin-capability-check
 Description|Ensures that containers do not use NET_ADMIN capability. Note: this test ensures iptables and nftables are not configured by CNF pods: - NET_ADMIN and NET_RAW are required to modify nftables (namespaced) which is not desired inside pods. nftables should be configured by an administrator outside the scope of the CNF. nftables are usually configured by operators, for instance the Performance Addon Operator (PAO) or istio. - Privileged container are required to modify host iptables, which is not safe to perform inside pods. nftables should be configured by an administrator outside the scope of the CNF. iptables are usually configured by operators, for instance the Performance Addon Operator (PAO) or istio.
 Result Type|normative
-Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
+Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5. Should adhere to minimum privilege principle and avoid access escalation unless absolutely necessary.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|Identify the pod that is needing special capabilities and document why
 Tags|common,access-control
@@ -118,7 +118,7 @@ Property|Description
 Unique ID|access-control-net-raw-capability-check
 Description|Ensures that containers do not use NET_RAW capability. Note: this test ensures iptables and nftables are not configured by CNF pods: - NET_ADMIN and NET_RAW are required to modify nftables (namespaced) which is not desired inside pods. nftables should be configured by an administrator outside the scope of the CNF. nftables are usually configured by operators, for instance the Performance Addon Operator (PAO) or istio. - Privileged container are required to modify host iptables, which is not safe to perform inside pods. nftables should be configured by an administrator outside the scope of the CNF. iptables are usually configured by operators, for instance the Performance Addon Operator (PAO) or istio.
 Result Type|normative
-Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
+Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5. Should adhere to minimum privilege principle and avoid access escalation unless absolutely necessary.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|Identify the pod that is needing special capabilities and document why
 Tags|common,access-control
@@ -135,7 +135,7 @@ Property|Description
 Unique ID|access-control-no-1337-uid
 Description|Checks that all pods are not using the securityContext UID 1337
 Result Type|informative
-Suggested Remediation|Use another process UID that is not 1337
+Suggested Remediation|Use another process UID that is not 1337.
 Best Practice Reference|https://to-be-done Section 4.6.24
 Exception Process|There is no documented exception process for this.
 Tags|extended,access-control
@@ -152,7 +152,7 @@ Property|Description
 Unique ID|access-control-one-process-per-container
 Description|Check that all containers under test have only one process running
 Result Type|informative
-Suggested Remediation|Launch only one process per container
+Suggested Remediation|Launch only one process per container. Should adhere to 1 process per container best practice wherever possible.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 10.8.3
 Exception Process|There is no documented exception process for this.
 Tags|common,access-control
@@ -169,9 +169,9 @@ Property|Description
 Unique ID|access-control-pod-automount-service-account-token
 Description|Check that all pods under test have automountServiceAccountToken set to false. Only pods that require access to the kubernetes API server should have automountServiceAccountToken set to true
 Result Type|informative
-Suggested Remediation|Check that pod has automountServiceAccountToken set to false or pod is attached to service account which has automountServiceAccountToken set to false, unless the pod needs access to the kubernetes API server.
+Suggested Remediation|Check that pod has automountServiceAccountToken set to false or pod is attached to service account which has automountServiceAccountToken set to false, unless the pod needs access to the kubernetes API server. Pods which do not need API access should set automountServiceAccountToken to false in pod spec.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 12.7
-Exception Process|There is no documented exception process for this.
+Exception Process|Please elaborate why it's needed and explain how it's used
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
@@ -186,9 +186,9 @@ Property|Description
 Unique ID|access-control-pod-host-ipc
 Description|Verifies that the spec.HostIpc parameter is set to false
 Result Type|normative
-Suggested Remediation|Set the spec.HostIpc parameter to false in the pod configuration
+Suggested Remediation|Set the spec.HostIpc parameter to false in the pod configuration. CNF should avoid accessing host resources - spec.HostIpc should be false.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.6
-Exception Process|There is no documented exception process for this.
+Exception Process|Please elaborate why it's needed and explain how it's used
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
@@ -203,7 +203,7 @@ Property|Description
 Unique ID|access-control-pod-host-network
 Description|Verifies that the spec.HostNetwork parameter is not set (not present)
 Result Type|normative
-Suggested Remediation|Set the spec.HostNetwork parameter to false in the pod configuration
+Suggested Remediation|Set the spec.HostNetwork parameter to false in the pod configuration. CNF should avoid accessing host resources - spec.HostNetwork should be false.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.6
 Exception Process|There is no documented exception process for this.
 Tags|common,access-control
@@ -220,9 +220,9 @@ Property|Description
 Unique ID|access-control-pod-host-path
 Description|Verifies that the spec.HostPath parameter is not set (not present)
 Result Type|normative
-Suggested Remediation|Set the spec.HostPath parameter to false in the pod configuration
+Suggested Remediation|Set the spec.HostPath parameter to false in the pod configuration. CNF should avoid accessing host resources - spec.HostPath should be false.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.6
-Exception Process|There is no documented exception process for this.
+Exception Process|Please elaborate why it's needed and explain how it's used
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
@@ -237,9 +237,9 @@ Property|Description
 Unique ID|access-control-pod-host-pid
 Description|Verifies that the spec.HostPid parameter is set to false
 Result Type|normative
-Suggested Remediation|Set the spec.HostPid parameter to false in the pod configuration
+Suggested Remediation|Set the spec.HostPid parameter to false in the pod configuration. CNF should avoid accessing host resources - spec.HostPid should be false.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.6
-Exception Process|There is no documented exception process for this.
+Exception Process|Please elaborate why it's needed and explain how it's used
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
@@ -254,7 +254,7 @@ Property|Description
 Unique ID|access-control-pod-role-bindings
 Description|Ensures that a CNF does not utilize RoleBinding(s) in a non-CNF Namespace.
 Result Type|normative
-Suggested Remediation|Ensure the CNF is not configured to use RoleBinding(s) in a non-CNF Namespace.
+Suggested Remediation|Ensure the CNF is not configured to use RoleBinding(s) in a non-CNF Namespace. Scope of role must <= scope of creator of role.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.3 and 5.3.5
 Exception Process|There is no documented exception process for this.
 Tags|common,access-control
@@ -305,7 +305,7 @@ Property|Description
 Unique ID|access-control-security-context
 Description|Checks the security context matches one of the 4 categories
 Result Type|normative
-Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
+Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5. Should adhere to minimum privilege principle and avoid access escalation unless absolutely necessary.
 Best Practice Reference|https://to-be-done Section 4.5
 Exception Process|If the container had the right configuration of the allowed category from the 4 list so the test will pass the list is on page 51 on the CNF Security Context Constraints (SCC) section 4.5(Allowed categories are category 1 and category 0), Applications MUST use one of the approved Security Context Constraints.
 Tags|extended,access-control
@@ -320,7 +320,7 @@ Tags|extended,access-control
 Property|Description
 ---|---
 Unique ID|access-control-security-context-non-root-user-check
-Description|Checks the security context runAsUser parameter in pods and containers to make sure it is not set to uid root(0)
+Description|Checks the security context runAsUser parameter in pods and containers to make sure it is not set to uid root(0). Pods and containers should not run as root (runAsUser is not set to uid0).
 Result Type|normative
 Suggested Remediation|Change the pod and containers "runAsUser" uid to something other than root(0)
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
@@ -337,9 +337,9 @@ Tags|common,access-control
 Property|Description
 ---|---
 Unique ID|access-control-security-context-privilege-escalation
-Description|Checks if privileged escalation is enabled (AllowPrivilegeEscalation=true)
+Description|Checks if privileged escalation is enabled (AllowPrivilegeEscalation=true).
 Result Type|normative
-Suggested Remediation|Configure privilege escalation to false
+Suggested Remediation|Configure privilege escalation to false. Privileged escalation should not be allowed (AllowPrivilegeEscalation=false).
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
 Tags|common,access-control
@@ -356,9 +356,9 @@ Property|Description
 Unique ID|access-control-ssh-daemons
 Description|Check that pods do not run SSH daemons.
 Result Type|normative
-Suggested Remediation|Ensure that no SSH daemons are running inside a pod
+Suggested Remediation|Ensure that no SSH daemons are running inside a pod. Pods should not run as SSH Daemons (replicaset or statefulset only).
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.12
-Exception Process|There is no documented exception process for this.
+Exception Process|Please elaborate why it's needed and explain how it's used
 Tags|common,telco,access-control
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
@@ -373,7 +373,7 @@ Property|Description
 Unique ID|access-control-sys-admin-capability-check
 Description|Ensures that containers do not use SYS_ADMIN capability
 Result Type|normative
-Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5
+Suggested Remediation|Change the security context to be one of the 4 that are allowed on the documentation section 4.5. Should adhere to minimum privilege principle and avoid access escalation unless absolutely necessary. Containers should not use the SYS_ADMIN Linux capability.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|Identify the pod that is needing special capabilities and document why
 Tags|common,access-control
@@ -515,7 +515,7 @@ Property|Description
 Unique ID|lifecycle-affinity-required-pods
 Description|Checks that affinity rules are in place if AffinityRequired: 'true' labels are set on Pods.
 Result Type|informative
-Suggested Remediation|If a pod/statefulset/deployment is required to use affinity rules, please add AffinityRequired: 'true' as a label
+Suggested Remediation|If a pod/statefulset/deployment is required to use affinity rules, please add AffinityRequired: 'true' as a label.
 Best Practice Reference|https://to-be-done Section 4.6.24
 Exception Process|There is no documented exception process for this.
 Tags|extended,telco,lifecycle
@@ -549,7 +549,7 @@ Property|Description
 Unique ID|lifecycle-container-startup
 Description|Ensure that the containers lifecycle postStart management feature is configured.
 Result Type|normative
-Suggested Remediation|PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks
+Suggested Remediation|PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. PostStart is used to configure container, set up dependencies, record new creation. It can also be used to check that a required API is available before the container’s work begins.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.1.3, 12.2 and 12.5
 Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.
 Tags|common,telco,lifecycle
@@ -566,7 +566,7 @@ Property|Description
 Unique ID|lifecycle-cpu-isolation
 Description|CPU isolation requires: For each container within the pod, resource requests and limits must be identical. Request and Limits are in the form of whole CPUs. The runTimeClassName must be specified. Annotations required disabling CPU and IRQ load-balancing.
 Result Type|informative
-Suggested Remediation|CPU isolation testing is enabled. Please ensure that all pods adhere to the CPU isolation requirements
+Suggested Remediation|CPU isolation testing is enabled. Please ensure that all pods adhere to the CPU isolation requirements.
 Best Practice Reference|https://to-be-done Section 3.5.5
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,lifecycle
@@ -804,7 +804,7 @@ Property|Description
 Unique ID|lifecycle-storage-required-pods
 Description|Checks that pods do not place persistent volumes on local storage.
 Result Type|informative
-Suggested Remediation|If the kind of pods is StatefulSet, so we need to make sure that servicename is not local-storage.
+Suggested Remediation|If pod is StatefulSet, make sure servicename is not local-storage (persistent volumes should not be on local storage).
 Best Practice Reference|https://to-be-done Section 4.6.24
 Exception Process|There is no documented exception process for this.
 Tags|extended,lifecycle
@@ -840,7 +840,7 @@ Property|Description
 Unique ID|manageability-containers-image-tag
 Description|Check that image tag exists on containers.
 Result Type|informative
-Suggested Remediation|Ensure that all the container images are tagged
+Suggested Remediation|Ensure that all the container images are tagged. Checks containers have image tags (e.g. latest, stable, dev).
 Best Practice Reference|https://to-be-done Section 4.6.12
 Exception Process|There is no documented exception process for this.
 Tags|extended,manageability
@@ -876,7 +876,7 @@ Property|Description
 Unique ID|networking-dual-stack-service
 Description|Checks that all services in namespaces under test are either ipv6 single stack or dual stack. This test case requires the deployment of the debug daemonset.
 Result Type|normative
-Suggested Remediation|Configure every CNF services with either a single stack ipv6 or dual stack (ipv4/ipv6) load balancer
+Suggested Remediation|Configure every CNF services with either a single stack ipv6 or dual stack (ipv4/ipv6) load balancer.
 Best Practice Reference|https://to-be-done Section 3.5.7
 Exception Process|There is no documented exception process for this.
 Tags|common,extended,networking
@@ -978,7 +978,7 @@ Property|Description
 Unique ID|networking-ocp-reserved-ports-usage
 Description|Check that containers do not listen on ports that are reserved by OpenShift
 Result Type|normative
-Suggested Remediation|Ensure that CNF apps do not listen on ports that are reserved by OpenShift
+Suggested Remediation|Ensure that CNF apps do not listen on ports that are reserved by OpenShift. The following ports are reserved by OpenShift and must NOT be used by any application: 22623, 22624.
 Best Practice Reference|https://to-be-done Section 3.5.9
 Exception Process|There is no documented exception process for this.
 Tags|common,networking
@@ -1029,7 +1029,7 @@ Property|Description
 Unique ID|networking-service-type
 Description|Tests that each CNF Service does not utilize NodePort(s).
 Result Type|normative
-Suggested Remediation|Ensure Services are not configured to use NodePort(s).
+Suggested Remediation|Ensure Services are not configured to use NodePort(s).CNF should avoid accessing host resources - tests that each CNF Service does not utilize NodePort(s).
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.1
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,networking
@@ -1044,9 +1044,9 @@ Tags|common,telco,networking
 Property|Description
 ---|---
 Unique ID|networking-undeclared-container-ports-usage
-Description|Check that containers do not listen on ports that weren't declared in their specification
+Description|Check that containers do not listen on ports that weren't declared in their specification. Platforms may be configured to block undeclared ports.
 Result Type|normative
-Suggested Remediation|Ensure the CNF apps do not listen on undeclared containers' ports
+Suggested Remediation|Ensure the CNF apps do not listen on undeclared containers' ports.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 16.3.1.1
 Exception Process|There is no documented exception process for this.
 Tags|common,telco,networking
@@ -1222,7 +1222,7 @@ Property|Description
 Unique ID|performance-isolated-cpu-pool-rt-scheduling-policy
 Description|Ensures that a workload running in an application-isolated exclusive CPU pool selects a RT CPU scheduling policy
 Result Type|normative
-Suggested Remediation|Ensure that the workload running in an application-isolated exclusive CPU pool selects a RT CPU scheduling policy (such as SCHED_FIFO/SCHED_RR)
+Suggested Remediation|Ensure that the workload running in an application-isolated exclusive CPU pool selects a RT CPU scheduling policy (such as SCHED_FIFO/SCHED_RR) with High priority.
 Best Practice Reference|https://to-be-done
 Exception Process|There is no documented exception process for this.
 Tags|faredge,performance
@@ -1343,7 +1343,7 @@ Property|Description
 Unique ID|platform-alteration-hugepages-config
 Description|Checks to see that HugePage settings have been configured through MachineConfig, and not manually on the underlying Node. This test case applies only to Nodes that are configured with the "worker" MachineConfigSet. First, the "worker" MachineConfig is polled, and the Hugepage settings are extracted. Next, the underlying Nodes are polled for configured HugePages through inspection of /proc/meminfo. The results are compared, and the test passes only if they are the same.
 Result Type|normative
-Suggested Remediation|HugePage settings should be configured either directly through the MachineConfigOperator or indirectly using the PerformanceAddonOperator. This ensures that OpenShift is aware of the special MachineConfig requirements, and can provision your CNF on a Node that is part of the corresponding MachineConfigSet. Avoid making changes directly to an underlying Node, and let OpenShift handle the heavy lifting of configuring advanced settings.
+Suggested Remediation|HugePage settings should be configured either directly through the MachineConfigOperator or indirectly using the PerformanceAddonOperator. This ensures that OpenShift is aware of the special MachineConfig requirements, and can provision your CNF on a Node that is part of the corresponding MachineConfigSet. Avoid making changes directly to an underlying Node, and let OpenShift handle the heavy lifting of configuring advanced settings. This test case applies only to Nodes that are configured with the "worker" MachineConfigSet.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.2
 Exception Process|There is no documented exception process for this.
 Tags|common,platform-alteration
