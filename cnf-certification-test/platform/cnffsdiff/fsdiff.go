@@ -156,7 +156,7 @@ func (f *FsDiff) GetResults() int {
 func (f *FsDiff) execCommandContainer(cmd, errorStr string) error {
 	output, outerr, err := f.clientHolder.ExecCommandContainer(f.ctxt, cmd)
 	if err != nil || output != "" || outerr != "" {
-		return errors.New(errorStr + fmt.Sprintf(" Stderr: %s, Stdout: %s, Err: %s", output, outerr, err))
+		return errors.New(errorStr + fmt.Sprintf(" Stderr: %s, Stdout: %s, Err: %v", output, outerr, err))
 	}
 
 	return nil
@@ -194,7 +194,7 @@ func (f *FsDiff) installCustomPodman() error {
 	if mountErr := f.mountDebugPartnerPodmanFolder(); mountErr != nil {
 		// We need to delete the temp folder previosly created as mount point.
 		if deleteErr := f.deleteNodeFolder(); deleteErr != nil {
-			return fmt.Errorf("failed mount folder %s: %s, failed to delete %s: %s",
+			return fmt.Errorf("failed to mount folder %s: %s, failed to delete %s: %s",
 				partnerPodmanFolder, mountErr, nodeTmpMountFolder, deleteErr)
 		}
 

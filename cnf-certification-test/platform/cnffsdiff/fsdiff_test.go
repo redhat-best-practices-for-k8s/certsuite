@@ -150,7 +150,7 @@ func TestRunTestMountFolderErrors(t *testing.T) {
 			mockedClientshHolder: &ClientHoldersMountCustomPodmanMock{
 				createFolderErr: fmt.Errorf("custom error"),
 			},
-			expectedError: "failed to create folder /host/tmp/tnf-podman: custom error",
+			expectedError: "failed or unexpected output when creating folder /host/tmp/tnf-podman. Stderr: , Stdout: , Err: custom error",
 		},
 		{
 			mockedClientshHolder: &ClientHoldersMountCustomPodmanMock{
@@ -158,7 +158,7 @@ func TestRunTestMountFolderErrors(t *testing.T) {
 				createFolderStderr: "custom stderr",
 				createFolderErr:    nil,
 			},
-			expectedError: "unexpected output when creating folder /host/tmp/tnf-podman. Stdout: custom stdout - StdErr: custom stderr",
+			expectedError: "failed or unexpected output when creating folder /host/tmp/tnf-podman. Stderr: custom stdout, Stdout: custom stderr, Err: <nil>",
 		},
 
 		// Errors mounting the podman folder.
@@ -166,7 +166,8 @@ func TestRunTestMountFolderErrors(t *testing.T) {
 			mockedClientshHolder: &ClientHoldersMountCustomPodmanMock{
 				mountFolderErr: fmt.Errorf("custom error"),
 			},
-			expectedError: "failed to mount /root/podman into /host/tmp/tnf-podman: custom error",
+			expectedError: "failed to mount folder /root/podman: failed or unexpected output when mounting /root/podman into /host/tmp/tnf-podman. " +
+				"Stderr: , Stdout: , Err: custom error, failed to delete /host/tmp/tnf-podman: failed or unexpected output when deleting folder /host/tmp/tnf-podman. Stderr: , Stdout: , Err: custom error",
 		},
 		{
 			mockedClientshHolder: &ClientHoldersMountCustomPodmanMock{
@@ -174,7 +175,8 @@ func TestRunTestMountFolderErrors(t *testing.T) {
 				mountFolderStderr: "custom stderr",
 				mountFolderErr:    nil,
 			},
-			expectedError: "unexpected output when mounting /root/podman into /host/tmp/tnf-podman. Stdout: custom stdout - StdErr: custom stderr",
+			expectedError: "failed to mount folder /root/podman: failed or unexpected output when mounting /root/podman into /host/tmp/tnf-podman. " +
+				"Stderr: custom stdout, Stdout: custom stderr, Err: <nil>, failed to delete /host/tmp/tnf-podman: failed or unexpected output when deleting folder /host/tmp/tnf-podman. Stderr: custom stdout, Stdout: custom stderr, Err: <nil>",
 		},
 	}
 
@@ -234,14 +236,14 @@ func TestRunTestUnmountFolderErrors(t *testing.T) {
 			mockedClientshHolder: &ClientHoldersUnmountCustomPodmanMock{
 				unmountFolderErr: fmt.Errorf("custom error"),
 			},
-			expectedError: "failed to unmount /host/tmp/tnf-podman: custom error",
+			expectedError: "failed or unexpected output when umounting /host/tmp/tnf-podman. Stderr: , Stdout: , Err: custom error",
 		},
 		{
 			mockedClientshHolder: &ClientHoldersUnmountCustomPodmanMock{
 				unmountFolderStdout: "custom stdout",
 				unmountFolderStderr: "custom stderr",
 			},
-			expectedError: "unexpected output when unmounting /host/tmp/tnf-podman. Stdout: custom stdout - StdErr: custom stderr",
+			expectedError: "failed or unexpected output when umounting /host/tmp/tnf-podman. Stderr: custom stdout, Stdout: custom stderr, Err: <nil>",
 		},
 
 		// Errors deleting the mount point folder.
@@ -249,14 +251,14 @@ func TestRunTestUnmountFolderErrors(t *testing.T) {
 			mockedClientshHolder: &ClientHoldersUnmountCustomPodmanMock{
 				deleteFolderErr: fmt.Errorf("custom error"),
 			},
-			expectedError: "failed to delete folder /host/tmp/tnf-podman: custom error",
+			expectedError: "failed or unexpected output when deleting folder /host/tmp/tnf-podman. Stderr: , Stdout: , Err: custom error",
 		},
 		{
 			mockedClientshHolder: &ClientHoldersUnmountCustomPodmanMock{
 				deleteFolderStdout: "custom stdout",
 				deleteFolderStderr: "custom stderr",
 			},
-			expectedError: "unexpected output when deleting folder /host/tmp/tnf-podman. Stdout: custom stdout - StdErr: custom stderr",
+			expectedError: "failed or unexpected output when deleting folder /host/tmp/tnf-podman. Stderr: custom stdout, Stdout: custom stderr, Err: <nil>",
 		},
 	}
 
