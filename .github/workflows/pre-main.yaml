@@ -24,6 +24,9 @@ env:
   TNF_SMOKE_TESTS_LOG_LEVEL: trace
   ON_DEMAND_DEBUG_PODS: false
   TERM: xterm-color
+  CM_BIN: /usr/local/bin/checkmake
+  CM_URL_LINUX: https://github.com/mrtazz/checkmake/releases/download/0.2.2/checkmake-0.2.2.linux.amd64 # yamllint disable-line
+  CM_URL_MACOS: https://github.com/mrtazz/checkmake/releases/download/0.2.2/checkmake-0.2.2.darwin.amd64 # yamllint disable-line
 
 jobs:
   lint:
@@ -54,6 +57,16 @@ jobs:
       - name: Install golangci-lint
         run: make install-lint
 
+      - name: Install checkmake Linux
+        run: curl --location --output $CM_BIN --silent $CM_URL_LINUX
+        if: runner.os == 'Linux'
+
+      - name: Install checkmake MacOS
+        run: curl --location --output $CM_BIN --silent $CM_URL_MACOS
+        if: runner.os == 'macOS'
+
+      - run: chmod +x $CM_BIN
+
       - name: Install hadolint
         run: |
           curl \
@@ -77,10 +90,14 @@ jobs:
       - name: make vet
         run: make vet
   action-linters:
-    name: Hadolint, markdownlint, shellcheck, shfmt, yamllint
+    name: Checkmake, hadolint, markdownlint, shellcheck, shfmt, yamllint
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
+      - run: |
+          curl --location --output $CM_BIN --silent $CM_URL_LINUX
+          chmod +x $CM_BIN
+          $CM_BIN Makefile
       - uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: Dockerfile

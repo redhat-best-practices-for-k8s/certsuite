@@ -37,6 +37,15 @@ Please contact us in case the documentation is broken.
 
 Golang
 
+## Linters
+
+* [`checkmake`](https://github.com/mrtazz/checkmake)
+* [`hadolint`](https://github.com/hadolint/hadolint)
+* [`markdownlint`](https://github.com/igorshubovych/markdownlint-cli)
+* [`shellcheck`](https://github.com/koalaman/shellcheck)
+* [`shfmt`](https://github.com/mvdan/sh)
+* [`yamllint`](https://github.com/adrienverge/yamllint)
+
 ## License
 
 CNF Certification Test is copyright [Red Hat, Inc.](https://www.redhat.com) and available
