@@ -40,5 +40,5 @@ const (
 	NoDocumentedProcess = `There is no documented exception process for this.`
 
 	// Generic provide info message
-	ElaborateOnWhyItIsNeeded = `Please elaborate why it's needed and explain how it's used`
+	ElaborateOnWhyItIsNeeded = `Please elaborate why it's needed and explain how it's used.`
 )
