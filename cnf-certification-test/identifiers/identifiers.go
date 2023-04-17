@@ -225,7 +225,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		"container-is-certified-digest",
 		common.AffiliatedCertTestKey,
 		`Tests whether container images that are autodiscovered have passed the Red Hat Container Certification Program by their digest(CCP).`,
-		ContainerIsCertifiedRemediation,
+		"Ensure that your container has passed the Red Hat Container Certification Program (CCP).",
 		NormativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 5.3.7",
@@ -327,7 +327,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		"container-startup",
 		common.LifecycleTestKey,
 		`Ensure that the containers lifecycle postStart management feature is configured.`,
-		`PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`, //nolint:lll
+		`PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. PostStart is used to configure container, set up dependencies, record new creation. It can also be used to check that a required API is available before the container’s work begins.`, //nolint:lll
 		NormativeResult,
 		`Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.`,
 		bestPracticeDocV1dot3URL+" Section 5.1.3, 12.2 and 12.5",
@@ -395,7 +395,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		"sys-admin-capability-check",
 		common.AccessControlTestKey,
 		`Ensures that containers do not use SYS_ADMIN capability`,
-		SecConRemediation,
+		SecConRemediation+" Containers should not use the SYS_ADMIN Linux capability.",
 		NormativeResult,
 		SecConCapabilitiesExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
@@ -411,7 +411,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestIpcLockIdentifier = AddCatalogEntry(
 		"ipc-lock-capability-check",
 		common.AccessControlTestKey,
-		`Ensures that containers do not use IPC_LOCK capability`,
+		`Ensures that containers do not use IPC_LOCK capability. CNF should avoid accessing host resources - spec.HostIpc should be false.`,
 		SecConRemediation,
 		NormativeResult,
 		SecConCapabilitiesExceptionProcess,
@@ -547,7 +547,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestSecConNonRootUserIdentifier = AddCatalogEntry(
 		"security-context-non-root-user-check",
 		common.AccessControlTestKey,
-		`Checks the security context runAsUser parameter in pods and containers to make sure it is not set to uid root(0)`,
+		`Checks the security context runAsUser parameter in pods and containers to make sure it is not set to uid root(0). Pods and containers should not run as root (runAsUser is not set to uid0).`,
 		SecConNonRootUserRemediation,
 		NormativeResult,
 		SecConNonRootUserExceptionProcess,
@@ -581,7 +581,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestSecConPrivilegeEscalation = AddCatalogEntry(
 		"security-context-privilege-escalation",
 		common.AccessControlTestKey,
-		`Checks if privileged escalation is enabled (AllowPrivilegeEscalation=true)`,
+		`Checks if privileged escalation is enabled (AllowPrivilegeEscalation=true).`,
 		SecConPrivilegeRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
@@ -601,7 +601,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Verifies if containers define a hostPort.`,
 		ContainerHostPortRemediation,
 		NormativeResult,
-		NoDocumentedProcess,
+		ElaborateOnWhyItIsNeeded,
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		false,
 		map[string]string{
@@ -635,7 +635,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Verifies that the spec.HostPath parameter is not set (not present)`,
 		PodHostPathRemediation,
 		NormativeResult,
-		NoDocumentedProcess,
+		ElaborateOnWhyItIsNeeded,
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		false,
 		map[string]string{
@@ -652,7 +652,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Verifies that the spec.HostIpc parameter is set to false`,
 		PodHostIPCRemediation,
 		NormativeResult,
-		NoDocumentedProcess,
+		ElaborateOnWhyItIsNeeded,
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		true,
 		map[string]string{
@@ -669,7 +669,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Verifies that the spec.HostPid parameter is set to false`,
 		PodHostPIDRemediation,
 		NormativeResult,
-		NoDocumentedProcess,
+		ElaborateOnWhyItIsNeeded,
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		true,
 		map[string]string{
@@ -946,7 +946,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Tests that a Pod does not specify ClusterRoleBindings.`,
 		PodClusterRoleBindingsBestPracticesRemediation,
 		NormativeResult,
-		NoDocumentedProcess,
+		"Reserved for cluster admin, exceptions possible",
 		bestPracticeDocV1dot3URL+" Section 5.2.10 and 5.3.6",
 		false,
 		map[string]string{
@@ -1082,7 +1082,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Check that all pods under test have automountServiceAccountToken set to false. Only pods that require access to the kubernetes API server should have automountServiceAccountToken set to true`,
 		AutomountServiceTokenRemediation,
 		InformativeResult,
-		NoDocumentedProcess,
+		ElaborateOnWhyItIsNeeded,
 		bestPracticeDocV1dot3URL+" Section 12.7",
 		true,
 		map[string]string{
@@ -1300,7 +1300,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 	TestUndeclaredContainerPortsUsage = AddCatalogEntry(
 		"undeclared-container-ports-usage",
 		common.NetworkingTestKey,
-		`Check that containers do not listen on ports that weren't declared in their specification`,
+		`Check that containers do not listen on ports that weren't declared in their specification. Platforms may be configured to block undeclared ports.`,
 		UndeclaredContainerPortsRemediation,
 		NormativeResult,
 		NoDocumentedProcess,
@@ -1541,7 +1541,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Check that pods do not run SSH daemons.`,
 		NoSSHDaemonsAllowedRemediation,
 		NormativeResult,
-		NoDocumentedProcess,
+		ElaborateOnWhyItIsNeeded,
 		bestPracticeDocV1dot3URL+" Section 4.6.12", // TODO Change this to v1.4 when available
 		false,
 		map[string]string{
