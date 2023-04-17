@@ -166,7 +166,7 @@ func outputTestCases() (outString string, summary catalogSummary) { //nolint:fun
 	// Iterating the map by test and suite names
 	outString = "## Test Case list\n\n" +
 		"Test Cases are the specifications used to perform a meaningful test. " +
-		"Test cases may run once, or several times against several targets. CNF Certification includes" +
+		"Test cases may run once, or several times against several targets. CNF Certification includes " +
 		"a number of normative and informative tests to ensure CNFs follow best practices. " +
 		"Here is the list of available Test Cases:\n"
 
