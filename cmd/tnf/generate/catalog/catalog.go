@@ -165,9 +165,9 @@ func outputTestCases() (outString string, summary catalogSummary) { //nolint:fun
 
 	// Iterating the map by test and suite names
 	outString = "## Test Case list\n\n" +
-		"Test Cases are the specifications used to perform a meaningful test." +
+		"Test Cases are the specifications used to perform a meaningful test. " +
 		"Test cases may run once, or several times against several targets. CNF Certification includes" +
-		"a number of normative and informative tests to ensure CNFs follow best practices." +
+		"a number of normative and informative tests to ensure CNFs follow best practices. " +
 		"Here is the list of available Test Cases:\n"
 
 	summary.testPerScenario = make(map[string]map[string]int)
@@ -282,7 +282,7 @@ func generateJS(_ *cobra.Command, _ []string) error {
 }
 
 func outputIntro() (out string) {
-	return "<!-- markdownlint-disable line-length no-bare-urls -->\n\n" +
+	return "<!-- markdownlint-disable line-length no-bare-urls -->\n" +
 		"# cnf-certification-test catalog\n\n" +
 		"The catalog for cnf-certification-test contains a list of test cases " +
 		"aiming at testing CNF best practices in various areas. Test suites are defined in 10 areas : `platform-alteration`, `access-control`, `affiliated-certification`, " +
