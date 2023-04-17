@@ -40,6 +40,7 @@ Golang
 ## Linters
 
 * [`checkmake`](https://github.com/mrtazz/checkmake)
+* [`golangci-lint`](https://github.com/golangci/golangci-lint)
 * [`hadolint`](https://github.com/hadolint/hadolint)
 * [`markdownlint`](https://github.com/igorshubovych/markdownlint-cli)
 * [`shellcheck`](https://github.com/koalaman/shellcheck)
