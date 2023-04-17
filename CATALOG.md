@@ -1,9 +1,54 @@
 <!-- markdownlint-disable line-length no-bare-urls -->
 # cnf-certification-test catalog
 
-The catalog for cnf-certification-test contains a variety of `Test Cases`, which are traditional JUnit testcases specified internally using `Ginkgo.It`.
+The catalog for cnf-certification-test contains a list of test cases aiming at testing CNF best practices in various areas. Test suites are defined in 10 areas : `platform-alteration`, `access-control`, `affiliated-certification`, `chaostesting`, `lifecycle`, `manageability`,`networking`, `observability`, `operator`, and `performance.`
 
-## Test Case Catalog
+Depending on the CNF type, not all tests are required to pass to satisfy best practice requirements. The scenario section indicates which tests are mandatory or optional depending on the scenario. The following CNF types / scenarios are defined: `Telco`, `Non-Telco`, `Far-Edge`, `Extended`.
+
+## Test cases summary
+
+### Total test cases: 85
+
+### Total suites: 10
+
+|Suite|Tests per suite|
+|---|---|
+|access-control|24|
+|affiliated-certification|4|
+|chaostesting|1|
+|lifecycle|18|
+|manageability|2|
+|networking|12|
+|observability|4|
+|operator|3|
+|performance|5|
+|platform-alteration|12|
+
+### Extended specific tests only: 11
+
+|Mandatory|Optional|
+|---|---|
+|9|2|
+
+### Far-Edge specific tests only: 7
+
+|Mandatory|Optional|
+|---|---|
+|7|0|
+
+### Non-Telco specific tests only: 42
+
+|Mandatory|Optional|
+|---|---|
+|30|12|
+
+### Telco specific tests only: 28
+
+|Mandatory|Optional|
+|---|---|
+|23|5|
+
+## Test Case list
 
 Test Cases are the specifications used to perform a meaningful test. Test cases may run once, or several times against several targets. CNF Certification includes a number of normative and informative tests to ensure CNFs follow best practices. Here is the list of available Test Cases:
 
@@ -35,7 +80,7 @@ Description|Verifies if containers define a hostPort.
 Result Type|normative
 Suggested Remediation|Remove hostPort configuration from the container. CNF should avoid accessing host resources - containers should not configure HostPort.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.6
-Exception Process|Please elaborate why it's needed and explain how it's used
+Exception Process|Please elaborate why it's needed and explain how it's used.
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
@@ -171,7 +216,7 @@ Description|Check that all pods under test have automountServiceAccountToken set
 Result Type|informative
 Suggested Remediation|Check that pod has automountServiceAccountToken set to false or pod is attached to service account which has automountServiceAccountToken set to false, unless the pod needs access to the kubernetes API server. Pods which do not need API access should set automountServiceAccountToken to false in pod spec.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 12.7
-Exception Process|Please elaborate why it's needed and explain how it's used
+Exception Process|Please elaborate why it's needed and explain how it's used.
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
@@ -188,7 +233,7 @@ Description|Verifies that the spec.HostIpc parameter is set to false
 Result Type|normative
 Suggested Remediation|Set the spec.HostIpc parameter to false in the pod configuration. CNF should avoid accessing host resources - spec.HostIpc should be false.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.6
-Exception Process|Please elaborate why it's needed and explain how it's used
+Exception Process|Please elaborate why it's needed and explain how it's used.
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
@@ -222,7 +267,7 @@ Description|Verifies that the spec.HostPath parameter is not set (not present)
 Result Type|normative
 Suggested Remediation|Set the spec.HostPath parameter to false in the pod configuration. CNF should avoid accessing host resources - spec.HostPath should be false.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.6
-Exception Process|Please elaborate why it's needed and explain how it's used
+Exception Process|Please elaborate why it's needed and explain how it's used.
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
@@ -239,7 +284,7 @@ Description|Verifies that the spec.HostPid parameter is set to false
 Result Type|normative
 Suggested Remediation|Set the spec.HostPid parameter to false in the pod configuration. CNF should avoid accessing host resources - spec.HostPid should be false.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.6
-Exception Process|Please elaborate why it's needed and explain how it's used
+Exception Process|Please elaborate why it's needed and explain how it's used.
 Tags|common,access-control
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
@@ -358,7 +403,7 @@ Description|Check that pods do not run SSH daemons.
 Result Type|normative
 Suggested Remediation|Ensure that no SSH daemons are running inside a pod. Pods should not run as SSH Daemons (replicaset or statefulset only).
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.12
-Exception Process|Please elaborate why it's needed and explain how it's used
+Exception Process|Please elaborate why it's needed and explain how it's used.
 Tags|common,telco,access-control
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|

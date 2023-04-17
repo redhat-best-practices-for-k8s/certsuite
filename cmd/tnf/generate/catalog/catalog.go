@@ -20,7 +20,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"path"
 	"sort"
 	"strings"
 
@@ -31,24 +30,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const (
-
-	// introMDFilename is the name of the file that contains the introductory text for CATALOG.md.
-	introMDFilename = "INTRO.md"
-
-	// tccFilename is the name of the file that contains the test case catalog section introductory text for CATALOG.md.
-	tccFilename = "TEST_CASE_CATALOG.md"
-)
-
 var (
-	// introMDFile is the path to the file that contains the test case catalog section introductory text for CATALOG.md.
-	introMDFile = path.Join(mdDirectory, introMDFilename)
-
-	// mdDirectory is the path to the directory of files that contain static text for CATALOG.md.
-	mdDirectory = path.Join("cmd", "tnf", "generate", "catalog")
-
-	// tccFile is the path to the file that contains the test case catalog section introductory text for CATALOG.md.
-	tccFile = path.Join(mdDirectory, tccFilename)
 
 	// generateCmd is the root of the "catalog generate" CLI program.
 	generateCmd = &cobra.Command{
@@ -73,6 +55,13 @@ var (
 type catalogElement struct {
 	testName   string
 	identifier claim.Identifier // {url and version}
+}
+
+type catalogSummary struct {
+	totalSuites     int
+	totalTests      int
+	testsPerSuite   map[string]int
+	testPerScenario map[string]map[string]int
 }
 
 // emitTextFromFile is a utility method to stream file contents to stdout.  This allows more natural specification of
@@ -152,7 +141,7 @@ func scenarioIDToText(id string) (text string) {
 }
 
 // outputTestCases outputs the Markdown representation for test cases from the catalog to stdout.
-func outputTestCases() { //nolint:funlen
+func outputTestCases() (outString string, summary catalogSummary) { //nolint:funlen
 	// Building a separate data structure to store the key order for the map
 	keys := make([]claim.Identifier, 0, len(identifiers.Catalog))
 	for k := range identifiers.Catalog {
@@ -175,17 +164,45 @@ func outputTestCases() { //nolint:funlen
 	sort.Strings(suites)
 
 	// Iterating the map by test and suite names
+	outString = "## Test Case list\n\n" +
+		"Test Cases are the specifications used to perform a meaningful test. " +
+		"Test cases may run once, or several times against several targets. CNF Certification includes " +
+		"a number of normative and informative tests to ensure CNFs follow best practices. " +
+		"Here is the list of available Test Cases:\n"
+
+	summary.testPerScenario = make(map[string]map[string]int)
+	summary.testsPerSuite = make(map[string]int)
+	summary.totalSuites = len(suites)
 	for _, suite := range suites {
-		fmt.Fprintf(os.Stdout, "\n### %s\n", suite)
+		outString += fmt.Sprintf("\n### %s\n", suite)
 		for _, k := range catalog[suite] {
+			summary.testsPerSuite[suite]++
+			summary.totalTests++
 			// Add the suite to the comma separate list of tags shown.  The tags are also modified in the:
 			// GetGinkgoTestIDAndLabels function for usage by Ginkgo.
 			tags := strings.ReplaceAll(identifiers.Catalog[k.identifier].Tags, "\n", " ") + "," + k.identifier.Suite
 
 			keys := make([]string, 0, len(identifiers.Catalog[k.identifier].CategoryClassification))
 
-			for j := range identifiers.Catalog[k.identifier].CategoryClassification {
-				keys = append(keys, j)
+			for scenario := range identifiers.Catalog[k.identifier].CategoryClassification {
+				keys = append(keys, scenario)
+				_, ok := summary.testPerScenario[scenarioIDToText(scenario)]
+				if !ok {
+					child := make(map[string]int)
+					summary.testPerScenario[scenarioIDToText(scenario)] = child
+				}
+				switch scenario {
+				case identifiers.NonTelco:
+					tag := identifiers.TagCommon
+					if identifiers.Catalog[k.identifier].Tags == tag {
+						summary.testPerScenario[scenarioIDToText(scenario)][identifiers.Catalog[k.identifier].CategoryClassification[scenario]]++
+					}
+				default:
+					tag := strings.ToLower(scenario)
+					if strings.Contains(identifiers.Catalog[k.identifier].Tags, tag) {
+						summary.testPerScenario[scenarioIDToText(scenario)][identifiers.Catalog[k.identifier].CategoryClassification[scenario]]++
+					}
+				}
 			}
 			sort.Strings(keys)
 			classificationString := "|**Scenario**|**Optional/Mandatory**|\n"
@@ -194,19 +211,59 @@ func outputTestCases() { //nolint:funlen
 			}
 
 			// Every paragraph starts with a new line.
-			fmt.Fprintf(os.Stdout, "\n#### %s\n\n", k.testName)
-			fmt.Println("Property|Description")
-			fmt.Println("---|---")
-			fmt.Fprintf(os.Stdout, "Unique ID|%s\n", k.identifier.Id)
-			fmt.Fprintf(os.Stdout, "Description|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].Description, "\n", " "))
-			fmt.Fprintf(os.Stdout, "Result Type|%s\n", identifiers.Catalog[k.identifier].Type)
-			fmt.Fprintf(os.Stdout, "Suggested Remediation|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].Remediation, "\n", " "))
-			fmt.Fprintf(os.Stdout, "Best Practice Reference|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].BestPracticeReference, "\n", " "))
-			fmt.Fprintf(os.Stdout, "Exception Process|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].ExceptionProcess, "\n", " "))
-			fmt.Fprintf(os.Stdout, "Tags|%s\n", tags)
-			fmt.Fprintf(os.Stdout, "%s", classificationString)
+
+			outString += fmt.Sprintf("\n#### %s\n\n", k.testName)
+			outString += "Property|Description\n"
+			outString += "---|---\n"
+			outString += fmt.Sprintf("Unique ID|%s\n", k.identifier.Id)
+			outString += fmt.Sprintf("Description|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].Description, "\n", " "))
+			outString += fmt.Sprintf("Result Type|%s\n", identifiers.Catalog[k.identifier].Type)
+			outString += fmt.Sprintf("Suggested Remediation|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].Remediation, "\n", " "))
+			outString += fmt.Sprintf("Best Practice Reference|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].BestPracticeReference, "\n", " "))
+			outString += fmt.Sprintf("Exception Process|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].ExceptionProcess, "\n", " "))
+			outString += fmt.Sprintf("Tags|%s\n", tags)
+			outString += classificationString
 		}
 	}
+
+	return outString, summary
+}
+
+func summaryToMD(aSummary catalogSummary) (out string) {
+	const tableHeader = "|---|---|\n"
+	out += "## Test cases summary\n\n"
+	out += fmt.Sprintf("### Total test cases: %d\n\n", aSummary.totalTests)
+	out += fmt.Sprintf("### Total suites: %d\n\n", aSummary.totalSuites)
+	out += "|Suite|Tests per suite|\n"
+	out += tableHeader
+
+	keys := make([]string, 0, len(aSummary.testsPerSuite))
+
+	for j := range aSummary.testsPerSuite {
+		keys = append(keys, j)
+	}
+	sort.Strings(keys)
+	for _, suite := range keys {
+		out += fmt.Sprintf("|%s|%d|\n", suite, aSummary.testsPerSuite[suite])
+	}
+	out += "\n"
+
+	keys = make([]string, 0, len(aSummary.testPerScenario))
+
+	for j := range aSummary.testPerScenario {
+		keys = append(keys, j)
+	}
+
+	sort.Strings(keys)
+
+	for _, scenario := range keys {
+		out += fmt.Sprintf("### %s specific tests only: %d\n\n", scenario, aSummary.testPerScenario[scenario][identifiers.Mandatory]+aSummary.testPerScenario[scenario][identifiers.Optional])
+		out += "|Mandatory|Optional|\n"
+		out += tableHeader
+		out += fmt.Sprintf("|%d|%d|\n", aSummary.testPerScenario[scenario][identifiers.Mandatory], aSummary.testPerScenario[scenario][identifiers.Optional])
+		out += "\n"
+	}
+	return out
 }
 
 func outputJS() {
@@ -224,26 +281,28 @@ func generateJS(_ *cobra.Command, _ []string) error {
 	return nil
 }
 
+func outputIntro() (out string) {
+	return "<!-- markdownlint-disable line-length no-bare-urls -->\n" +
+		"# cnf-certification-test catalog\n\n" +
+		"The catalog for cnf-certification-test contains a list of test cases " +
+		"aiming at testing CNF best practices in various areas. Test suites are defined in 10 areas : `platform-alteration`, `access-control`, `affiliated-certification`, " +
+		"`chaostesting`, `lifecycle`, `manageability`,`networking`, `observability`, `operator`, and `performance.`" +
+		"\n\nDepending on the CNF type, not all tests are required to pass to satisfy best practice requirements. The scenario section" +
+		" indicates which tests are mandatory or optional depending on the scenario. The following CNF types / scenarios are defined: `Telco`, `Non-Telco`, `Far-Edge`, `Extended`.\n\n"
+}
+
 // runGenerateMarkdownCmd generates a markdown test catalog.
 func runGenerateMarkdownCmd(_ *cobra.Command, _ []string) error {
-	// static introductory generation
-	if err := emitTextFromFile(introMDFile); err != nil {
-		return err
-	}
-	if err := emitTextFromFile(tccFile); err != nil {
-		return err
-	}
-
+	// prints intro
+	intro := outputIntro()
 	// process the test cases
-	outputTestCases()
+	tcs, summaryRaw := outputTestCases()
+	// create summary
+	summary := summaryToMD(summaryRaw)
+	fmt.Fprintf(os.Stdout, "%s", intro+summary+tcs)
 
 	return nil
 }
-
-/*func NewCommandclassification() *cobra.Command {
-	generateClassification.AddCommand(markdownGenerateClassification)
-	return generateClassification
-}*/
 
 // Execute executes the "catalog" CLI.
 func NewCommand() *cobra.Command {
