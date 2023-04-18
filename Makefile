@@ -23,19 +23,18 @@ TNF_IMAGE_NAME?=testnetworkfunction/cnf-certification-test
 IMAGE_TAG?=localtest
 TNF_VERSION?=0.0.1
 RELEASE_VERSION?=4.11
-
-.PHONY: build \
-	clean \
-	lint \
-	test \
-	coverage-html \
+.PHONY: all clean test
+.PHONY: \
+	build \
 	build-cnf-tests \
 	build-cnf-tests-debug \
-	install-tools \
-	vet \
+	coverage-html \
 	generate \
 	install-moq \
-	update-rhcos-versions
+	install-tools \
+	lint \
+	update-rhcos-versions \
+	vet
 
 # Get default value of $GOBIN if not explicitly set
 GO_PATH=$(shell go env GOPATH)
@@ -54,6 +53,8 @@ LINKER_TNF_RELEASE_FLAGS=-X github.com/test-network-function/cnf-certification-t
 LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/cnf-certification-test.GitRelease=${GIT_RELEASE}
 LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/cnf-certification-test.GitPreviousRelease=${GIT_PREVIOUS_RELEASE}
 
+all: build
+
 # Run the unit tests and build all binaries
 build:
 	make test
@@ -64,24 +65,15 @@ build-tnf-tool:
 
 # Cleans up auto-generated and report files
 clean:
-	go clean
-	rm -f ./cnf-certification-test/cnf-certification-test.test
-	rm -f ./cnf-certification-test/cnf-certification-tests_junit.xml
-	rm -f ./cnf-certification-test/claim.json
-	rm -f ./cnf-certification-test/claimjson.js
-	rm -f ./cnf-certification-test/results.html
-	rm -f ./cnf-certification-test/cnf-certification-tests_junit.xml
-	rm -f ./tnf
-	rm -f latest-release-tag.txt
-	rm -f release-tag.txt
-	rm -f jsontest-cli
-	rm -f test-out.json
-	rm -f cover.out
-	rm -f claim.json
-	rm -f all-releases.txt
+	go clean && rm -f all-releases.txt cover.out claim.json cnf-certification-test/claim.json \
+		cnf-certification-test/claimjson.js cnf-certification-test/cnf-certification-test.test \
+		cnf-certification-test/cnf-certification-tests_junit.xml \
+		cnf-certification-test/results.html jsontest-cli latest-release-tag.txt \
+		release-tag.txt test-out.json tnf
 
 # Run configured linters
 lint:
+	checkmake Makefile
 	golangci-lint run --timeout 10m0s
 	hadolint Dockerfile
 	shfmt -d *.sh script
@@ -161,4 +153,3 @@ build-image-tnf:
 
 classification-js:
 	./tnf generate catalog javascript > script/classification.js
-
