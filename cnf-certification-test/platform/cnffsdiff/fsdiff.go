@@ -18,6 +18,7 @@ package cnffsdiff
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	mapset "github.com/deckarep/golang-set/v2"
@@ -26,7 +27,14 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 )
 
+const (
+	partnerPodmanFolder = "/root/podman"
+	tmpMountDestFolder  = "/tmp/tnf-podman"
+)
+
 var (
+	nodeTmpMountFolder = "/host" + tmpMountDestFolder
+
 	// targetFolders stores all the targetFolders that shouldn't have been
 	// modified in the container. All of them exist on UBI.
 	targetFolders = mapset.NewSet(
@@ -57,8 +65,10 @@ type fsDiffJSON struct {
 }
 
 type FsDiff struct {
-	result         int
-	ClientHolder   clientsholder.Command
+	result       int
+	clientHolder clientsholder.Command
+	ctxt         clientsholder.Context
+
 	DeletedFolders []string
 	ChangedFolders []string
 	Error          error
@@ -69,9 +79,10 @@ type FsDiffFuncs interface {
 	GetResults() int
 }
 
-func NewFsDiffTester(client clientsholder.Command) *FsDiff {
+func NewFsDiffTester(client clientsholder.Command, ctxt clientsholder.Context) *FsDiff {
 	return &FsDiff{
-		ClientHolder: client,
+		clientHolder: client,
+		ctxt:         ctxt,
 		result:       testhelper.ERROR,
 	}
 }
@@ -87,21 +98,37 @@ func intersectTargetFolders(src []string) []string {
 	return dst
 }
 
-func (f *FsDiff) RunTest(ctx clientsholder.Context, containerUID string) {
-	output, outerr, err := f.ClientHolder.ExecCommandContainer(ctx, fmt.Sprintf("chroot /host podman diff --format json %s", containerUID))
+func (f *FsDiff) runPodmanDiff(containerUID string) (string, error) {
+	output, outerr, err := f.clientHolder.ExecCommandContainer(f.ctxt, fmt.Sprintf("chroot /host %s/podman diff --format json %s", tmpMountDestFolder, containerUID))
 	if err != nil {
-		f.Error = fmt.Errorf("can not execute command on container: %w", err)
+		return "", fmt.Errorf("can not execute command on container: %w", err)
+	}
+	if outerr != "" {
+		return "", fmt.Errorf("stderr log received when running fsdiff test: %s", outerr)
+	}
+	return output, nil
+}
+
+func (f *FsDiff) RunTest(containerUID string) {
+	err := f.installCustomPodman()
+	if err != nil {
+		f.Error = err
 		f.result = testhelper.ERROR
 		return
 	}
-	if outerr != "" {
-		f.Error = fmt.Errorf("stderr log received when running fsdiff test: %s", outerr)
+
+	defer f.unmountCustomPodman()
+
+	logrus.Infof("Running \"podman diff\" for container id %s", containerUID)
+	output, err := f.runPodmanDiff(containerUID)
+	if err != nil {
+		f.Error = err
 		f.result = testhelper.ERROR
 		return
 	}
 
 	// see if there's a match in the output
-	logrus.Traceln("the output is ", output)
+	logrus.Traceln("Podman diff output is ", output)
 
 	diff := fsDiffJSON{}
 	err = json.Unmarshal([]byte(output), &diff)
@@ -121,4 +148,76 @@ func (f *FsDiff) RunTest(ctx clientsholder.Context, containerUID string) {
 
 func (f *FsDiff) GetResults() int {
 	return f.result
+}
+
+// Generic helper function to execute a command inside the corresponding debug pod of the
+// container under test. Whatever output in stdout or stderr is considered a failure, so it will
+// return the concatenation of the given errorStr with those stdout, stderr and the error string.
+func (f *FsDiff) execCommandContainer(cmd, errorStr string) error {
+	output, outerr, err := f.clientHolder.ExecCommandContainer(f.ctxt, cmd)
+	if err != nil || output != "" || outerr != "" {
+		return errors.New(errorStr + fmt.Sprintf(" Stderr: %s, Stdout: %s, Err: %v", output, outerr, err))
+	}
+
+	return nil
+}
+
+func (f *FsDiff) createNodeFolder() error {
+	return f.execCommandContainer(fmt.Sprintf("mkdir %s", nodeTmpMountFolder),
+		fmt.Sprintf("failed or unexpected output when creating folder %s.", nodeTmpMountFolder))
+}
+
+func (f *FsDiff) deleteNodeFolder() error {
+	return f.execCommandContainer(fmt.Sprintf("rmdir %s", nodeTmpMountFolder),
+		fmt.Sprintf("failed or unexpected output when deleting folder %s.", nodeTmpMountFolder))
+}
+
+func (f *FsDiff) mountDebugPartnerPodmanFolder() error {
+	return f.execCommandContainer(fmt.Sprintf("mount --bind %s %s", partnerPodmanFolder, nodeTmpMountFolder),
+		fmt.Sprintf("failed or unexpected output when mounting %s into %s.", partnerPodmanFolder, nodeTmpMountFolder))
+}
+
+func (f *FsDiff) unmountDebugPartnerPodmanFolder() error {
+	return f.execCommandContainer(fmt.Sprintf("umount %s", nodeTmpMountFolder),
+		fmt.Sprintf("failed or unexpected output when umounting %s.", nodeTmpMountFolder))
+}
+
+func (f *FsDiff) installCustomPodman() error {
+	// We need to create the destination folder first.
+	logrus.Infof("Creating temp folder %s", nodeTmpMountFolder)
+	if err := f.createNodeFolder(); err != nil {
+		return err
+	}
+
+	// Mount podman from partner debug pod into /host/tmp/...
+	logrus.Infof("Mouting %s into %s", partnerPodmanFolder, nodeTmpMountFolder)
+	if mountErr := f.mountDebugPartnerPodmanFolder(); mountErr != nil {
+		// We need to delete the temp folder previosly created as mount point.
+		if deleteErr := f.deleteNodeFolder(); deleteErr != nil {
+			return fmt.Errorf("failed to mount folder %s: %s, failed to delete %s: %s",
+				partnerPodmanFolder, mountErr, nodeTmpMountFolder, deleteErr)
+		}
+
+		return mountErr
+	}
+
+	return nil
+}
+
+func (f *FsDiff) unmountCustomPodman() {
+	// Unmount podman folder from host.
+	logrus.Infof("Unmounting folder %s", nodeTmpMountFolder)
+	if err := f.unmountDebugPartnerPodmanFolder(); err != nil {
+		// Here, there's no point on trying to remove the temp folder used as mount point, as
+		// that probably won't work either.
+		f.Error = err
+		f.result = testhelper.ERROR
+		return
+	}
+
+	logrus.Infof("Deleting folder %s", nodeTmpMountFolder)
+	if err := f.deleteNodeFolder(); err != nil {
+		f.Error = err
+		f.result = testhelper.ERROR
+	}
 }
