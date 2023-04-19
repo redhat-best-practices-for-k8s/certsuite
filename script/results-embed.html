@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset=utf-8>
+  <title>CNF Certification Test Results</title>
+  <meta charset="utf-8">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+  <style type="text/css">
+    li.dropdown-menu {
+      background-color: white;
+    }
+
+    table {
+      border-collapse: collapse;
+    }
+
+    table td {
+      border: 1px solid #000;
+    }
+
+    tg {
+      background-color: #28a745;
+    }
+
+    tred {
+      background-color: #dc3545;
+    }
+
+    ty {
+      background-color: #ffc107;
+    }
+
+    tgy {
+      background-color: #ced4da;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">CNF Certification Test Results</a>
+    <div class="mb-3">
+      <label for="formFile" class="form-label text-light">Upload claim.json file</label>
+      <input class="form-control" type="file" id="formFile">
+      <label for="selectBox" class="form-label text-light">
+        Choose a scenario:</label>
+      <select name="class" id="selectBox" onchange="changeFunc()">
+        <option value="all"> All</option>
+        <option value="faredge"> Far-Edge</option>
+        <option value="telco"> Telco</option>
+        <option value="nontelco"> Non-Telco</option>
+        <option value="extended"> Extended</option>
+
+      </select>
+    </div>
+  </nav>
+
+  <button class="w3-button w3-right w3-light-grey" id="download" type="submit" onclick=download()
+    hidden="hidden">Download Results</button>
+
+
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <button class="nav-link active" id="config-tab" data-bs-toggle="tab" data-bs-target="#config" type="button"
+        role="tab" aria-controls="config" aria-selected="true" onclick="disableAllButton()">Configuration</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" id="metadata-tab" data-bs-toggle="tab" data-bs-target="#metadata" type="button"
+        role="tab" aria-controls="metadata" aria-selected="false" onclick="disableAllButton()">Metadata</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" id="nodes-tab" data-bs-toggle="tab" data-bs-target="#nodes" type="button" role="tab"
+        aria-controls="nodes" aria-selected="false" onclick="disableAllButton()">Nodes</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" id="result-tab" data-bs-toggle="tab" data-bs-target="#results" type="button" role="tab"
+        aria-controls="nodes" aria-selected="false" onclick="enableOptionButton()">Results</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" id="versions-tab" data-bs-toggle="tab" data-bs-target="#versions" type="button"
+        role="tab" aria-controls="versions" aria-selected="false" onclick="disableAllButton()">Versions</button>
+    </li>
+
+  </ul>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <label id="myCheck-mandatory" for="mandatory-tab" hidden="hidden">Show Mandatory Results for that scenario</label>
+      <input type="checkbox" id="mandatory-tab" data-bs-target="#results" data-bs-toggle="tab" role="tab" checked
+        onclick="showResults('mandatory')" hidden="hidden">
+
+
+
+      <label id="myCheck-result" for="optional-tab" hidden="hidden">Show Optional Results for that scenario</label>
+      <input type="checkbox" id="optional-tab" data-bs-target="#results" data-bs-toggle="tab" role="tab"
+        onclick="showResults('optional')" hidden="hidden">
+
+
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="config" role="tabpanel" aria-labelledby="config-tab">
+      <table class="table table-hover table-bordered" id="config-table">
+      </table>
+    </div>
+    <div class="tab-pane fade" id="metadata" role="tabpanel" aria-labelledby="metadata-tab">
+      <table class="table table-hover table-bordered" id="metadata-table">
+      </table>
+    </div>
+    <div class="tab-pane fade" id="nodes" role="tabpanel" aria-labelledby="nodes-tab">
+      <table class="table table-hover table-bordered" id="nodes-table">
+      </table>
+    </div>
+
+    <div class="tab-pane fade" id="results" role="tabpanel" aria-labelledby="result-tab">
+      <table class="table table-hover table-bordered" id="results-table" hidden="hidden">
+      </table>
+      <table class="table table-hover table-bordered" id="mandatory-far-edge-table" hidden="hidden">
+      </table>
+      <table class="table table-hover table-bordered" id="optional-far-edge-table" hidden="hidden">
+      </table>
+      <table class="table table-hover table-bordered" id="mandatory-telco-table" hidden="hidden">
+      </table>
+      <table class="table table-hover table-bordered" id="optional-telco-table" hidden="hidden">
+      </table>
+      <table class="table table-hover table-bordered" id="mandatory-non-telco-table" hidden="hidden">
+      </table>
+      <table class="table table-hover table-bordered" id="optional-non-telco-table" hidden="hidden">
+        <table class="table table-hover table-bordered" id="mandatory-extended-table" hidden="hidden">
+        </table>
+        <table class="table table-hover table-bordered" id="optional-extended-table" hidden="hidden">
+        </table>
+    </div>
+
+
+    <div class="tab-pane fade" id="versions" role="tabpanel" aria-labelledby="versions-tab">
+      <table class="table table-hover table-bordered" id="versions-table">
+      </table>
+    </div>
+  </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.4/dayjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.4/plugin/duration.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/ansi_up@5.1.0/ansi_up.js" crossorigin="anonymous"></script>
+  <!-- We should extract the javascript code to a separate file, but if we include it here we can just use a single file HTMl, which is handy -->
+  <!--    <script src="./utils.js"></script> -->
+  <script>
+    var buttonElementId = "non"
+
+
+    function changeFunc() {
+      var selectBox = document.getElementById("selectBox");
+      var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+
+
+      if (buttonElementId == "result-tab") {
+
+        enableOptionButton()
+
+      }
+    }
+
+    function enableOptionButton() {
+      disableAllButton()
+      enableSendDownload()
+      buttonElementId = "result-tab"
+      var selectBox = document.getElementById("selectBox");
+      var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+      if (selectedValue == "all") {
+        showAll()
+      }
+      else {
+        document.getElementById("results-table").setAttribute("hidden", "hidden");
+        document.getElementById("myCheck-result").removeAttribute("hidden");
+        document.getElementById("optional-tab").removeAttribute("hidden");
+        document.getElementById("myCheck-mandatory").removeAttribute("hidden");
+        document.getElementById("mandatory-tab").removeAttribute("hidden");
+      }
+      showResults("optional")
+      showResults("mandatory")
+    }
+
+    function showResults(optionalMandatory) {
+      var checkBox = document.getElementById(optionalMandatory + "-tab");
+      var selectBox = document.getElementById("selectBox");
+      var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+      if (selectedValue == "faredge") {
+        if (checkBox.checked == true) {
+          document.getElementById(optionalMandatory + "-far-edge-table").removeAttribute("hidden");
+        } else {
+          document.getElementById(optionalMandatory + "-far-edge-table").setAttribute("hidden", "hidden");
+        }
+      }
+      if (selectedValue == "telco") {
+        if (checkBox.checked == true) {
+          document.getElementById(optionalMandatory + "-telco-table").removeAttribute("hidden");
+        } else {
+          document.getElementById(optionalMandatory + "-telco-table").setAttribute("hidden", "hidden");
+        }
+      }
+      if (selectedValue == "nontelco") {
+        if (checkBox.checked == true) {
+          document.getElementById(optionalMandatory + "-non-telco-table").removeAttribute("hidden");
+        } else {
+          document.getElementById(optionalMandatory + "-non-telco-table").setAttribute("hidden", "hidden");
+        }
+      }
+      if (selectedValue == "extended") {
+        if (checkBox.checked == true) {
+          document.getElementById(optionalMandatory + "-extended-table").removeAttribute("hidden");
+        } else {
+          document.getElementById(optionalMandatory + "-extended-table").setAttribute("hidden", "hidden");
+        }
+      }
+    }
+
+    function showTest(tableId, tableName, state, mandatoryOptional) {
+      var checkBox = document.getElementById("filter-" + mandatoryOptional + "-" + state + "-" + tableName);
+      let show = checkBox.checked
+      if (show) {
+        checkBox.setAttribute("checked", "")
+      } else {
+        checkBox.removeAttribute("checked")
+      }
+      let tableIdClean = tableId.replace(/#/g, "")
+      let table = document.getElementById(tableIdClean);
+      let elements = table.getElementsByClassName('accordion-item');
+      for (let i = 0; i < elements.length; i++) {
+        let element = elements[i];
+        let id = element.getAttribute('data-id');
+        if (id == state) {
+          if (show == true) {
+            element.removeAttribute("hidden");
+          } else {
+            element.setAttribute("hidden", "hidden");
+          }
+
+        }
+      }
+    }
+
+    function showAll() {
+
+      document.getElementById("mandatory-far-edge-table").setAttribute("hidden", "hidden");
+      document.getElementById("mandatory-telco-table").setAttribute("hidden", "hidden");
+      document.getElementById("mandatory-non-telco-table").setAttribute("hidden", "hidden");
+      document.getElementById("mandatory-extended-table").setAttribute("hidden", "hidden");
+
+      document.getElementById("optional-far-edge-table").setAttribute("hidden", "hidden");
+      document.getElementById("optional-telco-table").setAttribute("hidden", "hidden");
+      document.getElementById("optional-non-telco-table").setAttribute("hidden", "hidden");
+      document.getElementById("optional-extended-table").setAttribute("hidden", "hidden");
+
+      document.getElementById("results-table").removeAttribute("hidden");
+    }
+
+    function enableSendDownload() {
+      document.getElementById("download").removeAttribute("hidden");
+
+    }
+
+
+    function disableAllButton() {
+      buttonElementId = "non"
+
+      document.getElementById("mandatory-far-edge-table").setAttribute("hidden", "hidden");
+      document.getElementById("mandatory-non-telco-table").setAttribute("hidden", "hidden");
+      document.getElementById("mandatory-extended-table").setAttribute("hidden", "hidden");
+      document.getElementById("mandatory-telco-table").setAttribute("hidden", "hidden");
+
+      document.getElementById("optional-far-edge-table").setAttribute("hidden", "hidden");
+      document.getElementById("optional-non-telco-table").setAttribute("hidden", "hidden");
+      document.getElementById("optional-extended-table").setAttribute("hidden", "hidden");
+
+      document.getElementById("optional-telco-table").setAttribute("hidden", "hidden");
+
+      document.getElementById("optional-tab").setAttribute("hidden", "hidden");
+      document.getElementById("mandatory-tab").setAttribute("hidden", "hidden");
+
+      document.getElementById("download").setAttribute("hidden", "hidden");
+      document.getElementById("myCheck-result").setAttribute("hidden", "hidden");
+
+      document.getElementById("myCheck-mandatory").setAttribute("hidden", "hidden");
+
+    }
+    function fillVersions(input, element) {
+      $(element).empty()
+
+      text = '<thead><tr><th scope="col">Component</th><th scope="col">Version</th></tr></thead><tbody>'
+      $(text).appendTo($(element))
+
+      for (const key in input) {
+        versionstext = '<tr><td><b>' + key + '</b></td><td>' + input[key] + '</td></tr>'
+        $(versionstext).appendTo($(element))
+      }
+
+      text = '</tbody>'
+      $(text).appendTo($(element))
+    }
+
+    function fillMetadata(input, element) {
+      $(element).empty()
+      text = '<tbody>'
+      $(text).appendTo($(element))
+
+      for (const key in input) {
+        text = '<tr><td><b>' + key + '</b></td><td>' + input[key] + '</td></tr>'
+        $(text).appendTo($(element))
+      }
+
+      text = '</tbody>'
+      $(text).appendTo($(element))
+    }
+
+    function innerFill(input) {
+      text = ''
+      // This utility function will return a table with the elements in input
+      if (typeof input === 'string') {
+        text = input
+      } else if (Array.isArray(input)) {
+        text += '<table class="table table-light table-bordered">'
+        // Gather header from first item
+        text += '<thead><tr>'
+
+        if (typeof input[0] === 'object' && input !== null) {
+          for (const key2 in input[0]) {
+            text += '<th scope="col">' + key2 + '</th>'
+          }
+        }
+        text += '</tr></thead><tbody>'
+
+        for (const item of input) {
+          text += '<tr>'
+          if (typeof item === 'string') {
+            text += '<td>' + item + '</td>'
+          } else {
+            for (const key2 in item) {
+              text += '<td>' + innerFill(item[key2]) + '</td>'
+            }
+          }
+          text += '</tr>'
+        }
+        text += '</tbody></table>'
+      } else if (typeof input === 'object' && input !== null) {
+        text += '<table class="table table-light table-bordered"><tbody>'
+        // Go down the rabbit hole
+        for (const key in input) {
+          text += '<tr><td><b>' + key + '</b></td><td>'
+          text += innerFill(input[key]) + '</td></tr>'
+        }
+        text += '</tbody></table>'
+      } else {
+        // What else could it be?
+        text = input
+      }
+      return text
+    }
+
+
+    function fillConfig(input, element) {
+      $(element).empty()
+      var text = '<tbody>'
+      $(text).appendTo($(element))
+
+      for (const key in input) {
+        text = '<tr><td><b>' + key + '</b></td><td>'
+        // Go down the rabbit hole
+        text += innerFill(input[key]) + '</td></tr>'
+        $(text).appendTo($(element))
+      }
+
+      text = '</tbody>'
+      $(text).appendTo($(element))
+    }
+
+    function fillResults(input, input2, element, element2, tableName) {
+      $(element).empty()
+      $(element2).empty()
+
+      // The results object is composed of multiple objects, 1 per test
+      // Inside the object we have an array of results
+      id = 1
+      var ansi_up = new AnsiUp;
+
+      tests_total = 0
+      tests_passed = 0
+      tests_skipped = 0
+      tests_failed = 0
+      tests_total_optional = 0
+      tests_passed_optional = 0
+      tests_skipped_optional = 0
+      tests_failed_optional = 0
+      // Compute number of passed/skipped/failed results
+      for (const key in input) {
+
+        for (const item of input[key]) {
+          for (const key2 in input2) {
+
+            eqData = input2[key2].FarEdge
+
+            if (tableName == "telco") {
+              eqData = input2[key2].Telco
+
+            }
+            if (tableName == "nontelco") {
+              eqData = input2[key2].NonTelco
+            }
+            if (tableName == "extended") {
+              eqData = input2[key2].Extended
+            }
+
+            if (key == key2) {
+              if (item.state == 'passed') {
+                if (eqData == "Mandatory" || tableName == "all") {
+                  tests_total++
+                  tests_passed++
+                } else {
+                  tests_total_optional++
+                  tests_passed_optional++
+                }
+
+              } else if (item.state == 'skipped') {
+                if (eqData == "Mandatory" || tableName == "all") {
+                  tests_total++
+                  tests_skipped++
+                } else {
+                  tests_total_optional++
+                  tests_skipped_optional++
+                }
+
+              } else if (item.state == 'failed') {
+                if (eqData == "Mandatory" || tableName == "all") {
+                  tests_total++
+                  tests_failed++
+                } else {
+                  tests_total_optional++
+                  tests_failed_optional++
+                }
+              }
+            }
+          }
+        }
+      }
+      text += '<th scope="col" class="th-sm">Test ID</th>'
+      tableNameMap = {
+        "faredge": "Far-Edge",
+        "telco": "Telco",
+        "nontelco": "Non-Telco",
+        "extended": "Extended",
+        "all": "All"
+      }
+      if (tableName == "all") {
+        text3 = '<thead><tr><th style="width:15%" scope="col">Test summary (' + tableNameMap[tableName] + ')</th><th scope="col">Test feedback</th></tr></thead><tbody>'
+      } else {
+        text3 = '<thead><tr><th style="width:15%" scope="col">Mandatory Test  summary (' + tableNameMap[tableName] + ')</th><th scope="col">Test feedback</th></tr></thead><tbody>'
+      }
+      //text3 += '<table><tr><td><tred>Failed Madatory</tred></td></tr><tr><td><ty>Failed Optional</ty></td></tr><tr><td><tgy>Skip</tgy></td></tr><tr><td><tg>Pass</tg></td></tr></table>'
+
+      text2 = '<thead><tr><th style="width:15%" scope="col">Optional Test summary (' + tableNameMap[tableName] + ')</th><th scope="col">Test results</th></tr></thead><tbody>'
+      //  text2 += '<table><tr><td><tred>Failed Madatory</tred></td></tr><tr><td><ty>Failed Optional</ty></td></tr><tr><td><tgy>Skip</tgy></td></tr><tr><td><tg>Pass</tg></td></tr></table>'
+      text2 += '<tr><td class="align-top"><b>Total:</b> ' + tests_total_optional + " "
+      text2 += '<br><b><tg>Passed:</tg></b> ' + tests_passed_optional + " "
+      text2 += `<input type="checkbox" id="filter-optional-passed-` + tableName + `" checked onclick="showTest('` + element2 + `','` + tableName + `', 'passed', 'optional' )" >`
+      text2 += '<br><b><tgy>Skipped:</tgy></b> ' + tests_skipped_optional + " "
+      text2 += `<input type="checkbox" id="filter-optional-skipped-` + tableName + `" checked onclick="showTest('` + element2 + `','` + tableName + `', 'skipped', 'optional' )" >`
+      text2 += '<br><b><ty>Failed:</ty></b> ' + tests_failed_optional + " "
+      text2 += `<input type="checkbox" id="filter-optional-failed-` + tableName + `" checked onclick="showTest('` + element2 + `','` + tableName + `', 'failed', 'optional' )" >`
+      text2 += '</td><td>'
+      text2 += '<div class="accordion" id="results-accordion">'
+      // First we will have a left column in the table with the summarized results
+      text3 += '<tr><td class="align-top"><b>Total:</b> ' + tests_total + '<br><b><tg>Passed:</tg></b> ' + tests_passed + " "
+      text3 += `<input type="checkbox" id="filter-mandatory-passed-` + tableName + `" checked onclick="showTest('` + element + `','` + tableName + `', 'passed','mandatory' )" >`
+      text3 += '<br><b><tgy>Skipped:</tgy></b> ' + tests_skipped + " "
+      text3 += `<input type="checkbox" id="filter-mandatory-skipped-` + tableName + `" checked onclick="showTest('` + element + `','` + tableName + `', 'skipped', 'mandatory' )" >`
+      text3 += '<br><b><tred>Failed:</tred></b> ' + tests_failed + " "
+      text3 += `<input type="checkbox" id="filter-mandatory-failed-` + tableName + `" checked onclick="showTest('` + element + `','` + tableName + `', 'failed', 'mandatory' )" >`
+      text3 += '</td><td>'
+
+      text3 += '<div class="accordion" id="results-accordion">'
+      // sorting according to state
+      sortedInput = Object.entries(input).sort(function (a, b) {
+        stringA = a[1][0].testID.id + a[1][0].state
+        stringB = b[1][0].testID.id + b[1][0].state
+        return stringA.localeCompare(stringB);
+      });
+      const sortedObj = Object.fromEntries(sortedInput);
+
+      for (const key in sortedObj) {
+        for (const key2 in input2) {
+
+          eqData = input2[key2].FarEdge
+
+          if (tableName == "telco") {
+            eqData = input2[key2].Telco
+
+          }
+          if (tableName == "nontelco") {
+            eqData = input2[key2].NonTelco
+          }
+          if (tableName == "extended") {
+            eqData = input2[key2].Extended
+          }
+
+          if (key == key2) {
+
+            text = ''
+            // NOTE: we are assuming the test result is determined by the passed/failed state of the first item
+            status = input[key][0].state
+            if (status === "passed") {
+              buttontype = 'bg-success text-white'
+            } else if (status === "skipped") {
+              buttontype = 'bg-dark-subtle text-black'
+            } else {
+              buttontype = 'bg-warning text-white'
+              if (eqData != "Optional" || tableName == "all") {
+                buttontype = 'bg-danger text-white'
+              }
+            }
+            itemid = 'collapse' + id
+            headingid = 'heading' + id
+            text += '<div data-id="' + status + '" class="accordion-item"><h2 class="accordion-header" id="' + headingid + '"><button class="accordion-button collapsed ' + buttontype + '" type="button" data-bs-toggle="collapse" data-bs-target="#' + itemid + '" aria-expanded="true" aria-controls="' + itemid + '">'
+            text += key + '</button></h2>'
+            // Now we should populate the item contents
+            text += '<div id="' + itemid + '" class="accordion-collapse collapse" aria-labelledby="' + headingid + '">'
+            text += '<div class="accordion-body">'
+            // Inside the accordion, 1 table with the following colummns
+            text += '<table id="myTable-' + key + '"class="table table-bordered table-fixed"><thead><tr>'
+            text += '<th scope="col" class="th-sm">Test ID</th>'
+            text += '<th scope="col" class="th-sm">Test Text</th>'
+            text += '<th scope="col" class="th-sm">Duration</th>'
+            text += '<th scope="col" class="th-sm">State</th>'
+            text += '<th scope="col" class="th-lg">Test output</th>'
+            text += '</tr></thead><tbody>'
+
+            // Note we are skipping some columns for now
+            // And 1 row per test
+            dayjs.extend(window.dayjs_plugin_duration);
+            for (const item of input[key]) {
+
+              const duration = dayjs.duration(item.duration / 1000000)
+              formattedDuration = duration.format('D[d] H[h] m[m] s[s] SSS[ms]')
+              text += '<tr><td>' + item.testID.id + '</td>'
+              text += '<td>' + item.testText.replace(/\n/g, '<br>') + '</td>'
+              text += '<td>' + formattedDuration + '</td>'
+              text += '<td>' + item.state + '</td>'
+              text += '<td>' + ansi_up.ansi_to_html(item.CapturedTestOutput).replace(/\n/g, '<br>') + '</td></tr>'
+            }
+
+            id = id + 1
+            if (eqData == "Optional" && tableName != "all") {
+              text2 += text
+              text2 += '</tbody></table>'
+              for (const item of input[key]) {
+                text2 += '<label >write your Feedback for ' + item.testID.id + ' test case</label>'
+                text2 += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-' + tableName + '-' + item.testID.id + '" type="text" ></textarea>'
+              }
+              text2 += '</div></div></div>'
+            } else {
+              text3 += text
+              text3 += '</tbody></table>'
+              for (const item of input[key]) {
+                text3 += '<label >write your Feedback for ' + item.testID.id + ' test case</label>'
+                text3 += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-' + tableName + '-' + item.testID.id + '" type="text"></textarea>'
+              }
+              text3 += '</div></div></div>'
+            }
+          }
+
+        }
+      }
+
+      text2 += '</div></td></tr></tbody>'
+      text3 += '</div></td></tr></tbody>'
+
+      $(text3).appendTo($(element))
+      $(text2).appendTo($(element2))
+    }
+
+    function copyData(key) {
+      var selectBox = document.getElementById("selectBox");
+      var tableName = selectBox.options[selectBox.selectedIndex].value;
+      var sourceId = 'source-' + tableName + '-' + key
+      var data = document.getElementById(sourceId).value;
+      document.getElementById(sourceId).textContent = data
+    }
+
+  </script>
+  <!-- This will load the initial JSON file, if present. It may fail. -->
+  <script src="./claimjson.js"></script>
+<script>
+classification=  {
+  "access-control-cluster-role-bindings": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Mandatory"
+  },
+  "access-control-container-host-port": {
+    "Extended": "Optional",
+    "FarEdge": "Optional",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "access-control-ipc-lock-capability-check": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Mandatory"
+  },
+  "access-control-namespace": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "access-control-namespace-resource-quota": {
+    "Extended": "Mandatory",
+    "FarEdge": "Optional",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "access-control-net-admin-capability-check": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Mandatory"
+  },
+  "access-control-net-raw-capability-check": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Mandatory"
+  },
+  "access-control-no-1337-uid": {
+    "Extended": "Mandatory",
+    "FarEdge": "Optional",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "access-control-one-process-per-container": {
+    "Extended": "Optional",
+    "FarEdge": "Optional",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "access-control-pod-automount-service-account-token": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Mandatory"
+  },
+  "access-control-pod-host-ipc": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "access-control-pod-host-network": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "access-control-pod-host-path": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "access-control-pod-host-pid": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "access-control-pod-role-bindings": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "access-control-pod-service-account": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "access-control-requests-and-limits": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Mandatory"
+  },
+  "access-control-security-context": {
+    "Extended": "Optional",
+    "FarEdge": "Optional",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "access-control-security-context-non-root-user-check": {
+    "Extended": "Optional",
+    "FarEdge": "Optional",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "access-control-security-context-privilege-escalation": {
+    "Extended": "Optional",
+    "FarEdge": "Optional",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "access-control-ssh-daemons": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Mandatory"
+  },
+  "access-control-sys-admin-capability-check": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "access-control-sys-nice-realtime-capability": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Mandatory"
+  },
+  "access-control-sys-ptrace-capability": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Mandatory"
+  },
+  "affiliated-certification-container-is-certified": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "affiliated-certification-container-is-certified-digest": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "affiliated-certification-helmchart-is-certified": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "affiliated-certification-operator-is-certified": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "chaostesting-pod-delete": {
+    "Extended": "Optional",
+    "FarEdge": "Optional",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "lifecycle-affinity-required-pods": {
+    "Extended": "Mandatory",
+    "FarEdge": "Optional",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "lifecycle-container-shutdown": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Mandatory"
+  },
+  "lifecycle-container-startup": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Mandatory"
+  },
+  "lifecycle-cpu-isolation": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Mandatory"
+  },
+  "lifecycle-crd-scaling": {
+    "Extended": "Mandatory",
+    "FarEdge": "Optional",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "lifecycle-deployment-scaling": {
+    "Extended": "Mandatory",
+    "FarEdge": "Optional",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "lifecycle-image-pull-policy": {
+    "Extended": "Optional",
+    "FarEdge": "Optional",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "lifecycle-liveness-probe": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Mandatory"
+  },
+  "lifecycle-persistent-volume-reclaim-policy": {
+    "Extended": "Optional",
+    "FarEdge": "Optional",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "lifecycle-pod-high-availability": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "lifecycle-pod-owner-type": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Mandatory"
+  },
+  "lifecycle-pod-recreation": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "lifecycle-pod-scheduling": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Mandatory"
+  },
+  "lifecycle-pod-toleration-bypass": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Mandatory"
+  },
+  "lifecycle-readiness-probe": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Mandatory"
+  },
+  "lifecycle-startup-probe": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "lifecycle-statefulset-scaling": {
+    "Extended": "Mandatory",
+    "FarEdge": "Optional",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "lifecycle-storage-required-pods": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "manageability-container-port-name-format": {
+    "Extended": "Mandatory",
+    "FarEdge": "Optional",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "manageability-containers-image-tag": {
+    "Extended": "Optional",
+    "FarEdge": "Optional",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "networking-dpdk-cpu-pinning-exec-probe": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Mandatory"
+  },
+  "networking-dual-stack-service": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Mandatory"
+  },
+  "networking-icmpv4-connectivity": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "networking-icmpv4-connectivity-multus": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Mandatory"
+  },
+  "networking-icmpv6-connectivity": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Mandatory"
+  },
+  "networking-icmpv6-connectivity-multus": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Mandatory"
+  },
+  "networking-network-policy-deny-all": {
+    "Extended": "Optional",
+    "FarEdge": "Optional",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "networking-ocp-reserved-ports-usage": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "networking-reserved-partner-ports": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "networking-restart-on-reboot-sriov-pod": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "networking-service-type": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "networking-undeclared-container-ports-usage": {
+    "Extended": "Mandatory",
+    "FarEdge": "Optional",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "observability-container-logging": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Mandatory"
+  },
+  "observability-crd-status": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "observability-pod-disruption-budget": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "observability-termination-policy": {
+    "Extended": "Optional",
+    "FarEdge": "Optional",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "operator-install-source": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "operator-install-status-no-privileges": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "operator-install-status-succeeded": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "performance-exclusive-cpu-pool": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "performance-exclusive-cpu-pool-rt-scheduling-policy": {
+    "Extended": "Optional",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "performance-isolated-cpu-pool-rt-scheduling-policy": {
+    "Extended": "Optional",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "performance-rt-apps-no-exec-probes": {
+    "Extended": "Optional",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "performance-shared-cpu-pool-non-rt-scheduling-policy": {
+    "Extended": "Optional",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "platform-alteration-base-image": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "platform-alteration-boot-params": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "platform-alteration-hugepages-1g-only": {
+    "Extended": "Optional",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "platform-alteration-hugepages-2m-only": {
+    "Extended": "Mandatory",
+    "FarEdge": "Optional",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "platform-alteration-hugepages-config": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "platform-alteration-is-selinux-enforcing": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "platform-alteration-isredhat-release": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "platform-alteration-ocp-lifecycle": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "platform-alteration-ocp-node-os-lifecycle": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "platform-alteration-service-mesh-usage": {
+    "Extended": "Optional",
+    "FarEdge": "Optional",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
+  "platform-alteration-sysctl-config": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "platform-alteration-tainted-node-kernel": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  }
+} </script>
+
+
+  <script>
+    // Load initial json, if available
+    if (typeof initialjson !== 'undefined') {
+      fillConfig(initialjson.claim.configurations, '#config-table')
+      fillConfig(initialjson.claim.nodes, '#nodes-table')
+      fillMetadata(initialjson.claim.metadata, '#metadata-table')
+      fillVersions(initialjson.claim.versions, '#versions-table')
+      fillResults(initialjson.claim.results, '#results-table', '#optional-far-edge-table', "ALL")
+      fillResults(initialjson.claim.results, classification.classification, '#mandatory-far-edge-table', '#optional-far-edge-table', "FarEdge")
+    }
+    const inputElement = document.getElementById("formFile");
+    inputElement.addEventListener("change", handleFiles, false);
+    function handleFiles() {
+      const fileList = this.files; /* now you can work with the file list */
+      if (fileList.length) {
+        // We have a file to load
+        let fileUploaded = new FileReader();
+        fileUploaded.addEventListener("load", e => {
+          json = JSON.parse(fileUploaded.result)
+          fillConfig(json.claim.configurations, '#config-table')
+          fillConfig(json.claim.nodes, '#nodes-table')
+          fillMetadata(json.claim.metadata, '#metadata-table')
+          fillVersions(json.claim.versions, '#versions-table')
+          fillResults(json.claim.results, classification, '#results-table', '#optional-', "all")
+          fillResults(json.claim.results, classification, '#mandatory-far-edge-table', '#optional-far-edge-table', "faredge")
+          fillResults(json.claim.results, classification, '#mandatory-telco-table', '#optional-telco-table', "telco")
+          fillResults(json.claim.results, classification, '#mandatory-non-telco-table', '#optional-non-telco-table', "nontelco")
+          fillResults(json.claim.results, classification, '#mandatory-extended-table', '#optional-extended-table', "extended")
+
+        });
+        fileUploaded.readAsText(fileList[0]);
+      }
+    }
+
+    function linkToStyle(link) {
+      var css = [];
+      var sheet = link.sheet;
+      var rules
+      try {
+        rules = sheet.cssRules || sheet.rules;
+      } catch (error) {
+        console.log(error);
+        return null
+      }
+
+      for (var i = 0; i < rules.length; ++i) {
+        var rule = rules[i];
+        if (rules[i].selectorText == ".collapse:not(.show)") {
+          continue
+        }
+        css.push(rule.cssText);
+      }
+      var style = document.createElement("style");
+      style.type = "text/css";
+      style.appendChild(
+        document.createTextNode(css.join("\r\n"))
+      );
+      return style;
+    }
+
+    function getHtmlResults() {
+      text = ""
+      var selectBox = document.getElementById("selectBox");
+      var tableName = selectBox.options[selectBox.selectedIndex].value;
+
+      doc = document.implementation.createHTMLDocument()
+      head = doc.head;
+      body = doc.body
+      var selectBox = document.getElementById("selectBox");
+      insertResults(body, "mandatory")
+      if (selectBox != "all") {
+        insertResults(body, "optional")
+      }
+
+      document.querySelectorAll("link[rel=stylesheet]").forEach(function (link) {
+        var style = linkToStyle(link);
+        if (style != null) {
+          head.insertBefore(style, head.firstChild);
+        }
+
+      });
+      document.querySelectorAll("style").forEach(function (style) {
+        const clonedStyle = style.cloneNode(true);
+        head.insertBefore(clonedStyle, head.firstChild);
+      });
+
+      // Make document read-only
+      const checkboxes = doc.querySelectorAll('input[type="checkbox"]');
+      const textareas = doc.querySelectorAll('textarea');
+
+      checkboxes.forEach(checkbox => {
+        checkbox.setAttribute("disabled", "disabled");
+      });
+
+      textareas.forEach(textarea => {
+        textarea.readOnly = true;
+      });
+
+      return doc.documentElement.outerHTML
+    }
+
+    function download() {
+      var selectBox = document.getElementById("selectBox");
+      var tableName = selectBox.options[selectBox.selectedIndex].value;
+      for (const key in this.json.claim.results) {
+        for (const key2 in this.classification) {
+          if (key == key2) {
+            copyData(key2)
+          }
+        }
+      }
+
+      htmlText = getHtmlResults()
+
+      var pom = document.createElement('a');
+      pom.setAttribute('href', 'data:text/html;charset=UTF-8,' + encodeURIComponent(htmlText));
+      pom.setAttribute('download', "results");
+
+      pom.style.display = 'none';
+      document.body.appendChild(pom);
+
+      pom.click();
+
+      document.body.removeChild(pom);
+    }
+
+    function insertResults(body, optionalMandatory) {
+      var checkBox = document.getElementById(optionalMandatory + "-tab");
+      var selectBox = document.getElementById("selectBox");
+      var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+      var table = document.getElementById("results-table")
+      if (selectedValue == "faredge") {
+        if (checkBox.checked == true) {
+          table = document.getElementById(optionalMandatory + "-far-edge-table");
+        }
+      }
+      if (selectedValue == "telco") {
+        if (checkBox.checked == true) {
+          table = document.getElementById(optionalMandatory + "-telco-table");
+        }
+      }
+      if (selectedValue == "nontelco") {
+        if (checkBox.checked == true) {
+          table = document.getElementById(optionalMandatory + "-non-telco-table");
+        }
+      }
+      if (selectedValue == "extended") {
+        if (checkBox.checked == true) {
+          table = document.getElementById(optionalMandatory + "-extended-table");
+        }
+      }
+      const clonedTable = table.cloneNode(true);
+      body.appendChild(clonedTable);
+    }
+
+  </script>
+</body>
+
+</html>

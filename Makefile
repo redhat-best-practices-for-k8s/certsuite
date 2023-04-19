@@ -136,7 +136,7 @@ get-db:
 	docker pull ${OCT_IMAGE}
 	docker run -v ${REPO_DIR}/offline-db:/tmp/dump:Z --user $(shell id -u):$(shell id -g) --env OCT_DUMP_ONLY=true ${OCT_IMAGE}
 delete-db:
-	rm -rf ${REPO_DIR}/offline-db
+	rm -rf ${REPO_DIR}/offline-dbed -i -e 's@  <script src="./classification.js"></script>@@g' script/results1.html
 
 build-image-local:
 	docker build --no-cache \
@@ -151,5 +151,8 @@ build-image-tnf:
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_VERSION} \
 		-f Dockerfile .
 
+# Generates the classification.js file and creates anew result-embed.html
 classification-js:
 	./tnf generate catalog javascript > script/classification.js
+	sed '/<script src=".\/classification.js"><\/script>/e echo "<script>";cat  script/classification.js; echo "<\/script>"' script/results.html > script/results-embed.html
+	sed -i -e 's@  <script src="./classification.js"></script>@@g' script/results-embed.html
