@@ -245,6 +245,28 @@ jobs:
             cnf-certification-test/results.html
             cnf-certification-test/tnf-execution.log
 
+      - name: Clone the gradetool repository
+        uses: actions/checkout@v3
+        with:
+          repository: test-network-function/gradetool
+          path: gradetool
+      
+      - name: Run gradetool on the claim.json
+        run: |
+          make build
+          ./gradetool -p ${GITHUB_WORKSPACE}/generated_policy.json -o ${GITHUB_WORKSPACE}/results.txt -r ${GITHUB_WORKSPACE}/cnf-certification-test/claim.json
+        working-directory: gradetool
+
+      - name: Check that their are 0 failed tests in the gradetool results
+        run: |
+          if $(jq '.[] | .Fail | length' ${GITHUB_WORKSPACE}/results.txt | grep -q 0); then
+            echo "OK"
+          else
+            echo "Gradetool has found failing tests in the following:"
+            jq '.[] | .Fail | .[].id' ${GITHUB_WORKSPACE}/results.txt
+            exit 1
+          fi
+
       - name: 'Test: Run preflight specific test suite'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "preflight"
 
@@ -328,6 +350,28 @@ jobs:
             ${{ env.TNF_OUTPUT_DIR }}/claimjson.js
             ${{ env.TNF_OUTPUT_DIR }}/results.html
             ${{ env.TNF_OUTPUT_DIR }}/tnf-execution.log
+
+            - name: Clone the gradetool repository
+            uses: actions/checkout@v3
+            with:
+              repository: test-network-function/gradetool
+              path: gradetool
+    
+      - name: Run gradetool on the claim.json
+        run: |
+          make build
+          ./gradetool -p ${GITHUB_WORKSPACE}/generated_policy.json -o ${GITHUB_WORKSPACE}/results.txt -r ${{ env.TNF_OUTPUT_DIR }}/claim.json
+        working-directory: gradetool
+  
+      - name: Check that their are 0 failed tests in the gradetool results
+        run: |
+          if $(jq '.[] | .Fail | length' ${GITHUB_WORKSPACE}/results.txt | grep -q 0); then
+            echo "OK"
+          else
+            echo "Gradetool has found failing tests in the following:"
+            jq '.[] | .Fail | .[].id' ${GITHUB_WORKSPACE}/results.txt
+            exit 1
+          fi
 
       - name: 'Test: Run Preflight Specific Smoke Tests in a TNF container'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "preflight"

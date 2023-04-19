@@ -100,7 +100,16 @@ build-catalog-json: build-tnf-tool
 build-catalog-md: build-tnf-tool classification-js
 	./tnf generate catalog markdown >CATALOG.md
 
+<<<<<<< HEAD
 # Builds the CNF test binary
+=======
+# build the policy file for the gradetool
+# requires a valid claim.json file
+build-gradetool-policy: 
+	./script/policy-builder-from-claim.sh
+
+# build the CNF test binary
+>>>>>>> a4f21214 (Add gradetool support)
 build-cnf-tests:
 	PATH=${PATH}:${GOBIN} ginkgo build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" ./cnf-certification-test
 
