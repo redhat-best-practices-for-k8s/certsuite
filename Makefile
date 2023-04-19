@@ -136,7 +136,7 @@ get-db:
 	docker pull ${OCT_IMAGE}
 	docker run -v ${REPO_DIR}/offline-db:/tmp/dump:Z --user $(shell id -u):$(shell id -g) --env OCT_DUMP_ONLY=true ${OCT_IMAGE}
 delete-db:
-	rm -rf ${REPO_DIR}/offline-dbed -i -e 's@  <script src="./classification.js"></script>@@g' script/results1.html
+	rm -rf ${REPO_DIR}/offline-db
 
 build-image-local:
 	docker build --no-cache \
