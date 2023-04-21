@@ -101,8 +101,8 @@ export TNF_CONTAINER_CLIENT=docker
 ### Build locally
 
 ```shell
-podman build -t cnf-certification-test:v4.2.2 \
-  --build-arg TNF_VERSION=v4.2.2 \
+podman build -t cnf-certification-test:v4.2.3 \
+  --build-arg TNF_VERSION=v4.2.3 \
 ```
 
 * `TNF_VERSION` value is set to a branch, a tag, or a hash of a commit that will be installed into the image
@@ -114,8 +114,8 @@ The unofficial source could be a fork of the TNF repository.
 Use the `TNF_SRC_URL` build argument to override the URL to a source repository.
 
 ```shell
-podman build -t cnf-certification-test:v4.2.2 \
-  --build-arg TNF_VERSION=v4.2.2 \
+podman build -t cnf-certification-test:v4.2.3 \
+  --build-arg TNF_VERSION=v4.2.3 \
   --build-arg TNF_SRC_URL=https://github.com/test-network-function/cnf-certification-test .
 ```
 
@@ -124,7 +124,7 @@ podman build -t cnf-certification-test:v4.2.2 \
 Specify the custom TNF image using the `-i` parameter.
 
 ```shell
-./run-tnf-container.sh -i cnf-certification-test:v4.2.2
+./run-tnf-container.sh -i cnf-certification-test:v4.2.3
 -t ~/tnf/config -o ~/tnf/output -l "networking,access-control"
 ```
 
