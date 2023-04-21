@@ -1,9 +1,14 @@
 targetNameSpaces:
   - name: tnf
-targetPodLabels:
-  - prefix: test-network-function.com
-    name: generic
-    value: target
+#DEPRECATED
+#targetPodLabels:
+#  - prefix: test-network-function.com
+#    name: generic
+#    value: target
+podsUnderTestLabels:
+  test-network-function.com/generic: target
+operatorsUnderTestLabels:
+  test-network-function.com/operator: 
 targetCrdFilters:
   - nameSuffix: "group1.test.com"
     scalable: false

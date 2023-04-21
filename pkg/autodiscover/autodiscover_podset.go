@@ -19,7 +19,6 @@ import (
 	"context"
 
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	appsv1 "k8s.io/api/apps/v1"
 	scalingv1 "k8s.io/api/autoscaling/v1"
 
@@ -59,7 +58,7 @@ func FindCrObjectByNameByNamespace(scalesGetter scale.ScalesGetter, ns, name str
 //nolint:dupl
 func findDeploymentByLabel(
 	appClient appv1client.AppsV1Interface,
-	labels []configuration.Label,
+	labels map[string]string,
 	namespaces []string,
 ) []appsv1.Deployment {
 	deployments := []appsv1.Deployment{}
@@ -74,8 +73,7 @@ func findDeploymentByLabel(
 		}
 
 		for i := 0; i < len(dps.Items); i++ {
-			for _, l := range labels {
-				key, value := buildLabelKeyValue(l)
+			for key, value := range labels {
 				logrus.Tracef("Searching pods in deployment %q found in ns %q using label %s=%s", dps.Items[i].Name, ns, key, value)
 				if dps.Items[i].Spec.Template.ObjectMeta.Labels[key] == value {
 					deployments = append(deployments, dps.Items[i])
@@ -93,7 +91,7 @@ func findDeploymentByLabel(
 //nolint:dupl
 func findStatefulSetByLabel(
 	appClient appv1client.AppsV1Interface,
-	labels []configuration.Label,
+	labels map[string]string,
 	namespaces []string,
 ) []appsv1.StatefulSet {
 	statefulsets := []appsv1.StatefulSet{}
@@ -108,8 +106,7 @@ func findStatefulSetByLabel(
 		}
 
 		for i := 0; i < len(ss.Items); i++ {
-			for _, l := range labels {
-				key, value := buildLabelKeyValue(l)
+			for key, value := range labels {
 				logrus.Tracef("Searching pods in statefulset %q found in ns %q using label %s=%s", ss.Items[i].Name, ns, key, value)
 				if ss.Items[i].Spec.Template.ObjectMeta.Labels[key] == value {
 					statefulsets = append(statefulsets, ss.Items[i])
