@@ -1,4 +1,4 @@
-// Copyright (C) 2022 Red Hat, Inc.
+// Copyright (C) 2023 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,31 +14,38 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package rbac
+package autodiscover
 
 import (
 	"context"
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func GetClusterRoleBindings(serviceAccountName, podNamespace string) ([]string, error) {
-	// Get all of the clusterrolebindings from all namespaces.
+// getRoleBindings returns all of the rolebindings in the cluster
+func getRoleBindings() ([]rbacv1.RoleBinding, error) {
+	// Get all of the rolebindings from all namespaces
 	clientsHolder := clientsholder.GetClientsHolder()
-	crbList, crbErr := clientsHolder.K8sClient.RbacV1().ClusterRoles().List(context.TODO(), metav1.ListOptions{})
+	roleList, roleErr := clientsHolder.K8sClient.RbacV1().RoleBindings("").List(context.TODO(), metav1.ListOptions{})
+	if roleErr != nil {
+		logrus.Errorf("executing rolebinding command failed with error: %v", roleErr)
+		return nil, roleErr
+	}
+	return roleList.Items, nil
+}
+
+// getClusterRoleBindings returns all of the clusterrolebindings in the cluster
+func getClusterRoleBindings() ([]rbacv1.ClusterRoleBinding, error) {
+	// Get all of the clusterrolebindings from the cluster
+	// These are not namespaced so we want all of them
+	clientsHolder := clientsholder.GetClientsHolder()
+	crbList, crbErr := clientsHolder.K8sClient.RbacV1().ClusterRoleBindings().List(context.TODO(), metav1.ListOptions{})
 	if crbErr != nil {
 		logrus.Errorf("executing clusterrolebinding command failed with error: %v", crbErr)
 		return nil, crbErr
 	}
-
-	clusterrolebindings := []string{}
-	for index := range crbList.Items {
-		// Determine if the role causes a failure of the test.
-		if roleOutOfNamespace(crbList.Items[index].Namespace, podNamespace, crbList.Items[index].Name, serviceAccountName) {
-			clusterrolebindings = append(clusterrolebindings, crbList.Items[index].Namespace+":"+crbList.Items[index].Name)
-		}
-	}
-	return clusterrolebindings, nil
+	return crbList.Items, nil
 }

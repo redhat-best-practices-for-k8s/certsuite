@@ -16,16 +16,20 @@
 
 package rbac
 
-func roleOutOfNamespace(roleNamespace, podNamespace, roleName, serviceAccountName string) bool {
-	// Skip if the role namespace is part of the pod namespace.
-	if roleNamespace == podNamespace {
+func roleBindingOutOfNamespace(roleBindingNamespace, podNamespace, roleBindingName, serviceAccountName string) bool {
+	// Skip if the rolebinding namespace is part of the pod namespace.
+	if roleBindingNamespace == podNamespace {
 		return false
 	}
 
-	// Role is in another namespace and the service account names match.
-	if roleName == serviceAccountName {
+	// RoleBinding is in another namespace and the service account names match.
+	if roleBindingName == serviceAccountName {
 		return true
 	}
 
 	return false
+}
+
+func IsRoleBindingOutOfNamespace(podNamespace, serviceAccountName, roleBindingNamespace, roleBindingName string) bool {
+	return roleBindingOutOfNamespace(roleBindingNamespace, podNamespace, roleBindingName, serviceAccountName)
 }

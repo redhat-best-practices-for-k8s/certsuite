@@ -39,6 +39,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	networkingv1 "k8s.io/api/networking/v1"
 	policyv1 "k8s.io/api/policy/v1"
+	rbacv1 "k8s.io/api/rbac/v1"
 	storagev1 "k8s.io/api/storage/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -90,6 +91,8 @@ type TestEnvironment struct { // rename this with testTarget
 	AllOperatorsSummary    []string     `json:"AllOperatorsSummary"`
 	PersistentVolumes      []corev1.PersistentVolume
 	PersistentVolumeClaims []corev1.PersistentVolumeClaim
+	ClusterRoleBindings    []rbacv1.ClusterRoleBinding
+	RoleBindings           []rbacv1.RoleBinding
 
 	Config    configuration.TestConfiguration
 	variables configuration.TestParameters
@@ -251,6 +254,8 @@ func buildTestEnvironment() { //nolint:funlen
 	env.PodDisruptionBudgets = data.PodDisruptionBudgets
 	env.PersistentVolumes = data.PersistentVolumes
 	env.PersistentVolumeClaims = data.PersistentVolumeClaims
+	env.ClusterRoleBindings = data.ClusterRoleBindings
+	env.RoleBindings = data.RoleBindings
 	env.Services = data.Services
 	env.NetworkPolicies = data.NetworkPolicies
 	for _, nsHelmChartReleases := range data.HelmChartReleases {

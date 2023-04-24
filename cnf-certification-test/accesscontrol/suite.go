@@ -454,44 +454,58 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 			continue
 		}
 
-		// Get any rolebindings that do not belong to the pod namespace.
-		roleBindings, err := rbac.GetRoleBindings(put.Namespace, put.Spec.ServiceAccountName)
-		if err != nil {
-			failedPods = append(failedPods, put.Name)
-		}
+		logrus.Infof("%s has a serviceAccountName: %s, checking role bindings.", put.String(), put.Spec.ServiceAccountName)
 
-		if len(roleBindings) > 0 {
-			logrus.Warnf("Pod: %s/%s has the following role bindings: %s", put.Namespace, put.Name, roleBindings)
-			tnf.ClaimFilePrintf("Pod: %s/%s has the following role bindings: %s", put.Namespace, put.Name, roleBindings)
-			failedPods = append(failedPods, put.Name)
+		// Loop through the rolebindings and check if they are from another namespace
+		for rbIndex := range env.RoleBindings {
+			found := false
+			for _, subject := range env.RoleBindings[rbIndex].Subjects {
+				// Match the subject service account with the name of the pod's service account.
+				// Determine if that service account is not in the same namespace as the pod.
+				if subject.Kind != "ServiceAccount" || subject.Name != put.Spec.ServiceAccountName {
+					continue
+				}
+
+				if rbac.IsRoleBindingOutOfNamespace(put.Namespace, put.Spec.ServiceAccountName, env.RoleBindings[rbIndex].Namespace, env.RoleBindings[rbIndex].Name) {
+					logrus.Warnf("Pod: %s/%s has the following role bindings that do not live in the same namespace: %s", put.Namespace, put.Name, env.RoleBindings[rbIndex].Name)
+					tnf.ClaimFilePrintf("Pod: %s/%s has the following role bindings that do not live in the same namespace: %s", put.Namespace, put.Name, env.RoleBindings)
+					failedPods = append(failedPods, put.Name)
+					found = true
+					break
+				}
+			}
+			// Break of out the loop if we found a role binding that is out of namespace
+			if found {
+				break
+			}
 		}
 	}
 	testhelper.AddTestResultLog("Non-compliant", failedPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
-// testPodClusterRoleBindings verifies that the pod utilizes a valid cluster role binding that does not cross namespaces
+// testPodClusterRoleBindings verifies that the pod does not use a cluster role binding
 //
 //nolint:dupl
 func testPodClusterRoleBindings(env *provider.TestEnvironment) {
-	ginkgo.By("Should not have ClusterRoleBinding in other namespaces")
+	ginkgo.By("Pods should not have ClusterRoleBindings")
 	failedPods := []string{}
+
+	logrus.Infof("There were %d cluster role bindings found in the cluster.", len(env.ClusterRoleBindings))
 
 	for _, put := range env.Pods {
 		ginkgo.By(fmt.Sprintf("Testing cluster role binding for pod: %s namespace: %s", put.Name, put.Namespace))
-		if put.Spec.ServiceAccountName == "" {
-			logrus.Infof("%s has an empty serviceAccountName, skipping.", put.String())
-			continue
-		}
-
-		// Get any clusterrolebindings that do not belong to the pod namespace.
-		clusterRoleBindings, err := rbac.GetClusterRoleBindings(put.Namespace, put.Spec.ServiceAccountName)
+		result, err := put.IsUsingClusterRoleBinding(env.ClusterRoleBindings)
 		if err != nil {
+			logrus.Errorf("failed to determine if pod %s/%s is using a cluster role binding: %v", put.Namespace, put.Name, err)
 			failedPods = append(failedPods, put.Name)
 		}
 
-		if len(clusterRoleBindings) > 0 {
-			logrus.Warnf("Pod: %s/%s has the following cluster role bindings: %s", put.Namespace, put.Name, clusterRoleBindings)
-			tnf.ClaimFilePrintf("Pod: %s/%s has the following cluster role bindings: %s", put.Namespace, put.Name, clusterRoleBindings)
+		// Pod was found to be using a cluster role binding.  This is not allowed.
+		// Flagging this pod as a failed pod.
+		if !result {
+			errMsg := fmt.Sprintf("%s is using a cluster role binding", put.String())
+			logrus.Warn(errMsg)
+			tnf.ClaimFilePrintf(errMsg)
 			failedPods = append(failedPods, put.Name)
 		}
 	}

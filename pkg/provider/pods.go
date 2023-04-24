@@ -19,14 +19,17 @@ package provider
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
 
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/rbac"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	corev1 "k8s.io/api/core/v1"
+	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -374,6 +377,45 @@ func (p *Pod) IsUsingSRIOV() (bool, error) {
 		logrus.Tracef("%s: NAD config: %s", p, nad.Spec.Config)
 		if isSRIOV {
 			return true, nil
+		}
+	}
+
+	return false, nil
+}
+
+func (p *Pod) IsUsingClusterRoleBinding(clusterRoleBindings []rbacv1.ClusterRoleBinding) (bool, error) {
+	// This function accepts a list of clusterRoleBindings and checks to see if the pod's service account is
+	// tied to any of them.  If it is, then it returns true, otherwise it returns false.
+
+	// Short circuit.  If there is no serviceAcccountName set we can skip the rest of the checks.
+	// Note: This currently does not handle where projected volumes are used to access service account tokens.
+	if p.Pod.Spec.ServiceAccountName == "" {
+		return false, nil
+	}
+
+	// Get all of the service accounts in the pod's namespace.
+	serviceAccounts, err := rbac.GetServiceAccountsFromNamespace(p.Pod.Namespace)
+	if err != nil {
+		errMsg := fmt.Sprintf("failed to retrieve all service accounts in namespace %s: %v", p.Pod.Namespace, err)
+		return false, errors.New(errMsg)
+	}
+
+	logrus.Infof("There were %d service accounts found in the namespace.", len(serviceAccounts))
+
+	// Loop through the service accounts in the namespace, looking for a match between the pod serviceAccountName and
+	// the service account name.  If there is a match, check to make sure that the SA is not a 'subject' of the cluster
+	// role bindings.
+	for saIndex := range serviceAccounts {
+		if serviceAccounts[saIndex].Name == p.Pod.Spec.ServiceAccountName {
+			logrus.Infof("Found a matching service account %s, checking cluster role bindings.", serviceAccounts[saIndex].Name)
+			for crbIndex := range clusterRoleBindings {
+				for _, subject := range clusterRoleBindings[crbIndex].Subjects {
+					if subject.Name == p.Pod.Spec.ServiceAccountName {
+						tnf.ClaimFilePrintf("Pod %s has service account %s that is tied to cluster role binding %s", p.Pod.Name, serviceAccounts[saIndex].Name, clusterRoleBindings[crbIndex].Name)
+						return true, nil
+					}
+				}
+			}
 		}
 	}
 
