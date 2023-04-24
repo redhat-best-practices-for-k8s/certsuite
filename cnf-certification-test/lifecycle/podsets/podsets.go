@@ -59,7 +59,7 @@ var WaitForScalingToComplete = func(ns, name string, timeout time.Duration, grou
 	for time.Since(start) < timeout {
 		crScale, err := provider.GetUpdatedCrObject(clients.ScalingClient, ns, name, groupResourceSchema)
 		if err != nil {
-			logrus.Errorf("error while getting the scaling fileds %e", err)
+			logrus.Errorf("error while getting the scaling fields %e", err)
 		} else if !crScale.IsScaleObjectReady() {
 			logrus.Errorf("%s is not ready yet", crScale.ToString())
 		} else {
