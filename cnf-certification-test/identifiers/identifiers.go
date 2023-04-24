@@ -467,7 +467,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		NormativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Optional,
@@ -518,7 +518,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		NormativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Optional,
