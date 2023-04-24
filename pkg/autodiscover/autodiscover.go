@@ -110,7 +110,7 @@ func warnDeprecation(config *configuration.TestConfiguration) {
 			deprecatedHardcodedOperatorLabelName, deprecatedHardcodedOperatorLabelValue)
 	}
 	if len(config.PodsUnderTestLabels) == 0 && len(config.TargetPodLabels) == 0 {
-		logrus.Warn("No Pod under test labels configured. Tests on pods and containers will not run. Please use the \"operatorsUnderTestLabels\" field to specify labels for pods under test")
+		logrus.Warn("No Pod under test labels configured. Tests on pods and containers will not run. Please use the \"podsUnderTestLabels\" field to specify labels for pods under test")
 	}
 }
 
