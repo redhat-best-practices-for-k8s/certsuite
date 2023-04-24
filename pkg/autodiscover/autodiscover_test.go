@@ -56,50 +56,6 @@ func TestBuildLabelName(t *testing.T) {
 	}
 }
 
-func TestBuildLabelQuery(t *testing.T) {
-	testCases := []struct {
-		testLabel      configuration.Label
-		expectedOutput string
-	}{
-		{
-			testLabel: configuration.Label{
-				Prefix: "prefix1",
-				Name:   "name1",
-				Value:  "value1",
-			},
-			expectedOutput: "prefix1/name1=value1",
-		},
-		{
-			testLabel: configuration.Label{
-				Prefix: "prefix2",
-				Name:   "",
-				Value:  "value2",
-			},
-			expectedOutput: "prefix2/=value2",
-		},
-		{
-			testLabel: configuration.Label{
-				Prefix: "",
-				Name:   "name3",
-				Value:  "value3",
-			},
-			expectedOutput: "name3=value3",
-		},
-		{
-			testLabel: configuration.Label{
-				Prefix: "",
-				Name:   "",
-				Value:  "value4",
-			},
-			expectedOutput: "=value4",
-		},
-	}
-
-	for _, tc := range testCases {
-		assert.Equal(t, tc.expectedOutput, buildLabelQuery(tc.testLabel))
-	}
-}
-
 func TestBuildLabelKeyValue(t *testing.T) {
 	testCases := []struct {
 		testLabel                configuration.Label

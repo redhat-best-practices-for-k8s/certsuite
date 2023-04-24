@@ -109,8 +109,12 @@ type ContainerImageIdentifier struct {
 type TestConfiguration struct {
 	// targetNameSpaces to be used in
 	TargetNameSpaces []Namespace `yaml:"targetNameSpaces" json:"targetNameSpaces"`
-	// Custom Pod labels for discovering containers/pods under test
+	// DEPRECATED - Custom Pod labels for discovering containers/pods under test
 	TargetPodLabels []Label `yaml:"targetPodLabels,omitempty" json:"targetPodLabels,omitempty"`
+	// labels identifying pods under test
+	PodsUnderTestLabels map[string]string `yaml:"podsUnderTestLabels,omitempty" json:"podsUnderTestLabels,omitempty"`
+	// labels identifying operators unde test
+	OperatorsUnderTestLabels map[string]string `yaml:"operatorsUnderTestLabels,omitempty" json:"operatorsUnderTestLabels,omitempty"`
 	// CertifiedContainerInfo is the list of container images to be checked for certification status.
 	CertifiedContainerInfo []ContainerImageIdentifier `yaml:"certifiedcontainerinfo,omitempty" json:"certifiedcontainerinfo,omitempty"`
 	// CertifiedOperatorInfo is list of operator bundle names that are queried for certification status.

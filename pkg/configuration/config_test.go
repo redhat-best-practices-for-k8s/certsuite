@@ -45,6 +45,18 @@ func TestLoadConfiguration(t *testing.T) {
 	assert.Contains(t, env.TargetPodLabels, podlabel1)
 	podlabel2 := configuration.Label{Prefix: label2Prefix, Name: label2Name, Value: label2Value}
 	assert.Contains(t, env.TargetPodLabels, podlabel2)
+	// podsUnderTestLabels
+	assert.Equal(t, 4, len(env.PodsUnderTestLabels))
+	assert.Equal(t, env.PodsUnderTestLabels["test"], "pod")
+	assert.Equal(t, env.PodsUnderTestLabels["cnf"], "pod")
+	assert.Equal(t, env.PodsUnderTestLabels["cnf/test"], "pod1")
+	assert.Equal(t, env.PodsUnderTestLabels["cnf/testEmpty"], "")
+	// operatorsUnderTestLabels
+	assert.Equal(t, 4, len(env.OperatorsUnderTestLabels))
+	assert.Equal(t, env.OperatorsUnderTestLabels["test"], "operator")
+	assert.Equal(t, env.OperatorsUnderTestLabels["cnf"], "operator")
+	assert.Equal(t, env.OperatorsUnderTestLabels["cnf/test"], "operator1")
+	assert.Equal(t, env.PodsUnderTestLabels["cnf/testEmpty"], "")
 	// check if targetCrdFilters section is parsed properly
 	assert.Equal(t, crds, len(env.CrdFilters))
 	crd1 := configuration.CrdFilter{NameSuffix: crdSuffix1}

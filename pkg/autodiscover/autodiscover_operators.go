@@ -63,13 +63,13 @@ func isIstioServiceMeshInstalled(allNs []string) bool {
 	return true
 }
 
-func findOperatorsByLabel(olmClient clientOlm.Interface, labels []configuration.Label, namespaces []configuration.Namespace) []*olmv1Alpha.ClusterServiceVersion {
+func findOperatorsByLabel(olmClient clientOlm.Interface, labels map[string]string, namespaces []configuration.Namespace) []*olmv1Alpha.ClusterServiceVersion {
 	csvs := []*olmv1Alpha.ClusterServiceVersion{}
 	for _, ns := range namespaces {
 		logrus.Debugf("Searching CSVs in namespace %s", ns)
-		for _, label := range labels {
-			logrus.Debugf("Searching CSVs with label %+v", label)
-			label := buildLabelQuery(label)
+		for key, value := range labels {
+			label := key + "=" + value
+			logrus.Debugf("Searching CSVs with label %s", label)
 			csvList, err := olmClient.OperatorsV1alpha1().ClusterServiceVersions(ns.Name).List(context.TODO(), metav1.ListOptions{
 				LabelSelector: label,
 			})

@@ -26,7 +26,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 )
 
 func TestFindDeploymentByLabel(t *testing.T) {
@@ -91,12 +90,7 @@ func TestFindDeploymentByLabel(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		testLabel := []configuration.Label{
-			{
-				Name:  "testLabel",
-				Value: tc.testDeploymentLabel,
-			},
-		}
+		testLabel := map[string]string{"testLabel": tc.testDeploymentLabel}
 		testNamespaces := []string{
 			tc.testDeploymentNamespace,
 		}
@@ -171,12 +165,7 @@ func TestFindStatefulSetByLabel(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		testLabel := []configuration.Label{
-			{
-				Name:  "testLabel",
-				Value: tc.testStatefulSetLabel,
-			},
-		}
+		testLabel := map[string]string{"testLabel": tc.testStatefulSetLabel}
 		testNamespaces := []string{
 			tc.testStatefulSetNamespace,
 		}
