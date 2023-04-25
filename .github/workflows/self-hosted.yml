@@ -62,7 +62,7 @@ jobs:
           path: cnf-certification-test-partner
 
       - name: Bootstrap the Kind and OC/Kubectl binaries for the `local-test-infra`
-        run: make bootstrap-cluster-fedora-local
+        run: make bootstrap-cluster
         working-directory: cnf-certification-test-partner
 
       - name: Create `local-test-infra` OpenShift resources
