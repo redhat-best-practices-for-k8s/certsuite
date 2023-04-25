@@ -280,7 +280,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		InformativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
@@ -1322,7 +1322,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		NormativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 3.5.9",
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
