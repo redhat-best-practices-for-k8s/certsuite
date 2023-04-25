@@ -6,6 +6,7 @@ import (
 
 	claim "github.com/test-network-function/cnf-certification-test/cmd/tnf/addclaim"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/generate/catalog"
+	qecoverage "github.com/test-network-function/cnf-certification-test/cmd/tnf/generate/qe_coverage"
 )
 
 var (
@@ -24,6 +25,7 @@ func main() {
 	rootCmd.AddCommand(claim.NewCommand())
 	rootCmd.AddCommand(generate)
 	generate.AddCommand(catalog.NewCommand())
+	generate.AddCommand(qecoverage.QeCoverageReportCmd)
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatal(err)
