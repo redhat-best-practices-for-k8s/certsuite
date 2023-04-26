@@ -63,7 +63,7 @@ func appendCrItems(crs *unstructured.UnstructuredList, aCrd *apiextv1.CustomReso
 
 		crScale, err := clients.ScalingClient.Scales(namespace).Get(context.TODO(), groupResourceSchema, name, metav1.GetOptions{})
 		if err != nil {
-			logrus.Fatalf("error while getting the scaling fields %e", err)
+			logrus.Fatalf("error while getting the scaling fields %v", err)
 		}
 		scalableItems = append(scalableItems, Scaleobject{Scale: crScale, GroupResourceSchema: groupResourceSchema})
 	}
