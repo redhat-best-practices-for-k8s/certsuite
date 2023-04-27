@@ -79,7 +79,7 @@ lint:
 	shfmt -d *.sh script
 
 # Build and run unit tests
-test:
+test: coverage-qe
 	./script/create-missing-test-files.sh
 	go build ${COMMON_GO_ARGS} ./...
 	UNIT_TEST="true" go test -coverprofile=cover.out.tmp ./...
@@ -87,6 +87,9 @@ test:
 coverage-html: test
 	cat cover.out.tmp | grep -v "_moq.go" > cover.out
 	go tool cover -html cover.out
+
+coverage-qe: build-tnf-tool
+	./tnf generate qe-coverage-report
 
 # generate the test catalog in JSON
 build-catalog-json: build-tnf-tool
@@ -152,7 +155,7 @@ build-image-tnf:
 		-f Dockerfile .
 
 # Generates the classification.js file and creates a new result-embed.html
-classification-js:
+classification-js: build-tnf-tool
 	./tnf generate catalog javascript >script/classification.js
 	sed '/<script src=".\/classification.js"><\/script>/e echo "<script>"; cat script/classification.js; echo "<\/script>"' script/results.html >script/results-embed.html
 	sed -i -e 's@  <script src="./classification.js"></script>@@g' script/results-embed.html
