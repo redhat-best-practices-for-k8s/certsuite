@@ -105,6 +105,11 @@ type ContainerImageIdentifier struct {
 	Digest string `yaml:"digest" json:"digest"`
 }
 
+type LabelObject struct {
+	LabelKey   string
+	LabelValue string
+}
+
 // TestConfiguration provides test related configuration
 type TestConfiguration struct {
 	// targetNameSpaces to be used in
@@ -112,9 +117,13 @@ type TestConfiguration struct {
 	// DEPRECATED - Custom Pod labels for discovering containers/pods under test
 	TargetPodLabels []Label `yaml:"targetPodLabels,omitempty" json:"targetPodLabels,omitempty"`
 	// labels identifying pods under test
-	PodsUnderTestLabels map[string]string `yaml:"podsUnderTestLabels,omitempty" json:"podsUnderTestLabels,omitempty"`
+	PodsUnderTestLabels []string `yaml:"podsUnderTestLabels,omitempty" json:"podsUnderTestLabels,omitempty"`
 	// labels identifying operators unde test
-	OperatorsUnderTestLabels map[string]string `yaml:"operatorsUnderTestLabels,omitempty" json:"operatorsUnderTestLabels,omitempty"`
+	OperatorsUnderTestLabels []string `yaml:"operatorsUnderTestLabels,omitempty" json:"operatorsUnderTestLabels,omitempty"`
+	// Parsed labels identifying pods under test
+	PodsUnderTestLabelsObjects []LabelObject `yaml:"-" json:"-"`
+	// Parsed labels identifying operators under test
+	OperatorsUnderTestLabelsObjects []LabelObject `yaml:"-" json:"-"`
 	// CertifiedContainerInfo is the list of container images to be checked for certification status.
 	CertifiedContainerInfo []ContainerImageIdentifier `yaml:"certifiedcontainerinfo,omitempty" json:"certifiedcontainerinfo,omitempty"`
 	// CertifiedOperatorInfo is list of operator bundle names that are queried for certification status.
