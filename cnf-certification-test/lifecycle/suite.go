@@ -64,7 +64,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	})
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCrdScalingIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Crds)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.ScaleCrUndetTest)
 		// Note: We skip this test because 'testHighAvailability' in the lifecycle suite is already
 		// testing the replicas and antiaffinity rules that should already be in place for crd.
 		testScaleCrd(&env, timeout)

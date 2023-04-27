@@ -83,7 +83,7 @@ type DiscoveredTestData struct {
 	ValidProtocolNames     []string
 	StorageClasses         []storagev1.StorageClass
 	ServicesIgnoreList     []string
-	ScaleCrUndetTest       []Scaleobject
+	ScaleCrUndetTest       []ScaleObject
 }
 
 var data = DiscoveredTestData{}
@@ -168,7 +168,7 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 		logrus.Fatalln("Cannot get network policies")
 	}
 	data.Crds = FindTestCrdNames(config.CrdFilters)
-	data.ScaleCrUndetTest = GetScaleCrUnderTest(data.Namespaces, data.Crds, config.CrdFilters)
+	data.ScaleCrUndetTest = GetScaleCrUnderTest(data.Namespaces, data.Crds)
 	data.Csvs = findOperatorsByLabel(oc.OlmClient, config.OperatorsUnderTestLabels, config.TargetNameSpaces)
 	data.Subscriptions = findSubscriptions(oc.OlmClient, data.Namespaces)
 	data.HelmChartReleases = getHelmList(oc.RestConfig, data.Namespaces)
