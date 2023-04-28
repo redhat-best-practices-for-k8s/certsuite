@@ -6,9 +6,10 @@ targetNameSpaces:
 #    name: generic
 #    value: target
 podsUnderTestLabels:
-  test-network-function.com/generic: target
+  - "test-network-function.com/generic: target"
+# deprecated operator label ("test-network-function.com/operator:"") still configured by default, no need to add it here
 operatorsUnderTestLabels:
-  test-network-function.com/operator: 
+  - "test-network-function.com/operator1:new" 
 targetCrdFilters:
   - nameSuffix: "group1.test.com"
     scalable: false

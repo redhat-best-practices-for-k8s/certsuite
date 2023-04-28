@@ -20,17 +20,18 @@ import (
 	"context"
 
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 )
 
-func findPodsByLabel(oc corev1client.CoreV1Interface, labels map[string]string, namespaces []string) (runningPods, allPods []corev1.Pod) {
+func findPodsByLabel(oc corev1client.CoreV1Interface, labels []configuration.LabelObject, namespaces []string) (runningPods, allPods []corev1.Pod) {
 	runningPods = []corev1.Pod{}
 	allPods = []corev1.Pod{}
 	for _, ns := range namespaces {
-		for key, value := range labels {
-			label := key + "=" + value
+		for _, aLabelObject := range labels {
+			label := aLabelObject.LabelKey + "=" + aLabelObject.LabelValue
 			logrus.Debugf("Searching Pods with label %s", label)
 			pods, err := oc.Pods(ns).List(context.TODO(), metav1.ListOptions{
 				LabelSelector: label,
