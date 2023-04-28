@@ -20,7 +20,7 @@ defaults:
 env:
   REGISTRY: quay.io
   REGISTRY_LOCAL: localhost
-  RELEASE_LEVEL: 4.11
+  RELEASE_LEVEL: 4.12
   TNF_IMAGE_NAME: testnetworkfunction/cnf-certification-test
   IMAGE_TAG: latest
   TNF_CONTAINER_CLIENT: docker

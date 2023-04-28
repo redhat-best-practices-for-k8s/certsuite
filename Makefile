@@ -22,7 +22,7 @@ REGISTRY?=quay.io
 TNF_IMAGE_NAME?=testnetworkfunction/cnf-certification-test
 IMAGE_TAG?=localtest
 TNF_VERSION?=0.0.1
-RELEASE_VERSION?=4.11
+RELEASE_VERSION?=4.12
 .PHONY: all clean test
 .PHONY: \
 	build \

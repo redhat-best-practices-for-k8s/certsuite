@@ -18,6 +18,13 @@ By default, `cnf-certification-test` emits results to `cnf-certification-test/cn
 
 ## 1. Install dependencies
 
+Depending on how you want to run the test suite there are different dependencies that will be needed.
+
+If you are planning on running the test suite as a container, the only pre-requisite is Docker or Podman.
+
+If you are planning on running the test suite as a standalone binary, there are pre-requisites that will
+need to be installed in your environment prior to runtime.
+
 Run the following command to install the following dependencies.
 
 ```shell
@@ -29,7 +36,7 @@ Dependency|Minimum Version
 [GoLang](https://golang.org/dl/)|1.20
 [golangci-lint](https://golangci-lint.run/usage/install/)|1.52.2
 [jq](https://stedolan.github.io/jq/)|1.6
-[OpenShift Client](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/)|4.11
+[OpenShift Client](https://mirror.openshift.com/pub/openshift-v4/clients/ocp/)|4.12
 
 Other binary dependencies required to run tests can be installed using the following command:
 

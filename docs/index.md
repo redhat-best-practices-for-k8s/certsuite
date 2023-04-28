@@ -34,4 +34,4 @@ There are 3 building blocks in the above framework.
 
 * the `Certification container/exec` is the certification test suite running on the platform or in a container. The executable verifies the CNF under test configuration and its interactions with openshift
 
-* the `Debug` pods are part of a Kubernetes daemonset responsible to run various **privileged commands** on kubernetes nodes. Debug pods are useful to run platform tests and test commands (e.g. ping) in container namespaces without changing the container image content. The debug daemonset is instantiated via the [cnf-certification-test-partner](https://github.com/test-network-function/cnf-certification-test-partner) repository.
+* the `Debug` pods are part of a Kubernetes daemonset responsible to run various **privileged commands** on kubernetes nodes. Debug pods are useful to run platform tests and test commands (e.g. ping) in container namespaces without changing the container image content. The debug daemonset is instantiated via the [privileged-daemonset](https://github.com/test-network-function/privileged-daemonset) repository.
