@@ -9,15 +9,15 @@ targetPodLabels:
     name: name2
     value: value2
 podsUnderTestLabels:
-  test: pod
-  cnf: pod
-  cnf/test: pod1
-  cnf/testEmpty:
+  - "test: pod"
+  - "cnf: pod"
+  - "cnf/test: pod1"
+  - "cnf/testEmpty:"
 operatorsUnderTestLabels:
-  test: operator
-  cnf/test: operator1
-  cnf: operator
-  cnf/testEmpty:
+  - "test: operator"
+  - "cnf/test: operator1"
+  - "cnf: operator"
+  - "cnf/testEmpty:"
 targetCrdFilters:
   - nameSuffix: "group1.test.com"
   - nameSuffix: "group2.test.com"
