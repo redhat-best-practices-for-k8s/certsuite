@@ -36,7 +36,7 @@ func GetScaleCrUnderTest(namespaces []string, crds []*apiextv1.CustomResourceDef
 			}
 
 			// Filter out non-scalable CRDs.
-			if crdVersion.Subresources.Scale == nil {
+			if crdVersion.Subresources == nil || crdVersion.Subresources.Scale == nil {
 				logrus.Infof("Target CRD %s is not scalable. Skipping search of scalable CRs.", crd.Name)
 				continue
 			}
