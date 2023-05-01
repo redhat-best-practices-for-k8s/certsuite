@@ -82,6 +82,7 @@ var (
 	TestICMPv4ConnectivityIdentifier                  claim.Identifier
 	TestNetworkPolicyDenyAllIdentifier                claim.Identifier
 	Test1337UIDIdentifier                             claim.Identifier
+	TestProjectedVolumeServiceAccountTokenIdentifier  claim.Identifier
 	TestContainerIsCertifiedDigestIdentifier          claim.Identifier
 	TestPodHugePages2M                                claim.Identifier
 	TestPodHugePages1G                                claim.Identifier
@@ -220,6 +221,22 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		},
 		TagExtended)
 
+	TestProjectedVolumeServiceAccountTokenIdentifier = AddCatalogEntry(
+		"projected-volume-service-account",
+		common.AccessControlTestKey,
+		`Checks that pods do not use projected volumes and service account tokens`,
+		ProjectedVolumeServiceAccountRemediation,
+		InformativeResult,
+		NoDocumentedProcess,
+		bestPracticeDocV1dot4URL+" Section 4.6.24",
+		true,
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Mandatory,
+		},
+		TagExtended)
 	// TestContainerIsCertifiedDigestIdentifier tests whether the container has passed Container Certification.
 	TestContainerIsCertifiedDigestIdentifier = AddCatalogEntry(
 		"container-is-certified-digest",

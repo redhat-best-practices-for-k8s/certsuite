@@ -209,7 +209,53 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		test1337UIDs(&env)
 	})
+
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestProjectedVolumeServiceAccountTokenIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
+		testProjectedVolumeServiceAccount(&env)
+	})
 })
+
+func testProjectedVolumeServiceAccount(env *provider.TestEnvironment) {
+	ginkgo.By("Testing pods to ensure they are not using projected volumes for service account access")
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+	index := 0
+	for _, put := range env.Pods {
+		for i := range put.Spec.Volumes {
+			if put.Spec.Volumes[i].Projected == nil {
+				continue
+			}
+			if put.Spec.Volumes[i].Projected.Sources == nil {
+				tnf.ClaimFilePrintf("%s, volume=%s does not use projected volumes", put, put.Spec.Volumes[i].Name)
+				continue
+			}
+			for index < len(put.Spec.Volumes[i].Projected.Sources) {
+				if put.Spec.Volumes[i].Projected.Sources[index].ServiceAccountToken != nil {
+					aPodOut := testhelper.NewPodReportObject(put.Namespace, put.Name,
+						"the projected volume Service account token field is not nil",
+						false).
+						SetType(testhelper.ProjectedVolumeType).
+						AddField(testhelper.ProjectedVolumeName, put.Spec.Volumes[i].Name).
+						AddField(testhelper.ProjectedVolumeSAToken, put.Spec.Volumes[i].Projected.Sources[index].ServiceAccountToken.String())
+
+					nonCompliantObjects = append(nonCompliantObjects, aPodOut)
+				} else {
+					aPodOut := testhelper.NewPodReportObject(put.Namespace, put.Name,
+						"the projected volume Service account token field is nil",
+						false).
+						SetType(testhelper.ProjectedVolumeType).
+						AddField(testhelper.ProjectedVolumeName, put.Spec.Volumes[i].Name).
+						AddField(testhelper.ProjectedVolumeSAToken, put.Spec.Volumes[i].Projected.Sources[index].ServiceAccountToken.String())
+					compliantObjects = append(compliantObjects, aPodOut)
+				}
+				index++
+			}
+		}
+	}
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, ginkgo.Fail)
+}
 
 func checkForbiddenCapability(containers []*provider.Container, capability string) []string {
 	var badContainers []string
