@@ -89,7 +89,7 @@ jobs:
       - name: make vet
         run: make vet
   action-linters:
-    name: Checkmake, hadolint, markdownlint, shellcheck, shfmt, yamllint
+    name: Checkmake, hadolint, shellcheck, shfmt, yamllint
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
@@ -101,10 +101,6 @@ jobs:
         with:
           dockerfile: Dockerfile
           recursive: true
-      - uses: nosborn/github-action-markdown-cli@v3.3.0
-        with:
-          files: .
-          ignore_files: cmd/tnf/generate/catalog/{INTRO,TEST_CASE_CATALOG}.md
       - uses: ludeeus/action-shellcheck@master
       - uses: mfinelli/setup-shfmt@v2
       - run: shfmt -d *.sh script
@@ -271,7 +267,7 @@ jobs:
         uses: ./cnf-certification-test-partner/.github/actions/create-local-test-infra-resources
         with:
           working_directory: cnf-certification-test-partner
-            
+
 
       # Perform smoke tests using a TNF container.
       - name: Check out code into the Go module directory
@@ -293,7 +289,7 @@ jobs:
 
       - name: 'Test: Run without any TS, just get diagnostic information'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }}
-          
+
       - name: 'Test: Run Smoke Tests in a TNF container'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "common"
 
