@@ -46,6 +46,7 @@ const (
 	minWorkerNodesForLifecycle = 2
 	statefulSet                = "StatefulSet"
 	localStorage               = "local-storage"
+	intrusiveTcSkippedReason   = "This is an intrusive test case and the env var TNF_NON_INTRUSIVE_ONLY was set"
 )
 
 // All actual test code belongs below here.  Utilities belong above.
@@ -64,6 +65,9 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	})
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCrdScalingIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		if !env.IsIntrusive() {
+			ginkgo.Skip(intrusiveTcSkippedReason)
+		}
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Crds)
 		// Note: We skip this test because 'testHighAvailability' in the lifecycle suite is already
 		// testing the replicas and antiaffinity rules that should already be in place for crd.
@@ -124,38 +128,45 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		testPodNodeSelectorAndAffinityBestPractices(testPods)
 	})
 
-	if env.IsIntrusive() {
-		testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodRecreationIdentifier)
-		ginkgo.It(testID, ginkgo.Label(tags...), func() {
-			testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Deployments, env.StatefulSets)
-			if env.GetWorkerCount() < minWorkerNodesForLifecycle {
-				ginkgo.Skip("Skipping pod recreation scaling test because invalid number of available workers.")
-			}
-			// Testing pod re-creation for deployments
-			testPodsRecreation(&env)
-		})
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodRecreationIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		if !env.IsIntrusive() {
+			ginkgo.Skip(intrusiveTcSkippedReason)
+		}
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Deployments, env.StatefulSets)
+		if env.GetWorkerCount() < minWorkerNodesForLifecycle {
+			ginkgo.Skip("Skipping pod recreation scaling test because invalid number of available workers.")
+		}
+		// Testing pod re-creation for deployments
+		testPodsRecreation(&env)
+	})
 
-		testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestDeploymentScalingIdentifier)
-		ginkgo.It(testID, ginkgo.Label(tags...), func() {
-			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Deployments)
-			if env.GetWorkerCount() < minWorkerNodesForLifecycle {
-				// Note: We skip this test because 'testHighAvailability' in the lifecycle suite is already
-				// testing the replicas and antiaffinity rules that should already be in place for deployments.
-				ginkgo.Skip("Skipping deployment scaling test because invalid number of available workers.")
-			}
-			testDeploymentScaling(&env, timeout)
-		})
-		testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStateFulSetScalingIdentifier)
-		ginkgo.It(testID, ginkgo.Label(tags...), func() {
-			testhelper.SkipIfEmptyAny(ginkgo.Skip, env.StatefulSets)
-			if env.GetWorkerCount() < minWorkerNodesForLifecycle {
-				// Note: We skip this test because 'testHighAvailability' in the lifecycle suite is already
-				// testing the replicas and antiaffinity rules that should already be in place for statefulset.
-				ginkgo.Skip("Skipping statefulset scaling test because invalid number of available workers.")
-			}
-			testStatefulSetScaling(&env, timeout)
-		})
-	}
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestDeploymentScalingIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		if !env.IsIntrusive() {
+			ginkgo.Skip(intrusiveTcSkippedReason)
+		}
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Deployments)
+		if env.GetWorkerCount() < minWorkerNodesForLifecycle {
+			// Note: We skip this test because 'testHighAvailability' in the lifecycle suite is already
+			// testing the replicas and antiaffinity rules that should already be in place for deployments.
+			ginkgo.Skip("Skipping deployment scaling test because invalid number of available workers.")
+		}
+		testDeploymentScaling(&env, timeout)
+	})
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStateFulSetScalingIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		if !env.IsIntrusive() {
+			ginkgo.Skip(intrusiveTcSkippedReason)
+		}
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.StatefulSets)
+		if env.GetWorkerCount() < minWorkerNodesForLifecycle {
+			// Note: We skip this test because 'testHighAvailability' in the lifecycle suite is already
+			// testing the replicas and antiaffinity rules that should already be in place for statefulset.
+			ginkgo.Skip("Skipping statefulset scaling test because invalid number of available workers.")
+		}
+		testStatefulSetScaling(&env, timeout)
+	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPersistentVolumeReclaimPolicyIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
