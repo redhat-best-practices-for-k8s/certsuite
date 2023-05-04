@@ -110,7 +110,7 @@ type TestEnvironment struct { // rename this with testTarget
 	IstioServiceMeshFound  bool
 	ValidProtocolNames     []string
 	DaemonsetFailedToSpawn bool
-	ScaleCrUndetTest       []Scaleobject
+	ScaleCrUndetTest       []ScaleObject
 	StorageClassList       []storagev1.StorageClass
 }
 
@@ -135,7 +135,7 @@ type cniNetworkInterface struct {
 	DeviceInfo deviceInfo             `json:"device-info"`
 }
 
-type Scaleobject struct {
+type ScaleObject struct {
 	Scale               CrScale
 	GroupResourceSchema schema.GroupResource
 }
@@ -294,10 +294,10 @@ func buildTestEnvironment() { //nolint:funlen
 	logrus.Infof("Completed the test environment build process in %.2f seconds", time.Since(start).Seconds())
 }
 
-func updateCrUnderTest(scaleCrUndetTest []autodiscover.Scaleobject) []Scaleobject {
-	var scaleCrUndetTesttTemp []Scaleobject
+func updateCrUnderTest(scaleCrUndetTest []autodiscover.ScaleObject) []ScaleObject {
+	var scaleCrUndetTesttTemp []ScaleObject
 	for i := range scaleCrUndetTest {
-		aNewScaleCrUndetTest := Scaleobject{Scale: CrScale{scaleCrUndetTest[i].Scale},
+		aNewScaleCrUndetTest := ScaleObject{Scale: CrScale{scaleCrUndetTest[i].Scale},
 			GroupResourceSchema: scaleCrUndetTest[i].GroupResourceSchema}
 		scaleCrUndetTesttTemp = append(scaleCrUndetTesttTemp, aNewScaleCrUndetTest)
 	}
