@@ -23,19 +23,18 @@ TNF_IMAGE_NAME?=testnetworkfunction/cnf-certification-test
 IMAGE_TAG?=localtest
 TNF_VERSION?=0.0.1
 RELEASE_VERSION?=4.11
-
-.PHONY: build \
-	clean \
-	lint \
-	test \
-	coverage-html \
+.PHONY: all clean test
+.PHONY: \
+	build \
 	build-cnf-tests \
 	build-cnf-tests-debug \
-	install-tools \
-	vet \
+	coverage-html \
 	generate \
 	install-moq \
-	update-rhcos-versions
+	install-tools \
+	lint \
+	update-rhcos-versions \
+	vet
 
 # Get default value of $GOBIN if not explicitly set
 GO_PATH=$(shell go env GOPATH)
@@ -49,10 +48,12 @@ COMMON_GO_ARGS=-race
 GIT_COMMIT=$(shell script/create-version-files.sh)
 GIT_RELEASE=$(shell script/get-git-release.sh)
 GIT_PREVIOUS_RELEASE=$(shell script/get-git-previous-release.sh)
-GOLANGCI_VERSION=v1.52.1
+GOLANGCI_VERSION=v1.52.2
 LINKER_TNF_RELEASE_FLAGS=-X github.com/test-network-function/cnf-certification-test/cnf-certification-test.GitCommit=${GIT_COMMIT}
 LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/cnf-certification-test.GitRelease=${GIT_RELEASE}
 LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/cnf-certification-test.GitPreviousRelease=${GIT_PREVIOUS_RELEASE}
+
+all: build
 
 # Run the unit tests and build all binaries
 build:
@@ -64,30 +65,21 @@ build-tnf-tool:
 
 # Cleans up auto-generated and report files
 clean:
-	go clean
-	rm -f ./cnf-certification-test/cnf-certification-test.test
-	rm -f ./cnf-certification-test/cnf-certification-tests_junit.xml
-	rm -f ./cnf-certification-test/claim.json
-	rm -f ./cnf-certification-test/claimjson.js
-	rm -f ./cnf-certification-test/results.html
-	rm -f ./cnf-certification-test/cnf-certification-tests_junit.xml
-	rm -f ./tnf
-	rm -f latest-release-tag.txt
-	rm -f release-tag.txt
-	rm -f jsontest-cli
-	rm -f test-out.json
-	rm -f cover.out
-	rm -f claim.json
-	rm -f all-releases.txt
+	go clean && rm -f all-releases.txt cover.out claim.json cnf-certification-test/claim.json \
+		cnf-certification-test/claimjson.js cnf-certification-test/cnf-certification-test.test \
+		cnf-certification-test/cnf-certification-tests_junit.xml \
+		cnf-certification-test/results.html jsontest-cli latest-release-tag.txt \
+		release-tag.txt test-out.json tnf
 
 # Run configured linters
 lint:
+	checkmake Makefile
 	golangci-lint run --timeout 10m0s
 	hadolint Dockerfile
 	shfmt -d *.sh script
 
 # Build and run unit tests
-test:
+test: coverage-qe
 	./script/create-missing-test-files.sh
 	go build ${COMMON_GO_ARGS} ./...
 	UNIT_TEST="true" go test -coverprofile=cover.out.tmp ./...
@@ -96,23 +88,24 @@ coverage-html: test
 	cat cover.out.tmp | grep -v "_moq.go" > cover.out
 	go tool cover -html cover.out
 
+coverage-qe: build-tnf-tool
+	./tnf generate qe-coverage-report
+
 # generate the test catalog in JSON
 build-catalog-json: build-tnf-tool
 	./tnf generate catalog json > catalog.json
 
 # generate the test catalog in Markdown
-build-catalog-md: build-tnf-tool
+build-catalog-md: build-tnf-tool classification-js
 	./tnf generate catalog markdown > CATALOG.md
 
 # build the CNF test binary
-build-cnf-tests: install-tools
+build-cnf-tests:
 	PATH=${PATH}:${GOBIN} ginkgo build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" ./cnf-certification-test
-	make build-catalog-md
 
 # build the CNF test binary with debug flags
-build-cnf-tests-debug: install-tools
+build-cnf-tests-debug:
 	PATH=${PATH}:${GOBIN} ginkgo build -gcflags "all=-N -l" -ldflags "${LINKER_TNF_RELEASE_FLAGS} -extldflags '-z relro -z now'" ./cnf-certification-test
-	make build-catalog-md
 
 # Install build tools and other required software.
 install-tools:
@@ -120,7 +113,7 @@ install-tools:
 
 # Install linters
 install-lint:
-	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b ${GO_PATH}/bin ${GOLANGCI_VERSION}
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@${GOLANGCI_VERSION}
 
 install-shfmt:
 	go install mvdan.cc/sh/v3/cmd/shfmt@latest
@@ -160,3 +153,9 @@ build-image-tnf:
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_VERSION} \
 		-f Dockerfile .
+
+# Generates the classification.js file and creates a new result-embed.html
+classification-js: build-tnf-tool
+	./tnf generate catalog javascript >script/classification.js
+	sed '/<script src=".\/classification.js"><\/script>/e echo "<script>"; cat script/classification.js; echo "<\/script>"' script/results.html >script/results-embed.html
+	sed -i -e 's@  <script src="./classification.js"></script>@@g' script/results-embed.html

@@ -64,7 +64,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	})
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCrdScalingIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Crds)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.ScaleCrUndetTest)
 		// Note: We skip this test because 'testHighAvailability' in the lifecycle suite is already
 		// testing the replicas and antiaffinity rules that should already be in place for crd.
 		testScaleCrd(&env, timeout)
@@ -625,6 +625,7 @@ func testPodTolerationBypass(env *provider.TestEnvironment) {
 	testhelper.AddTestResultLog("Non-compliant", podsWithRestrictedTolerationsNotDefault, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 func testStorageRequiredPods(env *provider.TestEnvironment) {
+	const localStorageProvisioner = "kubernetes.io/no-provisioner"
 	var podsWithLocalStorage []string
 	var StorageClasses = env.StorageClassList
 	var Pvc = env.PersistentVolumeClaims
@@ -640,6 +641,10 @@ func testStorageRequiredPods(env *provider.TestEnvironment) {
 			for i := range Pvc {
 				if Pvc[i].Name == put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName && Pvc[i].Namespace == put.Namespace {
 					for j := range StorageClasses {
+						if StorageClasses[j].Provisioner != localStorageProvisioner {
+							continue
+						}
+
 						if Pvc[i].Spec.StorageClassName != nil && StorageClasses[j].Name == *Pvc[i].Spec.StorageClassName {
 							tnf.ClaimFilePrintf("%s has been found to use a local storage enabled storageClass.\n Pvc_name: %s, Storageclass_name : %s, Provisioner_name: %s", put.String(), put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName,
 								StorageClasses[j].Name, StorageClasses[j].Provisioner)

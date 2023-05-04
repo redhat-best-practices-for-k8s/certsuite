@@ -1,4 +1,4 @@
-// Copyright (C) 2022 Red Hat, Inc.
+// Copyright (C) 2022-2023 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -39,15 +39,15 @@ var _ = ginkgo.Describe(common.PreflightTestKey, func() {
 	ginkgo.ReportAfterEach(results.RecordResult)
 
 	// Add safeguard against running the tests if the docker config doesn't exist.
-	if env.GetDockerConfigFile() == "" {
+	if env.GetDockerConfigFile() == "" || env.GetDockerConfigFile() == "NA" {
 		logrus.Debug("Skipping the preflight suite because the Docker Config file is not provided.")
 		return
 	}
 
-	// Safeguard against running the preflight tests if we are specifically targeting a certain label eg. in QE.
+	// Safeguard against running the preflight tests if the label filter is set but does not include the preflight label
 	ginkgoConfig, _ := ginkgo.GinkgoConfiguration()
-	if !labelsAllowTestRun(ginkgoConfig.LabelFilter, []string{common.PreflightTestKey, identifiers.TagCommon}) {
-		logrus.Warn("LabelFilter is set but 'preflight' or 'common' tests are not targeted. Skipping the preflight tests.")
+	if !labelsAllowTestRun(ginkgoConfig.LabelFilter, []string{common.PreflightTestKey, identifiers.TagPreflight}) {
+		logrus.Warn("LabelFilter is set but 'preflight' tests are not targeted. Skipping the preflight tests.")
 		return
 	}
 
@@ -124,7 +124,7 @@ func generatePreflightContainerGinkgoTest(testName, description, suggestion stri
 		identifiers.Telco:    identifiers.Optional,
 		identifiers.NonTelco: identifiers.Optional,
 		identifiers.Extended: identifiers.Optional,
-	}, identifiers.TagCommon)
+	}, identifiers.TagPreflight)
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(aID)
 
 	// Start the ginkgo It block
@@ -168,7 +168,7 @@ func generatePreflightOperatorGinkgoTest(testName, description, suggestion strin
 		identifiers.Telco:    identifiers.Optional,
 		identifiers.NonTelco: identifiers.Optional,
 		identifiers.Extended: identifiers.Optional,
-	}, identifiers.TagCommon)
+	}, identifiers.TagPreflight)
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(aID)
 
 	// Start the ginkgo It block

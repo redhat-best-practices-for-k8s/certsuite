@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022 Red Hat, Inc.
+// Copyright (C) 2020-2023 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -63,13 +63,17 @@ func isIstioServiceMeshInstalled(allNs []string) bool {
 	return true
 }
 
-func findOperatorsByLabel(olmClient clientOlm.Interface, labels []configuration.Label, namespaces []configuration.Namespace) []*olmv1Alpha.ClusterServiceVersion {
+func findOperatorsByLabel(olmClient clientOlm.Interface, labels []configuration.LabelObject, namespaces []configuration.Namespace) []*olmv1Alpha.ClusterServiceVersion {
 	csvs := []*olmv1Alpha.ClusterServiceVersion{}
 	for _, ns := range namespaces {
 		logrus.Debugf("Searching CSVs in namespace %s", ns)
-		for _, label := range labels {
-			logrus.Debugf("Searching CSVs with label %+v", label)
-			label := buildLabelQuery(label)
+		for _, aLabelObject := range labels {
+			label := aLabelObject.LabelKey
+			// DEPRECATED special processing for deprecated operator label. Value not needed to match.
+			if aLabelObject.LabelKey != deprecatedHardcodedOperatorLabelName {
+				label += "=" + aLabelObject.LabelValue
+			}
+			logrus.Debugf("Searching CSVs with label %s", label)
 			csvList, err := olmClient.OperatorsV1alpha1().ClusterServiceVersions(ns.Name).List(context.TODO(), metav1.ListOptions{
 				LabelSelector: label,
 			})

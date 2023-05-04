@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022 Red Hat, Inc.
+// Copyright (C) 2020-2023 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -55,7 +55,7 @@ func TestEmitTextFromFile(t *testing.T) {
 }
 
 func TestRunGenerateMarkdownCmd(t *testing.T) {
-	assert.NotNil(t, runGenerateMarkdownCmd(nil, nil))
+	assert.Nil(t, runGenerateMarkdownCmd(nil, nil))
 }
 
 func TestUnique(t *testing.T) {

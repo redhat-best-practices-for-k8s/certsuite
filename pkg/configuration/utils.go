@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022 Red Hat, Inc.
+// Copyright (C) 2020-2023 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@ package configuration
 
 import (
 	"os"
+	"regexp"
 
 	"github.com/kelseyhightower/envconfig"
 	log "github.com/sirupsen/logrus"
@@ -46,7 +47,7 @@ func LoadConfiguration(filePath string) (TestConfiguration, error) {
 		log.Debug("config file already loaded, return previous element")
 		return configuration, nil
 	}
-	confLoaded = true
+
 	log.Info("Loading config from file: ", filePath)
 	contents, err := os.ReadFile(filePath)
 	if err != nil {
@@ -57,9 +58,42 @@ func LoadConfiguration(filePath string) (TestConfiguration, error) {
 	if err != nil {
 		return configuration, err
 	}
+
+	// Set default namespace for the debug daemonset pods, in case it was not set.
+	if configuration.DebugDaemonSetNamespace == "" {
+		log.Warnf("No namespace configured for the debug DaemonSet. Defaulting to namespace %s", defaultDebugDaemonSetNamespace)
+		configuration.DebugDaemonSetNamespace = defaultDebugDaemonSetNamespace
+	} else {
+		log.Infof("Namespace for debug DaemonSet: %s", configuration.DebugDaemonSetNamespace)
+	}
+
+	configuration.OperatorsUnderTestLabelsObjects = createLabels(configuration.OperatorsUnderTestLabels)
+	configuration.PodsUnderTestLabelsObjects = createLabels(configuration.PodsUnderTestLabels)
+
+	confLoaded = true
 	return configuration, nil
 }
 
 func GetTestParameters() *TestParameters {
 	return &parameters
+}
+
+const labelRegex = `(\S*)\s*:\s*(\S*)`
+const labelRegexMatches = 3
+
+func createLabels(labelStrings []string) (labelObjects []LabelObject) {
+	for _, label := range labelStrings {
+		r := regexp.MustCompile(labelRegex)
+
+		values := r.FindStringSubmatch(label)
+		if len(values) != labelRegexMatches {
+			log.Errorf("failed to parse label=%s, will not be used!, ", label)
+			continue
+		}
+		var aLabel LabelObject
+		aLabel.LabelKey = values[1]
+		aLabel.LabelValue = values[2]
+		labelObjects = append(labelObjects, aLabel)
+	}
+	return labelObjects
 }

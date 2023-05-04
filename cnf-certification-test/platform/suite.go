@@ -204,8 +204,9 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 		if debugPod == nil {
 			ginkgo.Fail(fmt.Sprintf("Debug pod not found on Node: %s", cut.NodeName))
 		}
-		fsDiffTester := cnffsdiff.NewFsDiffTester(clientsholder.GetClientsHolder())
-		fsDiffTester.RunTest(clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name), cut.UID)
+		ctxt := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
+		fsDiffTester := cnffsdiff.NewFsDiffTester(clientsholder.GetClientsHolder(), ctxt)
+		fsDiffTester.RunTest(cut.UID)
 		switch fsDiffTester.GetResults() {
 		case testhelper.SUCCESS:
 			continue
@@ -213,7 +214,7 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 			tnf.ClaimFilePrintf("%s - changed folders: %v, deleted folders: %v", cut, fsDiffTester.ChangedFolders, fsDiffTester.DeletedFolders)
 			badContainers = append(badContainers, cut.Name)
 		case testhelper.ERROR:
-			tnf.ClaimFilePrintf("%s - error while running fs-diff: %v: ", cut, fsDiffTester.Error)
+			tnf.ClaimFilePrintf("%s - error while running fs-diff: %v", cut, fsDiffTester.Error)
 			errContainers = append(errContainers, cut.Name)
 		}
 	}
@@ -383,7 +384,14 @@ func testHugepages(env *provider.TestEnvironment) {
 			continue
 		}
 
-		hpTester, err := hugepages.NewTester(&node, env.DebugPods[node.Data.Name], clientsholder.GetClientsHolder())
+		debugPod, exist := env.DebugPods[node.Data.Name]
+		if !exist {
+			tnf.ClaimFilePrintf("Node %s: tnf debug pod not found.", node.Data.Name)
+			badNodes = append(badNodes, node.Data.Name)
+			continue
+		}
+
+		hpTester, err := hugepages.NewTester(&node, debugPod, clientsholder.GetClientsHolder())
 		if err != nil {
 			tnf.ClaimFilePrintf("Unable to get node hugepages tester for node %s, err: %v", node.Data.Name, err)
 			badNodes = append(badNodes, node.Data.Name)

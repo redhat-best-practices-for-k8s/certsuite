@@ -16,6 +16,10 @@
 
 package configuration
 
+const (
+	defaultDebugDaemonSetNamespace = "cnf-suite"
+)
+
 // CertifiedContainerRequestInfo contains all certified images request info
 type CertifiedContainerRequestInfo struct {
 	// Name is the name of the `operator bundle package name` or `image-version` that you want to check if exists in the RedHat catalog
@@ -101,12 +105,25 @@ type ContainerImageIdentifier struct {
 	Digest string `yaml:"digest" json:"digest"`
 }
 
+type LabelObject struct {
+	LabelKey   string
+	LabelValue string
+}
+
 // TestConfiguration provides test related configuration
 type TestConfiguration struct {
 	// targetNameSpaces to be used in
 	TargetNameSpaces []Namespace `yaml:"targetNameSpaces" json:"targetNameSpaces"`
-	// Custom Pod labels for discovering containers/pods under test
+	// DEPRECATED - Custom Pod labels for discovering containers/pods under test
 	TargetPodLabels []Label `yaml:"targetPodLabels,omitempty" json:"targetPodLabels,omitempty"`
+	// labels identifying pods under test
+	PodsUnderTestLabels []string `yaml:"podsUnderTestLabels,omitempty" json:"podsUnderTestLabels,omitempty"`
+	// labels identifying operators unde test
+	OperatorsUnderTestLabels []string `yaml:"operatorsUnderTestLabels,omitempty" json:"operatorsUnderTestLabels,omitempty"`
+	// Parsed labels identifying pods under test
+	PodsUnderTestLabelsObjects []LabelObject `yaml:"-" json:"-"`
+	// Parsed labels identifying operators under test
+	OperatorsUnderTestLabelsObjects []LabelObject `yaml:"-" json:"-"`
 	// CertifiedContainerInfo is the list of container images to be checked for certification status.
 	CertifiedContainerInfo []ContainerImageIdentifier `yaml:"certifiedcontainerinfo,omitempty" json:"certifiedcontainerinfo,omitempty"`
 	// CertifiedOperatorInfo is list of operator bundle names that are queried for certification status.
@@ -127,6 +144,7 @@ type TestConfiguration struct {
 	CheckDiscoveredContainerCertificationStatus bool     `yaml:"checkDiscoveredContainerCertificationStatus" json:"checkDiscoveredContainerCertificationStatus"`
 	ValidProtocolNames                          []string `yaml:"validProtocolNames" json:"validProtocolNames"`
 	ServicesIgnoreList                          []string `yaml:"servicesignorelist" json:"servicesignorelist"`
+	DebugDaemonSetNamespace                     string   `yaml:"debugDaemonSetNamespace" json:"debugDaemonSetNamespace"`
 }
 
 type TestParameters struct {

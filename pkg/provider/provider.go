@@ -49,7 +49,6 @@ import (
 const (
 	AffinityRequiredKey              = "AffinityRequired"
 	containerName                    = "container-00"
-	DaemonSetNamespace               = "default"
 	DaemonSetName                    = "tnf-debug"
 	debugPodsTimeout                 = 5 * time.Minute
 	CniNetworksStatusKey             = "k8s.v1.cni.cncf.io/networks-status"
@@ -111,7 +110,7 @@ type TestEnvironment struct { // rename this with testTarget
 	IstioServiceMeshFound  bool
 	ValidProtocolNames     []string
 	DaemonsetFailedToSpawn bool
-	ScaleCrUndetTest       []Scaleobject
+	ScaleCrUndetTest       []ScaleObject
 	StorageClassList       []storagev1.StorageClass
 }
 
@@ -136,7 +135,7 @@ type cniNetworkInterface struct {
 	DeviceInfo deviceInfo             `json:"device-info"`
 }
 
-type Scaleobject struct {
+type ScaleObject struct {
 	Scale               CrScale
 	GroupResourceSchema schema.GroupResource
 }
@@ -170,22 +169,22 @@ func buildImageWithVersion() string {
 	return tnfPartnerRepo + "/" + supportImage
 }
 
-func deployDaemonSet() error {
+func deployDaemonSet(namespace string) error {
 	k8sPriviledgedDs.SetDaemonSetClient(clientsholder.GetClientsHolder().K8sClient)
 	dsImage := buildImageWithVersion()
 
-	if k8sPriviledgedDs.IsDaemonSetReady(DaemonSetName, DaemonSetNamespace, dsImage) {
+	if k8sPriviledgedDs.IsDaemonSetReady(DaemonSetName, namespace, dsImage) {
 		return nil
 	}
 
 	matchLabels := make(map[string]string)
 	matchLabels["name"] = DaemonSetName
 	matchLabels["test-network-function.com/app"] = DaemonSetName
-	_, err := k8sPriviledgedDs.CreateDaemonSet(DaemonSetName, DaemonSetNamespace, containerName, dsImage, matchLabels, debugPodsTimeout)
+	_, err := k8sPriviledgedDs.CreateDaemonSet(DaemonSetName, namespace, containerName, dsImage, matchLabels, debugPodsTimeout)
 	if err != nil {
 		return fmt.Errorf("could not deploy tnf daemonset, err=%v", err)
 	}
-	err = k8sPriviledgedDs.WaitDaemonsetReady(DaemonSetNamespace, DaemonSetName, debugPodsTimeout)
+	err = k8sPriviledgedDs.WaitDaemonsetReady(namespace, DaemonSetName, debugPodsTimeout)
 	if err != nil {
 		return fmt.Errorf("timed out waiting for tnf daemonset, err=%v", err)
 	}
@@ -197,26 +196,30 @@ func buildTestEnvironment() { //nolint:funlen
 	start := time.Now()
 	env = TestEnvironment{}
 
+	env.variables = *configuration.GetTestParameters()
+	config, err := configuration.LoadConfiguration(env.variables.ConfigurationPath)
+	if err != nil {
+		logrus.Fatalf("Cannot load configuration file: %v", err)
+	}
+
 	// Wait for the debug pods to be ready before the autodiscovery starts.
-	if err := deployDaemonSet(); err != nil {
+	if err := deployDaemonSet(config.DebugDaemonSetNamespace); err != nil {
 		logrus.Errorf("The TNF daemonset could not be deployed, err=%v", err)
 		// Because of this failure, we are only able to run a certain amount of tests that do not rely
 		// on the existence of the daemonset debug pods.
 		env.DaemonsetFailedToSpawn = true
 	}
 
-	data := autodiscover.DoAutoDiscover()
+	data := autodiscover.DoAutoDiscover(&config)
 	// OpenshiftVersion needs to be set asap, as other helper functions will use it here.
 	env.OpenshiftVersion = data.OpenshiftVersion
-	env.Config = data.TestData
+	env.Config = config
 	env.Crds = data.Crds
 	env.AllInstallPlans = data.AllInstallPlans
 	env.AllCatalogSources = data.AllCatalogSources
 	env.AllOperators = createOperators(data.AllCsvs, data.AllSubscriptions, data.AllInstallPlans, data.AllCatalogSources, false, false)
 	env.AllOperatorsSummary = getSummaryAllOperators(env.AllOperators)
 	env.Namespaces = data.Namespaces
-
-	env.variables = data.Env
 	env.Nodes = createNodes(data.Nodes.Items)
 	env.IstioServiceMeshFound = data.IstioServiceMeshFound
 	env.ValidProtocolNames = append(env.ValidProtocolNames, data.ValidProtocolNames...)
@@ -252,7 +255,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.NetworkPolicies = data.NetworkPolicies
 	for _, nsHelmChartReleases := range data.HelmChartReleases {
 		for _, helmChartRelease := range nsHelmChartReleases {
-			if !isSkipHelmChart(helmChartRelease.Name, data.TestData.SkipHelmChartList) {
+			if !isSkipHelmChart(helmChartRelease.Name, config.SkipHelmChartList) {
 				env.HelmChartReleases = append(env.HelmChartReleases, helmChartRelease)
 			}
 		}
@@ -291,10 +294,10 @@ func buildTestEnvironment() { //nolint:funlen
 	logrus.Infof("Completed the test environment build process in %.2f seconds", time.Since(start).Seconds())
 }
 
-func updateCrUnderTest(scaleCrUndetTest []autodiscover.Scaleobject) []Scaleobject {
-	var scaleCrUndetTesttTemp []Scaleobject
+func updateCrUnderTest(scaleCrUndetTest []autodiscover.ScaleObject) []ScaleObject {
+	var scaleCrUndetTesttTemp []ScaleObject
 	for i := range scaleCrUndetTest {
-		aNewScaleCrUndetTest := Scaleobject{Scale: CrScale{scaleCrUndetTest[i].Scale},
+		aNewScaleCrUndetTest := ScaleObject{Scale: CrScale{scaleCrUndetTest[i].Scale},
 			GroupResourceSchema: scaleCrUndetTest[i].GroupResourceSchema}
 		scaleCrUndetTesttTemp = append(scaleCrUndetTesttTemp, aNewScaleCrUndetTest)
 	}

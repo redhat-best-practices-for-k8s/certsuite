@@ -33,6 +33,7 @@ import (
 	retry "k8s.io/client-go/util/retry"
 
 	appsv1 "k8s.io/api/apps/v1"
+	typedappsv1 "k8s.io/client-go/kubernetes/typed/apps/v1"
 	hps "k8s.io/client-go/kubernetes/typed/autoscaling/v1"
 )
 
@@ -49,25 +50,25 @@ func TestScaleDeployment(deployment *appsv1.Deployment, timeout time.Duration) b
 	if replicas <= 1 {
 		// scale up
 		replicas++
-		if !scaleDeploymentHelper(clients, deployment, replicas, timeout, true) {
+		if !scaleDeploymentHelper(clients.K8sClient.AppsV1(), deployment, replicas, timeout, true) {
 			logrus.Error("can not scale deployment =", deployment.Namespace, ":", deployment.Name)
 			return false
 		}
 		// scale down
 		replicas--
-		if !scaleDeploymentHelper(clients, deployment, replicas, timeout, false) {
+		if !scaleDeploymentHelper(clients.K8sClient.AppsV1(), deployment, replicas, timeout, false) {
 			logrus.Error("can not scale deployment =", deployment.Namespace, ":", deployment.Name)
 			return false
 		}
 	} else {
 		// scale down
 		replicas--
-		if !scaleDeploymentHelper(clients, deployment, replicas, timeout, false) {
+		if !scaleDeploymentHelper(clients.K8sClient.AppsV1(), deployment, replicas, timeout, false) {
 			logrus.Error("can not scale deployment =", deployment.Namespace, ":", deployment.Name)
 			return false
 		} // scale up
 		replicas++
-		if !scaleDeploymentHelper(clients, deployment, replicas, timeout, true) {
+		if !scaleDeploymentHelper(clients.K8sClient.AppsV1(), deployment, replicas, timeout, true) {
 			logrus.Error("can not scale deployment =", deployment.Namespace, ":", deployment.Name)
 			return false
 		}
@@ -75,7 +76,7 @@ func TestScaleDeployment(deployment *appsv1.Deployment, timeout time.Duration) b
 	return true
 }
 
-func scaleDeploymentHelper(clients *clientsholder.ClientsHolder, deployment *appsv1.Deployment, replicas int32, timeout time.Duration, up bool) bool {
+func scaleDeploymentHelper(client typedappsv1.AppsV1Interface, deployment *appsv1.Deployment, replicas int32, timeout time.Duration, up bool) bool {
 	if up {
 		logrus.Trace("scale UP deployment to ", replicas, " replicas ")
 	} else {
@@ -85,13 +86,13 @@ func scaleDeploymentHelper(clients *clientsholder.ClientsHolder, deployment *app
 	retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() error {
 		// Retrieve the latest version of Deployment before attempting update
 		// RetryOnConflict uses exponential backoff to avoid exhausting the apiserver
-		dp, err := clients.K8sClient.AppsV1().Deployments(deployment.Namespace).Get(context.TODO(), deployment.Name, v1machinery.GetOptions{})
+		dp, err := client.Deployments(deployment.Namespace).Get(context.TODO(), deployment.Name, v1machinery.GetOptions{})
 		if err != nil {
 			logrus.Error("failed to get latest version of deployment ", deployment.Namespace, ":", deployment.Name)
 			return err
 		}
 		dp.Spec.Replicas = &replicas
-		_, err = clients.K8sClient.AppsV1().Deployments(deployment.Namespace).Update(context.TODO(), dp, v1machinery.UpdateOptions{})
+		_, err = client.Deployments(deployment.Namespace).Update(context.TODO(), dp, v1machinery.UpdateOptions{})
 		if err != nil {
 			logrus.Error("can not update deployment ", deployment.Namespace, ":", deployment.Name)
 			return err

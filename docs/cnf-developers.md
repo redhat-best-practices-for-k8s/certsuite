@@ -1,3 +1,4 @@
+<!-- markdownlint-disable line-length no-bare-urls no-emphasis-as-heading -->
 # CNF Developers Guidelines
 
 Developers of CNFs, particularly those targeting
@@ -10,7 +11,7 @@ please contact [Red Hat](https://redhat-connect.gitbook.io/red-hat-partner-conne
 - [OpenShift 4.10 installation](https://docs.openshift.com/container-platform/4.10/welcome/index.html) to run the CNFs
 - At least one extra machine to host the test suite
 
-### To add private test cases
+## To add private test cases
 
 Refer this documentation
 https://github.com/test-network-function/cnfextensions

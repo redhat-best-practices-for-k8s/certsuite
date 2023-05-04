@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022 Red Hat, Inc.
+// Copyright (C) 2020-2023 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -91,12 +91,8 @@ func TestFindDeploymentByLabel(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		testLabel := []configuration.Label{
-			{
-				Name:  "testLabel",
-				Value: tc.testDeploymentLabel,
-			},
-		}
+		testLabel := []configuration.LabelObject{{LabelKey: "testLabel", LabelValue: tc.testDeploymentLabel}}
+
 		testNamespaces := []string{
 			tc.testDeploymentNamespace,
 		}
@@ -171,12 +167,7 @@ func TestFindStatefulSetByLabel(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		testLabel := []configuration.Label{
-			{
-				Name:  "testLabel",
-				Value: tc.testStatefulSetLabel,
-			},
-		}
+		testLabel := []configuration.LabelObject{{LabelKey: "testLabel", LabelValue: tc.testStatefulSetLabel}}
 		testNamespaces := []string{
 			tc.testStatefulSetNamespace,
 		}

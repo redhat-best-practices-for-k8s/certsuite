@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022 Red Hat, Inc.
+// Copyright (C) 2020-2023 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
 package autodiscover
 
 const (
-	defaultNamespace = "default"
-	debugLabelPrefix = "test-network-function.com"
-	debugLabelName   = "app"
-	debugLabelValue  = "tnf-debug"
+	deprecatedHardcodedOperatorLabelName  = "test-network-function.com/operator"
+	deprecatedHardcodedOperatorLabelValue = ""
+	debugHelperPodsLabelName              = "test-network-function.com/app"
+	debugHelperPodsLabelValue             = "tnf-debug"
 )

@@ -84,12 +84,7 @@ func TestFindPodsByLabel(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		testLabel := []configuration.Label{
-			{
-				Name:  "testLabel",
-				Value: tc.testPodLabel,
-			},
-		}
+		testLabel := []configuration.LabelObject{{LabelKey: "testLabel", LabelValue: tc.testPodLabel}}
 		testNamespaces := []string{
 			tc.testPodNamespace,
 		}

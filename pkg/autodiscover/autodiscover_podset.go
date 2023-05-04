@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022 Red Hat, Inc.
+// Copyright (C) 2020-2023 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ func FindCrObjectByNameByNamespace(scalesGetter scale.ScalesGetter, ns, name str
 //nolint:dupl
 func findDeploymentByLabel(
 	appClient appv1client.AppsV1Interface,
-	labels []configuration.Label,
+	labels []configuration.LabelObject,
 	namespaces []string,
 ) []appsv1.Deployment {
 	deployments := []appsv1.Deployment{}
@@ -74,10 +74,9 @@ func findDeploymentByLabel(
 		}
 
 		for i := 0; i < len(dps.Items); i++ {
-			for _, l := range labels {
-				key, value := buildLabelKeyValue(l)
-				logrus.Tracef("Searching pods in deployment %q found in ns %q using label %s=%s", dps.Items[i].Name, ns, key, value)
-				if dps.Items[i].Spec.Template.ObjectMeta.Labels[key] == value {
+			for _, aLabelObject := range labels {
+				logrus.Tracef("Searching pods in deployment %q found in ns %q using label %s=%s", dps.Items[i].Name, ns, aLabelObject.LabelKey, aLabelObject.LabelValue)
+				if dps.Items[i].Spec.Template.ObjectMeta.Labels[aLabelObject.LabelKey] == aLabelObject.LabelValue {
 					deployments = append(deployments, dps.Items[i])
 					logrus.Info("Deployment ", dps.Items[i].Name, " found in ns ", ns)
 				}
@@ -93,7 +92,7 @@ func findDeploymentByLabel(
 //nolint:dupl
 func findStatefulSetByLabel(
 	appClient appv1client.AppsV1Interface,
-	labels []configuration.Label,
+	labels []configuration.LabelObject,
 	namespaces []string,
 ) []appsv1.StatefulSet {
 	statefulsets := []appsv1.StatefulSet{}
@@ -108,10 +107,9 @@ func findStatefulSetByLabel(
 		}
 
 		for i := 0; i < len(ss.Items); i++ {
-			for _, l := range labels {
-				key, value := buildLabelKeyValue(l)
-				logrus.Tracef("Searching pods in statefulset %q found in ns %q using label %s=%s", ss.Items[i].Name, ns, key, value)
-				if ss.Items[i].Spec.Template.ObjectMeta.Labels[key] == value {
+			for _, aLabelObject := range labels {
+				logrus.Tracef("Searching pods in statefulset %q found in ns %q using label %s=%s", ss.Items[i].Name, ns, aLabelObject.LabelKey, aLabelObject.LabelValue)
+				if ss.Items[i].Spec.Template.ObjectMeta.Labels[aLabelObject.LabelKey] == aLabelObject.LabelValue {
 					statefulsets = append(statefulsets, ss.Items[i])
 					logrus.Info("StatefulSet ", ss.Items[i].Name, " found in ns ", ns)
 				}

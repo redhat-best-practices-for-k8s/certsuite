@@ -140,3 +140,39 @@ func TestHasExecProbes(t *testing.T) {
 		assert.Equal(t, tc.expectedOutput, tc.testContainer.HasExecProbes())
 	}
 }
+
+func TestHasIgnoredContainerName(t *testing.T) {
+	testCases := []struct {
+		testContainer  Container
+		expectedOutput bool
+	}{
+		{ // Test Case #1 - Container name is not ignored
+			testContainer: Container{
+				Container: &corev1.Container{
+					Name: "not-ignored",
+				},
+			},
+			expectedOutput: false,
+		},
+		{ // Test Case #2 - Container name is ignored
+			testContainer: Container{
+				Container: &corev1.Container{
+					Name: "istio-proxy",
+				},
+			},
+			expectedOutput: true,
+		},
+		{ // Test Case #3 - Container name contains ignored substring
+			testContainer: Container{
+				Container: &corev1.Container{
+					Name: "istio-proxy-test",
+				},
+			},
+			expectedOutput: true,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedOutput, tc.testContainer.HasIgnoredContainerName())
+	}
+}

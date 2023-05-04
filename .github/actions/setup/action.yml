@@ -1,0 +1,21 @@
+name: initial-setup-resources
+description: A shared action that removes a lot of copied tasks from steps in our CI
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Write temporary docker file
+      run: |
+        mkdir -p $GITHUB_WORKSPACE/.docker
+        touch ${PFLT_DOCKERCONFIG}
+        echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
+      shell: bash
+
+    - name: Set up Go 1.20
+      uses: actions/setup-go@v4
+      with:
+        go-version: 1.20.3
+
+    - name: Disable default go problem matcher
+      run: echo "::remove-matcher owner=go::"
+      shell: bash

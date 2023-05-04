@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022 Red Hat, Inc.
+// Copyright (C) 2020-2023 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ var WaitForScalingToComplete = func(ns, name string, timeout time.Duration, grou
 	for time.Since(start) < timeout {
 		crScale, err := provider.GetUpdatedCrObject(clients.ScalingClient, ns, name, groupResourceSchema)
 		if err != nil {
-			logrus.Errorf("error while getting the scaling fileds %e", err)
+			logrus.Errorf("error while getting the scaling fields %v", err)
 		} else if !crScale.IsScaleObjectReady() {
 			logrus.Errorf("%s is not ready yet", crScale.ToString())
 		} else {
