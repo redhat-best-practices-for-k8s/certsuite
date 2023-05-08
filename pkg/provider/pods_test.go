@@ -412,8 +412,9 @@ func TestIsUsingClusterRoleBinding(t *testing.T) {
 					},
 					Subjects: []rbacv1.Subject{
 						{
-							Kind: "ServiceAccount",
-							Name: "test-service-account",
+							Kind:      rbacv1.ServiceAccountKind,
+							Name:      "test-service-account",
+							Namespace: "test-namespace",
 						},
 					},
 				},
@@ -450,5 +451,47 @@ func TestIsUsingClusterRoleBinding(t *testing.T) {
 		result, err := tc.testPod.IsUsingClusterRoleBinding(tc.testClusterRoleBindings)
 		assert.Equal(t, tc.testResult, result)
 		assert.Equal(t, tc.testErr, err)
+	}
+}
+
+func TestIsUsingDefaultServiceAccount(t *testing.T) {
+	testCases := []struct {
+		testPod Pod
+		result  bool
+	}{
+		{ // Test Case #1 - Empty ServiceAccountName, return true
+			testPod: Pod{
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
+						ServiceAccountName: "",
+					},
+				},
+			},
+			result: true,
+		},
+		{ // Test Case #2 - "default" ServiceAccountName, return true
+			testPod: Pod{
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
+						ServiceAccountName: "default",
+					},
+				},
+			},
+			result: true,
+		},
+		{ // Test Case #2 - custom ServiceAccountName, return false
+			testPod: Pod{
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
+						ServiceAccountName: "customSA",
+					},
+				},
+			},
+			result: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.result, tc.testPod.IsUsingDefaultServiceAccount())
 	}
 }
