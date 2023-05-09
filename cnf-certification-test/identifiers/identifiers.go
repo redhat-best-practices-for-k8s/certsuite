@@ -219,7 +219,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco, TagExtended)
+		TagExtended)
 
 	TestProjectedVolumeServiceAccountTokenIdentifier = AddCatalogEntry(
 		"projected-volume-service-account-token",
@@ -270,7 +270,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco, TagExtended)
+		TagExtended)
 
 	TestPodHugePages1G = AddCatalogEntry(
 		"hugepages-1g-only",
@@ -287,7 +287,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Optional,
 			Extended: Optional,
 		},
-		TagCommon, TagTelco, TagFarEdge)
+		TagFarEdge)
 
 	TestReservedExtendedPartnerPorts = AddCatalogEntry(
 		"reserved-partner-ports",
@@ -304,7 +304,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco, TagExtended)
+		TagExtended)
 
 	TestAffinityRequiredPods = AddCatalogEntry(
 		"affinity-required-pods",
@@ -321,7 +321,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestStorageRequiredPods = AddCatalogEntry(
 		"storage-required-pods",
@@ -338,7 +338,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Mandatory,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco, TagExtended)
+		TagExtended)
 
 	TestStartupIdentifier = AddCatalogEntry(
 		"container-startup",
@@ -355,7 +355,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestShutdownIdentifier = AddCatalogEntry(
 		"container-shutdown",
@@ -372,7 +372,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestDpdkCPUPinningExecProbe = AddCatalogEntry(
 		"dpdk-cpu-pinning-exec-probe",
@@ -389,7 +389,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestNetAdminIdentifier = AddCatalogEntry(
 		"net-admin-capability-check",
@@ -406,7 +406,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestSysAdminIdentifier = AddCatalogEntry(
 		"sys-admin-capability-check",
@@ -440,7 +440,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestNetRawIdentifier = AddCatalogEntry(
 		"net-raw-capability-check",
@@ -457,7 +457,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestExclusiveCPUPoolIdentifier = AddCatalogEntry(
 		"exclusive-cpu-pool",
@@ -474,7 +474,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Optional,
 			Extended: Optional,
 		},
-		TagCommon, TagTelco, TagFarEdge)
+		TagFarEdge)
 
 	TestSharedCPUPoolSchedulingPolicy = AddCatalogEntry(
 		"shared-cpu-pool-non-rt-scheduling-policy",
@@ -491,7 +491,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Optional,
 			Extended: Optional,
 		},
-		TagCommon, TagTelco, TagFarEdge)
+		TagFarEdge)
 
 	TestExclusiveCPUPoolSchedulingPolicy = AddCatalogEntry(
 		"exclusive-cpu-pool-rt-scheduling-policy",
@@ -508,7 +508,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Optional,
 			Extended: Optional,
 		},
-		TagCommon, TagTelco, TagFarEdge)
+		TagFarEdge)
 
 	TestIsolatedCPUPoolSchedulingPolicy = AddCatalogEntry(
 		"isolated-cpu-pool-rt-scheduling-policy",
@@ -525,7 +525,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Optional,
 			Extended: Optional,
 		},
-		TagCommon, TagTelco, TagFarEdge)
+		TagFarEdge)
 
 	TestRtAppNoExecProbes = AddCatalogEntry(
 		"rt-apps-no-exec-probes",
@@ -542,7 +542,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Optional,
 			Extended: Optional,
 		},
-		TagCommon, TagTelco, TagFarEdge)
+		TagFarEdge)
 
 	TestRestartOnRebootLabelOnPodsUsingSRIOV = AddCatalogEntry(
 		"restart-on-reboot-sriov-pod",
@@ -559,7 +559,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco, TagFarEdge, TagExtended)
+		TagFarEdge)
 
 	TestSecConNonRootUserIdentifier = AddCatalogEntry(
 		"security-context-non-root-user-check",
@@ -764,7 +764,7 @@ test case requires the Deployment of the debug daemonset.`,
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestICMPv6ConnectivityMultusIdentifier = AddCatalogEntry(
 		"icmpv6-connectivity-multus",
@@ -782,7 +782,7 @@ test case requires the Deployment of the debug daemonset.`,
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestServiceDualStackIdentifier = AddCatalogEntry(
 		"dual-stack-service",
@@ -800,7 +800,7 @@ test case requires the deployment of the debug daemonset.`,
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco, TagExtended)
+		TagExtended)
 
 	TestNamespaceBestPracticesIdentifier = AddCatalogEntry(
 		"namespace",
@@ -938,7 +938,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestPodHighAvailabilityBestPractices = AddCatalogEntry(
 		"pod-high-availability",
@@ -972,7 +972,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestPodDeploymentBestPracticesIdentifier = AddCatalogEntry(
 		"pod-owner-type",
@@ -989,7 +989,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestDeploymentScalingIdentifier = AddCatalogEntry(
 		"deployment-scaling",
@@ -1040,7 +1040,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Optional,
 			Extended: Optional,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestPodRecreationIdentifier = AddCatalogEntry(
 		"pod-recreation",
@@ -1176,7 +1176,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestTerminationMessagePolicyIdentifier = AddCatalogEntry(
 		"termination-policy",
@@ -1193,7 +1193,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Optional,
 			Extended: Optional,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestCrdsStatusSubresourceIdentifier = AddCatalogEntry(
 		"crd-status",
@@ -1244,7 +1244,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Optional,
 			Extended: Optional,
 		},
-		TagCommon, TagTelco, TagExtended)
+		TagExtended)
 
 	TestOCPLifecycleIdentifier = AddCatalogEntry(
 		"ocp-lifecycle",
@@ -1329,7 +1329,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagExtended)
+		TagExtended)
 
 	TestOCPReservedPortsUsage = AddCatalogEntry(
 		"ocp-reserved-ports-usage",
@@ -1363,7 +1363,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestReadinessProbeIdentifier = AddCatalogEntry(
 		"readiness-probe",
@@ -1380,7 +1380,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestStartupProbeIdentifier = AddCatalogEntry(
 		"startup-probe",
@@ -1397,7 +1397,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestOneProcessPerContainerIdentifier = AddCatalogEntry(
 		"one-process-per-container",
@@ -1431,7 +1431,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestSysPtraceCapabilityIdentifier = AddCatalogEntry(
 		"sys-ptrace-capability",
@@ -1448,7 +1448,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestPodRequestsAndLimitsIdentifier = AddCatalogEntry(
 		"requests-and-limits",
@@ -1465,7 +1465,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestNamespaceResourceQuotaIdentifier = AddCatalogEntry(
 		"namespace-resource-quota",
@@ -1516,7 +1516,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestPersistentVolumeReclaimPolicyIdentifier = AddCatalogEntry(
 		"persistent-volume-reclaim-policy",
@@ -1533,7 +1533,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Optional,
 			Extended: Optional,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestContainersImageTag = AddCatalogEntry(
 		"containers-image-tag",
@@ -1550,7 +1550,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Optional,
 			Extended: Optional,
 		},
-		TagCommon, TagTelco, TagExtended)
+		TagExtended)
 
 	TestNoSSHDaemonsAllowedIdentifier = AddCatalogEntry(
 		"ssh-daemons",
@@ -1567,7 +1567,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestCPUIsolationIdentifier = AddCatalogEntry(
 		"cpu-isolation",
@@ -1584,7 +1584,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Mandatory,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco, TagFarEdge)
+		TagFarEdge)
 
 	TestContainerPortNameFormat = AddCatalogEntry(
 		"container-port-name-format",
@@ -1601,7 +1601,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco, TagExtended)
+		TagExtended)
 
 	TestCrdScalingIdentifier = AddCatalogEntry(
 		"crd-scaling",
@@ -1618,7 +1618,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Mandatory,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco,
+		TagTelco,
 	)
 
 	TestPodDeleteIdentifier = AddCatalogEntry(
