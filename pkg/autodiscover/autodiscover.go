@@ -119,7 +119,7 @@ func warnDeprecation(config *configuration.TestConfiguration) {
 
 // DoAutoDiscover finds objects under test
 //
-//nolint:funlen,gocyclo
+//nolint:funlen
 func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData {
 	oc := clientsholder.GetClientsHolder()
 

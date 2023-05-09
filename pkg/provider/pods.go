@@ -381,20 +381,10 @@ func (p *Pod) IsUsingSRIOV() (bool, error) {
 	return false, nil
 }
 
-func (p *Pod) IsUsingDefaultServiceAccount() bool {
-	// https://kubernetes.io/docs/concepts/security/service-accounts/#default-service-accounts
-	return p.Pod.Spec.ServiceAccountName == "" || strings.ToLower(p.Pod.Spec.ServiceAccountName) == "default"
-}
-
 func (p *Pod) IsUsingClusterRoleBinding(clusterRoleBindings []rbacv1.ClusterRoleBinding) (bool, error) {
 	// This function accepts a list of clusterRoleBindings and checks to see if the pod's service account is
 	// tied to any of them.  If it is, then it returns true, otherwise it returns false.
-
-	// Short circuit.  If there is no serviceAcccountName set we can skip the rest of the checks.
-	// Note: This currently does not handle where projected volumes are used to access service account tokens.
-	if p.IsUsingDefaultServiceAccount() {
-		return false, nil
-	}
+	logrus.Infof("Pod: %s/%s is using service account: %s", p.Pod.Namespace, p.Pod.Name, p.Pod.Spec.ServiceAccountName)
 
 	// Loop through the service accounts in the namespace, looking for a match between the pod serviceAccountName and
 	// the service account name.  If there is a match, check to make sure that the SA is not a 'subject' of the cluster

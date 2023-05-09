@@ -451,7 +451,7 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 
 	for _, put := range env.Pods {
 		ginkgo.By(fmt.Sprintf("Testing role binding for pod: %s namespace: %s", put.Name, put.Namespace))
-		if put.IsUsingDefaultServiceAccount() {
+		if put.Pod.Spec.ServiceAccountName == "" {
 			logrus.Infof("%s has an empty or default serviceAccountName, skipping.", put.String())
 			continue
 		}
@@ -460,7 +460,6 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 
 		// Loop through the rolebindings and check if they are from another namespace
 		for rbIndex := range env.RoleBindings {
-
 			// Short circuit if the role binding and the pod are in the same namespace.
 			if env.RoleBindings[rbIndex].Namespace == put.Namespace {
 				continue
@@ -471,8 +470,8 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 
 			found := false
 			for _, subject := range env.RoleBindings[rbIndex].Subjects {
-
 				// If the subject is a service account and the service account is in the same namespace as the pod, then we have a failure
+				//nolint:gocritic
 				if subject.Kind == rbacv1.ServiceAccountKind && subject.Namespace == put.Namespace && subject.Name == put.Spec.ServiceAccountName {
 					failMsg := fmt.Sprintf("Pod: %s/%s has the following role bindings that do not live in the same namespace: %s", put.Namespace, put.Name, env.RoleBindings[rbIndex].Name)
 					logrus.Warnf(failMsg)
@@ -489,12 +488,9 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 				break
 			}
 		}
-
 		// Add pod to the compliant object list
 		compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod does not contain role bindings from another namespace", true))
-
 	}
-	// testhelper.AddTestResultLog("Non-compliant", failedPods, tnf.ClaimFilePrintf, ginkgo.Fail)
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, ginkgo.Fail)
 }
 
