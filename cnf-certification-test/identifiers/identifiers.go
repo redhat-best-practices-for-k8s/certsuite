@@ -1579,12 +1579,12 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		bestPracticeDocV1dot4URL+" Section 3.5.5",
 		true,
 		map[string]string{
-			FarEdge:  Optional,
+			FarEdge:  Mandatory,
 			Telco:    Mandatory,
-			NonTelco: Mandatory,
+			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagFarEdge)
+		TagTelco)
 
 	TestContainerPortNameFormat = AddCatalogEntry(
 		"container-port-name-format",

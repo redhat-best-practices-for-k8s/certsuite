@@ -199,8 +199,8 @@ classification=  {
   },
   "lifecycle-cpu-isolation": {
     "Extended": "Mandatory",
-    "FarEdge": "Optional",
-    "NonTelco": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Optional",
     "Telco": "Mandatory"
   },
   "lifecycle-crd-scaling": {

@@ -30,11 +30,11 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |---|---|
 |9|2|
 
-### Far-Edge specific tests only: 8
+### Far-Edge specific tests only: 7
 
 |Mandatory|Optional|
 |---|---|
-|7|1|
+|7|0|
 
 ### Non-Telco specific tests only: 42
 
@@ -42,11 +42,11 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |---|---|
 |36|6|
 
-### Telco specific tests only: 25
+### Telco specific tests only: 26
 
 |Mandatory|Optional|
 |---|---|
-|22|3|
+|23|3|
 
 ## Test Case list
 
@@ -631,11 +631,11 @@ Result Type|informative
 Suggested Remediation|CPU isolation testing is enabled. Please ensure that all pods adhere to the CPU isolation requirements.
 Best Practice Reference|https://to-be-done Section 3.5.5
 Exception Process|There is no documented exception process for this.
-Tags|faredge,lifecycle
+Tags|telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
-|Far-Edge|Optional|
-|Non-Telco|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Optional|
 |Telco|Mandatory|
 
 #### lifecycle-crd-scaling
