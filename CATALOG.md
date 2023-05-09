@@ -36,11 +36,11 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |---|---|
 |7|0|
 
-### Non-Telco specific tests only: 42
+### Non-Telco specific tests only: 41
 
 |Mandatory|Optional|
 |---|---|
-|36|6|
+|36|5|
 
 ### Telco specific tests only: 26
 
@@ -132,7 +132,7 @@ Result Type|normative
 Suggested Remediation|Apply a ResourceQuota to the namespace your CNF is running in. The CNF namespace should have resource quota defined.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 4.6.8
 Exception Process|There is no documented exception process for this.
-Tags|common,access-control
+Tags|extended,access-control
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
 |Far-Edge|Optional|
