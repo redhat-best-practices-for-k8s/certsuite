@@ -17,6 +17,7 @@
 package clientsholder
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -164,29 +165,67 @@ func createByteArrayKubeConfig(kubeConfig *clientcmdapi.Config) ([]byte, error) 
 	return yamlBytes, nil
 }
 
-// GetClientsHolder instantiate an ocp client
-func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:funlen // this is a special function with lots of assignments
-	logrus.Infof("Creating k8s go-clients holder.")
-	loadingRules := clientcmd.NewDefaultClientConfigLoadingRules()
+// Creates a clientcmdapi.Config object from a rest.Config.
+// Based on https://github.com/kubernetes/client-go/issues/711#issuecomment-1666075787
+func GetClientConfigFromRestConfig(restConfig *rest.Config) *clientcmdapi.Config {
+	return &clientcmdapi.Config{
+		Kind:       "Config",
+		APIVersion: "v1",
+		Clusters: map[string]*clientcmdapi.Cluster{
+			"default-cluster": {
+				Server:                   restConfig.Host,
+				CertificateAuthorityData: restConfig.CAData,
+			},
+		},
+		Contexts: map[string]*clientcmdapi.Context{
+			"default-context": {
+				Cluster:  "default-cluster",
+				AuthInfo: "default-user",
+			},
+		},
+		CurrentContext: "default-context",
+		AuthInfos: map[string]*clientcmdapi.AuthInfo{
+			"default-user": {
+				ClientCertificateData: restConfig.CertData,
+				ClientKeyData:         restConfig.KeyData,
+			},
+		},
+	}
+}
 
-	precedence := []string{}
-	if len(filenames) > 0 {
-		precedence = append(precedence, filenames...)
+func getClusterRestConfig(filenames ...string) (*rest.Config, error) {
+	restConfig, err := rest.InClusterConfig()
+	if err == nil {
+		logrus.Infof("CNF Cert Suite is running inside a cluster.")
+
+		// Convert restConfig to clientcmdapi.Config so we can get the kubeconfig "file" bytes
+		// needed by preflight's operator checks.
+		clientConfig := GetClientConfigFromRestConfig(restConfig)
+		clientsHolder.KubeConfig, err = createByteArrayKubeConfig(clientConfig)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create byte array from kube config reference: %v", err)
+		}
+
+		// No error: we're inside a cluster.
+		return restConfig, nil
 	}
 
+	logrus.Infof("Running outside a cluster. Parsing kubeconfig file/s %+v", filenames)
+	if len(filenames) == 0 {
+		return nil, errors.New("no kubeconfig files set")
+	}
+
+	// Get the rest.Config from the kubeconfig file/s.
+	precedence := []string{}
+	precedence = append(precedence, filenames...)
+
+	loadingRules := clientcmd.NewDefaultClientConfigLoadingRules()
 	loadingRules.Precedence = precedence
-	configOverrides := &clientcmd.ConfigOverrides{}
+
 	kubeconfig := clientcmd.NewNonInteractiveDeferredLoadingClientConfig(
 		loadingRules,
-		configOverrides,
+		&clientcmd.ConfigOverrides{},
 	)
-	// Get a rest.Config from the kubeconfig file.  This will be passed into all
-	// the client objects we create.
-	var err error
-	clientsHolder.RestConfig, err = kubeconfig.ClientConfig()
-	if err != nil {
-		return nil, fmt.Errorf("cannot instantiate rest config: %s", err)
-	}
 
 	// Save merged config to temporary kubeconfig file.
 	kubeRawConfig, err := kubeconfig.RawConfig()
@@ -197,6 +236,24 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	clientsHolder.KubeConfig, err = createByteArrayKubeConfig(&kubeRawConfig)
 	if err != nil {
 		return nil, fmt.Errorf("failed to byte array kube config reference: %w", err)
+	}
+
+	restConfig, err = kubeconfig.ClientConfig()
+	if err != nil {
+		return nil, fmt.Errorf("cannot instantiate rest config: %s", err)
+	}
+
+	return restConfig, nil
+}
+
+// GetClientsHolder instantiate an ocp client
+func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:funlen // this is a special function with lots of assignments
+	logrus.Infof("Creating k8s go-clients holder.")
+
+	var err error
+	clientsHolder.RestConfig, err = getClusterRestConfig(filenames...)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get rest.Config: %v", err)
 	}
 
 	DefaultTimeout := 10 * time.Second
