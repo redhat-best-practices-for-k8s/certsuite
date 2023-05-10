@@ -443,7 +443,7 @@ func testPodServiceAccount(env *provider.TestEnvironment) {
 
 // testPodRoleBindings verifies that the pod utilizes a valid role binding that does not cross namespaces
 //
-//nolint:dupl
+//nolint:dupl,funlen
 func testPodRoleBindings(env *provider.TestEnvironment) {
 	ginkgo.By("Should not have RoleBinding in other namespaces")
 	var compliantObjects []*testhelper.ReportObject
@@ -458,6 +458,7 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 
 		logrus.Infof("%s has a serviceAccountName: %s, checking role bindings.", put.String(), put.Spec.ServiceAccountName)
 
+		podIsCompliant := true
 		// Loop through the rolebindings and check if they are from another namespace
 		for rbIndex := range env.RoleBindings {
 			// Short circuit if the role binding and the pod are in the same namespace.
@@ -478,8 +479,14 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 					tnf.ClaimFilePrintf(failMsg)
 
 					// Add the pod to the non-compliant list
-					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, failMsg, false))
+					nonCompliantObjects = append(nonCompliantObjects,
+						testhelper.NewPodReportObject(put.Namespace, put.Name,
+							"Non-compliant because the role bindings used by this pod do not live in the same namespace", false).
+							AddField(testhelper.RoleBindingName, env.RoleBindings[rbIndex].Name).
+							AddField(testhelper.RoleBindingNamespace, env.RoleBindings[rbIndex].Namespace).
+							AddField(testhelper.ServiceAccountName, put.Spec.ServiceAccountName))
 					found = true
+					podIsCompliant = false
 					break
 				}
 			}
@@ -489,7 +496,10 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 			}
 		}
 		// Add pod to the compliant object list
-		compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod does not contain role bindings from another namespace", true))
+		if podIsCompliant {
+			compliantObjects = append(compliantObjects,
+				testhelper.NewPodReportObject(put.Namespace, put.Name, "Compliant because all the role bindings used by this pod (applied by the service accounts) live in the same namespace", true))
+		}
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, ginkgo.Fail)
 }
@@ -499,16 +509,18 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 //nolint:dupl
 func testPodClusterRoleBindings(env *provider.TestEnvironment) {
 	ginkgo.By("Pods should not have ClusterRoleBindings")
-	failedPods := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 
 	logrus.Infof("There were %d cluster role bindings found in the cluster.", len(env.ClusterRoleBindings))
 
 	for _, put := range env.Pods {
+		podIsCompliant := true
 		ginkgo.By(fmt.Sprintf("Testing cluster role binding for pod: %s namespace: %s", put.Name, put.Namespace))
 		result, err := put.IsUsingClusterRoleBinding(env.ClusterRoleBindings)
 		if err != nil {
 			logrus.Errorf("failed to determine if pod %s/%s is using a cluster role binding: %v", put.Namespace, put.Name, err)
-			failedPods = append(failedPods, put.Name)
+			podIsCompliant = false
 		}
 
 		// Pod was found to be using a cluster role binding.  This is not allowed.
@@ -517,10 +529,16 @@ func testPodClusterRoleBindings(env *provider.TestEnvironment) {
 			errMsg := fmt.Sprintf("%s is using a cluster role binding", put.String())
 			logrus.Warn(errMsg)
 			tnf.ClaimFilePrintf(errMsg)
-			failedPods = append(failedPods, put.Name)
+			podIsCompliant = false
+		}
+
+		if podIsCompliant {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Compliant because the pod is not using a cluster role binding", true))
+		} else {
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Non-compliant because the pod is using a cluster role binding", false))
 		}
 	}
-	testhelper.AddTestResultLog("Non-compliant", failedPods, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, ginkgo.Fail)
 }
 
 func testAutomountServiceToken(env *provider.TestEnvironment) {
