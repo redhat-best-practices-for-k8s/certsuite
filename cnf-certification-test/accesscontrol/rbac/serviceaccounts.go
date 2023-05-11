@@ -1,5 +1,3 @@
-// Copyright (C) 2022 Red Hat, Inc.
-//
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation; either version 2 of the License, or
@@ -17,15 +15,18 @@
 package rbac
 
 import (
-	"testing"
+	"context"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func TestGetClusterRoleBinding(t *testing.T) {
-	_ = clientsholder.GetTestClientsHolder(buildTestObjects())
-	gatheredCRBs, err := GetClusterRoleBindings("testCR", "podNS")
-	assert.Nil(t, err)
-	assert.Equal(t, "testNS:testCR", gatheredCRBs[0])
+func GetServiceAccountsFromNamespace(namespace string) ([]corev1.ServiceAccount, error) {
+	ch := clientsholder.GetClientsHolder()
+	saList, saErr := ch.K8sClient.CoreV1().ServiceAccounts(namespace).List(context.TODO(), metav1.ListOptions{})
+	if saErr != nil {
+		return nil, saErr
+	}
+	return saList.Items, nil
 }

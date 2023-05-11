@@ -23,9 +23,13 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 	v1 "k8s.io/apimachinery/pkg/api/resource"
+	"k8s.io/apimachinery/pkg/runtime"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	k8sfake "k8s.io/client-go/kubernetes/fake"
 )
 
 func TestPod_CheckResourceOnly2MiHugePages(t *testing.T) {
@@ -341,5 +345,111 @@ func TestIssNetworkAttachmentDefinitionConfigTypeSRIOV(t *testing.T) {
 		} else {
 			assert.Equal(t, tc.expectedNadTypeSriov, isTypeSriov)
 		}
+	}
+}
+
+func TestIsUsingClusterRoleBinding(t *testing.T) {
+	testCases := []struct {
+		testPod                 Pod
+		testClusterRoleBindings []rbacv1.ClusterRoleBinding
+		testServiceAccounts     []corev1.ServiceAccount
+		testResult              bool
+		testErr                 error
+	}{
+		{ // Test Case #1 - Empty ServiceAccountName, return false
+			testPod: Pod{
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
+						ServiceAccountName: "",
+					},
+				},
+			},
+			testClusterRoleBindings: []rbacv1.ClusterRoleBinding{},
+			testServiceAccounts:     []corev1.ServiceAccount{},
+			testResult:              false,
+			testErr:                 nil,
+		},
+		{ // Test Case #2 - ServiceAccountName set, but no ClusterRoleBinding found, return false
+			testPod: Pod{
+				Pod: &corev1.Pod{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "test-pod",
+						Namespace: "test-namespace",
+					},
+					Spec: corev1.PodSpec{
+						ServiceAccountName: "test-service-account",
+					},
+				},
+			},
+			testClusterRoleBindings: []rbacv1.ClusterRoleBinding{},
+			testServiceAccounts: []corev1.ServiceAccount{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "test-service-account",
+						Namespace: "test-namespace",
+					},
+				},
+			},
+			testResult: false,
+			testErr:    nil,
+		},
+		{ // Test Case #3 - ServiceAccountName set, ClusterRoleBinding found, return true
+			testPod: Pod{
+				Pod: &corev1.Pod{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "test-pod",
+						Namespace: "test-namespace",
+					},
+					Spec: corev1.PodSpec{
+						ServiceAccountName: "test-service-account",
+					},
+				},
+			},
+			testClusterRoleBindings: []rbacv1.ClusterRoleBinding{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name: "test-cluster-role-binding",
+					},
+					Subjects: []rbacv1.Subject{
+						{
+							Kind:      rbacv1.ServiceAccountKind,
+							Name:      "test-service-account",
+							Namespace: "test-namespace",
+						},
+					},
+				},
+			},
+			testServiceAccounts: []corev1.ServiceAccount{
+				{
+					ObjectMeta: metav1.ObjectMeta{
+						Name:      "test-service-account",
+						Namespace: "test-namespace",
+					},
+				},
+			},
+			testResult: true,
+			testErr:    nil,
+		},
+	}
+
+	for _, tc := range testCases {
+		// Create runtimeObjects based on the ServiceAccounts and ClusterRoleBindings
+		// to pass to the clientsholder for testing
+		var testRuntimeObjects []runtime.Object
+		for _, sa := range tc.testServiceAccounts {
+			saTemp := sa
+			testRuntimeObjects = append(testRuntimeObjects, &saTemp)
+		}
+
+		for _, crb := range tc.testClusterRoleBindings {
+			crbTemp := crb
+			testRuntimeObjects = append(testRuntimeObjects, &crbTemp)
+		}
+
+		c := k8sfake.NewSimpleClientset(testRuntimeObjects...)
+		clientsholder.SetTestK8sClientsHolder(c)
+		result, err := tc.testPod.IsUsingClusterRoleBinding(tc.testClusterRoleBindings)
+		assert.Equal(t, tc.testResult, result)
+		assert.Equal(t, tc.testErr, err)
 	}
 }
