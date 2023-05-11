@@ -221,7 +221,6 @@ func testProjectedVolumeServiceAccount(env *provider.TestEnvironment) {
 	ginkgo.By("Testing pods to ensure they are not using projected volumes for service account access")
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
-	index := 0
 	for _, put := range env.Pods {
 		for i := range put.Spec.Volumes {
 			if put.Spec.Volumes[i].Projected == nil {
@@ -231,7 +230,7 @@ func testProjectedVolumeServiceAccount(env *provider.TestEnvironment) {
 				tnf.ClaimFilePrintf("%s, volume=%s does not use projected volumes", put, put.Spec.Volumes[i].Name)
 				continue
 			}
-			for index < len(put.Spec.Volumes[i].Projected.Sources) {
+			for index := range put.Spec.Volumes[i].Projected.Sources {
 				if put.Spec.Volumes[i].Projected.Sources[index].ServiceAccountToken != nil {
 					aPodOut := testhelper.NewPodReportObject(put.Namespace, put.Name,
 						"the projected volume Service account token field is not nil",
@@ -250,7 +249,6 @@ func testProjectedVolumeServiceAccount(env *provider.TestEnvironment) {
 						AddField(testhelper.ProjectedVolumeSAToken, put.Spec.Volumes[i].Projected.Sources[index].ServiceAccountToken.String())
 					compliantObjects = append(compliantObjects, aPodOut)
 				}
-				index++
 			}
 		}
 	}

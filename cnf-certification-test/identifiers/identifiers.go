@@ -222,7 +222,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		TagExtended)
 
 	TestProjectedVolumeServiceAccountTokenIdentifier = AddCatalogEntry(
-		"projected-volume-service-account",
+		"projected-volume-service-account-token",
 		common.AccessControlTestKey,
 		`Checks that pods do not use projected volumes and service account tokens`,
 		ProjectedVolumeServiceAccountRemediation,

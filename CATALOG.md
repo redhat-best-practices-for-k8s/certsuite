@@ -326,11 +326,11 @@ Tags|common,access-control
 |Non-Telco|Mandatory|
 |Telco|Mandatory|
 
-#### access-control-projected-volume-service-account
+#### access-control-projected-volume-service-account-token
 
 Property|Description
 ---|---
-Unique ID|access-control-projected-volume-service-account
+Unique ID|access-control-projected-volume-service-account-token
 Description|Checks that pods do not use projected volumes and service account tokens
 Result Type|informative
 Suggested Remediation|Ensure that pods do not use projected volumes and service account tokens
