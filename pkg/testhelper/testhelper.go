@@ -51,6 +51,8 @@ const (
 	ReasonForNonCompliance = "ReasonForNonCompliance"
 	ReasonForCompliance    = "ReasonForCompliance"
 	Category               = "Category"
+	ProjectedVolumeName    = "ProjectedVolumeName"
+	ProjectedVolumeSAToken = "ProjectedVolumeSAToken"
 )
 
 const (
@@ -60,6 +62,7 @@ const (
 	ContainerType        = "Container"
 	ContainerProcessType = "ContainerProcess"
 	ContainerCategory    = "ContainerCategory"
+	ProjectedVolumeType  = "ProjectedVolume"
 )
 
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {
