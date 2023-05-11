@@ -56,17 +56,17 @@ jobs:
       - name: Install golangci-lint
         run: make install-lint
 
-      - name: Install checkmake Linux
+      - name: Install checkmake (Linux)
         run: curl --location --output $CM_BIN --silent $CM_URL_LINUX
         if: runner.os == 'Linux'
 
-      - name: Install checkmake MacOS
+      - name: Install checkmake (MacOS)
         run: brew install checkmake
         if: runner.os == 'macOS'
 
       - run: chmod +x $CM_BIN
 
-      - name: Install hadolint
+      - name: Install hadolint (Linux)
         run: |
           curl \
             --location \
@@ -75,13 +75,18 @@ jobs:
           chmod +x /usr/local/bin/hadolint
         if: runner.os == 'Linux'
 
-      - name: Install hadolint
+      - name: Install hadolint (MacOS)
         run: |
           brew install hadolint
         if: runner.os == 'macOS'
 
-      - name: Install shfmt
+      - name: Install shfmt (Linux)
         run: make install-shfmt
+        if: runner.os == 'Linux'
+
+      - name: Install shfmt (MacOS)
+        run: brew install shfmt
+        if: runner.os == 'macOS'
 
       - name: make lint
         run: make lint

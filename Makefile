@@ -111,6 +111,12 @@ build-cnf-tests-debug:
 install-tools:
 	go install "$$(awk '/ginkgo/ {printf "%s/ginkgo@%s", $$1, $$2}' go.mod)"
 
+install-mac-brew-tools:
+	brew install golangci-lint
+	brew install hadolint
+	brew install shfmt
+	brew install checkmake
+
 # Install linters
 install-lint:
 	go install github.com/golangci/golangci-lint/cmd/golangci-lint@${GOLANGCI_VERSION}
