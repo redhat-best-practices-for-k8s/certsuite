@@ -17,6 +17,7 @@
 package podsets
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -91,26 +92,125 @@ func WaitForStatefulSetReady(ns, name string, timeout time.Duration) bool {
 	return false
 }
 
-func WaitForAllPodSetReady(env *provider.TestEnvironment, timeoutPodSetReady time.Duration) (claimsLog loghelper.CuratedLogLines, atLeastOnePodsetNotReady bool) {
-	atLeastOnePodsetNotReady = false
-	for _, dut := range env.Deployments {
-		isReady := WaitForDeploymentSetReady(dut.Namespace, dut.Name, timeoutPodSetReady)
-		if isReady {
-			claimsLog.AddLogLine("%s Status: OK", dut.ToString())
+func isDeploymentReady(name, namespace string) (bool, error) {
+	appsV1Api := clientsholder.GetClientsHolder().K8sClient.AppsV1()
+
+	dep, err := provider.GetUpdatedDeployment(appsV1Api, namespace, name)
+	if err != nil {
+		return false, err
+	}
+
+	return dep.IsDeploymentReady(), nil
+}
+
+func isStatefulSetReady(name, namespace string) (bool, error) {
+	appsV1Api := clientsholder.GetClientsHolder().K8sClient.AppsV1()
+
+	sts, err := provider.GetUpdatedStatefulset(appsV1Api, namespace, name)
+	if err != nil {
+		return false, err
+	}
+
+	return sts.IsStatefulSetReady(), nil
+}
+
+// Helper function to get a slice of namespace:name strings from a slice of *provider.Deployments.
+// E.g: [tnf:test tnf:hazelcast-platform-controller-manager]
+func getDeploymentsInfo(deployments []*provider.Deployment) []string {
+	deps := []string{}
+	for _, dep := range deployments {
+		deps = append(deps, fmt.Sprintf("%s:%s", dep.Namespace, dep.Name))
+	}
+
+	return deps
+}
+
+// Helper function to get a slice of namespace: name strings from a slice of *provider.Statefulsets.
+func getStatefulSetsInfo(statefulSets []*provider.StatefulSet) []string {
+	stsInfo := []string{}
+	for _, sts := range statefulSets {
+		stsInfo = append(stsInfo, fmt.Sprintf("%s:%s", sts.Namespace, sts.Name))
+	}
+
+	return stsInfo
+}
+
+// Helper function that checks the status of each deployment in the slice and returns
+// a slice with the not-ready ones.
+func getNotReadyDeployments(deployments []*provider.Deployment) []*provider.Deployment {
+	notReadyDeployments := []*provider.Deployment{}
+	for _, dep := range deployments {
+		ready, err := isDeploymentReady(dep.Name, dep.Namespace)
+		if err != nil {
+			logrus.Errorf("Failed to get %s", dep.ToString())
+			// We'll mark it as not ready, anyways.
+			notReadyDeployments = append(notReadyDeployments, dep)
+			continue
+		}
+
+		if ready {
+			logrus.Debugf("%s is ready.", dep.ToString())
 		} else {
-			claimsLog.AddLogLine("%s Status: NOK", dut.ToString())
-			atLeastOnePodsetNotReady = true
+			notReadyDeployments = append(notReadyDeployments, dep)
 		}
 	}
-	for _, sut := range env.StatefulSets {
-		isReady := WaitForStatefulSetReady(sut.Namespace, sut.Name, timeoutPodSetReady)
-		if isReady {
-			claimsLog.AddLogLine("%s Status: OK", sut.ToString())
+
+	return notReadyDeployments
+}
+
+// Helper function that checks the status of each statefulSet in the slice and returns
+// a slice with the not-ready ones.
+func getNotReadyStatefulSets(statefulSets []*provider.StatefulSet) []*provider.StatefulSet {
+	notReadyStatefulSets := []*provider.StatefulSet{}
+	for _, sts := range statefulSets {
+		ready, err := isStatefulSetReady(sts.Name, sts.Namespace)
+		if err != nil {
+			logrus.Errorf("Failed to get %s", sts.ToString())
+			// We'll mark it as not ready, anyways.
+			notReadyStatefulSets = append(notReadyStatefulSets, sts)
+			continue
+		}
+
+		if ready {
+			logrus.Debugf("%s is ready.", sts.ToString())
 		} else {
-			claimsLog.AddLogLine("%s Status: NOK", sut.ToString())
-			atLeastOnePodsetNotReady = true
+			notReadyStatefulSets = append(notReadyStatefulSets, sts)
 		}
 	}
+
+	return notReadyStatefulSets
+}
+
+func WaitForAllPodSetsReady(env *provider.TestEnvironment, timeout time.Duration) (claimsLog loghelper.CuratedLogLines, atLeastOnePodsetNotReady bool) {
+	const queryInterval = 15 * time.Second
+
+	deploymentsToCheck := env.Deployments
+	statefulSetsToCheck := env.StatefulSets
+
+	logrus.Infof("Waiting %s for %d podsets to be ready.", timeout, len(env.Deployments)+len(env.StatefulSets))
+	for startTime := time.Now(); time.Since(startTime) < timeout; {
+		logrus.Infof("Checking Deployments readiness of Deployments %v", getDeploymentsInfo(deploymentsToCheck))
+		deploymentsToCheck = getNotReadyDeployments(deploymentsToCheck)
+
+		logrus.Infof("Checking StatefulSets readiness of StatefulSets %v", getStatefulSetsInfo(statefulSetsToCheck))
+		statefulSetsToCheck = getNotReadyStatefulSets(statefulSetsToCheck)
+
+		logrus.Infof("Not ready Deployments: %v", getDeploymentsInfo(deploymentsToCheck))
+		logrus.Infof("Not ready StatefulSets: %v", getStatefulSetsInfo(statefulSetsToCheck))
+
+		if len(deploymentsToCheck) == 0 && len(statefulSetsToCheck) == 0 {
+			// No more podsets to check.
+			break
+		}
+
+		time.Sleep(queryInterval)
+	}
+
+	// Here, either we reached the timeout or there's no more not-ready deployments or statefulsets.
+	claimsLog.AddLogLine("Not ready Deployments: %v", getDeploymentsInfo(deploymentsToCheck))
+	claimsLog.AddLogLine("Not ready StatefulSets: %v", getStatefulSetsInfo(statefulSetsToCheck))
+
+	atLeastOnePodsetNotReady = len(deploymentsToCheck) > 0 || len(statefulSetsToCheck) > 0
 	return claimsLog, atLeastOnePodsetNotReady
 }
 

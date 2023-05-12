@@ -65,8 +65,8 @@ func (d *Deployment) ToString() string {
 	)
 }
 
-func GetUpdatedDeployment(ac appv1client.AppsV1Interface, namespace, podName string) (*Deployment, error) {
-	result, err := autodiscover.FindDeploymentByNameByNamespace(ac, namespace, podName)
+func GetUpdatedDeployment(ac appv1client.AppsV1Interface, namespace, name string) (*Deployment, error) {
+	result, err := autodiscover.FindDeploymentByNameByNamespace(ac, namespace, name)
 	return &Deployment{
 		result,
 	}, err
