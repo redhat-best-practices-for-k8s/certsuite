@@ -209,8 +209,8 @@ jobs:
       - name: Install ginkgo
         run: make install-tools
 
-      - name: Execute `make build`
-        run: make build
+      - name: Build CNF test suite binary
+        run: make build-cnf-tests
 
       # Create a Kind cluster for testing.
       - name: Check out `cnf-certification-test-partner`
