@@ -20,7 +20,7 @@ include specifications such as issuing a `GET` request to a web server, or passi
 These tests belong to multiple suites that can be run in any combination as is
 appropriate for the CNFs under test.
 
-! info
+!!! info
 
     Test suites group tests by the topic areas.
 
@@ -34,7 +34,7 @@ Suite|Test Spec Description|Minimum OpenShift Version
 `platform-alteration`| verifies that key platform configuration is not modified by the CNF under test|4.6.0
 `observability`|  the observability test suite contains tests that check CNF logging is following best practices and that CRDs have status fields|4.6.0
 
-! info
+!!! info
 
     Please refer [CATALOG.md](CATALOG.md) for more details.
 

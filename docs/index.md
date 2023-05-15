@@ -3,17 +3,17 @@
 
 This repository provides a set of Cloud-Native Network Functions (CNF) test cases and the framework to add more test cases.
 
-! tip "CNF"
+!!! tip "CNF"
 
     The app (containers/pods/operators) we want to certify according Telco partner/Red Hat's best practices.
 
-! tip "TNF/Certification Test Suite"
+!!! tip "TNF/Certification Test Suite"
 
     The tool we use to certify a CNF.
 
 The purpose of the tests and the framework is to test the interaction of CNF with OpenShift Container Platform (OCP).  
 
-! info
+!!! info
 
     This test suite is provided for the CNF Developers to test their CNFs readiness for certification.
     Please see "CNF Developers" for more information.

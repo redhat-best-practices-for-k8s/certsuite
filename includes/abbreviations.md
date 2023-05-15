@@ -1,5 +1,4 @@
-# Abbreviations
-
+<!-- markdownlint-disable first-line-heading -->
 *[TNF tool]: Test Network Function
 *[TNF]: Test Network Function
 *[CNF]: Cloud-Native Network Function or Containerised Network Function
