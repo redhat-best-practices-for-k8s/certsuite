@@ -909,8 +909,8 @@
 
 <!-- markdownlint-disable line-length no-bare-urls no-emphasis-as-heading -->
 <h1 id="test">Test<a class="headerlink" href="#test" title="Permanent link">&para;</a></h1>
-<p>The tests can be run within a prebuilt container in the <abbr title="OpenShift Container Platform">OCP</abbr> cluster.</p>
-<p><strong>Prerequisites for the <abbr title="OpenShift Container Platform">OCP</abbr> cluster</strong></p>
+<p>The tests can be run within a prebuilt container in the OCP cluster.</p>
+<p><strong>Prerequisites for the OCP cluster</strong></p>
 <ul>
 <li>The cluster should have enough resources to drain nodes and reschedule pods. If that is not the case, then <code>lifecycle-pod-recreation</code> test should be skipped.</li>
 </ul>
@@ -944,7 +944,7 @@ In order to get the required information, the test suite does not <code>ssh</cod
 <p>If <code>-l</code> is not specified, the tnf will run in &lsquo;diagnostic&rsquo; mode. In this mode, no test case will run: it will only get information from the cluster (PUTs, CRDs, nodes info, etc…) to save it in the claim file. This can be used to make sure the configuration was properly set and the autodiscovery found the right pods/crds…</p>
 <ul>
 <li>
-<p><code>-i</code> to provide a name to a custom <abbr title="Test Network Function">TNF</abbr> container image. Supports local images, as well as images from external registries.</p>
+<p><code>-i</code> to provide a name to a custom TNF container image. Supports local images, as well as images from external registries.</p>
 </li>
 <li>
 <p><code>-k</code> to set a path to one or more kubeconfig files to be used by the container to authenticate with the cluster. Paths must be separated by a colon.</p>
@@ -959,7 +959,7 @@ In order to get the required information, the test suite does not <code>ssh</cod
 <p>! note</p>
 <p>See the <a href="https://docs.docker.com/engine/reference/run/#network-settings">docker run &ndash;network parameter reference</a> for more information on how to configure network settings.</p>
 <ul>
-<li><code>-b</code> to set an external offline DB that will be used to verify the certification status of containers, helm charts and operators. Defaults to the DB included in the <abbr title="Test Network Function">TNF</abbr> container image.</li>
+<li><code>-b</code> to set an external offline DB that will be used to verify the certification status of containers, helm charts and operators. Defaults to the DB included in the TNF container image.</li>
 </ul>
 <p>! note</p>
 <p>See the <a href="https://github.com/test-network-function/oct">OCT tool</a> for more information on how to create this DB.</p>
@@ -985,19 +985,18 @@ client using <code>TNF_CONTAINER_CLIENT</code> can be configured. This is partic
 <li><code>TNF_VERSION</code> value is set to a branch, a tag, or a hash of a commit that will be installed into the image</li>
 </ul>
 <h3 id="build-from-an-unofficial-source">Build from an unofficial source<a class="headerlink" href="#build-from-an-unofficial-source" title="Permanent link">&para;</a></h3>
-<p>The unofficial source could be a fork of the <abbr title="Test Network Function">TNF</abbr> repository.</p>
+<p>The unofficial source could be a fork of the TNF repository.</p>
 <p>Use the <code>TNF_SRC_URL</code> build argument to override the URL to a source repository.</p>
 <div class="highlight"><pre><span></span><code>podman<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>cnf-certification-test:v4.2.4<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--build-arg<span class="w"> </span><span class="nv">TNF_VERSION</span><span class="o">=</span>v4.2.4<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--build-arg<span class="w"> </span><span class="nv">TNF_SRC_URL</span><span class="o">=</span>https://github.com/test-network-function/cnf-certification-test<span class="w"> </span>.
 </code></pre></div>
 <h3 id="run-the-tests-2">Run the tests 2<a class="headerlink" href="#run-the-tests-2" title="Permanent link">&para;</a></h3>
-<p>Specify the custom <abbr title="Test Network Function">TNF</abbr> image using the <code>-i</code> parameter.</p>
+<p>Specify the custom TNF image using the <code>-i</code> parameter.</p>
 <div class="highlight"><pre><span></span><code>./run-tnf-container.sh<span class="w"> </span>-i<span class="w"> </span>cnf-certification-test:v4.2.4
 -t<span class="w"> </span>~/tnf/config<span class="w"> </span>-o<span class="w"> </span>~/tnf/output<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;networking,access-control&quot;</span>
 </code></pre></div>
 <p>Note: see <a href="../test-spec/#general-tests">General tests</a> for a list of available keywords.</p>
-<h1 id="abbreviations">Abbreviations<a class="headerlink" href="#abbreviations" title="Permanent link">&para;</a></h1>
 
 
 

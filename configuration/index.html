@@ -993,7 +993,7 @@
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">secondnamespace</span>
 </code></pre></div>
 <h2 id="targetpodlabels">targetPodLabels<a class="headerlink" href="#targetpodlabels" title="Permanent link">&para;</a></h2>
-<p>The goal of this section is to specify the labels to be used to identify the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> resources under test.</p>
+<p>The goal of this section is to specify the labels to be used to identify the CNF resources under test.</p>
 <p>! note &ldquo;Highly recommended&rdquo;</p>
 <p>The labels should be defined in pod definition rather than added after pod is created, as labels added later on will be lost in case the pod gets rescheduled. In case of pods defined as part of a deployment, it&rsquo;s best to use the same label as the one defined in the <code>spec.selector.matchLabels</code> section of the deployment yaml. The prefix field can be used to avoid naming collision with other labels.</p>
 <div class="annotate highlight"><pre><span></span><code><span class="nt">targetPodLabels</span><span class="p">:</span>
@@ -1011,7 +1011,7 @@
 <span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">nameSuffix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;group1.tnf.com&quot;</span>
 <span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">nameSuffix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;anydomain.com&quot;</span>
 </code></pre></div>
-<p>The autodiscovery mechanism will create a list of all <abbr title="Custom Resource Definition">CRD</abbr> names in the cluster whose names have the suffix <code>group1.tnf.com</code> or <code>anydomain.com</code>, e.g. <code>crd1.group1.tnf.com</code> or <code>mycrd.mygroup.anydomain.com</code>.</p>
+<p>The autodiscovery mechanism will create a list of all CRD names in the cluster whose names have the suffix <code>group1.tnf.com</code> or <code>anydomain.com</code>, e.g. <code>crd1.group1.tnf.com</code> or <code>mycrd.mygroup.anydomain.com</code>.</p>
 <h2 id="testtarget">testTarget<a class="headerlink" href="#testtarget" title="Permanent link">&para;</a></h2>
 <h3 id="podsundertest-containersundertest">podsUnderTest / containersUnderTest<a class="headerlink" href="#podsundertest-containersundertest" title="Permanent link">&para;</a></h3>
 <p>The autodiscovery mechanism will attempt to identify the default network device and all the IP addresses of the pods it needs for network connectivity tests, though that information can be explicitly set using annotations if needed.</p>
@@ -1027,12 +1027,12 @@
 <p>The label <code>test-network-function.com/skip_connectivity_tests</code> excludes pods from all connectivity tests. The label value is trivial, only its presence.
 The label <code>test-network-function.com/skip_multus_connectivity_tests</code> excludes pods from <a href="https://github.com/k8snetworkplumbingwg/multus-cni">Multus</a> connectivity tests. Tests on default interface are still done. The label value is trivial, but its presence.</p>
 <h2 id="affinityrequired">AffinityRequired<a class="headerlink" href="#affinityrequired" title="Permanent link">&para;</a></h2>
-<p>For <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> workloads that require pods to use Pod or Node Affinity rules, the label <code>AffinityRequired: true</code> must be included on the Pod YAML. This will prevent any tests for anti-affinity to fail as well as test your workloads for affinity rules that support your <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>&lsquo;s use-case.</p>
+<p>For CNF workloads that require pods to use Pod or Node Affinity rules, the label <code>AffinityRequired: true</code> must be included on the Pod YAML. This will prevent any tests for anti-affinity to fail as well as test your workloads for affinity rules that support your CNF&rsquo;s use-case.</p>
 <h2 id="certifiedcontainerinfo">certifiedcontainerinfo<a class="headerlink" href="#certifiedcontainerinfo" title="Permanent link">&para;</a></h2>
-<p>The <code>certifiedcontainerinfo</code> section contains information about <abbr title="Cloud-Native Network Functions">CNFs</abbr> containers that are
+<p>The <code>certifiedcontainerinfo</code> section contains information about CNFs containers that are
 to be checked for certification status on Red Hat catalogs.</p>
 <h2 id="operators">Operators<a class="headerlink" href="#operators" title="Permanent link">&para;</a></h2>
-<p>The <abbr title="ClusterServiceVersion in Operator Lifecycle Manager">CSV</abbr> of the installed Operators can be tested by the <code>operator</code> and <code>affiliated-certification</code> specs are identified with the <code>test-network-function.com/operator=target</code>
+<p>The CSV of the installed Operators can be tested by the <code>operator</code> and <code>affiliated-certification</code> specs are identified with the <code>test-network-function.com/operator=target</code>
 label. Any value is permitted here but <code>target</code> is used here for consistency with the other specs.</p>
 <h2 id="allowedprotocolnames">AllowedProtocolNames<a class="headerlink" href="#allowedprotocolnames" title="Permanent link">&para;</a></h2>
 <p>This name of protocols that allowed.
@@ -1041,7 +1041,7 @@ If we want to add another name, we just need to write the name in the yaml file.
 <h2 id="servicesignorelist">ServicesIgnoreList<a class="headerlink" href="#servicesignorelist" title="Permanent link">&para;</a></h2>
 <p>This is a list of service names present in the namespace under test and that should not be tested.</p>
 <h2 id="skipscalingtestdeployments-and-skipscalingteststatefulsetnames">skipScalingTestDeployments and skipScalingTestStatefulSetNames<a class="headerlink" href="#skipscalingtestdeployments-and-skipscalingteststatefulsetnames" title="Permanent link">&para;</a></h2>
-<p>This section of the <abbr title="Test Network Function">TNF</abbr> config allows the user to skip the scaling tests that potentially cause known problems with workloads that do not like being scaled up and scaled down.</p>
+<p>This section of the TNF config allows the user to skip the scaling tests that potentially cause known problems with workloads that do not like being scaled up and scaled down.</p>
 <p>Example:</p>
 <div class="annotate highlight"><pre><span></span><code><span class="nt">skipScalingTestDeployments</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;deployment1&quot;</span>
@@ -1054,8 +1054,7 @@ If we want to add another name, we just need to write the name in the yaml file.
 <p>This is an optional field with the name of the namespace where a privileged DaemonSet will be deployed. The namespace will be created in case it does not exist. In case this field is not set, the default namespace for this DaemonSet is &ldquo;cnf-suite&rdquo;.</p>
 <div class="highlight"><pre><span></span><code>debugDaemonSetNamespace:<span class="w"> </span>cnf-cert
 </code></pre></div>
-<p>This DaemonSet, called &ldquo;tnf-debug&rdquo; is deployed and used internally by the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification tool to issue some shell commands that are needed in certain test cases. Some of these test cases might fail or be skipped in case it wasn&rsquo;t deployed correctly.</p>
-<h1 id="abbreviations">Abbreviations<a class="headerlink" href="#abbreviations" title="Permanent link">&para;</a></h1>
+<p>This DaemonSet, called &ldquo;tnf-debug&rdquo; is deployed and used internally by the CNF Certification tool to issue some shell commands that are needed in certain test cases. Some of these test cases might fail or be skipped in case it wasn&rsquo;t deployed correctly.</p>
 
 
 

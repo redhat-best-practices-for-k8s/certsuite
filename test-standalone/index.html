@@ -956,9 +956,9 @@ git<span class="w"> </span>clone<span class="w"> </span>git@github.com:test-netw
 <p>In order to build the test executable, first make sure you have satisfied the <a href="#dependencies">dependencies</a>.</p>
 <div class="highlight"><pre><span></span><code>make<span class="w"> </span>build-cnf-tests
 </code></pre></div>
-<p><em>Gotcha:</em> The <code>make build*</code> commands run unit tests where appropriate. They do NOT test the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>.</p>
-<h3 id="3-test-a-cnf">3. Test a <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr><a class="headerlink" href="#3-test-a-cnf" title="Permanent link">&para;</a></h3>
-<p>A <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> is tested by specifying which suites to run using the <code>run-cnf-suites.sh</code> helper
+<p><em>Gotcha:</em> The <code>make build*</code> commands run unit tests where appropriate. They do NOT test the CNF.</p>
+<h3 id="3-test-a-cnf">3. Test a CNF<a class="headerlink" href="#3-test-a-cnf" title="Permanent link">&para;</a></h3>
+<p>A CNF is tested by specifying which suites to run using the <code>run-cnf-suites.sh</code> helper
 script.</p>
 <p>Run any combination of the suites keywords listed at in the <a href="../test-spec/#general-tests">General tests</a> section, e.g.</p>
 <div class="highlight"><pre><span></span><code>./run-cnf-suites.sh<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;lifecycle&quot;</span>
@@ -997,9 +997,8 @@ To run the tests in an offline environment, skip the tests using the <code>l</co
 <div class="highlight"><pre><span></span><code>./run-cnf-suites.sh<span class="w"> </span>-l<span class="w"> </span><span class="s1">&#39;!online&#39;</span>
 </code></pre></div>
 <p>Alternatively, if an offline DB for containers, helm charts and operators is available, there is no need to skip those tests if the environment variable <code>TNF_OFFLINE_DB</code> is set to the DB location. This DB can be generated using the <a href="https://github.com/test-network-function/oct">OCT tool</a>.</p>
-<h3 id="build-test-a-cnf">Build + Test a <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr><a class="headerlink" href="#build-test-a-cnf" title="Permanent link">&para;</a></h3>
+<h3 id="build-test-a-cnf">Build + Test a CNF<a class="headerlink" href="#build-test-a-cnf" title="Permanent link">&para;</a></h3>
 <p>Refer <a href="../developers/">Developers&rsquo; Guide</a></p>
-<h1 id="abbreviations">Abbreviations<a class="headerlink" href="#abbreviations" title="Permanent link">&para;</a></h1>
 
 
 

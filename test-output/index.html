@@ -786,7 +786,7 @@
 <!-- markdownlint-disable line-length no-bare-urls no-emphasis-as-heading -->
 <h1 id="test-output">Test Output<a class="headerlink" href="#test-output" title="Permanent link">&para;</a></h1>
 <h2 id="claim-file">Claim File<a class="headerlink" href="#claim-file" title="Permanent link">&para;</a></h2>
-<p>The test suite generates an output file, named <strong>claim</strong> file. This file is considered as the proof of <abbr title="Cloud-Native Network Functions">CNFs</abbr> test run, evaluated by Red Hat when <strong>certified</strong> status is considered.</p>
+<p>The test suite generates an output file, named <strong>claim</strong> file. This file is considered as the proof of CNFs test run, evaluated by Red Hat when <strong>certified</strong> status is considered.</p>
 <p>This file describes the following</p>
 <ul>
 <li>The system(s) under test</li>
@@ -795,7 +795,7 @@
 </ul>
 <p><strong>Files that need to be submitted for certification</strong></p>
 <p>When submitting results back to Red Hat for certification, please include the above mentioned claim file, the JUnit file, and any available console logs.</p>
-<p><strong>How to add a <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> platform test result to the existing claim file?</strong></p>
+<p><strong>How to add a CNF platform test result to the existing claim file?</strong></p>
 <div class="highlight"><pre><span></span><code><span class="k">go</span><span class="w"> </span><span class="nx">run</span><span class="w"> </span><span class="nx">cmd</span><span class="o">/</span><span class="nx">tools</span><span class="o">/</span><span class="nx">cmd</span><span class="o">/</span><span class="nx">main</span><span class="p">.</span><span class="k">go</span><span class="w"> </span><span class="nx">claim</span><span class="o">-</span><span class="nx">add</span><span class="w"> </span><span class="o">--</span><span class="nx">claimfile</span><span class="p">=</span><span class="nx">claim</span><span class="p">.</span><span class="nx">json</span>
 <span class="o">--</span><span class="nx">reportdir</span><span class="p">=</span><span class="o">/</span><span class="nx">home</span><span class="o">/</span><span class="err">$</span><span class="nx">USER</span><span class="o">/</span><span class="nx">reports</span>
 </code></pre></div>
@@ -821,7 +821,6 @@
 </ul>
 <h2 id="execution-logs">Execution logs<a class="headerlink" href="#execution-logs" title="Permanent link">&para;</a></h2>
 <p>The test suite also saves a copy of the execution logs at [test output directory]/tnf-execution.log</p>
-<h1 id="abbreviations">Abbreviations<a class="headerlink" href="#abbreviations" title="Permanent link">&para;</a></h1>
 
 
 
