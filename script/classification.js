@@ -192,10 +192,10 @@ classification=  {
     "Telco": "Mandatory"
   },
   "lifecycle-container-startup": {
-    "Extended": "Mandatory",
-    "FarEdge": "Mandatory",
+    "Extended": "Optional",
+    "FarEdge": "Optional",
     "NonTelco": "Optional",
-    "Telco": "Mandatory"
+    "Telco": "Optional"
   },
   "lifecycle-cpu-isolation": {
     "Extended": "Mandatory",

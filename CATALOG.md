@@ -46,7 +46,7 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 
 |Mandatory|Optional|
 |---|---|
-|23|3|
+|22|4|
 
 ## Test Case list
 
@@ -616,10 +616,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.
 Tags|telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|Far-Edge|Mandatory|
+|Extended|Optional|
+|Far-Edge|Optional|
 |Non-Telco|Optional|
-|Telco|Mandatory|
+|Telco|Optional|
 
 #### lifecycle-cpu-isolation
 

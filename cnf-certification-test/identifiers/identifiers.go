@@ -350,10 +350,10 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		bestPracticeDocV1dot3URL+" Section 5.1.3, 12.2 and 12.5",
 		true,
 		map[string]string{
-			FarEdge:  Mandatory,
-			Telco:    Mandatory,
+			FarEdge:  Optional,
+			Telco:    Optional,
 			NonTelco: Optional,
-			Extended: Mandatory,
+			Extended: Optional,
 		},
 		TagTelco)
 
