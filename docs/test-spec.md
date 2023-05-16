@@ -36,7 +36,7 @@ Suite|Test Spec Description|Minimum OpenShift Version
 
 !!! info
 
-    Please refer [CATALOG.md](CATALOG.md) for more details.
+    Please refer [CATALOG.md](https://github.com/test-network-function/cnf-certification-test/blob/main/CATALOG.md) for more details.
 
 ### CNF-specific tests
 

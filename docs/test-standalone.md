@@ -14,7 +14,7 @@ cd cnf-certification-test
 
 !!! note
 
-By default, `cnf-certification-test` emits results to `cnf-certification-test/cnf-certification-tests_junit.xml`.
+    By default, `cnf-certification-test` emits results to `cnf-certification-test/cnf-certification-tests_junit.xml`.
 
 ## 1. Install dependencies
 
@@ -35,8 +35,8 @@ Other binary dependencies required to run tests can be installed using the follo
 
 !!! note
 
-* You must also make sure that `$GOBIN` (default `$GOPATH/bin`) is on your `$PATH`.
-* Efforts to containerise this offering are considered a work in progress.
+    * You must also make sure that `$GOBIN` (default `$GOPATH/bin`) is on your `$PATH`.
+    * Efforts to containerise this offering are considered a work in progress.
 
 ## 2. Build the Test Suite
 
@@ -65,7 +65,7 @@ Run any combination of the suites keywords listed at in the [General tests](test
 
 !!! note
 
-As with "run-tnf-container.sh", if `-l` is not specified here, the tnf will run in 'diagnostic' mode.
+    As with "run-tnf-container.sh", if `-l` is not specified here, the tnf will run in 'diagnostic' mode.
 
 By default the claim file will be output into the same location as the test executable. The `-o` argument for
     `run-cnf-suites.sh` can be used to provide a new location that the output files will be saved to. For more detailed
@@ -88,7 +88,7 @@ To select the test to be executed when running `run-cnf-suites.sh` with the foll
 
 !!! note
 
-The test labels work the same as the suite labels, so you can select more than one test with the filtering mechanism shown before.
+    The test labels work the same as the suite labels, so you can select more than one test with the filtering mechanism shown before.
 
 ### Run all of the tests
 

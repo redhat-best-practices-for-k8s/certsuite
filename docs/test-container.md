@@ -27,7 +27,7 @@ In order to get the required information, the test suite does not `ssh` into nod
 
 !!! note
 
-It's **recommended** to clean up disk space and make sure there's enough resources to deploy another container image in every node before starting the tests.
+    It's **recommended** to clean up disk space and make sure there's enough resources to deploy another container image in every node before starting the tests.
 
 ### Run the tests
 
@@ -42,7 +42,7 @@ It's **recommended** to clean up disk space and make sure there's enough resourc
 
 !!! warning
 
-This directory must exist in order for the claim file to be written.
+    This directory must exist in order for the claim file to be written.
 
 **Optional arguments**
 
@@ -50,7 +50,7 @@ This directory must exist in order for the claim file to be written.
 
 !!! note
 
-If `-l` is not specified, the tnf will run in 'diagnostic' mode. In this mode, no test case will run: it will only get information from the cluster (PUTs, CRDs, nodes info, etc…) to save it in the claim file. This can be used to make sure the configuration was properly set and the autodiscovery found the right pods/crds…
+    If `-l` is not specified, the tnf will run in 'diagnostic' mode. In this mode, no test case will run: it will only get information from the cluster (PUTs, CRDs, nodes info, etc…) to save it in the claim file. This can be used to make sure the configuration was properly set and the autodiscovery found the right pods/crds…
 
 * `-i` to provide a name to a custom TNF container image. Supports local images, as well as images from external registries.
 
@@ -58,7 +58,7 @@ If `-l` is not specified, the tnf will run in 'diagnostic' mode. In this mode, n
 
 !!! note
 
-If `-k` is not specified, autodiscovery is performed.
+    If `-k` is not specified, autodiscovery is performed.
 
 The autodiscovery first looks for paths in the `$KUBECONFIG` environment variable on the host system, and if the variable is not set or is empty, the default configuration stored in `$HOME/.kube/config` is checked.
 
@@ -66,13 +66,13 @@ The autodiscovery first looks for paths in the `$KUBECONFIG` environment variabl
 
 !!! note
 
-See the [docker run --network parameter reference](https://docs.docker.com/engine/reference/run/#network-settings) for more information on how to configure network settings.
+    See the [docker run --network parameter reference](https://docs.docker.com/engine/reference/run/#network-settings) for more information on how to configure network settings.
 
 * `-b` to set an external offline DB that will be used to verify the certification status of containers, helm charts and operators. Defaults to the DB included in the TNF container image.
 
 !!! note
 
-See the [OCT tool](https://github.com/test-network-function/oct) for more information on how to create this DB.
+    See the [OCT tool](https://github.com/test-network-function/oct) for more information on how to create this DB.
 
 **Command to run**
 
