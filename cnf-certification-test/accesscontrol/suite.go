@@ -718,11 +718,10 @@ func testPodRequestsAndLimits(env *provider.TestEnvironment) {
 func test1337UIDs(env *provider.TestEnvironment) {
 	// Note this test is only ran as part of the 'extended' test suite.
 	ginkgo.By("Testing pods to ensure none are using UID 1337")
-	const leetNum = 1337
 	var badPods []string
 	for _, put := range env.Pods {
 		ginkgo.By(fmt.Sprintf("checking if pod %s has a securityContext RunAsUser 1337 (ns= %s)", put.Name, put.Namespace))
-		if put.Spec.SecurityContext.RunAsUser != nil && *put.Spec.SecurityContext.RunAsUser == int64(leetNum) {
+		if put.IsRunAsUser1337() {
 			tnf.ClaimFilePrintf("Pod: %s/%s is found to use securityContext RunAsUser 1337", put.Namespace, put.Name)
 			badPods = append(badPods, put.Name)
 		}

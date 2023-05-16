@@ -400,3 +400,15 @@ func (p *Pod) IsUsingClusterRoleBinding(clusterRoleBindings []rbacv1.ClusterRole
 
 	return false, nil
 }
+
+func (p *Pod) IsRunAsUser1337() bool {
+	if p.Pod.Spec.SecurityContext == nil {
+		return false
+	}
+
+	if p.Pod.Spec.SecurityContext.RunAsUser != nil && *p.Pod.Spec.SecurityContext.RunAsUser == 1337 {
+		return true
+	}
+
+	return false
+}
