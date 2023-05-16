@@ -1,4 +1,4 @@
-<!-- markdownlint-disable line-length no-bare-urls no-emphasis-as-heading -->
+<!-- markdownlint-disable code-block-style line-length no-bare-urls no-emphasis-as-heading -->
 # Test
 
 The tests can be run within a prebuilt container in the OCP cluster.

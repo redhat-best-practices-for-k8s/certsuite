@@ -1,4 +1,4 @@
-<!-- markdownlint-disable link-fragments line-length no-bare-urls no-emphasis-as-heading -->
+<!-- markdownlint-disable code-block-style link-fragments line-length no-bare-urls no-emphasis-as-heading -->
 # Standalone test executable
 
 **Prerequisites**

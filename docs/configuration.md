@@ -1,4 +1,4 @@
-<!-- markdownlint-disable line-length no-bare-urls -->
+<!-- markdownlint-disable code-block-style line-length no-bare-urls -->
 # Test configuration
 
 The certification test suite supports autodiscovery using labels and annotations.
