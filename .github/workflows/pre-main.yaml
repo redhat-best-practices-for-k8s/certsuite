@@ -245,6 +245,21 @@ jobs:
             cnf-certification-test/results.html
             cnf-certification-test/tnf-execution.log
 
+      - name: 'Test: Run preflight specific test suite'
+        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "preflight"
+
+      - name: Upload preflight smoke test results as an artifact
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: preflight-smoke-tests
+          path: |
+            cnf-certification-test/*.xml
+            cnf-certification-test/claim.json
+            cnf-certification-test/claimjson.js
+            cnf-certification-test/results.html
+            cnf-certification-test/tnf-execution.log
+
   smoke-tests-container:
     name: Run Container Smoke Tests
     runs-on: ubuntu-22.04
@@ -307,6 +322,21 @@ jobs:
         if: always()
         with:
           name: smoke-tests-container
+          path: |
+            ${{ env.TNF_OUTPUT_DIR }}/*.xml
+            ${{ env.TNF_OUTPUT_DIR }}/claim.json
+            ${{ env.TNF_OUTPUT_DIR }}/claimjson.js
+            ${{ env.TNF_OUTPUT_DIR }}/results.html
+            ${{ env.TNF_OUTPUT_DIR }}/tnf-execution.log
+
+      - name: 'Test: Run Preflight Specific Smoke Tests in a TNF container'
+        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "preflight"
+
+      - name: Upload container preflight test results as an artifact
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: preflight-smoke-tests-container
           path: |
             ${{ env.TNF_OUTPUT_DIR }}/*.xml
             ${{ env.TNF_OUTPUT_DIR }}/claim.json
