@@ -27,6 +27,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	corev1 "k8s.io/api/core/v1"
+	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -374,6 +375,26 @@ func (p *Pod) IsUsingSRIOV() (bool, error) {
 		logrus.Tracef("%s: NAD config: %s", p, nad.Spec.Config)
 		if isSRIOV {
 			return true, nil
+		}
+	}
+
+	return false, nil
+}
+
+func (p *Pod) IsUsingClusterRoleBinding(clusterRoleBindings []rbacv1.ClusterRoleBinding) (bool, error) {
+	// This function accepts a list of clusterRoleBindings and checks to see if the pod's service account is
+	// tied to any of them.  If it is, then it returns true, otherwise it returns false.
+	logrus.Infof("Pod: %s/%s is using service account: %s", p.Pod.Namespace, p.Pod.Name, p.Pod.Spec.ServiceAccountName)
+
+	// Loop through the service accounts in the namespace, looking for a match between the pod serviceAccountName and
+	// the service account name.  If there is a match, check to make sure that the SA is not a 'subject' of the cluster
+	// role bindings.
+	for crbIndex := range clusterRoleBindings {
+		for _, subject := range clusterRoleBindings[crbIndex].Subjects {
+			if subject.Kind == rbacv1.ServiceAccountKind && subject.Name == p.Pod.Spec.ServiceAccountName && subject.Namespace == p.Pod.Namespace {
+				tnf.ClaimFilePrintf("Pod %s has service account %s that is tied to cluster role binding %s", p.Pod.Name, p.Pod.Spec.ServiceAccountName, clusterRoleBindings[crbIndex].Name)
+				return true, nil
+			}
 		}
 	}
 

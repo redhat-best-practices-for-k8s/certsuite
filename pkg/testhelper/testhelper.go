@@ -40,6 +40,8 @@ type FailureReasonOut struct {
 	NonCompliantObjectsOut []*ReportObject
 }
 
+// When adding new field types, please update the following:
+
 const (
 	Namespace              = "Namespace"
 	PodName                = "PodName"
@@ -51,7 +53,14 @@ const (
 	ReasonForNonCompliance = "ReasonForNonCompliance"
 	ReasonForCompliance    = "ReasonForCompliance"
 	Category               = "Category"
+	ProjectedVolumeName    = "ProjectedVolumeName"
+	ProjectedVolumeSAToken = "ProjectedVolumeSAToken"
+	RoleBindingName        = "RoleBindingName"
+	RoleBindingNamespace   = "RoleBindingNamespace"
+	ServiceAccountName     = "ServiceAccountName"
 )
+
+// When adding new object types, please update the following:
 
 const (
 	UndefinedType        = "Undefined Type"
@@ -60,6 +69,7 @@ const (
 	ContainerType        = "Container"
 	ContainerProcessType = "ContainerProcess"
 	ContainerCategory    = "ContainerCategory"
+	ProjectedVolumeType  = "ProjectedVolume"
 )
 
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {

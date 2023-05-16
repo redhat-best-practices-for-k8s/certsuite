@@ -35,6 +35,7 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	networkingv1 "k8s.io/api/networking/v1"
 	policyv1 "k8s.io/api/policy/v1"
+	rbacv1 "k8s.io/api/rbac/v1"
 	storagev1 "k8s.io/api/storage/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
@@ -70,6 +71,8 @@ type DiscoveredTestData struct {
 	StatefulSet            []appsv1.StatefulSet
 	PersistentVolumes      []corev1.PersistentVolume
 	PersistentVolumeClaims []corev1.PersistentVolumeClaim
+	ClusterRoleBindings    []rbacv1.ClusterRoleBinding
+	RoleBindings           []rbacv1.RoleBinding // Contains all rolebindings from all namespaces
 	Services               []*corev1.Service
 	Hpas                   []*scalingv1.HorizontalPodAutoscaler
 	Subscriptions          []olmv1Alpha.Subscription
@@ -188,6 +191,18 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.K8sVersion = k8sVersion.GitVersion
 	data.Deployments = findDeploymentByLabel(oc.K8sClient.AppsV1(), config.PodsUnderTestLabelsObjects, data.Namespaces)
 	data.StatefulSet = findStatefulSetByLabel(oc.K8sClient.AppsV1(), config.PodsUnderTestLabelsObjects, data.Namespaces)
+	// Find ClusterRoleBindings
+	clusterRoleBindings, err := getClusterRoleBindings()
+	if err != nil {
+		logrus.Fatalf("Cannot get cluster role bindings, error: %v", err)
+	}
+	data.ClusterRoleBindings = clusterRoleBindings
+	// Find RoleBindings
+	roleBindings, err := getRoleBindings()
+	if err != nil {
+		logrus.Fatalf("Cannot get cluster role bindings, error: %v", err)
+	}
+	data.RoleBindings = roleBindings
 	data.Hpas = findHpaControllers(oc.K8sClient, data.Namespaces)
 	data.Nodes, err = oc.K8sClient.CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {

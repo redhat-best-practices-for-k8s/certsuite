@@ -7,13 +7,13 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 
 ## Test cases summary
 
-### Total test cases: 85
+### Total test cases: 86
 
 ### Total suites: 10
 
 |Suite|Tests per suite|
 |---|---|
-|access-control|24|
+|access-control|25|
 |affiliated-certification|4|
 |chaostesting|1|
 |lifecycle|18|
@@ -24,11 +24,11 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |performance|5|
 |platform-alteration|12|
 
-### Extended specific tests only: 11
+### Extended specific tests only: 12
 
 |Mandatory|Optional|
 |---|---|
-|9|2|
+|10|2|
 
 ### Far-Edge specific tests only: 7
 
@@ -325,6 +325,23 @@ Tags|common,access-control
 |Far-Edge|Mandatory|
 |Non-Telco|Mandatory|
 |Telco|Mandatory|
+
+#### access-control-projected-volume-service-account-token
+
+Property|Description
+---|---
+Unique ID|access-control-projected-volume-service-account-token
+Description|Checks that pods do not use projected volumes and service account tokens
+Result Type|informative
+Suggested Remediation|Ensure that pods do not use projected volumes and service account tokens
+Best Practice Reference|https://to-be-done Section 4.6.24
+Exception Process|There is no documented exception process for this.
+Tags|extended,access-control
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
 
 #### access-control-requests-and-limits
 
