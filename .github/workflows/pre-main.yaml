@@ -163,7 +163,7 @@ jobs:
           totalCoverage=`UNIT_TEST='true' cat cover.out.tmp | grep -v "_moq.go" > cover.out; go tool cover -func=cover.out | grep total | grep -Eo '[0-9]+\.[0-9]+'`
           echo "Current test coverage : $totalCoverage %"
           if (( $(echo "$totalCoverage $TESTCOVERAGE_THRESHOLD" | awk '{print ($1 > $2)}') )); then
-              echo "OK"
+              echo OK
           else
               echo "Current test coverage is below threshold. Please add more unit tests or adjust threshold to a lower value."
               echo "Failed"
@@ -203,8 +203,8 @@ jobs:
       - name: Update the CNF DB
         run: |
           docker pull ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
-          mkdir -p ${GITHUB_WORKSPACE}/offline-db
-          docker run -v ${GITHUB_WORKSPACE}/offline-db:/tmp/dump:Z --env OCT_DUMP_ONLY=true ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
+          mkdir -p "${GITHUB_WORKSPACE}"/offline-db
+          docker run -v "${GITHUB_WORKSPACE}"/offline-db:/tmp/dump:Z --env OCT_DUMP_ONLY=true ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
 
       - name: Install ginkgo
         run: make install-tools
@@ -254,16 +254,16 @@ jobs:
       - name: Run gradetool on the claim.json
         run: |
           make build
-          ./gradetool -p ${GITHUB_WORKSPACE}/generated_policy.json -o ${GITHUB_WORKSPACE}/results.txt -r ${GITHUB_WORKSPACE}/cnf-certification-test/claim.json
+          ./gradetool -p "${GITHUB_WORKSPACE}"/generated_policy.json -o "${GITHUB_WORKSPACE}"/results.txt -r "${GITHUB_WORKSPACE}"/cnf-certification-test/claim.json
         working-directory: gradetool
 
       - name: Check that their are 0 failed tests in the gradetool results
         run: |
-          if $(jq '.[] | .Fail | length' ${GITHUB_WORKSPACE}/results.txt | grep -q 0); then
-            echo "OK"
+          if $(jq '.[] | .Fail | length' "${GITHUB_WORKSPACE}"/results.txt | grep -q 0); then
+            echo OK
           else
             echo "Gradetool has found failing tests in the following:"
-            jq '.[] | .Fail | .[].id' ${GITHUB_WORKSPACE}/results.txt
+            jq '.[] | .Fail | .[].id' "${GITHUB_WORKSPACE}"/results.txt
             exit 1
           fi
 
@@ -360,16 +360,16 @@ jobs:
       - name: Run gradetool on the claim.json
         run: |
           make build
-          ./gradetool -p ${GITHUB_WORKSPACE}/generated_policy.json -o ${GITHUB_WORKSPACE}/results.txt -r ${{ env.TNF_OUTPUT_DIR }}/claim.json
+          ./gradetool -p "${GITHUB_WORKSPACE}"/generated_policy.json -o "${GITHUB_WORKSPACE}"/results.txt -r ${{ env.TNF_OUTPUT_DIR }}/claim.json
         working-directory: gradetool
   
       - name: Check that their are 0 failed tests in the gradetool results
         run: |
-          if $(jq '.[] | .Fail | length' ${GITHUB_WORKSPACE}/results.txt | grep -q 0); then
-            echo "OK"
+          if $(jq '.[] | .Fail | length' "${GITHUB_WORKSPACE}"/results.txt | grep -q 0); then
+            echo OK
           else
             echo "Gradetool has found failing tests in the following:"
-            jq '.[] | .Fail | .[].id' ${GITHUB_WORKSPACE}/results.txt
+            jq '.[] | .Fail | .[].id' "${GITHUB_WORKSPACE}"/results.txt
             exit 1
           fi
 

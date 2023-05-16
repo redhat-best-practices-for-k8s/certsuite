@@ -11,7 +11,6 @@ for SUITE_VAL in "${SUITES[@]}"; do
 	#shellcheck disable=SC2013,SC2002
 	for i in $(cat CATALOG.md | grep "Unique ID" | grep "$SUITE_VAL" | sed 's/Unique ID|//'); do
 		jq --null-input --arg id "$i" --arg suite "$SUITE_VAL" '{"id": $id, "suite": $suite}' >>temp.txt
-		# jq --null-input --arg id "$i" --arg suite "$SUITE_VAL" '{"id": $id, "suite": $suite}'
 	done
 done
 
