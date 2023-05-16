@@ -717,17 +717,20 @@ func testPodRequestsAndLimits(env *provider.TestEnvironment) {
 
 func test1337UIDs(env *provider.TestEnvironment) {
 	// Note this test is only ran as part of the 'extended' test suite.
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	ginkgo.By("Testing pods to ensure none are using UID 1337")
-	var badPods []string
 	for _, put := range env.Pods {
 		ginkgo.By(fmt.Sprintf("checking if pod %s has a securityContext RunAsUser 1337 (ns= %s)", put.Name, put.Namespace))
 		if put.IsRunAsUser1337() {
 			tnf.ClaimFilePrintf("Pod: %s/%s is found to use securityContext RunAsUser 1337", put.Namespace, put.Name)
-			badPods = append(badPods, put.Name)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is using securityContext RunAsUser 1337", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not using securityContext RunAsUser 1337", true))
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, ginkgo.Fail)
 }
 
 // a test for security context that are allowed from the documentation of the cnf
