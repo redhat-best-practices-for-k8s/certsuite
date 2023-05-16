@@ -11,7 +11,7 @@ RUN \
 	&& dnf update --assumeyes --disableplugin=subscription-manager \
 	&& dnf install --assumeyes --disableplugin=subscription-manager \
 		gcc-8.5.0 \
-		git-2.31.1 \
+		git-2.39.1 \
 		jq-1.6 \
 		cmake-3.20.2 \
 		wget-1.19.5 \
