@@ -6,10 +6,10 @@ classification=  {
     "Telco": "Mandatory"
   },
   "access-control-container-host-port": {
-    "Extended": "Optional",
-    "FarEdge": "Optional",
-    "NonTelco": "Optional",
-    "Telco": "Optional"
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
   },
   "access-control-ipc-lock-capability-check": {
     "Extended": "Mandatory",
@@ -95,6 +95,12 @@ classification=  {
     "NonTelco": "Mandatory",
     "Telco": "Mandatory"
   },
+  "access-control-projected-volume-service-account-token": {
+    "Extended": "Mandatory",
+    "FarEdge": "Optional",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
   "access-control-requests-and-limits": {
     "Extended": "Mandatory",
     "FarEdge": "Mandatory",
@@ -102,22 +108,22 @@ classification=  {
     "Telco": "Mandatory"
   },
   "access-control-security-context": {
-    "Extended": "Optional",
+    "Extended": "Mandatory",
     "FarEdge": "Optional",
     "NonTelco": "Optional",
     "Telco": "Optional"
   },
   "access-control-security-context-non-root-user-check": {
-    "Extended": "Optional",
-    "FarEdge": "Optional",
-    "NonTelco": "Optional",
-    "Telco": "Optional"
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
   },
   "access-control-security-context-privilege-escalation": {
-    "Extended": "Optional",
-    "FarEdge": "Optional",
-    "NonTelco": "Optional",
-    "Telco": "Optional"
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
   },
   "access-control-ssh-daemons": {
     "Extended": "Mandatory",
@@ -175,9 +181,9 @@ classification=  {
   },
   "lifecycle-affinity-required-pods": {
     "Extended": "Mandatory",
-    "FarEdge": "Optional",
+    "FarEdge": "Mandatory",
     "NonTelco": "Optional",
-    "Telco": "Optional"
+    "Telco": "Mandatory"
   },
   "lifecycle-container-shutdown": {
     "Extended": "Mandatory",
@@ -186,10 +192,10 @@ classification=  {
     "Telco": "Mandatory"
   },
   "lifecycle-container-startup": {
-    "Extended": "Mandatory",
-    "FarEdge": "Mandatory",
+    "Extended": "Optional",
+    "FarEdge": "Optional",
     "NonTelco": "Optional",
-    "Telco": "Mandatory"
+    "Telco": "Optional"
   },
   "lifecycle-cpu-isolation": {
     "Extended": "Mandatory",
@@ -229,7 +235,7 @@ classification=  {
   },
   "lifecycle-pod-high-availability": {
     "Extended": "Mandatory",
-    "FarEdge": "Mandatory",
+    "FarEdge": "Optional",
     "NonTelco": "Mandatory",
     "Telco": "Mandatory"
   },
@@ -266,7 +272,7 @@ classification=  {
   "lifecycle-startup-probe": {
     "Extended": "Mandatory",
     "FarEdge": "Mandatory",
-    "NonTelco": "Mandatory",
+    "NonTelco": "Optional",
     "Telco": "Mandatory"
   },
   "lifecycle-statefulset-scaling": {
@@ -301,9 +307,9 @@ classification=  {
   },
   "networking-dual-stack-service": {
     "Extended": "Mandatory",
-    "FarEdge": "Mandatory",
+    "FarEdge": "Optional",
     "NonTelco": "Optional",
-    "Telco": "Mandatory"
+    "Telco": "Optional"
   },
   "networking-icmpv4-connectivity": {
     "Extended": "Mandatory",
@@ -343,9 +349,9 @@ classification=  {
   },
   "networking-reserved-partner-ports": {
     "Extended": "Mandatory",
-    "FarEdge": "Mandatory",
-    "NonTelco": "Mandatory",
-    "Telco": "Mandatory"
+    "FarEdge": "Optional",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
   },
   "networking-restart-on-reboot-sriov-pod": {
     "Extended": "Mandatory",
@@ -408,7 +414,7 @@ classification=  {
     "Telco": "Mandatory"
   },
   "performance-exclusive-cpu-pool": {
-    "Extended": "Mandatory",
+    "Extended": "Optional",
     "FarEdge": "Mandatory",
     "NonTelco": "Optional",
     "Telco": "Optional"
