@@ -142,7 +142,7 @@ func getNotReadyDeployments(deployments []*provider.Deployment) []*provider.Depl
 	for _, dep := range deployments {
 		ready, err := isDeploymentReady(dep.Name, dep.Namespace)
 		if err != nil {
-			logrus.Errorf("Failed to get %s", dep.ToString())
+			logrus.Errorf("Failed to get %s: %v", dep.ToString(), err)
 			// We'll mark it as not ready, anyways.
 			notReadyDeployments = append(notReadyDeployments, dep)
 			continue
@@ -165,7 +165,7 @@ func getNotReadyStatefulSets(statefulSets []*provider.StatefulSet) []*provider.S
 	for _, sts := range statefulSets {
 		ready, err := isStatefulSetReady(sts.Name, sts.Namespace)
 		if err != nil {
-			logrus.Errorf("Failed to get %s", sts.ToString())
+			logrus.Errorf("Failed to get %s: %v", sts.ToString(), err)
 			// We'll mark it as not ready, anyways.
 			notReadyStatefulSets = append(notReadyStatefulSets, sts)
 			continue
@@ -187,7 +187,7 @@ func WaitForAllPodSetsReady(env *provider.TestEnvironment, timeout time.Duration
 	deploymentsToCheck := env.Deployments
 	statefulSetsToCheck := env.StatefulSets
 
-	logrus.Infof("Waiting %s for %d podsets to be ready.", timeout, len(env.Deployments)+len(env.StatefulSets))
+	logrus.Infof("Waiting %s for %d podsets to be ready.", timeout, len(deploymentsToCheck)+len(statefulSetsToCheck))
 	for startTime := time.Now(); time.Since(startTime) < timeout; {
 		logrus.Infof("Checking Deployments readiness of Deployments %v", getDeploymentsInfo(deploymentsToCheck))
 		deploymentsToCheck = getNotReadyDeployments(deploymentsToCheck)
