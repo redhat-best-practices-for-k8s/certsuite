@@ -13,7 +13,7 @@
         <link rel="next" href="configuration/">
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.12">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.13">
     
     
       
@@ -769,16 +769,16 @@
 
 <!-- markdownlint-disable line-length no-bare-urls no-emphasis-as-heading -->
 <h1 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h1>
-<p>This repository provides a set of Cloud-Native Network Functions (CNF) test cases and the framework to add more test cases.</p>
-<p>! tip &ldquo;CNF&rdquo;</p>
+<p>This repository provides a set of Cloud-Native Network Functions (<abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>) test cases and the framework to add more test cases.</p>
+<p>! tip &ldquo;<abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>&ldquo;</p>
 <div class="codehilite"><pre><span></span><code>The app (containers/pods/operators) we want to certify according Telco partner/Red Hat&#39;s best practices.
 </code></pre></div>
 
-<p>! tip &ldquo;TNF/Certification Test Suite&rdquo;</p>
+<p>! tip &ldquo;<abbr title="Test Network Function">TNF</abbr>/Certification Test Suite&rdquo;</p>
 <div class="codehilite"><pre><span></span><code><span class="n">The</span><span class="w"> </span><span class="k">tool</span><span class="w"> </span><span class="n">we</span><span class="w"> </span><span class="n">use</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">certify</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">CNF</span><span class="o">.</span>
 </code></pre></div>
 
-<p>The purpose of the tests and the framework is to test the interaction of CNF with OpenShift Container Platform (OCP).  </p>
+<p>The purpose of the tests and the framework is to test the interaction of <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> with OpenShift Container Platform (<abbr title="OpenShift Container Platform">OCP</abbr>).  </p>
 <p>! info</p>
 <div class="codehilite"><pre><span></span><code><span class="nv">This</span><span class="w"> </span><span class="nv">test</span><span class="w"> </span><span class="nv">suite</span><span class="w"> </span><span class="nv">is</span><span class="w"> </span><span class="nv">provided</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">CNF</span><span class="w"> </span><span class="nv">Developers</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">test</span><span class="w"> </span><span class="nv">their</span><span class="w"> </span><span class="nv">CNFs</span><span class="w"> </span><span class="nv">readiness</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">certification</span>.
 <span class="nv">Please</span><span class="w"> </span><span class="nv">see</span><span class="w"> </span><span class="s2">&quot;CNF Developers&quot;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">more</span><span class="w"> </span><span class="nv">information</span>.
@@ -798,15 +798,16 @@
 <p>There are 3 building blocks in the above framework.</p>
 <ul>
 <li>
-<p>the <code>CNF</code> represents the CNF to be certified. The certification suite identifies the resources (containers/pods/operators etc) belonging to the CNF via labels or static data entries in the config file</p>
+<p>the <code>CNF</code> represents the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> to be certified. The certification suite identifies the resources (containers/pods/operators etc) belonging to the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> via labels or static data entries in the config file</p>
 </li>
 <li>
-<p>the <code>Certification container/exec</code> is the certification test suite running on the platform or in a container. The executable verifies the CNF under test configuration and its interactions with openshift</p>
+<p>the <code>Certification container/exec</code> is the certification test suite running on the platform or in a container. The executable verifies the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> under test configuration and its interactions with openshift</p>
 </li>
 <li>
 <p>the <code>Debug</code> pods are part of a Kubernetes daemonset responsible to run various <strong>privileged commands</strong> on kubernetes nodes. Debug pods are useful to run platform tests and test commands (e.g. ping) in container namespaces without changing the container image content. The debug daemonset is instantiated via the <a href="https://github.com/test-network-function/cnf-certification-test-partner">cnf-certification-test-partner</a> repository.</p>
 </li>
 </ul>
+<h1 id="abbreviations">Abbreviations<a class="headerlink" href="#abbreviations" title="Permanent link">&para;</a></h1>
 
 
 
@@ -852,7 +853,7 @@
     <script id="__config" type="application/json">{"base": ".", "features": ["navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "content.tooltips", "content.code.annotate"], "search": "assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="assets/javascripts/bundle.c2be25ad.min.js"></script>
+      <script src="assets/javascripts/bundle.b4d07000.min.js"></script>
       
     
   </body>
