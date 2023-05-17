@@ -190,13 +190,16 @@ func WaitForAllPodSetsReady(env *provider.TestEnvironment, timeout time.Duration
 	logrus.Infof("Waiting %s for %d podsets to be ready.", timeout, len(deploymentsToCheck)+len(statefulSetsToCheck))
 	for startTime := time.Now(); time.Since(startTime) < timeout; {
 		logrus.Infof("Checking Deployments readiness of Deployments %v", getDeploymentsInfo(deploymentsToCheck))
-		deploymentsToCheck = getNotReadyDeployments(deploymentsToCheck)
+		notReadyDeployments := getNotReadyDeployments(deploymentsToCheck)
 
 		logrus.Infof("Checking StatefulSets readiness of StatefulSets %v", getStatefulSetsInfo(statefulSetsToCheck))
-		statefulSetsToCheck = getNotReadyStatefulSets(statefulSetsToCheck)
+		notReadyStatefulSets := getNotReadyStatefulSets(statefulSetsToCheck)
 
-		logrus.Infof("Not ready Deployments: %v", getDeploymentsInfo(deploymentsToCheck))
-		logrus.Infof("Not ready StatefulSets: %v", getStatefulSetsInfo(statefulSetsToCheck))
+		logrus.Infof("Not ready Deployments: %v", getDeploymentsInfo(notReadyDeployments))
+		logrus.Infof("Not ready StatefulSets: %v", getStatefulSetsInfo(notReadyStatefulSets))
+
+		deploymentsToCheck = notReadyDeployments
+		statefulSetsToCheck = notReadyStatefulSets
 
 		if len(deploymentsToCheck) == 0 && len(statefulSetsToCheck) == 0 {
 			// No more podsets to check.
