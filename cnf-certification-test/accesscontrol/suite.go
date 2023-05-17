@@ -287,29 +287,33 @@ func testIpcLockCapability(env *provider.TestEnvironment) {
 
 // testSecConRootUser verifies that the container is not running as root
 func testSecConRootUser(env *provider.TestEnvironment) {
-	var badContainers, badPods []string
+	var compliantPodObjects []*testhelper.ReportObject
+	var nonCompliantPodObjects []*testhelper.ReportObject
+	var compliantContainerObjects []*testhelper.ReportObject
+	var nonCompliantContainerObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
-		if put.Spec.SecurityContext != nil && put.Spec.SecurityContext.RunAsUser != nil {
-			// Check the pod level RunAsUser parameter
-			if *(put.Spec.SecurityContext.RunAsUser) == 0 {
-				tnf.ClaimFilePrintf("Non compliant run as Root User detected (RunAsUser uid=0) in pod %s", put.Namespace+"."+put.Name)
-				badPods = append(badPods, put.Namespace+"."+put.Name)
-			}
+		if put.IsRunAsUserID(0) {
+			tnf.ClaimFilePrintf("Non compliant run as Root User detected (RunAsUser uid=0) in pod %s", put.Namespace+"."+put.Name)
+			nonCompliantPodObjects = append(nonCompliantPodObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Root User detected (RunAsUser uid=0)", false))
+		} else {
+			compliantPodObjects = append(compliantPodObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Root User not detected (RunAsUser uid=0)", true))
 		}
+
 		for idx := range put.Spec.Containers {
 			cut := &(put.Spec.Containers[idx])
 			// Check the container level RunAsUser parameter
 			if cut.SecurityContext != nil && cut.SecurityContext.RunAsUser != nil {
 				if *(cut.SecurityContext.RunAsUser) == 0 {
-					tnf.ClaimFilePrintf("Non compliant run as Root User detected (RunAsUser uid=0) in container %s", put.Namespace+"."+put.Name+"."+cut.Name)
-					badContainers = append(badContainers, put.Namespace+"."+put.Name+"."+cut.Name)
+					nonCompliantContainerObjects = append(nonCompliantContainerObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Name, "Root User detected (RunAsUser uid=0)", false))
+				} else {
+					compliantContainerObjects = append(compliantContainerObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Name, "Root User not detected (RunAsUser uid=0)", true))
 				}
 			}
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
-	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantPodObjects, nonCompliantPodObjects, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantContainerObjects, nonCompliantContainerObjects, ginkgo.Fail)
 }
 
 // testSecConPrivilegeEscalation verifies that the container is not allowed privilege escalation
