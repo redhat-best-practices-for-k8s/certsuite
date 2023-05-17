@@ -1,6 +1,6 @@
 FROM registry.access.redhat.com/ubi8/ubi:8.7
 
-RUN dnf install -y python39-3.9.13 && dnf clean all
+RUN dnf install -y python39-3.9.16 && dnf clean all
 
 # Pin versions in pip.
 # hadolint ignore=DL3013
