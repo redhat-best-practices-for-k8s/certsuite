@@ -1,19 +1,19 @@
 # There are four main groups of operations provided by this Makefile: build,
 # clean, run and tasks.
-
-# Build operations will create artefacts from code. This includes things such as
-# binaries, mock files, or catalogs of CNF tests.
-
+#
+# Build operations will create artefacts from code. This includes things such
+# as binaries, mock files, or catalogs of CNF tests.
+#
 # Clean operations remove the results of the build tasks, or other files not
 # considered permanent.
-
+#
 # Run operations provide shortcuts to execute built binaries in common
 # configurations or with default options. They are part convenience and part
 # documentation.
-
+#
 # Tasks provide shortcuts to common operations that occur frequently during
-# development. This includes running configured linters and executing unit tests
-
+# development. This includes running configured linters and executing unit
+# tests.
 GO_PACKAGES=$(shell go list ./... | grep -v vendor)
 
 # Default values
@@ -36,7 +36,7 @@ RELEASE_VERSION?=4.11
 	update-rhcos-versions \
 	vet
 
-# Get default value of $GOBIN if not explicitly set
+# Gets default value of $GOBIN if not explicitly set
 GO_PATH=$(shell go env GOPATH)
 ifeq (,$(shell go env GOBIN))
 	GOBIN=${GO_PATH}/bin
@@ -55,10 +55,11 @@ LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification
 
 all: build
 
-# Run the unit tests and build all binaries
+# Runs the unit tests and build all binaries
 build:
-	make test
-	make build-cnf-tests
+	make \
+		build-cnf-tests \
+		test
 
 build-tnf-tool:
 	go build -o tnf -v cmd/tnf/main.go
@@ -71,53 +72,54 @@ clean:
 		cnf-certification-test/results.html jsontest-cli latest-release-tag.txt \
 		release-tag.txt test-out.json tnf
 
-# Run configured linters
+# Runs configured linters
 lint:
 	checkmake Makefile
 	golangci-lint run --timeout 10m0s
 	hadolint Dockerfile
 	shfmt -d *.sh script
 
-# Build and run unit tests
+# Builds and runs unit tests
 test: coverage-qe
 	./script/create-missing-test-files.sh
 	go build ${COMMON_GO_ARGS} ./...
-	UNIT_TEST="true" go test -coverprofile=cover.out.tmp ./...
+	UNIT_TEST=true go test -coverprofile=cover.out.tmp ./...
 
 coverage-html: test
-	cat cover.out.tmp | grep -v "_moq.go" > cover.out
+	cat cover.out.tmp | grep -v _moq.go >cover.out
 	go tool cover -html cover.out
 
 coverage-qe: build-tnf-tool
 	./tnf generate qe-coverage-report
 
-# generate the test catalog in JSON
+# Generates the test catalog in JSON
 build-catalog-json: build-tnf-tool
-	./tnf generate catalog json > catalog.json
+	./tnf generate catalog json >catalog.json
 
-# generate the test catalog in Markdown
+# Generates the test catalog in Markdown
 build-catalog-md: build-tnf-tool classification-js
-	./tnf generate catalog markdown > CATALOG.md
+	./tnf generate catalog markdown >CATALOG.md
 
-# build the CNF test binary
+# Builds the CNF test binary
 build-cnf-tests:
 	PATH=${PATH}:${GOBIN} ginkgo build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" ./cnf-certification-test
 
-# build the CNF test binary with debug flags
+# Builds the CNF test binary with debug flags
 build-cnf-tests-debug:
 	PATH=${PATH}:${GOBIN} ginkgo build -gcflags "all=-N -l" -ldflags "${LINKER_TNF_RELEASE_FLAGS} -extldflags '-z relro -z now'" ./cnf-certification-test
 
-# Install build tools and other required software.
+# Installs build tools and other required software.
 install-tools:
 	go install "$$(awk '/ginkgo/ {printf "%s/ginkgo@%s", $$1, $$2}' go.mod)"
 
 install-mac-brew-tools:
-	brew install golangci-lint
-	brew install hadolint
-	brew install shfmt
-	brew install checkmake
+	brew install \
+		checkmake \
+		golangci-lint \
+		hadolint \
+		shfmt
 
-# Install linters
+# Installs linters
 install-lint:
 	go install github.com/golangci/golangci-lint/cmd/golangci-lint@${GOLANGCI_VERSION}
 
