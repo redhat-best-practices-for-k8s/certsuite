@@ -719,10 +719,11 @@ func test1337UIDs(env *provider.TestEnvironment) {
 	// Note this test is only ran as part of the 'extended' test suite.
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
+	const leetNum = 1337
 	ginkgo.By("Testing pods to ensure none are using UID 1337")
 	for _, put := range env.Pods {
 		ginkgo.By(fmt.Sprintf("checking if pod %s has a securityContext RunAsUser 1337 (ns= %s)", put.Name, put.Namespace))
-		if put.IsRunAsUser1337() {
+		if put.IsRunAsUserID(leetNum) {
 			tnf.ClaimFilePrintf("Pod: %s/%s is found to use securityContext RunAsUser 1337", put.Namespace, put.Name)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is using securityContext RunAsUser 1337", false))
 		} else {

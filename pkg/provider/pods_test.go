@@ -454,9 +454,10 @@ func TestIsUsingClusterRoleBinding(t *testing.T) {
 	}
 }
 
-func TestIsRunAsUser1337(t *testing.T) {
+func TestIsRunAsUserID(t *testing.T) {
 	testCases := []struct {
 		testPod        Pod
+		testUID        int64
 		expectedOutput bool
 	}{
 		{ // Test Case #1 - Empty SecurityContext, return false
@@ -467,6 +468,7 @@ func TestIsRunAsUser1337(t *testing.T) {
 					},
 				},
 			},
+			testUID:        1337,
 			expectedOutput: false,
 		},
 		{ // Test Case #2 - SecurityContext.RunAsUser set to 1337, return true
@@ -482,6 +484,7 @@ func TestIsRunAsUser1337(t *testing.T) {
 					},
 				},
 			},
+			testUID:        1337,
 			expectedOutput: true,
 		},
 		{ // Test Case #3 - SecurityContext.RunAsUser set to 1336, return false
@@ -497,11 +500,12 @@ func TestIsRunAsUser1337(t *testing.T) {
 					},
 				},
 			},
+			testUID:        1337,
 			expectedOutput: false,
 		},
 	}
 
 	for _, tc := range testCases {
-		assert.Equal(t, tc.expectedOutput, tc.testPod.IsRunAsUser1337())
+		assert.Equal(t, tc.expectedOutput, tc.testPod.IsRunAsUserID(tc.testUID))
 	}
 }
