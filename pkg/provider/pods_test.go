@@ -453,3 +453,59 @@ func TestIsUsingClusterRoleBinding(t *testing.T) {
 		assert.Equal(t, tc.testErr, err)
 	}
 }
+
+func TestIsRunAsUserID(t *testing.T) {
+	testCases := []struct {
+		testPod        Pod
+		testUID        int64
+		expectedOutput bool
+	}{
+		{ // Test Case #1 - Empty SecurityContext, return false
+			testPod: Pod{
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
+						SecurityContext: &corev1.PodSecurityContext{},
+					},
+				},
+			},
+			testUID:        1337,
+			expectedOutput: false,
+		},
+		{ // Test Case #2 - SecurityContext.RunAsUser set to 1337, return true
+			testPod: Pod{
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
+						SecurityContext: &corev1.PodSecurityContext{
+							RunAsUser: func() *int64 {
+								var uid int64 = 1337
+								return &uid
+							}(),
+						},
+					},
+				},
+			},
+			testUID:        1337,
+			expectedOutput: true,
+		},
+		{ // Test Case #3 - SecurityContext.RunAsUser set to 1336, return false
+			testPod: Pod{
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
+						SecurityContext: &corev1.PodSecurityContext{
+							RunAsUser: func() *int64 {
+								var uid int64 = 1336
+								return &uid
+							}(),
+						},
+					},
+				},
+			},
+			testUID:        1337,
+			expectedOutput: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedOutput, tc.testPod.IsRunAsUserID(tc.testUID))
+	}
+}
