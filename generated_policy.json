@@ -7,22 +7,7 @@
         "tags": "common"
       },
       {
-        "id": "access-control-ipc-lock-capability-check",
-        "suite": "access-control",
-        "tags": "common"
-      },
-      {
         "id": "access-control-namespace",
-        "suite": "access-control",
-        "tags": "common"
-      },
-      {
-        "id": "access-control-net-admin-capability-check",
-        "suite": "access-control",
-        "tags": "common"
-      },
-      {
-        "id": "access-control-net-raw-capability-check",
         "suite": "access-control",
         "tags": "common"
       },
@@ -87,6 +72,11 @@
         "tags": "common"
       },
       {
+        "id": "affiliated-certification-container-is-certified-digest",
+        "suite": "affiliated-certification",
+        "tags": "common"
+      },
+      {
         "id": "affiliated-certification-helmchart-is-certified",
         "suite": "affiliated-certification",
         "tags": "common"
@@ -99,11 +89,6 @@
       {
         "id": "chaostesting-pod-delete",
         "suite": "chaostesting",
-        "tags": "common"
-      },
-      {
-        "id": "lifecycle-crd-scaling",
-        "suite": "lifecycle",
         "tags": "common"
       },
       {
@@ -132,6 +117,11 @@
         "tags": "common"
       },
       {
+        "id": "networking-icmpv6-connectivity",
+        "suite": "networking",
+        "tags": "common"
+      },
+      {
         "id": "networking-network-policy-deny-all",
         "suite": "networking",
         "tags": "common"
@@ -142,7 +132,17 @@
         "tags": "common"
       },
       {
-        "id": "observability-termination-policy",
+        "id": "networking-service-type",
+        "suite": "networking",
+        "tags": "common"
+      },
+      {
+        "id": "observability-crd-status",
+        "suite": "observability",
+        "tags": "common"
+      },
+      {
+        "id": "observability-pod-disruption-budget",
         "suite": "observability",
         "tags": "common"
       },
@@ -193,11 +193,6 @@
       },
       {
         "id": "platform-alteration-ocp-node-os-lifecycle",
-        "suite": "platform-alteration",
-        "tags": "common"
-      },
-      {
-        "id": "platform-alteration-service-mesh-usage",
         "suite": "platform-alteration",
         "tags": "common"
       },

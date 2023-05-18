@@ -13,6 +13,8 @@ env:
   TNF_IMAGE_TAG: unstable
   OCT_IMAGE_NAME: testnetworkfunction/oct
   OCT_IMAGE_TAG: latest
+  GRADETOOL_IMAGE_NAME: testnetworkfunction/gradetool
+  GRADETOOL_IMAGE_TAG: latest
   TNF_CONTAINER_CLIENT: docker
   TNF_NON_INTRUSIVE_ONLY: false
   TNF_ALLOW_PREFLIGHT_INSECURE: false
@@ -245,17 +247,22 @@ jobs:
             cnf-certification-test/results.html
             cnf-certification-test/tnf-execution.log
 
-      - name: Clone the gradetool repository
-        uses: actions/checkout@v3
-        with:
-          repository: test-network-function/gradetool
-          path: gradetool
+      # - name: Clone the gradetool repository
+      #   uses: actions/checkout@v3
+      #   with:
+      #     repository: test-network-function/gradetool
+      #     path: gradetool
       
+      # - name: Run gradetool on the claim.json
+      #   run: |
+      #     make build
+      #     ./gradetool -p "${GITHUB_WORKSPACE}"/generated_policy.json -o "${GITHUB_WORKSPACE}"/results.txt -r "${GITHUB_WORKSPACE}"/cnf-certification-test/claim.json
+      #   working-directory: gradetool
+
       - name: Run gradetool on the claim.json
         run: |
-          make build
-          ./gradetool -p "${GITHUB_WORKSPACE}"/generated_policy.json -o "${GITHUB_WORKSPACE}"/results.txt -r "${GITHUB_WORKSPACE}"/cnf-certification-test/claim.json
-        working-directory: gradetool
+          docker pull ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG}
+          docker run -v "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json -v "${GITHUB_WORKSPACE}"/cnf-certification-test/claim.json:/claim.json ${{ env.REGISTRY }}/${{ env.GRADETOOL_IMAGE_NAME }}:${{ env.GRADETOOL_IMAGE_TAG }} -p /policy.json -o results.txt -r /claim.json > "${GITHUB_WORKSPACE}"/results.txt
 
       - name: Check that their are 0 failed tests in the gradetool results
         run: |
@@ -351,17 +358,22 @@ jobs:
             ${{ env.TNF_OUTPUT_DIR }}/results.html
             ${{ env.TNF_OUTPUT_DIR }}/tnf-execution.log
 
-            - name: Clone the gradetool repository
-            uses: actions/checkout@v3
-            with:
-              repository: test-network-function/gradetool
-              path: gradetool
+      # - name: Clone the gradetool repository
+      #   uses: actions/checkout@v3
+      #   with:
+      #     repository: test-network-function/gradetool
+      #     path: gradetool
     
+      # - name: Run gradetool on the claim.json
+      #   run: |
+      #     make build
+      #     ./gradetool -p "${GITHUB_WORKSPACE}"/generated_policy.json -o "${GITHUB_WORKSPACE}"/results.txt -r ${{ env.TNF_OUTPUT_DIR }}/claim.json
+      #   working-directory: gradetool
+
       - name: Run gradetool on the claim.json
         run: |
-          make build
-          ./gradetool -p "${GITHUB_WORKSPACE}"/generated_policy.json -o "${GITHUB_WORKSPACE}"/results.txt -r ${{ env.TNF_OUTPUT_DIR }}/claim.json
-        working-directory: gradetool
+          docker pull ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG}
+          docker run -v "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json -v ${{ env.TNF_OUTPUT_DIR }}/claim.json:/claim.json ${{ env.REGISTRY }}/${{ env.GRADETOOL_IMAGE_NAME }}:${{ env.GRADETOOL_IMAGE_TAG }} -p /policy.json -o results.txt -r /claim.json > "${GITHUB_WORKSPACE}"/results.txt
   
       - name: Check that their are 0 failed tests in the gradetool results
         run: |
