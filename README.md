@@ -27,7 +27,13 @@ Please contact us in case the documentation is broken.
 * Partner
 * Developer
 
-## Pre-requisites
+## Technical Pre-requisites for Running the Test Suite
+
+* OCP or Kubernetes Cluster
+* Docker or Podman (if running the container-based version)
+* `make install-tools` (if running the compiled binary version)
+
+## Pre-requisites for Topics Covered
 
 * Knowledge on Kubernetes
 * OpenShift Container Platform
@@ -37,7 +43,7 @@ Please contact us in case the documentation is broken.
 
 Golang
 
-## Linters
+## Linters for the Codebase
 
 * [`checkmake`](https://github.com/mrtazz/checkmake)
 * [`golangci-lint`](https://github.com/golangci/golangci-lint)
