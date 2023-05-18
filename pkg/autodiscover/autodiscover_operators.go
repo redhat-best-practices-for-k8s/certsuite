@@ -19,6 +19,9 @@ package autodiscover
 import (
 	"context"
 	"fmt"
+	"os/exec"
+	"strconv"
+	"strings"
 
 	helmclient "github.com/mittwald/go-helm-client"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
@@ -197,4 +200,25 @@ func getAllCatalogSources(olmClient clientOlm.Interface) (out []*olmv1Alpha.Cata
 		out = append(out, &catalogSourcesList.Items[index])
 	}
 	return out
+}
+
+func getHelmVersion() float64 {
+	cmd := exec.Command("helm", "version", "--short", "--client")
+	output, err := cmd.Output()
+	if err != nil {
+		logrus.Errorf("unable get helm version , err: %s", err)
+		return 0
+	}
+
+	helmVersion := string(output)
+	helmVersion = strings.Split(helmVersion, "+")[0]
+	helmVersion = strings.Split(helmVersion, "v")[1]
+	helmVersionInt, err := strconv.ParseFloat(helmVersion, 2)
+
+	if err != nil {
+		logrus.Errorf("Error during conversion, err: %s", err)
+		return -1
+	}
+
+	return helmVersionInt
 }

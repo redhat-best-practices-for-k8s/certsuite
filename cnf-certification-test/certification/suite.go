@@ -53,9 +53,12 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 		}
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
-
+	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHelmVerionIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testHelmVerion(&env)
+	})
 	// Query API for certification status of listed containers
-	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedIdentifier)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testContainerCertificationStatus(&env, validator)
 	})
@@ -75,6 +78,7 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testContainerCertificationStatusByDigest(&env, validator)
 	})
+
 })
 
 func getContainersToQuery(env *provider.TestEnvironment) map[configuration.ContainerImageIdentifier]bool {
@@ -201,4 +205,15 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment, val
 		}
 	}
 	testhelper.AddTestResultLog("Non-compliant", failedContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+}
+
+func testHelmVerion(env *provider.TestEnvironment) {
+	helmVersion := env.HelmVersion
+	if helmVersion == 0 {
+		ginkgo.Skip("skip the test helm is not installed")
+	}
+	if helmVersion > 0 && helmVersion < 3 {
+		tnf.ClaimFilePrintf("Helm Chart need to be v3 and not v2 which is not supported due to security risks associated with Tiller %s", helmVersion)
+		ginkgo.Fail("Helm Chart need to be v3 and not v2 which is not supported due to security risks associated with Tiller ")
+	}
 }

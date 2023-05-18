@@ -86,7 +86,8 @@ type DiscoveredTestData struct {
 	ValidProtocolNames     []string
 	StorageClasses         []storagev1.StorageClass
 	ServicesIgnoreList     []string
-	ScaleCrUnderTest       []ScaleObject
+	ScaleCrUndetTest       []ScaleObject
+	HelmVersion            float64
 }
 
 var data = DiscoveredTestData{}
@@ -220,6 +221,7 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	if err != nil {
 		logrus.Fatalf("Cannot get list of services, error: %v", err)
 	}
+	data.HelmVersion = getHelmVersion()
 	return data
 }
 
