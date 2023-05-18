@@ -60,7 +60,7 @@
   </nav>
 
   <button class="w3-button w3-right w3-light-grey" id="download" type="submit" onclick=download()
-    hidden="hidden">Download Results</button>
+    hidden="hidden">Download Results Feedback</button>
 
 
   <ul class="nav nav-tabs">
@@ -560,7 +560,7 @@
               text2 += text
               text2 += '</tbody></table>'
               for (const item of input[key]) {
-                text2 += '<label >write your Feedback for ' + item.testID.id + ' test case</label>'
+                text2 += '<label>Write your feedback for ' + item.testID.id + ' test case</label>'
                 text2 += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-' + tableName + '-' + item.testID.id + '" type="text" ></textarea>'
               }
               text2 += '</div></div></div>'
@@ -568,7 +568,7 @@
               text3 += text
               text3 += '</tbody></table>'
               for (const item of input[key]) {
-                text3 += '<label >write your Feedback for ' + item.testID.id + ' test case</label>'
+                text3 += '<label>Write your feedback for ' + item.testID.id + ' test case</label>'
                 text3 += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-' + tableName + '-' + item.testID.id + '" type="text"></textarea>'
               }
               text3 += '</div></div></div>'
@@ -714,7 +714,7 @@
 
       var pom = document.createElement('a');
       pom.setAttribute('href', 'data:text/html;charset=UTF-8,' + encodeURIComponent(htmlText));
-      pom.setAttribute('download', "results");
+      pom.setAttribute('download', "results-feedback");
 
       pom.style.display = 'none';
       document.body.appendChild(pom);
