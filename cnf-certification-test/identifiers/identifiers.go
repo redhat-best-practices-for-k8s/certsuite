@@ -169,7 +169,6 @@ var (
 
 //nolint:funlen
 func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
-
 	TestICMPv4ConnectivityIdentifier = AddCatalogEntry(
 		"icmpv4-connectivity",
 		common.NetworkingTestKey,
@@ -236,7 +235,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestHelmVerionIdentifier = AddCatalogEntry(
 		"helm-version",
 		common.AffiliatedCertTestKey,
-		`Check Helm Chart is v3 and not v2 which is not supported due to security risks associated with Tiller `,
+		`Test check if helm version is not v3 `,
 		`Check Helm Chart is v3 and not v2 which is not supported due to security risks associated with Tiller `,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 3.3.1",

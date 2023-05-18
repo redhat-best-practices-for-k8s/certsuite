@@ -213,7 +213,7 @@ func getHelmVersion() float64 {
 	helmVersion := string(output)
 	helmVersion = strings.Split(helmVersion, "+")[0]
 	helmVersion = strings.Split(helmVersion, "v")[1]
-	helmVersionInt, err := strconv.ParseFloat(helmVersion, 2)
+	helmVersionInt, err := strconv.ParseFloat(helmVersion, 64)
 
 	if err != nil {
 		logrus.Errorf("Error during conversion, err: %s", err)
