@@ -1,4 +1,4 @@
-<!-- markdownlint-disable line-length no-bare-urls no-emphasis-as-heading -->
+<!-- markdownlint-disable code-block-style line-length no-bare-urls no-emphasis-as-heading -->
 # Test
 
 The tests can be run within a prebuilt container in the OCP cluster.
@@ -25,9 +25,9 @@ In order to get the required information, the test suite does not `ssh` into nod
 
 `oc debug tool` will launch a new container ending with **-debug** suffix, and the container will be destroyed once the debug session is done. Ensure that the cluster should have enough resources to create debug pod, otherwise those tests would fail.
 
-! note
+!!! note
 
-It's **recommended** to clean up disk space and make sure there's enough resources to deploy another container image in every node before starting the tests.
+    It's **recommended** to clean up disk space and make sure there's enough resources to deploy another container image in every node before starting the tests.
 
 ### Run the tests
 
@@ -40,39 +40,39 @@ It's **recommended** to clean up disk space and make sure there's enough resourc
 * `-t` to provide the path of the local directory that contains tnf config files
 * `-o` to provide the path of the local directory where test results (claim.json) and execution logs (tnf-execution.log) will be available from after the container exits.
 
-! warning
+!!! warning
 
-This directory must exist in order for the claim file to be written.
+    This directory must exist in order for the claim file to be written.
 
 **Optional arguments**
 
 * `-l` to list the labels to be run. See [Ginkgo Spec Labels](https://onsi.github.io/ginkgo/#spec-labels) for more information on how to filter tests with labels.
 
-! note
+!!! note
 
-If `-l` is not specified, the tnf will run in 'diagnostic' mode. In this mode, no test case will run: it will only get information from the cluster (PUTs, CRDs, nodes info, etc…) to save it in the claim file. This can be used to make sure the configuration was properly set and the autodiscovery found the right pods/crds…
+    If `-l` is not specified, the tnf will run in 'diagnostic' mode. In this mode, no test case will run: it will only get information from the cluster (PUTs, CRDs, nodes info, etc…) to save it in the claim file. This can be used to make sure the configuration was properly set and the autodiscovery found the right pods/crds…
 
 * `-i` to provide a name to a custom TNF container image. Supports local images, as well as images from external registries.
 
 * `-k` to set a path to one or more kubeconfig files to be used by the container to authenticate with the cluster. Paths must be separated by a colon.
 
-! note
+!!! note
 
-If `-k` is not specified, autodiscovery is performed.
+    If `-k` is not specified, autodiscovery is performed.
 
 The autodiscovery first looks for paths in the `$KUBECONFIG` environment variable on the host system, and if the variable is not set or is empty, the default configuration stored in `$HOME/.kube/config` is checked.
 
 * `-n` to give the network mode of the container. Defaults set to `host`, which requires selinux to be disabled. Alternatively, `bridge` mode can be used with selinux if TNF_CONTAINER_CLIENT is set to `docker` or running the test as root.
 
-! note
+!!! note
 
-See the [docker run --network parameter reference](https://docs.docker.com/engine/reference/run/#network-settings) for more information on how to configure network settings.
+    See the [docker run --network parameter reference](https://docs.docker.com/engine/reference/run/#network-settings) for more information on how to configure network settings.
 
 * `-b` to set an external offline DB that will be used to verify the certification status of containers, helm charts and operators. Defaults to the DB included in the TNF container image.
 
-! note
+!!! note
 
-See the [OCT tool](https://github.com/test-network-function/oct) for more information on how to create this DB.
+    See the [OCT tool](https://github.com/test-network-function/oct) for more information on how to create this DB.
 
 **Command to run**
 
