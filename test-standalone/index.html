@@ -905,7 +905,7 @@
   
 
 
-<!-- markdownlint-disable link-fragments line-length no-bare-urls no-emphasis-as-heading -->
+<!-- markdownlint-disable code-block-style link-fragments line-length no-bare-urls no-emphasis-as-heading -->
 <h1 id="standalone-test-executable">Standalone test executable<a class="headerlink" href="#standalone-test-executable" title="Permanent link">&para;</a></h1>
 <p><strong>Prerequisites</strong></p>
 <p>The repo is cloned and all the commands should be run from the cloned repo.</p>
@@ -914,8 +914,10 @@
 git<span class="w"> </span>clone<span class="w"> </span>git@github.com:test-network-function/cnf-certification-test.git
 <span class="nb">cd</span><span class="w"> </span>cnf-certification-test
 </code></pre></div>
-<p>! note</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>By default, <code>cnf-certification-test</code> emits results to <code>cnf-certification-test/cnf-certification-tests_junit.xml</code>.</p>
+</div>
 <h2 id="1-install-dependencies">1. Install dependencies<a class="headerlink" href="#1-install-dependencies" title="Permanent link">&para;</a></h2>
 <p>Depending on how you want to run the test suite there are different dependencies that will be needed.</p>
 <p>If you are planning on running the test suite as a container, the only pre-requisite is Docker or Podman.</p>
@@ -951,11 +953,13 @@ need to be installed in your environment prior to runtime.</p>
 </tbody>
 </table>
 <p>Other binary dependencies required to run tests can be installed using the following command:</p>
-<p>! note</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <ul>
 <li>You must also make sure that <code>$GOBIN</code> (default <code>$GOPATH/bin</code>) is on your <code>$PATH</code>.</li>
 <li>Efforts to containerise this offering are considered a work in progress.</li>
 </ul>
+</div>
 <h2 id="2-build-the-test-suite">2. Build the Test Suite<a class="headerlink" href="#2-build-the-test-suite" title="Permanent link">&para;</a></h2>
 <p>In order to build the test executable, first make sure you have satisfied the <a href="#dependencies">dependencies</a>.</p>
 <div class="highlight"><pre><span></span><code>make<span class="w"> </span>build-cnf-tests
@@ -971,8 +975,10 @@ script.</p>
 ./run-cnf-suites.sh<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;networking,platform-alteration&quot;</span>
 ./run-cnf-suites.sh<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;networking,lifecycle,affiliated-certification,operator&quot;</span>
 </code></pre></div>
-<p>! note</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>As with &ldquo;run-tnf-container.sh&rdquo;, if <code>-l</code> is not specified here, the tnf will run in &lsquo;diagnostic&rsquo; mode.</p>
+</div>
 <p>By default the claim file will be output into the same location as the test executable. The <code>-o</code> argument for
     <code>run-cnf-suites.sh</code> can be used to provide a new location that the output files will be saved to. For more detailed
     control over the outputs, see the output of <code>cnf-certification-test.test --help</code>.</p>
@@ -984,8 +990,10 @@ a single test.</p>
 <p>To select the test to be executed when running <code>run-cnf-suites.sh</code> with the following command-line:</p>
 <div class="highlight"><pre><span></span><code>./run-cnf-suites.sh<span class="w"> </span>-l<span class="w"> </span>operator-install-source
 </code></pre></div>
-<p>! note</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>The test labels work the same as the suite labels, so you can select more than one test with the filtering mechanism shown before.</p>
+</div>
 <h3 id="run-all-of-the-tests">Run all of the tests<a class="headerlink" href="#run-all-of-the-tests" title="Permanent link">&para;</a></h3>
 <p>You can run all of the tests (including the intrusive tests and the extended suite) with the following commands:</p>
 <div class="highlight"><pre><span></span><code>./run-cnf-suites.sh<span class="w"> </span>-l<span class="w"> </span>common,extended
@@ -1003,7 +1011,7 @@ To run the tests in an offline environment, skip the tests using the <code>l</co
 <p>Alternatively, if an offline DB for containers, helm charts and operators is available, there is no need to skip those tests if the environment variable <code>TNF_OFFLINE_DB</code> is set to the DB location. This DB can be generated using the <a href="https://github.com/test-network-function/oct">OCT tool</a>.</p>
 <h3 id="build-test-a-cnf">Build + Test a <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr><a class="headerlink" href="#build-test-a-cnf" title="Permanent link">&para;</a></h3>
 <p>Refer <a href="../developers/">Developers&rsquo; Guide</a></p>
-<h1 id="abbreviations">Abbreviations<a class="headerlink" href="#abbreviations" title="Permanent link">&para;</a></h1>
+<!-- markdownlint-disable first-line-heading -->
 
 
 

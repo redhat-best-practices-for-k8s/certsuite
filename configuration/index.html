@@ -977,7 +977,7 @@
   
 
 
-<!-- markdownlint-disable line-length no-bare-urls -->
+<!-- markdownlint-disable code-block-style line-length no-bare-urls -->
 <h1 id="test-configuration">Test configuration<a class="headerlink" href="#test-configuration" title="Permanent link">&para;</a></h1>
 <p>The certification test suite supports autodiscovery using labels and annotations.</p>
 <p>These can be configured through the following config file.</p>
@@ -994,8 +994,10 @@
 </code></pre></div>
 <h2 id="targetpodlabels">targetPodLabels<a class="headerlink" href="#targetpodlabels" title="Permanent link">&para;</a></h2>
 <p>The goal of this section is to specify the labels to be used to identify the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> resources under test.</p>
-<p>! note &ldquo;Highly recommended&rdquo;</p>
+<div class="admonition note">
+<p class="admonition-title">Highly recommended</p>
 <p>The labels should be defined in pod definition rather than added after pod is created, as labels added later on will be lost in case the pod gets rescheduled. In case of pods defined as part of a deployment, it&rsquo;s best to use the same label as the one defined in the <code>spec.selector.matchLabels</code> section of the deployment yaml. The prefix field can be used to avoid naming collision with other labels.</p>
+</div>
 <div class="annotate highlight"><pre><span></span><code><span class="nt">targetPodLabels</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">prefix</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test-network-function.com</span>
 <span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generic</span>
@@ -1055,7 +1057,7 @@ If we want to add another name, we just need to write the name in the yaml file.
 <div class="highlight"><pre><span></span><code>debugDaemonSetNamespace:<span class="w"> </span>cnf-cert
 </code></pre></div>
 <p>This DaemonSet, called &ldquo;tnf-debug&rdquo; is deployed and used internally by the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification tool to issue some shell commands that are needed in certain test cases. Some of these test cases might fail or be skipped in case it wasn&rsquo;t deployed correctly.</p>
-<h1 id="abbreviations">Abbreviations<a class="headerlink" href="#abbreviations" title="Permanent link">&para;</a></h1>
+<!-- markdownlint-disable first-line-heading -->
 
 
 
