@@ -679,7 +679,7 @@ Property|Description
 Unique ID|lifecycle-image-pull-policy
 Description|Ensure that the containers under test are using IfNotPresent as Image Pull Policy.
 Result Type|normative
-Suggested Remediation|Ensure that the containers under test are using IfNotPresent as Image Pull Policy. If there is a situation where the container dies and needs to be restarted, the image pull policy 	becomes important. PullIfNotPresent is recommended so that a loss of image registry access does not	prevent the pod from restarting.
+Suggested Remediation|Ensure that the containers under test are using IfNotPresent as Image Pull Policy. If there is a situation where the container dies and needs to be restarted, the image pull policy becomes important. PullIfNotPresent is recommended so that a loss of image registry access does not prevent the pod from restarting.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf  Section 12.6
 Exception Process|There is no documented exception process for this.
 Tags|telco,lifecycle
