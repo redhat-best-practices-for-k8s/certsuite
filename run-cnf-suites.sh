@@ -145,7 +145,7 @@ else
 	fi
 fi
 
-cd ./cnf-certification-test || exit 1
+cd "$BASEDIR"/cnf-certification-test || exit 1
 
 # configuring special pipeline mode
 # The exit status of a pipeline is the exit status of the last command in the pipeline, unless the pipefail option
