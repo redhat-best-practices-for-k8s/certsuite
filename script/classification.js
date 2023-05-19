@@ -97,9 +97,9 @@ classification=  {
   },
   "access-control-projected-volume-service-account-token": {
     "Extended": "Mandatory",
-    "FarEdge": "Optional",
+    "FarEdge": "Mandatory",
     "NonTelco": "Optional",
-    "Telco": "Optional"
+    "Telco": "Mandatory"
   },
   "access-control-requests-and-limits": {
     "Extended": "Mandatory",

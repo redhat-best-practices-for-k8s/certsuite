@@ -24,11 +24,11 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |performance|5|
 |platform-alteration|12|
 
-### Extended specific tests only: 12
+### Extended specific tests only: 11
 
 |Mandatory|Optional|
 |---|---|
-|10|2|
+|9|2|
 
 ### Far-Edge specific tests only: 7
 
@@ -42,11 +42,11 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |---|---|
 |36|4|
 
-### Telco specific tests only: 27
+### Telco specific tests only: 28
 
 |Mandatory|Optional|
 |---|---|
-|23|4|
+|24|4|
 
 ## Test Case list
 
@@ -335,13 +335,13 @@ Description|Checks that pods do not use projected volumes and service account to
 Result Type|informative
 Suggested Remediation|Ensure that pods do not use projected volumes and service account tokens
 Best Practice Reference|https://to-be-done Section 4.6.24
-Exception Process|There is no documented exception process for this.
-Tags|extended,access-control
+Exception Process|Please elaborate why it's needed and explain how it's used.
+Tags|common,telco,access-control
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
-|Far-Edge|Optional|
+|Far-Edge|Mandatory|
 |Non-Telco|Optional|
-|Telco|Optional|
+|Telco|Mandatory|
 
 #### access-control-requests-and-limits
 

@@ -227,16 +227,15 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Checks that pods do not use projected volumes and service account tokens`,
 		ProjectedVolumeServiceAccountRemediation,
 		InformativeResult,
-		NoDocumentedProcess,
+		ElaborateOnWhyItIsNeeded,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		true,
 		map[string]string{
-			FarEdge:  Optional,
-			Telco:    Optional,
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
 			NonTelco: Optional,
-			Extended: Mandatory,
-		},
-		TagExtended)
+			Extended: Mandatory},
+		TagCommon, TagTelco)
 	// TestContainerIsCertifiedDigestIdentifier tests whether the container has passed Container Certification.
 	TestContainerIsCertifiedDigestIdentifier = AddCatalogEntry(
 		"container-is-certified-digest",
