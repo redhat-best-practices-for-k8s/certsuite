@@ -36,17 +36,17 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |---|---|
 |7|0|
 
-### Non-Telco specific tests only: 40
+### Non-Telco specific tests only: 41
 
 |Mandatory|Optional|
 |---|---|
-|36|4|
+|37|4|
 
-### Telco specific tests only: 28
+### Telco specific tests only: 27
 
 |Mandatory|Optional|
 |---|---|
-|24|4|
+|26|1|
 
 ## Test Case list
 
@@ -616,10 +616,10 @@ Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/C
 Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.
 Tags|telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
-|Extended|Optional|
-|Far-Edge|Optional|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
 |Non-Telco|Optional|
-|Telco|Optional|
+|Telco|Mandatory|
 
 #### lifecycle-cpu-isolation
 
@@ -648,7 +648,7 @@ Result Type|normative
 Suggested Remediation|Ensure CNF crd/replica sets can scale in/out successfully.
 Best Practice Reference|https://to-be-done Section 4.6.20
 Exception Process|There is no documented exception process for this.
-Tags|telco,lifecycle
+Tags|common,lifecycle
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
 |Far-Edge|Optional|
@@ -679,15 +679,15 @@ Property|Description
 Unique ID|lifecycle-image-pull-policy
 Description|Ensure that the containers under test are using IfNotPresent as Image Pull Policy.
 Result Type|normative
-Suggested Remediation|Ensure that the containers under test are using IfNotPresent as Image Pull Policy.
+Suggested Remediation|Ensure that the containers under test are using IfNotPresent as Image Pull Policy. If there is a situation where the container dies and needs to be restarted, the image pull policy 	becomes important. PullIfNotPresent is recommended so that a loss of image registry access does not	prevent the pod from restarting.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf  Section 12.6
 Exception Process|There is no documented exception process for this.
 Tags|telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
-|Extended|Optional|
-|Far-Edge|Optional|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
 |Non-Telco|Optional|
-|Telco|Optional|
+|Telco|Mandatory|
 
 #### lifecycle-liveness-probe
 
@@ -718,10 +718,10 @@ Best Practice Reference|https://to-be-done Section 3.3.4
 Exception Process|There is no documented exception process for this.
 Tags|telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
-|Extended|Optional|
-|Far-Edge|Optional|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
 |Non-Telco|Optional|
-|Telco|Optional|
+|Telco|Mandatory|
 
 #### lifecycle-pod-high-availability
 

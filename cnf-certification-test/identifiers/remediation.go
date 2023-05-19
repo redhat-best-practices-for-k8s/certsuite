@@ -87,7 +87,8 @@ const (
 
 	PodDeploymentBestPracticesRemediation = `Deploy the CNF using ReplicaSet/StatefulSet.`
 
-	ImagePullPolicyRemediation = `Ensure that the containers under test are using IfNotPresent as Image Pull Policy.`
+	ImagePullPolicyRemediation = `Ensure that the containers under test are using IfNotPresent as Image Pull Policy. If there is a situation where the container dies and needs to be restarted, the image pull policy
+	becomes important. PullIfNotPresent is recommended so that a loss of image registry access does not	prevent the pod from restarting.`
 
 	PodRoleBindingsBestPracticesRemediation = `Ensure the CNF is not configured to use RoleBinding(s) in a non-CNF Namespace. Scope of role must <= scope of creator of role.`
 

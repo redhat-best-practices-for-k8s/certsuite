@@ -349,10 +349,10 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		bestPracticeDocV1dot3URL+" Section 5.1.3, 12.2 and 12.5",
 		true,
 		map[string]string{
-			FarEdge:  Optional,
-			Telco:    Optional,
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
 			NonTelco: Optional,
-			Extended: Optional,
+			Extended: Mandatory,
 		},
 		TagTelco)
 
@@ -1034,10 +1034,10 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		bestPracticeDocV1dot3URL+"  Section 12.6",
 		true,
 		map[string]string{
-			FarEdge:  Optional,
-			Telco:    Optional,
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
 			NonTelco: Optional,
-			Extended: Optional,
+			Extended: Mandatory,
 		},
 		TagTelco)
 
@@ -1527,10 +1527,10 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		bestPracticeDocV1dot4URL+" Section 3.3.4",
 		true,
 		map[string]string{
-			FarEdge:  Optional,
-			Telco:    Optional,
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
 			NonTelco: Optional,
-			Extended: Optional,
+			Extended: Mandatory,
 		},
 		TagTelco)
 
@@ -1617,7 +1617,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Mandatory,
 			Extended: Mandatory,
 		},
-		TagTelco,
+		TagCommon,
 	)
 
 	TestPodDeleteIdentifier = AddCatalogEntry(

@@ -192,10 +192,10 @@ classification=  {
     "Telco": "Mandatory"
   },
   "lifecycle-container-startup": {
-    "Extended": "Optional",
-    "FarEdge": "Optional",
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
     "NonTelco": "Optional",
-    "Telco": "Optional"
+    "Telco": "Mandatory"
   },
   "lifecycle-cpu-isolation": {
     "Extended": "Mandatory",
@@ -216,10 +216,10 @@ classification=  {
     "Telco": "Mandatory"
   },
   "lifecycle-image-pull-policy": {
-    "Extended": "Optional",
-    "FarEdge": "Optional",
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
     "NonTelco": "Optional",
-    "Telco": "Optional"
+    "Telco": "Mandatory"
   },
   "lifecycle-liveness-probe": {
     "Extended": "Mandatory",
@@ -228,10 +228,10 @@ classification=  {
     "Telco": "Mandatory"
   },
   "lifecycle-persistent-volume-reclaim-policy": {
-    "Extended": "Optional",
-    "FarEdge": "Optional",
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
     "NonTelco": "Optional",
-    "Telco": "Optional"
+    "Telco": "Mandatory"
   },
   "lifecycle-pod-high-availability": {
     "Extended": "Mandatory",
