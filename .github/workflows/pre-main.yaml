@@ -247,18 +247,6 @@ jobs:
             cnf-certification-test/results.html
             cnf-certification-test/tnf-execution.log
 
-      # - name: Clone the gradetool repository
-      #   uses: actions/checkout@v3
-      #   with:
-      #     repository: test-network-function/gradetool
-      #     path: gradetool
-      
-      # - name: Run gradetool on the claim.json
-      #   run: |
-      #     make build
-      #     ./gradetool -p "${GITHUB_WORKSPACE}"/generated_policy.json -o "${GITHUB_WORKSPACE}"/results.txt -r "${GITHUB_WORKSPACE}"/cnf-certification-test/claim.json
-      #   working-directory: gradetool
-
       - name: Run gradetool on the claim.json
         run: |
           docker pull ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG}
@@ -357,18 +345,6 @@ jobs:
             ${{ env.TNF_OUTPUT_DIR }}/claimjson.js
             ${{ env.TNF_OUTPUT_DIR }}/results.html
             ${{ env.TNF_OUTPUT_DIR }}/tnf-execution.log
-
-      # - name: Clone the gradetool repository
-      #   uses: actions/checkout@v3
-      #   with:
-      #     repository: test-network-function/gradetool
-      #     path: gradetool
-    
-      # - name: Run gradetool on the claim.json
-      #   run: |
-      #     make build
-      #     ./gradetool -p "${GITHUB_WORKSPACE}"/generated_policy.json -o "${GITHUB_WORKSPACE}"/results.txt -r ${{ env.TNF_OUTPUT_DIR }}/claim.json
-      #   working-directory: gradetool
 
       - name: Run gradetool on the claim.json
         run: |
