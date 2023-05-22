@@ -50,8 +50,8 @@ func (ss *StatefulSet) ToString() string {
 	)
 }
 
-func GetUpdatedStatefulset(ac appv1client.AppsV1Interface, namespace, podName string) (*StatefulSet, error) {
-	result, err := autodiscover.FindStatefulsetByNameByNamespace(ac, namespace, podName)
+func GetUpdatedStatefulset(ac appv1client.AppsV1Interface, namespace, name string) (*StatefulSet, error) {
+	result, err := autodiscover.FindStatefulsetByNameByNamespace(ac, namespace, name)
 	return &StatefulSet{
 		result,
 	}, err

@@ -495,7 +495,11 @@ func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 	ginkgo.By("Testing node draining effect of deployment")
 	ginkgo.By("Testing initial state for deployments")
 	defer env.SetNeedsRefresh()
-	claimsLog, atLeastOnePodsetNotReady := podsets.WaitForAllPodSetReady(env, timeoutPodSetReady)
+
+	// Before draining any node, wait until all podsets are ready. The timeout depends on the number of podsets to check.
+	// timeout = k-mins + (1min * (num-deployments + num-statefulsets))
+	allPodsetsReadyTimeout := timeoutPodSetReady + time.Minute*time.Duration(len(env.Deployments)+len(env.StatefulSets))
+	claimsLog, atLeastOnePodsetNotReady := podsets.WaitForAllPodSetsReady(env, allPodsetsReadyTimeout)
 	if atLeastOnePodsetNotReady {
 		tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
 		ginkgo.Fail("Some deployments or stateful sets are not in a good initial state. Cannot perform test.")
@@ -532,13 +536,13 @@ func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 			ginkgo.Fail(fmt.Sprintf("Getting pods list to drain in node %s failed with err: %v. Test inconclusive.", n, err))
 		}
 		nodeTimeout := timeoutPodSetReady + timeoutPodRecreationPerPod*time.Duration(count)
-		logrus.Debugf("draining node: %s with timeout: %s", n, nodeTimeout.String())
+		logrus.Debugf("draining node: %s with timeout: %s", n, nodeTimeout)
 		_, err = podrecreation.CountPodsWithDelete(env.Pods, n, podrecreation.DeleteForeground)
 		if err != nil {
 			ginkgo.Fail(fmt.Sprintf("Draining node %s failed with err: %v. Test inconclusive", n, err))
 		}
 
-		claimsLog, podsNotReady := podsets.WaitForAllPodSetReady(env, nodeTimeout)
+		claimsLog, podsNotReady := podsets.WaitForAllPodSetsReady(env, nodeTimeout)
 		if podsNotReady {
 			tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
 			ginkgo.Fail(fmt.Sprintf("Some pods are not ready after draining the node %s", n))
