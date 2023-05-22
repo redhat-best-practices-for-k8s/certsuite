@@ -217,7 +217,7 @@ Result Type|informative
 Suggested Remediation|Check that pod has automountServiceAccountToken set to false or pod is attached to service account which has automountServiceAccountToken set to false, unless the pod needs access to the kubernetes API server. Pods which do not need API access should set automountServiceAccountToken to false in pod spec.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 12.7
 Exception Process|Please elaborate why it's needed and explain how it's used.
-Tags|common,telco,access-control
+Tags|telco,access-control
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
 |Far-Edge|Mandatory|
@@ -336,7 +336,7 @@ Result Type|informative
 Suggested Remediation|Ensure that pods do not use projected volumes and service account tokens
 Best Practice Reference|https://to-be-done Section 4.6.24
 Exception Process|Please elaborate why it's needed and explain how it's used.
-Tags|common,telco,access-control
+Tags|telco,access-control
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
 |Far-Edge|Mandatory|

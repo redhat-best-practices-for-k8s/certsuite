@@ -235,7 +235,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			Telco:    Mandatory,
 			NonTelco: Optional,
 			Extended: Mandatory},
-		TagCommon, TagTelco)
+		TagTelco)
 	// TestContainerIsCertifiedDigestIdentifier tests whether the container has passed Container Certification.
 	TestContainerIsCertifiedDigestIdentifier = AddCatalogEntry(
 		"container-is-certified-digest",
@@ -1107,7 +1107,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon, TagTelco)
+		TagTelco)
 
 	TestServicesDoNotUseNodeportsIdentifier = AddCatalogEntry(
 		"service-type",
