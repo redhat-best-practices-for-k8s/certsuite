@@ -98,6 +98,18 @@ func (env *TestEnvironment) GetCPUPinningPodsWithDpdk() []*Pod {
 	return filterDPDKRunningPods(env.GetGuaranteedPodsWithExclusiveCPUs())
 }
 
+func (env *TestEnvironment) GetPodsWithoutHostPID() []*Pod {
+	var withoutHostPIDPods []*Pod
+
+	for _, pod := range env.Pods {
+		if pod.Spec.HostPID {
+			continue
+		}
+		withoutHostPIDPods = append(withoutHostPIDPods, pod)
+	}
+	return withoutHostPIDPods
+}
+
 func (env *TestEnvironment) GetNonGuaranteedPodContainers() []*Container {
 	var nonGuaranteedPodContainers []*Container
 	for _, pod := range env.GetNonGuaranteedPods() {
