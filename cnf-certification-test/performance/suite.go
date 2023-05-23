@@ -32,7 +32,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
 
-// All actual test code belongs below here.  Utilities belong above.
+// The pods with no access to host network are considered for these tests
 var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
 	logrus.Debugf("Entering %s suite", common.PerformanceTestKey)
 	var env provider.TestEnvironment
@@ -47,8 +47,18 @@ var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
 		testExclusiveCPUPool(&env)
 	})
 
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestRtAppNoExecProbes)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		var guaranteedPodContainersWithExclusiveCPUs = env.GetGuaranteedPodContainersWithExlusiveCPUs()
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, guaranteedPodContainersWithExclusiveCPUs)
+		testRtAppsNoExecProbes(&env, guaranteedPodContainersWithExclusiveCPUs)
+	})
+
+	// Scheduling related tests begins here
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSharedCPUPoolSchedulingPolicy)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		env.Pods = env.GetPodsWithoutHostPID() // Consider only pods with no access to host machine
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		var nonGuaranteedPodContainers = env.GetNonGuaranteedPodContainers()
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, nonGuaranteedPodContainers)
 		testSchedulingPolicyInCPUPool(&env, nonGuaranteedPodContainers, scheduling.SharedCPUScheduling)
@@ -56,6 +66,8 @@ var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestExclusiveCPUPoolSchedulingPolicy)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		env.Pods = env.GetPodsWithoutHostPID() // Consider only pods with no access to host machine
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		var guaranteedPodContainersWithExclusiveCPUs = env.GetGuaranteedPodContainersWithExlusiveCPUs()
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, guaranteedPodContainersWithExclusiveCPUs)
 		testSchedulingPolicyInCPUPool(&env, guaranteedPodContainersWithExclusiveCPUs, scheduling.ExclusiveCPUScheduling)
@@ -63,17 +75,13 @@ var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsolatedCPUPoolSchedulingPolicy)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		env.Pods = env.GetPodsWithoutHostPID() // Consider only pods with no access to host machine
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		var guaranteedPodContainersWithIsolatedCPUs = env.GetGuaranteedPodContainersWithIsolatedCPUs()
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, guaranteedPodContainersWithIsolatedCPUs)
 		testSchedulingPolicyInCPUPool(&env, guaranteedPodContainersWithIsolatedCPUs, scheduling.IsolatedCPUScheduling)
 	})
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestRtAppNoExecProbes)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		var guaranteedPodContainersWithExclusiveCPUs = env.GetGuaranteedPodContainersWithExlusiveCPUs()
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, guaranteedPodContainersWithExclusiveCPUs)
-		testRtAppsNoExecProbes(&env, guaranteedPodContainersWithExclusiveCPUs)
-	})
+	// Scheduling related tests ends here
 })
 
 func testExclusiveCPUPool(env *provider.TestEnvironment) {
