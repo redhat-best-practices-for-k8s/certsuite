@@ -1,7 +1,7 @@
 FROM registry.access.redhat.com/ubi8/ubi:8.8
 
 # hadolint ignore=DL3041
-RUN dnf install -y python3 && dnf clean all
+RUN dnf install -y python39 && dnf clean all
 
 # Pin versions in pip.
 # hadolint ignore=DL3013
