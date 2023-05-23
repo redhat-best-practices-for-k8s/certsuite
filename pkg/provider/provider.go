@@ -115,7 +115,6 @@ type TestEnvironment struct { // rename this with testTarget
 	DaemonsetFailedToSpawn bool
 	ScaleCrUnderTest       []ScaleObject
 	StorageClassList       []storagev1.StorageClass
-	HelmVersion            float64
 }
 
 type MachineConfig struct {
@@ -258,7 +257,6 @@ func buildTestEnvironment() { //nolint:funlen
 	env.ClusterRoleBindings = data.ClusterRoleBindings
 	env.RoleBindings = data.RoleBindings
 	env.Services = data.Services
-	env.HelmVersion = data.HelmVersion
 	env.NetworkPolicies = data.NetworkPolicies
 	for _, nsHelmChartReleases := range data.HelmChartReleases {
 		for _, helmChartRelease := range nsHelmChartReleases {

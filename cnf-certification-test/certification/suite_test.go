@@ -79,25 +79,3 @@ func TestGetContainersToQuery(t *testing.T) {
 		assert.Equal(t, tc.expectedOutput, getContainersToQuery(generateEnv(tc.testCertStatus)))
 	}
 }
-
-func Test_testHelmVerion(t *testing.T) {
-	type args struct {
-		env *provider.TestEnvironment
-	}
-	tests := []struct {
-		name string
-		args args
-	}{
-		{
-			name: "test1",
-			args: args{env: &provider.TestEnvironment{
-				HelmVersion: 3.8,
-			}},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			testHelmVerion(tt.args.env)
-		})
-	}
-}

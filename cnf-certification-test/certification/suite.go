@@ -18,6 +18,7 @@ package certification
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/onsi/ginkgo/v2"
@@ -208,12 +209,20 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment, val
 }
 
 func testHelmVerion(env *provider.TestEnvironment) {
-	helmVersion := env.HelmVersion
-	if helmVersion == 0 {
-		ginkgo.Skip("skip the test helm is not installed")
+	helmchartsReleases := env.HelmChartReleases
+	// Collect all of the failed helm charts
+	failedHelmCharts := [][]string{}
+	var helmChartVersionf float64
+	for _, helm := range helmchartsReleases {
+		helmChartVersion := helm.Chart.Metadata.APIVersion
+		helmChartVersion = strings.Split(helmChartVersion, "+")[0]
+		helmChartVersion = strings.Split(helmChartVersion, "v")[1]
+		helmChartVersionf, _ = strconv.ParseFloat(helmChartVersion, 64)
+
+		if helmChartVersionf > 0 && helmChartVersionf < 3 {
+			failedHelmCharts = append(failedHelmCharts, []string{helm.Chart.Metadata.Version, helm.Name})
+			tnf.ClaimFilePrintf("Helm Chart need to be v3 and not v2 which is not supported due to security risks associated with Tiller %s", helmChartVersionf)
+		}
 	}
-	if helmVersion > 0 && helmVersion < 3 {
-		tnf.ClaimFilePrintf("Helm Chart need to be v3 and not v2 which is not supported due to security risks associated with Tiller %s", helmVersion)
-		ginkgo.Fail("Helm Chart need to be v3 and not v2 which is not supported due to security risks associated with Tiller ")
-	}
+	testhelper.AddTestResultLog("Non-compliant", failedHelmCharts, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
