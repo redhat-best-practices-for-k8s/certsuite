@@ -253,7 +253,7 @@ func testProjectedVolumeServiceAccount(env *provider.TestEnvironment) {
 			}
 		}
 	}
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func checkForbiddenCapability(containers []*provider.Container, capability string) []string {
@@ -312,8 +312,8 @@ func testSecConRootUser(env *provider.TestEnvironment) {
 		}
 	}
 
-	testhelper.AddTestResultReason(compliantPodObjects, nonCompliantPodObjects, ginkgo.Fail)
-	testhelper.AddTestResultReason(compliantContainerObjects, nonCompliantContainerObjects, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantPodObjects, nonCompliantPodObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantContainerObjects, nonCompliantContainerObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // testSecConPrivilegeEscalation verifies that the container is not allowed privilege escalation
@@ -505,7 +505,7 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 				testhelper.NewPodReportObject(put.Namespace, put.Name, "Compliant because all the role bindings used by this pod (applied by the service accounts) live in the same namespace", true))
 		}
 	}
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // testPodClusterRoleBindings verifies that the pod does not use a cluster role binding
@@ -542,7 +542,7 @@ func testPodClusterRoleBindings(env *provider.TestEnvironment) {
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Non-compliant because the pod is using a cluster role binding", false))
 		}
 	}
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testAutomountServiceToken(env *provider.TestEnvironment) {
@@ -735,7 +735,7 @@ func test1337UIDs(env *provider.TestEnvironment) {
 		}
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // a test for security context that are allowed from the documentation of the cnf
@@ -754,7 +754,9 @@ func testContainerSCC(env *provider.TestEnvironment) {
 					AddField(testhelper.Category, cat.Category.String())
 				nonCompliantObjects = append(nonCompliantObjects, aContainerOut)
 			} else {
-				aContainerOut := testhelper.NewContainerReportObject(cat.NameSpace, cat.Podname, cat.Containername, "container category is category 1 or category NoUID0", false).AddField(testhelper.Category, cat.Category.String())
+				aContainerOut := testhelper.NewContainerReportObject(cat.NameSpace, cat.Podname, cat.Containername, "container category is category 1 or category NoUID0", false).
+					SetType(testhelper.ContainerCategory).
+					AddField(testhelper.Category, cat.Category.String())
 				compliantObjects = append(compliantObjects, aContainerOut)
 			}
 			if cat.Category > highLevelCat {
@@ -764,5 +766,5 @@ func testContainerSCC(env *provider.TestEnvironment) {
 	}
 	aCNFOut := testhelper.NewReportObject("Overall CNF category", testhelper.CnfType, false).AddField(testhelper.Category, highLevelCat.String())
 	compliantObjects = append(compliantObjects, aCNFOut)
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }

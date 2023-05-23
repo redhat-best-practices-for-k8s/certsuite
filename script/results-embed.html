@@ -60,7 +60,7 @@
   </nav>
 
   <button class="w3-button w3-right w3-light-grey" id="download" type="submit" onclick=download()
-    hidden="hidden">Download Results</button>
+    hidden="hidden">Download Results Feedback</button>
 
 
   <ul class="nav nav-tabs">
@@ -533,6 +533,7 @@
             text += '<div id="' + itemid + '" class="accordion-collapse collapse" aria-labelledby="' + headingid + '">'
             text += '<div class="accordion-body">'
             // Inside the accordion, 1 table with the following colummns
+            text += '<h1>Results</h1>'
             text += '<table id="myTable-' + key + '"class="table table-bordered table-fixed"><thead><tr>'
             text += '<th scope="col" class="th-sm">Test ID</th>'
             text += '<th scope="col" class="th-sm">Test Text</th>'
@@ -545,7 +546,7 @@
             // And 1 row per test
             dayjs.extend(window.dayjs_plugin_duration);
             for (const item of input[key]) {
-
+              var jsonObj
               const duration = dayjs.duration(item.duration / 1000000)
               formattedDuration = duration.format('D[d] H[h] m[m] s[s] SSS[ms]')
               text += '<tr><td>' + item.testID.id + '</td>'
@@ -553,6 +554,8 @@
               text += '<td>' + formattedDuration + '</td>'
               text += '<td>' + item.state + '</td>'
               text += '<td>' + ansi_up.ansi_to_html(item.CapturedTestOutput).replace(/\n/g, '<br>') + '</td></tr>'
+              jsonObjNonCompliant = NonCompliantReasonTextToJson(item.CapturedTestOutput)
+              jsonObjCompliant = CompliantReasonTextToJson(item.CapturedTestOutput)
             }
 
             id = id + 1
@@ -560,21 +563,28 @@
               text2 += text
               text2 += '</tbody></table>'
               for (const item of input[key]) {
-                text2 += '<label >write your Feedback for ' + item.testID.id + ' test case</label>'
+                text2 += '<h1>Feedback</h1><label>Write your feedback for ' + item.testID.id + ' test case</label>'
                 text2 += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-' + tableName + '-' + item.testID.id + '" type="text" ></textarea>'
               }
+              text2 += '<h1>Non-Compliant objects</h1>'
+              text2 += createReasonTableAllTypes(jsonObjNonCompliant)
+              text2 += '<h1>Compliant objects</h1>'
+              text2 += createReasonTableAllTypes(jsonObjCompliant)
               text2 += '</div></div></div>'
             } else {
               text3 += text
               text3 += '</tbody></table>'
               for (const item of input[key]) {
-                text3 += '<label >write your Feedback for ' + item.testID.id + ' test case</label>'
+                text3 += '<h1>Feedback</h1><label>Write your feedback for ' + item.testID.id + ' test case</label>'
                 text3 += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-' + tableName + '-' + item.testID.id + '" type="text"></textarea>'
               }
+              text3 += '<h1>Non-Compliant objects</h1>'
+              text3 += createReasonTableAllTypes(jsonObjNonCompliant)
+              text3 += '<h1>Compliant objects</h1>'
+              text3 += createReasonTableAllTypes(jsonObjCompliant)
               text3 += '</div></div></div>'
             }
           }
-
         }
       }
 
@@ -1233,7 +1243,7 @@ classification=  {
 
       var pom = document.createElement('a');
       pom.setAttribute('href', 'data:text/html;charset=UTF-8,' + encodeURIComponent(htmlText));
-      pom.setAttribute('download', "results");
+      pom.setAttribute('download', "results-feedback");
 
       pom.style.display = 'none';
       document.body.appendChild(pom);
@@ -1270,6 +1280,95 @@ classification=  {
       }
       const clonedTable = table.cloneNode(true);
       body.appendChild(clonedTable);
+    }
+
+    // extract non-compliant json text from test output with regex
+    function NonCompliantReasonTextToJson(reasonText) {
+      var regex = /NonCompliantObjectsOut\"\:(\[.*])/;
+      var match = regex.exec(reasonText);
+      var jsonObj
+      if (match) {
+        var jsonStr = match[1];
+        jsonObj = JSON.parse(jsonStr);
+      }
+      return jsonObj
+    }
+
+    // extract compliant json text from test output with regex
+    function CompliantReasonTextToJson(reasonText) {
+      var regex = /\"CompliantObjectsOut\"\:(\[.*]),\"NonCompliantObjectsOut\"/;
+      var match = regex.exec(reasonText);
+      var jsonObj
+      if (match) {
+        var jsonStr = match[1];
+        jsonObj = JSON.parse(jsonStr);
+      }
+      return jsonObj
+    }
+
+    // create a list of object types present in json output
+    function createTypeList(jsonData) {
+      var objectTypes = new Map();
+      if (typeof jsonData == 'undefined') {
+        return objectTypes;
+      }
+      jsonData.forEach(function (item) {
+        objectTypes.set(item.ObjectType, true);
+      });
+      return objectTypes
+    }
+
+    // parse json text and creates one HTML table per type 
+    function createReasonTableAllTypes(jsonData) {
+      var aTypeMap = createTypeList(jsonData)
+      var allTables = ""
+      aTypeMap.forEach(function (value, key) {
+        allTables += '<h2> Type: ' + key + '</h2>'
+        allTables += createReasonTableOneType(jsonData, key)
+      })
+      return allTables
+    }
+
+    // parse json text and creates one HTML table for given type 
+    function createReasonTableOneType(jsonData, aType) {
+      if (typeof jsonData == 'undefined') {
+        return ""
+      }
+      // Create table element
+      var table = document.createElement('table');
+      table.setAttribute('border', '1');
+      table.setAttribute('class', 'table table-striped')
+      var firstItem = true
+      // Create table body
+      var tbody = document.createElement('tbody');
+      jsonData.forEach(function (item) {
+        // if not right type exit
+        if (item.ObjectType != aType) {
+          return
+        }
+        if (firstItem) {
+          // Create table header
+          var thead = document.createElement('thead');
+          var headerRow = document.createElement('tr');
+          Object.keys(item.ObjectFields).forEach(function (key) {
+            var th = document.createElement('th');
+            th.textContent = key;
+            headerRow.appendChild(th);
+          });
+          thead.appendChild(headerRow);
+          table.appendChild(thead);
+          firstItem = false
+        }
+        var row = document.createElement('tr');
+        Object.values(item.ObjectFields).forEach(function (value) {
+          var cell = document.createElement('td');
+          cell.textContent = value;
+          row.appendChild(cell);
+        });
+        tbody.appendChild(row);
+      });
+      table.appendChild(tbody);
+      return table.outerHTML
     }
 
   </script>

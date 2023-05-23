@@ -173,7 +173,7 @@ func AddTestResultLog(prefix string, object interface{}, log func(string, ...int
 	}
 }
 
-func AddTestResultReason(compliantObject, nonCompliantObject []*ReportObject, fail func(string, ...int)) {
+func AddTestResultReason(compliantObject, nonCompliantObject []*ReportObject, log func(string, ...interface{}), fail func(string, ...int)) {
 	var aReason FailureReasonOut
 	aReason.CompliantObjectsOut = compliantObject
 	aReason.NonCompliantObjectsOut = nonCompliantObject
@@ -181,7 +181,7 @@ func AddTestResultReason(compliantObject, nonCompliantObject []*ReportObject, fa
 	if err != nil {
 		logrus.Errorf("Could not Marshall FailureReason object, err=%s", err)
 	}
-	logrus.Info(string(bytes))
+	log(string(bytes))
 	if len(aReason.NonCompliantObjectsOut) > 0 {
 		fail(string(bytes))
 	}
