@@ -82,7 +82,7 @@ var (
 	Test1337UIDIdentifier                             claim.Identifier
 	TestProjectedVolumeServiceAccountTokenIdentifier  claim.Identifier
 	TestContainerIsCertifiedDigestIdentifier          claim.Identifier
-	TestHelmVerionIdentifier                          claim.Identifier
+	TestHelmVersionIdentifier                         claim.Identifier
 	TestPodHugePages2M                                claim.Identifier
 	TestPodHugePages1G                                claim.Identifier
 	TestReservedExtendedPartnerPorts                  claim.Identifier
@@ -232,10 +232,10 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			Extended: Mandatory},
 		TagTelco)
 
-	TestHelmVerionIdentifier = AddCatalogEntry(
+	TestHelmVersionIdentifier = AddCatalogEntry(
 		"helm-version",
 		common.AffiliatedCertTestKey,
-		`Test check if helm version is not v3 `,
+		`Test to check if the helm chart is v3`,
 		`Check Helm Chart is v3 and not v2 which is not supported due to security risks associated with Tiller `,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 3.3.1",

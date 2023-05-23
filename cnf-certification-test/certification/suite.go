@@ -54,9 +54,9 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 		}
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
-	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHelmVerionIdentifier)
+	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHelmVersionIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testHelmVerion(&env)
+		testHelmVersion(&env)
 	})
 	// Query API for certification status of listed containers
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedIdentifier)
@@ -79,7 +79,6 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testContainerCertificationStatusByDigest(&env, validator)
 	})
-
 })
 
 func getContainersToQuery(env *provider.TestEnvironment) map[configuration.ContainerImageIdentifier]bool {
@@ -208,21 +207,28 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment, val
 	testhelper.AddTestResultLog("Non-compliant", failedContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
-func testHelmVerion(env *provider.TestEnvironment) {
+func testHelmVersion(env *provider.TestEnvironment) {
 	helmchartsReleases := env.HelmChartReleases
 	// Collect all of the failed helm charts
-	failedHelmCharts := [][]string{}
-	var helmChartVersionf float64
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, helm := range helmchartsReleases {
 		helmChartVersion := helm.Chart.Metadata.APIVersion
 		helmChartVersion = strings.Split(helmChartVersion, "+")[0]
 		helmChartVersion = strings.Split(helmChartVersion, "v")[1]
-		helmChartVersionf, _ = strconv.ParseFloat(helmChartVersion, 64)
-
+		helmChartVersionf, err := strconv.ParseFloat(helmChartVersion, 64)
+		if err != nil {
+			logrus.Errorf("failed to parse helm %s version: %v", helm.Chart.Name(), err)
+		}
 		if helmChartVersionf > 0 && helmChartVersionf < 3 {
-			failedHelmCharts = append(failedHelmCharts, []string{helm.Chart.Metadata.Version, helm.Name})
-			tnf.ClaimFilePrintf("Helm Chart need to be v3 and not v2 which is not supported due to security risks associated with Tiller %s", helmChartVersionf)
+			reportObject := testhelper.NewReportObject("Helm Chart need to be v3 and not v2 which is not supported due to security risks associated with Tiller", testhelper.HelmChart, false).AddField(testhelper.ChartName, helm.Name)
+			reportObject = reportObject.AddField(testhelper.ChartVersion, helm.Chart.Metadata.Version)
+			nonCompliantObjects = append(nonCompliantObjects, reportObject)
+		} else {
+			reportObject := testhelper.NewReportObject("Helm Chart version is ok", testhelper.HelmChart, true).AddField(testhelper.ChartName, helm.Name)
+			reportObject = reportObject.AddField(testhelper.ChartVersion, helm.Chart.Metadata.Version)
+			compliantObjects = append(compliantObjects, reportObject)
 		}
 	}
-	testhelper.AddTestResultLog("Non-compliant", failedHelmCharts, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, ginkgo.Fail)
 }

@@ -60,6 +60,8 @@ const (
 	ServiceAccountName     = "ServiceAccountName"
 	ServiceMode            = "ServiceType"
 	ServiceName            = "ServiceName"
+	ChartName              = "ChartName"
+	ChartVersion           = "ChartVersion"
 )
 
 // When adding new object types, please update the following:
@@ -73,6 +75,7 @@ const (
 	ContainerCategory    = "ContainerCategory"
 	ProjectedVolumeType  = "ProjectedVolume"
 	ServiceType          = "Service"
+	HelmChart            = "HelmChart"
 )
 
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {
