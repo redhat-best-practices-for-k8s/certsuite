@@ -101,7 +101,7 @@ require (
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.16.0 // indirect
-	github.com/knqyf263/go-rpmdb v0.0.0-20230301153543-ba94b245509b // indirect
+	github.com/knqyf263/go-rpmdb v0.0.0-20230517124904-b97c85e63254 // indirect
 	github.com/lann/builder v0.0.0-20180802200727-47ae307949d0 // indirect
 	github.com/lann/ps v0.0.0-20150810152359-62de8c46ede0 // indirect
 	github.com/lib/pq v1.10.7 // indirect
@@ -212,10 +212,10 @@ require (
 	github.com/go-logr/stdr v1.2.2
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/openshift/machine-config-operator v0.0.1-0.20230515070935-49f32d46538e
-	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230417204801-c4836d6660ee
+	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230523134535-51af09a44662
 	github.com/test-network-function/privileged-daemonset v1.0.3
 	gopkg.in/yaml.v3 v3.0.1
 	k8s.io/kubectl v0.27.2
 )
 
-replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230417204801-c4836d6660ee
+replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230523134535-51af09a44662
