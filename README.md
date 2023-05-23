@@ -60,5 +60,5 @@ under an
 [Apache 2 license](https://github.com/test-network-function/cnf-certification-test/blob/main/LICENSE).
 
 ## Show Results after finishing of running the test code
-after the end of your run a claim.json file will be created for you with the results of that spcific running. to see them in a good way that is clear for you we created a result url page that is local you can open it by copy that path /#your-code-path/cnf-certification-test/script/results html and open it on bowser then upload the calim.json file of that run
+After the end of your run a claim.json file will be created for you with the results of that specific test run. To see them in a good way that is clear for you we created a parser that is local. You can open it by copying the path /#your-code-path/cnf-certification-test/script/results html and open it in your browser then upload the claim.json file of that run.
  ![overview](docs/assets/images/htmlpage.png)
