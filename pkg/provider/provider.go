@@ -52,7 +52,7 @@ const (
 	containerName                    = "container-00"
 	DaemonSetName                    = "tnf-debug"
 	debugPodsTimeout                 = 5 * time.Minute
-	CniNetworksStatusKey             = "k8s.v1.cni.cncf.io/networks-status"
+	CniNetworksStatusKey             = "k8s.v1.cni.cncf.io/network-status"
 	skipConnectivityTestsLabel       = "test-network-function.com/skip_connectivity_tests"
 	skipMultusConnectivityTestsLabel = "test-network-function.com/skip_multus_connectivity_tests"
 	rhcosName                        = "Red Hat Enterprise Linux CoreOS"
