@@ -151,3 +151,36 @@ func TestRemoveEmptyStrings(t *testing.T) {
 		assert.Equal(t, tc.expectedSlice, RemoveEmptyStrings(tc.testSlice))
 	}
 }
+
+func TestSubSlice(t *testing.T) {
+	testCases := []struct {
+		testSliceA     []string
+		testSliceB     []string
+		expectedOutput bool
+	}{
+		{ // Test #1 - SliceB exists in SliceA
+			testSliceA:     []string{"one", "two", "three"},
+			testSliceB:     []string{"one", "two"},
+			expectedOutput: true,
+		},
+		{ // Test #2 - SliceB does not exist in SliceA
+			testSliceA:     []string{"one", "two", "three"},
+			testSliceB:     []string{"four", "five"},
+			expectedOutput: false,
+		},
+		{ // Test #3 - Same slices, return true
+			testSliceA:     []string{"one", "two", "three"},
+			testSliceB:     []string{"one", "two", "three"},
+			expectedOutput: true,
+		},
+		{ // Test Case # - Empty SliceA
+			testSliceA:     []string{},
+			testSliceB:     []string{"one", "two", "three"},
+			expectedOutput: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedOutput, SubSlice(tc.testSliceA, tc.testSliceB))
+	}
+}
