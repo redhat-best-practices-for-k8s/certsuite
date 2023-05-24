@@ -221,11 +221,11 @@ func testHelmVersion(env *provider.TestEnvironment) {
 			logrus.Errorf("failed to parse helm %s version: %v", helm.Chart.Name(), err)
 		}
 		if helmChartVersionf > 0 && helmChartVersionf < 3 {
-			reportObject := testhelper.NewReportObject("Helm Chart need to be v3 and not v2 which is not supported due to security risks associated with Tiller", testhelper.HelmChart, false).AddField(testhelper.ChartName, helm.Name)
+			reportObject := testhelper.NewReportObject(fmt.Sprintf("This Helm Chart is v%f but needs to be v3 due to the security risks associated with Tiller", helmChartVersionf), testhelper.HelmChart, false).AddField(testhelper.ChartName, helm.Name)
 			reportObject = reportObject.AddField(testhelper.ChartVersion, helm.Chart.Metadata.Version)
 			nonCompliantObjects = append(nonCompliantObjects, reportObject)
 		} else {
-			reportObject := testhelper.NewReportObject("Helm Chart version is ok", testhelper.HelmChart, true).AddField(testhelper.ChartName, helm.Name)
+			reportObject := testhelper.NewReportObject("Helm Chart version is v3", testhelper.HelmChart, true).AddField(testhelper.ChartName, helm.Name)
 			reportObject = reportObject.AddField(testhelper.ChartVersion, helm.Chart.Metadata.Version)
 			compliantObjects = append(compliantObjects, reportObject)
 		}
