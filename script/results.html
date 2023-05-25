@@ -545,8 +545,9 @@
             // Note we are skipping some columns for now
             // And 1 row per test
             dayjs.extend(window.dayjs_plugin_duration);
+            var jsonObjNonCompliant
+            var jsonObjCompliant
             for (const item of input[key]) {
-              var jsonObj
               const duration = dayjs.duration(item.duration / 1000000)
               formattedDuration = duration.format('D[d] H[h] m[m] s[s] SSS[ms]')
               text += '<tr><td>' + item.testID.id + '</td>'
