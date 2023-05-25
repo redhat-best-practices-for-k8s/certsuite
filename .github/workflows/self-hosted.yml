@@ -65,6 +65,20 @@ jobs:
         run: make bootstrap-cluster
         working-directory: cnf-certification-test-partner
 
+      - name: Preemptively delete the Kind cluster
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          command: kind delete cluster
+
+      - name: Prune the local docker system
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          command: docker system prune -f
+
       - name: Create `local-test-infra` OpenShift resources
         run: make rebuild-cluster
         working-directory: cnf-certification-test-partner
