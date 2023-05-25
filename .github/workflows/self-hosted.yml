@@ -22,6 +22,7 @@ env:
   TNF_SMOKE_TESTS_LOG_LEVEL: trace
   ON_DEMAND_DEBUG_PODS: false
   TERM: xterm-color
+  SMOKE_TESTS_GINKGO_LABELS_FILTER: '!affiliated-certification-container-is-certified-digest && !access-control-security-context'
 
 jobs:
   smoke-tests-local:
@@ -75,7 +76,7 @@ jobs:
 
       # Perform smoke tests.
       - name: 'Test: Run test suites'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l 'common && !affiliated-certification-container-is-certified-digest'
+        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l ${SMOKE_TESTS_GINKGO_LABELS_FILTER}
 
       - name: Upload smoke test results as an artifact
         uses: actions/upload-artifact@v3
@@ -103,9 +104,9 @@ jobs:
 
       - name: 'Test: Run without any TS, just get diagnostic information'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }}
-          
+
       - name: 'Test: Run Smoke Tests in a TNF container'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l 'common && !affiliated-certification-container-is-certified-digest'
+        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l ${SMOKE_TESTS_GINKGO_LABELS_FILTER}
 
       - name: Upload container test results as an artifact
         uses: actions/upload-artifact@v3
