@@ -125,6 +125,12 @@ classification=  {
     "NonTelco": "Mandatory",
     "Telco": "Mandatory"
   },
+  "access-control-service-type": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
   "access-control-ssh-daemons": {
     "Extended": "Mandatory",
     "FarEdge": "Mandatory",
@@ -359,12 +365,6 @@ classification=  {
     "NonTelco": "Optional",
     "Telco": "Optional"
   },
-  "networking-service-type": {
-    "Extended": "Mandatory",
-    "FarEdge": "Mandatory",
-    "NonTelco": "Mandatory",
-    "Telco": "Mandatory"
-  },
   "networking-undeclared-container-ports-usage": {
     "Extended": "Mandatory",
     "FarEdge": "Optional",
@@ -390,10 +390,10 @@ classification=  {
     "Telco": "Mandatory"
   },
   "observability-termination-policy": {
-    "Extended": "Optional",
-    "FarEdge": "Optional",
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
     "NonTelco": "Optional",
-    "Telco": "Optional"
+    "Telco": "Mandatory"
   },
   "operator-install-source": {
     "Extended": "Mandatory",

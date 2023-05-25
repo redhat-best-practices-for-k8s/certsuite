@@ -26,7 +26,7 @@ const (
 
 	SecConNonRootUserRemediation = `Change the pod and containers "runAsUser" uid to something other than root(0)`
 
-	SecConRemediation = `Change the security context to be one of the 4 that are allowed on the documentation section 4.5. Should adhere to minimum privilege principle and avoid access escalation unless absolutely necessary.`
+	SecConRemediation = `Exception possible if CNF uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why.`
 
 	UnalteredBaseImageRemediation = `Ensure that Container applications do not modify the Container Base Image. In particular, ensure that the following directories are not modified: 1) /var/lib/rpm 2) /var/lib/dpkg 3) /bin 4) /sbin 5) /lib 6) /lib64 7) /usr/bin 8) /usr/sbin 9) /usr/lib 10) /usr/lib64 Ensure that all required binaries are built directly into the container image, and are not installed post startup.`
 
@@ -79,7 +79,7 @@ const (
 
 	OperatorIsInstalledViaOLMRemediation = `Ensure that your Operator is installed via OLM.`
 
-	PodNodeSelectorAndAffinityBestPracticesRemediation = `In most cases, Pod's should not specify their host Nodes through nodeSelector or nodeAffinity. However, there are cases in which CNFs require specialized hardware specific to a particular class of Node. As such, this test is purely informative, and will not prevent a CNF from being certified. However, one should have an appropriate justification as to why nodeSelector and/or nodeAffinity is utilized by a CNF.`
+	PodNodeSelectorAndAffinityBestPracticesRemediation = `In most cases, Pod's should not specify their host Nodes through nodeSelector or nodeAffinity. However, there are cases in which CNFs require specialized hardware specific to a particular class of Node.`
 
 	PodHighAvailabilityBestPracticesRemediation = `In high availability cases, Pod podAntiAffinity rule should be specified for pod scheduling and pod replica value is set to more than 1 .`
 
@@ -87,7 +87,7 @@ const (
 
 	PodDeploymentBestPracticesRemediation = `Deploy the CNF using ReplicaSet/StatefulSet.`
 
-	ImagePullPolicyRemediation = `Ensure that the containers under test are using IfNotPresent as Image Pull Policy. If there is a situation where the container dies and needs to be restarted, the image pull policy becomes important. PullIfNotPresent is recommended so that a loss of image registry access does not prevent the pod from restarting.`
+	ImagePullPolicyRemediation = `Ensure that the containers under test are using IfNotPresent as Image Pull Policy.`
 
 	PodRoleBindingsBestPracticesRemediation = `Ensure the CNF is not configured to use RoleBinding(s) in a non-CNF Namespace. Scope of role must <= scope of creator of role.`
 
@@ -115,7 +115,7 @@ const (
 
 	TerminationMessagePolicyRemediation = `Ensure containers are all using FallbackToLogsOnError in terminationMessagePolicy`
 
-	LivenessProbeRemediation = `Add a liveness probe to deployed containers`
+	LivenessProbeRemediation = `Add a liveness probe to deployed containers.`
 
 	ReadinessProbeRemediation = `Add a readiness probe to deployed containers`
 
