@@ -97,9 +97,9 @@ classification=  {
   },
   "access-control-projected-volume-service-account-token": {
     "Extended": "Mandatory",
-    "FarEdge": "Optional",
+    "FarEdge": "Mandatory",
     "NonTelco": "Optional",
-    "Telco": "Optional"
+    "Telco": "Mandatory"
   },
   "access-control-requests-and-limits": {
     "Extended": "Mandatory",
@@ -120,6 +120,12 @@ classification=  {
     "Telco": "Mandatory"
   },
   "access-control-security-context-privilege-escalation": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "access-control-service-type": {
     "Extended": "Mandatory",
     "FarEdge": "Mandatory",
     "NonTelco": "Mandatory",
@@ -192,10 +198,10 @@ classification=  {
     "Telco": "Mandatory"
   },
   "lifecycle-container-startup": {
-    "Extended": "Optional",
-    "FarEdge": "Optional",
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
     "NonTelco": "Optional",
-    "Telco": "Optional"
+    "Telco": "Mandatory"
   },
   "lifecycle-cpu-isolation": {
     "Extended": "Mandatory",
@@ -216,10 +222,10 @@ classification=  {
     "Telco": "Mandatory"
   },
   "lifecycle-image-pull-policy": {
-    "Extended": "Optional",
-    "FarEdge": "Optional",
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
     "NonTelco": "Optional",
-    "Telco": "Optional"
+    "Telco": "Mandatory"
   },
   "lifecycle-liveness-probe": {
     "Extended": "Mandatory",
@@ -228,10 +234,10 @@ classification=  {
     "Telco": "Mandatory"
   },
   "lifecycle-persistent-volume-reclaim-policy": {
-    "Extended": "Optional",
-    "FarEdge": "Optional",
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
     "NonTelco": "Optional",
-    "Telco": "Optional"
+    "Telco": "Mandatory"
   },
   "lifecycle-pod-high-availability": {
     "Extended": "Mandatory",
@@ -359,12 +365,6 @@ classification=  {
     "NonTelco": "Optional",
     "Telco": "Optional"
   },
-  "networking-service-type": {
-    "Extended": "Mandatory",
-    "FarEdge": "Mandatory",
-    "NonTelco": "Mandatory",
-    "Telco": "Mandatory"
-  },
   "networking-undeclared-container-ports-usage": {
     "Extended": "Mandatory",
     "FarEdge": "Optional",
@@ -390,10 +390,10 @@ classification=  {
     "Telco": "Mandatory"
   },
   "observability-termination-policy": {
-    "Extended": "Optional",
-    "FarEdge": "Optional",
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
     "NonTelco": "Optional",
-    "Telco": "Optional"
+    "Telco": "Mandatory"
   },
   "operator-install-source": {
     "Extended": "Mandatory",

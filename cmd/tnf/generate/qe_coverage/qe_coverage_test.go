@@ -18,7 +18,7 @@ func createCatalog(entries []catalogEntry) map[claim.Identifier]claim.TestCaseDe
 	catalog := map[claim.Identifier]claim.TestCaseDescription{}
 
 	for _, entry := range entries {
-		tcDescription, aID := claim.BuildTestCaseDescription(entry.testCaseName, entry.testSuiteName, "", "", "", "", "", entry.qe, map[string]string{})
+		tcDescription, aID := claim.BuildTestCaseDescription(entry.testCaseName, entry.testSuiteName, "", "", "", "", entry.qe, map[string]string{})
 		catalog[aID] = tcDescription
 	}
 

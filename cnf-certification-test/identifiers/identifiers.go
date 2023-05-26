@@ -24,15 +24,13 @@ import (
 )
 
 const (
-	InformativeResult        = "informative"
-	NormativeResult          = "normative"
 	bestPracticeDocV1dot3URL = "https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf"
 	bestPracticeDocV1dot4URL = "https://to-be-done" // TODO: Fill in this variable with the new v1.4 document when available.
 )
 
 // shared description text
 const (
-	iptablesNftablesImplicitCheck = `Note: this test ensures iptables and nftables are not configured by CNF pods:
+	iptablesNftablesImplicitCheck = `Note: this test also ensures iptables and nftables are not configured by CNF pods:
 - NET_ADMIN and NET_RAW are required to modify nftables (namespaced) which is not desired inside pods.
 nftables should be configured by an administrator outside the scope of the CNF. nftables are usually configured
 by operators, for instance the Performance Addon Operator (PAO) or istio.
@@ -59,7 +57,7 @@ func init() {
 	InitCatalog()
 }
 
-func AddCatalogEntry(testID, suiteName, description, remediation, testType, exception, reference string, qe bool, categoryclassification map[string]string, tags ...string) (aID claim.Identifier) {
+func AddCatalogEntry(testID, suiteName, description, remediation, exception, reference string, qe bool, categoryclassification map[string]string, tags ...string) (aID claim.Identifier) {
 	// Default Values (if missing)
 	if strings.TrimSpace(exception) == "" {
 		exception = NoDocumentedProcess
@@ -71,7 +69,7 @@ func AddCatalogEntry(testID, suiteName, description, remediation, testType, exce
 		tags = append(tags, TagCommon)
 	}
 
-	tcDescription, aID := claim.BuildTestCaseDescription(testID, suiteName, description, remediation, testType, exception, reference, qe, categoryclassification, tags...)
+	tcDescription, aID := claim.BuildTestCaseDescription(testID, suiteName, description, remediation, exception, reference, qe, categoryclassification, tags...)
 	Catalog[aID] = tcDescription
 	Classification[aID.Id] = categoryclassification
 
@@ -175,8 +173,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.NetworkingTestKey,
 		`Checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset.`,
 		`Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence.`, //nolint:lll
-		NormativeResult,
-		NoDocumentedProcess,
+		`No exceptions - must be able to communicate on default network using IPv4`,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
 		map[string]string{
@@ -192,8 +189,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.NetworkingTestKey,
 		`Check that network policies attached to namespaces running CNF pods contain a default deny-all rule for both ingress and egress traffic`,
 		NetworkPolicyDenyAllRemediation,
-		InformativeResult,
-		NoDocumentedProcess,
+		NoExceptionProcessForExtendedTests,
 		bestPracticeDocV1dot3URL+" Section 10.6",
 		true,
 		map[string]string{
@@ -209,8 +205,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.AccessControlTestKey,
 		`Checks that all pods are not using the securityContext UID 1337`,
 		UID1337Remediation,
-		InformativeResult,
-		NoDocumentedProcess,
+		NoExceptionProcessForExtendedTests,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		true,
 		map[string]string{
@@ -226,25 +221,22 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.AccessControlTestKey,
 		`Checks that pods do not use projected volumes and service account tokens`,
 		ProjectedVolumeServiceAccountRemediation,
-		InformativeResult,
-		NoDocumentedProcess,
+		`Exception will be considered if container needs to access APIs which OCP does not offer natively. Must document which container requires which API(s) and detail why existing OCP APIs cannot be used.`,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		true,
 		map[string]string{
-			FarEdge:  Optional,
-			Telco:    Optional,
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
 			NonTelco: Optional,
-			Extended: Mandatory,
-		},
-		TagExtended)
+			Extended: Mandatory},
+		TagTelco)
 	// TestContainerIsCertifiedDigestIdentifier tests whether the container has passed Container Certification.
 	TestContainerIsCertifiedDigestIdentifier = AddCatalogEntry(
 		"container-is-certified-digest",
 		common.AffiliatedCertTestKey,
 		`Tests whether container images that are autodiscovered have passed the Red Hat Container Certification Program by their digest(CCP).`,
 		"Ensure that your container has passed the Red Hat Container Certification Program (CCP).",
-		NormativeResult,
-		NoDocumentedProcess,
+		AffiliatedCert,
 		bestPracticeDocV1dot4URL+" Section 5.3.7",
 		false,
 		map[string]string{
@@ -260,8 +252,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.PlatformAlterationTestKey,
 		`Check that pods using hugepages only use 2Mi size`,
 		"Modify pod to consume 2Mi hugepages only",
-		NormativeResult,
-		NoDocumentedProcess,
+		NoExceptionProcessForExtendedTests,
 		bestPracticeDocV1dot4URL+" Section 3.5.4",
 		true,
 		map[string]string{
@@ -277,7 +268,6 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.PlatformAlterationTestKey,
 		`Check that pods using hugepages only use 1Gi size`,
 		"Modify pod to consume 1Gi hugepages only",
-		InformativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
@@ -294,8 +284,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.NetworkingTestKey,
 		`Checks that pods and containers are not consuming ports designated as reserved by partner`,
 		ReservedPartnerPortsRemediation,
-		InformativeResult,
-		NoDocumentedProcess,
+		NoExceptionProcessForExtendedTests,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		true,
 		map[string]string{
@@ -310,8 +299,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		"affinity-required-pods",
 		common.LifecycleTestKey,
 		`Checks that affinity rules are in place if AffinityRequired: 'true' labels are set on Pods.`,
-		AffinityRequiredRemediation,
-		InformativeResult,
+		`Pods which need to be co-located on the same node need Affinity rules. `+AffinityRequiredRemediation,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		true,
@@ -328,8 +316,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.LifecycleTestKey,
 		`Checks that pods do not place persistent volumes on local storage.`,
 		StorageRequiredPods,
-		InformativeResult,
-		NoDocumentedProcess,
+		NoExceptions,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		false,
 		map[string]string{
@@ -338,31 +325,29 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Mandatory,
 			Extended: Mandatory,
 		},
-		TagExtended)
+		TagCommon)
 
 	TestStartupIdentifier = AddCatalogEntry(
 		"container-startup",
 		common.LifecycleTestKey,
-		`Ensure that the containers lifecycle postStart management feature is configured.`,
+		`Ensure that the containers lifecycle postStart management feature is configured. A container must receive important events from the platform and conform/react to these events properly. For example, a container should catch SIGTERM or SIGKILL from the platform and shutdown as quickly as possible. Other typically important events from the platform are PostStart to initialize before servicing requests and PreStop to release resources cleanly before shutting down.`,                                                                                                                                                                                                                           //nolint:lll
 		`PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. PostStart is used to configure container, set up dependencies, record new creation. It can also be used to check that a required API is available before the container’s work begins.`, //nolint:lll
-		NormativeResult,
 		`Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.`,
 		bestPracticeDocV1dot3URL+" Section 5.1.3, 12.2 and 12.5",
 		true,
 		map[string]string{
-			FarEdge:  Optional,
-			Telco:    Optional,
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
 			NonTelco: Optional,
-			Extended: Optional,
+			Extended: Mandatory,
 		},
 		TagTelco)
 
 	TestShutdownIdentifier = AddCatalogEntry(
 		"container-shutdown",
 		common.LifecycleTestKey,
-		`Ensure that the containers lifecycle preStop management feature is configured.`,
-		`The preStop can be used to gracefully stop the container and clean resources (e.g., DB connection). For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks`, //nolint:lll
-		NormativeResult,
+		`Ensure that the containers lifecycle preStop management feature is configured. The most basic requirement for the lifecycle management of Pods in OpenShift are the ability to start and stop correctly. There are different ways a pod can stop on an OpenShift cluster. One way is that the pod can remain alive but non-functional. Another way is that the pod can crash and become non-functional. When pods are shut down by the platform they are sent a SIGTERM signal which means that the process in the container should start shutting down, closing connections and stopping all activity. If the pod doesn’t shut down within the default 30 seconds then the platform may send a SIGKILL signal which will stop the pod immediately. This method isn’t as clean and the default time between the SIGTERM and SIGKILL messages can be modified based on the requirements of the application. Containers should respond to SIGTERM/SIGKILL with graceful shutdown.`, //nolint:lll
+		`The preStop can be used to gracefully stop the container and clean resources (e.g., DB connection). For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. All pods must respond to SIGTERM signal and shutdown gracefully with a zero exit code.`, //nolint:lll
 		`Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.`,
 		bestPracticeDocV1dot3URL+" Section 5.1.3, 12.2 and 12.5",
 		true,
@@ -379,7 +364,6 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.NetworkingTestKey,
 		`If a CNF is doing CPI pinning, exec probes may not be used.`,
 		DpdkCPUPinningExecProbeRemediation,
-		InformativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.24",
 		false,
@@ -396,8 +380,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.AccessControlTestKey,
 		`Ensures that containers do not use NET_ADMIN capability. `+iptablesNftablesImplicitCheck,
 		SecConRemediation,
-		NormativeResult,
-		SecConCapabilitiesExceptionProcess,
+		`Exception will be considered for user plane or networking functions (e.g. SR-IOV, Multicast). Must identify which container requires the capability and detail why.`,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
 		map[string]string{
@@ -413,8 +396,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.AccessControlTestKey,
 		`Ensures that containers do not use SYS_ADMIN capability`,
 		SecConRemediation+" Containers should not use the SYS_ADMIN Linux capability.",
-		NormativeResult,
-		SecConCapabilitiesExceptionProcess,
+		NoExceptions,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
 		map[string]string{
@@ -430,8 +412,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.AccessControlTestKey,
 		`Ensures that containers do not use IPC_LOCK capability. CNF should avoid accessing host resources - spec.HostIpc should be false.`,
 		SecConRemediation,
-		NormativeResult,
-		SecConCapabilitiesExceptionProcess,
+		`Exception possible if CNF uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why.`,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
 		map[string]string{
@@ -447,8 +428,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.AccessControlTestKey,
 		`Ensures that containers do not use NET_RAW capability. `+iptablesNftablesImplicitCheck,
 		SecConRemediation,
-		NormativeResult,
-		SecConCapabilitiesExceptionProcess,
+		`Exception will be considered for user plane or networking functions. Must identify which container requires the capability and detail why.`,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
 		map[string]string{
@@ -464,7 +444,6 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.PerformanceTestKey,
 		`Ensures that if one container in a Pod selects an exclusive CPU pool the rest select the same type of CPU pool`,
 		ExclusiveCPUPoolRemediation,
-		NormativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		true,
@@ -481,7 +460,6 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.PerformanceTestKey,
 		`Ensures that if application workload runs in shared CPU pool, it chooses non-RT CPU schedule policy to always share the CPU with other applications and kernel threads.`,
 		SharedCPUPoolSchedulingPolicyRemediation,
-		NormativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		true,
@@ -498,7 +476,6 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.PerformanceTestKey,
 		`Ensures that if application workload runs in exclusive CPU pool, it chooses RT CPU schedule policy and set the priority less than 10.`,
 		ExclusiveCPUPoolSchedulingPolicyRemediation,
-		NormativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
@@ -515,7 +492,6 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.PerformanceTestKey,
 		`Ensures that a workload running in an application-isolated exclusive CPU pool selects a RT CPU scheduling policy`,
 		IsolatedCPUPoolSchedulingPolicyRemediation,
-		NormativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		true,
@@ -532,7 +508,6 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.PerformanceTestKey,
 		`Ensures that if one container runs a real time application exec probes are not used`,
 		RtAppNoExecProbesRemediation,
-		NormativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		true,
@@ -549,7 +524,6 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.NetworkingTestKey,
 		`Ensures that the label restart-on-reboot exists on pods that use SRIOV network interfaces.`,
 		SRIOVPodsRestartOnRebootLabelRemediation,
-		NormativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
 		false,
@@ -566,7 +540,6 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.AccessControlTestKey,
 		`Checks the security context runAsUser parameter in pods and containers to make sure it is not set to uid root(0). Pods and containers should not run as root (runAsUser is not set to uid0).`,
 		SecConNonRootUserRemediation,
-		NormativeResult,
 		SecConNonRootUserExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
@@ -582,9 +555,8 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		"security-context",
 		common.AccessControlTestKey,
 		`Checks the security context matches one of the 4 categories`,
-		SecConRemediation,
-		NormativeResult,
-		SecConExceptionProcess,
+		`Exception possible if CNF uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why. If the container had the right configuration of the allowed category from the 4 list so the test will pass the list is on page 51 on the CNF Security Context Constraints (SCC) section 4.5(Allowed categories are category 1 and category 0), Applications MUST use one of the approved Security Context Constraints.`, //nolint:lll
+		`no exception needed for optional/extended test`,
 		bestPracticeDocV1dot4URL+" Section 4.5",
 		false,
 		map[string]string{
@@ -600,8 +572,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.AccessControlTestKey,
 		`Checks if privileged escalation is enabled (AllowPrivilegeEscalation=true).`,
 		SecConPrivilegeRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoExceptions,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
 		map[string]string{
@@ -617,8 +588,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.AccessControlTestKey,
 		`Verifies if containers define a hostPort.`,
 		ContainerHostPortRemediation,
-		NormativeResult,
-		ElaborateOnWhyItIsNeeded,
+		"Exception for host resource access tests will only be considered in rare cases where it is absolutely needed",
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		false,
 		map[string]string{
@@ -634,8 +604,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.AccessControlTestKey,
 		`Verifies that the spec.HostNetwork parameter is not set (not present)`,
 		PodHostNetworkRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		`Exception for host resource access tests will only be considered in rare cases where it is absolutely needed`,
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		false,
 		map[string]string{
@@ -651,8 +620,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.AccessControlTestKey,
 		`Verifies that the spec.HostPath parameter is not set (not present)`,
 		PodHostPathRemediation,
-		NormativeResult,
-		ElaborateOnWhyItIsNeeded,
+		`Exception for host resource access tests will only be considered in rare cases where it is absolutely needed`,
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		false,
 		map[string]string{
@@ -668,8 +636,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.AccessControlTestKey,
 		`Verifies that the spec.HostIpc parameter is set to false`,
 		PodHostIPCRemediation,
-		NormativeResult,
-		ElaborateOnWhyItIsNeeded,
+		`Exception for host resource access tests will only be considered in rare cases where it is absolutely needed`,
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		true,
 		map[string]string{
@@ -685,8 +652,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.AccessControlTestKey,
 		`Verifies that the spec.HostPid parameter is set to false`,
 		PodHostPIDRemediation,
-		NormativeResult,
-		ElaborateOnWhyItIsNeeded,
+		`Exception for host resource access tests will only be considered in rare cases where it is absolutely needed`,
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
 		true,
 		map[string]string{
@@ -702,8 +668,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.AffiliatedCertTestKey,
 		`Tests whether container images listed in the configuration file have passed the Red Hat Container Certification Program (CCP).`,
 		ContainerIsCertifiedRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		AffiliatedCert,
 		bestPracticeDocV1dot3URL+" Section 5.3.7",
 		true,
 		map[string]string{
@@ -719,8 +684,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.PlatformAlterationTestKey,
 		`Checks to see that HugePage settings have been configured through MachineConfig, and not manually on the underlying Node. This test case applies only to Nodes that are configured with the "worker" MachineConfigSet. First, the "worker" MachineConfig is polled, and the Hugepage settings are extracted. Next, the underlying Nodes are polled for configured HugePages through inspection of /proc/meminfo. The results are compared, and the test passes only if they are the same.`, //nolint:lll
 		HugepagesNotManuallyManipulatedRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoExceptions,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
 		map[string]string{
@@ -735,8 +699,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		"icmpv6-connectivity",
 		common.NetworkingTestKey,
 		`Checks that each CNF Container is able to communicate via ICMPv6 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset.`,
-		ICMPv6ConnectivityRemediation,
-		NormativeResult,
+		ICMPv6ConnectivityRemediation+` Not applicable if IPv6 is not supported.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
@@ -751,10 +714,8 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestICMPv4ConnectivityMultusIdentifier = AddCatalogEntry(
 		"icmpv4-connectivity-multus",
 		common.NetworkingTestKey,
-		`Checks that each CNF Container is able to communicate via ICMPv4 on the Multus network(s). This
-test case requires the Deployment of the debug daemonset.`,
-		ICMPv4ConnectivityMultusRemediation,
-		NormativeResult,
+		`Checks that each CNF Container is able to communicate via ICMPv4 on the Multus network(s). This test case requires the Deployment of the debug daemonset.`,
+		ICMPv4ConnectivityMultusRemediation+` Not applicable if MULTUS is not supported.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
@@ -769,10 +730,8 @@ test case requires the Deployment of the debug daemonset.`,
 	TestICMPv6ConnectivityMultusIdentifier = AddCatalogEntry(
 		"icmpv6-connectivity-multus",
 		common.NetworkingTestKey,
-		`Checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s). This
-test case requires the Deployment of the debug daemonset.`,
-		ICMPv6ConnectivityMultusRemediation,
-		NormativeResult,
+		`Checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s). This test case requires the Deployment of the debug daemonset.`,
+		ICMPv6ConnectivityMultusRemediation+` Not applicable if IPv6/MULTUS is not supported.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		false,
@@ -787,11 +746,9 @@ test case requires the Deployment of the debug daemonset.`,
 	TestServiceDualStackIdentifier = AddCatalogEntry(
 		"dual-stack-service",
 		common.NetworkingTestKey,
-		`Checks that all services in namespaces under test are either ipv6 single stack or dual stack. This
-test case requires the deployment of the debug daemonset.`,
+		`Checks that all services in namespaces under test are either ipv6 single stack or dual stack. This test case requires the deployment of the debug daemonset.`,
 		TestServiceDualStackRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoExceptionProcessForExtendedTests,
 		bestPracticeDocV1dot4URL+" Section 3.5.7",
 		false,
 		map[string]string{
@@ -809,8 +766,7 @@ test case requires the deployment of the debug daemonset.`,
 the following conditions: (1) It was declared in the yaml config file under the targetNameSpaces
 tag. (2) It doesn't have any of the following prefixes: default, openshift-, istio- and aspenmesh-`,
 		NamespaceBestPracticesRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoExceptions,
 		bestPracticeDocV1dot3URL+" Section 5.2, 16.3.8 and 16.3.9",
 		false,
 		map[string]string{
@@ -826,8 +782,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.PlatformAlterationTestKey,
 		`Ensures that the Node(s) hosting CNFs do not utilize tainted kernels. This test case is especially important to support Highly Available CNFs, since when a CNF is re-instantiated on a backup Node, that Node's kernel may not have the same hacks.'`,
 		NonTaintedNodeKernelsRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		`If taint is necessary, document details of the taint and why it's needed by workload or environment.`,
 		bestPracticeDocV1dot3URL+" Section 5.2.14",
 		true,
 		map[string]string{
@@ -843,8 +798,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.OperatorTestKey,
 		`Ensures that the target CNF operators report "Succeeded" as their installation status.`,
 		OperatorInstallStatusSucceededRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoExceptions,
 		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
 		false,
 		map[string]string{
@@ -860,8 +814,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.OperatorTestKey,
 		`The operator is not installed with privileged rights. Test passes if clusterPermissions is not present in the CSV manifest or is present with no resourceNames under its rules.`,
 		OperatorNoPrivilegesRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoExceptions,
 		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
 		false,
 		map[string]string{
@@ -877,8 +830,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.AffiliatedCertTestKey,
 		`Tests whether CNF Operators listed in the configuration file have passed the Red Hat Operator Certification Program (OCP).`,
 		OperatorIsCertifiedRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		AffiliatedCert,
 		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
 		true,
 		map[string]string{
@@ -894,8 +846,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.AffiliatedCertTestKey,
 		`Tests whether helm charts listed in the cluster passed the Red Hat Helm Certification Program.`,
 		HelmIsCertifiedRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		AffiliatedCert,
 		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
 		false,
 		map[string]string{
@@ -911,8 +862,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.OperatorTestKey,
 		`Tests whether a CNF Operator is installed via OLM.`,
 		OperatorIsInstalledViaOLMRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoExceptions,
 		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
 		false,
 		map[string]string{
@@ -926,10 +876,9 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 	TestPodNodeSelectorAndAffinityBestPractices = AddCatalogEntry(
 		"pod-scheduling",
 		common.LifecycleTestKey,
-		`Ensures that CNF Pods do not specify nodeSelector or nodeAffinity. In most cases, Pods should allow for instantiation on any underlying Node.`,
+		`Ensures that CNF Pods do not specify nodeSelector or nodeAffinity. In most cases, Pods should allow for instantiation on any underlying Node. CNFs shall not use node selectors nor taints/tolerations to assign pod location.`,
 		PodNodeSelectorAndAffinityBestPracticesRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		`Exception will only be considered if application requires specialized hardware. Must specify which container requires special hardware and why.`,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
 		map[string]string{
@@ -945,8 +894,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.LifecycleTestKey,
 		`Ensures that CNF Pods specify podAntiAffinity rules and replica value is set to more than 1.`,
 		PodHighAvailabilityBestPracticesRemediation,
-		InformativeResult,
-		NoDocumentedProcess,
+		NoDocumentedProcess+` Not applicable to SNO applications.`,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
 		map[string]string{
@@ -962,8 +910,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.AccessControlTestKey,
 		`Tests that a Pod does not specify ClusterRoleBindings.`,
 		PodClusterRoleBindingsBestPracticesRemediation,
-		NormativeResult,
-		"Reserved for cluster admin, exceptions possible",
+		"Exception possible only for workloads that's cluster wide in nature and absolutely needs cluster level roles & role bindings",
 		bestPracticeDocV1dot3URL+" Section 5.2.10 and 5.3.6",
 		false,
 		map[string]string{
@@ -979,8 +926,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.LifecycleTestKey,
 		`Tests that CNF Pod(s) are deployed as part of a ReplicaSet(s)/StatefulSet(s).`,
 		PodDeploymentBestPracticesRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoDocumentedProcess+` Pods should not be deployed as Daemondset or naked pods.`,
 		bestPracticeDocV1dot3URL+" Section 5.3.3 and 5.3.8",
 		true,
 		map[string]string{
@@ -996,8 +942,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.LifecycleTestKey,
 		`Tests that CNF deployments support scale in/out operations. First, the test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s. In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the deployment/s`, //nolint:lll
 		DeploymentScalingRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoDocumentedProcess+` Not applicable to SNO applications.`,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
 		map[string]string{
@@ -1013,8 +958,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.LifecycleTestKey,
 		`Tests that CNF statefulsets support scale in/out operations. First, the test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the statefulset/s. In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the statefulset/s`, //nolint:lll
 		StatefulSetScalingRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoDocumentedProcess+` Not applicable to SNO applications.`,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
 		map[string]string{
@@ -1028,17 +972,16 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 	TestImagePullPolicyIdentifier = AddCatalogEntry(
 		"image-pull-policy",
 		common.LifecycleTestKey,
-		`Ensure that the containers under test are using IfNotPresent as Image Pull Policy.`,
+		`Ensure that the containers under test are using IfNotPresent as Image Pull Policy. If there is a situation where the container dies and needs to be restarted, the image pull policy becomes important. PullIfNotPresent is recommended so that a loss of image registry access does not prevent the pod from restarting.`, //nolint:lll
 		ImagePullPolicyRemediation,
-		NormativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+"  Section 12.6",
 		true,
 		map[string]string{
-			FarEdge:  Optional,
-			Telco:    Optional,
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
 			NonTelco: Optional,
-			Extended: Optional,
+			Extended: Mandatory,
 		},
 		TagTelco)
 
@@ -1047,8 +990,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.LifecycleTestKey,
 		`Tests that a CNF is configured to support High Availability. First, this test cordons and drains a Node that hosts the CNF Pod. Next, the test ensures that OpenShift can re-instantiate the Pod on another Node, and that the actual replica count matches the desired replica count.`, //nolint:lll
 		PodRecreationRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		`No exceptions - workloads should be able to be restarted/recreated.`,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
 		map[string]string{
@@ -1064,8 +1006,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.AccessControlTestKey,
 		`Ensures that a CNF does not utilize RoleBinding(s) in a non-CNF Namespace.`,
 		PodRoleBindingsBestPracticesRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoExceptions,
 		bestPracticeDocV1dot3URL+" Section 5.3.3 and 5.3.5",
 		false,
 		map[string]string{
@@ -1081,8 +1022,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.AccessControlTestKey,
 		`Tests that each CNF Pod utilizes a valid Service Account.`,
 		PodServiceAccountBestPracticesRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoExceptions,
 		bestPracticeDocV1dot3URL+" Section 5.2.3 and 5.2.7",
 		false,
 		map[string]string{
@@ -1098,8 +1038,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.AccessControlTestKey,
 		`Check that all pods under test have automountServiceAccountToken set to false. Only pods that require access to the kubernetes API server should have automountServiceAccountToken set to true`,
 		AutomountServiceTokenRemediation,
-		InformativeResult,
-		ElaborateOnWhyItIsNeeded,
+		`Exception will be considered if container needs to access APIs which OCP does not offer natively. Must document which container requires which API(s) and detail why existing OCP APIs cannot be used.`,
 		bestPracticeDocV1dot3URL+" Section 12.7",
 		true,
 		map[string]string{
@@ -1108,15 +1047,14 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Optional,
 			Extended: Mandatory,
 		},
-		TagCommon)
+		TagTelco)
 
 	TestServicesDoNotUseNodeportsIdentifier = AddCatalogEntry(
 		"service-type",
-		common.NetworkingTestKey,
+		common.AccessControlTestKey,
 		`Tests that each CNF Service does not utilize NodePort(s).`,
 		ServicesDoNotUseNodeportsRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		`Exception for host resource access tests will only be considered in rare cases where it is absolutely needed`,
 		bestPracticeDocV1dot3URL+" Section 5.3.1",
 		true,
 		map[string]string{
@@ -1132,8 +1070,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.PlatformAlterationTestKey,
 		`Ensures that the Container Base Image is not altered post-startup. This test is a heuristic, and ensures that there are no changes to the following directories: 1) /var/lib/rpm 2) /var/lib/dpkg 3) /bin 4) /sbin 5) /lib 6) /lib64 7) /usr/bin 8) /usr/sbin 9) /usr/lib 10) /usr/lib64`, //nolint:lll
 		UnalteredBaseImageRemediation,
-		NormativeResult,
-		UnalteredBaseImageExceptionProcess,
+		NoExceptions,
 		bestPracticeDocV1dot3URL+" Section 5.1.4",
 		true,
 		map[string]string{
@@ -1149,8 +1086,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.PlatformAlterationTestKey,
 		`Tests that boot parameters are set through the MachineConfigOperator, and not set manually on the Node.`,
 		UnalteredStartupBootParamsRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoExceptions,
 		bestPracticeDocV1dot3URL+" Section 5.2.13 and 5.2.14",
 		true,
 		map[string]string{
@@ -1164,9 +1100,8 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 	TestLoggingIdentifier = AddCatalogEntry(
 		"container-logging",
 		common.ObservabilityTestKey,
-		`Check that all containers under test use standard input output and standard error when logging`,
+		`Check that all containers under test use standard input output and standard error when logging. A container must provide APIs for the platform to observe the container health and act accordingly. These APIs include health checks (liveness and readiness), logging to stderr and stdout for log aggregation (by tools such as Logstash or Filebeat), and integrate with tracing and metrics-gathering libraries (such as Prometheus or Metricbeat).`, //nolint:lll
 		LoggingRemediation,
-		InformativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 10.1",
 		true,
@@ -1181,17 +1116,16 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 	TestTerminationMessagePolicyIdentifier = AddCatalogEntry(
 		"termination-policy",
 		common.ObservabilityTestKey,
-		`Check that all containers are using terminationMessagePolicy: FallbackToLogsOnError`,
+		`Check that all containers are using terminationMessagePolicy: FallbackToLogsOnError. There are different ways a pod can stop on an OpenShift cluster. One way is that the pod can remain alive but non-functional. Another way is that the pod can crash and become non-functional. In the first case, if the administrator has implemented liveness and readiness checks, OpenShift can stop the pod and either restart it on the same node or a different node in the cluster. For the second case, when the application in the pod stops, it should exit with a code and write suitable log entries to help the administrator diagnose what the issue was that caused the problem.`, //nolint:lll
 		TerminationMessagePolicyRemediation,
-		InformativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 12.1",
 		true,
 		map[string]string{
-			FarEdge:  Optional,
-			Telco:    Optional,
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
 			NonTelco: Optional,
-			Extended: Optional,
+			Extended: Mandatory,
 		},
 		TagTelco)
 
@@ -1200,8 +1134,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.ObservabilityTestKey,
 		`Checks that all CRDs have a status subresource specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties[“status”]).`,
 		CrdsStatusSubresourceRemediation,
-		InformativeResult,
-		NoDocumentedProcess,
+		NoExceptions,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
 		map[string]string{
@@ -1217,8 +1150,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.PlatformAlterationTestKey,
 		`Tests that no one has changed the node's sysctl configs after the node was created, the tests works by checking if the sysctl configs are consistent with the MachineConfig CR which defines how the node should be configured`,
 		SysctlConfigsRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoExceptions,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
 		map[string]string{
@@ -1234,8 +1166,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.PlatformAlterationTestKey,
 		`Checks if the istio namespace ("istio-system") is present. If it is present, checks that the istio sidecar is present in all pods under test.`,
 		ServiceMeshRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoExceptionProcessForExtendedTests,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
 		map[string]string{
@@ -1251,8 +1182,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.PlatformAlterationTestKey,
 		`Tests that the running OCP version is not end of life.`,
 		OCPLifecycleRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoExceptions,
 		bestPracticeDocV1dot3URL+" Section 7.9",
 		true,
 		map[string]string{
@@ -1268,8 +1198,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.PlatformAlterationTestKey,
 		`Tests that the nodes running in the cluster have operating systems that are compatible with the deployed version of OpenShift.`,
 		NodeOperatingSystemRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoExceptions,
 		bestPracticeDocV1dot3URL+" Section 7.9",
 		true,
 		map[string]string{
@@ -1285,8 +1214,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.PlatformAlterationTestKey,
 		`verifies if the container base image is redhat.`,
 		IsRedHatReleaseRemediation,
-		NormativeResult,
-		IsRedHatReleaseExceptionProcess,
+		NoExceptions,
 		bestPracticeDocV1dot3URL+" Section 5.2",
 		true,
 		map[string]string{
@@ -1302,8 +1230,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.PlatformAlterationTestKey,
 		`verifies that all openshift platform/cluster nodes have selinux in "Enforcing" mode.`,
 		IsSELinuxEnforcingRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoExceptions,
 		bestPracticeDocV1dot3URL+" Section 10.3 Pod Security",
 		true,
 		map[string]string{
@@ -1319,8 +1246,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.NetworkingTestKey,
 		`Check that containers do not listen on ports that weren't declared in their specification. Platforms may be configured to block undeclared ports.`,
 		UndeclaredContainerPortsRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoExceptionProcessForExtendedTests,
 		bestPracticeDocV1dot3URL+" Section 16.3.1.1",
 		false,
 		map[string]string{
@@ -1336,8 +1262,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.NetworkingTestKey,
 		`Check that containers do not listen on ports that are reserved by OpenShift`,
 		OCPReservedPortsUsageRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoExceptions,
 		bestPracticeDocV1dot4URL+" Section 3.5.9",
 		true,
 		map[string]string{
@@ -1351,9 +1276,8 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 	TestLivenessProbeIdentifier = AddCatalogEntry(
 		"liveness-probe",
 		common.LifecycleTestKey,
-		`Check that all containers under test have liveness probe defined`,
-		LivenessProbeRemediation,
-		NormativeResult,
+		`Check that all containers under test have liveness probe defined. The most basic requirement for the lifecycle management of Pods in OpenShift are the ability to start and stop correctly. When starting up, health probes like liveness and readiness checks can be put into place to ensure the application is functioning properly.`, //nolint:lll
+		LivenessProbeRemediation+` CNFs shall self-recover from common failures like pod failure, host failure, and network failure. Kubernetes native mechanisms such as health-checks (Liveness, Readiness and Startup Probes) shall be employed at a minimum.`,                                                                                 //nolint:lll
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.16, 12.1 and 12.5",
 		true,
@@ -1368,9 +1292,8 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 	TestReadinessProbeIdentifier = AddCatalogEntry(
 		"readiness-probe",
 		common.LifecycleTestKey,
-		`Check that all containers under test have readiness probe defined`,
+		`Check that all containers under test have readiness probe defined. There are different ways a pod can stop on on OpenShift cluster. One way is that the pod can remain alive but non-functional. Another way is that the pod can crash and become non-functional. In the first case, if the administrator has implemented liveness and readiness checks, OpenShift can stop the pod and either restart it on the same node or a different node in the cluster. For the second case, when the application in the pod stops, it should exit with a code and write suitable log entries to help the administrator diagnose what the issue was that caused the problem.`, //nolint:lll
 		ReadinessProbeRemediation,
-		NormativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2.16, 12.1 and 12.5",
 		true,
@@ -1385,9 +1308,8 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 	TestStartupProbeIdentifier = AddCatalogEntry(
 		"startup-probe",
 		common.LifecycleTestKey,
-		`Check that all containers under test have startup probe defined`,
+		`Check that all containers under test have startup probe defined. CNFs shall self-recover from common failures like pod failure, host failure, and network failure. Kubernetes native mechanisms such as health-checks (Liveness, Readiness and Startup Probes) shall be employed at a minimum.`, //nolint:lll
 		StartupProbeRemediation,
-		NormativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 4.6.12", // TODO Change this to v1.4 when available
 		true,
@@ -1404,8 +1326,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.AccessControlTestKey,
 		`Check that all containers under test have only one process running`,
 		OneProcessPerContainerRemediation,
-		InformativeResult,
-		NoDocumentedProcess,
+		NoExceptionProcessForExtendedTests+` Not applicable to SNO applications.`,
 		bestPracticeDocV1dot3URL+" Section 10.8.3",
 		false,
 		map[string]string{
@@ -1419,9 +1340,8 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 	TestSYSNiceRealtimeCapabilityIdentifier = AddCatalogEntry(
 		"sys-nice-realtime-capability",
 		common.AccessControlTestKey,
-		`Check that pods running on nodes with realtime kernel enabled have the SYS_NICE capability enabled in their spec.`,
+		`Check that pods running on nodes with realtime kernel enabled have the SYS_NICE capability enabled in their spec. In the case that a CNF is running on a node using the real-time kernel, SYS_NICE will be used to allow DPDK application to switch to SCHED_FIFO.`, //nolint:lll
 		SYSNiceRealtimeCapabilityRemediation,
-		InformativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 2.7.4",
 		false,
@@ -1436,9 +1356,8 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 	TestSysPtraceCapabilityIdentifier = AddCatalogEntry(
 		"sys-ptrace-capability",
 		common.AccessControlTestKey,
-		`Check that if process namespace sharing is enabled for a Pod then the SYS_PTRACE capability is allowed`,
+		`Check that if process namespace sharing is enabled for a Pod then the SYS_PTRACE capability is allowed. This capability is required when using Process Namespace Sharing. This is used when processes from one Container need to be exposed to another Container. For example, to send signals like SIGHUP from a process in a Container to another process in another Container. For more information on these capabilities refer to https://cloud.redhat.com/blog/linux-capabilities-in-openshift and https://kubernetes.io/docs/tasks/configure-pod-container/share-process-namespace/`, //nolint:lll
 		SysPtraceCapabilityRemediation,
-		InformativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 2.7.5",
 		true,
@@ -1455,7 +1374,6 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.AccessControlTestKey,
 		`Check that containers have resource requests and limits specified in their spec.`,
 		RequestsAndLimitsRemediation,
-		InformativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 4.6.11",
 		true,
@@ -1472,8 +1390,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.AccessControlTestKey,
 		`Checks to see if CNF workload pods are running in namespaces that have resource quotas applied.`,
 		NamespaceResourceQuotaRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoExceptionProcessForExtendedTests,
 		bestPracticeDocV1dot3URL+" Section 4.6.8", // TODO Change this to v1.4 when available
 		true,
 		map[string]string{
@@ -1489,8 +1406,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.ObservabilityTestKey,
 		`Checks to see if pod disruption budgets have allowed values for minAvailable and maxUnavailable`,
 		PodDisruptionBudgetRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoExceptions,
 		bestPracticeDocV1dot3URL+" Section 4.6.20", // TODO Change this to v1.4 when available
 		true,
 		map[string]string{
@@ -1506,7 +1422,6 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.LifecycleTestKey,
 		`Check that pods do not have NoExecute, PreferNoSchedule, or NoSchedule tolerations that have been modified from the default.`,
 		PodTolerationBypassRemediation,
-		NormativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 10.6",
 		true,
@@ -1521,17 +1436,16 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 	TestPersistentVolumeReclaimPolicyIdentifier = AddCatalogEntry(
 		"persistent-volume-reclaim-policy",
 		common.LifecycleTestKey,
-		`Check that the persistent volumes the CNF pods are using have a reclaim policy of delete.`,
+		`Check that the persistent volumes the CNF pods are using have a reclaim policy of delete. Network Functions should clear persistent storage by deleting their PVs when removing their application from a cluster.`,
 		PersistentVolumeReclaimPolicyRemediation,
-		InformativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 3.3.4",
 		true,
 		map[string]string{
-			FarEdge:  Optional,
-			Telco:    Optional,
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
 			NonTelco: Optional,
-			Extended: Optional,
+			Extended: Mandatory,
 		},
 		TagTelco)
 
@@ -1540,8 +1454,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.ManageabilityTestKey,
 		`Check that image tag exists on containers.`,
 		ContainersImageTagRemediation,
-		InformativeResult,
-		NoDocumentedProcess,
+		NoExceptionProcessForExtendedTests,
 		bestPracticeDocV1dot4URL+" Section 4.6.12",
 		false,
 		map[string]string{
@@ -1557,8 +1470,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.AccessControlTestKey,
 		`Check that pods do not run SSH daemons.`,
 		NoSSHDaemonsAllowedRemediation,
-		NormativeResult,
-		ElaborateOnWhyItIsNeeded,
+		`No exceptions - special consideration can be given to certain containers which run as utility tool daemon`,
 		bestPracticeDocV1dot3URL+" Section 4.6.12", // TODO Change this to v1.4 when available
 		false,
 		map[string]string{
@@ -1574,7 +1486,6 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.LifecycleTestKey,
 		`CPU isolation requires: For each container within the pod, resource requests and limits must be identical. Request and Limits are in the form of whole CPUs. The runTimeClassName must be specified. Annotations required disabling CPU and IRQ load-balancing.`, //nolint:lll
 		CPUIsolationRemediation,
-		InformativeResult,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot4URL+" Section 3.5.5",
 		true,
@@ -1589,10 +1500,9 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 	TestContainerPortNameFormat = AddCatalogEntry(
 		"container-port-name-format",
 		common.ManageabilityTestKey,
-		`Check that the container's ports name follow the naming conventions.`,
+		"Check that the container's ports name follow the naming conventions. Name field in ContainerPort section must be of form `<protocol>[-<suffix>]`. More naming convention requirements may be released in future",
 		ContainerPortNameFormatRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoExceptionProcessForExtendedTests,
 		bestPracticeDocV1dot4URL+" Section 4.6.20",
 		false,
 		map[string]string{
@@ -1608,8 +1518,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.LifecycleTestKey,
 		`Tests that CNF crd support scale in/out operations. First, the test starts getting the current replicaCount (N) of the crd/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the crd/s. In case of crd that are managed by HPA the test is changing the min and max value to crd Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the crd/s`, //nolint:lll
 		CrdScalingRemediation,
-		NormativeResult,
-		NoDocumentedProcess,
+		NoDocumentedProcess+` Not applicable to SNO applications.`,
 		bestPracticeDocV1dot4URL+" Section 4.6.20",
 		false,
 		map[string]string{
@@ -1618,14 +1527,13 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 			NonTelco: Mandatory,
 			Extended: Mandatory,
 		},
-		TagTelco,
+		TagCommon,
 	)
 
 	TestPodDeleteIdentifier = AddCatalogEntry(
 		"pod-delete",
 		common.ChaosTesting,
-		"",
-		"",
+		"Chaos test suite is under construction.",
 		"",
 		NoDocumentedProcess,
 		"",

@@ -29,6 +29,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netutil"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/services"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
@@ -37,6 +38,10 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	rbacv1 "k8s.io/api/rbac/v1"
+)
+
+const (
+	nodePort = "NodePort"
 )
 
 var (
@@ -216,6 +221,12 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		testProjectedVolumeServiceAccount(&env)
 	})
+
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServicesDoNotUseNodeportsIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
+		testNodePort(&env)
+	})
 })
 
 func testProjectedVolumeServiceAccount(env *provider.TestEnvironment) {
@@ -287,16 +298,14 @@ func testIpcLockCapability(env *provider.TestEnvironment) {
 
 // testSecConRootUser verifies that the container is not running as root
 func testSecConRootUser(env *provider.TestEnvironment) {
-	var compliantPodObjects []*testhelper.ReportObject
-	var nonCompliantPodObjects []*testhelper.ReportObject
-	var compliantContainerObjects []*testhelper.ReportObject
-	var nonCompliantContainerObjects []*testhelper.ReportObject
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
 		if put.IsRunAsUserID(0) {
 			tnf.ClaimFilePrintf("Non compliant run as Root User detected (RunAsUser uid=0) in pod %s", put.Namespace+"."+put.Name)
-			nonCompliantPodObjects = append(nonCompliantPodObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Root User detected (RunAsUser uid=0)", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Root User detected (RunAsUser uid=0)", false))
 		} else {
-			compliantPodObjects = append(compliantPodObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Root User not detected (RunAsUser uid=0)", true))
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Root User not detected (RunAsUser uid=0)", true))
 		}
 
 		for idx := range put.Spec.Containers {
@@ -304,16 +313,15 @@ func testSecConRootUser(env *provider.TestEnvironment) {
 			// Check the container level RunAsUser parameter
 			if cut.SecurityContext != nil && cut.SecurityContext.RunAsUser != nil {
 				if *(cut.SecurityContext.RunAsUser) == 0 {
-					nonCompliantContainerObjects = append(nonCompliantContainerObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Name, "Root User detected (RunAsUser uid=0)", false))
+					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Name, "Root User detected (RunAsUser uid=0)", false))
 				} else {
-					compliantContainerObjects = append(compliantContainerObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Name, "Root User not detected (RunAsUser uid=0)", true))
+					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Name, "Root User not detected (RunAsUser uid=0)", true))
 				}
 			}
 		}
 	}
 
-	testhelper.AddTestResultReason(compliantPodObjects, nonCompliantPodObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
-	testhelper.AddTestResultReason(compliantContainerObjects, nonCompliantContainerObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // testSecConPrivilegeEscalation verifies that the container is not allowed privilege escalation
@@ -766,5 +774,27 @@ func testContainerSCC(env *provider.TestEnvironment) {
 	}
 	aCNFOut := testhelper.NewReportObject("Overall CNF category", testhelper.CnfType, false).AddField(testhelper.Category, highLevelCat.String())
 	compliantObjects = append(compliantObjects, aCNFOut)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+}
+
+func testNodePort(env *provider.TestEnvironment) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+	for _, s := range env.Services {
+		ginkgo.By(fmt.Sprintf("Testing %s", services.ToString(s)))
+
+		if s.Spec.Type == nodePort {
+			tnf.ClaimFilePrintf("FAILURE: Service %s (ns %s) type is nodePort", s.Name, s.Namespace)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("", testhelper.ServiceType, false).
+				AddField(testhelper.Namespace, s.Namespace).
+				AddField(testhelper.ServiceName, s.Name).
+				AddField(testhelper.ServiceMode, string(s.Spec.Type)))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewReportObject("", testhelper.ServiceType, true).
+				AddField(testhelper.Namespace, s.Namespace).
+				AddField(testhelper.ServiceName, s.Name).
+				AddField(testhelper.ServiceMode, string(s.Spec.Type)))
+		}
+	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
