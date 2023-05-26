@@ -141,7 +141,7 @@ func testSchedulingPolicyInCPUPool(env *provider.TestEnvironment,
 		logrus.Debugf("Processed %v", testContainer)
 	}
 
-	testhelper.AddTestResultReason(compliantContainersPids, nonCompliantContainersPids, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantContainersPids, nonCompliantContainersPids, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testRtAppsNoExecProbes(env *provider.TestEnvironment, cuts []*provider.Container) {
