@@ -56,16 +56,27 @@ var (
 		// update documentation.
 
 		// Full Support
+		"4.13": {
+			GADate:  time.Date(2023, 5, 17, 0, 0, 0, 0, time.UTC),  // January 17, 2023
+			FSEDate: time.Date(2024, 8, 17, 0, 0, 0, 0, time.UTC),  // August 17, 2024
+			MSEDate: time.Date(2024, 11, 17, 0, 0, 0, 0, time.UTC), // November 17, 2024
+			// Note: FSEDate (Release of 4.13 + 3 months) is currently a "guess".  Update when available.
+
+			// OS Compatibility
+			MinRHCOSVersion:      "4.13",
+			RHELVersionsAccepted: []string{"8.4", "8.5"},
+		},
 		"4.12": {
 			GADate:  time.Date(2023, 1, 17, 0, 0, 0, 0, time.UTC), // January 17, 2023
-			FSEDate: time.Date(2024, 4, 17, 0, 0, 0, 0, time.UTC), // April 17, 2024
-			MSEDate: time.Date(2025, 7, 17, 0, 0, 0, 0, time.UTC), // July 17, 2025
-			// Note: FSEDate (Release of 4.13 + 3 months) is currently a "guess".  Update when available.
+			FSEDate: time.Date(2023, 8, 17, 0, 0, 0, 0, time.UTC), // August 17, 2023
+			MSEDate: time.Date(2024, 7, 17, 0, 0, 0, 0, time.UTC), // July 17, 2024
 
 			// OS Compatibility
 			MinRHCOSVersion:      "4.12",
 			RHELVersionsAccepted: []string{"8.4", "8.5"},
 		},
+
+		// Maintenance Support
 		"4.11": {
 			GADate:  time.Date(2022, 8, 10, 0, 0, 0, 0, time.UTC), // August 10, 2022
 			FSEDate: time.Date(2023, 4, 17, 0, 0, 0, 0, time.UTC), // April 17, 2023
@@ -75,8 +86,6 @@ var (
 			MinRHCOSVersion:      "4.11",
 			RHELVersionsAccepted: []string{"8.4", "8.5"},
 		},
-
-		// Maintenance Support
 		"4.10": {
 			GADate:  time.Date(2022, 3, 10, 0, 0, 0, 0, time.UTC),  // March 10, 2022
 			FSEDate: time.Date(2022, 11, 10, 0, 0, 0, 0, time.UTC), // November 10, 2022
