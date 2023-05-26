@@ -217,7 +217,6 @@ func outputTestCases() (outString string, summary catalogSummary) { //nolint:fun
 			outString += "---|---\n"
 			outString += fmt.Sprintf("Unique ID|%s\n", k.identifier.Id)
 			outString += fmt.Sprintf("Description|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].Description, "\n", " "))
-			outString += fmt.Sprintf("Result Type|%s\n", identifiers.Catalog[k.identifier].Type)
 			outString += fmt.Sprintf("Suggested Remediation|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].Remediation, "\n", " "))
 			outString += fmt.Sprintf("Best Practice Reference|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].BestPracticeReference, "\n", " "))
 			outString += fmt.Sprintf("Exception Process|%s\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].ExceptionProcess, "\n", " "))

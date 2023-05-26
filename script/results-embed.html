@@ -60,7 +60,7 @@
   </nav>
 
   <button class="w3-button w3-right w3-light-grey" id="download" type="submit" onclick=download()
-    hidden="hidden">Download Results</button>
+    hidden="hidden">Download Results Feedback</button>
 
 
   <ul class="nav nav-tabs">
@@ -560,7 +560,7 @@
               text2 += text
               text2 += '</tbody></table>'
               for (const item of input[key]) {
-                text2 += '<label >write your Feedback for ' + item.testID.id + ' test case</label>'
+                text2 += '<label>Write your feedback for ' + item.testID.id + ' test case</label>'
                 text2 += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-' + tableName + '-' + item.testID.id + '" type="text" ></textarea>'
               }
               text2 += '</div></div></div>'
@@ -568,7 +568,7 @@
               text3 += text
               text3 += '</tbody></table>'
               for (const item of input[key]) {
-                text3 += '<label >write your Feedback for ' + item.testID.id + ' test case</label>'
+                text3 += '<label>Write your feedback for ' + item.testID.id + ' test case</label>'
                 text3 += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-' + tableName + '-' + item.testID.id + '" type="text"></textarea>'
               }
               text3 += '</div></div></div>'
@@ -696,9 +696,9 @@ classification=  {
   },
   "access-control-projected-volume-service-account-token": {
     "Extended": "Mandatory",
-    "FarEdge": "Optional",
+    "FarEdge": "Mandatory",
     "NonTelco": "Optional",
-    "Telco": "Optional"
+    "Telco": "Mandatory"
   },
   "access-control-requests-and-limits": {
     "Extended": "Mandatory",
@@ -719,6 +719,12 @@ classification=  {
     "Telco": "Mandatory"
   },
   "access-control-security-context-privilege-escalation": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
+  "access-control-service-type": {
     "Extended": "Mandatory",
     "FarEdge": "Mandatory",
     "NonTelco": "Mandatory",
@@ -791,10 +797,10 @@ classification=  {
     "Telco": "Mandatory"
   },
   "lifecycle-container-startup": {
-    "Extended": "Optional",
-    "FarEdge": "Optional",
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
     "NonTelco": "Optional",
-    "Telco": "Optional"
+    "Telco": "Mandatory"
   },
   "lifecycle-cpu-isolation": {
     "Extended": "Mandatory",
@@ -815,10 +821,10 @@ classification=  {
     "Telco": "Mandatory"
   },
   "lifecycle-image-pull-policy": {
-    "Extended": "Optional",
-    "FarEdge": "Optional",
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
     "NonTelco": "Optional",
-    "Telco": "Optional"
+    "Telco": "Mandatory"
   },
   "lifecycle-liveness-probe": {
     "Extended": "Mandatory",
@@ -827,10 +833,10 @@ classification=  {
     "Telco": "Mandatory"
   },
   "lifecycle-persistent-volume-reclaim-policy": {
-    "Extended": "Optional",
-    "FarEdge": "Optional",
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
     "NonTelco": "Optional",
-    "Telco": "Optional"
+    "Telco": "Mandatory"
   },
   "lifecycle-pod-high-availability": {
     "Extended": "Mandatory",
@@ -958,12 +964,6 @@ classification=  {
     "NonTelco": "Optional",
     "Telco": "Optional"
   },
-  "networking-service-type": {
-    "Extended": "Mandatory",
-    "FarEdge": "Mandatory",
-    "NonTelco": "Mandatory",
-    "Telco": "Mandatory"
-  },
   "networking-undeclared-container-ports-usage": {
     "Extended": "Mandatory",
     "FarEdge": "Optional",
@@ -989,10 +989,10 @@ classification=  {
     "Telco": "Mandatory"
   },
   "observability-termination-policy": {
-    "Extended": "Optional",
-    "FarEdge": "Optional",
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
     "NonTelco": "Optional",
-    "Telco": "Optional"
+    "Telco": "Mandatory"
   },
   "operator-install-source": {
     "Extended": "Mandatory",
@@ -1233,7 +1233,7 @@ classification=  {
 
       var pom = document.createElement('a');
       pom.setAttribute('href', 'data:text/html;charset=UTF-8,' + encodeURIComponent(htmlText));
-      pom.setAttribute('download', "results");
+      pom.setAttribute('download', "results-feedback");
 
       pom.style.display = 'none';
       document.body.appendChild(pom);

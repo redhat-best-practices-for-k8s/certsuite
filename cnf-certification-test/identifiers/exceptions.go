@@ -28,7 +28,7 @@ const (
 	// TODO: Add more exception processes if/when we encounter more opportunities with partners
 	IsRedHatReleaseExceptionProcess = `Document which containers are not able to meet the RHEL-based container requirement and if/when the base image can be updated.`
 
-	SecConNonRootUserExceptionProcess = `If your application needs root user access, please document why your application cannot be ran as non-root and supply the reasoning for exception.`
+	SecConNonRootUserExceptionProcess = `No exceptions - will only be considered under special circumstances. Must identify which container needs access and document why with details.`
 	SecConExceptionProcess            = `If the container had the right configuration of the allowed category from the 4 list so the test will pass the list is on page 51 on the CNF Security Context Constraints (SCC) section 4.5(Allowed categories are category 1 and category 0), Applications MUST use one of the approved Security Context Constraints.`
 
 	SecConCapabilitiesExceptionProcess = `Identify the pod that is needing special capabilities and document why`
@@ -41,4 +41,13 @@ const (
 
 	// Generic provide info message
 	ElaborateOnWhyItIsNeeded = `Please elaborate why it's needed and explain how it's used.`
+
+	// No exception process for extended tests
+	NoExceptionProcessForExtendedTests = `No exception needed for optional/extended tests.`
+
+	// No exception process
+	NoExceptions = `No exceptions`
+
+	// affiliated certification exception process
+	AffiliatedCert = NoDocumentedProcess + `Partner can run CNF Certification test suite before passing other certifications (Container/Operator/HelmChart) but the affiliated certification test cases in CNF Certification test suite must be re-run once the other certifications have been granted.` //nolint:lll
 )
