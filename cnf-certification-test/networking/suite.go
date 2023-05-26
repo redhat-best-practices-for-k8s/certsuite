@@ -101,11 +101,6 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 		}
 		testUndeclaredContainerPortsUsage(&env)
 	})
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServicesDoNotUseNodeportsIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
-		testNodePort(&env)
-	})
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOCPReservedPortsUsage)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
@@ -207,19 +202,6 @@ func testUndeclaredContainerPortsUsage(env *provider.TestEnvironment) {
 		}
 	}
 	testhelper.AddTestResultLog("Non-compliant", failedPods, tnf.ClaimFilePrintf, ginkgo.Fail)
-}
-
-func testNodePort(env *provider.TestEnvironment) {
-	badServices := []string{}
-	for _, s := range env.Services {
-		ginkgo.By(fmt.Sprintf("Testing %s", services.ToString(s)))
-
-		if s.Spec.Type == nodePort {
-			tnf.ClaimFilePrintf("FAILURE: Service %s (ns %s) type is nodePort", s.Name, s.Namespace)
-			badServices = append(badServices, fmt.Sprintf("ns: %s, name: %s", s.Namespace, s.Name))
-		}
-	}
-	testhelper.AddTestResultLog("Non-compliant", badServices, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // testDefaultNetworkConnectivity test the connectivity between the default interfaces of containers under test

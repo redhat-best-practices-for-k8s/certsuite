@@ -29,6 +29,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netutil"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/services"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
@@ -37,6 +38,10 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	rbacv1 "k8s.io/api/rbac/v1"
+)
+
+const (
+	nodePort = "NodePort"
 )
 
 var (
@@ -215,6 +220,12 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		testProjectedVolumeServiceAccount(&env)
+	})
+
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServicesDoNotUseNodeportsIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
+		testNodePort(&env)
 	})
 })
 
@@ -765,4 +776,17 @@ func testContainerSCC(env *provider.TestEnvironment) {
 	aCNFOut := testhelper.NewReportObject("Overall CNF category", testhelper.CnfType, false).AddField(testhelper.Category, highLevelCat.String())
 	compliantObjects = append(compliantObjects, aCNFOut)
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, ginkgo.Fail)
+}
+
+func testNodePort(env *provider.TestEnvironment) {
+	badServices := []string{}
+	for _, s := range env.Services {
+		ginkgo.By(fmt.Sprintf("Testing %s", services.ToString(s)))
+
+		if s.Spec.Type == nodePort {
+			tnf.ClaimFilePrintf("FAILURE: Service %s (ns %s) type is nodePort", s.Name, s.Namespace)
+			badServices = append(badServices, fmt.Sprintf("ns: %s, name: %s", s.Namespace, s.Name))
+		}
+	}
+	testhelper.AddTestResultLog("Non-compliant", badServices, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
