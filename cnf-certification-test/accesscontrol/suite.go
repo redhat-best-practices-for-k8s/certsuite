@@ -298,16 +298,14 @@ func testIpcLockCapability(env *provider.TestEnvironment) {
 
 // testSecConRootUser verifies that the container is not running as root
 func testSecConRootUser(env *provider.TestEnvironment) {
-	var compliantPodObjects []*testhelper.ReportObject
-	var nonCompliantPodObjects []*testhelper.ReportObject
-	var compliantContainerObjects []*testhelper.ReportObject
-	var nonCompliantContainerObjects []*testhelper.ReportObject
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
 		if put.IsRunAsUserID(0) {
 			tnf.ClaimFilePrintf("Non compliant run as Root User detected (RunAsUser uid=0) in pod %s", put.Namespace+"."+put.Name)
-			nonCompliantPodObjects = append(nonCompliantPodObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Root User detected (RunAsUser uid=0)", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Root User detected (RunAsUser uid=0)", false))
 		} else {
-			compliantPodObjects = append(compliantPodObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Root User not detected (RunAsUser uid=0)", true))
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Root User not detected (RunAsUser uid=0)", true))
 		}
 
 		for idx := range put.Spec.Containers {
@@ -315,16 +313,15 @@ func testSecConRootUser(env *provider.TestEnvironment) {
 			// Check the container level RunAsUser parameter
 			if cut.SecurityContext != nil && cut.SecurityContext.RunAsUser != nil {
 				if *(cut.SecurityContext.RunAsUser) == 0 {
-					nonCompliantContainerObjects = append(nonCompliantContainerObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Name, "Root User detected (RunAsUser uid=0)", false))
+					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Name, "Root User detected (RunAsUser uid=0)", false))
 				} else {
-					compliantContainerObjects = append(compliantContainerObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Name, "Root User not detected (RunAsUser uid=0)", true))
+					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Name, "Root User not detected (RunAsUser uid=0)", true))
 				}
 			}
 		}
 	}
 
-	testhelper.AddTestResultReason(compliantPodObjects, nonCompliantPodObjects, ginkgo.Fail)
-	testhelper.AddTestResultReason(compliantContainerObjects, nonCompliantContainerObjects, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, ginkgo.Fail)
 }
 
 // testSecConPrivilegeEscalation verifies that the container is not allowed privilege escalation
@@ -779,14 +776,23 @@ func testContainerSCC(env *provider.TestEnvironment) {
 }
 
 func testNodePort(env *provider.TestEnvironment) {
-	badServices := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, s := range env.Services {
 		ginkgo.By(fmt.Sprintf("Testing %s", services.ToString(s)))
 
 		if s.Spec.Type == nodePort {
 			tnf.ClaimFilePrintf("FAILURE: Service %s (ns %s) type is nodePort", s.Name, s.Namespace)
-			badServices = append(badServices, fmt.Sprintf("ns: %s, name: %s", s.Namespace, s.Name))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("", testhelper.ServiceType, false).
+				AddField(testhelper.Namespace, s.Namespace).
+				AddField(testhelper.ServiceName, s.Name).
+				AddField(testhelper.ServiceMode, string(s.Spec.Type)))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewReportObject("", testhelper.ServiceType, true).
+				AddField(testhelper.Namespace, s.Namespace).
+				AddField(testhelper.ServiceName, s.Name).
+				AddField(testhelper.ServiceMode, string(s.Spec.Type)))
 		}
 	}
-	testhelper.AddTestResultLog("Non-compliant", badServices, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, ginkgo.Fail)
 }

@@ -58,6 +58,8 @@ const (
 	RoleBindingName        = "RoleBindingName"
 	RoleBindingNamespace   = "RoleBindingNamespace"
 	ServiceAccountName     = "ServiceAccountName"
+	ServiceMode            = "ServiceType"
+	ServiceName            = "ServiceName"
 )
 
 // When adding new object types, please update the following:
@@ -70,6 +72,7 @@ const (
 	ContainerProcessType = "ContainerProcess"
 	ContainerCategory    = "ContainerCategory"
 	ProjectedVolumeType  = "ProjectedVolume"
+	ServiceType          = "Service"
 )
 
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {
