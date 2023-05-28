@@ -66,4 +66,5 @@ results of that specific test run. To see them in a good way that is clear for
 you we created a parser that is local. You can open it by copying the path /
  #your-code-path/cnf-certification-test/script/results html and open it in your
 browser then upload the claim.json file of that run.
-![overview](docs/assets/images/htmlpage.png)
+ ![overview](docs/assets/images/htmlpage.png)
+ 
