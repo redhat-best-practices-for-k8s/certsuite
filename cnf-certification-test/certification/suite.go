@@ -18,13 +18,13 @@ package certification
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"golang.org/x/mod/semver"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/internal/certdb"
@@ -214,14 +214,15 @@ func testHelmVersion(env *provider.TestEnvironment) {
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, helm := range helmchartsReleases {
 		helmChartVersion := helm.Chart.Metadata.APIVersion
-		helmChartVersion = strings.Split(helmChartVersion, "+")[0]
-		helmChartVersion = strings.Split(helmChartVersion, "v")[1]
-		helmChartVersionf, err := strconv.ParseFloat(helmChartVersion, 64)
-		if err != nil {
-			logrus.Errorf("failed to parse helm %s version: %v", helm.Chart.Name(), err)
+		if !semver.IsValid(helmChartVersion) {
+			logrus.Errorf("Failed to parse helm %s version %s, but its major should be v3", helm.Name, helm.Chart.Metadata.Version)
+			reportObject := testhelper.NewReportObject("Failed to parse helm", testhelper.HelmChart, false).AddField(testhelper.ChartName, helm.Name)
+			reportObject = reportObject.AddField(testhelper.ChartVersion, helm.Chart.Metadata.Version)
+			nonCompliantObjects = append(nonCompliantObjects, reportObject)
 		}
-		if helmChartVersionf > 0 && helmChartVersionf < 3 {
-			reportObject := testhelper.NewReportObject(fmt.Sprintf("This Helm Chart is v%f but needs to be v3 due to the security risks associated with Tiller", helmChartVersionf), testhelper.HelmChart, false).AddField(testhelper.ChartName, helm.Name)
+		charAPIVersionMajor := semver.Major(helmChartVersion)
+		if charAPIVersionMajor != "v3" {
+			reportObject := testhelper.NewReportObject(fmt.Sprintf("This Helm Chart is v%v but needs to be v3 due to the security risks associated with Tiller", helmChartVersion), testhelper.HelmChart, false).AddField(testhelper.ChartName, helm.Name)
 			reportObject = reportObject.AddField(testhelper.ChartVersion, helm.Chart.Metadata.Version)
 			nonCompliantObjects = append(nonCompliantObjects, reportObject)
 		} else {
@@ -230,5 +231,5 @@ func testHelmVersion(env *provider.TestEnvironment) {
 			compliantObjects = append(compliantObjects, reportObject)
 		}
 	}
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
