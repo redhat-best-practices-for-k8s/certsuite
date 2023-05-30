@@ -209,17 +209,13 @@ func testNetworkConnectivity(env *provider.TestEnvironment, aIPVersion netcommon
 	netsUnderTest, claimsLog := icmp.BuildNetTestContext(env.Pods, aIPVersion, aType)
 	// Saving  curated logs to claims file
 	tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
-	badNets, claimsLog, skip := icmp.RunNetworkingTests(netsUnderTest, defaultNumPings, aIPVersion)
+	report, claimsLog, skip := icmp.RunNetworkingTests(netsUnderTest, defaultNumPings, aIPVersion)
 	// Saving curated logs to claims file
 	tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
 	if skip {
 		ginkgo.Skip(fmt.Sprintf("There are no %s networks to test, skipping test", aIPVersion))
 	}
-	if n := len(badNets); n > 0 {
-		logrus.Debugf("Failed nets: %+v", badNets)
-		tnf.ClaimFilePrintf("%d nets failed the %s network %s ping test.", n, aType, aIPVersion)
-		testhelper.AddTestResultLog("Non-compliant", badNets, tnf.ClaimFilePrintf, ginkgo.Fail)
-	}
+	testhelper.AddTestResultReason(report.CompliantObjectsOut, report.NonCompliantObjectsOut, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testOCPReservedPortsUsage(env *provider.TestEnvironment) {
