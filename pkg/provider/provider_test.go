@@ -703,7 +703,7 @@ func TestBuildImageWithVersion(t *testing.T) {
 		{
 			repoVar:         "",
 			supportImageVar: "",
-			expectedOutput:  "quay.io/testnetworkfunction/debug-partner:latest",
+			expectedOutput:  "quay.io/testnetworkfunction/debug-partner:4.3.0",
 		},
 	}
 
