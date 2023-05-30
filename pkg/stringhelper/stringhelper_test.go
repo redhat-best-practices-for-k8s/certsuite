@@ -173,10 +173,15 @@ func TestSubSlice(t *testing.T) {
 			testSliceB:     []string{"one", "two", "three"},
 			expectedOutput: true,
 		},
-		{ // Test Case # - Empty SliceA
+		{ // Test Case #4 - Empty SliceA
 			testSliceA:     []string{},
 			testSliceB:     []string{"one", "two", "three"},
 			expectedOutput: false,
+		},
+		{ // Test #5 - SliceB's elements exist out of order in SliceA
+			testSliceA:     []string{"one", "two", "three"},
+			testSliceB:     []string{"two", "one"},
+			expectedOutput: true,
 		},
 	}
 

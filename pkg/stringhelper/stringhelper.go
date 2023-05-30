@@ -36,21 +36,14 @@ func StringInSlice[T ~string](s []T, str T, contains bool) bool {
 	return false
 }
 
-// SubSlice checks if a slice exists within a slice
-func SubSlice[T ~string](s, sub []T) bool {
-	for i := range s {
-		if len(s)-i < len(sub) {
+// SubSlice checks if a slice's elements all exist within a slice
+func SubSlice(s, sub []string) bool {
+	for _, v := range sub {
+		if !StringInSlice(s, v, false) {
 			return false
 		}
-		for j := range sub {
-			if s[i+j] != sub[j] {
-				break
-			} else if j == len(sub)-1 {
-				return true
-			}
-		}
 	}
-	return false
+	return true
 }
 
 func RemoveEmptyStrings(s []string) []string {
