@@ -212,10 +212,10 @@ require (
 	github.com/go-logr/stdr v1.2.2
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/openshift/machine-config-operator v0.0.1-0.20230515070935-49f32d46538e
-	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230523134535-51af09a44662
+	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230530133445-14dfc9d1b0fc
 	github.com/test-network-function/privileged-daemonset v1.0.3
 	gopkg.in/yaml.v3 v3.0.1
 	k8s.io/kubectl v0.27.2
 )
 
-replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230523134535-51af09a44662
+replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230530133445-14dfc9d1b0fc
