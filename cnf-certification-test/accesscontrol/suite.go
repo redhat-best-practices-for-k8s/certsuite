@@ -234,34 +234,19 @@ func testProjectedVolumeServiceAccount(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
-		for i := range put.Spec.Volumes {
-			if put.Spec.Volumes[i].Projected == nil {
-				continue
-			}
-			if put.Spec.Volumes[i].Projected.Sources == nil {
-				tnf.ClaimFilePrintf("%s, volume=%s does not use projected volumes", put, put.Spec.Volumes[i].Name)
-				continue
-			}
-			for index := range put.Spec.Volumes[i].Projected.Sources {
-				if put.Spec.Volumes[i].Projected.Sources[index].ServiceAccountToken != nil {
-					aPodOut := testhelper.NewPodReportObject(put.Namespace, put.Name,
-						"the projected volume Service account token field is not nil",
-						false).
-						SetType(testhelper.ProjectedVolumeType).
-						AddField(testhelper.ProjectedVolumeName, put.Spec.Volumes[i].Name).
-						AddField(testhelper.ProjectedVolumeSAToken, put.Spec.Volumes[i].Projected.Sources[index].ServiceAccountToken.String())
-
-					nonCompliantObjects = append(nonCompliantObjects, aPodOut)
-				} else {
-					aPodOut := testhelper.NewPodReportObject(put.Namespace, put.Name,
-						"the projected volume Service account token field is nil",
-						false).
-						SetType(testhelper.ProjectedVolumeType).
-						AddField(testhelper.ProjectedVolumeName, put.Spec.Volumes[i].Name).
-						AddField(testhelper.ProjectedVolumeSAToken, put.Spec.Volumes[i].Projected.Sources[index].ServiceAccountToken.String())
-					compliantObjects = append(compliantObjects, aPodOut)
-				}
-			}
+		// Check if the pod is using a projected volume service account token
+		volumeName, saToken, result := put.UsesProjectedVolumeServiceAccounts()
+		if result {
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name,
+				"The projected volume Service Account token field is not nil",
+				false).
+				SetType(testhelper.ProjectedVolumeType).
+				AddField(testhelper.ProjectedVolumeName, volumeName).
+				AddField(testhelper.ProjectedVolumeSAToken, saToken))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name,
+				"The pod is not using a projected volume Service Account token",
+				true))
 		}
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
