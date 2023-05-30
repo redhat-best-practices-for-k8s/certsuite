@@ -724,7 +724,7 @@ Unique ID|lifecycle-pod-owner-type
 Description|Tests that CNF Pod(s) are deployed as part of a ReplicaSet(s)/StatefulSet(s).
 Suggested Remediation|Deploy the CNF using ReplicaSet/StatefulSet.
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 5.3.3 and 5.3.8
-Exception Process|There is no documented exception process for this. Pods should not be deployed as Daemondset or naked pods.
+Exception Process|There is no documented exception process for this. Pods should not be deployed as DaemonSet or naked pods.
 Tags|telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|

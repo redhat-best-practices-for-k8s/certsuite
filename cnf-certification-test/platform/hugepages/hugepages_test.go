@@ -500,7 +500,7 @@ func TestPositiveMachineConfigKernelArgsHugepages(t *testing.T) {
 		nodeHugePagesCmdOutput string
 		mcKernelArgs           []string
 	}{
-		// No hugepages info found in kernerlArgs, but the node has a file for the default hugepages size for RHEL (2MB) with count 0
+		// No hugepages info found in kernelArgs, but the node has a file for the default hugepages size for RHEL (2MB) with count 0
 		{
 			nodeHugePagesCmdOutput: `/host/sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages count:0`,
 			mcKernelArgs:           []string{},
@@ -623,7 +623,7 @@ func TestNegativeMachineConfigKernelArgsHugepages(t *testing.T) {
 		mcKernelArgs           []string
 		expectedErrorMsg       string
 	}{
-		// No hugepages config in kernerlArgs, but the node has non-zero value for 2MB size.
+		// No hugepages config in kernelArgs, but the node has non-zero value for 2MB size.
 		{
 			nodeHugePagesCmdOutput: `/host/sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages count:2`,
 			mcKernelArgs:           []string{},

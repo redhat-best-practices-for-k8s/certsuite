@@ -68,7 +68,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		if !env.IsIntrusive() {
 			ginkgo.Skip(intrusiveTcSkippedReason)
 		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.ScaleCrUndetTest)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.ScaleCrUnderTest)
 		// Note: We skip this test because 'testHighAvailability' in the lifecycle suite is already
 		// testing the replicas and antiaffinity rules that should already be in place for crd.
 		testScaleCrd(&env, timeout)
@@ -373,9 +373,9 @@ func testScaleCrd(env *provider.TestEnvironment, timeout time.Duration) {
 	ginkgo.By("Testing deployment scaling")
 	defer env.SetNeedsRefresh()
 	failedcrd := []string{}
-	for i := range env.ScaleCrUndetTest {
-		groupResourceSchema := env.ScaleCrUndetTest[i].GroupResourceSchema
-		scaleCr := env.ScaleCrUndetTest[i].Scale
+	for i := range env.ScaleCrUnderTest {
+		groupResourceSchema := env.ScaleCrUnderTest[i].GroupResourceSchema
+		scaleCr := env.ScaleCrUnderTest[i].Scale
 		if hpa := scaling.GetResourceHPA(env.HorizontalScaler, scaleCr.Name, scaleCr.Namespace, scaleCr.Kind); hpa != nil {
 			if !scaling.TestScaleHPACrd(&scaleCr, hpa, groupResourceSchema, timeout) {
 				tnf.ClaimFilePrintf("cr found to have failed the scaling test: %s", scaleCr.GetName())
@@ -510,16 +510,16 @@ func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 	// pods are scheduled.  Also, they are not allowed in general, see the node-selector test case.
 	// Skip the safeguard for any pods that are using a runtimeClassName.  This is potentially
 	// because pods that are derived from a performance profile might have a built-in nodeSelector.
-	var podsWithNodeAssignement []*provider.Pod
+	var podsWithNodeAssignment []*provider.Pod
 	for _, put := range env.Pods {
 		if !put.IsRuntimeClassNameSpecified() && put.HasNodeSelector() {
-			podsWithNodeAssignement = append(podsWithNodeAssignement, put)
+			podsWithNodeAssignment = append(podsWithNodeAssignment, put)
 			logrus.Errorf("%s has been found with node selector(s): %v", put.String(), put.Spec.NodeSelector)
 		}
 	}
-	if len(podsWithNodeAssignement) > 0 {
-		logrus.Errorf("Pod(s) have been found to contain a node assignment and cannot perform the pod-recreation test: %v", podsWithNodeAssignement)
-		testhelper.AddTestResultLog("Non-compliant", podsWithNodeAssignement, tnf.ClaimFilePrintf, ginkgo.Fail)
+	if len(podsWithNodeAssignment) > 0 {
+		logrus.Errorf("Pod(s) have been found to contain a node assignment and cannot perform the pod-recreation test: %v", podsWithNodeAssignment)
+		testhelper.AddTestResultLog("Non-compliant", podsWithNodeAssignment, tnf.ClaimFilePrintf, ginkgo.Fail)
 	}
 
 	for n := range podsets.GetAllNodesForAllPodSets(env.Pods) {

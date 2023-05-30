@@ -926,7 +926,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		common.LifecycleTestKey,
 		`Tests that CNF Pod(s) are deployed as part of a ReplicaSet(s)/StatefulSet(s).`,
 		PodDeploymentBestPracticesRemediation,
-		NoDocumentedProcess+` Pods should not be deployed as Daemondset or naked pods.`,
+		NoDocumentedProcess+` Pods should not be deployed as DaemonSet or naked pods.`,
 		bestPracticeDocV1dot3URL+" Section 5.3.3 and 5.3.8",
 		true,
 		map[string]string{
