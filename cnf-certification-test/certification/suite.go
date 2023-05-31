@@ -213,6 +213,7 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment, val
 func testHelmVersion(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
+	tillerFound := false
 	clients := clientsholder.GetClientsHolder()
 	for _, tillerNamespace := range env.AllNamespaces {
 		// Get the Tiller pod in the specified namespace
@@ -225,10 +226,16 @@ func testHelmVersion(env *provider.TestEnvironment) {
 		if len(podList.Items) == 0 {
 			tnf.ClaimFilePrintf("Tiller pod not found in namespace %s\n", tillerNamespace)
 		} else {
+			tillerFound = true
 			tnf.ClaimFilePrintf("Tiller pod found in namespace %s\n, helm version is v2", tillerNamespace)
 			reportObject := testhelper.NewReportObject(fmt.Sprintf("Found Tiller pod in namespace %s, Helm Chart  version is v2 but needs to be v3 due to the security risks associated with Tiller", tillerNamespace), testhelper.HelmChart, false)
 			nonCompliantObjects = append(nonCompliantObjects, reportObject)
 		}
+	}
+	if tillerFound {
+		tnf.ClaimFilePrintf("Tiller pod not found in all namespaces helm version is v3\n")
+		reportObject := testhelper.NewReportObject("Tiller pod not found in all namespaces helm version is v3", testhelper.HelmChart, true)
+		compliantObjects = append(compliantObjects, reportObject)
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
