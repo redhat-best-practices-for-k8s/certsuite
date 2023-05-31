@@ -178,8 +178,7 @@ func TestIsNetworkPolicyCompliant(t *testing.T) {
 					Name: "test1",
 				},
 				Spec: networkingv1.NetworkPolicySpec{
-					PodSelector: metav1.LabelSelector{
-					},
+					PodSelector: metav1.LabelSelector{},
 					PolicyTypes: []networkingv1.PolicyType{
 						networkingv1.PolicyTypeIngress,
 					},
@@ -188,7 +187,6 @@ func TestIsNetworkPolicyCompliant(t *testing.T) {
 			expectedIngressOutput: true,
 			expectedEgressOutput:  false,
 		},
-
 	}
 
 	for _, tc := range testCases {
@@ -237,8 +235,7 @@ func TestLabelsMatch(t *testing.T) {
 			expectedOutput: false,
 		},
 		{ // Test Case #4 - empty pod selector label
-			testPodSelectorLabels: metav1.LabelSelector{
-			},
+			testPodSelectorLabels: metav1.LabelSelector{},
 			testPodLabels: map[string]string{
 				"label1": "value2",
 			},
