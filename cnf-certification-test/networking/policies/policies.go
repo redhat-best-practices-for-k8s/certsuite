@@ -62,6 +62,12 @@ func IsNetworkPolicyCompliant(np *networkingv1.NetworkPolicy, policyType network
 
 func LabelsMatch(podSelectorLabels v1.LabelSelector, podLabels map[string]string) bool {
 	labelMatch := false
+
+	// When the pod selector label is empty, it will always match the pod
+	if podSelectorLabels.Size() == 0 {
+		return true
+	}
+
 	for psLabelKey, psLabelValue := range podSelectorLabels.MatchLabels {
 		for podLabelKey, podLabelValue := range podLabels {
 			if psLabelKey == podLabelKey && psLabelValue == podLabelValue {

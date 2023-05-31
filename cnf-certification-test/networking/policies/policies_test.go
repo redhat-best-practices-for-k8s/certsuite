@@ -172,6 +172,21 @@ func TestIsNetworkPolicyCompliant(t *testing.T) {
 			expectedIngressOutput: false,
 			expectedEgressOutput:  false, // ingress spec fails because specified
 		},
+		{ // Test #7 - Network Policy with no label selector, ingress policy types
+			testNP: networkingv1.NetworkPolicy{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "test1",
+				},
+				Spec: networkingv1.NetworkPolicySpec{
+					PodSelector: metav1.LabelSelector{},
+					PolicyTypes: []networkingv1.PolicyType{
+						networkingv1.PolicyTypeIngress,
+					},
+				},
+			},
+			expectedIngressOutput: true,
+			expectedEgressOutput:  false,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -218,6 +233,13 @@ func TestLabelsMatch(t *testing.T) {
 				"label1": "value2",
 			},
 			expectedOutput: false,
+		},
+		{ // Test Case #4 - empty pod selector label
+			testPodSelectorLabels: metav1.LabelSelector{},
+			testPodLabels: map[string]string{
+				"label1": "value2",
+			},
+			expectedOutput: true,
 		},
 	}
 
