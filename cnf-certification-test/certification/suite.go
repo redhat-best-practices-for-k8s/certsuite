@@ -223,7 +223,7 @@ func testHelmVersion(env *provider.TestEnvironment) {
 			ginkgo.Fail(fmt.Sprintf("Error getting Tiller pod: %v\n", err))
 		}
 		if len(podList.Items) == 0 {
-			tnf.ClaimFilePrintf("Tiller pod not found in namespace %s\n, helm version is v3", tillerNamespace)
+			tnf.ClaimFilePrintf("Tiller pod not found in namespace %s\n", tillerNamespace)
 		} else {
 			tnf.ClaimFilePrintf("Tiller pod found in namespace %s\n, helm version is v2", tillerNamespace)
 			reportObject := testhelper.NewReportObject(fmt.Sprintf("Found Tiller pod in namespace %s, Helm Chart  version is v2 but needs to be v3 due to the security risks associated with Tiller", tillerNamespace), testhelper.HelmChart, false)
