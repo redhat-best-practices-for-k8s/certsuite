@@ -512,12 +512,10 @@ func TestIsRunAsUserID(t *testing.T) {
 
 func TestUsesProjectedVolumeServiceAccounts(t *testing.T) {
 	testCases := []struct {
-		testPod            Pod
-		expectedVolumeName string
-		expectedSAName     string
-		expectedResult     bool
+		testPod        Pod
+		expectedResult []corev1.Volume
 	}{
-		{ // Test Case #1 - Empty Volumes, return false
+		{ // Test Case #1 - Empty Volumes, return empty
 			testPod: Pod{
 				Pod: &corev1.Pod{
 					Spec: corev1.PodSpec{
@@ -525,9 +523,9 @@ func TestUsesProjectedVolumeServiceAccounts(t *testing.T) {
 					},
 				},
 			},
-			expectedResult: false,
+			expectedResult: nil,
 		},
-		{ // Test Case #2 - One volume uses projected volume with service account token, return true
+		{ // Test Case #2 - One volume uses projected volume with service account token, return volume
 			testPod: Pod{
 				Pod: &corev1.Pod{
 					Spec: corev1.PodSpec{
@@ -550,11 +548,23 @@ func TestUsesProjectedVolumeServiceAccounts(t *testing.T) {
 					},
 				},
 			},
-			expectedResult:     true,
-			expectedVolumeName: "test-volume1",
-			expectedSAName:     "&ServiceAccountTokenProjection{Audience:test-audience,ExpirationSeconds:nil,Path:,}",
+			expectedResult: []corev1.Volume{
+				{
+					Name: "test-volume1", VolumeSource: corev1.VolumeSource{
+						Projected: &corev1.ProjectedVolumeSource{
+							Sources: []corev1.VolumeProjection{
+								{
+									ServiceAccountToken: &corev1.ServiceAccountTokenProjection{
+										Audience: "test-audience",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 		},
-		{ // Test Case #3 - Uses projected volume but not service account token, return false
+		{ // Test Case #3 - Uses projected volume but not service account token, return empty
 			testPod: Pod{
 				Pod: &corev1.Pod{
 					Spec: corev1.PodSpec{
@@ -575,18 +585,11 @@ func TestUsesProjectedVolumeServiceAccounts(t *testing.T) {
 					},
 				},
 			},
-			expectedResult:     false,
-			expectedVolumeName: "",
-			expectedSAName:     "",
+			expectedResult: nil,
 		},
 	}
 
 	for _, tc := range testCases {
-		volumeName, saName, result := tc.testPod.UsesProjectedVolumeServiceAccounts()
-		assert.Equal(t, tc.expectedResult, result)
-		if result {
-			assert.Equal(t, tc.expectedVolumeName, volumeName)
-			assert.Equal(t, tc.expectedSAName, saName)
-		}
+		assert.Equal(t, tc.expectedResult, tc.testPod.GetVolumesUsingProjectedServiceAccounts())
 	}
 }

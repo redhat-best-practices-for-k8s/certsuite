@@ -408,10 +408,10 @@ func (p *Pod) IsRunAsUserID(uid int64) bool {
 	return *p.Pod.Spec.SecurityContext.RunAsUser == uid
 }
 
-//nolint:gocritic
-func (p *Pod) UsesProjectedVolumeServiceAccounts() (string, string, bool) {
+func (p *Pod) GetVolumesUsingProjectedServiceAccounts() []corev1.Volume {
+	var volumes []corev1.Volume
 	if p.Pod.Spec.Volumes == nil {
-		return "", "", false
+		return volumes
 	}
 	// Loop through the volumes checking for potential Service Account tokens
 	for index := range p.Pod.Spec.Volumes {
@@ -421,10 +421,9 @@ func (p *Pod) UsesProjectedVolumeServiceAccounts() (string, string, bool) {
 
 		for _, source := range p.Pod.Spec.Volumes[index].Projected.Sources {
 			if source.ServiceAccountToken != nil {
-				// Return the projected volume name and the service account name String() func
-				return p.Pod.Spec.Volumes[index].Name, source.ServiceAccountToken.String(), true
+				volumes = append(volumes, p.Pod.Spec.Volumes[index])
 			}
 		}
 	}
-	return "", "", false
+	return volumes
 }

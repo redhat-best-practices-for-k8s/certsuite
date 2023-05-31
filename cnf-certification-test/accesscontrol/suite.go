@@ -235,18 +235,26 @@ func testProjectedVolumeServiceAccount(env *provider.TestEnvironment) {
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
 		// Check if the pod is using a projected volume service account token
-		volumeName, saToken, result := put.UsesProjectedVolumeServiceAccounts()
-		if result {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name,
-				"The projected volume Service Account token field is not nil",
+		volumesWithProjectedServiceAccounts := put.GetVolumesUsingProjectedServiceAccounts()
+
+		// Pod is compliant if it is not using a projected volume for service account access
+		if len(volumesWithProjectedServiceAccounts) == 0 {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "the pod is not using a projected volume for service account access", true))
+			continue
+		}
+
+		// Loop through all of the volumes that are using projected service accounts
+		for index := range volumesWithProjectedServiceAccounts {
+			aPodOut := testhelper.NewPodReportObject(put.Namespace, put.Name,
+				"the projected volume Service account token field is not nil",
 				false).
 				SetType(testhelper.ProjectedVolumeType).
-				AddField(testhelper.ProjectedVolumeName, volumeName).
-				AddField(testhelper.ProjectedVolumeSAToken, saToken))
-		} else {
-			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name,
-				"The pod is not using a projected volume Service Account token",
-				true))
+				AddField(testhelper.ProjectedVolumeName, volumesWithProjectedServiceAccounts[index].Name)
+
+			for _, saTokens := range volumesWithProjectedServiceAccounts[index].Projected.Sources {
+				aPodOut.AddField(testhelper.ProjectedVolumeSAToken, saTokens.ServiceAccountToken.String())
+			}
+			nonCompliantObjects = append(nonCompliantObjects, aPodOut)
 		}
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
