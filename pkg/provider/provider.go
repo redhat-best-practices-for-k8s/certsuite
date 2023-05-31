@@ -113,7 +113,7 @@ type TestEnvironment struct { // rename this with testTarget
 	IstioServiceMeshFound  bool
 	ValidProtocolNames     []string
 	DaemonsetFailedToSpawn bool
-	ScaleCrUndetTest       []ScaleObject
+	ScaleCrUnderTest       []ScaleObject
 	StorageClassList       []storagev1.StorageClass
 }
 
@@ -278,7 +278,7 @@ func buildTestEnvironment() { //nolint:funlen
 		env.StatefulSets = append(env.StatefulSets, aNewStatefulSet)
 	}
 
-	env.ScaleCrUndetTest = updateCrUnderTest(data.ScaleCrUndetTest)
+	env.ScaleCrUnderTest = updateCrUnderTest(data.ScaleCrUnderTest)
 	env.HorizontalScaler = data.Hpas
 	env.StorageClassList = data.StorageClasses
 
@@ -302,9 +302,9 @@ func buildTestEnvironment() { //nolint:funlen
 func updateCrUnderTest(scaleCrUndetTest []autodiscover.ScaleObject) []ScaleObject {
 	var scaleCrUndetTesttTemp []ScaleObject
 	for i := range scaleCrUndetTest {
-		aNewScaleCrUndetTest := ScaleObject{Scale: CrScale{scaleCrUndetTest[i].Scale},
+		aNewScaleCrUnderTest := ScaleObject{Scale: CrScale{scaleCrUndetTest[i].Scale},
 			GroupResourceSchema: scaleCrUndetTest[i].GroupResourceSchema}
-		scaleCrUndetTesttTemp = append(scaleCrUndetTesttTemp, aNewScaleCrUndetTest)
+		scaleCrUndetTesttTemp = append(scaleCrUndetTesttTemp, aNewScaleCrUnderTest)
 	}
 	return scaleCrUndetTesttTemp
 }
