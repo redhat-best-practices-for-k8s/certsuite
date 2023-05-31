@@ -118,12 +118,12 @@ func (env *TestEnvironment) GetNonGuaranteedPodContainers() []*Container {
 	return nonGuaranteedPodContainers
 }
 
-func (env *TestEnvironment) GetGuaranteedPodContainersWithExlusiveCPUs() []*Container {
-	var guaranteedPodContainersWithExlusiveCPUs []*Container
+func (env *TestEnvironment) GetGuaranteedPodContainersWithExclusiveCPUs() []*Container {
+	var guaranteedPodContainersWithExclusiveCPUs []*Container
 	for _, pod := range env.GetGuaranteedPodsWithExclusiveCPUs() {
-		guaranteedPodContainersWithExlusiveCPUs = append(guaranteedPodContainersWithExlusiveCPUs, pod.Containers...)
+		guaranteedPodContainersWithExclusiveCPUs = append(guaranteedPodContainersWithExclusiveCPUs, pod.Containers...)
 	}
-	return guaranteedPodContainersWithExlusiveCPUs
+	return guaranteedPodContainersWithExclusiveCPUs
 }
 
 func (env *TestEnvironment) GetGuaranteedPodContainersWithIsolatedCPUs() []*Container {
