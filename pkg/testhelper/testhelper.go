@@ -60,8 +60,6 @@ const (
 	ServiceAccountName     = "ServiceAccountName"
 	ServiceMode            = "ServiceType"
 	ServiceName            = "ServiceName"
-	ChartName              = "ChartName"
-	ChartVersion           = "ChartVersion"
 )
 
 // When adding new object types, please update the following:

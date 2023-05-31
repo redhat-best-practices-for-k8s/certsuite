@@ -72,6 +72,7 @@ var (
 
 type TestEnvironment struct { // rename this with testTarget
 	Namespaces     []string `json:"testNamespaces"`
+	AllNamespaces  []string `json:"AllNamespaces"`
 	AbnormalEvents []*Event
 
 	// Pod Groupings
@@ -223,6 +224,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.AllOperators = createOperators(data.AllCsvs, data.AllSubscriptions, data.AllInstallPlans, data.AllCatalogSources, false, false)
 	env.AllOperatorsSummary = getSummaryAllOperators(env.AllOperators)
 	env.Namespaces = data.Namespaces
+	env.AllNamespaces = data.AllNamespaces
 	env.Nodes = createNodes(data.Nodes.Items)
 	env.IstioServiceMeshFound = data.IstioServiceMeshFound
 	env.ValidProtocolNames = append(env.ValidProtocolNames, data.ValidProtocolNames...)

@@ -17,17 +17,20 @@
 package certification
 
 import (
+	"context"
 	"fmt"
 	"strings"
+
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
-	"golang.org/x/mod/semver"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/internal/certdb"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
@@ -208,27 +211,23 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment, val
 }
 
 func testHelmVersion(env *provider.TestEnvironment) {
-	helmchartsReleases := env.HelmChartReleases
-	// Collect all of the failed helm charts
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
-	for _, helm := range helmchartsReleases {
-		helmChartVersion := helm.Chart.Metadata.APIVersion
-		if !semver.IsValid(helmChartVersion) {
-			logrus.Errorf("Failed to parse helm %s version %s, but its major should be v3", helm.Name, helm.Chart.Metadata.Version)
-			reportObject := testhelper.NewReportObject("Failed to parse helm", testhelper.HelmChart, false).AddField(testhelper.ChartName, helm.Name)
-			reportObject = reportObject.AddField(testhelper.ChartVersion, helm.Chart.Metadata.Version)
-			nonCompliantObjects = append(nonCompliantObjects, reportObject)
+	clients := clientsholder.GetClientsHolder()
+	for _, tillerNamespace := range env.AllNamespaces {
+		// Get the Tiller pod in the specified namespace
+		podList, err := clients.K8sClient.CoreV1().Pods(tillerNamespace).List(context.TODO(), metav1.ListOptions{
+			LabelSelector: "app=helm,name=tiller",
+		})
+		if err != nil {
+			ginkgo.Fail(fmt.Sprintf("Error getting Tiller pod: %v\n", err))
 		}
-		charAPIVersionMajor := semver.Major(helmChartVersion)
-		if charAPIVersionMajor != "v3" {
-			reportObject := testhelper.NewReportObject(fmt.Sprintf("This Helm Chart is v%v but needs to be v3 due to the security risks associated with Tiller", helmChartVersion), testhelper.HelmChart, false).AddField(testhelper.ChartName, helm.Name)
-			reportObject = reportObject.AddField(testhelper.ChartVersion, helm.Chart.Metadata.Version)
-			nonCompliantObjects = append(nonCompliantObjects, reportObject)
+		if len(podList.Items) == 0 {
+			tnf.ClaimFilePrintf("Tiller pod not found in namespace %s\n, helm version is v3", tillerNamespace)
 		} else {
-			reportObject := testhelper.NewReportObject("Helm Chart version is v3", testhelper.HelmChart, true).AddField(testhelper.ChartName, helm.Name)
-			reportObject = reportObject.AddField(testhelper.ChartVersion, helm.Chart.Metadata.Version)
-			compliantObjects = append(compliantObjects, reportObject)
+			tnf.ClaimFilePrintf("Tiller pod found in namespace %s\n, helm version is v2", tillerNamespace)
+			reportObject := testhelper.NewReportObject(fmt.Sprintf("Found Tiller pod in namespace %s, Helm Chart  version is v2 but needs to be v3 due to the security risks associated with Tiller", tillerNamespace), testhelper.HelmChart, false)
+			nonCompliantObjects = append(nonCompliantObjects, reportObject)
 		}
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
