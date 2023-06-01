@@ -234,34 +234,27 @@ func testProjectedVolumeServiceAccount(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
-		for i := range put.Spec.Volumes {
-			if put.Spec.Volumes[i].Projected == nil {
-				continue
-			}
-			if put.Spec.Volumes[i].Projected.Sources == nil {
-				tnf.ClaimFilePrintf("%s, volume=%s does not use projected volumes", put, put.Spec.Volumes[i].Name)
-				continue
-			}
-			for index := range put.Spec.Volumes[i].Projected.Sources {
-				if put.Spec.Volumes[i].Projected.Sources[index].ServiceAccountToken != nil {
-					aPodOut := testhelper.NewPodReportObject(put.Namespace, put.Name,
-						"the projected volume Service account token field is not nil",
-						false).
-						SetType(testhelper.ProjectedVolumeType).
-						AddField(testhelper.ProjectedVolumeName, put.Spec.Volumes[i].Name).
-						AddField(testhelper.ProjectedVolumeSAToken, put.Spec.Volumes[i].Projected.Sources[index].ServiceAccountToken.String())
+		// Check if the pod is using a projected volume service account token
+		volumesWithProjectedServiceAccounts := put.GetVolumesUsingProjectedServiceAccounts()
 
-					nonCompliantObjects = append(nonCompliantObjects, aPodOut)
-				} else {
-					aPodOut := testhelper.NewPodReportObject(put.Namespace, put.Name,
-						"the projected volume Service account token field is nil",
-						false).
-						SetType(testhelper.ProjectedVolumeType).
-						AddField(testhelper.ProjectedVolumeName, put.Spec.Volumes[i].Name).
-						AddField(testhelper.ProjectedVolumeSAToken, put.Spec.Volumes[i].Projected.Sources[index].ServiceAccountToken.String())
-					compliantObjects = append(compliantObjects, aPodOut)
-				}
+		// Pod is compliant if it is not using a projected volume for service account access
+		if len(volumesWithProjectedServiceAccounts) == 0 {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "the pod is not using a projected volume for service account access", true))
+			continue
+		}
+
+		// Loop through all of the volumes that are using projected service accounts
+		for index := range volumesWithProjectedServiceAccounts {
+			aPodOut := testhelper.NewPodReportObject(put.Namespace, put.Name,
+				"the projected volume Service account token field is not nil",
+				false).
+				SetType(testhelper.ProjectedVolumeType).
+				AddField(testhelper.ProjectedVolumeName, volumesWithProjectedServiceAccounts[index].Name)
+
+			for _, saTokens := range volumesWithProjectedServiceAccounts[index].Projected.Sources {
+				aPodOut.AddField(testhelper.ProjectedVolumeSAToken, saTokens.ServiceAccountToken.String())
 			}
+			nonCompliantObjects = append(nonCompliantObjects, aPodOut)
 		}
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
