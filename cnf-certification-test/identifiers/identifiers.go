@@ -382,7 +382,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		SecConRemediation,
 		`Exception will be considered for user plane or networking functions (e.g. SR-IOV, Multicast). Must identify which container requires the capability and detail why.`,
 		bestPracticeDocV1dot3URL+" Section 5.2",
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
@@ -398,7 +398,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		SecConRemediation+" Containers should not use the SYS_ADMIN Linux capability.",
 		NoExceptions,
 		bestPracticeDocV1dot3URL+" Section 5.2",
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
@@ -414,7 +414,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		SecConRemediation,
 		`Exception possible if CNF uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why.`,
 		bestPracticeDocV1dot3URL+" Section 5.2",
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
@@ -430,7 +430,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		SecConRemediation,
 		`Exception will be considered for user plane or networking functions. Must identify which container requires the capability and detail why.`,
 		bestPracticeDocV1dot3URL+" Section 5.2",
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
@@ -574,7 +574,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		SecConPrivilegeRemediation,
 		NoExceptions,
 		bestPracticeDocV1dot3URL+" Section 5.2",
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
@@ -590,7 +590,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		ContainerHostPortRemediation,
 		"Exception for host resource access tests will only be considered in rare cases where it is absolutely needed",
 		bestPracticeDocV1dot3URL+" Section 5.3.6",
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
