@@ -46,7 +46,7 @@ type ContainerSCC struct {
 	HostPorts                       OkNok
 	PrivilegeEscalation             OkNok // this can be true or false
 	PrivilegedContainer             OkNok
-	RunAsUserPresent                OkNok // thes filed that checking if the value is present
+	RunAsUserPresent                OkNok
 	ReadOnlyRootFilesystem          OkNok
 	RunAsNonRoot                    OkNok
 	FsGroupPresent                  OkNok
@@ -67,7 +67,7 @@ const (
 	CategoryID4
 )
 
-type PodListcategory struct {
+type PodListCategory struct {
 	Containername string
 	Podname       string
 	NameSpace     string
@@ -89,7 +89,7 @@ var (
 		NOK,         // PrivilegedContainer
 		OK,          // RunAsUserPresent
 		NOK,         // ReadOnlyRootFilesystem
-		NOK,         // RunAsNonRoot
+		NOK,         // RunAsNonRoot - Note: This is NOK because the requirements document does not require it.
 		OK,          // FsGroupPresent
 		OK,          // SeLinuxContextPresent
 		CategoryID1, // Capabilities
@@ -149,7 +149,7 @@ var (
 )
 
 // print the strings
-func (category PodListcategory) String() string {
+func (category PodListCategory) String() string {
 	returnString := fmt.Sprintf("Containername: %s Podname: %s NameSpace: %s Category: %s \n ",
 		category.Containername, category.Podname, category.NameSpace, category.Category)
 	return returnString
@@ -224,10 +224,12 @@ func updateCapabilitiesFromContainer(cut *provider.Container, containerSCC *Cont
 		for _, ncc := range cut.SecurityContext.Capabilities.Drop {
 			sliceDropCapabilities = append(sliceDropCapabilities, string(ncc))
 		}
-		sort.Strings(sliceDropCapabilities)
 
+		// Sort the slices
+		sort.Strings(sliceDropCapabilities)
 		sort.Strings(requiredDropCapabilities)
-		if subslice(requiredDropCapabilities, sliceDropCapabilities) || reflect.DeepEqual(sliceDropCapabilities, dropAll) {
+
+		if stringhelper.SubSlice(sliceDropCapabilities, requiredDropCapabilities) || reflect.DeepEqual(sliceDropCapabilities, dropAll) {
 			containerSCC.RequiredDropCapabilitiesPresent = OK
 		}
 		//nolint:gocritic
@@ -246,25 +248,7 @@ func updateCapabilitiesFromContainer(cut *provider.Container, containerSCC *Cont
 		containerSCC.CapabilitiesCategory = CategoryID1
 	}
 }
-func contains(s []string, e string) bool {
-	for _, a := range s {
-		if a == e {
-			return true
-		}
-	}
-	return false
-}
-func subslice(s1, s2 []string) bool {
-	if len(s1) > len(s2) {
-		return false
-	}
-	for _, e := range s1 {
-		if !contains(s2, e) {
-			return false
-		}
-	}
-	return true
-}
+
 func AllVolumeAllowed(volumes []corev1.Volume) (r1, r2 OkNok) {
 	countVolume := 0
 	var value OkNok
@@ -299,15 +283,15 @@ func AllVolumeAllowed(volumes []corev1.Volume) (r1, r2 OkNok) {
 }
 
 //nolint:gocritic
-func checkContainerCategory(containers []corev1.Container, containerSCC ContainerSCC, podName, nameSpace string) []PodListcategory {
-	var ContainerList []PodListcategory
-	var categoryinfo PodListcategory
+func checkContainerCategory(containers []corev1.Container, containerSCC ContainerSCC, podName, nameSpace string) []PodListCategory {
+	var ContainerList []PodListCategory
+	var categoryinfo PodListCategory
 	for j := 0; j < len(containers); j++ {
 		cut := &provider.Container{Podname: podName, Namespace: nameSpace, Container: &containers[j]}
 		percontainerSCC := GetContainerSCC(cut, containerSCC)
 		tnf.ClaimFilePrintf("containerSCC %s is %+v", cut, percontainerSCC)
 		// after building the containerSCC need to check to which category it is
-		categoryinfo = PodListcategory{
+		categoryinfo = PodListCategory{
 			Containername: cut.Name,
 			Podname:       podName,
 			NameSpace:     nameSpace,
@@ -340,7 +324,7 @@ func checkContainCategory(addCapability []corev1.Capability, referenceCategoryAd
 	return true
 }
 
-func CheckPod(pod *provider.Pod) []PodListcategory {
+func CheckPod(pod *provider.Pod) []PodListCategory {
 	var containerSCC ContainerSCC
 	containerSCC.HostIPC = NOK
 	if pod.Spec.HostIPC {
