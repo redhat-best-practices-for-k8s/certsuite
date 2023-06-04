@@ -213,29 +213,22 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment, val
 func testHelmVersion(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
-	tillerFound := false
 	clients := clientsholder.GetClientsHolder()
-	for _, tillerNamespace := range env.AllNamespaces {
-		// Get the Tiller pod in the specified namespace
-		podList, err := clients.K8sClient.CoreV1().Pods(tillerNamespace).List(context.TODO(), metav1.ListOptions{
-			LabelSelector: "app=helm,name=tiller",
-		})
-		if err != nil {
-			ginkgo.Fail(fmt.Sprintf("Error getting Tiller pod: %v\n", err))
-		}
-		if len(podList.Items) == 0 {
-			tnf.ClaimFilePrintf("Tiller pod not found in namespace %s\n", tillerNamespace)
-		} else {
-			tillerFound = true
-			tnf.ClaimFilePrintf("Tiller pod found in namespace %s\n, helm version is v2", tillerNamespace)
-			reportObject := testhelper.NewReportObject(fmt.Sprintf("Found Tiller pod in namespace %s, Helm Chart  version is v2 but needs to be v3 due to the security risks associated with Tiller", tillerNamespace), testhelper.HelmChart, false)
-			nonCompliantObjects = append(nonCompliantObjects, reportObject)
-		}
+	// Get the Tiller pod in the specified namespace
+	podList, err := clients.K8sClient.CoreV1().Pods("").List(context.TODO(), metav1.ListOptions{
+		LabelSelector: "app=helm,name=tiller",
+	})
+	if err != nil {
+		ginkgo.Fail(fmt.Sprintf("Error getting Tiller pod: %v\n", err))
 	}
-	if tillerFound {
-		tnf.ClaimFilePrintf("Tiller pod not found in all namespaces helm version is v3\n")
-		reportObject := testhelper.NewReportObject("Tiller pod not found in all namespaces helm version is v3", testhelper.HelmChart, true)
-		compliantObjects = append(compliantObjects, reportObject)
+	if len(podList.Items) == 0 {
+		tnf.ClaimFilePrintf("Tiller pod is not found in all namespaces helm version is v3\n")
+	} else {
+		tnf.ClaimFilePrintf("Tiller pod found, helm version is v2")
+		for _, put := range podList.Items {
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "This pod is a Tiller pod , Helm Chart  version is v2 but needs to be v3 due to the security risks associated with Tiller", false))
+		}
+
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
