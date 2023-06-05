@@ -26,13 +26,13 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	pdbv1 "github.com/test-network-function/cnf-certification-test/cnf-certification-test/observability/pdb"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	corev1 "k8s.io/api/core/v1"
-	policyv1 "k8s.io/api/policy/v1"
 )
 
 // All actual test code belongs below here.  Utilities belong above.
@@ -64,7 +64,6 @@ var _ = ginkgo.Describe(common.ObservabilityTestKey, func() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodDisruptionBudgetIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.PodDisruptionBudgets)
 		testPodDisruptionBudgets(&env)
 	})
 })
@@ -151,49 +150,40 @@ func testTerminationMessagePolicy(env *provider.TestEnvironment) {
 	testhelper.AddTestResultLog("Non-compliant", failedContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
-func checkPDBIsValid(pdb *policyv1.PodDisruptionBudget, replicas *int32) (bool, error) {
-	var replicaCount int32
-	if replicas != nil {
-		replicaCount = *replicas
-	} else {
-		replicaCount = 1 // default value
-	}
-
-	if pdb.Spec.MinAvailable != nil && pdb.Spec.MinAvailable.IntValue() == 0 {
-		return false, fmt.Errorf("field .spec.minAvailable cannot be zero")
-	}
-
-	if pdb.Spec.MaxUnavailable != nil && pdb.Spec.MaxUnavailable.IntValue() >= int(replicaCount) {
-		return false, fmt.Errorf("field .spec.maxUnavailable cannot be greater than or equal to the number of pods in the replica")
-	}
-
-	return true, nil
-}
-
 func testPodDisruptionBudgets(env *provider.TestEnvironment) {
-	failedPDBs := []string{}
-	for i := range env.PodDisruptionBudgets {
-		pdb := &env.PodDisruptionBudgets[i]
-		for pdbLabelKey, pdbLabelValue := range pdb.Spec.Selector.MatchLabels {
-			// Go through all deployments and statefulsets, objects for which PDBs apply
-			for _, deployment := range env.Deployments {
-				if deployment.Spec.Template.Labels[pdbLabelKey] == pdbLabelValue {
-					if ok, err := checkPDBIsValid(pdb, deployment.Spec.Replicas); !ok {
-						failedPDBs = append(failedPDBs, pdb.Name)
-						tnf.ClaimFilePrintf("PDB %s is not valid for deployment %s, err: %v", pdb.Name, deployment.Name, err)
-					}
-				}
-			}
-			for _, statefulSet := range env.StatefulSets {
-				if statefulSet.Spec.Template.Labels[pdbLabelKey] == pdbLabelValue {
-					if ok, err := checkPDBIsValid(pdb, statefulSet.Spec.Replicas); !ok {
-						failedPDBs = append(failedPDBs, pdb.Name)
-						tnf.ClaimFilePrintf("PDB %s is not valid for statefulset %s, err: %v", pdb.Name, statefulSet.Name, err)
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	// Loop through all of the of Deployments and StatefulSets and check if the PDBs are valid
+	for _, d := range env.Deployments {
+		for k, v := range d.Spec.Template.Labels {
+			for pdbIndex := range env.PodDisruptionBudgets {
+				if env.PodDisruptionBudgets[pdbIndex].Spec.Selector.MatchLabels[k] == v {
+					if ok, err := pdbv1.CheckPDBIsValid(&env.PodDisruptionBudgets[pdbIndex], d.Spec.Replicas); !ok {
+						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject(fmt.Sprintf("Deployment: %s/%s is missing PodDisruptionBudget", d.Namespace, d.Name), testhelper.DeploymentType, false))
+						tnf.ClaimFilePrintf("PDB %s is not valid for Deployment %s, err: %v", env.PodDisruptionBudgets[pdbIndex].Name, d.Name, err)
+					} else {
+						compliantObjects = append(compliantObjects, testhelper.NewReportObject(fmt.Sprintf("Deployment: %s/%s references PodDisruptionBudget", d.Namespace, d.Name), testhelper.DeploymentType, true))
 					}
 				}
 			}
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", failedPDBs, tnf.ClaimFilePrintf, ginkgo.Fail)
+	for _, s := range env.StatefulSets {
+		for k, v := range s.Spec.Template.Labels {
+			for pdbIndex := range env.PodDisruptionBudgets {
+				if env.PodDisruptionBudgets[pdbIndex].Spec.Selector.MatchLabels[k] == v {
+					if ok, err := pdbv1.CheckPDBIsValid(&env.PodDisruptionBudgets[pdbIndex], s.Spec.Replicas); !ok {
+						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject(fmt.Sprintf("StatefulSet: %s/%s is missing PodDisruptionBudget", s.Namespace, s.Name), testhelper.DeploymentType, false))
+						tnf.ClaimFilePrintf("PDB %s is not valid for StatefulSet %s, err: %v", env.PodDisruptionBudgets[pdbIndex].Name, s.Name, err)
+					} else {
+						compliantObjects = append(compliantObjects, testhelper.NewReportObject(fmt.Sprintf("StatefulSet: %s/%s references PodDisruptionBudget", s.Namespace, s.Name), testhelper.DeploymentType, true))
+					}
+				}
+			}
+		}
+	}
+
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }

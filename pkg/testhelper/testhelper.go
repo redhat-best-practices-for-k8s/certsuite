@@ -73,6 +73,8 @@ const (
 	ContainerCategory    = "ContainerCategory"
 	ProjectedVolumeType  = "ProjectedVolume"
 	ServiceType          = "Service"
+	DeploymentType       = "Deployment"
+	StatefulSetType      = "StatefulSet"
 )
 
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {
