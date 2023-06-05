@@ -86,7 +86,7 @@ type DiscoveredTestData struct {
 	ValidProtocolNames     []string
 	StorageClasses         []storagev1.StorageClass
 	ServicesIgnoreList     []string
-	ScaleCrUndetTest       []ScaleObject
+	ScaleCrUnderTest       []ScaleObject
 }
 
 var data = DiscoveredTestData{}
