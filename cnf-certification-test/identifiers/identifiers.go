@@ -82,6 +82,7 @@ var (
 	Test1337UIDIdentifier                             claim.Identifier
 	TestProjectedVolumeServiceAccountTokenIdentifier  claim.Identifier
 	TestContainerIsCertifiedDigestIdentifier          claim.Identifier
+	TestHelmVersionIdentifier                         claim.Identifier
 	TestPodHugePages2M                                claim.Identifier
 	TestPodHugePages1G                                claim.Identifier
 	TestReservedExtendedPartnerPorts                  claim.Identifier
@@ -230,6 +231,23 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Optional,
 			Extended: Mandatory},
 		TagTelco)
+
+	TestHelmVersionIdentifier = AddCatalogEntry(
+		"helm-version",
+		common.AffiliatedCertTestKey,
+		`Test to check if the helm chart is v3`,
+		`Check Helm Chart is v3 and not v2 which is not supported due to security risks associated with Tiller `,
+		NoDocumentedProcess,
+		bestPracticeDocV1dot3URL+" Section 3.3.1",
+		true,
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
+		},
+		TagExtended)
+
 	// TestContainerIsCertifiedDigestIdentifier tests whether the container has passed Container Certification.
 	TestContainerIsCertifiedDigestIdentifier = AddCatalogEntry(
 		"container-is-certified-digest",

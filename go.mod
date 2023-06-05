@@ -214,6 +214,7 @@ require (
 	github.com/openshift/machine-config-operator v0.0.1-0.20230515070935-49f32d46538e
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230530133445-14dfc9d1b0fc
 	github.com/test-network-function/privileged-daemonset v1.0.3
+	golang.org/x/mod v0.10.0
 	gopkg.in/yaml.v3 v3.0.1
 	k8s.io/kubectl v0.27.2
 )

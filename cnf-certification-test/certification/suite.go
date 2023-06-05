@@ -17,8 +17,11 @@
 package certification
 
 import (
+	"context"
 	"fmt"
 	"strings"
+
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
@@ -27,6 +30,7 @@ import (
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/internal/certdb"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
@@ -53,9 +57,12 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 		}
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
-
+	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHelmVersionIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testHelmVersion()
+	})
 	// Query API for certification status of listed containers
-	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedIdentifier)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testContainerCertificationStatus(&env, validator)
 	})
@@ -201,4 +208,27 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment, val
 		}
 	}
 	testhelper.AddTestResultLog("Non-compliant", failedContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+}
+
+func testHelmVersion() {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+	clients := clientsholder.GetClientsHolder()
+	// Get the Tiller pod in the specified namespace
+	podList, err := clients.K8sClient.CoreV1().Pods("").List(context.TODO(), metav1.ListOptions{
+		LabelSelector: "app=helm,name=tiller",
+	})
+	if err != nil {
+		ginkgo.Fail(fmt.Sprintf("Error getting Tiller pod: %v\n", err))
+	}
+	if len(podList.Items) == 0 {
+		tnf.ClaimFilePrintf("Tiller pod is not found in all namespaces helm version is v3\n")
+	} else {
+		tnf.ClaimFilePrintf("Tiller pod found, helm version is v2")
+		for i := range podList.Items {
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(podList.Items[i].Namespace, podList.Items[i].Name,
+				"This pod is a Tiller pod , Helm Chart  version is v2 but needs to be v3 due to the security risks associated with Tiller", false))
+		}
+	}
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
