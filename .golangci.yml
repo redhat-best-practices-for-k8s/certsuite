@@ -51,7 +51,6 @@ linters:
   disable-all: true
   enable:
     - bodyclose
-    - depguard
     - dogsled
     - errcheck
     - exhaustive
@@ -70,7 +69,6 @@ linters:
     - ineffassign
     - lll
     - misspell
-    - nakedret
     - nolintlint
     - revive
     - rowserrcheck
@@ -83,6 +81,7 @@ linters:
     - whitespace
   # do not enable:
   # - asciicheck
+  # - depguard
   # - dupl
   # - gochecknoglobals
   # - gochecknoinits
@@ -91,6 +90,7 @@ linters:
   # - godox
   # - goerr113
   # - maligned
+  # - nakedret
   # - nestif
   # - noctx
   # - prealloc
@@ -121,6 +121,6 @@ issues:
 # golangci.com configuration
 # https://github.com/golangci/golangci/wiki/Configuration
 service:
-  golangci-lint-version: 1.52.x # use the fixed version to not introduce new linters unexpectedly
+  golangci-lint-version: 1.53.x # use the fixed version to not introduce new linters unexpectedly
   prepare:
     - echo "here I can run custom commands, but no preparation needed for this repo"
