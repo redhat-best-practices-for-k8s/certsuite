@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/Masterminds/semver/v3 v3.2.0 // indirect
 	github.com/basgys/goxml2json v1.1.0
-	github.com/sirupsen/logrus v1.9.2
+	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.7.0
 	github.com/stretchr/testify v1.8.4
 	github.com/test-network-function/test-network-function-claim v1.0.19
@@ -214,7 +214,6 @@ require (
 	github.com/openshift/machine-config-operator v0.0.1-0.20230515070935-49f32d46538e
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230530133445-14dfc9d1b0fc
 	github.com/test-network-function/privileged-daemonset v1.0.3
-	golang.org/x/mod v0.10.0
 	gopkg.in/yaml.v3 v3.0.1
 	k8s.io/kubectl v0.27.2
 )
