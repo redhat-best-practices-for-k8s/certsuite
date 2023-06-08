@@ -143,7 +143,8 @@ func deletePod(pod *corev1.Pod, mode string, wg *sync.WaitGroup) error {
 func CordonCleanup(node string) {
 	err := CordonHelper(node, Uncordon)
 	if err != nil {
-		ginkgo.AbortSuite(fmt.Sprintf("cleanup: error uncordoning the node: %s", node))
+		logrus.Errorf("cleanup: error uncordoning the node: %s, err=%s", node, err)
+		ginkgo.AbortSuite(fmt.Sprintf("cleanup: error uncordoning the node: %s, err=%s", node, err))
 	}
 }
 
