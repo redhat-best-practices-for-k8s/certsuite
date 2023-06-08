@@ -64,6 +64,7 @@ var _ = ginkgo.Describe(common.ObservabilityTestKey, func() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodDisruptionBudgetIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Deployments, env.StatefulSets)
 		testPodDisruptionBudgets(&env)
 	})
 })
@@ -163,6 +164,7 @@ func testPodDisruptionBudgets(env *provider.TestEnvironment) {
 						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject(fmt.Sprintf("Deployment: %s/%s is missing PodDisruptionBudget", d.Namespace, d.Name), testhelper.DeploymentType, false))
 						tnf.ClaimFilePrintf("PDB %s is not valid for Deployment %s, err: %v", env.PodDisruptionBudgets[pdbIndex].Name, d.Name, err)
 					} else {
+						logrus.Infof("PDB %s is valid for Deployment: %s", env.PodDisruptionBudgets[pdbIndex].Name, d.Name)
 						compliantObjects = append(compliantObjects, testhelper.NewReportObject(fmt.Sprintf("Deployment: %s/%s references PodDisruptionBudget", d.Namespace, d.Name), testhelper.DeploymentType, true))
 					}
 				}
@@ -178,6 +180,7 @@ func testPodDisruptionBudgets(env *provider.TestEnvironment) {
 						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject(fmt.Sprintf("StatefulSet: %s/%s is missing PodDisruptionBudget", s.Namespace, s.Name), testhelper.DeploymentType, false))
 						tnf.ClaimFilePrintf("PDB %s is not valid for StatefulSet %s, err: %v", env.PodDisruptionBudgets[pdbIndex].Name, s.Name, err)
 					} else {
+						logrus.Infof("PDB %s is valid for StatefulSet: %s", env.PodDisruptionBudgets[pdbIndex].Name, s.Name)
 						compliantObjects = append(compliantObjects, testhelper.NewReportObject(fmt.Sprintf("StatefulSet: %s/%s references PodDisruptionBudget", s.Namespace, s.Name), testhelper.DeploymentType, true))
 					}
 				}

@@ -29,7 +29,7 @@ func TestCheckPDBIsValid(t *testing.T) {
 			},
 			replicas:      nil,
 			expectedBool:  false,
-			expectedError: fmt.Errorf("field .spec.minAvailable cannot be zero"),
+			expectedError: fmt.Errorf("field .spec.minAvailable cannot be zero. Currently set to: 0"),
 		},
 		{ // Test Case #2 - MaxUnavailable is greater than or equal to the number of pods in the replica
 			testPDB: &policyv1.PodDisruptionBudget{
@@ -42,7 +42,7 @@ func TestCheckPDBIsValid(t *testing.T) {
 			},
 			replicas:      nil,
 			expectedBool:  false,
-			expectedError: fmt.Errorf("field .spec.maxUnavailable cannot be greater than or equal to the number of pods in the replica"),
+			expectedError: fmt.Errorf("field .spec.maxUnavailable cannot be greater than or equal to the number of pods in the replica. Currently set to: 1"),
 		},
 		{ // Test Case #3 - MinAvailable is not zero and MaxUnavailable is less than the number of pods in the replica
 			testPDB: &policyv1.PodDisruptionBudget{
