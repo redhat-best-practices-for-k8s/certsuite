@@ -98,40 +98,16 @@ func (env *TestEnvironment) GetCPUPinningPodsWithDpdk() []*Pod {
 	return filterDPDKRunningPods(env.GetGuaranteedPodsWithExclusiveCPUs())
 }
 
-func (env *TestEnvironment) GetPodsWithoutHostPID() []*Pod {
+func filterPodsWithoutHostPID(pods []*Pod) []*Pod {
 	var withoutHostPIDPods []*Pod
 
-	for _, pod := range env.Pods {
+	for _, pod := range pods {
 		if pod.Spec.HostPID {
 			continue
 		}
 		withoutHostPIDPods = append(withoutHostPIDPods, pod)
 	}
 	return withoutHostPIDPods
-}
-
-func (env *TestEnvironment) GetNonGuaranteedPodContainers() []*Container {
-	var nonGuaranteedPodContainers []*Container
-	for _, pod := range env.GetNonGuaranteedPods() {
-		nonGuaranteedPodContainers = append(nonGuaranteedPodContainers, pod.Containers...)
-	}
-	return nonGuaranteedPodContainers
-}
-
-func (env *TestEnvironment) GetGuaranteedPodContainersWithExlusiveCPUs() []*Container {
-	var guaranteedPodContainersWithExlusiveCPUs []*Container
-	for _, pod := range env.GetGuaranteedPodsWithExclusiveCPUs() {
-		guaranteedPodContainersWithExlusiveCPUs = append(guaranteedPodContainersWithExlusiveCPUs, pod.Containers...)
-	}
-	return guaranteedPodContainersWithExlusiveCPUs
-}
-
-func (env *TestEnvironment) GetGuaranteedPodContainersWithIsolatedCPUs() []*Container {
-	var guaranteedPodContainersWithIsolatedCPUs []*Container
-	for _, pod := range env.GetGuaranteedPodsWithIsolatedCPUs() {
-		guaranteedPodContainersWithIsolatedCPUs = append(guaranteedPodContainersWithIsolatedCPUs, pod.Containers...)
-	}
-	return guaranteedPodContainersWithIsolatedCPUs
 }
 
 func filterDPDKRunningPods(pods []*Pod) []*Pod {
@@ -182,4 +158,29 @@ func (env *TestEnvironment) GetPodsUsingSRIOV() ([]*Pod, error) {
 		}
 	}
 	return filteredPods, nil
+}
+
+func getContainers(pods []*Pod) []*Container {
+	var containers []*Container
+
+	for _, pod := range pods {
+		containers = append(containers, pod.Containers...)
+	}
+	return containers
+}
+
+func (env *TestEnvironment) GetGuaranteedPodContainersWithExlusiveCPUs() []*Container {
+	return getContainers(env.GetGuaranteedPodsWithExclusiveCPUs())
+}
+
+func (env *TestEnvironment) GetNonGuaranteedPodContainersWithoutHostPID() []*Container {
+	return getContainers(filterPodsWithoutHostPID(env.GetNonGuaranteedPods()))
+}
+
+func (env *TestEnvironment) GetGuaranteedPodContainersWithExlusiveCPUsWithoutHostPID() []*Container {
+	return getContainers(filterPodsWithoutHostPID(env.GetGuaranteedPodsWithExclusiveCPUs()))
+}
+
+func (env *TestEnvironment) GetGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID() []*Container {
+	return getContainers(filterPodsWithoutHostPID(env.GetGuaranteedPodsWithIsolatedCPUs()))
 }
