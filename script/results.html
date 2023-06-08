@@ -605,14 +605,15 @@
       $(text3).appendTo($(element))
       $(text2).appendTo($(element2))
     }
-    function fillFeedback(input){
-      var selectBox = document.getElementById("selectBox");
-      var tableName = selectBox.options[selectBox.selectedIndex].value;
-      for (const key in input) { 
-        var sourceId =  key
-      var data = document.getElementById(key)
-      document.getElementById(sourceId).textContent = input[key]
 
+    function fillFeedback(input){
+
+      for ( key in input) { 
+        // copy previus daata
+        document.getElementById(key).textContent = document.getElementById(key).value;
+    
+        document.getElementById(key).textContent = input[key]
+        document.getElementById(key).value=input[key]
       }
 
     }
