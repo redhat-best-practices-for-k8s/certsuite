@@ -169,7 +169,7 @@ func getContainers(pods []*Pod) []*Container {
 	return containers
 }
 
-func (env *TestEnvironment) GetGuaranteedPodContainersWithExlusiveCPUs() []*Container {
+func (env *TestEnvironment) GetGuaranteedPodContainersWithExclusiveCPUs() []*Container {
 	return getContainers(env.GetGuaranteedPodsWithExclusiveCPUs())
 }
 
@@ -177,7 +177,7 @@ func (env *TestEnvironment) GetNonGuaranteedPodContainersWithoutHostPID() []*Con
 	return getContainers(filterPodsWithoutHostPID(env.GetNonGuaranteedPods()))
 }
 
-func (env *TestEnvironment) GetGuaranteedPodContainersWithExlusiveCPUsWithoutHostPID() []*Container {
+func (env *TestEnvironment) GetGuaranteedPodContainersWithExclusiveCPUsWithoutHostPID() []*Container {
 	return getContainers(filterPodsWithoutHostPID(env.GetGuaranteedPodsWithExclusiveCPUs()))
 }
 
