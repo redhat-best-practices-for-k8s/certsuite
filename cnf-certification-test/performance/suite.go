@@ -49,7 +49,7 @@ var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestRtAppNoExecProbes)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		var guaranteedPodContainersWithExclusiveCPUs = env.GetGuaranteedPodContainersWithExlusiveCPUs()
+		var guaranteedPodContainersWithExclusiveCPUs = env.GetGuaranteedPodContainersWithExclusiveCPUs()
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, guaranteedPodContainersWithExclusiveCPUs)
 		testRtAppsNoExecProbes(&env, guaranteedPodContainersWithExclusiveCPUs)
 	})
@@ -57,27 +57,21 @@ var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
 	// Scheduling related tests begins here
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSharedCPUPoolSchedulingPolicy)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		env.Pods = env.GetPodsWithoutHostPID() // Consider only pods with no access to host machine
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
-		var nonGuaranteedPodContainers = env.GetNonGuaranteedPodContainers()
+		var nonGuaranteedPodContainers = env.GetNonGuaranteedPodContainersWithoutHostPID()
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, nonGuaranteedPodContainers)
 		testSchedulingPolicyInCPUPool(&env, nonGuaranteedPodContainers, scheduling.SharedCPUScheduling)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestExclusiveCPUPoolSchedulingPolicy)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		env.Pods = env.GetPodsWithoutHostPID() // Consider only pods with no access to host machine
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
-		var guaranteedPodContainersWithExclusiveCPUs = env.GetGuaranteedPodContainersWithExlusiveCPUs()
+		var guaranteedPodContainersWithExclusiveCPUs = env.GetGuaranteedPodContainersWithExclusiveCPUsWithoutHostPID()
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, guaranteedPodContainersWithExclusiveCPUs)
 		testSchedulingPolicyInCPUPool(&env, guaranteedPodContainersWithExclusiveCPUs, scheduling.ExclusiveCPUScheduling)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsolatedCPUPoolSchedulingPolicy)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		env.Pods = env.GetPodsWithoutHostPID() // Consider only pods with no access to host machine
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
-		var guaranteedPodContainersWithIsolatedCPUs = env.GetGuaranteedPodContainersWithIsolatedCPUs()
+		var guaranteedPodContainersWithIsolatedCPUs = env.GetGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID()
 		testhelper.SkipIfEmptyAll(ginkgo.Skip, guaranteedPodContainersWithIsolatedCPUs)
 		testSchedulingPolicyInCPUPool(&env, guaranteedPodContainersWithIsolatedCPUs, scheduling.IsolatedCPUScheduling)
 	})
