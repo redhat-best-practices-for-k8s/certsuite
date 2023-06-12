@@ -65,16 +65,17 @@ const (
 // When adding new object types, please update the following:
 
 const (
-	UndefinedType        = "Undefined Type"
-	CnfType              = "Cnf"
-	PodType              = "Pod"
-	ContainerType        = "Container"
-	ContainerProcessType = "ContainerProcess"
-	ContainerCategory    = "ContainerCategory"
-	ProjectedVolumeType  = "ProjectedVolume"
-	ServiceType          = "Service"
-	DeploymentType       = "Deployment"
-	StatefulSetType      = "StatefulSet"
+	UndefinedType           = "Undefined Type"
+	CnfType                 = "Cnf"
+	PodType                 = "Pod"
+	ContainerType           = "Container"
+	ContainerProcessType    = "ContainerProcess"
+	ContainerCategory       = "ContainerCategory"
+	ProjectedVolumeType     = "ProjectedVolume"
+	ServiceType             = "Service"
+	DeploymentType          = "Deployment"
+	StatefulSetType         = "StatefulSet"
+	PodDisruptionBudgetType = "PodDisruptionBudget"
 )
 
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {
