@@ -167,6 +167,12 @@ classification=  {
     "NonTelco": "Mandatory",
     "Telco": "Mandatory"
   },
+  "affiliated-certification-helm-version": {
+    "Extended": "Mandatory",
+    "FarEdge": "Mandatory",
+    "NonTelco": "Mandatory",
+    "Telco": "Mandatory"
+  },
   "affiliated-certification-helmchart-is-certified": {
     "Extended": "Mandatory",
     "FarEdge": "Mandatory",

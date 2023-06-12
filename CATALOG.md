@@ -7,14 +7,14 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 
 ## Test cases summary
 
-### Total test cases: 86
+### Total test cases: 87
 
 ### Total suites: 10
 
 |Suite|Tests per suite|
 |---|---|
 |access-control|26|
-|affiliated-certification|4|
+|affiliated-certification|5|
 |chaostesting|1|
 |lifecycle|18|
 |manageability|2|
@@ -24,11 +24,11 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |performance|5|
 |platform-alteration|12|
 
-### Extended specific tests only: 10
+### Extended specific tests only: 11
 
 |Mandatory|Optional|
 |---|---|
-|8|2|
+|9|2|
 
 ### Far-Edge specific tests only: 7
 
@@ -498,6 +498,22 @@ Suggested Remediation|Ensure that your container has passed the Red Hat Containe
 Best Practice Reference|https://to-be-done Section 5.3.7
 Exception Process|There is no documented exception process for this.Partner can run CNF Certification test suite before passing other certifications (Container/Operator/HelmChart) but the affiliated certification test cases in CNF Certification test suite must be re-run once the other certifications have been granted.
 Tags|common,affiliated-certification
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Mandatory|
+|Telco|Mandatory|
+
+#### affiliated-certification-helm-version
+
+Property|Description
+---|---
+Unique ID|affiliated-certification-helm-version
+Description|Test to check if the helm chart is v3
+Suggested Remediation|Check Helm Chart is v3 and not v2 which is not supported due to security risks associated with Tiller.
+Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 3.3.1
+Exception Process|There is no documented exception process for this.
+Tags|extended,affiliated-certification
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
 |Far-Edge|Mandatory|
