@@ -60,22 +60,24 @@ const (
 	ServiceAccountName     = "ServiceAccountName"
 	ServiceMode            = "ServiceType"
 	ServiceName            = "ServiceName"
+	DeploymentName         = "DeploymentName"
+	StatefulSetName        = "StatefulSetName"
 )
 
 // When adding new object types, please update the following:
 
 const (
-	UndefinedType           = "Undefined Type"
-	CnfType                 = "Cnf"
-	PodType                 = "Pod"
-	ContainerType           = "Container"
-	ContainerProcessType    = "ContainerProcess"
-	ContainerCategory       = "ContainerCategory"
-	ProjectedVolumeType     = "ProjectedVolume"
-	ServiceType             = "Service"
-	DeploymentType          = "Deployment"
-	StatefulSetType         = "StatefulSet"
-	PodDisruptionBudgetType = "PodDisruptionBudget"
+	UndefinedType                = "Undefined Type"
+	CnfType                      = "Cnf"
+	PodType                      = "Pod"
+	ContainerType                = "Container"
+	ContainerProcessType         = "ContainerProcess"
+	ContainerCategory            = "ContainerCategory"
+	ProjectedVolumeType          = "ProjectedVolume"
+	ServiceType                  = "Service"
+	DeploymentType               = "Deployment"
+	StatefulSetType              = "StatefulSet"
+	PodDisruptionBudgetReference = "PodDisruptionBudgetReference"
 )
 
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {
