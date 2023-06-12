@@ -236,7 +236,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		"helm-version",
 		common.AffiliatedCertTestKey,
 		`Test to check if the helm chart is v3`,
-		`Check Helm Chart is v3 and not v2 which is not supported due to security risks associated with Tiller `,
+		`Check Helm Chart is v3 and not v2 which is not supported due to security risks associated with Tiller.`,
 		NoDocumentedProcess,
 		bestPracticeDocV1dot3URL+" Section 3.3.1",
 		true,
