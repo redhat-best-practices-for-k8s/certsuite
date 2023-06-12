@@ -68,6 +68,7 @@ jobs:
         if: runner.os == 'macOS'
 
       - run: chmod +x $CM_BIN
+        if: runner.os == 'Linux'
 
       - name: Install hadolint (Linux)
         run: |
