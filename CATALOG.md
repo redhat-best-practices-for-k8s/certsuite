@@ -511,6 +511,7 @@ Property|Description
 Unique ID|affiliated-certification-helm-version
 Description|Test to check if the helm chart is v3
 Suggested Remediation|Check Helm Chart is v3 and not v2 which is not supported due to security risks associated with Tiller 
+
 Best Practice Reference|https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf Section 3.3.1
 Exception Process|There is no documented exception process for this.
 Tags|extended,affiliated-certification
