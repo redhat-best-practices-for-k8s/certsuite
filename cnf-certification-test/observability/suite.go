@@ -151,12 +151,21 @@ func testTerminationMessagePolicy(env *provider.TestEnvironment) {
 	testhelper.AddTestResultLog("Non-compliant", failedContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
+//nolint:funlen
 func testPodDisruptionBudgets(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
 	// Loop through all of the of Deployments and StatefulSets and check if the PDBs are valid
 	for _, d := range env.Deployments {
+		// Check if there are zero PDBs, if so this is a failure.
+		if len(env.PodDisruptionBudgets) == 0 {
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("FAIL: Deployment is missing a corresponding PodDisruptionBudget", testhelper.DeploymentType, false).
+				AddField(testhelper.DeploymentName, d.Name).
+				AddField(testhelper.Namespace, d.Namespace))
+			continue
+		}
+
 		for k, v := range d.Spec.Template.Labels {
 			for pdbIndex := range env.PodDisruptionBudgets {
 				if env.PodDisruptionBudgets[pdbIndex].Spec.Selector.MatchLabels[k] == v {
@@ -178,6 +187,14 @@ func testPodDisruptionBudgets(env *provider.TestEnvironment) {
 	}
 
 	for _, s := range env.StatefulSets {
+		// Check if there are zero PDBs, if so this is a failure.
+		if len(env.PodDisruptionBudgets) == 0 {
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("FAIL: StatefulSet is missing a corresponding PodDisruptionBudget", testhelper.StatefulSetType, false).
+				AddField(testhelper.DeploymentName, s.Name).
+				AddField(testhelper.Namespace, s.Namespace))
+			continue
+		}
+
 		for k, v := range s.Spec.Template.Labels {
 			for pdbIndex := range env.PodDisruptionBudgets {
 				if env.PodDisruptionBudgets[pdbIndex].Spec.Selector.MatchLabels[k] == v {
