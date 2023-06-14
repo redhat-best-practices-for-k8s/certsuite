@@ -43,23 +43,26 @@ type FailureReasonOut struct {
 // When adding new field types, please update the following:
 
 const (
-	Namespace              = "Namespace"
-	PodName                = "PodName"
-	ContainerName          = "ContainerName"
-	ProcessID              = "ProcessID"
-	ProcessCommandLine     = "ProcessCommandLine"
-	SchedulingPolicy       = "SchedulingPolicy"
-	SchedulingPriority     = "SchedulingPriority"
-	ReasonForNonCompliance = "ReasonForNonCompliance"
-	ReasonForCompliance    = "ReasonForCompliance"
-	Category               = "Category"
-	ProjectedVolumeName    = "ProjectedVolumeName"
-	ProjectedVolumeSAToken = "ProjectedVolumeSAToken"
-	RoleBindingName        = "RoleBindingName"
-	RoleBindingNamespace   = "RoleBindingNamespace"
-	ServiceAccountName     = "ServiceAccountName"
-	ServiceMode            = "ServiceType"
-	ServiceName            = "ServiceName"
+	Namespace                    = "Namespace"
+	PodName                      = "PodName"
+	ContainerName                = "ContainerName"
+	ProcessID                    = "ProcessID"
+	ProcessCommandLine           = "ProcessCommandLine"
+	SchedulingPolicy             = "SchedulingPolicy"
+	SchedulingPriority           = "SchedulingPriority"
+	ReasonForNonCompliance       = "ReasonForNonCompliance"
+	ReasonForCompliance          = "ReasonForCompliance"
+	Category                     = "Category"
+	ProjectedVolumeName          = "ProjectedVolumeName"
+	ProjectedVolumeSAToken       = "ProjectedVolumeSAToken"
+	RoleBindingName              = "RoleBindingName"
+	RoleBindingNamespace         = "RoleBindingNamespace"
+	ServiceAccountName           = "ServiceAccountName"
+	ServiceMode                  = "ServiceType"
+	ServiceName                  = "ServiceName"
+	DeploymentName               = "DeploymentName"
+	StatefulSetName              = "StatefulSetName"
+	PodDisruptionBudgetReference = "PodDisruptionBudgetReference"
 )
 
 // When adding new object types, please update the following:
@@ -73,6 +76,8 @@ const (
 	ContainerCategory    = "ContainerCategory"
 	ProjectedVolumeType  = "ProjectedVolume"
 	ServiceType          = "Service"
+	DeploymentType       = "Deployment"
+	StatefulSetType      = "StatefulSet"
 )
 
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {
