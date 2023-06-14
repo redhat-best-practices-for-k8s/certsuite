@@ -25,6 +25,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/pkg/arrayhelper"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 
 	"github.com/spf13/cobra"
@@ -106,22 +107,7 @@ func getSuitesFromIdentifiers(keys []claim.Identifier) []string {
 	for _, i := range keys {
 		suites = append(suites, i.Suite)
 	}
-	return Unique(suites)
-}
-
-func Unique(slice []string) []string {
-	// create a map with all the values as key
-	uniqMap := make(map[string]struct{})
-	for _, v := range slice {
-		uniqMap[v] = struct{}{}
-	}
-
-	// turn the map keys into a slice
-	uniqSlice := make([]string, 0, len(uniqMap))
-	for v := range uniqMap {
-		uniqSlice = append(uniqSlice, v)
-	}
-	return uniqSlice
+	return arrayhelper.Unique(suites)
 }
 
 func scenarioIDToText(id string) (text string) {

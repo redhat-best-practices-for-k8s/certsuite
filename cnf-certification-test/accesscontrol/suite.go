@@ -228,6 +228,12 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
 		testNodePort(&env)
 	})
+
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCrdRoleIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Crds, env.Roles, env.Namespaces)
+		testCrdRoles(&env)
+	})
 })
 
 func testProjectedVolumeServiceAccount(env *provider.TestEnvironment) {
@@ -789,6 +795,50 @@ func testNodePort(env *provider.TestEnvironment) {
 				AddField(testhelper.ServiceName, s.Name).
 				AddField(testhelper.ServiceMode, string(s.Spec.Type)))
 		}
+	}
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+}
+
+func testCrdRoles(env *provider.TestEnvironment) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+	crdResources := rbac.GetCrdResources(env.Crds)
+	for roleIndex := range env.Roles {
+		if !provider.IsNamespaceUnderTest(env.Roles[roleIndex].Namespace, env.Namespaces) {
+			continue
+		}
+
+		allRules := rbac.GetAllRules(&env.Roles[roleIndex])
+
+		matchingRules, nonMatchinRules := rbac.FilterRulesNonMatchingResources(allRules, crdResources)
+		if len(matchingRules) == 0 {
+			continue
+		}
+		for _, aRule := range matchingRules {
+			compliantObjects = append(compliantObjects, testhelper.NewNamespacedReportObject("This applies to CRDs under test", testhelper.RoleRuleType, true, env.Roles[roleIndex].Namespace).
+				AddField(testhelper.RoleName, env.Roles[roleIndex].Name).
+				AddField(testhelper.Group, aRule.Resource.Group).
+				AddField(testhelper.ResourceName, aRule.Resource.Name).
+				AddField(testhelper.Verb, aRule.Verb))
+		}
+		for _, aRule := range nonMatchinRules {
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNamespacedReportObject("This rule does not apply to CRDs under test", testhelper.RoleRuleType, false, env.Roles[roleIndex].Namespace).
+				AddField(testhelper.RoleName, env.Roles[roleIndex].Name).
+				AddField(testhelper.Group, aRule.Resource.Group).
+				AddField(testhelper.ResourceName, aRule.Resource.Name).
+				AddField(testhelper.Verb, aRule.Verb))
+		}
+
+		if len(nonMatchinRules) == 0 {
+			compliantObjects = append(compliantObjects, testhelper.NewNamespacedNamedReportObject("This role's rules only apply to CRDs under test",
+				testhelper.RoleType, true, env.Roles[roleIndex].Namespace, env.Roles[roleIndex].Name))
+		} else {
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNamespacedNamedReportObject("This role's rules apply to a mix of CRDs under test and others. See non compliant role rule objects.",
+				testhelper.RoleType, false, env.Roles[roleIndex].Namespace, env.Roles[roleIndex].Name))
+		}
+	}
+	if len(nonCompliantObjects) == 0 && len(compliantObjects) == 0 {
+		ginkgo.Skip("No role contains rules that apply to at least one CRD under test")
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }

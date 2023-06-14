@@ -93,6 +93,7 @@ type TestEnvironment struct { // rename this with testTarget
 	PersistentVolumeClaims []corev1.PersistentVolumeClaim
 	ClusterRoleBindings    []rbacv1.ClusterRoleBinding
 	RoleBindings           []rbacv1.RoleBinding
+	Roles                  []rbacv1.Role
 
 	Config    configuration.TestConfiguration
 	variables configuration.TestParameters
@@ -256,6 +257,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.PersistentVolumeClaims = data.PersistentVolumeClaims
 	env.ClusterRoleBindings = data.ClusterRoleBindings
 	env.RoleBindings = data.RoleBindings
+	env.Roles = data.Roles
 	env.Services = data.Services
 	env.NetworkPolicies = data.NetworkPolicies
 	for _, nsHelmChartReleases := range data.HelmChartReleases {

@@ -23,6 +23,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/test-network-function/cnf-certification-test/pkg/arrayhelper"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
@@ -79,7 +80,7 @@ func TestUnique(t *testing.T) {
 
 	for _, tc := range testCases {
 		sort.Strings(tc.expectedSlice)
-		results := Unique(tc.testSlice)
+		results := arrayhelper.Unique(tc.testSlice)
 		sort.Strings(results)
 		assert.True(t, reflect.DeepEqual(tc.expectedSlice, results))
 	}

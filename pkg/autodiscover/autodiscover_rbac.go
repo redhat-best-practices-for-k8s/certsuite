@@ -49,3 +49,15 @@ func getClusterRoleBindings() ([]rbacv1.ClusterRoleBinding, error) {
 	}
 	return crbList.Items, nil
 }
+
+// getRoles returns all of the roles in the cluster
+func getRoles() ([]rbacv1.Role, error) {
+	// Get all of the roles from all namespaces
+	clientsHolder := clientsholder.GetClientsHolder()
+	roleList, roleErr := clientsHolder.K8sClient.RbacV1().Roles("").List(context.TODO(), metav1.ListOptions{})
+	if roleErr != nil {
+		logrus.Errorf("executing roles command failed with error: %v", roleErr)
+		return nil, roleErr
+	}
+	return roleList.Items, nil
+}

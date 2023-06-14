@@ -73,6 +73,7 @@ type DiscoveredTestData struct {
 	PersistentVolumeClaims []corev1.PersistentVolumeClaim
 	ClusterRoleBindings    []rbacv1.ClusterRoleBinding
 	RoleBindings           []rbacv1.RoleBinding // Contains all rolebindings from all namespaces
+	Roles                  []rbacv1.Role        // Contains all roles from all namespaces
 	Services               []*corev1.Service
 	Hpas                   []*scalingv1.HorizontalPodAutoscaler
 	Subscriptions          []olmv1Alpha.Subscription
@@ -203,6 +204,12 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 		logrus.Fatalf("Cannot get cluster role bindings, error: %v", err)
 	}
 	data.RoleBindings = roleBindings
+	// find roles
+	roles, err := getRoles()
+	if err != nil {
+		logrus.Fatalf("Cannot get roles, error: %v", err)
+	}
+	data.Roles = roles
 	data.Hpas = findHpaControllers(oc.K8sClient, data.Namespaces)
 	data.Nodes, err = oc.K8sClient.CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {

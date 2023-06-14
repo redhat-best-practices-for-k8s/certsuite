@@ -11,6 +11,12 @@ classification=  {
     "NonTelco": "Mandatory",
     "Telco": "Mandatory"
   },
+  "access-control-crd-roles": {
+    "Extended": "Mandatory",
+    "FarEdge": "Optional",
+    "NonTelco": "Optional",
+    "Telco": "Optional"
+  },
   "access-control-ipc-lock-capability-check": {
     "Extended": "Mandatory",
     "FarEdge": "Mandatory",
