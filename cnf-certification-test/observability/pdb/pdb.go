@@ -2,6 +2,7 @@ package pdb
 
 import (
 	"fmt"
+	"math"
 
 	policyv1 "k8s.io/api/policy/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
@@ -74,7 +75,7 @@ func intOrStringToValue(intOrStr *intstr.IntOrString, replicas int32) (int, erro
 		if err != nil {
 			return 0, fmt.Errorf("invalid value %q: %v", intOrStr.StrVal, err)
 		}
-		return int(v * float64(replicas)), nil
+		return int(math.RoundToEven(v * float64(replicas))), nil
 	}
 	return 0, fmt.Errorf("invalid type: neither int nor percentage")
 }
