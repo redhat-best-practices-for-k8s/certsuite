@@ -1474,7 +1474,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		ContainersImageTagRemediation,
 		NoExceptionProcessForExtendedTests,
 		bestPracticeDocV1dot4URL+" Section 4.6.12",
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Optional,
 			Telco:    Optional,
@@ -1522,7 +1522,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		ContainerPortNameFormatRemediation,
 		NoExceptionProcessForExtendedTests,
 		bestPracticeDocV1dot4URL+" Section 4.6.20",
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Optional,
 			Telco:    Optional,
