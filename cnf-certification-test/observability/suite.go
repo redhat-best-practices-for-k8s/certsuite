@@ -160,7 +160,7 @@ func testPodDisruptionBudgets(env *provider.TestEnvironment) {
 	for _, d := range env.Deployments {
 		// Check if there are zero PDBs, if so this is a failure.
 		if len(env.PodDisruptionBudgets) == 0 {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("FAIL: Deployment is missing a corresponding PodDisruptionBudget", testhelper.DeploymentType, false).
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("Deployment is missing a corresponding PodDisruptionBudget", testhelper.DeploymentType, false).
 				AddField(testhelper.DeploymentName, d.Name).
 				AddField(testhelper.Namespace, d.Namespace))
 			continue
@@ -170,14 +170,14 @@ func testPodDisruptionBudgets(env *provider.TestEnvironment) {
 			for pdbIndex := range env.PodDisruptionBudgets {
 				if env.PodDisruptionBudgets[pdbIndex].Spec.Selector.MatchLabels[k] == v {
 					if ok, err := pdbv1.CheckPDBIsValid(&env.PodDisruptionBudgets[pdbIndex], d.Spec.Replicas); !ok {
-						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("FAIL: Deployment is missing a corresponding PodDisruptionBudget", testhelper.DeploymentType, false).
+						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject(fmt.Sprintf("Invalid PodDisruptionBudget config: %v", err), testhelper.DeploymentType, false).
 							AddField(testhelper.DeploymentName, d.Name).
 							AddField(testhelper.Namespace, d.Namespace).
 							AddField(testhelper.PodDisruptionBudgetReference, env.PodDisruptionBudgets[pdbIndex].Name))
 						tnf.ClaimFilePrintf("PDB %s is not valid for Deployment %s, err: %v", env.PodDisruptionBudgets[pdbIndex].Name, d.Name, err)
 					} else {
 						logrus.Infof("PDB %s is valid for Deployment: %s", env.PodDisruptionBudgets[pdbIndex].Name, d.Name)
-						compliantObjects = append(compliantObjects, testhelper.NewReportObject("OK: Deployment: references PodDisruptionBudget", testhelper.DeploymentType, true).
+						compliantObjects = append(compliantObjects, testhelper.NewReportObject("Deployment: references PodDisruptionBudget", testhelper.DeploymentType, true).
 							AddField(testhelper.DeploymentName, d.Name).
 							AddField(testhelper.PodDisruptionBudgetReference, env.PodDisruptionBudgets[pdbIndex].Name))
 					}
@@ -189,7 +189,7 @@ func testPodDisruptionBudgets(env *provider.TestEnvironment) {
 	for _, s := range env.StatefulSets {
 		// Check if there are zero PDBs, if so this is a failure.
 		if len(env.PodDisruptionBudgets) == 0 {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("FAIL: StatefulSet is missing a corresponding PodDisruptionBudget", testhelper.StatefulSetType, false).
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("StatefulSet is missing a corresponding PodDisruptionBudget", testhelper.StatefulSetType, false).
 				AddField(testhelper.DeploymentName, s.Name).
 				AddField(testhelper.Namespace, s.Namespace))
 			continue
@@ -199,13 +199,13 @@ func testPodDisruptionBudgets(env *provider.TestEnvironment) {
 			for pdbIndex := range env.PodDisruptionBudgets {
 				if env.PodDisruptionBudgets[pdbIndex].Spec.Selector.MatchLabels[k] == v {
 					if ok, err := pdbv1.CheckPDBIsValid(&env.PodDisruptionBudgets[pdbIndex], s.Spec.Replicas); !ok {
-						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("FAIL: StatefulSet is missing a corresponding PodDisruptionBudget", testhelper.StatefulSetType, false).
+						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject(fmt.Sprintf("Invalid PodDisruptionBudget config: %v", err), testhelper.StatefulSetType, false).
 							AddField(testhelper.StatefulSetName, s.Name).
 							AddField(testhelper.PodDisruptionBudgetReference, env.PodDisruptionBudgets[pdbIndex].Name))
 						tnf.ClaimFilePrintf("PDB %s is not valid for StatefulSet %s, err: %v", env.PodDisruptionBudgets[pdbIndex].Name, s.Name, err)
 					} else {
 						logrus.Infof("PDB %s is valid for StatefulSet: %s", env.PodDisruptionBudgets[pdbIndex].Name, s.Name)
-						compliantObjects = append(compliantObjects, testhelper.NewReportObject("OK: StatefulSet: references PodDisruptionBudget", testhelper.StatefulSetType, true).
+						compliantObjects = append(compliantObjects, testhelper.NewReportObject("StatefulSet: references PodDisruptionBudget", testhelper.StatefulSetType, true).
 							AddField(testhelper.StatefulSetType, s.Name).
 							AddField(testhelper.PodDisruptionBudgetReference, env.PodDisruptionBudgets[pdbIndex].Name))
 					}
