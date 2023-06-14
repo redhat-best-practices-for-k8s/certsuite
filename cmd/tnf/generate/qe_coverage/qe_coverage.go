@@ -86,10 +86,10 @@ func runGenerateQeCoverageReport(_ *cobra.Command, _ []string) error {
 	fmt.Printf("Total QE Coverage: %.f%%\n\n", qeCoverage.TotalCoveragePercentage)
 
 	// Per test suite QE coverage
-	fmt.Printf("%-30s\t%-10s\t%s\n", "Test Suite", "Test Cases", "QE Coverage")
+	fmt.Printf("%-30s\t%-20s\t%-20s\t%s\n", "Test Suite Name", "QE Coverage", "Total Test Cases", "Not Covered Test Count")
 	for _, suite := range testSuites {
 		tsCoverage := qeCoverage.CoverageByTestSuite[suite]
-		fmt.Printf("%-30s\t%-10d\t%.0f%%\n", suite, tsCoverage.TestCases, tsCoverage.Coverage)
+		fmt.Printf("%-30s\t%.0f%%\t%30d\t%10d\n", suite, tsCoverage.Coverage, tsCoverage.TestCases, tsCoverage.TestCases-tsCoverage.TestCasesWithQe)
 	}
 
 	fmt.Println()
