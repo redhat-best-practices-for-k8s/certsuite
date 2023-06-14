@@ -101,18 +101,6 @@ GINKGO_ARGS="\
 -test.v\
 "
 
-# Make sure the HTML output is copied to the output directory,
-# even in case of a test failure.
-# shellcheck disable=SC2317 # Command appears to be unreachable.
-html_output() {
-	if [ -f "${OUTPUT_LOC}"/claim.json ]; then
-		echo -n 'var initialjson=' >"${OUTPUT_LOC}"/claimjson.js
-		cat "${OUTPUT_LOC}"/claim.json >>"${OUTPUT_LOC}"/claimjson.js
-	fi
-	cp "${BASEDIR}"/script/results.html "${OUTPUT_LOC}"
-}
-
-trap html_output EXIT
 FOCUS=${FOCUS%?}
 SKIP=${SKIP%?}
 

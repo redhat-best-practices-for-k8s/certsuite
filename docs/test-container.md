@@ -38,7 +38,7 @@ In order to get the required information, the test suite does not `ssh` into nod
 **Required arguments**
 
 * `-t` to provide the path of the local directory that contains tnf config files
-* `-o` to provide the path of the local directory where test results (claim.json) and execution logs (tnf-execution.log) will be available from after the container exits.
+* `-o` to provide the path of the local directory where test results (claim.json), the execution logs (tnf-execution.log), and the results artifacts file (results.tar.gz) will be available from after the container exits.
 
 !!! warning
 
@@ -95,6 +95,16 @@ In order to configure the test harness to use `docker`, issue the following prio
 ```shell
 export TNF_CONTAINER_CLIENT=docker
 ```
+
+### Output tar.gz file with results and web viewer files
+
+After running all the test cases, a compressed file will be created with all the results files and web artifacts to review them.
+
+By default, only the `claim.js`, the `cnf-certification-tests_junit.xml` file and this new tar.gz file are created after the test suite has finished, as this is probably all that normal partners/users will need.
+
+Two env vars allow to control the web artifacts and the the new tar.gz file generation:
+- TNF_OMIT_ARTIFACTS_ZIP_FILE=true/false : Defaulted to false in the launch scripts. If set to true, the tar.gz generation will be skipped.
+- TNF_INCLUDE_WEB_FILES_IN_OUTPUT_FOLDER=true/false : Defaulted to false in the launch scripts. If set to true, the web viewer/parser files will also be copied to the output (claim) folder.
 
 ## With local test container image
 

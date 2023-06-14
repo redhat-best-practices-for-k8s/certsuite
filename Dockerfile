@@ -54,7 +54,10 @@ RUN \
 # Copy all of the files into the source directory and then switch contexts
 COPY . ${TNF_SRC_DIR}
 WORKDIR ${TNF_SRC_DIR}
-RUN make install-tools && make build-cnf-tests
+RUN \
+	make install-tools \
+	&& make classification-js \
+	&& make build-cnf-tests
 
 # Extract what's needed to run at a seperate location
 # Quote this to prevent word splitting.
@@ -62,8 +65,6 @@ RUN make install-tools && make build-cnf-tests
 RUN \
 	mkdir ${TNF_BIN_DIR} \
 	&& cp run-cnf-suites.sh ${TNF_DIR} \
-	&& mkdir ${TNF_DIR}/script \
-	&& cp script/results.html ${TNF_DIR}/script \
 	# copy all JSON files to allow tests to run
 	&& cp --parents $(find . -name '*.json*') ${TNF_DIR} \
 	&& cp cnf-certification-test/cnf-certification-test.test ${TNF_BIN_DIR} \

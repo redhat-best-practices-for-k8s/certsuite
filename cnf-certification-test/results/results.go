@@ -25,6 +25,11 @@ import (
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
+const (
+	ClaimFileName    = "claim.json"
+	JunitXMLFileName = "cnf-certification-tests_junit.xml"
+)
+
 // results is the results map
 var results = map[string][]claim.Result{}
 
