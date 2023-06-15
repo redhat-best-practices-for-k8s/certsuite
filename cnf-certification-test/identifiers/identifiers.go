@@ -560,7 +560,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		SecConNonRootUserRemediation,
 		SecConNonRootUserExceptionProcess,
 		bestPracticeDocV1dot3URL+" Section 5.2",
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
