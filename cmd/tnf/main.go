@@ -26,6 +26,7 @@ func main() {
 	rootCmd.AddCommand(generate)
 	generate.AddCommand(catalog.NewCommand())
 	generate.AddCommand(qecoverage.QeCoverageReportCmd)
+	qecoverage.QeCoverageReportCmd.PersistentFlags().String("name", "", "A search term for a dad joke.")
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatal(err)
