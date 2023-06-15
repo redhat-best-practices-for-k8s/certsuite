@@ -10,7 +10,7 @@ import (
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
-type QeCoverageSummaryReport struct {
+type TestCoverageSummaryReport struct {
 	CoverageByTestSuite     map[string]TestSuiteQeCoverage
 	TotalCoveragePercentage float32
 	TestCasesTotal          int
@@ -48,7 +48,7 @@ var (
 	}
 )
 
-func showQeCoverageForTestCaseName(suiteName string, qeCoverage QeCoverageSummaryReport) {
+func showQeCoverageForTestCaseName(suiteName string, qeCoverage TestCoverageSummaryReport) {
 	tsCoverage := qeCoverage.CoverageByTestSuite[suiteName]
 
 	fmt.Println("Suite Name : ", suiteName)
@@ -65,7 +65,7 @@ func showQeCoverageForTestCaseName(suiteName string, qeCoverage QeCoverageSummar
 	fmt.Println()
 }
 
-func GetQeCoverage(catalog map[claim.Identifier]claim.TestCaseDescription) QeCoverageSummaryReport {
+func GetQeCoverage(catalog map[claim.Identifier]claim.TestCaseDescription) TestCoverageSummaryReport {
 	totalTcs := 0
 	totalTcsWithQe := 0
 
@@ -102,7 +102,7 @@ func GetQeCoverage(catalog map[claim.Identifier]claim.TestCaseDescription) QeCov
 		totalCoverage = 100.0 * (float32(totalTcsWithQe) / float32(totalTcs))
 	}
 
-	return QeCoverageSummaryReport{
+	return TestCoverageSummaryReport{
 		CoverageByTestSuite:     qeCoverageByTestSuite,
 		TotalCoveragePercentage: totalCoverage,
 		TestCasesTotal:          totalTcs,
