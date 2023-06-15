@@ -53,8 +53,13 @@ func Test_parsePingResult(t *testing.T) {
 		 --- 8.8.8.8 ping statistics ---
 		 5 packets transmitted, 5 received, 0% packet loss, time 4005ms
 		 rtt min/avg/max/mdev = 32.593/35.761/38.212/1.802 ms`, stderr: ""},
-			wantResults: PingResults{outcome: testhelper.SUCCESS, transmitted: 5, received: 5, errors: 0},
-			wantErr:     false,
+			wantResults: PingResults{
+				outcome:     testhelper.SUCCESS,
+				transmitted: 5,
+				received:    5,
+				errors:      0,
+			},
+			wantErr: false,
 		},
 		{
 			name: "pingErrorPacket",
@@ -83,15 +88,25 @@ func Test_parsePingResult(t *testing.T) {
 			--- 192.168.1.1 ping statistics ---
 			20 packets transmitted, 16 received, +4 errors, 20% packet loss, time 19118ms
 			rtt min/avg/max/mdev = 1.582/134.079/585.861/179.394 ms`, stderr: ""},
-			wantResults: PingResults{outcome: testhelper.ERROR, transmitted: 20, received: 16, errors: 4},
-			wantErr:     false,
+			wantResults: PingResults{
+				outcome:     testhelper.ERROR,
+				transmitted: 20,
+				received:    16,
+				errors:      4,
+			},
+			wantErr: false,
 		},
 		{
 			name: "pingIncorrectIp",
 			args: args{stdout: `connect: Invalid argument
 			command terminated with exit code 2`, stderr: ""},
-			wantResults: PingResults{outcome: testhelper.ERROR, transmitted: 0, received: 0, errors: 0},
-			wantErr:     true,
+			wantResults: PingResults{
+				outcome:     testhelper.ERROR,
+				transmitted: 0,
+				received:    0,
+				errors:      0,
+			},
+			wantErr: true,
 		},
 		{
 			name: "pingPassingPacketLoss",
@@ -118,8 +133,13 @@ func Test_parsePingResult(t *testing.T) {
 			--- 192.168.1.5 ping statistics ---
 			20 packets transmitted, 19 received, 5% packet loss, time 19297ms
 			rtt min/avg/max/mdev = 3.381/7.772/14.867/4.167 ms`, stderr: ""},
-			wantResults: PingResults{outcome: testhelper.SUCCESS, transmitted: 20, received: 19, errors: 0},
-			wantErr:     false,
+			wantResults: PingResults{
+				outcome:     testhelper.SUCCESS,
+				transmitted: 20,
+				received:    19,
+				errors:      0,
+			},
+			wantErr: false,
 		},
 		{
 			name: "pingFailingPacketLoss",
@@ -130,8 +150,13 @@ func Test_parsePingResult(t *testing.T) {
 			1 packets transmitted, 0 received, 100% packet loss, time 0ms
 			
 			command terminated with exit code 1`, stderr: ""},
-			wantResults: PingResults{outcome: testhelper.FAILURE, transmitted: 1, received: 0, errors: 0},
-			wantErr:     false,
+			wantResults: PingResults{
+				outcome:     testhelper.FAILURE,
+				transmitted: 1,
+				received:    0,
+				errors:      0,
+			},
+			wantErr: false,
 		},
 		{
 			name: "pingHostnameNoPacketLoss",
@@ -150,8 +175,13 @@ func Test_parsePingResult(t *testing.T) {
 			--- www.google.com ping statistics ---
 			10 packets transmitted, 10 received, 0% packet loss, time 9014ms
 			rtt min/avg/max/mdev = 21.650/27.619/37.003/3.885 ms`, stderr: ""},
-			wantResults: PingResults{outcome: testhelper.SUCCESS, transmitted: 10, received: 10, errors: 0},
-			wantErr:     false,
+			wantResults: PingResults{
+				outcome:     testhelper.SUCCESS,
+				transmitted: 10,
+				received:    10,
+				errors:      0,
+			},
+			wantErr: false,
 		},
 		{
 			name: "decodingError",
@@ -170,8 +200,13 @@ func Test_parsePingResult(t *testing.T) {
 			--- www.google.com ping statistics ---
 			10 pacets transmitted, 10 received, 0% packet loss, time 9014ms
 			rtt min/avg/max/mdev = 21.650/27.619/37.003/3.885 ms`, stderr: ""},
-			wantResults: PingResults{outcome: testhelper.FAILURE, transmitted: 0, received: 0, errors: 0},
-			wantErr:     true,
+			wantResults: PingResults{
+				outcome:     testhelper.FAILURE,
+				transmitted: 0,
+				received:    0,
+				errors:      0,
+			},
+			wantErr: true,
 		},
 	}
 
@@ -264,9 +299,19 @@ func TestProcessContainerIpsPerNet(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			ProcessContainerIpsPerNet(tt.args.containerID, tt.args.netKey, tt.args.ipAddresses, tt.args.netsUnderTest, tt.args.aIPVersion)
+			ProcessContainerIpsPerNet(
+				tt.args.containerID,
+				tt.args.netKey,
+				tt.args.ipAddresses,
+				tt.args.netsUnderTest,
+				tt.args.aIPVersion,
+			)
 			if !reflect.DeepEqual(tt.args.netsUnderTest, tt.args.wantNetsUnderTest) {
-				t.Errorf("ProcessContainerIpsPerNet() = %v, want %v", tt.args.netsUnderTest, tt.args.wantNetsUnderTest)
+				t.Errorf(
+					"ProcessContainerIpsPerNet() = %v, want %v",
+					tt.args.netsUnderTest,
+					tt.args.wantNetsUnderTest,
+				)
 			}
 		})
 	}
@@ -349,7 +394,9 @@ func TestBuildNetTestContext(t *testing.T) {
 				},
 			},
 
-			wantClaimsLogStr: []string{"Skipping pod: pod2 ns: ns1 because it is excluded from all connectivity tests\n"},
+			wantClaimsLogStr: []string{
+				"Skipping pod: pod2 ns: ns1 because it is excluded from all connectivity tests\n",
+			},
 		},
 		{
 			name: "ipv4ok multus",
@@ -464,7 +511,9 @@ func TestBuildNetTestContext(t *testing.T) {
 				},
 			},
 
-			wantClaimsLogStr: []string{"Skipping pod pod2 because it is excluded from Multus connectivity tests only\n"},
+			wantClaimsLogStr: []string{
+				"Skipping pod pod2 because it is excluded from Multus connectivity tests only\n",
+			},
 		},
 	}
 	for _, tt := range tests {
@@ -472,18 +521,28 @@ func TestBuildNetTestContext(t *testing.T) {
 			for idx := range tt.args.pods {
 				tt.args.pods[idx].MultusIPs = make(map[string][]string)
 				var err error
-				tt.args.pods[idx].MultusIPs, err = provider.GetPodIPsPerNet(tt.args.pods[idx].GetAnnotations()[provider.CniNetworksStatusKey])
+				tt.args.pods[idx].MultusIPs, err = provider.GetPodIPsPerNet(
+					tt.args.pods[idx].GetAnnotations()[provider.CniNetworksStatusKey],
+				)
 				if err != nil {
 					fmt.Printf("Could not decode networks-status annotation")
 				}
 			}
 
-			gotNetsUnderTest, gotClaimsLog := BuildNetTestContext(tt.args.pods, tt.args.aIPVersion, tt.args.aType)
+			gotNetsUnderTest, gotClaimsLog := BuildNetTestContext(
+				tt.args.pods,
+				tt.args.aIPVersion,
+				tt.args.aType,
+			)
 
 			out, _ := json.MarshalIndent(gotNetsUnderTest, "", "")
 			fmt.Printf("%s", out)
 			if !reflect.DeepEqual(gotNetsUnderTest, tt.wantNetsUnderTest) {
-				t.Errorf("BuildNetTestContext() gotNetsUnderTest = %v, want %v", gotNetsUnderTest, tt.wantNetsUnderTest)
+				t.Errorf(
+					"BuildNetTestContext() gotNetsUnderTest = %v, want %v",
+					gotNetsUnderTest,
+					tt.wantNetsUnderTest,
+				)
 			}
 
 			testClaimsLog := loghelper.CuratedLogLines{}
@@ -492,7 +551,11 @@ func TestBuildNetTestContext(t *testing.T) {
 			}
 
 			if !reflect.DeepEqual(gotClaimsLog, testClaimsLog) {
-				t.Errorf("BuildNetTestContext() gotClaimsLog = %v, want %v", gotClaimsLog, testClaimsLog)
+				t.Errorf(
+					"BuildNetTestContext() gotClaimsLog = %v, want %v",
+					gotClaimsLog,
+					testClaimsLog,
+				)
 			}
 		})
 	}
@@ -662,7 +725,7 @@ func TestRunNetworkingTests(t *testing.T) {
 	tests := []struct {
 		name             string
 		args             args
-		wantBadNets      map[string][]string
+		wantReport       testhelper.FailureReasonOut
 		wantClaimsLogStr []string
 		testPingSuccess  bool
 	}{
@@ -699,15 +762,56 @@ func TestRunNetworkingTests(t *testing.T) {
 			},
 			}, count: 10, aIPVersion: netcommons.IPv4,
 			},
-			wantBadNets:      map[string][]string{},
-			wantClaimsLogStr: []string{"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test2 pod: test-1 ns: tnf dstip: 10.244.195.232 ) result: outcome: SUCCESS transmitted: 10 received: 10 errors: 0\n"}, //nolint:lll
-			testPingSuccess:  true,
+			wantReport: testhelper.FailureReasonOut{
+				CompliantObjectsOut: []*testhelper.ReportObject{
+					{
+						ObjectType: "ICMP result",
+						ObjectFieldsKeys: []string{
+							testhelper.ReasonForCompliance,
+							"Namespace",
+							testhelper.PodName,
+							testhelper.ContainerName,
+							testhelper.NetworkName,
+							testhelper.SourceIP,
+							testhelper.DestinationNamespace,
+							testhelper.DestinationPodName,
+							testhelper.DestinationContainerName,
+							testhelper.DestinationIP,
+						},
+						ObjectFieldsValues: []string{
+							"Pinging destination container/IP from source container (identified by Namespace/Pod Name/Container Name) Succeeded",
+							"tnf",
+							"test-0",
+							"test1",
+							"default",
+							"10.244.195.231",
+							"tnf",
+							"test-1",
+							"test2",
+							"10.244.195.232",
+						},
+					},
+					{
+						ObjectType:       "Network",
+						ObjectFieldsKeys: []string{testhelper.ReasonForCompliance, testhelper.NetworkName},
+						ObjectFieldsValues: []string{
+							"ICMP tests were successful for  all 1 IP source/destination in this network",
+							"default",
+						},
+					},
+				},
+				NonCompliantObjectsOut: []*testhelper.ReportObject{},
+			},
+			wantClaimsLogStr: []string{
+				"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test2 pod: test-1 ns: tnf dstip: 10.244.195.232 ) result: outcome: SUCCESS transmitted: 10 received: 10 errors: 0\n",
+			},
+			testPingSuccess: true,
 		},
 		{name: "noNetToTest",
 			args: args{netsUnderTest: map[string]netcommons.NetTestContext{},
 				count: 10, aIPVersion: netcommons.IPv4,
 			},
-			wantBadNets:     nil,
+			wantReport:      testhelper.FailureReasonOut{},
 			testPingSuccess: true,
 		},
 		{name: "only one container",
@@ -730,7 +834,7 @@ func TestRunNetworkingTests(t *testing.T) {
 			},
 			}, count: 10, aIPVersion: netcommons.IPv4,
 			},
-			wantBadNets:     map[string][]string{},
+			wantReport:      testhelper.FailureReasonOut{},
 			testPingSuccess: true,
 		},
 		{name: "ping fails",
@@ -779,9 +883,77 @@ func TestRunNetworkingTests(t *testing.T) {
 			},
 			}, count: 10, aIPVersion: netcommons.IPv4,
 			},
-			wantBadNets: map[string][]string{"default": {"10.244.195.232", "10.244.195.233"}},
-			wantClaimsLogStr: []string{"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test2 pod: test-1 ns: tnf dstip: 10.244.195.232 ) result: outcome: FAILURE transmitted: 10 received: 5 errors: 5\n", //nolint:lll
-				"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test3 pod: test-1 ns: tnf dstip: 10.244.195.233 ) result: outcome: FAILURE transmitted: 10 received: 5 errors: 5\n"}, //nolint:lll
+			wantReport: testhelper.FailureReasonOut{
+				CompliantObjectsOut: []*testhelper.ReportObject{},
+				NonCompliantObjectsOut: []*testhelper.ReportObject{
+					{
+						ObjectType: "ICMP result",
+						ObjectFieldsKeys: []string{
+							testhelper.ReasonForNonCompliance,
+							"Namespace",
+							testhelper.PodName,
+							testhelper.ContainerName,
+							testhelper.NetworkName,
+							testhelper.SourceIP,
+							testhelper.DestinationNamespace,
+							testhelper.DestinationPodName,
+							testhelper.DestinationContainerName,
+							testhelper.DestinationIP,
+						},
+						ObjectFieldsValues: []string{
+							"Pinging destination container/IP from source container (identified by Namespace/Pod Name/Container Name) Failed",
+							"tnf",
+							"test-0",
+							"test1",
+							"default",
+							"10.244.195.231",
+							"tnf",
+							"test-1",
+							"test2",
+							"10.244.195.232",
+						},
+					},
+					{
+						ObjectType: "ICMP result",
+						ObjectFieldsKeys: []string{
+							testhelper.ReasonForNonCompliance,
+							"Namespace",
+							testhelper.PodName,
+							testhelper.ContainerName,
+							testhelper.NetworkName,
+							testhelper.SourceIP,
+							testhelper.DestinationNamespace,
+							testhelper.DestinationPodName,
+							testhelper.DestinationContainerName,
+							testhelper.DestinationIP,
+						},
+						ObjectFieldsValues: []string{
+							"Pinging destination container/IP from source container (identified by Namespace/Pod Name/Container Name) Failed",
+							"tnf",
+							"test-0",
+							"test1",
+							"default",
+							"10.244.195.231",
+							"tnf",
+							"test-1",
+							"test3",
+							"10.244.195.233",
+						},
+					},
+					{
+						ObjectType:       "Network",
+						ObjectFieldsKeys: []string{testhelper.ReasonForNonCompliance, testhelper.NetworkName},
+						ObjectFieldsValues: []string{
+							"ICMP tests failed for 2 IP source/destination in this network",
+							"default",
+						},
+					},
+				},
+			},
+			wantClaimsLogStr: []string{
+				"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test2 pod: test-1 ns: tnf dstip: 10.244.195.232 ) result: outcome: FAILURE transmitted: 10 received: 5 errors: 5\n", //nolint:lll
+				"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test3 pod: test-1 ns: tnf dstip: 10.244.195.233 ) result: outcome: FAILURE transmitted: 10 received: 5 errors: 5\n",
+			},
 			testPingSuccess: false,
 		},
 	}
@@ -792,12 +964,24 @@ func TestRunNetworkingTests(t *testing.T) {
 			} else {
 				TestPing = TestPingFailure
 			}
-			gotBadNets, gotClaimsLog, _ := RunNetworkingTests(tt.args.netsUnderTest, tt.args.count, tt.args.aIPVersion)
-			if !reflect.DeepEqual(gotBadNets, tt.wantBadNets) {
-				t.Errorf("RunNetworkingTests() gotBadNets = %v, want %v", gotBadNets, tt.wantBadNets)
+			gotReport, gotClaimsLog, _ := RunNetworkingTests(
+				tt.args.netsUnderTest,
+				tt.args.count,
+				tt.args.aIPVersion,
+			)
+			if !gotReport.Equal(tt.wantReport) {
+				t.Errorf(
+					"RunNetworkingTests() gotReport = %s, want %s",
+					testhelper.FailureReasonOutTestString(gotReport),
+					testhelper.FailureReasonOutTestString(tt.wantReport),
+				)
 			}
 			if !reflect.DeepEqual(gotClaimsLog.GetLogLines(), tt.wantClaimsLogStr) {
-				t.Errorf("RunNetworkingTests() gotClaimsLog = %v, want %v", gotClaimsLog, tt.wantClaimsLogStr)
+				t.Errorf(
+					"RunNetworkingTests() gotReport = %+v, want %+v",
+					gotClaimsLog,
+					tt.wantClaimsLogStr,
+				)
 			}
 		})
 	}
@@ -808,5 +992,12 @@ var TestPingSuccess = func(sourceContainerID *provider.Container, targetContaine
 }
 
 var TestPingFailure = func(sourceContainerID *provider.Container, targetContainerIP netcommons.ContainerIP, count int) (results PingResults, err error) {
-	return PingResults{outcome: testhelper.FAILURE, transmitted: 10, received: 5, errors: 5}, fmt.Errorf("ping failed")
+	return PingResults{
+			outcome:     testhelper.FAILURE,
+			transmitted: 10,
+			received:    5,
+			errors:      5,
+		}, fmt.Errorf(
+			"ping failed",
+		)
 }

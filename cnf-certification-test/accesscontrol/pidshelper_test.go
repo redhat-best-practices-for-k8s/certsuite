@@ -22,6 +22,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 )
 
 func TestGetNbOfProcessesInPidNamespace(t *testing.T) {
@@ -86,7 +87,7 @@ func TestGetNbOfProcessesInPidNamespace(t *testing.T) {
 			},
 		}
 
-		result, err := getNbOfProcessesInPidNamespace(clientsholder.NewContext("testNamespace", "testPod", "containerName"), tc.testPID, ch)
+		result, err := getNbOfProcessesInPidNamespace(clientsholder.NewContext("testNamespace", "testPod", testhelper.ContainerName), tc.testPID, ch)
 
 		// assertions
 		assert.Equal(t, tc.expectedResult, result)

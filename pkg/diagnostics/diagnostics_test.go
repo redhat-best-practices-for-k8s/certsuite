@@ -24,6 +24,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	corev1 "k8s.io/api/core/v1"
 )
 
@@ -80,7 +81,7 @@ func TestGetHWJsonOutput(t *testing.T) {
 				// context .
 				Containers: []corev1.Container{
 					{
-						Name: "podname",
+						Name: testhelper.PodName,
 					},
 				},
 			},
@@ -142,7 +143,7 @@ func TestGetHWTextOutput(t *testing.T) {
 				// context .
 				Containers: []corev1.Container{
 					{
-						Name: "podname",
+						Name: testhelper.PodName,
 					},
 				},
 			},
