@@ -10,7 +10,7 @@ import (
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
-type QeCoverageSummaryReport struct {
+type TestCoverageSummaryReport struct {
 	CoverageByTestSuite     map[string]TestSuiteQeCoverage
 	TotalCoveragePercentage float32
 	TestCasesTotal          int
@@ -30,12 +30,17 @@ var (
 		Use:   "qe-coverage-report",
 		Short: "Generates the current QE coverage report.",
 		Run: func(cmd *cobra.Command, args []string) {
-			testCaseName, _ := cmd.Flags().GetString("name")
+			testSuiteName, _ := cmd.Flags().GetString("suitename")
 
 			qeCoverage := GetQeCoverage(identifiers.Catalog)
 
-			if testCaseName != "" {
-				showQeCoverageForTestCaseName(testCaseName, qeCoverage)
+			if testSuiteName != "" {
+				_, exists := qeCoverage.CoverageByTestSuite[testSuiteName]
+				if exists {
+					showQeCoverageForTestCaseName(testSuiteName, qeCoverage)
+				} else {
+					fmt.Println("Invalid test suite name")
+				}
 			} else {
 				showQeCoverageSummaryReport()
 			}
@@ -43,10 +48,12 @@ var (
 	}
 )
 
-func showQeCoverageForTestCaseName(suiteName string, qeCoverage QeCoverageSummaryReport) {
+func showQeCoverageForTestCaseName(suiteName string, qeCoverage TestCoverageSummaryReport) {
 	tsCoverage := qeCoverage.CoverageByTestSuite[suiteName]
-	fmt.Printf("Total Test Cases in %s : %d\n", suiteName, tsCoverage.TestCases)
-	fmt.Printf("QE coverage : %.f%%\n", tsCoverage.Coverage)
+
+	fmt.Println("Suite Name : ", suiteName)
+	fmt.Printf("Total Test Cases : %d, QE Coverage:  %.f%%, Unimplemented Test Cases : %d\n",
+		tsCoverage.TestCases, tsCoverage.Coverage, tsCoverage.TestCases-tsCoverage.TestCasesWithQe)
 
 	if len(tsCoverage.NotImplementedTestCases) == 0 {
 		fmt.Println("Congrats! All tests are QE test covered")
@@ -58,7 +65,7 @@ func showQeCoverageForTestCaseName(suiteName string, qeCoverage QeCoverageSummar
 	fmt.Println()
 }
 
-func GetQeCoverage(catalog map[claim.Identifier]claim.TestCaseDescription) QeCoverageSummaryReport {
+func GetQeCoverage(catalog map[claim.Identifier]claim.TestCaseDescription) TestCoverageSummaryReport {
 	totalTcs := 0
 	totalTcsWithQe := 0
 
@@ -95,7 +102,7 @@ func GetQeCoverage(catalog map[claim.Identifier]claim.TestCaseDescription) QeCov
 		totalCoverage = 100.0 * (float32(totalTcsWithQe) / float32(totalTcs))
 	}
 
-	return QeCoverageSummaryReport{
+	return TestCoverageSummaryReport{
 		CoverageByTestSuite:     qeCoverageByTestSuite,
 		TotalCoveragePercentage: totalCoverage,
 		TestCasesTotal:          totalTcs,
@@ -104,7 +111,6 @@ func GetQeCoverage(catalog map[claim.Identifier]claim.TestCaseDescription) QeCov
 }
 
 func showQeCoverageSummaryReport() {
-	// func runGenerateQeCoverageReport(_ *cobra.Command, _ []string) error {
 	qeCoverage := GetQeCoverage(identifiers.Catalog)
 
 	// Order test suite names so the report is in ascending test suite name order.
