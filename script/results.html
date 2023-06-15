@@ -5,22 +5,24 @@
   <meta charset=utf-8>
   <title>CNF Certification Test Results</title>
   <meta charset="utf-8">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
 
+
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.4/dayjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.4/plugin/duration.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/ansi_up@5.1.0/ansi_up.js" crossorigin="anonymous"></script>
   <style type="text/css">
     li.dropdown-menu {
       background-color: white;
     }
 
-    table {
-      border-collapse: collapse;
-    }
-
-    table td {
-      border: 1px solid #000;
-    }
 
     tg {
       background-color: #28a745;
@@ -36,6 +38,60 @@
 
     tgy {
       background-color: #ced4da;
+    }
+
+    body {
+      font-family: sans-serif;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 1.75em;
+    }
+
+    ul li {
+      border-bottom-left-radius: 0.75em;
+      border-top-left-radius: 0.75em;
+      margin: 2px 0;
+      position: relative;
+    }
+
+    ul li a {
+      background-color: #eee;
+      border-radius: 50%;
+      color: #000;
+      display: inline-block;
+      height: 1.5em;
+      left: -1.5em;
+      line-height: 1.5em;
+      position: absolute;
+      text-align: center;
+      text-decoration: none;
+      width: 1.5em;
+    }
+
+    ul li a.plus {
+      background-color: #77aeff;
+    }
+
+    ul li a.minus {
+      background-color: #eee;
+    }
+
+    ul li a:active {
+      top: 1px;
+    }
+
+    ul li span {
+      display: inline-block;
+      margin: 0.25em 0.5em;
+    }
+
+    .top-right {
+      font-size: small;
+      position: fixed;
+      right: 1em;
+      top: 1em;
     }
   </style>
 </head>
@@ -62,12 +118,15 @@
   <button class="w3-button w3-right w3-light-grey" id="download" type="submit" onclick=download()
     hidden="hidden">Download Results Feedback</button>
 
-    <button class="w3-button w3-right w3-light-grey" id="downloadjson" type="submit" onclick=downloadjson()
+  <button class="w3-button w3-right w3-light-grey" id="downloadjson" type="submit" onclick=downloadjson()
     hidden="hidden">Download Feedback as a JSON file</button>
-    <p hidden="hidden" id ="UploadFeedback">
-      Upload Feedback File: <input type="file" id="feedbackFile" size="40">
-      </p>
-
+  <p hidden="hidden" id="UploadFeedback">
+    Upload Feedback File: <input type="file" id="feedbackFile" size="40">
+  </p>
+  <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0"
+    aria-valuemax="100">
+    <div class="progress-bar" style="width: 0%"></div>
+  </div>
   <ul class="nav nav-tabs">
     <li class="nav-item">
       <button class="nav-link active" id="config-tab" data-bs-toggle="tab" data-bs-target="#config" type="button"
@@ -108,54 +167,47 @@
   </ul>
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="config" role="tabpanel" aria-labelledby="config-tab">
-      <table class="table table-hover table-bordered" id="config-table">
+      <div id="config-table">
+      </div>
+    </div>
+    <div class="table-responsive tab-pane fade" id="metadata" role="tabpanel" aria-labelledby="metadata-tab">
+      <table class="table" id="metadata-table">
       </table>
     </div>
-    <div class="tab-pane fade" id="metadata" role="tabpanel" aria-labelledby="metadata-tab">
-      <table class="table table-hover table-bordered" id="metadata-table">
-      </table>
-    </div>
-    <div class="tab-pane fade" id="nodes" role="tabpanel" aria-labelledby="nodes-tab">
-      <table class="table table-hover table-bordered" id="nodes-table">
+    <div class="table-responsive tab-pane fade" id="nodes" role="tabpanel" aria-labelledby="nodes-tab">
+      <table class="table" id="nodes-table">
       </table>
     </div>
 
-    <div class="tab-pane fade" id="results" role="tabpanel" aria-labelledby="result-tab">
-      <table class="table table-hover table-bordered" id="results-table" hidden="hidden">
+    <div class="tab-pane fade table-responsive" id="results" role="tabpanel" aria-labelledby="result-tab">
+      <table class="table" id="results-table" hidden="hidden">
       </table>
-      <table class="table table-hover table-bordered" id="mandatory-far-edge-table" hidden="hidden">
+      <table class="table" id="mandatory-far-edge-table" hidden="hidden">
       </table>
-      <table class="table table-hover table-bordered" id="optional-far-edge-table" hidden="hidden">
+      <table class="table" id="optional-far-edge-table" hidden="hidden">
       </table>
-      <table class="table table-hover table-bordered" id="mandatory-telco-table" hidden="hidden">
+      <table class="table" id="mandatory-telco-table" hidden="hidden">
       </table>
-      <table class="table table-hover table-bordered" id="optional-telco-table" hidden="hidden">
+      <table class="table" id="optional-telco-table" hidden="hidden">
       </table>
-      <table class="table table-hover table-bordered" id="mandatory-non-telco-table" hidden="hidden">
+      <table class="table" id="mandatory-non-telco-table" hidden="hidden">
       </table>
-      <table class="table table-hover table-bordered" id="optional-non-telco-table" hidden="hidden">
-        <table class="table table-hover table-bordered" id="mandatory-extended-table" hidden="hidden">
+      <table class="table" id="optional-non-telco-table" hidden="hidden">
+        <table class="table" id="mandatory-extended-table" hidden="hidden">
         </table>
-        <table class="table table-hover table-bordered" id="optional-extended-table" hidden="hidden">
+        <table class="table" id="optional-extended-table" hidden="hidden">
         </table>
     </div>
 
 
-    <div class="tab-pane fade" id="versions" role="tabpanel" aria-labelledby="versions-tab">
-      <table class="table table-hover table-bordered" id="versions-table">
+
+    <div class="table-responsive tab-pane fade" id="versions" role="tabpanel" aria-labelledby="versions-tab">
+      <table class="table" id="versions-table">
       </table>
     </div>
   </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.4/dayjs.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.4/plugin/duration.min.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-    crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/ansi_up@5.1.0/ansi_up.js" crossorigin="anonymous"></script>
   <!-- We should extract the javascript code to a separate file, but if we include it here we can just use a single file HTMl, which is handy -->
   <!--    <script src="./utils.js"></script> -->
   <script>
@@ -272,7 +324,7 @@
       document.getElementById("download").removeAttribute("hidden");
       document.getElementById("downloadjson").removeAttribute("hidden");
       document.getElementById("UploadFeedback").removeAttribute("hidden");
-      
+
     }
 
 
@@ -337,7 +389,7 @@
       if (typeof input === 'string') {
         text = input
       } else if (Array.isArray(input)) {
-        text += '<table class="table table-light table-bordered">'
+        text += '<div class="table-responsive"><table class="table table-light table-bordered">'
         // Gather header from first item
         text += '<thead><tr>'
 
@@ -359,15 +411,15 @@
           }
           text += '</tr>'
         }
-        text += '</tbody></table>'
+        text += '</tbody></table></div>'
       } else if (typeof input === 'object' && input !== null) {
-        text += '<table class="table table-light table-bordered"><tbody>'
+        text += '<div class="table-responsive"><table class="table table-light table-bordered"><tbody>'
         // Go down the rabbit hole
         for (const key in input) {
           text += '<tr><td><b>' + key + '</b></td><td>'
           text += innerFill(input[key]) + '</td></tr>'
         }
-        text += '</tbody></table>'
+        text += '</tbody></table></div>'
       } else {
         // What else could it be?
         text = input
@@ -460,7 +512,7 @@
           }
         }
       }
-      text += '<th scope="col" class="th-sm">Test ID</th>'
+      text += '<th>Test ID</th>'
       tableNameMap = {
         "faredge": "Far-Edge",
         "telco": "Telco",
@@ -541,15 +593,16 @@
             text += key + '</button></h2>'
             // Now we should populate the item contents
             text += '<div id="' + itemid + '" class="accordion-collapse collapse" aria-labelledby="' + headingid + '">'
-            text += '<div class="accordion-body">'
+            text += '<div class="accordion-body" >'
             // Inside the accordion, 1 table with the following colummns
             text += '<h1>Results</h1>'
-            text += '<table id="myTable-' + key + '"class="table table-bordered table-fixed"><thead><tr>'
-            text += '<th scope="col" class="th-sm">Test ID</th>'
-            text += '<th scope="col" class="th-sm">Test Text</th>'
-            text += '<th scope="col" class="th-sm">Duration</th>'
-            text += '<th scope="col" class="th-sm">State</th>'
-            text += '<th scope="col" class="th-lg">Test output</th>'
+            text += '<div class="table-responsive">'
+            text += '<table id="myTable-' + key + '" class="table table-bordered"><thead><tr>'
+            text += '<th>Test ID</th>'
+            text += '<th class="th-lg">Test Text</th>'
+            text += '<th>Duration</th>'
+            text += '<th>State</th>'
+            text += '<th>Test output</th>'
             text += '</tr></thead><tbody>'
 
             // Note we are skipping some columns for now
@@ -560,10 +613,10 @@
             for (const item of input[key]) {
               const duration = dayjs.duration(item.duration / 1000000)
               formattedDuration = duration.format('D[d] H[h] m[m] s[s] SSS[ms]')
-              text += '<tr><td>' + item.testID.id + '</td>'
-              text += '<td>' + item.testText.replace(/\n/g, '<br>') + '</td>'
+              text += '<tr><td  style="white-space: nowrap;">' + item.testID.id + '</td>'
+              text += '<td class="th-lg">' + item.testText.replace(/\n/g, '<br>') + '</td>'
               text += '<td>' + formattedDuration + '</td>'
-              text += '<td>' + item.state + '</td>'
+              text += '<td style="white-space: nowrap;">' + item.state + '</td>'
               text += '<td>' + ansi_up.ansi_to_html(item.CapturedTestOutput).replace(/\n/g, '<br>') + '</td></tr>'
               jsonObjNonCompliant = NonCompliantReasonTextToJson(item.CapturedTestOutput)
               jsonObjCompliant = CompliantReasonTextToJson(item.CapturedTestOutput)
@@ -572,7 +625,7 @@
             id = id + 1
             if (eqData == "Optional" && tableName != "all") {
               text2 += text
-              text2 += '</tbody></table>'
+              text2 += '</tbody></table></div>'
               for (const item of input[key]) {
                 text2 += '<h1>Feedback</h1><label>Write your feedback for ' + item.testID.id + ' test case</label>'
                 text2 += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-' + tableName + '-' + item.testID.id + '" type="text" ></textarea>'
@@ -584,7 +637,7 @@
               text2 += '</div></div></div>'
             } else {
               text3 += text
-              text3 += '</tbody></table>'
+              text3 += '</tbody></table></div>'
               for (const item of input[key]) {
                 text3 += '<h1>Feedback</h1><label>Write your feedback for ' + item.testID.id + ' test case</label>'
                 text3 += '<textarea style="width: 100%; margin: 0 auto;" rows = "5" id="source-' + tableName + '-' + item.testID.id + '" type="text"></textarea>'
@@ -606,12 +659,12 @@
       $(text2).appendTo($(element2))
     }
 
-    function fillFeedback(input){
-      for ( key in input) { 
+    function fillFeedback(input) {
+      for (key in input) {
         // copy previus daata
-          document.getElementById(key).textContent = document.getElementById(key).value;
-          document.getElementById(key).textContent = input[key]
-          document.getElementById(key).value=input[key]
+        document.getElementById(key).textContent = document.getElementById(key).value;
+        document.getElementById(key).textContent = input[key]
+        document.getElementById(key).value = input[key]
       }
     }
 
@@ -664,8 +717,20 @@
         let fileUploaded = new FileReader();
         fileUploaded.addEventListener("load", e => {
           json = JSON.parse(fileUploaded.result)
-          fillConfig(json.claim.configurations, '#config-table')
-          fillConfig(json.claim.nodes, '#nodes-table')
+          //fillConfig(json.claim.configurations, '#config-table')
+
+
+          // Create treeview from JSON data
+          var container = document.getElementById("config-table");
+          //var [configurationsArr, childName, childNamespace] = format_for_treeview("", json.claim.configurations, [])
+          //createTreeView(container, configurationsArr, 0);
+          var [data, dummy, dummy] = format_for_fast_treeview(0, json.claim.configurations, [])
+          addOrphans(data, "#config-table");
+          //expandAll(document.querySelector("#config-table"));
+          var [data, dummy, dummy] = format_for_fast_treeview(0, json.claim.nodes, [])
+          addOrphans(data, "#nodes-table");
+          //expandAll(document.querySelector("#nodes-table"));
+          //fillConfig(json.claim.nodes, '#nodes-table')
           fillMetadata(json.claim.metadata, '#metadata-table')
           fillVersions(json.claim.versions, '#versions-table')
           fillResults(json.claim.results, classification, '#results-table', '#optional-', "all")
@@ -746,33 +811,33 @@
       return doc.documentElement.outerHTML
     }
     function downloadjson() {
-      var dict = {}; 
-      const tablesName = ["all","telco","nontelco","extended","faredge"]; // to go over all the feedback and save it
+      var dict = {};
+      const tablesName = ["all", "telco", "nontelco", "extended", "faredge"]; // to go over all the feedback and save it
       for (const key in this.json.claim.results) {
         for (const key2 in this.classification) {
           if (key == key2) {
-            for (let i = 0; i <  tablesName.length; i++) {
-                var keydict='source-'+tablesName[i]+'-'+key
-                var data = document.getElementById(keydict)
-                if (data != null){
-                  dict[keydict]=data.value 
+            for (let i = 0; i < tablesName.length; i++) {
+              var keydict = 'source-' + tablesName[i] + '-' + key
+              var data = document.getElementById(keydict)
+              if (data != null) {
+                dict[keydict] = data.value
               }
             }
-     
+
+          }
         }
       }
-    }
-  
-    var pom = document.createElement('a');
-  pom.setAttribute('href', 'data:text/json;charset=utf-8,' + 
 
-encodeURIComponent(JSON.stringify(dict)));
-  pom.setAttribute('download', "feedback.json");
-  pom.style.display = 'none';
-  document.body.appendChild(pom);
-  pom.click();
-  document.body.removeChild(pom);
-  }
+      var pom = document.createElement('a');
+      pom.setAttribute('href', 'data:text/json;charset=utf-8,' +
+
+        encodeURIComponent(JSON.stringify(dict)));
+      pom.setAttribute('download', "feedback.json");
+      pom.style.display = 'none';
+      document.body.appendChild(pom);
+      pom.click();
+      document.body.removeChild(pom);
+    }
 
     function download() {
       var selectBox = document.getElementById("selectBox");
@@ -870,7 +935,9 @@ encodeURIComponent(JSON.stringify(dict)));
       var allTables = ""
       aTypeMap.forEach(function (value, key) {
         allTables += '<h2> Type: ' + key + '</h2>'
+        allTables += '<div class="table-responsive">'
         allTables += createReasonTableOneType(jsonData, key)
+        allTables += '</div>'
       })
       return allTables
     }
@@ -896,7 +963,7 @@ encodeURIComponent(JSON.stringify(dict)));
           // Create table header
           var thead = document.createElement('thead');
           var headerRow = document.createElement('tr');
-          Object.keys(item.ObjectFields).forEach(function (key) {
+          Object.values(item.ObjectFieldsKeys).forEach(function (key) {
             var th = document.createElement('th');
             th.textContent = key;
             headerRow.appendChild(th);
@@ -906,7 +973,7 @@ encodeURIComponent(JSON.stringify(dict)));
           firstItem = false
         }
         var row = document.createElement('tr');
-        Object.values(item.ObjectFields).forEach(function (value) {
+        Object.values(item.ObjectFieldsValues).forEach(function (value) {
           var cell = document.createElement('td');
           cell.textContent = value;
           row.appendChild(cell);
@@ -917,6 +984,248 @@ encodeURIComponent(JSON.stringify(dict)));
       return table.outerHTML
     }
 
+    function format_for_treeview(parentKey, data, arr) {
+      var objectName = ""
+      var objectNamespace = ""
+      for (var key in data) {
+        if (data[key] == null || key == "managedFields") {
+          continue
+        }
+        if (key.toLowerCase() == "name") {
+          objectName = data[key]
+        }
+        if (key.toLowerCase() == "namespace") {
+          objectNamespace = data[key]
+        }
+        if (Array.isArray(data[key]) || data[key].toString() === "[object Object]") {
+          // when data[key] is an array or object
+          var nodes = [];
+          var [completedNodes, childName, childNamespace] = format_for_treeview(key, data[key], nodes);
+          if (childName != "") {
+            objectName = childName
+            objectNamespace = childNamespace
+          }
+          var nameToPush = key
+          if (isStringInt(key) && objectName != "") {
+            nameToPush = "ns:" + objectNamespace + " name:" + objectName
+            objectName = ""
+            objectNamespace = ""
+          }
+
+          arr.push({
+            name: nameToPush,
+            children: completedNodes
+          });
+        } else {
+          // when data[key] is just strings or integer values
+          arr.push({
+            name: key + " : " + data[key]
+          });
+        }
+      }
+      return [arr, objectName, objectNamespace];
+    }
+
+    function isStringInt(str) {
+      return /^\d+$/.test(str);
+    }
+
+    //Fast tree
+    var uuidNode = 1 // zero is root
+    function format_for_fast_treeview(parentKey, data, arr) {
+      var objectName = ""
+      var objectNamespace = ""
+      for (var key in data) {
+        if (data[key] == null || key == "managedFields") {
+          continue
+        }
+        if (key.toLowerCase() == "name") {
+          objectName = data[key]
+        }
+        if (key.toLowerCase() == "namespace") {
+          objectNamespace = data[key]
+        }
+        var objectID = uuidNode++
+        if (Array.isArray(data[key]) || data[key].toString() === "[object Object]") {
+          // when data[key] is an array or object
+
+          var [arrRet, childName, childNamespace] = format_for_fast_treeview(objectID, data[key], arr);
+          if (childName != "") {
+            objectName = childName
+            objectNamespace = childNamespace
+          }
+          var nameToPush = key
+          if (isStringInt(key) && objectName != "") {
+            nameToPush = "ns:" + objectNamespace + " name:" + objectName
+            objectName = ""
+            objectNamespace = ""
+          }
+
+          arr.push({
+            id: objectID.toString(),
+            name: nameToPush,
+            parent: parentKey.toString()
+          });
+        } else {
+          // when data[key] is just strings or integer values
+          arr.push({
+            id: objectID.toString(),
+            name: key + " : " + data[key],
+            parent: parentKey.toString()
+          });
+        }
+      }
+      return [arr, objectName, objectNamespace];
+    }
+
+    function orphans(data) {
+      return data.filter(function (item) {
+        return item.parent === "0";
+      });
+    }
+
+    function hasChildren(data, parentId) {
+      return data.some(function (item) {
+        return item.parent === parentId;
+      });
+    }
+
+    function getChildren(data, parentId) {
+      return data.filter(function (item) {
+        return item.parent === parentId;
+      });
+    }
+
+    function generateListItem(data, item) {
+      const li = document.createElement('li');
+      li.id = 'item-' + item.id;
+      if (hasChildren(data, item.id)) {
+        const a = document.createElement('a');
+        a.href = '#';
+        a.textContent = '+';
+        a.classList.add('plus');
+        a.title = "hold shift to expand sub tree"
+        a.addEventListener('click', expand.bind(null, data), { once: true });
+        li.appendChild(a);
+      }
+      const span = document.createElement('span');
+      span.textContent = item.name;
+      li.appendChild(span);
+      return li;
+    }
+
+    function expand(data, event) {
+      event.preventDefault();
+      event.stopPropagation();
+      const et = event.target,
+        parent = et.parentElement,
+        id = parent.id.replace('item-', ''),
+        kids = getChildren(data, id),
+        items = kids.map(generateListItem.bind(null, data)),
+        ul = document.createElement('ul');
+      items.forEach(function (li) {
+        ul.appendChild(li);
+      });
+      parent.appendChild(ul);
+      et.classList.remove('plus');
+      et.classList.add('minus');
+      et.textContent = '-';
+      et.addEventListener('click', collapse.bind(null, data), { once: true });
+
+      if (event.shiftKey) {
+        max = countChildren(data, id, 0)
+        console.log(max)
+        initProgressBar()
+        expandAll({ value: ul }, max, { value: 2 })
+        return
+      }
+    }
+
+    function collapse(data, event) {
+      event.preventDefault();
+      event.stopPropagation();
+      const et = event.target,
+        parent = et.parentElement,
+        ul = parent.querySelector('ul');
+      parent.removeChild(ul);
+      et.classList.remove('minus');
+      et.classList.add('plus');
+      et.textContent = '+';
+      et.addEventListener('click', expand.bind(null, data), { once: true });
+    }
+
+    function addOrphans(data, rootObject) {
+      const root = document.querySelector(rootObject),
+        orphansArray = orphans(data);
+      if (orphansArray.length) {
+        const items = orphansArray.map(generateListItem.bind(null, data)),
+          ul = document.createElement('ul');
+        items.forEach(function (li) {
+          ul.appendChild(li);
+        });
+        root.appendChild(ul);
+      }
+    }
+
+    function expandAll(obj, max, count) {
+      if (isAnchorElement(obj.value)) {
+        const clickEvent = new MouseEvent('click', {
+          bubbles: true,
+          cancelable: true,
+          view: window
+        });
+        obj.value.dispatchEvent(clickEvent);
+      }
+      count.value++
+      percent = count.value * 100 / max
+      updateProgressBar(percent)
+      // Check if the object has children
+      if (obj.value.children.length > 0) {
+        // Iterate through the children and recursively process each child
+        setTimeout(function () {
+          for (let i = 0; i < obj.value.children.length; i++) {
+            const child = obj.value.children[i];
+            expandAll({ value: child }, max, count);
+          }
+        }, 0);
+      }
+    }
+
+    function isAnchorElement(obj) {
+      return obj instanceof HTMLAnchorElement;
+    }
+
+    function isListElement(obj) {
+      return obj instanceof HTMLUListElement;
+    }
+
+
+    function countChildren(data, id, count) {
+      kids = getChildren(data, id);
+      count++;
+      if (kids.length > 0) {
+        count += 2
+      }
+      kids.forEach(function (kid) {
+        count = countChildren(data, kid.id, count) + 1
+      });
+      return count;
+    }
+
+    function updateProgressBar(value) {
+      const progressBar = document.querySelector('.progress-bar');
+      const strippedStr = progressBar.style.width.replace(/%/g, '');
+      currentValue = parseInt(strippedStr)
+      if (value >= currentValue + 2) {
+        progressBar.style.width = value.toString() + '%';
+      }
+
+    }
+
+    function initProgressBar() {
+      const progressBar = document.querySelector('.progress-bar');
+      progressBar.style.width = "0%"
+    }
   </script>
 </body>
 

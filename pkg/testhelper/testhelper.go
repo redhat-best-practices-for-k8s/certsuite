@@ -31,8 +31,9 @@ const (
 )
 
 type ReportObject struct {
-	ObjectType   string
-	ObjectFields map[string]string
+	ObjectType         string
+	ObjectFieldsKeys   []string
+	ObjectFieldsValues []string
 }
 
 type FailureReasonOut struct {
@@ -40,26 +41,86 @@ type FailureReasonOut struct {
 	NonCompliantObjectsOut []*ReportObject
 }
 
+func Equal(p, other []*ReportObject) bool {
+	if len(p) != len(other) {
+		return false
+	}
+	for i := 0; i < len(p); i++ {
+		if p[i] == nil && other[i] == nil {
+			continue
+		}
+		if p[i] == nil || other[i] == nil {
+			return false
+		}
+		if !reflect.DeepEqual(*p[i], *other[i]) {
+			return false
+		}
+	}
+	return true
+}
+
+func FailureReasonOutTestString(p FailureReasonOut) (out string) {
+	out = "testhelper.FailureReasonOut{"
+	out += fmt.Sprintf("CompliantObjectsOut: %s,", ReportObjectTestStringPointer(p.CompliantObjectsOut))
+	out += fmt.Sprintf("NonCompliantObjectsOut: %s,", ReportObjectTestStringPointer(p.NonCompliantObjectsOut))
+	out += "}"
+	return out
+}
+
+func ReportObjectTestStringPointer(p []*ReportObject) (out string) {
+	out = "[]*testhelper.ReportObject{"
+	for _, p := range p {
+		out += fmt.Sprintf("&%#v,", *p)
+	}
+	out += "}"
+	return out
+}
+
+func ReportObjectTestString(p []*ReportObject) (out string) {
+	out = "[]testhelper.ReportObject{"
+	for _, p := range p {
+		out += fmt.Sprintf("%#v,", *p)
+	}
+	out += "}"
+	return out
+}
+
+func (p FailureReasonOut) Equal(other FailureReasonOut) bool {
+	return Equal(p.CompliantObjectsOut, other.CompliantObjectsOut) &&
+		Equal(p.NonCompliantObjectsOut, other.NonCompliantObjectsOut)
+}
+
 // When adding new field types, please update the following:
 
 const (
-	Namespace              = "Namespace"
-	PodName                = "PodName"
-	ContainerName          = "ContainerName"
-	ProcessID              = "ProcessID"
-	ProcessCommandLine     = "ProcessCommandLine"
-	SchedulingPolicy       = "SchedulingPolicy"
-	SchedulingPriority     = "SchedulingPriority"
-	ReasonForNonCompliance = "ReasonForNonCompliance"
-	ReasonForCompliance    = "ReasonForCompliance"
-	Category               = "Category"
-	ProjectedVolumeName    = "ProjectedVolumeName"
-	ProjectedVolumeSAToken = "ProjectedVolumeSAToken"
-	RoleBindingName        = "RoleBindingName"
-	RoleBindingNamespace   = "RoleBindingNamespace"
-	ServiceAccountName     = "ServiceAccountName"
-	ServiceMode            = "ServiceType"
-	ServiceName            = "ServiceName"
+	Namespace                    = "Namespace"
+	PodName                      = "Pod Name"
+	ContainerName                = "Container Name"
+	ProcessID                    = "Process ID"
+	ProcessCommandLine           = "Process CommandLine"
+	SchedulingPolicy             = "Scheduling Policy"
+	SchedulingPriority           = "Scheduling Priority"
+	ReasonForNonCompliance       = "Reason For Non Compliance"
+	ReasonForCompliance          = "Reason For Compliance"
+	Category                     = "Category"
+	ProjectedVolumeName          = "Projected Volume Name"
+	ProjectedVolumeSAToken       = "Projected Volume SA Token"
+	RoleBindingName              = "Role Binding Name"
+	RoleBindingNamespace         = "Role Binding Namespace"
+	ServiceAccountName           = "Service Account Name"
+	ServiceMode                  = "Service Type"
+	ServiceName                  = "Service Name"
+	DeploymentName               = "Deployment Name"
+	StatefulSetName              = "StatefulSet Name"
+	PodDisruptionBudgetReference = "Pod Disruption Budget Reference"
+
+	// ICMP tests
+	NetworkName              = "Network Name"
+	DestinationNamespace     = "Destination Namespace"
+	DestinationPodName       = "Destination Pod Name"
+	DestinationContainerName = "Destination Container Name"
+	DestinationIP            = "Destination IP"
+	SourceIP                 = "Source IP"
 )
 
 // When adding new object types, please update the following:
@@ -73,45 +134,49 @@ const (
 	ContainerCategory    = "ContainerCategory"
 	ProjectedVolumeType  = "ProjectedVolume"
 	ServiceType          = "Service"
+	DeploymentType       = "Deployment"
+	StatefulSetType      = "StatefulSet"
+	ICMPResultType       = "ICMP result"
+	NetworkType          = "Network"
 )
 
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {
+	obj.AddField(ProcessCommandLine, aCommandLine)
+	obj.AddField(SchedulingPolicy, aPolicy)
+	obj.AddField(SchedulingPriority, aPriority)
 	obj.ObjectType = ContainerProcessType
-	obj.ObjectFields[ProcessCommandLine] = aCommandLine
-	obj.ObjectFields[SchedulingPolicy] = aPolicy
-	obj.ObjectFields[SchedulingPriority] = aPriority
 	return obj
 }
 
 func NewContainerReportObject(aNamespace, aPodName, aContainerName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, ContainerType, isCompliant)
-	out.ObjectFields[Namespace] = aNamespace
-	out.ObjectFields[PodName] = aPodName
-	out.ObjectFields[ContainerName] = aContainerName
+	out.AddField(Namespace, aNamespace)
+	out.AddField(PodName, aPodName)
+	out.AddField(ContainerName, aContainerName)
 	return out
 }
 
 func NewPodReportObject(aNamespace, aPodName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, PodType, isCompliant)
-	out.ObjectFields[Namespace] = aNamespace
-	out.ObjectFields[PodName] = aPodName
+	out.AddField(Namespace, aNamespace)
+	out.AddField(PodName, aPodName)
 	return out
 }
 
 func NewReportObject(aReason, aType string, isCompliant bool) (out *ReportObject) {
 	out = &ReportObject{}
 	out.ObjectType = aType
-	out.ObjectFields = make(map[string]string)
 	if isCompliant {
-		out.ObjectFields[ReasonForCompliance] = aReason
+		out.AddField(ReasonForCompliance, aReason)
 	} else {
-		out.ObjectFields[ReasonForNonCompliance] = aReason
+		out.AddField(ReasonForNonCompliance, aReason)
 	}
 	return out
 }
 
-func (obj *ReportObject) AddField(aKey, aString string) (out *ReportObject) {
-	obj.ObjectFields[aKey] = aString
+func (obj *ReportObject) AddField(aKey, aValue string) (out *ReportObject) {
+	obj.ObjectFieldsKeys = append(obj.ObjectFieldsKeys, aKey)
+	obj.ObjectFieldsValues = append(obj.ObjectFieldsValues, aValue)
 	return obj
 }
 

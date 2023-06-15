@@ -122,26 +122,29 @@ func ProcessContainerIpsPerNet(containerID *provider.Container,
 func RunNetworkingTests( //nolint:funlen
 	netsUnderTest map[string]netcommons.NetTestContext,
 	count int,
-	aIPVersion netcommons.IPVersion) (badNets map[string][]string, claimsLog loghelper.CuratedLogLines, skip bool) {
+	aIPVersion netcommons.IPVersion) (report testhelper.FailureReasonOut, claimsLog loghelper.CuratedLogLines, skip bool) {
 	logrus.Debugf("%s", netcommons.PrintNetTestContextMap(netsUnderTest))
 	skip = false
 	if len(netsUnderTest) == 0 {
 		logrus.Debugf("There are no %s networks to test, skipping test", aIPVersion)
 		skip = true
-		return badNets, claimsLog, skip
+		return report, claimsLog, skip
 	}
-	// maps a net name to a list of failed destination IPs
-	badNets = map[string][]string{}
 	// if no network can be tested, then we need to skip the test entirely.
 	// If at least one network can be tested (e.g. > 2 IPs/ interfaces present), then we do not skip the test
 	atLeastOneNetworkTested := false
+	compliantNets := map[string]int{}
+	nonCompliantNets := map[string]int{}
 	for netName, netUnderTest := range netsUnderTest {
+		compliantNets[netName] = 0
+		nonCompliantNets[netName] = 0
 		if len(netUnderTest.DestTargets) == 0 {
 			logrus.Debugf("There are no containers to ping for %s network %s. A minimum of 2 containers is needed to run a ping test (a source and a destination) Skipping test", aIPVersion, netName)
 			continue
 		}
 		atLeastOneNetworkTested = true
 		logrus.Debugf("%s Ping tests on network %s. Number of target IPs: %d", aIPVersion, netName, len(netUnderTest.DestTargets))
+
 		for _, aDestIP := range netUnderTest.DestTargets {
 			logrus.Debugf("%s ping test on network %s from ( %s  srcip: %s ) to ( %s dstip: %s )",
 				aIPVersion, netName,
@@ -157,19 +160,48 @@ func RunNetworkingTests( //nolint:funlen
 				logrus.Debugf("Ping failed with err:%s", err)
 			}
 			if result.outcome != testhelper.SUCCESS {
-				if failedDestIps, netFound := badNets[netName]; netFound {
-					badNets[netName] = append(failedDestIps, aDestIP.IP)
-				} else {
-					badNets[netName] = []string{aDestIP.IP}
-				}
+				nonCompliantNets[netName]++
+				nonCompliantObject := testhelper.NewContainerReportObject(netUnderTest.TesterSource.ContainerIdentifier.Namespace,
+					netUnderTest.TesterSource.ContainerIdentifier.Podname,
+					netUnderTest.TesterSource.ContainerIdentifier.Name, "Pinging destination container/IP from source container (identified by Namespace/Pod Name/Container Name) Failed", false).
+					SetType(testhelper.ICMPResultType).
+					AddField(testhelper.NetworkName, netName).
+					AddField(testhelper.SourceIP, netUnderTest.TesterSource.IP).
+					AddField(testhelper.DestinationNamespace, aDestIP.ContainerIdentifier.Namespace).
+					AddField(testhelper.DestinationPodName, aDestIP.ContainerIdentifier.Podname).
+					AddField(testhelper.DestinationContainerName, aDestIP.ContainerIdentifier.Name).
+					AddField(testhelper.DestinationIP, aDestIP.IP)
+				report.NonCompliantObjectsOut = append(report.NonCompliantObjectsOut, nonCompliantObject)
+			} else {
+				compliantNets[netName]++
+				CompliantObject := testhelper.NewContainerReportObject(netUnderTest.TesterSource.ContainerIdentifier.Namespace,
+					netUnderTest.TesterSource.ContainerIdentifier.Podname,
+					netUnderTest.TesterSource.ContainerIdentifier.Name, "Pinging destination container/IP from source container (identified by Namespace/Pod Name/Container Name) Succeeded", true).
+					SetType(testhelper.ICMPResultType).
+					AddField(testhelper.NetworkName, netName).
+					AddField(testhelper.SourceIP, netUnderTest.TesterSource.IP).
+					AddField(testhelper.DestinationNamespace, aDestIP.ContainerIdentifier.Namespace).
+					AddField(testhelper.DestinationPodName, aDestIP.ContainerIdentifier.Podname).
+					AddField(testhelper.DestinationContainerName, aDestIP.ContainerIdentifier.Name).
+					AddField(testhelper.DestinationIP, aDestIP.IP)
+				report.CompliantObjectsOut = append(report.CompliantObjectsOut, CompliantObject)
 			}
+		}
+		if nonCompliantNets[netName] != 0 {
+			report.NonCompliantObjectsOut = append(report.NonCompliantObjectsOut, testhelper.NewReportObject(fmt.Sprintf("ICMP tests failed for %d IP source/destination in this network", nonCompliantNets[netName]), testhelper.NetworkType, false).
+				AddField(testhelper.NetworkName, netName))
+		}
+		if compliantNets[netName] != 0 {
+			report.CompliantObjectsOut = append(report.CompliantObjectsOut, testhelper.NewReportObject(fmt.Sprintf("ICMP tests were successful for  all %d IP source/destination in this network", compliantNets[netName]), testhelper.NetworkType, true).
+				AddField(testhelper.NetworkName, netName))
 		}
 	}
 	if !atLeastOneNetworkTested {
 		logrus.Debugf("There are no %s networks to test, skipping test", aIPVersion)
 		skip = true
 	}
-	return badNets, claimsLog, skip
+
+	return report, claimsLog, skip
 }
 
 // TestPing Initiates a ping test between a source container and network (1 ip) and a destination container and network (1 ip)
