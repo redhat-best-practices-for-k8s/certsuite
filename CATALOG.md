@@ -739,7 +739,7 @@ Property|Description
 Unique ID|lifecycle-pod-owner-type
 Description|Tests that CNF Pod(s) are deployed as part of a ReplicaSet(s)/StatefulSet(s).
 Suggested Remediation|Deploy the CNF using ReplicaSet/StatefulSet.
-Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-operator-requirements
+Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-no-naked-pods
 Exception Process|There is no documented exception process for this. Pods should not be deployed as DaemonSet or naked pods.
 Tags|telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
@@ -903,7 +903,7 @@ Property|Description
 Unique ID|networking-dpdk-cpu-pinning-exec-probe
 Description|If a CNF is doing CPU pinning, exec probes may not be used.
 Suggested Remediation|If the CNF is doing CPU pinning and running a DPDK process do not use exec probes (executing a command within the container) as it may pile up and block the node eventually.
-Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-liveness-readiness-and-startup-probes
+Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cpu-manager-pinning
 Exception Process|There is no documented exception process for this.
 Tags|telco,networking
 |**Scenario**|**Optional/Mandatory**|

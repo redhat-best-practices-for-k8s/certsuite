@@ -9,7 +9,7 @@ const (
 	TestICMPv4ConnectivityIdentifierDocLink         = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ipv4-&-ipv6"
 	TestNetworkPolicyDenyAllIdentifierDocLink       = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-vrfs-aka-routing-instances"
 	TestReservedExtendedPartnerPortsDocLink         = NoDocLinkExtended
-	TestDpdkCPUPinningExecProbeDocLink              = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-liveness-readiness-and-startup-probes"
+	TestDpdkCPUPinningExecProbeDocLink              = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cpu-manager-pinning"
 	TestRestartOnRebootLabelOnPodsUsingSRIOVDocLink = NoDocLinkFarEdge
 	TestICMPv6ConnectivityIdentifierDocLink         = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ipv4-&-ipv6"
 	TestICMPv4ConnectivityMultusIdentifierDocLink   = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations"
@@ -75,7 +75,7 @@ const (
 	TestShutdownIdentifierDocLink                      = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cloud-native-design-best-practices"
 	TestPodNodeSelectorAndAffinityBestPracticesDocLink = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations"
 	TestPodHighAvailabilityBestPracticesDocLink        = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations"
-	TestPodDeploymentBestPracticesIdentifierDocLink    = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-operator-requirements"
+	TestPodDeploymentBestPracticesIdentifierDocLink    = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-no-naked-pods"
 	TestDeploymentScalingIdentifierDocLink             = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations"
 	TestStateFulSetScalingIdentifierDocLink            = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations"
 	TestImagePullPolicyIdentifierDocLink               = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-use-imagepullpolicy-if-not-present"
