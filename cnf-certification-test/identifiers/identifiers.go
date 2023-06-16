@@ -634,7 +634,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Verifies that the spec.HostPath parameter is not set (not present)`,
 		PodHostPathRemediation,
 		`Exception for host resource access tests will only be considered in rare cases where it is absolutely needed`,
-		TestPodHostPathDocLink
+		TestPodHostPathDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
