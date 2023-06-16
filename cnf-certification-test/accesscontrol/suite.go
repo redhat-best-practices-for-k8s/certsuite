@@ -804,13 +804,13 @@ func testCrdRoles(env *provider.TestEnvironment) {
 	var nonCompliantObjects []*testhelper.ReportObject
 	crdResources := rbac.GetCrdResources(env.Crds)
 	for roleIndex := range env.Roles {
-		if !provider.IsNamespaceUnderTest(env.Roles[roleIndex].Namespace, env.Namespaces) {
+		if !stringhelper.StringInSlice(env.Namespaces, env.Roles[roleIndex].Namespace, false) {
 			continue
 		}
 
 		allRules := rbac.GetAllRules(&env.Roles[roleIndex])
 
-		matchingRules, nonMatchinRules := rbac.FilterRulesNonMatchingResources(allRules, crdResources)
+		matchingRules, nonMatchingRules := rbac.FilterRulesNonMatchingResources(allRules, crdResources)
 		if len(matchingRules) == 0 {
 			continue
 		}
@@ -821,7 +821,7 @@ func testCrdRoles(env *provider.TestEnvironment) {
 				AddField(testhelper.ResourceName, aRule.Resource.Name).
 				AddField(testhelper.Verb, aRule.Verb))
 		}
-		for _, aRule := range nonMatchinRules {
+		for _, aRule := range nonMatchingRules {
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNamespacedReportObject("This rule does not apply to CRDs under test", testhelper.RoleRuleType, false, env.Roles[roleIndex].Namespace).
 				AddField(testhelper.RoleName, env.Roles[roleIndex].Name).
 				AddField(testhelper.Group, aRule.Resource.Group).
@@ -829,7 +829,7 @@ func testCrdRoles(env *provider.TestEnvironment) {
 				AddField(testhelper.Verb, aRule.Verb))
 		}
 
-		if len(nonMatchinRules) == 0 {
+		if len(nonMatchingRules) == 0 {
 			compliantObjects = append(compliantObjects, testhelper.NewNamespacedNamedReportObject("This role's rules only apply to CRDs under test",
 				testhelper.RoleType, true, env.Roles[roleIndex].Namespace, env.Roles[roleIndex].Name))
 		} else {
