@@ -23,11 +23,6 @@ import (
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
-const (
-	bestPracticeDocV1dot3URL = "https://connect.redhat.com/sites/default/files/2022-05/Cloud%20Native%20Network%20Function%20Requirements%201-3.pdf"
-	bestPracticeDocV1dot4URL = "https://to-be-done" // TODO: Fill in this variable with the new v1.4 document when available.
-)
-
 // shared description text
 const (
 	iptablesNftablesImplicitCheck = `Note: this test also ensures iptables and nftables are not configured by CNF pods:
@@ -175,7 +170,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset.`,
 		`Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence.`, //nolint:lll
 		`No exceptions - must be able to communicate on default network using IPv4`,
-		bestPracticeDocV1dot3URL+" Section 5.2",
+		TestICMPv4ConnectivityIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -191,7 +186,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Check that network policies attached to namespaces running CNF pods contain a default deny-all rule for both ingress and egress traffic`,
 		NetworkPolicyDenyAllRemediation,
 		NoExceptionProcessForExtendedTests,
-		bestPracticeDocV1dot3URL+" Section 10.6",
+		TestNetworkPolicyDenyAllIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Optional,
@@ -207,7 +202,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Checks that all pods are not using the securityContext UID 1337`,
 		UID1337Remediation,
 		NoExceptionProcessForExtendedTests,
-		bestPracticeDocV1dot4URL+" Section 4.6.24",
+		Test1337UIDIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Optional,
@@ -223,7 +218,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Checks that pods do not use projected volumes and service account tokens`,
 		ProjectedVolumeServiceAccountRemediation,
 		`Exception will be considered if container needs to access APIs which OCP does not offer natively. Must document which container requires which API(s) and detail why existing OCP APIs cannot be used.`,
-		bestPracticeDocV1dot4URL+" Section 4.6.24",
+		TestProjectedVolumeServiceAccountTokenIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -236,9 +231,9 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		"helm-version",
 		common.AffiliatedCertTestKey,
 		`Test to check if the helm chart is v3`,
-		`Check Helm Chart is v3 and not v2 which is not supported due to security risks associated with Tiller.`,
+		HelmVersionV3Remediation,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot3URL+" Section 3.3.1",
+		TestHelmVersionIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -246,16 +241,16 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Mandatory,
 			Extended: Mandatory,
 		},
-		TagExtended)
+		TagCommon)
 
 	// TestContainerIsCertifiedDigestIdentifier tests whether the container has passed Container Certification.
 	TestContainerIsCertifiedDigestIdentifier = AddCatalogEntry(
 		"container-is-certified-digest",
 		common.AffiliatedCertTestKey,
 		`Tests whether container images that are autodiscovered have passed the Red Hat Container Certification Program by their digest(CCP).`,
-		"Ensure that your container has passed the Red Hat Container Certification Program (CCP).",
+		ContainerIsCertifiedDigestRemediation,
 		AffiliatedCert,
-		bestPracticeDocV1dot4URL+" Section 5.3.7",
+		TestContainerIsCertifiedDigestIdentifierDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -269,9 +264,9 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		"hugepages-2m-only",
 		common.PlatformAlterationTestKey,
 		`Check that pods using hugepages only use 2Mi size`,
-		"Modify pod to consume 2Mi hugepages only",
+		PodHugePages2MRemediation,
 		NoExceptionProcessForExtendedTests,
-		bestPracticeDocV1dot4URL+" Section 3.5.4",
+		TestPodHugePages2MDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Optional,
@@ -285,9 +280,9 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		"hugepages-1g-only",
 		common.PlatformAlterationTestKey,
 		`Check that pods using hugepages only use 1Gi size`,
-		"Modify pod to consume 1Gi hugepages only",
+		PodHugePages1GRemediation,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
+		TestPodHugePages1GDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -303,7 +298,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Checks that pods and containers are not consuming ports designated as reserved by partner`,
 		ReservedPartnerPortsRemediation,
 		NoExceptionProcessForExtendedTests,
-		bestPracticeDocV1dot4URL+" Section 4.6.24",
+		TestReservedExtendedPartnerPortsDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Optional,
@@ -317,9 +312,9 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		"affinity-required-pods",
 		common.LifecycleTestKey,
 		`Checks that affinity rules are in place if AffinityRequired: 'true' labels are set on Pods.`,
-		`Pods which need to be co-located on the same node need Affinity rules. `+AffinityRequiredRemediation,
+		AffinityRequiredRemediation,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot4URL+" Section 4.6.24",
+		TestAffinityRequiredPodsDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -335,7 +330,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Checks that pods do not place persistent volumes on local storage.`,
 		StorageRequiredPods,
 		NoExceptions,
-		bestPracticeDocV1dot4URL+" Section 4.6.24",
+		TestStorageRequiredPodsDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -350,8 +345,8 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.LifecycleTestKey,
 		`Ensure that the containers lifecycle postStart management feature is configured. A container must receive important events from the platform and conform/react to these events properly. For example, a container should catch SIGTERM or SIGKILL from the platform and shutdown as quickly as possible. Other typically important events from the platform are PostStart to initialize before servicing requests and PreStop to release resources cleanly before shutting down.`,                                                                                                                                                                                                                           //nolint:lll
 		`PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. PostStart is used to configure container, set up dependencies, record new creation. It can also be used to check that a required API is available before the container’s work begins.`, //nolint:lll
-		`Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.`,
-		bestPracticeDocV1dot3URL+" Section 5.1.3, 12.2 and 12.5",
+		StartupIdentifierRemediation,
+		TestStartupIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -366,8 +361,8 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.LifecycleTestKey,
 		`Ensure that the containers lifecycle preStop management feature is configured. The most basic requirement for the lifecycle management of Pods in OpenShift are the ability to start and stop correctly. There are different ways a pod can stop on an OpenShift cluster. One way is that the pod can remain alive but non-functional. Another way is that the pod can crash and become non-functional. When pods are shut down by the platform they are sent a SIGTERM signal which means that the process in the container should start shutting down, closing connections and stopping all activity. If the pod doesn’t shut down within the default 30 seconds then the platform may send a SIGKILL signal which will stop the pod immediately. This method isn’t as clean and the default time between the SIGTERM and SIGKILL messages can be modified based on the requirements of the application. Containers should respond to SIGTERM/SIGKILL with graceful shutdown.`, //nolint:lll
 		`The preStop can be used to gracefully stop the container and clean resources (e.g., DB connection). For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. All pods must respond to SIGTERM signal and shutdown gracefully with a zero exit code.`, //nolint:lll
-		`Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.`,
-		bestPracticeDocV1dot3URL+" Section 5.1.3, 12.2 and 12.5",
+		ShutdownIdentifierRemediation,
+		TestShutdownIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -380,10 +375,10 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestDpdkCPUPinningExecProbe = AddCatalogEntry(
 		"dpdk-cpu-pinning-exec-probe",
 		common.NetworkingTestKey,
-		`If a CNF is doing CPI pinning, exec probes may not be used.`,
+		`If a CNF is doing CPU pinning, exec probes may not be used.`,
 		DpdkCPUPinningExecProbeRemediation,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot4URL+" Section 4.6.24",
+		TestDpdkCPUPinningExecProbeDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -399,7 +394,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Ensures that containers do not use NET_ADMIN capability. `+iptablesNftablesImplicitCheck,
 		SecConRemediation,
 		`Exception will be considered for user plane or networking functions (e.g. SR-IOV, Multicast). Must identify which container requires the capability and detail why.`,
-		bestPracticeDocV1dot3URL+" Section 5.2",
+		TestNetAdminIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -415,7 +410,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Ensures that containers do not use SYS_ADMIN capability`,
 		SecConRemediation+" Containers should not use the SYS_ADMIN Linux capability.",
 		NoExceptions,
-		bestPracticeDocV1dot3URL+" Section 5.2",
+		TestSysAdminIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -431,7 +426,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Ensures that containers do not use IPC_LOCK capability. CNF should avoid accessing host resources - spec.HostIpc should be false.`,
 		SecConRemediation,
 		`Exception possible if CNF uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why.`,
-		bestPracticeDocV1dot3URL+" Section 5.2",
+		TestIpcLockIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -447,7 +442,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Ensures that containers do not use NET_RAW capability. `+iptablesNftablesImplicitCheck,
 		SecConRemediation,
 		`Exception will be considered for user plane or networking functions. Must identify which container requires the capability and detail why.`,
-		bestPracticeDocV1dot3URL+" Section 5.2",
+		TestNetRawIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -463,7 +458,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Ensures that if one container in a Pod selects an exclusive CPU pool the rest select the same type of CPU pool`,
 		ExclusiveCPUPoolRemediation,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
+		TestExclusiveCPUPoolIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -479,7 +474,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Ensures that if application workload runs in shared CPU pool, it chooses non-RT CPU schedule policy to always share the CPU with other applications and kernel threads.`,
 		SharedCPUPoolSchedulingPolicyRemediation,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
+		TestSharedCPUPoolSchedulingPolicyDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -495,7 +490,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Ensures that if application workload runs in exclusive CPU pool, it chooses RT CPU schedule policy and set the priority less than 10.`,
 		ExclusiveCPUPoolSchedulingPolicyRemediation,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
+		TestExclusiveCPUPoolSchedulingPolicyDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -511,7 +506,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Ensures that a workload running in an application-isolated exclusive CPU pool selects a RT CPU scheduling policy`,
 		IsolatedCPUPoolSchedulingPolicyRemediation,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
+		TestIsolatedCPUPoolSchedulingPolicyDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -527,7 +522,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Ensures that if one container runs a real time application exec probes are not used`,
 		RtAppNoExecProbesRemediation,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
+		TestRtAppNoExecProbesDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -543,7 +538,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Ensures that the label restart-on-reboot exists on pods that use SRIOV network interfaces.`,
 		SRIOVPodsRestartOnRebootLabelRemediation,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot4URL, // TODO: link Far Edge spec document
+		TestRestartOnRebootLabelOnPodsUsingSRIOVDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -559,7 +554,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Checks the security context runAsUser parameter in pods and containers to make sure it is not set to uid root(0). Pods and containers should not run as root (runAsUser is not set to uid0).`,
 		SecConNonRootUserRemediation,
 		SecConNonRootUserExceptionProcess,
-		bestPracticeDocV1dot3URL+" Section 5.2",
+		TestSecConNonRootUserIdentifierDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -573,9 +568,9 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		"security-context",
 		common.AccessControlTestKey,
 		`Checks the security context matches one of the 4 categories`,
-		`Exception possible if CNF uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and detail why. If the container had the right configuration of the allowed category from the 4 list so the test will pass the list is on page 51 on the CNF Security Context Constraints (SCC) section 4.5(Allowed categories are category 1 and category 0), Applications MUST use one of the approved Security Context Constraints.`, //nolint:lll
+		`Exception possible if CNF uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and document why. If the container had the right configuration of the allowed category from the 4 approved list then the test will pass. The 4 categories are defined in Requirement ID 94118 of the Extended Best Practices guide (private repo)`, //nolint:lll
 		`no exception needed for optional/extended test`,
-		bestPracticeDocV1dot4URL+" Section 4.5",
+		TestSecContextIdentifierDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Optional,
@@ -591,7 +586,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Checks if privileged escalation is enabled (AllowPrivilegeEscalation=true).`,
 		SecConPrivilegeRemediation,
 		NoExceptions,
-		bestPracticeDocV1dot3URL+" Section 5.2",
+		TestSecConPrivilegeEscalationDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -607,7 +602,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Verifies if containers define a hostPort.`,
 		ContainerHostPortRemediation,
 		"Exception for host resource access tests will only be considered in rare cases where it is absolutely needed",
-		bestPracticeDocV1dot3URL+" Section 5.3.6",
+		TestContainerHostPortDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -623,7 +618,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Verifies that the spec.HostNetwork parameter is not set (not present)`,
 		PodHostNetworkRemediation,
 		`Exception for host resource access tests will only be considered in rare cases where it is absolutely needed`,
-		bestPracticeDocV1dot3URL+" Section 5.3.6",
+		TestPodHostNetworkDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -639,7 +634,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Verifies that the spec.HostPath parameter is not set (not present)`,
 		PodHostPathRemediation,
 		`Exception for host resource access tests will only be considered in rare cases where it is absolutely needed`,
-		bestPracticeDocV1dot3URL+" Section 5.3.6",
+		TestPodHostPathDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -655,7 +650,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Verifies that the spec.HostIpc parameter is set to false`,
 		PodHostIPCRemediation,
 		`Exception for host resource access tests will only be considered in rare cases where it is absolutely needed`,
-		bestPracticeDocV1dot3URL+" Section 5.3.6",
+		TestPodHostIPCDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -671,7 +666,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Verifies that the spec.HostPid parameter is set to false`,
 		PodHostPIDRemediation,
 		`Exception for host resource access tests will only be considered in rare cases where it is absolutely needed`,
-		bestPracticeDocV1dot3URL+" Section 5.3.6",
+		TestPodHostPIDDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -687,7 +682,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Tests whether container images listed in the configuration file have passed the Red Hat Container Certification Program (CCP).`,
 		ContainerIsCertifiedRemediation,
 		AffiliatedCert,
-		bestPracticeDocV1dot3URL+" Section 5.3.7",
+		TestContainerIsCertifiedIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -703,7 +698,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Checks to see that HugePage settings have been configured through MachineConfig, and not manually on the underlying Node. This test case applies only to Nodes that are configured with the "worker" MachineConfigSet. First, the "worker" MachineConfig is polled, and the Hugepage settings are extracted. Next, the underlying Nodes are polled for configured HugePages through inspection of /proc/meminfo. The results are compared, and the test passes only if they are the same.`, //nolint:lll
 		HugepagesNotManuallyManipulatedRemediation,
 		NoExceptions,
-		bestPracticeDocV1dot3URL+" Section 5.2",
+		TestHugepagesNotManuallyManipulatedDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -717,9 +712,9 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		"icmpv6-connectivity",
 		common.NetworkingTestKey,
 		`Checks that each CNF Container is able to communicate via ICMPv6 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset.`,
-		ICMPv6ConnectivityRemediation+` Not applicable if IPv6 is not supported.`,
+		ICMPv6ConnectivityRemediation,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot3URL+" Section 5.2",
+		TestICMPv6ConnectivityIdentifierDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -733,9 +728,9 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		"icmpv4-connectivity-multus",
 		common.NetworkingTestKey,
 		`Checks that each CNF Container is able to communicate via ICMPv4 on the Multus network(s). This test case requires the Deployment of the debug daemonset.`,
-		ICMPv4ConnectivityMultusRemediation+` Not applicable if MULTUS is not supported.`,
+		ICMPv4ConnectivityMultusRemediation,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot3URL+" Section 5.2",
+		TestICMPv4ConnectivityMultusIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -751,7 +746,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s). This test case requires the Deployment of the debug daemonset.`,
 		ICMPv6ConnectivityMultusRemediation+` Not applicable if IPv6/MULTUS is not supported.`,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot3URL+" Section 5.2",
+		TestICMPv6ConnectivityMultusIdentifierDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -767,7 +762,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Checks that all services in namespaces under test are either ipv6 single stack or dual stack. This test case requires the deployment of the debug daemonset.`,
 		TestServiceDualStackRemediation,
 		NoExceptionProcessForExtendedTests,
-		bestPracticeDocV1dot4URL+" Section 3.5.7",
+		TestServiceDualStackIdentifierDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Optional,
@@ -785,7 +780,7 @@ the following conditions: (1) It was declared in the yaml config file under the 
 tag. (2) It doesn't have any of the following prefixes: default, openshift-, istio- and aspenmesh-`,
 		NamespaceBestPracticesRemediation,
 		NoExceptions,
-		bestPracticeDocV1dot3URL+" Section 5.2, 16.3.8 and 16.3.9",
+		TestNamespaceBestPracticesIdentifierDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -801,7 +796,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Ensures that the Node(s) hosting CNFs do not utilize tainted kernels. This test case is especially important to support Highly Available CNFs, since when a CNF is re-instantiated on a backup Node, that Node's kernel may not have the same hacks.'`,
 		NonTaintedNodeKernelsRemediation,
 		`If taint is necessary, document details of the taint and why it's needed by workload or environment.`,
-		bestPracticeDocV1dot3URL+" Section 5.2.14",
+		TestNonTaintedNodeKernelsIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -817,7 +812,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Ensures that the target CNF operators report "Succeeded" as their installation status.`,
 		OperatorInstallStatusSucceededRemediation,
 		NoExceptions,
-		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
+		TestOperatorInstallStatusSucceededIdentifierDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -833,7 +828,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`The operator is not installed with privileged rights. Test passes if clusterPermissions is not present in the CSV manifest or is present with no resourceNames under its rules.`,
 		OperatorNoPrivilegesRemediation,
 		NoExceptions,
-		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
+		TestOperatorNoPrivilegesDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -849,7 +844,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Tests whether CNF Operators listed in the configuration file have passed the Red Hat Operator Certification Program (OCP).`,
 		OperatorIsCertifiedRemediation,
 		AffiliatedCert,
-		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
+		TestOperatorIsCertifiedIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -865,7 +860,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Tests whether helm charts listed in the cluster passed the Red Hat Helm Certification Program.`,
 		HelmIsCertifiedRemediation,
 		AffiliatedCert,
-		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
+		TestHelmIsCertifiedIdentifierDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -881,7 +876,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Tests whether a CNF Operator is installed via OLM.`,
 		OperatorIsInstalledViaOLMRemediation,
 		NoExceptions,
-		bestPracticeDocV1dot3URL+" Section 5.2.12 and 5.3.3",
+		TestOperatorIsInstalledViaOLMIdentifierDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -897,7 +892,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Ensures that CNF Pods do not specify nodeSelector or nodeAffinity. In most cases, Pods should allow for instantiation on any underlying Node. CNFs shall not use node selectors nor taints/tolerations to assign pod location.`,
 		PodNodeSelectorAndAffinityBestPracticesRemediation,
 		`Exception will only be considered if application requires specialized hardware. Must specify which container requires special hardware and why.`,
-		bestPracticeDocV1dot3URL+" Section 5.2",
+		TestPodNodeSelectorAndAffinityBestPracticesDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -913,7 +908,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Ensures that CNF Pods specify podAntiAffinity rules and replica value is set to more than 1.`,
 		PodHighAvailabilityBestPracticesRemediation,
 		NoDocumentedProcess+` Not applicable to SNO applications.`,
-		bestPracticeDocV1dot3URL+" Section 5.2",
+		TestPodHighAvailabilityBestPracticesDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Optional,
@@ -929,7 +924,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Tests that a Pod does not specify ClusterRoleBindings.`,
 		PodClusterRoleBindingsBestPracticesRemediation,
 		"Exception possible only for workloads that's cluster wide in nature and absolutely needs cluster level roles & role bindings",
-		bestPracticeDocV1dot3URL+" Section 5.2.10 and 5.3.6",
+		TestPodClusterRoleBindingsBestPracticesIdentifierDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -945,7 +940,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Tests that CNF Pod(s) are deployed as part of a ReplicaSet(s)/StatefulSet(s).`,
 		PodDeploymentBestPracticesRemediation,
 		NoDocumentedProcess+` Pods should not be deployed as DaemonSet or naked pods.`,
-		bestPracticeDocV1dot3URL+" Section 5.3.3 and 5.3.8",
+		TestPodDeploymentBestPracticesIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -961,7 +956,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Tests that CNF deployments support scale in/out operations. First, the test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s. In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the deployment/s`, //nolint:lll
 		DeploymentScalingRemediation,
 		NoDocumentedProcess+` Not applicable to SNO applications.`,
-		bestPracticeDocV1dot3URL+" Section 5.2",
+		TestDeploymentScalingIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Optional,
@@ -977,7 +972,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Tests that CNF statefulsets support scale in/out operations. First, the test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the statefulset/s. In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the statefulset/s`, //nolint:lll
 		StatefulSetScalingRemediation,
 		NoDocumentedProcess+` Not applicable to SNO applications.`,
-		bestPracticeDocV1dot3URL+" Section 5.2",
+		TestStateFulSetScalingIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Optional,
@@ -993,7 +988,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Ensure that the containers under test are using IfNotPresent as Image Pull Policy. If there is a situation where the container dies and needs to be restarted, the image pull policy becomes important. PullIfNotPresent is recommended so that a loss of image registry access does not prevent the pod from restarting.`, //nolint:lll
 		ImagePullPolicyRemediation,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot3URL+"  Section 12.6",
+		TestImagePullPolicyIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1009,7 +1004,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Tests that a CNF is configured to support High Availability. First, this test cordons and drains a Node that hosts the CNF Pod. Next, the test ensures that OpenShift can re-instantiate the Pod on another Node, and that the actual replica count matches the desired replica count.`, //nolint:lll
 		PodRecreationRemediation,
 		`No exceptions - workloads should be able to be restarted/recreated.`,
-		bestPracticeDocV1dot3URL+" Section 5.2",
+		TestPodRecreationIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1025,7 +1020,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Ensures that a CNF does not utilize RoleBinding(s) in a non-CNF Namespace.`,
 		PodRoleBindingsBestPracticesRemediation,
 		NoExceptions,
-		bestPracticeDocV1dot3URL+" Section 5.3.3 and 5.3.5",
+		TestPodRoleBindingsBestPracticesIdentifierDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1041,7 +1036,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Tests that each CNF Pod utilizes a valid Service Account.`,
 		PodServiceAccountBestPracticesRemediation,
 		NoExceptions,
-		bestPracticeDocV1dot3URL+" Section 5.2.3 and 5.2.7",
+		TestPodServiceAccountBestPracticesIdentifierDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1057,7 +1052,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Check that all pods under test have automountServiceAccountToken set to false. Only pods that require access to the kubernetes API server should have automountServiceAccountToken set to true`,
 		AutomountServiceTokenRemediation,
 		`Exception will be considered if container needs to access APIs which OCP does not offer natively. Must document which container requires which API(s) and detail why existing OCP APIs cannot be used.`,
-		bestPracticeDocV1dot3URL+" Section 12.7",
+		TestPodAutomountServiceAccountIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1073,7 +1068,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Tests that each CNF Service does not utilize NodePort(s).`,
 		ServicesDoNotUseNodeportsRemediation,
 		`Exception for host resource access tests will only be considered in rare cases where it is absolutely needed`,
-		bestPracticeDocV1dot3URL+" Section 5.3.1",
+		TestServicesDoNotUseNodeportsIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1089,7 +1084,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Ensures that the Container Base Image is not altered post-startup. This test is a heuristic, and ensures that there are no changes to the following directories: 1) /var/lib/rpm 2) /var/lib/dpkg 3) /bin 4) /sbin 5) /lib 6) /lib64 7) /usr/bin 8) /usr/sbin 9) /usr/lib 10) /usr/lib64`, //nolint:lll
 		UnalteredBaseImageRemediation,
 		NoExceptions,
-		bestPracticeDocV1dot3URL+" Section 5.1.4",
+		TestUnalteredBaseImageIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1105,7 +1100,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Tests that boot parameters are set through the MachineConfigOperator, and not set manually on the Node.`,
 		UnalteredStartupBootParamsRemediation,
 		NoExceptions,
-		bestPracticeDocV1dot3URL+" Section 5.2.13 and 5.2.14",
+		TestUnalteredStartupBootParamsIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1121,7 +1116,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Check that all containers under test use standard input output and standard error when logging. A container must provide APIs for the platform to observe the container health and act accordingly. These APIs include health checks (liveness and readiness), logging to stderr and stdout for log aggregation (by tools such as Logstash or Filebeat), and integrate with tracing and metrics-gathering libraries (such as Prometheus or Metricbeat).`, //nolint:lll
 		LoggingRemediation,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot3URL+" Section 10.1",
+		TestLoggingIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1137,7 +1132,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Check that all containers are using terminationMessagePolicy: FallbackToLogsOnError. There are different ways a pod can stop on an OpenShift cluster. One way is that the pod can remain alive but non-functional. Another way is that the pod can crash and become non-functional. In the first case, if the administrator has implemented liveness and readiness checks, OpenShift can stop the pod and either restart it on the same node or a different node in the cluster. For the second case, when the application in the pod stops, it should exit with a code and write suitable log entries to help the administrator diagnose what the issue was that caused the problem.`, //nolint:lll
 		TerminationMessagePolicyRemediation,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot3URL+" Section 12.1",
+		TestTerminationMessagePolicyIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1150,10 +1145,10 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 	TestCrdsStatusSubresourceIdentifier = AddCatalogEntry(
 		"crd-status",
 		common.ObservabilityTestKey,
-		`Checks that all CRDs have a status subresource specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties[“status”]).`,
+		`Checks that all CRDs have a status sub-resource specification (Spec.versions[].Schema.OpenAPIV3Schema.Properties[“status”]).`,
 		CrdsStatusSubresourceRemediation,
 		NoExceptions,
-		bestPracticeDocV1dot3URL+" Section 5.2",
+		TestCrdsStatusSubresourceIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1169,7 +1164,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Tests that no one has changed the node's sysctl configs after the node was created, the tests works by checking if the sysctl configs are consistent with the MachineConfig CR which defines how the node should be configured`,
 		SysctlConfigsRemediation,
 		NoExceptions,
-		bestPracticeDocV1dot3URL+" Section 5.2",
+		TestSysctlConfigsIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1185,7 +1180,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Checks if the istio namespace ("istio-system") is present. If it is present, checks that the istio sidecar is present in all pods under test.`,
 		ServiceMeshRemediation,
 		NoExceptionProcessForExtendedTests,
-		bestPracticeDocV1dot3URL+" Section 5.2",
+		TestServiceMeshIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Optional,
@@ -1201,7 +1196,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Tests that the running OCP version is not end of life.`,
 		OCPLifecycleRemediation,
 		NoExceptions,
-		bestPracticeDocV1dot3URL+" Section 7.9",
+		TestOCPLifecycleIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1217,7 +1212,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Tests that the nodes running in the cluster have operating systems that are compatible with the deployed version of OpenShift.`,
 		NodeOperatingSystemRemediation,
 		NoExceptions,
-		bestPracticeDocV1dot3URL+" Section 7.9",
+		TestNodeOperatingSystemIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1233,7 +1228,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`verifies if the container base image is redhat.`,
 		IsRedHatReleaseRemediation,
 		NoExceptions,
-		bestPracticeDocV1dot3URL+" Section 5.2",
+		TestIsRedHatReleaseIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1249,7 +1244,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`verifies that all openshift platform/cluster nodes have selinux in "Enforcing" mode.`,
 		IsSELinuxEnforcingRemediation,
 		NoExceptions,
-		bestPracticeDocV1dot3URL+" Section 10.3 Pod Security",
+		TestIsSELinuxEnforcingIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1265,7 +1260,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Check that containers do not listen on ports that weren't declared in their specification. Platforms may be configured to block undeclared ports.`,
 		UndeclaredContainerPortsRemediation,
 		NoExceptionProcessForExtendedTests,
-		bestPracticeDocV1dot3URL+" Section 16.3.1.1",
+		TestUndeclaredContainerPortsUsageDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Optional,
@@ -1281,7 +1276,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Check that containers do not listen on ports that are reserved by OpenShift`,
 		OCPReservedPortsUsageRemediation,
 		NoExceptions,
-		bestPracticeDocV1dot4URL+" Section 3.5.9",
+		TestOCPReservedPortsUsageDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1297,7 +1292,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Check that all containers under test have liveness probe defined. The most basic requirement for the lifecycle management of Pods in OpenShift are the ability to start and stop correctly. When starting up, health probes like liveness and readiness checks can be put into place to ensure the application is functioning properly.`, //nolint:lll
 		LivenessProbeRemediation+` CNFs shall self-recover from common failures like pod failure, host failure, and network failure. Kubernetes native mechanisms such as health-checks (Liveness, Readiness and Startup Probes) shall be employed at a minimum.`,                                                                                 //nolint:lll
 		NoDocumentedProcess,
-		bestPracticeDocV1dot3URL+" Section 5.2.16, 12.1 and 12.5",
+		TestLivenessProbeIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1313,7 +1308,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Check that all containers under test have readiness probe defined. There are different ways a pod can stop on on OpenShift cluster. One way is that the pod can remain alive but non-functional. Another way is that the pod can crash and become non-functional. In the first case, if the administrator has implemented liveness and readiness checks, OpenShift can stop the pod and either restart it on the same node or a different node in the cluster. For the second case, when the application in the pod stops, it should exit with a code and write suitable log entries to help the administrator diagnose what the issue was that caused the problem.`, //nolint:lll
 		ReadinessProbeRemediation,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot3URL+" Section 5.2.16, 12.1 and 12.5",
+		TestReadinessProbeIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1329,7 +1324,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Check that all containers under test have startup probe defined. CNFs shall self-recover from common failures like pod failure, host failure, and network failure. Kubernetes native mechanisms such as health-checks (Liveness, Readiness and Startup Probes) shall be employed at a minimum.`, //nolint:lll
 		StartupProbeRemediation,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot3URL+" Section 4.6.12", // TODO Change this to v1.4 when available
+		TestStartupProbeIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1345,7 +1340,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Check that all containers under test have only one process running`,
 		OneProcessPerContainerRemediation,
 		NoExceptionProcessForExtendedTests+` Not applicable to SNO applications.`,
-		bestPracticeDocV1dot3URL+" Section 10.8.3",
+		TestOneProcessPerContainerIdentifierDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Optional,
@@ -1361,7 +1356,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Check that pods running on nodes with realtime kernel enabled have the SYS_NICE capability enabled in their spec. In the case that a CNF is running on a node using the real-time kernel, SYS_NICE will be used to allow DPDK application to switch to SCHED_FIFO.`, //nolint:lll
 		SYSNiceRealtimeCapabilityRemediation,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot3URL+" Section 2.7.4",
+		TestSYSNiceRealtimeCapabilityIdentifierDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1377,7 +1372,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Check that if process namespace sharing is enabled for a Pod then the SYS_PTRACE capability is allowed. This capability is required when using Process Namespace Sharing. This is used when processes from one Container need to be exposed to another Container. For example, to send signals like SIGHUP from a process in a Container to another process in another Container. For more information on these capabilities refer to https://cloud.redhat.com/blog/linux-capabilities-in-openshift and https://kubernetes.io/docs/tasks/configure-pod-container/share-process-namespace/`, //nolint:lll
 		SysPtraceCapabilityRemediation,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot3URL+" Section 2.7.5",
+		TestSysPtraceCapabilityIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1393,7 +1388,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Check that containers have resource requests and limits specified in their spec.`,
 		RequestsAndLimitsRemediation,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot4URL+" Section 4.6.11",
+		TestPodRequestsAndLimitsIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1409,7 +1404,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Checks to see if CNF workload pods are running in namespaces that have resource quotas applied.`,
 		NamespaceResourceQuotaRemediation,
 		NoExceptionProcessForExtendedTests,
-		bestPracticeDocV1dot3URL+" Section 4.6.8", // TODO Change this to v1.4 when available
+		TestNamespaceResourceQuotaIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Optional,
@@ -1425,7 +1420,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Checks to see if pod disruption budgets have allowed values for minAvailable and maxUnavailable`,
 		PodDisruptionBudgetRemediation,
 		NoExceptions,
-		bestPracticeDocV1dot3URL+" Section 4.6.20", // TODO Change this to v1.4 when available
+		TestPodDisruptionBudgetIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1441,7 +1436,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Check that pods do not have NoExecute, PreferNoSchedule, or NoSchedule tolerations that have been modified from the default.`,
 		PodTolerationBypassRemediation,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot3URL+" Section 10.6",
+		TestPodTolerationBypassIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1457,7 +1452,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Check that the persistent volumes the CNF pods are using have a reclaim policy of delete. Network Functions should clear persistent storage by deleting their PVs when removing their application from a cluster.`,
 		PersistentVolumeReclaimPolicyRemediation,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot4URL+" Section 3.3.4",
+		TestPersistentVolumeReclaimPolicyIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1473,7 +1468,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Check that image tag exists on containers.`,
 		ContainersImageTagRemediation,
 		NoExceptionProcessForExtendedTests,
-		bestPracticeDocV1dot4URL+" Section 4.6.12",
+		TestContainersImageTagDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Optional,
@@ -1489,7 +1484,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Check that pods do not run SSH daemons.`,
 		NoSSHDaemonsAllowedRemediation,
 		`No exceptions - special consideration can be given to certain containers which run as utility tool daemon`,
-		bestPracticeDocV1dot3URL+" Section 4.6.12", // TODO Change this to v1.4 when available
+		TestNoSSHDaemonsAllowedIdentifierDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1505,7 +1500,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`CPU isolation requires: For each container within the pod, resource requests and limits must be identical. Request and Limits are in the form of whole CPUs. The runTimeClassName must be specified. Annotations required disabling CPU and IRQ load-balancing.`, //nolint:lll
 		CPUIsolationRemediation,
 		NoDocumentedProcess,
-		bestPracticeDocV1dot4URL+" Section 3.5.5",
+		TestCPUIsolationIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -1521,7 +1516,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		"Check that the container's ports name follow the naming conventions. Name field in ContainerPort section must be of form `<protocol>[-<suffix>]`. More naming convention requirements may be released in future",
 		ContainerPortNameFormatRemediation,
 		NoExceptionProcessForExtendedTests,
-		bestPracticeDocV1dot4URL+" Section 4.6.20",
+		TestContainerPortNameFormatDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Optional,
@@ -1537,7 +1532,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		`Tests that CNF crd support scale in/out operations. First, the test starts getting the current replicaCount (N) of the crd/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the crd/s. In case of crd that are managed by HPA the test is changing the min and max value to crd Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the crd/s`, //nolint:lll
 		CrdScalingRemediation,
 		NoDocumentedProcess+` Not applicable to SNO applications.`,
-		bestPracticeDocV1dot4URL+" Section 4.6.20",
+		TestCrdScalingIdentifierDocLink,
 		false,
 		map[string]string{
 			FarEdge:  Optional,
