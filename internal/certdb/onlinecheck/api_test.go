@@ -25,6 +25,10 @@ import (
 func TestIsContainerCertified(t *testing.T) {
 	client := onlinecheck.NewOnlineValidator()
 	var v bool
+
+	// overwritten registry check
+	v = client.IsContainerCertified("registry.redhat.io", "openshift4/ose-kube-rbac-proxy", "v4.13.0-202305262054.p0.g11b1439.assembly.stream", "sha256:d2c996db015285504e1203f33beb5385e9efbe93c34cc4ea69bab6fe5f9df0e4")
+	assert.Equal(t, true, v) // true
 	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "", "")
 	assert.Equal(t, true, v) // true
 	v = client.IsContainerCertified("registry.connect.redhat.com", "rocketchat/rocketchat", "0.56.0-1", "")

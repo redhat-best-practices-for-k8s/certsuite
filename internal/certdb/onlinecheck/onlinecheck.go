@@ -24,6 +24,7 @@ import (
 	"net/http"
 
 	log "github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/certdb/config"
 	"github.com/test-network-function/cnf-certification-test/internal/certdb/offlinecheck"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	yaml "gopkg.in/yaml.v3"
@@ -39,7 +40,7 @@ const apiCatalogByRepositoriesBaseEndPoint = "https://catalog.redhat.com/api/con
 const filterCertifiedOperatorsOrg = "organization==certified-operators"
 const certifiedOperatorsCatalogURL = "https://catalog.redhat.com/api/containers/v1/operators/bundles?page_size=100&page=0&filter=csv_name==%s;%s"
 const certifiedContainerCatalogURL = "https://catalog.redhat.com/api/containers/v1/repositories/registry/%s/repository/%s/images?"
-const certifiedContainerCatalogDigestURL = "https://catalog.redhat.com/api/containers/v1/images?filter=docker_image_digest==%s"
+const certifiedContainerCatalogDigestURL = "https://catalog.redhat.com/api/containers/v1/images?filter=image_id==%s"
 const certifiedContainerCatalogTagURL = "https://catalog.redhat.com/api/containers/v1/repositories/registry/%s/repository/%s/tag/%s"
 const redhatCatalogPingURL = "https://catalog.redhat.com/api/containers/v1/ping"
 const redhatCatalogPingMongoDBURL = "https://catalog.redhat.com/api/containers/v1/status/mongo"
@@ -98,6 +99,12 @@ func (validator OnlineValidator) getImageByDigest(digest string) (imageID string
 		return
 	}
 	if len(containerEntries.Data) > 0 {
+		for _, repo := range containerEntries.Data[0].Repositories {
+			if config.IsRegistryRedhatOnlyImages(repo.Registry, repo.PublishedDate) {
+				log.Trace("This image is a Redhat provided image and is certified by default")
+				return containerEntries.Data[0].ID, nil
+			}
+		}
 		if containerEntries.Data[0].Certified {
 			return containerEntries.Data[0].ID, nil
 		}
@@ -126,6 +133,12 @@ func (validator OnlineValidator) getImageByTag(registry, repository, tag string)
 		return imageID, errors.New("certified image not found")
 	}
 	for _, v := range db {
+		for _, repo := range v.Repositories {
+			if config.IsRegistryRedhatOnlyImages(repo.Registry, repo.PublishedDate) {
+				log.Trace("This image is a Redhat provided image and is certified by default")
+				return v.ID, nil
+			}
+		}
 		if v.Certified {
 			return v.ID, nil
 		}
@@ -154,6 +167,12 @@ func (validator OnlineValidator) getImageByRepository(registry, repository strin
 		return imageID, errors.New("certified image not found")
 	}
 	for _, v := range db {
+		for _, repo := range v.Repositories {
+			if config.IsRegistryRedhatOnlyImages(repo.Registry, repo.PublishedDate) {
+				log.Trace("This image is a Redhat provided image and is certified by default")
+				return v.ID, nil
+			}
+		}
 		if v.Certified {
 			return v.ID, nil
 		}
@@ -165,6 +184,11 @@ func (validator OnlineValidator) getImageByRepository(registry, repository strin
 // returns true if the container is present and is certified.
 // returns false otherwise
 func (validator OnlineValidator) IsContainerCertified(registry, repository, tag, digest string) bool {
+	// overwrite registry value with hardcoded one due to Pyxis implementation
+	value, ok := config.HardcodedRegistryMapping[registry]
+	if ok {
+		registry = value
+	}
 	if digest != "" {
 		if imageID, err := validator.getImageByDigest(digest); err != nil || imageID == "" {
 			return false

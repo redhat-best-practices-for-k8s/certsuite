@@ -29,7 +29,7 @@ const containersDBJSON = `{
 	   "_id":"",
 	   "architecture":"amd64",
 	   "certified":false,
-	   "docker_image_digest":"sha256:d2f388e163a5126f7112757f0475c8c4e036fe00c76ef8a7fd50848fafdcb96b",
+	   "image_id":"sha256:d2f388e163a5126f7112757f0475c8c4e036fe00c76ef8a7fd50848fafdcb96b",
 	   "docker_image_id":"",
 	   "repositories":[
 		  {
@@ -56,7 +56,7 @@ const containersDBJSON = `{
 	   "_id":"",
 	   "architecture":"amd64",
 	   "certified":false,
-	   "docker_image_digest":"sha256:fa8f2136aed9daf4c5a805068a87dd274016b8dddae36bc0b02e18b391690493",
+	   "image_id":"sha256:fa8f2136aed9daf4c5a805068a87dd274016b8dddae36bc0b02e18b391690493",
 	   "docker_image_id":"",
 	   "repositories":[
 		  {
@@ -72,7 +72,33 @@ const containersDBJSON = `{
 			 ]
 		  }
 	   ]
-	}
+	},
+	"sha256:d2c996db015285504e1203f33beb5385e9efbe93c34cc4ea69bab6fe5f9df0e4": {
+		"_id": "",
+		"architecture": "amd64",
+		"certified": false,
+		"image_id": "sha256:d2c996db015285504e1203f33beb5385e9efbe93c34cc4ea69bab6fe5f9df0e4",
+		"repositories": [
+		  {
+			"registry": "registry.access.redhat.com",
+			"repository": "openshift4/ose-kube-rbac-proxy",
+			"tags": [
+			  {
+				"name": "latest"
+			  },
+			  {
+				"name": "v4.13.0"
+			  },
+			  {
+				"name": "v4.13"
+			  },
+			  {
+				"name": "v4.13.0-202305262054.p0.g11b1439.assembly.stream"
+			  }
+			]
+		  }
+		]
+	  }
  }`
 
 func loadContainersDB() error {
@@ -100,6 +126,14 @@ func TestIsCertified(t *testing.T) {
 		digest                      string
 		expectedCertificationStatus bool
 	}{
+		// check hardcoded registry
+		{
+			registry:                    "registry.redhat.io",
+			repository:                  "openshift4/ose-kube-rbac-proxy",
+			tag:                         "v4.13.0-202305262054.p0.g11b1439.assembly.stream",
+			digest:                      "sha256:d2c996db015285504e1203f33beb5385e9efbe93c34cc4ea69bab6fe5f9df0e4",
+			expectedCertificationStatus: true,
+		},
 		// Check status based on the tag.
 		{
 			registry:                    "quay.io",

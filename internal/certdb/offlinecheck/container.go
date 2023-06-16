@@ -22,6 +22,7 @@ import (
 	"os"
 
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/certdb/config"
 )
 
 var (
@@ -34,17 +35,17 @@ type Tag struct {
 	Name string `json:"name"`
 }
 type Repository struct {
-	Registry   string `json:"registry"`
-	Repository string `json:"repository"`
-	Tags       []Tag  `json:"tags"`
+	Registry      string `json:"registry"`
+	Repository    string `json:"repository"`
+	Tags          []Tag  `json:"tags"`
+	PublishedDate string `json:"push_date"`
 }
 
 type ContainerCatalogEntry struct {
 	ID                string       `json:"_id"`
 	Architecture      string       `json:"architecture"`
 	Certified         bool         `json:"certified"`
-	DockerImageDigest string       `json:"docker_image_digest"`
-	DockerImageID     string       `json:"docker_image_id"` // image digest
+	DockerImageDigest string       `json:"image_id"`
 	Repositories      []Repository `json:"repositories"`
 }
 type ContainerPageCatalog struct {
@@ -95,6 +96,11 @@ func LoadBinary(bytes []byte, db map[string]*ContainerCatalogEntry) (entries int
 func (validator OfflineValidator) IsContainerCertified(registry, repository, tag, digest string) bool {
 	const tagLatest = "latest"
 
+	// overwrite registry value with hardcoded one due to Pyxis implementation
+	value, ok := config.HardcodedRegistryMapping[registry]
+	if ok {
+		registry = value
+	}
 	if digest != "" {
 		if _, ok := containerdb[digest]; ok {
 			logrus.Trace("container is certified based on digest", digest)
