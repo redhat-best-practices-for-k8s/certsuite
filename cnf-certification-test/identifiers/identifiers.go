@@ -619,7 +619,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		PodHostNetworkRemediation,
 		`Exception for host resource access tests will only be considered in rare cases where it is absolutely needed`,
 		TestPodHostNetworkDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
@@ -635,7 +635,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		PodHostPathRemediation,
 		`Exception for host resource access tests will only be considered in rare cases where it is absolutely needed`,
 		TestPodHostPathDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
@@ -781,7 +781,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		NamespaceBestPracticesRemediation,
 		NoExceptions,
 		TestNamespaceBestPracticesIdentifierDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
