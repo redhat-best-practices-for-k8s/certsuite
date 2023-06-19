@@ -57,9 +57,9 @@ const (
 
 	ICMPv4ConnectivityRemediation = `Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence.`
 
-	ICMPv6ConnectivityRemediation = `Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence.`
+	ICMPv6ConnectivityRemediation = `Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence. Not applicable if IPv6 is not supported.`
 
-	ICMPv4ConnectivityMultusRemediation = `Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence.`
+	ICMPv4ConnectivityMultusRemediation = `Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence. Not applicable if MULTUS is not supported.`
 
 	ICMPv6ConnectivityMultusRemediation = `Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it.The label value is trivial, only its presence.`
 
@@ -154,7 +154,7 @@ const (
 
 	ReservedPartnerPortsRemediation = `Ensure ports are not being used that are reserved by our partner`
 
-	AffinityRequiredRemediation = `If a pod/statefulset/deployment is required to use affinity rules, please add AffinityRequired: 'true' as a label.`
+	AffinityRequiredRemediation = `Pods which need to be co-located on the same node need Affinity rules. If a pod/statefulset/deployment is required to use affinity rules, please add AffinityRequired: 'true' as a label.`
 
 	ContainerPortNameFormatRemediation = `Ensure that the container's ports name follow our partner naming conventions`
 
@@ -173,4 +173,16 @@ const (
 	RtAppNoExecProbesRemediation = `Ensure that if one container runs a real time application exec probes are not used`
 
 	SRIOVPodsRestartOnRebootLabelRemediation = `Ensure that the label restart-on-reboot exists on pods that use SRIOV network interfaces.`
+
+	HelmVersionV3Remediation = `Check Helm Chart is v3 and not v2 which is not supported due to security risks associated with Tiller.`
+
+	ContainerIsCertifiedDigestRemediation = "Ensure that your container has passed the Red Hat Container Certification Program (CCP)."
+
+	PodHugePages2MRemediation = "Modify pod to consume 2Mi hugepages only"
+
+	PodHugePages1GRemediation = "Modify pod to consume 1Gi hugepages only"
+
+	StartupIdentifierRemediation = `Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.`
+
+	ShutdownIdentifierRemediation = `Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.`
 )

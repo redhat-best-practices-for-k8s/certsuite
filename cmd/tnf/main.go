@@ -26,6 +26,7 @@ func main() {
 	rootCmd.AddCommand(generate)
 	generate.AddCommand(catalog.NewCommand())
 	generate.AddCommand(qecoverage.QeCoverageReportCmd)
+	qecoverage.QeCoverageReportCmd.PersistentFlags().String("suitename", "", "Displays the remaining tests not covered by QE for the specified suite name")
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatal(err)
