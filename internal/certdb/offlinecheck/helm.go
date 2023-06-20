@@ -19,9 +19,9 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"strings"
 
-	"github.com/hashicorp/go-version"
+	"github.com/Masterminds/semver/v3"
+	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v3"
 	"helm.sh/helm/v3/pkg/release"
 )
@@ -31,9 +31,9 @@ const (
 )
 
 type ChartEntry struct {
-	Name        string `yaml:"name"`
-	Version     string `yaml:"version"`
-	KubeVersion string `yaml:"kubeVersion"`
+	Name                  string `yaml:"name"`
+	ChartVersion          string `yaml:"version"`
+	KubeVersionConstraint string `yaml:"kubeVersion"`
 }
 type ChartStruct struct {
 	Entries map[string][]ChartEntry `yaml:"entries"`
@@ -72,32 +72,27 @@ func LoadHelmCharts(charts ChartStruct) {
 }
 
 // CompareVersion compare between versions
-func CompareVersion(ver1, ver2 string) bool {
-	ourKubeVersion, _ := version.NewVersion(ver1)
-	kubeVersion := strings.ReplaceAll(ver2, " ", "")[2:]
-	if strings.Contains(kubeVersion, "<") {
-		kubever := strings.Split(kubeVersion, "<")
-		minVersion, _ := version.NewVersion(kubever[0])
-		maxVersion, _ := version.NewVersion(kubever[1])
-		if ourKubeVersion.GreaterThanOrEqual(minVersion) && ourKubeVersion.LessThan(maxVersion) {
-			return true
-		}
-	} else {
-		kubever := strings.Split(kubeVersion, "-")
-		minVersion, _ := version.NewVersion(kubever[0])
-		if ourKubeVersion.GreaterThanOrEqual(minVersion) {
-			return true
-		}
+func CompareVersion(version, constraint string) bool {
+	c, err := semver.NewConstraint(constraint)
+	if err != nil {
+		logrus.Errorf("cannot parse semver constraint string=%s, err=%s", constraint, err)
 	}
-	return false
+
+	v, err := semver.NewVersion(version)
+	if err != nil {
+		// Handle version not being parsable.
+		logrus.Errorf("cannot parse semver version, string=%s err=%s", version, err)
+	}
+	// Check if the version meets the constraints. The a variable will be true.
+	return c.Check(v)
 }
 
 func (validator OfflineValidator) IsHelmChartCertified(helm *release.Release, ourKubeVersion string) bool {
 	for _, entryList := range chartsdb {
 		for _, entry := range entryList {
-			if entry.Name == helm.Chart.Metadata.Name && entry.Version == helm.Chart.Metadata.Version {
-				if entry.KubeVersion != "" {
-					if CompareVersion(ourKubeVersion, entry.KubeVersion) {
+			if entry.Name == helm.Chart.Metadata.Name && entry.ChartVersion == helm.Chart.Metadata.Version {
+				if entry.KubeVersionConstraint != "" {
+					if CompareVersion(ourKubeVersion, entry.KubeVersionConstraint) {
 						return true
 					}
 				} else {
