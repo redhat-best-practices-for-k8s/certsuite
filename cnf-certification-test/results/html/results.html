@@ -656,7 +656,7 @@
               text += '<td class="th-lg">' + item.testText.replace(/\n/g, '<br>') + '</td>'
               text += '<td>' + formattedDuration + '</td>'
               text += '<td><b>' + item.state + '</b>' + skippedReason + '</td>'
-              text += '<td>' + ansi_up.ansi_to_html(item.CapturedTestOutput).replace(/\n/g, '<br>') + '</td></tr>'
+              text += '<td>' + ansi_up.ansi_to_html(ExtractLog(item.CapturedTestOutput)).replace(/\n/g, '<br>') + '</td></tr>'
               jsonObjNonCompliant = NonCompliantReasonTextToJson(item.CapturedTestOutput)
               jsonObjCompliant = CompliantReasonTextToJson(item.CapturedTestOutput)
             }
@@ -955,7 +955,16 @@
       }
       return jsonObj
     }
-
+    // extract compliant json text from test output with regex
+    function ExtractLog(fullLog) {
+      var regex = /(.*){\"CompliantObjectsOut\"/;
+      var match = regex.exec(fullLog);
+      var logWithNoReason = fullLog
+      if (match) {
+        var logWithNoReason = match[1];
+      }
+      return logWithNoReason
+    }
     // create a list of object types present in json output
     function createTypeList(jsonData) {
       var objectTypes = new Map();
