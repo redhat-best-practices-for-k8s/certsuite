@@ -14,3 +14,45 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 package offlinecheck
+
+import "testing"
+
+func TestCompareVersion(t *testing.T) {
+	type args struct {
+		version    string
+		constraint string
+	}
+	tests := []struct {
+		name string
+		args args
+		want bool
+	}{
+		{
+			name: "ok",
+			args: args{version: "v1.25.4+18eadca", constraint: "v1.25.x"},
+			want: true,
+		},
+		{
+			name: "failed",
+			args: args{version: "v1.25.4+18eadca", constraint: "v1.24.x"},
+			want: false,
+		},
+		{
+			name: "superior",
+			args: args{version: "v1.25.4+18eadca", constraint: ">= v1.23.x"},
+			want: true,
+		},
+		{
+			name: "inferior",
+			args: args{version: "v1.25.4+18eadca", constraint: "< v2.2.x"},
+			want: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := CompareVersion(tt.args.version, tt.args.constraint); got != tt.want {
+				t.Errorf("CompareVersion() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
