@@ -13,17 +13,13 @@ import (
 )
 
 const (
-	tarGzFileNameSuffix = "cnf-test-results.tar.gz"
+	// tarGz file prefix layout format: YearMonthDay-HourMinSec
+	tarGzFileNamePrefixLayout = "20060102-150405"
+	tarGzFileNameSuffix       = "cnf-test-results.tar.gz"
 )
 
 func generateZipFileName() string {
-	dateTimePrefixFormat := "%02d%02d%02d-%02d%02d%02d"
-
-	now := time.Now().UTC()
-
-	return fmt.Sprintf(dateTimePrefixFormat+"-"+tarGzFileNameSuffix,
-		now.Year(), now.Month(), now.Day(),
-		now.Hour(), now.Minute(), now.Second())
+	return fmt.Sprintf(time.Now().Format(tarGzFileNamePrefixLayout) + "-" + tarGzFileNameSuffix)
 }
 
 // Helper function to get the tar file header from a file.
