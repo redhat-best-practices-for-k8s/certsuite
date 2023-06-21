@@ -491,7 +491,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		ExclusiveCPUPoolSchedulingPolicyRemediation,
 		NoDocumentedProcess,
 		TestExclusiveCPUPoolSchedulingPolicyDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Optional,
