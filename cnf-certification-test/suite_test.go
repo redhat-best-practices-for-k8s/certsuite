@@ -30,6 +30,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/claimhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol"
@@ -164,6 +165,9 @@ func TestTest(t *testing.T) {
 
 	claimData.Nodes = claimhelper.GenerateNodes()
 	claimhelper.UnmarshalConfigurations(configurations, claimData.Configurations)
+
+	// initialize abort flag
+	testhelper.AbortTrigger = ""
 
 	// Run tests specs only if not in diagnostic mode, otherwise all TSs would run.
 	var env provider.TestEnvironment

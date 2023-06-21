@@ -19,6 +19,11 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://unpkg.com/ansi_up@5.1.0/ansi_up.js" crossorigin="anonymous"></script>
   <style type="text/css">
+    .btn-purple {
+      background-color: #9935dc;
+      color: white;
+    }
+
     li.dropdown-menu {
       background-color: white;
     }
@@ -30,6 +35,10 @@
 
     tred {
       background-color: #dc3545;
+    }
+
+    tpurple {
+      background-color: #9935dc;
     }
 
     ty {
@@ -457,10 +466,12 @@
       tests_passed = 0
       tests_skipped = 0
       tests_failed = 0
+      tests_aborted = 0
       tests_total_optional = 0
       tests_passed_optional = 0
       tests_skipped_optional = 0
       tests_failed_optional = 0
+      tests_aborted_optional = 0
       // Compute number of passed/skipped/failed results
       for (const key in input) {
 
@@ -507,6 +518,14 @@
                   tests_total_optional++
                   tests_failed_optional++
                 }
+              } else if (item.state == 'aborted') {
+                if (eqData == "Mandatory" || tableName == "all") {
+                  tests_total++
+                  tests_aborted++
+                } else {
+                  tests_total_optional++
+                  tests_aborted_optional++
+                }
               }
             }
           }
@@ -536,6 +555,8 @@
       text2 += `<input type="checkbox" id="filter-optional-skipped-` + tableName + `" checked onclick="showTest('` + element2 + `','` + tableName + `', 'skipped', 'optional' )" >`
       text2 += '<br><b><ty>Failed:</ty></b> ' + tests_failed_optional + " "
       text2 += `<input type="checkbox" id="filter-optional-failed-` + tableName + `" checked onclick="showTest('` + element2 + `','` + tableName + `', 'failed', 'optional' )" >`
+      text2 += '<br><b><tpurple>Aborted:</tpurple></b> ' + tests_aborted_optional + " "
+      text2 += `<input type="checkbox" id="filter-optional-aborted-` + tableName + `" checked onclick="showTest('` + element2 + `','` + tableName + `', 'aborted', 'optional' )" >`
       text2 += '</td><td>'
       text2 += '<div class="accordion" id="results-accordion">'
       // First we will have a left column in the table with the summarized results
@@ -545,6 +566,8 @@
       text3 += `<input type="checkbox" id="filter-mandatory-skipped-` + tableName + `" checked onclick="showTest('` + element + `','` + tableName + `', 'skipped', 'mandatory' )" >`
       text3 += '<br><b><tred>Failed:</tred></b> ' + tests_failed + " "
       text3 += `<input type="checkbox" id="filter-mandatory-failed-` + tableName + `" checked onclick="showTest('` + element + `','` + tableName + `', 'failed', 'mandatory' )" >`
+      text3 += '<br><b><tpurple>Aborted:</tpurple></b> ' + tests_aborted + " "
+      text3 += `<input type="checkbox" id="filter-mandatory-aborted-` + tableName + `" checked onclick="showTest('` + element + `','` + tableName + `', 'aborted', 'mandatory' )" >`
       text3 += '</td><td>'
 
       text3 += '<div class="accordion" id="results-accordion">'
@@ -581,6 +604,8 @@
               buttontype = 'bg-success text-white'
             } else if (status === "skipped") {
               buttontype = 'bg-dark-subtle text-black'
+            } else if (status === "aborted") {
+              buttontype = 'btn-purple'
             } else {
               buttontype = 'bg-warning text-white'
               if (eqData != "Optional" || tableName == "all") {
@@ -613,10 +638,18 @@
             for (const item of input[key]) {
               const duration = dayjs.duration(item.duration / 1000000)
               formattedDuration = duration.format('D[d] H[h] m[m] s[s] SSS[ms]')
+              skippedReason = ""
+              if (item.state == "skipped") {
+                skippedReason = item.failureReason
+                if (skippedReason == "") {
+                  skippedReason = "Test case skipped by user"
+                }
+                skippedReason = ' ( ' + skippedReason + ' )'
+              }
               text += '<tr><td  style="white-space: nowrap;">' + item.testID.id + '</td>'
               text += '<td class="th-lg">' + item.testText.replace(/\n/g, '<br>') + '</td>'
               text += '<td>' + formattedDuration + '</td>'
-              text += '<td style="white-space: nowrap;">' + item.state + '</td>'
+              text += '<td><b>' + item.state + '</b>' + skippedReason + '</td>'
               text += '<td>' + ansi_up.ansi_to_html(item.CapturedTestOutput).replace(/\n/g, '<br>') + '</td></tr>'
               jsonObjNonCompliant = NonCompliantReasonTextToJson(item.CapturedTestOutput)
               jsonObjCompliant = CompliantReasonTextToJson(item.CapturedTestOutput)
