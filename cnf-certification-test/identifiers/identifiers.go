@@ -1021,7 +1021,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		PodRoleBindingsBestPracticesRemediation,
 		NoExceptions,
 		TestPodRoleBindingsBestPracticesIdentifierDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
