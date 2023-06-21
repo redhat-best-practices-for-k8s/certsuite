@@ -113,6 +113,8 @@ const (
 	DeploymentName               = "Deployment Name"
 	StatefulSetName              = "StatefulSet Name"
 	PodDisruptionBudgetReference = "Pod Disruption Budget Reference"
+	CrdName                      = "Crd Name"
+	CrdVersion                   = "Crd Name"
 
 	// ICMP tests
 	NetworkName              = "Network Name"
@@ -138,6 +140,7 @@ const (
 	StatefulSetType      = "StatefulSet"
 	ICMPResultType       = "ICMP result"
 	NetworkType          = "Network"
+	CrdType              = "Crd"
 )
 
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {

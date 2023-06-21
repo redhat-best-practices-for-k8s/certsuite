@@ -100,55 +100,75 @@ func containerHasLoggingOutput(cut *provider.Container) (bool, error) {
 func testContainersLogging(env *provider.TestEnvironment) {
 	// Iterate through all the CUTs to get their log output. The TC checks that at least
 	// one log line is found.
-	badContainers := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
 		ginkgo.By(fmt.Sprintf("Checking %s has some logging output", cut))
 		hasLoggingOutput, err := containerHasLoggingOutput(cut)
 		if err != nil {
 			tnf.ClaimFilePrintf("Failed to get %s log output: %s", cut, err)
-			badContainers = append(badContainers, cut.String())
+			nonCompliantObjects = append(nonCompliantObjects,
+				testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Could not get log output", false))
+			continue
 		}
 
 		if !hasLoggingOutput {
 			tnf.ClaimFilePrintf("%s does not have any line of log to stderr/stdout", cut)
-			badContainers = append(badContainers, cut.String())
+			nonCompliantObjects = append(nonCompliantObjects,
+				testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "No log line to stderr/stdout found", false))
+		} else {
+			compliantObjects = append(compliantObjects,
+				testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Found log line to stderr/stdout", true))
 		}
 	}
 
-	if n := len(badContainers); n > 0 {
-		logrus.Debugf("Containers without logging: %+v", badContainers)
-		ginkgo.Fail(fmt.Sprintf("%d containers do not have any log to stdout/stderr.", n))
-	}
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // testCrds testing if crds have a status sub resource set
 func testCrds(env *provider.TestEnvironment) {
-	failedCrds := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, crd := range env.Crds {
 		ginkgo.By("Testing CRD " + crd.Name)
 
 		for _, ver := range crd.Spec.Versions {
 			if _, ok := ver.Schema.OpenAPIV3Schema.Properties["status"]; !ok {
 				tnf.ClaimFilePrintf("FAILURE: CRD %s, version: %s does not have a status subresource.", crd.Name, ver.Name)
-				failedCrds = append(failedCrds, crd.Name+"."+ver.Name)
+				nonCompliantObjects = append(nonCompliantObjects,
+					testhelper.NewReportObject("Crd does not have a status sub resource set", testhelper.CrdType, false).
+						AddField(testhelper.Namespace, crd.Namespace).
+						AddField(testhelper.CrdName, crd.Name).
+						AddField(testhelper.CrdVersion, ver.Name))
+			} else {
+				compliantObjects = append(compliantObjects,
+					testhelper.NewReportObject("Crd has a status sub resource set", testhelper.CrdType, true).
+						AddField(testhelper.Namespace, crd.Namespace).
+						AddField(testhelper.CrdName, crd.Name).
+						AddField(testhelper.CrdVersion, ver.Name))
 			}
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", failedCrds, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // testTerminationMessagePolicy tests to make sure that pods
 func testTerminationMessagePolicy(env *provider.TestEnvironment) {
-	failedContainers := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
 		ginkgo.By("Testing for terminationMessagePolicy: " + cut.String())
 		if cut.TerminationMessagePolicy != corev1.TerminationMessageFallbackToLogsOnError {
 			tnf.ClaimFilePrintf("FAILURE: %s does not have a TerminationMessagePolicy: FallbackToLogsOnError", cut)
-			failedContainers = append(failedContainers, cut.Name)
+			nonCompliantObjects = append(nonCompliantObjects,
+				testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "TerminationMessagePolicy is not FallbackToLogsOnError", false))
+		} else {
+			compliantObjects = append(compliantObjects,
+				testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "TerminationMessagePolicy is FallbackToLogsOnError", true))
 		}
 	}
-	testhelper.AddTestResultLog("Non-compliant", failedContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 //nolint:funlen
