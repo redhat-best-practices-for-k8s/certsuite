@@ -100,7 +100,7 @@ func (validator OnlineValidator) getImageByDigest(digest string) (imageID string
 	}
 	if len(containerEntries.Data) > 0 {
 		for _, repo := range containerEntries.Data[0].Repositories {
-			if config.IsRegistryRedhatOnlyImages(repo.Registry, repo.PublishedDate) {
+			if config.IsRegistryRedhatOnlyImages(repo.Registry) {
 				log.Trace("This image is a Redhat provided image and is certified by default")
 				return containerEntries.Data[0].ID, nil
 			}
@@ -134,7 +134,7 @@ func (validator OnlineValidator) getImageByTag(registry, repository, tag string)
 	}
 	for _, v := range db {
 		for _, repo := range v.Repositories {
-			if config.IsRegistryRedhatOnlyImages(repo.Registry, repo.PublishedDate) {
+			if config.IsRegistryRedhatOnlyImages(repo.Registry) {
 				log.Trace("This image is a Redhat provided image and is certified by default")
 				return v.ID, nil
 			}
@@ -168,7 +168,7 @@ func (validator OnlineValidator) getImageByRepository(registry, repository strin
 	}
 	for _, v := range db {
 		for _, repo := range v.Repositories {
-			if config.IsRegistryRedhatOnlyImages(repo.Registry, repo.PublishedDate) {
+			if config.IsRegistryRedhatOnlyImages(repo.Registry) {
 				log.Trace("This image is a Redhat provided image and is certified by default")
 				return v.ID, nil
 			}

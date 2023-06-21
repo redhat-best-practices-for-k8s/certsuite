@@ -15,12 +15,6 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 package config
 
-import (
-	"time"
-
-	"github.com/sirupsen/logrus"
-)
-
 const (
 	registryRedhatIo        = "registry.redhat.io"
 	registryAccessRedhatCom = "registry.access.redhat.com"
@@ -30,13 +24,6 @@ const (
 var HardcodedRegistryMapping = map[string]string{registryRedhatIo: registryAccessRedhatCom}
 
 // determines certification status for Redhat images
-func IsRegistryRedhatOnlyImages(registry, publishedDate string) bool {
-	oneYearAgo := time.Now().AddDate(-1, 0, 0)
-	date, err := time.Parse("2006-01-02T15:04:05.999999-07:00", publishedDate)
-	if err != nil {
-		logrus.Errorf("could not parse image published date, container is not certified, err=%s", err)
-		return false
-	}
-
-	return (registry == registryRedhatIo || registry == registryAccessRedhatCom) && date.After(oneYearAgo)
+func IsRegistryRedhatOnlyImages(registry string) bool {
+	return registry == registryRedhatIo || registry == registryAccessRedhatCom
 }

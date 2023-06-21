@@ -72,33 +72,7 @@ const containersDBJSON = `{
 			 ]
 		  }
 	   ]
-	},
-	"sha256:d2c996db015285504e1203f33beb5385e9efbe93c34cc4ea69bab6fe5f9df0e4": {
-		"_id": "",
-		"architecture": "amd64",
-		"certified": false,
-		"image_id": "sha256:d2c996db015285504e1203f33beb5385e9efbe93c34cc4ea69bab6fe5f9df0e4",
-		"repositories": [
-		  {
-			"registry": "registry.access.redhat.com",
-			"repository": "openshift4/ose-kube-rbac-proxy",
-			"tags": [
-			  {
-				"name": "latest"
-			  },
-			  {
-				"name": "v4.13.0"
-			  },
-			  {
-				"name": "v4.13"
-			  },
-			  {
-				"name": "v4.13.0-202305262054.p0.g11b1439.assembly.stream"
-			  }
-			]
-		  }
-		]
-	  }
+	}
  }`
 
 func loadContainersDB() error {
@@ -126,14 +100,6 @@ func TestIsCertified(t *testing.T) {
 		digest                      string
 		expectedCertificationStatus bool
 	}{
-		// check hardcoded registry
-		{
-			registry:                    "registry.redhat.io",
-			repository:                  "openshift4/ose-kube-rbac-proxy",
-			tag:                         "v4.13.0-202305262054.p0.g11b1439.assembly.stream",
-			digest:                      "sha256:d2c996db015285504e1203f33beb5385e9efbe93c34cc4ea69bab6fe5f9df0e4",
-			expectedCertificationStatus: true,
-		},
 		// Check status based on the tag.
 		{
 			registry:                    "quay.io",
