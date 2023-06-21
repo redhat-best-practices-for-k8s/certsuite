@@ -133,9 +133,9 @@ After running all the test cases, a compressed file will be created with all the
 By default, only the `claim.js`, the `cnf-certification-tests_junit.xml` file and this new tar.gz file are created after the test suite has finished, as this is probably all that normal partners/users will need.
 
 Two env vars allow to control the web artifacts and the the new tar.gz file generation:
-- TNF_OMIT_ARTIFACTS_ZIP_FILE=true/false : Defaulted to false in the launch scripts. If set to true, the tar.gz generation will be skipped.
-- TNF_INCLUDE_WEB_FILES_IN_OUTPUT_FOLDER=true/false : Defaulted to false in the launch scripts. If set to true, the web viewer/parser files will also be copied to the output (claim) folder.
 
+* TNF_OMIT_ARTIFACTS_ZIP_FILE=true/false : Defaulted to false in the launch scripts. If set to true, the tar.gz generation will be skipped.
+* TNF_INCLUDE_WEB_FILES_IN_OUTPUT_FOLDER=true/false : Defaulted to false in the launch scripts. If set to true, the web viewer/parser files will also be copied to the output (claim) folder.
 
 ### Build + Test a CNF
 
