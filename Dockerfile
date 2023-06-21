@@ -54,10 +54,7 @@ RUN \
 # Copy all of the files into the source directory and then switch contexts
 COPY . ${TNF_SRC_DIR}
 WORKDIR ${TNF_SRC_DIR}
-RUN \
-	make install-tools \
-	&& make classification-js \
-	&& make build-cnf-tests
+RUN make install-tools build-cnf-tests
 
 # Extract what's needed to run at a seperate location
 # Quote this to prevent word splitting.

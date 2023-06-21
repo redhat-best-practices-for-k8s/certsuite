@@ -106,7 +106,7 @@ build-gradetool-policy:
 	./script/policy-builder-from-claim.sh
 
 # build the CNF test binary
-build-cnf-tests:
+build-cnf-tests: classification-js
 	PATH=${PATH}:${GOBIN} ginkgo build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" ./cnf-certification-test
 
 # Builds the CNF test binary with debug flags
