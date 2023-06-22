@@ -17,6 +17,7 @@
 package suite
 
 import (
+	_ "embed"
 	"flag"
 	"os"
 	"path/filepath"
@@ -48,13 +49,11 @@ import (
 )
 
 const (
-	claimFileName                 = "claim.json"
 	claimPathFlagKey              = "claimloc"
 	CnfCertificationTestSuiteName = "CNF Certification Test Suite"
 	defaultClaimPath              = ".."
 	defaultCliArgValue            = ""
 	junitFlagKey                  = "junit"
-	TNFJunitXMLFileName           = "cnf-certification-tests_junit.xml"
 	TNFReportKey                  = "cnf-certification-test"
 	extraInfoKey                  = "testsExtraInfo"
 )
@@ -180,7 +179,7 @@ func TestTest(t *testing.T) {
 	// Process the test results from the suites, the cnf-features-deploy test suite,
 	// and any extra informational messages.
 	junitMap := make(map[string]interface{})
-	cnfCertificationJUnitFilename := filepath.Join(*junitPath, TNFJunitXMLFileName)
+	cnfCertificationJUnitFilename := filepath.Join(*junitPath, results.JunitXMLFileName)
 
 	if !diagnosticMode {
 		claimhelper.LoadJUnitXMLIntoMap(junitMap, cnfCertificationJUnitFilename, TNFReportKey)
@@ -195,8 +194,40 @@ func TestTest(t *testing.T) {
 
 	// Marshal the claim and output to file
 	payload := claimhelper.MarshalClaimOutput(claimRoot)
-	claimOutputFile := filepath.Join(*claimPath, claimFileName)
+	claimOutputFile := filepath.Join(*claimPath, results.ClaimFileName)
 	claimhelper.WriteClaimOutput(claimOutputFile, payload)
+
+	// Create HTML artifacts for the web results viewer/parser.
+	resultsOutputDir := *claimPath
+	webFilePaths, err := results.CreateResultsWebFiles(resultsOutputDir)
+	if err != nil {
+		log.Errorf("Failed to create results web files: %v", err)
+	}
+
+	allArtifactsFilePaths := []string{
+		filepath.Join(*claimPath, results.ClaimFileName),
+		filepath.Join(*junitPath, results.JunitXMLFileName)}
+
+	// Add all the web artifacts file paths.
+	allArtifactsFilePaths = append(allArtifactsFilePaths, webFilePaths...)
+
+	// tar.gz file creation with results and html artifacts, unless omitted by env var.
+	if !configuration.GetTestParameters().OmitArtifactsZipFile {
+		err = results.CompressResultsArtifacts(resultsOutputDir, allArtifactsFilePaths)
+		if err != nil {
+			log.Errorf("Failed to compress results artifacts: %v", err)
+		}
+	}
+
+	// Remove web artifacts if user doesn't want them.
+	if !configuration.GetTestParameters().IncludeWebFilesInOutputFolder {
+		for _, file := range webFilePaths {
+			err := os.Remove(file)
+			if err != nil {
+				log.Errorf("failed to remove web file %s: %v", file, err)
+			}
+		}
+	}
 }
 
 // incorporateTNFVersion adds the TNF version to the claim.

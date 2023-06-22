@@ -126,6 +126,17 @@ To run the tests in an offline environment, skip the tests using the `l` option.
 
 Alternatively, if an offline DB for containers, helm charts and operators is available, there is no need to skip those tests if the environment variable `TNF_OFFLINE_DB` is set to the DB location. This DB can be generated using the [OCT tool](https://github.com/test-network-function/oct).
 
+#### Output tar.gz file with results and web viewer files
+
+After running all the test cases, a compressed file will be created with all the results files and web artifacts to review them.
+
+By default, only the `claim.js`, the `cnf-certification-tests_junit.xml` file and this new tar.gz file are created after the test suite has finished, as this is probably all that normal partners/users will need.
+
+Two env vars allow to control the web artifacts and the the new tar.gz file generation:
+
+* TNF_OMIT_ARTIFACTS_ZIP_FILE=true/false : Defaulted to false in the launch scripts. If set to true, the tar.gz generation will be skipped.
+* TNF_INCLUDE_WEB_FILES_IN_OUTPUT_FOLDER=true/false : Defaulted to false in the launch scripts. If set to true, the web viewer/parser files will also be copied to the output (claim) folder.
+
 ### Build + Test a CNF
 
 Refer [Developers' Guide](developers.md)

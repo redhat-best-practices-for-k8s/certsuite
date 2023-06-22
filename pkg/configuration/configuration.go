@@ -148,12 +148,14 @@ type TestConfiguration struct {
 }
 
 type TestParameters struct {
-	Home                   string `envconfig:"home"`
-	Kubeconfig             string `envconfig:"kubeconfig"`
-	ConfigurationPath      string `split_words:"true" default:"tnf_config.yml"`
-	NonIntrusiveOnly       bool   `split_words:"true"`
-	LogLevel               string `default:"debug" split_words:"true"`
-	OfflineDB              string `split_words:"true"`
-	AllowPreflightInsecure bool   `split_words:"true"`
-	PfltDockerconfig       string `split_words:"true" envconfig:"PFLT_DOCKERCONFIG"`
+	Home                          string `envconfig:"home"`
+	Kubeconfig                    string `envconfig:"kubeconfig"`
+	ConfigurationPath             string `split_words:"true" default:"tnf_config.yml"`
+	NonIntrusiveOnly              bool   `split_words:"true"`
+	LogLevel                      string `default:"debug" split_words:"true"`
+	OfflineDB                     string `split_words:"true"`
+	AllowPreflightInsecure        bool   `split_words:"true"`
+	PfltDockerconfig              string `split_words:"true" envconfig:"PFLT_DOCKERCONFIG"`
+	IncludeWebFilesInOutputFolder bool   `split_words:"true" default:"false"`
+	OmitArtifactsZipFile          bool   `split_words:"true" default:"false"`
 }
