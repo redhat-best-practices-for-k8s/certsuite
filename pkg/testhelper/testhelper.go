@@ -254,3 +254,5 @@ func AddTestResultReason(compliantObject, nonCompliantObject []*ReportObject, lo
 		fail(string(bytes))
 	}
 }
+
+var AbortTrigger string

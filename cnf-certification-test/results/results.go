@@ -21,6 +21,7 @@ import (
 
 	"github.com/onsi/ginkgo/v2/types"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
@@ -36,6 +37,12 @@ var results = map[string][]claim.Result{}
 // RecordResult is a hook provided to save aspects of the ginkgo.GinkgoTestDescription for a given claim.Identifier.
 // Multiple results for a given identifier are aggregated as an array under the same key.
 func RecordResult(report types.SpecReport) { //nolint:gocritic // From Ginkgo
+	aFailureReason := ""
+	if testhelper.AbortTrigger != "" {
+		aFailureReason = "Suite was aborted due to failure in " + testhelper.AbortTrigger
+	} else {
+		aFailureReason = report.FailureMessage()
+	}
 	if claimID, ok := identifiers.TestIDToClaimID[report.LeafNodeText]; ok {
 		testText := identifiers.Catalog[claimID].Description
 		results[report.LeafNodeText] = append(results[report.LeafNodeText], claim.Result{
@@ -43,13 +50,16 @@ func RecordResult(report types.SpecReport) { //nolint:gocritic // From Ginkgo
 			FailureLocation:    report.FailureLocation().String(),
 			FailureLineContent: report.FailureLocation().ContentsOfLine(),
 			TestText:           testText,
-			FailureReason:      report.FailureMessage(),
+			FailureReason:      aFailureReason,
 			State:              report.State.String(),
 			StartTime:          report.StartTime.String(),
 			EndTime:            report.EndTime.String(),
 			CapturedTestOutput: report.CapturedGinkgoWriterOutput,
 			TestID:             &claimID,
 		})
+		if report.State == types.SpecStateAborted {
+			testhelper.AbortTrigger = claimID.Id
+		}
 	} else {
 		panic(fmt.Sprintf("TestID %s has no corresponding Claim ID", report.LeafNodeText))
 	}
