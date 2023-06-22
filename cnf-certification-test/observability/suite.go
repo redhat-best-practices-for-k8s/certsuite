@@ -137,13 +137,11 @@ func testCrds(env *provider.TestEnvironment) {
 				tnf.ClaimFilePrintf("FAILURE: CRD %s, version: %s does not have a status subresource.", crd.Name, ver.Name)
 				nonCompliantObjects = append(nonCompliantObjects,
 					testhelper.NewReportObject("Crd does not have a status sub resource set", testhelper.CrdType, false).
-						AddField(testhelper.Namespace, crd.Namespace).
 						AddField(testhelper.CrdName, crd.Name).
 						AddField(testhelper.CrdVersion, ver.Name))
 			} else {
 				compliantObjects = append(compliantObjects,
 					testhelper.NewReportObject("Crd has a status sub resource set", testhelper.CrdType, true).
-						AddField(testhelper.Namespace, crd.Namespace).
 						AddField(testhelper.CrdName, crd.Name).
 						AddField(testhelper.CrdVersion, ver.Name))
 			}
