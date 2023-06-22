@@ -126,7 +126,6 @@ To run the tests in an offline environment, skip the tests using the `l` option.
 
 Alternatively, if an offline DB for containers, helm charts and operators is available, there is no need to skip those tests if the environment variable `TNF_OFFLINE_DB` is set to the DB location. This DB can be generated using the [OCT tool](https://github.com/test-network-function/oct).
 
-
 Note: Only partner certified images are stored in the offline database. If Redhat images are checked against the offline database, they will show up as not certified. The online database includes both Partner and Redhat images.
 
 #### Output tar.gz file with results and web viewer files
