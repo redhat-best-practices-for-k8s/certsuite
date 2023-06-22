@@ -553,6 +553,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#output-targz-file-with-results-and-web-viewer-files" class="md-nav__link">
+    Output tar.gz file with results and web viewer files
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -850,6 +857,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#output-targz-file-with-results-and-web-viewer-files" class="md-nav__link">
+    Output tar.gz file with results and web viewer files
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -934,7 +948,7 @@ In order to get the required information, the test suite does not <code>ssh</cod
 <p><strong>Required arguments</strong></p>
 <ul>
 <li><code>-t</code> to provide the path of the local directory that contains tnf config files</li>
-<li><code>-o</code> to provide the path of the local directory where test results (claim.json) and execution logs (tnf-execution.log) will be available from after the container exits.</li>
+<li><code>-o</code> to provide the path of the local directory where test results (claim.json), the execution logs (tnf-execution.log), and the results artifacts file (results.tar.gz) will be available from after the container exits.</li>
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -988,6 +1002,14 @@ client using <code>TNF_CONTAINER_CLIENT</code> can be configured. This is partic
 <code>run-tnf-container.sh</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">TNF_CONTAINER_CLIENT</span><span class="o">=</span>docker
 </code></pre></div>
+<h3 id="output-targz-file-with-results-and-web-viewer-files">Output tar.gz file with results and web viewer files<a class="headerlink" href="#output-targz-file-with-results-and-web-viewer-files" title="Permanent link">&para;</a></h3>
+<p>After running all the test cases, a compressed file will be created with all the results files and web artifacts to review them.</p>
+<p>By default, only the <code>claim.js</code>, the <code>cnf-certification-tests_junit.xml</code> file and this new tar.gz file are created after the test suite has finished, as this is probably all that normal partners/users will need.</p>
+<p>Two env vars allow to control the web artifacts and the the new tar.gz file generation:</p>
+<ul>
+<li>TNF_OMIT_ARTIFACTS_ZIP_FILE=true/false : Defaulted to false in the launch scripts. If set to true, the tar.gz generation will be skipped.</li>
+<li>TNF_INCLUDE_WEB_FILES_IN_OUTPUT_FOLDER=true/false : Defaulted to false in the launch scripts. If set to true, the web viewer/parser files will also be copied to the output (claim) folder.</li>
+</ul>
 <h2 id="with-local-test-container-image">With local test container image<a class="headerlink" href="#with-local-test-container-image" title="Permanent link">&para;</a></h2>
 <h3 id="build-locally">Build locally<a class="headerlink" href="#build-locally" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>podman<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>cnf-certification-test:v4.3.0<span class="w"> </span><span class="se">\</span>

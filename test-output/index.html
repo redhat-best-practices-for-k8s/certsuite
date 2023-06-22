@@ -580,6 +580,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#results-artifacts-zip-file" class="md-nav__link">
+    Results artifacts zip file
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -765,6 +772,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#results-artifacts-zip-file" class="md-nav__link">
+    Results artifacts zip file
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -821,6 +835,24 @@
 </ul>
 <h2 id="execution-logs">Execution logs<a class="headerlink" href="#execution-logs" title="Permanent link">&para;</a></h2>
 <p>The test suite also saves a copy of the execution logs at [test output directory]/tnf-execution.log</p>
+<h2 id="results-artifacts-zip-file">Results artifacts zip file<a class="headerlink" href="#results-artifacts-zip-file" title="Permanent link">&para;</a></h2>
+<p>After running all the test cases, a compressed file will be created with all the results files and web artifacts to review them. The file has a UTC date-time prefix and looks like this:</p>
+<p>20230620-110654-cnf-test-results.tar.gz</p>
+<p>The &ldquo;20230620-110654&rdquo; sample prefix means &ldquo;June-20th 2023, 11:06:54&rdquo;</p>
+<p>This is the content of the tar.gz file:</p>
+<ul>
+<li>claim.json</li>
+<li>cnf-certification-tests_junit.xml</li>
+<li>claimjson.js</li>
+<li>classification.js</li>
+<li>results-embed.html</li>
+<li>results.html</li>
+</ul>
+<p>This file serves two different purposes:</p>
+<ol>
+<li>Make it easier to store and send the test results for review.</li>
+<li>View the results in the html web page. In addition, the web page (either results-embed.thml or results.html) has a selector for workload type and allows the parter to introduce feedback for each of the failing test cases for later review from Red Hat. It&rsquo;s important to note that this web page needs the <code>claimjson.js</code> and <code>classification.js</code> files to be in the same folder as the html files to work properly.</li>
+</ol>
 <!-- markdownlint-disable first-line-heading -->
 
 
