@@ -8,7 +8,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.7.0
 	github.com/stretchr/testify v1.8.4
-	github.com/test-network-function/test-network-function-claim v1.0.20
+	github.com/test-network-function/test-network-function-claim v1.0.21
 	github.com/xeipuuv/gojsonschema v1.2.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
@@ -213,7 +213,7 @@ require (
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/openshift/machine-config-operator v0.0.1-0.20230515070935-49f32d46538e
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230609140721-1f72aa2f5b11
-	github.com/test-network-function/privileged-daemonset v1.0.4
+	github.com/test-network-function/privileged-daemonset v1.0.5
 	gopkg.in/yaml.v3 v3.0.1
 	k8s.io/kubectl v0.27.3
 )

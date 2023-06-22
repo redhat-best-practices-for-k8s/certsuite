@@ -13,6 +13,7 @@ usage() {
 	echo "  e.g."
 	echo "    $0 [ARGS] -l \"access-control,lifecycle\""
 	echo "  will run the access-control and lifecycle suites"
+	echo "    $0 [ARGS] -l all will run all the tests"
 	echo ""
 	echo "Allowed suites are listed in the README."
 	echo ""
@@ -79,6 +80,9 @@ done
 # Strips the leading whitespace.
 LABEL="$(echo -e "${LABEL}" | sed -e 's/^[[:space:]]*//')"
 
+if [[ $LABEL == "all" ]]; then
+	LABEL='common,extended,faredge,telco'
+fi
 # List the specs (filtering by suite).
 if [ "$LIST" = true ]; then
 	cd "$BASEDIR"/cnf-certification-test || exit 1
@@ -103,6 +107,10 @@ GINKGO_ARGS="\
 
 FOCUS=${FOCUS%?}
 SKIP=${SKIP%?}
+
+if [[ $LABEL == "all" ]]; then
+	LABEL='common,extended,faredge,telco'
+fi
 
 echo "Running with focus '$FOCUS'"
 echo "Running with skip '$SKIP'"
