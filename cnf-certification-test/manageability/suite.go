@@ -80,18 +80,17 @@ func testContainerPortNameFormat(env *provider.TestEnvironment) {
 	for _, newProtocol := range env.ValidProtocolNames {
 		allowedProtocolNames[newProtocol] = true
 	}
-	badContainers := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
 		for _, port := range cut.Ports {
 			if !containerPortNameFormatCheck(port.Name) {
-				badContainers = append(badContainers, cut.String())
 				tnf.ClaimFilePrintf("%s: ContainerPort %s does not follow the partner naming conventions", cut, port.Name)
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, fmt.Sprintf("ContainerPort %s does not follow the partner naming conventions", port.Name), false))
+			} else {
+				compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, fmt.Sprintf("ContainerPort %s follows the partner naming conventions", port.Name), true))
 			}
 		}
 	}
-
-	if len(badContainers) > 0 {
-		tnf.ClaimFilePrintf("Containers declaring ports whose names do not follow the partner naming conventions: %v", badContainers)
-		ginkgo.Fail("Number of containers with port names that do not follow the partner naming conventions: %d", len(badContainers))
-	}
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
