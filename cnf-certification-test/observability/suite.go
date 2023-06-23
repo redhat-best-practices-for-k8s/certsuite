@@ -136,14 +136,14 @@ func testCrds(env *provider.TestEnvironment) {
 			if _, ok := ver.Schema.OpenAPIV3Schema.Properties["status"]; !ok {
 				tnf.ClaimFilePrintf("FAILURE: CRD %s, version: %s does not have a status subresource.", crd.Name, ver.Name)
 				nonCompliantObjects = append(nonCompliantObjects,
-					testhelper.NewReportObject("Crd does not have a status sub resource set", testhelper.CrdType, false).
-						AddField(testhelper.CrdName, crd.Name).
-						AddField(testhelper.CrdVersion, ver.Name))
+					testhelper.NewReportObject("Crd does not have a status sub resource set", testhelper.CustomResourceDefinitionType, false).
+						AddField(testhelper.CustomResourceDefinitionName, crd.Name).
+						AddField(testhelper.CustomResourceDefinitionVersion, ver.Name))
 			} else {
 				compliantObjects = append(compliantObjects,
-					testhelper.NewReportObject("Crd has a status sub resource set", testhelper.CrdType, true).
-						AddField(testhelper.CrdName, crd.Name).
-						AddField(testhelper.CrdVersion, ver.Name))
+					testhelper.NewReportObject("Crd has a status sub resource set", testhelper.CustomResourceDefinitionType, true).
+						AddField(testhelper.CustomResourceDefinitionName, crd.Name).
+						AddField(testhelper.CustomResourceDefinitionVersion, ver.Name))
 			}
 		}
 	}
