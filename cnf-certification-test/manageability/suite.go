@@ -17,6 +17,7 @@
 package manageability
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/onsi/ginkgo/v2"
@@ -52,15 +53,18 @@ var _ = ginkgo.Describe(common.ManageabilityTestKey, func() {
 })
 
 func testContainersImageTag(env *provider.TestEnvironment) {
-	badContainers := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " image should be tagged ")
-		if cut.ContainerImageIdentifier.Tag == "" {
-			badContainers = append(badContainers, cut.String())
+		if cut.IsTagEmpty() {
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, fmt.Sprintf("Container %s is missing image tag(s)", cut.String()), false))
 			tnf.ClaimFilePrintf("Container %s is missing image tag(s)", cut.String())
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, fmt.Sprintf("Container %s is tagged", cut.String()), true))
 		}
 	}
-	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // The name field in the ContainerPort section must be of the form <protocol>[-<suffix>] where <protocol> is one of the following,

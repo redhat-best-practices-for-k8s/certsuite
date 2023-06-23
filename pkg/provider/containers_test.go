@@ -20,6 +20,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
 )
@@ -174,5 +175,33 @@ func TestHasIgnoredContainerName(t *testing.T) {
 
 	for _, tc := range testCases {
 		assert.Equal(t, tc.expectedOutput, tc.testContainer.HasIgnoredContainerName())
+	}
+}
+
+func TestIsTagEmpty(t *testing.T) {
+	testCases := []struct {
+		testContainer  Container
+		expectedOutput bool
+	}{
+		{ // Test Case #1 - Container image tag is empty
+			testContainer: Container{
+				ContainerImageIdentifier: configuration.ContainerImageIdentifier{
+					Tag: "",
+				},
+			},
+			expectedOutput: true,
+		},
+		{ // Test Case #2 - Container image tag is not empty
+			testContainer: Container{
+				ContainerImageIdentifier: configuration.ContainerImageIdentifier{
+					Tag: "test",
+				},
+			},
+			expectedOutput: false,
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedOutput, tc.testContainer.IsTagEmpty())
 	}
 }
