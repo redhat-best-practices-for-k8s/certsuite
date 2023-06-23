@@ -18,6 +18,7 @@ package networking
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
@@ -158,8 +159,9 @@ func testExecProbDenyAtCPUPinning(dpdkPods []*provider.Pod) {
 
 //nolint:funlen
 func testUndeclaredContainerPortsUsage(env *provider.TestEnvironment) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	var portInfo netutil.PortInfo
-	var failedPods []*provider.Pod
 	for _, put := range env.Pods {
 		// First get the ports declared in the Pod's containers spec
 		declaredPorts := make(map[netutil.PortInfo]bool)
@@ -176,7 +178,8 @@ func testUndeclaredContainerPortsUsage(env *provider.TestEnvironment) {
 		listeningPorts, err := netutil.GetListeningPorts(firstPodContainer)
 		if err != nil {
 			tnf.ClaimFilePrintf("Failed to get the container's listening ports, err: %v", err)
-			failedPods = append(failedPods, put)
+			nonCompliantObjects = append(nonCompliantObjects,
+				testhelper.NewPodReportObject(put.Namespace, put.Name, fmt.Sprintf("Failed to get the container's listening ports, err: %v", err), false))
 			continue
 		}
 		if len(listeningPorts) == 0 {
@@ -188,20 +191,38 @@ func testUndeclaredContainerPortsUsage(env *provider.TestEnvironment) {
 		failedPod := false
 		for listeningPort := range listeningPorts {
 			if put.ContainsIstioProxy() && netcommons.ReservedIstioPorts[int32(listeningPort.PortNumber)] {
-				tnf.ClaimFilePrintf("%s is listening on port %d protocol %s, but the pod also contains istio-proxy. Ignoring.", put, listeningPort.PortNumber, listeningPort.Protocol)
+				tnf.ClaimFilePrintf("%s is listening on port %d protocol %s, but the pod also contains istio-proxy. Ignoring.",
+					put, listeningPort.PortNumber, listeningPort.Protocol)
 				continue
 			}
 
 			if !declaredPorts[listeningPort] {
-				tnf.ClaimFilePrintf("%s is listening on port %d protocol %s, but that port was not declared in any container spec.", put, listeningPort.PortNumber, listeningPort.Protocol)
+				tnf.ClaimFilePrintf("%s is listening on port %d protocol %s, but that port was not declared in any container spec.",
+					put, listeningPort.PortNumber, listeningPort.Protocol)
 				failedPod = true
+				nonCompliantObjects = append(nonCompliantObjects,
+					testhelper.NewPodReportObject(put.Namespace, put.Name,
+						"Listening port was declared in no container spec", false).
+						SetType(testhelper.ListeningPortType).
+						AddField(testhelper.PortNumber, strconv.Itoa(listeningPort.PortNumber)).
+						AddField(testhelper.PortProtocol, listeningPort.Protocol))
 			}
+			compliantObjects = append(compliantObjects,
+				testhelper.NewPodReportObject(put.Namespace, put.Name,
+					"Listening port was declared in container spec", true).
+					SetType(testhelper.ListeningPortType).
+					AddField(testhelper.PortNumber, strconv.Itoa(listeningPort.PortNumber)).
+					AddField(testhelper.PortProtocol, listeningPort.Protocol))
 		}
 		if failedPod {
-			failedPods = append(failedPods, put)
+			nonCompliantObjects = append(nonCompliantObjects,
+				testhelper.NewPodReportObject(put.Namespace, put.Name, "At least one port was listening but not declared in any container specs", false))
+		} else {
+			compliantObjects = append(compliantObjects,
+				testhelper.NewPodReportObject(put.Namespace, put.Name, "All listening were declared in containers specs", true))
 		}
 	}
-	testhelper.AddTestResultLog("Non-compliant", failedPods, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // testDefaultNetworkConnectivity test the connectivity between the default interfaces of containers under test
