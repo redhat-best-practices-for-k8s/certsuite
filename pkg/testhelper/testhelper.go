@@ -155,6 +155,7 @@ const (
 	RoleRuleType                 = "Role Rule"
 	RoleType                     = "Role"
 	ListeningPortType            = "Listening Port"
+	DeclaredPortType             = "Declared Port"
 )
 
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {

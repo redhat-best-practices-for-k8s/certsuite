@@ -241,28 +241,11 @@ func testNetworkConnectivity(env *provider.TestEnvironment, aIPVersion netcommon
 
 func testOCPReservedPortsUsage(env *provider.TestEnvironment) {
 	// List of all ports reserved by OpenShift
-	OCPReservedPorts := map[int32]bool{22623: true, 22624: true}
-
-	rogueContainers := netcommons.FindRogueContainersDeclaringPorts(env.Containers, OCPReservedPorts)
-	roguePods, failedContainers := netcommons.FindRoguePodsListeningToPorts(env.Pods, OCPReservedPorts)
-
-	if n := len(rogueContainers); n > 0 {
-		errMsg := fmt.Sprintf("Number of containers declaring ports reserved by OpenShift: %d", n)
-		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
-	}
-
-	if n := len(roguePods); n > 0 {
-		errMsg := fmt.Sprintf("Number of pods having one or more containers listening on ports reserved by OpenShift: %d", n)
-		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
-	}
-
-	if failedContainers > 0 {
-		errMsg := fmt.Sprintf("Number of containers in which the test could not be performed due to an error: %d", failedContainers)
-		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
-	}
+	OCPReservedPorts := map[int32]bool{
+		22623: true,
+		22624: true}
+	compliantObjects, nonCompliantObjects := netcommons.TestReservedPortsUsage(env, OCPReservedPorts, "OCP")
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testPartnerSpecificTCPPorts(env *provider.TestEnvironment) {
@@ -278,27 +261,8 @@ func testPartnerSpecificTCPPorts(env *provider.TestEnvironment) {
 		15001: true,
 		15000: true,
 	}
-
-	rogueContainers := netcommons.FindRogueContainersDeclaringPorts(env.Containers, ReservedPorts)
-	roguePods, failedContainers := netcommons.FindRoguePodsListeningToPorts(env.Pods, ReservedPorts)
-
-	if n := len(rogueContainers); n > 0 {
-		errMsg := fmt.Sprintf("Number of containers declaring ports reserved by Partner: %d", n)
-		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
-	}
-
-	if n := len(roguePods); n > 0 {
-		errMsg := fmt.Sprintf("Number of pods having one or more containers listening on ports reserved by Partner: %d", n)
-		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
-	}
-
-	if failedContainers > 0 {
-		errMsg := fmt.Sprintf("Number of containers in which the test could not be performed due to an error: %d", failedContainers)
-		tnf.ClaimFilePrintf(errMsg)
-		ginkgo.Fail(errMsg)
-	}
+	compliantObjects, nonCompliantObjects := netcommons.TestReservedPortsUsage(env, ReservedPorts, "Partner")
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testDualStackServices(env *provider.TestEnvironment) {
