@@ -1023,6 +1023,7 @@ To run the tests in an offline environment, skip the tests using the <code>l</co
 <div class="highlight"><pre><span></span><code>./run-cnf-suites.sh<span class="w"> </span>-l<span class="w"> </span><span class="s1">&#39;!online&#39;</span>
 </code></pre></div>
 <p>Alternatively, if an offline DB for containers, helm charts and operators is available, there is no need to skip those tests if the environment variable <code>TNF_OFFLINE_DB</code> is set to the DB location. This DB can be generated using the <a href="https://github.com/test-network-function/oct">OCT tool</a>.</p>
+<p>Note: Only partner certified images are stored in the offline database. If Redhat images are checked against the offline database, they will show up as not certified. The online database includes both Partner and Redhat images.</p>
 <h4 id="output-targz-file-with-results-and-web-viewer-files">Output tar.gz file with results and web viewer files<a class="headerlink" href="#output-targz-file-with-results-and-web-viewer-files" title="Permanent link">&para;</a></h4>
 <p>After running all the test cases, a compressed file will be created with all the results files and web artifacts to review them.</p>
 <p>By default, only the <code>claim.js</code>, the <code>cnf-certification-tests_junit.xml</code> file and this new tar.gz file are created after the test suite has finished, as this is probably all that normal partners/users will need.</p>
