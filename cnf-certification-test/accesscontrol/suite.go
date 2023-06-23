@@ -41,7 +41,8 @@ import (
 )
 
 const (
-	nodePort = "NodePort"
+	nodePort              = "NodePort"
+	defaultServiceAccount = "default"
 )
 
 var (
@@ -438,7 +439,7 @@ func testPodServiceAccount(env *provider.TestEnvironment) {
 	failedPods := []string{}
 	for _, put := range env.Pods {
 		ginkgo.By(fmt.Sprintf("Testing service account for pod %s (ns: %s)", put.Name, put.Namespace))
-		if put.Spec.ServiceAccountName == "" {
+		if put.Spec.ServiceAccountName == defaultServiceAccount {
 			tnf.ClaimFilePrintf("Pod %s (ns: %s) doesn't have a service account name.", put.Name, put.Namespace)
 			failedPods = append(failedPods, put.Name)
 		}
@@ -456,7 +457,7 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 
 	for _, put := range env.Pods {
 		ginkgo.By(fmt.Sprintf("Testing role binding for pod: %s namespace: %s", put.Name, put.Namespace))
-		if put.Pod.Spec.ServiceAccountName == "" {
+		if put.Pod.Spec.ServiceAccountName == defaultServiceAccount {
 			logrus.Infof("%s has an empty or default serviceAccountName, skipping.", put.String())
 			continue
 		}
@@ -553,9 +554,9 @@ func testAutomountServiceToken(env *provider.TestEnvironment) {
 	failedPods := []string{}
 	for _, put := range env.Pods {
 		ginkgo.By(fmt.Sprintf("check the existence of pod service account %s (ns= %s )", put.Namespace, put.Name))
-		if put.Spec.ServiceAccountName == "" {
-			tnf.ClaimFilePrintf("Pod %s has been found with an empty service account name.", put.Name)
-			ginkgo.Fail("Pod has been found with an empty service account name.")
+		if put.Spec.ServiceAccountName == defaultServiceAccount {
+			tnf.ClaimFilePrintf("Pod %s has been found with default service account name.", put.Name)
+			ginkgo.Fail("Pod has been found with default service account name.")
 		}
 
 		// Evaluate the pod's automount service tokens and any attached service accounts

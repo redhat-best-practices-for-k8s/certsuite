@@ -1033,7 +1033,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 	TestPodServiceAccountBestPracticesIdentifier = AddCatalogEntry(
 		"pod-service-account",
 		common.AccessControlTestKey,
-		`Tests that each CNF Pod utilizes a valid Service Account.`,
+		`Tests that each CNF Pod utilizes a valid Service Account. Default or empty service account is not valid.`,
 		PodServiceAccountBestPracticesRemediation,
 		NoExceptions,
 		TestPodServiceAccountBestPracticesIdentifierDocLink,
