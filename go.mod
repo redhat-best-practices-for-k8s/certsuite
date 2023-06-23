@@ -3,7 +3,7 @@ module github.com/test-network-function/cnf-certification-test
 go 1.20
 
 require (
-	github.com/Masterminds/semver/v3 v3.2.1 // indirect
+	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/basgys/goxml2json v1.1.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.7.0
@@ -212,10 +212,10 @@ require (
 	github.com/go-logr/stdr v1.2.2
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/openshift/machine-config-operator v0.0.1-0.20230515070935-49f32d46538e
-	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230609140721-1f72aa2f5b11
+	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230622160833-12c869c25be6
 	github.com/test-network-function/privileged-daemonset v1.0.5
 	gopkg.in/yaml.v3 v3.0.1
 	k8s.io/kubectl v0.27.3
 )
 
-replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230620154455-7983a9740f54
+replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230622160833-12c869c25be6
