@@ -196,7 +196,7 @@ func testUndeclaredContainerPortsUsage(env *provider.TestEnvironment) {
 				continue
 			}
 
-			if !declaredPorts[listeningPort] {
+			if ok := declaredPorts[listeningPort]; !ok {
 				tnf.ClaimFilePrintf("%s is listening on port %d protocol %s, but that port was not declared in any container spec.",
 					put, listeningPort.PortNumber, listeningPort.Protocol)
 				failedPod = true
@@ -206,13 +206,14 @@ func testUndeclaredContainerPortsUsage(env *provider.TestEnvironment) {
 						SetType(testhelper.ListeningPortType).
 						AddField(testhelper.PortNumber, strconv.Itoa(listeningPort.PortNumber)).
 						AddField(testhelper.PortProtocol, listeningPort.Protocol))
+			} else {
+				compliantObjects = append(compliantObjects,
+					testhelper.NewPodReportObject(put.Namespace, put.Name,
+						"Listening port was declared in container spec", true).
+						SetType(testhelper.ListeningPortType).
+						AddField(testhelper.PortNumber, strconv.Itoa(listeningPort.PortNumber)).
+						AddField(testhelper.PortProtocol, listeningPort.Protocol))
 			}
-			compliantObjects = append(compliantObjects,
-				testhelper.NewPodReportObject(put.Namespace, put.Name,
-					"Listening port was declared in container spec", true).
-					SetType(testhelper.ListeningPortType).
-					AddField(testhelper.PortNumber, strconv.Itoa(listeningPort.PortNumber)).
-					AddField(testhelper.PortProtocol, listeningPort.Protocol))
 		}
 		if failedPod {
 			nonCompliantObjects = append(nonCompliantObjects,
