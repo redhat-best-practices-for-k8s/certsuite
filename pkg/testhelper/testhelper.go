@@ -94,6 +94,7 @@ func (p FailureReasonOut) Equal(other FailureReasonOut) bool {
 
 const (
 	Namespace                       = "Namespace"
+	Name                            = "Name"
 	PodName                         = "Pod Name"
 	ContainerName                   = "Container Name"
 	ProcessID                       = "Process ID"
@@ -123,6 +124,12 @@ const (
 	DestinationContainerName = "Destination Container Name"
 	DestinationIP            = "Destination IP"
 	SourceIP                 = "Source IP"
+
+	// Rbac roles
+	RoleName     = "Role Name"
+	Group        = "Group"
+	ResourceName = "Resource Name"
+	Verb         = "Verb"
 )
 
 // When adding new object types, please update the following:
@@ -141,6 +148,8 @@ const (
 	ICMPResultType               = "ICMP result"
 	NetworkType                  = "Network"
 	CustomResourceDefinitionType = "Custom Resource Definition"
+	RoleRuleType                 = "Role Rule"
+	RoleType                     = "Role"
 )
 
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {
@@ -181,6 +190,14 @@ func (obj *ReportObject) AddField(aKey, aValue string) (out *ReportObject) {
 	obj.ObjectFieldsKeys = append(obj.ObjectFieldsKeys, aKey)
 	obj.ObjectFieldsValues = append(obj.ObjectFieldsValues, aValue)
 	return obj
+}
+
+func NewNamespacedReportObject(aReason, aType string, isCompliant bool, aNamespace string) (out *ReportObject) {
+	return NewReportObject(aReason, aType, isCompliant).AddField(Namespace, aNamespace)
+}
+
+func NewNamespacedNamedReportObject(aReason, aType string, isCompliant bool, aNamespace, aName string) (out *ReportObject) {
+	return NewReportObject(aReason, aType, isCompliant).AddField(Namespace, aNamespace).AddField(Name, aName)
 }
 
 func (obj *ReportObject) SetType(aType string) (out *ReportObject) {

@@ -46,6 +46,16 @@ func SubSlice(s, sub []string) bool {
 	return true
 }
 
+// checks that at least one element is common to both slices
+func HasAtLeastOneCommonElement(s1, s2 []string) bool {
+	for _, v := range s2 {
+		if StringInSlice(s1, v, false) {
+			return true
+		}
+	}
+	return false
+}
+
 func RemoveEmptyStrings(s []string) []string {
 	var r []string
 	for _, str := range s {

@@ -7,13 +7,13 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 
 ## Test cases summary
 
-### Total test cases: 87
+### Total test cases: 88
 
 ### Total suites: 10
 
 |Suite|Tests per suite|
 |---|---|
-|access-control|26|
+|access-control|27|
 |affiliated-certification|5|
 |chaostesting|1|
 |lifecycle|18|
@@ -24,11 +24,11 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |performance|5|
 |platform-alteration|12|
 
-### Extended specific tests only: 10
+### Extended specific tests only: 11
 
 |Mandatory|Optional|
 |---|---|
-|8|2|
+|9|2|
 
 ### Far-Edge specific tests only: 7
 
@@ -85,6 +85,22 @@ Tags|common,access-control
 |Far-Edge|Mandatory|
 |Non-Telco|Mandatory|
 |Telco|Mandatory|
+
+#### access-control-crd-roles
+
+Property|Description
+---|---
+Unique ID|access-control-crd-roles
+Description|If an application creates CRDs it must supply a role to access those CRDs and no other API resources/permission. This test checks that there is at least one role present in each namespaces under test that only refers to CRDs under test.
+Suggested Remediation|Roles providing access to CRDs should not refer to any other api or resources. Change the generation of the CRD role accordingly
+Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-custom-role-to-access-application-crds
+Exception Process|No exception needed for optional/extended tests.
+Tags|extended,access-control
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
 
 #### access-control-ipc-lock-capability-check
 
