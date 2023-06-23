@@ -19,7 +19,6 @@ package rbac
 import (
 	"strings"
 
-	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	rbacv1 "k8s.io/api/rbac/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
@@ -66,19 +65,18 @@ func GetAllRules(aRole *rbacv1.Role) (ruleList []RoleRule) {
 	return ruleList
 }
 
-// Checks the resource name in the role against plural, singular and short names
-func equalResource(aResource CrdResource, aRule RoleRule) bool {
-	// remove subresources to keep only resource name
-	ruleBaseResourceName := strings.Split(aRule.Resource.Name, "/")[0]
-	return aResource.Group == aRule.Resource.Group && (aResource.SingularName == ruleBaseResourceName ||
-		aResource.PluralName == ruleBaseResourceName ||
-		stringhelper.StringInSlice(aResource.ShortNames, ruleBaseResourceName, false))
+// Checks the resource name in the role against plural name
+func isResourceInRoleRule(crd CrdResource, roleRule RoleRule) bool {
+	// remove subresources to keep only resource (plural) name
+	ruleResourcePluralName := strings.Split(roleRule.Resource.Name, "/")[0]
+
+	return crd.Group == roleRule.Resource.Group && crd.PluralName == ruleResourcePluralName
 }
 
 func FilterRulesNonMatchingResources(ruleList []RoleRule, resourceList []CrdResource) (matching, nonMatching []RoleRule) {
 	for _, aRule := range ruleList {
 		for _, aResource := range resourceList {
-			if equalResource(aResource, aRule) {
+			if isResourceInRoleRule(aResource, aRule) {
 				matching = append(matching, aRule)
 			}
 		}

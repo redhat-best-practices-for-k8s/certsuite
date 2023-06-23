@@ -207,7 +207,7 @@ func generateRole() *rbacv1.Role {
 	return &role
 }
 
-func Test_equalResource(t *testing.T) {
+func Test_isResourceInRoleRule(t *testing.T) {
 	type args struct {
 		aResource CrdResource
 		aRule     RoleRule
@@ -234,12 +234,12 @@ func Test_equalResource(t *testing.T) {
 			want: false,
 		},
 		{
-			name: "ok1",
+			name: "using a short name is invalid",
 			args: args{
 				aResource: generateCRDResource("group1", "singular1", "plural1", "short1_", 3),
 				aRule:     generateRoleRule("group1", "short1_2", "verb1"),
 			},
-			want: true,
+			want: false,
 		},
 		{
 			name: "ok1",
@@ -249,18 +249,10 @@ func Test_equalResource(t *testing.T) {
 			},
 			want: true,
 		},
-		{
-			name: "ok1",
-			args: args{
-				aResource: generateCRDResource("group1", "singular1", "plural1", "short1_", 3),
-				aRule:     generateRoleRule("group1", "short1_0", "verb1"),
-			},
-			want: true,
-		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := equalResource(tt.args.aResource, tt.args.aRule); got != tt.want {
+			if got := isResourceInRoleRule(tt.args.aResource, tt.args.aRule); got != tt.want {
 				t.Errorf("equalResource() = %v, want %v", got, tt.want)
 			}
 		})
@@ -281,36 +273,35 @@ func TestFilterRulesNonMatchingResources(t *testing.T) {
 		{
 			name: "ok",
 			args: args{
-				ruleList: []RoleRule{generateRoleRule("group1", "resource1", "verb1"),
-					generateRoleRule("group1", "plural2", "verb1"),
-					generateRoleRule("group1", "short3_2", "verb1"),
-					generateRoleRule("group1", "short3_2/finalizer", "verb1"),
+				ruleList: []RoleRule{generateRoleRule("group1", "plural1", "verb1"),
+					generateRoleRule("group2", "plural2", "verb1"),
+					generateRoleRule("group2", "plural2", "verb2"),
+					generateRoleRule("group1", "plural3/finalizer", "verb1"),
 				},
 				resourceList: []CrdResource{
 					generateCRDResource("group1", "resource1", "plural1", "short1_", 3),
-					generateCRDResource("group1", "resource2", "plural2", "short2_", 3),
+					generateCRDResource("group2", "resource2", "plural2", "short2_", 3),
 					generateCRDResource("group1", "resource3", "plural3", "short3_", 3),
 				},
 			},
 			wantMatching: []RoleRule{
-				{Resource: RoleResource{Group: "group1", Name: "resource1"}, Verb: "verb1"},
-				{Resource: RoleResource{Group: "group1", Name: "plural2"}, Verb: "verb1"},
-				{Resource: RoleResource{Group: "group1", Name: "short3_2"}, Verb: "verb1"},
+				{Resource: RoleResource{Group: "group1", Name: "plural1"}, Verb: "verb1"},
+				{Resource: RoleResource{Group: "group2", Name: "plural2"}, Verb: "verb1"},
+				{Resource: RoleResource{Group: "group2", Name: "plural2"}, Verb: "verb2"},
 				{
-					Resource: RoleResource{Group: "group1", Name: "short3_2/finalizer"},
+					Resource: RoleResource{Group: "group1", Name: "plural3/finalizer"},
 					Verb:     "verb1",
 				},
 			},
 			wantNonMatching: nil,
 		},
 		{
-			name: "a resources not matching",
+			name: "resource not matching (using singular)",
 			args: args{
-				ruleList: []RoleRule{generateRoleRule("group1", "resource1", "verb1"),
+				ruleList: []RoleRule{generateRoleRule("group1", "plural1", "verb1"),
 					generateRoleRule("group1", "plural2", "verb1"),
-					generateRoleRule("group1", "short3_2", "verb1"),
-					generateRoleRule("group1", "short3_2/finalizer", "verb1"),
-					generateRoleRule("group1", "notmatching", "verb1"),
+					generateRoleRule("group1", "resource1", "verb2"),
+					generateRoleRule("group1", "plural3/finalizer", "verb1"),
 				},
 				resourceList: []CrdResource{
 					generateCRDResource("group1", "resource1", "plural1", "short1_", 3),
@@ -319,44 +310,36 @@ func TestFilterRulesNonMatchingResources(t *testing.T) {
 				},
 			},
 			wantMatching: []RoleRule{
-				{Resource: RoleResource{Group: "group1", Name: "resource1"}, Verb: "verb1"},
+				{Resource: RoleResource{Group: "group1", Name: "plural1"}, Verb: "verb1"},
 				{Resource: RoleResource{Group: "group1", Name: "plural2"}, Verb: "verb1"},
-				{Resource: RoleResource{Group: "group1", Name: "short3_2"}, Verb: "verb1"},
-				{
-					Resource: RoleResource{Group: "group1", Name: "short3_2/finalizer"},
-					Verb:     "verb1",
-				},
+				{Resource: RoleResource{Group: "group1", Name: "plural3/finalizer"}, Verb: "verb1"},
 			},
 			wantNonMatching: []RoleRule{
-				{Resource: RoleResource{Group: "group1", Name: "notmatching"}, Verb: "verb1"}},
+				{Resource: RoleResource{Group: "group1", Name: "resource1"}, Verb: "verb2"},
+			},
 		},
 		{
-			name: "a group/resource not matching",
+			name: "resource not matching group",
 			args: args{
-				ruleList: []RoleRule{generateRoleRule("group1", "resource1", "verb1"),
+				ruleList: []RoleRule{generateRoleRule("group1", "plural1", "verb1"),
 					generateRoleRule("group1", "plural2", "verb1"),
-					generateRoleRule("group1", "short3_2", "verb1"),
-					generateRoleRule("group1", "short3_2/finalizer", "verb1"),
-					generateRoleRule("group2", "notmatching", "verb1"),
+					generateRoleRule("group2", "plural2", "verb2"),
+					generateRoleRule("group1", "plural3/finalizer", "verb1"),
 				},
 				resourceList: []CrdResource{
 					generateCRDResource("group1", "resource1", "plural1", "short1_", 3),
 					generateCRDResource("group1", "resource2", "plural2", "short2_", 3),
 					generateCRDResource("group1", "resource3", "plural3", "short3_", 3),
-					generateCRDResource("group4", "resource4", "plural4", "short4_", 3),
 				},
 			},
 			wantMatching: []RoleRule{
-				{Resource: RoleResource{Group: "group1", Name: "resource1"}, Verb: "verb1"},
+				{Resource: RoleResource{Group: "group1", Name: "plural1"}, Verb: "verb1"},
 				{Resource: RoleResource{Group: "group1", Name: "plural2"}, Verb: "verb1"},
-				{Resource: RoleResource{Group: "group1", Name: "short3_2"}, Verb: "verb1"},
-				{
-					Resource: RoleResource{Group: "group1", Name: "short3_2/finalizer"},
-					Verb:     "verb1",
-				},
+				{Resource: RoleResource{Group: "group1", Name: "plural3/finalizer"}, Verb: "verb1"},
 			},
 			wantNonMatching: []RoleRule{
-				{Resource: RoleResource{Group: "group2", Name: "notmatching"}, Verb: "verb1"}},
+				{Resource: RoleResource{Group: "group2", Name: "plural2"}, Verb: "verb2"},
+			},
 		},
 	}
 	for _, tt := range tests {
@@ -367,14 +350,14 @@ func TestFilterRulesNonMatchingResources(t *testing.T) {
 			)
 			if !reflect.DeepEqual(gotMatching, tt.wantMatching) {
 				t.Errorf(
-					"FilterRulesNonMatchingResources() gotMatching = %#v, want %v",
+					"FilterRulesNonMatchingResources() gotMatching = %#v, want %#v",
 					gotMatching,
 					tt.wantMatching,
 				)
 			}
 			if !reflect.DeepEqual(gotNonMatching, tt.wantNonMatching) {
 				t.Errorf(
-					"FilterRulesNonMatchingResources() gotNonMatching = %#v, want %v",
+					"FilterRulesNonMatchingResources() gotNonMatching = %#v, want %#v",
 					gotNonMatching,
 					tt.wantNonMatching,
 				)
