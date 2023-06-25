@@ -183,7 +183,7 @@ perform_kubeconfig_autodiscovery
 echo "Performing DOCKERCFG autodiscovery"
 perform_dockercfg_autodiscovery
 
-# Parge args beginning with -
+# Parse args beginning with -
 while [[ $1 == -* ]]; do
 	case "$1" in
 	-h | --help | -\?)

@@ -31,7 +31,7 @@ spec:
       - apiGroups: [""]
         resources: ["pods/log"]
         verbs: ["get", "list", "watch"]  
-      # for creating and managing to execute comands inside target container
+      # for creating and managing to execute commands inside target container
       - apiGroups: [""]
         resources: ["pods/exec"]
         verbs: ["get", "list", "create"]

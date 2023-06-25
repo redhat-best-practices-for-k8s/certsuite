@@ -56,7 +56,7 @@ COPY . ${TNF_SRC_DIR}
 WORKDIR ${TNF_SRC_DIR}
 RUN make install-tools && make build-cnf-tests
 
-# Extract what's needed to run at a seperate location
+# Extract what's needed to run at a separate location
 # Quote this to prevent word splitting.
 # hadolint ignore=SC2046
 RUN \

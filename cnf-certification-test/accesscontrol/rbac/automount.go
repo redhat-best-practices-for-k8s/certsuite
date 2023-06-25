@@ -43,7 +43,7 @@ func EvaluateAutomountTokens(put *corev1.Pod) (bool, string) {
 	// if no service account is configured, then the pod will use the configuration
 	// of the default service account in that namespace
 	// the token defined in the pod has takes precedence
-	// the test would pass iif token is explicitly set to false
+	// the test would pass if token is explicitly set to false
 	// if the token is set to true in the pod, the test would fail right away
 	if put.Spec.AutomountServiceAccountToken != nil && *put.Spec.AutomountServiceAccountToken {
 		return false, fmt.Sprintf("Pod %s:%s is configured with automountServiceAccountToken set to true", put.Namespace, put.Name)
