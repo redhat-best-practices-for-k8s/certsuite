@@ -315,7 +315,7 @@ Tags|common,access-control
 Property|Description
 ---|---
 Unique ID|access-control-pod-service-account
-Description|Tests that each CNF Pod utilizes a valid Service Account.
+Description|Tests that each CNF Pod utilizes a valid Service Account. Default or empty service account is not valid.
 Suggested Remediation|Ensure that the each CNF Pod is configured to use a valid Service Account
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-scc-permissions-for-an-application
 Exception Process|No exceptions

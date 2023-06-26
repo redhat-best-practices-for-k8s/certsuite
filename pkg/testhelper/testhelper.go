@@ -130,6 +130,10 @@ const (
 	Group        = "Group"
 	ResourceName = "Resource Name"
 	Verb         = "Verb"
+
+	// Listening ports
+	PortNumber   = "Port Number"
+	PortProtocol = "Port Protocol"
 )
 
 // When adding new object types, please update the following:
@@ -150,6 +154,8 @@ const (
 	CustomResourceDefinitionType = "Custom Resource Definition"
 	RoleRuleType                 = "Role Rule"
 	RoleType                     = "Role"
+	ListeningPortType            = "Listening Port"
+	DeclaredPortType             = "Declared Port"
 )
 
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {
