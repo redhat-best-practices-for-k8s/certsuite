@@ -35,7 +35,7 @@ get_container_tnf_kubeconfig_path_from_index() {
 	local local_path_index="$1"
 	kubeconfig_path=$CONTAINER_TNF_KUBECONFIG_FILE_BASE_PATH
 
-	# To maintain backward compatiblity with the TNF container image,
+	# To maintain backward compatibility with the TNF container image,
 	# indexing of kubeconfigs starts from the second file.
 	# For example:
 	# - /usr/tnf/kubeconfig/config

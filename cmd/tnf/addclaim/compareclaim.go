@@ -128,7 +128,7 @@ func compareEqual2String(a, b []string) bool {
 }
 
 // compare between 2 test case result (testCase) object
-// retrun 3 values: 1. the test name that have different result value - diffResult
+// return 3 values: 1. the test name that have different result value - diffResult
 // 2. name of test cases that in claim2 but do not have them on claim1 - notFoundtestIn1
 // 2. name of test cases that in claim1 but do not have them on claim2 - notFoundtestIn2
 func compare2TestCaseResults(testcaseResult1, testcaseResult2 []testCase) (diffResult []testCase, notFoundtestIn1, notFoundtestIn2 []string) {
@@ -194,7 +194,7 @@ func removeDuplicateValues(intSlice []string) []string {
 	return list
 }
 
-// compare between 2 cni objects and print the diffrents
+// compare between 2 cni objects and print the difference
 func compare2cni(cni1, cni2 map[string][]Cni) {
 	for node, val := range cni1 {
 		for node2, val2 := range cni2 {

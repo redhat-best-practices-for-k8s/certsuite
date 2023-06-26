@@ -119,7 +119,7 @@ func TestIsNetworkPolicyCompliant(t *testing.T) {
 					},
 					PolicyTypes: []networkingv1.PolicyType{
 						networkingv1.PolicyTypeEgress,
-						// networkingv1.PolicyTypeIngress, // policy type does not exist so this fails the ingress compliancy check
+						// networkingv1.PolicyTypeIngress, // policy type does not exist so this fails the ingress compliance check
 					},
 					Egress: []networkingv1.NetworkPolicyEgressRule{
 						{
@@ -151,7 +151,7 @@ func TestIsNetworkPolicyCompliant(t *testing.T) {
 						},
 					},
 					PolicyTypes: []networkingv1.PolicyType{
-						// networkingv1.PolicyTypeEgress, // policy type does not exist so this fails the ingress compliancy check
+						// networkingv1.PolicyTypeEgress, // policy type does not exist so this fails the ingress compliance check
 						networkingv1.PolicyTypeIngress,
 					},
 					Ingress: []networkingv1.NetworkPolicyIngressRule{

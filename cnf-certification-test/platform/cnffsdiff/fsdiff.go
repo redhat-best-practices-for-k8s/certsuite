@@ -192,7 +192,7 @@ func (f *FsDiff) installCustomPodman() error {
 	// Mount podman from partner debug pod into /host/tmp/...
 	logrus.Infof("Mouting %s into %s", partnerPodmanFolder, nodeTmpMountFolder)
 	if mountErr := f.mountDebugPartnerPodmanFolder(); mountErr != nil {
-		// We need to delete the temp folder previosly created as mount point.
+		// We need to delete the temp folder previously created as mount point.
 		if deleteErr := f.deleteNodeFolder(); deleteErr != nil {
 			return fmt.Errorf("failed to mount folder %s: %s, failed to delete %s: %s",
 				partnerPodmanFolder, mountErr, nodeTmpMountFolder, deleteErr)
