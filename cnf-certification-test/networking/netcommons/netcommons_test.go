@@ -56,6 +56,12 @@ func Test_getIPVersion(t *testing.T) {
 			want:    Undefined,
 			wantErr: true,
 		},
+		{
+			name:    "EmptyString",
+			args:    args{aIP: ""},
+			want:    Undefined,
+			wantErr: true,
+		},
 		// TODO: Add test cases.
 	}
 	for _, tt := range tests {
