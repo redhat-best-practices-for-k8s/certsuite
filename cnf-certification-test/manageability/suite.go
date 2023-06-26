@@ -17,7 +17,6 @@
 package manageability
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/onsi/ginkgo/v2"
@@ -58,10 +57,10 @@ func testContainersImageTag(env *provider.TestEnvironment) {
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " image should be tagged ")
 		if cut.IsTagEmpty() {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, fmt.Sprintf("Container %s is missing image tag(s)", cut.String()), false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is missing image tag(s)", false))
 			tnf.ClaimFilePrintf("Container %s is missing image tag(s)", cut.String())
 		} else {
-			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, fmt.Sprintf("Container %s is tagged", cut.String()), true))
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is tagged", true))
 		}
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
@@ -86,9 +85,9 @@ func testContainerPortNameFormat(env *provider.TestEnvironment) {
 		for _, port := range cut.Ports {
 			if !containerPortNameFormatCheck(port.Name) {
 				tnf.ClaimFilePrintf("%s: ContainerPort %s does not follow the partner naming conventions", cut, port.Name)
-				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, fmt.Sprintf("ContainerPort %s does not follow the partner naming conventions", port.Name), false))
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "ContainerPort does not follow the partner naming conventions", false))
 			} else {
-				compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, fmt.Sprintf("ContainerPort %s follows the partner naming conventions", port.Name), true))
+				compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "ContainerPort follows the partner naming conventions", true))
 			}
 		}
 	}
