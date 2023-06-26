@@ -85,9 +85,11 @@ func testContainerPortNameFormat(env *provider.TestEnvironment) {
 		for _, port := range cut.Ports {
 			if !containerPortNameFormatCheck(port.Name) {
 				tnf.ClaimFilePrintf("%s: ContainerPort %s does not follow the partner naming conventions", cut, port.Name)
-				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "ContainerPort does not follow the partner naming conventions", false))
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "ContainerPort does not follow the partner naming conventions", false).
+					AddField(testhelper.ContainerPort, port.Name))
 			} else {
-				compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "ContainerPort follows the partner naming conventions", true))
+				compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "ContainerPort follows the partner naming conventions", true).
+					AddField(testhelper.ContainerPort, port.Name))
 			}
 		}
 	}
