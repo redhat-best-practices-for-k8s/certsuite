@@ -96,7 +96,7 @@ func (c *Container) SetPreflightResults(preflightImageCache map[string]plibRunti
 	if err != nil {
 		return err
 	}
-	ctx := artifacts.ContextWithWriter(context.Background(), artifactsWriter)
+	ctx := artifacts.ContextWithWriter(context.TODO(), artifactsWriter)
 
 	// Add logger output to the context
 	logbytes := bytes.NewBuffer([]byte{})
