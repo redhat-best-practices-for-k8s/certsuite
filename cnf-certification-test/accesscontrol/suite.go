@@ -462,49 +462,50 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 	var nonCompliantObjects []*testhelper.ReportObject
 
 	for _, put := range env.Pods {
+		podIsCompliant := true
 		ginkgo.By(fmt.Sprintf("Testing role binding for pod: %s namespace: %s", put.Name, put.Namespace))
 		if put.Pod.Spec.ServiceAccountName == defaultServiceAccount {
 			logrus.Infof("%s has an empty or default serviceAccountName, skipping.", put.String())
-			continue
-		}
+			// Add the pod to the non-compliant list
+			nonCompliantObjects = append(nonCompliantObjects,
+				testhelper.NewPodReportObject(put.Namespace, put.Name,
+					"Non-compliant because the pod namespace is either empty or default", false))
+			podIsCompliant = false
+		} else {
+			logrus.Infof("%s has a serviceAccountName: %s, checking role bindings.", put.String(), put.Spec.ServiceAccountName)
+			// Loop through the rolebindings and check if they are from another namespace
+			for rbIndex := range env.RoleBindings {
+				// Short circuit if the role binding and the pod are in the same namespace.
+				if env.RoleBindings[rbIndex].Namespace == put.Namespace {
+					continue
+				}
+				// If we make it to this point, the role binding and the pod are in different namespaces.
+				// We must check if the pod's service account is in the role binding's subjects.
+				found := false
+				for _, subject := range env.RoleBindings[rbIndex].Subjects {
+					// If the subject is a service account and the service account is in the same namespace as the pod, then we have a failure
+					//nolint:gocritic
+					if subject.Kind == rbacv1.ServiceAccountKind && subject.Namespace == put.Namespace && subject.Name == put.Spec.ServiceAccountName {
+						failMsg := fmt.Sprintf("Pod: %s/%s has the following role bindings that do not live in the same namespace: %s", put.Namespace, put.Name, env.RoleBindings[rbIndex].Name)
+						logrus.Warnf(failMsg)
+						tnf.ClaimFilePrintf(failMsg)
 
-		logrus.Infof("%s has a serviceAccountName: %s, checking role bindings.", put.String(), put.Spec.ServiceAccountName)
-
-		podIsCompliant := true
-		// Loop through the rolebindings and check if they are from another namespace
-		for rbIndex := range env.RoleBindings {
-			// Short circuit if the role binding and the pod are in the same namespace.
-			if env.RoleBindings[rbIndex].Namespace == put.Namespace {
-				continue
-			}
-
-			// If we make it to this point, the role binding and the pod are in different namespaces.
-			// We must check if the pod's service account is in the role binding's subjects.
-
-			found := false
-			for _, subject := range env.RoleBindings[rbIndex].Subjects {
-				// If the subject is a service account and the service account is in the same namespace as the pod, then we have a failure
-				//nolint:gocritic
-				if subject.Kind == rbacv1.ServiceAccountKind && subject.Namespace == put.Namespace && subject.Name == put.Spec.ServiceAccountName {
-					failMsg := fmt.Sprintf("Pod: %s/%s has the following role bindings that do not live in the same namespace: %s", put.Namespace, put.Name, env.RoleBindings[rbIndex].Name)
-					logrus.Warnf(failMsg)
-					tnf.ClaimFilePrintf(failMsg)
-
-					// Add the pod to the non-compliant list
-					nonCompliantObjects = append(nonCompliantObjects,
-						testhelper.NewPodReportObject(put.Namespace, put.Name,
-							"Non-compliant because the role bindings used by this pod do not live in the same namespace", false).
-							AddField(testhelper.RoleBindingName, env.RoleBindings[rbIndex].Name).
-							AddField(testhelper.RoleBindingNamespace, env.RoleBindings[rbIndex].Namespace).
-							AddField(testhelper.ServiceAccountName, put.Spec.ServiceAccountName))
-					found = true
-					podIsCompliant = false
+						// Add the pod to the non-compliant list
+						nonCompliantObjects = append(nonCompliantObjects,
+							testhelper.NewPodReportObject(put.Namespace, put.Name,
+								"Non-compliant because the role bindings used by this pod do not live in the same namespace", false).
+								AddField(testhelper.RoleBindingName, env.RoleBindings[rbIndex].Name).
+								AddField(testhelper.RoleBindingNamespace, env.RoleBindings[rbIndex].Namespace).
+								AddField(testhelper.ServiceAccountName, put.Spec.ServiceAccountName))
+						found = true
+						podIsCompliant = false
+						break
+					}
+				}
+				// Break of out the loop if we found a role binding that is out of namespace
+				if found {
 					break
 				}
-			}
-			// Break of out the loop if we found a role binding that is out of namespace
-			if found {
-				break
 			}
 		}
 		// Add pod to the compliant object list
