@@ -719,6 +719,7 @@
   <!-- This will load the initial JSON file, if present. It may fail. -->
   <script src="./claimjson.js"></script>
   <script src="./classification.js"></script>
+  <script src="./feedback.js"></script>
 
   <script>
     // Load initial json, if available
@@ -777,7 +778,7 @@
           fillResults(json.claim.results, classification, '#mandatory-telco-table', '#optional-telco-table', "telco")
           fillResults(json.claim.results, classification, '#mandatory-non-telco-table', '#optional-non-telco-table', "nontelco")
           fillResults(json.claim.results, classification, '#mandatory-extended-table', '#optional-extended-table', "extended")
-
+          fillFeedback(feedback)         
         });
         fileUploaded.readAsText(fileList[0]);
       }
