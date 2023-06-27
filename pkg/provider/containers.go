@@ -158,3 +158,7 @@ func (c *Container) HasExecProbes() bool {
 		c.ReadinessProbe != nil && c.ReadinessProbe.Exec != nil ||
 		c.StartupProbe != nil && c.StartupProbe.Exec != nil
 }
+
+func (c *Container) IsTagEmpty() bool {
+	return c.ContainerImageIdentifier.Tag == ""
+}

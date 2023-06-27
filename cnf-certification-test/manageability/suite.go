@@ -52,15 +52,18 @@ var _ = ginkgo.Describe(common.ManageabilityTestKey, func() {
 })
 
 func testContainersImageTag(env *provider.TestEnvironment) {
-	badContainers := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " image should be tagged ")
-		if cut.ContainerImageIdentifier.Tag == "" {
-			badContainers = append(badContainers, cut.String())
+		if cut.IsTagEmpty() {
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is missing image tag(s)", false))
 			tnf.ClaimFilePrintf("Container %s is missing image tag(s)", cut.String())
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is tagged", true))
 		}
 	}
-	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // The name field in the ContainerPort section must be of the form <protocol>[-<suffix>] where <protocol> is one of the following,
@@ -76,18 +79,19 @@ func testContainerPortNameFormat(env *provider.TestEnvironment) {
 	for _, newProtocol := range env.ValidProtocolNames {
 		allowedProtocolNames[newProtocol] = true
 	}
-	badContainers := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
 		for _, port := range cut.Ports {
 			if !containerPortNameFormatCheck(port.Name) {
-				badContainers = append(badContainers, cut.String())
 				tnf.ClaimFilePrintf("%s: ContainerPort %s does not follow the partner naming conventions", cut, port.Name)
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "ContainerPort does not follow the partner naming conventions", false).
+					AddField(testhelper.ContainerPort, port.Name))
+			} else {
+				compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "ContainerPort follows the partner naming conventions", true).
+					AddField(testhelper.ContainerPort, port.Name))
 			}
 		}
 	}
-
-	if len(badContainers) > 0 {
-		tnf.ClaimFilePrintf("Containers declaring ports whose names do not follow the partner naming conventions: %v", badContainers)
-		ginkgo.Fail("Number of containers with port names that do not follow the partner naming conventions: %d", len(badContainers))
-	}
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
