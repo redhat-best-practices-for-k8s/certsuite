@@ -145,7 +145,7 @@ func DecodeKernelTaintsFromLetters(letters string) []string {
 			}
 		}
 
-		// The letter doesn't belong to any known (yet) taint...
+		// The letter does not belong to any known (yet) taint...
 		if !found {
 			taints = append(taints, fmt.Sprintf("unknown taint (letter %s)", taintLetter))
 		}

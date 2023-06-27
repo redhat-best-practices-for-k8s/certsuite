@@ -123,7 +123,7 @@ Tags|telco,access-control
 Property|Description
 ---|---
 Unique ID|access-control-namespace
-Description|Tests that all CNF's resources (PUTs and CRs) belong to valid namespaces. A valid namespace meets the following conditions: (1) It was declared in the yaml config file under the targetNameSpaces tag. (2) It doesn't have any of the following prefixes: default, openshift-, istio- and aspenmesh-
+Description|Tests that all CNF's resources (PUTs and CRs) belong to valid namespaces. A valid namespace meets the following conditions: (1) It was declared in the yaml config file under the targetNameSpaces tag. (2) It does not have any of the following prefixes: default, openshift-, istio- and aspenmesh-
 Suggested Remediation|Ensure that your CNF utilizes namespaces declared in the yaml config file. Additionally, the namespaces should not start with "default, openshift-, istio- or aspenmesh-".
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-requirements-cnf-reqs
 Exception Process|No exceptions

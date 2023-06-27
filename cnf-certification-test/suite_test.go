@@ -223,7 +223,7 @@ func TestTest(t *testing.T) {
 		}
 	}
 
-	// Remove web artifacts if user doesn't want them.
+	// Remove web artifacts if user does not want them.
 	if !configuration.GetTestParameters().IncludeWebFilesInOutputFolder {
 		for _, file := range webFilePaths {
 			err := os.Remove(file)
