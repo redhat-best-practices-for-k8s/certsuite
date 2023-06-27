@@ -257,7 +257,7 @@ func getCNCFNetworksNamesFromPodAnnotation(networksAnnotation string) []string {
 		return networkNames
 	}
 
-	// If the previous unmarshaling didn't work, let's try with parsing the comma separated names list.
+	// If the previous unmarshalling didn't work, let's try with parsing the comma separated names list.
 	networks := strings.TrimSpace(networksAnnotation)
 
 	// First, avoid empty strings (unlikely).
@@ -341,7 +341,7 @@ func isNetworkAttachmentDefinitionConfigTypeSRIOV(nadConfig string) (bool, error
 }
 
 // IsUsingSRIOV returns true if any of the pod's interfaces is a sriov one.
-// First, it retrives the list of networks names from the CNFC annotation and then
+// First, it retrieves the list of networks names from the CNFC annotation and then
 // checks the config of the corresponding network-attachment definition (NAD).
 func (p *Pod) IsUsingSRIOV() (bool, error) {
 	const (
