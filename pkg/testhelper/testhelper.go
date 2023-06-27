@@ -118,6 +118,9 @@ const (
 	CustomResourceDefinitionVersion = "Custom Resource Definition Version"
 	SCCCapability                   = "SCC Capability"
 	Path                            = "Path"
+	Repository                      = "Repository"
+	ImageName                       = "Image Name"
+	Version                         = "Version"
 
 	// ICMP tests
 	NetworkName              = "Network Name"
@@ -144,6 +147,8 @@ const (
 	UndefinedType                = "Undefined Type"
 	CnfType                      = "Cnf"
 	PodType                      = "Pod"
+	HelmType                     = "Helm"
+	OperatorType                 = "Operator"
 	ContainerType                = "Container"
 	ContainerProcessType         = "ContainerProcess"
 	ContainerCategory            = "ContainerCategory"
@@ -161,6 +166,9 @@ const (
 	ContainerPort                = "Container Port"
 	HostPortType                 = "Host Port"
 	HostPathType                 = "Host Path"
+	HelmVersionType              = "Helm Version"
+	OCPVersionType               = "OCP Version"
+	OCPChannelType               = "OCP Channel"
 )
 
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {
@@ -183,6 +191,20 @@ func NewPodReportObject(aNamespace, aPodName, aReason string, isCompliant bool) 
 	out = NewReportObject(aReason, PodType, isCompliant)
 	out.AddField(Namespace, aNamespace)
 	out.AddField(PodName, aPodName)
+	return out
+}
+
+func NewHelmChartReportObject(aNamespace, aHelmChartName, aReason string, isCompliant bool) (out *ReportObject) {
+	out = NewReportObject(aReason, HelmType, isCompliant)
+	out.AddField(Namespace, aNamespace)
+	out.AddField(Name, aHelmChartName)
+	return out
+}
+
+func NewOperatorReportObject(aNamespace, aOperatorName, aReason string, isCompliant bool) (out *ReportObject) {
+	out = NewReportObject(aReason, OperatorType, isCompliant)
+	out.AddField(Namespace, aNamespace)
+	out.AddField(Name, aOperatorName)
 	return out
 }
 
