@@ -926,7 +926,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		PodClusterRoleBindingsBestPracticesRemediation,
 		"Exception possible only for workloads that's cluster wide in nature and absolutely needs cluster level roles & role bindings",
 		TestPodClusterRoleBindingsBestPracticesIdentifierDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
