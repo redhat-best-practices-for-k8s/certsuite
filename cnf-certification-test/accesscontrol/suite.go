@@ -504,7 +504,7 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 			// Add the pod to the non-compliant list
 			nonCompliantObjects = append(nonCompliantObjects,
 				testhelper.NewPodReportObject(put.Namespace, put.Name,
-					"Non-compliant because the pod namespace is either empty or default", false))
+					"The pod namespace is either empty or default", false))
 			podIsCompliant = false
 		} else {
 			logrus.Infof("%s has a serviceAccountName: %s, checking role bindings.", put.String(), put.Spec.ServiceAccountName)
@@ -528,7 +528,7 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 						// Add the pod to the non-compliant list
 						nonCompliantObjects = append(nonCompliantObjects,
 							testhelper.NewPodReportObject(put.Namespace, put.Name,
-								"Non-compliant because the role bindings used by this pod do not live in the same namespace", false).
+								"The role bindings used by this pod do not live in the same namespace", false).
 								AddField(testhelper.RoleBindingName, env.RoleBindings[rbIndex].Name).
 								AddField(testhelper.RoleBindingNamespace, env.RoleBindings[rbIndex].Namespace).
 								AddField(testhelper.ServiceAccountName, put.Spec.ServiceAccountName))
@@ -546,7 +546,7 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 		// Add pod to the compliant object list
 		if podIsCompliant {
 			compliantObjects = append(compliantObjects,
-				testhelper.NewPodReportObject(put.Namespace, put.Name, "Compliant because all the role bindings used by this pod (applied by the service accounts) live in the same namespace", true))
+				testhelper.NewPodReportObject(put.Namespace, put.Name, "All the role bindings used by this pod (applied by the service accounts) live in the same namespace", true))
 		}
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
@@ -581,9 +581,9 @@ func testPodClusterRoleBindings(env *provider.TestEnvironment) {
 		}
 
 		if podIsCompliant {
-			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Compliant because the pod is not using a cluster role binding", true))
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not using a cluster role binding", true))
 		} else {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Non-compliant because the pod is using a cluster role binding", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is using a cluster role binding", false))
 		}
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
@@ -605,10 +605,10 @@ func testAutomountServiceToken(env *provider.TestEnvironment) {
 		// Evaluate the pod's automount service tokens and any attached service accounts
 		podPassed, newMsg := rbac.EvaluateAutomountTokens(put.Pod)
 		if !podPassed {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, fmt.Sprintf("Non-compliant because %s", newMsg), false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, newMsg, false))
 			msg = append(msg, newMsg)
 		} else {
-			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Compliant because the pod does not have automount service tokens set to true", true))
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod does not have automount service tokens set to true", true))
 		}
 	}
 
@@ -636,21 +636,21 @@ func testOneProcessPerContainer(env *provider.TestEnvironment) {
 		pid, err := crclient.GetPidFromContainer(cut, ocpContext)
 		if err != nil {
 			tnf.ClaimFilePrintf("Could not get PID for: %s, error: %v", cut, err)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, fmt.Sprintf("Non-compliant because %s", err), false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, err.Error(), false))
 			continue
 		}
 
 		nbProcesses, err := getNbOfProcessesInPidNamespace(ocpContext, pid, clientsholder.GetClientsHolder())
 		if err != nil {
 			tnf.ClaimFilePrintf("Could not get number of processes for: %s, error: %v", cut, err)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, fmt.Sprintf("Non-compliant because %s", err), false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, err.Error(), false))
 			continue
 		}
 		if nbProcesses > 1 {
 			tnf.ClaimFilePrintf("%s has more than one process running", cut.String())
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Non-compliant because it has more than one process running", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has more than one process running", false))
 		} else {
-			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Compliant because it has only one process running", true))
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has only one process running", true))
 		}
 	}
 
@@ -667,9 +667,9 @@ func testSYSNiceRealtimeCapability(env *provider.TestEnvironment) {
 		n := env.Nodes[cut.NodeName]
 		if n.IsRTKernel() && !strings.Contains(cut.SecurityContext.Capabilities.String(), "SYS_NICE") {
 			tnf.ClaimFilePrintf("%s has been found running on a realtime kernel enabled node without SYS_NICE capability.", cut.String())
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Non-compliant because it is running on a realtime kernel enabled node without SYS_NICE capability", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is running on a realtime kernel enabled node without SYS_NICE capability", false))
 		} else {
-			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Compliant because it is not running on a realtime kernel enabled node", true))
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is not running on a realtime kernel enabled node", true))
 		}
 	}
 
@@ -694,9 +694,9 @@ func testSysPtraceCapability(shareProcessPods []*provider.Pod) {
 		}
 		if !sysPtraceEnabled {
 			tnf.ClaimFilePrintf("Pod %s has process namespace sharing enabled but no container allowing the SYS_PTRACE capability.", put.String())
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Non-compliant because it has process namespace sharing enabled but no container allowing the SYS_PTRACE capability", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has process namespace sharing enabled but no container allowing the SYS_PTRACE capability", false))
 		} else {
-			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Compliant because it has process namespace sharing enabled and at least one container allowing the SYS_PTRACE capability", true))
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has process namespace sharing enabled and at least one container allowing the SYS_PTRACE capability", true))
 		}
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
@@ -723,9 +723,9 @@ func testNamespaceResourceQuota(env *provider.TestEnvironment) {
 
 		if !foundPodNamespaceRQ {
 			tnf.ClaimFilePrintf("Pod %s is running in a namespace that does not have a ResourceQuota applied.", put.String())
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Non-compliant because it is running in a namespace that does not have a ResourceQuota applied", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is running in a namespace that does not have a ResourceQuota applied", false))
 		} else {
-			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Compliant because it is running in a namespace that has a ResourceQuota applied", true))
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is running in a namespace that has a ResourceQuota applied", true))
 		}
 	}
 
@@ -749,15 +749,15 @@ func testNoSSHDaemonsAllowed(env *provider.TestEnvironment) {
 		listeningPorts, err := netutil.GetListeningPorts(cut)
 		if err != nil {
 			tnf.ClaimFilePrintf("Failed to get the listening ports on %s, err: %v", cut, err)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Non-compliant because it failed to get the listening ports", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Failed to get the listening ports for pod", false))
 			continue
 		}
 
 		if _, ok := listeningPorts[sshPortInfo]; ok {
 			tnf.ClaimFilePrintf("Pod %s is running an SSH daemon", put)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Non-compliant because it is running an SSH daemon", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is running an SSH daemon", false))
 		} else {
-			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Compliant because it is not running an SSH daemon", true))
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not running an SSH daemon", true))
 		}
 	}
 
@@ -773,9 +773,9 @@ func testPodRequestsAndLimits(env *provider.TestEnvironment) {
 	// These need to be defined in order to pass.
 	for _, cut := range env.Containers {
 		if !resources.HasRequestsAndLimitsSet(cut) {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Non-compliant because it is missing resource requests or limits", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is missing resource requests or limits", false))
 		} else {
-			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Compliant because it has resource requests and limits", true))
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has resource requests and limits", true))
 		}
 	}
 
