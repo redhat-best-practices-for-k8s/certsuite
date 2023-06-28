@@ -98,7 +98,7 @@ jobs:
       - name: make vet
         run: make vet
   action-linters:
-    name: Checkmake, hadolint, markdownlint, shellcheck, shfmt, yamllint
+    name: Checkmake, hadolint, markdownlint, shellcheck, shfmt, typos, yamllint
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
@@ -117,6 +117,7 @@ jobs:
       - uses: ludeeus/action-shellcheck@master
       - uses: mfinelli/setup-shfmt@v2
       - run: shfmt -d *.sh script
+      - uses: crate-ci/typos@master
       - uses: ibiqlik/action-yamllint@v3
         with:
           config_data: |

@@ -33,7 +33,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
-	k8sPriviledgedDs "github.com/test-network-function/privileged-daemonset"
+	k8sPrivilegedDs "github.com/test-network-function/privileged-daemonset"
 	"helm.sh/helm/v3/pkg/release"
 	scalingv1 "k8s.io/api/autoscaling/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -174,21 +174,21 @@ func buildImageWithVersion() string {
 }
 
 func deployDaemonSet(namespace string) error {
-	k8sPriviledgedDs.SetDaemonSetClient(clientsholder.GetClientsHolder().K8sClient)
+	k8sPrivilegedDs.SetDaemonSetClient(clientsholder.GetClientsHolder().K8sClient)
 	dsImage := buildImageWithVersion()
 
-	if k8sPriviledgedDs.IsDaemonSetReady(DaemonSetName, namespace, dsImage) {
+	if k8sPrivilegedDs.IsDaemonSetReady(DaemonSetName, namespace, dsImage) {
 		return nil
 	}
 
 	matchLabels := make(map[string]string)
 	matchLabels["name"] = DaemonSetName
 	matchLabels["test-network-function.com/app"] = DaemonSetName
-	_, err := k8sPriviledgedDs.CreateDaemonSet(DaemonSetName, namespace, containerName, dsImage, matchLabels, debugPodsTimeout)
+	_, err := k8sPrivilegedDs.CreateDaemonSet(DaemonSetName, namespace, containerName, dsImage, matchLabels, debugPodsTimeout)
 	if err != nil {
 		return fmt.Errorf("could not deploy tnf daemonset, err=%v", err)
 	}
-	err = k8sPriviledgedDs.WaitDaemonsetReady(namespace, DaemonSetName, debugPodsTimeout)
+	err = k8sPrivilegedDs.WaitDaemonsetReady(namespace, DaemonSetName, debugPodsTimeout)
 	if err != nil {
 		return fmt.Errorf("timed out waiting for tnf daemonset, err=%v", err)
 	}
@@ -301,14 +301,14 @@ func buildTestEnvironment() { //nolint:funlen
 	logrus.Infof("Completed the test environment build process in %.2f seconds", time.Since(start).Seconds())
 }
 
-func updateCrUnderTest(scaleCrUndetTest []autodiscover.ScaleObject) []ScaleObject {
-	var scaleCrUndetTesttTemp []ScaleObject
-	for i := range scaleCrUndetTest {
-		aNewScaleCrUnderTest := ScaleObject{Scale: CrScale{scaleCrUndetTest[i].Scale},
-			GroupResourceSchema: scaleCrUndetTest[i].GroupResourceSchema}
-		scaleCrUndetTesttTemp = append(scaleCrUndetTesttTemp, aNewScaleCrUnderTest)
+func updateCrUnderTest(scaleCrUnderTest []autodiscover.ScaleObject) []ScaleObject {
+	var scaleCrUndeTestTemp []ScaleObject
+	for i := range scaleCrUnderTest {
+		aNewScaleCrUnderTest := ScaleObject{Scale: CrScale{scaleCrUnderTest[i].Scale},
+			GroupResourceSchema: scaleCrUnderTest[i].GroupResourceSchema}
+		scaleCrUndeTestTemp = append(scaleCrUndeTestTemp, aNewScaleCrUnderTest)
 	}
-	return scaleCrUndetTesttTemp
+	return scaleCrUndeTestTemp
 }
 
 func getPodContainers(aPod *corev1.Pod, useIgnoreList bool) (containerList []*Container) {

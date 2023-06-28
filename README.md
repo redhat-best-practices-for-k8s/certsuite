@@ -51,6 +51,7 @@ Golang
 * [`markdownlint`](https://github.com/igorshubovych/markdownlint-cli)
 * [`shellcheck`](https://github.com/koalaman/shellcheck)
 * [`shfmt`](https://github.com/mvdan/sh)
+* [`typos`](https://github.com/crate-ci/typos)
 * [`yamllint`](https://github.com/adrienverge/yamllint)
 
 ## Show Results after finishing of running the test code

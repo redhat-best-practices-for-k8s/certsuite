@@ -107,7 +107,7 @@ func TestHasExecProbes(t *testing.T) {
 			},
 			expectedOutput: true,
 		},
-		{ // Test Case #4 - Container defines a LivenessProbe and a ReadinessProble with HTTP and a StartupProbe with Exec
+		{ // Test Case #4 - Container defines a LivenessProbe and a ReadinessProbe with HTTP and a StartupProbe with Exec
 			testContainer: Container{
 				Container: &corev1.Container{
 					LivenessProbe: &corev1.Probe{
