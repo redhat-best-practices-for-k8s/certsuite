@@ -117,6 +117,7 @@ const (
 	CustomResourceDefinitionName    = "Custom Resource Definition Name"
 	CustomResourceDefinitionVersion = "Custom Resource Definition Version"
 	SCCCapability                   = "SCC Capability"
+	Path                            = "Path"
 
 	// ICMP tests
 	NetworkName              = "Network Name"
@@ -158,8 +159,8 @@ const (
 	ListeningPortType            = "Listening Port"
 	DeclaredPortType             = "Declared Port"
 	ContainerPort                = "Container Port"
-	HostPort                     = "Host Port"
-	HostPath                     = "Host Path"
+	HostPortType                 = "Host Port"
+	HostPathType                 = "Host Path"
 )
 
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {

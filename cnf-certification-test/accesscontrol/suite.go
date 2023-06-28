@@ -356,7 +356,9 @@ func testContainerHostPort(env *provider.TestEnvironment) {
 		for _, aPort := range cut.Ports {
 			if aPort.HostPort != 0 {
 				tnf.ClaimFilePrintf("Host port %d is configured in container %s.", aPort.HostPort, cut.String())
-				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Host port is configured", false).AddField(testhelper.HostPort, strconv.Itoa(int(aPort.HostPort))))
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Host port is configured", false).
+					SetType(testhelper.HostPortType).
+					AddField(testhelper.PortNumber, strconv.Itoa(int(aPort.HostPort))))
 			} else {
 				compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Host port is not configured", true))
 			}
@@ -391,7 +393,9 @@ func testPodHostPath(env *provider.TestEnvironment) {
 			vol := &put.Spec.Volumes[idx]
 			if vol.HostPath != nil && vol.HostPath.Path != "" {
 				tnf.ClaimFilePrintf("Hostpath path: %s is set in pod %s.", vol.HostPath.Path, put.Namespace+"."+put.Name)
-				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Hostpath path is set", false).AddField(testhelper.HostPath, vol.HostPath.Path))
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Hostpath path is set", false).
+					SetType(testhelper.HostPathType).
+					AddField(testhelper.Path, vol.HostPath.Path))
 			} else {
 				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Hostpath path is not set", true))
 			}
