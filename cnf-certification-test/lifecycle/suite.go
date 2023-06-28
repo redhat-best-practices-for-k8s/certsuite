@@ -198,112 +198,141 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 })
 
 func testContainersPreStop(env *provider.TestEnvironment) {
-	badContainers := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " pre stop lifecycle ")
 
 		if cut.Lifecycle == nil || (cut.Lifecycle != nil && cut.Lifecycle.PreStop == nil) {
-			badContainers = append(badContainers, cut.Name)
 			tnf.ClaimFilePrintf("%s does not have preStop defined", cut)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container does not have preStop defined", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has preStop defined", true))
 		}
 	}
-	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testContainersPostStart(env *provider.TestEnvironment) {
-	badContainers := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " post start lifecycle ")
 
 		if cut.Lifecycle == nil || (cut.Lifecycle != nil && cut.Lifecycle.PostStart == nil) {
-			badContainers = append(badContainers, cut.Name)
 			tnf.ClaimFilePrintf("%s does not have postStart defined", cut)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container does not have postStart defined", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has postStart defined", true))
 		}
 	}
-	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testContainersImagePolicy(env *provider.TestEnvironment) {
 	testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
-	badContainers := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " pull policy, should be ", corev1.PullIfNotPresent)
 		if cut.ImagePullPolicy != corev1.PullIfNotPresent {
-			badContainers = append(badContainers, "{"+cut.String()+": is using"+string(cut.ImagePullPolicy)+"}")
 			logrus.Errorln("container ", cut.Name, " is using ", cut.ImagePullPolicy, " as image pull policy")
 			tnf.ClaimFilePrintf("%s is using %s as ImagePullPolicy", cut.String(), cut.ImagePullPolicy)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is not using IfNotPresent as ImagePullPolicy", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is using IfNotPresent as ImagePullPolicy", true))
 		}
 	}
-	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testContainersReadinessProbe(env *provider.TestEnvironment) {
-	badContainers := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " readiness probe ")
 		if cut.ReadinessProbe == nil {
-			badContainers = append(badContainers, cut.String())
 			logrus.Errorln("container ", cut.Name, " does not have ReadinessProbe defined")
 			tnf.ClaimFilePrintf("%s does not have ReadinessProbe defined", cut.String())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container does not have ReadinessProbe defined", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has ReadinessProbe defined", true))
 		}
 	}
-	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testContainersLivenessProbe(env *provider.TestEnvironment) {
-	badContainers := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " liveness probe ")
 		if cut.LivenessProbe == nil {
-			badContainers = append(badContainers, cut.String())
 			logrus.Errorln("container ", cut.Name, " does not have LivenessProbe defined")
 			tnf.ClaimFilePrintf("%s does not have LivenessProbe defined", cut.String())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container does not have LivenessProbe defined", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has LivenessProbe defined", true))
 		}
 	}
-	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testContainersStartupProbe(env *provider.TestEnvironment) {
-	badContainers := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " startup probe ")
 		if cut.StartupProbe == nil {
-			badContainers = append(badContainers, cut.String())
 			logrus.Errorln("container ", cut.Name, " does not have startupProbe defined")
 			tnf.ClaimFilePrintf("%s does not have StartupProbe defined", cut.String())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container does not have StartupProbe defined", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has StartupProbe defined", true))
 		}
 	}
-	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testPodsOwnerReference(env *provider.TestEnvironment) {
 	ginkgo.By("Testing owners of CNF pod, should be replicas Set")
-	badPods := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
 		logrus.Debugln("check pod ", put.Namespace, " ", put.Name, " owner reference")
 		o := ownerreference.NewOwnerReference(put.Pod)
 		o.RunTest()
 		if o.GetResults() != testhelper.SUCCESS {
-			badPods = append(badPods, put.String())
 			tnf.ClaimFilePrintf("%s found with non-compliant owner reference", put.String())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has non-compliant owner reference", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has compliant owner reference", true))
 		}
 	}
-	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testPodNodeSelectorAndAffinityBestPractices(testPods []*provider.Pod) {
-	var badPods []*corev1.Pod
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range testPods {
+		compliantPod := true
 		if put.HasNodeSelector() {
 			tnf.ClaimFilePrintf("ERROR: %s has a node selector. Node selector: %v", put, &put.Spec.NodeSelector)
-			badPods = append(badPods, put.Pod)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has node selector", false))
+			compliantPod = false
 		}
 		if put.Spec.Affinity != nil && put.Spec.Affinity.NodeAffinity != nil {
 			tnf.ClaimFilePrintf("ERROR: %s has a node affinity clause. Node affinity: %v", put, put.Spec.Affinity.NodeAffinity)
-			badPods = append(badPods, put.Pod)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has node affinity", false))
+			compliantPod = false
+		}
+
+		if compliantPod {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has no node selector or affinity", true))
 		}
 	}
-	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func nameInDeploymentSkipList(name, namespace string, list []configuration.SkipScalingTestDeploymentsInfo) bool {
@@ -328,14 +357,15 @@ func nameInStatefulSetSkipList(name, namespace string, list []configuration.Skip
 func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration) {
 	ginkgo.By("Testing deployment scaling")
 	defer env.SetNeedsRefresh()
-	failedDeployments := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for i := range env.Deployments {
 		if scaling.IsManaged(env.Deployments[i].Name, env.Config.ManagedDeployments) {
 			if !scaling.CheckOwnerReference(env.Deployments[i].GetOwnerReferences(), env.Config.CrdFilters, env.Crds) {
-				failedDeployments = append(failedDeployments, env.Deployments[i].ToString())
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewDeploymentReportObject(env.Deployments[i].Namespace, env.Deployments[i].Name, "Deployment is not scalable", false))
 				tnf.ClaimFilePrintf("%s is scaling failed due to OwnerReferences that are not scalable", env.Deployments[i].ToString())
 			} else {
-				logrus.Infof("%s is scaling skipped due to scalable OwnerReferences, test will run on te cr scaling", env.Deployments[i].ToString())
+				logrus.Infof("%s is scaling skipped due to scalable OwnerReferences, test will run on the cr scaling", env.Deployments[i].ToString())
 			}
 			continue
 		}
@@ -353,54 +383,60 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration)
 			// horizontal scaler, then test that scaler
 			// can scale the deployment
 			if !scaling.TestScaleHpaDeployment(env.Deployments[i], hpa, timeout) {
-				failedDeployments = append(failedDeployments, env.Deployments[i].ToString())
 				tnf.ClaimFilePrintf("Deployment has failed the HPA scale test: %s", env.Deployments[i].ToString())
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewDeploymentReportObject(env.Deployments[i].Namespace, env.Deployments[i].Name, "Deployment has failed the HPA scale test", false))
 			}
 			continue
 		}
 		// if the deployment is not controller by HPA
 		// scale it directly
 		if !scaling.TestScaleDeployment(env.Deployments[i].Deployment, timeout) {
-			failedDeployments = append(failedDeployments, env.Deployments[i].ToString())
 			tnf.ClaimFilePrintf("Deployment has failed the non-HPA scale test: %s", env.Deployments[i].ToString())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewDeploymentReportObject(env.Deployments[i].Namespace, env.Deployments[i].Name, "Deployment has failed the non-HPA scale test", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewDeploymentReportObject(env.Deployments[i].Namespace, env.Deployments[i].Name, "Deployment is scalable", true))
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", failedDeployments, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testScaleCrd(env *provider.TestEnvironment, timeout time.Duration) {
 	ginkgo.By("Testing deployment scaling")
 	defer env.SetNeedsRefresh()
-	failedcrd := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for i := range env.ScaleCrUnderTest {
 		groupResourceSchema := env.ScaleCrUnderTest[i].GroupResourceSchema
 		scaleCr := env.ScaleCrUnderTest[i].Scale
 		if hpa := scaling.GetResourceHPA(env.HorizontalScaler, scaleCr.Name, scaleCr.Namespace, scaleCr.Kind); hpa != nil {
 			if !scaling.TestScaleHPACrd(&scaleCr, hpa, groupResourceSchema, timeout) {
 				tnf.ClaimFilePrintf("cr found to have failed the scaling test: %s", scaleCr.GetName())
-				failedcrd = append(failedcrd, scaleCr.ToString())
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewCrdReportObject(scaleCr.Namespace, scaleCr.Name, "cr found to have failed the scaling test", false))
 			}
 			continue
 		}
 		if !scaling.TestScaleCrd(&scaleCr, groupResourceSchema, timeout) {
-			failedcrd = append(failedcrd, scaleCr.ToString())
 			tnf.ClaimFilePrintf("CR has failed the non-HPA scale test: %s", scaleCr.GetName())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewCrdReportObject(scaleCr.Namespace, scaleCr.Name, "CR has failed the non-HPA scale test", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewCrdReportObject(scaleCr.Namespace, scaleCr.Name, "CR is scalable", true))
 		}
 	}
-	testhelper.AddTestResultLog("Non-compliant", failedcrd, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 //nolint:dupl
 func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration) {
 	ginkgo.By("Testing statefulset scaling")
 	defer env.SetNeedsRefresh()
-	failedStatefulSets := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for i := range env.StatefulSets {
 		if scaling.IsManaged(env.StatefulSets[i].Name, env.Config.ManagedStatefulsets) {
 			if !scaling.CheckOwnerReference(env.StatefulSets[i].GetOwnerReferences(), env.Config.CrdFilters, env.Crds) {
-				failedStatefulSets = append(failedStatefulSets, env.StatefulSets[i].ToString())
 				tnf.ClaimFilePrintf("%s is scaling failed due to OwnerReferences that are not scalable", env.Deployments[i].ToString())
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewStatefulSetReportObject(env.StatefulSets[i].Namespace, env.StatefulSets[i].Name, "StatefulSet has OwnerReferences that are not scalable", false))
 			} else {
 				logrus.Infof("%s is scaling skipped due to scalable OwnerReferences, test will run on te cr scaling", env.StatefulSets[i].ToString())
 			}
@@ -421,7 +457,7 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 			// can scale the statefulset
 			if !scaling.TestScaleHpaStatefulSet(env.StatefulSets[i].StatefulSet, hpa, timeout) {
 				tnf.ClaimFilePrintf("StatefulSet found to have failed the scaling test: %s", env.StatefulSets[i].ToString())
-				failedStatefulSets = append(failedStatefulSets, env.StatefulSets[i].ToString())
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewStatefulSetReportObject(env.StatefulSets[i].Namespace, env.StatefulSets[i].Name, "StatefulSet found to have failed the scaling test", false))
 			}
 			continue
 		}
@@ -429,23 +465,28 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 		// scale it directly
 		if !scaling.TestScaleStatefulSet(env.StatefulSets[i].StatefulSet, timeout) {
 			tnf.ClaimFilePrintf("StatefulSet found to have failed the scaling test: %s", env.StatefulSets[i].ToString())
-			failedStatefulSets = append(failedStatefulSets, env.StatefulSets[i].ToString())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewStatefulSetReportObject(env.StatefulSets[i].Namespace, env.StatefulSets[i].Name, "StatefulSet found to have failed the scaling test", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewStatefulSetReportObject(env.StatefulSets[i].Namespace, env.StatefulSets[i].Name, "StatefulSet is scalable", true))
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", failedStatefulSets, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // testHighAvailability
+//
+//nolint:funlen
 func testHighAvailability(env *provider.TestEnvironment) {
 	ginkgo.By("Should set pod replica number greater than 1")
 
-	badDeployments := []string{}
-	badStatefulSet := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, dp := range env.Deployments {
+		compliantDeployment := true
 		if dp.Spec.Replicas == nil || *(dp.Spec.Replicas) <= 1 {
-			badDeployments = append(badDeployments, dp.ToString())
 			tnf.ClaimFilePrintf("Deployment found without valid high availability: %s", dp.ToString())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewDeploymentReportObject(dp.Namespace, dp.Name, "Deployment found without valid high availability", false))
 			continue
 		}
 
@@ -457,14 +498,20 @@ func testHighAvailability(env *provider.TestEnvironment) {
 
 		if dp.Spec.Template.Spec.Affinity == nil ||
 			dp.Spec.Template.Spec.Affinity.PodAntiAffinity == nil {
-			badDeployments = append(badDeployments, dp.ToString())
 			tnf.ClaimFilePrintf("Deployment found without valid high availability: %s", dp.ToString())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewDeploymentReportObject(dp.Namespace, dp.Name, "Deployment found without valid high availability", false))
+			compliantDeployment = false
+		}
+
+		if compliantDeployment {
+			compliantObjects = append(compliantObjects, testhelper.NewDeploymentReportObject(dp.Namespace, dp.Name, "Deployment has valid high availability", true))
 		}
 	}
 	for _, st := range env.StatefulSets {
+		compliantStatefulSet := true
 		if st.Spec.Replicas == nil || *(st.Spec.Replicas) <= 1 {
-			badStatefulSet = append(badStatefulSet, st.ToString())
 			tnf.ClaimFilePrintf("StatefulSet found without valid high availability: %s", st.ToString())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewStatefulSetReportObject(st.Namespace, st.Name, "StatefulSet found without valid high availability", false))
 			continue
 		}
 
@@ -475,13 +522,16 @@ func testHighAvailability(env *provider.TestEnvironment) {
 
 		if st.Spec.Template.Spec.Affinity == nil ||
 			st.Spec.Template.Spec.Affinity.PodAntiAffinity == nil {
-			badStatefulSet = append(badStatefulSet, st.ToString())
 			tnf.ClaimFilePrintf("StatefulSet found without valid high availability: %s", st.ToString())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewStatefulSetReportObject(st.Namespace, st.Name, "StatefulSet found without valid high availability", false))
+		}
+
+		if compliantStatefulSet {
+			compliantObjects = append(compliantObjects, testhelper.NewStatefulSetReportObject(st.Namespace, st.Name, "StatefulSet has valid high availability", true))
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", badDeployments, tnf.ClaimFilePrintf, ginkgo.Fail)
-	testhelper.AddTestResultLog("Non-compliant", badStatefulSet, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // testPodsRecreation tests that pods belonging to deployments and statefulsets are re-created and ready in case a node is lost
@@ -560,10 +610,12 @@ func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 
 func testPodPersistentVolumeReclaimPolicy(env *provider.TestEnvironment) {
 	ginkgo.By("Testing PersistentVolumes for reclaim policy to be set to delete")
-	var persistentVolumesBadReclaim []string
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 
 	// Look through all of the pods, matching their persistent volumes to the list of overall cluster PVs and checking their reclaim status.
 	for _, put := range env.Pods {
+		compliantPod := true
 		// Loop through all of the volumes attached to the pod.
 		for pvIndex := range put.Spec.Volumes {
 			// Skip any volumes that do not have a PVC.  No need to test them.
@@ -573,16 +625,21 @@ func testPodPersistentVolumeReclaimPolicy(env *provider.TestEnvironment) {
 
 			// If the Pod Volume is not tied back to a PVC and corresponding PV that has a reclaim policy of DELETE.
 			if !volumes.IsPodVolumeReclaimPolicyDelete(&put.Spec.Volumes[pvIndex], env.PersistentVolumes, env.PersistentVolumeClaims) {
-				persistentVolumesBadReclaim = append(persistentVolumesBadReclaim, put.String())
 				tnf.ClaimFilePrintf("%s contains volume: %s has been found without a reclaim policy of DELETE.", put.String(), &put.Spec.Volumes[pvIndex].Name)
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod contains volume without a reclaim policy of DELETE", false).
+					AddField(testhelper.PersistentVolumeName, put.Spec.Volumes[pvIndex].Name).
+					AddField(testhelper.PersistentVolumeClaimName, put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName))
+				compliantPod = false
 				break
 			}
 		}
+
+		if compliantPod {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod complies with volume reclaim policy rules", true))
+		}
 	}
 
-	if n := len(persistentVolumesBadReclaim); n > 0 {
-		testhelper.AddTestResultLog("Non-compliant", persistentVolumesBadReclaim, tnf.ClaimFilePrintf, ginkgo.Fail)
-	}
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testCPUIsolation(env *provider.TestEnvironment) {
@@ -596,52 +653,65 @@ func testCPUIsolation(env *provider.TestEnvironment) {
 	// - 'runtimeClassName' must be specified
 	// - Annotations must be provided disabling CPU and IRQ load-balancing.
 
-	podsMissingIsolationRequirements := make(map[string]bool)
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 
 	for _, put := range env.GetGuaranteedPodsWithExclusiveCPUs() {
 		if !put.IsCPUIsolationCompliant() {
-			podsMissingIsolationRequirements[put.Name] = true
+			tnf.ClaimFilePrintf("%s is not CPU isolated", put.String())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not CPU isolated", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is CPU isolated", true))
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", podsMissingIsolationRequirements, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testAffinityRequiredPods(env *provider.TestEnvironment) {
 	ginkgo.By("Testing affinity required pods for ")
 	testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetAffinityRequiredPods())
 
-	var podsDesiringAffinityRequiredMissingLabel []*provider.Pod
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.GetAffinityRequiredPods() {
 		// Check if the pod is Affinity compliant.
 		result, err := put.IsAffinityCompliant()
 		if !result {
 			tnf.ClaimFilePrintf(err.Error())
-			podsDesiringAffinityRequiredMissingLabel = append(podsDesiringAffinityRequiredMissingLabel, put)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not Affinity compliant", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is Affinity compliant", true))
 		}
 	}
-	testhelper.AddTestResultLog("Non-compliant", podsDesiringAffinityRequiredMissingLabel, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testPodTolerationBypass(env *provider.TestEnvironment) {
-	var podsWithRestrictedTolerationsNotDefault []string
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 
 	for _, put := range env.Pods {
 		for _, t := range put.Spec.Tolerations {
 			// Check if the tolerations fall outside the 'default' and are modified versions
 			// Take also into account the qosClass applied to the pod
 			if tolerations.IsTolerationModified(t, put.Status.QOSClass) {
-				podsWithRestrictedTolerationsNotDefault = append(podsWithRestrictedTolerationsNotDefault, put.String())
 				tnf.ClaimFilePrintf("%s has been found with non-default toleration %s/%s which is not allowed.", put.String(), t.Key, t.Effect)
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has non-default toleration", false).
+					AddField(testhelper.TolerationKey, t.Key).
+					AddField(testhelper.TolerationEffect, string(t.Effect)))
+			} else {
+				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has default toleration", true))
 			}
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", podsWithRestrictedTolerationsNotDefault, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 func testStorageRequiredPods(env *provider.TestEnvironment) {
 	const localStorageProvisioner = "kubernetes.io/no-provisioner"
-	var podsWithLocalStorage []string
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	var StorageClasses = env.StorageClassList
 	var Pvc = env.PersistentVolumeClaims
 	for _, put := range env.Pods {
@@ -663,18 +733,21 @@ func testStorageRequiredPods(env *provider.TestEnvironment) {
 						if Pvc[i].Spec.StorageClassName != nil && StorageClasses[j].Name == *Pvc[i].Spec.StorageClassName {
 							tnf.ClaimFilePrintf("%s has been found to use a local storage enabled storageClass.\n Pvc_name: %s, Storageclass_name : %s, Provisioner_name: %s", put.String(), put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName,
 								StorageClasses[j].Name, StorageClasses[j].Provisioner)
-							podsWithLocalStorage = append(podsWithLocalStorage, put.String())
+							nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has found to use a local storage enabled storageClass", false).
+								AddField(testhelper.StorageClassName, StorageClasses[j].Name).
+								AddField(testhelper.StorageClassProvisioner, StorageClasses[j].Provisioner).
+								AddField(testhelper.PersistentVolumeClaimName, put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName))
 							break
 						}
+
 						tnf.ClaimFilePrintf("%s has been not found to use a local storage enabled storageClass.\n Pvc_name: %s, Storageclass_name : %s, Provisioner_name: %s", put.String(), put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName,
 							StorageClasses[j].Name, StorageClasses[j].Provisioner)
+						compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod does not use a local storage enabled storageClass", true))
 					}
 				}
 			}
 		}
 	}
 
-	if n := len(podsWithLocalStorage); n > 0 {
-		testhelper.AddTestResultLog("Non-compliant", podsWithLocalStorage, tnf.ClaimFilePrintf, ginkgo.Fail)
-	}
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
