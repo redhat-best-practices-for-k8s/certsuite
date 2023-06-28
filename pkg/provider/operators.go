@@ -84,7 +84,7 @@ func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
 	if err != nil {
 		return err
 	}
-	ctx := artifacts.ContextWithWriter(context.Background(), artifactsWriter)
+	ctx := artifacts.ContextWithWriter(context.TODO(), artifactsWriter)
 	opts := []plibOperator.Option{}
 	opts = append(opts, plibOperator.WithDockerConfigJSONFromFile(env.GetDockerConfigFile()))
 	if env.IsPreflightInsecureAllowed() {
