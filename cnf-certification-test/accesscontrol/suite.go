@@ -18,6 +18,7 @@ package accesscontrol
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/onsi/ginkgo/v2"
@@ -267,33 +268,38 @@ func testProjectedVolumeServiceAccount(env *provider.TestEnvironment) {
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
-func checkForbiddenCapability(containers []*provider.Container, capability string) []string {
-	var badContainers []string
+func checkForbiddenCapability(containers []*provider.Container, capability string) (compliantObjects, nonCompliantObjects []*testhelper.ReportObject) {
 	for _, cut := range containers {
 		if cut.SecurityContext != nil && cut.SecurityContext.Capabilities != nil {
 			if strings.Contains(cut.SecurityContext.Capabilities.String(), capability) {
 				tnf.ClaimFilePrintf("Non compliant %s capability detected in container %s. All container caps: %s", capability, cut.String(), cut.SecurityContext.Capabilities.String())
-				badContainers = append(badContainers, cut.String())
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Non compliant capability detected in container", false).AddField(testhelper.SCCCapability, capability))
+			} else {
+				compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "No forbidden capabilities detected in container", true))
 			}
 		}
 	}
-	return badContainers
+	return compliantObjects, nonCompliantObjects
 }
 
 func testSysAdminCapability(env *provider.TestEnvironment) {
-	testhelper.AddTestResultLog("Non-compliant", checkForbiddenCapability(env.Containers, "SYS_ADMIN"), tnf.ClaimFilePrintf, ginkgo.Fail)
+	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "SYS_ADMIN")
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testNetAdminCapability(env *provider.TestEnvironment) {
-	testhelper.AddTestResultLog("Non-compliant", checkForbiddenCapability(env.Containers, "NET_ADMIN"), tnf.ClaimFilePrintf, ginkgo.Fail)
+	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "NET_ADMIN")
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testNetRawCapability(env *provider.TestEnvironment) {
-	testhelper.AddTestResultLog("Non-compliant", checkForbiddenCapability(env.Containers, "NET_RAW"), tnf.ClaimFilePrintf, ginkgo.Fail)
+	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "NET_RAW")
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testIpcLockCapability(env *provider.TestEnvironment) {
-	testhelper.AddTestResultLog("Non-compliant", checkForbiddenCapability(env.Containers, "IPC_LOCK"), tnf.ClaimFilePrintf, ginkgo.Fail)
+	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "IPC_LOCK")
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // testSecConRootUser verifies that the container is not running as root
@@ -326,131 +332,164 @@ func testSecConRootUser(env *provider.TestEnvironment) {
 
 // testSecConPrivilegeEscalation verifies that the container is not allowed privilege escalation
 func testSecConPrivilegeEscalation(env *provider.TestEnvironment) {
-	var badContainers []string
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
 		if cut.SecurityContext != nil && cut.SecurityContext.AllowPrivilegeEscalation != nil {
 			if *(cut.SecurityContext.AllowPrivilegeEscalation) {
 				tnf.ClaimFilePrintf("AllowPrivilegeEscalation is set to true in container %s.", cut.Podname+"."+cut.Name)
-				badContainers = append(badContainers, cut.Podname+"."+cut.Name)
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "AllowPrivilegeEscalation is set to true", false))
+			} else {
+				compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "AllowPrivilegeEscalation is set to false", true))
 			}
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // testContainerHostPort tests that containers are not configured with host port privileges
 func testContainerHostPort(env *provider.TestEnvironment) {
-	var badContainers []string
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
 		for _, aPort := range cut.Ports {
 			if aPort.HostPort != 0 {
 				tnf.ClaimFilePrintf("Host port %d is configured in container %s.", aPort.HostPort, cut.String())
-				badContainers = append(badContainers, cut.String())
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Host port is configured", false).
+					SetType(testhelper.HostPortType).
+					AddField(testhelper.PortNumber, strconv.Itoa(int(aPort.HostPort))))
+			} else {
+				compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Host port is not configured", true))
 			}
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // testPodHostNetwork verifies that the pod hostNetwork parameter is not set to true
 func testPodHostNetwork(env *provider.TestEnvironment) {
-	var badPods []string
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
 		if put.Spec.HostNetwork {
 			tnf.ClaimFilePrintf("Host network is set to true in pod %s.", put.Namespace+"."+put.Name)
-			badPods = append(badPods, put.Namespace+"."+put.Name)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Host network is set to true", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Host network is not set to true", true))
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // testPodHostPath verifies that the pod hostpath parameter is not set to true
 func testPodHostPath(env *provider.TestEnvironment) {
-	var badPods []string
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
 		for idx := range put.Spec.Volumes {
 			vol := &put.Spec.Volumes[idx]
 			if vol.HostPath != nil && vol.HostPath.Path != "" {
 				tnf.ClaimFilePrintf("Hostpath path: %s is set in pod %s.", vol.HostPath.Path, put.Namespace+"."+put.Name)
-				badPods = append(badPods, put.Namespace+"."+put.Name)
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Hostpath path is set", false).
+					SetType(testhelper.HostPathType).
+					AddField(testhelper.Path, vol.HostPath.Path))
+			} else {
+				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Hostpath path is not set", true))
 			}
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // testPodHostIPC verifies that the pod hostIpc parameter is not set to true
 func testPodHostIPC(env *provider.TestEnvironment) {
-	var badPods []string
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
 		if put.Spec.HostIPC {
 			tnf.ClaimFilePrintf("HostIpc is set in pod %s.", put.Namespace+"."+put.Name)
-			badPods = append(badPods, put.Namespace+"."+put.Name)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "HostIpc is set to true", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "HostIpc is not set to true", true))
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // testPodHostPID verifies that the pod hostPid parameter is not set to true
 func testPodHostPID(env *provider.TestEnvironment) {
-	var badPods []string
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
 		if put.Spec.HostPID {
 			tnf.ClaimFilePrintf("HostPid is set in pod %s.", put.Namespace+"."+put.Name)
-			badPods = append(badPods, put.Namespace+"."+put.Name)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "HostPid is set to true", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "HostPid is not set to true", true))
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // Tests namespaces for invalid prefixed and CRs are not defined in namespaces not under test with CRDs under test
 func testNamespace(env *provider.TestEnvironment) {
 	ginkgo.By(fmt.Sprintf("CNF resources' Namespaces should not have any of the following prefixes: %v", invalidNamespacePrefixes))
-	var failedNamespaces []string
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, namespace := range env.Namespaces {
 		ginkgo.By(fmt.Sprintf("Checking namespace %s", namespace))
 		for _, invalidPrefix := range invalidNamespacePrefixes {
 			if strings.HasPrefix(namespace, invalidPrefix) {
 				tnf.ClaimFilePrintf("Namespace %s has invalid prefix %s", namespace, invalidPrefix)
-				failedNamespaces = append(failedNamespaces, namespace)
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNamespacedReportObject("Namespace has invalid prefix", testhelper.Namespace, false, namespace))
+			} else {
+				compliantObjects = append(compliantObjects, testhelper.NewNamespacedReportObject("Namespace has valid prefix", testhelper.Namespace, true, namespace))
 			}
 		}
 	}
-	if failedNamespacesNum := len(failedNamespaces); failedNamespacesNum > 0 {
-		ginkgo.Fail(fmt.Sprintf("Found %d Namespaces with an invalid prefix.", failedNamespacesNum))
+	if failedNamespacesNum := len(nonCompliantObjects); failedNamespacesNum > 0 {
+		testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 	}
 	ginkgo.By(fmt.Sprintf("CNF pods should belong to any of the configured Namespaces: %v", env.Namespaces))
 	ginkgo.By(fmt.Sprintf("CRs from autodiscovered CRDs should belong only to the configured Namespaces: %v", env.Namespaces))
 	invalidCrs, err := namespace.TestCrsNamespaces(env.Crds, env.Namespaces)
 	if err != nil {
+		// Note: Leaving this as a direct call to Ginkgo fail instead of using the testhelper
 		ginkgo.Fail("error retrieving CRs")
 	}
 
 	invalidCrsNum, claimsLog := namespace.GetInvalidCRsNum(invalidCrs)
 	if invalidCrsNum > 0 && len(claimsLog.GetLogLines()) > 0 {
 		tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
-		ginkgo.Fail(fmt.Sprintf("Found %d CRs belonging to invalid namespaces.", invalidCrsNum))
+		nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("CRs are not in the configured namespaces", testhelper.Namespace, false))
+	} else {
+		compliantObjects = append(compliantObjects, testhelper.NewReportObject("CRs are in the configured namespaces", testhelper.Namespace, true))
 	}
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // testPodServiceAccount verifies that the pod utilizes a valid service account
 func testPodServiceAccount(env *provider.TestEnvironment) {
 	ginkgo.By("Tests that each pod utilizes a valid service account")
-	failedPods := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
 		ginkgo.By(fmt.Sprintf("Testing service account for pod %s (ns: %s)", put.Name, put.Namespace))
 		if put.Spec.ServiceAccountName == defaultServiceAccount {
-			tnf.ClaimFilePrintf("Pod %s (ns: %s) doesn't have a service account name.", put.Name, put.Namespace)
-			failedPods = append(failedPods, put.Name)
+			tnf.ClaimFilePrintf("Pod %s (ns: %s) does not have a service account name.", put.Name, put.Namespace)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod does not have a service account name", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has a service account name", true))
 		}
 	}
-	testhelper.AddTestResultLog("Non-compliant", failedPods, tnf.ClaimFilePrintf, ginkgo.Fail)
+
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 // testPodRoleBindings verifies that the pod utilizes a valid role binding that does not cross namespaces
@@ -469,7 +508,7 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 			// Add the pod to the non-compliant list
 			nonCompliantObjects = append(nonCompliantObjects,
 				testhelper.NewPodReportObject(put.Namespace, put.Name,
-					"Non-compliant because the pod namespace is either empty or default", false))
+					"The pod namespace is either empty or default", false))
 			podIsCompliant = false
 		} else {
 			logrus.Infof("%s has a serviceAccountName: %s, checking role bindings.", put.String(), put.Spec.ServiceAccountName)
@@ -493,7 +532,7 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 						// Add the pod to the non-compliant list
 						nonCompliantObjects = append(nonCompliantObjects,
 							testhelper.NewPodReportObject(put.Namespace, put.Name,
-								"Non-compliant because the role bindings used by this pod do not live in the same namespace", false).
+								"The role bindings used by this pod do not live in the same namespace", false).
 								AddField(testhelper.RoleBindingName, env.RoleBindings[rbIndex].Name).
 								AddField(testhelper.RoleBindingNamespace, env.RoleBindings[rbIndex].Namespace).
 								AddField(testhelper.ServiceAccountName, put.Spec.ServiceAccountName))
@@ -511,7 +550,7 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 		// Add pod to the compliant object list
 		if podIsCompliant {
 			compliantObjects = append(compliantObjects,
-				testhelper.NewPodReportObject(put.Namespace, put.Name, "Compliant because all the role bindings used by this pod (applied by the service accounts) live in the same namespace", true))
+				testhelper.NewPodReportObject(put.Namespace, put.Name, "All the role bindings used by this pod (applied by the service accounts) live in the same namespace", true))
 		}
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
@@ -546,9 +585,9 @@ func testPodClusterRoleBindings(env *provider.TestEnvironment) {
 		}
 
 		if podIsCompliant {
-			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Compliant because the pod is not using a cluster role binding", true))
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not using a cluster role binding", true))
 		} else {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Non-compliant because the pod is using a cluster role binding", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is using a cluster role binding", false))
 		}
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
@@ -558,7 +597,8 @@ func testAutomountServiceToken(env *provider.TestEnvironment) {
 	ginkgo.By("Should have automountServiceAccountToken set to false")
 
 	msg := []string{}
-	failedPods := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
 		ginkgo.By(fmt.Sprintf("check the existence of pod service account %s (ns= %s )", put.Namespace, put.Name))
 		if put.Spec.ServiceAccountName == defaultServiceAccount {
@@ -569,8 +609,10 @@ func testAutomountServiceToken(env *provider.TestEnvironment) {
 		// Evaluate the pod's automount service tokens and any attached service accounts
 		podPassed, newMsg := rbac.EvaluateAutomountTokens(put.Pod)
 		if !podPassed {
-			failedPods = append(failedPods, put.Name)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, newMsg, false))
 			msg = append(msg, newMsg)
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod does not have automount service tokens set to true", true))
 		}
 	}
 
@@ -578,11 +620,12 @@ func testAutomountServiceToken(env *provider.TestEnvironment) {
 		tnf.ClaimFilePrintf(strings.Join(msg, ""))
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", failedPods, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testOneProcessPerContainer(env *provider.TestEnvironment) {
-	var badContainers []string
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 
 	for _, cut := range env.Containers {
 		// the Istio sidecar container "istio-proxy" launches two processes: "pilot-agent" and "envoy"
@@ -597,27 +640,30 @@ func testOneProcessPerContainer(env *provider.TestEnvironment) {
 		pid, err := crclient.GetPidFromContainer(cut, ocpContext)
 		if err != nil {
 			tnf.ClaimFilePrintf("Could not get PID for: %s, error: %v", cut, err)
-			badContainers = append(badContainers, cut.String())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, err.Error(), false))
 			continue
 		}
 
 		nbProcesses, err := getNbOfProcessesInPidNamespace(ocpContext, pid, clientsholder.GetClientsHolder())
 		if err != nil {
 			tnf.ClaimFilePrintf("Could not get number of processes for: %s, error: %v", cut, err)
-			badContainers = append(badContainers, cut.String())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, err.Error(), false))
 			continue
 		}
 		if nbProcesses > 1 {
 			tnf.ClaimFilePrintf("%s has more than one process running", cut.String())
-			badContainers = append(badContainers, cut.String())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has more than one process running", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has only one process running", true))
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testSYSNiceRealtimeCapability(env *provider.TestEnvironment) {
-	var containersWithoutSysNice []string
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 
 	// Loop through all of the labeled containers and compare their security context capabilities and whether
 	// or not the node's kernel is realtime enabled.
@@ -625,15 +671,18 @@ func testSYSNiceRealtimeCapability(env *provider.TestEnvironment) {
 		n := env.Nodes[cut.NodeName]
 		if n.IsRTKernel() && !strings.Contains(cut.SecurityContext.Capabilities.String(), "SYS_NICE") {
 			tnf.ClaimFilePrintf("%s has been found running on a realtime kernel enabled node without SYS_NICE capability.", cut.String())
-			containersWithoutSysNice = append(containersWithoutSysNice, cut.String())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is running on a realtime kernel enabled node without SYS_NICE capability", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is not running on a realtime kernel enabled node", true))
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", containersWithoutSysNice, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testSysPtraceCapability(shareProcessPods []*provider.Pod) {
-	var podsWithoutSysPtrace []string
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range shareProcessPods {
 		sysPtraceEnabled := false
 		for _, cut := range put.Containers {
@@ -649,14 +698,17 @@ func testSysPtraceCapability(shareProcessPods []*provider.Pod) {
 		}
 		if !sysPtraceEnabled {
 			tnf.ClaimFilePrintf("Pod %s has process namespace sharing enabled but no container allowing the SYS_PTRACE capability.", put.String())
-			podsWithoutSysPtrace = append(podsWithoutSysPtrace, put.String())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has process namespace sharing enabled but no container allowing the SYS_PTRACE capability", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has process namespace sharing enabled and at least one container allowing the SYS_PTRACE capability", true))
 		}
 	}
-	testhelper.AddTestResultLog("Non-compliant", podsWithoutSysPtrace, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testNamespaceResourceQuota(env *provider.TestEnvironment) {
-	var namespacesMissingQuotas []string
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	ginkgo.By("Testing namespace resource quotas")
 
 	for _, put := range env.Pods {
@@ -674,12 +726,14 @@ func testNamespaceResourceQuota(env *provider.TestEnvironment) {
 		}
 
 		if !foundPodNamespaceRQ {
-			namespacesMissingQuotas = append(namespacesMissingQuotas, put.String())
 			tnf.ClaimFilePrintf("Pod %s is running in a namespace that does not have a ResourceQuota applied.", put.String())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is running in a namespace that does not have a ResourceQuota applied", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is running in a namespace that has a ResourceQuota applied", true))
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", namespacesMissingQuotas, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 const (
@@ -688,8 +742,8 @@ const (
 )
 
 func testNoSSHDaemonsAllowed(env *provider.TestEnvironment) {
-	var badPods []string
-	var errPods []string
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 
 	sshPortInfo := netutil.PortInfo{PortNumber: sshServicePortNumber, Protocol: sshServicePortProtocol}
 
@@ -699,33 +753,37 @@ func testNoSSHDaemonsAllowed(env *provider.TestEnvironment) {
 		listeningPorts, err := netutil.GetListeningPorts(cut)
 		if err != nil {
 			tnf.ClaimFilePrintf("Failed to get the listening ports on %s, err: %v", cut, err)
-			errPods = append(errPods, put.String())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Failed to get the listening ports for pod", false))
 			continue
 		}
 
 		if _, ok := listeningPorts[sshPortInfo]; ok {
 			tnf.ClaimFilePrintf("Pod %s is running an SSH daemon", put)
-			badPods = append(badPods, put.String())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is running an SSH daemon", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not running an SSH daemon", true))
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
-	testhelper.AddTestResultLog("Error", errPods, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testPodRequestsAndLimits(env *provider.TestEnvironment) {
-	var containersMissingRequestsOrLimits []string
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	ginkgo.By("Testing container resource requests and limits")
 
 	// Loop through the containers, looking for containers that are missing requests or limits.
 	// These need to be defined in order to pass.
 	for _, cut := range env.Containers {
 		if !resources.HasRequestsAndLimitsSet(cut) {
-			containersMissingRequestsOrLimits = append(containersMissingRequestsOrLimits, cut.String())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is missing resource requests or limits", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has resource requests and limits", true))
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", containersMissingRequestsOrLimits, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func test1337UIDs(env *provider.TestEnvironment) {

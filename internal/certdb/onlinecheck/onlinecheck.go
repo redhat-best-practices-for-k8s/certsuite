@@ -33,7 +33,7 @@ import (
 
 // Endpoints document can be found here
 // https://docs.engineering.redhat.com/pages/viewpage.action?spaceKey=EXD&title=Pyxis
-// There are external and internal endpoints. External doesn't need authentication
+// There are external and internal endpoints. External does not need authentication
 // Here we are using only External endpoint to collect published containers and operator information
 
 const apiCatalogByRepositoriesBaseEndPoint = "https://catalog.redhat.com/api/containers/v1/repositories/registry/registry.access.redhat.com/repository"

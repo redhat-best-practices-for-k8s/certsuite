@@ -566,7 +566,7 @@ func TestPositiveMachineConfigKernelArgsHugepages(t *testing.T) {
 									 /host/sys/devices/system/node/node1/hugepages/hugepages-1048576kB/nr_hugepages count:8`,
 			mcKernelArgs: []string{"hugepagesz=2M", "hugepages=256", "hugepagesz=1G", "hugepages=16"},
 		},
-		// Node has two numas and two sizes, with hugepages count on the first numa only. The second numa doesn't have any
+		// Node has two numas and two sizes, with hugepages count on the first numa only. The second numa does not have any
 		// hugepages for any size.
 		{
 			nodeHugePagesCmdOutput: `/host/sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages count:256
@@ -575,7 +575,7 @@ func TestPositiveMachineConfigKernelArgsHugepages(t *testing.T) {
 									 /host/sys/devices/system/node/node1/hugepages/hugepages-1048576kB/nr_hugepages count:0`,
 			mcKernelArgs: []string{"hugepagesz=1G", "hugepages=16", "hugepagesz=2M", "hugepages=256"},
 		},
-		// Node has two numas and two sizes, with hugepages count on the second numa only. The first numa doesn't have any
+		// Node has two numas and two sizes, with hugepages count on the second numa only. The first numa does not have any
 		// hugepages for any size.
 		{
 			nodeHugePagesCmdOutput: `/host/sys/devices/system/node/node0/hugepages/hugepages-2048kB/nr_hugepages count:0

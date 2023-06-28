@@ -778,7 +778,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		common.AccessControlTestKey,
 		`Tests that all CNF's resources (PUTs and CRs) belong to valid namespaces. A valid namespace meets
 the following conditions: (1) It was declared in the yaml config file under the targetNameSpaces
-tag. (2) It doesn't have any of the following prefixes: default, openshift-, istio- and aspenmesh-`,
+tag. (2) It does not have any of the following prefixes: default, openshift-, istio- and aspenmesh-`,
 		NamespaceBestPracticesRemediation,
 		NoExceptions,
 		TestNamespaceBestPracticesIdentifierDocLink,
