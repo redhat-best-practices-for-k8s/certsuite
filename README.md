@@ -65,15 +65,16 @@ browser then upload the claim.json file of that run.
 
 ## upload a previous feedback to the html parser page
 
-A new feture that we did that allow users to upload a previous feedback 
-that they have to the parser page, they have an option to download the feedback
-then to upload it for the next time from the html page
-another option users can have that feedback file in the path #your-code-path/cnf-certification-test/script/ 
-and it need to be named as feedback.js
-users need to conver the downloaded feedback.json to feedback.js by adding to the 
-begnning of the feedback.json page >> feedback = {contect of the json file} and they need
-to change the kind of json to be js and put it on the path #your-code-path/cnf-certification-test/script/
-with that users can see there feedback without upload it from the html page
+A new feture that we did that allow users to upload a previous feedback that they
+have to the parser page, they have an option to download the feedback then to
+upload it for the next time from the html page another option users can have
+that feedback file in the path #your-code-path/cnf-certification-test/script/
+and it need to be named as feedback.js users need to conver the downloaded
+feedback.json to feedback.js by adding to the begnning of the
+feedback.json page >> feedback = {contect of the json file} and they need to change
+the kind of json to be js and put it on the path
+#your-code-path/cnf-certification-test/script/
+with that users can see there feedback without upload it from the html page.
 
 ## License
 
