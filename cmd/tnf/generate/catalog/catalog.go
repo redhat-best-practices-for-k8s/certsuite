@@ -323,7 +323,7 @@ func runGeneratefeedbackjs(_ *cobra.Command, _ []string) error {
 		log.Fatalf("Error reading claim file :%v", err)
 	}
 	var obj map[string]interface{}
-	err = json.Unmarshal([]byte(dat), &obj)
+	err = json.Unmarshal(dat, &obj)
 	if err != nil {
 		fmt.Println("Error:", err)
 		return err
