@@ -59,11 +59,11 @@ Golang
 After the end of your run a claim.json file will be created for you with the
 results of that specific test run. To see them in a good way that is clear for
 you we created a parser that is local. You can open it by copying the path /
- #your-code-path/cnf-certification-test/script/results.html and open it in your
+#your-code-path/cnf-certification-test/script/results.html and open it in your
 browser then upload the claim.json file of that run.
 ![overview](docs/assets/images/htmlpage.png)
 
-## upload a previous feedback to the html parser page
+## Upload a previous feedback to the html parser page
 
 A new feture that we did that allow users to upload a previous feedback that they
 have to the parser page, they have an option to download the feedback then to
