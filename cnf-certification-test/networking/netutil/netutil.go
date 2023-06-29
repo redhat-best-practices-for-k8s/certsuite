@@ -77,3 +77,17 @@ func GetListeningPorts(cut *provider.Container) (map[PortInfo]bool, error) {
 
 	return parseListeningPorts(outStr)
 }
+
+func GetSSHDaemonPort(cut *provider.Container) (string, error) {
+	const findSSHDaemonPort = "grep -w 'Port' /etc/ssh/sshd_config"
+	outStr, errStr, err := crclient.ExecCommandContainerNSEnter(findSSHDaemonPort, cut)
+	if err != nil || errStr != "" {
+		return "", fmt.Errorf("failed to execute command %s on %s, err: %v", findSSHDaemonPort, cut, err)
+	}
+	tokens := strings.Fields(outStr)
+	if len(tokens) >= 2 {
+		return tokens[1], nil
+	} else {
+		return "", fmt.Errorf("malformed Port in sshd config file")
+	}
+}

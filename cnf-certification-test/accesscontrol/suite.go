@@ -18,6 +18,7 @@ package accesscontrol
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/onsi/ginkgo/v2"
@@ -683,7 +684,6 @@ func testNamespaceResourceQuota(env *provider.TestEnvironment) {
 }
 
 const (
-	sshServicePortNumber   = 22
 	sshServicePortProtocol = "TCP"
 )
 
@@ -691,10 +691,23 @@ func testNoSSHDaemonsAllowed(env *provider.TestEnvironment) {
 	var badPods []string
 	var errPods []string
 
-	sshPortInfo := netutil.PortInfo{PortNumber: sshServicePortNumber, Protocol: sshServicePortProtocol}
+	sshServicePortNumber := 22
 
 	for _, put := range env.Pods {
 		cut := put.Containers[0]
+
+		port, err := netutil.GetSSHDaemonPort(cut)
+		if err != nil { // This is fine, as it may be that SSH is not running, hence no sshd_config found
+			logrus.Error("error occurred while finding ssh port from sshd_config")
+		} else {
+			sshServicePortNumber, err = strconv.Atoi(port)
+			if err != nil {
+				logrus.Error("error occurred while convering port number from string to integer")
+				continue
+			}
+		}
+
+		sshPortInfo := netutil.PortInfo{PortNumber: sshServicePortNumber, Protocol: sshServicePortProtocol}
 
 		listeningPorts, err := netutil.GetListeningPorts(cut)
 		if err != nil {
