@@ -65,7 +65,7 @@ browser then upload the claim.json file of that run.
 
 ## Upload a previous feedback to the html parser page
 
-A new feture that we did that allow users to upload a previous feedback that they
+A new feature that we did that allow users to upload a previous feedback that they
 have to the parser page, they have an option to download the feedback then to
 upload it for the next time from the html page another option users can have
 that feedback file in the path #your-code-path/cnf-certification-test/script/
