@@ -151,13 +151,13 @@ func testAllOperatorCertified(env *provider.TestEnvironment, validator certdb.Ce
 			logrus.Infof("Operator %s (channel %s) not certified for OpenShift %s.", name, channel, ocpMinorVersion)
 			tnf.ClaimFilePrintf("Operator %s (channel %s) failed to be certified for OpenShift %s", name, channel, ocpMinorVersion)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operatorsUnderTest[i].Namespace, operatorsUnderTest[i].Name, "Operator failed to be certified for OpenShift", false).
-				SetType(testhelper.OCPVersionType).AddField(testhelper.Version, ocpMinorVersion).
-				SetType(testhelper.OCPChannelType).AddField(testhelper.OCPChannelType, channel))
+				AddField(testhelper.OCPVersionType, ocpMinorVersion).
+				AddField(testhelper.OCPChannelType, channel))
 		} else {
 			logrus.Infof("Operator %s (channel %s) certified OK.", name, channel)
 			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operatorsUnderTest[i].Namespace, operatorsUnderTest[i].Name, "Operator certified OK", true).
-				SetType(testhelper.OCPVersionType).AddField(testhelper.Version, ocpMinorVersion).
-				SetType(testhelper.OCPChannelType).AddField(testhelper.OCPChannelType, channel))
+				AddField(testhelper.OCPVersionType, ocpMinorVersion).
+				AddField(testhelper.OCPChannelType, channel))
 		}
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
