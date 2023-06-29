@@ -59,7 +59,7 @@ Golang
 After the end of your run a claim.json file will be created for you with the
 results of that specific test run. To see them in a good way that is clear for
 you we created a parser that is local. You can open it by copying the path /
-#your-code-path/cnf-certification-test/script/results.html and open it in your
+ #your-code-path/cnf-certification-test/script/results.html and open it in your
 browser then upload the claim.json file of that run.
 ![overview](docs/assets/images/htmlpage.png)
 
@@ -73,8 +73,8 @@ and it need to be named as feedback.js users need to conver the downloaded
 feedback.json to feedback.js by adding to the begnning of the
 feedback.json page >> feedback = {contect of the json file} and they need to change
 the kind of json to be js and put it on the path
-#your-code-path/cnf-certification-test/script/
-with that users can see there feedback without upload it from the html page.
+ #your-code-path/cnf-certification-test/script/ with 
+that users can see there feedback without upload it from the html page.
 
 ## License
 
