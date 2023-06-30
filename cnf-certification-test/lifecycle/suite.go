@@ -411,8 +411,8 @@ func testScaleCrd(env *provider.TestEnvironment, timeout time.Duration) {
 		scaleCr := env.ScaleCrUnderTest[i].Scale
 		if hpa := scaling.GetResourceHPA(env.HorizontalScaler, scaleCr.Name, scaleCr.Namespace, scaleCr.Kind); hpa != nil {
 			if !scaling.TestScaleHPACrd(&scaleCr, hpa, groupResourceSchema, timeout) {
-				tnf.ClaimFilePrintf("cr found to have failed the scaling test: %s", scaleCr.GetName())
-				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewCrdReportObject(scaleCr.Namespace, scaleCr.Name, "cr found to have failed the scaling test", false))
+				tnf.ClaimFilePrintf("cr has failed the scaling test: %s", scaleCr.GetName())
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewCrdReportObject(scaleCr.Namespace, scaleCr.Name, "cr has failed the HPA scaling test", false))
 			}
 			continue
 		}
@@ -456,16 +456,16 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 			// horizontal scaler, then test that scaler
 			// can scale the statefulset
 			if !scaling.TestScaleHpaStatefulSet(env.StatefulSets[i].StatefulSet, hpa, timeout) {
-				tnf.ClaimFilePrintf("StatefulSet found to have failed the scaling test: %s", env.StatefulSets[i].ToString())
-				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewStatefulSetReportObject(env.StatefulSets[i].Namespace, env.StatefulSets[i].Name, "StatefulSet found to have failed the scaling test", false))
+				tnf.ClaimFilePrintf("StatefulSet has failed the scaling test: %s", env.StatefulSets[i].ToString())
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewStatefulSetReportObject(env.StatefulSets[i].Namespace, env.StatefulSets[i].Name, "StatefulSet has failed the HPA scaling test", false))
 			}
 			continue
 		}
 		// if the statefulset is not controller by HPA
 		// scale it directly
 		if !scaling.TestScaleStatefulSet(env.StatefulSets[i].StatefulSet, timeout) {
-			tnf.ClaimFilePrintf("StatefulSet found to have failed the scaling test: %s", env.StatefulSets[i].ToString())
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewStatefulSetReportObject(env.StatefulSets[i].Namespace, env.StatefulSets[i].Name, "StatefulSet found to have failed the scaling test", false))
+			tnf.ClaimFilePrintf("StatefulSet has failed the scaling test: %s", env.StatefulSets[i].ToString())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewStatefulSetReportObject(env.StatefulSets[i].Namespace, env.StatefulSets[i].Name, "StatefulSet has failed the non-HPA scale test", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewStatefulSetReportObject(env.StatefulSets[i].Namespace, env.StatefulSets[i].Name, "StatefulSet is scalable", true))
 		}
@@ -475,15 +475,12 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 }
 
 // testHighAvailability
-//
-//nolint:funlen
 func testHighAvailability(env *provider.TestEnvironment) {
 	ginkgo.By("Should set pod replica number greater than 1")
 
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, dp := range env.Deployments {
-		compliantDeployment := true
 		if dp.Spec.Replicas == nil || *(dp.Spec.Replicas) <= 1 {
 			tnf.ClaimFilePrintf("Deployment found without valid high availability: %s", dp.ToString())
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewDeploymentReportObject(dp.Namespace, dp.Name, "Deployment found without valid high availability", false))
@@ -500,15 +497,11 @@ func testHighAvailability(env *provider.TestEnvironment) {
 			dp.Spec.Template.Spec.Affinity.PodAntiAffinity == nil {
 			tnf.ClaimFilePrintf("Deployment found without valid high availability: %s", dp.ToString())
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewDeploymentReportObject(dp.Namespace, dp.Name, "Deployment found without valid high availability", false))
-			compliantDeployment = false
-		}
-
-		if compliantDeployment {
+		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewDeploymentReportObject(dp.Namespace, dp.Name, "Deployment has valid high availability", true))
 		}
 	}
 	for _, st := range env.StatefulSets {
-		compliantStatefulSet := true
 		if st.Spec.Replicas == nil || *(st.Spec.Replicas) <= 1 {
 			tnf.ClaimFilePrintf("StatefulSet found without valid high availability: %s", st.ToString())
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewStatefulSetReportObject(st.Namespace, st.Name, "StatefulSet found without valid high availability", false))
@@ -524,9 +517,7 @@ func testHighAvailability(env *provider.TestEnvironment) {
 			st.Spec.Template.Spec.Affinity.PodAntiAffinity == nil {
 			tnf.ClaimFilePrintf("StatefulSet found without valid high availability: %s", st.ToString())
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewStatefulSetReportObject(st.Namespace, st.Name, "StatefulSet found without valid high availability", false))
-		}
-
-		if compliantStatefulSet {
+		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewStatefulSetReportObject(st.Namespace, st.Name, "StatefulSet has valid high availability", true))
 		}
 	}
