@@ -437,51 +437,6 @@ func TestProcessPidsCPUScheduling(t *testing.T) {
 	}
 }
 
-func TestGetProcessCPUScheduling(t *testing.T) {
-	mockSuccessStdout := `pid 476's current scheduling policy: SCHED_OTHER
-	pid 476's current scheduling priority: 0`
-	mockErr := fmt.Errorf(`chrt: failed to get pid 476's policy: No such process`)
-	container := provider.Container{}
-	testPid := 476
-
-	testCases := []struct {
-		testContainer                            *provider.Container
-		mockCrcClientExecCommandContainerNSEnter func(string, *provider.Container) (string, string, error)
-		expectedPolicy                           string
-		expectedPriority                         int
-		expectedError                            error
-	}{
-		{
-			testContainer: &container,
-			mockCrcClientExecCommandContainerNSEnter: func(command string, container *provider.Container) (string, string, error) {
-				return mockSuccessStdout, "", nil
-			},
-			expectedPolicy:   "SCHED_OTHER",
-			expectedPriority: 0,
-			expectedError:    mockErr,
-		},
-		{
-			testContainer: &container,
-			mockCrcClientExecCommandContainerNSEnter: func(command string, container *provider.Container) (string, string, error) {
-				return "", "", mockErr
-			},
-			expectedPolicy:   "",
-			expectedPriority: -1,
-			expectedError:    mockErr,
-		},
-	}
-	for _, tc := range testCases {
-		CrcClientExecCommandContainerNSEnter = tc.mockCrcClientExecCommandContainerNSEnter
-		policy, priority, err := GetProcessCPUScheduling(testPid, tc.testContainer)
-
-		assert.Equal(t, policy, tc.expectedPolicy)
-		assert.Equal(t, priority, tc.expectedPriority)
-		if err != nil {
-			assert.Contains(t, err.Error(), tc.expectedError.Error())
-		}
-	}
-}
-
 func TestExistsSchedulingPolicyAndPriority(t *testing.T) {
 	testCases := []struct {
 		outputString     string

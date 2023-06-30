@@ -22,6 +22,7 @@ import (
 	"strings"
 
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
@@ -120,10 +121,17 @@ func GetProcessCPUScheduling(pid int, testContainer *provider.Container) (schedu
 	logrus.Infof("Checking the scheduling policy/priority in %v for pid=%d", testContainer, pid)
 
 	command := fmt.Sprintf("chrt -p %d", pid)
+	env := provider.GetTestEnvironment()
+	ctx, err := crclient.GetNodeDebugPodContext(testContainer.NodeName, &env)
+	if err != nil {
+		return "", 0, fmt.Errorf("failed to get debug pod's context for container %s: %v", testContainer, err)
+	}
 
-	stdout, stderr, err := CrcClientExecCommandContainerNSEnter(command, testContainer)
+	ch := clientsholder.GetClientsHolder()
+
+	stdout, stderr, err := ch.ExecCommandContainer(ctx, command)
 	if err != nil || stderr != "" {
-		return schedulePolicy, InvalidPriority, fmt.Errorf("unable to run nsenter for %v due to : %v", testContainer, err)
+		return schedulePolicy, InvalidPriority, fmt.Errorf("command %q failed to run in debug pod %s (node %s): %v", command, ctx.GetPodName(), testContainer.NodeName, err)
 	}
 
 	schedulePolicy, schedulePriority, err = parseSchedulingPolicyAndPriority(stdout)
