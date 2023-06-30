@@ -1,5 +1,7 @@
 package chaostesting
 
+/*
+
 import (
 	"fmt"
 	"time"
@@ -71,3 +73,5 @@ func testPodDelete(env *provider.TestEnvironment) {
 		poddelete.DeleteAllResources(dep.Namespace)
 	}
 }
+
+*/

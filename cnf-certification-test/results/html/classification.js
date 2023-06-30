@@ -191,12 +191,6 @@ classification=  {
     "NonTelco": "Mandatory",
     "Telco": "Mandatory"
   },
-  "chaostesting-pod-delete": {
-    "Extended": "Optional",
-    "FarEdge": "Optional",
-    "NonTelco": "Optional",
-    "Telco": "Optional"
-  },
   "lifecycle-affinity-required-pods": {
     "Extended": "Mandatory",
     "FarEdge": "Mandatory",

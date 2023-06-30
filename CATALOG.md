@@ -1,21 +1,20 @@
 <!-- markdownlint-disable line-length no-bare-urls -->
 # cnf-certification-test catalog
 
-The catalog for cnf-certification-test contains a list of test cases aiming at testing CNF best practices in various areas. Test suites are defined in 10 areas : `platform-alteration`, `access-control`, `affiliated-certification`, `chaostesting`, `lifecycle`, `manageability`,`networking`, `observability`, `operator`, and `performance.`
+The catalog for cnf-certification-test contains a list of test cases aiming at testing CNF best practices in various areas. Test suites are defined in 10 areas : `platform-alteration`, `access-control`, `affiliated-certification`, `lifecycle`, `manageability`,`networking`, `observability`, `operator`, and `performance.`
 
 Depending on the CNF type, not all tests are required to pass to satisfy best practice requirements. The scenario section indicates which tests are mandatory or optional depending on the scenario. The following CNF types / scenarios are defined: `Telco`, `Non-Telco`, `Far-Edge`, `Extended`.
 
 ## Test cases summary
 
-### Total test cases: 88
+### Total test cases: 87
 
-### Total suites: 10
+### Total suites: 9
 
 |Suite|Tests per suite|
 |---|---|
 |access-control|27|
 |affiliated-certification|5|
-|chaostesting|1|
 |lifecycle|18|
 |manageability|2|
 |networking|11|
@@ -36,11 +35,11 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |---|---|
 |7|0|
 
-### Non-Telco specific tests only: 43
+### Non-Telco specific tests only: 42
 
 |Mandatory|Optional|
 |---|---|
-|39|4|
+|39|3|
 
 ### Telco specific tests only: 27
 
@@ -567,24 +566,6 @@ Tags|common,affiliated-certification
 |Far-Edge|Mandatory|
 |Non-Telco|Mandatory|
 |Telco|Mandatory|
-
-### chaostesting
-
-#### chaostesting-pod-delete
-
-Property|Description
----|---
-Unique ID|chaostesting-pod-delete
-Description|Chaos test suite is under construction.
-Suggested Remediation|
-Best Practice Reference|No Reference Document Specified
-Exception Process|There is no documented exception process for this.
-Tags|common,chaostesting
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Optional|
-|Far-Edge|Optional|
-|Non-Telco|Optional|
-|Telco|Optional|
 
 ### lifecycle
 
