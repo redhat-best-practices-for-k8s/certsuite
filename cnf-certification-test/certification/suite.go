@@ -98,13 +98,9 @@ func getContainersToQuery(env *provider.TestEnvironment) map[configuration.Conta
 }
 
 func testContainerCertification(c configuration.ContainerImageIdentifier, validator certdb.CertificationStatusValidator) bool {
-	tag := c.Tag
-	digest := c.Digest
-	registryName := c.Repository
-	name := c.Name
-	ans := validator.IsContainerCertified(registryName, name, tag, digest)
+	ans := validator.IsContainerCertified(c.Repository, c.Name, c.Tag, c.Digest)
 	if !ans {
-		tnf.ClaimFilePrintf("%s/%s:%s is not listed in certified containers", registryName, name, tag)
+		tnf.ClaimFilePrintf("%s/%s:%s is not listed in certified containers", c.Repository, c.Name, c.Tag)
 	}
 	return ans
 }
@@ -138,7 +134,8 @@ func testAllOperatorCertified(env *provider.TestEnvironment, validator certdb.Ce
 	operatorsUnderTest := env.Operators
 	testhelper.SkipIfEmptyAny(ginkgo.Skip, operatorsUnderTest)
 	ginkgo.By(fmt.Sprintf("Verify operator as certified. Number of operators to check: %d", len(operatorsUnderTest)))
-	testFailed := false
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	ocpMinorVersion := ""
 	if provider.IsOCPCluster() {
 		// Converts	major.minor.patch version format to major.minor
@@ -151,63 +148,68 @@ func testAllOperatorCertified(env *provider.TestEnvironment, validator certdb.Ce
 		channel := operatorsUnderTest[i].Channel
 		isCertified := validator.IsOperatorCertified(name, ocpMinorVersion, channel)
 		if !isCertified {
-			testFailed = true
-			logrus.Infof(
-				"Operator %s (channel %s) not certified for OpenShift %s.",
-				name,
-				channel,
-				ocpMinorVersion,
-			)
+			logrus.Infof("Operator %s (channel %s) not certified for OpenShift %s.", name, channel, ocpMinorVersion)
 			tnf.ClaimFilePrintf("Operator %s (channel %s) failed to be certified for OpenShift %s", name, channel, ocpMinorVersion)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operatorsUnderTest[i].Namespace, operatorsUnderTest[i].Name, "Operator failed to be certified for OpenShift", false).
+				AddField(testhelper.OCPVersion, ocpMinorVersion).
+				AddField(testhelper.OCPChannel, channel))
 		} else {
 			logrus.Infof("Operator %s (channel %s) certified OK.", name, channel)
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operatorsUnderTest[i].Namespace, operatorsUnderTest[i].Name, "Operator certified OK", true).
+				AddField(testhelper.OCPVersion, ocpMinorVersion).
+				AddField(testhelper.OCPChannel, channel))
 		}
 	}
-	if testFailed {
-		ginkgo.Fail("At least one operator was not certified to run on this version of OpenShift. Check Claim.json file for details.")
-	}
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testHelmCertified(env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
 	helmchartsReleases := env.HelmChartReleases
 	testhelper.SkipIfEmptyAny(ginkgo.Skip, helmchartsReleases)
 	// Collect all of the failed helm charts
-	failedHelmCharts := [][]string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, helm := range helmchartsReleases {
 		if !validator.IsHelmChartCertified(helm, env.K8sVersion) {
-			failedHelmCharts = append(failedHelmCharts, []string{helm.Chart.Metadata.Version, helm.Name})
-			tnf.ClaimFilePrintf(
-				"Helm Chart %s version %s is not certified.",
-				helm.Name,
-				helm.Chart.Metadata.Version,
-			)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewHelmChartReportObject(helm.Namespace, helm.Name, "helm chart is not certified", false).
+				SetType(testhelper.HelmVersionType).
+				AddField(testhelper.Version, helm.Chart.Metadata.Version))
+			tnf.ClaimFilePrintf("Helm Chart %s version %s is not certified.", helm.Name, helm.Chart.Metadata.Version)
 		} else {
-			logrus.Infof(
-				"Helm Chart %s version %s is certified.",
-				helm.Name,
-				helm.Chart.Metadata.Version,
-			)
+			logrus.Infof("Helm Chart %s version %s is certified.", helm.Name, helm.Chart.Metadata.Version)
+			compliantObjects = append(compliantObjects, testhelper.NewHelmChartReportObject(helm.Namespace, helm.Name, "helm chart is certified", true).
+				SetType(testhelper.HelmVersionType).
+				AddField(testhelper.Version, helm.Chart.Metadata.Version))
 		}
 	}
-	testhelper.AddTestResultLog("Non-compliant", failedHelmCharts, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testContainerCertificationStatusByDigest(env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
-	failedContainers := []configuration.ContainerImageIdentifier{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, c := range env.Containers {
 		if c.ContainerImageIdentifier.Name == "" || c.ContainerImageIdentifier.Repository == "" {
 			tnf.ClaimFilePrintf("Container name = %q or repository = %q is missing, skipping this container to query", c.ContainerImageIdentifier.Name, c.ContainerImageIdentifier.Repository)
 			continue
 		}
-		if c.ContainerImageIdentifier.Digest == "" {
+
+		switch {
+		case c.ContainerImageIdentifier.Digest == "":
 			tnf.ClaimFilePrintf("%s is missing digest field, failing validation (repo=%s image=%s)", c, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Name)
-			failedContainers = append(failedContainers, c.ContainerImageIdentifier)
-		} else if !testContainerCertification(c.ContainerImageIdentifier, validator) {
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Missing digest field", false).
+				AddField(testhelper.Repository, c.ContainerImageIdentifier.Repository).
+				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Name))
+		case !testContainerCertification(c.ContainerImageIdentifier, validator):
 			tnf.ClaimFilePrintf("%s digest not found in database, failing validation (repo=%s image=%s)", c, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Name)
-			failedContainers = append(failedContainers, c.ContainerImageIdentifier)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Digest not found in database", false).
+				AddField(testhelper.Repository, c.ContainerImageIdentifier.Repository).
+				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Name))
+		default:
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Container is certified", true))
 		}
 	}
-	testhelper.AddTestResultLog("Non-compliant", failedContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testHelmVersion() {
@@ -227,7 +229,7 @@ func testHelmVersion() {
 		tnf.ClaimFilePrintf("Tiller pod found, helm version is v2")
 		for i := range podList.Items {
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(podList.Items[i].Namespace, podList.Items[i].Name,
-				"This pod is a Tiller pod , Helm Chart  version is v2 but needs to be v3 due to the security risks associated with Tiller", false))
+				"This pod is a Tiller pod. Helm Chart version is v2 but needs to be v3 due to the security risks associated with Tiller", false))
 		}
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
