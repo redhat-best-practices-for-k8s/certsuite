@@ -1560,6 +1560,7 @@ tag. (2) It doesn't have any of the following prefixes: default, openshift-, ist
 		},
 		TagExtended)
 
+	//nolint:gocritic
 	// TestPodDeleteIdentifier = AddCatalogEntry(
 	// 	"pod-delete",
 	// 	common.ChaosTesting,
