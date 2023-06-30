@@ -121,6 +121,8 @@ const (
 	Repository                      = "Repository"
 	ImageName                       = "Image Name"
 	Version                         = "Version"
+	OCPVersion                      = "OCP Version"
+	OCPChannel                      = "OCP Channel"
 
 	// ICMP tests
 	NetworkName              = "Network Name"
@@ -167,8 +169,6 @@ const (
 	HostPortType                 = "Host Port"
 	HostPathType                 = "Host Path"
 	HelmVersionType              = "Helm Version"
-	OCPVersionType               = "OCP Version"
-	OCPChannelType               = "OCP Channel"
 )
 
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {

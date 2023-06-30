@@ -151,13 +151,13 @@ func testAllOperatorCertified(env *provider.TestEnvironment, validator certdb.Ce
 			logrus.Infof("Operator %s (channel %s) not certified for OpenShift %s.", name, channel, ocpMinorVersion)
 			tnf.ClaimFilePrintf("Operator %s (channel %s) failed to be certified for OpenShift %s", name, channel, ocpMinorVersion)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operatorsUnderTest[i].Namespace, operatorsUnderTest[i].Name, "Operator failed to be certified for OpenShift", false).
-				AddField(testhelper.OCPVersionType, ocpMinorVersion).
-				AddField(testhelper.OCPChannelType, channel))
+				AddField(testhelper.OCPVersion, ocpMinorVersion).
+				AddField(testhelper.OCPChannel, channel))
 		} else {
 			logrus.Infof("Operator %s (channel %s) certified OK.", name, channel)
 			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operatorsUnderTest[i].Namespace, operatorsUnderTest[i].Name, "Operator certified OK", true).
-				AddField(testhelper.OCPVersionType, ocpMinorVersion).
-				AddField(testhelper.OCPChannelType, channel))
+				AddField(testhelper.OCPVersion, ocpMinorVersion).
+				AddField(testhelper.OCPChannel, channel))
 		}
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
@@ -193,18 +193,19 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment, val
 			tnf.ClaimFilePrintf("Container name = %q or repository = %q is missing, skipping this container to query", c.ContainerImageIdentifier.Name, c.ContainerImageIdentifier.Repository)
 			continue
 		}
-		//nolint:gocritic
-		if c.ContainerImageIdentifier.Digest == "" {
+
+		switch {
+		case c.ContainerImageIdentifier.Digest == "":
 			tnf.ClaimFilePrintf("%s is missing digest field, failing validation (repo=%s image=%s)", c, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Name)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Missing digest field", false).
 				AddField(testhelper.Repository, c.ContainerImageIdentifier.Repository).
 				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Name))
-		} else if !testContainerCertification(c.ContainerImageIdentifier, validator) {
+		case !testContainerCertification(c.ContainerImageIdentifier, validator):
 			tnf.ClaimFilePrintf("%s digest not found in database, failing validation (repo=%s image=%s)", c, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Name)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Digest not found in database", false).
 				AddField(testhelper.Repository, c.ContainerImageIdentifier.Repository).
 				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Name))
-		} else {
+		default:
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Container is certified", true))
 		}
 	}
