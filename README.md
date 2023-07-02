@@ -71,7 +71,7 @@ feedback then to upload it for the next time from the HTML page another option u
 can have that feedback file in the path #your-code-path/cnf-certification-test/script/
 and it need to be named as `feedback.js` users need to convert the downloaded
 `feedback.json` to `feedback.js` by running the command:
-`./tnf generate catalog feedbackjs -f path-to-feedbackjson/feedback.json`
+`./tnf generate catalog feedbackjs -f path-to-feedbackjson/feedback.json -o #your-code-path/cnf-certification-test/script/` 
 
 The `feedback.js` will be copy to #your-code-path/cnf-certification-test/script/
 users can see there feedback without upload it from the HTML page.

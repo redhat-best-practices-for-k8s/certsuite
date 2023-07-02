@@ -26,7 +26,7 @@ import (
 )
 
 var (
-	feedbackJsonFilePath string
+	feedbackJSONFilePath string
 	feedbackOutputPath   string
 
 	// generateCmd is the root of the "catalog generate" CLI program.
@@ -38,14 +38,14 @@ var (
 )
 
 func runGenerateFeedbackJsFile(_ *cobra.Command, _ []string) error {
-	dat, err := os.ReadFile(feedbackJsonFilePath)
+	dat, err := os.ReadFile(feedbackJSONFilePath)
 	if err != nil {
-		return fmt.Errorf("failed to read json feeback file: %v", err)
+		return fmt.Errorf("failed to read json feedback file: %v", err)
 	}
 	var obj map[string]interface{}
 	err = json.Unmarshal(dat, &obj)
 	if err != nil {
-		return fmt.Errorf("failed to unmarshal json feedback file %s: %v", feedbackJsonFilePath, err)
+		return fmt.Errorf("failed to unmarshal json feedback file %s: %v", feedbackJSONFilePath, err)
 	}
 
 	// Print the JSON content
@@ -70,7 +70,7 @@ func runGenerateFeedbackJsFile(_ *cobra.Command, _ []string) error {
 // Execute executes the "catalog" CLI.
 func NewCommand() *cobra.Command {
 	generateFeedbackJsFile.Flags().StringVarP(
-		&feedbackJsonFilePath, "feedback", "f", "",
+		&feedbackJSONFilePath, "feedback", "f", "",
 		"path to the feedback.json file")
 
 	err := generateFeedbackJsFile.MarkFlagRequired("feedback")
