@@ -6,6 +6,7 @@ import (
 
 	claim "github.com/test-network-function/cnf-certification-test/cmd/tnf/addclaim"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/generate/catalog"
+	feedback "github.com/test-network-function/cnf-certification-test/cmd/tnf/generate/feedback"
 	qecoverage "github.com/test-network-function/cnf-certification-test/cmd/tnf/generate/qe_coverage"
 )
 
@@ -25,6 +26,7 @@ func main() {
 	rootCmd.AddCommand(claim.NewCommand())
 	rootCmd.AddCommand(generate)
 	generate.AddCommand(catalog.NewCommand())
+	generate.AddCommand(feedback.NewCommand())
 	generate.AddCommand(qecoverage.QeCoverageReportCmd)
 	qecoverage.QeCoverageReportCmd.PersistentFlags().String("suitename", "", "Displays the remaining tests not covered by QE for the specified suite name")
 

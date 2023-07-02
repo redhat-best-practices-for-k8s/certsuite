@@ -19,7 +19,6 @@ package catalog
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"os"
 	"sort"
 	"strings"
@@ -33,13 +32,6 @@ import (
 )
 
 var (
-	feedbackjson string
-	// generateCmd is the root of the "catalog generate" CLI program.
-	generatefeedbackjs = &cobra.Command{
-		Use:   "feedbackjs",
-		Short: "Generates feedbackjs from feedbackjson file and copy it into /cnf-certification-test/results/html",
-		RunE:  runGeneratefeedbackjs,
-	}
 
 	// generateCmd is the root of the "catalog generate" CLI program.
 	generateCmd = &cobra.Command{
@@ -299,54 +291,8 @@ func runGenerateMarkdownCmd(_ *cobra.Command, _ []string) error {
 
 // Execute executes the "catalog" CLI.
 func NewCommand() *cobra.Command {
-	generatefeedbackjs.Flags().StringVarP(
-		&feedbackjson, "feedback", "f", "",
-		"feedback.json file to convert it to js file, output is js ",
-	)
-
-	err := generatefeedbackjs.MarkFlagRequired("feedback")
-	if err != nil {
-		return nil
-	}
-	generateCmd.AddCommand(generatefeedbackjs)
-
 	generateCmd.AddCommand(markdownGenerateCmd)
 
 	generateCmd.AddCommand(markdownGenerateClassification)
 	return generateCmd
-}
-
-func runGeneratefeedbackjs(_ *cobra.Command, _ []string) error {
-	feedbackjsonFileTextPtr := &feedbackjson
-	dat, err := os.ReadFile(*feedbackjsonFileTextPtr)
-	if err != nil {
-		log.Fatalf("Error reading claim file :%v", err)
-	}
-	var obj map[string]interface{}
-	err = json.Unmarshal(dat, &obj)
-	if err != nil {
-		fmt.Println("Error:", err)
-		return err
-	}
-
-	// Print the JSON content
-	jsonBytes, err := json.MarshalIndent(obj, "", "  ")
-	if err != nil {
-		fmt.Println("Error:", err)
-		return err
-	}
-	file, err := os.Create("./cnf-certification-test/results/html/feedback.js")
-	if err != nil {
-		fmt.Println("Error:", err)
-		return err
-	}
-	feedbackjs := "feedback="
-	_, err = file.WriteString(feedbackjs + string(jsonBytes))
-	if err != nil {
-		fmt.Println("Error:", err)
-		return err
-	}
-
-	fmt.Println(feedbackjs + string(jsonBytes))
-	return nil
 }
