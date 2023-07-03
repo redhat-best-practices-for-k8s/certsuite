@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 )
@@ -53,7 +54,8 @@ func runGenerateFeedbackJsFile(_ *cobra.Command, _ []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to marshal feedback js content: %v", err)
 	}
-	file, err := os.Create(feedbackOutputPath + "feedback.js")
+	feedbackJsFilePath := filepath.Join(feedbackOutputPath, "feedback.js")
+	file, err := os.Create(feedbackJsFilePath)
 	if err != nil {
 		return fmt.Errorf("failed to create javascript feedback file: %v", err)
 	}
