@@ -284,7 +284,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		PodHugePages1GRemediation,
 		NoDocumentedProcess,
 		TestPodHugePages1GDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Optional,
