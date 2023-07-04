@@ -18,6 +18,7 @@ package performance
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
@@ -79,7 +80,8 @@ var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
 })
 
 func testExclusiveCPUPool(env *provider.TestEnvironment) {
-	var badPods []string
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 
 	for _, put := range env.Pods {
 		nBExclusiveCPUPoolContainers := 0
@@ -93,13 +95,20 @@ func testExclusiveCPUPool(env *provider.TestEnvironment) {
 		}
 
 		if nBExclusiveCPUPoolContainers > 0 && nBSharedCPUPoolContainers > 0 {
+			exclusiveStr := strconv.Itoa(nBExclusiveCPUPoolContainers)
+			sharedStr := strconv.Itoa(nBSharedCPUPoolContainers)
+
 			tnf.ClaimFilePrintf("Pod: %s has containers whose CPUs belong to different pools. Containers in the shared cpu pool: %d "+
 				"Containers in the exclusive cpu pool: %d", put.String(), nBSharedCPUPoolContainers, nBExclusiveCPUPoolContainers)
-			badPods = append(badPods, put.String())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has containers whose CPUs belong to different pools", false).
+				AddField("SharedCPUPoolContainers", sharedStr).
+				AddField("ExclusiveCPUPoolContainers", exclusiveStr))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has no containers whose CPUs belong to different pools", true))
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", badPods, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testSchedulingPolicyInCPUPool(env *provider.TestEnvironment,
@@ -139,30 +148,29 @@ func testSchedulingPolicyInCPUPool(env *provider.TestEnvironment,
 }
 
 func testRtAppsNoExecProbes(env *provider.TestEnvironment, cuts []*provider.Container) {
-	badContainers := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range cuts {
-		nonCompliantCut := false
 		processes, err := crclient.GetContainerProcesses(cut, env)
 		if err != nil {
-			badContainers = append(badContainers, cut.String())
 			tnf.ClaimFilePrintf("Could not determine the processes pids for container %s, err: %v", cut, err)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Could not determine the processes pids for container", false))
 			break
 		}
 		for _, p := range processes {
 			schedPolicy, _, err := scheduling.GetProcessCPUScheduling(p.Pid, cut)
 			if err != nil {
 				tnf.ClaimFilePrintf("Could not determine the scheduling policy for container %s (pid=%v), err: %v", cut, p.Pid, err)
-				nonCompliantCut = true
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Could not determine the scheduling policy for container", false).
+					AddField(testhelper.ProcessID, strconv.Itoa(p.Pid)))
 				break
 			}
 			if scheduling.PolicyIsRT(schedPolicy) && cut.HasExecProbes() {
 				tnf.ClaimFilePrintf("Pod %s/Container %s defines exec probes while having a RT scheduling policy for pid %d", cut.Podname, cut, p.Pid)
-				nonCompliantCut = true
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container defines exec probes while having a RT scheduling policy", false).
+					AddField(testhelper.ProcessID, strconv.Itoa(p.Pid)))
 			}
 		}
-		if nonCompliantCut {
-			badContainers = append(badContainers, cut.String())
-		}
 	}
-	testhelper.AddTestResultLog("Non-compliant", badContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
