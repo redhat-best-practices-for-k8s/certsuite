@@ -65,17 +65,15 @@ browser then upload the claim.json file of that run.
 
 ## Upload a previous feedback to the html parser page
 
-A feature on the HTML parser page that we did to allow users to upload a previous
-feedback that they have to the parser page, they have an option to download the
-feedback then to upload it for the next time from the HTML page another option users
-can have that feedback file in the path #your-code-path/cnf-certification-test/script/
-and it need to be named as `feedback.js` users need to convert the downloaded
-`feedback.json` to `feedback.js` by running the command:
-`./tnf generate feedbackjs -f path-to-feedbackjson/feedback.json`
-`-o #your-code-path/cnf-certification-test/script/`
+Users are able to add their feedback about their test run then download their
+own copy of their feedback via the parser HTML page.  Users can then re-use the
+feedback they have already entered in future runs.  To do this, users can upload their
+`feedback.json` file to the parser HTML page.  Alternatively, users can place their
+`feedback.json` file in the path #your-code-path/cnf-certification-test/script/ and it
+needs to be named `feedback.js`.  Users need to convert the downloaded
+`feedback.json` to `feedback.js` by running the command: 
+`./tnf generate feedbackjs -f path-to-feedbackjson/feedback.json -o #your-code-path/cnf-certification-test/script/`
 
-The `feedback.js` will be copy to #your-code-path/cnf-certification-test/script/
-users can see there feedback without upload it from the HTML page.
 
 ## License
 
