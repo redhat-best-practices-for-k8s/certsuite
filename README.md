@@ -67,13 +67,13 @@ browser then upload the claim.json file of that run.
 
 Users are able to add their feedback about their test run then download their
 own copy of their feedback via the parser HTML page.  Users can then re-use the
-feedback they have already entered in future runs.  To do this, users can upload their
-`feedback.json` file to the parser HTML page.  Alternatively, users can place their
-`feedback.json` file in the path #your-code-path/cnf-certification-test/script/ and it
+feedback they have already entered in future runs.  To do this, users can
+upload their `feedback.json` file to the parser HTML page.  Alternatively,
+users can place their `feedback.json` file in the path
+#your-code-path/cnf-certification-test/script/ and it
 needs to be named `feedback.js`.  Users need to convert the downloaded
-`feedback.json` to `feedback.js` by running the command: 
+`feedback.json` to `feedback.js` by running the command:
 `./tnf generate feedbackjs -f path-to-feedbackjson/feedback.json -o #your-code-path/cnf-certification-test/script/`
-
 
 ## License
 
