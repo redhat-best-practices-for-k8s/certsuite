@@ -821,7 +821,7 @@ func testContainerSCC(env *provider.TestEnvironment) {
 					AddField(testhelper.Category, cat.Category.String())
 				nonCompliantObjects = append(nonCompliantObjects, aContainerOut)
 			} else {
-				aContainerOut := testhelper.NewContainerReportObject(cat.NameSpace, cat.Podname, cat.Containername, "container category is category 1 or category NoUID0", false).
+				aContainerOut := testhelper.NewContainerReportObject(cat.NameSpace, cat.Podname, cat.Containername, "container category is category 1 or category NoUID0", true).
 					SetType(testhelper.ContainerCategory).
 					AddField(testhelper.Category, cat.Category.String())
 				compliantObjects = append(compliantObjects, aContainerOut)
