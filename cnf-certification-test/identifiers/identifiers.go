@@ -160,7 +160,7 @@ var (
 	TestCrdScalingIdentifier                          claim.Identifier
 	TestCrdRoleIdentifier                             claim.Identifier
 	// Chaos Testing
-	TestPodDeleteIdentifier claim.Identifier
+	// TestPodDeleteIdentifier claim.Identifier
 )
 
 //nolint:funlen
@@ -1560,21 +1560,22 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		},
 		TagExtended)
 
-	TestPodDeleteIdentifier = AddCatalogEntry(
-		"pod-delete",
-		common.ChaosTesting,
-		"Chaos test suite is under construction.",
-		"",
-		NoDocumentedProcess,
-		"",
-		false,
-		map[string]string{
-			FarEdge:  Optional,
-			Telco:    Optional,
-			NonTelco: Optional,
-			Extended: Optional,
-		},
-		TagCommon)
+	//nolint:gocritic
+	// TestPodDeleteIdentifier = AddCatalogEntry(
+	// 	"pod-delete",
+	// 	common.ChaosTesting,
+	// 	"Chaos test suite is under construction.",
+	// 	"",
+	// 	NoDocumentedProcess,
+	// 	"",
+	// 	false,
+	// 	map[string]string{
+	// 		FarEdge:  Optional,
+	// 		Telco:    Optional,
+	// 		NonTelco: Optional,
+	// 		Extended: Optional,
+	// 	},
+	// 	TagCommon)
 
 	return Catalog
 }

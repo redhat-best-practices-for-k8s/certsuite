@@ -271,7 +271,7 @@ func outputIntro() (out string) {
 		"# cnf-certification-test catalog\n\n" +
 		"The catalog for cnf-certification-test contains a list of test cases " +
 		"aiming at testing CNF best practices in various areas. Test suites are defined in 10 areas : `platform-alteration`, `access-control`, `affiliated-certification`, " +
-		"`chaostesting`, `lifecycle`, `manageability`,`networking`, `observability`, `operator`, and `performance.`" +
+		"`lifecycle`, `manageability`,`networking`, `observability`, `operator`, and `performance.`" +
 		"\n\nDepending on the CNF type, not all tests are required to pass to satisfy best practice requirements. The scenario section" +
 		" indicates which tests are mandatory or optional depending on the scenario. The following CNF types / scenarios are defined: `Telco`, `Non-Telco`, `Far-Edge`, `Extended`.\n\n"
 }
