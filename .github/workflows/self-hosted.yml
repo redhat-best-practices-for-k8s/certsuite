@@ -73,12 +73,12 @@ jobs:
           max_attempts: 3
           command: kind delete cluster
 
-      - name: Prune the local docker system
+      - name: Prune docker resources
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 10
           max_attempts: 3
-          command: docker system prune -f
+          command: docker container prune -f; docker network prune -f; docker volume prune -f 
 
       - name: Create `local-test-infra` OpenShift resources
         run: make rebuild-cluster
