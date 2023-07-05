@@ -123,6 +123,13 @@ const (
 	Version                         = "Version"
 	OCPVersion                      = "OCP Version"
 	OCPChannel                      = "OCP Channel"
+	NodeSelector                    = "Node Selector"
+	PersistentVolumeName            = "Persistent Volume Name"
+	PersistentVolumeClaimName       = "Persistent Volume Claim Name"
+	TolerationKey                   = "Toleration Key"
+	TolerationEffect                = "Toleration Effect"
+	StorageClassName                = "Storage Class Name"
+	StorageClassProvisioner         = "Storage Class Provisioner"
 
 	// ICMP tests
 	NetworkName              = "Network Name"
@@ -205,6 +212,27 @@ func NewOperatorReportObject(aNamespace, aOperatorName, aReason string, isCompli
 	out = NewReportObject(aReason, OperatorType, isCompliant)
 	out.AddField(Namespace, aNamespace)
 	out.AddField(Name, aOperatorName)
+	return out
+}
+
+func NewDeploymentReportObject(aNamespace, aDeploymentName, aReason string, isCompliant bool) (out *ReportObject) {
+	out = NewReportObject(aReason, DeploymentType, isCompliant)
+	out.AddField(Namespace, aNamespace)
+	out.AddField(DeploymentName, aDeploymentName)
+	return out
+}
+
+func NewStatefulSetReportObject(aNamespace, aStatefulSetName, aReason string, isCompliant bool) (out *ReportObject) {
+	out = NewReportObject(aReason, StatefulSetType, isCompliant)
+	out.AddField(Namespace, aNamespace)
+	out.AddField(StatefulSetName, aStatefulSetName)
+	return out
+}
+
+func NewCrdReportObject(aName, aVersion, aReason string, isCompliant bool) (out *ReportObject) {
+	out = NewReportObject(aReason, CustomResourceDefinitionType, isCompliant)
+	out.AddField(CustomResourceDefinitionName, aName)
+	out.AddField(CustomResourceDefinitionVersion, aVersion)
 	return out
 }
 
