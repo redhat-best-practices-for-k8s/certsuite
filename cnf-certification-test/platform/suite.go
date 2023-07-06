@@ -223,7 +223,7 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 
 		case testhelper.ERROR:
 			tnf.ClaimFilePrintf("%s - error while running fs-diff: %v", cut, fsDiffTester.Error)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Error while running fs-diff", false).AddField("Error", fsDiffTester.Error.Error()))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Error while running fs-diff", false).AddField(testhelper.Error, fsDiffTester.Error.Error()))
 		}
 	}
 
@@ -268,7 +268,8 @@ func testTainted(env *provider.TestEnvironment) {
 		taintsMask, err := tf.GetKernelTaintsMask()
 		if err != nil {
 			tnf.ClaimFilePrintf("Failed to retrieve kernel taint information from node %s: %v", nodeName, err)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Failed to retrieve kernel taint information from node", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Failed to retrieve kernel taint information from node", false).
+				AddField(testhelper.Error, err.Error()))
 			continue
 		}
 
@@ -296,7 +297,8 @@ func testTainted(env *provider.TestEnvironment) {
 		if err != nil {
 			tnf.ClaimFilePrintf("failed to get tainter modules from node %s: %v", nodeName, err)
 			errNodes = append(errNodes, nodeName)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Failed to get tainter modules", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Failed to get tainter modules", false).
+				AddField(testhelper.Error, err.Error()))
 			continue
 		}
 
@@ -315,7 +317,8 @@ func testTainted(env *provider.TestEnvironment) {
 		for _, taintedBit := range otherKernelTaints {
 			tnf.ClaimFilePrintf("Node %s - taint bit %d is set but it's not caused by any module.", nodeName, taintedBit)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Taint bit is set but it's not caused by any module", false).
-				AddField(testhelper.TaintBit, strconv.Itoa(taintedBit)))
+				AddField(testhelper.TaintBit, strconv.Itoa(taintedBit)).
+				AddField(testhelper.TaintBitDescription, nodetainted.GetTaintMsg(taintedBit)))
 			otherTaints[nodeName] = append(otherTaints[nodeName], taintedBit)
 		}
 	}

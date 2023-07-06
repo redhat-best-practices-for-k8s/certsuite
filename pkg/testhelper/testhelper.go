@@ -133,6 +133,7 @@ const (
 	ChangedFolders                  = "Changed Folders"
 	DeletedFolders                  = "Deleted Folders"
 	TaintBit                        = "Taint Bit"
+	TaintBitDescription             = "Taint Bit Description"
 	ModuleName                      = "Module Name"
 	Taints                          = "Taints"
 	SysctlKey                       = "Sysctl Key"
@@ -185,6 +186,7 @@ const (
 	HostPortType                 = "Host Port"
 	HostPathType                 = "Host Path"
 	HelmVersionType              = "Helm Version"
+	Error                        = "Error"
 )
 
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {
