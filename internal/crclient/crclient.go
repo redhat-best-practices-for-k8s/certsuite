@@ -22,7 +22,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
@@ -33,6 +32,18 @@ const PsRegex = `(?m)^(\d+?)\s+?(\d+?)\s+?(.*?)$`
 type Process struct {
 	PidNs, Pid int
 	Args       string
+}
+
+// Helper function to create the clientsholder.Context of the first container of the debug pod
+// that runs in the give node. This context is usually needed to run shell commands that get
+// information from a node where a pod/container under test is running.
+func GetNodeDebugPodContext(node string, env *provider.TestEnvironment) (clientsholder.Context, error) {
+	debugPod := env.DebugPods[node]
+	if debugPod == nil {
+		return clientsholder.Context{}, fmt.Errorf("debug pod not found on node %s", node)
+	}
+
+	return clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name), nil
 }
 
 func GetPidFromContainer(cut *provider.Container, ctx clientsholder.Context) (int, error) {
@@ -65,12 +76,11 @@ func GetPidFromContainer(cut *provider.Container, ctx clientsholder.Context) (in
 // To get the pid namespace of the container
 func GetContainerPidNamespace(testContainer *provider.Container, env *provider.TestEnvironment) (string, error) {
 	// Get the container pid
-	nodeName := testContainer.NodeName
-	debugPod := env.DebugPods[nodeName]
-	if debugPod == nil {
-		ginkgo.Fail(fmt.Sprintf("Debug pod not found on Node: %s", nodeName))
+	ocpContext, err := GetNodeDebugPodContext(testContainer.NodeName, env)
+	if err != nil {
+		return "", fmt.Errorf("failed to get debug pod's context for container %s: %v", testContainer, err)
 	}
-	ocpContext := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
+
 	pid, err := GetPidFromContainer(testContainer, ocpContext)
 	if err != nil {
 		return "", fmt.Errorf("unable to get container process id due to: %v", err)
@@ -78,10 +88,11 @@ func GetContainerPidNamespace(testContainer *provider.Container, env *provider.T
 	logrus.Debugf("Obtained process id for %s is %d", testContainer, pid)
 
 	command := fmt.Sprintf("lsns -p %d -t pid -n", pid)
-	stdout, stderr, err := ExecCommandContainerNSEnter(command, testContainer)
+	stdout, stderr, err := clientsholder.GetClientsHolder().ExecCommandContainer(ocpContext, command)
 	if err != nil || stderr != "" {
 		return "", fmt.Errorf("unable to run nsenter due to : %v", err)
 	}
+
 	return strings.Fields(stdout)[0], nil
 }
 
@@ -97,16 +108,13 @@ func GetContainerProcesses(container *provider.Container, env *provider.TestEnvi
 // ExecCommandContainerNSEnter executes a command in the specified container namespace using nsenter
 func ExecCommandContainerNSEnter(command string,
 	aContainer *provider.Container) (outStr, errStr string, err error) {
-	// Getting env
 	env := provider.GetTestEnvironment()
-	// Getting the debug pod corresponding to the container's node
-	debugPod := env.DebugPods[aContainer.NodeName]
-	if debugPod == nil {
-		err = fmt.Errorf("debug pod not found on Node: %s trying to run command: \" %s \" Namespace: %s Pod: %s container %s err:%s", aContainer.NodeName, command, aContainer.Namespace, aContainer.Podname, aContainer.Name, err)
-		return "", "", err
+	ctx, err := GetNodeDebugPodContext(aContainer.NodeName, &env)
+	if err != nil {
+		return "", "", fmt.Errorf("failed to get debug pod's context for container %s: %v", aContainer, err)
 	}
-	o := clientsholder.GetClientsHolder()
-	ctx := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
+
+	ch := clientsholder.GetClientsHolder()
 
 	// Get the container PID to build the nsenter command
 	containerPid, err := GetPidFromContainer(aContainer, ctx)
@@ -118,21 +126,27 @@ func ExecCommandContainerNSEnter(command string,
 	nsenterCommand := "nsenter -t " + strconv.Itoa(containerPid) + " -n " + command
 
 	// Run the nsenter command on the debug pod
-	outStr, errStr, err = o.ExecCommandContainer(ctx, nsenterCommand)
+	outStr, errStr, err = ch.ExecCommandContainer(ctx, nsenterCommand)
 	if err != nil {
 		return "", "", fmt.Errorf("cannot execute command: \" %s \"  on %s err:%s", command, aContainer, err)
 	}
+
 	return outStr, errStr, err
 }
 
 func GetPidsFromPidNamespace(pidNamespace string, container *provider.Container) (p []*Process, err error) {
-	const command = "ps -e -o pidns,pid,args"
-
-	stdout, stderr, err := ExecCommandContainerNSEnter(command, container)
-	if err != nil || stderr != "" {
-		err = fmt.Errorf("unable to run nsenter due to : %v", err)
-		return p, err
+	const command = "trap \"\" SIGURG ; ps -e -o pidns,pid,args"
+	env := provider.GetTestEnvironment()
+	ctx, err := GetNodeDebugPodContext(container.NodeName, &env)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get debug pod's context for container %s: %v", container, err)
 	}
+
+	stdout, stderr, err := clientsholder.GetClientsHolder().ExecCommandContainer(ctx, command)
+	if err != nil || stderr != "" {
+		return nil, fmt.Errorf("command %q failed to run in debug pod=%s (node=%s): %v", command, ctx.GetPodName(), container.NodeName, err)
+	}
+
 	re := regexp.MustCompile(PsRegex)
 	matches := re.FindAllStringSubmatch(stdout, -1)
 	// If we do not find a successful log, we fail
