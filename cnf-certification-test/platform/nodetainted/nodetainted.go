@@ -109,7 +109,7 @@ var kernelTaints = map[int]KernelTaint{
 	31: {"BPF syscall has either been configured or enabled for unprivileged users/programs", "u"},
 }
 
-func getTaintMsg(bit int) string {
+func GetTaintMsg(bit int) string {
 	if taintMsg, exists := kernelTaints[bit]; exists {
 		return fmt.Sprintf("%s (tainted bit %d)", taintMsg.Description, bit)
 	}
@@ -122,7 +122,7 @@ func DecodeKernelTaintsFromBitMask(bitmask uint64) []string {
 	for i := 0; i < 64; i++ {
 		bit := (bitmask >> i) & 1
 		if bit == 1 {
-			taints = append(taints, getTaintMsg(i))
+			taints = append(taints, GetTaintMsg(i))
 		}
 	}
 	return taints

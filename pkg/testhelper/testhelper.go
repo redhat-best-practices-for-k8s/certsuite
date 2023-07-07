@@ -130,6 +130,15 @@ const (
 	TolerationEffect                = "Toleration Effect"
 	StorageClassName                = "Storage Class Name"
 	StorageClassProvisioner         = "Storage Class Provisioner"
+	ChangedFolders                  = "Changed Folders"
+	DeletedFolders                  = "Deleted Folders"
+	TaintBit                        = "Taint Bit"
+	TaintBitDescription             = "Taint Bit Description"
+	ModuleName                      = "Module Name"
+	Taints                          = "Taints"
+	SysctlKey                       = "Sysctl Key"
+	SysctlValue                     = "Sysctl Value"
+	OSImage                         = "OS Image"
 
 	// ICMP tests
 	NetworkName              = "Network Name"
@@ -159,6 +168,7 @@ const (
 	HelmType                     = "Helm"
 	OperatorType                 = "Operator"
 	ContainerType                = "Container"
+	NodeType                     = "Node"
 	ContainerProcessType         = "ContainerProcess"
 	ContainerCategory            = "ContainerCategory"
 	ProjectedVolumeType          = "ProjectedVolume"
@@ -176,6 +186,7 @@ const (
 	HostPortType                 = "Host Port"
 	HostPathType                 = "Host Path"
 	HelmVersionType              = "Helm Version"
+	Error                        = "Error"
 )
 
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {
@@ -191,6 +202,12 @@ func NewContainerReportObject(aNamespace, aPodName, aContainerName, aReason stri
 	out.AddField(Namespace, aNamespace)
 	out.AddField(PodName, aPodName)
 	out.AddField(ContainerName, aContainerName)
+	return out
+}
+
+func NewNodeReportObject(aNodeName, aReason string, isCompliant bool) (out *ReportObject) {
+	out = NewReportObject(aReason, NodeType, isCompliant)
+	out.AddField(Name, aNodeName)
 	return out
 }
 
