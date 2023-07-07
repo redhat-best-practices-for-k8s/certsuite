@@ -1537,21 +1537,25 @@ classification=  {
           // Create table header
           var thead = document.createElement('thead');
           var headerRow = document.createElement('tr');
-          Object.values(item.ObjectFieldsKeys).forEach(function (key) {
-            var th = document.createElement('th');
-            th.textContent = key;
-            headerRow.appendChild(th);
-          });
+          if (item.ObjectFieldsKeys != null) {
+            Object.values(item.ObjectFieldsKeys).forEach(function (key) {
+              var th = document.createElement('th');
+              th.textContent = key;
+              headerRow.appendChild(th);
+            });
+          }
           thead.appendChild(headerRow);
           table.appendChild(thead);
           firstItem = false
         }
         var row = document.createElement('tr');
-        Object.values(item.ObjectFieldsValues).forEach(function (value) {
-          var cell = document.createElement('td');
-          cell.textContent = value;
-          row.appendChild(cell);
-        });
+        if (item.ObjectFieldsValues != null) {
+          Object.values(item.ObjectFieldsValues).forEach(function (value) {
+           var cell = document.createElement('td');
+            cell.textContent = value;
+            row.appendChild(cell);
+          });
+        }
         tbody.appendChild(row);
       });
       table.appendChild(tbody);
