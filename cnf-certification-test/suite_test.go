@@ -73,6 +73,9 @@ var (
 	// gitDisplayRelease is a string used to hold the text to display
 	// the version on screen and in the claim file
 	gitDisplayRelease string
+	// ClaimFormat is the current version for the claim file format to be produced by the TNF test suite.
+	// A client decoding this claim file must support decoding its specific version.
+	ClaimFormatVersion string
 )
 
 func init() {
@@ -135,6 +138,7 @@ func TestTest(t *testing.T) {
 
 	ginkgoConfig, _ := ginkgo.GinkgoConfiguration()
 	log.Infof("TNF Version         : %v", getGitVersion())
+	log.Infof("Claim Format Version: %s", ClaimFormatVersion)
 	log.Infof("Ginkgo Version      : %v", ginkgo.GINKGO_VERSION)
 	log.Infof("Focused test suites : %v", ginkgoConfig.FocusStrings)
 	log.Infof("TC skip patterns    : %v", ginkgoConfig.SkipStrings)
@@ -242,5 +246,6 @@ func incorporateVersions(claimData *claim.Claim) {
 		OcClient:     diagnostics.GetVersionOcClient(),
 		Ocp:          diagnostics.GetVersionOcp(),
 		K8s:          diagnostics.GetVersionK8s(),
+		ClaimFormat:  ClaimFormatVersion,
 	}
 }

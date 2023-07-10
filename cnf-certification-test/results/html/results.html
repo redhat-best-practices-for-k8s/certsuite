@@ -224,9 +224,30 @@
   </div>
   </div>
 
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Warning</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modalBody">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Stop Loading</button>
+          <button type="button" id="continueLoadingClaim" data-bs-dismiss="modal"
+            class="btn btn-primary">Continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- We should extract the javascript code to a separate file, but if we include it here we can just use a single file HTMl, which is handy -->
   <!--    <script src="./utils.js"></script> -->
   <script>
+    const expectedClaimVersion = "v0.0.1"
     var buttonElementId = "non"
     var claimGlobal
     var feedbackGlobal
@@ -384,6 +405,19 @@
 
       text = '</tbody>'
       $(text).appendTo($(element))
+    }
+
+    function getClaimVersion(input) {
+      const claimVersion = input["claimFormat"]
+      if (typeof claimVersion === 'undefined') {
+        return "nil - claimFormat version not present in claim file"
+      }
+      const regex = /(v[0-9]\.[0-9]\.[0-9])/;
+      const matches = claimVersion.match(regex);
+      if (matches != null && matches.length > 1) {
+        return matches[1]
+      }
+      return "nil - claimFormat version is not in a valid format, check claim file"
     }
 
     function fillMetadata(input, element) {
@@ -772,15 +806,29 @@
 
     const inputElement = document.getElementById("formFile");
     inputElement.addEventListener("change", handleFiles, false);
+
+
     function handleFiles() {
       const fileList = this.files; /* now you can work with the file list */
       if (fileList.length) {
         // We have a file to load
         let fileUploaded = new FileReader();
         fileUploaded.addEventListener("load", e => {
-          claimGlobal = JSON.parse(fileUploaded.result)
+          globalClaimJSON = JSON.parse(fileUploaded.result)
+          claimVersion = getClaimVersion(globalClaimJSON.claim.versions)
+          const modalBody = document.getElementById('modalBody');
+          if (expectedClaimVersion != claimVersion) {
+            $('#staticBackdrop').modal('show');
+            modalBody.textContent = 'Unsupported claim format. Expecting: ' + expectedClaimVersion + ' but got: ' + claimVersion
+            // Get a reference to the button element
+            const myButton = document.getElementById('continueLoadingClaim');
 
-          renderResults()
+            // Add an event listener to the button
+            myButton.addEventListener('click', renderClaim);
+          } else {
+            renderResults()
+          }
+
         });
         fileUploaded.readAsText(fileList[0]);
       }

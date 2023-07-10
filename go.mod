@@ -2,6 +2,8 @@ module github.com/test-network-function/cnf-certification-test
 
 go 1.20
 
+replace github.com/test-network-function/test-network-function-claim => ../test-network-function-claim
+
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
 	github.com/basgys/goxml2json v1.1.0
