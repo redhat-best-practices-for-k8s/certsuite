@@ -1,4 +1,4 @@
-package claim
+package add
 
 import (
 	"testing"
@@ -44,6 +44,6 @@ func TestNewCommand(t *testing.T) {
 	// No parameters to test
 	result := NewCommand()
 	assert.NotNil(t, result)
-	assert.Equal(t, "claim", result.Use)
-	assert.Equal(t, "The test suite generates a \"claim\" file", result.Short)
+	assert.Equal(t, "add", result.Use)
+	assert.Equal(t, "Add results from xml junit files to an existing claim file.", result.Short)
 }

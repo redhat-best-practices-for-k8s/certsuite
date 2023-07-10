@@ -1,4 +1,4 @@
-package claim
+package compare
 
 import (
 	"encoding/json"
@@ -7,6 +7,17 @@ import (
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+)
+
+var (
+	Claim1 string
+	Claim2 string
+
+	claimCompareFiles = &cobra.Command{
+		Use:   "compare",
+		Short: "Compare two claim files.",
+		RunE:  claimCompare,
+	}
 )
 
 type claimFileStruct struct {
@@ -31,6 +42,27 @@ type claimFileStruct struct {
 type Cni struct {
 	Name    string        "json:\"name\""
 	Plugins []interface{} "json:\"plugins\""
+}
+
+func NewCommand() *cobra.Command {
+	claimCompareFiles.Flags().StringVarP(
+		&Claim1, "claim1", "1", "",
+		"existing claim1 file. (Required) first file to compare",
+	)
+	claimCompareFiles.Flags().StringVarP(
+		&Claim2, "claim2", "2", "",
+		"existing claim2 file. (Required) second file to compare with",
+	)
+	err := claimCompareFiles.MarkFlagRequired("claim1")
+	if err != nil {
+		return nil
+	}
+	err = claimCompareFiles.MarkFlagRequired("claim2")
+	if err != nil {
+		return nil
+	}
+
+	return claimCompareFiles
 }
 
 func claimCompare(_ *cobra.Command, _ []string) error {

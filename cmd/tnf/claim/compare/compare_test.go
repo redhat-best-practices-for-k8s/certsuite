@@ -1,4 +1,4 @@
-package claim
+package compare
 
 import (
 	"reflect"

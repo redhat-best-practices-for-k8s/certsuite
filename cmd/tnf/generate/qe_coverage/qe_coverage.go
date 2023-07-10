@@ -24,9 +24,15 @@ type TestSuiteQeCoverage struct {
 	NotImplementedTestCases []string
 }
 
+func NewCommand() *cobra.Command {
+	qeCoverageReportCmd.PersistentFlags().String("suitename", "", "Displays the remaining tests not covered by QE for the specified suite name.")
+
+	return qeCoverageReportCmd
+}
+
 var (
 	// QeCoverageReportCmd is used to generate a QE coverage report.
-	QeCoverageReportCmd = &cobra.Command{
+	qeCoverageReportCmd = &cobra.Command{
 		Use:   "qe-coverage-report",
 		Short: "Generates the current QE coverage report.",
 		Run: func(cmd *cobra.Command, args []string) {

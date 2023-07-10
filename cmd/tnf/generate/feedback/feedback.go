@@ -33,7 +33,7 @@ var (
 	// generateCmd is the root of the "catalog generate" CLI program.
 	generateFeedbackJsFile = &cobra.Command{
 		Use:   "feedbackjs",
-		Short: "Generates a javascript file called feedback.js from a feedback.json that was downloaded from the results html viewer",
+		Short: "Generates a javascript file called feedback.js from a feedback.json that was downloaded from the results html viewer.",
 		RunE:  runGenerateFeedbackJsFile,
 	}
 )

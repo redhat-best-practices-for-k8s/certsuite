@@ -4,31 +4,20 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
-	claim "github.com/test-network-function/cnf-certification-test/cmd/tnf/addclaim"
-	"github.com/test-network-function/cnf-certification-test/cmd/tnf/generate/catalog"
-	feedback "github.com/test-network-function/cnf-certification-test/cmd/tnf/generate/feedback"
-	qecoverage "github.com/test-network-function/cnf-certification-test/cmd/tnf/generate/qe_coverage"
+	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim"
+	"github.com/test-network-function/cnf-certification-test/cmd/tnf/generate"
 )
 
 var (
 	rootCmd = &cobra.Command{
 		Use:   "tnf",
-		Short: "A CLI for creating, validating, and test-network-function tests.",
-	}
-
-	generate = &cobra.Command{
-		Use:   "generate",
-		Short: "generator tool for various tnf artifacts.",
+		Short: "A CLI program with tools related to the CNF Certification Suite.",
 	}
 )
 
 func main() {
 	rootCmd.AddCommand(claim.NewCommand())
-	rootCmd.AddCommand(generate)
-	generate.AddCommand(catalog.NewCommand())
-	generate.AddCommand(feedback.NewCommand())
-	generate.AddCommand(qecoverage.QeCoverageReportCmd)
-	qecoverage.QeCoverageReportCmd.PersistentFlags().String("suitename", "", "Displays the remaining tests not covered by QE for the specified suite name")
+	rootCmd.AddCommand(generate.NewCommand())
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatal(err)
