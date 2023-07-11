@@ -1262,7 +1262,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		UndeclaredContainerPortsRemediation,
 		NoExceptionProcessForExtendedTests,
 		TestUndeclaredContainerPortsUsageDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Optional,
 			Telco:    Optional,
