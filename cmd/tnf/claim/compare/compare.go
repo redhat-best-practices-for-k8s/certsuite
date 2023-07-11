@@ -7,6 +7,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"github.com/test-network-function/cnf-certification-test/cmd/tnf/pkg/claim"
 )
 
 var (
@@ -19,30 +20,6 @@ var (
 		RunE:  claimCompare,
 	}
 )
-
-type claimFileStruct struct {
-	Claim struct {
-		Nodes struct {
-			CniPlugins  map[string][]Cni       `json:"cniPlugins"`
-			NodesHwInfo map[string]interface{} `json:"nodesHwInfo"`
-			CsiDriver   interface{}            `json:"csiDriver"`
-		} `json:"nodes"`
-
-		RawResults struct {
-			Cnfcertificationtest struct {
-				Testsuites struct {
-					Testsuite struct {
-						Testcase []testCase `json:"testcase"`
-					} `json:"testsuite"`
-				} `json:"testsuites"`
-			} `json:"cnf-certification-test"`
-		} `json:"rawResults"`
-	} `json:"claim"`
-}
-type Cni struct {
-	Name    string        "json:\"name\""
-	Plugins []interface{} "json:\"plugins\""
-}
 
 func NewCommand() *cobra.Command {
 	claimCompareFiles.Flags().StringVarP(
@@ -73,11 +50,6 @@ func claimCompare(_ *cobra.Command, _ []string) error {
 		log.Fatalf("Error claimCompareFilesfunc :%v", err)
 	}
 	return nil
-}
-
-type testCase struct {
-	Name   string `json:"-name"`
-	Status string `json:"-status"`
 }
 
 func claimCompareFilesfunc(claim1, claim2 string) error {
@@ -119,8 +91,8 @@ func claimCompareFilesfunc(claim1, claim2 string) error {
 	return nil
 }
 
-func unmarshalClaimFile(claimdata []byte) (claimFileStruct, error) {
-	var claimDataResult claimFileStruct
+func unmarshalClaimFile(claimdata []byte) (claim.Schema, error) {
+	var claimDataResult claim.Schema
 	errclaimDataResult := json.Unmarshal(claimdata, &claimDataResult)
 	if errclaimDataResult != nil {
 		log.Fatalf("Error in unmarshal the claim file :%v", errclaimDataResult)
@@ -159,11 +131,11 @@ func compareEqual2String(a, b []string) bool {
 	return true
 }
 
-// compare between 2 test case result (testCase) object
+// compare between 2 test case result (claim.TestCase) object
 // return 3 values: 1. the test name that have different result value - diffResult
 // 2. name of test cases that in claim2 but do not have them on claim1 - notFoundtestIn1
 // 2. name of test cases that in claim1 but do not have them on claim2 - notFoundtestIn2
-func compare2TestCaseResults(testcaseResult1, testcaseResult2 []testCase) (diffResult []testCase, notFoundtestIn1, notFoundtestIn2 []string) {
+func compare2TestCaseResults(testcaseResult1, testcaseResult2 []claim.TestCaseRawResult) (diffResult []claim.TestCaseRawResult, notFoundtestIn1, notFoundtestIn2 []string) {
 	var testcaseR1, testcaseR2 []string
 	for _, result1 := range testcaseResult1 {
 		testcaseR1 = append(testcaseR1, result1.Name)
@@ -227,7 +199,7 @@ func removeDuplicateValues(intSlice []string) []string {
 }
 
 // compare between 2 cni objects and print the difference
-func compare2cni(cni1, cni2 map[string][]Cni) {
+func compare2cni(cni1, cni2 map[string][]claim.Cni) {
 	for node, val := range cni1 {
 		for node2, val2 := range cni2 {
 			if node != node2 {
@@ -252,7 +224,7 @@ func compare2cni(cni1, cni2 map[string][]Cni) {
 // 1. name of cni's that have same name but the plugin value are different - diffPlugins
 // 2. name of cni's that found on claim2 but not in claim1 - notFoundNamesIn1
 // 3. name of cni's that found on claim1 but not in claim2 - notFoundNamesIn3
-func compare2cniHelper(cniList1, cniList2 []Cni, node string) (diffPlugins []Cni, notFoundNamesIn1, notFoundNamesIn2 []string) {
+func compare2cniHelper(cniList1, cniList2 []claim.Cni, node string) (diffPlugins []claim.Cni, notFoundNamesIn1, notFoundNamesIn2 []string) {
 	var cniList1Name, cniList2Name []string
 	if len(cniList1) == 0 {
 		log.Infof("in node %s CNIs present in claim2 and on claim1 that node do not have cni values: %v", node, cniList2)
