@@ -54,36 +54,6 @@ Golang
 * [`typos`](https://github.com/crate-ci/typos)
 * [`yamllint`](https://github.com/adrienverge/yamllint)
 
-## Show Results after finishing of running the test code
-
-After the end of your run a claim.json file will be created for you with the
-results of that specific test run. To see them in a good way that is clear for
-you we created a parser that is local.
-
-The parser is a simple HTML web page that can be opened in any browser. It can be
-found in the results "tar.gz" file that is generated in the output folder, so it
-needs to be uncompressed first in a local folder. Both files `results.html` and
-`results-embed.html` can be used. See chapter [Results artifacts zip file](https://test-network-function.github.io/cnf-certification-test/test-output/#results-artifacts-zip-file)
-of the Test Output tab of the documentation for more details about the results
-"tar.gz" file.
-
-![overview](docs/assets/images/htmlpage.png)
-
-## Upload a previous feedback to the html parser page
-
-Users are able to add their feedback about their test run then download their
-own copy of their feedback via the parser HTML page.  Users can then re-use the
-feedback they have already entered in future runs.  To do this, users can
-upload their `feedback.json` file to the parser HTML page.  Alternatively,
-users can place their `feedback.json` file in the compressed folder from the
-results.tat.gz that they did after running the tnf test and
-needs to be named `feedback.js`.  Users need to convert the
-downloaded `feedback.json` to `feedback.js` by running the command:
-`./tnf generate feedbackjs -f path-to-feedbackjson/feedback.json -o #your-compressed-results-folder`
-
-when running this command the feedback.json file will be convert to feedback.js
-and it will be located on  #your-compressed-results-folder
-
 ## License
 
 CNF Certification Test is copyright [Red Hat, Inc.](https://www.redhat.com) and available
