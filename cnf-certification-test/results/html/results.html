@@ -833,11 +833,10 @@
         fillResults(claimGlobal.claim.results, classification, '#mandatory-telco-table', '#optional-telco-table', "telco")
         fillResults(claimGlobal.claim.results, classification, '#mandatory-non-telco-table', '#optional-non-telco-table', "nontelco")
         fillResults(claimGlobal.claim.results, classification, '#mandatory-extended-table', '#optional-extended-table', "extended")
+        if (typeof feedbackGlobal != 'undefined') {
+          fillFeedback(feedbackGlobal)
+        }
       }
-      if (typeof feedbackGlobal != 'undefined') {
-        fillFeedback(feedbackGlobal)
-      }
-
     }
 
     function linkToStyle(link) {
