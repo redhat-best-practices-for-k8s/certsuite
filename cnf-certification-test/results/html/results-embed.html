@@ -702,10 +702,14 @@
 
     function fillFeedback(input) {
       for (key in input) {
-        // copy previus daata
-        document.getElementById(key).textContent = document.getElementById(key).value;
-        document.getElementById(key).textContent = input[key]
-        document.getElementById(key).value = input[key]
+        // copy previous data
+        element = document.getElementById(key)
+        if (element == null) {
+          continue
+        }
+        element.textContent = element.value;
+        element.textContent = input[key]
+        element.value = input[key]
       }
     }
 
@@ -1272,11 +1276,9 @@ classification=  {
     fetchRenderFeedbackFile(feedbackFileParam)
 
     // First render if local files or url provided files are present
-    if (feedbackGlobal != "" || claimGlobal != "") {
+    if (typeof claimGlobal != 'undefined') {
       renderResults()
     }
-
-
     const inputElement1 = document.getElementById("feedbackFile");
     inputElement1.addEventListener("change", handleFeedbackFiles, false);
     function handleFeedbackFiles() {
@@ -1310,6 +1312,9 @@ classification=  {
     }
 
     function fetchRenderClaimFile(fileParam) {
+      if (fileParam == null) {
+        return
+      }
       fetch(fileParam)
         .then((response) => {
           if (!response.ok) {
@@ -1327,6 +1332,9 @@ classification=  {
     }
 
     function fetchRenderFeedbackFile(fileParam) {
+      if (fileParam == null) {
+        return
+      }
       fetch(fileParam)
         .then((response) => {
           if (!response.ok) {
@@ -1606,7 +1614,7 @@ classification=  {
         var row = document.createElement('tr');
         if (item.ObjectFieldsValues != null) {
           Object.values(item.ObjectFieldsValues).forEach(function (value) {
-           var cell = document.createElement('td');
+            var cell = document.createElement('td');
             cell.textContent = value;
             row.appendChild(cell);
           });
