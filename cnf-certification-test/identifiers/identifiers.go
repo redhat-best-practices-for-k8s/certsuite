@@ -1486,7 +1486,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		NoSSHDaemonsAllowedRemediation,
 		`No exceptions - special consideration can be given to certain containers which run as utility tool daemon`,
 		TestNoSSHDaemonsAllowedIdentifierDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
