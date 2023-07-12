@@ -737,7 +737,6 @@ func testNamespaceResourceQuota(env *provider.TestEnvironment) {
 }
 
 const (
-	sshServicePortNumber   = 22
 	sshServicePortProtocol = "TCP"
 )
 
@@ -745,10 +744,24 @@ func testNoSSHDaemonsAllowed(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
-	sshPortInfo := netutil.PortInfo{PortNumber: sshServicePortNumber, Protocol: sshServicePortProtocol}
+	sshServicePortNumber := 22
 
 	for _, put := range env.Pods {
 		cut := put.Containers[0]
+
+		// 1. Find SSH port
+		port, err := netutil.GetSSHDaemonPort(cut)
+		if err != nil {
+			logrus.Errorf("error occurred while finding ssh port on %s, err %v", cut, err)
+		} else {
+			sshServicePortNumber, err = strconv.Atoi(port)
+			if err != nil {
+				logrus.Errorf("error occurred while converting port number from string to integer on %s", cut)
+			}
+		}
+
+		// 2. Check if SSH port is listening
+		sshPortInfo := netutil.PortInfo{PortNumber: sshServicePortNumber, Protocol: sshServicePortProtocol}
 
 		listeningPorts, err := netutil.GetListeningPorts(cut)
 		if err != nil {

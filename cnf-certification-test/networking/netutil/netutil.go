@@ -77,3 +77,13 @@ func GetListeningPorts(cut *provider.Container) (map[PortInfo]bool, error) {
 
 	return parseListeningPorts(outStr)
 }
+
+func GetSSHDaemonPort(cut *provider.Container) (string, error) {
+	const findSSHDaemonPort = "ss -tpln | grep sshd | head -1 | awk '{ print $4 }' | awk -F : '{ print $2 }'"
+	outStr, errStr, err := crclient.ExecCommandContainerNSEnter(findSSHDaemonPort, cut)
+	if err != nil || errStr != "" {
+		return "", fmt.Errorf("failed to execute command %s on %s, err: %v", findSSHDaemonPort, cut, err)
+	}
+
+	return outStr, nil
+}
