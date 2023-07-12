@@ -103,7 +103,8 @@ downloaded `feedback.json` to `feedback.js` by running the command:
 when running this command the feedback.json file will be convert to feedback.js
 and it will be located on  #your-compressed-results-folder
 
-## HTML Page modes 
+## HTML Page modes
+
 ### Manually uploading claim and feedback files via the webpage
 
 load the result.html or result-embed.html files locally and click on the "Choose File" button to pick the claim file to load:
@@ -121,10 +122,10 @@ If present in the same directory as the webpage, both files are loaded to update
 
 ### Load claim and feedback files via URL parameters
 
-When the result.html or result-embed.html are hosted it is also possible to pass the url of a claim and a feedback file as follows: 
+When the result.html or result-embed.html are hosted it is also possible to pass the url of a claim and a feedback file as follows:
 http://localhost/results-embed.html?claimfile=claim.json&feedback=feedback3.json
 
-- the `claimfile=` parameter indicates the claim file to load
-- the `feedback=` parameter indicates the feedback file to load
+* the `claimfile=` parameter indicates the claim file to load
+* the `feedback=` parameter indicates the feedback file to load
 
 Both files are loaded without user interaction.
