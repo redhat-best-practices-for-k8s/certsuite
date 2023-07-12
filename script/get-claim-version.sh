@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 #set -x
 
-jq .claimFormat < version.json
+jq .claimFormat <version.json
