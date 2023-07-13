@@ -1288,50 +1288,51 @@ classification=  {
 
   <script>
     var uuidNode = 1 // zero is root
-    // Load initial json, if available
-    if (typeof initialjson !== 'undefined') {
-      claimGlobal = initialjson
-    }
-    if (typeof feedback !== 'undefined') {
-      feedbackGlobal = feedback
-    }
-    // Get the URL
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-
-    // Get the claim file URL
-    const claimFileParam = urlParams.get('claimfile');
-    const feedbackFileParam = urlParams.get('feedback');
-
-    console.log("claimfile via url:", claimFileParam);
-    console.log("feedbackfile via url:", feedbackFileParam);
-
-    fetchRenderClaimFile(claimFileParam)
-    fetchRenderFeedbackFile(feedbackFileParam)
-
-    // First render if local files or url provided files are present
-    if (typeof claimGlobal != 'undefined') {
-      renderResultsWithModal()
-    }
-    const inputElement1 = document.getElementById("feedbackFile");
-    inputElement1.addEventListener("change", handleFeedbackFiles, false);
-    function handleFeedbackFiles() {
-      const fileList = this.files; /* now you can work with the file list */
-      if (fileList.length) {
-        // We have a file to load
-        let fileUploaded = new FileReader();
-        fileUploaded.addEventListener("load", e => {
-          input = JSON.parse(fileUploaded.result)
-          fillFeedback(input)
-        });
-        fileUploaded.readAsText(fileList[0]);
+    $(document).ready(function () {
+      // Load initial json, if available
+      if (typeof initialjson !== 'undefined') {
+        claimGlobal = initialjson
       }
-      this.value = null;
-    }
+      if (typeof feedback !== 'undefined') {
+        feedbackGlobal = feedback
+      }
+      // Get the URL
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
 
-    const inputElement = document.getElementById("formFile");
-    inputElement.addEventListener("change", handleFiles, false);
+      // Get the claim file URL
+      const claimFileParam = urlParams.get('claimfile');
+      const feedbackFileParam = urlParams.get('feedback');
 
+      console.log("claimfile via url:", claimFileParam);
+      console.log("feedbackfile via url:", feedbackFileParam);
+
+      fetchRenderClaimFile(claimFileParam)
+      fetchRenderFeedbackFile(feedbackFileParam)
+
+      // First render if local files or url provided files are present
+      if (typeof claimGlobal != 'undefined') {
+        renderResultsWithModal()
+      }
+      const inputElement1 = document.getElementById("feedbackFile");
+      inputElement1.addEventListener("change", handleFeedbackFiles, false);
+      function handleFeedbackFiles() {
+        const fileList = this.files; /* now you can work with the file list */
+        if (fileList.length) {
+          // We have a file to load
+          let fileUploaded = new FileReader();
+          fileUploaded.addEventListener("load", e => {
+            input = JSON.parse(fileUploaded.result)
+            fillFeedback(input)
+          });
+          fileUploaded.readAsText(fileList[0]);
+        }
+        this.value = null;
+      }
+
+      const inputElement = document.getElementById("formFile");
+      inputElement.addEventListener("change", handleFiles, false);
+    });
 
     function handleFiles() {
       const fileList = this.files; /* now you can work with the file list */
