@@ -1311,7 +1311,7 @@ classification=  {
 
     // First render if local files or url provided files are present
     if (typeof claimGlobal != 'undefined') {
-      renderResults()
+      renderResultsWithModal()
     }
     const inputElement1 = document.getElementById("feedbackFile");
     inputElement1.addEventListener("change", handleFeedbackFiles, false);
@@ -1339,23 +1339,26 @@ classification=  {
         // We have a file to load
         let fileUploaded = new FileReader();
         fileUploaded.addEventListener("load", e => {
-          globalClaimJSON = JSON.parse(fileUploaded.result)
-          claimVersion = getClaimVersion(globalClaimJSON.claim.versions)
-          const modalBody = document.getElementById('modalBody');
-          if (expectedClaimVersion != claimVersion) {
-            $('#staticBackdrop').modal('show');
-            modalBody.textContent = 'Unsupported claim format. Expecting: ' + expectedClaimVersion + ' but got: ' + claimVersion
-            // Get a reference to the button element
-            const myButton = document.getElementById('continueLoadingClaim');
-
-            // Add an event listener to the button
-            myButton.addEventListener('click', renderClaim);
-          } else {
-            renderResults()
-          }
-
+          claimGlobal = JSON.parse(fileUploaded.result)
+          renderResultsWithModal()
         });
         fileUploaded.readAsText(fileList[0]);
+      }
+    }
+
+    function renderResultsWithModal() {
+      claimVersion = getClaimVersion(claimGlobal.claim.versions)
+      const modalBody = document.getElementById('modalBody');
+      if (expectedClaimVersion != claimVersion) {
+        $('#staticBackdrop').modal('show');
+        modalBody.textContent = 'Unsupported claim format. Expecting: ' + expectedClaimVersion + ' but got: ' + claimVersion
+        // Get a reference to the button element
+        const myButton = document.getElementById('continueLoadingClaim');
+
+        // Add an event listener to the button
+        myButton.addEventListener('click', renderResults);
+      } else {
+        renderResults()
       }
     }
 
@@ -1372,7 +1375,7 @@ classification=  {
         })
         .then((data) => {
           claimGlobal = data
-          renderResults()
+          renderResultsWithModal()
         })
         .catch((error) => {
           console.log(`Error: ${error.message}`);
@@ -1392,7 +1395,7 @@ classification=  {
         })
         .then((data) => {
           feedbackGlobal = data
-          renderResults()
+          renderResultsWithModal()
         })
         .catch((error) => {
           console.log(`Error: ${error.message}`);
