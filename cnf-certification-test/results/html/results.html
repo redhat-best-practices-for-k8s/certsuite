@@ -6,8 +6,9 @@
   <title>CNF Certification Test Results</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    crossorigin="anonymous">
+  <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet" crossorigin="anonymous">
 
 
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -131,7 +132,7 @@
   </nav>
 
   <button class="w3-button w3-right w3-light-grey" id="download" type="submit" onclick=download()
-    hidden="hidden">Download Results Feedback</button>
+    hidden="hidden">Download Results</button>
 
   <button class="w3-button w3-right w3-light-grey" id="downloadjson" type="submit" onclick=downloadjson()
     hidden="hidden">Download Feedback as a JSON file</button>
@@ -227,7 +228,8 @@
   <!--    <script src="./utils.js"></script> -->
   <script>
     var buttonElementId = "non"
-
+    var claimGlobal
+    var feedbackGlobal
 
     function changeFunc() {
       var selectBox = document.getElementById("selectBox");
@@ -700,10 +702,14 @@
 
     function fillFeedback(input) {
       for (key in input) {
-        // copy previus daata
-        document.getElementById(key).textContent = document.getElementById(key).value;
-        document.getElementById(key).textContent = input[key]
-        document.getElementById(key).value = input[key]
+        // copy previous data
+        element = document.getElementById(key)
+        if (element == null) {
+          continue
+        }
+        element.textContent = element.value;
+        element.textContent = input[key]
+        element.value = input[key]
       }
     }
 
@@ -722,16 +728,32 @@
   <script src="./feedback.js"></script>
 
   <script>
+    var uuidNode = 1 // zero is root
     // Load initial json, if available
     if (typeof initialjson !== 'undefined') {
-      fillConfig(initialjson.claim.configurations, '#config-table')
-      fillConfig(initialjson.claim.nodes, '#nodes-table')
-      fillMetadata(initialjson.claim.metadata, '#metadata-table')
-      fillVersions(initialjson.claim.versions, '#versions-table')
-      fillResults(initialjson.claim.results, '#results-table', '#optional-far-edge-table', "ALL")
-      fillResults(initialjson.claim.results, classification.classification, '#mandatory-far-edge-table', '#optional-far-edge-table', "FarEdge")
+      claimGlobal = initialjson
     }
+    if (typeof feedback !== 'undefined') {
+      feedbackGlobal = feedback
+    }
+    // Get the URL
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
 
+    // Get the claim file URL
+    const claimFileParam = urlParams.get('claimfile');
+    const feedbackFileParam = urlParams.get('feedback');
+
+    console.log("claimfile via url:", claimFileParam);
+    console.log("feedbackfile via url:", feedbackFileParam);
+
+    fetchRenderClaimFile(claimFileParam)
+    fetchRenderFeedbackFile(feedbackFileParam)
+
+    // First render if local files or url provided files are present
+    if (typeof claimGlobal != 'undefined') {
+      renderResults()
+    }
     const inputElement1 = document.getElementById("feedbackFile");
     inputElement1.addEventListener("change", handleFeedbackFiles, false);
     function handleFeedbackFiles() {
@@ -756,31 +778,72 @@
         // We have a file to load
         let fileUploaded = new FileReader();
         fileUploaded.addEventListener("load", e => {
-          json = JSON.parse(fileUploaded.result)
-          //fillConfig(json.claim.configurations, '#config-table')
+          claimGlobal = JSON.parse(fileUploaded.result)
 
-
-          // Create treeview from JSON data
-          var container = document.getElementById("config-table");
-          //var [configurationsArr, childName, childNamespace] = format_for_treeview("", json.claim.configurations, [])
-          //createTreeView(container, configurationsArr, 0);
-          var [data, dummy, dummy] = format_for_fast_treeview(0, json.claim.configurations, [])
-          addOrphans(data, "#config-table");
-          //expandAll(document.querySelector("#config-table"));
-          var [data, dummy, dummy] = format_for_fast_treeview(0, json.claim.nodes, [])
-          addOrphans(data, "#nodes-table");
-          //expandAll(document.querySelector("#nodes-table"));
-          //fillConfig(json.claim.nodes, '#nodes-table')
-          fillMetadata(json.claim.metadata, '#metadata-table')
-          fillVersions(json.claim.versions, '#versions-table')
-          fillResults(json.claim.results, classification, '#results-table', '#optional-', "all")
-          fillResults(json.claim.results, classification, '#mandatory-far-edge-table', '#optional-far-edge-table', "faredge")
-          fillResults(json.claim.results, classification, '#mandatory-telco-table', '#optional-telco-table', "telco")
-          fillResults(json.claim.results, classification, '#mandatory-non-telco-table', '#optional-non-telco-table', "nontelco")
-          fillResults(json.claim.results, classification, '#mandatory-extended-table', '#optional-extended-table', "extended")
-          fillFeedback(feedback)         
+          renderResults()
         });
         fileUploaded.readAsText(fileList[0]);
+      }
+    }
+
+    function fetchRenderClaimFile(fileParam) {
+      if (fileParam == null) {
+        return
+      }
+      fetch(fileParam)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error, status = ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          claimGlobal = data
+          renderResults()
+        })
+        .catch((error) => {
+          console.log(`Error: ${error.message}`);
+        });
+    }
+
+    function fetchRenderFeedbackFile(fileParam) {
+      if (fileParam == null) {
+        return
+      }
+      fetch(fileParam)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error, status = ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          feedbackGlobal = data
+          renderResults()
+        })
+        .catch((error) => {
+          console.log(`Error: ${error.message}`);
+        });
+    }
+
+    function renderResults() {
+      if (typeof claimGlobal != 'undefined') {
+        // Create treeview from JSON data
+        var container = document.getElementById("config-table");
+        var [data, dummy, dummy] = format_for_fast_treeview(0, claimGlobal.claim.configurations, [])
+        addOrphans(data, "#config-table");
+        var [data, dummy, dummy] = format_for_fast_treeview(0, claimGlobal.claim.nodes, [])
+        addOrphans(data, "#nodes-table");
+        fillMetadata(claimGlobal.claim.metadata, '#metadata-table')
+        fillVersions(claimGlobal.claim.versions, '#versions-table')
+        fillResults(claimGlobal.claim.results, classification, '#results-table', '#optional-', "all")
+        fillResults(claimGlobal.claim.results, classification, '#mandatory-far-edge-table', '#optional-far-edge-table', "faredge")
+        fillResults(claimGlobal.claim.results, classification, '#mandatory-telco-table', '#optional-telco-table', "telco")
+        fillResults(claimGlobal.claim.results, classification, '#mandatory-non-telco-table', '#optional-non-telco-table', "nontelco")
+        fillResults(claimGlobal.claim.results, classification, '#mandatory-extended-table', '#optional-extended-table', "extended")
+        if (typeof feedbackGlobal != 'undefined') {
+          fillFeedback(feedbackGlobal)
+        }
       }
     }
 
@@ -824,7 +887,7 @@
         insertResults(body, "optional")
       }
 
-      document.querySelectorAll("link[rel=stylesheet]").forEach(function (link) {
+      document.querySelectorAll("link[rel='stylesheet']").forEach(function (link) {
         var style = linkToStyle(link);
         if (style != null) {
           head.insertBefore(style, head.firstChild);
@@ -853,7 +916,7 @@
     function downloadjson() {
       var dict = {};
       const tablesName = ["all", "telco", "nontelco", "extended", "faredge"]; // to go over all the feedback and save it
-      for (const key in this.json.claim.results) {
+      for (const key in claimGlobal.claim.results) {
         for (const key2 in this.classification) {
           if (key == key2) {
             for (let i = 0; i < tablesName.length; i++) {
@@ -882,7 +945,7 @@
     function download() {
       var selectBox = document.getElementById("selectBox");
       var tableName = selectBox.options[selectBox.selectedIndex].value;
-      for (const key in this.json.claim.results) {
+      for (const key in claimGlobal.claim.results) {
         for (const key2 in this.classification) {
           if (key == key2) {
             copyData(key2)
@@ -1084,7 +1147,6 @@
     }
 
     //Fast tree
-    var uuidNode = 1 // zero is root
     function format_for_fast_treeview(parentKey, data, arr) {
       var objectName = ""
       var objectNamespace = ""
@@ -1283,4 +1345,3 @@
 </body>
 
 </html>
-
