@@ -587,6 +587,54 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#show-results-after-finishing-of-running-the-test-code" class="md-nav__link">
+    Show Results after finishing of running the test code
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#upload-a-previous-feedback-to-the-html-parser-page" class="md-nav__link">
+    Upload a previous feedback to the html parser page
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#html-page-modes" class="md-nav__link">
+    HTML Page modes
+  </a>
+  
+    <nav class="md-nav" aria-label="HTML Page modes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manually-uploading-claim-and-feedback-files-via-the-webpage" class="md-nav__link">
+    Manually uploading claim and feedback files via the webpage
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-local-claimjsonjs-and-feedbackjs-files" class="md-nav__link">
+    Load local claimjson.js and feedback.js files
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-claim-and-feedback-files-via-url-parameters" class="md-nav__link">
+    Load claim and feedback files via URL parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -779,6 +827,54 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#show-results-after-finishing-of-running-the-test-code" class="md-nav__link">
+    Show Results after finishing of running the test code
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#upload-a-previous-feedback-to-the-html-parser-page" class="md-nav__link">
+    Upload a previous feedback to the html parser page
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#html-page-modes" class="md-nav__link">
+    HTML Page modes
+  </a>
+  
+    <nav class="md-nav" aria-label="HTML Page modes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manually-uploading-claim-and-feedback-files-via-the-webpage" class="md-nav__link">
+    Manually uploading claim and feedback files via the webpage
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-local-claimjsonjs-and-feedbackjs-files" class="md-nav__link">
+    Load local claimjson.js and feedback.js files
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-claim-and-feedback-files-via-url-parameters" class="md-nav__link">
+    Load claim and feedback files via URL parameters
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -853,6 +949,46 @@
 <li>Make it easier to store and send the test results for review.</li>
 <li>View the results in the html web page. In addition, the web page (either results-embed.thml or results.html) has a selector for workload type and allows the parter to introduce feedback for each of the failing test cases for later review from Red Hat. It&rsquo;s important to note that this web page needs the <code>claimjson.js</code> and <code>classification.js</code> files to be in the same folder as the html files to work properly.</li>
 </ol>
+<h2 id="show-results-after-finishing-of-running-the-test-code">Show Results after finishing of running the test code<a class="headerlink" href="#show-results-after-finishing-of-running-the-test-code" title="Permanent link">&para;</a></h2>
+<p>After the end of your run a claim.json file will be created for you with the
+results of that specific test run. To see them in a good way that is clear for
+you we created a parser that is local.</p>
+<p>The parser is a simple HTML web page that can be opened in any browser. It can be
+found in the results &ldquo;tar.gz&rdquo; file that is generated in the output folder, so it
+needs to be uncompressed first in a local folder. Both files <code>results.html</code> and
+<code>results-embed.html</code> can be used. See chapter <a href="https://test-network-function.github.io/cnf-certification-test/test-output/#results-artifacts-zip-file">Results artifacts zip file</a>
+of the Test Output tab of the documentation for more details about the results
+&ldquo;tar.gz&rdquo; file.</p>
+<p><img alt="overview" src="docs/assets/images/htmlpage.png" /></p>
+<h2 id="upload-a-previous-feedback-to-the-html-parser-page">Upload a previous feedback to the html parser page<a class="headerlink" href="#upload-a-previous-feedback-to-the-html-parser-page" title="Permanent link">&para;</a></h2>
+<p>Users are able to add their feedback about their test run then download their
+own copy of their feedback via the parser HTML page.  Users can then re-use the
+feedback they have already entered in future runs.  To do this, users can
+upload their <code>feedback.json</code> file to the parser HTML page.  Alternatively,
+users can place their <code>feedback.json</code> file in the compressed folder from the
+results.tat.gz that they did after running the tnf test and
+needs to be named <code>feedback.js</code>.  Users need to convert the
+downloaded <code>feedback.json</code> to <code>feedback.js</code> by running the command:
+<code>./tnf generate feedbackjs -f path-to-feedbackjson/feedback.json -o #your-compressed-results-folder</code></p>
+<p>when running this command the feedback.json file will be convert to feedback.js
+and it will be located on  #your-compressed-results-folder</p>
+<h2 id="html-page-modes">HTML Page modes<a class="headerlink" href="#html-page-modes" title="Permanent link">&para;</a></h2>
+<h3 id="manually-uploading-claim-and-feedback-files-via-the-webpage">Manually uploading claim and feedback files via the webpage<a class="headerlink" href="#manually-uploading-claim-and-feedback-files-via-the-webpage" title="Permanent link">&para;</a></h3>
+<p>load the result.html or result-embed.html files locally and click on the &ldquo;Choose File&rdquo; button to pick the claim file to load:</p>
+<p><img alt="claim" src="../assets/images/pick-claim.jpg" /></p>
+<p>Click on the &ldquo;Upload Feedback File: Choose File&rdquo; button to pick the feedback file to upload:</p>
+<p><img alt="feedback" src="../assets/images/pick-feedback.jpg" /></p>
+<h3 id="load-local-claimjsonjs-and-feedbackjs-files">Load local claimjson.js and feedback.js files<a class="headerlink" href="#load-local-claimjsonjs-and-feedbackjs-files" title="Permanent link">&para;</a></h3>
+<p>When it is loaded, the webpage also looks for the following properly formatted javascript files: claimjson.js and feedback.js.
+If present in the same directory as the webpage, both files are loaded to update the webpage content without user interaction. Delete the files to prevent auto-loading the results and feedback. Works for hosted pages and local pages.</p>
+<h3 id="load-claim-and-feedback-files-via-url-parameters">Load claim and feedback files via URL parameters<a class="headerlink" href="#load-claim-and-feedback-files-via-url-parameters" title="Permanent link">&para;</a></h3>
+<p>When the result.html or result-embed.html are hosted it is also possible to pass the url of a claim and a feedback file as follows:
+<a href="http://localhost/results-embed.html?claimfile=claim.json&amp;feedback=feedback3.json">http://localhost/results-embed.html?claimfile=claim.json&amp;feedback=feedback3.json</a></p>
+<ul>
+<li>the <code>claimfile=</code> parameter indicates the claim file to load</li>
+<li>the <code>feedback=</code> parameter indicates the feedback file to load</li>
+</ul>
+<p>Both files are loaded without user interaction.</p>
 <!-- markdownlint-disable first-line-heading -->
 
 
