@@ -32,6 +32,7 @@ func NewCommand() *cobra.Command {
 	)
 	err := claimCompareFiles.MarkFlagRequired("claim1")
 	if err != nil {
+		log.Errorf("Failed to mark flag claim1 as required: %v", err)
 		return nil
 	}
 	err = claimCompareFiles.MarkFlagRequired("claim2")
