@@ -1,39 +1,41 @@
-package claim
+package compare
 
 import (
 	"reflect"
 	"testing"
+
+	"github.com/test-network-function/cnf-certification-test/cmd/tnf/pkg/claim"
 )
 
 func Test_compare2TestCaseResults(t *testing.T) {
 	type args struct {
-		testcaseResult1 []testCase
-		testcaseResult2 []testCase
+		testcaseResult1 []claim.TestCaseRawResult
+		testcaseResult2 []claim.TestCaseRawResult
 	}
 	tests := []struct {
 		name              string
 		args              args
-		wantDiffresult    []testCase
+		wantDiffresult    []claim.TestCaseRawResult
 		wantNotFoundtest  []string
 		wantNotFoundtest2 []string
 	}{
 		{
 			name: "test1",
 			args: args{
-				testcaseResult1: []testCase{
+				testcaseResult1: []claim.TestCaseRawResult{
 					{
 						Name:   "[It] observability observability-container-logging [common, observability, observability-container-logging]",
 						Status: "skipped",
 					},
 				},
-				testcaseResult2: []testCase{
+				testcaseResult2: []claim.TestCaseRawResult{
 					{
 						Name:   "[It] observability observability-container-logging [common, observability, observability-container-logging]",
 						Status: "failed",
 					},
 				},
 			},
-			wantDiffresult: []testCase{
+			wantDiffresult: []claim.TestCaseRawResult{
 				{
 					Name:   "[It] observability observability-container-logging [common, observability, observability-container-logging]",
 					Status: "skipped",
@@ -45,7 +47,7 @@ func Test_compare2TestCaseResults(t *testing.T) {
 		{
 			name: "test2",
 			args: args{
-				testcaseResult1: []testCase{
+				testcaseResult1: []claim.TestCaseRawResult{
 					{
 						Name:   "[It] observability observability-crd-status [common, observability, observability-crd-status]",
 						Status: "skipped",
@@ -55,14 +57,14 @@ func Test_compare2TestCaseResults(t *testing.T) {
 						Status: "skipped",
 					},
 				},
-				testcaseResult2: []testCase{
+				testcaseResult2: []claim.TestCaseRawResult{
 					{
 						Name:   "[It] observability observability-container-logging [common, observability, observability-container-logging]",
 						Status: "failed",
 					},
 				},
 			},
-			wantDiffresult: []testCase{
+			wantDiffresult: []claim.TestCaseRawResult{
 				{
 					Name:   "[It] observability observability-container-logging [common, observability, observability-container-logging]",
 					Status: "skipped",
@@ -90,21 +92,21 @@ func Test_compare2TestCaseResults(t *testing.T) {
 
 func Test_compare2cnis(t *testing.T) {
 	type args struct {
-		cniList1 []Cni
-		cniList2 []Cni
+		cniList1 []claim.Cni
+		cniList2 []claim.Cni
 		nodeName string
 	}
 	tests := []struct {
 		name               string
 		args               args
-		wantDiffplugins    []Cni
+		wantDiffplugins    []claim.Cni
 		wantNotFoundNames  []string
 		wantNotFoundNames2 []string
 	}{
 		{
 			name: "test1",
 			args: args{
-				cniList1: []Cni{
+				cniList1: []claim.Cni{
 					{
 						Name:    "podman",
 						Plugins: nil,
@@ -114,7 +116,7 @@ func Test_compare2cnis(t *testing.T) {
 						Plugins: nil,
 					},
 				},
-				cniList2: []Cni{
+				cniList2: []claim.Cni{
 					{
 						Name:    "podman",
 						Plugins: nil,
@@ -129,13 +131,13 @@ func Test_compare2cnis(t *testing.T) {
 		{
 			name: "test2",
 			args: args{
-				cniList1: []Cni{
+				cniList1: []claim.Cni{
 					{
 						Name:    "podman",
 						Plugins: nil,
 					},
 				},
-				cniList2: []Cni{
+				cniList2: []claim.Cni{
 					{
 						Name:    "podman",
 						Plugins: nil,
@@ -155,7 +157,7 @@ func Test_compare2cnis(t *testing.T) {
 			name: "test3",
 			args: args{
 				cniList1: nil,
-				cniList2: []Cni{
+				cniList2: []claim.Cni{
 					{
 						Name:    "podman",
 						Plugins: nil,
@@ -185,8 +187,8 @@ func Test_compare2cnis(t *testing.T) {
 		{
 			name: "test5",
 			args: args{
-				cniList1: []Cni{},
-				cniList2: []Cni{},
+				cniList1: []claim.Cni{},
+				cniList2: []claim.Cni{},
 				nodeName: "master1",
 			},
 			wantDiffplugins:    nil,
@@ -196,13 +198,13 @@ func Test_compare2cnis(t *testing.T) {
 		{
 			name: "test6",
 			args: args{
-				cniList1: []Cni{
+				cniList1: []claim.Cni{
 					{
 						Name:    "podman",
 						Plugins: nil,
 					},
 				},
-				cniList2: []Cni{},
+				cniList2: []claim.Cni{},
 				nodeName: "master1",
 			},
 			wantDiffplugins:    nil,

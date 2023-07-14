@@ -94,10 +94,6 @@ coverage-html: test
 coverage-qe: build-tnf-tool
 	./tnf generate qe-coverage-report
 
-# Generates the test catalog in JSON
-build-catalog-json: build-tnf-tool
-	./tnf generate catalog json >catalog.json
-
 # Generates the test catalog in Markdown
 build-catalog-md: build-tnf-tool classification-js
 	./tnf generate catalog markdown >CATALOG.md

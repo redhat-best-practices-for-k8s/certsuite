@@ -36,12 +36,12 @@ var (
 	// generateCmd is the root of the "catalog generate" CLI program.
 	generateCmd = &cobra.Command{
 		Use:   "catalog",
-		Short: "Generates the test catalog",
+		Short: "Generates the test catalog.",
 	}
 
 	markdownGenerateClassification = &cobra.Command{
 		Use:   "javascript",
-		Short: "Generates java script file for classification",
+		Short: "Generates java script file for classification.",
 		RunE:  generateJS,
 	}
 

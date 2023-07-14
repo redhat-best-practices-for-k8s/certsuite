@@ -1,4 +1,4 @@
-package claim
+package add
 
 import (
 	"fmt"
@@ -16,23 +16,11 @@ import (
 var (
 	Reportdir string
 	Claim     string
-	Claim1    string
-	Claim2    string
 
-	addclaim = &cobra.Command{
-		Use:   "claim",
-		Short: "The test suite generates a \"claim\" file",
-		RunE:  claimUpdate,
-	}
 	claimAddFile = &cobra.Command{
 		Use:   "add",
-		Short: "The test suite generates a \"claim\" file",
+		Short: "Add results from xml junit files to an existing claim file.",
 		RunE:  claimUpdate,
-	}
-	claimCompareFiles = &cobra.Command{
-		Use:   "compare",
-		Short: "Compare 2 \"claim\" file",
-		RunE:  claimCompare,
 	}
 )
 
@@ -114,23 +102,6 @@ func NewCommand() *cobra.Command {
 	if err != nil {
 		return nil
 	}
-	addclaim.AddCommand(claimAddFile)
-	claimCompareFiles.Flags().StringVarP(
-		&Claim1, "claim1", "1", "",
-		"existing claim1 file. (Required) first file to compare",
-	)
-	claimCompareFiles.Flags().StringVarP(
-		&Claim2, "claim2", "2", "",
-		"existing claim2 file. (Required) second file to compare with",
-	)
-	err = claimCompareFiles.MarkFlagRequired("claim1")
-	if err != nil {
-		return nil
-	}
-	err = claimCompareFiles.MarkFlagRequired("claim2")
-	if err != nil {
-		return nil
-	}
-	addclaim.AddCommand(claimCompareFiles)
-	return addclaim
+
+	return claimAddFile
 }
