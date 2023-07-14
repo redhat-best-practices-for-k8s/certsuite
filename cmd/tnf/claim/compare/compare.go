@@ -28,7 +28,7 @@ func NewCommand() *cobra.Command {
 	)
 	claimCompareFiles.Flags().StringVarP(
 		&Claim2, "claim2", "2", "",
-		"existing claim2 file. (Required) second file to compare with",
+		"existing claim2 file. (Required) second file to compare",
 	)
 	err := claimCompareFiles.MarkFlagRequired("claim1")
 	if err != nil {
@@ -36,6 +36,7 @@ func NewCommand() *cobra.Command {
 	}
 	err = claimCompareFiles.MarkFlagRequired("claim2")
 	if err != nil {
+		log.Errorf("Failed to mark flag claim2 as required: %v", err)
 		return nil
 	}
 
