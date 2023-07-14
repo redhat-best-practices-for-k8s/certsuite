@@ -1,0 +1,87 @@
+name: QE Testing
+
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+env:
+  QE_REPO: test-network-function/cnfcert-tests-verification
+
+
+
+jobs:
+  qe-testing:
+    runs-on: qe-runner
+    strategy:
+      fail-fast: false
+      matrix: 
+        # suite: [accesscontrol, affiliatedcertification, lifecycle, networking, observability, platformalteration, performance, operator]
+        suite: [lifecycle]
+    env:
+      SHELL: /bin/bash
+      DEBUG_TNF: true # More verbose output from the TNF
+      KUBECONFIG: '/home/tnf/.kube/config'
+      PFLT_DOCKERCONFIG: '/home/tnf/.docker/config'
+      TEST_TNF_IMAGE_NAME: quay.io/testnetworkfunction/cnf-certification-test
+      TEST_TNF_IMAGE_TAG: localtest
+      DOCKER_CONFIG_DIR: '/home/tnf/.docker'
+
+    steps:
+      # 1) Clone the QE repository
+      # 2) Clone the partner repository
+      # 3) Create a Kind cluster from partner repo
+      # 4) Build the image from the test repo
+      # 4) Run the tests from QE repo
+      - name: Check out code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Run initial setup
+        uses: ./.github/actions/setup
+
+      - name: Build the test image
+        run: make build-image-local # quay.io/testnetworkfunction/cnf-certification-test:localtest
+        
+      - name: Check out `cnf-certification-test-partner`
+        uses: actions/checkout@v3
+        with:
+          repository: test-network-function/cnf-certification-test-partner
+          path: cnf-certification-test-partner
+
+      - name: Bootstrap the Kind and OC/Kubectl binaries for the `local-test-infra`
+        run: make bootstrap-cluster
+        working-directory: cnf-certification-test-partner
+  
+      - name: Preemptively delete the Kind cluster
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          command: kind delete cluster
+
+      - name: Prune docker resources
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          command: docker container prune -f; docker network prune -f; docker volume prune -f 
+
+      - name: Create `local-test-infra` OpenShift resources
+        run: make rebuild-cluster
+        working-directory: cnf-certification-test-partner
+  
+      - name: Install partner resources
+        run: make install
+        working-directory: cnf-certification-test-partner
+
+      - name: Clone the QE repository
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ env.QE_REPO }}
+          path: cnfcert-tests-verification
+
+      # Setup is complete.  Time to run the QE tests.
+      - name: Run the tests
+        run: FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} make test-features
+        working-directory: cnfcert-tests-verification
