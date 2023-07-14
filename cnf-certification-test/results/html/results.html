@@ -224,9 +224,30 @@
   </div>
   </div>
 
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Warning</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="modalBody">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Stop Loading</button>
+          <button type="button" id="continueLoadingClaim" data-bs-dismiss="modal"
+            class="btn btn-primary">Continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- We should extract the javascript code to a separate file, but if we include it here we can just use a single file HTMl, which is handy -->
   <!--    <script src="./utils.js"></script> -->
   <script>
+    const expectedClaimVersion = "v0.0.1"
     var buttonElementId = "non"
     var claimGlobal
     var feedbackGlobal
@@ -384,6 +405,19 @@
 
       text = '</tbody>'
       $(text).appendTo($(element))
+    }
+
+    function getClaimVersion(input) {
+      const claimVersion = input["claimFormat"]
+      if (typeof claimVersion === 'undefined') {
+        return "nil - claimFormat version not present in claim file"
+      }
+      const regex = /(v[0-9]\.[0-9]\.[0-9])/;
+      const matches = claimVersion.match(regex);
+      if (matches != null && matches.length > 1) {
+        return matches[1]
+      }
+      return "nil - claimFormat version is not in a valid format, check claim file"
     }
 
     function fillMetadata(input, element) {
@@ -729,49 +763,52 @@
 
   <script>
     var uuidNode = 1 // zero is root
-    // Load initial json, if available
-    if (typeof initialjson !== 'undefined') {
-      claimGlobal = initialjson
-    }
-    if (typeof feedback !== 'undefined') {
-      feedbackGlobal = feedback
-    }
-    // Get the URL
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-
-    // Get the claim file URL
-    const claimFileParam = urlParams.get('claimfile');
-    const feedbackFileParam = urlParams.get('feedback');
-
-    console.log("claimfile via url:", claimFileParam);
-    console.log("feedbackfile via url:", feedbackFileParam);
-
-    fetchRenderClaimFile(claimFileParam)
-    fetchRenderFeedbackFile(feedbackFileParam)
-
-    // First render if local files or url provided files are present
-    if (typeof claimGlobal != 'undefined') {
-      renderResults()
-    }
-    const inputElement1 = document.getElementById("feedbackFile");
-    inputElement1.addEventListener("change", handleFeedbackFiles, false);
-    function handleFeedbackFiles() {
-      const fileList = this.files; /* now you can work with the file list */
-      if (fileList.length) {
-        // We have a file to load
-        let fileUploaded = new FileReader();
-        fileUploaded.addEventListener("load", e => {
-          input = JSON.parse(fileUploaded.result)
-          fillFeedback(input)
-        });
-        fileUploaded.readAsText(fileList[0]);
+    $(document).ready(function () {
+      // Load initial json, if available
+      if (typeof initialjson !== 'undefined') {
+        claimGlobal = initialjson
       }
-      this.value = null;
-    }
+      if (typeof feedback !== 'undefined') {
+        feedbackGlobal = feedback
+      }
+      // Get the URL
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
 
-    const inputElement = document.getElementById("formFile");
-    inputElement.addEventListener("change", handleFiles, false);
+      // Get the claim file URL
+      const claimFileParam = urlParams.get('claimfile');
+      const feedbackFileParam = urlParams.get('feedback');
+
+      console.log("claimfile via url:", claimFileParam);
+      console.log("feedbackfile via url:", feedbackFileParam);
+
+      fetchRenderClaimFile(claimFileParam)
+      fetchRenderFeedbackFile(feedbackFileParam)
+
+      // First render if local files or url provided files are present
+      if (typeof claimGlobal != 'undefined') {
+        renderResultsWithModal()
+      }
+      const inputElement1 = document.getElementById("feedbackFile");
+      inputElement1.addEventListener("change", handleFeedbackFiles, false);
+      function handleFeedbackFiles() {
+        const fileList = this.files; /* now you can work with the file list */
+        if (fileList.length) {
+          // We have a file to load
+          let fileUploaded = new FileReader();
+          fileUploaded.addEventListener("load", e => {
+            input = JSON.parse(fileUploaded.result)
+            fillFeedback(input)
+          });
+          fileUploaded.readAsText(fileList[0]);
+        }
+        this.value = null;
+      }
+
+      const inputElement = document.getElementById("formFile");
+      inputElement.addEventListener("change", handleFiles, false);
+    });
+
     function handleFiles() {
       const fileList = this.files; /* now you can work with the file list */
       if (fileList.length) {
@@ -779,10 +816,25 @@
         let fileUploaded = new FileReader();
         fileUploaded.addEventListener("load", e => {
           claimGlobal = JSON.parse(fileUploaded.result)
-
-          renderResults()
+          renderResultsWithModal()
         });
         fileUploaded.readAsText(fileList[0]);
+      }
+    }
+
+    function renderResultsWithModal() {
+      claimVersion = getClaimVersion(claimGlobal.claim.versions)
+      const modalBody = document.getElementById('modalBody');
+      if (expectedClaimVersion != claimVersion) {
+        $('#staticBackdrop').modal('show');
+        modalBody.textContent = 'Unsupported claim format. Expecting: ' + expectedClaimVersion + ' but got: ' + claimVersion
+        // Get a reference to the button element
+        const myButton = document.getElementById('continueLoadingClaim');
+
+        // Add an event listener to the button
+        myButton.addEventListener('click', renderResults);
+      } else {
+        renderResults()
       }
     }
 
@@ -799,7 +851,7 @@
         })
         .then((data) => {
           claimGlobal = data
-          renderResults()
+          renderResultsWithModal()
         })
         .catch((error) => {
           console.log(`Error: ${error.message}`);
@@ -819,7 +871,7 @@
         })
         .then((data) => {
           feedbackGlobal = data
-          renderResults()
+          renderResultsWithModal()
         })
         .catch((error) => {
           console.log(`Error: ${error.message}`);
