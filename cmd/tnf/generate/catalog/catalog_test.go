@@ -108,7 +108,7 @@ func TestGetSuitesFromIdentifiers(t *testing.T) {
 
 	for _, tc := range testCases {
 		sort.Strings(tc.expectedSuites)
-		results := getSuitesFromIdentifiers(tc.testKeys)
+		results := GetSuitesFromIdentifiers(tc.testKeys)
 		sort.Strings(results)
 		assert.True(t, reflect.DeepEqual(tc.expectedSuites, results))
 	}

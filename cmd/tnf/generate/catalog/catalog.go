@@ -53,7 +53,7 @@ var (
 	}
 )
 
-type catalogElement struct {
+type Element struct {
 	testName   string
 	identifier claim.Identifier // {url and version}
 }
@@ -90,11 +90,11 @@ func emitTextFromFile(filename string) error {
 //						{testName4, identifier{url, version}}
 //	               ]
 //	}
-func createPrintableCatalogFromIdentifiers(keys []claim.Identifier) map[string][]catalogElement {
-	catalog := make(map[string][]catalogElement)
+func CreatePrintableCatalogFromIdentifiers(keys []claim.Identifier) map[string][]Element {
+	catalog := make(map[string][]Element)
 	// we need the list of suite's names
 	for _, i := range keys {
-		catalog[i.Suite] = append(catalog[i.Suite], catalogElement{
+		catalog[i.Suite] = append(catalog[i.Suite], Element{
 			testName:   i.Id,
 			identifier: i,
 		})
@@ -102,7 +102,7 @@ func createPrintableCatalogFromIdentifiers(keys []claim.Identifier) map[string][
 	return catalog
 }
 
-func getSuitesFromIdentifiers(keys []claim.Identifier) []string {
+func GetSuitesFromIdentifiers(keys []claim.Identifier) []string {
 	var suites []string
 	for _, i := range keys {
 		suites = append(suites, i.Suite)
@@ -139,12 +139,12 @@ func outputTestCases() (outString string, summary catalogSummary) { //nolint:fun
 		return keys[i].Id < keys[j].Id
 	})
 
-	catalog := createPrintableCatalogFromIdentifiers(keys)
+	catalog := CreatePrintableCatalogFromIdentifiers(keys)
 	if catalog == nil {
 		return
 	}
 	// we need the list of suite's names
-	suites := getSuitesFromIdentifiers(keys)
+	suites := GetSuitesFromIdentifiers(keys)
 
 	// Sort the list of suite names
 	sort.Strings(suites)
