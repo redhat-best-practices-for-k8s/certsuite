@@ -5,6 +5,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim"
+	"github.com/test-network-function/cnf-certification-test/cmd/tnf/enrich"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/generate"
 )
 
@@ -18,6 +19,7 @@ var (
 func main() {
 	rootCmd.AddCommand(claim.NewCommand())
 	rootCmd.AddCommand(generate.NewCommand())
+	rootCmd.AddCommand(enrich.NewCommand())
 
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatal(err)
