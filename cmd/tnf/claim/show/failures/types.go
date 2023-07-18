@@ -11,27 +11,27 @@ type NonCompliantObject struct {
 }
 
 type ObjectSpec struct {
-	fields []struct{ key, value string }
+	Fields []struct{ Key, Value string }
 }
 
 func (spec *ObjectSpec) AddField(key, value string) {
-	spec.fields = append(spec.fields, struct {
-		key   string
-		value string
+	spec.Fields = append(spec.Fields, struct {
+		Key   string
+		Value string
 	}{key, value})
 }
 
 func (spec *ObjectSpec) MarshalJSON() ([]byte, error) {
-	if len(spec.fields) == 0 {
+	if len(spec.Fields) == 0 {
 		return []byte("{}"), nil
 	}
 
 	specStr := "{"
-	for i := range spec.fields {
+	for i := range spec.Fields {
 		if i != 0 {
 			specStr += ", "
 		}
-		specStr += fmt.Sprintf("%q:%q", spec.fields[i].key, spec.fields[i].value)
+		specStr += fmt.Sprintf("%q:%q", spec.Fields[i].Key, spec.Fields[i].Value)
 	}
 
 	specStr += "}"

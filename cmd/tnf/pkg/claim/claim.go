@@ -50,7 +50,10 @@ type Schema struct {
 			} `json:"cnf-certification-test"`
 		} `json:"rawResults"`
 
-		Results map[string][]TestCaseResult `json:"results"`
+		Results  map[string][]TestCaseResult `json:"results"`
+		Versions struct {
+			ClaimFormat string `json:"claimFormat"`
+		} `json:"versions"`
 	} `json:"claim"`
 }
 
