@@ -408,6 +408,10 @@ func TestIsClaimFormatVersionSupported(t *testing.T) {
 			claimFormatVersion: "v0.0.1",
 			expectedError:      "",
 		},
+		{
+			claimFormatVersion: "v0.0.2",
+			expectedError:      "claim format version v0.0.2 is not supported. Supported version is v0.0.1",
+		},
 	}
 
 	for _, tc := range testCases {
