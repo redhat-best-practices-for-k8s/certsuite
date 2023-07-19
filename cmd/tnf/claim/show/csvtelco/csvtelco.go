@@ -51,7 +51,7 @@ func NewCommand() *cobra.Command {
 		return nil
 	}
 
-	CSVDumpCommand.Flags().StringVarP(&CNFNameFlag, "cnf-name", "o", "",
+	CSVDumpCommand.Flags().StringVarP(&CNFNameFlag, "cnf-name", "n", "",
 		"Required: CNF name.",
 	)
 
