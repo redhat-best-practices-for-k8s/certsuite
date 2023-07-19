@@ -281,8 +281,8 @@ func checkClaimVersion(version string) error {
 		return fmt.Errorf("supported claim file version v%v is not valid: v%v", supportedClaimFormatVersion, err)
 	}
 
-	if claimSemVersion.Compare(supportedSemVersion) < 0 {
-		return fmt.Errorf("claim format version v%v is not supported. Minimum supported version is v%v",
+	if claimSemVersion.Compare(supportedSemVersion) != 0 {
+		return fmt.Errorf("claim format version v%v is not supported. Supported version is v%v",
 			claimSemVersion, supportedSemVersion)
 	}
 
