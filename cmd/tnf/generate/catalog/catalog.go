@@ -53,7 +53,7 @@ var (
 	}
 )
 
-type Element struct {
+type Entry struct {
 	testName   string
 	identifier claim.Identifier // {url and version}
 }
@@ -90,11 +90,11 @@ func emitTextFromFile(filename string) error {
 //						{testName4, identifier{url, version}}
 //	               ]
 //	}
-func CreatePrintableCatalogFromIdentifiers(keys []claim.Identifier) map[string][]Element {
-	catalog := make(map[string][]Element)
+func CreatePrintableCatalogFromIdentifiers(keys []claim.Identifier) map[string][]Entry {
+	catalog := make(map[string][]Entry)
 	// we need the list of suite's names
 	for _, i := range keys {
-		catalog[i.Suite] = append(catalog[i.Suite], Element{
+		catalog[i.Suite] = append(catalog[i.Suite], Entry{
 			testName:   i.Id,
 			identifier: i,
 		})
