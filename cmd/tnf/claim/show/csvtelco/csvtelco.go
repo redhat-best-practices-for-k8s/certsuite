@@ -121,7 +121,7 @@ func dumpCsvTelco(_ *cobra.Command, _ []string) error {
 func buildCSV(claimScheme *claim.Schema, telcoCNFMap map[string]bool, catalogMap map[string]claimschema.TestCaseDescription) (resultsCSVRecords [][]string) {
 	// add header
 	resultsCSVRecords = append(resultsCSVRecords, []string{
-		"CNFName", "testID",
+		"CNFName", "testID", "Suite",
 		"Description", "State",
 		"StartTime", "EndTime",
 		"FailureReason", "Output",
@@ -138,6 +138,7 @@ func buildCSV(claimScheme *claim.Schema, telcoCNFMap map[string]bool, catalogMap
 		record = append(record,
 			CNFNameFlag,
 			testID,
+			claimScheme.Claim.Results[testID][0].TestID.Suite,
 			claimScheme.Claim.Results[testID][0].Description,
 			claimScheme.Claim.Results[testID][0].State,
 			claimScheme.Claim.Results[testID][0].StartTime,
