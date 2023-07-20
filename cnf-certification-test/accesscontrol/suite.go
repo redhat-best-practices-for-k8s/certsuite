@@ -749,7 +749,7 @@ func findSSHPort(cut *provider.Container) (port string, isError bool) {
 	return port, isError
 }
 
-func testNoSSHDaemonsAllowed(env *provider.TestEnvironment) { //nolint: funlen
+func testNoSSHDaemonsAllowed(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 

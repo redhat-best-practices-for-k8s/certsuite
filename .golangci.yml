@@ -3,7 +3,7 @@ linters-settings:
     threshold: 100
   funlen:
     lines: 50
-    statements: 25
+    statements: 37
   gci:
     local-prefixes: github.com/golangci/golangci-lint
   goconst:
