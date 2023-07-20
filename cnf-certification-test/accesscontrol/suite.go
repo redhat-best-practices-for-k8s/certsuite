@@ -743,8 +743,7 @@ const (
 func testNoSSHDaemonsAllowed(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
-
-	sshServicePortNumber := 22
+	var sshServicePortNumber int
 
 	for _, put := range env.Pods {
 		cut := put.Containers[0]
@@ -753,11 +752,15 @@ func testNoSSHDaemonsAllowed(env *provider.TestEnvironment) {
 		port, err := netutil.GetSSHDaemonPort(cut)
 		if err != nil {
 			logrus.Errorf("error occurred while finding ssh port on %s, err %v", cut, err)
-		} else {
-			sshServicePortNumber, err = strconv.Atoi(port)
-			if err != nil {
-				logrus.Errorf("error occurred while converting port number from string to integer on %s", cut)
-			}
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Failed to get the ssh port for pod", false))
+			continue
+		}
+
+		sshServicePortNumber, err = strconv.Atoi(port)
+		if err != nil {
+			logrus.Errorf("error occurred while converting port %s from string to integer on %s", port, cut)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Failed to get the listening ports for pod", false))
+			continue
 		}
 
 		// 2. Check if SSH port is listening
