@@ -110,7 +110,6 @@ func scaleCrHelper(scalesGetter scale.ScalesGetter, rc schema.GroupResource, aut
 	return true
 }
 
-//nolint:funlen
 func TestScaleHPACrd(cr *provider.CrScale, hpa *scalingv1.HorizontalPodAutoscaler, groupResourceSchema schema.GroupResource, timeout time.Duration) bool {
 	if cr == nil {
 		logrus.Errorf("cc object is nill")

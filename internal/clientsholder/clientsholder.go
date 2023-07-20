@@ -76,8 +76,6 @@ func SetupFakeOlmClient(olmMockObjects []runtime.Object) {
 // Only pure k8s interfaces will be available. The runtime objects must be pure k8s ones.
 // For other (OLM, )
 // runtime mocking objects loading, use the proper clientset mocking function.
-//
-//nolint:funlen,gocyclo
 func GetTestClientsHolder(k8sMockObjects []runtime.Object) *ClientsHolder {
 	// Build slices of different objects depending on what client
 	// is supposed to expect them.
@@ -167,7 +165,7 @@ func createByteArrayKubeConfig(kubeConfig *clientcmdapi.Config) ([]byte, error) 
 }
 
 // GetClientsHolder instantiate an ocp client
-func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:funlen,gocyclo // this is a special function with lots of assignments
+func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:funlen // this is a special function with lots of assignments
 	logrus.Infof("Creating k8s go-clients holder.")
 	loadingRules := clientcmd.NewDefaultClientConfigLoadingRules()
 
