@@ -28,7 +28,6 @@ const (
 	claimFilePermissions = 0o644
 )
 
-//nolint:funlen
 func claimUpdate(_ *cobra.Command, _ []string) error {
 	claimFileTextPtr := &Claim
 	reportFilesTextPtr := &Reportdir

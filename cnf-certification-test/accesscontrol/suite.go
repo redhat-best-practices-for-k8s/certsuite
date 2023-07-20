@@ -493,8 +493,6 @@ func testPodServiceAccount(env *provider.TestEnvironment) {
 }
 
 // testPodRoleBindings verifies that the pod utilizes a valid role binding that does not cross namespaces
-//
-//nolint:dupl,funlen
 func testPodRoleBindings(env *provider.TestEnvironment) {
 	ginkgo.By("Should not have RoleBinding in other namespaces")
 	var compliantObjects []*testhelper.ReportObject
