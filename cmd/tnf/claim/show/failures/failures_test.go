@@ -270,13 +270,12 @@ func TestGetNonCompliantObjectsFromFailureReason(t *testing.T) {
 
 // Uses claim files in testdata folder:
 // claim1.json -> Two test suites, access-control & platform-alteration. One failed test case in the access-control ts.
-// claim2.json -> Same as clam1.json, but the failureReason is not a valid json string.
+// claim2.json -> Same as clam1.json, but the failureReason is a simple string, not using report objects yet.
 func TestGetFailedTestCasesByTestSuite(t *testing.T) {
 	testCases := []struct {
 		claimFilePath            string
 		targetTestSuite          string
 		expectedFailedTestSuites []FailedTestSuite
-		expectedError            string
 	}{
 		// Target test suite doesn't have any failed tc.
 		{
@@ -284,13 +283,22 @@ func TestGetFailedTestCasesByTestSuite(t *testing.T) {
 			targetTestSuite:          "platform-alteration",
 			expectedFailedTestSuites: []FailedTestSuite{},
 		},
-		// Failed test case has an invalid json string in the failureReason field.
+		// Failed test case that doesn't use the report objects yet.
 		{
-			claimFilePath:            "testdata/claim2.json",
-			targetTestSuite:          "access-control",
-			expectedFailedTestSuites: nil,
-			expectedError: "test suite access-control, test case access-control-sys-admin-capability-check : failed to parse non compliant objects: " +
-				"failed to decode failureReason INVALID OUTPUT: invalid character 'I' looking for beginning of value",
+			claimFilePath:   "testdata/claim2.json",
+			targetTestSuite: "access-control",
+			expectedFailedTestSuites: []FailedTestSuite{
+				{
+					TestSuiteName: "access-control",
+					FailingTestCases: []FailedTestCase{
+						{
+							TestCaseName:        "access-control-sys-admin-capability-check",
+							TestCaseDescription: "Ensures that containers do not use SYS_ADMIN capability",
+							FailureReason:       "pod xxx ns yyy container zzz uses SYS_ADMIN",
+						},
+					},
+				},
+			},
 		},
 		{
 			targetTestSuite: "access-control",
@@ -362,7 +370,6 @@ func TestGetFailedTestCasesByTestSuite(t *testing.T) {
 					},
 				},
 			},
-			expectedError: "",
 		},
 	}
 
@@ -377,11 +384,7 @@ func TestGetFailedTestCasesByTestSuite(t *testing.T) {
 			resultsByTestSuite[tcResult.TestID.Suite] = append(resultsByTestSuite[tcResult.TestID.Suite], &tcResult)
 		}
 
-		testSuites, err := getFailedTestCasesByTestSuite(resultsByTestSuite, map[string]bool{tc.targetTestSuite: true})
-		if err != nil {
-			assert.Equal(t, tc.expectedError, err.Error())
-		}
-
+		testSuites := getFailedTestCasesByTestSuite(resultsByTestSuite, map[string]bool{tc.targetTestSuite: true})
 		assert.DeepEqual(t, tc.expectedFailedTestSuites, testSuites)
 	}
 }

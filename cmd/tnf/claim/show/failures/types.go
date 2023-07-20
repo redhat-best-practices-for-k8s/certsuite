@@ -42,7 +42,8 @@ func (spec *ObjectSpec) MarshalJSON() ([]byte, error) {
 type FailedTestCase struct {
 	TestCaseName        string               `json:"name"`
 	TestCaseDescription string               `json:"description"`
-	NonCompliantObjects []NonCompliantObject `json:"nonCompliantObjects"`
+	FailureReason       string               `json:"failureReason,omitempty"`
+	NonCompliantObjects []NonCompliantObject `json:"nonCompliantObjects,omitempty"`
 }
 
 type FailedTestSuite struct {

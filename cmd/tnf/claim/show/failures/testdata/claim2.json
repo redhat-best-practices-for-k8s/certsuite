@@ -8,7 +8,7 @@
           "endTime": "2023-07-18 03:37:42.095508375 -0500 CDT m=+23.133713410",
           "failureLineContent": "\t\tfail(string(bytes))",
           "failureLocation": "/home/greyerof/github/tnf/pkg/testhelper/testhelper.go:352",
-          "failureReason": "INVALID OUTPUT",
+          "failureReason": "pod xxx ns yyy container zzz uses SYS_ADMIN",
           "startTime": "2023-07-18 03:37:42.095225914 -0500 CDT m=+23.133430956",
           "state": "failed",
           "testID": {

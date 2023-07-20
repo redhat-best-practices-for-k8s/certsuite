@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"os"
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
@@ -195,6 +196,13 @@ func printFailuresText(testSuites []FailedTestSuite) {
 		for _, tc := range ts.FailingTestCases {
 			fmt.Printf("  Test Case: %s\n", tc.TestCaseName)
 			fmt.Printf("    Description: %s\n", tc.TestCaseDescription)
+
+			// In case this tc was not using report objects, just print the failure reason string.
+			if len(tc.NonCompliantObjects) == 0 {
+				fmt.Printf("    Failure reason: %s\n", tc.FailureReason)
+				continue
+			}
+
 			fmt.Printf("    Failure reasons:\n")
 			for i := range tc.NonCompliantObjects {
 				nonCompliantObject := tc.NonCompliantObjects[i]
@@ -232,7 +240,7 @@ func printFailuresJSON(testSuites []FailedTestSuite) {
 // results in claimResultsByTestSuite var maps a test suite name to a list of TestCaseResult,
 // which are processed to create the list of FailingTestSuite, filtering out those test suites
 // that don't exist in the targetTestSuites map.
-func getFailedTestCasesByTestSuite(claimResultsByTestSuite map[string][]*claim.TestCaseResult, targetTestSuites map[string]bool) ([]FailedTestSuite, error) {
+func getFailedTestCasesByTestSuite(claimResultsByTestSuite map[string][]*claim.TestCaseResult, targetTestSuites map[string]bool) []FailedTestSuite {
 	testSuites := []FailedTestSuite{}
 	for testSuite := range claimResultsByTestSuite {
 		if targetTestSuites != nil && !targetTestSuites[testSuite] {
@@ -245,15 +253,19 @@ func getFailedTestCasesByTestSuite(claimResultsByTestSuite map[string][]*claim.T
 				continue
 			}
 
-			nonCompliantObjects, err := getNonCompliantObjectsFromFailureReason(tc.FailureReason)
-			if err != nil {
-				return nil, fmt.Errorf("test suite %s, test case %s : failed to parse non compliant objects: %v", testSuite, tc.TestID.ID, err)
-			}
-
 			failingTc := FailedTestCase{
 				TestCaseName:        tc.TestID.ID,
 				TestCaseDescription: tc.Description,
-				NonCompliantObjects: nonCompliantObjects,
+			}
+
+			nonCompliantObjects, err := getNonCompliantObjectsFromFailureReason(tc.FailureReason)
+			if err != nil {
+				// This means the test case doesn't use the report objects yet. Just use the raw failure reason instead.
+				// Also, send the error into stderr, so it can be filtered out with "2>/errors.txt" or "2>/dev/null".
+				fmt.Fprintf(os.Stderr, "Failed to parse non compliant objects from test case %s (test suite %s): %v", tc.TestID.ID, testSuite, err)
+				failingTc.FailureReason = tc.FailureReason
+			} else {
+				failingTc.NonCompliantObjects = nonCompliantObjects
 			}
 
 			failedTcs = append(failedTcs, failingTc)
@@ -267,7 +279,7 @@ func getFailedTestCasesByTestSuite(claimResultsByTestSuite map[string][]*claim.T
 		}
 	}
 
-	return testSuites, nil
+	return testSuites
 }
 
 func checkClaimVersion(version string) error {
@@ -318,10 +330,7 @@ func showFailures(_ *cobra.Command, _ []string) error {
 	targetTestSuites := parseTargetTestSuitesFlag()
 	// From the target test suites, get their failed test cases and put them in
 	// our custom types.
-	testSuites, err := getFailedTestCasesByTestSuite(resultsByTestSuite, targetTestSuites)
-	if err != nil {
-		return fmt.Errorf("failed to process claim file results: %v", err)
-	}
+	testSuites := getFailedTestCasesByTestSuite(resultsByTestSuite, targetTestSuites)
 
 	switch outputFormat {
 	case outputFormatJSON:
