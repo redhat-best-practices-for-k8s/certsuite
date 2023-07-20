@@ -38,7 +38,7 @@ The test case catalog, classification table and CNF Type map are used to do the 
 with no column header:
 ./tnf claim show csv -c claim.yaml -n elasticsearch-operator -t cnf-type.json > claim.csv
 with column header:
-./tnf claim show csv -c claim.yaml -n elasticsearch-operator -t cnf-type.json -h > claim.csv
+./tnf claim show csv -c claim.yaml -n elasticsearch-operator -t cnf-type.json -a > claim.csv
 `,
 		RunE: dumpCsv,
 	}
