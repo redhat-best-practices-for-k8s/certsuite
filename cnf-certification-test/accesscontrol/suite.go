@@ -740,23 +740,35 @@ const (
 	sshServicePortProtocol = "TCP"
 )
 
-func testNoSSHDaemonsAllowed(env *provider.TestEnvironment) {
+func findSSHPort(cut *provider.Container) (port string, isError bool) {
+	port, err := netutil.GetSSHDaemonPort(cut)
+	if err != nil {
+		isError = true
+		logrus.Errorf("error occurred while finding ssh port on %s, err %v", cut, err)
+	}
+	return port, isError
+}
+
+func testNoSSHDaemonsAllowed(env *provider.TestEnvironment) { //nolint: funlen
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
-	var sshServicePortNumber int
 
 	for _, put := range env.Pods {
 		cut := put.Containers[0]
 
 		// 1. Find SSH port
-		port, err := netutil.GetSSHDaemonPort(cut)
-		if err != nil {
-			logrus.Errorf("error occurred while finding ssh port on %s, err %v", cut, err)
+		port, foundError := findSSHPort(cut)
+		if foundError {
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Failed to get the ssh port for pod", false))
 			continue
 		}
 
-		sshServicePortNumber, err = strconv.Atoi(port)
+		if port == "" {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not running an SSH daemon", true))
+			continue
+		}
+
+		sshServicePortNumber, err := strconv.Atoi(port)
 		if err != nil {
 			logrus.Errorf("error occurred while converting port %s from string to integer on %s", port, cut)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Failed to get the listening ports for pod", false))
@@ -765,7 +777,6 @@ func testNoSSHDaemonsAllowed(env *provider.TestEnvironment) {
 
 		// 2. Check if SSH port is listening
 		sshPortInfo := netutil.PortInfo{PortNumber: sshServicePortNumber, Protocol: sshServicePortProtocol}
-
 		listeningPorts, err := netutil.GetListeningPorts(cut)
 		if err != nil {
 			tnf.ClaimFilePrintf("Failed to get the listening ports on %s, err: %v", cut, err)
