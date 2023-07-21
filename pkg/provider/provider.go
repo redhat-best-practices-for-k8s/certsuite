@@ -19,6 +19,7 @@ package provider
 import (
 	"context"
 	"os"
+	"regexp"
 	"time"
 
 	"errors"
@@ -321,9 +322,19 @@ func getPodContainers(aPod *corev1.Pod, useIgnoreList bool) (containerList []*Co
 			logrus.Errorf("%s is not ready, skipping status collection", aPod.String())
 		}
 		aRuntime, uid := GetRuntimeUID(&status)
+		var cutStatus corev1.ContainerStatus
+
+		// get Status for current container
+		for index := range aPod.Status.ContainerStatuses {
+			if status.Name == cut.Name {
+				cutStatus = aPod.Status.ContainerStatuses[index]
+				break
+			}
+		}
+
 		container := Container{Podname: aPod.Name, Namespace: aPod.Namespace,
 			NodeName: aPod.Spec.NodeName, Container: cut, Status: status, Runtime: aRuntime, UID: uid,
-			ContainerImageIdentifier: buildContainerImageSource(aPod.Spec.Containers[j].Image)}
+			ContainerImageIdentifier: buildContainerImageSource(aPod.Spec.Containers[j].Image, cutStatus.ImageID)}
 
 		// Warn if readiness probe did not succeeded yet.
 		if !status.Ready {
@@ -381,26 +392,34 @@ func IsOCPCluster() bool {
 	return env.OpenshiftVersion != autodiscover.NonOpenshiftClusterVersion
 }
 
-func buildContainerImageSource(url string) configuration.ContainerImageIdentifier {
-	source := configuration.ContainerImageIdentifier{}
-	urlSegments := strings.Split(url, "/")
-	n := len(urlSegments)
-	if n > 1 {
-		source.Repository = urlSegments[n-2]
+func buildContainerImageSource(urlImage, urlImageID string) (source configuration.ContainerImageIdentifier) {
+	const regexImageWithTag = `([^/]*)/([^@]*):(.*)`
+	const regexImageDigest = `([^/]*)/(.*)@(.*:.*)`
+
+	// get image repository, Name and tag if present
+	re := regexp.MustCompile(regexImageWithTag)
+	match := re.FindStringSubmatch(urlImage)
+
+	if match != nil {
+		source.Tag = match[3]
 	}
-	colonIndex := strings.Index(urlSegments[n-1], ":")
-	atIndex := strings.Index(urlSegments[n-1], "@")
-	if atIndex == -1 {
-		if colonIndex == -1 {
-			source.Name = urlSegments[n-1]
-		} else {
-			source.Name = urlSegments[n-1][:colonIndex]
-			source.Tag = urlSegments[n-1][colonIndex+1:]
-		}
-	} else {
-		source.Name = urlSegments[n-1][:atIndex]
-		source.Digest = urlSegments[n-1][atIndex+1:]
+
+	// get image Digest based on imageID only
+	re = regexp.MustCompile(regexImageDigest)
+	match = re.FindStringSubmatch(urlImageID)
+
+	if match != nil {
+		source.Repository = match[1]
+		source.Name = match[2]
+		source.Digest = match[3]
 	}
+
+	logrus.Debugf("parsed image, repo: %s, name:%s, tag: %s, digest: %s",
+		source.Repository,
+		source.Name,
+		source.Tag,
+		source.Digest)
+
 	return source
 }
 
