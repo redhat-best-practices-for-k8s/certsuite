@@ -330,6 +330,13 @@ jobs:
         env:
           IMAGE_TAG: ${TNF_IMAGE_TAG}
 
+      - name: Remove temp/dangling container images to save space.
+        run: |
+          df -h
+          docker images
+          docker rmi $(docker images -f "dangling=true" -q) || true
+          df -h
+
       - name: Create required TNF config files and directories
         run: |
           mkdir -p $TNF_CONFIG_DIR $TNF_OUTPUT_DIR
