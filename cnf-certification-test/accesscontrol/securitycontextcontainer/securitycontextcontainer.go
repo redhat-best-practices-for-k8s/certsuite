@@ -182,7 +182,7 @@ func (category CategoryID) String() string {
 	return CategoryID4String
 }
 
-//nolint:gocritic,gocyclo
+//nolint:gocritic
 func GetContainerSCC(cut *provider.Container, containerSCC ContainerSCC) ContainerSCC {
 	containerSCC.HostPorts = NOK
 	for _, aPort := range cut.Ports {
@@ -356,7 +356,7 @@ func CheckPod(pod *provider.Pod) []PodListCategory {
 	return checkContainerCategory(pod.Spec.Containers, containerSCC, pod.Name, pod.Namespace)
 }
 
-//nolint:gocyclo,funlen
+//nolint:funlen
 func compareCategory(refCategory, containerSCC *ContainerSCC, id CategoryID) bool {
 	result := true
 	tnf.ClaimFilePrintf("Testing if pod belongs to category %s", &id)

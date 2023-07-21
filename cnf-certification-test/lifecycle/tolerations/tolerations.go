@@ -27,7 +27,6 @@ var (
 	tolerationSecondsDefault = 300
 )
 
-//nolint:funlen
 func IsTolerationModified(t corev1.Toleration, qosClass corev1.PodQOSClass) bool {
 	const (
 		notReadyStr       = "node.kubernetes.io/not-ready"

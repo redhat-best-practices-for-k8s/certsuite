@@ -456,7 +456,6 @@ func testUnalteredBootParams(env *provider.TestEnvironment) {
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
-//nolint:funlen
 func testSysctlConfigs(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -523,7 +522,7 @@ func testOCPStatus(env *provider.TestEnvironment) {
 	}
 }
 
-//nolint:funlen,gocyclo
+//nolint:funlen
 func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 	ginkgo.By("Testing the control-plane and workers in the cluster for Operating System compatibility")
 

@@ -74,7 +74,6 @@ func ExtractNameVersionFromName(operatorName string) (name, version string) {
 	return name, version
 }
 
-//nolint:funlen
 func loadOperatorsCatalog(pathToRoot string) error {
 	if operatorLoaded {
 		log.Trace("operator catalog already loaded, return")

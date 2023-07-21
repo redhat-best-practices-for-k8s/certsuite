@@ -68,7 +68,6 @@ func (op *Operator) String() string {
 	return fmt.Sprintf("csv: %s ns:%s subscription:%s targetNamespaces=%v", op.Name, op.Namespace, op.SubscriptionName, op.TargetNamespaces)
 }
 
-//nolint:funlen
 func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
 	if len(op.InstallPlans) == 0 {
 		logrus.Warnf("%s has no InstallPlans. Skipping setting preflight results", op.String())
