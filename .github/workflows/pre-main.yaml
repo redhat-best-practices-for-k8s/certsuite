@@ -302,6 +302,11 @@ jobs:
           repository: test-network-function/cnf-certification-test-partner
           path: cnf-certification-test-partner
 
+      - name: Setup tmate session for debugging through ssh.
+        uses: mxschmitt/action-tmate@v3
+        with:
+          detached: true
+
       - name: Start the Kind cluster for `local-test-infra`
         uses: ./cnf-certification-test-partner/.github/actions/start-k8s-cluster
         with:
