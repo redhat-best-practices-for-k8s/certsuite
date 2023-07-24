@@ -17,16 +17,15 @@
 package provider
 
 import (
-	"os"
-	"testing"
-
 	"errors"
-
-	corev1 "k8s.io/api/core/v1"
+	"os"
+	"reflect"
+	"testing"
 
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -59,27 +58,69 @@ var (
 	}
 
 	ns1InstallPlan1 = olmv1Alpha.InstallPlan{
-		TypeMeta: metav1.TypeMeta{Kind: "InstallPlan"}, ObjectMeta: metav1.ObjectMeta{Name: "ns1Plan1", Namespace: "ns1"},
-		Spec: olmv1Alpha.InstallPlanSpec{CatalogSource: "catalogSource1", CatalogSourceNamespace: "ns1",
-			ClusterServiceVersionNames: []string{"op1.v1.0.1"}, Approval: olmv1Alpha.ApprovalAutomatic, Approved: true},
-		Status: olmv1Alpha.InstallPlanStatus{BundleLookups: []olmv1Alpha.BundleLookup{{Path: "lookuppath1",
-			CatalogSourceRef: &corev1.ObjectReference{Name: "catalogSource1", Namespace: "ns1"}}}},
+		TypeMeta: metav1.TypeMeta{
+			Kind: "InstallPlan",
+		}, ObjectMeta: metav1.ObjectMeta{Name: "ns1Plan1", Namespace: "ns1"},
+		Spec: olmv1Alpha.InstallPlanSpec{
+			CatalogSource:          "catalogSource1",
+			CatalogSourceNamespace: "ns1",
+			ClusterServiceVersionNames: []string{
+				"op1.v1.0.1",
+			},
+			Approval: olmv1Alpha.ApprovalAutomatic,
+			Approved: true,
+		},
+		Status: olmv1Alpha.InstallPlanStatus{
+			BundleLookups: []olmv1Alpha.BundleLookup{{Path: "lookuppath1",
+				CatalogSourceRef: &corev1.ObjectReference{
+					Name:      "catalogSource1",
+					Namespace: "ns1",
+				}}},
+		},
 	}
 
 	ns2InstallPlan1 = olmv1Alpha.InstallPlan{
-		TypeMeta: metav1.TypeMeta{Kind: "InstallPlan"}, ObjectMeta: metav1.ObjectMeta{Name: "ns2Plan1", Namespace: "ns2"},
-		Spec: olmv1Alpha.InstallPlanSpec{CatalogSource: "catalogSource2", CatalogSourceNamespace: "ns2",
-			ClusterServiceVersionNames: []string{"op1.v1.0.1"}, Approval: olmv1Alpha.ApprovalAutomatic, Approved: true},
-		Status: olmv1Alpha.InstallPlanStatus{BundleLookups: []olmv1Alpha.BundleLookup{{Path: "lookuppath2",
-			CatalogSourceRef: &corev1.ObjectReference{Name: "catalogSource2", Namespace: "ns2"}}}},
+		TypeMeta: metav1.TypeMeta{
+			Kind: "InstallPlan",
+		}, ObjectMeta: metav1.ObjectMeta{Name: "ns2Plan1", Namespace: "ns2"},
+		Spec: olmv1Alpha.InstallPlanSpec{
+			CatalogSource:          "catalogSource2",
+			CatalogSourceNamespace: "ns2",
+			ClusterServiceVersionNames: []string{
+				"op1.v1.0.1",
+			},
+			Approval: olmv1Alpha.ApprovalAutomatic,
+			Approved: true,
+		},
+		Status: olmv1Alpha.InstallPlanStatus{
+			BundleLookups: []olmv1Alpha.BundleLookup{{Path: "lookuppath2",
+				CatalogSourceRef: &corev1.ObjectReference{
+					Name:      "catalogSource2",
+					Namespace: "ns2",
+				}}},
+		},
 	}
 
 	ns2InstallPlan2 = olmv1Alpha.InstallPlan{
-		TypeMeta: metav1.TypeMeta{Kind: "InstallPlan"}, ObjectMeta: metav1.ObjectMeta{Name: "ns2Plan2", Namespace: "ns2"},
-		Spec: olmv1Alpha.InstallPlanSpec{CatalogSource: "catalogSource3", CatalogSourceNamespace: "ns2",
-			ClusterServiceVersionNames: []string{"op2.v2.0.2"}, Approval: olmv1Alpha.ApprovalAutomatic, Approved: true},
-		Status: olmv1Alpha.InstallPlanStatus{BundleLookups: []olmv1Alpha.BundleLookup{{Path: "lookuppath3",
-			CatalogSourceRef: &corev1.ObjectReference{Name: "catalogSource3", Namespace: "ns2"}}}},
+		TypeMeta: metav1.TypeMeta{
+			Kind: "InstallPlan",
+		}, ObjectMeta: metav1.ObjectMeta{Name: "ns2Plan2", Namespace: "ns2"},
+		Spec: olmv1Alpha.InstallPlanSpec{
+			CatalogSource:          "catalogSource3",
+			CatalogSourceNamespace: "ns2",
+			ClusterServiceVersionNames: []string{
+				"op2.v2.0.2",
+			},
+			Approval: olmv1Alpha.ApprovalAutomatic,
+			Approved: true,
+		},
+		Status: olmv1Alpha.InstallPlanStatus{
+			BundleLookups: []olmv1Alpha.BundleLookup{{Path: "lookuppath3",
+				CatalogSourceRef: &corev1.ObjectReference{
+					Name:      "catalogSource3",
+					Namespace: "ns2",
+				}}},
+		},
 	}
 )
 
@@ -302,31 +343,47 @@ func TestIsWorkerNode(t *testing.T) {
 		},
 		{
 			node: &corev1.Node{
-				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/master": ""}},
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: map[string]string{"node-role.kubernetes.io/master": ""},
+				},
 			},
 			expectedResult: false,
 		},
 		{
 			node: &corev1.Node{
-				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/worker": ""}},
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: map[string]string{"node-role.kubernetes.io/worker": ""},
+				},
 			},
 			expectedResult: true,
 		},
 		{
 			node: &corev1.Node{
-				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/worker": "blahblah"}},
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: map[string]string{"node-role.kubernetes.io/worker": "blahblah"},
+				},
 			},
 			expectedResult: true,
 		},
 		{
 			node: &corev1.Node{
-				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"label1": "fakeValue1", "node-role.kubernetes.io/worker": ""}},
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: map[string]string{
+						"label1":                         "fakeValue1",
+						"node-role.kubernetes.io/worker": "",
+					},
+				},
 			},
 			expectedResult: true,
 		},
 		{
 			node: &corev1.Node{
-				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"label1": "fakeValue1", "node-role.kubernetes.io/worker": ""}},
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: map[string]string{
+						"label1":                         "fakeValue1",
+						"node-role.kubernetes.io/worker": "",
+					},
+				},
 			},
 			expectedResult: true,
 		},
@@ -357,49 +414,75 @@ func TestIsMasterNode(t *testing.T) {
 		},
 		{
 			node: &corev1.Node{
-				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/worker": ""}},
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: map[string]string{"node-role.kubernetes.io/worker": ""},
+				},
 			},
 			expectedResult: false,
 		},
 		{
 			node: &corev1.Node{
-				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/master": ""}},
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: map[string]string{"node-role.kubernetes.io/master": ""},
+				},
 			},
 			expectedResult: true,
 		},
 		{
 			node: &corev1.Node{
-				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/master": "blahblah"}},
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: map[string]string{"node-role.kubernetes.io/master": "blahblah"},
+				},
 			},
 			expectedResult: true,
 		},
 		{
 			node: &corev1.Node{
-				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/control-plane": ""}},
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: map[string]string{"node-role.kubernetes.io/control-plane": ""},
+				},
 			},
 			expectedResult: true,
 		},
 		{
 			node: &corev1.Node{
-				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"node-role.kubernetes.io/control-plane": "blablah"}},
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: map[string]string{"node-role.kubernetes.io/control-plane": "blablah"},
+				},
 			},
 			expectedResult: true,
 		},
 		{
 			node: &corev1.Node{
-				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"label1": "fakeValue1", "node-role.kubernetes.io/master": ""}},
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: map[string]string{
+						"label1":                         "fakeValue1",
+						"node-role.kubernetes.io/master": "",
+					},
+				},
 			},
 			expectedResult: true,
 		},
 		{
 			node: &corev1.Node{
-				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"label1": "fakeValue1", "node-role.kubernetes.io/control-plane": ""}},
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: map[string]string{
+						"label1":                                "fakeValue1",
+						"node-role.kubernetes.io/control-plane": "",
+					},
+				},
 			},
 			expectedResult: true,
 		},
 		{
 			node: &corev1.Node{
-				ObjectMeta: metav1.ObjectMeta{Labels: map[string]string{"label1": "fakeValue1", "node-role.kubernetes.io/master": "", "node-role.kubernetes.io/control-plane": ""}},
+				ObjectMeta: metav1.ObjectMeta{
+					Labels: map[string]string{
+						"label1":                                "fakeValue1",
+						"node-role.kubernetes.io/master":        "",
+						"node-role.kubernetes.io/control-plane": "",
+					},
+				},
 			},
 			expectedResult: true,
 		},
@@ -619,7 +702,9 @@ func TestGetCSCOSVersion(t *testing.T) {
 		{
 			testImageName:  "Red Hat Enterprise Linux CoreOS 410.84.202205031645-0 (Ootpa)",
 			expectedOutput: "",
-			expectedErr:    errors.New("invalid OS type: Red Hat Enterprise Linux CoreOS 410.84.202205031645-0 (Ootpa)"),
+			expectedErr: errors.New(
+				"invalid OS type: Red Hat Enterprise Linux CoreOS 410.84.202205031645-0 (Ootpa)",
+			),
 		},
 		{
 			testImageName:  "Ubuntu 20.04",
@@ -716,5 +801,52 @@ func TestBuildImageWithVersion(t *testing.T) {
 		os.Setenv("TNF_PARTNER_REPO", tc.repoVar)
 		os.Setenv("SUPPORT_IMAGE", tc.supportImageVar)
 		assert.Equal(t, tc.expectedOutput, buildImageWithVersion())
+	}
+}
+
+func Test_buildContainerImageSource(t *testing.T) {
+	type args struct {
+		urlImage   string
+		urlImageID string
+	}
+	tests := []struct {
+		name       string
+		args       args
+		wantSource configuration.ContainerImageIdentifier
+	}{
+		{name: "image has tag",
+			args: args{
+				urlImage:   "quay.io/testnetworkfunction/cnf-test-partner:latest",
+				urlImageID: "quay.io/testnetworkfunction/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
+			},
+			wantSource: configuration.ContainerImageIdentifier{
+				Repository: "quay.io",
+				Name:       "testnetworkfunction/cnf-test-partner",
+				Tag:        "latest",
+				Digest:     "sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
+			},
+		},
+		{name: "digest and imageID do not match and no tag",
+			args: args{
+				urlImage:   "quay.io/testnetworkfunction/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b96465665465465a2d0d811168667a919a49",
+				urlImageID: "quay.io/testnetworkfunction/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
+			},
+			wantSource: configuration.ContainerImageIdentifier{
+				Repository: "quay.io",
+				Name:       "testnetworkfunction/cnf-test-partner",
+				Tag:        "",
+				Digest:     "sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if gotSource := buildContainerImageSource(tt.args.urlImage, tt.args.urlImageID); !reflect.DeepEqual(
+				gotSource,
+				tt.wantSource,
+			) {
+				t.Errorf("buildContainerImageSource() = %v, want %v", gotSource, tt.wantSource)
+			}
+		})
 	}
 }
