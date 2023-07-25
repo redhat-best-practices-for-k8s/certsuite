@@ -102,7 +102,7 @@ To select the test to be executed when running `run-cnf-suites.sh` with the foll
 You can run all of the tests (including the intrusive tests and the extended suite) with the following commands:
 
 ```shell
-./run-cnf-suites.sh -l common,extended
+./run-cnf-suites.sh -l all
 ```
 
 #### Run a subset
