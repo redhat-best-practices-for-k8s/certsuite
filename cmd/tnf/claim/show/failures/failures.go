@@ -7,7 +7,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Masterminds/semver/v3"
 	"github.com/spf13/cobra"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/pkg/claim"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
@@ -99,10 +98,6 @@ const (
 	outputFormatText    = "text"
 	outputFormatJSON    = "json"
 	outputFarmatInvalid = "invalid"
-)
-
-const (
-	supportedClaimFormatVersion = "v0.0.1"
 )
 
 var availableOutputFormats = []string{
@@ -282,25 +277,6 @@ func getFailedTestCasesByTestSuite(claimResultsByTestSuite map[string][]*claim.T
 	return testSuites
 }
 
-func checkClaimVersion(version string) error {
-	claimSemVersion, err := semver.NewVersion(version)
-	if err != nil {
-		return fmt.Errorf("claim file version %q is not valid: %v", version, err)
-	}
-
-	supportedSemVersion, err := semver.NewVersion(supportedClaimFormatVersion)
-	if err != nil {
-		return fmt.Errorf("supported claim file version v%v is not valid: v%v", supportedClaimFormatVersion, err)
-	}
-
-	if claimSemVersion.Compare(supportedSemVersion) != 0 {
-		return fmt.Errorf("claim format version v%v is not supported. Supported version is v%v",
-			claimSemVersion, supportedSemVersion)
-	}
-
-	return nil
-}
-
 // Main function for the `show failures` subcommand.
 func showFailures(_ *cobra.Command, _ []string) error {
 	outputFormat, err := parseOutputFormatFlag()
@@ -315,7 +291,7 @@ func showFailures(_ *cobra.Command, _ []string) error {
 	}
 
 	// Check claim format version
-	err = checkClaimVersion(claimScheme.Claim.Versions.ClaimFormat)
+	err = claim.CheckClaimVersion(claimScheme.Claim.Versions.ClaimFormat)
 	if err != nil {
 		return err
 	}

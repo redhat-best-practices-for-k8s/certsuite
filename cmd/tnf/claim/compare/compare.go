@@ -7,12 +7,13 @@ import (
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/compare/testcases"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/pkg/claim"
 )
 
 var (
-	Claim1 string
-	Claim2 string
+	Claim1FilePathFlag string
+	Claim2FilePathFlag string
 
 	claimCompareFiles = &cobra.Command{
 		Use:   "compare",
@@ -23,11 +24,11 @@ var (
 
 func NewCommand() *cobra.Command {
 	claimCompareFiles.Flags().StringVarP(
-		&Claim1, "claim1", "1", "",
+		&Claim1FilePathFlag, "claim1", "1", "",
 		"existing claim1 file. (Required) first file to compare",
 	)
 	claimCompareFiles.Flags().StringVarP(
-		&Claim2, "claim2", "2", "",
+		&Claim2FilePathFlag, "claim2", "2", "",
 		"existing claim2 file. (Required) second file to compare",
 	)
 	err := claimCompareFiles.MarkFlagRequired("claim1")
@@ -45,11 +46,9 @@ func NewCommand() *cobra.Command {
 }
 
 func claimCompare(_ *cobra.Command, _ []string) error {
-	claimFileTextPtr := Claim1
-	claimFileTextPtr2 := Claim2
-	err := claimCompareFilesfunc(claimFileTextPtr, claimFileTextPtr2)
+	err := claimCompareFilesfunc(Claim1FilePathFlag, Claim2FilePathFlag)
 	if err != nil {
-		log.Fatalf("Error claimCompareFilesfunc :%v", err)
+		log.Fatalf("Error comparing claim files: %v", err)
 	}
 	return nil
 }
@@ -58,25 +57,25 @@ func claimCompareFilesfunc(claim1, claim2 string) error {
 	// readfiles
 	claimdata1, err := os.ReadFile(claim1)
 	if err != nil {
-		log.Infof("Error reading claim1 file: %v", err)
-		return err
+		return fmt.Errorf("failed reading claim1 file: %v", err)
 	}
-	claimdata2, err2 := os.ReadFile(claim2)
-	if err2 != nil {
-		log.Infof("Error reading claim2 file: %v", err2)
-		return err2
+
+	claimdata2, err := os.ReadFile(claim2)
+	if err != nil {
+		return fmt.Errorf("failed reading claim2 file: %v", err)
 	}
+
 	// unmarshal the files
 	claimFile1Data, err := unmarshalClaimFile(claimdata1)
 	if err != nil {
-		log.Infof("Error in unmarshal claim1 file: %v", err)
-		return err
+		return fmt.Errorf("failed to unmarshal claim1 file: %v", err)
 	}
+
 	claimFile2Data, err := unmarshalClaimFile(claimdata2)
 	if err != nil {
-		log.Infof("Error in unmarshal claim2 file: %v", err)
-		return err
+		return fmt.Errorf("failed to unmarshal claim2 file: %v", err)
 	}
+
 	// compares function
 	if compare2NodeList(claimFile1Data.Claim.Nodes.NodesHwInfo, claimFile2Data.Claim.Nodes.NodesHwInfo) {
 		log.Info("we are comparing two different cluster, all the nodes are different in both claim")
@@ -84,21 +83,18 @@ func claimCompareFilesfunc(claim1, claim2 string) error {
 
 	compare2cni(claimFile1Data.Claim.Nodes.CniPlugins, claimFile2Data.Claim.Nodes.CniPlugins)
 
-	diffResultValue, notFoundTestIn1, notFoundTestIn2 := compare2TestCaseResults(claimFile1Data.Claim.RawResults.Cnfcertificationtest.Testsuites.Testsuite.Testcase,
-		claimFile2Data.Claim.RawResults.Cnfcertificationtest.Testsuites.Testsuite.Testcase)
-	log.Infof("claim1 and claim2 has diff Results on tests: %v", diffResultValue)
-	log.Infof("test name that claim1 has but claim2 do not has %v", notFoundTestIn2)
-	log.Infof("test name that claim2 has but claim1 do not has %v", notFoundTestIn1)
+	// Get and show test cases results summary and differences
+	tcsDiffReport := testcases.GetDiffReport(claimFile1Data.Claim.Results, claimFile2Data.Claim.Results)
+	fmt.Println(&tcsDiffReport)
 
 	return nil
 }
 
 func unmarshalClaimFile(claimdata []byte) (claim.Schema, error) {
 	var claimDataResult claim.Schema
-	errclaimDataResult := json.Unmarshal(claimdata, &claimDataResult)
-	if errclaimDataResult != nil {
-		log.Fatalf("Error in unmarshal the claim file :%v", errclaimDataResult)
-		return claimDataResult, errclaimDataResult
+	err := json.Unmarshal(claimdata, &claimDataResult)
+	if err != nil {
+		return claim.Schema{}, err
 	}
 	return claimDataResult, nil
 }
@@ -131,28 +127,6 @@ func compareEqual2String(a, b []string) bool {
 		}
 	}
 	return true
-}
-
-// compare between 2 test case result (claim.TestCase) object
-// return 3 values: 1. the test name that have different result value - diffResult
-// 2. name of test cases that in claim2 but do not have them on claim1 - notFoundtestIn1
-// 2. name of test cases that in claim1 but do not have them on claim2 - notFoundtestIn2
-func compare2TestCaseResults(testcaseResult1, testcaseResult2 []claim.TestCaseRawResult) (diffResult []claim.TestCaseRawResult, notFoundtestIn1, notFoundtestIn2 []string) {
-	var testcaseR1, testcaseR2 []string
-	for _, result1 := range testcaseResult1 {
-		testcaseR1 = append(testcaseR1, result1.Name)
-		for _, result2 := range testcaseResult2 {
-			testcaseR2 = append(testcaseR2, result2.Name)
-			if result2.Name != result1.Name {
-				continue
-			} // if they are the same name
-			if result2.Status != result1.Status {
-				diffResult = append(diffResult, result1)
-			}
-		}
-	}
-	notFoundtestIn1, notFoundtestIn2 = missing(testcaseR1, testcaseR2)
-	return diffResult, removeDuplicateValues(notFoundtestIn1), removeDuplicateValues(notFoundtestIn2)
 }
 
 // empty struct (0 bytes)
