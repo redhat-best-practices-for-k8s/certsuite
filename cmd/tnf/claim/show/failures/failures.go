@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
+	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/common"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/pkg/claim"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 )
@@ -250,7 +251,7 @@ func getFailedTestCasesByTestSuite(claimResultsByTestSuite map[string][]*claim.T
 
 			failingTc := FailedTestCase{
 				TestCaseName:        tc.TestID.ID,
-				TestCaseDescription: tc.Description,
+				TestCaseDescription: tc.CatalogInfo.Description,
 			}
 
 			nonCompliantObjects, err := getNonCompliantObjectsFromFailureReason(tc.FailureReason)
@@ -291,7 +292,7 @@ func showFailures(_ *cobra.Command, _ []string) error {
 	}
 
 	// Check claim format version
-	err = claim.CheckClaimVersion(claimScheme.Claim.Versions.ClaimFormat)
+	err = common.CheckClaimVersion(claimScheme.Claim.Versions.ClaimFormat)
 	if err != nil {
 		return err
 	}

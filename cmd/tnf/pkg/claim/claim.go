@@ -35,15 +35,26 @@ type TestCaseID struct {
 }
 
 type TestCaseResult struct {
-	TestID      TestCaseID `json:"TestID"`
-	Description string     `json:"testText"`
-
-	Output        string `json:"CapturedTestOutput"`
-	FailureReason string `json:"failureReason"`
-	State         string `json:"state"`
-
-	StartTime string `json:"startTime"`
-	EndTime   string `json:"endTime"`
+	CapturedTestOutput string `json:"capturedTestOutput"`
+	CatalogInfo        struct {
+		BestPracticeReference string `json:"bestPracticeReference"`
+		Description           string `json:"description"`
+		ExceptionProcess      string `json:"exceptionProcess"`
+		Remediation           string `json:"remediation"`
+	} `json:"catalogInfo"`
+	CategoryClassification map[string]string `json:"categoryClassification"`
+	Duration               int               `json:"duration"`
+	EndTime                string            `json:"endTime"`
+	FailureLineContent     string            `json:"failureLineContent"`
+	FailureLocation        string            `json:"failureLocation"`
+	FailureReason          string            `json:"failureReason"`
+	StartTime              string            `json:"startTime"`
+	State                  string            `json:"state"`
+	TestID                 struct {
+		ID    string `json:"id"`
+		Suite string `json:"suite"`
+		Tags  string `json:"tags"`
+	} `json:"testID"`
 }
 
 // Maps a test suite name to a list of TestCaseResult
