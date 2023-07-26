@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/Masterminds/semver/v3"
+	corev1 "k8s.io/api/core/v1"
 )
 
 const (
@@ -18,9 +19,13 @@ const (
 	TestCaseResultFailed  = "failed"
 )
 
-type Cni struct {
-	Name    string        "json:\"name\""
-	Plugins []interface{} "json:\"plugins\""
+type CNIPlugin map[string]interface{}
+
+type CNINetwork struct {
+	Name         string      `json:"name"`
+	CNIVersion   string      `json:"cniVersion"`
+	DisableCheck bool        `json:"disableCheck"`
+	Plugins      []CNIPlugin `json:"plugins"`
 }
 
 type TestCaseRawResult struct {
@@ -60,13 +65,16 @@ type TestCaseResult struct {
 // Maps a test suite name to a list of TestCaseResult
 type TestSuiteResults map[string][]TestCaseResult
 
+type Nodes struct {
+	NodesSummary map[string]*corev1.Node `json:"nodeSummary"`
+	CniNetworks  interface{}             `json:"cniPlugins"`
+	NodesHwInfo  map[string]interface{}  `json:"nodesHwInfo"`
+	CsiDriver    interface{}             `json:"csiDriver"`
+}
+
 type Schema struct {
 	Claim struct {
-		Nodes struct {
-			CniPlugins  map[string][]Cni       `json:"cniPlugins"`
-			NodesHwInfo map[string]interface{} `json:"nodesHwInfo"`
-			CsiDriver   interface{}            `json:"csiDriver"`
-		} `json:"nodes"`
+		Nodes Nodes `json:"nodes"`
 
 		RawResults struct {
 			Cnfcertificationtest struct {
