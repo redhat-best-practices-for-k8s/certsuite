@@ -185,7 +185,7 @@ func deployDaemonSet(namespace string) error {
 	matchLabels := make(map[string]string)
 	matchLabels["name"] = DaemonSetName
 	matchLabels["test-network-function.com/app"] = DaemonSetName
-	_, err := k8sPrivilegedDs.CreateDaemonSet(DaemonSetName, namespace, containerName, dsImage, matchLabels, debugPodsTimeout)
+	_, err := k8sPrivilegedDs.CreateDaemonSetDummy(DaemonSetName, namespace, containerName, dsImage, matchLabels, debugPodsTimeout)
 	if err != nil {
 		return fmt.Errorf("could not deploy tnf daemonset, err=%v", err)
 	}
