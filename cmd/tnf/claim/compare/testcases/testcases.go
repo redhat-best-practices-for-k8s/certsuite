@@ -151,18 +151,21 @@ func (r *DiffReport) String() string {
 		tcStatusSummaryRowFmt = "%-15s%-20s%-20s\n"
 	)
 
-	str := fmt.Sprintf(tcDiffRowFmt, "TEST CASE NAME", "CLAIM-1", "CLAIM-2")
-
-	for _, diff := range r.TestCases {
-		str += fmt.Sprintf(tcDiffRowFmt, diff.Name, diff.Claim1Result, diff.Claim2Result)
-	}
-
-	str += "\n"
-
+	str := "\n"
 	str += fmt.Sprintf(tcStatusSummaryRowFmt, "STATUS", "# in CLAIM-1", "# in CLAIM-2")
 	str += fmt.Sprintf(tcStatusSummaryRowFmt, "passed", fmt.Sprintf("%d", r.Claim1ResultsSummary.Passed), fmt.Sprintf("%d", r.Claim2ResultsSummary.Passed))
 	str += fmt.Sprintf(tcStatusSummaryRowFmt, "skipped", fmt.Sprintf("%d", r.Claim1ResultsSummary.Skipped), fmt.Sprintf("%d", r.Claim2ResultsSummary.Skipped))
 	str += fmt.Sprintf(tcStatusSummaryRowFmt, "failed", fmt.Sprintf("%d", r.Claim1ResultsSummary.Failed), fmt.Sprintf("%d", r.Claim2ResultsSummary.Failed))
+
+	if len(r.TestCases) == 0 {
+		return str
+	}
+
+	str += "\n"
+	str += fmt.Sprintf(tcDiffRowFmt, "TEST CASE NAME", "CLAIM-1", "CLAIM-2")
+	for _, diff := range r.TestCases {
+		str += fmt.Sprintf(tcDiffRowFmt, diff.Name, diff.Claim1Result, diff.Claim2Result)
+	}
 
 	return str
 }
