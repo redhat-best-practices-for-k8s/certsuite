@@ -212,9 +212,12 @@ func TestTest(t *testing.T) {
 		log.Errorf("Failed to create results web files: %v", err)
 	}
 
-	allArtifactsFilePaths := []string{
-		filepath.Join(*claimPath, results.ClaimFileName),
-		filepath.Join(*junitPath, results.JunitXMLFileName)}
+	allArtifactsFilePaths := []string{filepath.Join(*claimPath, results.ClaimFileName)}
+
+	// Add the junit xml file only if we're not in diagnostic mode.
+	if !diagnosticMode {
+		allArtifactsFilePaths = append(allArtifactsFilePaths, filepath.Join(*junitPath, results.JunitXMLFileName))
+	}
 
 	// Add all the web artifacts file paths.
 	allArtifactsFilePaths = append(allArtifactsFilePaths, webFilePaths...)
@@ -223,7 +226,7 @@ func TestTest(t *testing.T) {
 	if !configuration.GetTestParameters().OmitArtifactsZipFile {
 		err = results.CompressResultsArtifacts(resultsOutputDir, allArtifactsFilePaths)
 		if err != nil {
-			log.Errorf("Failed to compress results artifacts: %v", err)
+			log.Fatalf("Failed to compress results artifacts: %v", err)
 		}
 	}
 
@@ -232,7 +235,7 @@ func TestTest(t *testing.T) {
 		for _, file := range webFilePaths {
 			err := os.Remove(file)
 			if err != nil {
-				log.Errorf("failed to remove web file %s: %v", file, err)
+				log.Fatalf("failed to remove web file %s: %v", file, err)
 			}
 		}
 	}
