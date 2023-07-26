@@ -217,6 +217,13 @@ jobs:
       - name: Build CNF test suite binary
         run: make build-cnf-tests
 
+      - name: Remove oct container image and the go mod cache to save disk space.
+        run: |
+          df -h
+          docker rmi ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG} || true
+          go clean -modcache || true
+          df -h
+
       # Create a Kind cluster for testing.
       - name: Check out `cnf-certification-test-partner`
         uses: actions/checkout@v3
