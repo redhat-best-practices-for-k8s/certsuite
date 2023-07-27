@@ -35,7 +35,7 @@ func TestIsClaimFormatVersionSupported(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		err := CheckClaimVersion(tc.claimFormatVersion)
+		err := CheckVersion(tc.claimFormatVersion)
 		if err != nil {
 			assert.Equal(t, tc.expectedError, err.Error())
 		}

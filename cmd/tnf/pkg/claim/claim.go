@@ -85,7 +85,7 @@ type Schema struct {
 	} `json:"claim"`
 }
 
-func CheckClaimVersion(version string) error {
+func CheckVersion(version string) error {
 	claimSemVersion, err := semver.NewVersion(version)
 	if err != nil {
 		return fmt.Errorf("claim file version %q is not valid: %v", version, err)

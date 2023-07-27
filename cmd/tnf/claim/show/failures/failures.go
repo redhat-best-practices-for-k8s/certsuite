@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/common"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/pkg/claim"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 )
@@ -292,7 +291,7 @@ func showFailures(_ *cobra.Command, _ []string) error {
 	}
 
 	// Check claim format version
-	err = common.CheckClaimVersion(claimScheme.Claim.Versions.ClaimFormat)
+	err = claim.CheckVersion(claimScheme.Claim.Versions.ClaimFormat)
 	if err != nil {
 		return err
 	}
