@@ -22,15 +22,15 @@ func TestIsClaimFormatVersionSupported(t *testing.T) {
 		},
 		{
 			claimFormatVersion: "v0.0.0",
-			expectedError:      "claim format version v0.0.0 is not supported. Supported version is v0.0.2",
+			expectedError:      "claim format version v0.0.0 is not supported. Supported version is v0.1.0",
 		},
 		{
-			claimFormatVersion: "v0.0.2",
+			claimFormatVersion: "v0.1.0",
 			expectedError:      "",
 		},
 		{
 			claimFormatVersion: "v0.0.3",
-			expectedError:      "claim format version v0.0.3 is not supported. Supported version is v0.0.2",
+			expectedError:      "claim format version v0.0.3 is not supported. Supported version is v0.1.0",
 		},
 	}
 

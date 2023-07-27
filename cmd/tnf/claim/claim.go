@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	supportedClaimFormatVersion = "v0.0.2"
+	supportedClaimFormatVersion = "v0.1.0"
 )
 
 var (
