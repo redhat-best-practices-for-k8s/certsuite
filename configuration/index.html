@@ -15,7 +15,7 @@
         <link rel="next" href="../runtime-env/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.19">
+      <meta name="generator" content="mkdocs-1.5.0, mkdocs-material-9.1.20">
     
     
       
@@ -1029,7 +1029,7 @@
 <p>The label <code>test-network-function.com/skip_connectivity_tests</code> excludes pods from all connectivity tests. The label value is trivial, only its presence.
 The label <code>test-network-function.com/skip_multus_connectivity_tests</code> excludes pods from <a href="https://github.com/k8snetworkplumbingwg/multus-cni">Multus</a> connectivity tests. Tests on default interface are still done. The label value is trivial, but its presence.</p>
 <h2 id="affinityrequired">AffinityRequired<a class="headerlink" href="#affinityrequired" title="Permanent link">&para;</a></h2>
-<p>For <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> workloads that require pods to use Pod or Node Affinity rules, the label <code>AffinityRequired: true</code> must be included on the Pod YAML. This will prevent any tests for anti-affinity to fail as well as test your workloads for affinity rules that support your <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>&lsquo;s use-case.</p>
+<p>For <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> workloads that require pods to use Pod or Node Affinity rules, the label <code>AffinityRequired: true</code> must be included on the Pod YAML. This will prevent any tests for anti-affinity to fail as well as test your workloads for affinity rules that support your <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>&rsquo;s use-case.</p>
 <h2 id="certifiedcontainerinfo">certifiedcontainerinfo<a class="headerlink" href="#certifiedcontainerinfo" title="Permanent link">&para;</a></h2>
 <p>The <code>certifiedcontainerinfo</code> section contains information about <abbr title="Cloud-Native Network Functions">CNFs</abbr> containers that are
 to be checked for certification status on Red Hat catalogs.</p>
