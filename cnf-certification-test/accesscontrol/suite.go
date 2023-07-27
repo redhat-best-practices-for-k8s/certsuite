@@ -482,8 +482,8 @@ func testPodServiceAccount(env *provider.TestEnvironment) {
 	for _, put := range env.Pods {
 		ginkgo.By(fmt.Sprintf("Testing service account for pod %s (ns: %s)", put.Name, put.Namespace))
 		if put.Spec.ServiceAccountName == defaultServiceAccount {
-			tnf.ClaimFilePrintf("Pod %s (ns: %s) does not have a service account name.", put.Name, put.Namespace)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod does not have a service account name", false))
+			tnf.ClaimFilePrintf("Pod %s (ns: %s) does not have a valid service account name.", put.Name, put.Namespace)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod does not have a valid service account name", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has a service account name", true))
 		}
