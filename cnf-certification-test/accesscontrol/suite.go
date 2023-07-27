@@ -506,7 +506,7 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 			// Add the pod to the non-compliant list
 			nonCompliantObjects = append(nonCompliantObjects,
 				testhelper.NewPodReportObject(put.Namespace, put.Name,
-					"The pod namespace is either empty or default", false))
+					"The serviceAccountName is either empty or default", false))
 			podIsCompliant = false
 		} else {
 			logrus.Infof("%s has a serviceAccountName: %s, checking role bindings.", put.String(), put.Spec.ServiceAccountName)
