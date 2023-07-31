@@ -25,6 +25,7 @@ import (
 func ArgListToMap(lst []string) map[string]string {
 	retval := make(map[string]string)
 	for _, arg := range lst {
+		arg = strings.ReplaceAll(arg, `"`, ``)
 		splitArgs := strings.Split(arg, "=")
 		if len(splitArgs) == 1 {
 			retval[splitArgs[0]] = ""

@@ -54,6 +54,13 @@ func TestArgListToMap(t *testing.T) {
 		expectedMap map[string]string
 	}{
 		{
+			argList: []string{"key1=value1", `key2="value2"`},
+			expectedMap: map[string]string{
+				"key1": "value1",
+				"key2": "value2",
+			},
+		},
+		{
 			argList: []string{"key1=value1", "key2=value2"},
 			expectedMap: map[string]string{
 				"key1": "value1",
