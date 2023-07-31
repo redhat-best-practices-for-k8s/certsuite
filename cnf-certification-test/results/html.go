@@ -40,7 +40,6 @@ func createClaimJSFile(claimFilePath, outputDir string) (filePath string, err er
 // Creates all the html/web related files needed for parsing the claim file in outputDir.
 // - claimjson.js
 // - results.html
-// - results-embed.html
 // - classification.js
 // Returns a slice with the paths of every file created.
 func CreateResultsWebFiles(outputDir string) (filePaths []string, err error) {

@@ -251,11 +251,7 @@ jobs:
         with:
           name: smoke-tests
           path: |
-            cnf-certification-test/*.xml
-            cnf-certification-test/claim.json
-            cnf-certification-test/claimjson.js
-            cnf-certification-test/results.html
-            cnf-certification-test/tnf-execution.log
+            cnf-certification-test/*.tar.gz
 
       - name: Run gradetool on the claim.json
         run: |
