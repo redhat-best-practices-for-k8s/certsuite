@@ -250,7 +250,7 @@ func getFailedTestCasesByTestSuite(claimResultsByTestSuite map[string][]*claim.T
 
 			failingTc := FailedTestCase{
 				TestCaseName:        tc.TestID.ID,
-				TestCaseDescription: tc.Description,
+				TestCaseDescription: tc.CatalogInfo.Description,
 			}
 
 			nonCompliantObjects, err := getNonCompliantObjectsFromFailureReason(tc.FailureReason)
@@ -291,7 +291,7 @@ func showFailures(_ *cobra.Command, _ []string) error {
 	}
 
 	// Check claim format version
-	err = claim.CheckClaimVersion(claimScheme.Claim.Versions.ClaimFormat)
+	err = claim.CheckVersion(claimScheme.Claim.Versions.ClaimFormat)
 	if err != nil {
 		return err
 	}

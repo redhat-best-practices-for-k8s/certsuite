@@ -92,6 +92,12 @@ func dumpCsv(_ *cobra.Command, _ []string) error {
 		return fmt.Errorf("failed to parse claim file %s: %v", claimFilePathFlag, err)
 	}
 
+	// Check claim format version
+	err = claim.CheckVersion(claimScheme.Claim.Versions.ClaimFormat)
+	if err != nil {
+		return err
+	}
+
 	// loads the mapping between CNF name and type
 	CNFTypeMap, err := loadCNFTypeMap(CNFListFilePathFlag)
 	if err != nil {
@@ -147,8 +153,6 @@ func buildCSV(claimScheme *claim.Schema, cnfType string, catalogMap map[string]c
 	}
 
 	for testID := range claimScheme.Claim.Results {
-		// get classification map for current test case
-		classificationForTestID := identifiers.Classification[testID]
 		// initialize record
 		record := []string{}
 		// creates and appends new CSV record
@@ -156,15 +160,15 @@ func buildCSV(claimScheme *claim.Schema, cnfType string, catalogMap map[string]c
 			CNFNameFlag,
 			testID,
 			claimScheme.Claim.Results[testID][0].TestID.Suite,
-			claimScheme.Claim.Results[testID][0].Description,
+			claimScheme.Claim.Results[testID][0].CatalogInfo.Description,
 			claimScheme.Claim.Results[testID][0].State,
 			claimScheme.Claim.Results[testID][0].StartTime,
 			claimScheme.Claim.Results[testID][0].EndTime,
 			claimScheme.Claim.Results[testID][0].FailureReason,
-			claimScheme.Claim.Results[testID][0].Output,
+			claimScheme.Claim.Results[testID][0].CapturedTestOutput,
 			catalogMap[testID].Remediation,
-			cnfType,                          // Append the CNF type
-			classificationForTestID[cnfType], // CNF type corresponding Mandatory/Optional result
+			cnfType, // Append the CNF type
+			claimScheme.Claim.Results[testID][0].CategoryClassification[cnfType],
 		)
 
 		resultsCSVRecords = append(resultsCSVRecords, record)

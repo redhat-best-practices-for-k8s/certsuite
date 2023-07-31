@@ -1,6 +1,7 @@
 package failures
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/pkg/claim"
@@ -381,10 +382,17 @@ func TestGetFailedTestCasesByTestSuite(t *testing.T) {
 		resultsByTestSuite := map[string][]*claim.TestCaseResult{}
 		for id := range claimScheme.Claim.Results {
 			tcResult := claimScheme.Claim.Results[id][0]
-			resultsByTestSuite[tcResult.TestID.Suite] = append(resultsByTestSuite[tcResult.TestID.Suite], &tcResult)
+			resultsByTestSuite[tcResult.TestID.Suite] = append(
+				resultsByTestSuite[tcResult.TestID.Suite],
+				&tcResult,
+			)
 		}
 
-		testSuites := getFailedTestCasesByTestSuite(resultsByTestSuite, map[string]bool{tc.targetTestSuite: true})
+		testSuites := getFailedTestCasesByTestSuite(
+			resultsByTestSuite,
+			map[string]bool{tc.targetTestSuite: true},
+		)
+		fmt.Printf("%#v\n\n", testSuites)
 		assert.DeepEqual(t, tc.expectedFailedTestSuites, testSuites)
 	}
 }
