@@ -65,7 +65,6 @@ This is the content of the tar.gz file:
 * cnf-certification-tests_junit.xml
 * claimjson.js
 * classification.js
-* results-embed.html
 * results.html
 
 This file serves two different purposes:
