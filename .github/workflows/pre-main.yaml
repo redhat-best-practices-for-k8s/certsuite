@@ -277,11 +277,7 @@ jobs:
         with:
           name: preflight-smoke-tests
           path: |
-            cnf-certification-test/*.xml
-            cnf-certification-test/claim.json
-            cnf-certification-test/claimjson.js
-            cnf-certification-test/results.html
-            cnf-certification-test/tnf-execution.log
+            cnf-certification-test/*.tar.gz
 
   smoke-tests-container:
     name: Run Container Smoke Tests
@@ -355,11 +351,7 @@ jobs:
         with:
           name: smoke-tests-container
           path: |
-            ${{ env.TNF_OUTPUT_DIR }}/*.xml
-            ${{ env.TNF_OUTPUT_DIR }}/claim.json
-            ${{ env.TNF_OUTPUT_DIR }}/claimjson.js
-            ${{ env.TNF_OUTPUT_DIR }}/results.html
-            ${{ env.TNF_OUTPUT_DIR }}/tnf-execution.log
+            ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
 
       - name: Run gradetool on the claim.json
         run: |
@@ -385,11 +377,7 @@ jobs:
         with:
           name: preflight-smoke-tests-container
           path: |
-            ${{ env.TNF_OUTPUT_DIR }}/*.xml
-            ${{ env.TNF_OUTPUT_DIR }}/claim.json
-            ${{ env.TNF_OUTPUT_DIR }}/claimjson.js
-            ${{ env.TNF_OUTPUT_DIR }}/results.html
-            ${{ env.TNF_OUTPUT_DIR }}/tnf-execution.log
+            ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
 
       # Push the new unstable TNF image to Quay.io.
       - name: (if on main and upstream) Authenticate against Quay.io
