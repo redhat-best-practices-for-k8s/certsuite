@@ -27,11 +27,6 @@ jobs:
       DOCKER_CONFIG_DIR: '/home/tnf/.docker'
 
     steps:
-      # 1) Clone the QE repository
-      # 2) Clone the partner repository
-      # 3) Create a Kind cluster from partner repo
-      # 4) Build the image from the test repo
-      # 4) Run the tests from QE repo
       - name: Check out code
         uses: actions/checkout@v3
         with:
