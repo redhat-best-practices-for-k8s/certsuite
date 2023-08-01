@@ -159,7 +159,7 @@ var (
 	TestContainerPortNameFormat                       claim.Identifier
 	TestCrdScalingIdentifier                          claim.Identifier
 	TestCrdRoleIdentifier                             claim.Identifier
-	TestLimitedUseOfExecProbesIdentifier			  claim.Identifier
+	TestLimitedUseOfExecProbesIdentifier              claim.Identifier
 	// Chaos Testing
 	// TestPodDeleteIdentifier claim.Identifier
 )
@@ -213,7 +213,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			Extended: Mandatory,
 		},
 		TagExtended)
-	
+
 	TestLimitedUseOfExecProbesIdentifier = AddCatalogEntry(
 		"test case to ensure limited use of exec probes",
 		common.AccessControlTestKey,

@@ -11,7 +11,7 @@ const (
 	TestReservedExtendedPartnerPortsDocLink         = NoDocLinkExtended
 	TestDpdkCPUPinningExecProbeDocLink              = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cpu-manager-pinning"
 	TestRestartOnRebootLabelOnPodsUsingSRIOVDocLink = NoDocLinkFarEdge
-	TestLimitedUseOfExecProbesIdentifierDocLink = NoDocLinkFarEdge
+	TestLimitedUseOfExecProbesIdentifierDocLink     = NoDocLinkFarEdge
 	TestICMPv6ConnectivityIdentifierDocLink         = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ipv4-&-ipv6"
 	TestICMPv4ConnectivityMultusIdentifierDocLink   = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations"
 	TestICMPv6ConnectivityMultusIdentifierDocLink   = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations"

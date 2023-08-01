@@ -99,7 +99,6 @@ func testLimitedUseOfExecProbes(env *provider.TestEnvironment) {
 		}
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
-
 }
 
 func testExclusiveCPUPool(env *provider.TestEnvironment) {
