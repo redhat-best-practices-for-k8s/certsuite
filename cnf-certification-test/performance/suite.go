@@ -70,6 +70,12 @@ var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
 		testSchedulingPolicyInCPUPool(&env, guaranteedPodContainersWithExclusiveCPUs, scheduling.ExclusiveCPUScheduling)
 	})
 
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestLimitedUseOfExecProbesIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
+		testLimitedUseOfExecProbes(&env)
+	})
+
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsolatedCPUPoolSchedulingPolicy)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		var guaranteedPodContainersWithIsolatedCPUs = env.GetGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID()
@@ -78,6 +84,23 @@ var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
 	})
 	// Scheduling related tests ends here
 })
+
+func testLimitedUseOfExecProbes(env *provider.TestEnvironment) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+	for _, put := range env.Pods {
+		for _, cut := range put.Containers {
+			if cut.LivenessProbe.PeriodSeconds < 10 && cut.LivenessProbe.InitialDelaySeconds <= 10 {
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Ensure limited use of exec probes", false))
+				continue
+			}
+			tnf.ClaimFilePrintf("Pod %s/Container %s defines not ensure limited use of exec probes", cut.Podname, cut)
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "", true))
+		}
+	}
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+
+}
 
 func testExclusiveCPUPool(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject

@@ -7,13 +7,13 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 
 ## Test cases summary
 
-### Total test cases: 87
+### Total test cases: 88
 
 ### Total suites: 9
 
 |Suite|Tests per suite|
 |---|---|
-|access-control|27|
+|access-control|28|
 |affiliated-certification|5|
 |lifecycle|18|
 |manageability|2|
@@ -41,17 +41,33 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |---|---|
 |39|3|
 
-### Telco specific tests only: 27
+### Telco specific tests only: 28
 
 |Mandatory|Optional|
 |---|---|
-|27|0|
+|27|1|
 
 ## Test Case list
 
 Test Cases are the specifications used to perform a meaningful test. Test cases may run once, or several times against several targets. CNF Certification includes a number of normative and informative tests to ensure CNFs follow best practices. Here is the list of available Test Cases:
 
 ### access-control
+
+#### access-control-
+
+Property|Description
+---|---
+Unique ID|access-control-
+Description|C
+Suggested Remediation|Ensure that pods use projected volumes and service account tokens
+Best Practice Reference|No Doc Link - Far Edge
+Exception Process|E.
+Tags|telco,access-control
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
 
 #### access-control-cluster-role-bindings
 

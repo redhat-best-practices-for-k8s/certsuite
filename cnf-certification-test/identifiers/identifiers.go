@@ -159,6 +159,7 @@ var (
 	TestContainerPortNameFormat                       claim.Identifier
 	TestCrdScalingIdentifier                          claim.Identifier
 	TestCrdRoleIdentifier                             claim.Identifier
+	TestLimitedUseOfExecProbesIdentifier			  claim.Identifier
 	// Chaos Testing
 	// TestPodDeleteIdentifier claim.Identifier
 )
@@ -212,6 +213,21 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			Extended: Mandatory,
 		},
 		TagExtended)
+	
+	TestLimitedUseOfExecProbesIdentifier = AddCatalogEntry(
+		"test case to ensure limited use of exec probes",
+		common.AccessControlTestKey,
+		`Check if periodseconds < 10 && initialDelaySeconds <= 10`,
+		LimitedUseOfExecProbesRemediation,
+		`Ensure that limited use of exec probes`,
+		TestLimitedUseOfExecProbesIdentifierDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional},
+		TagTelco)
 
 	TestProjectedVolumeServiceAccountTokenIdentifier = AddCatalogEntry(
 		"projected-volume-service-account-token",
