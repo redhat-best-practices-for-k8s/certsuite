@@ -268,6 +268,13 @@ jobs:
             exit 1
           fi
 
+      - name: Remove gradetool container image and the go mod cache to save disk space.
+        run: |
+          df -h
+          docker rmi -f ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG}|| true
+          go clean -modcache || true
+          df -h
+
       - name: 'Test: Run preflight specific test suite'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "preflight"
 
@@ -367,6 +374,13 @@ jobs:
             jq '.[] | .Fail | .[].id' "${GITHUB_WORKSPACE}"/results.txt
             exit 1
           fi
+
+      - name: Remove gradetool container image and the go mod cache to save disk space.
+        run: |
+          df -h
+          docker rmi -f ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG}|| true
+          go clean -modcache || true
+          df -h
 
       - name: 'Test: Run Preflight Specific Smoke Tests in a TNF container'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "preflight"
