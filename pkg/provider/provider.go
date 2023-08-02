@@ -547,7 +547,6 @@ func createNodes(nodes []corev1.Node) map[string]Node {
 	machineConfigs := map[string]MachineConfig{}
 	for i := range nodes {
 		node := &nodes[i]
-
 		if !IsOCPCluster() {
 			// Avoid getting Mc info for non ocp clusters.
 			wrapperNodes[node.Name] = Node{Data: node}

@@ -33,7 +33,9 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/bootparams"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/cnffsdiff"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/hugepages"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/ishyperthread"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/isredhat"
+
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/operatingsystem"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/sysctlconfig"
 
@@ -51,8 +53,12 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		env = provider.GetTestEnvironment()
 	})
 	ginkgo.ReportAfterEach(results.RecordResult)
-
-	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUnalteredBaseImageIdentifier)
+	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHyperThreadEnable)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Nodes)
+		testHyperThreadEnable(&env)
+	})
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUnalteredBaseImageIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		if !provider.IsOCPCluster() {
 			ginkgo.Skip("Non-OCP cluster found, skipping testContainersFsDiff")
@@ -168,6 +174,24 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 	})
 
 })
+
+func testHyperThreadEnable(env *provider.TestEnvironment) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	for _, node := range env.Nodes {
+
+		nodeName := node.Data.Name
+		enable, _ := ishyperthread.IsHyperThreadEnable(env, nodeName)
+		if enable {
+			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has hyperthread enable", true))
+		} else {
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has hyperthread disable", false))
+		}
+	}
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+
+}
 
 func testServiceMesh(env *provider.TestEnvironment) {
 	// check if istio is installed
