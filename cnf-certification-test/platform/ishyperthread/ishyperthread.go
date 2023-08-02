@@ -36,10 +36,7 @@ func IsHyperThread(env *provider.TestEnvironment, nodeName string) (bool, error)
 			fmt.Println("Number:", num)
 		}
 	}
-	if num > 1 {
-		return true, nil
-	}
-	return false, nil
+	return num > 1, nil
 }
 
 func IsBareMetal(providerID string) bool {

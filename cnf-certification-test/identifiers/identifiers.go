@@ -297,7 +297,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestHyperThreadEnable = AddCatalogEntry(
 		"hyperthread-enable",
 		common.PlatformAlterationTestKey,
-		`Check that pods using hyperthread enable`,
+		`Check that baremetal workers have hyperthreading enabled`,
 		HyperThreadEnable,
 		NoDocumentedProcess,
 		TestHyperThreadEnableDocLink,

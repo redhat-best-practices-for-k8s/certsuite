@@ -183,9 +183,9 @@ func testHyperThreadEnable(env *provider.TestEnvironment) {
 		if ishyperthread.IsBareMetal(node.Data.Spec.ProviderID) {
 			enable, _ := ishyperthread.IsHyperThread(env, nodeName)
 			if enable {
-				compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has hyperthread enable", true))
+				compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has hyperthreading enabled", true))
 			} else {
-				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has hyperthread disable", false))
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has hyperthreading disabled", false))
 			}
 		}
 	}
