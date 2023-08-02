@@ -216,7 +216,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 
 	TestLimitedUseOfExecProbesIdentifier = AddCatalogEntry(
 		"test case to ensure limited use of exec probes",
-		common.AccessControlTestKey,
+		common.PerformanceTestKey,
 		`Check if periodseconds < 10 && initialDelaySeconds <= 10`,
 		LimitedUseOfExecProbesRemediation,
 		`Ensure that limited use of exec probes`,
@@ -227,7 +227,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			Telco:    Optional,
 			NonTelco: Optional,
 			Extended: Optional},
-		TagTelco)
+		TagFarEdge)
 
 	TestProjectedVolumeServiceAccountTokenIdentifier = AddCatalogEntry(
 		"projected-volume-service-account-token",
