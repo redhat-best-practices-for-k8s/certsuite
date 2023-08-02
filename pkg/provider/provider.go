@@ -334,7 +334,7 @@ func getPodContainers(aPod *corev1.Pod, useIgnoreList bool) (containerList []*Co
 
 		container := Container{Podname: aPod.Name, Namespace: aPod.Namespace,
 			NodeName: aPod.Spec.NodeName, Container: cut, Status: status, Runtime: aRuntime, UID: uid,
-			ContainerImageIdentifier: buildContainerImageSource(aPod.Spec.Containers[j].Image, cutStatus.ImageID)}
+			ContainerImageIdentifier: buildContainerImageSource(cutStatus.Image, cutStatus.ImageID)}
 
 		// Warn if readiness probe did not succeeded yet.
 		if !status.Ready {
