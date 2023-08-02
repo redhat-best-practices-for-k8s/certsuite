@@ -178,11 +178,9 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 func testHyperThreadEnable(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
-
 	for _, node := range env.Nodes {
-
 		nodeName := node.Data.Name
-		enable, _ := ishyperthread.IsHyperThreadEnable(env, nodeName)
+		enable, _ := ishyperthread.IsHyperThread(env, nodeName)
 		if enable {
 			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has hyperthread enable", true))
 		} else {
@@ -190,7 +188,6 @@ func testHyperThreadEnable(env *provider.TestEnvironment) {
 		}
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
-
 }
 
 func testServiceMesh(env *provider.TestEnvironment) {

@@ -13,7 +13,7 @@ const (
 	isHyperThreadCommand = "lscpu | grep \"Thread(s) per core\""
 )
 
-func IsHyperThreadEnable(env *provider.TestEnvironment, nodeName string) (bool, error) {
+func IsHyperThread(env *provider.TestEnvironment, nodeName string) (bool, error) {
 	o := clientsholder.GetClientsHolder()
 	ctx := clientsholder.NewContext(env.DebugPods[nodeName].Namespace, env.DebugPods[nodeName].Name, env.DebugPods[nodeName].Spec.Containers[0].Name)
 	cmdValue, errStr, err := o.ExecCommandContainer(ctx, isHyperThreadCommand)
@@ -39,5 +39,4 @@ func IsHyperThreadEnable(env *provider.TestEnvironment, nodeName string) (bool, 
 		return true, nil
 	}
 	return false, nil
-
 }
