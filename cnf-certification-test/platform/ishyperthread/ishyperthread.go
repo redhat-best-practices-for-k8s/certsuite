@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"regexp"
 	"strconv"
+	"strings"
 
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
@@ -39,4 +40,9 @@ func IsHyperThread(env *provider.TestEnvironment, nodeName string) (bool, error)
 		return true, nil
 	}
 	return false, nil
+}
+
+func IsBareMetal(providerID string) bool {
+	// Check if the node's providerID indicates it's a baremetalhost
+	return strings.HasPrefix(providerID, "baremetalhost://")
 }

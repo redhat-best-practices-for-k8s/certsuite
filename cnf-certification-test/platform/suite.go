@@ -180,11 +180,13 @@ func testHyperThreadEnable(env *provider.TestEnvironment) {
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, node := range env.Nodes {
 		nodeName := node.Data.Name
-		enable, _ := ishyperthread.IsHyperThread(env, nodeName)
-		if enable {
-			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has hyperthread enable", true))
-		} else {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has hyperthread disable", false))
+		if ishyperthread.IsBareMetal(node.Data.Spec.ProviderID) {
+			enable, _ := ishyperthread.IsHyperThread(env, nodeName)
+			if enable {
+				compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has hyperthread enable", true))
+			} else {
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has hyperthread disable", false))
+			}
 		}
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
