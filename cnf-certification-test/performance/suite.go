@@ -33,6 +33,10 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
 
+const (
+	LimitedUseOfExecProbes = 10
+)
+
 // The pods with no access to host network are considered for these tests
 var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
 	logrus.Debugf("Entering %s suite", common.PerformanceTestKey)
@@ -89,14 +93,24 @@ func testLimitedUseOfExecProbes(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
+		counter := 0
 		for _, cut := range put.Containers {
-			if cut.LivenessProbe.PeriodSeconds < 10 && cut.LivenessProbe.InitialDelaySeconds <= 10 {
-				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Ensure limited use of exec probes", false))
+			if cut.HasExecProbes() {
+				tnf.ClaimFilePrintf("Pod %s/Container %s use of exec probes, InitialDelaySeconds of LivenessProbe: %s,  InitialDelaySeconds of ReadinessProbe: %s, InitialDelaySeconds of StartupProbe: %s", cut.Podname, cut,
+					cut.LivenessProbe.InitialDelaySeconds, cut.ReadinessProbe.InitialDelaySeconds, cut.StartupProbe.InitialDelaySeconds)
+				counter++
 				continue
 			}
-			tnf.ClaimFilePrintf("Pod %s/Container %s defines not ensure limited use of exec probes", cut.Podname, cut)
-			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "", true))
+			tnf.ClaimFilePrintf("Pod %s/Container %s not use of exec probes, InitialDelaySeconds of LivenessProbe: %s,  InitialDelaySeconds of ReadinessProbe: %s, InitialDelaySeconds of StartupProbe: %s", cut.Podname, cut,
+				cut.LivenessProbe.InitialDelaySeconds, cut.ReadinessProbe.InitialDelaySeconds, cut.StartupProbe.InitialDelaySeconds)
 		}
+		if counter <= LimitedUseOfExecProbes {
+			tnf.ClaimFilePrintf("Pod %s defines ensure limited use of exec probes", put.String())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Ensure limited use of exec probes", false))
+			continue
+		}
+		tnf.ClaimFilePrintf("Pod %s defines ensure limited use of exec probes", put.String())
+		compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "", true))
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
