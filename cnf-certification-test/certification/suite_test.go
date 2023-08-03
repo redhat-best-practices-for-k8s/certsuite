@@ -31,16 +31,16 @@ func TestGetContainersToQuery(t *testing.T) {
 				CheckDiscoveredContainerCertificationStatus: certStatus,
 				CertifiedContainerInfo: []configuration.ContainerImageIdentifier{
 					{
-						Name:       "test2",
-						Repository: "repo1",
+						Repository: "test2",
+						Registry:   "repo1",
 					},
 				},
 			},
 			Containers: []*provider.Container{
 				{
 					ContainerImageIdentifier: configuration.ContainerImageIdentifier{
-						Name:       "test1",
-						Repository: "repo1",
+						Repository: "test1",
+						Registry:   "repo1",
 					},
 				},
 			},
@@ -55,12 +55,12 @@ func TestGetContainersToQuery(t *testing.T) {
 			testCertStatus: true,
 			expectedOutput: map[configuration.ContainerImageIdentifier]bool{
 				{
-					Name:       "test1",
-					Repository: "repo1",
+					Repository: "test1",
+					Registry:   "repo1",
 				}: true,
 				{
-					Name:       "test2",
-					Repository: "repo1",
+					Repository: "test2",
+					Registry:   "repo1",
 				}: true,
 			},
 		},
@@ -68,8 +68,8 @@ func TestGetContainersToQuery(t *testing.T) {
 			testCertStatus: false,
 			expectedOutput: map[configuration.ContainerImageIdentifier]bool{
 				{
-					Name:       "test2",
-					Repository: "repo1",
+					Repository: "test2",
+					Registry:   "repo1",
 				}: true,
 			},
 		},
