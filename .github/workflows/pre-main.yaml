@@ -203,6 +203,12 @@ jobs:
         with:
           ref: ${{ github.sha }}
 
+      - name: Cleanup the runner
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf "/usr/local/share/boost"
+
       # Update the CNF containers, helm charts and operators DB
 
       - name: Update the CNF DB
@@ -253,6 +259,9 @@ jobs:
           path: |
             cnf-certification-test/*.tar.gz
 
+      - name: Remove tarball(s) to save disk space.
+        run: rm -f cnf-certification-test/*.tar.gz
+
       - name: Run gradetool on the claim.json
         run: |
           docker pull ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG}
@@ -271,7 +280,7 @@ jobs:
       - name: Remove gradetool container image and the go mod cache to save disk space.
         run: |
           df -h
-          docker rmi -f ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG}|| true
+          docker rmi -f ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} || true
           go clean -modcache || true
           df -h
 
@@ -285,6 +294,9 @@ jobs:
           name: preflight-smoke-tests
           path: |
             cnf-certification-test/*.tar.gz
+      
+      - name: Remove tarball(s) to save disk space
+        run: rm -f cnf-certification-test/*.tar.gz
 
   smoke-tests-container:
     name: Run Container Smoke Tests
@@ -325,6 +337,12 @@ jobs:
         with:
           ref: ${{ github.sha }}
 
+      - name: Cleanup the runner
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf "/usr/local/share/boost"
+
       - name: Build the `cnf-certification-test` image
         run: |
           make build-image-local
@@ -360,6 +378,9 @@ jobs:
           path: |
             ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
 
+      - name: Remove tarball(s) to save disk space.
+        run: rm -f ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
+
       - name: Run gradetool on the claim.json
         run: |
           docker pull ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG}
@@ -378,7 +399,7 @@ jobs:
       - name: Remove gradetool container image and the go mod cache to save disk space.
         run: |
           df -h
-          docker rmi -f ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG}|| true
+          docker rmi -f ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} || true
           go clean -modcache || true
           df -h
 
@@ -392,6 +413,9 @@ jobs:
           name: preflight-smoke-tests-container
           path: |
             ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
+      
+      - name: Remove tarball(s) to save disk space.
+        run: rm -f ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
 
       # Push the new unstable TNF image to Quay.io.
       - name: (if on main and upstream) Authenticate against Quay.io
