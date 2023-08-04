@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix: 
         # suite: [accesscontrol, affiliatedcertification, lifecycle, networking, observability, platformalteration, performance, operator]
-        suite: [lifecycle]
+        suite: [lifecycle, manageability]
     env:
       SHELL: /bin/bash
       DEBUG_TNF: true # More verbose output from the TNF
