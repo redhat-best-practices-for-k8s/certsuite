@@ -111,6 +111,7 @@ const (
 	ServiceAccountName              = "Service Account Name"
 	ServiceMode                     = "Service Type"
 	ServiceName                     = "Service Name"
+	ServiceIPVersion                = "Service IP Version"
 	DeploymentName                  = "Deployment Name"
 	StatefulSetName                 = "StatefulSet Name"
 	PodDisruptionBudgetReference    = "Pod Disruption Budget Reference"

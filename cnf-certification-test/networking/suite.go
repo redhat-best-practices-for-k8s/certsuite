@@ -33,7 +33,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
-	corev1 "k8s.io/api/core/v1"
 	networkingv1 "k8s.io/api/networking/v1"
 )
 
@@ -267,27 +266,31 @@ func testPartnerSpecificTCPPorts(env *provider.TestEnvironment) {
 }
 
 func testDualStackServices(env *provider.TestEnvironment) {
-	var nonCompliantServices []*corev1.Service
-	var errorServices []*corev1.Service
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	ginkgo.By("Testing services (should be either single stack ipv6 or dual-stack)")
 	for _, s := range env.Services {
-		result, err := services.GetServiceIPVersion(s)
+		serviceIPVersion, err := services.GetServiceIPVersion(s)
 		if err != nil {
 			tnf.ClaimFilePrintf("%s", err)
-			errorServices = append(errorServices, s)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("Could not get IP Version from service", testhelper.ServiceType, false).
+				AddField(testhelper.Namespace, s.Namespace).
+				AddField(testhelper.ServiceName, s.Name))
 		}
-		if result == netcommons.Undefined || result == netcommons.IPv4 {
-			nonCompliantServices = append(nonCompliantServices, s)
+		if serviceIPVersion == netcommons.Undefined || serviceIPVersion == netcommons.IPv4 {
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("Service supports only IPv4", testhelper.ServiceType, false).
+				AddField(testhelper.Namespace, s.Namespace).
+				AddField(testhelper.ServiceName, s.Name).
+				AddField(testhelper.ServiceIPVersion, serviceIPVersion.String()))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewReportObject("Service support IPv6 or is dual stack", testhelper.ServiceType, false).
+				AddField(testhelper.Namespace, s.Namespace).
+				AddField(testhelper.ServiceName, s.Name).
+				AddField(testhelper.ServiceIPVersion, serviceIPVersion.String()))
 		}
 	}
-	if len(nonCompliantServices) > 0 {
-		tnf.ClaimFilePrintf("Non compliant services:\n %s", services.ToStringSlice(nonCompliantServices))
-		ginkgo.Fail(fmt.Sprintf("Found %d non compliant services (either non single stack ipv6 or non dual-stack)", len(nonCompliantServices)))
-	}
-	if len(errorServices) > 0 {
-		tnf.ClaimFilePrintf("Services in error:\n %s", services.ToStringSlice(errorServices))
-		ginkgo.Fail(fmt.Sprintf("Found %d services in error, check error log for details", len(errorServices)))
-	}
+
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testNetworkPolicyDenyAll(env *provider.TestEnvironment) {
