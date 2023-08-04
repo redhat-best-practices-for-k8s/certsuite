@@ -878,7 +878,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		OperatorIsInstalledViaOLMRemediation,
 		NoExceptions,
 		TestOperatorIsInstalledViaOLMIdentifierDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
