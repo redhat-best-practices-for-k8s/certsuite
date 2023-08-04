@@ -98,9 +98,9 @@ func getContainersToQuery(env *provider.TestEnvironment) map[configuration.Conta
 }
 
 func testContainerCertification(c configuration.ContainerImageIdentifier, validator certdb.CertificationStatusValidator) bool {
-	ans := validator.IsContainerCertified(c.Repository, c.Name, c.Tag, c.Digest)
+	ans := validator.IsContainerCertified(c.Registry, c.Repository, c.Tag, c.Digest)
 	if !ans {
-		tnf.ClaimFilePrintf("%s/%s:%s is not listed in certified containers", c.Repository, c.Name, c.Tag)
+		tnf.ClaimFilePrintf("%s/%s:%s is not listed in certified containers", c.Registry, c.Repository, c.Tag)
 	}
 	return ans
 }
@@ -112,8 +112,8 @@ func testContainerCertificationStatus(env *provider.TestEnvironment, validator c
 	failedContainers := []configuration.ContainerImageIdentifier{}
 	allContainersToQueryEmpty := true
 	for c := range containersToQuery {
-		if c.Name == "" || c.Repository == "" {
-			tnf.ClaimFilePrintf("Container name = \"%s\" or repository = \"%s\" is missing, skipping this container to query", c.Name, c.Repository)
+		if c.Repository == "" || c.Registry == "" {
+			tnf.ClaimFilePrintf("Container name = \"%s\" or repository = \"%s\" is missing, skipping this container to query", c.Repository, c.Registry)
 			continue
 		}
 		allContainersToQueryEmpty = false
@@ -189,22 +189,22 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment, val
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, c := range env.Containers {
-		if c.ContainerImageIdentifier.Name == "" || c.ContainerImageIdentifier.Repository == "" {
-			tnf.ClaimFilePrintf("Container name = %q or repository = %q is missing, skipping this container to query", c.ContainerImageIdentifier.Name, c.ContainerImageIdentifier.Repository)
+		if c.ContainerImageIdentifier.Repository == "" || c.ContainerImageIdentifier.Registry == "" {
+			tnf.ClaimFilePrintf("Container name = %q or repository = %q is missing, skipping this container to query", c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Registry)
 			continue
 		}
 
 		switch {
 		case c.ContainerImageIdentifier.Digest == "":
-			tnf.ClaimFilePrintf("%s is missing digest field, failing validation (repo=%s image=%s)", c, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Name)
+			tnf.ClaimFilePrintf("%s is missing digest field, failing validation (repo=%s image=%s)", c, c.ContainerImageIdentifier.Registry, c.ContainerImageIdentifier.Repository)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Missing digest field", false).
-				AddField(testhelper.Repository, c.ContainerImageIdentifier.Repository).
-				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Name))
+				AddField(testhelper.Repository, c.ContainerImageIdentifier.Registry).
+				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Repository))
 		case !testContainerCertification(c.ContainerImageIdentifier, validator):
-			tnf.ClaimFilePrintf("%s digest not found in database, failing validation (repo=%s image=%s)", c, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Name)
+			tnf.ClaimFilePrintf("%s digest not found in database, failing validation (repo=%s image=%s)", c, c.ContainerImageIdentifier.Registry, c.ContainerImageIdentifier.Repository)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Digest not found in database", false).
-				AddField(testhelper.Repository, c.ContainerImageIdentifier.Repository).
-				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Name))
+				AddField(testhelper.Repository, c.ContainerImageIdentifier.Registry).
+				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Repository))
 		default:
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Container is certified", true))
 		}

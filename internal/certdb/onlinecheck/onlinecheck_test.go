@@ -37,8 +37,8 @@ func TestCreateContainerCatalogQueryURL(t *testing.T) {
 	}{
 		{
 			testContainerImageID: configuration.ContainerImageIdentifier{
-				Name:       "name1",
-				Repository: "repo1",
+				Repository: "name1",
+				Registry:   "repo1",
 				Tag:        "tag1",
 				Digest:     "digest1",
 			},
@@ -46,8 +46,8 @@ func TestCreateContainerCatalogQueryURL(t *testing.T) {
 		},
 		{
 			testContainerImageID: configuration.ContainerImageIdentifier{
-				Name:       "name1",
-				Repository: "repo1",
+				Repository: "name1",
+				Registry:   "repo1",
 				Tag:        "tag1",
 				// Digest:     "digest1",
 			},
@@ -55,8 +55,8 @@ func TestCreateContainerCatalogQueryURL(t *testing.T) {
 		},
 		{
 			testContainerImageID: configuration.ContainerImageIdentifier{
-				Name:       "name1",
-				Repository: "repo1",
+				Repository: "name1",
+				Registry:   "repo1",
 				// Tag:        "tag1",
 				// Digest:     "digest1",
 			},
