@@ -593,10 +593,10 @@ func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 		if err != nil {
 			logrus.Fatalf("error uncordoning the node: %s", n)
 		}
-
-		// Reached end of TC, which means no ginkgo.Fail() was called.
-		needsPostMortemInfo = false
 	}
+
+	// Reached end of TC, which means no ginkgo.Fail() was called.
+	needsPostMortemInfo = false
 }
 
 func testPodPersistentVolumeReclaimPolicy(env *provider.TestEnvironment) {
