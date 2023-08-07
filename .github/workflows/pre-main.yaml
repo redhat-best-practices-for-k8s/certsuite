@@ -209,13 +209,19 @@ jobs:
           sudo rm -rf /opt/ghc
           sudo rm -rf "/usr/local/share/boost"
 
-      # Update the CNF containers, helm charts and operators DB
-
+      # Update the CNF containers, helm charts and operators DB.
       - name: Update the CNF DB
         run: |
           docker pull ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
           mkdir -p "${GITHUB_WORKSPACE}"/offline-db
-          docker run -v "${GITHUB_WORKSPACE}"/offline-db:/tmp/dump:Z --env OCT_DUMP_ONLY=true ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
+          docker run \
+            --env OCT_DUMP_ONLY=true \
+            --interactive \
+            --rm \
+            --rmi \
+            --tty
+            --volume "${GITHUB_WORKSPACE}"/offline-db:/tmp/dump:Z \
+            ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
 
       - name: Install ginkgo
         run: make install-tools
@@ -223,10 +229,9 @@ jobs:
       - name: Build CNF test suite binary
         run: make build-cnf-tests
 
-      - name: Remove oct container image and the go mod cache to save disk space.
+      - name: Remove go mod cache to save disk space.
         run: |
           df -h
-          docker rmi -f ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG} || true
           go clean -modcache || true
           df -h
 
@@ -294,7 +299,7 @@ jobs:
           name: preflight-smoke-tests
           path: |
             cnf-certification-test/*.tar.gz
-      
+
       - name: Remove tarball(s) to save disk space
         run: rm -f cnf-certification-test/*.tar.gz
 
