@@ -184,6 +184,17 @@ jobs:
       PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
 
     steps:
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+
       - name: Write temporary docker file
         run: |
           mkdir -p /home/runner/.docker
@@ -202,12 +213,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ github.sha }}
-
-      - name: Cleanup the runner
-        run: |
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /opt/ghc
-          sudo rm -rf "/usr/local/share/boost"
 
       # Update the CNF containers, helm charts and operators DB
 
@@ -307,6 +312,17 @@ jobs:
       PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
 
     steps:
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+
       - name: Write temporary docker file
         run: |
           mkdir -p /home/runner/.docker
@@ -336,12 +352,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ github.sha }}
-
-      - name: Cleanup the runner
-        run: |
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /opt/ghc
-          sudo rm -rf "/usr/local/share/boost"
 
       - name: Build the `cnf-certification-test` image
         run: |
