@@ -271,9 +271,9 @@ jobs:
             --volume "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json \
             --volume "${GITHUB_WORKSPACE}"/cnf-certification-test/claim.json:/claim.json \
             ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} \
-              --OutputPath results.txt \
-              --policy /policy.json \
-              --results /claim.json \
+              -o results.txt \
+              -p /policy.json \
+              -r /claim.json \
               >"${GITHUB_WORKSPACE}"/results.txt
           docker system prune -a
 
@@ -391,9 +391,9 @@ jobs:
             --volume "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json \
             --volume "${GITHUB_WORKSPACE}"/cnf-certification-test/claim.json:/claim.json \
             ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} \
-              --OutputPath results.txt \
-              --policy /policy.json \
-              --results /claim.json \
+              -o results.txt \
+              -p /policy.json \
+              -r /claim.json \
               >"${GITHUB_WORKSPACE}"/results.txt
           docker system prune -a
 
