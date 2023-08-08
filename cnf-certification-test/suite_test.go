@@ -140,13 +140,12 @@ func TestTest(t *testing.T) {
 	log.Infof("TNF Version         : %v", getGitVersion())
 	log.Infof("Claim Format Version: %s", ClaimFormatVersion)
 	log.Infof("Ginkgo Version      : %v", ginkgo.GINKGO_VERSION)
-	log.Infof("Focused test suites : %v", ginkgoConfig.FocusStrings)
 	log.Infof("TC skip patterns    : %v", ginkgoConfig.SkipStrings)
 	log.Infof("Labels filter       : %v", ginkgoConfig.LabelFilter)
 
-	// Diagnostic functions will run when no focus test suites or labels are provided.
+	// Diagnostic functions will run when no labels are provided.
 	var diagnosticMode bool
-	if len(ginkgoConfig.FocusStrings) == 0 && ginkgoConfig.LabelFilter == "" {
+	if ginkgoConfig.LabelFilter == "" {
 		log.Infof("TNF will run in diagnostic mode so no test case will be launched.")
 		diagnosticMode = true
 	}

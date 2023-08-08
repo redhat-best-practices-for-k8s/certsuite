@@ -26,7 +26,6 @@ usage_error() {
 }
 
 TIMEOUT=24h0m0s
-FOCUS=''
 SKIP=''
 LABEL=''
 LIST=false
@@ -54,12 +53,6 @@ while [[ $1 == -* ]]; do
 	-s | --skip)
 		while (("$#" >= 2)) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]]; do
 			SKIP="$2|$SKIP"
-			shift
-		done
-		;;
-	-f | --focus)
-		while (("$#" >= 2)) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]]; do
-			FOCUS="$2|$FOCUS"
 			shift
 		done
 		;;
@@ -105,40 +98,23 @@ GINKGO_ARGS="\
 -test.v\
 "
 
-FOCUS=${FOCUS%?}
 SKIP=${SKIP%?}
 
 if [[ $LABEL == "all" ]]; then
 	LABEL='common,extended,faredge,telco'
 fi
 
-echo "Running with focus '$FOCUS'"
 echo "Running with skip '$SKIP'"
 echo "Running with label filter '$LABEL'"
 echo "Report will be output to '$OUTPUT_LOC'"
 echo "ginkgo arguments '${GINKGO_ARGS}'"
-FOCUS_STRING=''
 SKIP_STRING=''
 LABEL_STRING=''
 
-if [ -n "$FOCUS" ]; then
-	FOCUS_STRING=-ginkgo.focus="${FOCUS}"
-	if [ -n "$SKIP" ]; then
-		SKIP_STRING=-ginkgo.skip="${SKIP}"
-	fi
-fi
-
-if [ -z "$FOCUS_STRING" ] && [ -z "$LABEL" ]; then
-	echo "No test focus (-f) or label (-l) was set, so only diagnostic functions will run."
+if [ -z "$LABEL" ]; then
+	echo "No test label (-l) was set, so only diagnostic functions will run."
 else
-	# Add the label "common" in case no labels have been provided. This will
-	# allow to filter out some either non-official TCs or TCs not intended to run
-	# in CI (yet).
-	if [ -n "$LABEL" ]; then
-		LABEL_STRING="-ginkgo.label-filter=${LABEL}"
-	else
-		LABEL_STRING='-ginkgo.label-filter=common'
-	fi
+	LABEL_STRING="-ginkgo.label-filter=${LABEL}"
 fi
 
 cd "$BASEDIR"/cnf-certification-test || exit 1
@@ -153,7 +129,6 @@ set -o pipefail
 # SC2086: Double quote to prevent globbing and word splitting.
 # shellcheck disable=SC2086
 ./cnf-certification-test.test \
-	${FOCUS_STRING} \
 	${SKIP_STRING} \
 	"${LABEL_STRING}" \
 	${GINKGO_ARGS} |& tee $OUTPUT_LOC/tnf-execution.log

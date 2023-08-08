@@ -27,7 +27,6 @@ export TNF_OFFICIAL_ORG=quay.io/testnetworkfunction/
 export TNF_OFFICIAL_IMAGE="${TNF_OFFICIAL_ORG}${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG}"
 export TNF_CMD="./run-cnf-suites.sh"
 export OUTPUT_ARG="-o"
-export FOCUS_ARG="-f"
 export SKIP_ARG="-s"
 export LABEL_ARG="-l"
 export CONTAINER_NETWORK_MODE='host'
@@ -284,19 +283,6 @@ while [[ $1 == -* ]]; do
 		done
 		export TNF_SKIP_SUITES
 		echo "-s $TNF_SKIP_SUITES"
-		;;
-	-f)
-		ONCE=true
-		while (("$#" >= 2)) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]]; do
-			if [ $ONCE = true ]; then
-				TNF_FOCUS_SUITES="$2"
-				ONCE=false
-			fi
-			TNF_FOCUS_SUITES="$TNF_FOCUS_SUITES $2"
-			shift
-		done
-		export TNF_FOCUS_SUITES
-		echo "-f $TNF_FOCUS_SUITES"
 		;;
 	-l)
 		while (("$#" >= 2)) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]]; do
