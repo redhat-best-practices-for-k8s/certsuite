@@ -21,8 +21,7 @@ func IsHyperThread(env *provider.TestEnvironment, nodeName string) (bool, error)
 	if err != nil || errStr != "" {
 		return false, fmt.Errorf("cannot execute %s on debug pod %s, err=%s, stderr=%s", isHyperThreadCommand, env.DebugPods[nodeName], err, errStr)
 	}
-	str := cmdValue // Replace with your input string containing the number
-	num := extractNumber(str)
+	num := extractNumber(cmdValue)
 	return num > 1, nil
 }
 

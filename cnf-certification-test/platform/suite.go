@@ -184,8 +184,10 @@ func testHyperThreadEnable(env *provider.TestEnvironment) {
 			enable, err := ishyperthread.IsHyperThread(env, nodeName)
 			if enable {
 				compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has hyperthreading enabled", true))
+			} else if err != nil {
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Error with executing the checker for hyperthreading: "+err.Error(), false))
 			} else {
-				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has hyperthreading disabled "+err.Error(), false))
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has hyperthreading disabled ", false))
 			}
 		}
 	}
