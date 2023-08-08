@@ -182,6 +182,7 @@ func testHyperThreadEnable(env *provider.TestEnvironment) {
 		nodeName := node.Data.Name
 		if ishyperthread.IsBareMetal(node.Data.Spec.ProviderID) {
 			enable, err := ishyperthread.IsHyperThread(env, nodeName)
+			//nolint:gocritic
 			if enable {
 				compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has hyperthreading enabled", true))
 			} else if err != nil {
