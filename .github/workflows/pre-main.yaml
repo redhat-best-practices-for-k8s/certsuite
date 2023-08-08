@@ -214,13 +214,16 @@ jobs:
         with:
           ref: ${{ github.sha }}
 
-      # Update the CNF containers, helm charts and operators DB
-
+      # Update the CNF containers, helm charts and operators DB.
       - name: Update the CNF DB
         run: |
-          docker pull ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
           mkdir -p "${GITHUB_WORKSPACE}"/offline-db
-          docker run -v "${GITHUB_WORKSPACE}"/offline-db:/tmp/dump:Z --env OCT_DUMP_ONLY=true ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
+          docker run \
+            --env OCT_DUMP_ONLY=true \
+            --rm \
+            --volume "${GITHUB_WORKSPACE}"/offline-db:/tmp/dump:Z \
+            ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
+          docker system prune -a
 
       - name: Install ginkgo
         run: make install-tools
@@ -228,10 +231,9 @@ jobs:
       - name: Build CNF test suite binary
         run: make build-cnf-tests
 
-      - name: Remove oct container image and the go mod cache to save disk space.
+      - name: Remove go mod cache to save disk space.
         run: |
           df -h
-          docker rmi -f ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG} || true
           go clean -modcache || true
           df -h
 
@@ -267,10 +269,18 @@ jobs:
       - name: Remove tarball(s) to save disk space.
         run: rm -f cnf-certification-test/*.tar.gz
 
-      - name: Run gradetool on the claim.json
+      - name: Run gradetool on the claim.json.
         run: |
-          docker pull ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG}
-          docker run -v "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json -v "${GITHUB_WORKSPACE}"/cnf-certification-test/claim.json:/claim.json ${{ env.REGISTRY }}/${{ env.GRADETOOL_IMAGE_NAME }}:${{ env.GRADETOOL_IMAGE_TAG }} -p /policy.json -o results.txt -r /claim.json > "${GITHUB_WORKSPACE}"/results.txt
+          docker run \
+            --rm \
+            --volume "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json \
+            --volume "${GITHUB_WORKSPACE}"/cnf-certification-test/claim.json:/claim.json \
+            ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} \
+              -o results.txt \
+              -p /policy.json \
+              -r /claim.json \
+              >"${GITHUB_WORKSPACE}"/results.txt
+          docker system prune -a
 
       - name: Check that their are 0 failed tests in the gradetool results
         run: |
@@ -282,13 +292,6 @@ jobs:
             exit 1
           fi
 
-      - name: Remove gradetool container image and the go mod cache to save disk space.
-        run: |
-          df -h
-          docker rmi -f ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} || true
-          go clean -modcache || true
-          df -h
-
       - name: 'Test: Run preflight specific test suite'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "preflight"
 
@@ -299,7 +302,7 @@ jobs:
           name: preflight-smoke-tests
           path: |
             cnf-certification-test/*.tar.gz
-      
+
       - name: Remove tarball(s) to save disk space
         run: rm -f cnf-certification-test/*.tar.gz
 
@@ -391,11 +394,19 @@ jobs:
       - name: Remove tarball(s) to save disk space.
         run: rm -f ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
 
-      - name: Run gradetool on the claim.json
+      - name: Run gradetool on the claim.json.
         run: |
-          docker pull ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG}
-          docker run -v "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json -v ${{ env.TNF_OUTPUT_DIR }}/claim.json:/claim.json ${{ env.REGISTRY }}/${{ env.GRADETOOL_IMAGE_NAME }}:${{ env.GRADETOOL_IMAGE_TAG }} -p /policy.json -o results.txt -r /claim.json > "${GITHUB_WORKSPACE}"/results.txt
-  
+          docker run \
+            --rm \
+            --volume "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json \
+            --volume "${TNF_OUTPUT_DIR}"/claim.json:/claim.json \
+            ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} \
+              -o results.txt \
+              -p /policy.json \
+              -r /claim.json \
+              >"${GITHUB_WORKSPACE}"/results.txt
+          docker system prune -a
+
       - name: Check that their are 0 failed tests in the gradetool results
         run: |
           if $(jq '.[] | .Fail | length' "${GITHUB_WORKSPACE}"/results.txt | grep -q 0); then
@@ -405,13 +416,6 @@ jobs:
             jq '.[] | .Fail | .[].id' "${GITHUB_WORKSPACE}"/results.txt
             exit 1
           fi
-
-      - name: Remove gradetool container image and the go mod cache to save disk space.
-        run: |
-          df -h
-          docker rmi -f ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} || true
-          go clean -modcache || true
-          df -h
 
       - name: 'Test: Run Preflight Specific Smoke Tests in a TNF container'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "preflight"
@@ -423,7 +427,7 @@ jobs:
           name: preflight-smoke-tests-container
           path: |
             ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
-      
+
       - name: Remove tarball(s) to save disk space.
         run: rm -f ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
 
