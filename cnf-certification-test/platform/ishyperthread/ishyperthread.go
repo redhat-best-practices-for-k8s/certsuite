@@ -22,8 +22,11 @@ func IsHyperThread(env *provider.TestEnvironment, nodeName string) (bool, error)
 		return false, fmt.Errorf("cannot execute %s on debug pod %s, err=%s, stderr=%s", isHyperThreadCommand, env.DebugPods[nodeName], err, errStr)
 	}
 	str := cmdValue // Replace with your input string containing the number
+	num := extractNumber(str)
+	return num > 1, nil
+}
 
-	// Define the regular expression pattern to find numbers in the string
+func extractNumber(str string) int {
 	re := regexp.MustCompile(`\d+`)
 
 	// Find all matches in the string
@@ -33,7 +36,7 @@ func IsHyperThread(env *provider.TestEnvironment, nodeName string) (bool, error)
 	for _, match := range matches {
 		num, _ = strconv.Atoi(match)
 	}
-	return num > 1, nil
+	return num
 }
 
 func IsBareMetal(providerID string) bool {
