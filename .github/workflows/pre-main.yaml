@@ -399,7 +399,7 @@ jobs:
           docker run \
             --rm \
             --volume "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json \
-            --volume "${GITHUB_WORKSPACE}"/cnf-certification-test/claim.json:/claim.json \
+            --volume "${TNF_OUTPUT_DIR}"/claim.json:/claim.json \
             ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} \
               -o results.txt \
               -p /policy.json \
