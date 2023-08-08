@@ -31,10 +31,7 @@ func IsHyperThread(env *provider.TestEnvironment, nodeName string) (bool, error)
 	num := 0
 	// Loop through the matches and convert them to integers (assuming there's only one number)
 	for _, match := range matches {
-		num, err = strconv.Atoi(match)
-		if err == nil {
-			fmt.Println("Number:", num)
-		}
+		num, _ = strconv.Atoi(match)
 	}
 	return num > 1, nil
 }
