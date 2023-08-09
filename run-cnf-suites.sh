@@ -26,7 +26,6 @@ usage_error() {
 }
 
 TIMEOUT=24h0m0s
-SKIP=''
 LABEL=''
 LIST=false
 BASEDIR=$(dirname "$(realpath "$0")")
@@ -49,12 +48,6 @@ while [[ $1 == -* ]]; do
 			echo >&2 '-o requires an argument'
 			exit 1
 		fi
-		;;
-	-s | --skip)
-		while (("$#" >= 2)) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]]; do
-			SKIP="$2|$SKIP"
-			shift
-		done
 		;;
 	-l | --label)
 		while (("$#" >= 2)) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]]; do
@@ -98,17 +91,13 @@ GINKGO_ARGS="\
 -test.v\
 "
 
-SKIP=${SKIP%?}
-
 if [[ $LABEL == "all" ]]; then
 	LABEL='common,extended,faredge,telco'
 fi
 
-echo "Running with skip '$SKIP'"
 echo "Running with label filter '$LABEL'"
 echo "Report will be output to '$OUTPUT_LOC'"
 echo "ginkgo arguments '${GINKGO_ARGS}'"
-SKIP_STRING=''
 LABEL_STRING=''
 
 if [ -z "$LABEL" ]; then
@@ -129,7 +118,6 @@ set -o pipefail
 # SC2086: Double quote to prevent globbing and word splitting.
 # shellcheck disable=SC2086
 ./cnf-certification-test.test \
-	${SKIP_STRING} \
 	"${LABEL_STRING}" \
 	${GINKGO_ARGS} |& tee $OUTPUT_LOC/tnf-execution.log
 

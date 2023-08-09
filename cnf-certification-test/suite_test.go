@@ -140,7 +140,6 @@ func TestTest(t *testing.T) {
 	log.Infof("TNF Version         : %v", getGitVersion())
 	log.Infof("Claim Format Version: %s", ClaimFormatVersion)
 	log.Infof("Ginkgo Version      : %v", ginkgo.GINKGO_VERSION)
-	log.Infof("TC skip patterns    : %v", ginkgoConfig.SkipStrings)
 	log.Infof("Labels filter       : %v", ginkgoConfig.LabelFilter)
 
 	// Diagnostic functions will run when no labels are provided.
