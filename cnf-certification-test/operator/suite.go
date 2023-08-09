@@ -74,12 +74,12 @@ func testOperatorInstallationPhaseSucceeded(env *provider.TestEnvironment) {
 		phase := phasecheck.WaitOperatorReady(csv)
 		if phase != v1alpha1.CSVPhaseSucceeded {
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name,
-				"Operator not in Succeeded state ", false).AddField(testhelper.OperatorPhase, string(env.Operators[i].Csv.Status.Phase)))
+				"Operator not in Succeeded state ", false).AddField(testhelper.OperatorPhase, string(phase)))
 			tnf.ClaimFilePrintf("%s is in phase %s. Expected phase is %s",
-				&env.Operators[i], csv.Status.Phase, v1alpha1.CSVPhaseSucceeded)
+				&env.Operators[i], phase, v1alpha1.CSVPhaseSucceeded)
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name,
-				"Operator on Succeeded state ", true).AddField(testhelper.OperatorPhase, string(env.Operators[i].Csv.Status.Phase)))
+				"Operator on Succeeded state ", true).AddField(testhelper.OperatorPhase, string(phase)))
 		}
 	}
 
@@ -94,6 +94,7 @@ func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
 		clusterPermissions := csv.Spec.InstallStrategy.StrategySpec.ClusterPermissions
 		if len(clusterPermissions) == 0 {
 			logrus.Debugf("No clusterPermissions found in %s", env.Operators[i])
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "Operator has no privileges on cluster resources", true))
 			continue
 		}
 
