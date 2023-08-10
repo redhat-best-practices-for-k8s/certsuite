@@ -54,8 +54,8 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 	ginkgo.ReportAfterEach(results.RecordResult)
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHyperThreadEnable)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, provider.GetBaremetalNodes(&env))
-		testHyperThreadEnable(&env)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetBaremetalNodes())
+		testHyperThreadingEnabled(&env)
 	})
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUnalteredBaseImageIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
@@ -174,10 +174,10 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 
 })
 
-func testHyperThreadEnable(env *provider.TestEnvironment) {
+func testHyperThreadingEnabled(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
-	baremetalNodes := provider.GetBaremetalNodes(env)
+	baremetalNodes := env.GetBaremetalNodes()
 	for _, node := range baremetalNodes {
 		nodeName := node.Data.Name
 		enable, err := node.IsHyperThreadNode(env)
@@ -185,7 +185,7 @@ func testHyperThreadEnable(env *provider.TestEnvironment) {
 		if enable {
 			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has hyperthreading enabled", true))
 		} else if err != nil {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Error with executing the checker for hyperthreading: "+err.Error(), false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Error with executing the checke for hyperthreading: "+err.Error(), false))
 		} else {
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has hyperthreading disabled ", false))
 		}
