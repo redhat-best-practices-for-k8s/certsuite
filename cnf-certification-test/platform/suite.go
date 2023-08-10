@@ -33,7 +33,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/bootparams"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/cnffsdiff"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/hugepages"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/ishyperthread"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/isredhat"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/operatingsystem"
@@ -181,7 +180,7 @@ func testHyperThreadEnable(env *provider.TestEnvironment) {
 	baremetalNodes := provider.GetBaremetalNodes(env)
 	for _, node := range baremetalNodes {
 		nodeName := node.Data.Name
-		enable, err := ishyperthread.IsHyperThread(env, nodeName)
+		enable, err := node.IsHyperThreadNode(env)
 		//nolint:gocritic
 		if enable {
 			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has hyperthreading enabled", true))
