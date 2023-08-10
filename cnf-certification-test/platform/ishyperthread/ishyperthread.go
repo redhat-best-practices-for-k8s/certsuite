@@ -11,7 +11,8 @@ import (
 )
 
 const (
-	isHyperThreadCommand = "lscpu | grep \"Thread(s) per core\""
+	expectedValue        = 2
+	isHyperThreadCommand = "lscpu "
 )
 
 func IsHyperThread(env *provider.TestEnvironment, nodeName string) (bool, error) {
@@ -21,7 +22,12 @@ func IsHyperThread(env *provider.TestEnvironment, nodeName string) (bool, error)
 	if err != nil || errStr != "" {
 		return false, fmt.Errorf("cannot execute %s on debug pod %s, err=%s, stderr=%s", isHyperThreadCommand, env.DebugPods[nodeName], err, errStr)
 	}
-	num := extractNumber(cmdValue)
+	re := regexp.MustCompile(`Thread\(s\) per core:\s+(\d+)`)
+	match := re.FindStringSubmatch(cmdValue)
+	num := 0
+	if len(match) == expectedValue {
+		num, _ = strconv.Atoi(match[1])
+	}
 	return num > 1, nil
 }
 
