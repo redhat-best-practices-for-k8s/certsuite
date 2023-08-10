@@ -65,10 +65,6 @@ jobs:
       - name: Create `local-test-infra` OpenShift resources
         run: make rebuild-cluster
         working-directory: cnf-certification-test-partner
-  
-      - name: Install partner resources
-        run: make install
-        working-directory: cnf-certification-test-partner
 
       - name: Clone the QE repository
         uses: actions/checkout@v3
