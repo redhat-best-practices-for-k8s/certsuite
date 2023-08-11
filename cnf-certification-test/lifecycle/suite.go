@@ -402,7 +402,7 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration)
 }
 
 func testScaleCrd(env *provider.TestEnvironment, timeout time.Duration) {
-	ginkgo.By("Testing deployment scaling")
+	ginkgo.By("Testing custom resource scaling")
 	defer env.SetNeedsRefresh()
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
