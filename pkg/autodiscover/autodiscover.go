@@ -88,6 +88,9 @@ type DiscoveredTestData struct {
 	StorageClasses         []storagev1.StorageClass
 	ServicesIgnoreList     []string
 	ScaleCrUnderTest       []ScaleObject
+	CollectorsEndPoint	   string
+	ExecutedBy             string
+	PartnerName            string
 }
 
 var data = DiscoveredTestData{}
@@ -227,6 +230,13 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	if err != nil {
 		logrus.Fatalf("Cannot get list of services, error: %v", err)
 	}
+
+	if config.CollectorsEndPoint == "" {
+		config.CollectorsEndPoint = "http://localhost:8080"
+	}
+	data.CollectorsEndPoint = config.CollectorsEndPoint
+	data.ExecutedBy = config.ExecutedBy
+	data.PartnerName = config.PartnerName
 	return data
 }
 

@@ -203,6 +203,12 @@ func TestTest(t *testing.T) {
 	claimOutputFile := filepath.Join(*claimPath, results.ClaimFileName)
 	claimhelper.WriteClaimOutput(claimOutputFile, payload)
 
+	// Send claim file to the collector
+	err = collector.SendClaimFileToCollector(env.CollectorsEndPoint, claimOutputFile, env.ExecutedBy, env.PartnerName)
+	if err != nil {
+		log.Errorf("Failed to send post request to the collector: %v", err)
+	}
+
 	// Create HTML artifacts for the web results viewer/parser.
 	resultsOutputDir := *claimPath
 	webFilePaths, err := results.CreateResultsWebFiles(resultsOutputDir)
