@@ -863,7 +863,7 @@ func Test_buildContainerImageSource(t *testing.T) {
 	}
 }
 
-func TestTestEnvironment_GetBaremetalNodes(t *testing.T) {
+func TestGetBaremetalNodes(t *testing.T) {
 	type fields struct {
 		Nodes map[string]Node
 	}

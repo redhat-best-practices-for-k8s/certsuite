@@ -128,7 +128,7 @@ func (node *Node) GetRHELVersion() (string, error) {
 
 const (
 	expectedValue        = 2
-	isHyperThreadCommand = "lscpu"
+	isHyperThreadCommand = "chroot /host lscpu"
 )
 
 func (node *Node) IsHyperThreadNode(env *TestEnvironment) (bool, error) {
