@@ -117,7 +117,7 @@ type TestEnvironment struct { // rename this with testTarget
 	DaemonsetFailedToSpawn bool
 	ScaleCrUnderTest       []ScaleObject
 	StorageClassList       []storagev1.StorageClass
-	CollectorsEndPoint	   string
+	CollectorsEndPoint     string
 	ExecutedBy             string
 	PartnerName            string
 }

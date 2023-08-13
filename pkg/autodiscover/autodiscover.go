@@ -88,7 +88,7 @@ type DiscoveredTestData struct {
 	StorageClasses         []storagev1.StorageClass
 	ServicesIgnoreList     []string
 	ScaleCrUnderTest       []ScaleObject
-	CollectorsEndPoint	   string
+	CollectorsEndPoint     string
 	ExecutedBy             string
 	PartnerName            string
 }
