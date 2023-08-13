@@ -89,29 +89,73 @@ var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
 	// Scheduling related tests ends here
 })
 
+func appendToCompliantObject(compliantObjects []*testhelper.ReportObject, cut *provider.Container, put *provider.Pod) []*testhelper.ReportObject {
+	tnf.ClaimFilePrintf("Pod %s/Container %s use of exec probes, InitialDelaySeconds of LivenessProbe: %s,  InitialDelaySeconds of ReadinessProbe: %s, InitialDelaySeconds of StartupProbe: %s", cut.Podname, cut,
+		cut.LivenessProbe.InitialDelaySeconds, cut.ReadinessProbe.InitialDelaySeconds, cut.StartupProbe.InitialDelaySeconds)
+	compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Ensure limited is not using of exec probes", true))
+	return compliantObjects
+}
+
+func appendToNonCompliantObject(noncompliantObjects []*testhelper.ReportObject, cut *provider.Container, put *provider.Pod) []*testhelper.ReportObject {
+	tnf.ClaimFilePrintf("Pod %s/Container %s is not using of exec probes, InitialDelaySeconds of LivenessProbe: %s,  InitialDelaySeconds of ReadinessProbe: %s, InitialDelaySeconds of StartupProbe: %s", cut.Podname, cut,
+		cut.LivenessProbe.InitialDelaySeconds, cut.ReadinessProbe.InitialDelaySeconds, cut.StartupProbe.InitialDelaySeconds)
+	noncompliantObjects = append(noncompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Ensure limited is use of exec probes", false))
+	return noncompliantObjects
+}
+
 func testLimitedUseOfExecProbes(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
+
+	// The entire cluster's worth of pods needs to have less than or equal to 10 exec probes.
+	counter := 0
 	for _, put := range env.Pods {
-		counter := 0
 		for _, cut := range put.Containers {
 			if cut.HasExecProbes() {
-				tnf.ClaimFilePrintf("Pod %s/Container %s use of exec probes, InitialDelaySeconds of LivenessProbe: %s,  InitialDelaySeconds of ReadinessProbe: %s, InitialDelaySeconds of StartupProbe: %s", cut.Podname, cut,
-					cut.LivenessProbe.InitialDelaySeconds, cut.ReadinessProbe.InitialDelaySeconds, cut.StartupProbe.InitialDelaySeconds)
-				counter++
-				continue
+				if cut.LivenessProbe.Exec != nil {
+					counter++
+					if cut.LivenessProbe.PeriodSeconds <= LimitedUseOfExecProbes {
+						compliantObjects = appendToCompliantObject(compliantObjects, cut, put)
+						counter++
+					} else {
+						// Exec probes are BAD
+						// add nonCompliant container object
+						nonCompliantObjects = appendToNonCompliantObject(nonCompliantObjects, cut, put)
+					}
+				}
+				if cut.StartupProbe.Exec != nil {
+					counter++
+					if cut.StartupProbe.PeriodSeconds <= LimitedUseOfExecProbes {
+						compliantObjects = appendToCompliantObject(compliantObjects, cut, put)
+						counter++
+					} else {
+						nonCompliantObjects = appendToNonCompliantObject(nonCompliantObjects, cut, put)
+					}
+				}
+
+				if cut.ReadinessProbe.Exec != nil {
+					counter++
+					if cut.StartupProbe.PeriodSeconds <= LimitedUseOfExecProbes {
+						compliantObjects = appendToCompliantObject(compliantObjects, cut, put)
+						counter++
+					} else {
+						nonCompliantObjects = appendToNonCompliantObject(nonCompliantObjects, cut, put)
+					}
+				}
 			}
-			tnf.ClaimFilePrintf("Pod %s/Container %s not use of exec probes, InitialDelaySeconds of LivenessProbe: %s,  InitialDelaySeconds of ReadinessProbe: %s, InitialDelaySeconds of StartupProbe: %s", cut.Podname, cut,
-				cut.LivenessProbe.InitialDelaySeconds, cut.ReadinessProbe.InitialDelaySeconds, cut.StartupProbe.InitialDelaySeconds)
 		}
-		if counter <= LimitedUseOfExecProbes {
-			tnf.ClaimFilePrintf("Pod %s defines ensure limited use of exec probes", put.String())
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Ensure limited use of exec probes", false))
-			continue
-		}
-		tnf.ClaimFilePrintf("Pod %s defines ensure limited use of exec probes", put.String())
-		compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "", true))
 	}
+
+	// If there >10 exec probes, mark the entire cluster as a failure
+	if counter >= LimitedUseOfExecProbes {
+		tnf.ClaimFilePrintf("CNF has 10 or more exec probes")
+		nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("CNF has 10 or more exec probes", testhelper.CustomResourceDefinitionType, false))
+	} else {
+		// Compliant cluster
+		compliantObjects = append(compliantObjects, testhelper.NewReportObject("CNF has less than 10 exec probes", testhelper.CustomResourceDefinitionType, true))
+		tnf.ClaimFilePrintf("CNF has less than 10 exec probes")
+	}
+
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
