@@ -1272,8 +1272,8 @@ Tags|faredge,performance
 Property|Description
 ---|---
 Unique ID|performance-test case to ensure limited use of exec probes
-Description|Check if periodseconds < 10 && initialDelaySeconds <= 10
-Suggested Remediation|Ensure that pods use projected volumes and service account tokens
+Description|The entire cluster's worth of pods needs to have less than or equal to 10 exec probes.
+Suggested Remediation|The entire cluster's worth of pods needs to have less than or equal to 10 exec probes.
 Best Practice Reference|No Doc Link - Far Edge
 Exception Process|Ensure that limited use of exec probes
 Tags|faredge,performance

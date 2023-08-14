@@ -106,7 +106,6 @@ func appendToNonCompliantObject(noncompliantObjects []*testhelper.ReportObject, 
 func testLimitedUseOfExecProbes(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
-
 	// The entire cluster's worth of pods needs to have less than or equal to 10 exec probes.
 	counter := 0
 	for _, put := range env.Pods {

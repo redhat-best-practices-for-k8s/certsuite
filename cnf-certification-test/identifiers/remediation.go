@@ -152,7 +152,7 @@ const (
 
 	ProjectedVolumeServiceAccountRemediation = `Ensure that pods do not use projected volumes and service account tokens`
 
-	LimitedUseOfExecProbesRemediation = `Ensure that pods use projected volumes and service account tokens`
+	LimitedUseOfExecProbesRemediation = `The entire cluster's worth of pods needs to have less than or equal to 10 exec probes.`
 
 	ReservedPartnerPortsRemediation = `Ensure ports are not being used that are reserved by our partner`
 
