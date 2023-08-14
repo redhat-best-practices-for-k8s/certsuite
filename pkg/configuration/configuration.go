@@ -147,7 +147,7 @@ type TestConfiguration struct {
 	DebugDaemonSetNamespace                     string   `yaml:"debugDaemonSetNamespace" json:"debugDaemonSetNamespace"`
 	// Collector's parameters
 	CollectorAppEndPoint string `yaml:"collectorAppEndPoint" json:"collectorAppEndPoint"`
-	ExecutedBy         	 string `yaml:"executedBy" json:"executedBy"`
+	ExecutedBy           string `yaml:"executedBy" json:"executedBy"`
 	PartnerName          string `yaml:"partnerName" json:"partnerName"`
 }
 
