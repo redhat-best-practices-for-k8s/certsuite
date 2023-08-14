@@ -47,9 +47,13 @@ func waitOperatorReady(csv *v1alpha1.ClusterServiceVersion) bool {
 
 		// update old csv and check status again
 		*csv = *freshCsv
-		if csv.Status.Phase == v1alpha1.CSVPhaseSucceeded {
+		switch csv.Status.Phase { //nolint:exhaustive
+		case v1alpha1.CSVPhaseSucceeded:
 			tnf.ClaimFilePrintf("%s is ready", provider.CsvToString(csv))
 			return true
+		case v1alpha1.CSVPhaseFailed, v1alpha1.CSVPhaseUnknown, v1alpha1.CSVPhaseAny:
+			tnf.ClaimFilePrintf("%s failed to be ready, status=%s", provider.CsvToString(csv), csv.Status.Phase)
+			return false
 		}
 
 		tnf.ClaimFilePrintf("Waiting for %s to be in Succeeded phase: %s", provider.CsvToString(freshCsv), csv.Status.Phase)
