@@ -146,9 +146,9 @@ type TestConfiguration struct {
 	ServicesIgnoreList                          []string `yaml:"servicesignorelist" json:"servicesignorelist"`
 	DebugDaemonSetNamespace                     string   `yaml:"debugDaemonSetNamespace" json:"debugDaemonSetNamespace"`
 	// Collector's parameters
-	CollectorsEndPoint string `yaml:"collectorsEndPoint" json:"collectorsEndPoint"`
-	ExecutedBy         string `yaml:"executedBy" json:"executedBy"`
-	PartnerName        string `yaml:"partnerName" json:"partnerName"`
+	CollectorAppEndPoint string `yaml:"collectorAppEndPoint" json:"collectorAppEndPoint"`
+	ExecutedBy         	 string `yaml:"executedBy" json:"executedBy"`
+	PartnerName          string `yaml:"partnerName" json:"partnerName"`
 }
 
 type TestParameters struct {
