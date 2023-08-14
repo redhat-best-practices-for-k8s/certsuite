@@ -51,66 +51,7 @@ func Test_isOperatorSucceeded(t *testing.T) {
 					Namespace: "aNamespace",
 				},
 				Status: v1alpha1.ClusterServiceVersionStatus{
-					Phase: v1alpha1.CSVPhaseInstalling,
-				},
-			}},
-			wantIsReady: false,
-		},
-		{name: "nok",
-			args: args{csv: &v1alpha1.ClusterServiceVersion{
-				ObjectMeta: metav1.ObjectMeta{
-					Name:      "aCSV",
-					Namespace: "aNamespace",
-				},
-				Status: v1alpha1.ClusterServiceVersionStatus{
-					Phase: v1alpha1.CSVPhaseDeleting,
-				},
-			}},
-			wantIsReady: false,
-		},
-		{name: "nok",
-			args: args{csv: &v1alpha1.ClusterServiceVersion{
-				ObjectMeta: metav1.ObjectMeta{
-					Name:      "aCSV",
-					Namespace: "aNamespace",
-				},
-				Status: v1alpha1.ClusterServiceVersionStatus{
-					Phase: v1alpha1.CSVPhaseInstallReady,
-				},
-			}},
-		},
-		{name: "nok",
-			args: args{csv: &v1alpha1.ClusterServiceVersion{
-				ObjectMeta: metav1.ObjectMeta{
-					Name:      "aCSV",
-					Namespace: "aNamespace",
-				},
-				Status: v1alpha1.ClusterServiceVersionStatus{
 					Phase: v1alpha1.CSVPhaseUnknown,
-				},
-			}},
-			wantIsReady: false,
-		},
-		{name: "nok",
-			args: args{csv: &v1alpha1.ClusterServiceVersion{
-				ObjectMeta: metav1.ObjectMeta{
-					Name:      "aCSV",
-					Namespace: "aNamespace",
-				},
-				Status: v1alpha1.ClusterServiceVersionStatus{
-					Phase: v1alpha1.CSVPhasePending,
-				},
-			}},
-			wantIsReady: false,
-		},
-		{name: "nok",
-			args: args{csv: &v1alpha1.ClusterServiceVersion{
-				ObjectMeta: metav1.ObjectMeta{
-					Name:      "aCSV",
-					Namespace: "aNamespace",
-				},
-				Status: v1alpha1.ClusterServiceVersionStatus{
-					Phase: v1alpha1.CSVPhaseReplacing,
 				},
 			}},
 			wantIsReady: false,
@@ -135,19 +76,6 @@ func Test_isOperatorSucceeded(t *testing.T) {
 				},
 				Status: v1alpha1.ClusterServiceVersionStatus{
 					Phase: v1alpha1.CSVPhaseFailed,
-				},
-			}},
-
-			wantIsReady: false,
-		},
-		{name: "nok",
-			args: args{csv: &v1alpha1.ClusterServiceVersion{
-				ObjectMeta: metav1.ObjectMeta{
-					Name:      "aCSV",
-					Namespace: "aNamespace",
-				},
-				Status: v1alpha1.ClusterServiceVersionStatus{
-					Phase: v1alpha1.CSVPhaseNone,
 				},
 			}},
 

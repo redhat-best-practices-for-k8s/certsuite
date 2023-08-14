@@ -69,22 +69,13 @@ func IsOperatorPhaseSucceeded(csv *v1alpha1.ClusterServiceVersion) bool {
 	switch csv.Status.Phase {
 	case v1alpha1.CSVPhaseSucceeded:
 		return true
-	case v1alpha1.CSVPhaseFailed:
-		fallthrough
-	case v1alpha1.CSVPhaseUnknown:
+	case v1alpha1.CSVPhaseFailed, v1alpha1.CSVPhaseUnknown, v1alpha1.CSVPhaseAny:
 		return false
 	// Operator is not ready, but we need to take into account that its pods
 	// could have been deleted by some of the lifecycle test cases, so they
 	// could be restarting. Let's give it some time before declaring it failed.
-	case v1alpha1.CSVPhasePending:
-		fallthrough
-	case v1alpha1.CSVPhaseInstalling:
-		fallthrough
-	case v1alpha1.CSVPhaseInstallReady:
-		fallthrough
-	case v1alpha1.CSVPhaseDeleting:
-		fallthrough
-	case v1alpha1.CSVPhaseReplacing:
+	case v1alpha1.CSVPhasePending, v1alpha1.CSVPhaseInstalling, v1alpha1.CSVPhaseInstallReady,
+		v1alpha1.CSVPhaseDeleting, v1alpha1.CSVPhaseReplacing:
 		return waitOperatorReady(csv)
 	default:
 		return false
