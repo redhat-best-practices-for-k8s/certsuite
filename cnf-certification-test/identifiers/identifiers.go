@@ -1534,7 +1534,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		CrdScalingRemediation,
 		NoDocumentedProcess+` Not applicable to SNO applications.`,
 		TestCrdScalingIdentifierDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Optional,
 			Telco:    Mandatory,
