@@ -19,3 +19,14 @@ runs:
     - name: Disable default go problem matcher
       run: echo "::remove-matcher owner=go::"
       shell: bash
+
+    - name: Install cr-scale-operator
+      run: |
+        rm -rf cr-scale-operator
+        git clone https://github.com/test-network-function/cr-scale-operator
+        cd cr-scale-operator
+        IMG="quay.io/testnetworkfunction/cr-scale-operator"
+        make deploy IMG=$IMG
+        cd ..
+        rm -rf cr-scale-operator
+      shell: bash
