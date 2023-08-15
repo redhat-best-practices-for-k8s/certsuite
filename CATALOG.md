@@ -1235,6 +1235,22 @@ Tags|faredge,performance
 |Non-Telco|Optional|
 |Telco|Optional|
 
+#### performance-max-resources-exec-probes
+
+Property|Description
+---|---
+Unique ID|performance-max-resources-exec-probes
+Description|The entire cluster's worth of pods needs to have less than or equal to 10 exec probes and ensure that resources of periodSeconds is more from 10. 
+Suggested Remediation|The entire cluster's worth of pods needs to have less than or equal to 10 exec probes.
+Best Practice Reference|No Doc Link - Far Edge
+Exception Process|min-resources-periodSeconds
+Tags|faredge,performance
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
 #### performance-rt-apps-no-exec-probes
 
 Property|Description
@@ -1264,22 +1280,6 @@ Tags|faredge,performance
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
 |Far-Edge|Mandatory|
-|Non-Telco|Optional|
-|Telco|Optional|
-
-#### performance-test case to ensure limited use of exec probes
-
-Property|Description
----|---
-Unique ID|performance-test case to ensure limited use of exec probes
-Description|The entire cluster's worth of pods needs to have less than or equal to 10 exec probes.
-Suggested Remediation|The entire cluster's worth of pods needs to have less than or equal to 10 exec probes.
-Best Practice Reference|No Doc Link - Far Edge
-Exception Process|Ensure that limited use of exec probes
-Tags|faredge,performance
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Optional|
-|Far-Edge|Optional|
 |Non-Telco|Optional|
 |Telco|Optional|
 
