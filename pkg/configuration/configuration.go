@@ -157,5 +157,5 @@ type TestParameters struct {
 	AllowPreflightInsecure        bool   `split_words:"true"`
 	PfltDockerconfig              string `split_words:"true" envconfig:"PFLT_DOCKERCONFIG"`
 	IncludeWebFilesInOutputFolder bool   `split_words:"true" default:"false"`
-	OmitArtifactsZipFile          bool   `split_words:"true" default:"false"`
+	OmitArtifactsZipFile          bool   `split_words:"true" default:"false" envconfig:"OMIT_ARTIFACTS_ZIP_FILE"`
 }
