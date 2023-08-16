@@ -33,7 +33,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
-	corev1 "k8s.io/api/core/v1"
 	networkingv1 "k8s.io/api/networking/v1"
 )
 
@@ -267,32 +266,37 @@ func testPartnerSpecificTCPPorts(env *provider.TestEnvironment) {
 }
 
 func testDualStackServices(env *provider.TestEnvironment) {
-	var nonCompliantServices []*corev1.Service
-	var errorServices []*corev1.Service
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	ginkgo.By("Testing services (should be either single stack ipv6 or dual-stack)")
 	for _, s := range env.Services {
-		result, err := services.GetServiceIPVersion(s)
+		serviceIPVersion, err := services.GetServiceIPVersion(s)
 		if err != nil {
 			tnf.ClaimFilePrintf("%s", err)
-			errorServices = append(errorServices, s)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("Could not get IP Version from service", testhelper.ServiceType, false).
+				AddField(testhelper.Namespace, s.Namespace).
+				AddField(testhelper.ServiceName, s.Name))
 		}
-		if result == netcommons.Undefined || result == netcommons.IPv4 {
-			nonCompliantServices = append(nonCompliantServices, s)
+		if serviceIPVersion == netcommons.Undefined || serviceIPVersion == netcommons.IPv4 {
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("Service supports only IPv4", testhelper.ServiceType, false).
+				AddField(testhelper.Namespace, s.Namespace).
+				AddField(testhelper.ServiceName, s.Name).
+				AddField(testhelper.ServiceIPVersion, serviceIPVersion.String()))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewReportObject("Service support IPv6 or is dual stack", testhelper.ServiceType, false).
+				AddField(testhelper.Namespace, s.Namespace).
+				AddField(testhelper.ServiceName, s.Name).
+				AddField(testhelper.ServiceIPVersion, serviceIPVersion.String()))
 		}
 	}
-	if len(nonCompliantServices) > 0 {
-		tnf.ClaimFilePrintf("Non compliant services:\n %s", services.ToStringSlice(nonCompliantServices))
-		ginkgo.Fail(fmt.Sprintf("Found %d non compliant services (either non single stack ipv6 or non dual-stack)", len(nonCompliantServices)))
-	}
-	if len(errorServices) > 0 {
-		tnf.ClaimFilePrintf("Services in error:\n %s", services.ToStringSlice(errorServices))
-		ginkgo.Fail(fmt.Sprintf("Found %d services in error, check error log for details", len(errorServices)))
-	}
+
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testNetworkPolicyDenyAll(env *provider.TestEnvironment) {
 	ginkgo.By("Test for Deny All in network policies")
-	var podsMissingDenyAllDefaultPolicies []string
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 
 	// Loop through the pods, looking for corresponding entries within a deny-all network policy (both ingress and egress).
 	// This ensures that each pod is accounted for that we are tasked with testing and excludes any pods that are not marked
@@ -322,18 +326,25 @@ func testNetworkPolicyDenyAll(env *provider.TestEnvironment) {
 		}
 
 		// Network policy has not been found that contains a deny-all rule for both ingress and egress.
+		podIsCompliant := true
 		if !denyAllIngressFound {
-			podsMissingDenyAllDefaultPolicies = append(podsMissingDenyAllDefaultPolicies, put.Name)
 			tnf.ClaimFilePrintf("%s was found to not have a default ingress deny-all network policy.", put.Name)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod was found to not have a default ingress deny-all network policy", false))
+			podIsCompliant = false
 		}
 
 		if !denyAllEgressFound {
-			podsMissingDenyAllDefaultPolicies = append(podsMissingDenyAllDefaultPolicies, put.Name)
 			tnf.ClaimFilePrintf("%s was found to not have a default egress deny-all network policy.", put.Name)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod was found to not have a default egress deny-all network policy", false))
+			podIsCompliant = false
+		}
+
+		if podIsCompliant {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has a default ingress/egress deny-all network policy", true))
 		}
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", podsMissingDenyAllDefaultPolicies, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testRestartOnRebootLabelOnPodsUsingSriov(sriovPods []*provider.Pod) {
@@ -341,22 +352,26 @@ func testRestartOnRebootLabelOnPodsUsingSriov(sriovPods []*provider.Pod) {
 		restartOnRebootLabel = "restart-on-reboot"
 	)
 
-	nonCompliantPods := []string{}
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 	for _, pod := range sriovPods {
 		logrus.Debugf("Pod %s uses SRIOV network/s. Checking label %s existence & value.", pod, restartOnRebootLabel)
 
 		labelValue, exist := pod.GetLabels()[restartOnRebootLabel]
 		if !exist {
 			tnf.ClaimFilePrintf("Pod %s is using SRIOV but the label %s was not found.", pod, restartOnRebootLabel)
-			nonCompliantPods = append(nonCompliantPods, pod.String())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, fmt.Sprintf("Pod uses SRIOV but the label %s was not found", restartOnRebootLabel), false))
 			continue
 		}
 
 		if labelValue != "true" {
 			tnf.ClaimFilePrintf("Pod %s is using SRIOV but the %s label value is not true.", pod, restartOnRebootLabel)
-			nonCompliantPods = append(nonCompliantPods, pod.String())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, fmt.Sprintf("Pod uses SRIOV but the label %s is not set to true", restartOnRebootLabel), false))
+			continue
 		}
+
+		compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, fmt.Sprintf("Pod uses SRIOV and the label %s is set to true", restartOnRebootLabel), true))
 	}
 
-	testhelper.AddTestResultLog("Non-compliant", nonCompliantPods, tnf.ClaimFilePrintf, ginkgo.Fail)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }

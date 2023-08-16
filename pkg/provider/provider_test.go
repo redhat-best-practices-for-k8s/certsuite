@@ -788,7 +788,7 @@ func TestBuildImageWithVersion(t *testing.T) {
 		{
 			repoVar:         "",
 			supportImageVar: "",
-			expectedOutput:  "quay.io/testnetworkfunction/debug-partner:4.3.2",
+			expectedOutput:  "quay.io/testnetworkfunction/debug-partner:4.3.4",
 		},
 	}
 
@@ -814,27 +814,39 @@ func Test_buildContainerImageSource(t *testing.T) {
 		args       args
 		wantSource configuration.ContainerImageIdentifier
 	}{
-		{name: "image has tag",
+		{name: "image has tag and registry",
 			args: args{
 				urlImage:   "quay.io/testnetworkfunction/cnf-test-partner:latest",
 				urlImageID: "quay.io/testnetworkfunction/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
 			},
 			wantSource: configuration.ContainerImageIdentifier{
-				Repository: "quay.io",
-				Name:       "testnetworkfunction/cnf-test-partner",
+				Registry:   "quay.io",
+				Repository: "testnetworkfunction/cnf-test-partner",
 				Tag:        "latest",
 				Digest:     "sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
 			},
 		},
-		{name: "digest and imageID do not match and no tag",
+		{name: "digest in image and imageID do not match and no tag",
 			args: args{
-				urlImage:   "quay.io/testnetworkfunction/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b96465665465465a2d0d811168667a919a49",
+				urlImage:   "quay.io/testnetworkfunction/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b96465665465465a2d0d811168667a919345",
 				urlImageID: "quay.io/testnetworkfunction/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
 			},
 			wantSource: configuration.ContainerImageIdentifier{
-				Repository: "quay.io",
-				Name:       "testnetworkfunction/cnf-test-partner",
+				Registry:   "",
+				Repository: "",
 				Tag:        "",
+				Digest:     "sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
+			},
+		},
+		{name: "image with no tag and no registry",
+			args: args{
+				urlImage:   "httpd:2.4.57",
+				urlImageID: "quay.io/httpd:2.4.57@sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
+			},
+			wantSource: configuration.ContainerImageIdentifier{
+				Registry:   "",
+				Repository: "httpd",
+				Tag:        "2.4.57",
 				Digest:     "sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
 			},
 		},

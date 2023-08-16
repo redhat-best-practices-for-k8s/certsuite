@@ -402,7 +402,7 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration)
 }
 
 func testScaleCrd(env *provider.TestEnvironment, timeout time.Duration) {
-	ginkgo.By("Testing deployment scaling")
+	ginkgo.By("Testing custom resource scaling")
 	defer env.SetNeedsRefresh()
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -593,10 +593,10 @@ func testPodsRecreation(env *provider.TestEnvironment) { //nolint:funlen
 		if err != nil {
 			logrus.Fatalf("error uncordoning the node: %s", n)
 		}
-
-		// Reached end of TC, which means no ginkgo.Fail() was called.
-		needsPostMortemInfo = false
 	}
+
+	// Reached end of TC, which means no ginkgo.Fail() was called.
+	needsPostMortemInfo = false
 }
 
 func testPodPersistentVolumeReclaimPolicy(env *provider.TestEnvironment) {

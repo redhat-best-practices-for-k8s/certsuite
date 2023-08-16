@@ -73,7 +73,7 @@ func TestLoadConfiguration(t *testing.T) {
 	assert.Contains(t, env.CrdFilters, crd2)
 	// check if certifiedcontainerinfo section is parsed properly
 	assert.Equal(t, containers, len(env.CertifiedContainerInfo))
-	containerInfo := configuration.ContainerImageIdentifier{Name: containerInfoName, Repository: containerRepo, Tag: "", Digest: ""}
+	containerInfo := configuration.ContainerImageIdentifier{Repository: containerInfoName, Registry: containerRepo, Tag: "", Digest: ""}
 	assert.Contains(t, env.CertifiedContainerInfo, containerInfo)
 	// check if certifiedoperatorinfo section is parsed properly
 	assert.Equal(t, operators, len(env.CertifiedOperatorInfo))

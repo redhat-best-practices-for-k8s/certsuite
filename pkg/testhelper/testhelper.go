@@ -111,6 +111,7 @@ const (
 	ServiceAccountName              = "Service Account Name"
 	ServiceMode                     = "Service Type"
 	ServiceName                     = "Service Name"
+	ServiceIPVersion                = "Service IP Version"
 	DeploymentName                  = "Deployment Name"
 	StatefulSetName                 = "StatefulSet Name"
 	PodDisruptionBudgetReference    = "Pod Disruption Budget Reference"
@@ -157,6 +158,10 @@ const (
 	// Listening ports
 	PortNumber   = "Port Number"
 	PortProtocol = "Port Protocol"
+
+	//
+	SubscriptionName = "Subscription Name"
+	OperatorPhase    = "Operator Phase"
 )
 
 // When adding new object types, please update the following:
@@ -187,6 +192,7 @@ const (
 	HostPathType                 = "Host Path"
 	HelmVersionType              = "Helm Version"
 	Error                        = "Error"
+	OperatorPermission           = "Operator Cluster Permission"
 )
 
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {

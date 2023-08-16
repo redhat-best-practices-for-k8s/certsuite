@@ -60,7 +60,7 @@ const (
 	cscosName                        = "CentOS Stream CoreOS"
 	rhelName                         = "Red Hat Enterprise Linux"
 	tnfPartnerRepoDef                = "quay.io/testnetworkfunction"
-	supportImageDef                  = "debug-partner:4.3.2"
+	supportImageDef                  = "debug-partner:4.3.4"
 )
 
 // Node's roles labels. Node is role R if it has **any** of the labels of each list.
@@ -393,15 +393,22 @@ func IsOCPCluster() bool {
 }
 
 func buildContainerImageSource(urlImage, urlImageID string) (source configuration.ContainerImageIdentifier) {
-	const regexImageWithTag = `([^/]*)/([^@]*):(.*)`
-	const regexImageDigest = `([^/]*)/(.*)@(.*:.*)`
+	const regexImageWithTag = `^([^/]*)/*([^@]*):(.*)`
+	const regexImageDigest = `^([^/]*)/(.*)@(.*:.*)`
 
 	// get image repository, Name and tag if present
 	re := regexp.MustCompile(regexImageWithTag)
 	match := re.FindStringSubmatch(urlImage)
 
 	if match != nil {
-		source.Tag = match[3]
+		if match[2] != "" {
+			source.Registry = match[1]
+			source.Repository = match[2]
+			source.Tag = match[3]
+		} else {
+			source.Repository = match[1]
+			source.Tag = match[3]
+		}
 	}
 
 	// get image Digest based on imageID only
@@ -409,14 +416,12 @@ func buildContainerImageSource(urlImage, urlImageID string) (source configuratio
 	match = re.FindStringSubmatch(urlImageID)
 
 	if match != nil {
-		source.Repository = match[1]
-		source.Name = match[2]
 		source.Digest = match[3]
 	}
 
 	logrus.Debugf("parsed image, repo: %s, name:%s, tag: %s, digest: %s",
+		source.Registry,
 		source.Repository,
-		source.Name,
 		source.Tag,
 		source.Digest)
 

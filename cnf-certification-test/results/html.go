@@ -8,22 +8,14 @@ import (
 )
 
 const (
-	htmlResultsFileName          = "results.html"
-	htmlResultsEmbedFileName     = "results-embed.html"
-	htmlClassificationJsFileName = "classification.js"
-	jsClaimVarFileName           = "claimjson.js"
+	htmlResultsFileName = "results.html"
+	jsClaimVarFileName  = "claimjson.js"
 
 	writeFilePerms = 0o644
 )
 
 //go:embed html/results.html
 var htmlResultsFileContent []byte
-
-//go:embed html/results-embed.html
-var htmlResultsEmbedFileContent []byte
-
-//go:embed html/classification.js
-var htmlClassificationJsFileContent []byte
 
 // Creates the claimjson.js file from the claim.json file.
 func createClaimJSFile(claimFilePath, outputDir string) (filePath string, err error) {
@@ -48,7 +40,6 @@ func createClaimJSFile(claimFilePath, outputDir string) (filePath string, err er
 // Creates all the html/web related files needed for parsing the claim file in outputDir.
 // - claimjson.js
 // - results.html
-// - results-embed.html
 // - classification.js
 // Returns a slice with the paths of every file created.
 func CreateResultsWebFiles(outputDir string) (filePaths []string, err error) {
@@ -61,14 +52,6 @@ func CreateResultsWebFiles(outputDir string) (filePaths []string, err error) {
 		{
 			Path:    filepath.Join(outputDir, htmlResultsFileName),
 			Content: htmlResultsFileContent,
-		},
-		{
-			Path:    filepath.Join(outputDir, htmlResultsEmbedFileName),
-			Content: htmlResultsEmbedFileContent,
-		},
-		{
-			Path:    filepath.Join(outputDir, htmlClassificationJsFileName),
-			Content: htmlClassificationJsFileContent,
 		},
 	}
 

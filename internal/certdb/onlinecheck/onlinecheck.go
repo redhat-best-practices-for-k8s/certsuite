@@ -345,9 +345,9 @@ func CreateContainerCatalogQueryURL(id configuration.ContainerImageIdentifier) s
 			id.Tag = defaultTag
 		}
 		url = fmt.Sprintf("%s/%s/%s/images?filter=architecture==%s;repositories.repository==%s/%s;repositories.tags.name==%s",
-			apiCatalogByRepositoriesBaseEndPoint, id.Repository, id.Name, arch, id.Repository, id.Name, id.Tag)
+			apiCatalogByRepositoriesBaseEndPoint, id.Registry, id.Repository, arch, id.Registry, id.Repository, id.Tag)
 	} else {
-		url = fmt.Sprintf("%s/%s/%s/images?filter=architecture==%s;image_id==%s", apiCatalogByRepositoriesBaseEndPoint, id.Repository, id.Name, arch, id.Digest)
+		url = fmt.Sprintf("%s/%s/%s/images?filter=architecture==%s;image_id==%s", apiCatalogByRepositoriesBaseEndPoint, id.Registry, id.Repository, arch, id.Digest)
 	}
 	return url
 }

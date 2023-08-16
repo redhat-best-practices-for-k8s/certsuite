@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022 Red Hat, Inc.
+// Copyright (C) 2020-2023 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -37,8 +37,8 @@ func TestCreateContainerCatalogQueryURL(t *testing.T) {
 	}{
 		{
 			testContainerImageID: configuration.ContainerImageIdentifier{
-				Name:       "name1",
-				Repository: "repo1",
+				Repository: "name1",
+				Registry:   "repo1",
 				Tag:        "tag1",
 				Digest:     "digest1",
 			},
@@ -46,8 +46,8 @@ func TestCreateContainerCatalogQueryURL(t *testing.T) {
 		},
 		{
 			testContainerImageID: configuration.ContainerImageIdentifier{
-				Name:       "name1",
-				Repository: "repo1",
+				Repository: "name1",
+				Registry:   "repo1",
 				Tag:        "tag1",
 				// Digest:     "digest1",
 			},
@@ -55,8 +55,8 @@ func TestCreateContainerCatalogQueryURL(t *testing.T) {
 		},
 		{
 			testContainerImageID: configuration.ContainerImageIdentifier{
-				Name:       "name1",
-				Repository: "repo1",
+				Repository: "name1",
+				Registry:   "repo1",
 				// Tag:        "tag1",
 				// Digest:     "digest1",
 			},

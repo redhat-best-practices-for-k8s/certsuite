@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022 Red Hat, Inc.
+// Copyright (C) 2020-2023 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -53,6 +53,13 @@ func TestArgListToMap(t *testing.T) {
 		argList     []string
 		expectedMap map[string]string
 	}{
+		{
+			argList: []string{"key1=value1", `key2="value2"`},
+			expectedMap: map[string]string{
+				"key1": "value1",
+				"key2": "value2",
+			},
+		},
 		{
 			argList: []string{"key1=value1", "key2=value2"},
 			expectedMap: map[string]string{

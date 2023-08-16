@@ -98,11 +98,7 @@ jobs:
         with:
           name: smoke-tests
           path: |
-            cnf-certification-test/*.xml
-            cnf-certification-test/claim.json
-            cnf-certification-test/claimjson.js
-            cnf-certification-test/results.html
-            cnf-certification-test/tnf-execution.log
+            cnf-certification-test/*.tar.gz
 
       - name: Build the `cnf-certification-test` image
         run: |
@@ -128,8 +124,4 @@ jobs:
         with:
           name: smoke-tests-container
           path: |
-            ${{ env.TNF_OUTPUT_DIR }}/*.xml
-            ${{ env.TNF_OUTPUT_DIR }}/claim.json
-            ${{ env.TNF_OUTPUT_DIR }}/claimjson.js
-            ${{ env.TNF_OUTPUT_DIR }}/results.html
-            ${{ env.TNF_OUTPUT_DIR }}/tnf-execution.log
+            ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz

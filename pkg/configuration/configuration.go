@@ -91,12 +91,12 @@ type ManagedDeploymentsStatefulsets struct {
 
 // Tag and Digest should not be populated at the same time. Digest takes precedence if both are populated
 type ContainerImageIdentifier struct {
-	// Name is the name of the image that you want to check if exists in the RedHat catalog
-	Name string `yaml:"name" json:"name"`
-
-	// Repository is the name of the repository `rhel8` of the container
-	// This is valid for container only and required field
+	// Repository is the name of the image that you want to check if exists in the RedHat catalog
 	Repository string `yaml:"repository" json:"repository"`
+
+	// Registry is the name of the registry `docker.io` of the container
+	// This is valid for container only and required field
+	Registry string `yaml:"registry" json:"registry"`
 
 	// Tag is the optional image tag. "latest" is implied if not specified
 	Tag string `yaml:"tag" json:"tag"`

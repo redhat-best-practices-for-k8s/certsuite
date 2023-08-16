@@ -8,7 +8,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.7.0
 	github.com/stretchr/testify v1.8.4
-	github.com/test-network-function/test-network-function-claim v1.0.23
+	github.com/test-network-function/test-network-function-claim v1.0.25
 	github.com/xeipuuv/gojsonschema v1.2.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
@@ -21,10 +21,10 @@ require (
 	github.com/onsi/ginkgo/v2 v2.11.0
 	github.com/openshift/api v0.0.0-20230223193310-d964c7a58d75
 	github.com/openshift/client-go v0.0.0-20230120202327-72f107311084
-	github.com/operator-framework/api v0.17.6
+	github.com/operator-framework/api v0.17.7
 	github.com/operator-framework/operator-lifecycle-manager v0.20.0
 	github.com/pkg/errors v0.9.1 // indirect
-	helm.sh/helm/v3 v3.12.2
+	helm.sh/helm/v3 v3.12.3
 	k8s.io/api v0.27.4
 	k8s.io/apimachinery v0.27.4
 	k8s.io/klog/v2 v2.100.1 // indirect
@@ -79,7 +79,7 @@ require (
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/btree v1.1.2 // indirect
-	github.com/google/cel-go v0.15.1 // indirect
+	github.com/google/cel-go v0.15.3 // indirect
 	github.com/google/gnostic v0.6.9 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/go-containerregistry v0.15.2 // indirect
@@ -164,20 +164,20 @@ require (
 	go.starlark.net v0.0.0-20221020143700-22309ac47eac // indirect
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/crypto v0.9.0 // indirect
+	golang.org/x/crypto v0.11.0 // indirect
 	golang.org/x/exp v0.0.0-20230510235704-dd950f8aeaea // indirect
 	golang.org/x/net v0.10.0 // indirect
 	golang.org/x/oauth2 v0.7.0 // indirect
 	golang.org/x/sync v0.2.0 // indirect
-	golang.org/x/sys v0.9.0 // indirect
-	golang.org/x/term v0.8.0 // indirect
-	golang.org/x/text v0.9.0 // indirect
+	golang.org/x/sys v0.10.0 // indirect
+	golang.org/x/term v0.10.0 // indirect
+	golang.org/x/text v0.11.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	golang.org/x/tools v0.9.3 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.3.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1 // indirect
+	google.golang.org/genproto v0.0.0-20230525154841-bd750badd5c6 // indirect
 	google.golang.org/grpc v1.55.0 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
@@ -207,16 +207,16 @@ require (
 )
 
 require (
-	github.com/deckarep/golang-set/v2 v2.3.0
+	github.com/deckarep/golang-set/v2 v2.3.1
 	github.com/go-logr/logr v1.2.4
 	github.com/go-logr/stdr v1.2.2
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/openshift/machine-config-operator v0.0.1-0.20230515070935-49f32d46538e
-	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230630224617-d03f7eb599c6
-	github.com/test-network-function/privileged-daemonset v1.0.7
+	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230727202657-9234b2e92055
+	github.com/test-network-function/privileged-daemonset v1.0.8
 	gopkg.in/yaml.v3 v3.0.1
 	gotest.tools/v3 v3.5.0
 	k8s.io/kubectl v0.27.4
 )
 
-replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230630224617-d03f7eb599c6
+replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230727202657-9234b2e92055

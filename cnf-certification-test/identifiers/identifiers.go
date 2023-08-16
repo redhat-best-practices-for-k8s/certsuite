@@ -332,7 +332,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		StorageRequiredPods,
 		NoExceptions,
 		TestStorageRequiredPodsDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
@@ -862,7 +862,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		HelmIsCertifiedRemediation,
 		AffiliatedCert,
 		TestHelmIsCertifiedIdentifierDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
@@ -878,7 +878,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		OperatorIsInstalledViaOLMRemediation,
 		NoExceptions,
 		TestOperatorIsInstalledViaOLMIdentifierDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,

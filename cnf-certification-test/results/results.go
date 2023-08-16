@@ -44,18 +44,27 @@ func RecordResult(report types.SpecReport) { //nolint:gocritic // From Ginkgo
 		aFailureReason = report.FailureMessage()
 	}
 	if claimID, ok := identifiers.TestIDToClaimID[report.LeafNodeText]; ok {
-		testText := identifiers.Catalog[claimID].Description
 		results[report.LeafNodeText] = append(results[report.LeafNodeText], claim.Result{
 			Duration:           int(report.RunTime.Nanoseconds()),
 			FailureLocation:    report.FailureLocation().String(),
 			FailureLineContent: report.FailureLocation().ContentsOfLine(),
-			TestText:           testText,
 			FailureReason:      aFailureReason,
 			State:              report.State.String(),
 			StartTime:          report.StartTime.String(),
 			EndTime:            report.EndTime.String(),
 			CapturedTestOutput: report.CapturedGinkgoWriterOutput,
 			TestID:             &claimID,
+			CategoryClassification: &claim.CategoryClassification{
+				Extended: identifiers.Catalog[claimID].CategoryClassification[identifiers.Extended],
+				FarEdge:  identifiers.Catalog[claimID].CategoryClassification[identifiers.FarEdge],
+				NonTelco: identifiers.Catalog[claimID].CategoryClassification[identifiers.NonTelco],
+				Telco:    identifiers.Catalog[claimID].CategoryClassification[identifiers.Telco]},
+			CatalogInfo: &claim.CatalogInfo{
+				Description:           identifiers.Catalog[claimID].Description,
+				Remediation:           identifiers.Catalog[claimID].Remediation,
+				BestPracticeReference: identifiers.Catalog[claimID].BestPracticeReference,
+				ExceptionProcess:      identifiers.Catalog[claimID].ExceptionProcess,
+			},
 		})
 		if report.State == types.SpecStateAborted {
 			testhelper.AbortTrigger = claimID.Id
