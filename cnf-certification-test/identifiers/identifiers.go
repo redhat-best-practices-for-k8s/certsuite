@@ -217,9 +217,9 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestLimitedUseOfExecProbesIdentifier = AddCatalogEntry(
 		"max-resources-exec-probes",
 		common.PerformanceTestKey,
-		`The entire cluster's worth of pods needs to have less than or equal to 10 exec probes and ensure that resources of periodSeconds is more from 10. `,
+		`The entire cluster's worth of pods needs to have less than or equal to 10 exec probes and ensure that resources of periodSeconds is more from 10`,
 		LimitedUseOfExecProbesRemediation,
-		`min-resources-periodSeconds`,
+		`min resources periodSeconds`,
 		TestLimitedUseOfExecProbesIdentifierDocLink,
 		true,
 		map[string]string{
