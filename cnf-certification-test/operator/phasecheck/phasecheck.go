@@ -33,7 +33,7 @@ const (
 	timeout = 5 * time.Minute
 )
 
-func waitOperatorReady(csv *v1alpha1.ClusterServiceVersion) bool {
+func WaitOperatorReady(csv *v1alpha1.ClusterServiceVersion) bool {
 	oc := clientsholder.GetClientsHolder()
 	start := time.Now()
 	for time.Since(start) < timeout {
@@ -47,11 +47,10 @@ func waitOperatorReady(csv *v1alpha1.ClusterServiceVersion) bool {
 
 		// update old csv and check status again
 		*csv = *freshCsv
-		switch csv.Status.Phase { //nolint:exhaustive
-		case v1alpha1.CSVPhaseSucceeded:
+		if IsOperatorPhaseSucceeded(csv) {
 			tnf.ClaimFilePrintf("%s is ready", provider.CsvToString(csv))
 			return true
-		case v1alpha1.CSVPhaseFailed, v1alpha1.CSVPhaseUnknown, v1alpha1.CSVPhaseAny:
+		} else if IsOperatorPhaseFailedOrUnknown(csv) {
 			tnf.ClaimFilePrintf("%s failed to be ready, status=%s", provider.CsvToString(csv), csv.Status.Phase)
 			return false
 		}
@@ -69,19 +68,12 @@ func waitOperatorReady(csv *v1alpha1.ClusterServiceVersion) bool {
 }
 
 func IsOperatorPhaseSucceeded(csv *v1alpha1.ClusterServiceVersion) bool {
-	logrus.Tracef("Checking status phase for csv %s (ns %s). Phase: %v", csv.Name, csv.Namespace, csv.Status.Phase)
-	switch csv.Status.Phase {
-	case v1alpha1.CSVPhaseSucceeded:
-		return true
-	case v1alpha1.CSVPhaseFailed, v1alpha1.CSVPhaseUnknown, v1alpha1.CSVPhaseAny:
-		return false
-	// Operator is not ready, but we need to take into account that its pods
-	// could have been deleted by some of the lifecycle test cases, so they
-	// could be restarting. Let's give it some time before declaring it failed.
-	case v1alpha1.CSVPhasePending, v1alpha1.CSVPhaseInstalling, v1alpha1.CSVPhaseInstallReady,
-		v1alpha1.CSVPhaseDeleting, v1alpha1.CSVPhaseReplacing:
-		return waitOperatorReady(csv)
-	default:
-		return false
-	}
+	logrus.Tracef("Checking succeeded status phase for csv %s (ns %s). Phase: %v", csv.Name, csv.Namespace, csv.Status.Phase)
+	return csv.Status.Phase == v1alpha1.CSVPhaseSucceeded
+}
+
+func IsOperatorPhaseFailedOrUnknown(csv *v1alpha1.ClusterServiceVersion) bool {
+	logrus.Tracef("Checking failed status phase for csv %s (ns %s). Phase: %v", csv.Name, csv.Namespace, csv.Status.Phase)
+	return csv.Status.Phase == v1alpha1.CSVPhaseFailed ||
+		csv.Status.Phase == v1alpha1.CSVPhaseUnknown
 }

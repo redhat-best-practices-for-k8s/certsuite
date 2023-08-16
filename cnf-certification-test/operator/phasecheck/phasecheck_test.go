@@ -51,7 +51,68 @@ func Test_isOperatorSucceeded(t *testing.T) {
 					Namespace: "aNamespace",
 				},
 				Status: v1alpha1.ClusterServiceVersionStatus{
+					Phase: v1alpha1.CSVPhaseInstalling,
+				},
+			}},
+			wantIsReady: false,
+		},
+		{name: "nok",
+			args: args{csv: &v1alpha1.ClusterServiceVersion{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "aCSV",
+					Namespace: "aNamespace",
+				},
+				Status: v1alpha1.ClusterServiceVersionStatus{
+					Phase: v1alpha1.CSVPhaseDeleting,
+				},
+			}},
+			wantIsReady: false,
+		},
+		{name: "nok",
+			args: args{csv: &v1alpha1.ClusterServiceVersion{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "aCSV",
+					Namespace: "aNamespace",
+				},
+				Status: v1alpha1.ClusterServiceVersionStatus{
+					Phase: v1alpha1.CSVPhaseInstallReady,
+				},
+			}},
+
+			wantIsReady: false,
+		},
+		{name: "nok",
+			args: args{csv: &v1alpha1.ClusterServiceVersion{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "aCSV",
+					Namespace: "aNamespace",
+				},
+				Status: v1alpha1.ClusterServiceVersionStatus{
 					Phase: v1alpha1.CSVPhaseUnknown,
+				},
+			}},
+			wantIsReady: false,
+		},
+		{name: "nok",
+			args: args{csv: &v1alpha1.ClusterServiceVersion{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "aCSV",
+					Namespace: "aNamespace",
+				},
+				Status: v1alpha1.ClusterServiceVersionStatus{
+					Phase: v1alpha1.CSVPhasePending,
+				},
+			}},
+			wantIsReady: false,
+		},
+		{name: "nok",
+			args: args{csv: &v1alpha1.ClusterServiceVersion{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "aCSV",
+					Namespace: "aNamespace",
+				},
+				Status: v1alpha1.ClusterServiceVersionStatus{
+					Phase: v1alpha1.CSVPhaseReplacing,
 				},
 			}},
 			wantIsReady: false,
@@ -81,12 +142,94 @@ func Test_isOperatorSucceeded(t *testing.T) {
 
 			wantIsReady: false,
 		},
+		{name: "nok",
+			args: args{csv: &v1alpha1.ClusterServiceVersion{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "aCSV",
+					Namespace: "aNamespace",
+				},
+				Status: v1alpha1.ClusterServiceVersionStatus{
+					Phase: v1alpha1.CSVPhaseNone,
+				},
+			}},
+
+			wantIsReady: false,
+		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if gotIsReady := IsOperatorPhaseSucceeded(tt.args.csv); gotIsReady != tt.wantIsReady {
 				t.Errorf("isOperatorSucceeded() = %v, want %v", gotIsReady, tt.wantIsReady)
+			}
+		})
+	}
+}
+
+func Test_isOperatorFailedOrUnknown(t *testing.T) {
+	type args struct {
+		csv *v1alpha1.ClusterServiceVersion
+	}
+	tests := []struct {
+		name        string
+		args        args
+		wantIsReady bool
+	}{
+		{name: "ok",
+			args: args{csv: &v1alpha1.ClusterServiceVersion{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "aCSV",
+					Namespace: "aNamespace",
+				},
+				Status: v1alpha1.ClusterServiceVersionStatus{
+					Phase: v1alpha1.CSVPhaseFailed,
+				},
+			}},
+			wantIsReady: true,
+		},
+		{name: "ok",
+			args: args{csv: &v1alpha1.ClusterServiceVersion{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "aCSV",
+					Namespace: "aNamespace",
+				},
+				Status: v1alpha1.ClusterServiceVersionStatus{
+					Phase: v1alpha1.CSVPhaseUnknown,
+				},
+			}},
+			wantIsReady: true,
+		},
+		{name: "nok",
+			args: args{csv: &v1alpha1.ClusterServiceVersion{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "aCSV",
+					Namespace: "aNamespace",
+				},
+				Status: v1alpha1.ClusterServiceVersionStatus{
+					Phase: v1alpha1.CSVPhaseDeleting,
+				},
+			}},
+			wantIsReady: false,
+		},
+		{name: "nok",
+			args: args{csv: &v1alpha1.ClusterServiceVersion{
+				ObjectMeta: metav1.ObjectMeta{
+					Name:      "aCSV",
+					Namespace: "aNamespace",
+				},
+				Status: v1alpha1.ClusterServiceVersionStatus{
+					Phase: v1alpha1.CSVPhaseInstallReady,
+				},
+			}},
+
+			wantIsReady: false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if gotIsReady := IsOperatorPhaseFailedOrUnknown(tt.args.csv); gotIsReady != tt.wantIsReady {
+				t.Errorf("isOperatorFailedOrUnknown() = %v, want %v", gotIsReady, tt.wantIsReady)
 			}
 		})
 	}

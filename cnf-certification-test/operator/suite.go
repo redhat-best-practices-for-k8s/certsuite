@@ -64,14 +64,27 @@ func testOperatorInstallationPhaseSucceeded(env *provider.TestEnvironment) {
 	var nonCompliantObjects []*testhelper.ReportObject
 	for i := range env.Operators {
 		csv := env.Operators[i].Csv
-		if phasecheck.IsOperatorPhaseSucceeded(csv) {
+
+		var isCompliant bool
+		switch {
+		case phasecheck.IsOperatorPhaseSucceeded(csv):
+			isCompliant = true
+		case phasecheck.IsOperatorPhaseFailedOrUnknown(csv):
+			isCompliant = false
+			tnf.ClaimFilePrintf("%s is in phase %s. Expected phase is %s", &env.Operators[i], csv.Status.Phase, v1alpha1.CSVPhaseSucceeded)
+		default:
+			// Operator is not ready, but we need to take into account that its pods
+			// could have been deleted by some of the lifecycle test cases, so they
+			// could be restarting. Let's give it some time before declaring it failed.
+			isCompliant = phasecheck.WaitOperatorReady(csv)
+		}
+
+		if isCompliant {
 			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name,
 				"Operator on Succeeded state ", true).AddField(testhelper.OperatorPhase, string(csv.Status.Phase)))
 		} else {
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name,
 				"Operator not in Succeeded state ", false).AddField(testhelper.OperatorPhase, string(csv.Status.Phase)))
-			tnf.ClaimFilePrintf("%s is in phase %s. Expected phase is %s",
-				&env.Operators[i], csv.Status.Phase, v1alpha1.CSVPhaseSucceeded)
 		}
 	}
 
