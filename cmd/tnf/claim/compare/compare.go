@@ -54,6 +54,10 @@ func claimCompare(_ *cobra.Command, _ []string) error {
 	return nil
 }
 
+func printSectionSeparator() {
+	fmt.Printf("\n================================================================================\n")
+}
+
 func claimCompareFilesfunc(claim1, claim2 string) error {
 	// readfiles
 	claimdata1, err := os.ReadFile(claim1)
@@ -77,12 +81,15 @@ func claimCompareFilesfunc(claim1, claim2 string) error {
 		return fmt.Errorf("failed to unmarshal claim2 file: %v", err)
 	}
 
-	nodesDiff := nodes.GetDiffReport(&claimFile1Data.Claim.Nodes, &claimFile2Data.Claim.Nodes)
-	fmt.Printf("%s", nodesDiff)
-
-	// Get and show test cases results summary and differences
+	// Show test cases results summary and differences.
 	tcsDiffReport := testcases.GetDiffReport(claimFile1Data.Claim.Results, claimFile2Data.Claim.Results)
 	fmt.Println(&tcsDiffReport)
+
+	printSectionSeparator()
+
+	// Show the cluster differences.
+	nodesDiff := nodes.GetDiffReport(&claimFile1Data.Claim.Nodes, &claimFile2Data.Claim.Nodes)
+	fmt.Printf("%s", nodesDiff)
 
 	return nil
 }
