@@ -1243,7 +1243,7 @@ Unique ID|performance-max-resources-exec-probes
 Description|The entire cluster's worth of pods needs to have less than or equal to 10 exec probes and ensure that resources of periodSeconds is more from 10
 Suggested Remediation|The entire cluster's worth of pods needs to have less than or equal to 10 exec probes.
 Best Practice Reference|No Doc Link - Far Edge
-Exception Process|min resources periodSeconds
+Exception Process|There is no documented exception process for this.
 Tags|faredge,performance
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|

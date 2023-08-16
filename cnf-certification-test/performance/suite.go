@@ -34,8 +34,8 @@ import (
 )
 
 const (
-	MaximumOfExecProbes = 10
-	MinimumOfPeriod     = 10
+	maxNumberOfExecProbes = 10
+	minExecProbePeriod    = 10
 )
 
 // The pods with no access to host network are considered for these tests
@@ -98,39 +98,39 @@ func testLimitedUseOfExecProbes(env *provider.TestEnvironment) {
 		for _, cut := range put.Containers {
 			if cut.LivenessProbe != nil && cut.LivenessProbe.Exec != nil {
 				counter++
-				if cut.LivenessProbe.PeriodSeconds <= MaximumOfExecProbes && cut.LivenessProbe.PeriodSeconds > MinimumOfPeriod {
-					tnf.ClaimFilePrintf("Pod %s/Container %s use of exec probes, PeriodSeconds of LivenessProbe: %s, PeriodSeconds of ReadinessProbe: %s, PeriodSeconds of StartupProbe: %s", cut.Podname, cut,
-						cut.LivenessProbe.PeriodSeconds, cut.ReadinessProbe.PeriodSeconds, cut.StartupProbe.PeriodSeconds)
+				if cut.LivenessProbe.PeriodSeconds <= maxNumberOfExecProbes && cut.LivenessProbe.PeriodSeconds > minExecProbePeriod {
+					tnf.ClaimFilePrintf("Container %s use of exec probes, PeriodSeconds of LivenessProbe: %s", cut,
+						cut.LivenessProbe.PeriodSeconds)
 					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Status.ContainerID, "Ensure limited is not using of exec probes", true))
 				} else {
-					tnf.ClaimFilePrintf("Pod %s/Container %s is not using of exec probes, PeriodSeconds of LivenessProbe: %s, PeriodSeconds of ReadinessProbe: %s, PeriodSeconds of StartupProbe: %s", cut.Podname, cut,
-						cut.LivenessProbe.PeriodSeconds, cut.ReadinessProbe.PeriodSeconds, cut.StartupProbe.PeriodSeconds)
+					tnf.ClaimFilePrintf("Container %s is not using of exec probes, PeriodSeconds of LivenessProbe: %s", cut,
+						cut.LivenessProbe.PeriodSeconds)
 					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Status.ContainerID,
 						"Ensure limited is use of exec probes", false))
 				}
 			}
 			if cut.StartupProbe != nil && cut.StartupProbe.Exec != nil {
 				counter++
-				if cut.StartupProbe.PeriodSeconds <= MaximumOfExecProbes && cut.LivenessProbe.PeriodSeconds > MinimumOfPeriod {
-					tnf.ClaimFilePrintf("Pod %s/Container %s use of exec probes, PeriodSeconds of LivenessProbe: %s, PeriodSeconds of ReadinessProbe: %s, PeriodSeconds of StartupProbe: %s", cut.Podname, cut,
-						cut.LivenessProbe.PeriodSeconds, cut.ReadinessProbe.PeriodSeconds, cut.StartupProbe.PeriodSeconds)
+				if cut.StartupProbe.PeriodSeconds <= maxNumberOfExecProbes && cut.LivenessProbe.PeriodSeconds > minExecProbePeriod {
+					tnf.ClaimFilePrintf("Container %s use of exec probes, PeriodSeconds of StartupProbe: %s", cut,
+						cut.StartupProbe.PeriodSeconds)
 					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Status.ContainerID, "Ensure limited is not using of exec probes", true))
 				} else {
-					tnf.ClaimFilePrintf("Pod %s/Container %s is not using of exec probes, PeriodSeconds of LivenessProbe: %s, PeriodSeconds of ReadinessProbe: %s, PeriodSeconds of StartupProbe: %s", cut.Podname, cut,
-						cut.LivenessProbe.PeriodSeconds, cut.ReadinessProbe.PeriodSeconds, cut.StartupProbe.PeriodSeconds)
+					tnf.ClaimFilePrintf("Container %s is not using of exec probes, PeriodSeconds of StartupProbe: %s", cut,
+						cut.StartupProbe.PeriodSeconds)
 					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Status.ContainerID,
 						"Ensure limited is use of exec probes", false))
 				}
 			}
 			if cut.ReadinessProbe != nil && cut.ReadinessProbe.Exec != nil {
 				counter++
-				if cut.StartupProbe.PeriodSeconds <= MaximumOfExecProbes && cut.LivenessProbe.PeriodSeconds > MinimumOfPeriod {
-					tnf.ClaimFilePrintf("Pod %s/Container %s use of exec probes, PeriodSeconds of LivenessProbe: %s, PeriodSeconds of ReadinessProbe: %s, PeriodSeconds of StartupProbe: %s", cut.Podname, cut,
-						cut.LivenessProbe.PeriodSeconds, cut.ReadinessProbe.PeriodSeconds, cut.StartupProbe.PeriodSeconds)
+				if cut.StartupProbe.PeriodSeconds <= maxNumberOfExecProbes && cut.LivenessProbe.PeriodSeconds > minExecProbePeriod {
+					tnf.ClaimFilePrintf("Container %s use of exec probes, PeriodSeconds of ReadinessProbe: %s", cut,
+						cut.ReadinessProbe.PeriodSeconds)
 					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Status.ContainerID, "Ensure limited is not using of exec probes", true))
 				} else {
-					tnf.ClaimFilePrintf("Pod %s/Container %s is not using of exec probes, PeriodSeconds of LivenessProbe: %s, PeriodSeconds of ReadinessProbe: %s, PeriodSeconds of StartupProbe: %s", cut.Podname, cut,
-						cut.LivenessProbe.PeriodSeconds, cut.ReadinessProbe.PeriodSeconds, cut.StartupProbe.PeriodSeconds)
+					tnf.ClaimFilePrintf("Container %s is not using of exec probes, PeriodSeconds of ReadinessProbe: %s", cut,
+						cut.ReadinessProbe.PeriodSeconds)
 					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Status.ContainerID,
 						"Ensure limited is use of exec probes", false))
 				}
@@ -139,7 +139,7 @@ func testLimitedUseOfExecProbes(env *provider.TestEnvironment) {
 	}
 
 	// If there >10 exec probes, mark the entire cluster as a failure
-	if counter >= MaximumOfExecProbes && counter < MinimumOfPeriod {
+	if counter >= maxNumberOfExecProbes {
 		tnf.ClaimFilePrintf("CNF has 10 or more exec probes")
 		nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("CNF has 10 or more exec probes", testhelper.CustomResourceDefinitionType, false).
 			SetType(testhelper.CnfType))
