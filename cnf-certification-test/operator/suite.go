@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	"github.com/onsi/ginkgo/v2"
-	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
@@ -64,22 +63,7 @@ func testOperatorInstallationPhaseSucceeded(env *provider.TestEnvironment) {
 	var nonCompliantObjects []*testhelper.ReportObject
 	for i := range env.Operators {
 		csv := env.Operators[i].Csv
-
-		var isCompliant bool
-		switch {
-		case phasecheck.IsOperatorPhaseSucceeded(csv):
-			isCompliant = true
-		case phasecheck.IsOperatorPhaseFailedOrUnknown(csv):
-			isCompliant = false
-			tnf.ClaimFilePrintf("%s is in phase %s. Expected phase is %s", &env.Operators[i], csv.Status.Phase, v1alpha1.CSVPhaseSucceeded)
-		default:
-			// Operator is not ready, but we need to take into account that its pods
-			// could have been deleted by some of the lifecycle test cases, so they
-			// could be restarting. Let's give it some time before declaring it failed.
-			isCompliant = phasecheck.WaitOperatorReady(csv)
-		}
-
-		if isCompliant {
+		if phasecheck.WaitOperatorReady(csv) {
 			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name,
 				"Operator on Succeeded state ", true).AddField(testhelper.OperatorPhase, string(csv.Status.Phase)))
 		} else {

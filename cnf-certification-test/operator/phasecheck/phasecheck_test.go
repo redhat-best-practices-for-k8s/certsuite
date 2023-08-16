@@ -159,7 +159,7 @@ func Test_isOperatorSucceeded(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotIsReady := IsOperatorPhaseSucceeded(tt.args.csv); gotIsReady != tt.wantIsReady {
+			if gotIsReady := isOperatorPhaseSucceeded(tt.args.csv); gotIsReady != tt.wantIsReady {
 				t.Errorf("isOperatorSucceeded() = %v, want %v", gotIsReady, tt.wantIsReady)
 			}
 		})
@@ -228,7 +228,7 @@ func Test_isOperatorFailedOrUnknown(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotIsReady := IsOperatorPhaseFailedOrUnknown(tt.args.csv); gotIsReady != tt.wantIsReady {
+			if gotIsReady := isOperatorPhaseFailedOrUnknown(tt.args.csv); gotIsReady != tt.wantIsReady {
 				t.Errorf("isOperatorFailedOrUnknown() = %v, want %v", gotIsReady, tt.wantIsReady)
 			}
 		})

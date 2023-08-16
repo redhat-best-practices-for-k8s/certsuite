@@ -37,6 +37,20 @@ func WaitOperatorReady(csv *v1alpha1.ClusterServiceVersion) bool {
 	oc := clientsholder.GetClientsHolder()
 	start := time.Now()
 	for time.Since(start) < timeout {
+		if isOperatorPhaseSucceeded(csv) {
+			tnf.ClaimFilePrintf("%s is ready", provider.CsvToString(csv))
+			return true
+		} else if isOperatorPhaseFailedOrUnknown(csv) {
+			tnf.ClaimFilePrintf("%s failed to be ready, status=%s", provider.CsvToString(csv), csv.Status.Phase)
+			return false
+		}
+
+		// Operator is not ready, but we need to take into account that its pods
+		// could have been deleted by some of the lifecycle test cases, so they
+		// could be restarting. Let's give it some time before declaring it failed.
+		tnf.ClaimFilePrintf("Waiting for %s to be in Succeeded phase: %s", provider.CsvToString(csv), csv.Status.Phase)
+		time.Sleep(time.Second)
+
 		freshCsv, err := oc.OlmClient.OperatorsV1alpha1().ClusterServiceVersions(csv.Namespace).Get(context.TODO(), csv.Name, metav1.GetOptions{})
 		if err != nil {
 			errMsg := fmt.Sprintf("could not get csv %s, err: %v", provider.CsvToString(freshCsv), err)
@@ -47,16 +61,6 @@ func WaitOperatorReady(csv *v1alpha1.ClusterServiceVersion) bool {
 
 		// update old csv and check status again
 		*csv = *freshCsv
-		if IsOperatorPhaseSucceeded(csv) {
-			tnf.ClaimFilePrintf("%s is ready", provider.CsvToString(csv))
-			return true
-		} else if IsOperatorPhaseFailedOrUnknown(csv) {
-			tnf.ClaimFilePrintf("%s failed to be ready, status=%s", provider.CsvToString(csv), csv.Status.Phase)
-			return false
-		}
-
-		tnf.ClaimFilePrintf("Waiting for %s to be in Succeeded phase: %s", provider.CsvToString(freshCsv), csv.Status.Phase)
-		time.Sleep(time.Second)
 	}
 	if time.Since(start) > timeout {
 		errMsg := fmt.Sprintf("timeout waiting for csv %s to be ready", provider.CsvToString(csv))
@@ -67,12 +71,12 @@ func WaitOperatorReady(csv *v1alpha1.ClusterServiceVersion) bool {
 	return false
 }
 
-func IsOperatorPhaseSucceeded(csv *v1alpha1.ClusterServiceVersion) bool {
+func isOperatorPhaseSucceeded(csv *v1alpha1.ClusterServiceVersion) bool {
 	logrus.Tracef("Checking succeeded status phase for csv %s (ns %s). Phase: %v", csv.Name, csv.Namespace, csv.Status.Phase)
 	return csv.Status.Phase == v1alpha1.CSVPhaseSucceeded
 }
 
-func IsOperatorPhaseFailedOrUnknown(csv *v1alpha1.ClusterServiceVersion) bool {
+func isOperatorPhaseFailedOrUnknown(csv *v1alpha1.ClusterServiceVersion) bool {
 	logrus.Tracef("Checking failed status phase for csv %s (ns %s). Phase: %v", csv.Name, csv.Namespace, csv.Status.Phase)
 	return csv.Status.Phase == v1alpha1.CSVPhaseFailed ||
 		csv.Status.Phase == v1alpha1.CSVPhaseUnknown
