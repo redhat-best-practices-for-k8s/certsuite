@@ -175,7 +175,7 @@ func TestTest(t *testing.T) {
 	var env provider.TestEnvironment
 	if !diagnosticMode {
 		env.SetNeedsRefresh()
-		provider.GetTestEnvironment()
+		env = provider.GetTestEnvironment()
 		ginkgo.RunSpecs(t, CnfCertificationTestSuiteName)
 	}
 
