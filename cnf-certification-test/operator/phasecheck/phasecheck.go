@@ -18,12 +18,14 @@ package phasecheck
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -31,31 +33,51 @@ const (
 	timeout = 5 * time.Minute
 )
 
-func WaitOperatorReady(csv *v1alpha1.ClusterServiceVersion) v1alpha1.ClusterServiceVersionPhase {
+func WaitOperatorReady(csv *v1alpha1.ClusterServiceVersion) bool {
 	oc := clientsholder.GetClientsHolder()
-	isReady := false
 	start := time.Now()
-	var freshCsv *v1alpha1.ClusterServiceVersion
-	for !isReady && time.Since(start) < timeout {
-		var err error
-		freshCsv, err = oc.OlmClient.OperatorsV1alpha1().ClusterServiceVersions(csv.Namespace).Get(context.TODO(), csv.Name, metav1.GetOptions{})
-		if err != nil {
-			logrus.Errorf("error getting %s", provider.CsvToString(freshCsv))
+	for time.Since(start) < timeout {
+		if isOperatorPhaseSucceeded(csv) {
+			tnf.ClaimFilePrintf("%s is ready", provider.CsvToString(csv))
+			return true
+		} else if isOperatorPhaseFailedOrUnknown(csv) {
+			tnf.ClaimFilePrintf("%s failed to be ready, status=%s", provider.CsvToString(csv), csv.Status.Phase)
+			return false
 		}
-		isReady = IsOperatorPhaseSucceeded(freshCsv)
-		logrus.Debugf("Waiting for %s to be in Succeeded phase: %s", provider.CsvToString(freshCsv), freshCsv.Status.Phase)
+
+		// Operator is not ready, but we need to take into account that its pods
+		// could have been deleted by some of the lifecycle test cases, so they
+		// could be restarting. Let's give it some time before declaring it failed.
+		tnf.ClaimFilePrintf("Waiting for %s to be in Succeeded phase: %s", provider.CsvToString(csv), csv.Status.Phase)
 		time.Sleep(time.Second)
+
+		freshCsv, err := oc.OlmClient.OperatorsV1alpha1().ClusterServiceVersions(csv.Namespace).Get(context.TODO(), csv.Name, metav1.GetOptions{})
+		if err != nil {
+			errMsg := fmt.Sprintf("could not get csv %s, err: %v", provider.CsvToString(freshCsv), err)
+			logrus.Errorf(errMsg)
+			tnf.ClaimFilePrintf(errMsg)
+			return false
+		}
+
+		// update old csv and check status again
+		*csv = *freshCsv
 	}
 	if time.Since(start) > timeout {
-		logrus.Fatalf("Timeout waiting for %s to be ready", provider.CsvToString(csv))
+		errMsg := fmt.Sprintf("timeout waiting for csv %s to be ready", provider.CsvToString(csv))
+		logrus.Errorf(errMsg)
+		tnf.ClaimFilePrintf(errMsg)
 	}
-	if isReady {
-		logrus.Infof("%s is ready", provider.CsvToString(csv))
-	}
-	return freshCsv.Status.Phase
+
+	return false
 }
 
-func IsOperatorPhaseSucceeded(csv *v1alpha1.ClusterServiceVersion) (isReady bool) {
-	logrus.Tracef("Checking status phase for csv %s (ns %s). Phase: %v", csv.Name, csv.Namespace, csv.Status.Phase)
+func isOperatorPhaseSucceeded(csv *v1alpha1.ClusterServiceVersion) bool {
+	logrus.Tracef("Checking succeeded status phase for csv %s (ns %s). Phase: %v", csv.Name, csv.Namespace, csv.Status.Phase)
 	return csv.Status.Phase == v1alpha1.CSVPhaseSucceeded
+}
+
+func isOperatorPhaseFailedOrUnknown(csv *v1alpha1.ClusterServiceVersion) bool {
+	logrus.Tracef("Checking failed status phase for csv %s (ns %s). Phase: %v", csv.Name, csv.Namespace, csv.Status.Phase)
+	return csv.Status.Phase == v1alpha1.CSVPhaseFailed ||
+		csv.Status.Phase == v1alpha1.CSVPhaseUnknown
 }
