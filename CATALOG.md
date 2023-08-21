@@ -1240,8 +1240,8 @@ Tags|faredge,performance
 Property|Description
 ---|---
 Unique ID|performance-max-resources-exec-probes
-Description|The entire cluster's worth of pods needs to have less than or equal to 10 exec probes and ensure that resources using the field periodSeconds is greater than 10
-Suggested Remediation|The entire cluster's worth of pods needs to have less than or equal to 10 exec probes.
+Description|Checks that less than 10 exec probes are configured in the cluster for this CNF. Also checks that the periodSeconds parameter for each probe is superior or equal to 10.
+Suggested Remediation|Reduce the number of exec probes in the cluster for this CNF to less than 10. Increase the update period of the exec probe to be superior or equal to 10 seconds.
 Best Practice Reference|No Doc Link - Far Edge
 Exception Process|There is no documented exception process for this.
 Tags|faredge,performance

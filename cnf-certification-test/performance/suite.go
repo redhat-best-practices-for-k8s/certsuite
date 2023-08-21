@@ -35,7 +35,7 @@ import (
 
 const (
 	maxNumberOfExecProbes = 10
-	minExecProbePeriod    = 10
+	minExecProbePeriodSeconds    = 10
 )
 
 // The pods with no access to host network are considered for these tests
@@ -98,38 +98,38 @@ func testLimitedUseOfExecProbes(env *provider.TestEnvironment) {
 		for _, cut := range put.Containers {
 			if cut.LivenessProbe != nil && cut.LivenessProbe.Exec != nil {
 				counter++
-				if cut.LivenessProbe.PeriodSeconds > minExecProbePeriod {
+				if cut.LivenessProbe.PeriodSeconds > minExecProbePeriodSeconds {
 					tnf.ClaimFilePrintf("Container %s is using exec probes, PeriodSeconds of LivenessProbe: %s", cut,
 						cut.LivenessProbe.PeriodSeconds)
-					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Status.ContainerID, "Liveness exec probe has a PeriodSeconds greater than 10", true))
+					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Name, "Liveness exec probe has a PeriodSeconds greater than 10", true))
 				} else {
 					tnf.ClaimFilePrintf("Container %s is not using of exec probes, PeriodSeconds of LivenessProbe: %s", cut,
 						cut.LivenessProbe.PeriodSeconds)
-					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Status.ContainerID, "Ensure limited use of exec probes", false))
+					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Status.ContainerID, "Liveness exec probe has a PeriodSeconds that is not greater than 10", false))
 				}
 			}
 			if cut.StartupProbe != nil && cut.StartupProbe.Exec != nil {
 				counter++
-				if cut.StartupProbe.PeriodSeconds > minExecProbePeriod {
+				if cut.StartupProbe.PeriodSeconds > minExecProbePeriodSeconds {
 					tnf.ClaimFilePrintf("Container %s is using exec probes, PeriodSeconds of StartupProbe: %s", cut,
 						cut.StartupProbe.PeriodSeconds)
 					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Status.ContainerID, "StartupProbe exec probe has a PeriodSeconds greater than 10", true))
 				} else {
 					tnf.ClaimFilePrintf("Container %s is not using of exec probes, PeriodSeconds of StartupProbe: %s", cut,
 						cut.StartupProbe.PeriodSeconds)
-					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Status.ContainerID, "Ensure limited use of exec probes", false))
+					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Status.ContainerID, "StartupProbe exec probe has a PeriodSeconds not greater than 10", false))
 				}
 			}
 			if cut.ReadinessProbe != nil && cut.ReadinessProbe.Exec != nil {
 				counter++
-				if cut.ReadinessProbe.PeriodSeconds > minExecProbePeriod {
+				if cut.ReadinessProbe.PeriodSeconds > minExecProbePeriodSeconds {
 					tnf.ClaimFilePrintf("Container %s is using exec probes, PeriodSeconds of ReadinessProbe: %s", cut,
 						cut.ReadinessProbe.PeriodSeconds)
 					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Status.ContainerID, "ReadinessProbe exec probe has a PeriodSeconds greater than 10", true))
 				} else {
 					tnf.ClaimFilePrintf("Container %s is not using of exec probes, PeriodSeconds of ReadinessProbe: %s", cut,
 						cut.ReadinessProbe.PeriodSeconds)
-					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Status.ContainerID, "Ensure limited use of exec probes", false))
+					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Status.ContainerID, "ReadinessProbe exec probe has a PeriodSeconds not greater than 10", false))
 				}
 			}
 		}
@@ -137,14 +137,14 @@ func testLimitedUseOfExecProbes(env *provider.TestEnvironment) {
 
 	// If there >=10 exec probes, mark the entire cluster as a failure
 	if counter >= maxNumberOfExecProbes {
-		tnf.ClaimFilePrintf("CNF has 10 or more exec probes")
+		tnf.ClaimFilePrintf(fmt.Sprintf("CNF has %d exec probes",counter))
 		nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("CNF has 10 or more exec probes", testhelper.CnfType, false).
 			SetType(testhelper.CnfType))
 	} else {
 		// Compliant object
 		compliantObjects = append(compliantObjects, testhelper.NewReportObject("CNF has less than 10 exec probes", testhelper.CnfType, true).
 			SetType(testhelper.CnfType))
-		tnf.ClaimFilePrintf("CNF has less than 10 exec probes")
+		tnf.ClaimFilePrintf(fmt.Sprintf("CNF has less than %d exec probes",counter))
 	}
 
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
