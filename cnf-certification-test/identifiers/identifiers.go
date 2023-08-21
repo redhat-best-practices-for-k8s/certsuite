@@ -80,6 +80,7 @@ var (
 	TestHelmVersionIdentifier                         claim.Identifier
 	TestPodHugePages2M                                claim.Identifier
 	TestPodHugePages1G                                claim.Identifier
+	TestHyperThreadEnable                             claim.Identifier
 	TestReservedExtendedPartnerPorts                  claim.Identifier
 	TestAffinityRequiredPods                          claim.Identifier
 	TestStartupIdentifier                             claim.Identifier
@@ -292,6 +293,22 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			Extended: Optional,
 		},
 		TagFarEdge)
+
+	TestHyperThreadEnable = AddCatalogEntry(
+		"hyperthread-enable",
+		common.PlatformAlterationTestKey,
+		`Check that baremetal workers have hyperthreading enabled`,
+		HyperThreadEnable,
+		NoDocumentedProcess,
+		TestHyperThreadEnableDocLink,
+		false,
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
+		},
+		TagExtended)
 
 	TestReservedExtendedPartnerPorts = AddCatalogEntry(
 		"reserved-partner-ports",

@@ -63,10 +63,12 @@ const (
 	TestUnalteredStartupBootParamsIdentifierDocLink = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-host-os"
 	TestSysctlConfigsIdentifierDocLink              = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-security"
 	TestServiceMeshIdentifierDocLink                = NoDocLinkExtended
-	TestOCPLifecycleIdentifierDocLink               = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-k8s"
-	TestNodeOperatingSystemIdentifierDocLink        = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-host-os"
-	TestIsRedHatReleaseIdentifierDocLink            = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-base-images"
-	TestIsSELinuxEnforcingIdentifierDocLink         = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-pod-security"
+	TestHyperThreadEnableDocLink                    = NoDocLinkExtended
+
+	TestOCPLifecycleIdentifierDocLink        = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-k8s"
+	TestNodeOperatingSystemIdentifierDocLink = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-host-os"
+	TestIsRedHatReleaseIdentifierDocLink     = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-base-images"
+	TestIsSELinuxEnforcingIdentifierDocLink  = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-pod-security"
 
 	// Lifecycle Suite
 	TestAffinityRequiredPodsDocLink                    = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations"

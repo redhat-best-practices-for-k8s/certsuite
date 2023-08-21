@@ -862,3 +862,72 @@ func Test_buildContainerImageSource(t *testing.T) {
 		})
 	}
 }
+
+func TestGetBaremetalNodes(t *testing.T) {
+	type fields struct {
+		Nodes map[string]Node
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   []Node
+	}{
+		{
+			name: "test1",
+			fields: fields{
+				Nodes: map[string]Node{
+					"node1": {
+						Data: &corev1.Node{
+							ObjectMeta: metav1.ObjectMeta{
+								Name: "node1",
+							},
+							Spec: corev1.NodeSpec{
+								ProviderID: "baremetalhost://aaaaaa",
+							},
+						},
+					},
+				},
+			},
+			want: []Node{
+				{
+					Data: &corev1.Node{
+						ObjectMeta: metav1.ObjectMeta{
+							Name: "node1",
+						},
+						Spec: corev1.NodeSpec{
+							ProviderID: "baremetalhost://aaaaaa",
+						},
+					},
+				},
+			},
+		},
+		{
+			name: "test2",
+			fields: fields{
+				Nodes: map[string]Node{
+					"node1": {
+						Data: &corev1.Node{
+							ObjectMeta: metav1.ObjectMeta{
+								Name: "node1",
+							},
+							Spec: corev1.NodeSpec{
+								ProviderID: "Virtual://aaaaaa",
+							},
+						},
+					},
+				},
+			},
+			want: nil,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			env := &TestEnvironment{
+				Nodes: tt.fields.Nodes,
+			}
+			if got := env.GetBaremetalNodes(); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("TestEnvironment.GetBaremetalNodes() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

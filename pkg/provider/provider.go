@@ -576,3 +576,12 @@ func createNodes(nodes []corev1.Node) map[string]Node {
 
 	return wrapperNodes
 }
+func (env *TestEnvironment) GetBaremetalNodes() []Node {
+	var baremetalNodes []Node
+	for _, node := range env.Nodes {
+		if strings.HasPrefix(node.Data.Spec.ProviderID, "baremetalhost://") {
+			baremetalNodes = append(baremetalNodes, node)
+		}
+	}
+	return baremetalNodes
+}
