@@ -34,8 +34,8 @@ import (
 )
 
 const (
-	maxNumberOfExecProbes = 10
-	minExecProbePeriodSeconds    = 10
+	maxNumberOfExecProbes     = 10
+	minExecProbePeriodSeconds = 10
 )
 
 // The pods with no access to host network are considered for these tests
@@ -137,14 +137,14 @@ func testLimitedUseOfExecProbes(env *provider.TestEnvironment) {
 
 	// If there >=10 exec probes, mark the entire cluster as a failure
 	if counter >= maxNumberOfExecProbes {
-		tnf.ClaimFilePrintf(fmt.Sprintf("CNF has %d exec probes",counter))
+		tnf.ClaimFilePrintf(fmt.Sprintf("CNF has %d exec probes", counter))
 		nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("CNF has 10 or more exec probes", testhelper.CnfType, false).
 			SetType(testhelper.CnfType))
 	} else {
 		// Compliant object
 		compliantObjects = append(compliantObjects, testhelper.NewReportObject("CNF has less than 10 exec probes", testhelper.CnfType, true).
 			SetType(testhelper.CnfType))
-		tnf.ClaimFilePrintf(fmt.Sprintf("CNF has less than %d exec probes",counter))
+		tnf.ClaimFilePrintf(fmt.Sprintf("CNF has less than %d exec probes", counter))
 	}
 
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
