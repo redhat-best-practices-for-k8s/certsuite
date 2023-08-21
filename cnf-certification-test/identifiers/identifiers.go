@@ -831,7 +831,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		OperatorInstallStatusSucceededRemediation,
 		NoExceptions,
 		TestOperatorInstallStatusSucceededIdentifierDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
@@ -847,7 +847,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		OperatorNoPrivilegesRemediation,
 		NoExceptions,
 		TestOperatorNoPrivilegesDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
