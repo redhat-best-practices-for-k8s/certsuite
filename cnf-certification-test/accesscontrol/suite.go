@@ -523,7 +523,7 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 					// If the subject is a service account and the service account is in the same namespace as the pod, then we have a failure
 					//nolint:gocritic
 					if subject.Kind == rbacv1.ServiceAccountKind && subject.Namespace == put.Namespace && subject.Name == put.Spec.ServiceAccountName {
-						tnf.Log(logrus.WarnLevel, "Pod: %s/%s has the following role bindings that do not live in the same namespace: %s", put.Namespace, put.Name, env.RoleBindings[rbIndex].Name)
+						tnf.Logf(logrus.WarnLevel, "Pod: %s/%s has the following role bindings that do not live in the same namespace: %s", put.Namespace, put.Name, env.RoleBindings[rbIndex].Name)
 
 						// Add the pod to the non-compliant list
 						nonCompliantObjects = append(nonCompliantObjects,
@@ -574,7 +574,7 @@ func testPodClusterRoleBindings(env *provider.TestEnvironment) {
 		// Pod was found to be using a cluster role binding.  This is not allowed.
 		// Flagging this pod as a failed pod.
 		if result {
-			tnf.Log(logrus.WarnLevel, "%s is using a cluster role binding", put.String())
+			tnf.Logf(logrus.WarnLevel, "%s is using a cluster role binding", put.String())
 			podIsCompliant = false
 		}
 

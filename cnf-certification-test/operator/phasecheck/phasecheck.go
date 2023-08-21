@@ -52,7 +52,7 @@ func WaitOperatorReady(csv *v1alpha1.ClusterServiceVersion) bool {
 
 		freshCsv, err := oc.OlmClient.OperatorsV1alpha1().ClusterServiceVersions(csv.Namespace).Get(context.TODO(), csv.Name, metav1.GetOptions{})
 		if err != nil {
-			tnf.Log(logrus.ErrorLevel, "could not get csv %s, err: %v", provider.CsvToString(freshCsv), err)
+			tnf.Logf(logrus.ErrorLevel, "could not get csv %s, err: %v", provider.CsvToString(freshCsv), err)
 			return false
 		}
 
@@ -60,7 +60,7 @@ func WaitOperatorReady(csv *v1alpha1.ClusterServiceVersion) bool {
 		*csv = *freshCsv
 	}
 	if time.Since(start) > timeout {
-		tnf.Log(logrus.ErrorLevel, "timeout waiting for csv %s to be ready", provider.CsvToString(csv))
+		tnf.Logf(logrus.ErrorLevel, "timeout waiting for csv %s to be ready", provider.CsvToString(csv))
 	}
 
 	return false
