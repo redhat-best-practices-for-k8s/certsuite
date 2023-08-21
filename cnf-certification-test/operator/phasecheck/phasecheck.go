@@ -18,7 +18,6 @@ package phasecheck
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
@@ -53,9 +52,7 @@ func WaitOperatorReady(csv *v1alpha1.ClusterServiceVersion) bool {
 
 		freshCsv, err := oc.OlmClient.OperatorsV1alpha1().ClusterServiceVersions(csv.Namespace).Get(context.TODO(), csv.Name, metav1.GetOptions{})
 		if err != nil {
-			errMsg := fmt.Sprintf("could not get csv %s, err: %v", provider.CsvToString(freshCsv), err)
-			logrus.Errorf(errMsg)
-			tnf.ClaimFilePrintf(errMsg)
+			tnf.Logf(logrus.ErrorLevel, "could not get csv %s, err: %v", provider.CsvToString(freshCsv), err)
 			return false
 		}
 
@@ -63,9 +60,7 @@ func WaitOperatorReady(csv *v1alpha1.ClusterServiceVersion) bool {
 		*csv = *freshCsv
 	}
 	if time.Since(start) > timeout {
-		errMsg := fmt.Sprintf("timeout waiting for csv %s to be ready", provider.CsvToString(csv))
-		logrus.Errorf(errMsg)
-		tnf.ClaimFilePrintf(errMsg)
+		tnf.Logf(logrus.ErrorLevel, "timeout waiting for csv %s to be ready", provider.CsvToString(csv))
 	}
 
 	return false
