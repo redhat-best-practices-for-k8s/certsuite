@@ -135,6 +135,7 @@ const (
 	DeletedFolders                  = "Deleted Folders"
 	TaintBit                        = "Taint Bit"
 	TaintBitDescription             = "Taint Bit Description"
+	TaintMask                       = "Taint Mask"
 	ModuleName                      = "Module Name"
 	Taints                          = "Taints"
 	SysctlKey                       = "Sysctl Key"
@@ -193,6 +194,7 @@ const (
 	HelmVersionType              = "Helm Version"
 	Error                        = "Error"
 	OperatorPermission           = "Operator Cluster Permission"
+	TaintType                    = "Taint"
 )
 
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {
@@ -214,6 +216,13 @@ func NewContainerReportObject(aNamespace, aPodName, aContainerName, aReason stri
 func NewNodeReportObject(aNodeName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, NodeType, isCompliant)
 	out.AddField(Name, aNodeName)
+	return out
+}
+
+func NewTaintReportObject(taintBit, nodeName, aReason string, isCompliant bool) (out *ReportObject) {
+	out = NewReportObject(aReason, TaintType, isCompliant)
+	out.AddField(NodeType, nodeName)
+	out.AddField(TaintBit, taintBit)
 	return out
 }
 
