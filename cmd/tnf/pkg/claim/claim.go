@@ -21,12 +21,9 @@ const (
 
 type CNIPlugin map[string]interface{}
 
-type Cni struct {
-}
-
 type CNINetwork struct {
 	Name         string      `json:"name"`
-	CNIVersion   string      `json:"cniVersion"`
+	CNIVersion   string      `json:"version"`
 	DisableCheck bool        `json:"disableCheck"`
 	Plugins      []CNIPlugin `json:"plugins"`
 }
@@ -69,7 +66,7 @@ type TestCaseResult struct {
 type TestSuiteResults map[string][]TestCaseResult
 
 type Nodes struct {
-	NodesSummary map[string]corev1.Node  `json:"nodeSummary"`
+	NodesSummary map[string]*corev1.Node `json:"nodeSummary"`
 	CniNetworks  map[string][]CNINetwork `json:"cniPlugins"`
 	NodesHwInfo  map[string]interface{}  `json:"nodesHwInfo"`
 	CsiDriver    interface{}             `json:"csiDriver"`

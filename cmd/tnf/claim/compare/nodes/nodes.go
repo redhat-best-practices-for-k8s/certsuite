@@ -2,11 +2,12 @@ package nodes
 
 import (
 	"fmt"
+	"regexp"
 	"sort"
-	"strings"
 
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/compare/nodes/cnis"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/pkg/claim"
+	v1 "k8s.io/api/core/v1"
 )
 
 const (
@@ -17,7 +18,12 @@ const (
 	// differentCSIs     = "CSIs"
 )
 
-type Summary struct {
+var (
+	masterNodeLabels = map[string]bool{"node-role.kubernetes.io/master": true, "node-role.kubernetes.io/control-plane": true}
+	workerLabels     = map[string]bool{"node-role.kubernetes.io/worker": true}
+)
+
+type RolesSummary struct {
 	MasterNodes       int `json:"masterNodes"`
 	WorkerNodes       int `json:"workerNodes"`
 	MasterWorkerNodes int `json:"masterAndWorkerNodes"`
@@ -31,31 +37,42 @@ type NodeDiffReport struct {
 
 type DiffReport struct {
 	Summary struct {
-		Claim1Summary Summary `json:"claim1"`
-		Claim2Summary Summary `json:"claim2"`
-	} `json:"summary"`
+		Claim1 RolesSummary `json:"claim1"`
+		Claim2 RolesSummary `json:"claim2"`
+	} `json:"nodesRolesSummary"`
 
 	NodesDiffReports []NodeDiffReport `json:"nodesDiffReport"`
 }
 
 func NodeDiffIsNotFoundIn(diff string) bool {
-	return strings.Contains(diff, nodeNotFoundIn)
+	r := regexp.MustCompile("^" + nodeNotFoundIn + "claim[1|2]$")
+	return r.MatchString(diff)
 }
 
 func (d DiffReport) String() string {
-	const diffRowFmt = "%-60s%-60s\n"
+	const (
+		rolesSummaryHeaderFmt = "%-10s%-10s%-10s%-s\n"
+		rolesSummaryRowFmt    = "%-10s%-10d%-10d%-d\n"
+		nodeDiffsRowFmt       = "%-60s%-s\n"
+	)
 
+	str := "CLUSTER NODES ROLES SUMMARY\n"
+	str += "---------------------------\n"
+	str += fmt.Sprintf(rolesSummaryHeaderFmt, "CLAIM", "MASTERS", "WORKERS", "MASTER+WORKER")
+	str += fmt.Sprintf(rolesSummaryRowFmt, "claim1", d.Summary.Claim1.MasterNodes, d.Summary.Claim1.WorkerNodes, d.Summary.Claim1.MasterWorkerNodes)
+	str += fmt.Sprintf(rolesSummaryRowFmt, "claim2", d.Summary.Claim2.MasterNodes, d.Summary.Claim2.WorkerNodes, d.Summary.Claim2.MasterWorkerNodes)
+	str += "\n"
+
+	str += "CLUSTER NODES DIFFERENCES\n"
+	str += "-------------------------\n"
 	if len(d.NodesDiffReports) == 0 {
-		return ""
+		str += "<none>\n"
+		return str
 	}
 
-	str := fmt.Sprintf(diffRowFmt, "NODE", "DIFFERENCES")
+	str += fmt.Sprintf(nodeDiffsRowFmt, "NODE", "DIFFERENCES")
 
 	for _, nodeDiffReport := range d.NodesDiffReports {
-		if len(nodeDiffReport.Differences) == 0 {
-			continue
-		}
-
 		differences := ""
 		for i := range nodeDiffReport.Differences {
 			if i != 0 {
@@ -63,7 +80,7 @@ func (d DiffReport) String() string {
 			}
 			differences += nodeDiffReport.Differences[i]
 		}
-		str += fmt.Sprintf(diffRowFmt, nodeDiffReport.NodeName, differences)
+		str += fmt.Sprintf(nodeDiffsRowFmt, nodeDiffReport.NodeName, differences)
 	}
 
 	// Print section differences (CNIs, CSIs, hardware...) of each node.
@@ -74,7 +91,6 @@ func (d DiffReport) String() string {
 		}
 
 		str += "\nNODE: " + nodeDiffReport.NodeName + "\n"
-
 		str += nodeDiffReport.CNINetworksDiffReport.String()
 
 		for _, netDiffReport := range nodeDiffReport.CNINetworksDiffReport {
@@ -111,8 +127,52 @@ func getMergedNodeNamesList(claim1Nodes, claim2Nodes *claim.Nodes) []string {
 	return names
 }
 
+func isMasterNode(node *v1.Node) bool {
+	for label := range node.Labels {
+		if masterNodeLabels[label] {
+			return true
+		}
+	}
+	return false
+}
+
+func isWorkerNode(node *v1.Node) bool {
+	for label := range node.Labels {
+		if workerLabels[label] {
+			return true
+		}
+	}
+	return false
+}
+
+func getRolesSummary(nodesSummary map[string]*v1.Node) RolesSummary {
+	summary := RolesSummary{}
+
+	for _, node := range nodesSummary {
+		if isMasterNode(node) {
+			if isWorkerNode(node) {
+				summary.MasterWorkerNodes++
+			} else {
+				summary.MasterNodes++
+			}
+		} else if isWorkerNode(node) {
+			summary.WorkerNodes++
+		}
+	}
+
+	return summary
+}
+
 func GetDiffReport(claim1Nodes, claim2Nodes *claim.Nodes) DiffReport {
-	diffReport := DiffReport{}
+	diffReport := DiffReport{
+		Summary: struct {
+			Claim1 RolesSummary `json:"claim1"`
+			Claim2 RolesSummary `json:"claim2"`
+		}{
+			Claim1: getRolesSummary(claim1Nodes.NodesSummary),
+			Claim2: getRolesSummary(claim2Nodes.NodesSummary),
+		},
+	}
 
 	nodes := getMergedNodeNamesList(claim1Nodes, claim2Nodes)
 

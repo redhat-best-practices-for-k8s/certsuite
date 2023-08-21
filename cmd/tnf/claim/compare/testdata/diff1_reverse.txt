@@ -1,0 +1,67 @@
+RESULTS SUMMARY
+---------------
+STATUS         # in CLAIM-1        # in CLAIM-2
+passed         24                  2
+skipped        62                  83
+failed         1                   2
+
+RESULTS DIFFERENCES
+-------------------
+TEST CASE NAME                                              CLAIM-1   CLAIM-2
+access-control-cluster-role-bindings                        passed    skipped
+access-control-container-host-port                          passed    skipped
+access-control-ipc-lock-capability-check                    passed    skipped
+access-control-namespace                                    passed    skipped
+access-control-namespace-resource-quota                     passed    skipped
+access-control-net-admin-capability-check                   passed    skipped
+access-control-net-raw-capability-check                     passed    skipped
+access-control-no-1337-uid                                  passed    skipped
+access-control-one-process-per-container                    passed    skipped
+access-control-pod-automount-service-account-token          passed    skipped
+access-control-pod-host-ipc                                 passed    skipped
+access-control-pod-host-network                             passed    skipped
+access-control-pod-host-path                                passed    skipped
+access-control-pod-host-pid                                 passed    skipped
+access-control-pod-role-bindings                            passed    skipped
+access-control-pod-service-account                          passed    skipped
+access-control-projected-volume-service-account-token       passed    skipped
+access-control-requests-and-limits                          passed    skipped
+access-control-security-context                             passed    skipped
+access-control-security-context-non-root-user-check         passed    skipped
+access-control-security-context-privilege-escalation        passed    skipped
+access-control-service-type                                 passed    skipped
+access-control-ssh-daemons                                  passed    skipped
+access-control-sys-admin-capability-check                   passed    skipped
+access-control-sys-nice-realtime-capability                 failed    skipped
+observability-container-logging                             skipped   failed
+observability-crd-status                                    skipped   passed
+observability-pod-disruption-budget                         skipped   passed
+observability-termination-policy                            skipped   failed
+
+CLUSTER NODES ROLES SUMMARY
+---------------------------
+CLAIM     MASTERS   WORKERS   MASTER+WORKER
+claim1    0         0         3
+claim2    0         0         3
+
+CLUSTER NODES DIFFERENCES
+-------------------------
+NODE                                                        DIFFERENCES
+clus0-0                                                     CNIs
+clus0-1                                                     CNIs
+
+NODE: clus0-0
+CNI-NETWORK                   DIFFERENCES
+crio                          cniVersion,plugins
+
+NODE: clus0-0, CNI-NETWORK: crio
+PLUGIN                        DIFFERENCES
+bridge                        ipMasq
+
+NODE: clus0-1
+CNI-NETWORK                   DIFFERENCES
+crio                          plugins
+
+NODE: clus0-1, CNI-NETWORK: crio
+PLUGIN                        DIFFERENCES
+bridge                        hairpinMode,ipam

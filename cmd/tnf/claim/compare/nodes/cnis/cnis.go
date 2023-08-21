@@ -3,8 +3,8 @@ package cnis
 import (
 	"fmt"
 	"reflect"
+	"regexp"
 	"sort"
-	"strings"
 
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/pkg/claim"
 )
@@ -35,7 +35,7 @@ type CNINetworksDiffReports []CNINetworkDiffReport
 type CNIPluginsDiffReports []CNIPluginDiffReport
 
 func (networksDiff CNINetworksDiffReports) String() string {
-	const diffRowFmt = "%-30s%-60s\n"
+	const diffRowFmt = "%-30s%-s\n"
 
 	str := fmt.Sprintf(diffRowFmt, "CNI-NETWORK", "DIFFERENCES")
 
@@ -54,7 +54,7 @@ func (networksDiff CNINetworksDiffReports) String() string {
 }
 
 func (pluginsDiff CNIPluginsDiffReports) String() string {
-	const diffRowFmt = "%-30s%-60s\n"
+	const diffRowFmt = "%-30s%-s\n"
 
 	str := fmt.Sprintf(diffRowFmt, "PLUGIN", "DIFFERENCES")
 	for _, pluginDiff := range pluginsDiff {
@@ -72,7 +72,8 @@ func (pluginsDiff CNIPluginsDiffReports) String() string {
 }
 
 func NetworkDiffIsNotFoundIn(diff string) bool {
-	return strings.Contains(diff, elemNotFoundIn)
+	r := regexp.MustCompile("^" + elemNotFoundIn + "claim[1|2]$")
+	return r.MatchString(diff)
 }
 
 func getMergedListOfNetworksNames(networksClaim1, networksClaim2 []claim.CNINetwork) []string {
@@ -95,10 +96,11 @@ func getMergedListOfNetworksNames(networksClaim1, networksClaim2 []claim.CNINetw
 	return networkNames
 }
 
-func getNetworksMap(networks []claim.CNINetwork) map[string]claim.CNINetwork {
-	networksMap := map[string]claim.CNINetwork{}
+func getNetworksMap(networks []claim.CNINetwork) map[string]*claim.CNINetwork {
+	networksMap := map[string]*claim.CNINetwork{}
 
-	for _, network := range networks {
+	for i := range networks {
+		network := &networks[i]
 		networksMap[network.Name] = network
 	}
 
