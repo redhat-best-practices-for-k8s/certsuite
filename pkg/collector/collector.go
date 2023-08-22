@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func addClaimFileToPostRequest(w *multipart.Writer, claimFilePath string) error{
+func addClaimFileToPostRequest(w *multipart.Writer, claimFilePath string) error {
 	claimFile, err := os.Open(claimFilePath)
 	if err != nil {
 		return err
@@ -24,8 +24,8 @@ func addClaimFileToPostRequest(w *multipart.Writer, claimFilePath string) error{
 	return nil
 }
 
-func addVarFieldsToPostRequest(w *multipart.Writer, executedBy, partnerName, password string) error{
-	fw, err := w.CreateFormField("executed_by"); 
+func addVarFieldsToPostRequest(w *multipart.Writer, executedBy, partnerName, password string) error {
+	fw, err := w.CreateFormField("executed_by")
 	if err != nil {
 		return err
 	}
@@ -33,7 +33,7 @@ func addVarFieldsToPostRequest(w *multipart.Writer, executedBy, partnerName, pas
 		return err
 	}
 
-	fw, err = w.CreateFormField("partner_name"); 
+	fw, err = w.CreateFormField("partner_name")
 	if err != nil {
 		return err
 	}
@@ -41,7 +41,7 @@ func addVarFieldsToPostRequest(w *multipart.Writer, executedBy, partnerName, pas
 		return err
 	}
 
-	fw, err = w.CreateFormField("decoded_password"); 
+	fw, err = w.CreateFormField("decoded_password")
 	if err != nil {
 		return err
 	}
