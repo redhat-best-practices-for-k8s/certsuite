@@ -121,8 +121,7 @@ func testSchedulingPolicyInCPUPool(env *provider.TestEnvironment,
 		// Get the pid namespace
 		pidNamespace, err := crclient.GetContainerPidNamespace(testContainer, env)
 		if err != nil {
-			logrus.Errorf("unable to get pid namespace due to: %v", err)
-			tnf.ClaimFilePrintf("Failed", "Incomplete processing for %v while getting pid namespace err %v", testContainer, err)
+			tnf.Logf(logrus.ErrorLevel, "unable to get pid namespace for container %s, err: %v", testContainer, err)
 			nonCompliantContainersPids = append(nonCompliantContainersPids,
 				testhelper.NewContainerReportObject(testContainer.Namespace, testContainer.Podname, testContainer.Name, fmt.Sprintf("Internal error, err=%s", err), false))
 			continue

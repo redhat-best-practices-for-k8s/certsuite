@@ -148,8 +148,7 @@ func testAllOperatorCertified(env *provider.TestEnvironment, validator certdb.Ce
 		channel := operatorsUnderTest[i].Channel
 		isCertified := validator.IsOperatorCertified(name, ocpMinorVersion, channel)
 		if !isCertified {
-			logrus.Infof("Operator %s (channel %s) not certified for OpenShift %s.", name, channel, ocpMinorVersion)
-			tnf.ClaimFilePrintf("Operator %s (channel %s) failed to be certified for OpenShift %s", name, channel, ocpMinorVersion)
+			tnf.Logf(logrus.InfoLevel, "Operator %s (channel %s) failed to be certified for OpenShift %s", name, channel, ocpMinorVersion)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operatorsUnderTest[i].Namespace, operatorsUnderTest[i].Name, "Operator failed to be certified for OpenShift", false).
 				AddField(testhelper.OCPVersion, ocpMinorVersion).
 				AddField(testhelper.OCPChannel, channel))
