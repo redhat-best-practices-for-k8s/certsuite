@@ -205,8 +205,7 @@ func IsChaosResultVerdictPass() bool {
 		if verdictValue == pass {
 			return true
 		}
-		logrus.Debugf("test completed but it failed with reason %s", failResult.(string))
-		tnf.ClaimFilePrintf("test completed but it failed with reason %s", failResult.(string))
+		tnf.Logf(logrus.WarnLevel, "test completed but it failed with reason %s", failResult.(string))
 		return false
 	}
 	return false

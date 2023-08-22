@@ -236,8 +236,7 @@ func testContainersImagePolicy(env *provider.TestEnvironment) {
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " pull policy, should be ", corev1.PullIfNotPresent)
 		if cut.ImagePullPolicy != corev1.PullIfNotPresent {
-			logrus.Errorln("container ", cut.Name, " is using ", cut.ImagePullPolicy, " as image pull policy")
-			tnf.ClaimFilePrintf("%s is using %s as ImagePullPolicy", cut.String(), cut.ImagePullPolicy)
+			tnf.Logf(logrus.WarnLevel, "%s is using %s as ImagePullPolicy", cut, cut.ImagePullPolicy)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is not using IfNotPresent as ImagePullPolicy", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is using IfNotPresent as ImagePullPolicy", true))
@@ -252,8 +251,7 @@ func testContainersReadinessProbe(env *provider.TestEnvironment) {
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " readiness probe ")
 		if cut.ReadinessProbe == nil {
-			logrus.Errorln("container ", cut.Name, " does not have ReadinessProbe defined")
-			tnf.ClaimFilePrintf("%s does not have ReadinessProbe defined", cut.String())
+			tnf.Logf(logrus.WarnLevel, "%s does not have ReadinessProbe defined", cut)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container does not have ReadinessProbe defined", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has ReadinessProbe defined", true))
@@ -268,8 +266,7 @@ func testContainersLivenessProbe(env *provider.TestEnvironment) {
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " liveness probe ")
 		if cut.LivenessProbe == nil {
-			logrus.Errorln("container ", cut.Name, " does not have LivenessProbe defined")
-			tnf.ClaimFilePrintf("%s does not have LivenessProbe defined", cut.String())
+			tnf.Logf(logrus.WarnLevel, "%s does not have LivenessProbe defined", cut)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container does not have LivenessProbe defined", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has LivenessProbe defined", true))
@@ -284,8 +281,7 @@ func testContainersStartupProbe(env *provider.TestEnvironment) {
 	for _, cut := range env.Containers {
 		logrus.Debugln("check container ", cut.String(), " startup probe ")
 		if cut.StartupProbe == nil {
-			logrus.Errorln("container ", cut.Name, " does not have startupProbe defined")
-			tnf.ClaimFilePrintf("%s does not have StartupProbe defined", cut.String())
+			tnf.Logf(logrus.WarnLevel, "%s does not have StartupProbe defined", cut)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container does not have StartupProbe defined", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has StartupProbe defined", true))
