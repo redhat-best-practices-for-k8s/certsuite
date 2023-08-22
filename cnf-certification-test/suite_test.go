@@ -204,10 +204,12 @@ func TestTest(t *testing.T) {
 	claimOutputFile := filepath.Join(*claimPath, results.ClaimFileName)
 	claimhelper.WriteClaimOutput(claimOutputFile, payload)
 
-	// Send claim file to the collector
-	err = collector.SendClaimFileToCollector(env.CollectorAppEndPoint, claimOutputFile, env.ExecutedBy, env.PartnerName)
-	if err != nil {
-		log.Errorf("Failed to send post request to the collector: %v", err)
+	// Send claim file to the collector if specified by env var
+	if configuration.GetTestParameters().EnableDataCollection {
+		err = collector.SendClaimFileToCollector(env.CollectorAppEndPoint, claimOutputFile, env.ExecutedBy, env.PartnerName, env.CollectorAppPassword)
+		if err != nil {
+			log.Errorf("Failed to send post request to the collector: %v", err)
+		}
 	}
 
 	// Create HTML artifacts for the web results viewer/parser.

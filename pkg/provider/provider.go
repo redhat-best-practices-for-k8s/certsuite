@@ -120,6 +120,7 @@ type TestEnvironment struct { // rename this with testTarget
 	CollectorAppEndPoint   string
 	ExecutedBy             string
 	PartnerName            string
+	CollectorAppPassword   string
 }
 
 type MachineConfig struct {
@@ -291,6 +292,7 @@ func buildTestEnvironment() { //nolint:funlen
 	env.CollectorAppEndPoint = data.CollectorAppEndPoint
 	env.ExecutedBy = data.ExecutedBy
 	env.PartnerName = data.PartnerName
+	env.CollectorAppPassword = data.CollectorAppPassword
 
 	operators := createOperators(data.Csvs, data.Subscriptions, data.AllInstallPlans, data.AllCatalogSources, false, true)
 	env.Operators = operators

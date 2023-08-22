@@ -91,6 +91,7 @@ type DiscoveredTestData struct {
 	CollectorAppEndPoint   string
 	ExecutedBy             string
 	PartnerName            string
+	CollectorAppPassword   string
 }
 
 var data = DiscoveredTestData{}
@@ -237,6 +238,7 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.CollectorAppEndPoint = config.CollectorAppEndPoint
 	data.ExecutedBy = config.ExecutedBy
 	data.PartnerName = config.PartnerName
+	data.CollectorAppPassword = config.CollectorAppPassword
 	return data
 }
 

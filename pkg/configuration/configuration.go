@@ -149,6 +149,7 @@ type TestConfiguration struct {
 	CollectorAppEndPoint string `yaml:"collectorAppEndPoint" json:"collectorAppEndPoint"`
 	ExecutedBy           string `yaml:"executedBy" json:"executedBy"`
 	PartnerName          string `yaml:"partnerName" json:"partnerName"`
+	CollectorAppPassword string `yaml:"collectorAppPassword" json:"collectorAppPassword"`
 }
 
 type TestParameters struct {
@@ -162,4 +163,5 @@ type TestParameters struct {
 	PfltDockerconfig              string `split_words:"true" envconfig:"PFLT_DOCKERCONFIG"`
 	IncludeWebFilesInOutputFolder bool   `split_words:"true" default:"false"`
 	OmitArtifactsZipFile          bool   `split_words:"true" default:"false"`
+	EnableDataCollection		  bool	 `split_words:"true" default:"false"`
 }

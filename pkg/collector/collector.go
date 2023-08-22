@@ -8,37 +8,63 @@ import (
 	"os"
 )
 
-func createSendToCollectorPostRequest(endPoint, claimFilePath, executedBy, partnerName string) (*http.Request, error) {
+func addClaimFileToPostRequest(w *multipart.Writer, claimFilePath string) error{
+	claimFile, err := os.Open(claimFilePath)
+	if err != nil {
+		return err
+	}
+	defer claimFile.Close()
+	fw, err := w.CreateFormFile("claimFile", claimFilePath)
+	if err != nil {
+		return err
+	}
+	if _, err = io.Copy(fw, claimFile); err != nil {
+		return err
+	}
+	return nil
+}
+
+func addVarFieldsToPostRequest(w *multipart.Writer, executedBy, partnerName, password string) error{
+	fw, err := w.CreateFormField("executed_by"); 
+	if err != nil {
+		return err
+	}
+	if _, err = fw.Write([]byte(executedBy)); err != nil {
+		return err
+	}
+
+	fw, err = w.CreateFormField("partner_name"); 
+	if err != nil {
+		return err
+	}
+	if _, err = fw.Write([]byte(partnerName)); err != nil {
+		return err
+	}
+
+	fw, err = w.CreateFormField("decoded_password"); 
+	if err != nil {
+		return err
+	}
+	if _, err = fw.Write([]byte(password)); err != nil {
+		return err
+	}
+	return nil
+}
+
+func createSendToCollectorPostRequest(endPoint, claimFilePath, executedBy, partnerName, password string) (*http.Request, error) {
 	// Create a new buffer to hold the form-data
 	var buffer bytes.Buffer
 	w := multipart.NewWriter(&buffer)
 
 	// Add the claim file to the request
-	claimFile, err := os.Open(claimFilePath)
+	err := addClaimFileToPostRequest(w, claimFilePath)
 	if err != nil {
 		return nil, err
 	}
-	defer claimFile.Close()
-	fw, err := w.CreateFormFile("claimFile", claimFilePath)
+
+	// Add the executed by, partner name and password fields to the request
+	err = addVarFieldsToPostRequest(w, executedBy, partnerName, password)
 	if err != nil {
-		return nil, err
-	}
-	if _, err = io.Copy(fw, claimFile); err != nil {
-		return nil, err
-	}
-
-	// Add the executed by and partner name to the request
-	if fw, err = w.CreateFormField("executed_by"); err != nil {
-		return nil, err
-	}
-	if _, err = fw.Write([]byte(executedBy)); err != nil {
-		return nil, err
-	}
-
-	if fw, err = w.CreateFormField("partner_name"); err != nil {
-		return nil, err
-	}
-	if _, err = fw.Write([]byte(partnerName)); err != nil {
 		return nil, err
 	}
 
@@ -54,9 +80,9 @@ func createSendToCollectorPostRequest(endPoint, claimFilePath, executedBy, partn
 	return req, nil
 }
 
-func SendClaimFileToCollector(endPoint, claimFilePath, executedBy, partnerName string) error {
+func SendClaimFileToCollector(endPoint, claimFilePath, executedBy, partnerName, password string) error {
 	// Temporary end point
-	postReq, err := createSendToCollectorPostRequest(endPoint, claimFilePath, executedBy, partnerName)
+	postReq, err := createSendToCollectorPostRequest(endPoint, claimFilePath, executedBy, partnerName, password)
 	if err != nil {
 		return err
 	}
