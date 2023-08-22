@@ -253,7 +253,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		ContainerIsCertifiedDigestRemediation,
 		AffiliatedCert,
 		TestContainerIsCertifiedDigestIdentifierDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
