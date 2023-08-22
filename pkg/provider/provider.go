@@ -117,6 +117,10 @@ type TestEnvironment struct { // rename this with testTarget
 	DaemonsetFailedToSpawn bool
 	ScaleCrUnderTest       []ScaleObject
 	StorageClassList       []storagev1.StorageClass
+	CollectorAppEndPoint   string
+	ExecutedBy             string
+	PartnerName            string
+	CollectorAppPassword   string
 }
 
 type MachineConfig struct {
@@ -284,6 +288,11 @@ func buildTestEnvironment() { //nolint:funlen
 	env.ScaleCrUnderTest = updateCrUnderTest(data.ScaleCrUnderTest)
 	env.HorizontalScaler = data.Hpas
 	env.StorageClassList = data.StorageClasses
+
+	env.CollectorAppEndPoint = data.CollectorAppEndPoint
+	env.ExecutedBy = data.ExecutedBy
+	env.PartnerName = data.PartnerName
+	env.CollectorAppPassword = data.CollectorAppPassword
 
 	operators := createOperators(data.Csvs, data.Subscriptions, data.AllInstallPlans, data.AllCatalogSources, false, true)
 	env.Operators = operators

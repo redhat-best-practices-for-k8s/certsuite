@@ -28,6 +28,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/claimhelper"
+	"github.com/test-network-function/cnf-certification-test/pkg/collector"
 	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
@@ -175,7 +176,7 @@ func TestTest(t *testing.T) {
 	var env provider.TestEnvironment
 	if !diagnosticMode {
 		env.SetNeedsRefresh()
-		provider.GetTestEnvironment()
+		env = provider.GetTestEnvironment()
 		ginkgo.RunSpecs(t, CnfCertificationTestSuiteName)
 	}
 
@@ -202,6 +203,14 @@ func TestTest(t *testing.T) {
 	payload := claimhelper.MarshalClaimOutput(claimRoot)
 	claimOutputFile := filepath.Join(*claimPath, results.ClaimFileName)
 	claimhelper.WriteClaimOutput(claimOutputFile, payload)
+
+	// Send claim file to the collector if specified by env var
+	if configuration.GetTestParameters().EnableDataCollection {
+		err = collector.SendClaimFileToCollector(env.CollectorAppEndPoint, claimOutputFile, env.ExecutedBy, env.PartnerName, env.CollectorAppPassword)
+		if err != nil {
+			log.Errorf("Failed to send post request to the collector: %v", err)
+		}
+	}
 
 	// Create HTML artifacts for the web results viewer/parser.
 	resultsOutputDir := *claimPath
