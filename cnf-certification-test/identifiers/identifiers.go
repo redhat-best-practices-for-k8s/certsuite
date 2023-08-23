@@ -160,6 +160,7 @@ var (
 	TestContainerPortNameFormat                       claim.Identifier
 	TestCrdScalingIdentifier                          claim.Identifier
 	TestCrdRoleIdentifier                             claim.Identifier
+	TestLimitedUseOfExecProbesIdentifier              claim.Identifier
 	// Chaos Testing
 	// TestPodDeleteIdentifier claim.Identifier
 )
@@ -213,6 +214,21 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			Extended: Mandatory,
 		},
 		TagExtended)
+
+	TestLimitedUseOfExecProbesIdentifier = AddCatalogEntry(
+		"max-resources-exec-probes",
+		common.PerformanceTestKey,
+		`Checks that less than 10 exec probes are configured in the cluster for this CNF. Also checks that the periodSeconds parameter for each probe is superior or equal to 10.`,
+		LimitedUseOfExecProbesRemediation,
+		NoDocumentedProcess,
+		TestLimitedUseOfExecProbesIdentifierDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional},
+		TagFarEdge)
 
 	TestProjectedVolumeServiceAccountTokenIdentifier = AddCatalogEntry(
 		"projected-volume-service-account-token",

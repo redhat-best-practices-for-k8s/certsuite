@@ -152,6 +152,8 @@ const (
 
 	ProjectedVolumeServiceAccountRemediation = `Ensure that pods do not use projected volumes and service account tokens`
 
+	LimitedUseOfExecProbesRemediation = `Reduce the number of exec probes in the cluster for this CNF to less than 10. Increase the update period of the exec probe to be superior or equal to 10 seconds.`
+
 	ReservedPartnerPortsRemediation = `Ensure ports are not being used that are reserved by our partner`
 
 	AffinityRequiredRemediation = `Pods which need to be co-located on the same node need Affinity rules. If a pod/statefulset/deployment is required to use affinity rules, please add AffinityRequired: 'true' as a label.`
