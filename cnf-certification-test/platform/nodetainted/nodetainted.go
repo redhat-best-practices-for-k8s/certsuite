@@ -19,6 +19,7 @@ package nodetainted
 import (
 	"errors"
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -126,6 +127,15 @@ func DecodeKernelTaintsFromBitMask(bitmask uint64) []string {
 		}
 	}
 	return taints
+}
+
+func RemoveAllExceptNumbers(incomingStr string) string {
+	// example string ", bit:10)"
+	// return 10
+
+	// remove all characters except numbers
+	re := regexp.MustCompile(`\D+`)
+	return re.ReplaceAllString(incomingStr, "")
 }
 
 func DecodeKernelTaintsFromLetters(letters string) []string {
@@ -256,10 +266,10 @@ func (nt *NodeTainted) getAllTainterModules() (map[string]string, error) {
 // GetTainterModules runs a command in the node to get all the modules that
 // have set a kernel taint bit. Returns:
 //   - tainters: maps a module to a string of taints letters. Each letter maps
-//     to a single bit in the taint mask. Tainters that appear in the whitelist won't
+//     to a single bit in the taint mask. Tainters that appear in the allowlist won't
 //     be added to this map.
-//   - taintBits: bits (pos) of kernel taints caused by all modules (included the whitelisted ones).
-func (nt *NodeTainted) GetTainterModules(whiteList map[string]bool) (tainters map[string]string, taintBits map[int]bool, err error) {
+//   - taintBits: bits (pos) of kernel taints caused by all modules (included the allowlisted ones).
+func (nt *NodeTainted) GetTainterModules(allowList map[string]bool) (tainters map[string]string, taintBits map[int]bool, err error) {
 	// First, get all the modules that are tainting the kernel in this node.
 	allTainters, err := nt.getAllTainterModules()
 	if err != nil {
@@ -271,9 +281,9 @@ func (nt *NodeTainted) GetTainterModules(whiteList map[string]bool) (tainters ma
 		moduleTaints := DecodeKernelTaintsFromLetters(moduleTaintsLetters)
 		logrus.Debugf("%s: Module %s has taints (%s): %s", nt.node, moduleName, moduleTaintsLetters, moduleTaints)
 
-		// Apply whitelist.
-		if whiteList[moduleName] {
-			tnf.ClaimFilePrintf("%s module %s is tainting the kernel but it has been whitelisted (taints: %v)",
+		// Apply allowlist.
+		if allowList[moduleName] {
+			tnf.ClaimFilePrintf("%s module %s is tainting the kernel but it has been allowlisted (taints: %v)",
 				nt.node, moduleName, moduleTaints)
 		} else {
 			filteredTainters[moduleName] = moduleTaintsLetters
