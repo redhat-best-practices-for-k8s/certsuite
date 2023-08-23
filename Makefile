@@ -108,6 +108,10 @@ build-gradetool-policy:
 build-cnf-tests: results-html
 	PATH=${PATH}:${GOBIN} ginkgo build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" ./cnf-certification-test
 
+# build the CNF test binary for local development
+dev:
+	PATH=${PATH}:${GOBIN} ginkgo build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" ./cnf-certification-test
+
 # Builds the CNF test binary with debug flags
 build-cnf-tests-debug: results-html
 	PATH=${PATH}:${GOBIN} ginkgo build -gcflags "all=-N -l" -ldflags "${LINKER_TNF_RELEASE_FLAGS} -extldflags '-z relro -z now'" ./cnf-certification-test
