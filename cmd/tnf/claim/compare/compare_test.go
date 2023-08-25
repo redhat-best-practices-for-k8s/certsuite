@@ -66,7 +66,7 @@ func Test_claimCompareFilesfunc(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			// Create pipe so we can read the stdout output frmo the test function.
+			// Create pipe so we can read the stdout output from the test function.
 			originalStdout := os.Stdout
 			r, w, err := os.Pipe()
 			assert.NilError(t, err)
