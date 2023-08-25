@@ -3,7 +3,6 @@ package nodes
 import (
 	"testing"
 
-	"github.com/test-network-function/cnf-certification-test/cmd/tnf/pkg/claim"
 	"gotest.tools/v3/assert"
 	v1 "k8s.io/api/core/v1"
 )
@@ -11,65 +10,57 @@ import (
 func TestGetMergedNodeNamesList(t *testing.T) {
 	testCases := []struct {
 		name          string
-		claim1Nodes   *claim.Nodes
-		claim2Nodes   *claim.Nodes
+		claim1Nodes   map[string]*v1.Node
+		claim2Nodes   map[string]*v1.Node
 		expectedNames []string
 	}{
 		{
 			name:          "empty structs",
-			claim1Nodes:   &claim.Nodes{},
-			claim2Nodes:   &claim.Nodes{},
+			claim1Nodes:   map[string]*v1.Node{},
+			claim2Nodes:   map[string]*v1.Node{},
 			expectedNames: []string{},
 		},
 		{
 			name: "nodes in claim1 only",
-			claim1Nodes: &claim.Nodes{
-				NodesSummary: map[string]*v1.Node{
-					"node1": {},
-					"node2": {}},
+			claim1Nodes: map[string]*v1.Node{
+				"node1": {},
+				"node2": {},
 			},
-			claim2Nodes:   &claim.Nodes{},
+			claim2Nodes:   map[string]*v1.Node{},
 			expectedNames: []string{"node1", "node2"},
 		},
 		{
 			name:        "nodes in claim2 only",
-			claim1Nodes: &claim.Nodes{},
-			claim2Nodes: &claim.Nodes{
-				NodesSummary: map[string]*v1.Node{
-					"node1": {},
-					"node2": {}},
+			claim1Nodes: map[string]*v1.Node{},
+			claim2Nodes: map[string]*v1.Node{
+				"node1": {},
+				"node2": {},
 			},
 			expectedNames: []string{"node1", "node2"},
 		},
 		{
 			name: "same nodes in both claim files",
-			claim1Nodes: &claim.Nodes{
-				NodesSummary: map[string]*v1.Node{
-					"node1": {},
-					"node2": {}},
+			claim1Nodes: map[string]*v1.Node{
+				"node1": {},
+				"node2": {},
 			},
-			claim2Nodes: &claim.Nodes{
-				NodesSummary: map[string]*v1.Node{
-					"node1": {},
-					"node2": {}},
+			claim2Nodes: map[string]*v1.Node{
+				"node1": {},
+				"node2": {},
 			},
 			expectedNames: []string{"node1", "node2"},
 		},
 		{
 			name: "shared nodes in both files but they have an extra different node",
-			claim1Nodes: &claim.Nodes{
-				NodesSummary: map[string]*v1.Node{
-					"node1": {},
-					"node2": {},
-					"node3": {},
-				},
+			claim1Nodes: map[string]*v1.Node{
+				"node1": {},
+				"node2": {},
+				"node3": {},
 			},
-			claim2Nodes: &claim.Nodes{
-				NodesSummary: map[string]*v1.Node{
-					"node1": {},
-					"node2": {},
-					"node4": {},
-				},
+			claim2Nodes: map[string]*v1.Node{
+				"node1": {},
+				"node2": {},
+				"node4": {},
 			},
 			expectedNames: []string{"node1", "node2", "node3", "node4"},
 		},

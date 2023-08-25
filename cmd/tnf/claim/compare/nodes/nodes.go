@@ -13,6 +13,7 @@ import (
 const (
 	nodeNotFoundIn = "not found in "
 
+	// List of possible differences for nodes.
 	differentCNIs = "CNIs"
 	// differentHardware = "hardware"
 	// differentCSIs     = "CSIs"
@@ -29,12 +30,22 @@ type RolesSummary struct {
 	MasterWorkerNodes int `json:"masterAndWorkerNodes"`
 }
 
+// Structure to hold the differences found in a node.
+// The slice "Differences" holds an entry for each section (CNI, CSI, hardware) that
+// has differenes in configuration.
+// Each section has its own slice with a differences report per node.
 type NodeDiffReport struct {
-	NodeName              string                      `json:"nodeName"`
-	Differences           []string                    `json:"differences"`
+	NodeName    string   `json:"nodeName"`
+	Differences []string `json:"differences"`
+
+	// CNINetworksDiffReport is a slice and every entry has a report of CNI networks differences
+	// for each node.
 	CNINetworksDiffReport cnis.CNINetworksDiffReports `json:"cniNetworksDiffReport,omitempty"`
 }
 
+// Structure that holds a summary of nodes roles and a slice of NodeDiffReports,
+// one per node found in both claim files. In case one node only exists in one
+// claim file, it will be marked as "not found in claim[1|2]".
 type DiffReport struct {
 	Summary struct {
 		Claim1 RolesSummary `json:"claim1"`
@@ -44,11 +55,43 @@ type DiffReport struct {
 	NodesDiffReports []NodeDiffReport `json:"nodesDiffReport"`
 }
 
+// Helper function to parse a string and returns true in case it's
+// a "not found in claim[1|2]".
 func NodeDiffIsNotFoundIn(diff string) bool {
 	r := regexp.MustCompile("^" + nodeNotFoundIn + "claim[1|2]$")
 	return r.MatchString(diff)
 }
 
+// Stringer method to show in a table the the differences found on each node
+// appearing on both claim files. If a node only appears in one claim file, it
+// will be flagged as "not found in claim[1|2]"
+//
+// CLUSTER NODES ROLES SUMMARY
+// ---------------------------
+// CLAIM     MASTERS   WORKERS   MASTER+WORKER
+// claim1    0         0         3
+// claim2    0         1         3
+
+// CLUSTER NODES DIFFERENCES
+// -------------------------
+// NODE                                                        DIFFERENCES
+// clus0-0                                                     CNIs
+// ...                                                         CSIs,hardware
+// clus0-7                                                     not found in claim1
+//
+// NODE: clus0-0
+// CNI-NETWORK                   DIFFERENCES
+// crio                          plugins
+//
+// NODE: clus0-0, CNI-NETWORK: crio
+// PLUGIN                        DIFFERENCES
+// bridge                        ipMasq
+//
+// ...
+//
+// The previous example shows that the crio network is not the same in both claim files
+// for node clus0-0. The difference column shows a list of "fields" whose values
+// are different. Node "clus0-7" was only found in claim2.
 func (d DiffReport) String() string {
 	const (
 		rolesSummaryHeaderFmt = "%-10s%-10s%-10s%-s\n"
@@ -107,15 +150,17 @@ func (d DiffReport) String() string {
 	return str
 }
 
-func getMergedNodeNamesList(claim1Nodes, claim2Nodes *claim.Nodes) []string {
+// Helper function that returns a sorted list of unique node names found in
+// two slices claim.Nodes.
+func getMergedNodeNamesList(claim1NodesSummary, claim2NodesSummary map[string]*v1.Node) []string {
 	names := []string{}
 	namesMap := map[string]struct{}{}
 
-	for nodeName := range claim1Nodes.NodesSummary {
+	for nodeName := range claim1NodesSummary {
 		namesMap[nodeName] = struct{}{}
 	}
 
-	for nodeName := range claim2Nodes.NodesSummary {
+	for nodeName := range claim2NodesSummary {
 		namesMap[nodeName] = struct{}{}
 	}
 
@@ -163,6 +208,9 @@ func getRolesSummary(nodesSummary map[string]*v1.Node) RolesSummary {
 	return summary
 }
 
+// Generates a DiffReport from two pointers to claim.Nodes. The report consists
+// of a Summary of Nodes Roles found in both files, as well as a list of
+// NodeDiffReport objects, one per node.
 func GetDiffReport(claim1Nodes, claim2Nodes *claim.Nodes) DiffReport {
 	diffReport := DiffReport{
 		Summary: struct {
@@ -174,7 +222,7 @@ func GetDiffReport(claim1Nodes, claim2Nodes *claim.Nodes) DiffReport {
 		},
 	}
 
-	nodes := getMergedNodeNamesList(claim1Nodes, claim2Nodes)
+	nodes := getMergedNodeNamesList(claim1Nodes.NodesSummary, claim2Nodes.NodesSummary)
 
 	for _, node := range nodes {
 		nodeDiffReport := NodeDiffReport{NodeName: node}

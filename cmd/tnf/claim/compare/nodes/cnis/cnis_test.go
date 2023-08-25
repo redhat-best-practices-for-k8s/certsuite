@@ -54,57 +54,57 @@ func TestGetNetworksMap(t *testing.T) {
 func TestGetMergedListOfNetworksNames(t *testing.T) {
 	testCases := []struct {
 		name          string
-		nets1         []claim.CNINetwork
-		nets2         []claim.CNINetwork
+		nets1         map[string]*claim.CNINetwork
+		nets2         map[string]*claim.CNINetwork
 		expectedNames []string
 	}{
 		{
 			name:          "empty slices",
-			nets1:         []claim.CNINetwork{},
-			nets2:         []claim.CNINetwork{},
+			nets1:         map[string]*claim.CNINetwork{},
+			nets2:         map[string]*claim.CNINetwork{},
 			expectedNames: []string{},
 		},
 		{
 			name: "only first slice has elements",
-			nets1: []claim.CNINetwork{
-				{Name: "net1"},
-				{Name: "net2"},
+			nets1: map[string]*claim.CNINetwork{
+				"net1": {},
+				"net2": {},
 			},
-			nets2:         []claim.CNINetwork{},
+			nets2:         map[string]*claim.CNINetwork{},
 			expectedNames: []string{"net1", "net2"},
 		},
 		{
 			name:  "only second slice has elements",
-			nets1: []claim.CNINetwork{},
-			nets2: []claim.CNINetwork{
-				{Name: "net1"},
-				{Name: "net2"},
+			nets1: map[string]*claim.CNINetwork{},
+			nets2: map[string]*claim.CNINetwork{
+				"net1": {},
+				"net2": {},
 			},
 			expectedNames: []string{"net1", "net2"},
 		},
 		{
 			name: "both have different elements",
-			nets1: []claim.CNINetwork{
-				{Name: "net3"},
-				{Name: "net4"},
+			nets1: map[string]*claim.CNINetwork{
+				"net3": {},
+				"net4": {},
 			},
-			nets2: []claim.CNINetwork{
-				{Name: "net1"},
-				{Name: "net2"},
+			nets2: map[string]*claim.CNINetwork{
+				"net1": {},
+				"net2": {},
 			},
 			expectedNames: []string{"net1", "net2", "net3", "net4"},
 		},
 		{
 			name: "both have elements but they share some of them",
-			nets1: []claim.CNINetwork{
-				{Name: "net1"},
-				{Name: "net2"},
-				{Name: "net3"},
+			nets1: map[string]*claim.CNINetwork{
+				"net1": {},
+				"net2": {},
+				"net3": {},
 			},
-			nets2: []claim.CNINetwork{
-				{Name: "net1"},
-				{Name: "net2"},
-				{Name: "net4"},
+			nets2: map[string]*claim.CNINetwork{
+				"net1": {},
+				"net2": {},
+				"net4": {},
 			},
 			expectedNames: []string{"net1", "net2", "net3", "net4"},
 		},
@@ -165,58 +165,57 @@ func TestGetPluginsMap(t *testing.T) {
 func TestGetMergedListOfPluginsNames(t *testing.T) {
 	testCases := []struct {
 		name          string
-		plugins1      []claim.CNIPlugin
-		plugins2      []claim.CNIPlugin
+		plugins1      map[string]claim.CNIPlugin
+		plugins2      map[string]claim.CNIPlugin
 		expectedNames []string
 	}{
 		{
 			name:          "empty slices",
-			plugins1:      []claim.CNIPlugin{},
-			plugins2:      []claim.CNIPlugin{},
+			plugins1:      map[string]claim.CNIPlugin{},
+			plugins2:      map[string]claim.CNIPlugin{},
 			expectedNames: []string{},
 		},
 		{
 			name: "only first slice has elements",
-			plugins1: []claim.CNIPlugin{
-				{"type": "multus"},
-				{"type": "sriov"},
+			plugins1: map[string]claim.CNIPlugin{
+				"multus": {},
+				"sriov":  {},
 			},
-			plugins2:      []claim.CNIPlugin{},
+			plugins2:      map[string]claim.CNIPlugin{},
 			expectedNames: []string{"multus", "sriov"},
 		},
 		{
 			name:     "only second slice has elements",
-			plugins1: []claim.CNIPlugin{},
-			plugins2: []claim.CNIPlugin{
-				{"type": "multus"},
-				{"type": "sriov"},
+			plugins1: map[string]claim.CNIPlugin{},
+			plugins2: map[string]claim.CNIPlugin{
+				"multus": {},
+				"sriov":  {},
 			},
 			expectedNames: []string{"multus", "sriov"},
 		},
 		{
 			name: "both have different elements",
-			plugins1: []claim.CNIPlugin{
-				{"type": "multus"},
-				{"type": "fakeName1"},
+			plugins1: map[string]claim.CNIPlugin{
+				"multus":    {},
+				"fakeName1": {},
 			},
-			plugins2: []claim.CNIPlugin{
-
-				{"type": "sriov"},
-				{"type": "fakeName2"},
+			plugins2: map[string]claim.CNIPlugin{
+				"sriov":     {},
+				"fakeName2": {},
 			},
 			expectedNames: []string{"fakeName1", "fakeName2", "multus", "sriov"},
 		},
 		{
 			name: "both have elements but they share some of them",
-			plugins1: []claim.CNIPlugin{
-				{"type": "multus"},
-				{"type": "sriov"},
-				{"type": "fakeName1"},
+			plugins1: map[string]claim.CNIPlugin{
+				"multus":    {},
+				"sriov":     {},
+				"fakeName1": {},
 			},
-			plugins2: []claim.CNIPlugin{
-				{"type": "multus"},
-				{"type": "sriov"},
-				{"type": "fakeName2"},
+			plugins2: map[string]claim.CNIPlugin{
+				"multus":    {},
+				"sriov":     {},
+				"fakeName2": {},
 			},
 			expectedNames: []string{"fakeName1", "fakeName2", "multus", "sriov"},
 		},
