@@ -410,7 +410,8 @@ jobs:
       - name: Check out `Collector`
         uses: actions/checkout@v3
         with:
-          repository: test-network-function/collector
+          repository: shirmoran/collector
+          ref: CI-tests
           path: collector
 
       - name: Run sanity check on collector
