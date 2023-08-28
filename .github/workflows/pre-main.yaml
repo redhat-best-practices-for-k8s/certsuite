@@ -406,6 +406,18 @@ jobs:
       - name: 'Test: Run Smoke Tests in a TNF container'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "${SMOKE_TESTS_GINKGO_LABELS_FILTER}"
 
+      # Perform tests on collector
+      - name: Check out `Collector`
+        uses: actions/checkout@v3
+        with:
+          repository: test-network-function/collector
+          path: collector
+
+      - name: Run sanity check on collector
+        uses: ./collector/.github/actions/collector-sanity-check
+        with:
+          working_directory: collector
+
       - name: Upload container test results as an artifact
         uses: actions/upload-artifact@v3
         if: always()
