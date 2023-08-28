@@ -58,7 +58,7 @@ type CNIPluginsDiffReports []CNIPluginDiffReport
 //
 // That example shows that the crio network is not the same in both claim files
 // for a given node. The difference column shows a list of "fields" whose value
-// is different. Plugins means that there's at leat one crio plugin whose config
+// is different. Plugins means that there's at least one crio plugin whose config
 // is different.
 // In case the network appears only in one claim file, the only difference will
 // be "not found in claim[1|2]"

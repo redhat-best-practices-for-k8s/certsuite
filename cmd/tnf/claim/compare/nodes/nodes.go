@@ -32,7 +32,7 @@ type RolesSummary struct {
 
 // Structure to hold the differences found in a node.
 // The slice "Differences" holds an entry for each section (CNI, CSI, hardware) that
-// has differenes in configuration.
+// has differences in configuration.
 // Each section has its own slice with a differences report per node.
 type NodeDiffReport struct {
 	NodeName    string   `json:"nodeName"`
