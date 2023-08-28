@@ -39,7 +39,7 @@ const (
 	ipCommand         = `ip -j a`
 	lsblkCommand      = `lsblk -J`
 	lspciCommand      = `lspci`
-	cniPluginsCommand = `cat /host/etc/cni/net.d/[0-999]* | jq -s '[ .[] | {name:.name, type:.type, version:.cniVersion, plugins: .plugins}]'`
+	cniPluginsCommand = `cat /host/etc/cni/net.d/[0-999]* | jq -s`
 )
 
 // CniPlugin holds info about a CNI plugin
@@ -81,13 +81,18 @@ func GetHwInfoAllNodes() (out map[string]NodeHwInfo) {
 	env := provider.GetTestEnvironment()
 	o := clientsholder.GetClientsHolder()
 	out = make(map[string]NodeHwInfo)
-	var err error
 	for _, debugPod := range env.DebugPods {
 		hw := NodeHwInfo{}
-		hw.Lscpu, err = getHWJsonOutput(debugPod, o, lscpuCommand)
+		lscpu, err := getHWJsonOutput(debugPod, o, lscpuCommand)
 		if err != nil {
 			logrus.Errorf("problem getting lscpu for node %s", debugPod.Spec.NodeName)
 		}
+		var ok bool
+		hw.Lscpu, ok = lscpu.(map[string]interface{})["lscpu"]
+		if !ok {
+			logrus.Errorf("problem casting lscpu field for node %s, lscpu=%v", debugPod.Spec.NodeName, lscpu)
+		}
+
 		hw.IPconfig, err = getHWJsonOutput(debugPod, o, ipCommand)
 		if err != nil {
 			logrus.Errorf("problem getting ip config for node %s", debugPod.Spec.NodeName)
