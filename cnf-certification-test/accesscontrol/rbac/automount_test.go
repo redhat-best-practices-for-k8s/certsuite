@@ -68,13 +68,13 @@ func TestAutomountServiceAccountSetOnSA(t *testing.T) {
 		},
 	}
 
-	for _, tc := range testCases {
+	for index, tc := range testCases {
 		testSA := corev1.ServiceAccount{
 			ObjectMeta: metav1.ObjectMeta{
 				Namespace: "podNS",
 				Name:      "testSA",
 			},
-			AutomountServiceAccountToken: &tc.automountServiceTokenSet,
+			AutomountServiceAccountToken: &testCases[index].automountServiceTokenSet,
 		}
 
 		var testRuntimeObjects []runtime.Object
