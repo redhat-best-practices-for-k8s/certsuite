@@ -4,6 +4,7 @@ const (
 	// Default Strings
 	NoDocLinkExtended = "No Doc Link - Extended"
 	NoDocLinkFarEdge  = "No Doc Link - Far Edge"
+	NoDocLinkTelco    = "No Doc Link - Telco"
 
 	// Networking Suite
 	TestICMPv4ConnectivityIdentifierDocLink         = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ipv4-&-ipv6"
@@ -27,6 +28,7 @@ const (
 	TestSysAdminIdentifierDocLink                            = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-avoid-sys_admin"
 	TestIpcLockIdentifierDocLink                             = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ipc_lock"
 	TestNetRawIdentifierDocLink                              = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-user-plane-cnfs"
+	TestBpfIdentifierDocLink                                 = NoDocLinkTelco
 	TestSecConNonRootUserIdentifierDocLink                   = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-security"
 	TestSecContextIdentifierDocLink                          = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-security"
 	TestSecConPrivilegeEscalationDocLink                     = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-security"
