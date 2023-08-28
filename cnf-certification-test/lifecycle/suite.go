@@ -314,7 +314,7 @@ func testPodNodeSelectorAndAffinityBestPractices(testPods []*provider.Pod) {
 	for _, put := range testPods {
 		compliantPod := true
 		if put.HasNodeSelector() {
-			tnf.ClaimFilePrintf("ERROR: %s has a node selector. Node selector: %v", put, &put.Spec.NodeSelector)
+			tnf.ClaimFilePrintf("ERROR: %s has a node selector. Node selector: %v", put, put.Spec.NodeSelector)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has node selector", false))
 			compliantPod = false
 		}

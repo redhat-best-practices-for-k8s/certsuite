@@ -117,7 +117,7 @@ func TestIsPodVolumeReclaimPolicyDelete(t *testing.T) {
 		},
 	}
 
-	for _, tc := range testCases {
-		assert.Equal(t, tc.expectedResult, IsPodVolumeReclaimPolicyDelete(&tc.testVolume, tc.testPVs, tc.testPVCs))
+	for index, tc := range testCases {
+		assert.Equal(t, tc.expectedResult, IsPodVolumeReclaimPolicyDelete(&testCases[index].testVolume, tc.testPVs, tc.testPVCs))
 	}
 }
