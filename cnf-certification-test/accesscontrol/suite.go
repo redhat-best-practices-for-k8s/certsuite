@@ -97,6 +97,13 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 		testIpcLockCapability(&env)
 	})
 
+	// Security Context: non-compliant capabilities (BPF)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestBpfIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
+		testBpfCapability(&env)
+	})
+
 	// container security context: non-root user
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSecConNonRootUserIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), ginkgo.Label(tags...), func() {
@@ -299,6 +306,11 @@ func testNetRawCapability(env *provider.TestEnvironment) {
 
 func testIpcLockCapability(env *provider.TestEnvironment) {
 	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "IPC_LOCK")
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+}
+
+func testBpfCapability(env *provider.TestEnvironment) {
+	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "BPF")
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 

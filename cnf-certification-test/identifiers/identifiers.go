@@ -90,6 +90,7 @@ var (
 	TestNetAdminIdentifier                            claim.Identifier
 	TestNetRawIdentifier                              claim.Identifier
 	TestIpcLockIdentifier                             claim.Identifier
+	TestBpfIdentifier                                 claim.Identifier
 	TestStorageRequiredPods                           claim.Identifier
 	TestExclusiveCPUPoolIdentifier                    claim.Identifier
 	TestSharedCPUPoolSchedulingPolicy                 claim.Identifier
@@ -478,6 +479,22 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Exception will be considered for user plane or networking functions. Must identify which container requires the capability and detail why.`,
 		TestNetRawIdentifierDocLink,
 		true,
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Optional,
+			Extended: Mandatory,
+		},
+		TagTelco)
+
+	TestBpfIdentifier = AddCatalogEntry(
+		"bpf-capability-check",
+		common.AccessControlTestKey,
+		`Ensures that containers do not use BFP capability. CNF should avoid loading eBPF filters`,
+		BpfCapabilityRemediation,
+		`Exception can be considered. Must identify which container requires the capability and detail why.`,
+		TestBpfIdentifierDocLink,
+		false,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,

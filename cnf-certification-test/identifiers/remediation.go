@@ -39,6 +39,8 @@ const (
 
 	SecConCapabilitiesRemediation = `Remove the following capabilities from the container/pod definitions: NET_ADMIN SCC, SYS_ADMIN SCC, NET_RAW SCC, IPC_LOCK SCC`
 
+	BpfCapabilityRemediation = `Remove the following capability from the container/pod definitions: BPF`
+
 	SecConPrivilegeRemediation = `Configure privilege escalation to false. Privileged escalation should not be allowed (AllowPrivilegeEscalation=false).`
 
 	ContainerIsCertifiedRemediation = `Ensure that your container has passed the Red Hat Container Certification Program (CCP).`
