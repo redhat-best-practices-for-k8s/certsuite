@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix: 
         # suite: [accesscontrol, affiliatedcertification, lifecycle, networking, observability, platformalteration, performance, operator]
-        suite: []
+        suite: [networking, manageability]
     env:
       SHELL: /bin/bash
       DEBUG_TNF: true # More verbose output from the TNF
@@ -78,5 +78,5 @@ jobs:
 
       # Setup is complete.  Time to run the QE tests.
       - name: Run the tests
-        run: FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} make test-features
+        run: FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true make test-features
         working-directory: cnfcert-tests-verification
