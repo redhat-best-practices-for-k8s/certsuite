@@ -7,13 +7,13 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 
 ## Test cases summary
 
-### Total test cases: 88
+### Total test cases: 90
 
 ### Total suites: 9
 
 |Suite|Tests per suite|
 |---|---|
-|access-control|27|
+|access-control|28|
 |affiliated-certification|5|
 |lifecycle|18|
 |manageability|2|
@@ -21,13 +21,13 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |observability|4|
 |operator|3|
 |performance|6|
-|platform-alteration|12|
+|platform-alteration|13|
 
-### Extended specific tests only: 11
+### Extended specific tests only: 12
 
 |Mandatory|Optional|
 |---|---|
-|9|2|
+|9|3|
 
 ### Far-Edge specific tests only: 8
 
@@ -41,17 +41,33 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |---|---|
 |39|3|
 
-### Telco specific tests only: 27
+### Telco specific tests only: 28
 
 |Mandatory|Optional|
 |---|---|
-|27|0|
+|28|0|
 
 ## Test Case list
 
 Test Cases are the specifications used to perform a meaningful test. Test cases may run once, or several times against several targets. CNF Certification includes a number of normative and informative tests to ensure CNFs follow best practices. Here is the list of available Test Cases:
 
 ### access-control
+
+#### access-control-bpf-capability-check
+
+Property|Description
+---|---
+Unique ID|access-control-bpf-capability-check
+Description|Ensures that containers do not use BFP capability. CNF should avoid loading eBPF filters
+Suggested Remediation|Remove the following capability from the container/pod definitions: BPF
+Best Practice Reference|No Doc Link - Telco
+Exception Process|Exception can be considered. Must identify which container requires the capability and detail why.
+Tags|telco,access-control
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Optional|
+|Telco|Mandatory|
 
 #### access-control-cluster-role-bindings
 
@@ -1364,6 +1380,22 @@ Tags|common,platform-alteration
 |Far-Edge|Mandatory|
 |Non-Telco|Mandatory|
 |Telco|Mandatory|
+
+#### platform-alteration-hyperthread-enable
+
+Property|Description
+---|---
+Unique ID|platform-alteration-hyperthread-enable
+Description|Check that baremetal workers have hyperthreading enabled
+Suggested Remediation|Check that baremetal workers have hyperthreading enabled
+Best Practice Reference|No Doc Link - Extended
+Exception Process|There is no documented exception process for this.
+Tags|extended,platform-alteration
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
 
 #### platform-alteration-is-selinux-enforcing
 
