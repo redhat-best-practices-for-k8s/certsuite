@@ -23,7 +23,7 @@ type CNIPlugin map[string]interface{}
 
 type CNINetwork struct {
 	Name         string      `json:"name"`
-	CNIVersion   string      `json:"version"`
+	CNIVersion   string      `json:"cniVersion"`
 	DisableCheck bool        `json:"disableCheck"`
 	Plugins      []CNIPlugin `json:"plugins"`
 }
