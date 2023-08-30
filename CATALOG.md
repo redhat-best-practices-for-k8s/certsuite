@@ -7,7 +7,7 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 
 ## Test cases summary
 
-### Total test cases: 87
+### Total test cases: 88
 
 ### Total suites: 9
 
@@ -20,7 +20,7 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |networking|11|
 |observability|4|
 |operator|3|
-|performance|5|
+|performance|6|
 |platform-alteration|12|
 
 ### Extended specific tests only: 11
@@ -29,11 +29,11 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |---|---|
 |9|2|
 
-### Far-Edge specific tests only: 7
+### Far-Edge specific tests only: 8
 
 |Mandatory|Optional|
 |---|---|
-|7|0|
+|7|1|
 
 ### Non-Telco specific tests only: 42
 
@@ -1232,6 +1232,22 @@ Tags|faredge,performance
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Optional|
 |Far-Edge|Mandatory|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### performance-max-resources-exec-probes
+
+Property|Description
+---|---
+Unique ID|performance-max-resources-exec-probes
+Description|Checks that less than 10 exec probes are configured in the cluster for this CNF. Also checks that the periodSeconds parameter for each probe is superior or equal to 10.
+Suggested Remediation|Reduce the number of exec probes in the cluster for this CNF to less than 10. Increase the update period of the exec probe to be superior or equal to 10 seconds.
+Best Practice Reference|No Doc Link - Far Edge
+Exception Process|There is no documented exception process for this.
+Tags|faredge,performance
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
 |Non-Telco|Optional|
 |Telco|Optional|
 

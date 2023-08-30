@@ -92,16 +92,12 @@ func (p *Pod) IsCPUIsolationCompliant() bool {
 	isCPUIsolated := true
 
 	if !LoadBalancingDisabled(p) {
-		errMsg := fmt.Sprintf("%s has been found to not have annotations set correctly for CPU isolation.", p.String())
-		logrus.Debugf(errMsg)
-		tnf.ClaimFilePrintf(errMsg)
+		tnf.Logf(logrus.DebugLevel, "%s has been found to not have annotations set correctly for CPU isolation.", p)
 		isCPUIsolated = false
 	}
 
 	if !p.IsRuntimeClassNameSpecified() {
-		errMsg := fmt.Sprintf("%s has been found to not have runtimeClassName specified.", p.String())
-		logrus.Debugf(errMsg)
-		tnf.ClaimFilePrintf(errMsg)
+		tnf.Logf(logrus.DebugLevel, "%s has been found to not have runtimeClassName specified.", p)
 		isCPUIsolated = false
 	}
 

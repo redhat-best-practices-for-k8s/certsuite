@@ -66,6 +66,8 @@ var (
 			MinRHCOSVersion:      "4.13",
 			RHELVersionsAccepted: []string{"8.4", "8.5"},
 		},
+
+		// Maintenance Support
 		"4.12": {
 			GADate:  time.Date(2023, 1, 17, 0, 0, 0, 0, time.UTC), // January 17, 2023
 			FSEDate: time.Date(2023, 8, 17, 0, 0, 0, 0, time.UTC), // August 17, 2023
@@ -75,8 +77,6 @@ var (
 			MinRHCOSVersion:      "4.12",
 			RHELVersionsAccepted: []string{"8.4", "8.5"},
 		},
-
-		// Maintenance Support
 		"4.11": {
 			GADate:  time.Date(2022, 8, 10, 0, 0, 0, 0, time.UTC), // August 10, 2022
 			FSEDate: time.Date(2023, 4, 17, 0, 0, 0, 0, time.UTC), // April 17, 2023
@@ -95,6 +95,8 @@ var (
 			MinRHCOSVersion:      "4.10",
 			RHELVersionsAccepted: []string{"8.4", "8.5"},
 		},
+
+		// End of life
 		"4.9": {
 			GADate:  time.Date(2021, 10, 18, 0, 0, 0, 0, time.UTC), // October 18, 2021
 			FSEDate: time.Date(2022, 6, 10, 0, 0, 0, 0, time.UTC),  // June 10, 2022
@@ -113,8 +115,6 @@ var (
 			MinRHCOSVersion:      "4.8",
 			RHELVersionsAccepted: []string{"7.9"},
 		},
-
-		// End of life
 		"4.7": {
 			GADate:  time.Date(2021, 2, 24, 0, 0, 0, 0, time.UTC),  // February 24, 2021
 			FSEDate: time.Date(2021, 10, 27, 0, 0, 0, 0, time.UTC), // October 27, 2021

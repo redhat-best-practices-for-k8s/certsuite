@@ -140,15 +140,13 @@ func generatePreflightContainerGinkgoTest(testName, description, suggestion stri
 			}
 			for _, r := range cut.PreflightResults.Failed {
 				if r.Name() == testName {
-					logrus.Infof("%s has failed preflight test: %s", cut.String(), testName)
-					tnf.ClaimFilePrintf("%s has failed preflight test: %s", cut.String(), testName)
+					tnf.Logf(logrus.WarnLevel, "%s has failed preflight test: %s", cut, testName)
 					failedContainers = append(failedContainers, cut.String())
 				}
 			}
 			for _, r := range cut.PreflightResults.Errors {
 				if r.Name() == testName {
-					logrus.Infof("%s has errored preflight test: %s", cut.String(), testName)
-					tnf.ClaimFilePrintf("%s has errored preflight test: %s", cut.String(), testName)
+					tnf.Logf(logrus.ErrorLevel, "%s has errored preflight test: %s", cut, testName)
 					erroredContainers = append(erroredContainers, cut.String())
 				}
 			}
@@ -184,15 +182,13 @@ func generatePreflightOperatorGinkgoTest(testName, description, suggestion strin
 			}
 			for _, r := range op.PreflightResults.Failed {
 				if r.Name() == testName {
-					logrus.Infof("%s has failed preflight test: %s", op.String(), testName)
-					tnf.ClaimFilePrintf("%s has failed preflight test: %s", op.String(), testName)
+					tnf.Logf(logrus.WarnLevel, "%s has failed preflight test: %s", op, testName)
 					failedOperators = append(failedOperators, op.String())
 				}
 			}
 			for _, r := range op.PreflightResults.Errors {
 				if r.Name() == testName {
-					logrus.Infof("%s has errored preflight test: %s", op.String(), testName)
-					tnf.ClaimFilePrintf("%s has errored preflight test: %s", op.String(), testName)
+					tnf.Logf(logrus.ErrorLevel, "%s has errored preflight test: %s", op, testName)
 					erroredOperators = append(erroredOperators, op.String())
 				}
 			}

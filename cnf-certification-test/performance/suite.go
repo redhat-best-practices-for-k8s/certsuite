@@ -31,6 +31,12 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/scheduling"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
+	v1 "k8s.io/api/core/v1"
+)
+
+const (
+	maxNumberOfExecProbes     = 10
+	minExecProbePeriodSeconds = 10
 )
 
 // The pods with no access to host network are considered for these tests
@@ -70,6 +76,12 @@ var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
 		testSchedulingPolicyInCPUPool(&env, guaranteedPodContainersWithExclusiveCPUs, scheduling.ExclusiveCPUScheduling)
 	})
 
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestLimitedUseOfExecProbesIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
+		testLimitedUseOfExecProbes(&env)
+	})
+
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsolatedCPUPoolSchedulingPolicy)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		var guaranteedPodContainersWithIsolatedCPUs = env.GetGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID()
@@ -78,6 +90,77 @@ var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
 	})
 	// Scheduling related tests ends here
 })
+
+func CheckProbePeriodSeconds(elem *v1.Probe, cut *provider.Container, s string) bool {
+	if elem.PeriodSeconds > minExecProbePeriodSeconds {
+		tnf.ClaimFilePrintf("Container %s is using exec probes, PeriodSeconds of %s: %s", cut, s,
+			elem.PeriodSeconds)
+		return true
+	}
+	tnf.ClaimFilePrintf("Container %s is not using of exec probes, PeriodSeconds of %s: %s", cut, s,
+		elem.PeriodSeconds)
+	return false
+}
+func testLimitedUseOfExecProbes(env *provider.TestEnvironment) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+	counter := 0
+	for _, put := range env.Pods {
+		for _, cut := range put.Containers {
+			if cut.LivenessProbe != nil && cut.LivenessProbe.Exec != nil {
+				counter++
+				if CheckProbePeriodSeconds(cut.LivenessProbe, cut, "LivenessProbe") {
+					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name,
+						cut.Name, fmt.Sprintf("LivenessProbe exec probe has a PeriodSeconds greater than 10 ( %d seconds)",
+							cut.LivenessProbe.PeriodSeconds), true))
+				} else {
+					nonCompliantObjects = append(nonCompliantObjects,
+						testhelper.NewContainerReportObject(put.Namespace, put.Name,
+							cut.Name, fmt.Sprintf("LivenessProbe exec probe has a PeriodSeconds that is not greater than 10 ( %d seconds)",
+								cut.LivenessProbe.PeriodSeconds), false))
+				}
+			}
+			if cut.StartupProbe != nil && cut.StartupProbe.Exec != nil {
+				counter++
+				if CheckProbePeriodSeconds(cut.StartupProbe, cut, "StartupProbe") {
+					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name,
+						cut.Name, fmt.Sprintf("StartupProbe exec probe has a PeriodSeconds greater than 10 ( %d seconds)",
+							cut.StartupProbe.PeriodSeconds), true))
+				} else {
+					nonCompliantObjects = append(nonCompliantObjects,
+						testhelper.NewContainerReportObject(put.Namespace, put.Name,
+							cut.Name, fmt.Sprintf("StartupProbe exec probe has a PeriodSeconds that is not greater than 10 ( %d seconds)",
+								cut.StartupProbe.PeriodSeconds), false))
+				}
+			}
+			if cut.ReadinessProbe != nil && cut.ReadinessProbe.Exec != nil {
+				counter++
+				if CheckProbePeriodSeconds(cut.ReadinessProbe, cut, "ReadinessProbe") {
+					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name,
+						cut.Name, fmt.Sprintf("ReadinessProbe exec probe has a PeriodSeconds greater than 10 ( %d seconds)",
+							cut.ReadinessProbe.PeriodSeconds), true))
+				} else {
+					nonCompliantObjects = append(nonCompliantObjects,
+						testhelper.NewContainerReportObject(put.Namespace, put.Name,
+							cut.Name, fmt.Sprintf("ReadinessProbe exec probe has a PeriodSeconds that is not greater than 10 ( %d seconds)",
+								cut.ReadinessProbe.PeriodSeconds), false))
+				}
+			}
+		}
+	}
+
+	// If there >=10 exec probes, mark the entire cluster as a failure
+	if counter >= maxNumberOfExecProbes {
+		tnf.ClaimFilePrintf(fmt.Sprintf("CNF has %d exec probes", counter))
+		nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject(fmt.Sprintf("CNF has 10 or more exec probes (%d exec probes)", counter), testhelper.CnfType, false))
+	} else {
+		// Compliant object
+		compliantObjects = append(compliantObjects, testhelper.NewReportObject(fmt.Sprintf("CNF has less than 10 exec probes (%d exec probes)", counter), testhelper.CnfType, true))
+		tnf.ClaimFilePrintf(fmt.Sprintf("CNF has less than %d exec probes", counter))
+	}
+
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+}
 
 func testExclusiveCPUPool(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
@@ -121,8 +204,9 @@ func testSchedulingPolicyInCPUPool(env *provider.TestEnvironment,
 		// Get the pid namespace
 		pidNamespace, err := crclient.GetContainerPidNamespace(testContainer, env)
 		if err != nil {
-			logrus.Errorf("unable to get pid namespace due to: %v", err)
-			tnf.ClaimFilePrintf("Failed", "Incomplete processing for %v while getting pid namespace err %v", testContainer, err)
+			tnf.Logf(logrus.ErrorLevel, "unable to get pid namespace for container %s, err: %v", testContainer, err)
+			nonCompliantContainersPids = append(nonCompliantContainersPids,
+				testhelper.NewContainerReportObject(testContainer.Namespace, testContainer.Podname, testContainer.Name, fmt.Sprintf("Internal error, err=%s", err), false))
 			continue
 		}
 		logrus.Debugf("Obtained pidNamespace for %s is %s", testContainer, pidNamespace)

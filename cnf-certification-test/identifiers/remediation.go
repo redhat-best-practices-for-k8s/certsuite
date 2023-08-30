@@ -39,6 +39,8 @@ const (
 
 	SecConCapabilitiesRemediation = `Remove the following capabilities from the container/pod definitions: NET_ADMIN SCC, SYS_ADMIN SCC, NET_RAW SCC, IPC_LOCK SCC`
 
+	BpfCapabilityRemediation = `Remove the following capability from the container/pod definitions: BPF`
+
 	SecConPrivilegeRemediation = `Configure privilege escalation to false. Privileged escalation should not be allowed (AllowPrivilegeEscalation=false).`
 
 	ContainerIsCertifiedRemediation = `Ensure that your container has passed the Red Hat Container Certification Program (CCP).`
@@ -152,6 +154,8 @@ const (
 
 	ProjectedVolumeServiceAccountRemediation = `Ensure that pods do not use projected volumes and service account tokens`
 
+	LimitedUseOfExecProbesRemediation = `Reduce the number of exec probes in the cluster for this CNF to less than 10. Increase the update period of the exec probe to be superior or equal to 10 seconds.`
+
 	ReservedPartnerPortsRemediation = `Ensure ports are not being used that are reserved by our partner`
 
 	AffinityRequiredRemediation = `Pods which need to be co-located on the same node need Affinity rules. If a pod/statefulset/deployment is required to use affinity rules, please add AffinityRequired: 'true' as a label.`
@@ -181,6 +185,8 @@ const (
 	PodHugePages2MRemediation = "Modify pod to consume 2Mi hugepages only"
 
 	PodHugePages1GRemediation = "Modify pod to consume 1Gi hugepages only"
+
+	HyperThreadEnable = "Check that baremetal workers have hyperthreading enabled"
 
 	StartupIdentifierRemediation = `Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.`
 

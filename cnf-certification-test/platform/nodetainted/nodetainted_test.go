@@ -289,7 +289,7 @@ func TestGetAllTainterModules(t *testing.T) {
 func TestGetTainterModules(t *testing.T) {
 	testCases := []struct {
 		runCommandOutput  string
-		whiteList         map[string]bool
+		allowList         map[string]bool
 		expectedTainters  map[string]string
 		expectedTaintBits map[int]bool
 		expectedErrorMsg  string
@@ -314,17 +314,17 @@ func TestGetTainterModules(t *testing.T) {
 			expectedTainters:  map[string]string{"module1": "OE", "module2": "O", "module3": "E"},
 			expectedTaintBits: map[int]bool{12: true, 13: true},
 		},
-		// Whitelist usage 1
+		// Allowlist usage 1
 		{
 			runCommandOutput:  "module1 OE\nmodule2 O\nmodule3 E",
-			whiteList:         map[string]bool{"module2": true},
+			allowList:         map[string]bool{"module2": true},
 			expectedTainters:  map[string]string{"module1": "OE", "module3": "E"},
 			expectedTaintBits: map[int]bool{12: true, 13: true},
 		},
-		// Whitelist usage 2
+		// Allowlist usage 2
 		{
 			runCommandOutput:  "module2 O\nmodule3 E",
-			whiteList:         map[string]bool{"module2": true, "module3": true},
+			allowList:         map[string]bool{"module2": true, "module3": true},
 			expectedTainters:  map[string]string{},
 			expectedTaintBits: map[int]bool{12: true, 13: true},
 		},
@@ -356,7 +356,7 @@ func TestGetTainterModules(t *testing.T) {
 			return tc.runCommandOutput, nil
 		}
 		nt := NewNodeTaintedTester(nil, "fake-node-name")
-		tainters, taintBitsByAllModules, err := nt.GetTainterModules(tc.whiteList)
+		tainters, taintBitsByAllModules, err := nt.GetTainterModules(tc.allowList)
 		if err != nil {
 			assert.Equal(t, tc.expectedErrorMsg, err.Error())
 		} else {
@@ -366,6 +366,59 @@ func TestGetTainterModules(t *testing.T) {
 		assert.Equal(t, tc.expectedTaintBits, taintBitsByAllModules)
 
 		runCommand = origFunc
+	}
+}
+
+func TestRemoveAllExceptNumbers(t *testing.T) {
+	testCases := []struct {
+		input    string
+		expected string
+	}{
+		{
+			input:    "module was loaded (taint letter:O, bit:12)",
+			expected: "12",
+		},
+		{
+			input:    "123",
+			expected: "123",
+		},
+		{
+			input:    "123abc",
+			expected: "123",
+		},
+		{
+			input:    "abc123",
+			expected: "123",
+		},
+		{
+			input:    "abc123abc",
+			expected: "123",
+		},
+		{
+			input:    "abc",
+			expected: "",
+		},
+		{
+			input:    "123abc123",
+			expected: "123123",
+		},
+		{
+			input:    "123abc123abc",
+			expected: "123123",
+		},
+		{
+			input:    "abc123abc123abc",
+			expected: "123123",
+		},
+		{
+			input:    "abc123abc123abc123",
+			expected: "123123123",
+		},
+	}
+
+	for _, tc := range testCases {
+		result := RemoveAllExceptNumbers(tc.input)
+		assert.Equal(t, tc.expected, result)
 	}
 }
 

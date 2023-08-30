@@ -117,6 +117,10 @@ type TestEnvironment struct { // rename this with testTarget
 	DaemonsetFailedToSpawn bool
 	ScaleCrUnderTest       []ScaleObject
 	StorageClassList       []storagev1.StorageClass
+	CollectorAppEndPoint   string
+	ExecutedBy             string
+	PartnerName            string
+	CollectorAppPassword   string
 }
 
 type MachineConfig struct {
@@ -284,6 +288,11 @@ func buildTestEnvironment() { //nolint:funlen
 	env.ScaleCrUnderTest = updateCrUnderTest(data.ScaleCrUnderTest)
 	env.HorizontalScaler = data.Hpas
 	env.StorageClassList = data.StorageClasses
+
+	env.CollectorAppEndPoint = data.CollectorAppEndPoint
+	env.ExecutedBy = data.ExecutedBy
+	env.PartnerName = data.PartnerName
+	env.CollectorAppPassword = data.CollectorAppPassword
 
 	operators := createOperators(data.Csvs, data.Subscriptions, data.AllInstallPlans, data.AllCatalogSources, false, true)
 	env.Operators = operators
@@ -575,4 +584,13 @@ func createNodes(nodes []corev1.Node) map[string]Node {
 	}
 
 	return wrapperNodes
+}
+func (env *TestEnvironment) GetBaremetalNodes() []Node {
+	var baremetalNodes []Node
+	for _, node := range env.Nodes {
+		if strings.HasPrefix(node.Data.Spec.ProviderID, "baremetalhost://") {
+			baremetalNodes = append(baremetalNodes, node)
+		}
+	}
+	return baremetalNodes
 }

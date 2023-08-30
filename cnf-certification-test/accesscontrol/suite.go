@@ -97,6 +97,13 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 		testIpcLockCapability(&env)
 	})
 
+	// Security Context: non-compliant capabilities (BPF)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestBpfIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
+		testBpfCapability(&env)
+	})
+
 	// container security context: non-root user
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSecConNonRootUserIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), ginkgo.Label(tags...), func() {
@@ -299,6 +306,11 @@ func testNetRawCapability(env *provider.TestEnvironment) {
 
 func testIpcLockCapability(env *provider.TestEnvironment) {
 	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "IPC_LOCK")
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+}
+
+func testBpfCapability(env *provider.TestEnvironment) {
+	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "BPF")
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
@@ -523,9 +535,7 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 					// If the subject is a service account and the service account is in the same namespace as the pod, then we have a failure
 					//nolint:gocritic
 					if subject.Kind == rbacv1.ServiceAccountKind && subject.Namespace == put.Namespace && subject.Name == put.Spec.ServiceAccountName {
-						failMsg := fmt.Sprintf("Pod: %s/%s has the following role bindings that do not live in the same namespace: %s", put.Namespace, put.Name, env.RoleBindings[rbIndex].Name)
-						logrus.Warnf(failMsg)
-						tnf.ClaimFilePrintf(failMsg)
+						tnf.Logf(logrus.WarnLevel, "Pod: %s/%s has the following role bindings that do not live in the same namespace: %s", put.Namespace, put.Name, env.RoleBindings[rbIndex].Name)
 
 						// Add the pod to the non-compliant list
 						nonCompliantObjects = append(nonCompliantObjects,
@@ -576,9 +586,7 @@ func testPodClusterRoleBindings(env *provider.TestEnvironment) {
 		// Pod was found to be using a cluster role binding.  This is not allowed.
 		// Flagging this pod as a failed pod.
 		if result {
-			errMsg := fmt.Sprintf("%s is using a cluster role binding", put.String())
-			logrus.Warn(errMsg)
-			tnf.ClaimFilePrintf(errMsg)
+			tnf.Logf(logrus.WarnLevel, "%s is using a cluster role binding", put.String())
 			podIsCompliant = false
 		}
 
