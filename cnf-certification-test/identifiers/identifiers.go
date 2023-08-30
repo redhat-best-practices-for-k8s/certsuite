@@ -494,7 +494,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		BpfCapabilityRemediation,
 		`Exception can be considered. Must identify which container requires the capability and detail why.`,
 		TestBpfIdentifierDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
