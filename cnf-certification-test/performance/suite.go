@@ -37,6 +37,9 @@ import (
 const (
 	maxNumberOfExecProbes     = 10
 	minExecProbePeriodSeconds = 10
+	LivenessProbe             = "LivenessProbe"
+	StartupProbe              = "StartupProbe"
+	ReadinessProbe            = "ReadinessProbe"
 )
 
 // The pods with no access to host network are considered for these tests
@@ -102,7 +105,7 @@ func CheckProbePeriodSeconds(elem *v1.Probe, cut *provider.Container, s string) 
 	return false
 }
 
-func testProbe(aProbe *v1.Probe, counter *int, cut *provider.Container, str string) (nonCompliantObjects, compliantObjects []*testhelper.ReportObject) {
+func testProbePeriodSeconds(aProbe *v1.Probe, counter *int, cut *provider.Container, str string) (nonCompliantObjects, compliantObjects []*testhelper.ReportObject) {
 	if aProbe != nil && aProbe.Exec != nil {
 		*counter++
 		if CheckProbePeriodSeconds(aProbe, cut, str) {
@@ -125,15 +128,29 @@ func testLimitedUseOfExecProbes(env *provider.TestEnvironment) {
 	counter := 0
 	for _, put := range env.Pods {
 		for _, cut := range put.Containers {
-			nonCompliantObjects, compliantObjects = testProbe(cut.LivenessProbe, &counter, cut, "LivenessProbe")
+			probesToCheck := []struct {
+				probe     *v1.Probe
+				probeName string
+			}{
+				{
+					probe:     cut.LivenessProbe,
+					probeName: "LivenessProbe",
+				},
+				{
+					probe:     cut.ReadinessProbe,
+					probeName: "ReadinessProbe",
+				},
+				{
+					probe:     cut.StartupProbe,
+					probeName: "StartupProbe",
+				},
+			}
 
-			nonCompliant, compliant := testProbe(cut.StartupProbe, &counter, cut, "StartupProbe")
-			compliantObjects = append(compliantObjects, compliant...)
-			nonCompliantObjects = append(nonCompliantObjects, nonCompliant...)
-
-			nonCompliant, compliant = testProbe(cut.ReadinessProbe, &counter, cut, "ReadinessProbe")
-			compliantObjects = append(compliantObjects, compliant...)
-			nonCompliantObjects = append(nonCompliantObjects, nonCompliant...)
+			for _, probeToCheck := range probesToCheck {
+				ncObjs, cObjs := testProbePeriodSeconds(probeToCheck.probe, &counter, cut, probeToCheck.probeName)
+				nonCompliantObjects = append(nonCompliantObjects, ncObjs...)
+				compliantObjects = append(compliantObjects, cObjs...)
+			}
 		}
 	}
 
