@@ -223,7 +223,7 @@ jobs:
             --rm \
             --volume "${GITHUB_WORKSPACE}"/offline-db:/tmp/dump:Z \
             ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
-          docker system prune -a
+          docker system prune --volumes -f
 
       - name: Install ginkgo
         run: make install-tools
@@ -280,7 +280,7 @@ jobs:
               --policy /policy.json \
               --results /claim.json \
               >"${GITHUB_WORKSPACE}"/results.txt
-          docker system prune -a
+          docker system prune --volumes -f
 
       - name: Check that their are 0 failed tests in the gradetool results
         run: |
@@ -405,7 +405,7 @@ jobs:
               --policy /policy.json \
               --results /claim.json \
               >"${GITHUB_WORKSPACE}"/results.txt
-          docker system prune -a
+          docker system prune --volumes -f
 
       - name: Check that their are 0 failed tests in the gradetool results
         run: |
