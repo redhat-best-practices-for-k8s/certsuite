@@ -169,7 +169,6 @@ func testTerminationMessagePolicy(env *provider.TestEnvironment) {
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
-//nolint:funlen
 func testPodDisruptionBudgets(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
