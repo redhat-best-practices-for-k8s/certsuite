@@ -1601,7 +1601,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		"Roles providing access to CRDs should not refer to any other api or resources. Change the generation of the CRD role accordingly",
 		NoExceptionProcessForExtendedTests,
 		"https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-custom-role-to-access-application-crds",
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Optional,
 			Telco:    Optional,
