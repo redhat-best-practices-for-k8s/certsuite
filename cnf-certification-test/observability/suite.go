@@ -176,17 +176,11 @@ func testPodDisruptionBudgets(env *provider.TestEnvironment) {
 
 	// Loop through all of the of Deployments and StatefulSets and check if the PDBs are valid
 	for _, d := range env.Deployments {
-		// Check if there are zero PDBs, if so this is a failure.
-		if len(env.PodDisruptionBudgets) == 0 {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("Deployment is missing a corresponding PodDisruptionBudget", testhelper.DeploymentType, false).
-				AddField(testhelper.DeploymentName, d.Name).
-				AddField(testhelper.Namespace, d.Namespace))
-			continue
-		}
-
-		for k, v := range d.Spec.Template.Labels {
-			for pdbIndex := range env.PodDisruptionBudgets {
+		pdbFound := false
+		for pdbIndex := range env.PodDisruptionBudgets {
+			for k, v := range d.Spec.Template.Labels {
 				if env.PodDisruptionBudgets[pdbIndex].Spec.Selector.MatchLabels[k] == v {
+					pdbFound = true
 					if ok, err := pdbv1.CheckPDBIsValid(&env.PodDisruptionBudgets[pdbIndex], d.Spec.Replicas); !ok {
 						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject(fmt.Sprintf("Invalid PodDisruptionBudget config: %v", err), testhelper.DeploymentType, false).
 							AddField(testhelper.DeploymentName, d.Name).
@@ -197,38 +191,45 @@ func testPodDisruptionBudgets(env *provider.TestEnvironment) {
 						logrus.Infof("PDB %s is valid for Deployment: %s", env.PodDisruptionBudgets[pdbIndex].Name, d.Name)
 						compliantObjects = append(compliantObjects, testhelper.NewReportObject("Deployment: references PodDisruptionBudget", testhelper.DeploymentType, true).
 							AddField(testhelper.DeploymentName, d.Name).
+							AddField(testhelper.Namespace, d.Namespace).
 							AddField(testhelper.PodDisruptionBudgetReference, env.PodDisruptionBudgets[pdbIndex].Name))
 					}
 				}
 			}
 		}
+		if !pdbFound {
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("Deployment is missing a corresponding PodDisruptionBudget", testhelper.DeploymentType, false).
+				AddField(testhelper.DeploymentName, d.Name).
+				AddField(testhelper.Namespace, d.Namespace))
+		}
 	}
 
 	for _, s := range env.StatefulSets {
-		// Check if there are zero PDBs, if so this is a failure.
-		if len(env.PodDisruptionBudgets) == 0 {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("StatefulSet is missing a corresponding PodDisruptionBudget", testhelper.StatefulSetType, false).
-				AddField(testhelper.DeploymentName, s.Name).
-				AddField(testhelper.Namespace, s.Namespace))
-			continue
-		}
-
-		for k, v := range s.Spec.Template.Labels {
-			for pdbIndex := range env.PodDisruptionBudgets {
+		pdbFound := false
+		for pdbIndex := range env.PodDisruptionBudgets {
+			for k, v := range s.Spec.Template.Labels {
 				if env.PodDisruptionBudgets[pdbIndex].Spec.Selector.MatchLabels[k] == v {
+					pdbFound = true
 					if ok, err := pdbv1.CheckPDBIsValid(&env.PodDisruptionBudgets[pdbIndex], s.Spec.Replicas); !ok {
 						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject(fmt.Sprintf("Invalid PodDisruptionBudget config: %v", err), testhelper.StatefulSetType, false).
 							AddField(testhelper.StatefulSetName, s.Name).
+							AddField(testhelper.Namespace, s.Namespace).
 							AddField(testhelper.PodDisruptionBudgetReference, env.PodDisruptionBudgets[pdbIndex].Name))
 						tnf.ClaimFilePrintf("PDB %s is not valid for StatefulSet %s, err: %v", env.PodDisruptionBudgets[pdbIndex].Name, s.Name, err)
 					} else {
 						logrus.Infof("PDB %s is valid for StatefulSet: %s", env.PodDisruptionBudgets[pdbIndex].Name, s.Name)
 						compliantObjects = append(compliantObjects, testhelper.NewReportObject("StatefulSet: references PodDisruptionBudget", testhelper.StatefulSetType, true).
-							AddField(testhelper.StatefulSetType, s.Name).
+							AddField(testhelper.StatefulSetName, s.Name).
+							AddField(testhelper.Namespace, s.Namespace).
 							AddField(testhelper.PodDisruptionBudgetReference, env.PodDisruptionBudgets[pdbIndex].Name))
 					}
 				}
 			}
+		}
+		if !pdbFound {
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("StatefulSet is missing a corresponding PodDisruptionBudget", testhelper.StatefulSetType, false).
+				AddField(testhelper.StatefulSetName, s.Name).
+				AddField(testhelper.Namespace, s.Namespace))
 		}
 	}
 
