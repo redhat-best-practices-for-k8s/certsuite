@@ -622,7 +622,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		`Exception possible if CNF uses mlock(), mlockall(), shmctl(), mmap(); exception will be considered for DPDK applications. Must identify which container requires the capability and document why. If the container had the right configuration of the allowed category from the 4 approved list then the test will pass. The 4 categories are defined in Requirement ID 94118 of the Extended Best Practices guide (private repo)`, //nolint:lll
 		`no exception needed for optional/extended test`,
 		TestSecContextIdentifierDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Optional,
 			Telco:    Optional,
