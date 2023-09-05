@@ -35,7 +35,7 @@ jobs:
 
     steps:
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
 
@@ -57,7 +57,7 @@ jobs:
 
       # Create a Kind cluster for testing.
       - name: Check out `cnf-certification-test-partner`
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: test-network-function/cnf-certification-test-partner
           path: cnf-certification-test-partner

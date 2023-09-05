@@ -32,7 +32,7 @@ jobs:
       TNF_VERSION: ""
       PARTNER_VERSION: ""
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ env.CURRENT_VERSION_GENERIC_BRANCH }}
           fetch-depth: '0'
@@ -76,7 +76,7 @@ jobs:
         if: ${{ failure() }}
         run: echo "Tag '$PARTNER_VERSION' does not exist on remote $PARTNER_SRC_URL"
       - name: Checkout the version tag
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ env.TNF_VERSION }}
       - name: Build the `cnf-certification-test` image

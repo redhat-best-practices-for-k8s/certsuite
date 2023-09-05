@@ -50,7 +50,7 @@ jobs:
         run: echo "::remove-matcher owner=go::"
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
 
@@ -101,7 +101,7 @@ jobs:
     name: Checkmake, hadolint, markdownlint, shellcheck, shfmt, typos, yamllint
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: |
           curl --location --output $CM_BIN --silent $CM_URL_LINUX
           chmod +x $CM_BIN
@@ -150,7 +150,7 @@ jobs:
         run: echo "::remove-matcher owner=go::"
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
 
@@ -210,7 +210,7 @@ jobs:
         run: echo "::remove-matcher owner=go::"
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
 
@@ -239,7 +239,7 @@ jobs:
 
       # Create a Kind cluster for testing.
       - name: Check out `cnf-certification-test-partner`
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: test-network-function/cnf-certification-test-partner
           path: cnf-certification-test-partner
@@ -334,7 +334,7 @@ jobs:
 
       # Create a Kind cluster for testing.
       - name: Check out `cnf-certification-test-partner`
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: test-network-function/cnf-certification-test-partner
           path: cnf-certification-test-partner
@@ -352,7 +352,7 @@ jobs:
 
       # Perform smoke tests using a TNF container.
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
 
