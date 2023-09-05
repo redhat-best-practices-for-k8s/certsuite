@@ -17,9 +17,6 @@
 package identifiers
 
 const (
-	//nolint:gosec
-	AutomountServiceTokenRemediation = `Check that pod has automountServiceAccountToken set to false or pod is attached to service account which has automountServiceAccountToken set to false, unless the pod needs access to the kubernetes API server. Pods which do not need API access should set automountServiceAccountToken to false in pod spec.`
-
 	IsRedHatReleaseRemediation = `Build a new container image that is based on UBI (Red Hat Universal Base Image).`
 
 	NodeOperatingSystemRemediation = `Please update your workers to a version that is supported by your version of OpenShift`
@@ -151,8 +148,6 @@ const (
 	CPUIsolationRemediation = `CPU isolation testing is enabled. Please ensure that all pods adhere to the CPU isolation requirements.`
 
 	UID1337Remediation = `Use another process UID that is not 1337.`
-
-	ProjectedVolumeServiceAccountRemediation = `Ensure that pods do not use projected volumes and service account tokens`
 
 	LimitedUseOfExecProbesRemediation = `Reduce the number of exec probes in the cluster for this CNF to less than 10. Increase the update period of the exec probe to be superior or equal to 10 seconds.`
 

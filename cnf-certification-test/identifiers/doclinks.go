@@ -21,9 +21,7 @@ const (
 	TestOCPReservedPortsUsageDocLink                = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ports-reserved-by-openshift"
 
 	// Access Control Suite
-	Test1337UIDIdentifierDocLink = NoDocLinkExtended
-	//nolint:gosec
-	TestProjectedVolumeServiceAccountTokenIdentifierDocLink  = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-automount-services-for-pods"
+	Test1337UIDIdentifierDocLink                             = NoDocLinkExtended
 	TestNetAdminIdentifierDocLink                            = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-net_admin"
 	TestSysAdminIdentifierDocLink                            = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-avoid-sys_admin"
 	TestIpcLockIdentifierDocLink                             = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ipc_lock"
@@ -42,7 +40,6 @@ const (
 	TestPodClusterRoleBindingsBestPracticesIdentifierDocLink = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-security-rbac"
 	TestPodRoleBindingsBestPracticesIdentifierDocLink        = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-security-rbac"
 	TestPodServiceAccountBestPracticesIdentifierDocLink      = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-scc-permissions-for-an-application"
-	TestPodAutomountServiceAccountIdentifierDocLink          = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-automount-services-for-pods"
 	TestServicesDoNotUseNodeportsIdentifierDocLink           = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-avoid-the-host-network-namespace"
 	TestUnalteredBaseImageIdentifierDocLink                  = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-image-standards"
 	TestOneProcessPerContainerIdentifierDocLink              = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-one-process-per-container"

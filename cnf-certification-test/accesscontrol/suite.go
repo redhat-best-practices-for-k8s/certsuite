@@ -170,12 +170,6 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
 		testPodClusterRoleBindings(&env)
 	})
-	// automount service token
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodAutomountServiceAccountIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
-		testAutomountServiceToken(&env)
-	})
 	// one process per container
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOneProcessPerContainerIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
@@ -225,12 +219,6 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 		test1337UIDs(&env)
 	})
 
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestProjectedVolumeServiceAccountTokenIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
-		testProjectedVolumeServiceAccount(&env)
-	})
-
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServicesDoNotUseNodeportsIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
@@ -243,37 +231,6 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 		testCrdRoles(&env)
 	})
 })
-
-func testProjectedVolumeServiceAccount(env *provider.TestEnvironment) {
-	ginkgo.By("Testing pods to ensure they are not using projected volumes for service account access")
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-	for _, put := range env.Pods {
-		// Check if the pod is using a projected volume service account token
-		volumesWithProjectedServiceAccounts := put.GetVolumesUsingProjectedServiceAccounts()
-
-		// Pod is compliant if it is not using a projected volume for service account access
-		if len(volumesWithProjectedServiceAccounts) == 0 {
-			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "the pod is not using a projected volume for service account access", true))
-			continue
-		}
-
-		// Loop through all of the volumes that are using projected service accounts
-		for index := range volumesWithProjectedServiceAccounts {
-			aPodOut := testhelper.NewPodReportObject(put.Namespace, put.Name,
-				"the projected volume Service account token field is not nil",
-				false).
-				SetType(testhelper.ProjectedVolumeType).
-				AddField(testhelper.ProjectedVolumeName, volumesWithProjectedServiceAccounts[index].Name)
-
-			for _, saTokens := range volumesWithProjectedServiceAccounts[index].Projected.Sources {
-				aPodOut.AddField(testhelper.ProjectedVolumeSAToken, saTokens.ServiceAccountToken.String())
-			}
-			nonCompliantObjects = append(nonCompliantObjects, aPodOut)
-		}
-	}
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
-}
 
 func checkForbiddenCapability(containers []*provider.Container, capability string) (compliantObjects, nonCompliantObjects []*testhelper.ReportObject) {
 	for _, cut := range containers {
@@ -596,36 +553,6 @@ func testPodClusterRoleBindings(env *provider.TestEnvironment) {
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is using a cluster role binding", false))
 		}
 	}
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
-}
-
-func testAutomountServiceToken(env *provider.TestEnvironment) {
-	ginkgo.By("Should have automountServiceAccountToken set to false")
-
-	msg := []string{}
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-	for _, put := range env.Pods {
-		ginkgo.By(fmt.Sprintf("check the existence of pod service account %s (ns= %s )", put.Namespace, put.Name))
-		if put.Spec.ServiceAccountName == defaultServiceAccount {
-			tnf.ClaimFilePrintf("Pod %s has been found with default service account name.", put.Name)
-			ginkgo.Fail("Pod has been found with default service account name.")
-		}
-
-		// Evaluate the pod's automount service tokens and any attached service accounts
-		podPassed, newMsg := rbac.EvaluateAutomountTokens(put.Pod)
-		if !podPassed {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, newMsg, false))
-			msg = append(msg, newMsg)
-		} else {
-			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod does not have automount service tokens set to true", true))
-		}
-	}
-
-	if len(msg) > 0 {
-		tnf.ClaimFilePrintf(strings.Join(msg, ""))
-	}
-
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 

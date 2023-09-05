@@ -7,13 +7,13 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 
 ## Test cases summary
 
-### Total test cases: 90
+### Total test cases: 88
 
 ### Total suites: 9
 
 |Suite|Tests per suite|
 |---|---|
-|access-control|28|
+|access-control|26|
 |affiliated-certification|5|
 |lifecycle|18|
 |manageability|2|
@@ -41,11 +41,11 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |---|---|
 |39|3|
 
-### Telco specific tests only: 28
+### Telco specific tests only: 26
 
 |Mandatory|Optional|
 |---|---|
-|28|0|
+|26|0|
 
 ## Test Case list
 
@@ -229,22 +229,6 @@ Tags|common,access-control
 |Non-Telco|Optional|
 |Telco|Optional|
 
-#### access-control-pod-automount-service-account-token
-
-Property|Description
----|---
-Unique ID|access-control-pod-automount-service-account-token
-Description|Check that all pods under test have automountServiceAccountToken set to false. Only pods that require access to the kubernetes API server should have automountServiceAccountToken set to true
-Suggested Remediation|Check that pod has automountServiceAccountToken set to false or pod is attached to service account which has automountServiceAccountToken set to false, unless the pod needs access to the kubernetes API server. Pods which do not need API access should set automountServiceAccountToken to false in pod spec.
-Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-automount-services-for-pods
-Exception Process|Exception will be considered if container needs to access APIs which OCP does not offer natively. Must document which container requires which API(s) and detail why existing OCP APIs cannot be used.
-Tags|telco,access-control
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|Far-Edge|Mandatory|
-|Non-Telco|Optional|
-|Telco|Mandatory|
-
 #### access-control-pod-host-ipc
 
 Property|Description
@@ -339,22 +323,6 @@ Tags|common,access-control
 |Extended|Mandatory|
 |Far-Edge|Mandatory|
 |Non-Telco|Mandatory|
-|Telco|Mandatory|
-
-#### access-control-projected-volume-service-account-token
-
-Property|Description
----|---
-Unique ID|access-control-projected-volume-service-account-token
-Description|Checks that pods do not use projected volumes and service account tokens
-Suggested Remediation|Ensure that pods do not use projected volumes and service account tokens
-Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-automount-services-for-pods
-Exception Process|Exception will be considered if container needs to access APIs which OCP does not offer natively. Must document which container requires which API(s) and detail why existing OCP APIs cannot be used.
-Tags|telco,access-control
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|Far-Edge|Mandatory|
-|Non-Telco|Optional|
 |Telco|Mandatory|
 
 #### access-control-requests-and-limits

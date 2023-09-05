@@ -75,7 +75,6 @@ var (
 	TestICMPv4ConnectivityIdentifier                  claim.Identifier
 	TestNetworkPolicyDenyAllIdentifier                claim.Identifier
 	Test1337UIDIdentifier                             claim.Identifier
-	TestProjectedVolumeServiceAccountTokenIdentifier  claim.Identifier
 	TestContainerIsCertifiedDigestIdentifier          claim.Identifier
 	TestHelmVersionIdentifier                         claim.Identifier
 	TestPodHugePages2M                                claim.Identifier
@@ -129,7 +128,6 @@ var (
 	TestPodRecreationIdentifier                       claim.Identifier
 	TestPodRoleBindingsBestPracticesIdentifier        claim.Identifier
 	TestPodServiceAccountBestPracticesIdentifier      claim.Identifier
-	TestPodAutomountServiceAccountIdentifier          claim.Identifier
 	TestServicesDoNotUseNodeportsIdentifier           claim.Identifier
 	TestUnalteredBaseImageIdentifier                  claim.Identifier
 	TestUnalteredStartupBootParamsIdentifier          claim.Identifier
@@ -230,21 +228,6 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Optional,
 			Extended: Optional},
 		TagFarEdge)
-
-	TestProjectedVolumeServiceAccountTokenIdentifier = AddCatalogEntry(
-		"projected-volume-service-account-token",
-		common.AccessControlTestKey,
-		`Checks that pods do not use projected volumes and service account tokens`,
-		ProjectedVolumeServiceAccountRemediation,
-		`Exception will be considered if container needs to access APIs which OCP does not offer natively. Must document which container requires which API(s) and detail why existing OCP APIs cannot be used.`,
-		TestProjectedVolumeServiceAccountTokenIdentifierDocLink,
-		true,
-		map[string]string{
-			FarEdge:  Mandatory,
-			Telco:    Mandatory,
-			NonTelco: Optional,
-			Extended: Mandatory},
-		TagTelco)
 
 	TestHelmVersionIdentifier = AddCatalogEntry(
 		"helm-version",
@@ -1096,22 +1079,6 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 			Extended: Mandatory,
 		},
 		TagCommon)
-
-	TestPodAutomountServiceAccountIdentifier = AddCatalogEntry(
-		"pod-automount-service-account-token",
-		common.AccessControlTestKey,
-		`Check that all pods under test have automountServiceAccountToken set to false. Only pods that require access to the kubernetes API server should have automountServiceAccountToken set to true`,
-		AutomountServiceTokenRemediation,
-		`Exception will be considered if container needs to access APIs which OCP does not offer natively. Must document which container requires which API(s) and detail why existing OCP APIs cannot be used.`,
-		TestPodAutomountServiceAccountIdentifierDocLink,
-		true,
-		map[string]string{
-			FarEdge:  Mandatory,
-			Telco:    Mandatory,
-			NonTelco: Optional,
-			Extended: Mandatory,
-		},
-		TagTelco)
 
 	TestServicesDoNotUseNodeportsIdentifier = AddCatalogEntry(
 		"service-type",
