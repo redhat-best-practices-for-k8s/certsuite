@@ -250,7 +250,7 @@ func testProjectedVolumeServiceAccount(env *provider.TestEnvironment) {
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
 		// Check if the pod is using a projected volume service account token
-		volumesWithProjectedServiceAccounts := put.GetVolumesUsingProjectedServiceAccounts()
+		volumesWithProjectedServiceAccounts := put.GetVolumesUsingProjectedDefaultServiceAccounts()
 
 		// Pod is compliant if it is not using a projected volume for service account access
 		if len(volumesWithProjectedServiceAccounts) == 0 {

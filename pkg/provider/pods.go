@@ -404,7 +404,7 @@ func (p *Pod) IsRunAsUserID(uid int64) bool {
 	return *p.Pod.Spec.SecurityContext.RunAsUser == uid
 }
 
-func (p *Pod) GetVolumesUsingProjectedServiceAccounts() []corev1.Volume {
+func (p *Pod) GetVolumesUsingProjectedDefaultServiceAccounts() []corev1.Volume {
 	var volumes []corev1.Volume
 	if p.Pod.Spec.Volumes == nil {
 		return volumes
@@ -415,8 +415,9 @@ func (p *Pod) GetVolumesUsingProjectedServiceAccounts() []corev1.Volume {
 			continue
 		}
 
+		// Find any "default" service account tokens
 		for _, source := range p.Pod.Spec.Volumes[index].Projected.Sources {
-			if source.ServiceAccountToken != nil {
+			if source.ServiceAccountToken != nil && source.ServiceAccountToken.Audience == "system:serviceaccount:default:default" {
 				volumes = append(volumes, p.Pod.Spec.Volumes[index])
 			}
 		}

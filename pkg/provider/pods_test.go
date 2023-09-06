@@ -525,7 +525,7 @@ func TestUsesProjectedVolumeServiceAccounts(t *testing.T) {
 			},
 			expectedResult: nil,
 		},
-		{ // Test Case #2 - One volume uses projected volume with service account token, return volume
+		{ // Test Case #2 - One volume uses projected volume with "test-audience" service account token, return empty
 			testPod: Pod{
 				Pod: &corev1.Pod{
 					Spec: corev1.PodSpec{
@@ -548,21 +548,7 @@ func TestUsesProjectedVolumeServiceAccounts(t *testing.T) {
 					},
 				},
 			},
-			expectedResult: []corev1.Volume{
-				{
-					Name: "test-volume1", VolumeSource: corev1.VolumeSource{
-						Projected: &corev1.ProjectedVolumeSource{
-							Sources: []corev1.VolumeProjection{
-								{
-									ServiceAccountToken: &corev1.ServiceAccountTokenProjection{
-										Audience: "test-audience",
-									},
-								},
-							},
-						},
-					},
-				},
-			},
+			expectedResult: nil,
 		},
 		{ // Test Case #3 - Uses projected volume but not service account token, return empty
 			testPod: Pod{
@@ -587,9 +573,49 @@ func TestUsesProjectedVolumeServiceAccounts(t *testing.T) {
 			},
 			expectedResult: nil,
 		},
+		{ // Test Case #4 - Uses projected volume with default service account token, return volume
+			testPod: Pod{
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
+						Volumes: []corev1.Volume{
+							{
+								Name: "test-volume1",
+								VolumeSource: corev1.VolumeSource{
+									Projected: &corev1.ProjectedVolumeSource{
+										Sources: []corev1.VolumeProjection{
+											{
+												ServiceAccountToken: &corev1.ServiceAccountTokenProjection{
+													Audience: "system:serviceaccount:default:default",
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			expectedResult: []corev1.Volume{
+				{
+					Name: "test-volume1",
+					VolumeSource: corev1.VolumeSource{
+						Projected: &corev1.ProjectedVolumeSource{
+							Sources: []corev1.VolumeProjection{
+								{
+									ServiceAccountToken: &corev1.ServiceAccountTokenProjection{
+										Audience: "system:serviceaccount:default:default",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
 	}
 
 	for _, tc := range testCases {
-		assert.Equal(t, tc.expectedResult, tc.testPod.GetVolumesUsingProjectedServiceAccounts())
+		assert.Equal(t, tc.expectedResult, tc.testPod.GetVolumesUsingProjectedDefaultServiceAccounts())
 	}
 }
