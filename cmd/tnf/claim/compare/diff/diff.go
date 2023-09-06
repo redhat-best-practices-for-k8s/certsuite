@@ -8,7 +8,7 @@ import (
 )
 
 // Diffs holds the differences between two interface{} objects that have
-// been obtained by unmarshaling JSON strings.
+// been obtained by unmarshalling JSON strings.
 type Diffs struct {
 	// Name of the json object whose diffs are stored here.
 	// It will be used when serializing the data in table format.
@@ -109,7 +109,7 @@ func (d *Diffs) String() string {
 	return str
 }
 
-// Compares to interface{} objects obtained thorugh json.Unmarshal() and returns
+// Compares to interface{} objects obtained through json.Unmarshal() and returns
 // a pointer to a Diffs object
 func Compare(objectName string, claim1Object, claim2Object interface{}) *Diffs {
 	objectsDiffs := Diffs{Name: objectName}
@@ -162,7 +162,7 @@ type field struct {
 	Value interface{}
 }
 
-// Helper function that traverses recursivelly a node to return a list
+// Helper function that traverses recursively a node to return a list
 // of each field (leaf) path and its value.
 func traverse(node interface{}, path string) []field {
 	if node == nil {

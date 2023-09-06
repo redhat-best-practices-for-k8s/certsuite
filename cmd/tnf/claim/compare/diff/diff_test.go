@@ -92,21 +92,21 @@ func TestCompare(t *testing.T) {
 		objectName    string
 		JSONData1     string
 		JSONData2     string
-		expectedDiffs Diffs
+		expectedDiffs *Diffs
 	}{
 		{
 			name:          "nil objects",
 			objectName:    "nil",
 			JSONData1:     "{}",
 			JSONData2:     "{}",
-			expectedDiffs: Diffs{Name: "nil"},
+			expectedDiffs: &Diffs{Name: "nil"},
 		},
 		{
 			name:          "Equal objects with single field",
 			objectName:    "Test",
 			JSONData1:     `{ "field1" : "value1" }`,
 			JSONData2:     `{ "field1" : "value1" }`,
-			expectedDiffs: Diffs{Name: "Test"},
+			expectedDiffs: &Diffs{Name: "Test"},
 		},
 		{
 			name:       "Equal complex objects with matching fields",
@@ -137,7 +137,7 @@ func TestCompare(t *testing.T) {
 					"internalField3": ["hello3", "goodbye3"]
 				}
 			}`,
-			expectedDiffs: Diffs{Name: "Test"},
+			expectedDiffs: &Diffs{Name: "Test"},
 		},
 		{
 			name:       "Different complex objects 1: two non matching values",
@@ -168,7 +168,7 @@ func TestCompare(t *testing.T) {
 					"internalField3": ["hello3", "goodbye3"]
 				}
 			}`,
-			expectedDiffs: Diffs{
+			expectedDiffs: &Diffs{
 				Name: "Test",
 				Fields: []FieldDiff{
 					{
@@ -189,7 +189,7 @@ func TestCompare(t *testing.T) {
 			objectName: "Test",
 			JSONData1:  `{ "field1" : "value1", "field2": "value2" }`,
 			JSONData2:  `{ "field1" : "value1" }`,
-			expectedDiffs: Diffs{
+			expectedDiffs: &Diffs{
 				Name:               "Test",
 				FieldsInClaim1Only: []string{"/field2=value2"}},
 		},
@@ -198,7 +198,7 @@ func TestCompare(t *testing.T) {
 			objectName: "Test",
 			JSONData1:  `{ "field1" : "value1" }`,
 			JSONData2:  `{ "field1" : "value1", "field2": "value2" }`,
-			expectedDiffs: Diffs{
+			expectedDiffs: &Diffs{
 				Name:               "Test",
 				FieldsInClaim2Only: []string{"/field2=value2"}},
 		},
@@ -207,7 +207,7 @@ func TestCompare(t *testing.T) {
 			objectName: "Test",
 			JSONData1:  `{ "field1" : "value1", "field2": "value3" }`,
 			JSONData2:  `{ "field1" : "value2", "field3": "value4" }`,
-			expectedDiffs: Diffs{
+			expectedDiffs: &Diffs{
 				Name: "Test",
 				Fields: []FieldDiff{
 					{
@@ -234,7 +234,8 @@ func TestCompare(t *testing.T) {
 			differences := Compare(tc.objectName, data1, data2)
 			t.Logf("Expected: %+v", tc.expectedDiffs)
 			t.Logf("Actual  : %+v", *differences)
-			assert.DeepEqual(t, &tc.expectedDiffs, differences)
+
+			assert.DeepEqual(t, tc.expectedDiffs, differences)
 		})
 	}
 }
