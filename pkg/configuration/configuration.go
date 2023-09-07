@@ -114,8 +114,6 @@ type LabelObject struct {
 type TestConfiguration struct {
 	// targetNameSpaces to be used in
 	TargetNameSpaces []Namespace `yaml:"targetNameSpaces" json:"targetNameSpaces"`
-	// DEPRECATED - Custom Pod labels for discovering containers/pods under test
-	TargetPodLabels []Label `yaml:"targetPodLabels,omitempty" json:"targetPodLabels,omitempty"`
 	// labels identifying pods under test
 	PodsUnderTestLabels []string `yaml:"podsUnderTestLabels,omitempty" json:"podsUnderTestLabels,omitempty"`
 	// labels identifying operators unde test
