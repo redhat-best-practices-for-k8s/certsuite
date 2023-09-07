@@ -75,11 +75,6 @@ type Label struct {
 	Value  string `yaml:"value" json:"value"`
 }
 
-// Namespace struct defines namespace properties
-type Namespace struct {
-	Name string `yaml:"name" json:"name"`
-}
-
 // CrdFilter defines a CustomResourceDefinition config filter.
 type CrdFilter struct {
 	NameSuffix string `yaml:"nameSuffix" json:"nameSuffix"`
@@ -113,7 +108,7 @@ type LabelObject struct {
 // TestConfiguration provides test related configuration
 type TestConfiguration struct {
 	// targetNameSpaces to be used in
-	TargetNameSpaces []Namespace `yaml:"targetNameSpaces" json:"targetNameSpaces"`
+	TargetNamespaces []string `yaml:"targetNamespaces" json:"targetNamespaces"`
 	// DEPRECATED - Custom Pod labels for discovering containers/pods under test
 	TargetPodLabels []Label `yaml:"targetPodLabels,omitempty" json:"targetPodLabels,omitempty"`
 	// labels identifying pods under test

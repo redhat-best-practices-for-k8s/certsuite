@@ -152,7 +152,7 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.AllCsvs = getAllOperators(oc.OlmClient)
 	data.AllInstallPlans = getAllInstallPlans(oc.OlmClient)
 	data.AllCatalogSources = getAllCatalogSources(oc.OlmClient)
-	data.Namespaces = namespacesListToStringList(config.TargetNameSpaces)
+	data.Namespaces = config.TargetNamespaces
 	data.Pods, data.AllPods = findPodsByLabel(oc.K8sClient.CoreV1(), config.PodsUnderTestLabelsObjects, data.Namespaces)
 	data.AbnormalEvents = findAbnormalEvents(oc.K8sClient.CoreV1(), data.Namespaces)
 	debugLabels := []configuration.LabelObject{{LabelKey: debugHelperPodsLabelName, LabelValue: debugHelperPodsLabelValue}}
@@ -172,7 +172,7 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	}
 	data.Crds = FindTestCrdNames(config.CrdFilters)
 	data.ScaleCrUnderTest = GetScaleCrUnderTest(data.Namespaces, data.Crds)
-	data.Csvs = findOperatorsByLabel(oc.OlmClient, config.OperatorsUnderTestLabelsObjects, config.TargetNameSpaces)
+	data.Csvs = findOperatorsByLabel(oc.OlmClient, config.OperatorsUnderTestLabelsObjects, config.TargetNamespaces)
 	data.Subscriptions = findSubscriptions(oc.OlmClient, data.Namespaces)
 	data.HelmChartReleases = getHelmList(oc.RestConfig, data.Namespaces)
 
@@ -240,13 +240,6 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.PartnerName = config.PartnerName
 	data.CollectorAppPassword = config.CollectorAppPassword
 	return data
-}
-
-func namespacesListToStringList(namespaceList []configuration.Namespace) (stringList []string) {
-	for _, ns := range namespaceList {
-		stringList = append(stringList, ns.Name)
-	}
-	return stringList
 }
 
 func getOpenshiftVersion(oClient clientconfigv1.ConfigV1Interface) (ver string, err error) {
