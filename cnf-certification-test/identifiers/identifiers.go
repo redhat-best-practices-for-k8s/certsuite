@@ -1548,7 +1548,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 	TestCPUIsolationIdentifier = AddCatalogEntry(
 		"cpu-isolation",
 		common.LifecycleTestKey,
-		`CPU isolation requires: For each container within the pod, resource requests and limits must be identical. Request and Limits are in the form of whole CPUs. The runTimeClassName must be specified. Annotations required disabling CPU and IRQ load-balancing.`, //nolint:lll
+		`CPU isolation requires: For each container within the pod, resource requests and limits must be identical. If cpu requests and limits are not identical and in whole units (Guaranteed pods with exclusive cpus), your pods will not be tested for compliance. The runTimeClassName must be specified. Annotations required disabling CPU and IRQ load-balancing.`, //nolint:lll
 		CPUIsolationRemediation,
 		NoDocumentedProcess,
 		TestCPUIsolationIdentifierDocLink,
