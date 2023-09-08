@@ -34,9 +34,9 @@ func TestLoadConfiguration(t *testing.T) {
 	env, err := configuration.LoadConfiguration(filePath)
 	assert.Nil(t, err)
 	// check if targetNameSpaces section is parsed properly
-	assert.Equal(t, nsLength, len(env.TargetNamespaces))
-	assert.Contains(t, env.TargetNamespaces, ns1)
-	assert.Contains(t, env.TargetNamespaces, ns2)
+	assert.Equal(t, nsLength, len(env.TargetNameSpaces))
+	assert.Contains(t, env.TargetNameSpaces, ns1)
+	assert.Contains(t, env.TargetNameSpaces, ns2)
 	// check if targetPodlabels section is parsed properly
 	assert.Equal(t, labels, len(env.TargetPodLabels))
 	podlabel1 := configuration.Label{Prefix: label1Prefix, Name: label1Name, Value: label1Value}
