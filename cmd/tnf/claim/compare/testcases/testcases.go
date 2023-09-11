@@ -166,7 +166,6 @@ func (r *DiffReport) String() string {
 		return str
 	}
 
-	// str += "\n"
 	str += fmt.Sprintf(tcDiffRowFmt, "TEST CASE NAME", "CLAIM-1", "CLAIM-2")
 	for _, diff := range r.TestCases {
 		str += fmt.Sprintf(tcDiffRowFmt, diff.Name, diff.Claim1Result, diff.Claim2Result)

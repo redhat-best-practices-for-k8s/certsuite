@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"gotest.tools/v3/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func Test_traverse(t *testing.T) {
@@ -78,10 +78,10 @@ func Test_traverse(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			var data interface{}
 			err := json.Unmarshal([]byte(tc.JSONdata), &data)
-			assert.NilError(t, err)
+			assert.Nil(t, err)
 
 			fields := traverse(data, "")
-			assert.DeepEqual(t, tc.expectedFields, fields)
+			assert.Equal(t, tc.expectedFields, fields)
 		})
 	}
 }
@@ -225,17 +225,17 @@ func TestCompare(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			var data1 interface{}
 			err := json.Unmarshal([]byte(tc.JSONData1), &data1)
-			assert.NilError(t, err)
+			assert.Nil(t, err)
 
 			var data2 interface{}
 			err = json.Unmarshal([]byte(tc.JSONData2), &data2)
-			assert.NilError(t, err)
+			assert.Nil(t, err)
 
 			differences := Compare(tc.objectName, data1, data2)
 			t.Logf("Expected: %+v", tc.expectedDiffs)
 			t.Logf("Actual  : %+v", *differences)
 
-			assert.DeepEqual(t, tc.expectedDiffs, differences)
+			assert.Equal(t, tc.expectedDiffs, differences)
 		})
 	}
 }

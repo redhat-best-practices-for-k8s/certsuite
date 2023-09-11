@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"gotest.tools/v3/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func Test_claimCompareFilesfunc(t *testing.T) {
@@ -70,7 +70,7 @@ func Test_claimCompareFilesfunc(t *testing.T) {
 			// Create pipe so we can read the stdout output from the test function.
 			originalStdout := os.Stdout
 			r, w, err := os.Pipe()
-			assert.NilError(t, err)
+			assert.Nil(t, err)
 
 			os.Stdout = w
 			// Run function under test.
@@ -83,7 +83,7 @@ func Test_claimCompareFilesfunc(t *testing.T) {
 			var testErr error
 			if tc.expectedOutputFile != "" {
 				expectedOutput, testErr = os.ReadFile(tc.expectedOutputFile)
-				assert.NilError(t, testErr)
+				assert.Nil(t, testErr)
 			}
 
 			if err != nil {

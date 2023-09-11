@@ -3,8 +3,8 @@ package nodes
 import (
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/compare/diff"
-	"gotest.tools/v3/assert"
 )
 
 // The UT checks the node role summary and the node differences table only.
