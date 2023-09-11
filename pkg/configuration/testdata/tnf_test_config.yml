@@ -1,6 +1,6 @@
 targetNameSpaces:
-  - name: tnf
-  - name: test2
+  - tnf
+  - test2
 targetPodLabels:
   - prefix: targetPod1.com
     name: name1
