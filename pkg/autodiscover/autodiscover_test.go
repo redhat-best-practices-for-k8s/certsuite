@@ -105,3 +105,37 @@ func TestBuildLabelKeyValue(t *testing.T) {
 		assert.Equal(t, tc.expectedVal, v)
 	}
 }
+
+func TestNamespacesListToStringList(t *testing.T) {
+	testCases := []struct {
+		testList       []configuration.Namespace
+		expectedOutput []string
+	}{
+		{
+			testList: []configuration.Namespace{
+				{
+					Name: "ns1",
+				},
+				{
+					Name: "ns2",
+				},
+			},
+			expectedOutput: []string{"ns1", "ns2"},
+		},
+		{
+			testList:       []configuration.Namespace{},
+			expectedOutput: nil,
+		},
+		{
+			testList: []configuration.Namespace{
+				{Name: "name1"},
+				{Name: "name1"},
+			},
+			expectedOutput: []string{"name1", "name1"},
+		},
+	}
+
+	for _, tc := range testCases {
+		assert.Equal(t, tc.expectedOutput, namespacesListToStringList(tc.testList))
+	}
+}
