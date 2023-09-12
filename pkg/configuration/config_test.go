@@ -45,26 +45,6 @@ func TestLoadConfiguration(t *testing.T) {
 	assert.Contains(t, env.TargetPodLabels, podlabel1)
 	podlabel2 := configuration.Label{Prefix: label2Prefix, Name: label2Name, Value: label2Value}
 	assert.Contains(t, env.TargetPodLabels, podlabel2)
-	// PodsUnderTestLabelsObjects
-	assert.Equal(t, 4, len(env.PodsUnderTestLabelsObjects))
-	assert.Equal(t, env.PodsUnderTestLabelsObjects[0].LabelKey, "test", "pod")
-	assert.Equal(t, env.PodsUnderTestLabelsObjects[1].LabelKey, "cnf", "pod")
-	assert.Equal(t, env.PodsUnderTestLabelsObjects[2].LabelKey, "cnf/test", "pod1")
-	assert.Equal(t, env.PodsUnderTestLabelsObjects[3].LabelKey, "cnf/testEmpty", "")
-	assert.Equal(t, env.PodsUnderTestLabelsObjects[0].LabelValue, "pod")
-	assert.Equal(t, env.PodsUnderTestLabelsObjects[1].LabelValue, "pod")
-	assert.Equal(t, env.PodsUnderTestLabelsObjects[2].LabelValue, "pod1")
-	assert.Equal(t, env.PodsUnderTestLabelsObjects[3].LabelValue, "")
-	// OperatorsUnderTestLabelsObjects
-	assert.Equal(t, 4, len(env.OperatorsUnderTestLabelsObjects))
-	assert.Equal(t, env.OperatorsUnderTestLabelsObjects[0].LabelKey, "test")
-	assert.Equal(t, env.OperatorsUnderTestLabelsObjects[1].LabelKey, "cnf/test")
-	assert.Equal(t, env.OperatorsUnderTestLabelsObjects[2].LabelKey, "cnf")
-	assert.Equal(t, env.PodsUnderTestLabelsObjects[3].LabelKey, "cnf/testEmpty")
-	assert.Equal(t, env.OperatorsUnderTestLabelsObjects[0].LabelValue, "operator")
-	assert.Equal(t, env.OperatorsUnderTestLabelsObjects[1].LabelValue, "operator1")
-	assert.Equal(t, env.OperatorsUnderTestLabelsObjects[2].LabelValue, "operator")
-	assert.Equal(t, env.PodsUnderTestLabelsObjects[3].LabelValue, "")
 	// check if targetCrdFilters section is parsed properly
 	assert.Equal(t, crds, len(env.CrdFilters))
 	crd1 := configuration.CrdFilter{NameSuffix: crdSuffix1}

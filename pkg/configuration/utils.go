@@ -18,7 +18,6 @@ package configuration
 
 import (
 	"os"
-	"regexp"
 
 	"github.com/kelseyhightower/envconfig"
 	log "github.com/sirupsen/logrus"
@@ -67,33 +66,10 @@ func LoadConfiguration(filePath string) (TestConfiguration, error) {
 		log.Infof("Namespace for debug DaemonSet: %s", configuration.DebugDaemonSetNamespace)
 	}
 
-	configuration.OperatorsUnderTestLabelsObjects = createLabels(configuration.OperatorsUnderTestLabels)
-	configuration.PodsUnderTestLabelsObjects = createLabels(configuration.PodsUnderTestLabels)
-
 	confLoaded = true
 	return configuration, nil
 }
 
 func GetTestParameters() *TestParameters {
 	return &parameters
-}
-
-const labelRegex = `(\S*)\s*:\s*(\S*)`
-const labelRegexMatches = 3
-
-func createLabels(labelStrings []string) (labelObjects []LabelObject) {
-	for _, label := range labelStrings {
-		r := regexp.MustCompile(labelRegex)
-
-		values := r.FindStringSubmatch(label)
-		if len(values) != labelRegexMatches {
-			log.Errorf("failed to parse label=%s, will not be used!, ", label)
-			continue
-		}
-		var aLabel LabelObject
-		aLabel.LabelKey = values[1]
-		aLabel.LabelValue = values[2]
-		labelObjects = append(labelObjects, aLabel)
-	}
-	return labelObjects
 }
