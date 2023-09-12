@@ -1,0 +1,78 @@
+RESULTS SUMMARY
+---------------
+STATUS         # in CLAIM-1        # in CLAIM-2
+passed         17                  3
+skipped        64                  86
+failed         9                   1
+
+RESULTS DIFFERENCES
+-------------------
+TEST CASE NAME                                              CLAIM-1   CLAIM-2
+access-control-bpf-capability-check                         failed    skipped
+access-control-cluster-role-bindings                        passed    skipped
+access-control-container-host-port                          passed    skipped
+access-control-ipc-lock-capability-check                    passed    skipped
+access-control-namespace                                    passed    skipped
+access-control-namespace-resource-quota                     passed    skipped
+access-control-net-admin-capability-check                   failed    skipped
+access-control-net-raw-capability-check                     passed    skipped
+access-control-no-1337-uid                                  passed    skipped
+access-control-one-process-per-container                    passed    skipped
+access-control-pod-automount-service-account-token          failed    skipped
+access-control-pod-host-ipc                                 passed    skipped
+access-control-pod-host-network                             passed    skipped
+access-control-pod-host-path                                passed    skipped
+access-control-pod-host-pid                                 passed    skipped
+access-control-pod-role-bindings                            failed    skipped
+access-control-pod-service-account                          failed    skipped
+access-control-projected-volume-service-account-token       failed    skipped
+access-control-requests-and-limits                          failed    skipped
+access-control-security-context                             failed    skipped
+access-control-security-context-non-root-user-check         passed    skipped
+access-control-security-context-privilege-escalation        passed    skipped
+access-control-service-type                                 passed    skipped
+access-control-ssh-daemons                                  passed    skipped
+access-control-sys-admin-capability-check                   passed    skipped
+access-control-sys-nice-realtime-capability                 failed    skipped
+observability-container-logging                             skipped   passed
+observability-crd-status                                    skipped   passed
+observability-pod-disruption-budget                         skipped   passed
+observability-termination-policy                            skipped   failed
+
+CLUSTER NODES DIFFERENCES
+-------------------------
+
+CNIs: Differences
+FIELD                           CLAIM 1      CLAIM 2
+/clus0-0/0/cniVersion           1.0.1        1.0.0
+/clus0-1/0/plugins/0/ipMasq     false        true
+/clus0-1/1/plugins/0/type       loopbark     loopback
+
+CNIs: Only in CLAIM 1
+<none>
+
+CNIs: Only in CLAIM 2
+<none>
+
+CSIs: Differences
+FIELD                         CLAIM 1               CLAIM 2
+/apiVersion                   storage.k8s.io/v2     storage.k8s.io/v1
+/metadata/resourceVersion     18038390              18038123
+
+CSIs: Only in CLAIM 1
+<none>
+
+CSIs: Only in CLAIM 2
+<none>
+
+Hardware: Differences
+FIELD                      CLAIM 1      CLAIM 2
+/clus0-0/Lscpu/17/data     2100.000     2800.003
+/clus0-1/Lscpu/17/data     2999.993     2999.940
+
+Hardware: Only in CLAIM 1
+<none>
+
+Hardware: Only in CLAIM 2
+<none>
+
