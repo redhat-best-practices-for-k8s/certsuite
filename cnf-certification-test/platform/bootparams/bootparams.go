@@ -29,7 +29,7 @@ import (
 
 const (
 	grubKernelArgsCommand = "cat /host/boot/loader/entries/$(ls /host/boot/loader/entries/ | sort | tail -n 1)"
-	kernelArgscommand     = "cat /proc/cmdline"
+	kernelArgscommand     = "cat /host/proc/cmdline"
 )
 
 func TestBootParamsHelper(env *provider.TestEnvironment, cut *provider.Container) (claimsLog loghelper.CuratedLogLines, err error) {
