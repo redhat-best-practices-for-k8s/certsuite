@@ -152,7 +152,7 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.AllCsvs = getAllOperators(oc.OlmClient)
 	data.AllInstallPlans = getAllInstallPlans(oc.OlmClient)
 	data.AllCatalogSources = getAllCatalogSources(oc.OlmClient)
-	data.Namespaces = config.TargetNameSpaces
+	data.Namespaces = namespacesListToStringList(config.TargetNameSpaces)
 	data.Pods, data.AllPods = findPodsByLabel(oc.K8sClient.CoreV1(), config.PodsUnderTestLabelsObjects, data.Namespaces)
 	data.AbnormalEvents = findAbnormalEvents(oc.K8sClient.CoreV1(), data.Namespaces)
 	debugLabels := []configuration.LabelObject{{LabelKey: debugHelperPodsLabelName, LabelValue: debugHelperPodsLabelValue}}
@@ -240,6 +240,13 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.PartnerName = config.PartnerName
 	data.CollectorAppPassword = config.CollectorAppPassword
 	return data
+}
+
+func namespacesListToStringList(namespaceList []configuration.Namespace) (stringList []string) {
+	for _, ns := range namespaceList {
+		stringList = append(stringList, ns.Name)
+	}
+	return stringList
 }
 
 func getOpenshiftVersion(oClient clientconfigv1.ConfigV1Interface) (ver string, err error) {

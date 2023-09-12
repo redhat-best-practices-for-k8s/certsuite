@@ -35,8 +35,10 @@ func TestLoadConfiguration(t *testing.T) {
 	assert.Nil(t, err)
 	// check if targetNameSpaces section is parsed properly
 	assert.Equal(t, nsLength, len(env.TargetNameSpaces))
-	assert.Contains(t, env.TargetNameSpaces, ns1)
-	assert.Contains(t, env.TargetNameSpaces, ns2)
+	ns := configuration.Namespace{Name: ns1}
+	assert.Contains(t, env.TargetNameSpaces, ns)
+	ns.Name = ns2
+	assert.Contains(t, env.TargetNameSpaces, ns)
 	// check if targetPodlabels section is parsed properly
 	assert.Equal(t, labels, len(env.TargetPodLabels))
 	podlabel1 := configuration.Label{Prefix: label1Prefix, Name: label1Name, Value: label1Value}
