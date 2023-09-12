@@ -46,8 +46,10 @@ jobs:
         run: |
 
           # Check if the cluster is live
-          kubectl get nodes 
-          if [[ $? -ne 0 ]]; then
+          set -e
+          EXIT_CODE=0
+          kubectl get nodes || EXIT_CODE=$?
+          if [[ $EXIT_CODE -ne 0 ]]; then
             echo "Cluster is not live.  Exiting."
             echo "Recreate=true" >> $GITHUB_ENV
           else
