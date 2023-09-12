@@ -19,15 +19,6 @@ const (
 	TestCaseResultFailed  = "failed"
 )
 
-type CNIPlugin map[string]interface{}
-
-type CNINetwork struct {
-	Name         string      `json:"name"`
-	CNIVersion   string      `json:"cniVersion"`
-	DisableCheck bool        `json:"disableCheck"`
-	Plugins      []CNIPlugin `json:"plugins"`
-}
-
 type TestCaseRawResult struct {
 	Name   string `json:"-name"`
 	Status string `json:"-status"`
@@ -68,7 +59,7 @@ type TestSuiteResults map[string][]TestCaseResult
 type Nodes struct {
 	NodesSummary map[string]*corev1.Node `json:"nodeSummary"`
 	CniNetworks  interface{}             `json:"cniPlugins"`
-	NodesHwInfo  map[string]interface{}  `json:"nodesHwInfo"`
+	NodesHwInfo  interface{}             `json:"nodesHwInfo"`
 	CsiDriver    interface{}             `json:"csiDriver"`
 }
 
