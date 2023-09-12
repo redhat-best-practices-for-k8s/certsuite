@@ -78,7 +78,7 @@ jobs:
         with:
           timeout_minutes: 10
           max_attempts: 3
-          command: docker system prune -f
+          command: docker system prune --volumes -f
 
       - name: Create `local-test-infra` OpenShift resources
         run: make rebuild-cluster
