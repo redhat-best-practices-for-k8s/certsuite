@@ -106,10 +106,14 @@ func testContainerCertification(c configuration.ContainerImageIdentifier, valida
 }
 
 func testContainerCertificationStatus(env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	// Get the list of containers to query
 	containersToQuery := getContainersToQuery(env)
 	testhelper.SkipIfEmptyAny(ginkgo.Skip, containersToQuery)
+
 	ginkgo.By(fmt.Sprintf("Getting certification status. Number of containers to check: %d", len(containersToQuery)))
-	failedContainers := []configuration.ContainerImageIdentifier{}
 	allContainersToQueryEmpty := true
 	for c := range containersToQuery {
 		if c.Repository == "" || c.Registry == "" {
@@ -118,16 +122,15 @@ func testContainerCertificationStatus(env *provider.TestEnvironment, validator c
 		}
 		allContainersToQueryEmpty = false
 		if !testContainerCertification(c, validator) {
-			failedContainers = append(failedContainers, c)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewCertifiedContainerReportObject(c, "Container is not certified", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewCertifiedContainerReportObject(c, "Container is certified", true))
 		}
 	}
 	if allContainersToQueryEmpty {
 		ginkgo.Skip("No containers to check because either container name or repository is empty for all containers in tnf_config.yml")
 	}
-	if n := len(failedContainers); n > 0 {
-		logrus.Warnf("Containers that are not certified: %+v", failedContainers)
-		ginkgo.Fail(fmt.Sprintf("%d container images are not certified.", n))
-	}
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testAllOperatorCertified(env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
