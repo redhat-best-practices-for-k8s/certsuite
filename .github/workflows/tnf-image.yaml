@@ -123,7 +123,7 @@ jobs:
 
       # Push the new TNF image to Quay.io.
       - name: Authenticate against Quay.io
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           # Use a Robot Account to authenticate against Quay.io
