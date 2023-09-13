@@ -76,9 +76,10 @@ type TestEnvironment struct { // rename this with testTarget
 	AbnormalEvents []*Event
 
 	// Pod Groupings
-	Pods      []*Pod                 `json:"testPods"`
-	DebugPods map[string]*corev1.Pod // map from nodename to debugPod
-	AllPods   []*Pod                 `json:"AllPods"`
+	Pods           []*Pod `json:"testPods"`
+	KubeSystemPods []*Pod
+	DebugPods      map[string]*corev1.Pod // map from nodename to debugPod
+	AllPods        []*Pod                 `json:"AllPods"`
 
 	// Deployment Groupings
 	Deployments []*Deployment `json:"testDeployments"`
@@ -242,6 +243,12 @@ func buildTestEnvironment() { //nolint:funlen
 		env.Pods = append(env.Pods, &aNewPod)
 		// Note: 'getPodContainers' is returning a filtered list of Container objects.
 		env.Containers = append(env.Containers, getPodContainers(&pods[i], true)...)
+	}
+
+	kubeSystemPods := data.KubeSystemPods
+	for i := 0; i < len(kubeSystemPods); i++ {
+		aNewPod := NewPod(&kubeSystemPods[i])
+		env.KubeSystemPods = append(env.KubeSystemPods, &aNewPod)
 	}
 	pods = data.AllPods
 	for i := 0; i < len(pods); i++ {

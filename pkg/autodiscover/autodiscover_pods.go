@@ -53,3 +53,15 @@ func findPodsByLabel(oc corev1client.CoreV1Interface, labels []configuration.Lab
 	}
 	return runningPods, allPods
 }
+
+func getKubeSystemPods(oc corev1client.CoreV1Interface, ns string) []corev1.Pod {
+	kubeSystemPods := []corev1.Pod{}
+	pods, err := oc.Pods(ns).List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		logrus.Errorln("error when listing pods in ns=", ns, "err: ", err)
+	}
+	for i := 0; i < len(pods.Items); i++ {
+		kubeSystemPods = append(kubeSystemPods, pods.Items[i])
+	}
+	return kubeSystemPods
+}

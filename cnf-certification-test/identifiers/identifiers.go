@@ -80,6 +80,7 @@ var (
 	TestHelmVersionIdentifier                         claim.Identifier
 	TestPodHugePages2M                                claim.Identifier
 	TestPodHugePages1G                                claim.Identifier
+	TestControlPlanHardening                          claim.Identifier
 	TestHyperThreadEnable                             claim.Identifier
 	TestReservedExtendedPartnerPorts                  claim.Identifier
 	TestAffinityRequiredPods                          claim.Identifier
@@ -310,6 +311,22 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			Extended: Optional,
 		},
 		TagFarEdge)
+
+	TestControlPlanHardening = AddCatalogEntry(
+		"control-plan-hardening",
+		common.PlatformAlterationTestKey,
+		`Check that control plan pods dont have insecure-port as disables`,
+		TestControlPlanHardeningRemediation,
+		NoDocumentedProcess,
+		TestControlPlanHardeningDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Optional,
+			Extended: Optional,
+		},
+		TagExtended)
 
 	TestHyperThreadEnable = AddCatalogEntry(
 		"hyperthread-enable",

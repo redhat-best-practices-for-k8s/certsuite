@@ -38,10 +38,9 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/operatingsystem"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/sysctlconfig"
 
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
-
 	"github.com/onsi/ginkgo/v2"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/nodetainted"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 )
 
 // All actual test code belongs below here.  Utilities belong above.
@@ -172,7 +171,36 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		testPodHugePagesSize(&env, provider.HugePages1Gi)
 	})
 
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestControlPlanHardening)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.KubeSystemPods)
+		testControlPlanHardening(&env)
+	})
 })
+
+func testControlPlanHardening(env *provider.TestEnvironment) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+	// Check if the insecure-port flag is set in each KubeSystemPod's command-line arguments.
+	for _, pod := range env.KubeSystemPods {
+		flag := false
+		for i := range pod.Spec.Containers {
+			for _, arg := range pod.Spec.Containers[i].Command {
+				if strings.HasPrefix(arg, "--insecure-port=0") {
+					flag = true
+					tnf.ClaimFilePrintf("Pod %s in namespace %s has insecure-port disables: %s\n", pod.Name, pod.Namespace, arg)
+				}
+			}
+		}
+		if flag {
+			tnf.ClaimFilePrintf("Pod %s has insecure-port disables ", pod.String())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Pod has insecure-port disables", false))
+		} else {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Pod hasn't insecure-port disables", true))
+		}
+	}
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+}
 
 func testHyperThreadingEnabled(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject

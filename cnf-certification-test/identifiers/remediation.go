@@ -186,6 +186,8 @@ const (
 
 	PodHugePages1GRemediation = "Modify pod to consume 1Gi hugepages only"
 
+	TestControlPlanHardeningRemediation = "check if the control plan pods has disabled insecure port "
+
 	HyperThreadEnable = "Check that baremetal workers have hyperthreading enabled"
 
 	StartupIdentifierRemediation = `Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.`

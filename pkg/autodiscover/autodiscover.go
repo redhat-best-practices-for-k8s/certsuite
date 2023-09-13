@@ -55,6 +55,7 @@ type DiscoveredTestData struct {
 	Env                    configuration.TestParameters
 	Pods                   []corev1.Pod
 	AllPods                []corev1.Pod
+	KubeSystemPods         []corev1.Pod
 	DebugPods              []corev1.Pod
 	ResourceQuotaItems     []corev1.ResourceQuota
 	PodDisruptionBudgets   []policyv1.PodDisruptionBudget
@@ -154,6 +155,9 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.AllCatalogSources = getAllCatalogSources(oc.OlmClient)
 	data.Namespaces = config.TargetNameSpaces
 	data.Pods, data.AllPods = findPodsByLabel(oc.K8sClient.CoreV1(), config.PodsUnderTestLabelsObjects, data.Namespaces)
+	namespace := "kube-system"
+	data.KubeSystemPods = getKubeSystemPods(oc.K8sClient.CoreV1(), namespace)
+
 	data.AbnormalEvents = findAbnormalEvents(oc.K8sClient.CoreV1(), data.Namespaces)
 	debugLabels := []configuration.LabelObject{{LabelKey: debugHelperPodsLabelName, LabelValue: debugHelperPodsLabelValue}}
 	debugNS := []string{config.DebugDaemonSetNamespace}
