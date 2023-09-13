@@ -515,10 +515,12 @@ func testUnalteredBootParams(env *provider.TestEnvironment) {
 		claimsLog, err := bootparams.TestBootParamsHelper(env, cut)
 
 		if err != nil || len(claimsLog.GetLogLines()) != 0 {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Failed the boot params check", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Failed the boot params check", false).
+				AddField(testhelper.DebugPodName, env.DebugPods[cut.NodeName].Name))
 			tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
 		} else {
-			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Passed the boot params check", true))
+			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Passed the boot params check", true).
+				AddField(testhelper.DebugPodName, env.DebugPods[cut.NodeName].Name))
 		}
 	}
 
