@@ -141,6 +141,7 @@ const (
 	SysctlKey                       = "Sysctl Key"
 	SysctlValue                     = "Sysctl Value"
 	OSImage                         = "OS Image"
+	DebugPodName                    = "Debug Pod Name"
 
 	// ICMP tests
 	NetworkName              = "Network Name"
