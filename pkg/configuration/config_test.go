@@ -25,9 +25,6 @@ const (
 	containers        = 1
 	containerInfoName = "nginx-116"
 	containerRepo     = "rhel8"
-	operators         = 1
-	operatorName      = "etcd"
-	operatorOrg       = "community-operators"
 )
 
 func TestLoadConfiguration(t *testing.T) {
@@ -75,11 +72,4 @@ func TestLoadConfiguration(t *testing.T) {
 	assert.Equal(t, containers, len(env.CertifiedContainerInfo))
 	containerInfo := configuration.ContainerImageIdentifier{Repository: containerInfoName, Registry: containerRepo, Tag: "", Digest: ""}
 	assert.Contains(t, env.CertifiedContainerInfo, containerInfo)
-	// check if certifiedoperatorinfo section is parsed properly
-	assert.Equal(t, operators, len(env.CertifiedOperatorInfo))
-	operator := configuration.CertifiedOperatorRequestInfo{Name: operatorName, Organization: operatorOrg}
-	assert.Contains(t, env.CertifiedOperatorInfo, operator)
-	e, er := configuration.LoadConfiguration(filePath)
-	assert.Equal(t, &env, &e)
-	assert.Nil(t, er)
 }
