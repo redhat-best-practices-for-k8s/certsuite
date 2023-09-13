@@ -54,6 +54,11 @@ jobs:
         with:
           ref: ${{ github.sha }}
 
+      - name: Extract dependent Pull Requests
+        uses: depends-on/depends-on-action@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       # TODO: golangci-lint team recommends using a GitHub Action to perform golangci-lint responsibilities.  However
       # there does not appear to be a way to honor our existing .golangci.yml.  For now, mimic developer behavior.
       - name: Install golangci-lint
@@ -102,6 +107,10 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
+      - name: Extract dependent Pull Requests
+        uses: depends-on/depends-on-action@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - run: |
           curl --location --output $CM_BIN --silent $CM_URL_LINUX
           chmod +x $CM_BIN
@@ -154,6 +163,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
+
+      - name: Extract dependent Pull Requests
+        uses: depends-on/depends-on-action@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run Tests
         run: make test
@@ -214,6 +228,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
+
+      - name: Extract dependent Pull Requests
+        uses: depends-on/depends-on-action@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       # Update the CNF containers, helm charts and operators DB.
       - name: Update the CNF DB
@@ -357,6 +376,11 @@ jobs:
         with:
           ref: ${{ github.sha }}
 
+      - name: Extract dependent Pull Requests
+        uses: depends-on/depends-on-action@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build the `cnf-certification-test` image
         run: |
           make build-image-local
@@ -446,3 +470,17 @@ jobs:
       - name: (if on main and upstream) Push the newly built image to Quay.io
         if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
         run: docker push --all-tags ${REGISTRY}/${TNF_IMAGE_NAME}
+
+  check-all-dependencies-are-merged:
+    name: Check all the PR dependencies are merged
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check all dependent Pull Requests are merged
+        uses: depends-on/depends-on-action@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          check-unmerged-pr: true
