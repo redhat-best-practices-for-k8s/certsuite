@@ -126,8 +126,6 @@ type TestConfiguration struct {
 	OperatorsUnderTestLabelsObjects []LabelObject `yaml:"-" json:"-"`
 	// CertifiedContainerInfo is the list of container images to be checked for certification status.
 	CertifiedContainerInfo []ContainerImageIdentifier `yaml:"certifiedcontainerinfo,omitempty" json:"certifiedcontainerinfo,omitempty"`
-	// CertifiedOperatorInfo is list of operator bundle names that are queried for certification status.
-	CertifiedOperatorInfo []CertifiedOperatorRequestInfo `yaml:"certifiedoperatorinfo,omitempty" json:"certifiedoperatorinfo,omitempty"`
 	// CRDs section.
 	CrdFilters          []CrdFilter                      `yaml:"targetCrdFilters" json:"targetCrdFilters"`
 	ManagedDeployments  []ManagedDeploymentsStatefulsets `yaml:"managedDeployments" json:"managedDeployments"`
