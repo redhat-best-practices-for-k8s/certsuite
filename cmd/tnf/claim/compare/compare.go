@@ -7,6 +7,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/compare/configurations"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/compare/nodes"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/compare/testcases"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/pkg/claim"
@@ -79,11 +80,17 @@ func claimCompareFilesfunc(claim1, claim2 string) error {
 
 	// Show test cases results summary and differences.
 	tcsDiffReport := testcases.GetDiffReport(claimFile1Data.Claim.Results, claimFile2Data.Claim.Results)
-	fmt.Println(&tcsDiffReport)
+	fmt.Println(tcsDiffReport)
+
+	// Show CNF Certification Suite configuration differences.
+	claim1Configurations := &claimFile1Data.Claim.Configurations
+	claim2Configurations := &claimFile2Data.Claim.Configurations
+	configurationsDiffReport := configurations.GetDiffReport(claim1Configurations, claim2Configurations)
+	fmt.Println(configurationsDiffReport)
 
 	// Show the cluster differences.
 	nodesDiff := nodes.GetDiffReport(&claimFile1Data.Claim.Nodes, &claimFile2Data.Claim.Nodes)
-	fmt.Printf("%s", nodesDiff)
+	fmt.Print(nodesDiff)
 
 	return nil
 }

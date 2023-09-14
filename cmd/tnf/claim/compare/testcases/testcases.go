@@ -90,7 +90,7 @@ func getTestCasesResultsSummary(results map[string]string) TcResultsSummary {
 // Process the results from different claim files and return the DiffReport.
 // In case one tc name does not exist in the other claim file, the result will
 // be marked as "not found" in the table.
-func GetDiffReport(resultsClaim1, resultsClaim2 claim.TestSuiteResults) DiffReport {
+func GetDiffReport(resultsClaim1, resultsClaim2 claim.TestSuiteResults) *DiffReport {
 	const tcResultNotFound = "not found"
 
 	report := DiffReport{}
@@ -128,7 +128,7 @@ func GetDiffReport(resultsClaim1, resultsClaim2 claim.TestSuiteResults) DiffRepo
 	report.Claim1ResultsSummary = getTestCasesResultsSummary(claim1Results)
 	report.Claim2ResultsSummary = getTestCasesResultsSummary(claim2Results)
 
-	return report
+	return &report
 }
 
 // Stringer method for the DiffReport. Will return a string with two tables:
