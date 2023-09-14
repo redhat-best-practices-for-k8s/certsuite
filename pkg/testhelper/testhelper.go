@@ -176,6 +176,7 @@ const (
 	HelmType                     = "Helm"
 	OperatorType                 = "Operator"
 	ContainerType                = "Container"
+	ContainerImageType           = "Container Image"
 	NodeType                     = "Node"
 	ContainerProcessType         = "ContainerProcess"
 	ContainerCategory            = "ContainerCategory"
@@ -220,7 +221,7 @@ func NewContainerReportObject(aNamespace, aPodName, aContainerName, aReason stri
 }
 
 func NewCertifiedContainerReportObject(cii configuration.ContainerImageIdentifier, aReason string, isCompliant bool) (out *ReportObject) {
-	out = NewReportObject(aReason, ContainerType, isCompliant)
+	out = NewReportObject(aReason, ContainerImageType, isCompliant)
 	out.AddField(ImageDigest, cii.Digest)
 	out.AddField(ImageRepo, cii.Repository)
 	out.AddField(ImageTag, cii.Tag)
