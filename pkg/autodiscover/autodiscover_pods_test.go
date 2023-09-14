@@ -25,7 +25,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 )
 
 func TestFindPodsByLabel(t *testing.T) {
@@ -84,7 +83,7 @@ func TestFindPodsByLabel(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		testLabel := []configuration.LabelObject{{LabelKey: "testLabel", LabelValue: tc.testPodLabel}}
+		testLabel := []labelObject{{LabelKey: "testLabel", LabelValue: tc.testPodLabel}}
 		testNamespaces := []string{
 			tc.testPodNamespace,
 		}
