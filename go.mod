@@ -13,7 +13,7 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-require k8s.io/client-go v0.28.1
+require k8s.io/client-go v0.28.2
 
 require (
 	github.com/kelseyhightower/envconfig v1.4.0
@@ -25,8 +25,8 @@ require (
 	github.com/operator-framework/operator-lifecycle-manager v0.20.0
 	github.com/pkg/errors v0.9.1 // indirect
 	helm.sh/helm/v3 v3.12.3
-	k8s.io/api v0.28.1
-	k8s.io/apimachinery v0.28.1
+	k8s.io/api v0.28.2
+	k8s.io/apimachinery v0.28.2
 	k8s.io/klog/v2 v2.100.1 // indirect
 )
 
@@ -79,7 +79,7 @@ require (
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/btree v1.1.2 // indirect
-	github.com/google/cel-go v0.15.3 // indirect
+	github.com/google/cel-go v0.16.1 // indirect
 	github.com/google/gnostic-models v0.6.8 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/go-containerregistry v0.15.2 // indirect
@@ -183,9 +183,9 @@ require (
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
-	k8s.io/apiserver v0.27.4 // indirect
+	k8s.io/apiserver v0.28.2 // indirect
 	k8s.io/cli-runtime v0.28.1 // indirect
-	k8s.io/component-base v0.28.1 // indirect
+	k8s.io/component-base v0.28.2 // indirect
 	k8s.io/kube-openapi v0.0.0-20230717233707-2695361300d9 // indirect
 	k8s.io/utils v0.0.0-20230505201702-9f6742963106 // indirect
 	modernc.org/libc v1.22.3 // indirect
@@ -204,7 +204,7 @@ require (
 
 require (
 	github.com/hashicorp/go-version v1.6.0
-	k8s.io/apiextensions-apiserver v0.27.4
+	k8s.io/apiextensions-apiserver v0.28.2
 )
 
 require (
