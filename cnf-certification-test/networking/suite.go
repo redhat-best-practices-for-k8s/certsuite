@@ -234,7 +234,7 @@ func testNetworkConnectivity(env *provider.TestEnvironment, aIPVersion netcommon
 	// Saving curated logs to claims file
 	tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
 	if skip {
-		ginkgo.Skip(fmt.Sprintf("There are no %s networks to test, skipping test", aIPVersion))
+		ginkgo.Skip(fmt.Sprintf("There are no %s networks to test with at least 2 pods, skipping test", aIPVersion))
 	}
 	testhelper.AddTestResultReason(report.CompliantObjectsOut, report.NonCompliantObjectsOut, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
