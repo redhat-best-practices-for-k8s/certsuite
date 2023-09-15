@@ -946,7 +946,7 @@ Tags|extended,networking
 Property|Description
 ---|---
 Unique ID|networking-icmpv4-connectivity
-Description|Checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exist this test will be skipped.
+Description|Checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.
 Suggested Remediation|Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ipv4-&-ipv6
 Exception Process|No exceptions - must be able to communicate on default network using IPv4
@@ -962,7 +962,7 @@ Tags|common,networking
 Property|Description
 ---|---
 Unique ID|networking-icmpv4-connectivity-multus
-Description|Checks that each CNF Container is able to communicate via ICMPv4 on the Multus network(s). This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exist this test will be skipped.
+Description|Checks that each CNF Container is able to communicate via ICMPv4 on the Multus network(s). This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.
 Suggested Remediation|Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence. Not applicable if MULTUS is not supported.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations
 Exception Process|There is no documented exception process for this.
@@ -978,7 +978,7 @@ Tags|telco,networking
 Property|Description
 ---|---
 Unique ID|networking-icmpv6-connectivity
-Description|Checks that each CNF Container is able to communicate via ICMPv6 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exist this test will be skipped.
+Description|Checks that each CNF Container is able to communicate via ICMPv6 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.
 Suggested Remediation|Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence. Not applicable if IPv6 is not supported.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ipv4-&-ipv6
 Exception Process|There is no documented exception process for this.
@@ -994,7 +994,7 @@ Tags|common,networking
 Property|Description
 ---|---
 Unique ID|networking-icmpv6-connectivity-multus
-Description|Checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s). This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exist this test will be skipped.
+Description|Checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s). This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.
 Suggested Remediation|Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it.The label value is trivial, only its presence. Not applicable if IPv6/MULTUS is not supported.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations
 Exception Process|There is no documented exception process for this.
