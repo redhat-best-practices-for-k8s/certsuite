@@ -523,8 +523,8 @@ func testSysctlConfigs(env *provider.TestEnvironment) {
 		}
 
 		mcKernelArgumentsMap := bootparams.GetMcKernelArguments(env, cut.NodeName)
+		validSettings := true
 		for key, sysctlConfigVal := range sysctlSettings {
-			validSettings := true
 			if mcVal, ok := mcKernelArgumentsMap[key]; ok {
 				if mcVal != sysctlConfigVal {
 					tnf.ClaimFilePrintf(fmt.Sprintf("Kernel config mismatch in node %s for %s (sysctl value: %s, machine config value: %s)",
@@ -533,9 +533,9 @@ func testSysctlConfigs(env *provider.TestEnvironment) {
 					validSettings = false
 				}
 			}
-			if validSettings {
-				compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Passed the sysctl config check", true))
-			}
+		}
+		if validSettings {
+			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Passed the sysctl config check", true))
 		}
 	}
 
