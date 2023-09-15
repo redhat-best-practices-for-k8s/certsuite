@@ -40,13 +40,13 @@ var _ = ginkgo.Describe(common.ManageabilityTestKey, func() {
 
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainersImageTag)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
 		testContainersImageTag(&env)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerPortNameFormat)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
 		testContainerPortNameFormat(&env)
 	})
 })
