@@ -22,6 +22,7 @@ import (
 	"reflect"
 
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 )
 
 const (
@@ -175,6 +176,7 @@ const (
 	HelmType                     = "Helm"
 	OperatorType                 = "Operator"
 	ContainerType                = "Container"
+	ContainerImageType           = "Container Image"
 	NodeType                     = "Node"
 	ContainerProcessType         = "ContainerProcess"
 	ContainerCategory            = "ContainerCategory"
@@ -196,6 +198,10 @@ const (
 	Error                        = "Error"
 	OperatorPermission           = "Operator Cluster Permission"
 	TaintType                    = "Taint"
+	ImageDigest                  = "Image Digest"
+	ImageRepo                    = "Image Repo"
+	ImageTag                     = "Image Tag"
+	ImageRegistry                = "Image Registry"
 )
 
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {
@@ -211,6 +217,15 @@ func NewContainerReportObject(aNamespace, aPodName, aContainerName, aReason stri
 	out.AddField(Namespace, aNamespace)
 	out.AddField(PodName, aPodName)
 	out.AddField(ContainerName, aContainerName)
+	return out
+}
+
+func NewCertifiedContainerReportObject(cii configuration.ContainerImageIdentifier, aReason string, isCompliant bool) (out *ReportObject) {
+	out = NewReportObject(aReason, ContainerImageType, isCompliant)
+	out.AddField(ImageDigest, cii.Digest)
+	out.AddField(ImageRepo, cii.Repository)
+	out.AddField(ImageTag, cii.Tag)
+	out.AddField(ImageRegistry, cii.Registry)
 	return out
 }
 
