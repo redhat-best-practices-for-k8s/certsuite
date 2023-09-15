@@ -75,7 +75,6 @@ var (
 	TestICMPv4ConnectivityIdentifier                  claim.Identifier
 	TestNetworkPolicyDenyAllIdentifier                claim.Identifier
 	Test1337UIDIdentifier                             claim.Identifier
-	TestProjectedVolumeServiceAccountTokenIdentifier  claim.Identifier
 	TestContainerIsCertifiedDigestIdentifier          claim.Identifier
 	TestHelmVersionIdentifier                         claim.Identifier
 	TestPodHugePages2M                                claim.Identifier
@@ -214,21 +213,6 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Optional,
 			Extended: Optional},
 		TagFarEdge)
-
-	TestProjectedVolumeServiceAccountTokenIdentifier = AddCatalogEntry(
-		"projected-volume-service-account-token",
-		common.AccessControlTestKey,
-		`Checks that pods do not use projected volumes and service account tokens`,
-		ProjectedVolumeServiceAccountRemediation,
-		`Exception will be considered if container needs to access APIs which OCP does not offer natively. Must document which container requires which API(s) and detail why existing OCP APIs cannot be used.`,
-		TestProjectedVolumeServiceAccountTokenIdentifierDocLink,
-		true,
-		map[string]string{
-			FarEdge:  Mandatory,
-			Telco:    Mandatory,
-			NonTelco: Optional,
-			Extended: Mandatory},
-		TagTelco)
 
 	TestHelmVersionIdentifier = AddCatalogEntry(
 		"helm-version",
