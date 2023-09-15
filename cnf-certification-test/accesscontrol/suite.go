@@ -364,6 +364,7 @@ func testPodHostPath(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
+		podIsCompliant := true
 		for idx := range put.Spec.Volumes {
 			vol := &put.Spec.Volumes[idx]
 			if vol.HostPath != nil && vol.HostPath.Path != "" {
@@ -371,9 +372,11 @@ func testPodHostPath(env *provider.TestEnvironment) {
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Hostpath path is set", false).
 					SetType(testhelper.HostPathType).
 					AddField(testhelper.Path, vol.HostPath.Path))
-			} else {
-				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Hostpath path is not set", true))
+				podIsCompliant = false
 			}
+		}
+		if podIsCompliant {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Hostpath path is not set", true))
 		}
 	}
 
