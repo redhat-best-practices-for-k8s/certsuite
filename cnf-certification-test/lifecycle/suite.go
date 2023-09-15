@@ -679,6 +679,7 @@ func testPodTolerationBypass(env *provider.TestEnvironment) {
 	var nonCompliantObjects []*testhelper.ReportObject
 
 	for _, put := range env.Pods {
+		podIsCompliant := true
 		for _, t := range put.Spec.Tolerations {
 			// Check if the tolerations fall outside the 'default' and are modified versions
 			// Take also into account the qosClass applied to the pod
@@ -687,9 +688,12 @@ func testPodTolerationBypass(env *provider.TestEnvironment) {
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has non-default toleration", false).
 					AddField(testhelper.TolerationKey, t.Key).
 					AddField(testhelper.TolerationEffect, string(t.Effect)))
-			} else {
-				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has default toleration", true))
+				podIsCompliant = false
 			}
+		}
+
+		if podIsCompliant {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has default toleration", true))
 		}
 	}
 
