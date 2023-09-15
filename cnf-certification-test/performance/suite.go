@@ -101,6 +101,7 @@ func CheckProbePeriodSeconds(elem *v1.Probe, cut *provider.Container, s string) 
 		elem.PeriodSeconds)
 	return false
 }
+
 func testLimitedUseOfExecProbes(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -111,12 +112,12 @@ func testLimitedUseOfExecProbes(env *provider.TestEnvironment) {
 				counter++
 				if CheckProbePeriodSeconds(cut.LivenessProbe, cut, "LivenessProbe") {
 					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name,
-						cut.Name, fmt.Sprintf("LivenessProbe exec probe has a PeriodSeconds greater than 10 ( %d seconds)",
+						cut.Name, fmt.Sprintf("LivenessProbe exec probe has a PeriodSeconds greater than 10 (%d seconds)",
 							cut.LivenessProbe.PeriodSeconds), true))
 				} else {
 					nonCompliantObjects = append(nonCompliantObjects,
 						testhelper.NewContainerReportObject(put.Namespace, put.Name,
-							cut.Name, fmt.Sprintf("LivenessProbe exec probe has a PeriodSeconds that is not greater than 10 ( %d seconds)",
+							cut.Name, fmt.Sprintf("LivenessProbe exec probe has a PeriodSeconds that is not greater than 10 (%d seconds)",
 								cut.LivenessProbe.PeriodSeconds), false))
 				}
 			}
@@ -124,12 +125,12 @@ func testLimitedUseOfExecProbes(env *provider.TestEnvironment) {
 				counter++
 				if CheckProbePeriodSeconds(cut.StartupProbe, cut, "StartupProbe") {
 					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name,
-						cut.Name, fmt.Sprintf("StartupProbe exec probe has a PeriodSeconds greater than 10 ( %d seconds)",
+						cut.Name, fmt.Sprintf("StartupProbe exec probe has a PeriodSeconds greater than 10 (%d seconds)",
 							cut.StartupProbe.PeriodSeconds), true))
 				} else {
 					nonCompliantObjects = append(nonCompliantObjects,
 						testhelper.NewContainerReportObject(put.Namespace, put.Name,
-							cut.Name, fmt.Sprintf("StartupProbe exec probe has a PeriodSeconds that is not greater than 10 ( %d seconds)",
+							cut.Name, fmt.Sprintf("StartupProbe exec probe has a PeriodSeconds that is not greater than 10 (%d seconds)",
 								cut.StartupProbe.PeriodSeconds), false))
 				}
 			}
@@ -137,12 +138,12 @@ func testLimitedUseOfExecProbes(env *provider.TestEnvironment) {
 				counter++
 				if CheckProbePeriodSeconds(cut.ReadinessProbe, cut, "ReadinessProbe") {
 					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name,
-						cut.Name, fmt.Sprintf("ReadinessProbe exec probe has a PeriodSeconds greater than 10 ( %d seconds)",
+						cut.Name, fmt.Sprintf("ReadinessProbe exec probe has a PeriodSeconds greater than 10 (%d seconds)",
 							cut.ReadinessProbe.PeriodSeconds), true))
 				} else {
 					nonCompliantObjects = append(nonCompliantObjects,
 						testhelper.NewContainerReportObject(put.Namespace, put.Name,
-							cut.Name, fmt.Sprintf("ReadinessProbe exec probe has a PeriodSeconds that is not greater than 10 ( %d seconds)",
+							cut.Name, fmt.Sprintf("ReadinessProbe exec probe has a PeriodSeconds that is not greater than 10 (%d seconds)",
 								cut.ReadinessProbe.PeriodSeconds), false))
 				}
 			}
