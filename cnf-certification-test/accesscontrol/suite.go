@@ -418,14 +418,18 @@ func testNamespace(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, namespace := range env.Namespaces {
+		namespaceCompliant := true
 		ginkgo.By(fmt.Sprintf("Checking namespace %s", namespace))
 		for _, invalidPrefix := range invalidNamespacePrefixes {
 			if strings.HasPrefix(namespace, invalidPrefix) {
 				tnf.ClaimFilePrintf("Namespace %s has invalid prefix %s", namespace, invalidPrefix)
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNamespacedReportObject("Namespace has invalid prefix", testhelper.Namespace, false, namespace))
-			} else {
-				compliantObjects = append(compliantObjects, testhelper.NewNamespacedReportObject("Namespace has valid prefix", testhelper.Namespace, true, namespace))
+				namespaceCompliant = false
+				break // Break out of the loop if we find an invalid prefix
 			}
+		}
+		if namespaceCompliant {
+			compliantObjects = append(compliantObjects, testhelper.NewNamespacedReportObject("Namespace has valid prefix", testhelper.Namespace, true, namespace))
 		}
 	}
 	if failedNamespacesNum := len(nonCompliantObjects); failedNamespacesNum > 0 {
