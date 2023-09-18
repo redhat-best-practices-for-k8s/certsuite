@@ -116,10 +116,6 @@ func testContainerCertificationStatus(env *provider.TestEnvironment, validator c
 	ginkgo.By(fmt.Sprintf("Getting certification status. Number of containers to check: %d", len(containersToQuery)))
 	allContainersToQueryEmpty := true
 	for c := range containersToQuery {
-		if c.Repository == "" || c.Registry == "" {
-			tnf.ClaimFilePrintf("Container name = \"%s\" or repository = \"%s\" is missing, skipping this container to query", c.Repository, c.Registry)
-			continue
-		}
 		allContainersToQueryEmpty = false
 		if !testContainerCertification(c, validator) {
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewCertifiedContainerReportObject(c, "Container is not certified", false))
@@ -191,11 +187,6 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment, val
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, c := range env.Containers {
-		if c.ContainerImageIdentifier.Repository == "" || c.ContainerImageIdentifier.Registry == "" {
-			tnf.ClaimFilePrintf("Container name = %q or repository = %q is missing, skipping this container to query", c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Registry)
-			continue
-		}
-
 		switch {
 		case c.ContainerImageIdentifier.Digest == "":
 			tnf.ClaimFilePrintf("%s is missing digest field, failing validation (repo=%s image=%s)", c, c.ContainerImageIdentifier.Registry, c.ContainerImageIdentifier.Repository)
