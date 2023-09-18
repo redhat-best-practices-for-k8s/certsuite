@@ -18,8 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix: 
-        # suite: [accesscontrol, affiliatedcertification, lifecycle, networking, observability, platformalteration, performance, operator]
-        suite: [accesscontrol, affiliatedcertification, manageability, networking, lifecycle, performance]
+        suite: [accesscontrol, affiliatedcertification, manageability, networking, lifecycle, performance, platformalteration, observability, operator]
     env:
       SHELL: /bin/bash
       DEBUG_TNF: true # More verbose output from the TNF
@@ -54,20 +53,6 @@ jobs:
             echo "Recreate=true" >> $GITHUB_ENV
           else
             echo "Cluster is live.  Continuing."
-
-            # Removing the time check for now.  The Kind clusters are surprisingly resilient.
-            # Basically we only want to check if we need to recreate the cluster if it is mistakenly deleted.
-
-            # CURRENT_DATE=$(date +%s)
-            # CLUSTER_CREATED=$(date -d $(kubectl get nodes -o custom-columns='AGE:.metadata.creationTimestamp' --no-headers | head -n 1) +%s)
-
-            # # If the cluster is older than 24 hours, recreate it
-            # if [[ $((CURRENT_DATE - CLUSTER_CREATED)) -gt 86400 ]]; then
-            #   echo "Cluster is older than 24 hours.  Recreating."
-            #   echo "Recreate=true" >> $GITHUB_ENV
-            # else
-            #   echo "Cluster is less than 24 hours old.  Continuing."
-            # fi
           fi
         
       - name: Check out `cnf-certification-test-partner`
@@ -116,6 +101,10 @@ jobs:
         with:
           repository: ${{ env.QE_REPO }}
           path: cnfcert-tests-verification
+
+      - name: Preemptively potential QE namespaces
+        run: ./scripts/delete-namespaces.sh
+        working-directory: cnfcert-tests-verification
 
       # Setup is complete.  Time to run the QE tests.
       - name: Run the tests
