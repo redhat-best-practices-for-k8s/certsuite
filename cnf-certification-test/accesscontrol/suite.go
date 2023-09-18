@@ -840,12 +840,12 @@ func testNodePort(env *provider.TestEnvironment) {
 
 		if s.Spec.Type == nodePort {
 			tnf.ClaimFilePrintf("FAILURE: Service %s (ns %s) type is nodePort", s.Name, s.Namespace)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("", testhelper.ServiceType, false).
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("Service is type NodePort", testhelper.ServiceType, false).
 				AddField(testhelper.Namespace, s.Namespace).
 				AddField(testhelper.ServiceName, s.Name).
 				AddField(testhelper.ServiceMode, string(s.Spec.Type)))
 		} else {
-			compliantObjects = append(compliantObjects, testhelper.NewReportObject("", testhelper.ServiceType, true).
+			compliantObjects = append(compliantObjects, testhelper.NewReportObject("Service is not type NodePort", testhelper.ServiceType, true).
 				AddField(testhelper.Namespace, s.Namespace).
 				AddField(testhelper.ServiceName, s.Name).
 				AddField(testhelper.ServiceMode, string(s.Spec.Type)))
