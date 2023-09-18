@@ -111,7 +111,7 @@ func testContainerCertificationStatus(env *provider.TestEnvironment, validator c
 
 	// Get the list of containers to query
 	containersToQuery := getContainersToQuery(env)
-	testhelper.SkipIfEmptyAny(ginkgo.Skip, containersToQuery)
+	testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(containersToQuery, "containersToQuery"))
 
 	ginkgo.By(fmt.Sprintf("Getting certification status. Number of containers to check: %d", len(containersToQuery)))
 	allContainersToQueryEmpty := true
@@ -135,7 +135,7 @@ func testContainerCertificationStatus(env *provider.TestEnvironment, validator c
 
 func testAllOperatorCertified(env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
 	operatorsUnderTest := env.Operators
-	testhelper.SkipIfEmptyAny(ginkgo.Skip, operatorsUnderTest)
+	testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(operatorsUnderTest, "operatorsUnderTest"))
 	ginkgo.By(fmt.Sprintf("Verify operator as certified. Number of operators to check: %d", len(operatorsUnderTest)))
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -167,7 +167,7 @@ func testAllOperatorCertified(env *provider.TestEnvironment, validator certdb.Ce
 
 func testHelmCertified(env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
 	helmchartsReleases := env.HelmChartReleases
-	testhelper.SkipIfEmptyAny(ginkgo.Skip, helmchartsReleases)
+	testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(helmchartsReleases, "helmchartsReleases"))
 	// Collect all of the failed helm charts
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject

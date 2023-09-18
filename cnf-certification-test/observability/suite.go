@@ -46,25 +46,25 @@ var _ = ginkgo.Describe(common.ObservabilityTestKey, func() {
 
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestLoggingIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
 		testContainersLogging(&env)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCrdsStatusSubresourceIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Crds)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Crds, "env.Crds"))
 		testCrds(&env)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestTerminationMessagePolicyIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
 		testTerminationMessagePolicy(&env)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodDisruptionBudgetIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Deployments, env.StatefulSets)
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(env.Deployments, "env.Deployments"), testhelper.NewSkipObject(env.StatefulSets, "env.StatefulSets"))
 		testPodDisruptionBudgets(&env)
 	})
 })
