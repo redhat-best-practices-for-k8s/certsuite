@@ -55,16 +55,19 @@ jobs:
           else
             echo "Cluster is live.  Continuing."
 
-            CURRENT_DATE=$(date +%s)
-            CLUSTER_CREATED=$(date -d $(kubectl get nodes -o custom-columns='AGE:.metadata.creationTimestamp' --no-headers | head -n 1) +%s)
+            # Removing the time check for now.  The Kind clusters are surprisingly resilient.
+            # Basically we only want to check if we need to recreate the cluster if it is mistakenly deleted.
 
-            # If the cluster is older than 24 hours, recreate it
-            if [[ $((CURRENT_DATE - CLUSTER_CREATED)) -gt 86400 ]]; then
-              echo "Cluster is older than 24 hours.  Recreating."
-              echo "Recreate=true" >> $GITHUB_ENV
-            else
-              echo "Cluster is less than 24 hours old.  Continuing."
-            fi
+            # CURRENT_DATE=$(date +%s)
+            # CLUSTER_CREATED=$(date -d $(kubectl get nodes -o custom-columns='AGE:.metadata.creationTimestamp' --no-headers | head -n 1) +%s)
+
+            # # If the cluster is older than 24 hours, recreate it
+            # if [[ $((CURRENT_DATE - CLUSTER_CREATED)) -gt 86400 ]]; then
+            #   echo "Cluster is older than 24 hours.  Recreating."
+            #   echo "Recreate=true" >> $GITHUB_ENV
+            # else
+            #   echo "Cluster is less than 24 hours old.  Continuing."
+            # fi
           fi
         
       - name: Check out `cnf-certification-test-partner`
