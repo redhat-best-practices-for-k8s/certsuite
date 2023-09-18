@@ -425,6 +425,7 @@ func testNamespace(env *provider.TestEnvironment) {
 				tnf.ClaimFilePrintf("Namespace %s has invalid prefix %s", namespace, invalidPrefix)
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNamespacedReportObject("Namespace has invalid prefix", testhelper.Namespace, false, namespace))
 				namespaceCompliant = false
+				break // Break out of the loop if we find an invalid prefix
 			}
 		}
 		if namespaceCompliant {
