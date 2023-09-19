@@ -44,7 +44,7 @@ jobs:
       - name: Set up Go 1.21
         uses: actions/setup-go@v4
         with:
-          go-version: 1.21.0
+          go-version: 1.21.1
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -53,6 +53,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
+
+      - name: Extract dependent Pull Requests
+        uses: depends-on/depends-on-action@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       # TODO: golangci-lint team recommends using a GitHub Action to perform golangci-lint responsibilities.  However
       # there does not appear to be a way to honor our existing .golangci.yml.  For now, mimic developer behavior.
@@ -102,6 +107,10 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
+      - name: Extract dependent Pull Requests
+        uses: depends-on/depends-on-action@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - run: |
           curl --location --output $CM_BIN --silent $CM_URL_LINUX
           chmod +x $CM_BIN
@@ -124,6 +133,7 @@ jobs:
             extends: default
             rules:
               line-length:
+                max: 180
                 level: warning
               trailing-spaces:
                 level: warning
@@ -144,7 +154,7 @@ jobs:
       - name: Set up Go 1.21
         uses: actions/setup-go@v4
         with:
-          go-version: 1.21.0
+          go-version: 1.21.1
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -153,6 +163,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
+
+      - name: Extract dependent Pull Requests
+        uses: depends-on/depends-on-action@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run Tests
         run: make test
@@ -204,7 +219,7 @@ jobs:
       - name: Set up Go 1.21
         uses: actions/setup-go@v4
         with:
-          go-version: 1.21.0
+          go-version: 1.21.1
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -213,6 +228,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
+
+      - name: Extract dependent Pull Requests
+        uses: depends-on/depends-on-action@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       # Update the CNF containers, helm charts and operators DB.
       - name: Update the CNF DB
@@ -223,7 +243,7 @@ jobs:
             --rm \
             --volume "${GITHUB_WORKSPACE}"/offline-db:/tmp/dump:Z \
             ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
-          docker system prune -a
+          docker system prune --volumes -f
 
       - name: Install ginkgo
         run: make install-tools
@@ -280,7 +300,7 @@ jobs:
               --policy /policy.json \
               --results /claim.json \
               >"${GITHUB_WORKSPACE}"/results.txt
-          docker system prune -a
+          docker system prune --volumes -f
 
       - name: Check that their are 0 failed tests in the gradetool results
         run: |
@@ -356,6 +376,11 @@ jobs:
         with:
           ref: ${{ github.sha }}
 
+      - name: Extract dependent Pull Requests
+        uses: depends-on/depends-on-action@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build the `cnf-certification-test` image
         run: |
           make build-image-local
@@ -405,7 +430,7 @@ jobs:
               --policy /policy.json \
               --results /claim.json \
               >"${GITHUB_WORKSPACE}"/results.txt
-          docker system prune -a
+          docker system prune --volumes -f
 
       - name: Check that their are 0 failed tests in the gradetool results
         run: |
@@ -434,7 +459,7 @@ jobs:
       # Push the new unstable TNF image to Quay.io.
       - name: (if on main and upstream) Authenticate against Quay.io
         if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           # Use a Robot Account to authenticate against Quay.io
@@ -445,3 +470,17 @@ jobs:
       - name: (if on main and upstream) Push the newly built image to Quay.io
         if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
         run: docker push --all-tags ${REGISTRY}/${TNF_IMAGE_NAME}
+
+  check-all-dependencies-are-merged:
+    name: Check all the PR dependencies are merged
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check all dependent Pull Requests are merged
+        uses: depends-on/depends-on-action@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          check-unmerged-pr: true

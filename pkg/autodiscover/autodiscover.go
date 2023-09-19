@@ -19,6 +19,7 @@ package autodiscover
 import (
 	"context"
 	"errors"
+	"regexp"
 	"time"
 
 	configv1 "github.com/openshift/api/config/v1"
@@ -93,6 +94,11 @@ type DiscoveredTestData struct {
 	CollectorAppPassword   string
 }
 
+type labelObject struct {
+	LabelKey   string
+	LabelValue string
+}
+
 var data = DiscoveredTestData{}
 
 func warnDeprecation(config *configuration.TestConfiguration) {
@@ -103,6 +109,26 @@ func warnDeprecation(config *configuration.TestConfiguration) {
 	if len(config.PodsUnderTestLabels) == 0 {
 		logrus.Warn("No Pod under test labels configured. Tests on pods and containers will not run. Please use the \"podsUnderTestLabels\" field to specify labels for pods under test")
 	}
+}
+
+const labelRegex = `(\S*)\s*:\s*(\S*)`
+const labelRegexMatches = 3
+
+func createLabels(labelStrings []string) (labelObjects []labelObject) {
+	for _, label := range labelStrings {
+		r := regexp.MustCompile(labelRegex)
+
+		values := r.FindStringSubmatch(label)
+		if len(values) != labelRegexMatches {
+			logrus.Errorf("failed to parse label=%s, will not be used!, ", label)
+			continue
+		}
+		var aLabel labelObject
+		aLabel.LabelKey = values[1]
+		aLabel.LabelValue = values[2]
+		labelObjects = append(labelObjects, aLabel)
+	}
+	return labelObjects
 }
 
 // DoAutoDiscover finds objects under test
@@ -117,13 +143,16 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 		logrus.Fatalf("Failed to retrieve storageClasses - err: %v", err)
 	}
 
+	podsUnderTestLabelsObjects := createLabels(config.PodsUnderTestLabels)
+	operatorsUnderTestLabelsObjects := createLabels(config.OperatorsUnderTestLabels)
+
 	// prints warning about deprecated labels
 	warnDeprecation(config)
 	// adds DEPRECATED hardcoded operator label
-	config.OperatorsUnderTestLabelsObjects = append(config.OperatorsUnderTestLabelsObjects, configuration.LabelObject{LabelKey: deprecatedHardcodedOperatorLabelName, LabelValue: deprecatedHardcodedOperatorLabelValue})
+	operatorsUnderTestLabelsObjects = append(operatorsUnderTestLabelsObjects, labelObject{LabelKey: deprecatedHardcodedOperatorLabelName, LabelValue: deprecatedHardcodedOperatorLabelValue})
 
-	logrus.Infof("parsed pods under test labels: %+v", config.PodsUnderTestLabelsObjects)
-	logrus.Infof("parsed operators under test labels: %+v", config.OperatorsUnderTestLabelsObjects)
+	logrus.Infof("parsed pods under test labels: %+v", podsUnderTestLabelsObjects)
+	logrus.Infof("parsed operators under test labels: %+v", operatorsUnderTestLabelsObjects)
 
 	data.AllNamespaces, _ = getAllNamespaces(oc.K8sClient.CoreV1())
 	data.AllSubscriptions = findSubscriptions(oc.OlmClient, []string{""})
@@ -131,9 +160,9 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.AllInstallPlans = getAllInstallPlans(oc.OlmClient)
 	data.AllCatalogSources = getAllCatalogSources(oc.OlmClient)
 	data.Namespaces = namespacesListToStringList(config.TargetNameSpaces)
-	data.Pods, data.AllPods = findPodsByLabel(oc.K8sClient.CoreV1(), config.PodsUnderTestLabelsObjects, data.Namespaces)
+	data.Pods, data.AllPods = findPodsByLabel(oc.K8sClient.CoreV1(), podsUnderTestLabelsObjects, data.Namespaces)
 	data.AbnormalEvents = findAbnormalEvents(oc.K8sClient.CoreV1(), data.Namespaces)
-	debugLabels := []configuration.LabelObject{{LabelKey: debugHelperPodsLabelName, LabelValue: debugHelperPodsLabelValue}}
+	debugLabels := []labelObject{{LabelKey: debugHelperPodsLabelName, LabelValue: debugHelperPodsLabelValue}}
 	debugNS := []string{config.DebugDaemonSetNamespace}
 	data.DebugPods, _ = findPodsByLabel(oc.K8sClient.CoreV1(), debugLabels, debugNS)
 	data.ResourceQuotaItems, err = getResourceQuotas(oc.K8sClient.CoreV1())
@@ -150,7 +179,7 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	}
 	data.Crds = FindTestCrdNames(config.CrdFilters)
 	data.ScaleCrUnderTest = GetScaleCrUnderTest(data.Namespaces, data.Crds)
-	data.Csvs = findOperatorsByLabel(oc.OlmClient, config.OperatorsUnderTestLabelsObjects, config.TargetNameSpaces)
+	data.Csvs = findOperatorsByLabel(oc.OlmClient, operatorsUnderTestLabelsObjects, config.TargetNameSpaces)
 	data.Subscriptions = findSubscriptions(oc.OlmClient, data.Namespaces)
 	data.HelmChartReleases = getHelmList(oc.RestConfig, data.Namespaces)
 
@@ -172,8 +201,8 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.OCPStatus = compatibility.DetermineOCPStatus(openshiftVersion, time.Now())
 
 	data.K8sVersion = k8sVersion.GitVersion
-	data.Deployments = findDeploymentByLabel(oc.K8sClient.AppsV1(), config.PodsUnderTestLabelsObjects, data.Namespaces)
-	data.StatefulSet = findStatefulSetByLabel(oc.K8sClient.AppsV1(), config.PodsUnderTestLabelsObjects, data.Namespaces)
+	data.Deployments = findDeploymentByLabel(oc.K8sClient.AppsV1(), podsUnderTestLabelsObjects, data.Namespaces)
+	data.StatefulSet = findStatefulSetByLabel(oc.K8sClient.AppsV1(), podsUnderTestLabelsObjects, data.Namespaces)
 	// Find ClusterRoleBindings
 	clusterRoleBindings, err := getClusterRoleBindings()
 	if err != nil {

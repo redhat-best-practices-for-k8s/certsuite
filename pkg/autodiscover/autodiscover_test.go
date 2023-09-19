@@ -17,11 +17,45 @@
 package autodiscover
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 )
+
+func TestCreateLabels(t *testing.T) {
+	type args struct {
+		labelStrings []string
+	}
+	tests := []struct {
+		name             string
+		args             args
+		wantLabelObjects []labelObject
+	}{
+		{
+			name:             "ok",
+			args:             args{labelStrings: []string{"test-network-function.com/generic: target"}},
+			wantLabelObjects: []labelObject{{LabelKey: "test-network-function.com/generic", LabelValue: "target"}},
+		},
+		{
+			name:             "ok1",
+			args:             args{labelStrings: []string{"test-network-function.com/generic   : 1"}},
+			wantLabelObjects: []labelObject{{LabelKey: "test-network-function.com/generic", LabelValue: "1"}},
+		},
+		{
+			name: "nok",
+			args: args{labelStrings: []string{"test-network-function.com/generic= target"}},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if gotLabelObjects := createLabels(tt.args.labelStrings); !reflect.DeepEqual(gotLabelObjects, tt.wantLabelObjects) {
+				t.Errorf("createLabels() = %v, want %v", gotLabelObjects, tt.wantLabelObjects)
+			}
+		})
+	}
+}
 
 func TestNamespacesListToStringList(t *testing.T) {
 	testCases := []struct {

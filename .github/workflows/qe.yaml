@@ -1,9 +1,12 @@
 name: QE Testing
 
 on:
-  pull_request:
-    branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
   workflow_dispatch:
+  # Schedule a daily cron at midnight UTC
+  schedule:
+    - cron: '0 0 * * *'
 env:
   QE_REPO: test-network-function/cnfcert-tests-verification
 
@@ -16,7 +19,7 @@ jobs:
       fail-fast: false
       matrix: 
         # suite: [accesscontrol, affiliatedcertification, lifecycle, networking, observability, platformalteration, performance, operator]
-        suite: []
+        suite: [accesscontrol, affiliatedcertification, manageability, networking, lifecycle, performance]
     env:
       SHELL: /bin/bash
       DEBUG_TNF: true # More verbose output from the TNF
@@ -37,16 +40,47 @@ jobs:
 
       - name: Build the test image
         run: make build-image-local # quay.io/testnetworkfunction/cnf-certification-test:localtest
+
+      - name: Compare the time of cluster creation to the current time
+        shell: bash
+        run: |
+
+          # Check if the cluster is live
+          set -e
+          EXIT_CODE=0
+          kubectl get nodes || EXIT_CODE=$?
+          if [[ $EXIT_CODE -ne 0 ]]; then
+            echo "Cluster is not live.  Exiting."
+            echo "Recreate=true" >> $GITHUB_ENV
+          else
+            echo "Cluster is live.  Continuing."
+
+            # Removing the time check for now.  The Kind clusters are surprisingly resilient.
+            # Basically we only want to check if we need to recreate the cluster if it is mistakenly deleted.
+
+            # CURRENT_DATE=$(date +%s)
+            # CLUSTER_CREATED=$(date -d $(kubectl get nodes -o custom-columns='AGE:.metadata.creationTimestamp' --no-headers | head -n 1) +%s)
+
+            # # If the cluster is older than 24 hours, recreate it
+            # if [[ $((CURRENT_DATE - CLUSTER_CREATED)) -gt 86400 ]]; then
+            #   echo "Cluster is older than 24 hours.  Recreating."
+            #   echo "Recreate=true" >> $GITHUB_ENV
+            # else
+            #   echo "Cluster is less than 24 hours old.  Continuing."
+            # fi
+          fi
         
       - name: Check out `cnf-certification-test-partner`
         uses: actions/checkout@v4
         with:
           repository: test-network-function/cnf-certification-test-partner
           path: cnf-certification-test-partner
+        if: ${{ env.Recreate == 'true' }}
 
       - name: Bootstrap the Kind and OC/Kubectl binaries for the `local-test-infra`
         run: make bootstrap-cluster
         working-directory: cnf-certification-test-partner
+        if: ${{ env.Recreate == 'true' }}
   
       - name: Preemptively delete the Kind cluster
         uses: nick-fields/retry@v2
@@ -54,21 +88,28 @@ jobs:
           timeout_minutes: 10
           max_attempts: 3
           command: kind delete cluster
+        if: ${{ env.Recreate == 'true' }}
 
       - name: Prune docker resources
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 10
           max_attempts: 3
-          command: docker container prune -f; docker network prune -f; docker volume prune -f 
+          command: docker system prune --volumes -f
+        if: ${{ env.Recreate == 'true' }}
 
       - name: Create `local-test-infra` OpenShift resources
         run: make rebuild-cluster
         working-directory: cnf-certification-test-partner
+        if: ${{ env.Recreate == 'true' }}
   
       - name: Install partner resources
-        run: make install
+        run: make install-for-qe
         working-directory: cnf-certification-test-partner
+        if: ${{ env.Recreate == 'true' }}
+
+      - name: Show pods
+        run: oc get pods -A
 
       - name: Clone the QE repository
         uses: actions/checkout@v4

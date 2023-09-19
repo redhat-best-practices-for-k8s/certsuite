@@ -19,7 +19,6 @@ import (
 	"context"
 
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	appsv1 "k8s.io/api/apps/v1"
 	scalingv1 "k8s.io/api/autoscaling/v1"
 
@@ -59,7 +58,7 @@ func FindCrObjectByNameByNamespace(scalesGetter scale.ScalesGetter, ns, name str
 //nolint:dupl
 func findDeploymentByLabel(
 	appClient appv1client.AppsV1Interface,
-	labels []configuration.LabelObject,
+	labels []labelObject,
 	namespaces []string,
 ) []appsv1.Deployment {
 	deployments := []appsv1.Deployment{}
@@ -92,7 +91,7 @@ func findDeploymentByLabel(
 //nolint:dupl
 func findStatefulSetByLabel(
 	appClient appv1client.AppsV1Interface,
-	labels []configuration.LabelObject,
+	labels []labelObject,
 	namespaces []string,
 ) []appsv1.StatefulSet {
 	statefulsets := []appsv1.StatefulSet{}

@@ -7,7 +7,7 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 
 ## Test cases summary
 
-### Total test cases: 88
+### Total test cases: 89
 
 ### Total suites: 9
 
@@ -21,13 +21,13 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |observability|4|
 |operator|3|
 |performance|6|
-|platform-alteration|12|
+|platform-alteration|13|
 
-### Extended specific tests only: 11
+### Extended specific tests only: 12
 
 |Mandatory|Optional|
 |---|---|
-|9|2|
+|9|3|
 
 ### Far-Edge specific tests only: 8
 
@@ -52,6 +52,22 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 Test Cases are the specifications used to perform a meaningful test. Test cases may run once, or several times against several targets. CNF Certification includes a number of normative and informative tests to ensure CNFs follow best practices. Here is the list of available Test Cases:
 
 ### access-control
+
+#### access-control-bpf-capability-check
+
+Property|Description
+---|---
+Unique ID|access-control-bpf-capability-check
+Description|Ensures that containers do not use BFP capability. CNF should avoid loading eBPF filters
+Suggested Remediation|Remove the following capability from the container/pod definitions: BPF
+Best Practice Reference|No Doc Link - Telco
+Exception Process|Exception can be considered. Must identify which container requires the capability and detail why.
+Tags|telco,access-control
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Optional|
+|Telco|Mandatory|
 
 #### access-control-cluster-role-bindings
 
@@ -323,22 +339,6 @@ Tags|common,access-control
 |Extended|Mandatory|
 |Far-Edge|Mandatory|
 |Non-Telco|Mandatory|
-|Telco|Mandatory|
-
-#### access-control-projected-volume-service-account-token
-
-Property|Description
----|---
-Unique ID|access-control-projected-volume-service-account-token
-Description|Checks that pods do not use projected volumes and service account tokens
-Suggested Remediation|Ensure that pods do not use projected volumes and service account tokens
-Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-automount-services-for-pods
-Exception Process|Exception will be considered if container needs to access APIs which OCP does not offer natively. Must document which container requires which API(s) and detail why existing OCP APIs cannot be used.
-Tags|telco,access-control
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|Far-Edge|Mandatory|
-|Non-Telco|Optional|
 |Telco|Mandatory|
 
 #### access-control-requests-and-limits
@@ -622,7 +622,7 @@ Tags|telco,lifecycle
 Property|Description
 ---|---
 Unique ID|lifecycle-cpu-isolation
-Description|CPU isolation requires: For each container within the pod, resource requests and limits must be identical. Request and Limits are in the form of whole CPUs. The runTimeClassName must be specified. Annotations required disabling CPU and IRQ load-balancing.
+Description|CPU isolation requires: For each container within the pod, resource requests and limits must be identical. If cpu requests and limits are not identical and in whole units (Guaranteed pods with exclusive cpus), your pods will not be tested for compliance. The runTimeClassName must be specified. Annotations required disabling CPU and IRQ load-balancing.
 Suggested Remediation|CPU isolation testing is enabled. Please ensure that all pods adhere to the CPU isolation requirements.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cpu-isolation
 Exception Process|There is no documented exception process for this.
@@ -930,7 +930,7 @@ Tags|extended,networking
 Property|Description
 ---|---
 Unique ID|networking-icmpv4-connectivity
-Description|Checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset.
+Description|Checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.
 Suggested Remediation|Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ipv4-&-ipv6
 Exception Process|No exceptions - must be able to communicate on default network using IPv4
@@ -946,7 +946,7 @@ Tags|common,networking
 Property|Description
 ---|---
 Unique ID|networking-icmpv4-connectivity-multus
-Description|Checks that each CNF Container is able to communicate via ICMPv4 on the Multus network(s). This test case requires the Deployment of the debug daemonset.
+Description|Checks that each CNF Container is able to communicate via ICMPv4 on the Multus network(s). This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.
 Suggested Remediation|Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence. Not applicable if MULTUS is not supported.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations
 Exception Process|There is no documented exception process for this.
@@ -962,7 +962,7 @@ Tags|telco,networking
 Property|Description
 ---|---
 Unique ID|networking-icmpv6-connectivity
-Description|Checks that each CNF Container is able to communicate via ICMPv6 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset.
+Description|Checks that each CNF Container is able to communicate via ICMPv6 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.
 Suggested Remediation|Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence. Not applicable if IPv6 is not supported.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ipv4-&-ipv6
 Exception Process|There is no documented exception process for this.
@@ -978,7 +978,7 @@ Tags|common,networking
 Property|Description
 ---|---
 Unique ID|networking-icmpv6-connectivity-multus
-Description|Checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s). This test case requires the Deployment of the debug daemonset.
+Description|Checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s). This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.
 Suggested Remediation|Ensure that the CNF is able to communicate via the Multus network(s). In some rare cases, CNFs may require routing table changes in order to communicate over the Multus network(s). To exclude a particular pod from ICMPv6 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it.The label value is trivial, only its presence. Not applicable if IPv6/MULTUS is not supported.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations
 Exception Process|There is no documented exception process for this.
@@ -1364,6 +1364,22 @@ Tags|common,platform-alteration
 |Far-Edge|Mandatory|
 |Non-Telco|Mandatory|
 |Telco|Mandatory|
+
+#### platform-alteration-hyperthread-enable
+
+Property|Description
+---|---
+Unique ID|platform-alteration-hyperthread-enable
+Description|Check that baremetal workers have hyperthreading enabled
+Suggested Remediation|Check that baremetal workers have hyperthreading enabled
+Best Practice Reference|No Doc Link - Extended
+Exception Process|There is no documented exception process for this.
+Tags|extended,platform-alteration
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
 
 #### platform-alteration-is-selinux-enforcing
 

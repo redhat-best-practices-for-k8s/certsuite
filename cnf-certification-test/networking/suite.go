@@ -59,7 +59,7 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	// Default interface ICMP IPv4 test case
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestICMPv4ConnectivityIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"), testhelper.NewSkipObject(env.Pods, "env.Pods"))
 		if env.DaemonsetFailedToSpawn {
 			ginkgo.Skip("Debug Daemonset failed to spawn skipping testNetworkConnectivity ICMP IPv4")
 		}
@@ -68,7 +68,7 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	// Multus interfaces ICMP IPv4 test case
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestICMPv4ConnectivityMultusIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"), testhelper.NewSkipObject(env.Pods, "env.Pods"))
 		if env.DaemonsetFailedToSpawn {
 			ginkgo.Skip("Debug Daemonset failed to spawn skipping testNetworkConnectivity Multus IPv4")
 		}
@@ -77,7 +77,7 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	// Default interface ICMP IPv6 test case
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestICMPv6ConnectivityIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"), testhelper.NewSkipObject(env.Pods, "env.Pods"))
 		if env.DaemonsetFailedToSpawn {
 			ginkgo.Skip("Debug Daemonset failed to spawn skipping testNetworkConnectivity ICMP IPv6")
 		}
@@ -86,7 +86,7 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	// Multus interfaces ICMP IPv6 test case
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestICMPv6ConnectivityMultusIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"), testhelper.NewSkipObject(env.Pods, "env.Pods"))
 		if env.DaemonsetFailedToSpawn {
 			ginkgo.Skip("Debug Daemonset failed to spawn skipping testNetworkConnectivity Multus IPv6")
 		}
@@ -95,7 +95,7 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	// Default interface ICMP IPv6 test case
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUndeclaredContainerPortsUsage)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"), testhelper.NewSkipObject(env.Pods, "env.Pods"))
 		if env.DaemonsetFailedToSpawn {
 			ginkgo.Skip("Debug Daemonset failed to spawn skipping testUndeclaredContainerPortsUsage")
 		}
@@ -103,7 +103,7 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	})
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOCPReservedPortsUsage)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers, env.Pods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"), testhelper.NewSkipObject(env.Pods, "env.Pods"))
 		if env.DaemonsetFailedToSpawn {
 			ginkgo.Skip("Debug Daemonset failed to spawn skipping testOCPReservedPortsUsage")
 		}
@@ -111,17 +111,17 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	})
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServiceDualStackIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Services)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Services, "env.Services"))
 		testDualStackServices(&env)
 	})
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNetworkPolicyDenyAllIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Pods, "env.Pods"))
 		testNetworkPolicyDenyAll(&env)
 	})
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestReservedExtendedPartnerPorts)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Pods, "env.Pods"))
 		if env.DaemonsetFailedToSpawn {
 			ginkgo.Skip("Debug Daemonset failed to spawn skipping testPartnerSpecificTCPPorts")
 		}
@@ -130,7 +130,7 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestDpdkCPUPinningExecProbe)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		dpdkPods := env.GetCPUPinningPodsWithDpdk()
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, dpdkPods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(dpdkPods, "dpdkPods"))
 		testExecProbDenyAtCPUPinning(dpdkPods)
 	})
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestRestartOnRebootLabelOnPodsUsingSRIOV)
@@ -139,7 +139,7 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 		if err != nil {
 			ginkgo.Fail(fmt.Sprintf("Failure getting pods using SRIOV: %v", err))
 		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, sriovPods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(sriovPods, "sriovPods"))
 		testRestartOnRebootLabelOnPodsUsingSriov(sriovPods)
 	})
 })
@@ -234,7 +234,7 @@ func testNetworkConnectivity(env *provider.TestEnvironment, aIPVersion netcommon
 	// Saving curated logs to claims file
 	tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
 	if skip {
-		ginkgo.Skip(fmt.Sprintf("There are no %s networks to test, skipping test", aIPVersion))
+		ginkgo.Skip(fmt.Sprintf("There are no %s networks to test with at least 2 pods, skipping test", aIPVersion))
 	}
 	testhelper.AddTestResultReason(report.CompliantObjectsOut, report.NonCompliantObjectsOut, tnf.ClaimFilePrintf, ginkgo.Fail)
 }

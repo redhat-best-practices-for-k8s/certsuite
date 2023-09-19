@@ -22,7 +22,7 @@ RUN \
 # Install Go binary and set the PATH
 ENV \
 	GO_DL_URL=https://golang.org/dl \
-	GO_BIN_TAR=go1.21.0.linux-amd64.tar.gz \
+	GO_BIN_TAR=go1.21.1.linux-amd64.tar.gz \
 	GOPATH=/root/go
 ENV GO_BIN_URL_x86_64=${GO_DL_URL}/${GO_BIN_TAR}
 RUN \
@@ -99,8 +99,11 @@ FROM quay.io/testnetworkfunction/oct:latest AS db
 # TODO run as non-root
 FROM registry.access.redhat.com/ubi8/ubi-minimal:8.8-1037
 
+ENV \
+	TNF_DIR=/usr/tnf \
+	OSDK_BIN=/usr/local/osdk/bin
+
 # Copy all of the necessary files over from the TNF_DIR
-ENV TNF_DIR=/usr/tnf
 COPY --from=build ${TNF_DIR} ${TNF_DIR}
 
 # Add operatorsdk binary to image
@@ -115,7 +118,7 @@ ENV \
 	TNF_CONFIGURATION_PATH=/usr/tnf/config/tnf_config.yml \
 	KUBECONFIG=/usr/tnf/kubeconfig/config \
 	PFLT_DOCKERCONFIG=/usr/tnf/dockercfg/config.json \
-	PATH="/usr/local/osdk/bin:${PATH}"
+	PATH="${OSDK_BIN}:${PATH}"
 WORKDIR ${TNF_DIR}
 ENV SHELL=/bin/bash
 CMD ["./run-cnf-suites.sh", "-o", "claim", "-f", "diagnostic"]

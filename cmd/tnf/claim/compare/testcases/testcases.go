@@ -90,7 +90,7 @@ func getTestCasesResultsSummary(results map[string]string) TcResultsSummary {
 // Process the results from different claim files and return the DiffReport.
 // In case one tc name does not exist in the other claim file, the result will
 // be marked as "not found" in the table.
-func GetDiffReport(resultsClaim1, resultsClaim2 claim.TestSuiteResults) DiffReport {
+func GetDiffReport(resultsClaim1, resultsClaim2 claim.TestSuiteResults) *DiffReport {
 	const tcResultNotFound = "not found"
 
 	report := DiffReport{}
@@ -128,7 +128,7 @@ func GetDiffReport(resultsClaim1, resultsClaim2 claim.TestSuiteResults) DiffRepo
 	report.Claim1ResultsSummary = getTestCasesResultsSummary(claim1Results)
 	report.Claim2ResultsSummary = getTestCasesResultsSummary(claim2Results)
 
-	return report
+	return &report
 }
 
 // Stringer method for the DiffReport. Will return a string with two tables:
@@ -147,22 +147,29 @@ func GetDiffReport(resultsClaim1, resultsClaim2 claim.TestSuiteResults) DiffRepo
 // ...
 func (r *DiffReport) String() string {
 	const (
-		tcDiffRowFmt          = "%-60s%-10s%-10s\n"
-		tcStatusSummaryRowFmt = "%-15s%-20s%-20s\n"
+		tcDiffRowFmt          = "%-60s%-10s%-s\n"
+		tcStatusSummaryRowFmt = "%-15s%-20s%-s\n"
 	)
 
-	str := fmt.Sprintf(tcDiffRowFmt, "TEST CASE NAME", "CLAIM-1", "CLAIM-2")
-
-	for _, diff := range r.TestCases {
-		str += fmt.Sprintf(tcDiffRowFmt, diff.Name, diff.Claim1Result, diff.Claim2Result)
-	}
-
-	str += "\n"
-
+	str := "RESULTS SUMMARY\n"
+	str += "---------------\n"
 	str += fmt.Sprintf(tcStatusSummaryRowFmt, "STATUS", "# in CLAIM-1", "# in CLAIM-2")
 	str += fmt.Sprintf(tcStatusSummaryRowFmt, "passed", fmt.Sprintf("%d", r.Claim1ResultsSummary.Passed), fmt.Sprintf("%d", r.Claim2ResultsSummary.Passed))
 	str += fmt.Sprintf(tcStatusSummaryRowFmt, "skipped", fmt.Sprintf("%d", r.Claim1ResultsSummary.Skipped), fmt.Sprintf("%d", r.Claim2ResultsSummary.Skipped))
 	str += fmt.Sprintf(tcStatusSummaryRowFmt, "failed", fmt.Sprintf("%d", r.Claim1ResultsSummary.Failed), fmt.Sprintf("%d", r.Claim2ResultsSummary.Failed))
+	str += "\n"
+
+	str += "RESULTS DIFFERENCES\n"
+	str += "-------------------\n"
+	if len(r.TestCases) == 0 {
+		str += "<none>\n"
+		return str
+	}
+
+	str += fmt.Sprintf(tcDiffRowFmt, "TEST CASE NAME", "CLAIM-1", "CLAIM-2")
+	for _, diff := range r.TestCases {
+		str += fmt.Sprintf(tcDiffRowFmt, diff.Name, diff.Claim1Result, diff.Claim2Result)
+	}
 
 	return str
 }

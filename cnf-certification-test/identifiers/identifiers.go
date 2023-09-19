@@ -75,7 +75,6 @@ var (
 	TestICMPv4ConnectivityIdentifier                  claim.Identifier
 	TestNetworkPolicyDenyAllIdentifier                claim.Identifier
 	Test1337UIDIdentifier                             claim.Identifier
-	TestProjectedVolumeServiceAccountTokenIdentifier  claim.Identifier
 	TestContainerIsCertifiedDigestIdentifier          claim.Identifier
 	TestHelmVersionIdentifier                         claim.Identifier
 	TestPodHugePages2M                                claim.Identifier
@@ -168,22 +167,6 @@ var (
 
 //nolint:funlen
 func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
-	TestICMPv4ConnectivityIdentifier = AddCatalogEntry(
-		"icmpv4-connectivity",
-		common.NetworkingTestKey,
-		`Checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset.`,
-		`Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence.`, //nolint:lll
-		`No exceptions - must be able to communicate on default network using IPv4`,
-		TestICMPv4ConnectivityIdentifierDocLink,
-		true,
-		map[string]string{
-			FarEdge:  Mandatory,
-			Telco:    Mandatory,
-			NonTelco: Mandatory,
-			Extended: Mandatory,
-		},
-		TagCommon)
-
 	TestNetworkPolicyDenyAllIdentifier = AddCatalogEntry(
 		"network-policy-deny-all",
 		common.NetworkingTestKey,
@@ -230,21 +213,6 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			NonTelco: Optional,
 			Extended: Optional},
 		TagFarEdge)
-
-	TestProjectedVolumeServiceAccountTokenIdentifier = AddCatalogEntry(
-		"projected-volume-service-account-token",
-		common.AccessControlTestKey,
-		`Checks that pods do not use projected volumes and service account tokens`,
-		ProjectedVolumeServiceAccountRemediation,
-		`Exception will be considered if container needs to access APIs which OCP does not offer natively. Must document which container requires which API(s) and detail why existing OCP APIs cannot be used.`,
-		TestProjectedVolumeServiceAccountTokenIdentifierDocLink,
-		true,
-		map[string]string{
-			FarEdge:  Mandatory,
-			Telco:    Mandatory,
-			NonTelco: Optional,
-			Extended: Mandatory},
-		TagTelco)
 
 	TestHelmVersionIdentifier = AddCatalogEntry(
 		"helm-version",
@@ -759,10 +727,26 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		},
 		TagCommon)
 
+	TestICMPv4ConnectivityIdentifier = AddCatalogEntry(
+		"icmpv4-connectivity",
+		common.NetworkingTestKey,
+		`Checks that each CNF Container is able to communicate via ICMPv4 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.`,                                             //nolint:lll
+		`Ensure that the CNF is able to communicate via the Default OpenShift network. In some rare cases, CNFs may require routing table changes in order to communicate over the Default network. To exclude a particular pod from ICMPv4 connectivity tests, add the test-network-function.com/skip_connectivity_tests label to it. The label value is trivial, only its presence.`, //nolint:lll
+		`No exceptions - must be able to communicate on default network using IPv4`,
+		TestICMPv4ConnectivityIdentifierDocLink,
+		true,
+		map[string]string{
+			FarEdge:  Mandatory,
+			Telco:    Mandatory,
+			NonTelco: Mandatory,
+			Extended: Mandatory,
+		},
+		TagCommon)
+
 	TestICMPv6ConnectivityIdentifier = AddCatalogEntry(
 		"icmpv6-connectivity",
 		common.NetworkingTestKey,
-		`Checks that each CNF Container is able to communicate via ICMPv6 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset.`,
+		`Checks that each CNF Container is able to communicate via ICMPv6 on the Default OpenShift network. This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.`, //nolint:lll
 		ICMPv6ConnectivityRemediation,
 		NoDocumentedProcess,
 		TestICMPv6ConnectivityIdentifierDocLink,
@@ -778,7 +762,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestICMPv4ConnectivityMultusIdentifier = AddCatalogEntry(
 		"icmpv4-connectivity-multus",
 		common.NetworkingTestKey,
-		`Checks that each CNF Container is able to communicate via ICMPv4 on the Multus network(s). This test case requires the Deployment of the debug daemonset.`,
+		`Checks that each CNF Container is able to communicate via ICMPv4 on the Multus network(s). This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.`, //nolint:lll
 		ICMPv4ConnectivityMultusRemediation,
 		NoDocumentedProcess,
 		TestICMPv4ConnectivityMultusIdentifierDocLink,
@@ -794,7 +778,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestICMPv6ConnectivityMultusIdentifier = AddCatalogEntry(
 		"icmpv6-connectivity-multus",
 		common.NetworkingTestKey,
-		`Checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s). This test case requires the Deployment of the debug daemonset.`,
+		`Checks that each CNF Container is able to communicate via ICMPv6 on the Multus network(s). This test case requires the Deployment of the debug daemonset and at least 2 pods connected to each network under test(one source and one destination). If no network with more than 2 pods exists this test will be skipped.`, //nolint:lll
 		ICMPv6ConnectivityMultusRemediation+` Not applicable if IPv6/MULTUS is not supported.`,
 		NoDocumentedProcess,
 		TestICMPv6ConnectivityMultusIdentifierDocLink,
@@ -1548,7 +1532,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 	TestCPUIsolationIdentifier = AddCatalogEntry(
 		"cpu-isolation",
 		common.LifecycleTestKey,
-		`CPU isolation requires: For each container within the pod, resource requests and limits must be identical. Request and Limits are in the form of whole CPUs. The runTimeClassName must be specified. Annotations required disabling CPU and IRQ load-balancing.`, //nolint:lll
+		`CPU isolation requires: For each container within the pod, resource requests and limits must be identical. If cpu requests and limits are not identical and in whole units (Guaranteed pods with exclusive cpus), your pods will not be tested for compliance. The runTimeClassName must be specified. Annotations required disabling CPU and IRQ load-balancing.`, //nolint:lll
 		CPUIsolationRemediation,
 		NoDocumentedProcess,
 		TestCPUIsolationIdentifierDocLink,
