@@ -99,8 +99,11 @@ FROM quay.io/testnetworkfunction/oct:latest AS db
 # TODO run as non-root
 FROM registry.access.redhat.com/ubi8/ubi-minimal:8.8-1037
 
+ENV \
+	TNF_DIR=/usr/tnf \
+	OSDK_BIN=/usr/local/osdk/bin
+
 # Copy all of the necessary files over from the TNF_DIR
-ENV TNF_DIR=/usr/tnf
 COPY --from=build ${TNF_DIR} ${TNF_DIR}
 
 # Add operatorsdk binary to image
@@ -115,7 +118,7 @@ ENV \
 	TNF_CONFIGURATION_PATH=/usr/tnf/config/tnf_config.yml \
 	KUBECONFIG=/usr/tnf/kubeconfig/config \
 	PFLT_DOCKERCONFIG=/usr/tnf/dockercfg/config.json \
-	PATH="/usr/local/osdk/bin:${PATH}"
+	PATH="${OSDK_BIN}:${PATH}"
 WORKDIR ${TNF_DIR}
 ENV SHELL=/bin/bash
 CMD ["./run-cnf-suites.sh", "-o", "claim", "-f", "diagnostic"]
