@@ -216,7 +216,7 @@ require (
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230727202657-9234b2e92055
 	github.com/test-network-function/privileged-daemonset v1.0.8
 	gopkg.in/yaml.v3 v3.0.1
-	gotest.tools/v3 v3.5.0
+	gotest.tools/v3 v3.5.1
 	k8s.io/kubectl v0.28.2
 )
 
