@@ -18,8 +18,8 @@ package imagecert
 
 import (
 	"fmt"
-	"log"
 
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 	"github.com/test-network-function/cnf-certification-test/internal/certdb"
 )
@@ -35,6 +35,7 @@ func checkImageCertStatus(cmd *cobra.Command, args []string) error {
 	imageName, _ := cmd.Flags().GetString("name")
 	imageRegistry, _ := cmd.Flags().GetString("registry")
 	imageTag, _ := cmd.Flags().GetString("tag")
+	imageDigest, _ := cmd.Flags().GetString("digest")
 	offlineDb, _ := cmd.Flags().GetString("offline-db")
 
 	validator, err := certdb.GetValidator(offlineDb)
@@ -42,12 +43,20 @@ func checkImageCertStatus(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("could not get a validator for container images, error: %v", err)
 	}
 
-	fmt.Printf("Image name: %s\nImage registry: %s\nImage tag: %s\n", imageName, imageRegistry, imageTag)
-
-	if validator.IsContainerCertified(imageRegistry, imageName, imageTag, "") {
-		fmt.Println("Image is certified")
+	if imageName != "" {
+		fmt.Println("**********************************************")
+		fmt.Printf("Image name: %s\nImage registry: %s\nImage tag: %s\n", imageName, imageRegistry, imageTag)
+		fmt.Println("**********************************************")
 	} else {
-		fmt.Println("Image is not certified")
+		fmt.Println("**************************************************************************************")
+		fmt.Printf("Image digest: %s\n", imageDigest)
+		fmt.Println("**************************************************************************************")
+	}
+
+	if validator.IsContainerCertified(imageRegistry, imageName, imageTag, imageDigest) {
+		color.Green("Image certified")
+	} else {
+		color.Red("Image not certified")
 	}
 
 	return nil
@@ -56,23 +65,10 @@ func checkImageCertStatus(cmd *cobra.Command, args []string) error {
 // Execute executes the "catalog" CLI.
 func NewCommand() *cobra.Command {
 	checkImageCertStatusCmd.PersistentFlags().String("name", "", "name of the image to verify")
-
-	err := checkImageCertStatusCmd.MarkPersistentFlagRequired("name")
-	if err != nil {
-		log.Fatalf("failed to mark name flag as required:  :%v", err)
-		return nil
-	}
 	checkImageCertStatusCmd.PersistentFlags().String("registry", "", "registry where the image is stored")
-
-	err = checkImageCertStatusCmd.MarkPersistentFlagRequired("registry")
-	if err != nil {
-		log.Fatalf("failed to mark registry flag as required:  :%v", err)
-		return nil
-	}
-
 	checkImageCertStatusCmd.PersistentFlags().String("tag", "latest", "image tag to be fetched")
-
-	checkImageCertStatusCmd.PersistentFlags().String("offline-db", "", "path to the offline db (for disconnected evironments)")
+	checkImageCertStatusCmd.PersistentFlags().String("digest", "", "digest of the image")
+	checkImageCertStatusCmd.PersistentFlags().String("offline-db", "", "path to the offline db (for disconnected environments)")
 
 	return checkImageCertStatusCmd
 }

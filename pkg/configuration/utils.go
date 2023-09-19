@@ -17,6 +17,7 @@
 package configuration
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/kelseyhightower/envconfig"
@@ -29,15 +30,6 @@ var (
 	confLoaded    = false
 	parameters    = TestParameters{}
 )
-
-func init() {
-	log.Info("Saving environment variables & parameters.")
-	err := envconfig.Process("tnf", &parameters)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-	log.Infof("Environment: %+v", parameters)
-}
 
 // LoadConfiguration return a function that loads
 // the configuration from a file once
@@ -68,6 +60,16 @@ func LoadConfiguration(filePath string) (TestConfiguration, error) {
 
 	confLoaded = true
 	return configuration, nil
+}
+
+func LoadEnvironmentVariables() error {
+	log.Info("Saving environment variables & parameters.")
+	err := envconfig.Process("tnf", &parameters)
+	if err != nil {
+		return fmt.Errorf("could not process the environment variables values, error: %v", err)
+	}
+	log.Infof("Environment: %+v", parameters)
+	return nil
 }
 
 func GetTestParameters() *TestParameters {

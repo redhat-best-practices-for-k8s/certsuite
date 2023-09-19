@@ -54,7 +54,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 	ginkgo.ReportAfterEach(results.RecordResult)
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHyperThreadEnable)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetBaremetalNodes())
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.GetBaremetalNodes(), "env.GetBaremetalNodes()"))
 		testHyperThreadingEnabled(&env)
 	})
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUnalteredBaseImageIdentifier)
@@ -62,7 +62,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		if !provider.IsOCPCluster() {
 			ginkgo.Skip("Non-OCP cluster found, skipping testContainersFsDiff")
 		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
 		if env.DaemonsetFailedToSpawn {
 			ginkgo.Skip("Debug Daemonset failed to spawn skipping testContainersFsDiff")
 		}
@@ -71,7 +71,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNonTaintedNodeKernelsIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.DebugPods, "env.DebugPods"))
 		if env.DaemonsetFailedToSpawn {
 			ginkgo.Skip("Debug Daemonset failed to spawn skipping testTainted")
 		}
@@ -80,7 +80,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsRedHatReleaseIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
 		testIsRedHatRelease(&env)
 	})
 
@@ -89,7 +89,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		if !provider.IsOCPCluster() {
 			ginkgo.Skip("Non-OCP cluster found, skipping testIsSELinuxEnforcing")
 		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.DebugPods, "env.DebugPods"))
 		if env.DaemonsetFailedToSpawn {
 			ginkgo.Skip("Debug Daemonset failed to spawn skipping testIsSELinuxEnforcing")
 		}
@@ -101,7 +101,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		if !provider.IsOCPCluster() {
 			ginkgo.Skip("Non-OCP cluster found, skipping testHugepages")
 		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.DebugPods, "env.DebugPods"))
 		if env.DaemonsetFailedToSpawn {
 			ginkgo.Skip("Debug Daemonset failed to spawn skipping testHugepages")
 		}
@@ -113,7 +113,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		if !provider.IsOCPCluster() {
 			ginkgo.Skip("Non-OCP cluster found, skipping testUnalteredBootParams")
 		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.DebugPods, "env.DebugPods"))
 		if env.DaemonsetFailedToSpawn {
 			ginkgo.Skip("Debug Daemonset failed to spawn skipping testUnalteredBootParams")
 		}
@@ -125,7 +125,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		if !provider.IsOCPCluster() {
 			ginkgo.Skip("Non-OCP cluster found, skipping testSysctlConfigs")
 		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.DebugPods, "env.DebugPods"))
 		if env.DaemonsetFailedToSpawn {
 			ginkgo.Skip("Debug Daemonset failed to spawn skipping testSysctlConfigs")
 		}
@@ -134,7 +134,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServiceMeshIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Pods, "env.Pods"))
 		testServiceMesh(&env)
 	})
 
@@ -159,7 +159,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		if !provider.IsOCPCluster() {
 			ginkgo.Skip("Non-OCP cluster found, skipping testPodHugePagesSize2M")
 		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetHugepagesPods())
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.GetHugepagesPods(), "env.GetHugepagesPods()"))
 		testPodHugePagesSize(&env, provider.HugePages2Mi)
 	})
 
@@ -168,7 +168,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		if !provider.IsOCPCluster() {
 			ginkgo.Skip("Non-OCP cluster found, skipping testPodHugePagesSize1G")
 		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetHugepagesPods())
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.GetHugepagesPods(), "env.GetHugepagesPods()"))
 		testPodHugePagesSize(&env, provider.HugePages1Gi)
 	})
 
@@ -523,8 +523,8 @@ func testSysctlConfigs(env *provider.TestEnvironment) {
 		}
 
 		mcKernelArgumentsMap := bootparams.GetMcKernelArguments(env, cut.NodeName)
+		validSettings := true
 		for key, sysctlConfigVal := range sysctlSettings {
-			validSettings := true
 			if mcVal, ok := mcKernelArgumentsMap[key]; ok {
 				if mcVal != sysctlConfigVal {
 					tnf.ClaimFilePrintf(fmt.Sprintf("Kernel config mismatch in node %s for %s (sysctl value: %s, machine config value: %s)",
@@ -533,9 +533,9 @@ func testSysctlConfigs(env *provider.TestEnvironment) {
 					validSettings = false
 				}
 			}
-			if validSettings {
-				compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Passed the sysctl config check", true))
-			}
+		}
+		if validSettings {
+			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Passed the sysctl config check", true))
 		}
 	}
 

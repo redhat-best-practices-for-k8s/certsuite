@@ -323,37 +323,60 @@ func ResultToString(result int) (str string) {
 	return ""
 }
 
-func SkipIfEmptyAny(skip func(string, ...int), object ...interface{}) {
+func SkipIfEmptyAny(skip func(string, ...int), object ...[2]interface{}) {
 	for _, o := range object {
-		s := reflect.ValueOf(o)
+		s := reflect.ValueOf(o[0])
 		if s.Kind() != reflect.Slice && s.Kind() != reflect.Map {
 			panic("SkipIfEmpty was given a non slice/map type")
 		}
+		if str, ok := o[1].(string); ok {
+			if s.Len() == 0 {
+				skip(fmt.Sprintf("Test skipped because there are no %s (%s) to test, please check under test labels", reflect.TypeOf(o[0]), str))
+			}
+		} else {
+			panic("Value is not a string")
+		}
 
-		if s.Len() == 0 {
-			skip(fmt.Sprintf("Test skipped because there are no %s to test, please check under test labels", reflect.TypeOf(o)))
+		s = reflect.ValueOf(o[1])
+		if s.Kind() != reflect.String {
+			panic("SkipIfEmpty object name is not a string")
 		}
 	}
 }
 
-func SkipIfEmptyAll(skip func(string, ...int), object ...interface{}) {
+func SkipIfEmptyAll(skip func(string, ...int), object ...[2]interface{}) {
 	countLenZero := 0
 	allTypes := ""
 	for _, o := range object {
-		s := reflect.ValueOf(o)
+		s := reflect.ValueOf(o[0])
 		if s.Kind() != reflect.Slice && s.Kind() != reflect.Map {
 			panic("SkipIfEmpty was given a non slice/map type")
 		}
 
 		if s.Len() == 0 {
 			countLenZero++
-			allTypes = allTypes + reflect.TypeOf(o).String() + ", "
+			if str, ok := o[1].(string); ok {
+				allTypes = allTypes + reflect.TypeOf(o[0]).String() + " (" + str + ")" + ", "
+			} else {
+				panic("Value is not a string")
+			}
+		}
+
+		s = reflect.ValueOf(o[1])
+		if s.Kind() != reflect.String {
+			panic("SkipIfEmpty object name is not a string")
 		}
 	}
 	// all objects have len() of 0
 	if countLenZero == len(object) {
 		skip(fmt.Sprintf("Test skipped because there are no %s to test, please check under test labels", allTypes))
 	}
+}
+
+func NewSkipObject(object interface{}, name string) (skipObject [2]interface{}) {
+	skipObject[0] = object
+	skipObject[1] = name
+	return skipObject
 }
 
 func AddTestResultLog(prefix string, object interface{}, log func(string, ...interface{}), fail func(string, ...int)) {

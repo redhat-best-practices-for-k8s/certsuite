@@ -63,8 +63,15 @@ type Nodes struct {
 	CsiDriver    interface{}             `json:"csiDriver"`
 }
 
+type Configurations struct {
+	Config         interface{}   `json:"Config"`
+	AbnormalEvents []interface{} `json:"AbnormalEvents"`
+}
+
 type Schema struct {
 	Claim struct {
+		Configurations `json:"configurations"`
+
 		Nodes Nodes `json:"nodes"`
 
 		RawResults struct {

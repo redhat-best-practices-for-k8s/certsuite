@@ -39,6 +39,23 @@ observability-crd-status                                    passed    skipped
 observability-pod-disruption-budget                         passed    skipped
 observability-termination-policy                            failed    skipped
 
+CONFIGURATIONS
+--------------
+
+CNF Cert Suite Configuration: Differences
+FIELD                        CLAIM 1                 CLAIM 2
+/debugDaemonSetNamespace     custom-debugpods-ns     cnf-suite
+
+CNF Cert Suite Configuration: Only in CLAIM 1
+<none>
+
+CNF Cert Suite Configuration: Only in CLAIM 2
+/targetNameSpaces/1=test-ns
+
+Cluster abnormal events count
+CLAIM 1     CLAIM 2
+1           2
+
 CLUSTER NODES DIFFERENCES
 -------------------------
 
