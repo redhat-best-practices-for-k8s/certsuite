@@ -267,7 +267,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 	TestClusterAdmin = AddCatalogEntry(
 		"pod-has-cluster-admin",
 		common.AccessControlTestKey,
-		`Check that pods dont have a  cluster role binding cluser-admin`,
+		`Check that pods dont have a  cluster role binding cluster-admin`,
 		TestClusterAdminRemediation,
 		NoDocumentedProcess,
 		TestClusterAdminDocLink,
