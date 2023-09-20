@@ -126,8 +126,9 @@ func showQeCoverageSummaryReport() {
 	}
 	sort.Strings(testSuites)
 
-	// Total QE coverage
+	// QE Coverage details
 	fmt.Printf("Total QE Coverage: %.f%%\n\n", qeCoverage.TotalCoveragePercentage)
+	fmt.Printf("Total Test Cases: %d, Total QE Test Cases: %d\n\n", qeCoverage.TestCasesTotal, qeCoverage.TestCasesWithQe)
 
 	// Per test suite QE coverage
 	fmt.Printf("%-30s\t%-20s\t%-20s\t%s\n", "Test Suite Name", "QE Coverage", "Total Test Cases", "Not Covered Test Count")
