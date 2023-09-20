@@ -114,18 +114,14 @@ func testContainerCertificationStatus(env *provider.TestEnvironment, validator c
 	testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(containersToQuery, "containersToQuery"))
 
 	ginkgo.By(fmt.Sprintf("Getting certification status. Number of containers to check: %d", len(containersToQuery)))
-	allContainersToQueryEmpty := true
 	for c := range containersToQuery {
-		allContainersToQueryEmpty = false
 		if !testContainerCertification(c, validator) {
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewCertifiedContainerReportObject(c, "Container is not certified", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewCertifiedContainerReportObject(c, "Container is certified", true))
 		}
 	}
-	if allContainersToQueryEmpty {
-		ginkgo.Skip("No containers to check because either container name or repository is empty for all containers in tnf_config.yml")
-	}
+
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
