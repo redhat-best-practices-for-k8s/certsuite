@@ -31,7 +31,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/internal/certdb"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
@@ -84,20 +83,15 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	})
 })
 
-func getContainersToQuery(env *provider.TestEnvironment) map[configuration.ContainerImageIdentifier]bool {
-	containersToQuery := make(map[configuration.ContainerImageIdentifier]bool)
-	for _, c := range env.Config.CertifiedContainerInfo {
-		containersToQuery[c] = true
-	}
-	if env.Config.CheckDiscoveredContainerCertificationStatus {
-		for _, cut := range env.Containers {
-			containersToQuery[cut.ContainerImageIdentifier] = true
-		}
+func getContainersToQuery(env *provider.TestEnvironment) map[provider.ContainerImageIdentifier]bool {
+	containersToQuery := make(map[provider.ContainerImageIdentifier]bool)
+	for _, cut := range env.Containers {
+		containersToQuery[cut.ContainerImageIdentifier] = true
 	}
 	return containersToQuery
 }
 
-func testContainerCertification(c configuration.ContainerImageIdentifier, validator certdb.CertificationStatusValidator) bool {
+func testContainerCertification(c provider.ContainerImageIdentifier, validator certdb.CertificationStatusValidator) bool {
 	ans := validator.IsContainerCertified(c.Registry, c.Repository, c.Tag, c.Digest)
 	if !ans {
 		tnf.ClaimFilePrintf("%s/%s:%s is not listed in certified containers", c.Registry, c.Repository, c.Tag)

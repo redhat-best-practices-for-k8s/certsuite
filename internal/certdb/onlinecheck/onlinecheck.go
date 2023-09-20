@@ -26,7 +26,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/certdb/config"
 	"github.com/test-network-function/cnf-certification-test/internal/certdb/offlinecheck"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	yaml "gopkg.in/yaml.v3"
 	"helm.sh/helm/v3/pkg/release"
 )
@@ -336,7 +336,7 @@ func (validator OnlineValidator) GetCertifiedCharts() (offlinecheck.ChartStruct,
 	}
 	return charts, err
 }
-func CreateContainerCatalogQueryURL(id configuration.ContainerImageIdentifier) string {
+func CreateContainerCatalogQueryURL(id provider.ContainerImageIdentifier) string {
 	var url string
 	const defaultTag = "latest"
 	const arch = "amd64"
