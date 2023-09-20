@@ -54,7 +54,7 @@ RUN \
 # Copy all of the files into the source directory and then switch contexts
 COPY . ${TNF_SRC_DIR}
 WORKDIR ${TNF_SRC_DIR}
-RUN make install-tools build-cnf-tests
+RUN make install-tools build-cnf-tests build-tnf-tool
 
 # Extract what's needed to run at a separate location
 # Quote this to prevent word splitting.
@@ -65,6 +65,8 @@ RUN \
 	# copy all JSON files to allow tests to run
 	&& cp --parents $(find . -name '*.json*') ${TNF_DIR} \
 	&& cp cnf-certification-test/cnf-certification-test.test ${TNF_BIN_DIR} \
+	# copy the tnf command binary
+	&& cp tnf ${TNF_BIN_DIR} \
 	# copy all of the chaos-test-files
 	&& mkdir -p ${TNF_DIR}/cnf-certification-test/chaostesting \
 	# copy the rhcos_version_map
@@ -114,11 +116,14 @@ ENV \
 	TNF_OFFLINE_DB=/usr/offline-db \
 	OCT_DB_PATH=/usr/oct/cmd/tnf/fetch
 COPY --from=db ${OCT_DB_PATH} ${TNF_OFFLINE_DB}
+
+ENV TNF_BIN_DIR=${TNF_DIR}/cnf-certification-test
+
 ENV \
 	TNF_CONFIGURATION_PATH=/usr/tnf/config/tnf_config.yml \
 	KUBECONFIG=/usr/tnf/kubeconfig/config \
 	PFLT_DOCKERCONFIG=/usr/tnf/dockercfg/config.json \
-	PATH="${OSDK_BIN}:${PATH}"
+	PATH="${OSDK_BIN}:${TNF_BIN_DIR}:${PATH}"
 WORKDIR ${TNF_DIR}
 ENV SHELL=/bin/bash
 CMD ["./run-cnf-suites.sh", "-o", "claim", "-f", "diagnostic"]
