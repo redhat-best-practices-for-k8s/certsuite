@@ -7,14 +7,14 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 
 ## Test cases summary
 
-### Total test cases: 89
+### Total test cases: 88
 
 ### Total suites: 9
 
 |Suite|Tests per suite|
 |---|---|
 |access-control|27|
-|affiliated-certification|5|
+|affiliated-certification|4|
 |lifecycle|18|
 |manageability|2|
 |networking|11|
@@ -35,11 +35,11 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |---|---|
 |7|1|
 
-### Non-Telco specific tests only: 42
+### Non-Telco specific tests only: 41
 
 |Mandatory|Optional|
 |---|---|
-|39|3|
+|38|3|
 
 ### Telco specific tests only: 27
 
@@ -486,22 +486,6 @@ Tags|telco,access-control
 |Telco|Mandatory|
 
 ### affiliated-certification
-
-#### affiliated-certification-container-is-certified
-
-Property|Description
----|---
-Unique ID|affiliated-certification-container-is-certified
-Description|Tests whether container images listed in the configuration file have passed the Red Hat Container Certification Program (CCP).
-Suggested Remediation|Ensure that your container has passed the Red Hat Container Certification Program (CCP).
-Best Practice Reference|https://redhat-connect.gitbook.io/partner-guide-for-red-hat-openshift-and-container/certify-your-application/overview
-Exception Process|There is no documented exception process for this.Partner can run CNF Certification test suite before passing other certifications (Container/Operator/HelmChart) but the affiliated certification test cases in CNF Certification test suite must be re-run once the other certifications have been granted.
-Tags|common,affiliated-certification
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|Far-Edge|Mandatory|
-|Non-Telco|Mandatory|
-|Telco|Mandatory|
 
 #### affiliated-certification-container-is-certified-digest
 

@@ -60,11 +60,6 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testHelmVersion()
 	})
-	// Query API for certification status of listed containers
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testContainerCertificationStatus(&env, validator)
-	})
 
 	// Query API for certification status of listed operators
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOperatorIsCertifiedIdentifier)
@@ -97,30 +92,6 @@ func testContainerCertification(c provider.ContainerImageIdentifier, validator c
 		tnf.ClaimFilePrintf("%s/%s:%s is not listed in certified containers", c.Registry, c.Repository, c.Tag)
 	}
 	return ans
-}
-
-func testContainerCertificationStatus(env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-
-	// Get the list of containers to query
-	containersToQuery := getContainersToQuery(env)
-	testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(containersToQuery, "containersToQuery"))
-
-	ginkgo.By(fmt.Sprintf("Getting certification status. Number of containers to check: %d", len(containersToQuery)))
-	allContainersToQueryEmpty := true
-	for c := range containersToQuery {
-		allContainersToQueryEmpty = false
-		if !testContainerCertification(c, validator) {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewCertifiedContainerReportObject(c, "Container is not certified", false))
-		} else {
-			compliantObjects = append(compliantObjects, testhelper.NewCertifiedContainerReportObject(c, "Container is certified", true))
-		}
-	}
-	if allContainersToQueryEmpty {
-		ginkgo.Skip("No containers to check because either container name or repository is empty for all containers in tnf_config.yml")
-	}
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testAllOperatorCertified(env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
