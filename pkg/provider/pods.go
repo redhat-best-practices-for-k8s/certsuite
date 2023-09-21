@@ -377,6 +377,7 @@ func (p *Pod) IsUsingSRIOV() (bool, error) {
 	return false, nil
 }
 
+//nolint:gocritic
 func (p *Pod) IsUsingClusterRoleBinding(clusterRoleBindings []rbacv1.ClusterRoleBinding) (bool, string, error) {
 	// This function accepts a list of clusterRoleBindings and checks to see if the pod's service account is
 	// tied to any of them.  If it is, then it returns true, otherwise it returns false.
