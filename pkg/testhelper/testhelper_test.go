@@ -81,10 +81,10 @@ func TestSkipIfEmptyFuncs(t *testing.T) {
 
 		if tc.slice1 == nil || tc.map1 == nil {
 			assert.Panics(t, func() {
-				SkipIfEmptyAll(func(s string, i ...int) {}, tc.slice1, tc.map1)
+				SkipIfEmptyAll(func(s string, i ...int) {}, NewSkipObject(tc.slice1, "tc.slice1"), NewSkipObject(tc.map1, "tc.map1"))
 			})
 			assert.Panics(t, func() {
-				SkipIfEmptyAny(func(s string, i ...int) {}, tc.slice1, tc.map1)
+				SkipIfEmptyAny(func(s string, i ...int) {}, NewSkipObject(tc.slice1, "tc.slice1"), NewSkipObject(tc.map1, "tc.map1"))
 			})
 		} else {
 			SkipIfEmptyAll(func(s string, i ...int) {
@@ -93,7 +93,7 @@ func TestSkipIfEmptyFuncs(t *testing.T) {
 				} else {
 					result = false
 				}
-			}, tc.slice1, tc.map1)
+			}, NewSkipObject(tc.slice1, "tc.slice1"), NewSkipObject(tc.map1, "tc.map1"))
 			assert.Equal(t, tc.skippedAll, result)
 
 			SkipIfEmptyAny(func(s string, i ...int) {
@@ -102,7 +102,7 @@ func TestSkipIfEmptyFuncs(t *testing.T) {
 				} else {
 					result = false
 				}
-			}, tc.slice1, tc.map1)
+			}, NewSkipObject(tc.slice1, "tc.slice1"), NewSkipObject(tc.map1, "tc.map1"))
 			assert.Equal(t, tc.skippedAny, result)
 		}
 	}

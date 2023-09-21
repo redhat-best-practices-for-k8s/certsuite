@@ -1,10 +1,5 @@
 targetNameSpaces:
   - name: tnf
-#DEPRECATED
-#targetPodLabels:
-#  - prefix: test-network-function.com
-#    name: generic
-#    value: target
 podsUnderTestLabels:
   - "test-network-function.com/generic: target"
 # deprecated operator label ("test-network-function.com/operator:"") still configured by default, no need to add it here

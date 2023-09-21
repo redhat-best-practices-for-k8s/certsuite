@@ -18,7 +18,7 @@ require k8s.io/client-go v0.28.2
 require (
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/mittwald/go-helm-client v0.12.3
-	github.com/onsi/ginkgo/v2 v2.12.0
+	github.com/onsi/ginkgo/v2 v2.12.1
 	github.com/openshift/api v0.0.0-20230223193310-d964c7a58d75
 	github.com/openshift/client-go v0.0.0-20230120202327-72f107311084
 	github.com/operator-framework/api v0.17.7
@@ -63,7 +63,6 @@ require (
 	github.com/evanphx/json-patch v5.6.0+incompatible // indirect
 	github.com/evanphx/json-patch/v5 v5.6.0 // indirect
 	github.com/exponent-io/jsonpath v0.0.0-20210407135951-1de76d718b3f // indirect
-	github.com/fatih/color v1.15.0 // indirect
 	github.com/felixge/httpsnoop v1.0.3 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/glebarez/go-sqlite v1.21.1 // indirect
@@ -168,7 +167,7 @@ require (
 	golang.org/x/net v0.14.0 // indirect
 	golang.org/x/oauth2 v0.8.0 // indirect
 	golang.org/x/sync v0.3.0 // indirect
-	golang.org/x/sys v0.11.0 // indirect
+	golang.org/x/sys v0.12.0 // indirect
 	golang.org/x/term v0.11.0 // indirect
 	golang.org/x/text v0.12.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
@@ -209,6 +208,7 @@ require (
 
 require (
 	github.com/deckarep/golang-set/v2 v2.3.1
+	github.com/fatih/color v1.15.0
 	github.com/go-logr/logr v1.2.4
 	github.com/go-logr/stdr v1.2.2
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
@@ -216,7 +216,7 @@ require (
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230727202657-9234b2e92055
 	github.com/test-network-function/privileged-daemonset v1.0.8
 	gopkg.in/yaml.v3 v3.0.1
-	gotest.tools/v3 v3.5.0
+	gotest.tools/v3 v3.5.1
 	k8s.io/kubectl v0.28.2
 )
 
