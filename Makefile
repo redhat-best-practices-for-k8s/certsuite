@@ -83,7 +83,7 @@ lint: go.sum
 	shfmt -d *.sh script
 
 # Builds and runs unit tests
-test: go.sum coverage-qe results-html
+test: go.sum coverage-qe
 	./script/create-missing-test-files.sh
 	go build ${COMMON_GO_ARGS} ./...
 	UNIT_TEST=true go test -coverprofile=cover.out.tmp ./...
