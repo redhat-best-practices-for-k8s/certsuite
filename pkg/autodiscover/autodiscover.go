@@ -19,7 +19,6 @@ package autodiscover
 import (
 	"context"
 	"errors"
-	"fmt"
 	"regexp"
 	"time"
 
@@ -102,28 +101,12 @@ type labelObject struct {
 
 var data = DiscoveredTestData{}
 
-func buildLabelName(labelPrefix, labelName string) string {
-	if labelPrefix == "" {
-		return labelName
-	}
-	return fmt.Sprintf(labelTemplate, labelPrefix, labelName)
-}
-
-func buildLabelKeyValue(label configuration.Label) (key, value string) {
-	key = buildLabelName(label.Prefix, label.Name)
-	value = label.Value
-	return key, value
-}
-
 func warnDeprecation(config *configuration.TestConfiguration) {
-	if len(config.TargetPodLabels) > 0 {
-		logrus.Warn("DEPRECATED: targetPodLabels config field is about to be obsolete. Please use the new \"podsUnderTestLabels\" field instead.")
-	}
 	if len(config.OperatorsUnderTestLabels) == 0 {
 		logrus.Warnf("DEPRECATED: deprecated default operator label in use ( %s:%s ) is about to be obsolete. Please use the new \"operatorsUnderTestLabels\" field to specify operators labels instead.",
 			deprecatedHardcodedOperatorLabelName, deprecatedHardcodedOperatorLabelValue)
 	}
-	if len(config.PodsUnderTestLabels) == 0 && len(config.TargetPodLabels) == 0 {
+	if len(config.PodsUnderTestLabels) == 0 {
 		logrus.Warn("No Pod under test labels configured. Tests on pods and containers will not run. Please use the \"podsUnderTestLabels\" field to specify labels for pods under test")
 	}
 }
@@ -165,11 +148,6 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 
 	// prints warning about deprecated labels
 	warnDeprecation(config)
-	// consolidate pods labels
-	for _, aLabel := range config.TargetPodLabels {
-		key, value := buildLabelKeyValue(aLabel)
-		podsUnderTestLabelsObjects = append(podsUnderTestLabelsObjects, labelObject{LabelKey: key, LabelValue: value})
-	}
 	// adds DEPRECATED hardcoded operator label
 	operatorsUnderTestLabelsObjects = append(operatorsUnderTestLabelsObjects, labelObject{LabelKey: deprecatedHardcodedOperatorLabelName, LabelValue: deprecatedHardcodedOperatorLabelValue})
 
