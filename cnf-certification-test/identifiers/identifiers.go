@@ -160,7 +160,6 @@ var (
 	TestContainerPortNameFormat                       claim.Identifier
 	TestCrdScalingIdentifier                          claim.Identifier
 	TestCrdRoleIdentifier                             claim.Identifier
-	TestClusterAdmin                                  claim.Identifier
 	TestLimitedUseOfExecProbesIdentifier              claim.Identifier
 	// Chaos Testing
 	// TestPodDeleteIdentifier claim.Identifier
@@ -261,22 +260,6 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 			Telco:    Optional,
 			NonTelco: Optional,
 			Extended: Mandatory,
-		},
-		TagExtended)
-
-	TestClusterAdmin = AddCatalogEntry(
-		"pod-has-cluster-admin",
-		common.AccessControlTestKey,
-		`Check that pods dont have a  cluster role binding cluster-admin`,
-		TestClusterAdminRemediation,
-		NoDocumentedProcess,
-		TestClusterAdminDocLink,
-		true,
-		map[string]string{
-			FarEdge:  Mandatory,
-			Telco:    Optional,
-			NonTelco: Optional,
-			Extended: Optional,
 		},
 		TagExtended)
 

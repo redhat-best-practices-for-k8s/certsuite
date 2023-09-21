@@ -236,43 +236,7 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Crds, "env.Crds"), testhelper.NewSkipObject(env.Roles, "env.Roles"), testhelper.NewSkipObject(env.Namespaces, "env.Namespaces"))
 		testCrdRoles(&env)
 	})
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestClusterAdmin)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Pods, "env.Pods()"), testhelper.NewSkipObject(env.ClusterRoleBindings, "env.ClusterRoleBindings"))
-		testClusterAdmin(&env)
-	})
 })
-
-func testClusterAdmin(env *provider.TestEnvironment) {
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-	for _, pod := range env.Pods {
-		serviceAccountName := pod.Spec.ServiceAccountName
-		tnf.ClaimFilePrintf("Pod: %s, ServiceAccount: %s\n", pod.Name, serviceAccountName)
-
-		// Check if there's a "cluster-admin" ClusterRoleBinding for the service account.
-		hasClusterAdminBinding := false
-		for i := range env.ClusterRoleBindings {
-			for _, subject := range env.ClusterRoleBindings[i].Subjects {
-				if subject.Name == serviceAccountName && subject.Kind == "ServiceAccount" && env.ClusterRoleBindings[i].RoleRef.Name == "cluster-admin" {
-					hasClusterAdminBinding = true
-					break
-				}
-			}
-			if hasClusterAdminBinding {
-				break
-			}
-		}
-		if hasClusterAdminBinding {
-			tnf.ClaimFilePrintf("Pod Has cluster-admin ClusterRoleBinding: %s", pod.String())
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Pod Has cluster-admin ClusterRoleBinding", false))
-		} else {
-			tnf.ClaimFilePrintf("Pod Does not have cluster-admin ClusterRoleBinding")
-			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Pod Does not have cluster-admin ClusterRoleBinding", true))
-		}
-	}
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
-}
 
 func checkForbiddenCapability(containers []*provider.Container, capability string) (compliantObjects, nonCompliantObjects []*testhelper.ReportObject) {
 	for _, cut := range containers {
@@ -583,7 +547,7 @@ func testPodClusterRoleBindings(env *provider.TestEnvironment) {
 	for _, put := range env.Pods {
 		podIsCompliant := true
 		ginkgo.By(fmt.Sprintf("Testing cluster role binding for pod: %s namespace: %s", put.Name, put.Namespace))
-		result, err := put.IsUsingClusterRoleBinding(env.ClusterRoleBindings)
+		result, roleRefName, err := put.IsUsingClusterRoleBinding(env.ClusterRoleBindings)
 		if err != nil {
 			logrus.Errorf("failed to determine if pod %s/%s is using a cluster role binding: %v", put.Namespace, put.Name, err)
 			podIsCompliant = false
@@ -599,7 +563,8 @@ func testPodClusterRoleBindings(env *provider.TestEnvironment) {
 		if podIsCompliant {
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not using a cluster role binding", true))
 		} else {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is using a cluster role binding", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is using a cluster role binding", false).
+				AddField(testhelper.ClusterRoleBindingName, roleRefName))
 		}
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)

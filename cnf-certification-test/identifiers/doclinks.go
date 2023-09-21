@@ -59,7 +59,6 @@ const (
 	// Platform Alteration Suite
 	TestPodHugePages2MDocLink                       = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-huge-pages"
 	TestPodHugePages1GDocLink                       = NoDocLinkFarEdge
-	TestClusterAdminDocLink                         = NoDocLinkExtended
 	TestHugepagesNotManuallyManipulatedDocLink      = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-huge-pages"
 	TestNonTaintedNodeKernelsIdentifierDocLink      = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations"
 	TestUnalteredStartupBootParamsIdentifierDocLink = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-host-os"

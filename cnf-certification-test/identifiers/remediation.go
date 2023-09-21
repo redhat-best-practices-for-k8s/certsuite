@@ -184,8 +184,6 @@ const (
 
 	PodHugePages1GRemediation = "Modify pod to consume 1Gi hugepages only"
 
-	TestClusterAdminRemediation = "Check pods that dont have on their service account subjects cluster-admin"
-
 	HyperThreadEnable = "Check that baremetal workers have hyperthreading enabled"
 
 	StartupIdentifierRemediation = `Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.`

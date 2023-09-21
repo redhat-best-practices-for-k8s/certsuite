@@ -377,7 +377,7 @@ func (p *Pod) IsUsingSRIOV() (bool, error) {
 	return false, nil
 }
 
-func (p *Pod) IsUsingClusterRoleBinding(clusterRoleBindings []rbacv1.ClusterRoleBinding) (bool, error) {
+func (p *Pod) IsUsingClusterRoleBinding(clusterRoleBindings []rbacv1.ClusterRoleBinding) (bool, string, error) {
 	// This function accepts a list of clusterRoleBindings and checks to see if the pod's service account is
 	// tied to any of them.  If it is, then it returns true, otherwise it returns false.
 	logrus.Infof("Pod: %s/%s is using service account: %s", p.Pod.Namespace, p.Pod.Name, p.Pod.Spec.ServiceAccountName)
@@ -389,12 +389,12 @@ func (p *Pod) IsUsingClusterRoleBinding(clusterRoleBindings []rbacv1.ClusterRole
 		for _, subject := range clusterRoleBindings[crbIndex].Subjects {
 			if subject.Kind == rbacv1.ServiceAccountKind && subject.Name == p.Pod.Spec.ServiceAccountName && subject.Namespace == p.Pod.Namespace {
 				tnf.ClaimFilePrintf("Pod %s has service account %s that is tied to cluster role binding %s", p.Pod.Name, p.Pod.Spec.ServiceAccountName, clusterRoleBindings[crbIndex].Name)
-				return true, nil
+				return true, clusterRoleBindings[crbIndex].RoleRef.Name, nil
 			}
 		}
 	}
 
-	return false, nil
+	return false, "", nil
 }
 
 func (p *Pod) IsRunAsUserID(uid int64) bool {

@@ -106,6 +106,7 @@ const (
 	ReasonForCompliance             = "Reason For Compliance"
 	Category                        = "Category"
 	RoleBindingName                 = "Role Binding Name"
+	ClusterRoleBindingName          = "Cluster Role Binding Name"
 	RoleBindingNamespace            = "Role Binding Namespace"
 	ServiceAccountName              = "Service Account Name"
 	ServiceMode                     = "Service Type"
