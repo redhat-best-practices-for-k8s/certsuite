@@ -382,7 +382,7 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		DpdkCPUPinningExecProbeRemediation,
 		NoDocumentedProcess,
 		TestDpdkCPUPinningExecProbeDocLink,
-		false,
+		true,
 		map[string]string{
 			FarEdge:  Mandatory,
 			Telco:    Mandatory,
