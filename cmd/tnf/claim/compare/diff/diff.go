@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"sort"
 	"strconv"
+	"strings"
 )
 
 // Diffs holds the differences between two interface{} objects that have
@@ -110,12 +111,17 @@ func (d *Diffs) String() string {
 }
 
 // Compares to interface{} objects obtained through json.Unmarshal() and returns
-// a pointer to a Diffs object
-func Compare(objectName string, claim1Object, claim2Object interface{}) *Diffs {
+// a pointer to a Diffs object.
+// A simple filtering of json subtrees can be achieved using the filters slice parameter.
+// This might be helpful with big json trees that could have too many potential differences,
+// but we want to get just the differences for some custom nodes/subtrees.
+// E.g.: filters = []string{"labels"} : only the nodes/subtrees under all the
+// labels nodes/branches will be traversed and compared.
+func Compare(objectName string, claim1Object, claim2Object interface{}, filters []string) *Diffs {
 	objectsDiffs := Diffs{Name: objectName}
 
-	claim1Fields := traverse(claim1Object, "")
-	claim2Fields := traverse(claim2Object, "")
+	claim1Fields := traverse(claim1Object, "", filters)
+	claim2Fields := traverse(claim2Object, "", filters)
 
 	// Build helper maps, to make it easier to find fields.
 	claim1FieldsMap := map[string]interface{}{}
@@ -164,7 +170,7 @@ type field struct {
 
 // Helper function that traverses recursively a node to return a list
 // of each field (leaf) path and its value.
-func traverse(node interface{}, path string) []field {
+func traverse(node interface{}, path string, filters []string) []field {
 	if node == nil {
 		return nil
 	}
@@ -184,19 +190,32 @@ func traverse(node interface{}, path string) []field {
 		// Sort keys
 		sort.Strings(keys)
 		for _, key := range keys {
-			fields = append(fields, traverse(value[key], path+leavePathDelimiter+key)...)
+			fields = append(fields, traverse(value[key], path+leavePathDelimiter+key, filters)...)
 		}
 	// list object
 	case []interface{}:
 		for i, v := range value {
-			fields = append(fields, traverse(v, path+leavePathDelimiter+strconv.Itoa(i))...)
+			fields = append(fields, traverse(v, path+leavePathDelimiter+strconv.Itoa(i), filters)...)
 		}
 	// simple value (int, string...)
 	default:
-		return append(fields, field{
-			Path:  path,
-			Value: value,
-		})
+		// No filters: append every field's path=value
+		if len(filters) == 0 {
+			fields = append(fields, field{
+				Path:  path,
+				Value: value,
+			})
+		}
+
+		// Append field's whose path matches some filter.
+		for _, filter := range filters {
+			if strings.Contains(path, "/"+filter+"/") {
+				fields = append(fields, field{
+					Path:  path,
+					Value: value,
+				})
+			}
+		}
 	}
 
 	return fields
