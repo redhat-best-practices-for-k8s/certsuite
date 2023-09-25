@@ -59,6 +59,16 @@ CLAIM 1     CLAIM 2
 CLUSTER NODES DIFFERENCES
 -------------------------
 
+Nodes: Differences
+FIELD                                                             CLAIM 1                     CLAIM 2
+/clus0-0/metadata/annotations/k8s.ovn.org/node-primary-ifaddr     {"ipv4":"10.1.24.3/24"}     {"ipv4":"10.1.24.3/25"}
+
+Nodes: Only in CLAIM 1
+<none>
+
+Nodes: Only in CLAIM 2
+/clus0-1/metadata/labels/node-role.kubernetes.io/worker-cnf=
+
 CNIs: Differences
 FIELD                           CLAIM 1      CLAIM 2
 /clus0-0/0/cniVersion           1.0.1        1.0.0

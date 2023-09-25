@@ -83,7 +83,7 @@ lint: go.sum
 	shfmt -d *.sh script
 
 # Builds and runs unit tests
-test: go.sum coverage-qe results-html
+test: go.sum coverage-qe
 	./script/create-missing-test-files.sh
 	go build ${COMMON_GO_ARGS} ./...
 	UNIT_TEST=true go test -coverprofile=cover.out.tmp ./...
@@ -161,13 +161,13 @@ delete-db:
 	rm -rf ${REPO_DIR}/offline-db
 
 build-image-local:
-	docker build --no-cache \
+	docker build --pull --no-cache \
 		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
 		-f Dockerfile .
 
 build-image-tnf:
-	docker build --no-cache \
+	docker build --pull --no-cache \
 		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_VERSION} \

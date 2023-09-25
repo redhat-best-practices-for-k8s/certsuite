@@ -124,7 +124,7 @@ jobs:
           files: .
           ignore_files: cmd/tnf/generate/catalog/{INTRO,TEST_CASE_CATALOG}.md
       - uses: ludeeus/action-shellcheck@master
-      - uses: mfinelli/setup-shfmt@v2
+      - uses: mfinelli/setup-shfmt@v3
       - run: shfmt -d *.sh script
       - uses: crate-ci/typos@master
       - uses: ibiqlik/action-yamllint@v3

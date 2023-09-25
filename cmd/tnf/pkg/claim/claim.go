@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"github.com/Masterminds/semver/v3"
-	corev1 "k8s.io/api/core/v1"
 )
 
 const (
@@ -57,10 +56,10 @@ type TestCaseResult struct {
 type TestSuiteResults map[string][]TestCaseResult
 
 type Nodes struct {
-	NodesSummary map[string]*corev1.Node `json:"nodeSummary"`
-	CniNetworks  interface{}             `json:"cniPlugins"`
-	NodesHwInfo  interface{}             `json:"nodesHwInfo"`
-	CsiDriver    interface{}             `json:"csiDriver"`
+	NodesSummary interface{} `json:"nodeSummary"`
+	CniNetworks  interface{} `json:"cniPlugins"`
+	NodesHwInfo  interface{} `json:"nodesHwInfo"`
+	CsiDriver    interface{} `json:"csiDriver"`
 }
 
 type Configurations struct {
