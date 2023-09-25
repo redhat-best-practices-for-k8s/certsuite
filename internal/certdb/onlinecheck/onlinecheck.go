@@ -26,7 +26,6 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/certdb/config"
 	"github.com/test-network-function/cnf-certification-test/internal/certdb/offlinecheck"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	yaml "gopkg.in/yaml.v3"
 	"helm.sh/helm/v3/pkg/release"
 )
@@ -36,7 +35,6 @@ import (
 // There are external and internal endpoints. External does not need authentication
 // Here we are using only External endpoint to collect published containers and operator information
 
-const apiCatalogByRepositoriesBaseEndPoint = "https://catalog.redhat.com/api/containers/v1/repositories/registry/registry.access.redhat.com/repository"
 const filterCertifiedOperatorsOrg = "organization==certified-operators"
 const certifiedOperatorsCatalogURL = "https://catalog.redhat.com/api/containers/v1/operators/bundles?page_size=100&page=0&filter=csv_name==%s;%s"
 const certifiedContainerCatalogURL = "https://catalog.redhat.com/api/containers/v1/repositories/registry/%s/repository/%s/images?"
@@ -335,19 +333,4 @@ func (validator OnlineValidator) GetCertifiedCharts() (offlinecheck.ChartStruct,
 		log.Error("error while parsing the yaml file of the helm certification list ", err)
 	}
 	return charts, err
-}
-func CreateContainerCatalogQueryURL(id provider.ContainerImageIdentifier) string {
-	var url string
-	const defaultTag = "latest"
-	const arch = "amd64"
-	if id.Digest == "" {
-		if id.Tag == "" {
-			id.Tag = defaultTag
-		}
-		url = fmt.Sprintf("%s/%s/%s/images?filter=architecture==%s;repositories.repository==%s/%s;repositories.tags.name==%s",
-			apiCatalogByRepositoriesBaseEndPoint, id.Registry, id.Repository, arch, id.Registry, id.Repository, id.Tag)
-	} else {
-		url = fmt.Sprintf("%s/%s/%s/images?filter=architecture==%s;image_id==%s", apiCatalogByRepositoriesBaseEndPoint, id.Registry, id.Repository, arch, id.Digest)
-	}
-	return url
 }
