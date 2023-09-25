@@ -43,8 +43,6 @@ const (
 
 	SecConPrivilegeRemediation = `Configure privilege escalation to false. Privileged escalation should not be allowed (AllowPrivilegeEscalation=false).`
 
-	ContainerIsCertifiedRemediation = `Ensure that your container has passed the Red Hat Container Certification Program (CCP).`
-
 	ContainerHostPortRemediation = `Remove hostPort configuration from the container. CNF should avoid accessing host resources - containers should not configure HostPort.`
 
 	PodHostNetworkRemediation = `Set the spec.HostNetwork parameter to false in the pod configuration. CNF should avoid accessing host resources - spec.HostNetwork should be false.`

@@ -401,7 +401,7 @@ func IsOCPCluster() bool {
 	return env.OpenshiftVersion != autodiscover.NonOpenshiftClusterVersion
 }
 
-func buildContainerImageSource(urlImage, urlImageID string) (source configuration.ContainerImageIdentifier) {
+func buildContainerImageSource(urlImage, urlImageID string) (source ContainerImageIdentifier) {
 	const regexImageWithTag = `^([^/]*)/*([^@]*):(.*)`
 	const regexImageDigest = `^([^/]*)/(.*)@(.*:.*)`
 

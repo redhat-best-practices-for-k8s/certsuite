@@ -14,9 +14,6 @@ operatorsUnderTestLabels:
 targetCrdFilters:
   - nameSuffix: "group1.test.com"
   - nameSuffix: "group2.test.com"
-certifiedcontainerinfo:
-  - repository: nginx-116  # working example
-    registry: rhel8
 certifiedoperatorinfo:
   - name: etcd
     organization: community-operators # working example
