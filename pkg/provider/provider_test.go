@@ -812,14 +812,14 @@ func Test_buildContainerImageSource(t *testing.T) {
 	tests := []struct {
 		name       string
 		args       args
-		wantSource configuration.ContainerImageIdentifier
+		wantSource ContainerImageIdentifier
 	}{
 		{name: "image has tag and registry",
 			args: args{
 				urlImage:   "quay.io/testnetworkfunction/cnf-test-partner:latest",
 				urlImageID: "quay.io/testnetworkfunction/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
 			},
-			wantSource: configuration.ContainerImageIdentifier{
+			wantSource: ContainerImageIdentifier{
 				Registry:   "quay.io",
 				Repository: "testnetworkfunction/cnf-test-partner",
 				Tag:        "latest",
@@ -831,7 +831,7 @@ func Test_buildContainerImageSource(t *testing.T) {
 				urlImage:   "quay.io/testnetworkfunction/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b96465665465465a2d0d811168667a919345",
 				urlImageID: "quay.io/testnetworkfunction/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
 			},
-			wantSource: configuration.ContainerImageIdentifier{
+			wantSource: ContainerImageIdentifier{
 				Registry:   "",
 				Repository: "",
 				Tag:        "",
@@ -843,7 +843,7 @@ func Test_buildContainerImageSource(t *testing.T) {
 				urlImage:   "httpd:2.4.57",
 				urlImageID: "quay.io/httpd:2.4.57@sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
 			},
-			wantSource: configuration.ContainerImageIdentifier{
+			wantSource: ContainerImageIdentifier{
 				Registry:   "",
 				Repository: "httpd",
 				Tag:        "2.4.57",

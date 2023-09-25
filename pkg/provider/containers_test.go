@@ -20,7 +20,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
 )
@@ -185,7 +184,7 @@ func TestIsTagEmpty(t *testing.T) {
 	}{
 		{ // Test Case #1 - Container image tag is empty
 			testContainer: Container{
-				ContainerImageIdentifier: configuration.ContainerImageIdentifier{
+				ContainerImageIdentifier: ContainerImageIdentifier{
 					Tag: "",
 				},
 			},
@@ -193,7 +192,7 @@ func TestIsTagEmpty(t *testing.T) {
 		},
 		{ // Test Case #2 - Container image tag is not empty
 			testContainer: Container{
-				ContainerImageIdentifier: configuration.ContainerImageIdentifier{
+				ContainerImageIdentifier: ContainerImageIdentifier{
 					Tag: "test",
 				},
 			},

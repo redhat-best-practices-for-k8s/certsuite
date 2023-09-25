@@ -19,7 +19,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
 func TestGetRequest(t *testing.T) {
@@ -32,11 +32,11 @@ func TestGetRequest(t *testing.T) {
 
 func TestCreateContainerCatalogQueryURL(t *testing.T) {
 	testCases := []struct {
-		testContainerImageID configuration.ContainerImageIdentifier
+		testContainerImageID provider.ContainerImageIdentifier
 		expectedResult       string
 	}{
 		{
-			testContainerImageID: configuration.ContainerImageIdentifier{
+			testContainerImageID: provider.ContainerImageIdentifier{
 				Repository: "name1",
 				Registry:   "repo1",
 				Tag:        "tag1",
@@ -45,7 +45,7 @@ func TestCreateContainerCatalogQueryURL(t *testing.T) {
 			expectedResult: apiCatalogByRepositoriesBaseEndPoint + "/repo1/name1/images?filter=architecture==amd64;image_id==digest1",
 		},
 		{
-			testContainerImageID: configuration.ContainerImageIdentifier{
+			testContainerImageID: provider.ContainerImageIdentifier{
 				Repository: "name1",
 				Registry:   "repo1",
 				Tag:        "tag1",
@@ -54,7 +54,7 @@ func TestCreateContainerCatalogQueryURL(t *testing.T) {
 			expectedResult: apiCatalogByRepositoriesBaseEndPoint + "/repo1/name1/images?filter=architecture==amd64;repositories.repository==repo1/name1;repositories.tags.name==tag1",
 		},
 		{
-			testContainerImageID: configuration.ContainerImageIdentifier{
+			testContainerImageID: provider.ContainerImageIdentifier{
 				Repository: "name1",
 				Registry:   "repo1",
 				// Tag:        "tag1",
