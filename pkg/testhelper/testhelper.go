@@ -22,7 +22,7 @@ import (
 	"reflect"
 
 	"github.com/sirupsen/logrus"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
 const (
@@ -218,7 +218,7 @@ func NewContainerReportObject(aNamespace, aPodName, aContainerName, aReason stri
 	return out
 }
 
-func NewCertifiedContainerReportObject(cii configuration.ContainerImageIdentifier, aReason string, isCompliant bool) (out *ReportObject) {
+func NewCertifiedContainerReportObject(cii provider.ContainerImageIdentifier, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, ContainerImageType, isCompliant)
 	out.AddField(ImageDigest, cii.Digest)
 	out.AddField(ImageRepo, cii.Repository)
