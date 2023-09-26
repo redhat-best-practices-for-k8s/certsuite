@@ -333,17 +333,9 @@ func getPodContainers(aPod *corev1.Pod, useIgnoreList bool) (containerList []*Co
 		aRuntime, uid := GetRuntimeUID(&status)
 		var cutStatus corev1.ContainerStatus
 
-		// get Status for current container in any states available in order: running, then Terminated, then waiting
+		// get Status for current container
 		for index := range aPod.Status.ContainerStatuses {
-			if status.State.Running != nil {
-				cutStatus = aPod.Status.ContainerStatuses[index]
-				break
-			}
-			if status.State.Terminated != nil {
-				cutStatus = aPod.Status.ContainerStatuses[index]
-				break
-			}
-			if status.State.Waiting != nil {
+			if status.Name == cut.Name {
 				cutStatus = aPod.Status.ContainerStatuses[index]
 				break
 			}
