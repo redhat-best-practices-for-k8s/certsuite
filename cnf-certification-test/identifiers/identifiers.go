@@ -105,7 +105,6 @@ var (
 	TestPodHostPath                                   claim.Identifier
 	TestPodHostIPC                                    claim.Identifier
 	TestPodHostPID                                    claim.Identifier
-	TestContainerIsCertifiedIdentifier                claim.Identifier
 	TestHugepagesNotManuallyManipulated               claim.Identifier
 	TestICMPv6ConnectivityIdentifier                  claim.Identifier
 	TestICMPv4ConnectivityMultusIdentifier            claim.Identifier
@@ -686,22 +685,6 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		PodHostPIDRemediation,
 		`Exception for host resource access tests will only be considered in rare cases where it is absolutely needed`,
 		TestPodHostPIDDocLink,
-		true,
-		map[string]string{
-			FarEdge:  Mandatory,
-			Telco:    Mandatory,
-			NonTelco: Mandatory,
-			Extended: Mandatory,
-		},
-		TagCommon)
-
-	TestContainerIsCertifiedIdentifier = AddCatalogEntry(
-		"container-is-certified",
-		common.AffiliatedCertTestKey,
-		`Tests whether container images listed in the configuration file have passed the Red Hat Container Certification Program (CCP).`,
-		ContainerIsCertifiedRemediation,
-		AffiliatedCert,
-		TestContainerIsCertifiedIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,

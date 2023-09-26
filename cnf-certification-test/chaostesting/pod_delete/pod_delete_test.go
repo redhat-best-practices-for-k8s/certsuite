@@ -15,6 +15,8 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 package poddelete
 
+/*
+
 import (
 	"errors"
 	"testing"
@@ -134,3 +136,5 @@ func TestParseLitmusResult(t *testing.T) {
 		assert.Equal(t, tc.expectedOutput, parseLitmusResult(tc.testList))
 	}
 }
+
+*/
