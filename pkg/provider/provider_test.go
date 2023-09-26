@@ -931,3 +931,244 @@ func TestGetBaremetalNodes(t *testing.T) {
 		})
 	}
 }
+
+func Test_getPodContainers(t *testing.T) {
+	pod1 := corev1.Pod{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      "prometheus-k8s-0",
+			Namespace: "openshift-monitoring",
+		},
+		Spec: corev1.PodSpec{
+			Containers: []corev1.Container{
+				{
+					Name:  "prometheus",
+					Image: "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:064300d031bcc2423e2dc5eb32c9606c869942aa41f239b9c561c0b038d3d8f0",
+				},
+				{
+					Name:  "config-reloader",
+					Image: "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:55fdb6cdbcb7c25d8206eba68ef8676fc86949ad6965ce5f9bc1afe18e0c6918",
+				},
+				{
+					Name:  "thanos-sidecar",
+					Image: "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:ac3558b2758c283c355f30b1255793f1363b86c199569de55a6e599a39135b1f",
+				},
+				{
+					Name:  "prometheus-proxy",
+					Image: "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:df80d3297a5530801baf25e2b4e2e265fe094c43fe1fa959f83e380b56a3f0c3",
+				},
+				{
+					Name:  "kube-rbac-proxy",
+					Image: "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:e2b2c89aedaa44964e4cf003ef94963da2e773ace08e601592078adefa482b52",
+				},
+				{
+					Name:  "kube-rbac-proxy-thanos",
+					Image: "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:e2b2c89aedaa44964e4cf003ef94963da2e773ace08e601592078adefa482b52",
+				},
+			},
+		},
+		Status: corev1.PodStatus{
+			ContainerStatuses: []corev1.ContainerStatus{
+				{
+					Name:         "config-reloader",
+					State:        corev1.ContainerState{Running: &corev1.ContainerStateRunning{StartedAt: metav1.Time{}}},
+					Ready:        true,
+					RestartCount: 2,
+					Image:        "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:55fdb6cdbcb7c25d8206eba68ef8676fc86949ad6965ce5f9bc1afe18e0c6918",
+					ImageID:      "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:55fdb6cdbcb7c25d8206eba68ef8676fc86949ad6965ce5f9bc1afe18e0c6918",
+					ContainerID:  "cri-o://57c22c7e3eb0c906dd517bab91059db671b6ac03b70a44f2839ac1ece3c03db3",
+				},
+				{
+					Name:         "kube-rbac-proxy",
+					State:        corev1.ContainerState{Running: &corev1.ContainerStateRunning{StartedAt: metav1.Time{}}},
+					Ready:        true,
+					RestartCount: 2,
+					Image:        "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:e2b2c89aedaa44964e4cf003ef94963da2e773ace08e601592078adefa482b52",
+					ImageID:      "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:e2b2c89aedaa44964e4cf003ef94963da2e773ace08e601592078adefa482b52",
+					ContainerID:  "cri-o://33ed1ea7f25bea164cde6a196ada613101c0958c1c4907502d62008f245fbf35",
+				},
+				{
+					Name:         "kube-rbac-proxy-thanos",
+					State:        corev1.ContainerState{Running: &corev1.ContainerStateRunning{StartedAt: metav1.Time{}}},
+					Ready:        true,
+					RestartCount: 2,
+					Image:        "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:e2b2c89aedaa44964e4cf003ef94963da2e773ace08e601592078adefa482b52",
+					ImageID:      "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:e2b2c89aedaa44964e4cf003ef94963da2e773ace08e601592078adefa482b52",
+					ContainerID:  "cri-o://5ed2c50da83c19bf8aab38178af5c44438c1abc9bd6478480b9be0282b1a1cd6",
+				},
+				{
+					Name:         "prometheus",
+					State:        corev1.ContainerState{Running: &corev1.ContainerStateRunning{StartedAt: metav1.Time{}}},
+					Ready:        true,
+					RestartCount: 2,
+					Image:        "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:064300d031bcc2423e2dc5eb32c9606c869942aa41f239b9c561c0b038d3d8f0",
+					ImageID:      "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:064300d031bcc2423e2dc5eb32c9606c869942aa41f239b9c561c0b038d3d8f0",
+					ContainerID:  "cri-o://2c0ffc1f7c522edfa786ff4fc04c9d8f487926e6159dc2c5c708d2bfdc2619a7",
+				},
+				{
+					Name:         "prometheus-proxy",
+					State:        corev1.ContainerState{Running: &corev1.ContainerStateRunning{StartedAt: metav1.Time{}}},
+					Ready:        true,
+					RestartCount: 2,
+					Image:        "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:df80d3297a5530801baf25e2b4e2e265fe094c43fe1fa959f83e380b56a3f0c3",
+					ImageID:      "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:df80d3297a5530801baf25e2b4e2e265fe094c43fe1fa959f83e380b56a3f0c3",
+					ContainerID:  "cri-o://a54fbb740338618de653a20596571490caa93e28be9d582314d898bf8e163d22",
+				},
+				{
+					Name:         "thanos-sidecar",
+					State:        corev1.ContainerState{Running: &corev1.ContainerStateRunning{StartedAt: metav1.Time{}}},
+					Ready:        true,
+					RestartCount: 2,
+					Image:        "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:ac3558b2758c283c355f30b1255793f1363b86c199569de55a6e599a39135b1f",
+					ImageID:      "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:ac3558b2758c283c355f30b1255793f1363b86c199569de55a6e599a39135b1f",
+					ContainerID:  "cri-o://1c90c74031e6565fbbab74ef1bdc6cb9ca9b48ca728c42d7041f1e4e71a95ed0",
+				},
+			},
+		},
+	}
+
+	type args struct {
+		aPod          *corev1.Pod
+		useIgnoreList bool
+	}
+	tests := []struct {
+		name              string
+		args              args
+		wantContainerList []*Container
+	}{
+		{
+			name: "pod1normal",
+			args: args{aPod: &pod1, useIgnoreList: false},
+			wantContainerList: []*Container{
+				{
+					Container: &corev1.Container{
+						Name:  "prometheus",
+						Image: "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:064300d031bcc2423e2dc5eb32c9606c869942aa41f239b9c561c0b038d3d8f0",
+					},
+					Status: corev1.ContainerStatus{
+						Name: "prometheus",
+						State: corev1.ContainerState{
+							Running: &corev1.ContainerStateRunning{},
+						},
+						Ready:        true,
+						RestartCount: 2,
+						Image:        "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:064300d031bcc2423e2dc5eb32c9606c869942aa41f239b9c561c0b038d3d8f0",
+						ImageID:      "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:064300d031bcc2423e2dc5eb32c9606c869942aa41f239b9c561c0b038d3d8f0",
+						ContainerID:  "cri-o://2c0ffc1f7c522edfa786ff4fc04c9d8f487926e6159dc2c5c708d2bfdc2619a7",
+					},
+					Namespace:                "openshift-monitoring",
+					Podname:                  "prometheus-k8s-0",
+					Runtime:                  "cri-o",
+					UID:                      "2c0ffc1f7c522edfa786ff4fc04c9d8f487926e6159dc2c5c708d2bfdc2619a7",
+					ContainerImageIdentifier: ContainerImageIdentifier{Digest: "sha256:064300d031bcc2423e2dc5eb32c9606c869942aa41f239b9c561c0b038d3d8f0"},
+				},
+				{
+					Container: &corev1.Container{
+						Name:  "config-reloader",
+						Image: "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:55fdb6cdbcb7c25d8206eba68ef8676fc86949ad6965ce5f9bc1afe18e0c6918",
+					},
+					Status: corev1.ContainerStatus{
+						Name:         "config-reloader",
+						State:        corev1.ContainerState{Running: &corev1.ContainerStateRunning{}},
+						Ready:        true,
+						RestartCount: 2,
+						Image:        "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:55fdb6cdbcb7c25d8206eba68ef8676fc86949ad6965ce5f9bc1afe18e0c6918",
+						ImageID:      "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:55fdb6cdbcb7c25d8206eba68ef8676fc86949ad6965ce5f9bc1afe18e0c6918",
+						ContainerID:  "cri-o://57c22c7e3eb0c906dd517bab91059db671b6ac03b70a44f2839ac1ece3c03db3",
+					},
+					Namespace:                "openshift-monitoring",
+					Podname:                  "prometheus-k8s-0",
+					Runtime:                  "cri-o",
+					UID:                      "57c22c7e3eb0c906dd517bab91059db671b6ac03b70a44f2839ac1ece3c03db3",
+					ContainerImageIdentifier: ContainerImageIdentifier{Digest: "sha256:55fdb6cdbcb7c25d8206eba68ef8676fc86949ad6965ce5f9bc1afe18e0c6918"},
+				},
+				{
+					Container: &corev1.Container{
+						Name:  "thanos-sidecar",
+						Image: "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:ac3558b2758c283c355f30b1255793f1363b86c199569de55a6e599a39135b1f",
+					},
+					Status: corev1.ContainerStatus{
+						Name:         "thanos-sidecar",
+						State:        corev1.ContainerState{Running: &corev1.ContainerStateRunning{}},
+						Ready:        true,
+						RestartCount: 2,
+						Image:        "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:ac3558b2758c283c355f30b1255793f1363b86c199569de55a6e599a39135b1f",
+						ImageID:      "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:ac3558b2758c283c355f30b1255793f1363b86c199569de55a6e599a39135b1f",
+						ContainerID:  "cri-o://1c90c74031e6565fbbab74ef1bdc6cb9ca9b48ca728c42d7041f1e4e71a95ed0",
+					},
+					Namespace:                "openshift-monitoring",
+					Podname:                  "prometheus-k8s-0",
+					Runtime:                  "cri-o",
+					UID:                      "1c90c74031e6565fbbab74ef1bdc6cb9ca9b48ca728c42d7041f1e4e71a95ed0",
+					ContainerImageIdentifier: ContainerImageIdentifier{Digest: "sha256:ac3558b2758c283c355f30b1255793f1363b86c199569de55a6e599a39135b1f"},
+				},
+				{
+					Container: &corev1.Container{
+						Name:  "prometheus-proxy",
+						Image: "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:df80d3297a5530801baf25e2b4e2e265fe094c43fe1fa959f83e380b56a3f0c3",
+					},
+					Status: corev1.ContainerStatus{
+						Name:         "prometheus-proxy",
+						State:        corev1.ContainerState{Running: &corev1.ContainerStateRunning{}},
+						Ready:        true,
+						RestartCount: 2,
+						Image:        "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:df80d3297a5530801baf25e2b4e2e265fe094c43fe1fa959f83e380b56a3f0c3",
+						ImageID:      "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:df80d3297a5530801baf25e2b4e2e265fe094c43fe1fa959f83e380b56a3f0c3",
+						ContainerID:  "cri-o://a54fbb740338618de653a20596571490caa93e28be9d582314d898bf8e163d22",
+					},
+					Namespace:                "openshift-monitoring",
+					Podname:                  "prometheus-k8s-0",
+					Runtime:                  "cri-o",
+					UID:                      "a54fbb740338618de653a20596571490caa93e28be9d582314d898bf8e163d22",
+					ContainerImageIdentifier: ContainerImageIdentifier{Digest: "sha256:df80d3297a5530801baf25e2b4e2e265fe094c43fe1fa959f83e380b56a3f0c3"},
+				},
+				{
+					Container: &corev1.Container{
+						Name:  "kube-rbac-proxy",
+						Image: "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:e2b2c89aedaa44964e4cf003ef94963da2e773ace08e601592078adefa482b52",
+					},
+					Status: corev1.ContainerStatus{
+						Name:         "kube-rbac-proxy",
+						State:        corev1.ContainerState{Running: &corev1.ContainerStateRunning{}},
+						Ready:        true,
+						RestartCount: 2,
+						Image:        "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:e2b2c89aedaa44964e4cf003ef94963da2e773ace08e601592078adefa482b52",
+						ImageID:      "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:e2b2c89aedaa44964e4cf003ef94963da2e773ace08e601592078adefa482b52",
+						ContainerID:  "cri-o://33ed1ea7f25bea164cde6a196ada613101c0958c1c4907502d62008f245fbf35",
+					},
+					Namespace:                "openshift-monitoring",
+					Podname:                  "prometheus-k8s-0",
+					Runtime:                  "cri-o",
+					UID:                      "33ed1ea7f25bea164cde6a196ada613101c0958c1c4907502d62008f245fbf35",
+					ContainerImageIdentifier: ContainerImageIdentifier{Digest: "sha256:e2b2c89aedaa44964e4cf003ef94963da2e773ace08e601592078adefa482b52"},
+				},
+				{
+					Container: &corev1.Container{
+						Name:  "kube-rbac-proxy-thanos",
+						Image: "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:e2b2c89aedaa44964e4cf003ef94963da2e773ace08e601592078adefa482b52",
+					},
+					Status: corev1.ContainerStatus{
+						Name:         "kube-rbac-proxy-thanos",
+						State:        corev1.ContainerState{Running: &corev1.ContainerStateRunning{}},
+						Ready:        true,
+						RestartCount: 2,
+						Image:        "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:e2b2c89aedaa44964e4cf003ef94963da2e773ace08e601592078adefa482b52",
+						ImageID:      "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:e2b2c89aedaa44964e4cf003ef94963da2e773ace08e601592078adefa482b52",
+						ContainerID:  "cri-o://5ed2c50da83c19bf8aab38178af5c44438c1abc9bd6478480b9be0282b1a1cd6",
+					},
+					Namespace:                "openshift-monitoring",
+					Podname:                  "prometheus-k8s-0",
+					Runtime:                  "cri-o",
+					UID:                      "5ed2c50da83c19bf8aab38178af5c44438c1abc9bd6478480b9be0282b1a1cd6",
+					ContainerImageIdentifier: ContainerImageIdentifier{Digest: "sha256:e2b2c89aedaa44964e4cf003ef94963da2e773ace08e601592078adefa482b52"},
+				},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if gotContainerList := getPodContainers(tt.args.aPod, tt.args.useIgnoreList); !reflect.DeepEqual(gotContainerList, tt.wantContainerList) {
+				t.Errorf("getPodContainers() = %v, want %v", gotContainerList, tt.wantContainerList)
+			}
+		})
+	}
+}
