@@ -154,15 +154,17 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment, val
 	for _, c := range env.Containers {
 		switch {
 		case c.ContainerImageIdentifier.Digest == "":
-			tnf.ClaimFilePrintf("%s is missing digest field, failing validation (repo=%s image=%s)", c, c.ContainerImageIdentifier.Registry, c.ContainerImageIdentifier.Repository)
+			tnf.ClaimFilePrintf("%s is missing digest field, failing validation (repo=%s image=%s digest=%s)", c, c.ContainerImageIdentifier.Registry, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Digest)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Missing digest field", false).
 				AddField(testhelper.Repository, c.ContainerImageIdentifier.Registry).
-				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Repository))
+				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Repository).
+				AddField(testhelper.ImageDigest, c.ContainerImageIdentifier.Digest))
 		case !testContainerCertification(c.ContainerImageIdentifier, validator):
-			tnf.ClaimFilePrintf("%s digest not found in database, failing validation (repo=%s image=%s)", c, c.ContainerImageIdentifier.Registry, c.ContainerImageIdentifier.Repository)
+			tnf.ClaimFilePrintf("%s digest not found in database, failing validation (repo=%s image=%s digest=%s)", c, c.ContainerImageIdentifier.Registry, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Digest)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Digest not found in database", false).
 				AddField(testhelper.Repository, c.ContainerImageIdentifier.Registry).
-				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Repository))
+				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Repository).
+				AddField(testhelper.ImageDigest, c.ContainerImageIdentifier.Digest))
 		default:
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Container is certified", true))
 		}
