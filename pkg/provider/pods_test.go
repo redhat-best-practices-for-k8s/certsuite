@@ -354,6 +354,7 @@ func TestIsUsingClusterRoleBinding(t *testing.T) {
 		testClusterRoleBindings []rbacv1.ClusterRoleBinding
 		testServiceAccounts     []corev1.ServiceAccount
 		testResult              bool
+		testroleRefName         string
 		testErr                 error
 	}{
 		{ // Test Case #1 - Empty ServiceAccountName, return false
@@ -417,6 +418,9 @@ func TestIsUsingClusterRoleBinding(t *testing.T) {
 							Namespace: "test-namespace",
 						},
 					},
+					RoleRef: rbacv1.RoleRef{
+						Name: "test",
+					},
 				},
 			},
 			testServiceAccounts: []corev1.ServiceAccount{
@@ -427,8 +431,9 @@ func TestIsUsingClusterRoleBinding(t *testing.T) {
 					},
 				},
 			},
-			testResult: true,
-			testErr:    nil,
+			testResult:      true,
+			testroleRefName: "test",
+			testErr:         nil,
 		},
 	}
 
@@ -448,8 +453,9 @@ func TestIsUsingClusterRoleBinding(t *testing.T) {
 
 		c := k8sfake.NewSimpleClientset(testRuntimeObjects...)
 		clientsholder.SetTestK8sClientsHolder(c)
-		result, err := tc.testPod.IsUsingClusterRoleBinding(tc.testClusterRoleBindings)
+		result, roleRefName, err := tc.testPod.IsUsingClusterRoleBinding(tc.testClusterRoleBindings)
 		assert.Equal(t, tc.testResult, result)
+		assert.Equal(t, tc.testroleRefName, roleRefName)
 		assert.Equal(t, tc.testErr, err)
 	}
 }
