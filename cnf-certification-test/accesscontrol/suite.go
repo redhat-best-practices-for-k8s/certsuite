@@ -564,7 +564,7 @@ func testPodClusterRoleBindings(env *provider.TestEnvironment) {
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not using a cluster role binding", true))
 		} else {
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is using a cluster role binding", false).
-				AddField(testhelper.ClusterRoleBindingName, roleRefName))
+				AddField(testhelper.ClusterRoleName, roleRefName))
 		}
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
