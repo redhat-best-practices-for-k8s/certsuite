@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/Masterminds/semver/v3"
+	officialClaimScheme "github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
 const (
@@ -83,10 +84,8 @@ type Schema struct {
 			} `json:"cnf-certification-test"`
 		} `json:"rawResults"`
 
-		Results  TestSuiteResults `json:"results"`
-		Versions struct {
-			ClaimFormat string `json:"claimFormat"`
-		} `json:"versions"`
+		Results  TestSuiteResults             `json:"results"`
+		Versions officialClaimScheme.Versions `json:"versions"`
 	} `json:"claim"`
 }
 

@@ -10,6 +10,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/compare/configurations"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/compare/nodes"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/compare/testcases"
+	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/compare/versions"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/pkg/claim"
 )
 
@@ -77,6 +78,10 @@ func claimCompareFilesfunc(claim1, claim2 string) error {
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal claim2 file: %v", err)
 	}
+
+	// Compare claim versions.
+	versionsDiff := versions.Compare(&claimFile1Data.Claim.Versions, &claimFile2Data.Claim.Versions)
+	fmt.Println(versionsDiff)
 
 	// Show test cases results summary and differences.
 	tcsDiffReport := testcases.GetDiffReport(claimFile1Data.Claim.Results, claimFile2Data.Claim.Results)
