@@ -547,7 +547,7 @@ func testPodClusterRoleBindings(env *provider.TestEnvironment) {
 	for _, put := range env.Pods {
 		podIsCompliant := true
 		ginkgo.By(fmt.Sprintf("Testing cluster role binding for pod: %s namespace: %s", put.Name, put.Namespace))
-		result, err := put.IsUsingClusterRoleBinding(env.ClusterRoleBindings)
+		result, roleRefName, err := put.IsUsingClusterRoleBinding(env.ClusterRoleBindings)
 		if err != nil {
 			logrus.Errorf("failed to determine if pod %s/%s is using a cluster role binding: %v", put.Namespace, put.Name, err)
 			podIsCompliant = false
@@ -563,7 +563,8 @@ func testPodClusterRoleBindings(env *provider.TestEnvironment) {
 		if podIsCompliant {
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not using a cluster role binding", true))
 		} else {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is using a cluster role binding", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is using a cluster role binding", false).
+				AddField(testhelper.ClusterRoleName, roleRefName))
 		}
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)

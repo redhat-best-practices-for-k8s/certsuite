@@ -75,20 +75,20 @@ var WaitForScalingToComplete = func(ns, name string, timeout time.Duration, grou
 }
 
 func WaitForStatefulSetReady(ns, name string, timeout time.Duration) bool {
-	logrus.Trace("check if statefulset ", ns, ":", name, " is ready ")
+	logrus.Trace("check if statefulset ", ns, ":", name, " is ready")
 	clients := clientsholder.GetClientsHolder()
 	start := time.Now()
 	for time.Since(start) < timeout {
 		ss, err := provider.GetUpdatedStatefulset(clients.K8sClient.AppsV1(), ns, name)
-		if err == nil && ss.IsStatefulSetReady() {
-			logrus.Tracef("%s is ready, err: %v", ss.ToString(), err)
+		if err != nil {
+			logrus.Errorf("error while getting the %s, err: %v", ss.ToString(), err)
+		} else if ss.IsStatefulSetReady() {
+			logrus.Tracef("%s is ready", ss.ToString())
 			return true
-		} else if err != nil {
-			logrus.Errorf("Error while getting the %s, err: %v", ss.ToString(), err)
 		}
 		time.Sleep(time.Second)
 	}
-	logrus.Error("statefulset ", ns, ":", name, " is not ready ")
+	logrus.Error("statefulset ", ns, ":", name, " is not ready")
 	return false
 }
 
