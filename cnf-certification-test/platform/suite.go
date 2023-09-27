@@ -54,7 +54,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 	ginkgo.ReportAfterEach(results.RecordResult)
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHyperThreadEnable)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetBaremetalNodes())
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.GetBaremetalNodes(), "env.GetBaremetalNodes()"))
 		testHyperThreadingEnabled(&env)
 	})
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUnalteredBaseImageIdentifier)
@@ -62,7 +62,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		if !provider.IsOCPCluster() {
 			ginkgo.Skip("Non-OCP cluster found, skipping testContainersFsDiff")
 		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
 		if env.DaemonsetFailedToSpawn {
 			ginkgo.Skip("Debug Daemonset failed to spawn skipping testContainersFsDiff")
 		}
@@ -71,7 +71,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNonTaintedNodeKernelsIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.DebugPods, "env.DebugPods"))
 		if env.DaemonsetFailedToSpawn {
 			ginkgo.Skip("Debug Daemonset failed to spawn skipping testTainted")
 		}
@@ -80,7 +80,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsRedHatReleaseIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Containers)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
 		testIsRedHatRelease(&env)
 	})
 
@@ -89,7 +89,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		if !provider.IsOCPCluster() {
 			ginkgo.Skip("Non-OCP cluster found, skipping testIsSELinuxEnforcing")
 		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.DebugPods, "env.DebugPods"))
 		if env.DaemonsetFailedToSpawn {
 			ginkgo.Skip("Debug Daemonset failed to spawn skipping testIsSELinuxEnforcing")
 		}
@@ -101,7 +101,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		if !provider.IsOCPCluster() {
 			ginkgo.Skip("Non-OCP cluster found, skipping testHugepages")
 		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.DebugPods, "env.DebugPods"))
 		if env.DaemonsetFailedToSpawn {
 			ginkgo.Skip("Debug Daemonset failed to spawn skipping testHugepages")
 		}
@@ -113,7 +113,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		if !provider.IsOCPCluster() {
 			ginkgo.Skip("Non-OCP cluster found, skipping testUnalteredBootParams")
 		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.DebugPods, "env.DebugPods"))
 		if env.DaemonsetFailedToSpawn {
 			ginkgo.Skip("Debug Daemonset failed to spawn skipping testUnalteredBootParams")
 		}
@@ -125,7 +125,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		if !provider.IsOCPCluster() {
 			ginkgo.Skip("Non-OCP cluster found, skipping testSysctlConfigs")
 		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.DebugPods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.DebugPods, "env.DebugPods"))
 		if env.DaemonsetFailedToSpawn {
 			ginkgo.Skip("Debug Daemonset failed to spawn skipping testSysctlConfigs")
 		}
@@ -134,7 +134,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServiceMeshIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Pods, "env.Pods"))
 		testServiceMesh(&env)
 	})
 
@@ -159,7 +159,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		if !provider.IsOCPCluster() {
 			ginkgo.Skip("Non-OCP cluster found, skipping testPodHugePagesSize2M")
 		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetHugepagesPods())
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.GetHugepagesPods(), "env.GetHugepagesPods()"))
 		testPodHugePagesSize(&env, provider.HugePages2Mi)
 	})
 
@@ -168,7 +168,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 		if !provider.IsOCPCluster() {
 			ginkgo.Skip("Non-OCP cluster found, skipping testPodHugePagesSize1G")
 		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetHugepagesPods())
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.GetHugepagesPods(), "env.GetHugepagesPods()"))
 		testPodHugePagesSize(&env, provider.HugePages1Gi)
 	})
 
@@ -272,11 +272,11 @@ func testTainted(env *provider.TestEnvironment) {
 	// otherTaints maps a node to a list of taint bits that haven't been set by any module.
 	otherTaints := map[string][]int{}
 
-	logrus.Infof("Modules whitelist: %+v", env.Config.AcceptedKernelTaints)
+	logrus.Infof("Modules allowlist: %+v", env.Config.AcceptedKernelTaints)
 	// helper map to make the checks easier.
-	whiteListedModules := map[string]bool{}
+	allowListedModules := map[string]bool{}
 	for _, module := range env.Config.AcceptedKernelTaints {
-		whiteListedModules[module.Module] = true
+		allowListedModules[module.Module] = true
 	}
 
 	// Loop through the debug pods that are tied to each node.
@@ -298,26 +298,29 @@ func testTainted(env *provider.TestEnvironment) {
 		}
 
 		if taintsMask == 0 {
-			tnf.ClaimFilePrintf("Node %s has no kernel taints.", nodeName)
-			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has no kernel taints", true))
+			tnf.ClaimFilePrintf("Node %s has no non-approved kernel taints.", nodeName)
+			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has no non-approved kernel taints", true))
 			continue
 		}
 
 		tnf.ClaimFilePrintf("Node %s kernel is tainted. Taints mask=%d - Decoded taints: %v",
 			nodeName, taintsMask, nodetainted.DecodeKernelTaintsFromBitMask(taintsMask))
 
-		// Check the white list. If empty, mark this node as failed.
-		if len(whiteListedModules) == 0 {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "No modules in whitelist", false))
+		// Check the allow list. If empty, mark this node as failed.
+		if len(allowListedModules) == 0 {
+			taintsMaskStr := strconv.FormatUint(taintsMask, 10)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Node contains taints not covered by module allowlist", false).
+				AddField(testhelper.TaintMask, taintsMaskStr).
+				AddField(testhelper.Taints, strings.Join(nodetainted.DecodeKernelTaintsFromBitMask(taintsMask), ",")))
 			continue
 		}
 
-		// White list check.
+		// allow list check.
 		// Get the list of modules (tainters) that have set a taint bit.
-		//   1. Each module should appear in the white list.
+		//   1. Each module should appear in the allow list.
 		//   2. All kernel taint bits (one bit <-> one letter) should have been set by at least
 		//      one tainter module.
-		tainters, taintBitsByAllModules, err := tf.GetTainterModules(whiteListedModules)
+		tainters, taintBitsByAllModules, err := tf.GetTainterModules(allowListedModules)
 		if err != nil {
 			tnf.ClaimFilePrintf("failed to get tainter modules from node %s: %v", nodeName, err)
 			errNodes = append(errNodes, nodeName)
@@ -326,24 +329,38 @@ func testTainted(env *provider.TestEnvironment) {
 			continue
 		}
 
+		// Keep track of whether or not this node is compliant with module allow list.
+		compliantNode := true
+
 		// Save modules' names only.
 		for moduleName, taintsLetters := range tainters {
 			moduleTaints := nodetainted.DecodeKernelTaintsFromLetters(taintsLetters)
 			badModules[nodeName] = append(badModules[nodeName], badModuleTaints{name: moduleName, taints: moduleTaints})
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Module taints kernel", false).
-				AddField(testhelper.ModuleName, moduleName).
-				AddField(testhelper.Taints, strings.Join(moduleTaints, ",")))
-			tnf.ClaimFilePrintf("Node %s - module %s taints kernel: %s", nodeName, moduleName, moduleTaints)
+
+			// Create non-compliant taint objects for each of the taints
+			for _, taint := range moduleTaints {
+				tnf.ClaimFilePrintf("Node %s - module %s taints kernel: %s", nodeName, moduleName, taint)
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewTaintReportObject(nodetainted.RemoveAllExceptNumbers(taint), nodeName, taint, false).AddField(testhelper.ModuleName, moduleName))
+
+				// Set the node as non-compliant for future reporting
+				compliantNode = false
+			}
 		}
 
 		// Lastly, check that all kernel taint bits come from modules.
 		otherKernelTaints := nodetainted.GetOtherTaintedBits(taintsMask, taintBitsByAllModules)
 		for _, taintedBit := range otherKernelTaints {
-			tnf.ClaimFilePrintf("Node %s - taint bit %d is set but it's not caused by any module.", nodeName, taintedBit)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Taint bit is set but it's not caused by any module", false).
-				AddField(testhelper.TaintBit, strconv.Itoa(taintedBit)).
-				AddField(testhelper.TaintBitDescription, nodetainted.GetTaintMsg(taintedBit)))
+			tnf.ClaimFilePrintf("Node %s - taint bit %d is set but it is not caused by any module.", nodeName, taintedBit)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewTaintReportObject(strconv.Itoa(taintedBit), nodeName, nodetainted.GetTaintMsg(taintedBit), false).
+				AddField(testhelper.ModuleName, "N/A"))
 			otherTaints[nodeName] = append(otherTaints[nodeName], taintedBit)
+
+			// Set the node as non-compliant for future reporting
+			compliantNode = false
+		}
+
+		if compliantNode {
+			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Passed the tainted kernel check", true))
 		}
 	}
 
@@ -470,10 +487,12 @@ func testUnalteredBootParams(env *provider.TestEnvironment) {
 		claimsLog, err := bootparams.TestBootParamsHelper(env, cut)
 
 		if err != nil || len(claimsLog.GetLogLines()) != 0 {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Failed the boot params check", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Failed the boot params check", false).
+				AddField(testhelper.DebugPodName, env.DebugPods[cut.NodeName].Name))
 			tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
 		} else {
-			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Passed the boot params check", true))
+			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Passed the boot params check", true).
+				AddField(testhelper.DebugPodName, env.DebugPods[cut.NodeName].Name))
 		}
 	}
 
@@ -504,8 +523,8 @@ func testSysctlConfigs(env *provider.TestEnvironment) {
 		}
 
 		mcKernelArgumentsMap := bootparams.GetMcKernelArguments(env, cut.NodeName)
+		validSettings := true
 		for key, sysctlConfigVal := range sysctlSettings {
-			validSettings := true
 			if mcVal, ok := mcKernelArgumentsMap[key]; ok {
 				if mcVal != sysctlConfigVal {
 					tnf.ClaimFilePrintf(fmt.Sprintf("Kernel config mismatch in node %s for %s (sysctl value: %s, machine config value: %s)",
@@ -514,9 +533,9 @@ func testSysctlConfigs(env *provider.TestEnvironment) {
 					validSettings = false
 				}
 			}
-			if validSettings {
-				compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Passed the sysctl config check", true))
-			}
+		}
+		if validSettings {
+			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Passed the sysctl config check", true))
 		}
 	}
 

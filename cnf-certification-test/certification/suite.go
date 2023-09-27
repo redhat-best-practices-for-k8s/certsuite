@@ -31,7 +31,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/internal/certdb"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
@@ -61,11 +60,6 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testHelmVersion()
 	})
-	// Query API for certification status of listed containers
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testContainerCertificationStatus(&env, validator)
-	})
 
 	// Query API for certification status of listed operators
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOperatorIsCertifiedIdentifier)
@@ -84,20 +78,15 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	})
 })
 
-func getContainersToQuery(env *provider.TestEnvironment) map[configuration.ContainerImageIdentifier]bool {
-	containersToQuery := make(map[configuration.ContainerImageIdentifier]bool)
-	for _, c := range env.Config.CertifiedContainerInfo {
-		containersToQuery[c] = true
-	}
-	if env.Config.CheckDiscoveredContainerCertificationStatus {
-		for _, cut := range env.Containers {
-			containersToQuery[cut.ContainerImageIdentifier] = true
-		}
+func getContainersToQuery(env *provider.TestEnvironment) map[provider.ContainerImageIdentifier]bool {
+	containersToQuery := make(map[provider.ContainerImageIdentifier]bool)
+	for _, cut := range env.Containers {
+		containersToQuery[cut.ContainerImageIdentifier] = true
 	}
 	return containersToQuery
 }
 
-func testContainerCertification(c configuration.ContainerImageIdentifier, validator certdb.CertificationStatusValidator) bool {
+func testContainerCertification(c provider.ContainerImageIdentifier, validator certdb.CertificationStatusValidator) bool {
 	ans := validator.IsContainerCertified(c.Registry, c.Repository, c.Tag, c.Digest)
 	if !ans {
 		tnf.ClaimFilePrintf("%s/%s:%s is not listed in certified containers", c.Registry, c.Repository, c.Tag)
@@ -105,34 +94,9 @@ func testContainerCertification(c configuration.ContainerImageIdentifier, valida
 	return ans
 }
 
-func testContainerCertificationStatus(env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
-	containersToQuery := getContainersToQuery(env)
-	testhelper.SkipIfEmptyAny(ginkgo.Skip, containersToQuery)
-	ginkgo.By(fmt.Sprintf("Getting certification status. Number of containers to check: %d", len(containersToQuery)))
-	failedContainers := []configuration.ContainerImageIdentifier{}
-	allContainersToQueryEmpty := true
-	for c := range containersToQuery {
-		if c.Repository == "" || c.Registry == "" {
-			tnf.ClaimFilePrintf("Container name = \"%s\" or repository = \"%s\" is missing, skipping this container to query", c.Repository, c.Registry)
-			continue
-		}
-		allContainersToQueryEmpty = false
-		if !testContainerCertification(c, validator) {
-			failedContainers = append(failedContainers, c)
-		}
-	}
-	if allContainersToQueryEmpty {
-		ginkgo.Skip("No containers to check because either container name or repository is empty for all containers in tnf_config.yml")
-	}
-	if n := len(failedContainers); n > 0 {
-		logrus.Warnf("Containers that are not certified: %+v", failedContainers)
-		ginkgo.Fail(fmt.Sprintf("%d container images are not certified.", n))
-	}
-}
-
 func testAllOperatorCertified(env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
 	operatorsUnderTest := env.Operators
-	testhelper.SkipIfEmptyAny(ginkgo.Skip, operatorsUnderTest)
+	testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(operatorsUnderTest, "operatorsUnderTest"))
 	ginkgo.By(fmt.Sprintf("Verify operator as certified. Number of operators to check: %d", len(operatorsUnderTest)))
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -164,7 +128,7 @@ func testAllOperatorCertified(env *provider.TestEnvironment, validator certdb.Ce
 
 func testHelmCertified(env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
 	helmchartsReleases := env.HelmChartReleases
-	testhelper.SkipIfEmptyAny(ginkgo.Skip, helmchartsReleases)
+	testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(helmchartsReleases, "helmchartsReleases"))
 	// Collect all of the failed helm charts
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -188,22 +152,19 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment, val
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, c := range env.Containers {
-		if c.ContainerImageIdentifier.Repository == "" || c.ContainerImageIdentifier.Registry == "" {
-			tnf.ClaimFilePrintf("Container name = %q or repository = %q is missing, skipping this container to query", c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Registry)
-			continue
-		}
-
 		switch {
 		case c.ContainerImageIdentifier.Digest == "":
-			tnf.ClaimFilePrintf("%s is missing digest field, failing validation (repo=%s image=%s)", c, c.ContainerImageIdentifier.Registry, c.ContainerImageIdentifier.Repository)
+			tnf.ClaimFilePrintf("%s is missing digest field, failing validation (repo=%s image=%s digest=%s)", c, c.ContainerImageIdentifier.Registry, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Digest)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Missing digest field", false).
 				AddField(testhelper.Repository, c.ContainerImageIdentifier.Registry).
-				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Repository))
+				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Repository).
+				AddField(testhelper.ImageDigest, c.ContainerImageIdentifier.Digest))
 		case !testContainerCertification(c.ContainerImageIdentifier, validator):
-			tnf.ClaimFilePrintf("%s digest not found in database, failing validation (repo=%s image=%s)", c, c.ContainerImageIdentifier.Registry, c.ContainerImageIdentifier.Repository)
+			tnf.ClaimFilePrintf("%s digest not found in database, failing validation (repo=%s image=%s digest=%s)", c, c.ContainerImageIdentifier.Registry, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Digest)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Digest not found in database", false).
 				AddField(testhelper.Repository, c.ContainerImageIdentifier.Registry).
-				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Repository))
+				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Repository).
+				AddField(testhelper.ImageDigest, c.ContainerImageIdentifier.Digest))
 		default:
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Container is certified", true))
 		}

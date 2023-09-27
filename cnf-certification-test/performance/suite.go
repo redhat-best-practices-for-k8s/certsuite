@@ -31,6 +31,12 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/scheduling"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
+	v1 "k8s.io/api/core/v1"
+)
+
+const (
+	maxNumberOfExecProbes     = 10
+	minExecProbePeriodSeconds = 10
 )
 
 // The pods with no access to host network are considered for these tests
@@ -44,14 +50,14 @@ var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
 
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestExclusiveCPUPoolIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Pods, "env.Pods"))
 		testExclusiveCPUPool(&env)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestRtAppNoExecProbes)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		var guaranteedPodContainersWithExclusiveCPUs = env.GetGuaranteedPodContainersWithExclusiveCPUs()
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, guaranteedPodContainersWithExclusiveCPUs)
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(guaranteedPodContainersWithExclusiveCPUs, "guaranteedPodContainersWithExclusiveCPUs"))
 		testRtAppsNoExecProbes(&env, guaranteedPodContainersWithExclusiveCPUs)
 	})
 
@@ -59,25 +65,103 @@ var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSharedCPUPoolSchedulingPolicy)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		var nonGuaranteedPodContainers = env.GetNonGuaranteedPodContainersWithoutHostPID()
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, nonGuaranteedPodContainers)
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(nonGuaranteedPodContainers, "nonGuaranteedPodContainers"))
 		testSchedulingPolicyInCPUPool(&env, nonGuaranteedPodContainers, scheduling.SharedCPUScheduling)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestExclusiveCPUPoolSchedulingPolicy)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		var guaranteedPodContainersWithExclusiveCPUs = env.GetGuaranteedPodContainersWithExclusiveCPUsWithoutHostPID()
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, guaranteedPodContainersWithExclusiveCPUs)
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(guaranteedPodContainersWithExclusiveCPUs, "guaranteedPodContainersWithExclusiveCPUs"))
 		testSchedulingPolicyInCPUPool(&env, guaranteedPodContainersWithExclusiveCPUs, scheduling.ExclusiveCPUScheduling)
+	})
+
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestLimitedUseOfExecProbesIdentifier)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Pods, "env.Pods"))
+		testLimitedUseOfExecProbes(&env)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsolatedCPUPoolSchedulingPolicy)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		var guaranteedPodContainersWithIsolatedCPUs = env.GetGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID()
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, guaranteedPodContainersWithIsolatedCPUs)
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(guaranteedPodContainersWithIsolatedCPUs, "guaranteedPodContainersWithIsolatedCPUs"))
 		testSchedulingPolicyInCPUPool(&env, guaranteedPodContainersWithIsolatedCPUs, scheduling.IsolatedCPUScheduling)
 	})
 	// Scheduling related tests ends here
 })
+
+func CheckProbePeriodSeconds(elem *v1.Probe, cut *provider.Container, s string) bool {
+	if elem.PeriodSeconds > minExecProbePeriodSeconds {
+		tnf.ClaimFilePrintf("Container %s is using exec probes, PeriodSeconds of %s: %s", cut, s,
+			elem.PeriodSeconds)
+		return true
+	}
+	tnf.ClaimFilePrintf("Container %s is not using of exec probes, PeriodSeconds of %s: %s", cut, s,
+		elem.PeriodSeconds)
+	return false
+}
+
+func testLimitedUseOfExecProbes(env *provider.TestEnvironment) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+	counter := 0
+	for _, put := range env.Pods {
+		for _, cut := range put.Containers {
+			if cut.LivenessProbe != nil && cut.LivenessProbe.Exec != nil {
+				counter++
+				if CheckProbePeriodSeconds(cut.LivenessProbe, cut, "LivenessProbe") {
+					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name,
+						cut.Name, fmt.Sprintf("LivenessProbe exec probe has a PeriodSeconds greater than 10 (%d seconds)",
+							cut.LivenessProbe.PeriodSeconds), true))
+				} else {
+					nonCompliantObjects = append(nonCompliantObjects,
+						testhelper.NewContainerReportObject(put.Namespace, put.Name,
+							cut.Name, fmt.Sprintf("LivenessProbe exec probe has a PeriodSeconds that is not greater than 10 (%d seconds)",
+								cut.LivenessProbe.PeriodSeconds), false))
+				}
+			}
+			if cut.StartupProbe != nil && cut.StartupProbe.Exec != nil {
+				counter++
+				if CheckProbePeriodSeconds(cut.StartupProbe, cut, "StartupProbe") {
+					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name,
+						cut.Name, fmt.Sprintf("StartupProbe exec probe has a PeriodSeconds greater than 10 (%d seconds)",
+							cut.StartupProbe.PeriodSeconds), true))
+				} else {
+					nonCompliantObjects = append(nonCompliantObjects,
+						testhelper.NewContainerReportObject(put.Namespace, put.Name,
+							cut.Name, fmt.Sprintf("StartupProbe exec probe has a PeriodSeconds that is not greater than 10 (%d seconds)",
+								cut.StartupProbe.PeriodSeconds), false))
+				}
+			}
+			if cut.ReadinessProbe != nil && cut.ReadinessProbe.Exec != nil {
+				counter++
+				if CheckProbePeriodSeconds(cut.ReadinessProbe, cut, "ReadinessProbe") {
+					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name,
+						cut.Name, fmt.Sprintf("ReadinessProbe exec probe has a PeriodSeconds greater than 10 (%d seconds)",
+							cut.ReadinessProbe.PeriodSeconds), true))
+				} else {
+					nonCompliantObjects = append(nonCompliantObjects,
+						testhelper.NewContainerReportObject(put.Namespace, put.Name,
+							cut.Name, fmt.Sprintf("ReadinessProbe exec probe has a PeriodSeconds that is not greater than 10 (%d seconds)",
+								cut.ReadinessProbe.PeriodSeconds), false))
+				}
+			}
+		}
+	}
+
+	// If there >=10 exec probes, mark the entire cluster as a failure
+	if counter >= maxNumberOfExecProbes {
+		tnf.ClaimFilePrintf(fmt.Sprintf("CNF has %d exec probes", counter))
+		nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject(fmt.Sprintf("CNF has 10 or more exec probes (%d exec probes)", counter), testhelper.CnfType, false))
+	} else {
+		// Compliant object
+		compliantObjects = append(compliantObjects, testhelper.NewReportObject(fmt.Sprintf("CNF has less than 10 exec probes (%d exec probes)", counter), testhelper.CnfType, true))
+		tnf.ClaimFilePrintf(fmt.Sprintf("CNF has less than %d exec probes", counter))
+	}
+
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+}
 
 func testExclusiveCPUPool(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject

@@ -39,9 +39,9 @@ const (
 
 	SecConCapabilitiesRemediation = `Remove the following capabilities from the container/pod definitions: NET_ADMIN SCC, SYS_ADMIN SCC, NET_RAW SCC, IPC_LOCK SCC`
 
-	SecConPrivilegeRemediation = `Configure privilege escalation to false. Privileged escalation should not be allowed (AllowPrivilegeEscalation=false).`
+	BpfCapabilityRemediation = `Remove the following capability from the container/pod definitions: BPF`
 
-	ContainerIsCertifiedRemediation = `Ensure that your container has passed the Red Hat Container Certification Program (CCP).`
+	SecConPrivilegeRemediation = `Configure privilege escalation to false. Privileged escalation should not be allowed (AllowPrivilegeEscalation=false).`
 
 	ContainerHostPortRemediation = `Remove hostPort configuration from the container. CNF should avoid accessing host resources - containers should not configure HostPort.`
 
@@ -150,7 +150,7 @@ const (
 
 	UID1337Remediation = `Use another process UID that is not 1337.`
 
-	ProjectedVolumeServiceAccountRemediation = `Ensure that pods do not use projected volumes and service account tokens`
+	LimitedUseOfExecProbesRemediation = `Reduce the number of exec probes in the cluster for this CNF to less than 10. Increase the update period of the exec probe to be superior or equal to 10 seconds.`
 
 	ReservedPartnerPortsRemediation = `Ensure ports are not being used that are reserved by our partner`
 

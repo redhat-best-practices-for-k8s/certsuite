@@ -133,6 +133,11 @@ func TestTest(t *testing.T) {
 		t.Skip("Skipping test suite when running unit tests")
 	}
 
+	err := configuration.LoadEnvironmentVariables()
+	if err != nil {
+		log.Fatalf("could not load the environment variables, error: %v", err)
+	}
+
 	// Set up logging params for logrus
 	loghelper.SetLogFormat()
 	setLogLevel()

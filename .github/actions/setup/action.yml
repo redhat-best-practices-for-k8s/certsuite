@@ -1,5 +1,7 @@
+---
 name: initial-setup-resources
-description: A shared action that removes a lot of copied tasks from steps in our CI
+description: A shared action that removes a lot of copied
+              tasks from steps in our CI
 
 runs:
   using: 'composite'
@@ -14,7 +16,7 @@ runs:
     - name: Set up Go 1.21
       uses: actions/setup-go@v4
       with:
-        go-version: 1.21.0
+        go-version: 1.21.1
 
     - name: Disable default go problem matcher
       run: echo "::remove-matcher owner=go::"

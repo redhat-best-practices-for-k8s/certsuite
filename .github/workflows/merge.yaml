@@ -5,7 +5,16 @@ on:
     types: [ closed ]
 
 jobs:
-
+  do-not-merge:
+    if: ${{ contains(github.event.*.labels.*.name, 'do not merge') }}
+    name: Prevent Merging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for label
+        run: |
+          echo "Pull request is labeled as 'do not merge'"
+          echo "This workflow fails so that the pull request cannot be merged"
+          exit 1
   build:
     if: github.event.pull_request.merged == true
     name: Run Tests
@@ -15,10 +24,10 @@ jobs:
       - name: Set up Go 1.21
         uses: actions/setup-go@v4
         with:
-          go-version: 1.21.0
+          go-version: 1.21.1
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Run Tests
         run: make test
@@ -31,4 +40,3 @@ jobs:
     steps:
       - run: |
           echo PR #${{ github.event.number }} has been closed without being merged
-

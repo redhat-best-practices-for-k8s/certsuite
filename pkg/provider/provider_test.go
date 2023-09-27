@@ -788,7 +788,7 @@ func TestBuildImageWithVersion(t *testing.T) {
 		{
 			repoVar:         "",
 			supportImageVar: "",
-			expectedOutput:  "quay.io/testnetworkfunction/debug-partner:4.3.4",
+			expectedOutput:  "quay.io/testnetworkfunction/debug-partner:4.4.0",
 		},
 	}
 
@@ -812,14 +812,14 @@ func Test_buildContainerImageSource(t *testing.T) {
 	tests := []struct {
 		name       string
 		args       args
-		wantSource configuration.ContainerImageIdentifier
+		wantSource ContainerImageIdentifier
 	}{
 		{name: "image has tag and registry",
 			args: args{
 				urlImage:   "quay.io/testnetworkfunction/cnf-test-partner:latest",
 				urlImageID: "quay.io/testnetworkfunction/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
 			},
-			wantSource: configuration.ContainerImageIdentifier{
+			wantSource: ContainerImageIdentifier{
 				Registry:   "quay.io",
 				Repository: "testnetworkfunction/cnf-test-partner",
 				Tag:        "latest",
@@ -831,7 +831,7 @@ func Test_buildContainerImageSource(t *testing.T) {
 				urlImage:   "quay.io/testnetworkfunction/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b96465665465465a2d0d811168667a919345",
 				urlImageID: "quay.io/testnetworkfunction/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
 			},
-			wantSource: configuration.ContainerImageIdentifier{
+			wantSource: ContainerImageIdentifier{
 				Registry:   "",
 				Repository: "",
 				Tag:        "",
@@ -843,7 +843,7 @@ func Test_buildContainerImageSource(t *testing.T) {
 				urlImage:   "httpd:2.4.57",
 				urlImageID: "quay.io/httpd:2.4.57@sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
 			},
-			wantSource: configuration.ContainerImageIdentifier{
+			wantSource: ContainerImageIdentifier{
 				Registry:   "",
 				Repository: "httpd",
 				Tag:        "2.4.57",
@@ -927,6 +927,180 @@ func TestGetBaremetalNodes(t *testing.T) {
 			}
 			if got := env.GetBaremetalNodes(); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("TestEnvironment.GetBaremetalNodes() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func generatePodContainer(imageID, state string) *corev1.Pod {
+	aPod := corev1.Pod{}
+	aPod.Name = "podname"
+	aPod.Namespace = "namespace"
+	aContainer := corev1.Container{}
+	aContainer.Name = "aName"
+	aContainer.Image = "quay.io/testnetworkfunction/cnf-test-partner:latest"
+	aPod.Spec.Containers = append(aPod.Spec.Containers, aContainer)
+	aStatus := corev1.ContainerStatus{}
+	aStatus.ImageID = imageID
+	aStatus.Name = "anotherName"
+	aState := corev1.ContainerState{}
+	switch state {
+	case "running":
+		aState = corev1.ContainerState{Running: &corev1.ContainerStateRunning{}}
+	case "terminated":
+		aState = corev1.ContainerState{Terminated: &corev1.ContainerStateTerminated{}}
+	case "waiting":
+		aState = corev1.ContainerState{Waiting: &corev1.ContainerStateWaiting{}}
+	}
+
+	aStatus.State = aState
+	aPod.Status.ContainerStatuses = append(aPod.Status.ContainerStatuses, aStatus)
+	return &aPod
+}
+func podEqual(container1, container2 *Container, state string) bool {
+	return container1.ContainerImageIdentifier == container2.ContainerImageIdentifier &&
+		container1.Container.Name == container2.Container.Name &&
+		container1.Container.Image == container2.Container.Image &&
+		container1.Status.ImageID == container2.Status.ImageID &&
+		container1.Status.Name == container2.Status.Name &&
+		container1.Podname == container2.Podname &&
+		container1.Name == container2.Name &&
+		container1.Namespace == container2.Namespace &&
+		(state == "running" && (container1.Status.State.Running != nil) ||
+			state == "terminated" && (container1.Status.State.Terminated != nil) ||
+			state == "waiting" && (container1.Status.State.Waiting != nil))
+}
+
+func Test_getPodContainers(t *testing.T) {
+	type args struct {
+		useIgnoreList bool
+	}
+	tests := []struct {
+		state, imageID, name string
+		args                 args
+		wantContainerList    []*Container
+	}{
+		{
+			name:    "ok-running",
+			state:   "running",
+			imageID: "quay.io/testnetworkfunction/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
+			wantContainerList: []*Container{
+				{
+					Podname:   "podname",
+					Namespace: "namespace",
+					ContainerImageIdentifier: ContainerImageIdentifier{
+						Repository: "testnetworkfunction/cnf-test-partner",
+						Registry:   "quay.io",
+						Tag:        "latest",
+						Digest:     "sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
+					},
+					Container: &corev1.Container{
+						Name:  "aName",
+						Image: "quay.io/testnetworkfunction/cnf-test-partner:latest",
+					},
+					Status: corev1.ContainerStatus{
+						Name:    "anotherName",
+						State:   corev1.ContainerState{Running: &corev1.ContainerStateRunning{}},
+						ImageID: "quay.io/testnetworkfunction/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
+					},
+				},
+			},
+		},
+		{
+			name:    "ok-terminated",
+			state:   "terminated",
+			imageID: "quay.io/testnetworkfunction/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
+			wantContainerList: []*Container{
+				{
+					Podname:   "podname",
+					Namespace: "namespace",
+					ContainerImageIdentifier: ContainerImageIdentifier{
+						Repository: "testnetworkfunction/cnf-test-partner",
+						Registry:   "quay.io",
+						Tag:        "latest",
+						Digest:     "sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
+					},
+					Container: &corev1.Container{
+						Name:  "aName",
+						Image: "quay.io/testnetworkfunction/cnf-test-partner:latest",
+					},
+					Status: corev1.ContainerStatus{
+						Name: "anotherName",
+						State: corev1.ContainerState{
+							Terminated: &corev1.ContainerStateTerminated{},
+						},
+						ImageID: "quay.io/testnetworkfunction/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
+					},
+				},
+			},
+		},
+		{
+			name:    "ok-waiting",
+			state:   "waiting",
+			imageID: "quay.io/testnetworkfunction/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
+			wantContainerList: []*Container{
+				{
+					Podname:   "podname",
+					Namespace: "namespace",
+					ContainerImageIdentifier: ContainerImageIdentifier{
+						Repository: "testnetworkfunction/cnf-test-partner",
+						Registry:   "quay.io",
+						Tag:        "latest",
+						Digest:     "sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
+					},
+					Container: &corev1.Container{
+						Name:  "aName",
+						Image: "quay.io/testnetworkfunction/cnf-test-partner:latest",
+					},
+					Status: corev1.ContainerStatus{
+						Name: "anotherName",
+						State: corev1.ContainerState{
+							Terminated: &corev1.ContainerStateTerminated{},
+						},
+						ImageID: "quay.io/testnetworkfunction/cnf-test-partner@sha256:2341c96eba68e2dbf9498a2fe7b95e6f9b84f6ac15fa2d0d811168667a919a49",
+					},
+				},
+			},
+		},
+		{
+			name:    "no digest",
+			state:   "running",
+			imageID: "",
+			wantContainerList: []*Container{
+				{
+					Podname:   "podname",
+					Namespace: "namespace",
+					ContainerImageIdentifier: ContainerImageIdentifier{
+						Repository: "testnetworkfunction/cnf-test-partner",
+						Registry:   "quay.io",
+						Tag:        "latest",
+						Digest:     "",
+					},
+					Container: &corev1.Container{
+						Name:  "aName",
+						Image: "quay.io/testnetworkfunction/cnf-test-partner:latest",
+					},
+					Status: corev1.ContainerStatus{
+						Name:    "anotherName",
+						State:   corev1.ContainerState{Running: &corev1.ContainerStateRunning{}},
+						ImageID: "",
+					},
+				},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if gotContainerList := getPodContainers(generatePodContainer(tt.imageID, tt.state), tt.args.useIgnoreList); !podEqual(
+				gotContainerList[0],
+				tt.wantContainerList[0],
+				tt.state,
+			) {
+				t.Errorf(
+					"getPodContainers() = %#v, want %#v",
+					gotContainerList[0],
+					tt.wantContainerList[0],
+				)
 			}
 		})
 	}

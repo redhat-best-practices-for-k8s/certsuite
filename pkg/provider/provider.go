@@ -60,7 +60,7 @@ const (
 	cscosName                        = "CentOS Stream CoreOS"
 	rhelName                         = "Red Hat Enterprise Linux"
 	tnfPartnerRepoDef                = "quay.io/testnetworkfunction"
-	supportImageDef                  = "debug-partner:4.3.4"
+	supportImageDef                  = "debug-partner:4.4.0"
 )
 
 // Node's roles labels. Node is role R if it has **any** of the labels of each list.
@@ -333,9 +333,17 @@ func getPodContainers(aPod *corev1.Pod, useIgnoreList bool) (containerList []*Co
 		aRuntime, uid := GetRuntimeUID(&status)
 		var cutStatus corev1.ContainerStatus
 
-		// get Status for current container
+		// get Status for current container in any states available in order: running, then Terminated, then waiting
 		for index := range aPod.Status.ContainerStatuses {
-			if status.Name == cut.Name {
+			if status.State.Running != nil {
+				cutStatus = aPod.Status.ContainerStatuses[index]
+				break
+			}
+			if status.State.Terminated != nil {
+				cutStatus = aPod.Status.ContainerStatuses[index]
+				break
+			}
+			if status.State.Waiting != nil {
 				cutStatus = aPod.Status.ContainerStatuses[index]
 				break
 			}
@@ -401,7 +409,7 @@ func IsOCPCluster() bool {
 	return env.OpenshiftVersion != autodiscover.NonOpenshiftClusterVersion
 }
 
-func buildContainerImageSource(urlImage, urlImageID string) (source configuration.ContainerImageIdentifier) {
+func buildContainerImageSource(urlImage, urlImageID string) (source ContainerImageIdentifier) {
 	const regexImageWithTag = `^([^/]*)/*([^@]*):(.*)`
 	const regexImageDigest = `^([^/]*)/(.*)@(.*:.*)`
 

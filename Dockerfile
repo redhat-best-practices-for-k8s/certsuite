@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/ubi:8.8-1032 AS build
+FROM registry.access.redhat.com/ubi8/ubi:8.8-1067 AS build
 ENV TNF_DIR=/usr/tnf
 ENV \
 	TNF_SRC_DIR=${TNF_DIR}/tnf-src \
@@ -22,7 +22,7 @@ RUN \
 # Install Go binary and set the PATH
 ENV \
 	GO_DL_URL=https://golang.org/dl \
-	GO_BIN_TAR=go1.21.0.linux-amd64.tar.gz \
+	GO_BIN_TAR=go1.21.1.linux-amd64.tar.gz \
 	GOPATH=/root/go
 ENV GO_BIN_URL_x86_64=${GO_DL_URL}/${GO_BIN_TAR}
 RUN \
@@ -54,7 +54,7 @@ RUN \
 # Copy all of the files into the source directory and then switch contexts
 COPY . ${TNF_SRC_DIR}
 WORKDIR ${TNF_SRC_DIR}
-RUN make install-tools build-cnf-tests
+RUN make install-tools build-cnf-tests build-tnf-tool
 
 # Extract what's needed to run at a separate location
 # Quote this to prevent word splitting.
@@ -65,6 +65,8 @@ RUN \
 	# copy all JSON files to allow tests to run
 	&& cp --parents $(find . -name '*.json*') ${TNF_DIR} \
 	&& cp cnf-certification-test/cnf-certification-test.test ${TNF_BIN_DIR} \
+	# copy the tnf command binary
+	&& cp tnf ${TNF_BIN_DIR} \
 	# copy all of the chaos-test-files
 	&& mkdir -p ${TNF_DIR}/cnf-certification-test/chaostesting \
 	# copy the rhcos_version_map
@@ -97,10 +99,13 @@ FROM quay.io/testnetworkfunction/oct:latest AS db
 
 # Copy the state into a new flattened image to reduce size.
 # TODO run as non-root
-FROM registry.access.redhat.com/ubi8/ubi-minimal:8.8-1037
+FROM registry.access.redhat.com/ubi8/ubi-minimal:8.8-1072
+
+ENV \
+	TNF_DIR=/usr/tnf \
+	OSDK_BIN=/usr/local/osdk/bin
 
 # Copy all of the necessary files over from the TNF_DIR
-ENV TNF_DIR=/usr/tnf
 COPY --from=build ${TNF_DIR} ${TNF_DIR}
 
 # Add operatorsdk binary to image
@@ -111,11 +116,14 @@ ENV \
 	TNF_OFFLINE_DB=/usr/offline-db \
 	OCT_DB_PATH=/usr/oct/cmd/tnf/fetch
 COPY --from=db ${OCT_DB_PATH} ${TNF_OFFLINE_DB}
+
+ENV TNF_BIN_DIR=${TNF_DIR}/cnf-certification-test
+
 ENV \
 	TNF_CONFIGURATION_PATH=/usr/tnf/config/tnf_config.yml \
 	KUBECONFIG=/usr/tnf/kubeconfig/config \
 	PFLT_DOCKERCONFIG=/usr/tnf/dockercfg/config.json \
-	PATH="/usr/local/osdk/bin:${PATH}"
+	PATH="${OSDK_BIN}:${TNF_BIN_DIR}:${PATH}"
 WORKDIR ${TNF_DIR}
 ENV SHELL=/bin/bash
 CMD ["./run-cnf-suites.sh", "-o", "claim", "-f", "diagnostic"]

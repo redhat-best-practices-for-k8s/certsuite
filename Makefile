@@ -49,7 +49,7 @@ GIT_COMMIT=$(shell script/create-version-files.sh)
 GIT_RELEASE=$(shell script/get-git-release.sh)
 GIT_PREVIOUS_RELEASE=$(shell script/get-git-previous-release.sh)
 CLAIM_FORMAT_VERSION=$(shell script/get-claim-version.sh)
-GOLANGCI_VERSION=v1.53.3
+GOLANGCI_VERSION=v1.54.2
 LINKER_TNF_RELEASE_FLAGS=-X github.com/test-network-function/cnf-certification-test/cnf-certification-test.GitCommit=${GIT_COMMIT}
 LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/cnf-certification-test.GitRelease=${GIT_RELEASE}
 LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/cnf-certification-test.GitPreviousRelease=${GIT_PREVIOUS_RELEASE}
@@ -64,7 +64,7 @@ build:
 		build-cnf-tests \
 		test
 
-build-tnf-tool:
+build-tnf-tool: go.sum
 	go build -o tnf -v cmd/tnf/main.go
 
 # Cleans up auto-generated and report files
@@ -76,14 +76,14 @@ clean:
 		release-tag.txt test-out.json tnf
 
 # Runs configured linters
-lint:
+lint: go.sum
 	checkmake Makefile
 	golangci-lint run --timeout 10m0s
 	hadolint Dockerfile
 	shfmt -d *.sh script
 
 # Builds and runs unit tests
-test: coverage-qe results-html
+test: go.sum coverage-qe
 	./script/create-missing-test-files.sh
 	go build ${COMMON_GO_ARGS} ./...
 	UNIT_TEST=true go test -coverprofile=cover.out.tmp ./...
@@ -105,7 +105,11 @@ build-gradetool-policy:
 	./script/policy-builder-from-claim.sh
 
 # build the CNF test binary
-build-cnf-tests: results-html
+build-cnf-tests: go.sum results-html
+	PATH=${PATH}:${GOBIN} ginkgo build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" ./cnf-certification-test
+
+# build the CNF test binary for local development
+dev: go.sum
 	PATH=${PATH}:${GOBIN} ginkgo build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" ./cnf-certification-test
 
 # Builds the CNF test binary with debug flags
@@ -113,8 +117,11 @@ build-cnf-tests-debug: results-html
 	PATH=${PATH}:${GOBIN} ginkgo build -gcflags "all=-N -l" -ldflags "${LINKER_TNF_RELEASE_FLAGS} -extldflags '-z relro -z now'" ./cnf-certification-test
 
 # Installs build tools and other required software.
-install-tools:
+install-tools: go.sum
 	go install "$$(awk '/ginkgo/ {printf "%s/ginkgo@%s", $$1, $$2}' go.mod)"
+
+go.sum: go.mod
+	go mod tidy
 
 install-mac-brew-tools:
 	brew install \
@@ -154,13 +161,13 @@ delete-db:
 	rm -rf ${REPO_DIR}/offline-db
 
 build-image-local:
-	docker build --no-cache \
+	docker build --pull --no-cache \
 		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
 		-f Dockerfile .
 
 build-image-tnf:
-	docker build --no-cache \
+	docker build --pull --no-cache \
 		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_VERSION} \

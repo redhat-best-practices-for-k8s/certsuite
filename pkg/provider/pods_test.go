@@ -354,6 +354,7 @@ func TestIsUsingClusterRoleBinding(t *testing.T) {
 		testClusterRoleBindings []rbacv1.ClusterRoleBinding
 		testServiceAccounts     []corev1.ServiceAccount
 		testResult              bool
+		testroleRefName         string
 		testErr                 error
 	}{
 		{ // Test Case #1 - Empty ServiceAccountName, return false
@@ -417,6 +418,9 @@ func TestIsUsingClusterRoleBinding(t *testing.T) {
 							Namespace: "test-namespace",
 						},
 					},
+					RoleRef: rbacv1.RoleRef{
+						Name: "test",
+					},
 				},
 			},
 			testServiceAccounts: []corev1.ServiceAccount{
@@ -427,8 +431,9 @@ func TestIsUsingClusterRoleBinding(t *testing.T) {
 					},
 				},
 			},
-			testResult: true,
-			testErr:    nil,
+			testResult:      true,
+			testroleRefName: "test",
+			testErr:         nil,
 		},
 	}
 
@@ -448,8 +453,9 @@ func TestIsUsingClusterRoleBinding(t *testing.T) {
 
 		c := k8sfake.NewSimpleClientset(testRuntimeObjects...)
 		clientsholder.SetTestK8sClientsHolder(c)
-		result, err := tc.testPod.IsUsingClusterRoleBinding(tc.testClusterRoleBindings)
+		result, roleRefName, err := tc.testPod.IsUsingClusterRoleBinding(tc.testClusterRoleBindings)
 		assert.Equal(t, tc.testResult, result)
+		assert.Equal(t, tc.testroleRefName, roleRefName)
 		assert.Equal(t, tc.testErr, err)
 	}
 }
@@ -507,89 +513,5 @@ func TestIsRunAsUserID(t *testing.T) {
 
 	for _, tc := range testCases {
 		assert.Equal(t, tc.expectedOutput, tc.testPod.IsRunAsUserID(tc.testUID))
-	}
-}
-
-func TestUsesProjectedVolumeServiceAccounts(t *testing.T) {
-	testCases := []struct {
-		testPod        Pod
-		expectedResult []corev1.Volume
-	}{
-		{ // Test Case #1 - Empty Volumes, return empty
-			testPod: Pod{
-				Pod: &corev1.Pod{
-					Spec: corev1.PodSpec{
-						Volumes: []corev1.Volume{},
-					},
-				},
-			},
-			expectedResult: nil,
-		},
-		{ // Test Case #2 - One volume uses projected volume with service account token, return volume
-			testPod: Pod{
-				Pod: &corev1.Pod{
-					Spec: corev1.PodSpec{
-						Volumes: []corev1.Volume{
-							{
-								Name: "test-volume1",
-								VolumeSource: corev1.VolumeSource{
-									Projected: &corev1.ProjectedVolumeSource{
-										Sources: []corev1.VolumeProjection{
-											{
-												ServiceAccountToken: &corev1.ServiceAccountTokenProjection{
-													Audience: "test-audience",
-												},
-											},
-										},
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-			expectedResult: []corev1.Volume{
-				{
-					Name: "test-volume1", VolumeSource: corev1.VolumeSource{
-						Projected: &corev1.ProjectedVolumeSource{
-							Sources: []corev1.VolumeProjection{
-								{
-									ServiceAccountToken: &corev1.ServiceAccountTokenProjection{
-										Audience: "test-audience",
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-		},
-		{ // Test Case #3 - Uses projected volume but not service account token, return empty
-			testPod: Pod{
-				Pod: &corev1.Pod{
-					Spec: corev1.PodSpec{
-						Volumes: []corev1.Volume{
-							{
-								Name: "test-volume1",
-								VolumeSource: corev1.VolumeSource{
-									Projected: &corev1.ProjectedVolumeSource{
-										Sources: []corev1.VolumeProjection{
-											{
-												ConfigMap: &corev1.ConfigMapProjection{},
-											},
-										},
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-			expectedResult: nil,
-		},
-	}
-
-	for _, tc := range testCases {
-		assert.Equal(t, tc.expectedResult, tc.testPod.GetVolumesUsingProjectedServiceAccounts())
 	}
 }

@@ -34,7 +34,8 @@ const (
 	CurrentSchedulingPriority = "current scheduling priority"
 	newLineCharacter          = "\n"
 
-	SharedCPUScheduling    = "SHARED_CPU_SCHEDULING"
+	SharedCPUScheduling = "SHARED_CPU_SCHEDULING"
+	//nolint:gosec
 	ExclusiveCPUScheduling = "EXCLUSIVE_CPU_SCHEDULING"
 	IsolatedCPUScheduling  = "ISOLATED_CPU_SCHEDULING"
 

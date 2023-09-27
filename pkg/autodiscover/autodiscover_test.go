@@ -17,92 +17,43 @@
 package autodiscover
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 )
 
-func TestBuildLabelName(t *testing.T) {
-	testCases := []struct {
-		testPrefix     string
-		testLabelName  string
-		expectedOutput string
+func TestCreateLabels(t *testing.T) {
+	type args struct {
+		labelStrings []string
+	}
+	tests := []struct {
+		name             string
+		args             args
+		wantLabelObjects []labelObject
 	}{
 		{
-			testPrefix:     "pre1",
-			testLabelName:  "label1",
-			expectedOutput: "pre1/label1",
+			name:             "ok",
+			args:             args{labelStrings: []string{"test-network-function.com/generic: target"}},
+			wantLabelObjects: []labelObject{{LabelKey: "test-network-function.com/generic", LabelValue: "target"}},
 		},
 		{
-			testPrefix:     "",
-			testLabelName:  "label1",
-			expectedOutput: "label1",
+			name:             "ok1",
+			args:             args{labelStrings: []string{"test-network-function.com/generic   : 1"}},
+			wantLabelObjects: []labelObject{{LabelKey: "test-network-function.com/generic", LabelValue: "1"}},
 		},
 		{
-			testPrefix:     "pre1",
-			testLabelName:  "",
-			expectedOutput: "pre1/",
-		},
-		{
-			testPrefix:     "",
-			testLabelName:  "",
-			expectedOutput: "",
+			name: "nok",
+			args: args{labelStrings: []string{"test-network-function.com/generic= target"}},
 		},
 	}
-
-	for _, tc := range testCases {
-		assert.Equal(t, tc.expectedOutput, buildLabelName(tc.testPrefix, tc.testLabelName))
-	}
-}
-
-func TestBuildLabelKeyValue(t *testing.T) {
-	testCases := []struct {
-		testLabel                configuration.Label
-		expectedKey, expectedVal string
-	}{
-		{
-			testLabel: configuration.Label{
-				Prefix: "prefix1",
-				Name:   "name1",
-				Value:  "value1",
-			},
-			expectedKey: "prefix1/name1",
-			expectedVal: "value1",
-		},
-		{
-			testLabel: configuration.Label{
-				Prefix: "prefix2",
-				Name:   "",
-				Value:  "value2",
-			},
-			expectedKey: "prefix2/",
-			expectedVal: "value2",
-		},
-		{
-			testLabel: configuration.Label{
-				Prefix: "",
-				Name:   "name3",
-				Value:  "value3",
-			},
-			expectedKey: "name3",
-			expectedVal: "value3",
-		},
-		{
-			testLabel: configuration.Label{
-				Prefix: "",
-				Name:   "",
-				Value:  "value4",
-			},
-			expectedKey: "",
-			expectedVal: "value4",
-		},
-	}
-
-	for _, tc := range testCases {
-		k, v := buildLabelKeyValue(tc.testLabel)
-		assert.Equal(t, tc.expectedKey, k)
-		assert.Equal(t, tc.expectedVal, v)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if gotLabelObjects := createLabels(tt.args.labelStrings); !reflect.DeepEqual(gotLabelObjects, tt.wantLabelObjects) {
+				t.Errorf("createLabels() = %v, want %v", gotLabelObjects, tt.wantLabelObjects)
+			}
+		})
 	}
 }
 

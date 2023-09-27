@@ -22,6 +22,7 @@ import (
 	"reflect"
 
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
 const (
@@ -104,9 +105,8 @@ const (
 	ReasonForNonCompliance          = "Reason For Non Compliance"
 	ReasonForCompliance             = "Reason For Compliance"
 	Category                        = "Category"
-	ProjectedVolumeName             = "Projected Volume Name"
-	ProjectedVolumeSAToken          = "Projected Volume SA Token"
 	RoleBindingName                 = "Role Binding Name"
+	ClusterRoleName                 = "Cluster Role Reference Name"
 	RoleBindingNamespace            = "Role Binding Namespace"
 	ServiceAccountName              = "Service Account Name"
 	ServiceMode                     = "Service Type"
@@ -135,11 +135,13 @@ const (
 	DeletedFolders                  = "Deleted Folders"
 	TaintBit                        = "Taint Bit"
 	TaintBitDescription             = "Taint Bit Description"
+	TaintMask                       = "Taint Mask"
 	ModuleName                      = "Module Name"
 	Taints                          = "Taints"
 	SysctlKey                       = "Sysctl Key"
 	SysctlValue                     = "Sysctl Value"
 	OSImage                         = "OS Image"
+	DebugPodName                    = "Debug Pod Name"
 
 	// ICMP tests
 	NetworkName              = "Network Name"
@@ -173,10 +175,10 @@ const (
 	HelmType                     = "Helm"
 	OperatorType                 = "Operator"
 	ContainerType                = "Container"
+	ContainerImageType           = "Container Image"
 	NodeType                     = "Node"
 	ContainerProcessType         = "ContainerProcess"
 	ContainerCategory            = "ContainerCategory"
-	ProjectedVolumeType          = "ProjectedVolume"
 	ServiceType                  = "Service"
 	DeploymentType               = "Deployment"
 	StatefulSetType              = "StatefulSet"
@@ -193,6 +195,11 @@ const (
 	HelmVersionType              = "Helm Version"
 	Error                        = "Error"
 	OperatorPermission           = "Operator Cluster Permission"
+	TaintType                    = "Taint"
+	ImageDigest                  = "Image Digest"
+	ImageRepo                    = "Image Repo"
+	ImageTag                     = "Image Tag"
+	ImageRegistry                = "Image Registry"
 )
 
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {
@@ -211,9 +218,25 @@ func NewContainerReportObject(aNamespace, aPodName, aContainerName, aReason stri
 	return out
 }
 
+func NewCertifiedContainerReportObject(cii provider.ContainerImageIdentifier, aReason string, isCompliant bool) (out *ReportObject) {
+	out = NewReportObject(aReason, ContainerImageType, isCompliant)
+	out.AddField(ImageDigest, cii.Digest)
+	out.AddField(ImageRepo, cii.Repository)
+	out.AddField(ImageTag, cii.Tag)
+	out.AddField(ImageRegistry, cii.Registry)
+	return out
+}
+
 func NewNodeReportObject(aNodeName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, NodeType, isCompliant)
 	out.AddField(Name, aNodeName)
+	return out
+}
+
+func NewTaintReportObject(taintBit, nodeName, aReason string, isCompliant bool) (out *ReportObject) {
+	out = NewReportObject(aReason, TaintType, isCompliant)
+	out.AddField(NodeType, nodeName)
+	out.AddField(TaintBit, taintBit)
 	return out
 }
 
@@ -301,37 +324,60 @@ func ResultToString(result int) (str string) {
 	return ""
 }
 
-func SkipIfEmptyAny(skip func(string, ...int), object ...interface{}) {
+func SkipIfEmptyAny(skip func(string, ...int), object ...[2]interface{}) {
 	for _, o := range object {
-		s := reflect.ValueOf(o)
+		s := reflect.ValueOf(o[0])
 		if s.Kind() != reflect.Slice && s.Kind() != reflect.Map {
 			panic("SkipIfEmpty was given a non slice/map type")
 		}
+		if str, ok := o[1].(string); ok {
+			if s.Len() == 0 {
+				skip(fmt.Sprintf("Test skipped because there are no %s (%s) to test, please check under test labels", reflect.TypeOf(o[0]), str))
+			}
+		} else {
+			panic("Value is not a string")
+		}
 
-		if s.Len() == 0 {
-			skip(fmt.Sprintf("Test skipped because there are no %s to test, please check under test labels", reflect.TypeOf(o)))
+		s = reflect.ValueOf(o[1])
+		if s.Kind() != reflect.String {
+			panic("SkipIfEmpty object name is not a string")
 		}
 	}
 }
 
-func SkipIfEmptyAll(skip func(string, ...int), object ...interface{}) {
+func SkipIfEmptyAll(skip func(string, ...int), object ...[2]interface{}) {
 	countLenZero := 0
 	allTypes := ""
 	for _, o := range object {
-		s := reflect.ValueOf(o)
+		s := reflect.ValueOf(o[0])
 		if s.Kind() != reflect.Slice && s.Kind() != reflect.Map {
 			panic("SkipIfEmpty was given a non slice/map type")
 		}
 
 		if s.Len() == 0 {
 			countLenZero++
-			allTypes = allTypes + reflect.TypeOf(o).String() + ", "
+			if str, ok := o[1].(string); ok {
+				allTypes = allTypes + reflect.TypeOf(o[0]).String() + " (" + str + ")" + ", "
+			} else {
+				panic("Value is not a string")
+			}
+		}
+
+		s = reflect.ValueOf(o[1])
+		if s.Kind() != reflect.String {
+			panic("SkipIfEmpty object name is not a string")
 		}
 	}
 	// all objects have len() of 0
 	if countLenZero == len(object) {
 		skip(fmt.Sprintf("Test skipped because there are no %s to test, please check under test labels", allTypes))
 	}
+}
+
+func NewSkipObject(object interface{}, name string) (skipObject [2]interface{}) {
+	skipObject[0] = object
+	skipObject[1] = name
+	return skipObject
 }
 
 func AddTestResultLog(prefix string, object interface{}, log func(string, ...interface{}), fail func(string, ...int)) {

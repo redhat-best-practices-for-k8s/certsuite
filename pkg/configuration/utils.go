@@ -17,8 +17,8 @@
 package configuration
 
 import (
+	"fmt"
 	"os"
-	"regexp"
 
 	"github.com/kelseyhightower/envconfig"
 	log "github.com/sirupsen/logrus"
@@ -30,15 +30,6 @@ var (
 	confLoaded    = false
 	parameters    = TestParameters{}
 )
-
-func init() {
-	log.Info("Saving environment variables & parameters.")
-	err := envconfig.Process("tnf", &parameters)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-	log.Infof("Environment: %+v", parameters)
-}
 
 // LoadConfiguration return a function that loads
 // the configuration from a file once
@@ -67,33 +58,20 @@ func LoadConfiguration(filePath string) (TestConfiguration, error) {
 		log.Infof("Namespace for debug DaemonSet: %s", configuration.DebugDaemonSetNamespace)
 	}
 
-	configuration.OperatorsUnderTestLabelsObjects = createLabels(configuration.OperatorsUnderTestLabels)
-	configuration.PodsUnderTestLabelsObjects = createLabels(configuration.PodsUnderTestLabels)
-
 	confLoaded = true
 	return configuration, nil
 }
 
-func GetTestParameters() *TestParameters {
-	return &parameters
+func LoadEnvironmentVariables() error {
+	log.Info("Saving environment variables & parameters.")
+	err := envconfig.Process("tnf", &parameters)
+	if err != nil {
+		return fmt.Errorf("could not process the environment variables values, error: %v", err)
+	}
+	log.Infof("Environment: %+v", parameters)
+	return nil
 }
 
-const labelRegex = `(\S*)\s*:\s*(\S*)`
-const labelRegexMatches = 3
-
-func createLabels(labelStrings []string) (labelObjects []LabelObject) {
-	for _, label := range labelStrings {
-		r := regexp.MustCompile(labelRegex)
-
-		values := r.FindStringSubmatch(label)
-		if len(values) != labelRegexMatches {
-			log.Errorf("failed to parse label=%s, will not be used!, ", label)
-			continue
-		}
-		var aLabel LabelObject
-		aLabel.LabelKey = values[1]
-		aLabel.LabelValue = values[2]
-		labelObjects = append(labelObjects, aLabel)
-	}
-	return labelObjects
+func GetTestParameters() *TestParameters {
+	return &parameters
 }

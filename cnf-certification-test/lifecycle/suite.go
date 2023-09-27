@@ -60,7 +60,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestShutdownIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
 		testContainersPreStop(&env)
 	})
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCrdScalingIdentifier)
@@ -68,44 +68,44 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		if !env.IsIntrusive() {
 			ginkgo.Skip(intrusiveTcSkippedReason)
 		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.ScaleCrUnderTest)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.ScaleCrUnderTest, "env.ScaleCrUnderTest"))
 		// Note: We skip this test because 'testHighAvailability' in the lifecycle suite is already
 		// testing the replicas and antiaffinity rules that should already be in place for crd.
 		testScaleCrd(&env, timeout)
 	})
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStartupIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
 		testContainersPostStart(&env)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestImagePullPolicyIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
 		testContainersImagePolicy(&env)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestReadinessProbeIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
 		testContainersReadinessProbe(&env)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestLivenessProbeIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
 		testContainersLivenessProbe(&env)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStartupProbeIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
 		testContainersStartupProbe(&env)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodDeploymentBestPracticesIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Pods)
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(env.Pods, "env.Pods"))
 		testPodsOwnerReference(&env)
 	})
 
@@ -114,7 +114,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		if env.GetWorkerCount() < minWorkerNodesForLifecycle {
 			ginkgo.Skip("Skipping pod high availability test because invalid number of available workers.")
 		}
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Deployments, env.StatefulSets)
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(env.Deployments, "env.Deployments"), testhelper.NewSkipObject(env.StatefulSets, "env.StatefulSets"))
 		testHighAvailability(&env)
 	})
 
@@ -124,7 +124,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 			ginkgo.Skip("Skipping pod scheduling test because invalid number of available workers.")
 		}
 		testPods := env.GetPodsWithoutAffinityRequiredLabel()
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testPods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(testPods, "testPods"))
 		testPodNodeSelectorAndAffinityBestPractices(testPods)
 	})
 
@@ -133,7 +133,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		if !env.IsIntrusive() {
 			ginkgo.Skip(intrusiveTcSkippedReason)
 		}
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Deployments, env.StatefulSets)
+		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(env.Deployments, "env.Deployments"), testhelper.NewSkipObject(env.StatefulSets, "env.StatefulSets"))
 		if env.GetWorkerCount() < minWorkerNodesForLifecycle {
 			ginkgo.Skip("Skipping pod recreation scaling test because invalid number of available workers.")
 		}
@@ -146,7 +146,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		if !env.IsIntrusive() {
 			ginkgo.Skip(intrusiveTcSkippedReason)
 		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Deployments)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Deployments, "env.Deployments"))
 		if env.GetWorkerCount() < minWorkerNodesForLifecycle {
 			// Note: We skip this test because 'testHighAvailability' in the lifecycle suite is already
 			// testing the replicas and antiaffinity rules that should already be in place for deployments.
@@ -159,7 +159,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		if !env.IsIntrusive() {
 			ginkgo.Skip(intrusiveTcSkippedReason)
 		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.StatefulSets)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.StatefulSets, "env.StatefulSets"))
 		if env.GetWorkerCount() < minWorkerNodesForLifecycle {
 			// Note: We skip this test because 'testHighAvailability' in the lifecycle suite is already
 			// testing the replicas and antiaffinity rules that should already be in place for statefulset.
@@ -170,13 +170,13 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPersistentVolumeReclaimPolicyIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods, env.PersistentVolumes)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Pods, "env.Pods"), testhelper.NewSkipObject(env.PersistentVolumes, "env.PersistentVolumes"))
 		testPodPersistentVolumeReclaimPolicy(&env)
 	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCPUIsolationIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetGuaranteedPodsWithExclusiveCPUs())
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.GetGuaranteedPodsWithExclusiveCPUs(), "env.GetGuaranteedPodsWithExclusiveCPUs()"))
 		testCPUIsolation(&env)
 	})
 
@@ -187,7 +187,7 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodTolerationBypassIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, env.Pods)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Pods, "env.Pods"))
 		testPodTolerationBypass(&env)
 	})
 
@@ -230,7 +230,7 @@ func testContainersPostStart(env *provider.TestEnvironment) {
 }
 
 func testContainersImagePolicy(env *provider.TestEnvironment) {
-	testhelper.SkipIfEmptyAll(ginkgo.Skip, env.Containers)
+	testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
@@ -314,7 +314,7 @@ func testPodNodeSelectorAndAffinityBestPractices(testPods []*provider.Pod) {
 	for _, put := range testPods {
 		compliantPod := true
 		if put.HasNodeSelector() {
-			tnf.ClaimFilePrintf("ERROR: %s has a node selector. Node selector: %v", put, &put.Spec.NodeSelector)
+			tnf.ClaimFilePrintf("ERROR: %s has a node selector. Node selector: %v", put, put.Spec.NodeSelector)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has node selector", false))
 			compliantPod = false
 		}
@@ -657,7 +657,7 @@ func testCPUIsolation(env *provider.TestEnvironment) {
 
 func testAffinityRequiredPods(env *provider.TestEnvironment) {
 	ginkgo.By("Testing affinity required pods for ")
-	testhelper.SkipIfEmptyAny(ginkgo.Skip, env.GetAffinityRequiredPods())
+	testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.GetAffinityRequiredPods(), "env.GetAffinityRequiredPods()"))
 
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -679,6 +679,7 @@ func testPodTolerationBypass(env *provider.TestEnvironment) {
 	var nonCompliantObjects []*testhelper.ReportObject
 
 	for _, put := range env.Pods {
+		podIsCompliant := true
 		for _, t := range put.Spec.Tolerations {
 			// Check if the tolerations fall outside the 'default' and are modified versions
 			// Take also into account the qosClass applied to the pod
@@ -687,9 +688,12 @@ func testPodTolerationBypass(env *provider.TestEnvironment) {
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has non-default toleration", false).
 					AddField(testhelper.TolerationKey, t.Key).
 					AddField(testhelper.TolerationEffect, string(t.Effect)))
-			} else {
-				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has default toleration", true))
+				podIsCompliant = false
 			}
+		}
+
+		if podIsCompliant {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has default toleration", true))
 		}
 	}
 

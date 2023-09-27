@@ -4,6 +4,7 @@ const (
 	// Default Strings
 	NoDocLinkExtended = "No Doc Link - Extended"
 	NoDocLinkFarEdge  = "No Doc Link - Far Edge"
+	NoDocLinkTelco    = "No Doc Link - Telco"
 
 	// Networking Suite
 	TestICMPv4ConnectivityIdentifierDocLink         = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ipv4-&-ipv6"
@@ -11,6 +12,7 @@ const (
 	TestReservedExtendedPartnerPortsDocLink         = NoDocLinkExtended
 	TestDpdkCPUPinningExecProbeDocLink              = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cpu-manager-pinning"
 	TestRestartOnRebootLabelOnPodsUsingSRIOVDocLink = NoDocLinkFarEdge
+	TestLimitedUseOfExecProbesIdentifierDocLink     = NoDocLinkFarEdge
 	TestICMPv6ConnectivityIdentifierDocLink         = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ipv4-&-ipv6"
 	TestICMPv4ConnectivityMultusIdentifierDocLink   = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations"
 	TestICMPv6ConnectivityMultusIdentifierDocLink   = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations"
@@ -19,13 +21,12 @@ const (
 	TestOCPReservedPortsUsageDocLink                = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ports-reserved-by-openshift"
 
 	// Access Control Suite
-	Test1337UIDIdentifierDocLink = NoDocLinkExtended
-	//nolint:gosec
-	TestProjectedVolumeServiceAccountTokenIdentifierDocLink  = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-automount-services-for-pods"
+	Test1337UIDIdentifierDocLink                             = NoDocLinkExtended
 	TestNetAdminIdentifierDocLink                            = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-net_admin"
 	TestSysAdminIdentifierDocLink                            = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-avoid-sys_admin"
 	TestIpcLockIdentifierDocLink                             = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ipc_lock"
 	TestNetRawIdentifierDocLink                              = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-user-plane-cnfs"
+	TestBpfIdentifierDocLink                                 = NoDocLinkTelco
 	TestSecConNonRootUserIdentifierDocLink                   = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-security"
 	TestSecContextIdentifierDocLink                          = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-security"
 	TestSecConPrivilegeEscalationDocLink                     = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cnf-security"

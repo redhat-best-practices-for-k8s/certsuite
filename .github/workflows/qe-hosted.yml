@@ -1,0 +1,108 @@
+name: QE Testing (Ubuntu-hosted)
+
+on:
+  # pull_request:
+  #   branches: [ main ]
+  workflow_dispatch:
+  # Schedule a daily cron at midnight UTC
+  schedule:
+    - cron: '0 0 * * *'
+env:
+  QE_REPO: test-network-function/cnfcert-tests-verification
+
+
+
+jobs:
+  qe-testing:
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix: 
+        suite: [accesscontrol, affiliatedcertification, manageability, networking, lifecycle, performance, platformalteration, observability, operator]
+    env:
+      SHELL: /bin/bash
+      DEBUG_TNF: true # More verbose output from the TNF
+      KUBECONFIG: '/home/runner/.kube/config'
+      PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
+      TEST_TNF_IMAGE_NAME: quay.io/testnetworkfunction/cnf-certification-test
+      TEST_TNF_IMAGE_TAG: localtest
+      DOCKER_CONFIG_DIR: '/home/runner/.docker/'
+
+    steps:
+      - name: Free Disk Space (Ubuntu)
+        uses: edcdavid/free-disk-space@main
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          docker-images: true
+          swap-storage: true
+
+      - name: Write temporary docker file
+        run: |
+          mkdir -p /home/runner/.docker
+          touch ${PFLT_DOCKERCONFIG}
+          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
+
+      - name: Set up Go 1.21
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.21.1
+
+      - name: Disable default go problem matcher
+        run: echo "::remove-matcher owner=go::"
+
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Run initial setup
+        uses: ./.github/actions/setup
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip
+          sudo pip3 install j2cli
+
+      - name: Build the test image
+        run: make build-image-local # quay.io/testnetworkfunction/cnf-certification-test:localtest
+
+      # Create a Kind cluster for testing.
+      - name: Check out `cnf-certification-test-partner`
+        uses: actions/checkout@v4
+        with:
+          repository: test-network-function/cnf-certification-test-partner
+          path: cnf-certification-test-partner
+
+      - name: Bootstrap the Kind and OC/Kubectl binaries for the `local-test-infra`
+        run: make bootstrap-cluster
+        working-directory: cnf-certification-test-partner
+
+      - name: Create `local-test-infra` OpenShift resources
+        run: make rebuild-cluster
+        working-directory: cnf-certification-test-partner
+
+      - name: Install partner resources
+        run: make install-for-qe
+        working-directory: cnf-certification-test-partner
+
+      - name: Show pods
+        run: oc get pods -A
+
+      - name: Wait for all pods to be ready
+        run: ./scripts/wait-for-all-pods-running.sh
+        working-directory: cnf-certification-test-partner
+
+      - name: Clone the QE repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.QE_REPO }}
+          path: cnfcert-tests-verification
+
+      # Setup is complete.  Time to run the QE tests.
+      - name: Run the tests
+        run: FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true make test-features
+        working-directory: cnfcert-tests-verification

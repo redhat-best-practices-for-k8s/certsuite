@@ -1,0 +1,105 @@
+RESULTS SUMMARY
+---------------
+STATUS         # in CLAIM-1        # in CLAIM-2
+passed         3                   17
+skipped        86                  64
+failed         1                   9
+
+RESULTS DIFFERENCES
+-------------------
+TEST CASE NAME                                              CLAIM-1   CLAIM-2
+access-control-bpf-capability-check                         skipped   failed
+access-control-cluster-role-bindings                        skipped   passed
+access-control-container-host-port                          skipped   passed
+access-control-ipc-lock-capability-check                    skipped   passed
+access-control-namespace                                    skipped   passed
+access-control-namespace-resource-quota                     skipped   passed
+access-control-net-admin-capability-check                   skipped   failed
+access-control-net-raw-capability-check                     skipped   passed
+access-control-no-1337-uid                                  skipped   passed
+access-control-one-process-per-container                    skipped   passed
+access-control-pod-automount-service-account-token          skipped   failed
+access-control-pod-host-ipc                                 skipped   passed
+access-control-pod-host-network                             skipped   passed
+access-control-pod-host-path                                skipped   passed
+access-control-pod-host-pid                                 skipped   passed
+access-control-pod-role-bindings                            skipped   failed
+access-control-pod-service-account                          skipped   failed
+access-control-projected-volume-service-account-token       skipped   failed
+access-control-requests-and-limits                          skipped   failed
+access-control-security-context                             skipped   failed
+access-control-security-context-non-root-user-check         skipped   passed
+access-control-security-context-privilege-escalation        skipped   passed
+access-control-service-type                                 skipped   passed
+access-control-ssh-daemons                                  skipped   passed
+access-control-sys-admin-capability-check                   skipped   passed
+access-control-sys-nice-realtime-capability                 skipped   failed
+observability-container-logging                             passed    skipped
+observability-crd-status                                    passed    skipped
+observability-pod-disruption-budget                         passed    skipped
+observability-termination-policy                            failed    skipped
+
+CONFIGURATIONS
+--------------
+
+CNF Cert Suite Configuration: Differences
+FIELD                        CLAIM 1                 CLAIM 2
+/debugDaemonSetNamespace     custom-debugpods-ns     cnf-suite
+
+CNF Cert Suite Configuration: Only in CLAIM 1
+<none>
+
+CNF Cert Suite Configuration: Only in CLAIM 2
+/targetNameSpaces/1=test-ns
+
+Cluster abnormal events count
+CLAIM 1     CLAIM 2
+1           2
+
+CLUSTER NODES DIFFERENCES
+-------------------------
+
+Nodes: Differences
+FIELD                                                             CLAIM 1                     CLAIM 2
+/clus0-0/metadata/annotations/k8s.ovn.org/node-primary-ifaddr     {"ipv4":"10.1.24.3/25"}     {"ipv4":"10.1.24.3/24"}
+
+Nodes: Only in CLAIM 1
+/clus0-1/metadata/labels/node-role.kubernetes.io/worker-cnf=
+
+Nodes: Only in CLAIM 2
+<none>
+
+CNIs: Differences
+FIELD                           CLAIM 1      CLAIM 2
+/clus0-0/0/cniVersion           1.0.0        1.0.1
+/clus0-1/0/plugins/0/ipMasq     true         false
+/clus0-1/1/plugins/0/type       loopback     loopbark
+
+CNIs: Only in CLAIM 1
+<none>
+
+CNIs: Only in CLAIM 2
+<none>
+
+CSIs: Differences
+FIELD                         CLAIM 1               CLAIM 2
+/apiVersion                   storage.k8s.io/v1     storage.k8s.io/v2
+/metadata/resourceVersion     18038123              18038390
+
+CSIs: Only in CLAIM 1
+<none>
+
+CSIs: Only in CLAIM 2
+<none>
+
+Hardware: Differences
+FIELD                      CLAIM 1      CLAIM 2
+/clus0-0/Lscpu/17/data     2800.003     2100.000
+/clus0-1/Lscpu/17/data     2999.940     2999.993
+
+Hardware: Only in CLAIM 1
+<none>
+
+Hardware: Only in CLAIM 2
+<none>
+

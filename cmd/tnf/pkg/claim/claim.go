@@ -18,11 +18,6 @@ const (
 	TestCaseResultFailed  = "failed"
 )
 
-type Cni struct {
-	Name    string        "json:\"name\""
-	Plugins []interface{} "json:\"plugins\""
-}
-
 type TestCaseRawResult struct {
 	Name   string `json:"-name"`
 	Status string `json:"-status"`
@@ -60,13 +55,23 @@ type TestCaseResult struct {
 // Maps a test suite name to a list of TestCaseResult
 type TestSuiteResults map[string][]TestCaseResult
 
+type Nodes struct {
+	NodesSummary interface{} `json:"nodeSummary"`
+	CniNetworks  interface{} `json:"cniPlugins"`
+	NodesHwInfo  interface{} `json:"nodesHwInfo"`
+	CsiDriver    interface{} `json:"csiDriver"`
+}
+
+type Configurations struct {
+	Config         interface{}   `json:"Config"`
+	AbnormalEvents []interface{} `json:"AbnormalEvents"`
+}
+
 type Schema struct {
 	Claim struct {
-		Nodes struct {
-			CniPlugins  map[string][]Cni       `json:"cniPlugins"`
-			NodesHwInfo map[string]interface{} `json:"nodesHwInfo"`
-			CsiDriver   interface{}            `json:"csiDriver"`
-		} `json:"nodes"`
+		Configurations `json:"configurations"`
+
+		Nodes Nodes `json:"nodes"`
 
 		RawResults struct {
 			Cnfcertificationtest struct {

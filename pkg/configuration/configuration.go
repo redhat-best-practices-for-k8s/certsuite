@@ -89,45 +89,14 @@ type ManagedDeploymentsStatefulsets struct {
 	Name string `yaml:"name" json:"name"`
 }
 
-// Tag and Digest should not be populated at the same time. Digest takes precedence if both are populated
-type ContainerImageIdentifier struct {
-	// Repository is the name of the image that you want to check if exists in the RedHat catalog
-	Repository string `yaml:"repository" json:"repository"`
-
-	// Registry is the name of the registry `docker.io` of the container
-	// This is valid for container only and required field
-	Registry string `yaml:"registry" json:"registry"`
-
-	// Tag is the optional image tag. "latest" is implied if not specified
-	Tag string `yaml:"tag" json:"tag"`
-
-	// Digest is the image digest following the "@" in a URL, e.g. image@sha256:45b23dee08af5e43a7fea6c4cf9c25ccf269ee113168c19722f87876677c5cb2
-	Digest string `yaml:"digest" json:"digest"`
-}
-
-type LabelObject struct {
-	LabelKey   string
-	LabelValue string
-}
-
 // TestConfiguration provides test related configuration
 type TestConfiguration struct {
 	// targetNameSpaces to be used in
 	TargetNameSpaces []Namespace `yaml:"targetNameSpaces" json:"targetNameSpaces"`
-	// DEPRECATED - Custom Pod labels for discovering containers/pods under test
-	TargetPodLabels []Label `yaml:"targetPodLabels,omitempty" json:"targetPodLabels,omitempty"`
 	// labels identifying pods under test
 	PodsUnderTestLabels []string `yaml:"podsUnderTestLabels,omitempty" json:"podsUnderTestLabels,omitempty"`
 	// labels identifying operators unde test
 	OperatorsUnderTestLabels []string `yaml:"operatorsUnderTestLabels,omitempty" json:"operatorsUnderTestLabels,omitempty"`
-	// Parsed labels identifying pods under test
-	PodsUnderTestLabelsObjects []LabelObject `yaml:"-" json:"-"`
-	// Parsed labels identifying operators under test
-	OperatorsUnderTestLabelsObjects []LabelObject `yaml:"-" json:"-"`
-	// CertifiedContainerInfo is the list of container images to be checked for certification status.
-	CertifiedContainerInfo []ContainerImageIdentifier `yaml:"certifiedcontainerinfo,omitempty" json:"certifiedcontainerinfo,omitempty"`
-	// CertifiedOperatorInfo is list of operator bundle names that are queried for certification status.
-	CertifiedOperatorInfo []CertifiedOperatorRequestInfo `yaml:"certifiedoperatorinfo,omitempty" json:"certifiedoperatorinfo,omitempty"`
 	// CRDs section.
 	CrdFilters          []CrdFilter                      `yaml:"targetCrdFilters" json:"targetCrdFilters"`
 	ManagedDeployments  []ManagedDeploymentsStatefulsets `yaml:"managedDeployments" json:"managedDeployments"`
@@ -140,11 +109,9 @@ type TestConfiguration struct {
 	SkipScalingTestDeployments []SkipScalingTestDeploymentsInfo `yaml:"skipScalingTestDeployments,omitempty" json:"skipScalingTestDeployments,omitempty"`
 	// SkipScalingTestStatefulSetNames
 	SkipScalingTestStatefulSets []SkipScalingTestStatefulSetsInfo `yaml:"skipScalingTestStatefulSets,omitempty" json:"skipScalingTestStatefulSets,omitempty"`
-	// CheckDiscoveredContainerCertificationStatus controls whether the container certification test will validate images used by autodiscovered containers, in addition to the configured image list
-	CheckDiscoveredContainerCertificationStatus bool     `yaml:"checkDiscoveredContainerCertificationStatus" json:"checkDiscoveredContainerCertificationStatus"`
-	ValidProtocolNames                          []string `yaml:"validProtocolNames" json:"validProtocolNames"`
-	ServicesIgnoreList                          []string `yaml:"servicesignorelist" json:"servicesignorelist"`
-	DebugDaemonSetNamespace                     string   `yaml:"debugDaemonSetNamespace" json:"debugDaemonSetNamespace"`
+	ValidProtocolNames          []string                          `yaml:"validProtocolNames" json:"validProtocolNames"`
+	ServicesIgnoreList          []string                          `yaml:"servicesignorelist" json:"servicesignorelist"`
+	DebugDaemonSetNamespace     string                            `yaml:"debugDaemonSetNamespace" json:"debugDaemonSetNamespace"`
 	// Collector's parameters
 	CollectorAppEndPoint string `yaml:"collectorAppEndPoint" json:"collectorAppEndPoint"`
 	ExecutedBy           string `yaml:"executedBy" json:"executedBy"`
