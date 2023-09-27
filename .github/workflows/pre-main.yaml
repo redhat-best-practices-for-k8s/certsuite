@@ -349,6 +349,18 @@ jobs:
         with:
           working_directory: cnf-certification-test-partner
 
+      # Deploy mysql for sending tests payloads to the collector
+      - name: Check out `Collector`
+        uses: actions/checkout@v3
+        with:
+          repository: shirmoran/collector
+          ref: CI-tests
+          path: collector
+
+      - name: Deploy mysql for sending tests payloads to the collector.
+        run: make deploy-mysql
+        with:
+          working_directory: collector
 
       # Perform smoke tests using a TNF container.
       - name: Check out code into the Go module directory
