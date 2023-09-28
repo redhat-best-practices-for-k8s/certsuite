@@ -324,42 +324,27 @@ func updateCrUnderTest(scaleCrUnderTest []autodiscover.ScaleObject) []ScaleObjec
 func getPodContainers(aPod *corev1.Pod, useIgnoreList bool) (containerList []*Container) {
 	for j := 0; j < len(aPod.Spec.Containers); j++ {
 		cut := &(aPod.Spec.Containers[j])
-		var status corev1.ContainerStatus
-		if len(aPod.Status.ContainerStatuses) > 0 {
-			status = aPod.Status.ContainerStatuses[j]
-		} else {
-			logrus.Errorf("%s is not ready, skipping status collection", aPod.String())
-		}
-		aRuntime, uid := GetRuntimeUID(&status)
+
 		var cutStatus corev1.ContainerStatus
-
-		// get Status for current container in any states available in order: running, then Terminated, then waiting
+		// get Status for current container
 		for index := range aPod.Status.ContainerStatuses {
-			if status.State.Running != nil {
-				cutStatus = aPod.Status.ContainerStatuses[index]
-				break
-			}
-			if status.State.Terminated != nil {
-				cutStatus = aPod.Status.ContainerStatuses[index]
-				break
-			}
-			if status.State.Waiting != nil {
+			if aPod.Status.ContainerStatuses[index].Name == cut.Name {
 				cutStatus = aPod.Status.ContainerStatuses[index]
 				break
 			}
 		}
-
+		aRuntime, uid := GetRuntimeUID(&cutStatus)
 		container := Container{Podname: aPod.Name, Namespace: aPod.Namespace,
-			NodeName: aPod.Spec.NodeName, Container: cut, Status: status, Runtime: aRuntime, UID: uid,
+			NodeName: aPod.Spec.NodeName, Container: cut, Status: cutStatus, Runtime: aRuntime, UID: uid,
 			ContainerImageIdentifier: buildContainerImageSource(aPod.Spec.Containers[j].Image, cutStatus.ImageID)}
 
 		// Warn if readiness probe did not succeeded yet.
-		if !status.Ready {
+		if !cutStatus.Ready {
 			logrus.Warnf("%s is not ready yet.", &container)
 		}
 
 		// Warn if container state is not running.
-		if state := &status.State; state.Running == nil {
+		if state := &cutStatus.State; state.Running == nil {
 			reason := ""
 			switch {
 			case state.Waiting != nil:
@@ -372,7 +357,7 @@ func getPodContainers(aPod *corev1.Pod, useIgnoreList bool) (containerList []*Co
 			}
 
 			logrus.Warnf("%s is not running (reason: %s, restarts %d): some test cases might fail.",
-				&container, reason, status.RestartCount)
+				&container, reason, cutStatus.RestartCount)
 		}
 
 		// Build slices of containers based on whether or not we are "ignoring" them or not.

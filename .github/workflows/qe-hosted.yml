@@ -33,11 +33,13 @@ jobs:
         uses: edcdavid/free-disk-space@main
         with:
           tool-cache: false
+          large-packages: true
           android: true
           dotnet: true
           haskell: true
           docker-images: true
           swap-storage: true
+        continue-on-error: true
 
       - name: Write temporary docker file
         run: |
