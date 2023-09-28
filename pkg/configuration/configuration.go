@@ -98,25 +98,25 @@ type TestConfiguration struct {
 	// labels identifying operators unde test
 	OperatorsUnderTestLabels []string `yaml:"operatorsUnderTestLabels,omitempty" json:"operatorsUnderTestLabels,omitempty"`
 	// CRDs section.
-	CrdFilters          []CrdFilter                      `yaml:"targetCrdFilters" json:"targetCrdFilters"`
-	ManagedDeployments  []ManagedDeploymentsStatefulsets `yaml:"managedDeployments" json:"managedDeployments"`
-	ManagedStatefulsets []ManagedDeploymentsStatefulsets `yaml:"managedStatefulsets" json:"managedStatefulsets"`
+	CrdFilters          []CrdFilter                      `yaml:"targetCrdFilters,omitempty" json:"targetCrdFilters,omitempty"`
+	ManagedDeployments  []ManagedDeploymentsStatefulsets `yaml:"managedDeployments,omitempty" json:"managedDeployments,omitempty"`
+	ManagedStatefulsets []ManagedDeploymentsStatefulsets `yaml:"managedStatefulsets,omitempty" json:"managedStatefulsets,omitempty"`
 
 	// AcceptedKernelTaints
 	AcceptedKernelTaints []AcceptedKernelTaintsInfo `yaml:"acceptedKernelTaints,omitempty" json:"acceptedKernelTaints,omitempty"`
-	SkipHelmChartList    []SkipHelmChartList        `yaml:"skipHelmChartList" json:"skipHelmChartList"`
+	SkipHelmChartList    []SkipHelmChartList        `yaml:"skipHelmChartList,omitempty" json:"skipHelmChartList,omitempty"`
 	// SkipScalingTestDeploymentNames
 	SkipScalingTestDeployments []SkipScalingTestDeploymentsInfo `yaml:"skipScalingTestDeployments,omitempty" json:"skipScalingTestDeployments,omitempty"`
 	// SkipScalingTestStatefulSetNames
 	SkipScalingTestStatefulSets []SkipScalingTestStatefulSetsInfo `yaml:"skipScalingTestStatefulSets,omitempty" json:"skipScalingTestStatefulSets,omitempty"`
-	ValidProtocolNames          []string                          `yaml:"validProtocolNames" json:"validProtocolNames"`
-	ServicesIgnoreList          []string                          `yaml:"servicesignorelist" json:"servicesignorelist"`
-	DebugDaemonSetNamespace     string                            `yaml:"debugDaemonSetNamespace" json:"debugDaemonSetNamespace"`
+	ValidProtocolNames          []string                          `yaml:"validProtocolNames,omitempty" json:"validProtocolNames,omitempty"`
+	ServicesIgnoreList          []string                          `yaml:"servicesignorelist,omitempty" json:"servicesignorelist,omitempty"`
+	DebugDaemonSetNamespace     string                            `yaml:"debugDaemonSetNamespace,omitempty" json:"debugDaemonSetNamespace,omitempty"`
 	// Collector's parameters
-	CollectorAppEndPoint string `yaml:"collectorAppEndPoint" json:"collectorAppEndPoint"`
-	ExecutedBy           string `yaml:"executedBy" json:"executedBy"`
-	PartnerName          string `yaml:"partnerName" json:"partnerName"`
-	CollectorAppPassword string `yaml:"collectorAppPassword" json:"collectorAppPassword"`
+	CollectorAppEndPoint string `yaml:"collectorAppEndPoint,omitempty" json:"collectorAppEndPoint,omitempty"`
+	ExecutedBy           string `yaml:"executedBy,omitempty" json:"executedBy,omitempty"`
+	PartnerName          string `yaml:"partnerName,omitempty" json:"partnerName,omitempty"`
+	CollectorAppPassword string `yaml:"collectorAppPassword,omitempty" json:"collectorAppPassword,omitempty"`
 }
 
 type TestParameters struct {
