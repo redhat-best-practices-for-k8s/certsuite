@@ -1,8 +1,8 @@
 name: QE Testing (Ubuntu-hosted)
 
 on:
-  # pull_request:
-  #   branches: [ main ]
+  pull_request:
+    branches: [ main ]
   workflow_dispatch:
   # Schedule a daily cron at midnight UTC
   schedule:
@@ -84,7 +84,7 @@ jobs:
         working-directory: cnf-certification-test-partner
 
       - name: Create `local-test-infra` OpenShift resources
-        run: make rebuild-cluster
+        run: make rebuild-cluster-single-worker
         working-directory: cnf-certification-test-partner
 
       - name: Install partner resources
@@ -103,6 +103,7 @@ jobs:
         with:
           repository: ${{ env.QE_REPO }}
           path: cnfcert-tests-verification
+          ref: masters_scheduable
 
       # Setup is complete.  Time to run the QE tests.
       - name: Run the tests
