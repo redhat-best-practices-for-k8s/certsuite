@@ -3,10 +3,19 @@ ENV TNF_DIR=/usr/tnf
 ENV \
 	TNF_SRC_DIR=${TNF_DIR}/tnf-src \
 	TNF_BIN_DIR=${TNF_DIR}/cnf-certification-test \
-	TEMP_DIR=/tmp
+	TEMP_DIR=/tmp \
+	GO_DL_URL=https://golang.org/dl \
+	GO_BIN_TAR=go1.21.1.linux-amd64.tar.gz \
+	GOPATH=/root/go \
+	OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.31.0 \
+	OSDK_BIN=/usr/local/osdk/bin
+ENV \
+	GO_BIN_URL_x86_64=${GO_DL_URL}/${GO_BIN_TAR} \
+	PATH=${PATH}:"/usr/local/go/bin":${GOPATH}/"bin"
+
 
 # Install dependencies
-# hadolint ignore=DL3041
+# hadolint ignore=DL3041,DL4001
 RUN \
 	mkdir ${TNF_DIR} \
 	&& dnf update --assumeyes --disableplugin=subscription-manager \
@@ -17,49 +26,31 @@ RUN \
 		cmake \
 		wget \
 	&& dnf clean all --assumeyes --disableplugin=subscription-manager \
-	&& rm -rf /var/cache/yum
-
-# Install Go binary and set the PATH
-ENV \
-	GO_DL_URL=https://golang.org/dl \
-	GO_BIN_TAR=go1.21.1.linux-amd64.tar.gz \
-	GOPATH=/root/go
-ENV GO_BIN_URL_x86_64=${GO_DL_URL}/${GO_BIN_TAR}
-RUN \
+	&& rm -rf /var/cache/yum; \
 	if [ "$(uname -m)" = x86_64 ]; then \
 		wget --directory-prefix=${TEMP_DIR} ${GO_BIN_URL_x86_64} --quiet \
 		&& rm -rf /usr/local/go \
 		&& tar -C /usr/local -xzf ${TEMP_DIR}/${GO_BIN_TAR}; \
 	else \
 		echo "CPU architecture is not supported." && exit 1; \
-	fi
-ENV PATH=${PATH}:"/usr/local/go/bin":${GOPATH}/"bin"
-
-# Download operator-sdk binary
-ENV \
-	OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.31.0 \
-	OSDK_BIN=/usr/local/osdk/bin
-
-# Either use Wget or Curl but not both.
-# hadolint ignore=DL4001
-RUN \
+	fi; \
 	mkdir -p ${OSDK_BIN} \
 	&& curl \
 		--location \
 		--remote-name \
 		${OPERATOR_SDK_DL_URL}/operator-sdk_linux_amd64 \
 	&& mv operator-sdk_linux_amd64 ${OSDK_BIN}/operator-sdk \
-	&& chmod +x ${OSDK_BIN}/operator-sdk
+	&& chmod +x ${OSDK_BIN}/operator-sdk;
 
 # Copy all of the files into the source directory and then switch contexts
 COPY . ${TNF_SRC_DIR}
 WORKDIR ${TNF_SRC_DIR}
-RUN make install-tools build-cnf-tests build-tnf-tool
 
 # Extract what's needed to run at a separate location
 # Quote this to prevent word splitting.
 # hadolint ignore=SC2046
 RUN \
+	make install-tools build-cnf-tests build-tnf-tool; \
 	mkdir ${TNF_BIN_DIR} \
 	&& cp run-cnf-suites.sh ${TNF_DIR} \
 	# copy all JSON files to allow tests to run
@@ -76,7 +67,7 @@ RUN \
 	&& mkdir -p ${TNF_DIR}/cnf-certification-test/platform/operatingsystem/files \
 	&& cp \
 		cnf-certification-test/platform/operatingsystem/files/rhcos_version_map \
-		${TNF_DIR}/cnf-certification-test/platform/operatingsystem/files/rhcos_version_map
+		${TNF_DIR}/cnf-certification-test/platform/operatingsystem/files/rhcos_version_map;
 
 # Switch contexts back to the root TNF directory
 WORKDIR ${TNF_DIR}
@@ -103,7 +94,14 @@ FROM registry.access.redhat.com/ubi8/ubi-minimal:8.8-1072
 
 ENV \
 	TNF_DIR=/usr/tnf \
-	OSDK_BIN=/usr/local/osdk/bin
+	OSDK_BIN=/usr/local/osdk/bin \
+	TNF_OFFLINE_DB=/usr/offline-db \
+	OCT_DB_PATH=/usr/oct/cmd/tnf/fetch \
+	TNF_CONFIGURATION_PATH=/usr/tnf/config/tnf_config.yml \
+	KUBECONFIG=/usr/tnf/kubeconfig/config \
+	PFLT_DOCKERCONFIG=/usr/tnf/dockercfg/config.json
+ENV PATH="${OSDK_BIN}:${PATH}"
+	
 
 # Copy all of the necessary files over from the TNF_DIR
 COPY --from=build ${TNF_DIR} ${TNF_DIR}
@@ -112,18 +110,8 @@ COPY --from=build ${TNF_DIR} ${TNF_DIR}
 COPY --from=build ${OSDK_BIN} ${OSDK_BIN}
 
 # Update the CNF containers, helm charts and operators DB
-ENV \
-	TNF_OFFLINE_DB=/usr/offline-db \
-	OCT_DB_PATH=/usr/oct/cmd/tnf/fetch
 COPY --from=db ${OCT_DB_PATH} ${TNF_OFFLINE_DB}
-
-ENV TNF_BIN_DIR=${TNF_DIR}/cnf-certification-test
-
-ENV \
-	TNF_CONFIGURATION_PATH=/usr/tnf/config/tnf_config.yml \
-	KUBECONFIG=/usr/tnf/kubeconfig/config \
-	PFLT_DOCKERCONFIG=/usr/tnf/dockercfg/config.json \
-	PATH="${OSDK_BIN}:${TNF_BIN_DIR}:${PATH}"
+	
 WORKDIR ${TNF_DIR}
 ENV SHELL=/bin/bash
 CMD ["./run-cnf-suites.sh", "-o", "claim", "-f", "diagnostic"]

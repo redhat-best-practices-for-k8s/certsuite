@@ -161,13 +161,13 @@ delete-db:
 	rm -rf ${REPO_DIR}/offline-db
 
 build-image-local:
-	docker build --pull --no-cache \
+	docker build --pull \
 		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
 		-f Dockerfile .
 
 build-image-tnf:
-	docker build --pull --no-cache \
+	docker build --pull \
 		-t ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${IMAGE_TAG} \
 		-t ${REGISTRY}/${TNF_IMAGE_NAME}:${TNF_VERSION} \
