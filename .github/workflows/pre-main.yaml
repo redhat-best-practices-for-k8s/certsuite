@@ -375,6 +375,9 @@ jobs:
           ref: CI-tests
           path: collector
 
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+
       - name: Deploy collector and mysql
         uses: ./collector/.github/actions/prepare-collector-for-use
         with:
@@ -422,7 +425,7 @@ jobs:
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }}
 
       - name: 'Test: Run Smoke Tests in a TNF container'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "${SMOKE_TESTS_GINKGO_LABELS_FILTER}"
+        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} TNF_ENABLE_DATA_COLLECTION=true ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "${SMOKE_TESTS_GINKGO_LABELS_FILTER}"
 
       # Perform tests on collector
       - name: Check out `Collector`
