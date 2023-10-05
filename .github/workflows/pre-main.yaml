@@ -463,7 +463,7 @@ jobs:
         env:
           COMMIT_SHA: ${{ github.sha }}
           JOB_RUN_ID: ${{ github.run_id }}
-          JOB_RUN_ATTEMPT:  ${{ github.run_attempt }}
+          JOB_RUN_ATTEMPT: ${{ github.run_attempt }}
         run: |
           curl -X POST --data "{
               \"text\": \"🚨⚠️  Failed to create \`unstable\` container image from commit \<https://github.com/greyerof/test_releases/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<https://github.com/greyerof/test_releases/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"
