@@ -458,6 +458,17 @@ jobs:
       - name: Remove tarball(s) to save disk space.
         run: rm -f ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
 
+      - name: (if on main and upstream) Send chat msg to dev team if failed to create container image.
+        if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
+        env:
+          COMMIT_SHA: ${{ github.sha }}
+          JOB_RUN_ID: ${{ github.run_id }}
+          JOB_RUN_ATTEMPT:  ${{ github.run_attempt }}
+        run: |
+          curl -X POST --data "{
+              \"text\": \"🚨⚠️  Failed to create \`unstable\` container image from commit \<https://github.com/greyerof/test_releases/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<https://github.com/greyerof/test_releases/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"
+          }" -H 'Content-type: application/json; charset=UTF-8' ${{ secrets.GCHAT_WEBHOOK_URL }}
+
       # Push the new unstable TNF image to Quay.io.
       - name: (if on main and upstream) Authenticate against Quay.io
         if: ${{ github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
