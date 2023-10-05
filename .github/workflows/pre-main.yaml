@@ -377,9 +377,6 @@ jobs:
 
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
-        with:
-          limit-access-to-actor: true
-          detached: true
 
       - name: Deploy collector and mysql
         uses: ./collector/.github/actions/prepare-collector-for-use
