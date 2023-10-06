@@ -29,6 +29,6 @@ for i in "${CHANNELS[@]}"; do
 	done
 done
 
-sort -o ./cnf-certification-test/platform/operatingsystem/files/rhcos_version_map ./cnf-certification-test/platform/operatingsystem/files/rhcos_version_map
+sort -u -o ./cnf-certification-test/platform/operatingsystem/files/rhcos_version_map ./cnf-certification-test/platform/operatingsystem/files/rhcos_version_map
 
 echo OpenShift to RHCOS version mapping is in rhcos_version_map
