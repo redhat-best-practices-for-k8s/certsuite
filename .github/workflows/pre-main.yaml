@@ -44,7 +44,7 @@ jobs:
       - name: Set up Go 1.21
         uses: actions/setup-go@v4
         with:
-          go-version: 1.21.1
+          go-version: 1.21.2
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -154,7 +154,7 @@ jobs:
       - name: Set up Go 1.21
         uses: actions/setup-go@v4
         with:
-          go-version: 1.21.1
+          go-version: 1.21.2
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -220,7 +220,7 @@ jobs:
       - name: Set up Go 1.21
         uses: actions/setup-go@v4
         with:
-          go-version: 1.21.1
+          go-version: 1.21.2
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
