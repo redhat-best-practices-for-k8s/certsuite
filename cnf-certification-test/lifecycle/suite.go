@@ -191,9 +191,10 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 		testPodTolerationBypass(&env)
 	})
 
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStorageRequiredPods)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStorageProvisioner)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testStorageRequiredPods(&env)
+		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Pods, "env.Pods"))
+		testStorageProvisioner(&env)
 	})
 })
 
@@ -699,12 +700,17 @@ func testPodTolerationBypass(env *provider.TestEnvironment) {
 
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
-func testStorageRequiredPods(env *provider.TestEnvironment) {
+
+//nolint:funlen
+func testStorageProvisioner(env *provider.TestEnvironment) {
 	const localStorageProvisioner = "kubernetes.io/no-provisioner"
+	const lvmProvisioner = "topolvm.io"
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
+
 	var StorageClasses = env.StorageClassList
 	var Pvc = env.PersistentVolumeClaims
+	snoSingleLocalStorageProvisionner := ""
 	for _, put := range env.Pods {
 		for pvIndex := range put.Spec.Volumes {
 			// Skip any nil persistentClaims.
@@ -717,28 +723,54 @@ func testStorageRequiredPods(env *provider.TestEnvironment) {
 			for i := range Pvc {
 				if Pvc[i].Name == put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName && Pvc[i].Namespace == put.Namespace {
 					for j := range StorageClasses {
-						if StorageClasses[j].Provisioner != localStorageProvisioner {
-							continue
-						}
-
 						if Pvc[i].Spec.StorageClassName != nil && StorageClasses[j].Name == *Pvc[i].Spec.StorageClassName {
-							tnf.ClaimFilePrintf("%s has been found to use a local storage enabled storageClass.\n Pvc_name: %s, Storageclass_name : %s, Provisioner_name: %s", put.String(), put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName,
+							tnf.ClaimFilePrintf("%s pvc_name: %s, storageclass_name : %s, provisioner_name: %s", put.String(), put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName,
 								StorageClasses[j].Name, StorageClasses[j].Provisioner)
-							nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has found to use a local storage enabled storageClass", false).
-								AddField(testhelper.StorageClassName, StorageClasses[j].Name).
-								AddField(testhelper.StorageClassProvisioner, StorageClasses[j].Provisioner).
-								AddField(testhelper.PersistentVolumeClaimName, put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName))
-							break
-						}
 
-						tnf.ClaimFilePrintf("%s has been not found to use a local storage enabled storageClass.\n Pvc_name: %s, Storageclass_name : %s, Provisioner_name: %s", put.String(), put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName,
-							StorageClasses[j].Name, StorageClasses[j].Provisioner)
-						compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod does not use a local storage enabled storageClass", true))
+							if env.IsSNO() {
+								// For SNO, only one local storage provisionner is allowed. The first local storage provisioner for this pod is assumed to be the only local storage provisioner allowed in the cluster.
+								if snoSingleLocalStorageProvisionner == "" &&
+									(StorageClasses[j].Provisioner == localStorageProvisioner ||
+										StorageClasses[j].Provisioner == lvmProvisioner) {
+									snoSingleLocalStorageProvisionner = StorageClasses[j].Provisioner
+								}
+								if StorageClasses[j].Provisioner == snoSingleLocalStorageProvisionner {
+									compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Local storage (no provisioner or lvms) is recommended for SNO clusters.", false).
+										AddField(testhelper.StorageClassName, StorageClasses[j].Name).
+										AddField(testhelper.StorageClassProvisioner, StorageClasses[j].Provisioner).
+										AddField(testhelper.PersistentVolumeClaimName, put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName))
+									continue
+								}
+								if StorageClasses[j].Provisioner == localStorageProvisioner || StorageClasses[j].Provisioner == lvmProvisioner {
+									nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name,
+										"A single type of local storage cluster is recommended for single node clusters. Use lvms or kubernetes noprovisioner, but not both.", false).
+										AddField(testhelper.StorageClassName, StorageClasses[j].Name).
+										AddField(testhelper.StorageClassProvisioner, StorageClasses[j].Provisioner).
+										AddField(testhelper.PersistentVolumeClaimName, put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName))
+									continue
+								}
+								nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Non local storage not recommended in single node clusters.", false).
+									AddField(testhelper.StorageClassName, StorageClasses[j].Name).
+									AddField(testhelper.StorageClassProvisioner, StorageClasses[j].Provisioner).
+									AddField(testhelper.PersistentVolumeClaimName, put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName))
+							} else {
+								if StorageClasses[j].Provisioner == localStorageProvisioner || StorageClasses[j].Provisioner == lvmProvisioner {
+									nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Local storage provisioner (no provisioner or lvms) not recommended in multinode clusters.", false).
+										AddField(testhelper.StorageClassName, StorageClasses[j].Name).
+										AddField(testhelper.StorageClassProvisioner, StorageClasses[j].Provisioner).
+										AddField(testhelper.PersistentVolumeClaimName, put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName))
+									continue
+								}
+								compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Non local storage provisioner recommended in multinode clusters.", false).
+									AddField(testhelper.StorageClassName, StorageClasses[j].Name).
+									AddField(testhelper.StorageClassProvisioner, StorageClasses[j].Provisioner).
+									AddField(testhelper.PersistentVolumeClaimName, put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName))
+							}
+						}
 					}
 				}
 			}
 		}
 	}
-
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }

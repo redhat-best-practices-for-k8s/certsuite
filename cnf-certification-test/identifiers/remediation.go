@@ -160,7 +160,7 @@ const (
 
 	DpdkCPUPinningExecProbeRemediation = "If the CNF is doing CPU pinning and running a DPDK process do not use exec probes (executing a command within the container) as it may pile up and block the node eventually."
 
-	StorageRequiredPods = "If pod is StatefulSet, make sure servicename is not local-storage (persistent volumes should not be on local storage)."
+	CheckStorageProvisionerRemediation = `Use a non-local storage (e.g. no kubernetes.io/no-provisioner and no  topolvm.io provisioners) in multinode clusters. Local storage are recommended for single node clusters only, but a single local provisioner should be installed.`
 
 	ExclusiveCPUPoolRemediation = `Ensure that if one container in a Pod selects an exclusive CPU pool the rest also select this type of CPU pool`
 

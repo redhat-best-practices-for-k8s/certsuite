@@ -90,7 +90,7 @@ var (
 	TestNetRawIdentifier                              claim.Identifier
 	TestIpcLockIdentifier                             claim.Identifier
 	TestBpfIdentifier                                 claim.Identifier
-	TestStorageRequiredPods                           claim.Identifier
+	TestStorageProvisioner                            claim.Identifier
 	TestExclusiveCPUPoolIdentifier                    claim.Identifier
 	TestSharedCPUPoolSchedulingPolicy                 claim.Identifier
 	TestExclusiveCPUPoolSchedulingPolicy              claim.Identifier
@@ -326,13 +326,13 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		},
 		TagTelco)
 
-	TestStorageRequiredPods = AddCatalogEntry(
-		"storage-required-pods",
+	TestStorageProvisioner = AddCatalogEntry(
+		"storage-provisioner",
 		common.LifecycleTestKey,
-		`Checks that pods do not place persistent volumes on local storage.`,
-		StorageRequiredPods,
+		`Checks that pods do not place persistent volumes on local storage in multinode clusters. Local storage is recommended for single node clusters, but only one type of local storage should be installed (lvms or noprovisioner).`,
+		CheckStorageProvisionerRemediation,
 		NoExceptions,
-		TestStorageRequiredPodsDocLink,
+		TestStorageProvisionerDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
