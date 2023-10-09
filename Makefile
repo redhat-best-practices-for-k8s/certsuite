@@ -64,7 +64,7 @@ build:
 		build-cnf-tests \
 		test
 
-build-tnf-tool: go.sum
+build-tnf-tool:
 	go build -o tnf -v cmd/tnf/main.go
 
 # Cleans up auto-generated and report files
@@ -76,14 +76,14 @@ clean:
 		release-tag.txt test-out.json tnf
 
 # Runs configured linters
-lint: go.sum
+lint:
 	checkmake Makefile
 	golangci-lint run --timeout 10m0s
 	hadolint Dockerfile
 	shfmt -d *.sh script
 
 # Builds and runs unit tests
-test: go.sum coverage-qe
+test: coverage-qe
 	./script/create-missing-test-files.sh
 	go build ${COMMON_GO_ARGS} ./...
 	UNIT_TEST=true go test -coverprofile=cover.out.tmp ./...
@@ -105,11 +105,11 @@ build-gradetool-policy:
 	./script/policy-builder-from-claim.sh
 
 # build the CNF test binary
-build-cnf-tests: go.sum results-html
+build-cnf-tests: results-html
 	PATH=${PATH}:${GOBIN} ginkgo build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" ./cnf-certification-test
 
 # build the CNF test binary for local development
-dev: go.sum
+dev:
 	PATH=${PATH}:${GOBIN} ginkgo build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" ./cnf-certification-test
 
 # Builds the CNF test binary with debug flags
@@ -117,11 +117,8 @@ build-cnf-tests-debug: results-html
 	PATH=${PATH}:${GOBIN} ginkgo build -gcflags "all=-N -l" -ldflags "${LINKER_TNF_RELEASE_FLAGS} -extldflags '-z relro -z now'" ./cnf-certification-test
 
 # Installs build tools and other required software.
-install-tools: go.sum
+install-tools:
 	go install "$$(awk '/ginkgo/ {printf "%s/ginkgo@%s", $$1, $$2}' go.mod)"
-
-go.sum: go.mod
-	go mod tidy
 
 install-mac-brew-tools:
 	brew install \
