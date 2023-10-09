@@ -51,7 +51,7 @@ func generateConfig() {
 		{Option: create, Help: createConfigHelp},
 		{Option: show, Help: showConfigHelp},
 		{Option: save, Help: saveConfigHelp},
-		{Option: close, Help: exitHelp},
+		{Option: quit, Help: exitHelp},
 	}
 
 	var exit bool
@@ -66,7 +66,7 @@ func generateConfig() {
 
 		opt, _, err := mainPrompt.Run()
 		if err != nil {
-			fmt.Printf("Prompt failed %v\n", err)
+			log.Printf("Prompt failed %v\n", err)
 			return
 		}
 		switch mainMenu[opt].Option {
@@ -76,7 +76,7 @@ func generateConfig() {
 			showConfiguration(&tnfConfig)
 		case save:
 			saveConfiguration(&tnfConfig)
-		case close:
+		case quit:
 			exit = true
 		}
 	}
@@ -103,7 +103,7 @@ func createConfiguration() {
 	for !exit {
 		i, _, err := createPrompt.Run()
 		if err != nil {
-			fmt.Printf("Prompt failed %v\n", err)
+			log.Printf("Prompt failed %v\n", err)
 			return
 		}
 		switch createMenu[i].Option {
@@ -139,8 +139,18 @@ func saveConfiguration(config *configuration.TestConfiguration) {
 		return
 	}
 
-	const filePermissions = 0644
-	err = os.WriteFile("tnf_config.yml", configYaml, filePermissions) // TODO: make the file configurable
+	saveConfigPrompt := promptui.Prompt{
+		Label:   "CNF config file",
+		Default: defaultConfigFileName,
+	}
+
+	configFileName, err := saveConfigPrompt.Run()
+	if err != nil {
+		log.Printf("could not read config file name, err: %v\n", err)
+		return
+	}
+
+	err = os.WriteFile(configFileName, configYaml, defaultConfigFilePermissions)
 	if err != nil {
 		log.Printf("could not write file, err: %v", err)
 		return
@@ -161,8 +171,8 @@ func createCnfResourcesConfiguration() {
 	}
 	cnfResourcesSearcher := func(input string, index int) bool {
 		basicOption := cnfResourcesOptions[index]
-		name := strings.Replace(strings.ToLower(basicOption.Option), " ", "", -1)
-		input = strings.Replace(strings.ToLower(input), " ", "", -1)
+		name := strings.ReplaceAll(strings.ToLower(basicOption.Option), " ", "")
+		input = strings.ReplaceAll(strings.ToLower(input), " ", "")
 
 		return strings.Contains(name, input)
 	}
@@ -178,7 +188,7 @@ func createCnfResourcesConfiguration() {
 	for !exit {
 		i, _, err := cnfResourcesPrompt.Run()
 		if err != nil {
-			fmt.Printf("Prompt failed %v\n", err)
+			log.Printf("Prompt failed %v\n", err)
 			return
 		}
 		switch cnfResourcesOptions[i].Option {
@@ -191,9 +201,9 @@ func createCnfResourcesConfiguration() {
 		case crdFilters:
 			loadCRDfilters(getAnswer(crdFiltersPrompt, crdFiltersSyntax, crdFiltersExample))
 		case managedDeployments:
-			// TODO
+			// TODO: to be implemented
 		case managedStatefulSets:
-			// TODO
+			// TODO: to be implemented
 		case previousMenu:
 			exit = true
 		}
@@ -205,15 +215,15 @@ func createExceptionsConfiguration() {
 		{Option: kernelTaints, Help: kernelTaintsHelp},
 		{Option: helmCharts, Help: helmChartsHelp},
 		{Option: protocolNames, Help: protocolNamesHelp},
-		{Option: services, Help: ""},
-		{Option: nonScalableDeployments, Help: ""},
-		{Option: nonScalableStatefulSets, Help: ""},
+		{Option: services, Help: servicesHelp},
+		{Option: nonScalableDeployments, Help: nonScalableDeploymentsHelp},
+		{Option: nonScalableStatefulSets, Help: nonScalableStatefulSetsHelp},
 		{Option: previousMenu, Help: backHelp},
 	}
 	exceptionsSearcher := func(input string, index int) bool {
 		exceptionOption := exceptionsOptions[index]
-		name := strings.Replace(strings.ToLower(exceptionOption.Option), " ", "", -1)
-		input = strings.Replace(strings.ToLower(input), " ", "", -1)
+		name := strings.ReplaceAll(strings.ToLower(exceptionOption.Option), " ", "")
+		input = strings.ReplaceAll(strings.ToLower(input), " ", "")
 
 		return strings.Contains(name, input)
 	}
@@ -229,7 +239,7 @@ func createExceptionsConfiguration() {
 	for !exit {
 		i, _, err := exceptionsPrompt.Run()
 		if err != nil {
-			fmt.Printf("Prompt failed %v\n", err)
+			log.Printf("Prompt failed %v\n", err)
 			return
 		}
 		switch exceptionsOptions[i].Option {
@@ -240,11 +250,11 @@ func createExceptionsConfiguration() {
 		case protocolNames:
 			loadProtocolNames(getAnswer(protocolNamesPrompt, protocolNamesSyntax, protocolNamesExample))
 		case services:
-			// TODO
+			loadServices(getAnswer(servicesPrompt, servicesSyntax, servicesExample))
 		case nonScalableDeployments:
-			// TODO
+			loadNonScalableDeployments(getAnswer(nonScalableDeploymentsPrompt, nonScalableDeploymentsSyntax, nonScalableDeploymentsExample))
 		case nonScalableStatefulSets:
-			// TODO
+			loadNonScalableStatefulSets(getAnswer(nonScalableStatefulSetsPrompt, nonScalableStatefulSetsSyxtax, nonScalableStatefulSetsExample))
 		case previousMenu:
 			exit = true
 		}
@@ -261,8 +271,8 @@ func createCollectorConfiguration() {
 	}
 	collectorSearcher := func(input string, index int) bool {
 		collectorOption := collectorOptions[index]
-		name := strings.Replace(strings.ToLower(collectorOption.Option), " ", "", -1)
-		input = strings.Replace(strings.ToLower(input), " ", "", -1)
+		name := strings.ReplaceAll(strings.ToLower(collectorOption.Option), " ", "")
+		input = strings.ReplaceAll(strings.ToLower(input), " ", "")
 
 		return strings.Contains(name, input)
 	}
@@ -278,20 +288,19 @@ func createCollectorConfiguration() {
 	for !exit {
 		i, _, err := collectorPrompt.Run()
 		if err != nil {
-			fmt.Printf("Prompt failed %v\n", err)
+			log.Printf("Prompt failed %v\n", err)
 			return
 		}
 		switch collectorOptions[i].Option {
 		case appEndPoint:
-			// TODO
+			// TODO: to be implemented
 		case executedBy:
-			// TODO
+			// TODO: to be implemented
 		case partnerName:
-			// TODO
+			// TODO: to be implemented
 		case appPassword:
-			// TODO
+			// TODO: to be implemented
 		case previousMenu:
-			// TODO
 			exit = true
 		}
 	}
@@ -313,7 +322,7 @@ func createSettingsConfiguration() {
 	for !exit {
 		i, _, err := settingsPrompt.Run()
 		if err != nil {
-			fmt.Printf("Prompt failed %v\n", err)
+			log.Printf("Prompt failed %v\n", err)
 			return
 		}
 		switch settingsOptions[i].Option {
@@ -400,6 +409,45 @@ func loadHelmCharts(helmCharts []string) {
 func loadProtocolNames(protocolNames []string) {
 	tnfConfig.ValidProtocolNames = nil
 	tnfConfig.ValidProtocolNames = protocolNames
+}
+
+func loadServices(services []string) {
+	tnfConfig.ServicesIgnoreList = nil
+	tnfConfig.ServicesIgnoreList = services
+}
+
+func loadNonScalableDeployments(nonScalableDeployments []string) {
+	tnfConfig.SkipScalingTestDeployments = nil
+	for _, nonScalableDeploymentStr := range nonScalableDeployments {
+		nonScalableDeployment := strings.Split(nonScalableDeploymentStr, "/")
+		const nonScalableDeploymentsFields = 2
+		if len(nonScalableDeployment) != nonScalableDeploymentsFields {
+			log.Println("could not parse Non-scalable Deployment")
+			return
+		}
+		nonScalableDeploymentName := nonScalableDeployment[0]
+		nonScalableDeploymentNamesapce := nonScalableDeployment[1]
+		tnfNonScalableDeployment := configuration.SkipScalingTestDeploymentsInfo{Name: nonScalableDeploymentName,
+			Namespace: nonScalableDeploymentNamesapce}
+		tnfConfig.SkipScalingTestDeployments = append(tnfConfig.SkipScalingTestDeployments, tnfNonScalableDeployment)
+	}
+}
+
+func loadNonScalableStatefulSets(nonScalableStatefulSets []string) {
+	tnfConfig.SkipScalingTestStatefulSets = nil
+	for _, nonScalableStatefulSetStr := range nonScalableStatefulSets {
+		nonScalableStatefulSet := strings.Split(nonScalableStatefulSetStr, "/")
+		const nonScalableStatefulSetFields = 2
+		if len(nonScalableStatefulSet) != nonScalableStatefulSetFields {
+			log.Println("could not parse Non-scalable StatefulSet")
+			return
+		}
+		nonScalableStatefulSetName := nonScalableStatefulSet[0]
+		nonScalableStatefulSetNamesapce := nonScalableStatefulSet[1]
+		tnfNonScalableStatefulSet := configuration.SkipScalingTestStatefulSetsInfo{Name: nonScalableStatefulSetName,
+			Namespace: nonScalableStatefulSetNamesapce}
+		tnfConfig.SkipScalingTestStatefulSets = append(tnfConfig.SkipScalingTestStatefulSets, tnfNonScalableStatefulSet)
+	}
 }
 
 func loadDebugDaemonSetNamespace(namespace []string) {

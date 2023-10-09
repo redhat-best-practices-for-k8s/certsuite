@@ -6,7 +6,7 @@ const (
 	create = "Create"
 	show   = "Show"
 	save   = "Save"
-	close  = "Exit"
+	quit   = "Exit"
 	// Create
 	cnfResources = "CNF resources"
 	exceptions   = "Exceptions"
@@ -85,6 +85,16 @@ The name field of a container port must be of the form <protocol>[-<suffix>] whe
 be allowed by default or added to this list. The optional <suffix> can be chosen by the application.
 Protocol names allowed by default: "grpc", "grpc-web", "http", "http2", "tcp", "udp".
 Test cases affected: manageability-container-port-name-format.`
+	servicesHelp = `The list of Services that will skip verification. 
+Services included in this list will be filtered out at the autodiscovery stage
+and will not be subject to checks in any test case.
+Tests cases affected: networking-dual-stack-service, access-control-service-type`
+	nonScalableDeploymentsHelp = `The list of Deployments that do not support scale in/out operations.
+Deployments included in this list will skip any scaling operation check.
+Test cases affected: lifecycle-deployment-scaling`
+	nonScalableStatefulSetsHelp = `The list of StatefulSets that do not support scale in/out operations.
+StatefulSets included in this list will skip any scaling operation check.
+Test cases affected: lifecycle-statefulset-scaling`
 	// Collector (TODO)
 	// Settings
 	debugDaemonSetHelp = `Set the namespace where the debug DaemonSet will be deployed.
@@ -98,32 +108,47 @@ fail or be skipped in case it is not deployed correctly.`
 // Prompts, syxtax, examples
 const (
 	// CNF resources
-	namespacePrompt  = "Write a comma-separated list of the namespaces in which the CNF is deploying its workload."
+	namespacePrompt  = "Enter a comma-separated list of the namespaces in which the CNF is deploying its workload."
 	namespaceSyntax  = "ns1[, <ns2>]..."
 	namespaceExample = "cnf, cnf-workload"
-	podsPrompt       = "Write a comma-separated list of labels to identify the CNF's Pods under test."
+	podsPrompt       = "Enter a comma-separated list of labels to identify the CNF's Pods under test."
 	podsSyntax       = "pod-label-1[, pod-label-2]..."
 	podsExample      = "test-network-function.com/generic: target"
-	operatorsPrompt  = "Write a comma-separated list of labels to identify the CNF's operators under test."
+	operatorsPrompt  = "Enter a comma-separated list of labels to identify the CNF's operators under test."
 	operatorsSyntax  = "operator-label-1[, operator-label-2]..."
 	operatorsExample = "test-network-function.com/operator1: target"
-	crdFiltersPrompt = "Write a comma-separated list of the CRD's name suffixes that the CNF contains. Also, specify if the\n" +
+	crdFiltersPrompt = "Enter a comma-separated list of the CRD's name suffixes that the CNF contains. Also, specify if the\n" +
 		"resources managed by those CRDs are scalable."
 	crdFiltersSyntax  = "crd-name-suffix/{true|false}[,crd-name-suffix/{true|false}]..."
 	crdFiltersExample = "group1.test.com/false"
 	// Exceptions
-	kernelTaintsPrompt   = "Write a comma-separated list of kernel taints (modules)"
-	kernelTaintsSyntax   = "mod1[,mod2]..."
-	kernelTaintsExample  = "vboxsf, vboxguest"
-	helmChartsPrompt     = "Enter a comma-separated list of Helm charts that will skip verification."
-	helmChartsSyntax     = "chart1[,chart2]..."
-	helmChartsExample    = "coredns"
-	protocolNamesPrompt  = "Enter a comma-separated list of protocol names"
-	protocolNamesSyntax  = "proto1[,proto2]..."
-	protocolNamesExample = "http3, sctp"
+	kernelTaintsPrompt             = "Enter a comma-separated list of kernel taints (modules)"
+	kernelTaintsSyntax             = "mod1[,mod2]..."
+	kernelTaintsExample            = "vboxsf, vboxguest"
+	helmChartsPrompt               = "Enter a comma-separated list of Helm charts that will skip verification."
+	helmChartsSyntax               = "chart1[,chart2]..."
+	helmChartsExample              = "coredns"
+	protocolNamesPrompt            = "Enter a comma-separated list of protocol names"
+	protocolNamesSyntax            = "proto1[,proto2]..."
+	protocolNamesExample           = "http3, sctp"
+	servicesPrompt                 = "Enter a comma-separated list of Service names"
+	servicesSyntax                 = "svc1[,svc2]..."
+	servicesExample                = "hazelcast-platform-controller-manager-service, hazelcast-platform-webhook-service"
+	nonScalableDeploymentsPrompt   = "Enter a comma-separated list of Deployments that do not support scaling operations."
+	nonScalableDeploymentsSyntax   = "deployment1-name/deployment1-namespace[,deployment2-name/deployment2-namespace]..."
+	nonScalableDeploymentsExample  = "deployment-test/cnf-test"
+	nonScalableStatefulSetsPrompt  = "Enter a comma-separated list of StatefulSets that do not support scaling operations."
+	nonScalableStatefulSetsSyxtax  = "statefulset1-name/statefulset1-namespace[,statefulset2-name/statefulset2-namespace]..."
+	nonScalableStatefulSetsExample = "statefulset-test-test/cnf-test"
 	// Collector (TODO)
 	// Settings
 	debugDaemonSetPrompt  = "Enter the namespace in which de debug DaemonSet will be deployed."
 	debugDaemonSetSyntax  = "ds-namespace"
 	debugDaemonSetExample = "cnf-cert"
+)
+
+// Internal constants
+const (
+	defaultConfigFileName        = "tnf_config.yml"
+	defaultConfigFilePermissions = 0o644
 )
