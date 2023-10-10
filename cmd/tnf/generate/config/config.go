@@ -426,9 +426,9 @@ func loadNonScalableDeployments(nonScalableDeployments []string) {
 			return
 		}
 		nonScalableDeploymentName := nonScalableDeployment[0]
-		nonScalableDeploymentNamesapce := nonScalableDeployment[1]
+		nonScalableDeploymentNamespace := nonScalableDeployment[1]
 		tnfNonScalableDeployment := configuration.SkipScalingTestDeploymentsInfo{Name: nonScalableDeploymentName,
-			Namespace: nonScalableDeploymentNamesapce}
+			Namespace: nonScalableDeploymentNamespace}
 		tnfConfig.SkipScalingTestDeployments = append(tnfConfig.SkipScalingTestDeployments, tnfNonScalableDeployment)
 	}
 }
@@ -443,9 +443,9 @@ func loadNonScalableStatefulSets(nonScalableStatefulSets []string) {
 			return
 		}
 		nonScalableStatefulSetName := nonScalableStatefulSet[0]
-		nonScalableStatefulSetNamesapce := nonScalableStatefulSet[1]
+		nonScalableStatefulSetNamespace := nonScalableStatefulSet[1]
 		tnfNonScalableStatefulSet := configuration.SkipScalingTestStatefulSetsInfo{Name: nonScalableStatefulSetName,
-			Namespace: nonScalableStatefulSetNamesapce}
+			Namespace: nonScalableStatefulSetNamespace}
 		tnfConfig.SkipScalingTestStatefulSets = append(tnfConfig.SkipScalingTestStatefulSets, tnfNonScalableStatefulSet)
 	}
 }
