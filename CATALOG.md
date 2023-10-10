@@ -825,13 +825,13 @@ Tags|common,lifecycle
 |Non-Telco|Mandatory|
 |Telco|Mandatory|
 
-#### lifecycle-storage-required-pods
+#### lifecycle-storage-provisioner
 
 Property|Description
 ---|---
-Unique ID|lifecycle-storage-required-pods
-Description|Checks that pods do not place persistent volumes on local storage.
-Suggested Remediation|If pod is StatefulSet, make sure servicename is not local-storage (persistent volumes should not be on local storage).
+Unique ID|lifecycle-storage-provisioner
+Description|Checks that pods do not place persistent volumes on local storage in multinode clusters. Local storage is recommended for single node clusters, but only one type of local storage should be installed (lvms or noprovisioner).
+Suggested Remediation|Use a non-local storage (e.g. no kubernetes.io/no-provisioner and no  topolvm.io provisioners) in multinode clusters. Local storage are recommended for single node clusters only, but a single local provisioner should be installed.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-local-storage
 Exception Process|No exceptions
 Tags|common,lifecycle

@@ -39,6 +39,7 @@ const filterCertifiedOperatorsOrg = "organization==certified-operators"
 const certifiedOperatorsCatalogURL = "https://catalog.redhat.com/api/containers/v1/operators/bundles?page_size=100&page=0&filter=csv_name==%s;%s"
 const certifiedContainerCatalogURL = "https://catalog.redhat.com/api/containers/v1/repositories/registry/%s/repository/%s/images?"
 const certifiedContainerCatalogDigestURL = "https://catalog.redhat.com/api/containers/v1/images?filter=image_id==%s"
+const certifiedContainerCatalogListDigestURL = "https://catalog.redhat.com/api/containers/v1/images?filter=repositories.manifest_list_digest==%s"
 const certifiedContainerCatalogTagURL = "https://catalog.redhat.com/api/containers/v1/repositories/registry/%s/repository/%s/tag/%s"
 const redhatCatalogPingURL = "https://catalog.redhat.com/api/containers/v1/ping"
 const redhatCatalogPingMongoDBURL = "https://catalog.redhat.com/api/containers/v1/status/mongo"
@@ -83,9 +84,9 @@ func (validator OnlineValidator) IsServiceReachable() bool {
 // GetImageByID get container image Id using the digest.
 // return imageID if entry exists,
 // return empty string if entry does not exist
-func (validator OnlineValidator) getImageByDigest(digest string) (imageID string, err error) {
+func (validator OnlineValidator) getImageByDigest(digest, catalogURL string) (imageID string, err error) {
 	var responseData []byte
-	url := fmt.Sprintf(certifiedContainerCatalogDigestURL, digest)
+	url := fmt.Sprintf(catalogURL, digest)
 	log.Trace(url)
 	if responseData, err = validator.GetRequest(url); err != nil || len(responseData) == 0 {
 		return imageID, nil
@@ -188,7 +189,12 @@ func (validator OnlineValidator) IsContainerCertified(registry, repository, tag,
 		registry = value
 	}
 	if digest != "" {
-		if imageID, err := validator.getImageByDigest(digest); err != nil || imageID == "" {
+		// check image_id digest fist, this is to support images that do not support multiple architectures
+		if imageID, err := validator.getImageByDigest(digest, certifiedContainerCatalogDigestURL); err == nil && imageID != "" {
+			return true
+		}
+		// if image_id digest not found, check the manifest_list_digest, this is to support images that support multiple architectures
+		if imageID, err := validator.getImageByDigest(digest, certifiedContainerCatalogListDigestURL); err != nil || imageID == "" {
 			return false
 		}
 		return true

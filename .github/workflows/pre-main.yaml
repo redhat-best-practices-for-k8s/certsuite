@@ -44,7 +44,7 @@ jobs:
       - name: Set up Go 1.21
         uses: actions/setup-go@v4
         with:
-          go-version: 1.21.1
+          go-version: 1.21.2
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -107,10 +107,6 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@main
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
       - run: |
           curl --location --output $CM_BIN --silent $CM_URL_LINUX
           chmod +x $CM_BIN
@@ -154,7 +150,7 @@ jobs:
       - name: Set up Go 1.21
         uses: actions/setup-go@v4
         with:
-          go-version: 1.21.1
+          go-version: 1.21.2
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -200,7 +196,7 @@ jobs:
 
     steps:
       - name: Free Disk Space (Ubuntu)
-        uses: edcdavid/free-disk-space@main
+        uses: jlumbroso/free-disk-space@main
         with:
           tool-cache: false
           large-packages: true
@@ -220,7 +216,7 @@ jobs:
       - name: Set up Go 1.21
         uses: actions/setup-go@v4
         with:
-          go-version: 1.21.1
+          go-version: 1.21.2
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -337,7 +333,7 @@ jobs:
 
     steps:
       - name: Free Disk Space (Ubuntu)
-        uses: edcdavid/free-disk-space@main
+        uses: jlumbroso/free-disk-space@main
         with:
           tool-cache: false
           large-packages: true
@@ -371,6 +367,11 @@ jobs:
         with:
           working_directory: cnf-certification-test-partner
 
+      # needed by depends-on-action
+      - name: Set up Go 1.21
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.21.2
 
       # Perform smoke tests using a TNF container.
       - name: Check out code into the Go module directory
@@ -457,6 +458,18 @@ jobs:
 
       - name: Remove tarball(s) to save disk space.
         run: rm -f ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
+
+      - name: (if on main and upstream) Send chat msg to dev team if failed to create container image.
+        if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
+        env:
+          COMMIT_SHA: ${{ github.sha }}
+          JOB_RUN_ID: ${{ github.run_id }}
+          JOB_RUN_ATTEMPT: ${{ github.run_attempt }}
+          GITHUB_REPO: https://github.com/test-network-function/cnf-certification-test
+        run: |
+          curl -X POST --data "{
+              \"text\": \"🚨⚠️  Failed to create \`unstable\` container image from commit \<$GITHUB_REPO/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<$GITHUB_REPO/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"
+          }" -H 'Content-type: application/json; charset=UTF-8' ${{ secrets.GCHAT_WEBHOOK_URL }}
 
       # Push the new unstable TNF image to Quay.io.
       - name: (if on main and upstream) Authenticate against Quay.io

@@ -60,7 +60,7 @@ const (
 	cscosName                        = "CentOS Stream CoreOS"
 	rhelName                         = "Red Hat Enterprise Linux"
 	tnfPartnerRepoDef                = "quay.io/testnetworkfunction"
-	supportImageDef                  = "debug-partner:4.4.0"
+	supportImageDef                  = "debug-partner:4.5.0"
 )
 
 // Node's roles labels. Node is role R if it has **any** of the labels of each list.
@@ -515,6 +515,10 @@ func (env *TestEnvironment) GetMasterCount() int {
 		}
 	}
 	return masterCount
+}
+
+func (env *TestEnvironment) IsSNO() bool {
+	return len(env.Nodes) == 1
 }
 
 func getMachineConfig(mcName string, machineConfigs map[string]MachineConfig) (MachineConfig, error) {
