@@ -22,52 +22,121 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	pdbv1 "github.com/test-network-function/cnf-certification-test/cnf-certification-test/observability/pdb"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
+
+	// "github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	corev1 "k8s.io/api/core/v1"
 )
 
-// All actual test code belongs below here.  Utilities belong above.
-var _ = ginkgo.Describe(common.ObservabilityTestKey, func() {
-	logrus.Debugf("Entering %s suite", common.ObservabilityTestKey)
-	var env provider.TestEnvironment
-	ginkgo.BeforeEach(func() {
+var (
+	env provider.TestEnvironment
+
+	beforeAll = func([]*checksdb.Check) error {
+		logrus.Infof("OBSERVABILITY GROUP BEFORE-ALL")
+		return nil
+	}
+
+	afterAllFn = func(checks []*checksdb.Check) error {
+		logrus.Infof("OBSERVABILITY GROUP AFTER-ALL")
+		return nil // errors.New("crappy afterAll func!")
+	}
+
+	beforeEachFn = func(check *checksdb.Check) error {
+		logrus.Infof("Getting test environment for check %s", check.ID)
 		env = provider.GetTestEnvironment()
-	})
-	ginkgo.ReportAfterEach(results.RecordResult)
+		// panic("beforeEach panickism")
+		return nil
+	}
+
+	afterEachFn = func(check *checksdb.Check) error {
+		logrus.Infof("Fake afterEachFn for check %s", check.ID)
+		return nil
+	}
+
+	skipIfNoContainersFn = func() (bool, string) {
+		if len(env.Containers) == 0 {
+			logrus.Warnf("No containers to check...")
+			return true, "There are no containers to check. Please check under test labels."
+		}
+
+		return false, ""
+	}
+
+	skipIfNoCrdsFn = func() (bool, string) {
+		if len(env.Crds) == 0 {
+			logrus.Warn("No CRDs to check.")
+			return true, "There are no CRDs to check."
+		}
+
+		return false, ""
+	}
+
+	skipIfNoDeploymentsNorStatefulSets = func() (bool, string) {
+		if len(env.Deployments) == 0 && len(env.StatefulSets) == 0 {
+			logrus.Warn("No deployments nor statefulsets to check.")
+			return true, "There are no deployments nor statefulsets to check."
+		}
+		return false, ""
+	}
+)
+
+func init() {
+	logrus.Debugf("Entering %s suite", common.ObservabilityTestKey)
+
+	checksGroup := checksdb.NewChecksGroup(common.ObservabilityTestKey).
+		WithBeforeAllFn(beforeAll).
+		WithAfterAllFn(afterAllFn).
+		WithBeforeEachFn(beforeEachFn).
+		WithAfterEachFn(afterEachFn)
 
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestLoggingIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
-		testContainersLogging(&env)
-	})
+	check := checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(skipIfNoContainersFn).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testContainersLogging(c, &env)
+			return nil
+		})
+
+	checksGroup.Add(check)
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCrdsStatusSubresourceIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Crds, "env.Crds"))
-		testCrds(&env)
-	})
+	check = checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(skipIfNoCrdsFn).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testCrds(c, &env)
+			return nil
+		})
+
+	checksGroup.Add(check)
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestTerminationMessagePolicyIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
-		testTerminationMessagePolicy(&env)
-	})
+	check = checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(skipIfNoContainersFn).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testTerminationMessagePolicy(c, &env)
+			return nil
+		})
+
+	checksGroup.Add(check)
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodDisruptionBudgetIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(env.Deployments, "env.Deployments"), testhelper.NewSkipObject(env.StatefulSets, "env.StatefulSets"))
-		testPodDisruptionBudgets(&env)
-	})
-})
+	check = checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(skipIfNoDeploymentsNorStatefulSets).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testPodDisruptionBudgets(c, &env)
+			return nil
+		})
+
+	checksGroup.Add(check)
+}
 
 // containerHasLoggingOutput helper function to get the last line of logging output from
 // a container. Returns true in case some output was found, false otherwise.
@@ -97,23 +166,23 @@ func containerHasLoggingOutput(cut *provider.Container) (bool, error) {
 	return buf.String() != "", nil
 }
 
-func testContainersLogging(env *provider.TestEnvironment) {
+func testContainersLogging(check *checksdb.Check, env *provider.TestEnvironment) {
 	// Iterate through all the CUTs to get their log output. The TC checks that at least
 	// one log line is found.
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
-		ginkgo.By(fmt.Sprintf("Checking %s has some logging output", cut))
+		logrus.Info(fmt.Sprintf("Checking %s has some logging output", cut))
 		hasLoggingOutput, err := containerHasLoggingOutput(cut)
 		if err != nil {
-			tnf.ClaimFilePrintf("Failed to get %s log output: %s", cut, err)
+			tnf.Logf(logrus.ErrorLevel, "Failed to get %s log output: %s", cut, err)
 			nonCompliantObjects = append(nonCompliantObjects,
 				testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Could not get log output", false))
 			continue
 		}
 
 		if !hasLoggingOutput {
-			tnf.ClaimFilePrintf("%s does not have any line of log to stderr/stdout", cut)
+			tnf.Logf(logrus.ErrorLevel, "%s does not have any line of log to stderr/stdout", cut)
 			nonCompliantObjects = append(nonCompliantObjects,
 				testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "No log line to stderr/stdout found", false))
 		} else {
@@ -122,19 +191,20 @@ func testContainersLogging(env *provider.TestEnvironment) {
 		}
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 // testCrds testing if crds have a status sub resource set
-func testCrds(env *provider.TestEnvironment) {
+func testCrds(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, crd := range env.Crds {
-		ginkgo.By("Testing CRD " + crd.Name)
-
+		logrus.Info("Testing CRD " + crd.Name)
+		// v := []string{}
+		// fmt.Printf("%s", v[1])
 		for _, ver := range crd.Spec.Versions {
 			if _, ok := ver.Schema.OpenAPIV3Schema.Properties["status"]; !ok {
-				tnf.ClaimFilePrintf("FAILURE: CRD %s, version: %s does not have a status subresource.", crd.Name, ver.Name)
+				tnf.Logf(logrus.ErrorLevel, "FAILURE: CRD %s, version: %s does not have a status subresource.", crd.Name, ver.Name)
 				nonCompliantObjects = append(nonCompliantObjects,
 					testhelper.NewReportObject("Crd does not have a status sub resource set", testhelper.CustomResourceDefinitionType, false).
 						AddField(testhelper.CustomResourceDefinitionName, crd.Name).
@@ -148,15 +218,16 @@ func testCrds(env *provider.TestEnvironment) {
 		}
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 // testTerminationMessagePolicy tests to make sure that pods
-func testTerminationMessagePolicy(env *provider.TestEnvironment) {
+func testTerminationMessagePolicy(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
+
 	for _, cut := range env.Containers {
-		ginkgo.By("Testing for terminationMessagePolicy: " + cut.String())
+		logrus.Info("Testing for terminationMessagePolicy: " + cut.String())
 		if cut.TerminationMessagePolicy != corev1.TerminationMessageFallbackToLogsOnError {
 			tnf.ClaimFilePrintf("FAILURE: %s does not have a TerminationMessagePolicy: FallbackToLogsOnError", cut)
 			nonCompliantObjects = append(nonCompliantObjects,
@@ -166,11 +237,12 @@ func testTerminationMessagePolicy(env *provider.TestEnvironment) {
 				testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "TerminationMessagePolicy is FallbackToLogsOnError", true))
 		}
 	}
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 //nolint:funlen
-func testPodDisruptionBudgets(env *provider.TestEnvironment) {
+func testPodDisruptionBudgets(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
@@ -233,5 +305,5 @@ func testPodDisruptionBudgets(env *provider.TestEnvironment) {
 		}
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }

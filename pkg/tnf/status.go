@@ -3,7 +3,6 @@ package tnf
 import (
 	"fmt"
 
-	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 )
 
@@ -16,8 +15,8 @@ func ClaimFilePrintf(format string, args ...interface{}) {
 func Logf(level logrus.Level, format string, args ...interface{}) {
 	message := fmt.Sprintf(format+"\n", args...)
 	logrus.StandardLogger().Log(level, message)
-	_, err := ginkgo.GinkgoWriter.Write([]byte(message))
-	if err != nil {
-		logrus.Errorf("Ginkgo writer could not write msg '%s' because: %s", message, err)
-	}
+	// _, err := ginkgo.GinkgoWriter.Write([]byte(message))
+	// if err != nil {
+	// 	logrus.Errorf("Ginkgo writer could not write msg '%s' because: %s", message, err)
+	// }
 }
