@@ -21,7 +21,6 @@ jobs:
         suite: [accesscontrol, affiliatedcertification, manageability, networking, lifecycle, performance, platformalteration, observability, operator]
     env:
       SHELL: /bin/bash
-      DEBUG_TNF: true # More verbose output from the TNF
       KUBECONFIG: '/home/runner/.kube/config'
       PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
       TEST_TNF_IMAGE_NAME: quay.io/testnetworkfunction/cnf-certification-test

@@ -32,3 +32,13 @@ export TNF_NON_INTRUSIVE_ONLY=true
     ```shell
     ./script/development.sh networking
     ```
+
+# Dependencies on other PR
+
+If you have dependencies on other Pull Requests, you can add a comment like that:
+
+```text
+Depends-On: <url of the PR>
+```
+
+and the dependent PR will automatically be extracted and injected in your change during the GitHub Action CI jobs and the DCI jobs.

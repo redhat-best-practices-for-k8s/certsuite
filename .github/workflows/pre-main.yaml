@@ -107,10 +107,6 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@main
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
       - run: |
           curl --location --output $CM_BIN --silent $CM_URL_LINUX
           chmod +x $CM_BIN
@@ -371,6 +367,11 @@ jobs:
         with:
           working_directory: cnf-certification-test-partner
 
+      # needed by depends-on-action
+      - name: Set up Go 1.21
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.21.2
 
       # Perform smoke tests using a TNF container.
       - name: Check out code into the Go module directory

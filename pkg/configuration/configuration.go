@@ -20,29 +20,9 @@ const (
 	defaultDebugDaemonSetNamespace = "cnf-suite"
 )
 
-// CertifiedContainerRequestInfo contains all certified images request info
-type CertifiedContainerRequestInfo struct {
-	// Name is the name of the `operator bundle package name` or `image-version` that you want to check if exists in the RedHat catalog
-	Name string `yaml:"name" json:"name"`
-
-	// Repository is the name of the repository `rhel8` of the container
-	// This is valid for container only and required field
-	Repository string `yaml:"repository" json:"repository"`
-}
-
 type SkipHelmChartList struct {
 	// Name is the name of the `operator bundle package name` or `image-version` that you want to check if exists in the RedHat catalog
 	Name string `yaml:"name" json:"name"`
-}
-
-// CertifiedOperatorRequestInfo contains all certified operator request info
-type CertifiedOperatorRequestInfo struct {
-
-	// Name is the name of the `operator bundle package name` that you want to check if exists in the RedHat catalog
-	Name string `yaml:"name" json:"name"`
-
-	// Organization as understood by the operator publisher, e.g. `redhat-marketplace`
-	Organization string `yaml:"organization" json:"organization"`
 }
 
 // AcceptedKernelTaintsInfo contains all certified operator request info
@@ -68,13 +48,6 @@ type SkipScalingTestStatefulSetsInfo struct {
 	Namespace string `yaml:"namespace" json:"namespace"`
 }
 
-// Label ns/name/value for resource lookup
-type Label struct {
-	Prefix string `yaml:"prefix" json:"prefix"`
-	Name   string `yaml:"name" json:"name"`
-	Value  string `yaml:"value" json:"value"`
-}
-
 // Namespace struct defines namespace properties
 type Namespace struct {
 	Name string `yaml:"name" json:"name"`
@@ -92,7 +65,7 @@ type ManagedDeploymentsStatefulsets struct {
 // TestConfiguration provides test related configuration
 type TestConfiguration struct {
 	// targetNameSpaces to be used in
-	TargetNameSpaces []Namespace `yaml:"targetNameSpaces" json:"targetNameSpaces"`
+	TargetNameSpaces []Namespace `yaml:"targetNameSpaces,omitempty" json:"targetNameSpaces,omitempty"`
 	// labels identifying pods under test
 	PodsUnderTestLabels []string `yaml:"podsUnderTestLabels,omitempty" json:"podsUnderTestLabels,omitempty"`
 	// labels identifying operators unde test

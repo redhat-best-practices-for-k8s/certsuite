@@ -73,7 +73,7 @@ const (
 
 	// Lifecycle Suite
 	TestAffinityRequiredPodsDocLink                    = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations"
-	TestStorageRequiredPodsDocLink                     = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-local-storage"
+	TestStorageProvisionerDocLink                      = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-local-storage"
 	TestStartupIdentifierDocLink                       = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cloud-native-design-best-practices"
 	TestShutdownIdentifierDocLink                      = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cloud-native-design-best-practices"
 	TestPodNodeSelectorAndAffinityBestPracticesDocLink = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations"

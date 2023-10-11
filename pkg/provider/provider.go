@@ -517,6 +517,10 @@ func (env *TestEnvironment) GetMasterCount() int {
 	return masterCount
 }
 
+func (env *TestEnvironment) IsSNO() bool {
+	return len(env.Nodes) == 1
+}
+
 func getMachineConfig(mcName string, machineConfigs map[string]MachineConfig) (MachineConfig, error) {
 	client := clientsholder.GetClientsHolder()
 
