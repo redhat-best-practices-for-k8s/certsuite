@@ -150,7 +150,9 @@ func testExecProbDenyAtCPUPinning(dpdkPods []*provider.Pod) {
 	for _, cpuPinnedPod := range dpdkPods {
 		for _, cut := range cpuPinnedPod.Containers {
 			if cut.HasExecProbes() {
-				ginkgo.Fail("Exec prob is not allowed")
+				ginkgo.Fail(fmt.Sprintf(
+					"Exec prob is not allowed, namespace: %s, pod: %s, container: %s",
+					cut.Namespace, cut.Podname, cut.Name))
 			}
 		}
 	}
