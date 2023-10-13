@@ -77,3 +77,120 @@ This file serves two different purposes:
 A standalone HTML page is available to decode the results.
 For more details, see:
 https://github.com/test-network-function/parser
+
+## Compare claim files from two different CNF Certification Suite runs
+
+Parters can use the `tnf claim compare` tool in order to compare two claim files. The differences are shown in a table per section.
+This tool can be helpful when the result of some test cases is different between two (consecutive) runs, as it shows
+configuration differences in both the CNF Cert Suite config and the cluster nodes that could be the root cause for
+some of the test cases results discrepancy.
+
+All the compared sections, except the test cases results are compared blindly, traversing the whole json tree and
+substrees to get a list of all the fields and their values. Three tables are shown:
+
+* Differences: same fields with different values.
+* Fields in claim 1 only: json fields in claim file 1 that don't exist in claim 2.
+* Fields in claim 2 only: json fields in claim file 2 that don't exist in claim 1.
+
+Let's say one of the nodes of the claim.json file containes this struct:
+
+```json
+{
+  "field1": "value1",
+  "field2": {
+    "field3": "value2",
+    "field4": {
+      "field5": "value3",
+      "field6": "value4"
+    }
+  }
+}
+```
+
+When parsing that json struct fields, it will produce a list of fields like this:
+
+```console
+/field1=value1
+/field2/field3=value2
+/field2/field4/field5=value3
+/field2/field4/field6=finalvalue2
+```
+
+Once this list of field's path+value strings has been obtained from both claim files,
+it is compared in order to find the differences or the fields that only exist on each file.
+
+This is a fake example of a node "clus0-0" whose first CNI (index 0) has a different cniVersion
+and the ipMask flag of its first plugin (also index 0) has changed to false in the second run.
+Also, the plugin has another "newFakeFlag" config flag in claim 2 that didn't exist in clam file 1.
+
+```console
+...
+CNIs: Differences
+FIELD                           CLAIM 1      CLAIM 2
+/clus0-0/0/cniVersion           1.0.0        1.0.1
+/clus0-1/0/plugins/0/ipMasq     true         false
+
+CNIs: Only in CLAIM 1
+<none>
+
+CNIs: Only in CLAIM 2
+/clus0-1/0/plugins/0/newFakeFlag=true
+...
+```
+
+ Currently, the following sections are compared, in this order:
+
+* claim.versions
+* claim.Results
+* claim.configurations.Config
+* claim.nodes.cniPlugins
+* claim.nodes.csiDriver
+* claim.nodes.nodesHwInfo
+* claim.nodes.nodeSummary
+
+### How to build the tnf tool
+
+The `tnf` tool is located in the repo's `cmd/tnf` folder. In order to compile it, just run:
+
+```console
+make build-tnf-tool
+```
+
+### Examples
+
+#### Compare a claim file against itself: no differences expected
+
+<!-- markdownlint-disable MD033 -->
+<object type="image/svg+xml" data="../assets/images/claim-compare-self.svg" width="100%" height=auto></object>
+<!-- markdownlint-disable MD033 -->
+
+#### Different test cases results
+
+Let's assume we have two claim files, claim1.json and claim2.json, obtained from two CNF Certification Suite runs in the same cluster.
+
+During the second run, there was a test case that failed. Let's simulate it modifying manually the second run's claim file to switch one test case's state from "passed" to "failed".
+
+<!-- markdownlint-disable MD033 -->
+<object type="image/svg+xml" data="../assets/images/claim-compare-results.svg" width="100%" height=auto></object>
+<!-- markdownlint-disable MD033 -->
+
+#### Different cluster configurations
+
+First, let's simulate that the second run took place in a cluster with a different OCP version. As we store the OCP version in the claim file (section claim.versions), we can also modify it manually.
+The versions section comparison appears at the very beginning of the `tnf claim compare` output:
+
+<!-- markdownlint-disable MD033 -->
+<object type="image/svg+xml" data="../assets/images/claim-compare-versions.svg" width="100%" height=auto></object>
+<!-- markdownlint-disable MD033 -->
+
+Now, let's simulate that the cluster was a bit different when the second CNF Certification Suite run was performed. First, let's make a manual change in claim2.json to emulate a different CNI version in the first node.
+
+<!-- markdownlint-disable MD033 -->
+<object type="image/svg+xml" data="../assets/images/claim-compare-cni.svg" width="100%" height=auto></object>
+<!-- markdownlint-disable MD033 -->
+
+Finally, we'll simulate that, for some reason, the first node had one label removed when the second run was performed:
+
+<!-- markdownlint-disable MD033 -->
+<object type="image/svg+xml" data="../assets/images/claim-compare-nodes.svg" width="100%" height=auto></object>
+<!-- markdownlint-disable MD033 -->
