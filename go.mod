@@ -217,6 +217,7 @@ require (
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/openshift/machine-config-operator v0.0.1-0.20230515070935-49f32d46538e
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230926153703-7ab81a71d043
+	github.com/test-network-function/oct v0.0.1
 	github.com/test-network-function/privileged-daemonset v1.0.10
 	gopkg.in/yaml.v3 v3.0.1
 	gotest.tools/v3 v3.5.1

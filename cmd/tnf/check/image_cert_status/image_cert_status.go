@@ -21,7 +21,7 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/cnf-certification-test/internal/certdb"
+	"github.com/test-network-function/oct/pkg/certdb"
 )
 
 var checkImageCertStatusCmd = &cobra.Command{
