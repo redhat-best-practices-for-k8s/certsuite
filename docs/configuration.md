@@ -29,9 +29,9 @@ To launch the CNF Config Generator:
 
 Here's an example of how to use the tool:
 
-<p align="left">
-  <img width="600" src="../demo-config-2x.svg">
-</p>
+<!-- markdownlint-disable MD033 -->
+<img width="600" src="./assets/images/demo-config.svg">
+<!-- markdownlint-enable MD033 -->
 
 ## targetNameSpaces
 
