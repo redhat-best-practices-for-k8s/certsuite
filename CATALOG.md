@@ -45,7 +45,7 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 
 |Mandatory|Optional|
 |---|---|
-|27|0|
+|26|1|
 
 ## Test Case list
 
@@ -756,10 +756,10 @@ Best Practice Reference|https://test-network-function.github.io/cnf-best-practic
 Exception Process|Exception will only be considered if application requires specialized hardware. Must specify which container requires special hardware and why.
 Tags|telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|Far-Edge|Mandatory|
-|Non-Telco|Optional|
-|Telco|Mandatory|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Mandatory|
+|Telco|Optional|
 
 #### lifecycle-pod-toleration-bypass
 
@@ -831,7 +831,7 @@ Property|Description
 ---|---
 Unique ID|lifecycle-storage-provisioner
 Description|Checks that pods do not place persistent volumes on local storage in multinode clusters. Local storage is recommended for single node clusters, but only one type of local storage should be installed (lvms or noprovisioner).
-Suggested Remediation|Use a non-local storage (e.g. no kubernetes.io/no-provisioner and no  topolvm.io provisioners) in multinode clusters. Local storage are recommended for single node clusters only, but a single local provisioner should be installed.
+Suggested Remediation|Use a non-local storage (e.g. no kubernetes.io/no-provisioner and no topolvm.io provisioners) in multinode clusters. Local storage are recommended for single node clusters only, but a single local provisioner should be installed.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-local-storage
 Exception Process|No exceptions
 Tags|common,lifecycle
