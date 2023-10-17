@@ -430,9 +430,6 @@ jobs:
           repository: shirmoran/collector
           ref: CI-tests
           path: collector
-      
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
 
       - name: Run sanity check on collector
         uses: ./collector/.github/actions/run-sanity-check
