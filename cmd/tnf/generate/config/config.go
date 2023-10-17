@@ -86,7 +86,7 @@ func createConfiguration() {
 	createMenu := []configOption{
 		{Option: cnfResources, Help: cnfResourcesHelp},
 		{Option: exceptions, Help: exceptionsdHelp},
-		{Option: collector, Help: collectordHelp},
+		// {Option: collector, Help: collectordHelp},
 		{Option: settings, Help: settingsHelp},
 		{Option: previousMenu, Help: backHelp},
 	}
@@ -111,8 +111,8 @@ func createConfiguration() {
 			createCnfResourcesConfiguration()
 		case exceptions:
 			createExceptionsConfiguration()
-		case collector:
-			createCollectorConfiguration()
+		// case collector:
+		// 	createCollectorConfiguration()
 		case settings:
 			createSettingsConfiguration()
 		case previousMenu:
@@ -165,8 +165,8 @@ func createCnfResourcesConfiguration() {
 		{Option: pods, Help: podLabelsHelp},
 		{Option: operators, Help: operatorLabelsHelp},
 		{Option: crdFilters, Help: crdFiltersHelp},
-		{Option: managedDeployments, Help: ""},
-		{Option: managedStatefulSets, Help: ""},
+		{Option: managedDeployments, Help: managedDeploymentsHelp},
+		{Option: managedStatefulSets, Help: managedStatefulSetsHelp},
 		{Option: previousMenu, Help: backHelp},
 	}
 	cnfResourcesSearcher := func(input string, index int) bool {
@@ -201,9 +201,9 @@ func createCnfResourcesConfiguration() {
 		case crdFilters:
 			loadCRDfilters(getAnswer(crdFiltersPrompt, crdFiltersSyntax, crdFiltersExample))
 		case managedDeployments:
-			// TODO: to be implemented
+			loadManagedDeployments(getAnswer(managedDeploymentsPrompt, managedDeploymentsSyntax, managedDeploymentsExample))
 		case managedStatefulSets:
-			// TODO: to be implemented
+			loadManagedStatefulSets(getAnswer(managedStatefulSetsPrompt, managedStatefulSetsSyntax, managedStatefulSetsExample))
 		case previousMenu:
 			exit = true
 		}
@@ -261,6 +261,7 @@ func createExceptionsConfiguration() {
 	}
 }
 
+//nolint:unused
 func createCollectorConfiguration() {
 	collectorOptions := []configOption{
 		{Option: appEndPoint, Help: ""},
@@ -387,6 +388,22 @@ func loadCRDfilters(crdFilters []string) {
 		}
 		tnfCrdFilter := configuration.CrdFilter{NameSuffix: crdFilterName, Scalable: crdFilterScalable}
 		tnfConfig.CrdFilters = append(tnfConfig.CrdFilters, tnfCrdFilter)
+	}
+}
+
+func loadManagedDeployments(deployments []string) {
+	tnfConfig.ManagedDeployments = nil
+	for _, deployment := range deployments {
+		tnfManagedDeployment := configuration.ManagedDeploymentsStatefulsets{Name: deployment}
+		tnfConfig.ManagedDeployments = append(tnfConfig.ManagedDeployments, tnfManagedDeployment)
+	}
+}
+
+func loadManagedStatefulSets(statefulSets []string) {
+	tnfConfig.ManagedStatefulsets = nil
+	for _, statefulSet := range statefulSets {
+		tnfManagedStatefulSet := configuration.ManagedDeploymentsStatefulsets{Name: statefulSet}
+		tnfConfig.ManagedStatefulsets = append(tnfConfig.ManagedStatefulsets, tnfManagedStatefulSet)
 	}
 }
 
