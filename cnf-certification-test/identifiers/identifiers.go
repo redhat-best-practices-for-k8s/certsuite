@@ -913,10 +913,10 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		TestPodNodeSelectorAndAffinityBestPracticesDocLink,
 		true,
 		map[string]string{
-			FarEdge:  Mandatory,
-			Telco:    Mandatory,
-			NonTelco: Optional,
-			Extended: Mandatory,
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Mandatory,
+			Extended: Optional,
 		},
 		TagTelco)
 

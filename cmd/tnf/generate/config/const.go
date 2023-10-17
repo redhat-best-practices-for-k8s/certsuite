@@ -1,6 +1,8 @@
 package config
 
 // Menu names
+//
+//nolint:unused
 const (
 	// Main menu
 	create = "Create"
@@ -72,6 +74,16 @@ If a new label is used for this purpose make sure it is added to the CNF operato
 	crdFiltersHelp = `The CRD name suffix used to filter the CNF's CRDs among all the CRDs present in the cluster.
 It must also be specified if the resources own by the CRD are scalable or not in order to avoid
 some lifecycle test cases.`
+	managedDeploymentsHelp = `The Deployments managed by a Custom Resource whose scaling is controlled using
+the "scale" subresource of the CR.
+The CRD defining that CR should be included in the CRD filters with the scalable
+property set to true. If so, the test case "lifecycle-deployment-scaling" will be
+skipped, otherwise it will fail.`
+	managedStatefulSetsHelp = `The StatefulSets managed by a Custom Resource whose scaling is controlled using
+the "scale" subresource of the CR.
+The CRD defining that CR should be included in the CRD filters with the scalable
+property set to true. If so, the test case "lifecycle-statefulset-scaling" will be
+skipped, otherwise it will fail.`
 	// Exceptions
 	kernelTaintsHelp = `The list of kernel modules loaded by the CNF that make the Linux kernel mark itself
 as "tainted" but that should skip verification.
@@ -109,7 +121,7 @@ fail or be skipped in case it is not deployed correctly.`
 const (
 	// CNF resources
 	namespacePrompt  = "Enter a comma-separated list of the namespaces in which the CNF is deploying its workload."
-	namespaceSyntax  = "ns1[, <ns2>]..."
+	namespaceSyntax  = "ns1[, ns2]..."
 	namespaceExample = "cnf, cnf-workload"
 	podsPrompt       = "Enter a comma-separated list of labels to identify the CNF's Pods under test."
 	podsSyntax       = "pod-label-1[, pod-label-2]..."
@@ -119,8 +131,14 @@ const (
 	operatorsExample = "test-network-function.com/operator1: target"
 	crdFiltersPrompt = "Enter a comma-separated list of the CRD's name suffixes that the CNF contains. Also, specify if the\n" +
 		"resources managed by those CRDs are scalable."
-	crdFiltersSyntax  = "crd-name-suffix/{true|false}[,crd-name-suffix/{true|false}]..."
-	crdFiltersExample = "group1.test.com/false"
+	crdFiltersSyntax           = "crd-name-suffix/{true|false}[,crd-name-suffix/{true|false}]..."
+	crdFiltersExample          = "group1.test.com/true"
+	managedDeploymentsPrompt   = "Enter a comma-separated list of Deployments that are managed by a Custom Resource."
+	managedDeploymentsSyntax   = "managed-deployment1[, managed-deployment2]..."
+	managedDeploymentsExample  = "group1-deployment"
+	managedStatefulSetsPrompt  = "Enter a comma-separated list of StatefulSets that are managed by a Custom Resource."
+	managedStatefulSetsSyntax  = "managed-statefulset1[, managed-statefulset2]..."
+	managedStatefulSetsExample = "group1-statefulset"
 	// Exceptions
 	kernelTaintsPrompt             = "Enter a comma-separated list of kernel taints (modules)"
 	kernelTaintsSyntax             = "mod1[,mod2]..."
