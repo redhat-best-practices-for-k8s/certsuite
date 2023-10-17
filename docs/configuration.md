@@ -11,6 +11,28 @@ These can be configured through the following config file.
 
 As per the requirement the following fields can be changed.
 
+## CNF Config Generator
+
+The CNF config file can be created using the CNF Config Generator, which is part of the TNF tool shipped with the CNF Certification. The purpose of this particular tool is to help users configuring the CNF Certification providing a logical structure of the available options as well as the information required to make use of them. The result is a CNF config file in YAML format that the CNF Certification will parse to adapt the certification process to a specific CNF workload.
+
+To compile the TNF tool:
+
+```shell
+make build-tnf-tool
+```
+
+To launch the CNF Config Generator:
+
+```shell
+./tnf generate config
+```
+
+Here's an example of how to use the tool:
+
+<!-- markdownlint-disable MD033 -->
+<img width="600" src="./assets/images/demo-config.svg">
+<!-- markdownlint-enable MD033 -->
+
 ## targetNameSpaces
 
 Multiple namespaces can be specified to deploy partner pods for testing through `targetNameSpaces` in the config file.
