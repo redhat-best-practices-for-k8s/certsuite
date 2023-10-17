@@ -521,6 +521,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#cnf-config-generator" class="md-nav__link">
+    CNF Config Generator
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#targetnamespaces" class="md-nav__link">
     targetNameSpaces
   </a>
@@ -1004,6 +1011,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#cnf-config-generator" class="md-nav__link">
+    CNF Config Generator
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#targetnamespaces" class="md-nav__link">
     targetNameSpaces
   </a>
@@ -1140,6 +1154,19 @@
 </ul>
 <p><a href="https://github.com/test-network-function/cnf-certification-test/blob/main/cnf-certification-test/tnf_config.yml">Sample</a></p>
 <p>As per the requirement the following fields can be changed.</p>
+<h2 id="cnf-config-generator"><abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Config Generator<a class="headerlink" href="#cnf-config-generator" title="Permanent link">&para;</a></h2>
+<p>The <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> config file can be created using the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Config Generator, which is part of the <abbr title="Test Network Function">TNF tool</abbr> shipped with the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification. The purpose of this particular tool is to help users configuring the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification providing a logical structure of the available options as well as the information required to make use of them. The result is a <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> config file in YAML format that the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification will parse to adapt the certification process to a specific <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> workload.</p>
+<p>To compile the <abbr title="Test Network Function">TNF tool</abbr>:</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>build-tnf-tool
+</code></pre></div>
+<p>To launch the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Config Generator:</p>
+<div class="highlight"><pre><span></span><code>./tnf<span class="w"> </span>generate<span class="w"> </span>config
+</code></pre></div>
+<p>Here&rsquo;s an example of how to use the tool:</p>
+<!-- markdownlint-disable MD033 -->
+<p><img width="600" src="./assets/images/demo-config.svg"></p>
+<!-- markdownlint-enable MD033 -->
+
 <h2 id="targetnamespaces">targetNameSpaces<a class="headerlink" href="#targetnamespaces" title="Permanent link">&para;</a></h2>
 <p>Multiple namespaces can be specified to deploy partner pods for testing through <code>targetNameSpaces</code> in the config file.</p>
 <div class="annotate highlight"><pre><span></span><code><span class="nt">targetNameSpaces</span><span class="p">:</span>
