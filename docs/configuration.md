@@ -24,7 +24,9 @@ To launch the CNF Config Generator:
 Here's an example of how to use the tool:
 
 <!-- markdownlint-disable MD033 -->
-<img width="600" src="./assets/images/demo-config.svg">
+<object type="image/svg+xml" data="./assets/images/demo-config.svg">
+<img width="600" src="../assets/images/demo-config.svg">
+</object>
 <!-- markdownlint-enable MD033 -->
 
 ## CNF Config File options
