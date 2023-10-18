@@ -1166,8 +1166,8 @@ client using <code>TNF_CONTAINER_CLIENT</code> can be configured. This is partic
 </ul>
 <h2 id="with-local-test-container-image">With local test container image<a class="headerlink" href="#with-local-test-container-image" title="Permanent link">&para;</a></h2>
 <h3 id="build-locally">Build locally<a class="headerlink" href="#build-locally" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code>podman<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>cnf-certification-test:v4.5.0<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--build-arg<span class="w"> </span><span class="nv">TNF_VERSION</span><span class="o">=</span>v4.5.0<span class="w"> </span><span class="se">\</span>
+<div class="highlight"><pre><span></span><code>podman<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>cnf-certification-test:v4.5.1<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--build-arg<span class="w"> </span><span class="nv">TNF_VERSION</span><span class="o">=</span>v4.5.1<span class="w"> </span><span class="se">\</span>
 </code></pre></div>
 <ul>
 <li><code>TNF_VERSION</code> value is set to a branch, a tag, or a hash of a commit that will be installed into the image</li>
@@ -1175,13 +1175,13 @@ client using <code>TNF_CONTAINER_CLIENT</code> can be configured. This is partic
 <h3 id="build-from-an-unofficial-source">Build from an unofficial source<a class="headerlink" href="#build-from-an-unofficial-source" title="Permanent link">&para;</a></h3>
 <p>The unofficial source could be a fork of the <abbr title="Test Network Function">TNF</abbr> repository.</p>
 <p>Use the <code>TNF_SRC_URL</code> build argument to override the URL to a source repository.</p>
-<div class="highlight"><pre><span></span><code>podman<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>cnf-certification-test:v4.5.0<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--build-arg<span class="w"> </span><span class="nv">TNF_VERSION</span><span class="o">=</span>v4.5.0<span class="w"> </span><span class="se">\</span>
+<div class="highlight"><pre><span></span><code>podman<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>cnf-certification-test:v4.5.1<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--build-arg<span class="w"> </span><span class="nv">TNF_VERSION</span><span class="o">=</span>v4.5.1<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--build-arg<span class="w"> </span><span class="nv">TNF_SRC_URL</span><span class="o">=</span>https://github.com/test-network-function/cnf-certification-test<span class="w"> </span>.
 </code></pre></div>
 <h3 id="run-the-tests-2">Run the tests 2<a class="headerlink" href="#run-the-tests-2" title="Permanent link">&para;</a></h3>
 <p>Specify the custom <abbr title="Test Network Function">TNF</abbr> image using the <code>-i</code> parameter.</p>
-<div class="highlight"><pre><span></span><code>./run-tnf-container.sh<span class="w"> </span>-i<span class="w"> </span>cnf-certification-test:v4.5.0
+<div class="highlight"><pre><span></span><code>./run-tnf-container.sh<span class="w"> </span>-i<span class="w"> </span>cnf-certification-test:v4.5.1
 -t<span class="w"> </span>~/tnf/config<span class="w"> </span>-o<span class="w"> </span>~/tnf/output<span class="w"> </span>-l<span class="w"> </span><span class="s2">&quot;networking,access-control&quot;</span>
 </code></pre></div>
 <p>Note: see <a href="../test-spec/#general-tests">General tests</a> for a list of available keywords.</p>
