@@ -75,7 +75,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#test-configuration" class="md-skip">
+        <a href="#cnf-certification-configuration" class="md-skip">
           Skip to content
         </a>
       
@@ -528,40 +528,135 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#cnf-config-file-options" class="md-nav__link">
+    CNF Config File options
+  </a>
+  
+    <nav class="md-nav" aria-label="CNF Config File options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cnf-resources" class="md-nav__link">
+    CNF resources
+  </a>
+  
+    <nav class="md-nav" aria-label="CNF resources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#targetnamespaces" class="md-nav__link">
     targetNameSpaces
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#targetpodlabels" class="md-nav__link">
-    targetPodLabels
+        
+          <li class="md-nav__item">
+  <a href="#podsundertestlabels" class="md-nav__link">
+    podsUnderTestLabels
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#targetcrds" class="md-nav__link">
-    targetCrds
+        
+          <li class="md-nav__item">
+  <a href="#operatorsundertestlabels" class="md-nav__link">
+    operatorsUnderTestLabels
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#testtarget" class="md-nav__link">
-    testTarget
+        
+          <li class="md-nav__item">
+  <a href="#targetcrdfilters" class="md-nav__link">
+    targetCrdFilters
   </a>
   
-    <nav class="md-nav" aria-label="testTarget">
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manageddeployments-managedstatefulsets" class="md-nav__link">
+    managedDeployments / managedStatefulSets
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exceptions" class="md-nav__link">
+    Exceptions
+  </a>
+  
+    <nav class="md-nav" aria-label="Exceptions">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#podsundertest-containersundertest" class="md-nav__link">
-    podsUnderTest / containersUnderTest
+  <a href="#acceptedkerneltaints" class="md-nav__link">
+    acceptedKernelTaints
   </a>
   
-    <nav class="md-nav" aria-label="podsUnderTest / containersUnderTest">
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#skiphelmchartlist" class="md-nav__link">
+    skipHelmChartList
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validprotocolnames" class="md-nav__link">
+    validProtocolNames
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#servicesignorelist" class="md-nav__link">
+    servicesIgnoreList
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#skipscalingtestdeployments-skipscalingteststatefulsets" class="md-nav__link">
+    skipScalingTestDeployments / skipScalingTestStatefulSets
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cnf-certification-settings" class="md-nav__link">
+    CNF Certification settings
+  </a>
+  
+    <nav class="md-nav" aria-label="CNF Certification settings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#debugdaemonsetnamespace" class="md-nav__link">
+    debugDaemonSetNamespace
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-settings" class="md-nav__link">
+    Other settings
+  </a>
+  
+    <nav class="md-nav" aria-label="Other settings">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -578,8 +673,10 @@
   
 </li>
         
-      </ul>
-    </nav>
+          <li class="md-nav__item">
+  <a href="#affinity-requirements" class="md-nav__link">
+    Affinity requirements
+  </a>
   
 </li>
         
@@ -587,53 +684,9 @@
     </nav>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#affinityrequired" class="md-nav__link">
-    AffinityRequired
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#certifiedcontainerinfo" class="md-nav__link">
-    certifiedcontainerinfo
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#operators" class="md-nav__link">
-    Operators
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#allowedprotocolnames" class="md-nav__link">
-    AllowedProtocolNames
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#servicesignorelist" class="md-nav__link">
-    ServicesIgnoreList
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#skipscalingtestdeployments-and-skipscalingteststatefulsetnames" class="md-nav__link">
-    skipScalingTestDeployments and skipScalingTestStatefulSetNames
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#debugdaemonsetnamespace" class="md-nav__link">
-    debugDaemonSetNamespace
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1018,40 +1071,135 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#cnf-config-file-options" class="md-nav__link">
+    CNF Config File options
+  </a>
+  
+    <nav class="md-nav" aria-label="CNF Config File options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cnf-resources" class="md-nav__link">
+    CNF resources
+  </a>
+  
+    <nav class="md-nav" aria-label="CNF resources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#targetnamespaces" class="md-nav__link">
     targetNameSpaces
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#targetpodlabels" class="md-nav__link">
-    targetPodLabels
+        
+          <li class="md-nav__item">
+  <a href="#podsundertestlabels" class="md-nav__link">
+    podsUnderTestLabels
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#targetcrds" class="md-nav__link">
-    targetCrds
+        
+          <li class="md-nav__item">
+  <a href="#operatorsundertestlabels" class="md-nav__link">
+    operatorsUnderTestLabels
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#testtarget" class="md-nav__link">
-    testTarget
+        
+          <li class="md-nav__item">
+  <a href="#targetcrdfilters" class="md-nav__link">
+    targetCrdFilters
   </a>
   
-    <nav class="md-nav" aria-label="testTarget">
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manageddeployments-managedstatefulsets" class="md-nav__link">
+    managedDeployments / managedStatefulSets
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exceptions" class="md-nav__link">
+    Exceptions
+  </a>
+  
+    <nav class="md-nav" aria-label="Exceptions">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#podsundertest-containersundertest" class="md-nav__link">
-    podsUnderTest / containersUnderTest
+  <a href="#acceptedkerneltaints" class="md-nav__link">
+    acceptedKernelTaints
   </a>
   
-    <nav class="md-nav" aria-label="podsUnderTest / containersUnderTest">
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#skiphelmchartlist" class="md-nav__link">
+    skipHelmChartList
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validprotocolnames" class="md-nav__link">
+    validProtocolNames
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#servicesignorelist" class="md-nav__link">
+    servicesIgnoreList
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#skipscalingtestdeployments-skipscalingteststatefulsets" class="md-nav__link">
+    skipScalingTestDeployments / skipScalingTestStatefulSets
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cnf-certification-settings" class="md-nav__link">
+    CNF Certification settings
+  </a>
+  
+    <nav class="md-nav" aria-label="CNF Certification settings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#debugdaemonsetnamespace" class="md-nav__link">
+    debugDaemonSetNamespace
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-settings" class="md-nav__link">
+    Other settings
+  </a>
+  
+    <nav class="md-nav" aria-label="Other settings">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1068,8 +1216,10 @@
   
 </li>
         
-      </ul>
-    </nav>
+          <li class="md-nav__item">
+  <a href="#affinity-requirements" class="md-nav__link">
+    Affinity requirements
+  </a>
   
 </li>
         
@@ -1077,53 +1227,9 @@
     </nav>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#affinityrequired" class="md-nav__link">
-    AffinityRequired
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#certifiedcontainerinfo" class="md-nav__link">
-    certifiedcontainerinfo
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#operators" class="md-nav__link">
-    Operators
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#allowedprotocolnames" class="md-nav__link">
-    AllowedProtocolNames
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#servicesignorelist" class="md-nav__link">
-    ServicesIgnoreList
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#skipscalingtestdeployments-and-skipscalingteststatefulsetnames" class="md-nav__link">
-    skipScalingTestDeployments and skipScalingTestStatefulSetNames
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#debugdaemonsetnamespace" class="md-nav__link">
-    debugDaemonSetNamespace
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1146,14 +1252,9 @@
 
 
 <!-- markdownlint-disable code-block-style line-length no-bare-urls -->
-<h1 id="test-configuration">Test configuration<a class="headerlink" href="#test-configuration" title="Permanent link">&para;</a></h1>
-<p>The certification test suite supports autodiscovery using labels and annotations.</p>
-<p>These can be configured through the following config file.</p>
-<ul>
-<li><code>tnf_config.yml</code></li>
-</ul>
-<p><a href="https://github.com/test-network-function/cnf-certification-test/blob/main/cnf-certification-test/tnf_config.yml">Sample</a></p>
-<p>As per the requirement the following fields can be changed.</p>
+<h1 id="cnf-certification-configuration"><abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification configuration<a class="headerlink" href="#cnf-certification-configuration" title="Permanent link">&para;</a></h1>
+<p>The <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification Test uses a YAML configuration file to certify a specific <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> workload. This file specifies the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> resources to be certified, as well as any exceptions or other general configuration options.</p>
+<p>By default a file named <em>tnf_config.yml</em> will be used. Here&rsquo;s an <a href="https://github.com/test-network-function/cnf-certification-test/blob/main/cnf-certification-test/tnf_config.yml">example</a> of the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Config File. For a description of each config option see the section <a href="#cnf-config-file-options"><abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Config File options</a>.</p>
 <h2 id="cnf-config-generator"><abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Config Generator<a class="headerlink" href="#cnf-config-generator" title="Permanent link">&para;</a></h2>
 <p>The <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> config file can be created using the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Config Generator, which is part of the <abbr title="Test Network Function">TNF tool</abbr> shipped with the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification. The purpose of this particular tool is to help users configuring the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification providing a logical structure of the available options as well as the information required to make use of them. The result is a <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> config file in YAML format that the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification will parse to adapt the certification process to a specific <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> workload.</p>
 <p>To compile the <abbr title="Test Network Function">TNF tool</abbr>:</p>
@@ -1165,81 +1266,115 @@
 <p>Here&rsquo;s an example of how to use the tool:</p>
 <!-- markdownlint-disable MD033 -->
 <object type="image/svg+xml" data="./assets/images/demo-config.svg">
-<img width="600" src="../assets/images/demo-config.svg">
+<img src="../assets/images/demo-config.svg">
 </object>
 <!-- markdownlint-enable MD033 -->
 
-<h2 id="targetnamespaces">targetNameSpaces<a class="headerlink" href="#targetnamespaces" title="Permanent link">&para;</a></h2>
-<p>Multiple namespaces can be specified to deploy partner pods for testing through <code>targetNameSpaces</code> in the config file.</p>
+<h2 id="cnf-config-file-options"><abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Config File options<a class="headerlink" href="#cnf-config-file-options" title="Permanent link">&para;</a></h2>
+<h3 id="cnf-resources"><abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> resources<a class="headerlink" href="#cnf-resources" title="Permanent link">&para;</a></h3>
+<p>These options allow configuring the workload resources of the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> to be verified. Only the resources that the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> uses are required to be configured. The rest can be left empty. Usually a basic configuration includes <em>Namespaces</em> and <em>Pods</em> at least.</p>
+<h4 id="targetnamespaces">targetNameSpaces<a class="headerlink" href="#targetnamespaces" title="Permanent link">&para;</a></h4>
+<p>The namespaces in which the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> under test will be deployed.</p>
 <div class="annotate highlight"><pre><span></span><code><span class="nt">targetNameSpaces</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">firstnamespace</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">secondnamespace</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tnf</span>
 </code></pre></div>
-<h2 id="targetpodlabels">targetPodLabels<a class="headerlink" href="#targetpodlabels" title="Permanent link">&para;</a></h2>
-<p>The goal of this section is to specify the labels to be used to identify the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> resources under test.</p>
+<h4 id="podsundertestlabels">podsUnderTestLabels<a class="headerlink" href="#podsundertestlabels" title="Permanent link">&para;</a></h4>
+<p>The labels that each Pod of the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> under test must have to be verified by the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification Suite.</p>
 <div class="admonition note">
 <p class="admonition-title">Highly recommended</p>
-<p>The labels should be defined in pod definition rather than added after pod is created, as labels added later on will be lost in case the pod gets rescheduled. In case of pods defined as part of a deployment, it&rsquo;s best to use the same label as the one defined in the <code>spec.selector.matchLabels</code> section of the deployment yaml. The prefix field can be used to avoid naming collision with other labels.</p>
+<p>The labels should be defined in Pod definition rather than added after the Pod is created, as labels added later on will be lost in case the Pod gets rescheduled. In the case of Pods defined as part of a Deployment, it&rsquo;s best to use the same label as the one defined in the <em>spec.selector.matchLabels</em> section of the Deployment YAML. The prefix field can be used to avoid naming collision with other labels.</p>
 </div>
-<div class="annotate highlight"><pre><span></span><code><span class="nt">targetPodLabels</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">prefix</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test-network-function.com</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generic</span>
-<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">target</span>
+<div class="annotate highlight"><pre><span></span><code><span class="nt">podsUnderTestLabels</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;test-network-function.com/generic:</span><span class="nv"> </span><span class="s">target&quot;</span>
 </code></pre></div>
-<p>The corresponding pod label used to match pods is:</p>
-<div class="annotate highlight"><pre><span></span><code><span class="nt">test-network-function.com/generic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">target</span>
+<h4 id="operatorsundertestlabels">operatorsUnderTestLabels<a class="headerlink" href="#operatorsundertestlabels" title="Permanent link">&para;</a></h4>
+<p>The labels that each operator&rsquo;s <abbr title="ClusterServiceVersion in Operator Lifecycle Manager">CSV</abbr> of the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> under test must have to be verified by the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification Suite.</p>
+<p>If a new label is used for this purpose make sure it is added to the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> operator&rsquo;s CSVs.</p>
+<div class="annotate highlight"><pre><span></span><code><span class="nt">operatorsUnderTestLabels</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;test-network-function.com/operator:</span><span class="nv"> </span><span class="s">target&quot;</span><span class="w"> </span>
 </code></pre></div>
-<p>Once the pods are found, all of their containers are also added to the target container list. A target deployment list will also be created with all the deployments which the test pods belong to.</p>
-<h2 id="targetcrds">targetCrds<a class="headerlink" href="#targetcrds" title="Permanent link">&para;</a></h2>
-<p>In order to autodiscover the CRDs to be tested, an array of search filters can be set under the &ldquo;targetCrdFilters&rdquo; label. The autodiscovery mechanism will iterate through all the filters to look for all the CRDs that match it. Currently, filters only work by name suffix.</p>
+<h4 id="targetcrdfilters">targetCrdFilters<a class="headerlink" href="#targetcrdfilters" title="Permanent link">&para;</a></h4>
+<p>The <abbr title="Custom Resource Definition">CRD</abbr> name suffix used to filter the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>&rsquo;s CRDs among all the CRDs present in the cluster. For each <abbr title="Custom Resource Definition">CRD</abbr> it can also be specified if it&rsquo;s scalable or not in order to avoid some lifecycle test cases.</p>
 <div class="annotate highlight"><pre><span></span><code><span class="nt">targetCrdFilters</span><span class="p">:</span>
 <span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">nameSuffix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;group1.tnf.com&quot;</span>
+<span class="w">   </span><span class="nt">scalable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">nameSuffix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;anydomain.com&quot;</span>
+<span class="w">   </span><span class="nt">scalable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </code></pre></div>
-<p>The autodiscovery mechanism will create a list of all <abbr title="Custom Resource Definition">CRD</abbr> names in the cluster whose names have the suffix <code>group1.tnf.com</code> or <code>anydomain.com</code>, e.g. <code>crd1.group1.tnf.com</code> or <code>mycrd.mygroup.anydomain.com</code>.</p>
-<h2 id="testtarget">testTarget<a class="headerlink" href="#testtarget" title="Permanent link">&para;</a></h2>
-<h3 id="podsundertest-containersundertest">podsUnderTest / containersUnderTest<a class="headerlink" href="#podsundertest-containersundertest" title="Permanent link">&para;</a></h3>
-<p>The autodiscovery mechanism will attempt to identify the default network device and all the IP addresses of the pods it needs for network connectivity tests, though that information can be explicitly set using annotations if needed.</p>
+<p>With the config show above, all <abbr title="Custom Resource Definition">CRD</abbr> names in the cluster whose names have the suffix <em>group1.tnf.com</em> or <em>anydomain.com</em> ( e.g. <em>crd1.group1.tnf.com</em> or <em>mycrd.mygroup.anydomain.com</em>) will be tested.</p>
+<h4 id="manageddeployments-managedstatefulsets">managedDeployments / managedStatefulSets<a class="headerlink" href="#manageddeployments-managedstatefulsets" title="Permanent link">&para;</a></h4>
+<p>The Deployments/StatefulSets managed by a Custom Resource whose scaling is controlled using the &ldquo;scale&rdquo; subresource of the CR.</p>
+<p>The <abbr title="Custom Resource Definition">CRD</abbr> defining that CR should be included in the <abbr title="Custom Resource Definition">CRD</abbr> filters with the scalable property set to true. If so, the test case <em>lifecycle-{deployment/statefulset}-scaling</em> will be skipped, otherwise it will fail.</p>
+<div class="annotate highlight"><pre><span></span><code><span class="nt">managedDeployments</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jack</span>
+<span class="nt">managedStatefulsets</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jack</span>
+</code></pre></div>
+<h3 id="exceptions">Exceptions<a class="headerlink" href="#exceptions" title="Permanent link">&para;</a></h3>
+<p>These options allow adding exceptions to skip several checks for different resources. The exceptions must be justified in order to pass the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification.</p>
+<h4 id="acceptedkerneltaints">acceptedKernelTaints<a class="headerlink" href="#acceptedkerneltaints" title="Permanent link">&para;</a></h4>
+<p>The list of kernel modules loaded by the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> that make the Linux kernel mark itself as <em>tainted</em> but that should skip verification.</p>
+<p>Test cases affected: <em>platform-alteration-tainted-node-kernel</em>.</p>
+<div class="annotate highlight"><pre><span></span><code><span class="nt">acceptedKernelTaints</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">module</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vboxsf</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">module</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vboxguest</span>
+</code></pre></div>
+<h4 id="skiphelmchartlist">skipHelmChartList<a class="headerlink" href="#skiphelmchartlist" title="Permanent link">&para;</a></h4>
+<p>The list of Helm charts that the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> uses whose certification status will not be verified.</p>
+<p>If no exception is configured, the certification status for all Helm charts will be checked in the <a href="https://charts.openshift.io/">OpenShift Helms Charts repository</a>.</p>
+<p>Test cases affected: <em>affiliated-certification-helmchart-is-certified</em>.</p>
+<div class="annotate highlight"><pre><span></span><code><span class="nt">skipHelmChartList</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coredns</span>
+</code></pre></div>
+<h4 id="validprotocolnames">validProtocolNames<a class="headerlink" href="#validprotocolnames" title="Permanent link">&para;</a></h4>
+<p>The list of allowed protocol names to be used for container port names.</p>
+<p>The name field of a container port must be of the form <em>protocol[-suffix]</em> where <em>protocol</em> must be allowed by default or added to this list. The optional <em>suffix</em> can be chosen by the application. Protocol names allowed by default: <em>grpc</em>, <em>grpc-web</em>, <em>http</em>, <em>http2</em>, <em>tcp</em>, <em>udp</em>.</p>
+<p>Test cases affected: <em>manageability-container-port-name-format</em>.</p>
+<div class="annotate highlight"><pre><span></span><code><span class="nt">validProtocolNames</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;http3&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;sctp&quot;</span>
+</code></pre></div>
+<h4 id="servicesignorelist">servicesIgnoreList<a class="headerlink" href="#servicesignorelist" title="Permanent link">&para;</a></h4>
+<p>The list of Services that will skip verification.</p>
+<p>Services included in this list will be filtered out at the autodiscovery stage and will not be subject to checks in any test case.</p>
+<p>Tests cases affected: <em>networking-dual-stack-service</em>, <em>access-control-service-type</em>.</p>
+<div class="annotate highlight"><pre><span></span><code><span class="nt">servicesignorelist</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;hazelcast-platform-controller-manager-service&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;hazelcast-platform-webhook-service&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;new-pro-controller-manager-metrics-service&quot;</span>
+</code></pre></div>
+<h4 id="skipscalingtestdeployments-skipscalingteststatefulsets">skipScalingTestDeployments / skipScalingTestStatefulSets<a class="headerlink" href="#skipscalingtestdeployments-skipscalingteststatefulsets" title="Permanent link">&para;</a></h4>
+<p>The list of Deployments/StatefulSets that do not support scale in/out operations.</p>
+<p>Deployments/StatefulSets included in this list will skip any scaling operation check.</p>
+<p>Test cases affected: <em>lifecycle-deployment-scaling</em>, <em>lifecycle-statefulset-scaling</em>.</p>
+<div class="annotate highlight"><pre><span></span><code><span class="nt">skipScalingTestDeployments</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deployment1</span>
+<span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tnf</span>
+<span class="nt">skipScalingTestStatefulSetNames</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">statefulset1</span>
+<span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tnf</span>
+</code></pre></div>
+<h3 id="cnf-certification-settings"><abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification settings<a class="headerlink" href="#cnf-certification-settings" title="Permanent link">&para;</a></h3>
+<h4 id="debugdaemonsetnamespace">debugDaemonSetNamespace<a class="headerlink" href="#debugdaemonsetnamespace" title="Permanent link">&para;</a></h4>
+<p>This is an optional field with the name of the namespace where a privileged DaemonSet will be deployed. The namespace will be created in case it does not exist. In case this field is not set, the default namespace for this DaemonSet is <em>cnf-suite</em>.</p>
+<div class="annotate highlight"><pre><span></span><code><span class="nt">debugDaemonSetNamespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cnf-cert</span>
+</code></pre></div>
+<p>This DaemonSet, called <em>tnf-debug</em> is deployed and used internally by the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification tool to issue some shell commands that are needed in certain test cases. Some of these test cases might fail or be skipped in case it wasn&rsquo;t deployed correctly.</p>
+<h3 id="other-settings">Other settings<a class="headerlink" href="#other-settings" title="Permanent link">&para;</a></h3>
+<p>The autodiscovery mechanism will attempt to identify the default network device and all the IP addresses of the Pods it needs for network connectivity tests, though that information can be explicitly set using annotations if needed.</p>
 <h4 id="pod-ips">Pod IPs<a class="headerlink" href="#pod-ips" title="Permanent link">&para;</a></h4>
 <ul>
-<li>The <code>k8s.v1.cni.cncf.io/networks-status</code> annotation is checked and all IPs from it are used. This annotation is automatically managed in OpenShift but may not be present in K8s.</li>
-<li>If it is not present, then only known IPs associated with the pod are used (the pod <code>.status.ips</code> field).</li>
+<li>The <em>k8s.v1.cni.cncf.io/networks-status</em> annotation is checked and all IPs from it are used. This annotation is automatically managed in OpenShift but may not be present in K8s.</li>
+<li>If it is not present, then only known IPs associated with the Pod are used (the Pod <em>.status.ips</em> field).</li>
 </ul>
 <h4 id="network-interfaces">Network Interfaces<a class="headerlink" href="#network-interfaces" title="Permanent link">&para;</a></h4>
 <ul>
-<li>The <code>k8s.v1.cni.cncf.io/networks-status</code> annotation is checked and the <code>interface</code> from the first entry found with <code>“default”=true</code> is used. This annotation is automatically managed in OpenShift but may not be present in K8s.</li>
+<li>The <em>k8s.v1.cni.cncf.io/networks-status</em> annotation is checked and the <em>interface</em> from the first entry found with <em>“default”=true</em> is used. This annotation is automatically managed in OpenShift but may not be present in K8s.</li>
 </ul>
-<p>The label <code>test-network-function.com/skip_connectivity_tests</code> excludes pods from all connectivity tests. The label value is trivial, only its presence.
-The label <code>test-network-function.com/skip_multus_connectivity_tests</code> excludes pods from <a href="https://github.com/k8snetworkplumbingwg/multus-cni">Multus</a> connectivity tests. Tests on default interface are still done. The label value is trivial, but its presence.</p>
-<h2 id="affinityrequired">AffinityRequired<a class="headerlink" href="#affinityrequired" title="Permanent link">&para;</a></h2>
-<p>For <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> workloads that require pods to use Pod or Node Affinity rules, the label <code>AffinityRequired: true</code> must be included on the Pod YAML. This will prevent any tests for anti-affinity to fail as well as test your workloads for affinity rules that support your <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr>&rsquo;s use-case.</p>
-<h2 id="certifiedcontainerinfo">certifiedcontainerinfo<a class="headerlink" href="#certifiedcontainerinfo" title="Permanent link">&para;</a></h2>
-<p>The <code>certifiedcontainerinfo</code> section contains information about <abbr title="Cloud-Native Network Functions">CNFs</abbr> containers that are
-to be checked for certification status on Red Hat catalogs.</p>
-<h2 id="operators">Operators<a class="headerlink" href="#operators" title="Permanent link">&para;</a></h2>
-<p>The <abbr title="ClusterServiceVersion in Operator Lifecycle Manager">CSV</abbr> of the installed Operators can be tested by the <code>operator</code> and <code>affiliated-certification</code> specs are identified with the <code>test-network-function.com/operator=target</code>
-label. Any value is permitted here but <code>target</code> is used here for consistency with the other specs.</p>
-<h2 id="allowedprotocolnames">AllowedProtocolNames<a class="headerlink" href="#allowedprotocolnames" title="Permanent link">&para;</a></h2>
-<p>This name of protocols that allowed.
-If we want to add another name, we just need to write the name in the yaml file.</p>
-<p>for example: if we want to add new protocol - &ldquo;http4&rdquo;, we add in &ldquo;tnf_config.yml&rdquo;  below &ldquo;validProtocolNames&rdquo; and then this protocol (&ldquo;http4&rdquo;) add to map allowedProtocolNames and finally &ldquo;http4&rdquo;  will be allow protocol.</p>
-<h2 id="servicesignorelist">ServicesIgnoreList<a class="headerlink" href="#servicesignorelist" title="Permanent link">&para;</a></h2>
-<p>This is a list of service names present in the namespace under test and that should not be tested.</p>
-<h2 id="skipscalingtestdeployments-and-skipscalingteststatefulsetnames">skipScalingTestDeployments and skipScalingTestStatefulSetNames<a class="headerlink" href="#skipscalingtestdeployments-and-skipscalingteststatefulsetnames" title="Permanent link">&para;</a></h2>
-<p>This section of the <abbr title="Test Network Function">TNF</abbr> config allows the user to skip the scaling tests that potentially cause known problems with workloads that do not like being scaled up and scaled down.</p>
-<p>Example:</p>
-<div class="annotate highlight"><pre><span></span><code><span class="nt">skipScalingTestDeployments</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;deployment1&quot;</span>
-<span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tnf&quot;</span>
-<span class="nt">skipScalingTestStatefulSetNames</span><span class="p">:</span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;statefulset1&quot;</span>
-<span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;tnf&quot;</span>
-</code></pre></div>
-<h2 id="debugdaemonsetnamespace">debugDaemonSetNamespace<a class="headerlink" href="#debugdaemonsetnamespace" title="Permanent link">&para;</a></h2>
-<p>This is an optional field with the name of the namespace where a privileged DaemonSet will be deployed. The namespace will be created in case it does not exist. In case this field is not set, the default namespace for this DaemonSet is &ldquo;cnf-suite&rdquo;.</p>
-<div class="highlight"><pre><span></span><code>debugDaemonSetNamespace:<span class="w"> </span>cnf-cert
-</code></pre></div>
-<p>This DaemonSet, called &ldquo;tnf-debug&rdquo; is deployed and used internally by the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification tool to issue some shell commands that are needed in certain test cases. Some of these test cases might fail or be skipped in case it wasn&rsquo;t deployed correctly.</p>
+<p>The label <em>test-network-function.com/skip_connectivity_tests</em> excludes Pods from all connectivity tests.</p>
+<p>The label <em>test-network-function.com/skip_multus_connectivity_tests</em> excludes Pods from <a href="https://github.com/k8snetworkplumbingwg/multus-cni">Multus</a> connectivity tests. Tests on the default interface are still run.</p>
+<h4 id="affinity-requirements">Affinity requirements<a class="headerlink" href="#affinity-requirements" title="Permanent link">&para;</a></h4>
+<p>For <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> workloads that require Pods to use Pod or Node Affinity rules, the label <em>AffinityRequired: true</em> must be included on the Pod YAML. This will ensure that the affinity best practices are tested and prevent any test cases for anti-affinity to fail.</p>
 <!-- markdownlint-disable first-line-heading -->
 
 
