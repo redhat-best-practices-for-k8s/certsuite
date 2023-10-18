@@ -70,7 +70,7 @@ operatorsUnderTestLabels:
 
 #### targetCrdFilters
 
-The CRD name suffix used to filter the CNF's CRDs among all the CRDs present in the cluster. For each CRD it can also be specified if it's scalable or not in order to avoid some lifecyle test cases.
+The CRD name suffix used to filter the CNF's CRDs among all the CRDs present in the cluster. For each CRD it can also be specified if it's scalable or not in order to avoid some lifecycle test cases.
 
 ``` { .yaml .annotate }
 targetCrdFilters:
