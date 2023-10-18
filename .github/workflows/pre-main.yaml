@@ -374,10 +374,9 @@ jobs:
           go-version: 1.21.2
       # Prepare collector to be used when running smoke tests
       - name: Check out `Collector`
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          repository: shirmoran/collector
-          ref: CI-tests
+          repository: test-network-function/collector
           path: collector
 
       - name: Deploy collector and mysql
@@ -425,10 +424,9 @@ jobs:
 
       # Perform tests on collector
       - name: Check out `Collector`
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          repository: shirmoran/collector
-          ref: CI-tests
+          repository: test-network-function/collector
           path: collector
 
       - name: Run sanity check on collector
