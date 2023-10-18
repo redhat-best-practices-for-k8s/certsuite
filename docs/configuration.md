@@ -25,7 +25,7 @@ Here's an example of how to use the tool:
 
 <!-- markdownlint-disable MD033 -->
 <object type="image/svg+xml" data="./assets/images/demo-config.svg">
-<img width="600" src="../assets/images/demo-config.svg">
+<img src="../assets/images/demo-config.svg">
 </object>
 <!-- markdownlint-enable MD033 -->
 
