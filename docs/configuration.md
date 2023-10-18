@@ -1,7 +1,7 @@
 <!-- markdownlint-disable code-block-style line-length no-bare-urls -->
 # CNF Certification configuration
 
-The CNF Certification is configured to certify a specific CNF workload using a YAML config file, in which the CNF resources as well as some particular exceptions and other general config options can be set up.
+The CNF Certification Test uses a YAML configuration file to certify a specific CNF workload. This file specifies the CNF resources to be certified, as well as any exceptions or other general configuration options.
 
 By default a file named _tnf_config.yml_ will be used. Here's an [example](https://github.com/test-network-function/cnf-certification-test/blob/main/cnf-certification-test/tnf_config.yml) of the CNF Config File. For a description of each config option see the section [CNF Config File options](#cnf-config-file-options).
 
@@ -126,7 +126,7 @@ skipHelmChartList:
 
 The list of allowed protocol names to be used for container port names.
 
-The name field of a container port must be of the form <protocol>[-<suffix>] where <protocol> must be allowed by default or added to this list. The optional <suffix> can be chosen by the application. Protocol names allowed by default: _grpc_, _grpc-web_, _http_, _http2_, _tcp_, _udp_.
+The name field of a container port must be of the form _protocol[-suffix]_ where _protocol_ must be allowed by default or added to this list. The optional _suffix_ can be chosen by the application. Protocol names allowed by default: _grpc_, _grpc-web_, _http_, _http2_, _tcp_, _udp_.
 
 Test cases affected: _manageability-container-port-name-format_.
 
@@ -138,7 +138,7 @@ validProtocolNames:
 
 #### servicesIgnoreList
 
-The list of Services that will skip verification. 
+The list of Services that will skip verification.
 
 Services included in this list will be filtered out at the autodiscovery stage and will not be subject to checks in any test case.
 
@@ -199,4 +199,4 @@ The label _test-network-function.com/skip_multus_connectivity_tests_ excludes Po
 
 #### Affinity requirements
 
-For CNF workloads that require Pods to use Pod or Node Affinity rules, the label _AffinityRequired: true_ must be included on the Pod YAML. This will ensure that the affinity best practices are tested and prevent any test cases for anti-affinity to fail. 
+For CNF workloads that require Pods to use Pod or Node Affinity rules, the label _AffinityRequired: true_ must be included on the Pod YAML. This will ensure that the affinity best practices are tested and prevent any test cases for anti-affinity to fail.
