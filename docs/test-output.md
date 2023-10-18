@@ -92,7 +92,7 @@ substrees to get a list of all the fields and their values. Three tables are sho
 * Fields in claim 1 only: json fields in claim file 1 that don't exist in claim 2.
 * Fields in claim 2 only: json fields in claim file 2 that don't exist in claim 1.
 
-Let's say one of the nodes of the claim.json file containes this struct:
+Let's say one of the nodes of the claim.json file contains this struct:
 
 ```json
 {
