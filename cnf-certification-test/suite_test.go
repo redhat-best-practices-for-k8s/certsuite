@@ -17,14 +17,20 @@
 package suite
 
 import (
+	"bufio"
 	_ "embed"
+	"encoding/json"
 	"flag"
+	"fmt"
+	"net/http"
 	"os"
 	"path/filepath"
 	"testing"
 	"time"
 
+	"github.com/gorilla/websocket"
 	"github.com/onsi/ginkgo/v2"
+	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/claimhelper"
@@ -56,8 +62,10 @@ const (
 	defaultClaimPath              = ".."
 	defaultCliArgValue            = ""
 	junitFlagKey                  = "junit"
+	serverRun                     = "runserver"
 	TNFReportKey                  = "cnf-certification-test"
 	extraInfoKey                  = "testsExtraInfo"
+	defaultServerRun              = false
 )
 
 var (
@@ -77,12 +85,27 @@ var (
 	// ClaimFormat is the current version for the claim file format to be produced by the TNF test suite.
 	// A client decoding this claim file must support decoding its specific version.
 	ClaimFormatVersion string
+	serveRun           *bool
 )
+
+//go:embed amalpro/index.html
+var indexHTML []byte
+
+//go:embed amalpro/submit.js
+var submit []byte
+
+//go:embed amalpro/logs.js
+var logs []byte
+
+//go:embed amalpro/toast.js
+var toast []byte
 
 func init() {
 	claimPath = flag.String(claimPathFlagKey, defaultClaimPath,
 		"the path where the claimfile will be output")
 	junitPath = flag.String(junitFlagKey, defaultCliArgValue,
+		"the path for the junit format report")
+	serveRun = flag.Bool(serverRun, defaultServerRun,
 		"the path for the junit format report")
 }
 
@@ -102,6 +125,7 @@ func setLogLevel() {
 
 func getK8sClientsConfigFileNames() []string {
 	params := configuration.GetTestParameters()
+	logrus.Info(params)
 	fileNames := []string{}
 	if params.Kubeconfig != "" {
 		fileNames = append(fileNames, params.Kubeconfig)
@@ -126,6 +150,59 @@ func getGitVersion() string {
 	return gitDisplayRelease + " ( " + GitCommit + " )"
 }
 
+func startServer() {
+	log.Info("inside starting the server")
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		// Set the content type to "text/html".
+		w.Header().Set("Content-Type", "text/html")
+		// Write the embedded HTML content to the response.
+		_, err := w.Write(indexHTML)
+		if err != nil {
+			http.Error(w, "Failed to write response", http.StatusInternalServerError)
+		}
+	})
+
+	http.HandleFunc("/submit.js", func(w http.ResponseWriter, r *http.Request) {
+		// Set the content type to "application/javascript".
+		w.Header().Set("Content-Type", "application/javascript")
+		// Write the embedded JavaScript content to the response.
+		_, err := w.Write(submit)
+		if err != nil {
+			http.Error(w, "Failed to write response", http.StatusInternalServerError)
+		}
+	})
+
+	http.HandleFunc("/logs.js", func(w http.ResponseWriter, r *http.Request) {
+		// Set the content type to "application/javascript".
+		w.Header().Set("Content-Type", "application/javascript")
+		// Write the embedded JavaScript content to the response.
+		_, err := w.Write(logs)
+		if err != nil {
+			http.Error(w, "Failed to write response", http.StatusInternalServerError)
+		}
+	})
+
+	http.HandleFunc("/toast.js", func(w http.ResponseWriter, r *http.Request) {
+		// Set the content type to "application/javascript".
+		w.Header().Set("Content-Type", "application/javascript")
+		// Write the embedded JavaScript content to the response.
+		_, err := w.Write(toast)
+		if err != nil {
+			http.Error(w, "Failed to write response", http.StatusInternalServerError)
+		}
+	})
+
+	http.HandleFunc("/runFunction", runHandler)
+	// Serve the static HTML file
+	http.HandleFunc("/logstream", logStreamHandler)
+
+	fmt.Println("Server is running on :8080...")
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		panic(err)
+	}
+}
+
 // TestTest invokes the CNF Certification Test Suite.
 func TestTest(t *testing.T) {
 	// When running unit tests, skip the suite
@@ -147,43 +224,55 @@ func TestTest(t *testing.T) {
 	log.Infof("Claim Format Version: %s", ClaimFormatVersion)
 	log.Infof("Ginkgo Version      : %v", ginkgo.GINKGO_VERSION)
 	log.Infof("Labels filter       : %v", ginkgoConfig.LabelFilter)
+	log.Infof("*serveRun       : %v", *serveRun)
+	log.Info("starting the server")
+
+	go startServer()
+	// Keep the main program running
 
 	// Diagnostic functions will run when no labels are provided.
-	var diagnosticMode bool
-	if ginkgoConfig.LabelFilter == "" {
-		log.Infof("TNF will run in diagnostic mode so no test case will be launched.")
-		diagnosticMode = true
+	if !*serveRun {
+		var diagnosticMode bool
+		if ginkgoConfig.LabelFilter == "" {
+			log.Infof("TNF will run in diagnostic mode so no test case will be launched.")
+			diagnosticMode = true
+		}
+
+		// Set clientsholder singleton with the filenames from the env vars.
+		_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
+
+		// Initialize the claim with the start time, tnf version, etc.
+		claimRoot := claimhelper.CreateClaimRoot()
+		claimData := claimRoot.Claim
+		claimData.Configurations = make(map[string]interface{})
+		claimData.Nodes = make(map[string]interface{})
+		incorporateVersions(claimData)
+
+		configurations, err := claimhelper.MarshalConfigurations()
+		if err != nil {
+			log.Errorf("Configuration node missing because of: %s", err)
+			t.FailNow()
+		}
+
+		claimData.Nodes = claimhelper.GenerateNodes()
+		claimhelper.UnmarshalConfigurations(configurations, claimData.Configurations)
+
+		// initialize abort flag
+		testhelper.AbortTrigger = ""
+
+		// Run tests specs only if not in diagnostic mode, otherwise all TSs would run.
+		var env provider.TestEnvironment
+		if !diagnosticMode {
+			env.SetNeedsRefresh()
+			env = provider.GetTestEnvironment()
+			ginkgo.RunSpecs(t, CnfCertificationTestSuiteName)
+		}
+		continueRun(t, diagnosticMode, env, claimData, claimRoot)
 	}
+	select {}
+}
 
-	// Set clientsholder singleton with the filenames from the env vars.
-	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
-
-	// Initialize the claim with the start time, tnf version, etc.
-	claimRoot := claimhelper.CreateClaimRoot()
-	claimData := claimRoot.Claim
-	claimData.Configurations = make(map[string]interface{})
-	claimData.Nodes = make(map[string]interface{})
-	incorporateVersions(claimData)
-
-	configurations, err := claimhelper.MarshalConfigurations()
-	if err != nil {
-		log.Errorf("Configuration node missing because of: %s", err)
-		t.FailNow()
-	}
-
-	claimData.Nodes = claimhelper.GenerateNodes()
-	claimhelper.UnmarshalConfigurations(configurations, claimData.Configurations)
-
-	// initialize abort flag
-	testhelper.AbortTrigger = ""
-
-	// Run tests specs only if not in diagnostic mode, otherwise all TSs would run.
-	var env provider.TestEnvironment
-	if !diagnosticMode {
-		env.SetNeedsRefresh()
-		env = provider.GetTestEnvironment()
-		ginkgo.RunSpecs(t, CnfCertificationTestSuiteName)
-	}
+func continueRun(t *testing.T, diagnosticMode bool, env provider.TestEnvironment, claimData *claim.Claim, claimRoot *claim.Root) {
 
 	endTime := time.Now()
 	claimData.Metadata.EndTime = endTime.UTC().Format(claimhelper.DateTimeFormatDirective)
@@ -211,7 +300,7 @@ func TestTest(t *testing.T) {
 
 	// Send claim file to the collector if specified by env var
 	if configuration.GetTestParameters().EnableDataCollection {
-		err = collector.SendClaimFileToCollector(env.CollectorAppEndPoint, claimOutputFile, env.ExecutedBy, env.PartnerName, env.CollectorAppPassword)
+		err := collector.SendClaimFileToCollector(env.CollectorAppEndPoint, claimOutputFile, env.ExecutedBy, env.PartnerName, env.CollectorAppPassword)
 		if err != nil {
 			log.Errorf("Failed to send post request to the collector: %v", err)
 		}
@@ -263,4 +352,210 @@ func incorporateVersions(claimData *claim.Claim) {
 		K8s:          diagnostics.GetVersionK8s(),
 		ClaimFormat:  ClaimFormatVersion,
 	}
+}
+
+var upgrader = websocket.Upgrader{
+	CheckOrigin: func(r *http.Request) bool {
+		return true
+	},
+}
+
+// Define an HTTP handler that triggers Ginkgo tests
+func runHandler(w http.ResponseWriter, r *http.Request) {
+	// Run Ginkgo tests
+	var requestData RequestData
+	//var responseData ResponseData
+	// Parse JSON data from the request body
+	err := json.NewDecoder(r.Body).Decode(&requestData)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	// Create or open a log file
+	filename := "log.log"
+	if _, err := os.Stat(filename); err == nil {
+		// If it exists, truncate it to remove the contents
+		file, err := os.OpenFile(filename, os.O_TRUNC, 0)
+		if err != nil {
+			// Handle the error if necessary
+			panic(err)
+		}
+		file.Close()
+	}
+	logFile, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+	if err != nil {
+		panic(err)
+	}
+	logrus.SetOutput(logFile)
+	originalStdout := os.Stdout
+	os.Stdout = logFile
+	// Read the YAML file
+	defer func() {
+		os.Stdout = originalStdout
+		logFile.Close()
+	}()
+	os.Setenv("KUBECONFIG", requestData.KubeConfigPath)
+	logrus.Infof("KUBECONFIG      : %v", requestData.KubeConfigPath)
+
+	logrus.Infof("Labels filter       : %v", requestData.SelectedOptions)
+
+	// Set the output of the logger to the log file
+
+	/*data, err := os.ReadFile("tnf_config.yml")
+	if err != nil {
+		log.Fatalf("Error reading YAML file: %v", err)
+	}
+
+	// Unmarshal the YAML data into a Config struct
+	var config configuration.TestConfiguration
+
+	err = yaml.Unmarshal(data, &config)
+	if err != nil {
+		log.Fatalf("Error unmarshaling YAML: %v", err)
+	}
+
+	// Modify the configuration
+	var namespace []configuration.Namespace
+	namespace = append(namespace, configuration.Namespace{Name: requestData.Field3})
+
+	config.TargetNameSpaces = namespace // Change the port to a new value
+
+	// Serialize the modified config back to YAML format
+	newData, err := yaml.Marshal(&config)
+	if err != nil {
+		log.Fatalf("Error marshaling YAML: %v", err)
+	}
+
+	// Write the modified YAML data back to the file
+	err = os.WriteFile("tnf_config.yml", newData, os.ModePerm)
+	if err != nil {
+		log.Fatalf("Error writing YAML file: %v", err)
+	}
+	*/
+	t := testing.T{}
+	logrus.Infof(os.Getenv("KUBECONFIG"))
+	// When running unit tests, skip the suite
+	if os.Getenv("UNIT_TEST") != "" {
+		t.Skip("Skipping test suite when running unit tests")
+	}
+
+	err = configuration.LoadEnvironmentVariables()
+	if err != nil {
+		log.Fatalf("could not load the environment variables, error: %v", err)
+	}
+
+	// Set up logging params for logrus
+	loghelper.SetLogFormat()
+	setLogLevel()
+
+	ginkgoConfig, _ := ginkgo.GinkgoConfiguration()
+	log.Infof("Ginkgo Version      : %v", ginkgo.GINKGO_VERSION)
+	log.Infof("Labels filter       : %v", ginkgoConfig.LabelFilter)
+	// Set clientsholder singleton with the filenames from the env vars.
+	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
+
+	// Initialize the claim with the start time, tnf version, etc.
+	claimRoot := claimhelper.CreateClaimRoot()
+	claimData := claimRoot.Claim
+	claimData.Configurations = make(map[string]interface{})
+	claimData.Nodes = make(map[string]interface{})
+	incorporateVersions(claimData)
+
+	configurations, err := claimhelper.MarshalConfigurations()
+	if err != nil {
+		log.Errorf("Configuration node missing because of: %s", err)
+		t.FailNow()
+	}
+	claimData.Nodes = claimhelper.GenerateNodes()
+	claimhelper.UnmarshalConfigurations(configurations, claimData.Configurations)
+
+	// initialize abort flag
+	testhelper.AbortTrigger = ""
+
+	fmt.Println("This will be written to the log file.")
+	var env provider.TestEnvironment
+	env.SetNeedsRefresh()
+	env = provider.GetTestEnvironment()
+	// fetch the current config
+	suiteConfig, reporterConfig := ginkgo.GinkgoConfiguration()
+	// adjust it
+	suiteConfig.SkipStrings = []string{"NEVER-RUN"}
+	reporterConfig.FullTrace = true
+	reporterConfig.JUnitReport = "cnf-certification-tests_junit.xml"
+	// pass it in to RunSpecs
+	suiteConfig.LabelFilter = requestData.SelectedOptions
+	ginkgo.RunSpecs(&t, CnfCertificationTestSuiteName, suiteConfig, reporterConfig)
+
+	continueRun(&t, false, env, claimData, claimRoot)
+	// Return the result as JSON
+	response := struct {
+		Message string `json:"Message"`
+	}{
+		Message: fmt.Sprintf("Sucsses to run %s", requestData.SelectedOptions),
+	}
+	// Serialize the response data to JSON
+	jsonResponse, err := json.Marshal(response)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	// Set the Content-Type header to specify that the response is JSON
+	w.Header().Set("Content-Type", "application/json")
+
+	// Write the JSON response to the client
+	_, err = w.Write(jsonResponse)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+}
+
+func logStreamHandler(w http.ResponseWriter, r *http.Request) {
+	conn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Printf("WebSocket upgrade error: %v", err)
+		return
+	}
+	defer conn.Close()
+
+	filePath := "log.log"
+
+	// Open the log file
+	file, err := os.Open(filePath)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	defer file.Close()
+
+	// Create a scanner to read the log file line by line
+	for {
+		scanner := bufio.NewScanner(file)
+		for scanner.Scan() {
+			line := scanner.Text() + "\n"
+			// Send each log line to the client
+			if err := conn.WriteMessage(websocket.TextMessage, []byte(line)); err != nil {
+				fmt.Println(err)
+				//return
+			}
+
+			// Sleep for a short duration to simulate real-time updates
+			time.Sleep(100 * time.Millisecond)
+		}
+		if err := scanner.Err(); err != nil {
+			log.Printf("Error reading log file: %v", err)
+		}
+
+		time.Sleep(1 * time.Second)
+	}
+
+}
+
+type RequestData struct {
+	KubeConfigPath  string `json:"kubeConfigPath"`
+	SelectedOptions string `json:"selectedOptions"`
+}
+type ResponseData struct {
+	Message string `json:"message"`
 }

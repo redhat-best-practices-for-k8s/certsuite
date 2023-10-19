@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="importmap">
+        {
+          "imports": {
+            "@rhds/elements": "https://ga.jspm.io/npm:@rhds/elements@1.1.1/rhds.min.js",
+            "@rhds/elements/rh-accordion/rh-accordion.js": "https://ga.jspm.io/npm:@rhds/elements@1.1.1/elements/rh-accordion/rh-accordion.js",
+            "@rhds/elements/rh-button/rh-button.js": "https://ga.jspm.io/npm:@rhds/elements@1.1.1/elements/rh-button/rh-button.js",
+            "@rhds/elements/rh-footer/rh-footer.js": "https://ga.jspm.io/npm:@rhds/elements@1.1.1/elements/rh-footer/rh-footer.js"
+          },
+          "scopes": {
+            "https://ga.jspm.io/": {
+              "@lit/reactive-element": "https://ga.jspm.io/npm:@lit/reactive-element@1.6.3/reactive-element.js",
+              "@lit/reactive-element/decorators/": "https://ga.jspm.io/npm:@lit/reactive-element@1.6.3/decorators/",
+              "@patternfly/elements/": "https://ga.jspm.io/npm:@patternfly/elements@2.4.0/",
+              "@patternfly/pfe-core": "https://ga.jspm.io/npm:@patternfly/pfe-core@2.4.1/core.js",
+              "@patternfly/pfe-core/": "https://ga.jspm.io/npm:@patternfly/pfe-core@2.4.1/",
+              "@rhds/tokens/media.js": "https://ga.jspm.io/npm:@rhds/tokens@1.1.2/js/media.js",
+              "lit": "https://ga.jspm.io/npm:lit@2.8.0/index.js",
+              "lit-element/lit-element.js": "https://ga.jspm.io/npm:lit-element@3.3.3/lit-element.js",
+              "lit-html": "https://ga.jspm.io/npm:lit-html@2.8.0/lit-html.js",
+              "lit-html/": "https://ga.jspm.io/npm:lit-html@2.8.0/",
+              "lit/": "https://ga.jspm.io/npm:lit@2.8.0/",
+              "tslib": "https://ga.jspm.io/npm:tslib@2.6.2/tslib.es6.mjs"
+            },
+            "https://ga.jspm.io/npm:@patternfly/elements@2.4.0/": {
+              "lit": "https://ga.jspm.io/npm:lit@2.6.1/index.js",
+              "lit/": "https://ga.jspm.io/npm:lit@2.6.1/"
+            }
+          }
+        }
+        </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://static.redhat.com/libs/redhat/redhat-theme/6/advanced-theme.css">
+
+    <script type="module">
+        import * as Elements from "@rhds/elements";
+        import * as ElementsRhAccordionRhAccordion from "@rhds/elements/rh-accordion/rh-accordion.js";
+        // Write main module code here, or as a separate file with a "src" attribute on the module script.
+        import * as ElementsRhButtonRhButton from "@rhds/elements/rh-button/rh-button.js";
+        import * as ElementsRhFooterRhFooter from "@rhds/elements/rh-footer/rh-footer.js";
+  
+  // Write main module code here, or as a separate file with a "src" attribute on the module script.
+  console.log(Elements, ElementsRhAccordionRhAccordion, ElementsRhButtonRhButton, ElementsRhFooterRhFooter);
+
+  // Write main module code here, or as a separate file with a "src" at
+      </script>
+
+          <title>Run Function</title>
+
+
+    <style>
+
+        /* Style for log popup */
+        #logPopup {
+            display: none;
+            position: fixed;
+            top: 50px;
+            left: 50px;
+            width: 980px;
+            height: 680px;
+            border: 1px solid #ccc;
+            background-color: white;
+            z-index: 1000;
+            padding: 10px;
+            overflow-y: scroll;
+        }
+        /* Style for the "X" button */
+		.closeButton {
+			cursor: pointer;
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			font-weight: bold;
+		}
+                /* Add some basic styling */
+                body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .section {
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+        .section h2 {
+            cursor: pointer;
+        }
+        .section-content {
+            display: none;
+        }
+
+        /* Style form fields */
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+        }
+
+        /* Style the submit button */
+        input[type="submit"] {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        #end-element {
+    position: fixed; /* Fixed position to keep it at the end */
+    bottom: 0; /* Align it to the bottom of the page */
+    width: 100%; /* Full width of the page */
+    background-color: rgb(255, 255, 255); /* Set background color */
+    padding: 10px; /* Add some padding for spacing */
+}
+
+    </style>
+
+</head>
+<body>
+    <rh-footer data-analytics-region="page-footer">
+        <a slot="logo"  data-analytics-category="Footer" data-analytics-text="Logo">
+            <img alt="Red Hat logo" src="https://static.redhat.com/libs/redhat/brand-assets/2/corp/logo--on-dark.svg" width="100" height="30" loading="lazy" />
+            <h3>CNF CERTIFICATION TEST WEBPAGE</h3>
+        </a>
+    </rh-footer>
+    <div id="responseMessage"></div>
+    <rh-accordion>
+        <rh-accordion-header>
+          <h2>Environment Configuration</h2>
+        </rh-accordion-header>
+        <rh-accordion-panel>
+            <label for="field1">Path of KubeConfig file:</label>
+            <input type="text" id="field1" name="field1" placeholder="Enter text">  
+            </rh-accordion-panel>
+        <rh-accordion-header>
+        <h2>TNF Configuration</h2>
+        </rh-accordion-header>
+        <rh-accordion-panel>
+            <label for="field3">TargetNameSpaces:</label>
+            <input type="text" id="field3" name="field3" placeholder="example: tnf">        
+            <label for="field4">podsUnderTestLabels:</label>
+            <input type="text" id="field4" name="field4" placeholder="example: test-network-function.com/generic: target"> 
+        </rh-accordion-panel>
+        <rh-accordion-header>
+        <h2>Selecet a Test</h2>
+        </rh-accordion-header>
+        <rh-accordion-panel>
+            <form id="checkboxForm">
+            <div id="customMultiSelect">
+                <label><input type="checkbox" value="lifecycle" name="selectedOption" > Lifecycle</label>
+                <label><input type="checkbox" value="certification" name="selectedOption" > certification</label>
+                <label><input type="checkbox" value="access-control" name="selectedOption"> Access Control</label>
+            </div>
+            </form>
+        </rh-accordion-panel>
+      </rh-accordion>
+
+      <h4>Click Run Certification Test</h4>
+    <rh-button id="runFunction">Run Certification Test</rh-button>
+    <h4>Show Certification Test log</h4>
+    <rh-button variant="link" onclick="openLogPopup()">Show Log</rh-button>
+
+    <!-- Log popup container -->
+    <div id="logPopup">
+        <h2>Log Output</h2>
+        <pre id="logContent"></pre>
+		<span class="closeButton" onclick="closeLogPopup()">X</span>
+    </div>
+
+      
+
+    <script>
+
+        document.getElementById("runFunction").addEventListener("click", function() {
+                // Collect data from form fields
+            document.getElementById("runFunction").disabled = true;
+
+            const field1Value = document.getElementById("field1").value;
+            const field3Value = document.getElementById("field3").value;
+
+            const selectedOptions = [];
+            const customMultiSelectV = document.getElementById("customMultiSelect") 
+            const selectedCheckboxes = document.querySelectorAll('input[name="selectedOption"]:checked');
+            console.log(selectedCheckboxes)
+            const selectedData = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
+            console.log(selectedData)
+            console.log(String(selectedData))
+
+            const data = {
+            field1: field1Value,
+            field3: field3Value,
+            selectedOptions: (selectedData),
+            // Add more fields as needed
+             };
+             console.log(data)
+            // Send an HTTP request to the server to run the function
+            fetch("/runFunction",{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Display the result in an alert box
+                    alert(data.Message);
+                    document.getElementById("responseMessage").textContent = "Previous Running  " + data.Message;
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                })
+                .finally(function() {
+                // Re-enable the button
+                document.getElementById("runFunction").disabled = false;
+            });
+        });
+        const logPopup = document.getElementById('logPopup');
+		const logContent = document.getElementById('logContent');
+
+		// Function to open the log popup
+		function openLogPopup() {
+			logPopup.style.display = 'block';
+
+			// Create a WebSocket connection to the server
+			const socket = new WebSocket('ws://localhost:8080/logstream');
+
+			// Handle incoming log messages
+			socket.addEventListener('message', function (event) {
+				logContent.textContent += event.data + '\n';
+			});
+		}
+
+		// Function to close the log popup
+		function closeLogPopup() {
+			logPopup.style.display = 'none';
+		}
+        function toggleSection(id) {
+        const section = document.getElementById(id);
+        const display = section.style.display;
+        section.style.display = (display === 'none' || !display) ? 'block' : 'none';
+}
+
+    </script>
+      <!-- Universal Footer -->
+  <rh-footer-universal slot="universal" id="end-element">
+    <rh-footer-copyright slot="links-secondary" >© 2022 Red Hat, Inc.</rh-footer-copyright>
+  </rh-footer-universal>
+</body>
+</html>

@@ -1,0 +1,395 @@
+[36mINFO   [0m[Oct 19 17:05:52.390][suite_test.go: 398] KUBECONFIG      : /Users/amal/Downloads/kubeconfig.3nodes 
+[36mINFO   [0m[Oct 19 17:05:52.390][suite_test.go: 400] Labels filter       : lifecycle              
+[36mINFO   [0m[Oct 19 17:05:52.390][suite_test.go: 436] /Users/amal/Downloads/kubeconfig.3nodes      
+[36mINFO   [0m[Oct 19 17:05:52.390][utils.go: 66] Saving environment variables & parameters.   
+[36mINFO   [0m[Oct 19 17:05:52.390][utils.go: 71] Environment: {Home:/Users/amal Kubeconfig:/Users/amal/Downloads/kubeconfig.3nodes ConfigurationPath:tnf_config.yml NonIntrusiveOnly:false LogLevel:debug OfflineDB: AllowPreflightInsecure:false PfltDockerconfig: IncludeWebFilesInOutputFolder:false OmitArtifactsZipFile:false EnableDataCollection:false} 
+[36mINFO   [0m[Oct 19 17:05:52.390][suite_test.go: 122] Log level set to: debug                      
+[36mINFO   [0m[Oct 19 17:05:52.391][suite_test.go: 452] Ginkgo Version      : 2.12.1                 
+[36mINFO   [0m[Oct 19 17:05:52.391][suite_test.go: 453] Labels filter       : lifecycle              
+[36mINFO   [0m[Oct 19 17:05:52.391][suite_test.go: 128] &{/Users/amal /Users/amal/Downloads/kubeconfig.3nodes tnf_config.yml false debug  false  false false false} 
+[36mINFO   [0m[Oct 19 17:05:52.391][clientsholder.go: 169] Creating k8s go-clients holder.              
+[36mINFO   [0m[Oct 19 17:05:53.857][utils.go: 42] Loading config from file: tnf_config.yml     
+[33mWARNING[0m[Oct 19 17:05:53.858][utils.go: 55] No namespace configured for the debug DaemonSet. Defaulting to namespace cnf-suite 
+[36mINFO   [0m[Oct 19 17:06:05.785][main.go: 436] namespace cnf-suite deleted                  
+[36mINFO   [0m[Oct 19 17:06:06.411][main.go: 175] Checking if the daemonset exists             
+[36mINFO   [0m[Oct 19 17:06:06.566][main.go: 178] daemonset tnf-debug does not exist, err=daemonsets.apps "tnf-debug" not found 
+[36mINFO   [0m[Oct 19 17:06:06.566][main.go: 226] Creating daemonset tnf-debug                 
+[36mINFO   [0m[Oct 19 17:06:07.344][main.go: 264] Waiting for (3) daemonset pods to be ready: {CurrentNumberScheduled:3 NumberMisscheduled:0 DesiredNumberScheduled:3 NumberReady:0 ObservedGeneration:1 UpdatedNumberScheduled:3 NumberAvailable:0 NumberUnavailable:3 CollisionCount:<nil> Conditions:[]} 
+[36mINFO   [0m[Oct 19 17:06:12.502][main.go: 264] Waiting for (3) daemonset pods to be ready: {CurrentNumberScheduled:3 NumberMisscheduled:0 DesiredNumberScheduled:3 NumberReady:3 ObservedGeneration:1 UpdatedNumberScheduled:3 NumberAvailable:3 NumberUnavailable:0 CollisionCount:<nil> Conditions:[]} 
+[36mINFO   [0m[Oct 19 17:06:12.502][main.go: 281] All the debug pods are ready.                
+[36mINFO   [0m[Oct 19 17:06:12.502][main.go: 237] Daemonset is ready                           
+[36mINFO   [0m[Oct 19 17:06:12.811][main.go: 243] Successfully created daemonset tnf-debug     
+[36mINFO   [0m[Oct 19 17:06:13.283][main.go: 264] Waiting for (3) daemonset pods to be ready: {CurrentNumberScheduled:3 NumberMisscheduled:0 DesiredNumberScheduled:3 NumberReady:3 ObservedGeneration:1 UpdatedNumberScheduled:3 NumberAvailable:3 NumberUnavailable:0 CollisionCount:<nil> Conditions:[]} 
+[36mINFO   [0m[Oct 19 17:06:13.283][main.go: 281] All the debug pods are ready.                
+[36mINFO   [0m[Oct 19 17:06:13.441][autodiscover.go: 154] parsed pods under test labels: [{LabelKey:test-network-function.com/generic LabelValue:target}] 
+[36mINFO   [0m[Oct 19 17:06:13.441][autodiscover.go: 155] parsed operators under test labels: [{LabelKey:test-network-function.com/operator1 LabelValue:new} {LabelKey:test-network-function.com/operator LabelValue:}] 
+[37mDEBUG  [0m[Oct 19 17:06:13.609][autodiscover_operators.go: 135] Searching subscriptions in namespace All Namespaces 
+[36mINFO   [0m[Oct 19 17:06:13.764][autodiscover_operators.go: 144] Found 2 subscriptions in the target namespaces 
+[36mINFO   [0m[Oct 19 17:06:13.764][autodiscover_operators.go: 146]  Subscriptions name: lvms-operator (ns: openshift-storage) 
+[36mINFO   [0m[Oct 19 17:06:13.764][autodiscover_operators.go: 146]  Subscriptions name: test-subscription (ns: tnf) 
+[37mDEBUG  [0m[Oct 19 17:06:13.764][autodiscover_operators.go: 112] Searching CSVs in namespace All              
+[36mINFO   [0m[Oct 19 17:06:13.932][autodiscover_operators.go: 121] Found 2 CSVs:                                
+[36mINFO   [0m[Oct 19 17:06:13.932][autodiscover_operators.go: 123]  CSV name: packageserver (ns: openshift-operator-lifecycle-manager) 
+[36mINFO   [0m[Oct 19 17:06:13.932][autodiscover_operators.go: 123]  CSV name: lvms-operator.v4.13.1 (ns: openshift-storage) 
+[37mDEBUG  [0m[Oct 19 17:06:14.253][autodiscover_pods.go: 34] Searching Pods with label test-network-function.com/generic=target 
+[37mDEBUG  [0m[Oct 19 17:06:14.583][autodiscover_pods.go: 34] Searching Pods with label test-network-function.com/app=tnf-debug 
+[36mINFO   [0m[Oct 19 17:06:16.090][autodiscover_scales.go: 40] Target CRD crdexamples.test-network-function.com is not scalable. Skipping search of scalable CRs. 
+[37mDEBUG  [0m[Oct 19 17:06:16.090][autodiscover_operators.go: 69] Searching CSVs in namespace {tnf}            
+[37mDEBUG  [0m[Oct 19 17:06:16.090][autodiscover_operators.go: 76] Searching CSVs with label test-network-function.com/operator1=new 
+[37mDEBUG  [0m[Oct 19 17:06:16.243][autodiscover_operators.go: 76] Searching CSVs with label test-network-function.com/operator 
+[36mINFO   [0m[Oct 19 17:06:16.398][autodiscover_operators.go: 91] Found 0 CSVs:                                
+[37mDEBUG  [0m[Oct 19 17:06:16.398][autodiscover_operators.go: 135] Searching subscriptions in namespace tnf     
+[36mINFO   [0m[Oct 19 17:06:16.551][autodiscover_operators.go: 144] Found 1 subscriptions in the target namespaces 
+[36mINFO   [0m[Oct 19 17:06:16.551][autodiscover_operators.go: 146]  Subscriptions name: test-subscription (ns: tnf) 
+[36mINFO   [0m[Oct 19 17:06:17.018][autodiscover.go: 276] OpenShift Version found: 4.13.0              
+[36mINFO   [0m[Oct 19 17:06:17.324][autodiscover_podset.go: 80] Deployment test found in ns tnf              
+[36mINFO   [0m[Oct 19 17:06:17.478][autodiscover_podset.go: 113] StatefulSet test found in ns tnf             
+[36mINFO   [0m[Oct 19 17:06:18.760][operators.go: 130] Found 2 unique CSVs                          
+[36mINFO   [0m[Oct 19 17:06:18.760][operators.go: 132]   CSV: packageserver                         
+[36mINFO   [0m[Oct 19 17:06:18.761][operators.go: 132]   CSV: lvms-operator.v4.13.1                 
+[36mINFO   [0m[Oct 19 17:06:18.914][operators.go: 185] Getting installplans for op lvms-operator.v4.13.1 (subs lvms-operator ns openshift-storage) 
+[33mWARNING[0m[Oct 19 17:06:18.914][operators.go: 183] Subscription not found for CSV: packageserver (ns openshift-operator-lifecycle-manager) 
+[36mINFO   [0m[Oct 19 17:06:18.914][operators.go: 185] Getting installplans for op packageserver (subs  ns ) 
+[36mINFO   [0m[Oct 19 17:06:18.914][provider.go: 566] Node clus0-0 - mc name: rendered-master-87e86cb409fb5f914d4c94bee99ef373 
+[36mINFO   [0m[Oct 19 17:06:19.091][provider.go: 566] Node clus0-1 - mc name: rendered-master-87e86cb409fb5f914d4c94bee99ef373 
+[36mINFO   [0m[Oct 19 17:06:19.265][provider.go: 566] Node clus0-2 - mc name: rendered-master-87e86cb409fb5f914d4c94bee99ef373 
+[37mDEBUG  [0m[Oct 19 17:06:19.436][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:06:19.436][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:06:19.436][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:06:19.436][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:06:19.436][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:06:19.436][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:06:19.436][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:06:19.436][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:06:19.436][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:06:19.436][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:06:19.436][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:06:19.436][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[36mINFO   [0m[Oct 19 17:06:19.437][operators.go: 130] Found 0 unique CSVs                          
+[36mINFO   [0m[Oct 19 17:06:19.437][provider.go: 299] Operators found: 0                           
+[36mINFO   [0m[Oct 19 17:06:19.437][provider.go: 311] Completed the test environment build process in 25.58 seconds 
+This will be written to the log file.
+[37mDEBUG  [0m[Oct 19 17:06:36.971][utils.go: 38] config file already loaded, return previous element 
+[36mINFO   [0m[Oct 19 17:06:37.282][autodiscover.go: 154] parsed pods under test labels: [{LabelKey:test-network-function.com/generic LabelValue:target}] 
+[36mINFO   [0m[Oct 19 17:06:37.282][autodiscover.go: 155] parsed operators under test labels: [{LabelKey:test-network-function.com/operator1 LabelValue:new} {LabelKey:test-network-function.com/operator LabelValue:}] 
+[37mDEBUG  [0m[Oct 19 17:06:37.601][autodiscover_operators.go: 135] Searching subscriptions in namespace All Namespaces 
+[36mINFO   [0m[Oct 19 17:06:37.757][autodiscover_operators.go: 144] Found 2 subscriptions in the target namespaces 
+[36mINFO   [0m[Oct 19 17:06:37.757][autodiscover_operators.go: 146]  Subscriptions name: lvms-operator (ns: openshift-storage) 
+[36mINFO   [0m[Oct 19 17:06:37.757][autodiscover_operators.go: 146]  Subscriptions name: test-subscription (ns: tnf) 
+[37mDEBUG  [0m[Oct 19 17:06:37.757][autodiscover_operators.go: 112] Searching CSVs in namespace All              
+[36mINFO   [0m[Oct 19 17:06:38.081][autodiscover_operators.go: 121] Found 2 CSVs:                                
+[36mINFO   [0m[Oct 19 17:06:38.081][autodiscover_operators.go: 123]  CSV name: packageserver (ns: openshift-operator-lifecycle-manager) 
+[36mINFO   [0m[Oct 19 17:06:38.081][autodiscover_operators.go: 123]  CSV name: lvms-operator.v4.13.1 (ns: openshift-storage) 
+[37mDEBUG  [0m[Oct 19 17:06:38.398][autodiscover_pods.go: 34] Searching Pods with label test-network-function.com/generic=target 
+[37mDEBUG  [0m[Oct 19 17:06:38.727][autodiscover_pods.go: 34] Searching Pods with label test-network-function.com/app=tnf-debug 
+[36mINFO   [0m[Oct 19 17:06:40.202][autodiscover_scales.go: 40] Target CRD crdexamples.test-network-function.com is not scalable. Skipping search of scalable CRs. 
+[37mDEBUG  [0m[Oct 19 17:06:40.202][autodiscover_operators.go: 69] Searching CSVs in namespace {tnf}            
+[37mDEBUG  [0m[Oct 19 17:06:40.202][autodiscover_operators.go: 76] Searching CSVs with label test-network-function.com/operator1=new 
+[37mDEBUG  [0m[Oct 19 17:06:40.396][autodiscover_operators.go: 76] Searching CSVs with label test-network-function.com/operator 
+[36mINFO   [0m[Oct 19 17:06:40.554][autodiscover_operators.go: 91] Found 0 CSVs:                                
+[37mDEBUG  [0m[Oct 19 17:06:40.554][autodiscover_operators.go: 135] Searching subscriptions in namespace tnf     
+[36mINFO   [0m[Oct 19 17:06:40.712][autodiscover_operators.go: 144] Found 1 subscriptions in the target namespaces 
+[36mINFO   [0m[Oct 19 17:06:40.712][autodiscover_operators.go: 146]  Subscriptions name: test-subscription (ns: tnf) 
+[36mINFO   [0m[Oct 19 17:06:41.179][autodiscover.go: 276] OpenShift Version found: 4.13.0              
+[36mINFO   [0m[Oct 19 17:06:41.497][autodiscover_podset.go: 80] Deployment test found in ns tnf              
+[36mINFO   [0m[Oct 19 17:06:41.652][autodiscover_podset.go: 113] StatefulSet test found in ns tnf             
+[36mINFO   [0m[Oct 19 17:06:42.947][operators.go: 130] Found 2 unique CSVs                          
+[36mINFO   [0m[Oct 19 17:06:42.947][operators.go: 132]   CSV: packageserver                         
+[36mINFO   [0m[Oct 19 17:06:42.948][operators.go: 132]   CSV: lvms-operator.v4.13.1                 
+[36mINFO   [0m[Oct 19 17:06:43.101][operators.go: 185] Getting installplans for op lvms-operator.v4.13.1 (subs lvms-operator ns openshift-storage) 
+[33mWARNING[0m[Oct 19 17:06:43.101][operators.go: 183] Subscription not found for CSV: packageserver (ns openshift-operator-lifecycle-manager) 
+[36mINFO   [0m[Oct 19 17:06:43.101][operators.go: 185] Getting installplans for op packageserver (subs  ns ) 
+[36mINFO   [0m[Oct 19 17:06:43.101][provider.go: 566] Node clus0-0 - mc name: rendered-master-87e86cb409fb5f914d4c94bee99ef373 
+[36mINFO   [0m[Oct 19 17:06:43.269][provider.go: 566] Node clus0-1 - mc name: rendered-master-87e86cb409fb5f914d4c94bee99ef373 
+[36mINFO   [0m[Oct 19 17:06:43.438][provider.go: 566] Node clus0-2 - mc name: rendered-master-87e86cb409fb5f914d4c94bee99ef373 
+[37mDEBUG  [0m[Oct 19 17:06:43.613][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:06:43.614][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:06:43.614][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:06:43.614][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:06:43.614][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:06:43.614][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:06:43.614][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:06:43.614][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:06:43.614][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:06:43.614][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:06:43.614][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:06:43.614][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[36mINFO   [0m[Oct 19 17:06:43.614][operators.go: 130] Found 0 unique CSVs                          
+[36mINFO   [0m[Oct 19 17:06:43.614][provider.go: 299] Operators found: 0                           
+[36mINFO   [0m[Oct 19 17:06:43.614][provider.go: 311] Completed the test environment build process in 6.64 seconds 
+[37mDEBUG  [0m[Oct 19 17:06:43.614][suite.go: 60] Entering access-control suite                
+[37mDEBUG  [0m[Oct 19 17:06:43.614][suite.go: 46] Entering affiliated-certification suite      
+[37mDEBUG  [0m[Oct 19 17:06:43.614][suite.go: 54] Entering lifecycle suite                     
+[37mDEBUG  [0m[Oct 19 17:06:43.615][suite.go: 34] Entering manageability suite                 
+[37mDEBUG  [0m[Oct 19 17:06:43.615][suite.go: 52] Entering networking suite                    
+[37mDEBUG  [0m[Oct 19 17:06:43.615][suite.go: 40] Entering observability suite                 
+[37mDEBUG  [0m[Oct 19 17:06:43.615][suite.go: 35] Entering operator suite                      
+[37mDEBUG  [0m[Oct 19 17:06:43.615][suite.go: 49] Entering platform-alteration suite           
+[37mDEBUG  [0m[Oct 19 17:06:43.615][suite.go: 34] Entering preflight suite                     
+[37mDEBUG  [0m[Oct 19 17:06:43.615][suite.go: 43] Skipping the preflight suite because the Docker Config file is not provided. 
+[37mDEBUG  [0m[Oct 19 17:06:43.615][suite.go: 44] Entering performance suite                   
+[37mDEBUG  [0m[Oct 19 17:06:43.616][suite.go: 204] check container  container: test pod: test-0 ns: tnf  pre stop lifecycle  
+[37mDEBUG  [0m[Oct 19 17:06:43.616][suite.go: 204] check container  container: test pod: test-1 ns: tnf  pre stop lifecycle  
+[37mDEBUG  [0m[Oct 19 17:06:43.616][suite.go: 204] check container  container: test pod: test-d78fbf8d6-2fk6c ns: tnf  pre stop lifecycle  
+[37mDEBUG  [0m[Oct 19 17:06:43.616][suite.go: 204] check container  container: test pod: test-d78fbf8d6-wmj2m ns: tnf  pre stop lifecycle  
+[37mDEBUG  [0m[Oct 19 17:06:43.616][suite.go: 220] check container  container: test pod: test-0 ns: tnf  post start lifecycle  
+[37mDEBUG  [0m[Oct 19 17:06:43.616][suite.go: 220] check container  container: test pod: test-1 ns: tnf  post start lifecycle  
+[37mDEBUG  [0m[Oct 19 17:06:43.616][suite.go: 220] check container  container: test pod: test-d78fbf8d6-2fk6c ns: tnf  post start lifecycle  
+[37mDEBUG  [0m[Oct 19 17:06:43.616][suite.go: 220] check container  container: test pod: test-d78fbf8d6-wmj2m ns: tnf  post start lifecycle  
+[37mDEBUG  [0m[Oct 19 17:06:43.616][suite.go: 237] check container  container: test pod: test-0 ns: tnf  pull policy, should be  IfNotPresent 
+[37mDEBUG  [0m[Oct 19 17:06:43.616][suite.go: 237] check container  container: test pod: test-1 ns: tnf  pull policy, should be  IfNotPresent 
+[37mDEBUG  [0m[Oct 19 17:06:43.617][suite.go: 237] check container  container: test pod: test-d78fbf8d6-2fk6c ns: tnf  pull policy, should be  IfNotPresent 
+[37mDEBUG  [0m[Oct 19 17:06:43.617][suite.go: 237] check container  container: test pod: test-d78fbf8d6-wmj2m ns: tnf  pull policy, should be  IfNotPresent 
+[37mDEBUG  [0m[Oct 19 17:06:43.617][suite.go: 252] check container  container: test pod: test-0 ns: tnf  readiness probe  
+[37mDEBUG  [0m[Oct 19 17:06:43.617][suite.go: 252] check container  container: test pod: test-1 ns: tnf  readiness probe  
+[37mDEBUG  [0m[Oct 19 17:06:43.617][suite.go: 252] check container  container: test pod: test-d78fbf8d6-2fk6c ns: tnf  readiness probe  
+[37mDEBUG  [0m[Oct 19 17:06:43.617][suite.go: 252] check container  container: test pod: test-d78fbf8d6-wmj2m ns: tnf  readiness probe  
+[37mDEBUG  [0m[Oct 19 17:06:43.617][suite.go: 267] check container  container: test pod: test-0 ns: tnf  liveness probe  
+[37mDEBUG  [0m[Oct 19 17:06:43.617][suite.go: 267] check container  container: test pod: test-1 ns: tnf  liveness probe  
+[37mDEBUG  [0m[Oct 19 17:06:43.617][suite.go: 267] check container  container: test pod: test-d78fbf8d6-2fk6c ns: tnf  liveness probe  
+[37mDEBUG  [0m[Oct 19 17:06:43.617][suite.go: 267] check container  container: test pod: test-d78fbf8d6-wmj2m ns: tnf  liveness probe  
+[37mDEBUG  [0m[Oct 19 17:06:43.617][suite.go: 282] check container  container: test pod: test-0 ns: tnf  startup probe  
+[37mDEBUG  [0m[Oct 19 17:06:43.617][suite.go: 282] check container  container: test pod: test-1 ns: tnf  startup probe  
+[37mDEBUG  [0m[Oct 19 17:06:43.617][suite.go: 282] check container  container: test pod: test-d78fbf8d6-2fk6c ns: tnf  startup probe  
+[37mDEBUG  [0m[Oct 19 17:06:43.617][suite.go: 282] check container  container: test pod: test-d78fbf8d6-wmj2m ns: tnf  startup probe  
+[37mDEBUG  [0m[Oct 19 17:06:43.618][suite.go: 298] check pod  tnf   test-0  owner reference     
+[37mDEBUG  [0m[Oct 19 17:06:43.618][suite.go: 298] check pod  tnf   test-1  owner reference     
+[37mDEBUG  [0m[Oct 19 17:06:43.618][suite.go: 298] check pod  tnf   test-d78fbf8d6-2fk6c  owner reference 
+[37mDEBUG  [0m[Oct 19 17:06:43.618][suite.go: 298] check pod  tnf   test-d78fbf8d6-wmj2m  owner reference 
+[36mINFO   [0m[Oct 19 17:06:43.618][podsets.go: 190] Waiting 9m0s for 2 podsets to be ready.      
+[36mINFO   [0m[Oct 19 17:06:43.618][podsets.go: 192] Checking Deployments readiness of Deployments [tnf:test] 
+[37mDEBUG  [0m[Oct 19 17:06:43.773][podsets.go: 152] deployment: test ns: tnf is ready.           
+[36mINFO   [0m[Oct 19 17:06:43.773][podsets.go: 195] Checking StatefulSets readiness of StatefulSets [tnf:test] 
+[37mDEBUG  [0m[Oct 19 17:06:43.933][podsets.go: 175] statefulset: test ns: tnf is ready.          
+[36mINFO   [0m[Oct 19 17:06:43.933][podsets.go: 198] Not ready Deployments: []                    
+[36mINFO   [0m[Oct 19 17:06:43.933][podsets.go: 199] Not ready StatefulSets: []                   
+[37mDEBUG  [0m[Oct 19 17:06:43.933][loghelper.go: 40] Not ready Deployments: []                    
+[37mDEBUG  [0m[Oct 19 17:06:43.933][loghelper.go: 40] Not ready StatefulSets: []                   
+[36mINFO   [0m[Oct 19 17:06:43.933][podrecreation.go: 51] Performing cordon operation on node clus0-2  
+[37mDEBUG  [0m[Oct 19 17:06:44.405][suite.go: 570] node: clus0-2 cordoned                       
+[37mDEBUG  [0m[Oct 19 17:06:44.406][suite.go: 576] draining node: clus0-2 with timeout: 8m0s    
+[37mDEBUG  [0m[Oct 19 17:06:44.406][podrecreation.go: 113] deleting ns=tnf pod=test-0 with deleteForeground mode 
+[37mDEBUG  [0m[Oct 19 17:06:45.574][podrecreation.go: 159] ns=tnf pod=test-0 deleted                    
+[36mINFO   [0m[Oct 19 17:06:45.574][podsets.go: 190] Waiting 8m0s for 2 podsets to be ready.      
+[36mINFO   [0m[Oct 19 17:06:45.575][podsets.go: 192] Checking Deployments readiness of Deployments [tnf:test] 
+[37mDEBUG  [0m[Oct 19 17:06:45.730][podsets.go: 152] deployment: test ns: tnf is ready.           
+[36mINFO   [0m[Oct 19 17:06:45.730][podsets.go: 195] Checking StatefulSets readiness of StatefulSets [tnf:test] 
+[36mINFO   [0m[Oct 19 17:06:45.888][podsets.go: 198] Not ready Deployments: []                    
+[36mINFO   [0m[Oct 19 17:06:45.888][podsets.go: 199] Not ready StatefulSets: [tnf:test]           
+[36mINFO   [0m[Oct 19 17:07:00.888][podsets.go: 192] Checking Deployments readiness of Deployments [] 
+[36mINFO   [0m[Oct 19 17:07:00.889][podsets.go: 195] Checking StatefulSets readiness of StatefulSets [tnf:test] 
+[37mDEBUG  [0m[Oct 19 17:07:01.055][podsets.go: 175] statefulset: test ns: tnf is ready.          
+[36mINFO   [0m[Oct 19 17:07:01.056][podsets.go: 198] Not ready Deployments: []                    
+[36mINFO   [0m[Oct 19 17:07:01.056][podsets.go: 199] Not ready StatefulSets: []                   
+[37mDEBUG  [0m[Oct 19 17:07:01.056][loghelper.go: 40] Not ready Deployments: []                    
+[37mDEBUG  [0m[Oct 19 17:07:01.056][loghelper.go: 40] Not ready StatefulSets: []                   
+[36mINFO   [0m[Oct 19 17:07:01.056][podrecreation.go: 51] Performing uncordon operation on node clus0-2 
+[36mINFO   [0m[Oct 19 17:07:02.642][podrecreation.go: 51] Performing cordon operation on node clus0-0  
+[37mDEBUG  [0m[Oct 19 17:07:03.963][suite.go: 570] node: clus0-0 cordoned                       
+[37mDEBUG  [0m[Oct 19 17:07:03.964][suite.go: 576] draining node: clus0-0 with timeout: 9m0s    
+[37mDEBUG  [0m[Oct 19 17:07:03.964][podrecreation.go: 113] deleting ns=tnf pod=test-1 with deleteForeground mode 
+[37mDEBUG  [0m[Oct 19 17:07:04.299][podrecreation.go: 113] deleting ns=tnf pod=test-d78fbf8d6-wmj2m with deleteForeground mode 
+[37mDEBUG  [0m[Oct 19 17:07:06.065][podrecreation.go: 159] ns=tnf pod=test-d78fbf8d6-wmj2m deleted      
+[37mDEBUG  [0m[Oct 19 17:07:06.233][podrecreation.go: 159] ns=tnf pod=test-1 deleted                    
+[36mINFO   [0m[Oct 19 17:07:06.233][podsets.go: 190] Waiting 9m0s for 2 podsets to be ready.      
+[36mINFO   [0m[Oct 19 17:07:06.233][podsets.go: 192] Checking Deployments readiness of Deployments [tnf:test] 
+[36mINFO   [0m[Oct 19 17:07:06.400][podsets.go: 195] Checking StatefulSets readiness of StatefulSets [tnf:test] 
+[36mINFO   [0m[Oct 19 17:07:06.572][podsets.go: 198] Not ready Deployments: [tnf:test]            
+[36mINFO   [0m[Oct 19 17:07:06.572][podsets.go: 199] Not ready StatefulSets: [tnf:test]           
+[36mINFO   [0m[Oct 19 17:07:21.573][podsets.go: 192] Checking Deployments readiness of Deployments [tnf:test] 
+[37mDEBUG  [0m[Oct 19 17:07:21.738][podsets.go: 152] deployment: test ns: tnf is ready.           
+[36mINFO   [0m[Oct 19 17:07:21.738][podsets.go: 195] Checking StatefulSets readiness of StatefulSets [tnf:test] 
+[37mDEBUG  [0m[Oct 19 17:07:21.907][podsets.go: 175] statefulset: test ns: tnf is ready.          
+[36mINFO   [0m[Oct 19 17:07:21.907][podsets.go: 198] Not ready Deployments: []                    
+[36mINFO   [0m[Oct 19 17:07:21.907][podsets.go: 199] Not ready StatefulSets: []                   
+[37mDEBUG  [0m[Oct 19 17:07:21.907][loghelper.go: 40] Not ready Deployments: []                    
+[37mDEBUG  [0m[Oct 19 17:07:21.907][loghelper.go: 40] Not ready StatefulSets: []                   
+[36mINFO   [0m[Oct 19 17:07:21.907][podrecreation.go: 51] Performing uncordon operation on node clus0-0 
+[36mINFO   [0m[Oct 19 17:07:22.734][podrecreation.go: 51] Performing cordon operation on node clus0-1  
+[37mDEBUG  [0m[Oct 19 17:07:24.042][suite.go: 570] node: clus0-1 cordoned                       
+[37mDEBUG  [0m[Oct 19 17:07:24.054][suite.go: 576] draining node: clus0-1 with timeout: 8m0s    
+[37mDEBUG  [0m[Oct 19 17:07:24.054][podrecreation.go: 113] deleting ns=tnf pod=test-d78fbf8d6-2fk6c with deleteForeground mode 
+[37mDEBUG  [0m[Oct 19 17:07:26.465][podrecreation.go: 159] ns=tnf pod=test-d78fbf8d6-2fk6c deleted      
+[36mINFO   [0m[Oct 19 17:07:26.465][podsets.go: 190] Waiting 8m0s for 2 podsets to be ready.      
+[36mINFO   [0m[Oct 19 17:07:26.465][podsets.go: 192] Checking Deployments readiness of Deployments [tnf:test] 
+[36mINFO   [0m[Oct 19 17:07:26.631][podsets.go: 195] Checking StatefulSets readiness of StatefulSets [tnf:test] 
+[37mDEBUG  [0m[Oct 19 17:07:26.797][podsets.go: 175] statefulset: test ns: tnf is ready.          
+[36mINFO   [0m[Oct 19 17:07:26.797][podsets.go: 198] Not ready Deployments: [tnf:test]            
+[36mINFO   [0m[Oct 19 17:07:26.797][podsets.go: 199] Not ready StatefulSets: []                   
+[36mINFO   [0m[Oct 19 17:07:41.798][podsets.go: 192] Checking Deployments readiness of Deployments [tnf:test] 
+[37mDEBUG  [0m[Oct 19 17:07:41.957][podsets.go: 152] deployment: test ns: tnf is ready.           
+[36mINFO   [0m[Oct 19 17:07:41.957][podsets.go: 195] Checking StatefulSets readiness of StatefulSets [] 
+[36mINFO   [0m[Oct 19 17:07:41.957][podsets.go: 198] Not ready Deployments: []                    
+[36mINFO   [0m[Oct 19 17:07:41.957][podsets.go: 199] Not ready StatefulSets: []                   
+[37mDEBUG  [0m[Oct 19 17:07:41.957][loghelper.go: 40] Not ready Deployments: []                    
+[37mDEBUG  [0m[Oct 19 17:07:41.957][loghelper.go: 40] Not ready StatefulSets: []                   
+[36mINFO   [0m[Oct 19 17:07:41.957][podrecreation.go: 51] Performing uncordon operation on node clus0-1 
+[36mINFO   [0m[Oct 19 17:07:43.096][podrecreation.go: 51] Performing uncordon operation on node clus0-1 
+[36mINFO   [0m[Oct 19 17:07:43.579][podrecreation.go: 51] Performing uncordon operation on node clus0-0 
+[36mINFO   [0m[Oct 19 17:07:44.056][podrecreation.go: 51] Performing uncordon operation on node clus0-2 
+[37mDEBUG  [0m[Oct 19 17:07:44.692][utils.go: 38] config file already loaded, return previous element 
+[36mINFO   [0m[Oct 19 17:07:45.020][autodiscover.go: 154] parsed pods under test labels: [{LabelKey:test-network-function.com/generic LabelValue:target}] 
+[36mINFO   [0m[Oct 19 17:07:45.020][autodiscover.go: 155] parsed operators under test labels: [{LabelKey:test-network-function.com/operator1 LabelValue:new} {LabelKey:test-network-function.com/operator LabelValue:}] 
+[37mDEBUG  [0m[Oct 19 17:07:45.193][autodiscover_operators.go: 135] Searching subscriptions in namespace All Namespaces 
+[36mINFO   [0m[Oct 19 17:07:45.355][autodiscover_operators.go: 144] Found 2 subscriptions in the target namespaces 
+[36mINFO   [0m[Oct 19 17:07:45.355][autodiscover_operators.go: 146]  Subscriptions name: lvms-operator (ns: openshift-storage) 
+[36mINFO   [0m[Oct 19 17:07:45.355][autodiscover_operators.go: 146]  Subscriptions name: test-subscription (ns: tnf) 
+[37mDEBUG  [0m[Oct 19 17:07:45.355][autodiscover_operators.go: 112] Searching CSVs in namespace All              
+[36mINFO   [0m[Oct 19 17:07:45.678][autodiscover_operators.go: 121] Found 2 CSVs:                                
+[36mINFO   [0m[Oct 19 17:07:45.678][autodiscover_operators.go: 123]  CSV name: packageserver (ns: openshift-operator-lifecycle-manager) 
+[36mINFO   [0m[Oct 19 17:07:45.678][autodiscover_operators.go: 123]  CSV name: lvms-operator.v4.13.1 (ns: openshift-storage) 
+[37mDEBUG  [0m[Oct 19 17:07:46.004][autodiscover_pods.go: 34] Searching Pods with label test-network-function.com/generic=target 
+[37mDEBUG  [0m[Oct 19 17:07:46.340][autodiscover_pods.go: 34] Searching Pods with label test-network-function.com/app=tnf-debug 
+[36mINFO   [0m[Oct 19 17:07:47.722][autodiscover_scales.go: 40] Target CRD crdexamples.test-network-function.com is not scalable. Skipping search of scalable CRs. 
+[37mDEBUG  [0m[Oct 19 17:07:47.723][autodiscover_operators.go: 69] Searching CSVs in namespace {tnf}            
+[37mDEBUG  [0m[Oct 19 17:07:47.723][autodiscover_operators.go: 76] Searching CSVs with label test-network-function.com/operator1=new 
+[37mDEBUG  [0m[Oct 19 17:07:47.881][autodiscover_operators.go: 76] Searching CSVs with label test-network-function.com/operator 
+[36mINFO   [0m[Oct 19 17:07:48.038][autodiscover_operators.go: 91] Found 0 CSVs:                                
+[37mDEBUG  [0m[Oct 19 17:07:48.055][autodiscover_operators.go: 135] Searching subscriptions in namespace tnf     
+[36mINFO   [0m[Oct 19 17:07:48.213][autodiscover_operators.go: 144] Found 1 subscriptions in the target namespaces 
+[36mINFO   [0m[Oct 19 17:07:48.213][autodiscover_operators.go: 146]  Subscriptions name: test-subscription (ns: tnf) 
+[36mINFO   [0m[Oct 19 17:07:48.678][autodiscover.go: 276] OpenShift Version found: 4.13.0              
+[36mINFO   [0m[Oct 19 17:07:48.997][autodiscover_podset.go: 80] Deployment test found in ns tnf              
+[36mINFO   [0m[Oct 19 17:07:49.152][autodiscover_podset.go: 113] StatefulSet test found in ns tnf             
+[36mINFO   [0m[Oct 19 17:07:50.462][operators.go: 130] Found 2 unique CSVs                          
+[36mINFO   [0m[Oct 19 17:07:50.463][operators.go: 132]   CSV: packageserver                         
+[36mINFO   [0m[Oct 19 17:07:50.463][operators.go: 132]   CSV: lvms-operator.v4.13.1                 
+[36mINFO   [0m[Oct 19 17:07:50.630][operators.go: 185] Getting installplans for op lvms-operator.v4.13.1 (subs lvms-operator ns openshift-storage) 
+[33mWARNING[0m[Oct 19 17:07:50.630][operators.go: 183] Subscription not found for CSV: packageserver (ns openshift-operator-lifecycle-manager) 
+[36mINFO   [0m[Oct 19 17:07:50.630][operators.go: 185] Getting installplans for op packageserver (subs  ns ) 
+[36mINFO   [0m[Oct 19 17:07:50.630][provider.go: 566] Node clus0-0 - mc name: rendered-master-87e86cb409fb5f914d4c94bee99ef373 
+[36mINFO   [0m[Oct 19 17:07:50.810][provider.go: 566] Node clus0-1 - mc name: rendered-master-87e86cb409fb5f914d4c94bee99ef373 
+[36mINFO   [0m[Oct 19 17:07:51.020][provider.go: 566] Node clus0-2 - mc name: rendered-master-87e86cb409fb5f914d4c94bee99ef373 
+[37mDEBUG  [0m[Oct 19 17:07:51.390][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:07:51.391][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:07:51.391][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:07:51.391][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:07:51.391][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:07:51.391][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:07:51.391][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:07:51.391][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:07:51.391][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:07:51.391][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:07:51.391][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:07:51.391][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[36mINFO   [0m[Oct 19 17:07:51.391][operators.go: 130] Found 0 unique CSVs                          
+[36mINFO   [0m[Oct 19 17:07:51.391][provider.go: 299] Operators found: 0                           
+[36mINFO   [0m[Oct 19 17:07:51.391][provider.go: 311] Completed the test environment build process in 6.70 seconds 
+[36mINFO   [0m[Oct 19 17:07:53.160][podsets.go: 44] deployment: test ns: tnf is not ready yet    
+[36mINFO   [0m[Oct 19 17:07:54.315][podsets.go: 44] deployment: test ns: tnf is not ready yet    
+[36mINFO   [0m[Oct 19 17:07:55.476][podsets.go: 44] deployment: test ns: tnf is not ready yet    
+[36mINFO   [0m[Oct 19 17:07:56.632][podsets.go: 44] deployment: test ns: tnf is not ready yet    
+[36mINFO   [0m[Oct 19 17:07:57.841][podsets.go: 44] deployment: test ns: tnf is not ready yet    
+[36mINFO   [0m[Oct 19 17:07:59.000][podsets.go: 44] deployment: test ns: tnf is not ready yet    
+[36mINFO   [0m[Oct 19 17:08:00.160][podsets.go: 44] deployment: test ns: tnf is not ready yet    
+[36mINFO   [0m[Oct 19 17:08:01.317][podsets.go: 44] deployment: test ns: tnf is not ready yet    
+[36mINFO   [0m[Oct 19 17:08:02.473][podsets.go: 44] deployment: test ns: tnf is not ready yet    
+[36mINFO   [0m[Oct 19 17:08:03.631][podsets.go: 44] deployment: test ns: tnf is not ready yet    
+[36mINFO   [0m[Oct 19 17:08:04.789][podsets.go: 44] deployment: test ns: tnf is not ready yet    
+[36mINFO   [0m[Oct 19 17:08:05.945][podsets.go: 44] deployment: test ns: tnf is not ready yet    
+[36mINFO   [0m[Oct 19 17:08:07.100][podsets.go: 44] deployment: test ns: tnf is not ready yet    
+[37mDEBUG  [0m[Oct 19 17:08:08.254][utils.go: 38] config file already loaded, return previous element 
+[36mINFO   [0m[Oct 19 17:08:08.561][autodiscover.go: 154] parsed pods under test labels: [{LabelKey:test-network-function.com/generic LabelValue:target}] 
+[36mINFO   [0m[Oct 19 17:08:08.561][autodiscover.go: 155] parsed operators under test labels: [{LabelKey:test-network-function.com/operator1 LabelValue:new} {LabelKey:test-network-function.com/operator LabelValue:}] 
+[37mDEBUG  [0m[Oct 19 17:08:08.725][autodiscover_operators.go: 135] Searching subscriptions in namespace All Namespaces 
+[36mINFO   [0m[Oct 19 17:08:08.880][autodiscover_operators.go: 144] Found 2 subscriptions in the target namespaces 
+[36mINFO   [0m[Oct 19 17:08:08.880][autodiscover_operators.go: 146]  Subscriptions name: lvms-operator (ns: openshift-storage) 
+[36mINFO   [0m[Oct 19 17:08:08.880][autodiscover_operators.go: 146]  Subscriptions name: test-subscription (ns: tnf) 
+[37mDEBUG  [0m[Oct 19 17:08:08.881][autodiscover_operators.go: 112] Searching CSVs in namespace All              
+[36mINFO   [0m[Oct 19 17:08:09.199][autodiscover_operators.go: 121] Found 2 CSVs:                                
+[36mINFO   [0m[Oct 19 17:08:09.200][autodiscover_operators.go: 123]  CSV name: packageserver (ns: openshift-operator-lifecycle-manager) 
+[36mINFO   [0m[Oct 19 17:08:09.200][autodiscover_operators.go: 123]  CSV name: lvms-operator.v4.13.1 (ns: openshift-storage) 
+[37mDEBUG  [0m[Oct 19 17:08:09.526][autodiscover_pods.go: 34] Searching Pods with label test-network-function.com/generic=target 
+[37mDEBUG  [0m[Oct 19 17:08:09.880][autodiscover_pods.go: 34] Searching Pods with label test-network-function.com/app=tnf-debug 
+[36mINFO   [0m[Oct 19 17:08:11.375][autodiscover_scales.go: 40] Target CRD crdexamples.test-network-function.com is not scalable. Skipping search of scalable CRs. 
+[37mDEBUG  [0m[Oct 19 17:08:11.375][autodiscover_operators.go: 69] Searching CSVs in namespace {tnf}            
+[37mDEBUG  [0m[Oct 19 17:08:11.375][autodiscover_operators.go: 76] Searching CSVs with label test-network-function.com/operator1=new 
+[37mDEBUG  [0m[Oct 19 17:08:11.531][autodiscover_operators.go: 76] Searching CSVs with label test-network-function.com/operator 
+[36mINFO   [0m[Oct 19 17:08:11.687][autodiscover_operators.go: 91] Found 0 CSVs:                                
+[37mDEBUG  [0m[Oct 19 17:08:11.687][autodiscover_operators.go: 135] Searching subscriptions in namespace tnf     
+[36mINFO   [0m[Oct 19 17:08:11.842][autodiscover_operators.go: 144] Found 1 subscriptions in the target namespaces 
+[36mINFO   [0m[Oct 19 17:08:11.842][autodiscover_operators.go: 146]  Subscriptions name: test-subscription (ns: tnf) 
+[36mINFO   [0m[Oct 19 17:08:12.314][autodiscover.go: 276] OpenShift Version found: 4.13.0              
+[36mINFO   [0m[Oct 19 17:08:12.622][autodiscover_podset.go: 80] Deployment test found in ns tnf              
+[36mINFO   [0m[Oct 19 17:08:12.776][autodiscover_podset.go: 113] StatefulSet test found in ns tnf             
+[36mINFO   [0m[Oct 19 17:08:14.078][operators.go: 130] Found 2 unique CSVs                          
+[36mINFO   [0m[Oct 19 17:08:14.079][operators.go: 132]   CSV: packageserver                         
+[36mINFO   [0m[Oct 19 17:08:14.079][operators.go: 132]   CSV: lvms-operator.v4.13.1                 
+[36mINFO   [0m[Oct 19 17:08:14.236][operators.go: 185] Getting installplans for op lvms-operator.v4.13.1 (subs lvms-operator ns openshift-storage) 
+[33mWARNING[0m[Oct 19 17:08:14.236][operators.go: 183] Subscription not found for CSV: packageserver (ns openshift-operator-lifecycle-manager) 
+[36mINFO   [0m[Oct 19 17:08:14.236][operators.go: 185] Getting installplans for op packageserver (subs  ns ) 
+[36mINFO   [0m[Oct 19 17:08:14.236][provider.go: 566] Node clus0-0 - mc name: rendered-master-87e86cb409fb5f914d4c94bee99ef373 
+[36mINFO   [0m[Oct 19 17:08:14.408][provider.go: 566] Node clus0-1 - mc name: rendered-master-87e86cb409fb5f914d4c94bee99ef373 
+[36mINFO   [0m[Oct 19 17:08:14.580][provider.go: 566] Node clus0-2 - mc name: rendered-master-87e86cb409fb5f914d4c94bee99ef373 
+[37mDEBUG  [0m[Oct 19 17:08:14.783][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:08:14.783][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:08:14.783][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:08:14.783][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:08:14.783][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:08:14.783][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:08:14.783][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:08:14.783][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:08:14.783][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:08:14.784][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:08:14.784][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:08:14.784][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[36mINFO   [0m[Oct 19 17:08:14.784][operators.go: 130] Found 0 unique CSVs                          
+[36mINFO   [0m[Oct 19 17:08:14.784][provider.go: 299] Operators found: 0                           
+[36mINFO   [0m[Oct 19 17:08:14.784][provider.go: 311] Completed the test environment build process in 6.53 seconds 
+[37mDEBUG  [0m[Oct 19 17:08:16.369][utils.go: 38] config file already loaded, return previous element 
+[36mINFO   [0m[Oct 19 17:08:16.678][autodiscover.go: 154] parsed pods under test labels: [{LabelKey:test-network-function.com/generic LabelValue:target}] 
+[36mINFO   [0m[Oct 19 17:08:16.678][autodiscover.go: 155] parsed operators under test labels: [{LabelKey:test-network-function.com/operator1 LabelValue:new} {LabelKey:test-network-function.com/operator LabelValue:}] 
+[37mDEBUG  [0m[Oct 19 17:08:16.844][autodiscover_operators.go: 135] Searching subscriptions in namespace All Namespaces 
+[36mINFO   [0m[Oct 19 17:08:17.001][autodiscover_operators.go: 144] Found 2 subscriptions in the target namespaces 
+[36mINFO   [0m[Oct 19 17:08:17.001][autodiscover_operators.go: 146]  Subscriptions name: lvms-operator (ns: openshift-storage) 
+[36mINFO   [0m[Oct 19 17:08:17.001][autodiscover_operators.go: 146]  Subscriptions name: test-subscription (ns: tnf) 
+[37mDEBUG  [0m[Oct 19 17:08:17.001][autodiscover_operators.go: 112] Searching CSVs in namespace All              
+[36mINFO   [0m[Oct 19 17:08:17.169][autodiscover_operators.go: 121] Found 2 CSVs:                                
+[36mINFO   [0m[Oct 19 17:08:17.169][autodiscover_operators.go: 123]  CSV name: packageserver (ns: openshift-operator-lifecycle-manager) 
+[36mINFO   [0m[Oct 19 17:08:17.169][autodiscover_operators.go: 123]  CSV name: lvms-operator.v4.13.1 (ns: openshift-storage) 
+[37mDEBUG  [0m[Oct 19 17:08:17.485][autodiscover_pods.go: 34] Searching Pods with label test-network-function.com/generic=target 
+[37mDEBUG  [0m[Oct 19 17:08:17.810][autodiscover_pods.go: 34] Searching Pods with label test-network-function.com/app=tnf-debug 
+[36mINFO   [0m[Oct 19 17:08:19.152][autodiscover_scales.go: 40] Target CRD crdexamples.test-network-function.com is not scalable. Skipping search of scalable CRs. 
+[37mDEBUG  [0m[Oct 19 17:08:19.152][autodiscover_operators.go: 69] Searching CSVs in namespace {tnf}            
+[37mDEBUG  [0m[Oct 19 17:08:19.152][autodiscover_operators.go: 76] Searching CSVs with label test-network-function.com/operator1=new 
+[37mDEBUG  [0m[Oct 19 17:08:19.305][autodiscover_operators.go: 76] Searching CSVs with label test-network-function.com/operator 
+[36mINFO   [0m[Oct 19 17:08:19.458][autodiscover_operators.go: 91] Found 0 CSVs:                                
+[37mDEBUG  [0m[Oct 19 17:08:19.458][autodiscover_operators.go: 135] Searching subscriptions in namespace tnf     
+[36mINFO   [0m[Oct 19 17:08:19.614][autodiscover_operators.go: 144] Found 1 subscriptions in the target namespaces 
+[36mINFO   [0m[Oct 19 17:08:19.614][autodiscover_operators.go: 146]  Subscriptions name: test-subscription (ns: tnf) 
+[36mINFO   [0m[Oct 19 17:08:20.082][autodiscover.go: 276] OpenShift Version found: 4.13.0              
+[36mINFO   [0m[Oct 19 17:08:20.391][autodiscover_podset.go: 80] Deployment test found in ns tnf              
+[36mINFO   [0m[Oct 19 17:08:20.547][autodiscover_podset.go: 113] StatefulSet test found in ns tnf             
+[36mINFO   [0m[Oct 19 17:08:21.850][operators.go: 130] Found 2 unique CSVs                          
+[36mINFO   [0m[Oct 19 17:08:21.850][operators.go: 132]   CSV: packageserver                         
+[36mINFO   [0m[Oct 19 17:08:21.850][operators.go: 132]   CSV: lvms-operator.v4.13.1                 
+[36mINFO   [0m[Oct 19 17:08:22.004][operators.go: 185] Getting installplans for op lvms-operator.v4.13.1 (subs lvms-operator ns openshift-storage) 
+[33mWARNING[0m[Oct 19 17:08:22.004][operators.go: 183] Subscription not found for CSV: packageserver (ns openshift-operator-lifecycle-manager) 
+[36mINFO   [0m[Oct 19 17:08:22.004][operators.go: 185] Getting installplans for op packageserver (subs  ns ) 
+[36mINFO   [0m[Oct 19 17:08:22.004][provider.go: 566] Node clus0-0 - mc name: rendered-master-87e86cb409fb5f914d4c94bee99ef373 
+[36mINFO   [0m[Oct 19 17:08:22.179][provider.go: 566] Node clus0-1 - mc name: rendered-master-87e86cb409fb5f914d4c94bee99ef373 
+[36mINFO   [0m[Oct 19 17:08:22.351][provider.go: 566] Node clus0-2 - mc name: rendered-master-87e86cb409fb5f914d4c94bee99ef373 
+[37mDEBUG  [0m[Oct 19 17:08:22.530][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:08:22.530][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:08:22.530][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:08:22.530][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:08:22.530][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:08:22.530][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:08:22.530][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:08:22.530][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:08:22.530][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:08:22.530][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:08:22.531][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[37mDEBUG  [0m[Oct 19 17:08:22.531][provider.go: 424] parsed image, repo: quay.io, name:testnetworkfunction/cnf-test-partner, tag: latest, digest: sha256:cca46b755479e1ca7390c9b824ca50057e14375405c2294efb7907d7a0a20c6d 
+[36mINFO   [0m[Oct 19 17:08:22.531][operators.go: 130] Found 0 unique CSVs                          
+[36mINFO   [0m[Oct 19 17:08:22.531][provider.go: 299] Operators found: 0                           
+[36mINFO   [0m[Oct 19 17:08:22.531][provider.go: 311] Completed the test environment build process in 6.16 seconds 
+[37mDEBUG  [0m[Oct 19 17:08:22.531][isolation.go: 71] container: test pod: test-0 ns: tnf has CPU requests 250 (milli) that has to be a whole unit. 
+[37mDEBUG  [0m[Oct 19 17:08:22.531][isolation.go: 71] container: test pod: test-1 ns: tnf has CPU requests 250 (milli) that has to be a whole unit. 
+[37mDEBUG  [0m[Oct 19 17:08:22.531][isolation.go: 71] container: test pod: test-d78fbf8d6-rtxbr ns: tnf has CPU requests 250 (milli) that has to be a whole unit. 
+[37mDEBUG  [0m[Oct 19 17:08:22.531][isolation.go: 71] container: test pod: test-d78fbf8d6-vvlwx ns: tnf has CPU requests 250 (milli) that has to be a whole unit. 
+[36mINFO   [0m[Oct 19 17:08:22.636][archiver.go: 45] Compressing results artifacts into /Users/amal/Documents/GitHub/cnf-certification-test/cnf-certification-test/20231019-170822-cnf-test-results.tar.gz 
+[37mDEBUG  [0m[Oct 19 17:08:22.637][archiver.go: 59] Zipping file /Users/amal/Documents/GitHub/cnf-certification-test/cnf-certification-test/claim.json 
+[37mDEBUG  [0m[Oct 19 17:08:22.666][archiver.go: 59] Zipping file /Users/amal/Documents/GitHub/cnf-certification-test/cnf-certification-test/cnf-certification-tests_junit.xml 
+[37mDEBUG  [0m[Oct 19 17:08:22.667][archiver.go: 59] Zipping file /Users/amal/Documents/GitHub/cnf-certification-test/cnf-certification-test/claimjson.js 
+[37mDEBUG  [0m[Oct 19 17:08:22.700][archiver.go: 59] Zipping file /Users/amal/Documents/GitHub/cnf-certification-test/cnf-certification-test/results.html 
