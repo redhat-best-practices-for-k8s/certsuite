@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNF Certification Test</title>
+    <link rel="shortcut icon"
+          type="image/svg+xml"
+          sizes="any"
+          href="https://ux.redhat.com/assets/logo-red-hat.svg">
+    <link rel="stylesheet" href="https://ux.redhat.com/assets/packages/@rhds/elements/elements/rh-footer/rh-footer-lightdom.css">
+    <script type="importmap">
+      {
+        "imports": {
+          "@rhds/elements/": "https://ga.jspm.io/npm:@rhds/elements@1.2.0/elements/",
+          "@rhds/elements/lib/": "https://ga.jspm.io/npm:@rhds/elements@1.2.0/elements/lib/",
+          "@patternfly/elements/": "https://ga.jspm.io/npm:@patternfly/elements@2.4.0/"
+        },
+        "scopes": {
+          "https://ga.jspm.io/": {
+            "@lit/reactive-element": "https://ga.jspm.io/npm:@lit/reactive-element@1.6.3/reactive-element.js",
+            "@lit/reactive-element/decorators/": "https://ga.jspm.io/npm:@lit/reactive-element@1.6.3/decorators/",
+            "@patternfly/elements/": "https://ga.jspm.io/npm:@patternfly/elements@2.4.0/",
+            "@patternfly/pfe-core": "https://ga.jspm.io/npm:@patternfly/pfe-core@2.4.1/core.js",
+            "@patternfly/pfe-core/": "https://ga.jspm.io/npm:@patternfly/pfe-core@2.4.1/",
+            "@rhds/tokens/media.js": "https://ga.jspm.io/npm:@rhds/tokens@1.1.2/js/media.js",
+            "lit": "https://ga.jspm.io/npm:lit@2.8.0/index.js",
+            "lit-element/lit-element.js": "https://ga.jspm.io/npm:lit-element@3.3.3/lit-element.js",
+            "lit-html": "https://ga.jspm.io/npm:lit-html@2.8.0/lit-html.js",
+            "lit-html/": "https://ga.jspm.io/npm:lit-html@2.8.0/",
+            "lit/": "https://ga.jspm.io/npm:lit@2.8.0/",
+            "tslib": "https://ga.jspm.io/npm:tslib@2.6.2/tslib.es6.mjs"
+          },
+          "https://ga.jspm.io/npm:@patternfly/elements@2.4.0/": {
+            "lit": "https://ga.jspm.io/npm:lit@2.6.1/index.js",
+            "lit/": "https://ga.jspm.io/npm:lit@2.6.1/"
+          }
+        }
+      }
+    </script>
+
+    <style>
+      /* Add some basic styling */
+      html, body {
+        font-family: var(--rh-font-family-body-text, RedHatText, "Red Hat Text", "Noto Sans Arabic", "Noto Sans Hebrew", Helvetica, Arial, sans-serif);
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+
+      body {
+        display: grid;
+      }
+
+      header {
+        height: var(--rh-length-5xl, 80px);
+        background: var(--rh-color-surface-darkest, #151515);
+        color: var(--rh-color-text-primary-on-dark, #ffffff);
+        padding-inline : var(--rh-space-xl, 24px);
+        display: flex;
+        align-items: center;
+        gap: var(--rh-space-xl, 24px);
+      }
+
+      h1, h2, h3, h4 {
+        font-family: var(--rh-font-family-heading, RedHatDisplay, "Red Hat Display", "Noto Sans Arabic", "Noto Sans Hebrew", "Noto Sans JP", "Noto Sans KR", "Noto Sans Malayalam", "Noto Sans SC", "Noto Sans TC", "Noto Sans Thai", Helvetica, Arial, sans-serif);
+      }
+
+      h1 {
+        font-size: var(--rh-font-size-heading-2xl, 3rem);
+        margin: 0;
+      }
+
+      main {
+        margin: var(--rh-space-xl, 24px);
+        display: flex;
+        gap: var(--rh-space-lg, 16px);
+        justify-content: space-between;
+        flex-flow: row wrap;
+      }
+
+      form {
+        display: contents;
+      }
+
+      #show-logs::part(button) {
+        margin-inline-start: auto;
+      }
+
+      fieldset {
+        display: grid;
+        flex: 1 1 100%;
+      }
+
+      label {
+        display: block;
+        font-weight: var(--rh-font-weight-heading-bold, 700);
+        margin-block-end: var(--rh-space-sm, 6px);
+      }
+
+      rh-dialog::part(footer) {
+        padding-block-start: var(--rh-space-lg, 16px);
+      }
+
+      rh-footer-universal {
+        margin-block-start: auto;
+      }
+      main, :not(:defined) {
+        opacity: var(--main-opacity, 1);
+        transition: opacity 200ms ease;
+      }
+    </style>
+
+      <script type="module">
+      await Promise.all(['rh-button','pf-text-input'].map(x => customElements.whenDefined(x)));
+      document.body.style.removeProperty('--main-opacity');
+      </script>
+
+    <script type="module">
+      // import design system element definitions,
+      // which auto-register their tagnames once executed
+      import '@rhds/elements/rh-button/rh-button.js';
+      import '@rhds/elements/rh-dialog/rh-dialog.js';
+      import '@rhds/elements/rh-footer/rh-footer-universal.js';
+      import '@patternfly/elements/pf-text-input/pf-text-input.js';
+      // set up interactive elements
+      // use dynamic import to improve page load times
+      document.getElementById('logs').addEventListener('open', () => import('./logs.js'));
+      document.getElementById('form').addEventListener('submit', async function(event) {
+        // prevent page from redirecting to form endpoint.
+        // consider using a multi-page architecture instead.
+        event.preventDefault();
+        const { submit } = await import('./submit.js');
+        // submit the form
+        const { heading, message, state } = await submit(event.target);
+        // display the result
+        const { toast } = await import('./toast.js');
+        await toast({ heading, message, state, timeout: 20_000 });
+      });
+      document.getElementById('show-logs').addEventListener('click', function(event) {
+        const socket = new WebSocket('ws://localhost:8080/logstream');
+        const code = document
+        .getElementById('logs')
+        .querySelector('rh-code-block');
+        code.textContent = '';
+        // Handle incoming log messages
+        socket.addEventListener('message', function (event) {
+          code.textContent += event.data + '\n';
+        });
+      });
+    </script>
+
+  </head>
+  <body style="--main-opacity:0;">
+    <header>
+      <img alt="Red Hat"
+           src="https://static.redhat.com/libs/redhat/brand-assets/2/corp/logo--on-dark.svg"
+           width="100"
+           height="30">
+    </header>
+
+    <main>
+      <h1>CNF Certification Test</h1>
+
+      <form id="form">
+        <!-- see https://ux.redhat.com/patterns/form/ for design guidelines-->
+
+        <fieldset>
+          <legend>Environment Configuration</legend>
+          <label for="kubeConfigPath">Path of KubeConfig file:</label>
+          <pf-text-input id="kubeConfigPath"
+                         name="kubeConfigPath"
+                         required
+                         pattern="\/"
+                         placeholder="/home/username/project/kubeconfig.yml"></pf-text-input>
+        </fieldset>
+
+        <fieldset>
+          <legend>TNF Configuration</legend>
+
+          <label for="targetNameSpaces">Target Namespaces</label>
+          <pf-text-input id="targetNameSpaces"
+                         name="targetNameSpaces"></pf-text-input>
+
+          <label for="podsUnderTestLabels">podsUnderTestLabels:</label>
+          <pf-text-input id="podsUnderTestLabels"
+                         name="podsUnderTestLabels"
+                         placeholder="test-network-function.com/generic: target"></pf-text-input>
+        </fieldset>
+
+        <fieldset>
+          <legend>Select a Test</legend>
+          <label>
+            <input type="checkbox"
+                   value="lifecycle"
+                   name="selectedOptions"> Lifecycle
+          </label>
+          <label>
+            <input type="checkbox"
+                   value="certification"
+                   name="selectedOptions"> Certification
+          </label>
+          <label>
+            <input type="checkbox"
+                   value="access-control"
+                   name="selectedOptions"> Access Control
+          </label>
+        </fieldset>
+
+        <rh-button type="submit" name="submit">Run Certification Test</rh-button>
+      </form>
+      <rh-button id="show-logs" type="button" variant="secondary">Show Log</rh-button>
+    </main>
+
+    <rh-dialog id="logs" trigger="show-logs">
+      <h2>Logs</h2>
+      <rh-code-block>No Logs Found</rh-code-block>
+      <rh-button slot="footer" onclick="this.closest('rh-dialog').close();">Close</rh-button>
+    </rh-dialog>
+
+    <!-- Universal Footer -->
+    <rh-footer-universal>
+      <h3 slot="links-primary" data-analytics-text="Red Hat legal and privacy links" hidden>Red Hat legal and privacy links</h3>
+      <ul slot="links-primary" data-analytics-region="page-footer-bottom-primary">
+        <li><a href="https://redhat.com/en/about/company" data-analytics-category="Footer|Corporate" data-analytics-text="About Red Hat">About Red Hat</a></li>
+        <li><a href="https://redhat.com/en/jobs" data-analytics-category="Footer|Corporate" data-analytics-text="Jobs">Jobs</a></li>
+        <li><a href="https://redhat.com/en/events" data-analytics-category="Footer|Corporate" data-analytics-text="Events">Events</a></li>
+        <li><a href="https://redhat.com/en/about/office-locations" data-analytics-category="Footer|Corporate" data-analytics-text="Locations">Locations</a></li>
+        <li><a href="https://redhat.com/en/contact" data-analytics-category="Footer|Corporate" data-analytics-text="Contact Red Hat">Contact Red Hat</a></li>
+        <li><a href="https://redhat.com/en/blog" data-analytics-category="Footer|Corporate" data-analytics-text="Red Hat Blog">Red Hat Blog</a></li>
+        <li><a href="https://redhat.com/en/about/our-culture/diversity-equity-inclusion" data-analytics-category="Footer|Corporate" data-analytics-text="Diversity equity and inclusion">Diversity, equity, and inclusion</a></li>
+        <li><a href="https://coolstuff.redhat.com/" data-analytics-category="Footer|Corporate" data-analytics-text="Cool Stuff Store">Cool Stuff Store</a></li>
+        <li><a href="https://www.redhat.com/en/summit" data-analytics-category="Footer|Corporate" data-analytics-text="Red Hat Summit">Red Hat Summit</a></li>
+      </ul>
+      <rh-footer-copyright slot="links-secondary">© 2022 Red Hat, Inc.</rh-footer-copyright>
+      <h3 slot="links-secondary" data-analytics-text="Red Hat legal and privacy links" hidden>Red Hat legal and privacy links</h3>
+      <ul slot="links-secondary" data-analytics-region="page-footer-bottom-secondary">
+        <li><a href="https://redhat.com/en/about/privacy-policy" data-analytics-category="Footer|Red Hat legal and privacy links" data-analytics-text="Privacy statement">Privacy statement</a></li>
+        <li><a href="https://redhat.com/en/about/terms-use" data-analytics-category="Footer|Red Hat legal and privacy links" data-analytics-text="Terms of use">Terms of use</a></li>
+        <li><a href="https://redhat.com/en/about/all-policies-guidelines" data-analytics-category="Footer|Red Hat legal and privacy links" data-analytics-text="All policies and guidelines">All policies and guidelines</a></li>
+        <li><a href="https://redhat.com/en/about/digital-accessibility" data-analytics-category="Footer|Red Hat legal and privacy links" data-analytics-text="Digital accessibility" class="active">Digital accessibility</a></li>
+        <!-- If your website supports trustarc include this item to add Cookie Preferences to your site. -->
+        <!-- <li><span id="teconsent"> </span></li> -->
+      </ul>
+    </rh-footer-universal>
+  </body>
+</html
