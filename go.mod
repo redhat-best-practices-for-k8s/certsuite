@@ -216,7 +216,7 @@ require (
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/manifoldco/promptui v0.9.0
 	github.com/openshift/machine-config-operator v0.0.1-0.20230515070935-49f32d46538e
-	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230926153703-7ab81a71d043
+	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20231018165107-f04b78186455
 	github.com/test-network-function/oct v0.0.1
 	github.com/test-network-function/privileged-daemonset v1.0.12
 	gopkg.in/yaml.v3 v3.0.1
@@ -224,4 +224,4 @@ require (
 	k8s.io/kubectl v0.28.2
 )
 
-replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20230926153703-7ab81a71d043
+replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20231018165107-f04b78186455
