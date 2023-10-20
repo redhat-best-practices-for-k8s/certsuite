@@ -173,8 +173,8 @@ func GetClientConfigFromRestConfig(restConfig *rest.Config) *clientcmdapi.Config
 		APIVersion: "v1",
 		Clusters: map[string]*clientcmdapi.Cluster{
 			"default-cluster": {
-				Server:                   restConfig.Host,
-				CertificateAuthorityData: restConfig.CAData,
+				Server:               restConfig.Host,
+				CertificateAuthority: restConfig.TLSClientConfig.CAFile,
 			},
 		},
 		Contexts: map[string]*clientcmdapi.Context{
@@ -186,8 +186,7 @@ func GetClientConfigFromRestConfig(restConfig *rest.Config) *clientcmdapi.Config
 		CurrentContext: "default-context",
 		AuthInfos: map[string]*clientcmdapi.AuthInfo{
 			"default-user": {
-				ClientCertificateData: restConfig.CertData,
-				ClientKeyData:         restConfig.KeyData,
+				Token: restConfig.BearerToken,
 			},
 		},
 	}
