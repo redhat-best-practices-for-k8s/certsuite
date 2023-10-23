@@ -90,16 +90,16 @@ var (
 	serveRun           *bool
 )
 
-//go:embed amalpro/index.html
+//go:embed webserver/index.html
 var indexHTML []byte
 
-//go:embed amalpro/submit.js
+//go:embed webserver/submit.js
 var submit []byte
 
-//go:embed amalpro/logs.js
+//go:embed webserver/logs.js
 var logs []byte
 
-//go:embed amalpro/toast.js
+//go:embed webserver/toast.js
 var toast []byte
 
 func init() {
@@ -127,7 +127,6 @@ func setLogLevel() {
 
 func getK8sClientsConfigFileNames() []string {
 	params := configuration.GetTestParameters()
-	logrus.Info(params)
 	fileNames := []string{}
 	if params.Kubeconfig != "" {
 		fileNames = append(fileNames, params.Kubeconfig)
@@ -229,7 +228,6 @@ func TestTest(t *testing.T) {
 	log.Infof("*serveRun       : %v", *serveRun)
 	log.Info("starting the server")
 
-	go startServer()
 	// Keep the main program running
 
 	// Diagnostic functions will run when no labels are provided.
@@ -270,8 +268,10 @@ func TestTest(t *testing.T) {
 			ginkgo.RunSpecs(t, CnfCertificationTestSuiteName)
 		}
 		continueRun(t, diagnosticMode, env, claimData, claimRoot)
+	} else {
+		go startServer()
+		select {}
 	}
-	select {}
 }
 
 func continueRun(t *testing.T, diagnosticMode bool, env provider.TestEnvironment, claimData *claim.Claim, claimRoot *claim.Root) {
