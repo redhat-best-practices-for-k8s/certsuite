@@ -137,16 +137,12 @@
         const { toast } = await import('./toast.js');
         await toast({ heading, message, state, timeout: 20_000 });
       });
-      document.getElementById('show-logs').addEventListener('click', function(event) {
-        const socket = new WebSocket('ws://localhost:8080/logstream');
+      document.getElementById('show-logs').addEventListener('click', async function(event) {
         const code = document
-        .getElementById('logs')
-        .querySelector('rh-code-block');
+          .getElementById('logs')
+          .querySelector('rh-code-block');
         code.textContent = '';
-        // Handle incoming log messages
-        socket.addEventListener('message', function (event) {
-          code.textContent += event.data + '\n';
-        });
+        await import('./logs.js')
       });
     </script>
 
@@ -168,11 +164,9 @@
         <fieldset>
           <legend>Environment Configuration</legend>
           <label for="kubeConfigPath">Path of KubeConfig file:</label>
-          <pf-text-input id="kubeConfigPath"
+          <input id="kubeConfigPath"
                          name="kubeConfigPath"
-                         required
-                         pattern="\/"
-                         placeholder="/home/username/project/kubeconfig.yml"></pf-text-input>
+                         type="file"></input>
         </fieldset>
 
         <fieldset>

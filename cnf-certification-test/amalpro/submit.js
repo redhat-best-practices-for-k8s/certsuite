@@ -11,7 +11,8 @@ export async function submit(form) {
   
     delete fields.submit;
     console.log(fields);
-  
+    formdata.append("jsonData", JSON.stringify(fields));
+
     // Send an HTTP request to the server to run the function
     let heading;
     let message;
@@ -20,8 +21,7 @@ export async function submit(form) {
     try {
       const data = await fetch('/runFunction', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', },
-        body: JSON.stringify(fields),
+        body: formdata,
       }).then(response => {
         if (response.ok) {
           return response.json();
