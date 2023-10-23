@@ -22,9 +22,11 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
@@ -363,14 +365,9 @@ var upgrader = websocket.Upgrader{
 // Define an HTTP handler that triggers Ginkgo tests
 func runHandler(w http.ResponseWriter, r *http.Request) {
 	// Run Ginkgo tests
-	var requestData RequestData
 	//var responseData ResponseData
 	// Parse JSON data from the request body
-	err := json.NewDecoder(r.Body).Decode(&requestData)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
+
 	// Create or open a log file
 	filename := "log.log"
 	if _, err := os.Stat(filename); err == nil {
@@ -394,10 +391,50 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 		os.Stdout = originalStdout
 		logFile.Close()
 	}()
-	os.Setenv("KUBECONFIG", requestData.KubeConfigPath)
-	logrus.Infof("KUBECONFIG      : %v", requestData.KubeConfigPath)
+	logrus.Info(r.FormValue("selectedOptions"))
 
-	logrus.Infof("Labels filter       : %v", requestData.SelectedOptions)
+	jsonData := r.FormValue("jsonData") // "jsonData" is the name of the JSON input field
+	logrus.Info(jsonData)
+	var data RequstedData
+	if err := json.Unmarshal([]byte(jsonData), &data); err != nil {
+		fmt.Println("Error:", err)
+	}
+	logrus.Info("Field1:", data.SelectedOptions)
+	var flattenedOptions []string
+	flattenedOptions = flattenData(data.SelectedOptions, flattenedOptions)
+	logrus.Info("Field1:", flattenedOptions)
+
+	// Get the file from the request
+	file, handler, err := r.FormFile("kubeConfigPath") // "fileInput" is the name of the file input field
+	if err != nil {
+		http.Error(w, "Unable to retrieve file from form", http.StatusBadRequest)
+		return
+	}
+	defer file.Close()
+
+	// Create a new file on the server to store the uploaded content
+	uploadedFile, err := os.Create(handler.Filename)
+	if err != nil {
+		http.Error(w, "Unable to create file for writing", http.StatusInternalServerError)
+		return
+	}
+	defer uploadedFile.Close()
+
+	// Copy the uploaded file's content to the new file
+	_, err = io.Copy(uploadedFile, file)
+	if err != nil {
+		http.Error(w, "Unable to copy file", http.StatusInternalServerError)
+		return
+	}
+
+	logrus.Infof("Labels filter       : %v", flattenedOptions)
+
+	// Copy the uploaded file to the server file
+
+	os.Setenv("KUBECONFIG", handler.Filename)
+	logrus.Infof("KUBECONFIG      : %v", handler.Filename)
+
+	logrus.Infof("Labels filter       : %v", flattenedOptions)
 
 	// Set the output of the logger to the log file
 
@@ -483,7 +520,7 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	reporterConfig.FullTrace = true
 	reporterConfig.JUnitReport = "cnf-certification-tests_junit.xml"
 	// pass it in to RunSpecs
-	suiteConfig.LabelFilter = requestData.SelectedOptions
+	suiteConfig.LabelFilter = strings.Join(flattenedOptions, "")
 	ginkgo.RunSpecs(&t, CnfCertificationTestSuiteName, suiteConfig, reporterConfig)
 
 	continueRun(&t, false, env, claimData, claimRoot)
@@ -491,7 +528,7 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	response := struct {
 		Message string `json:"Message"`
 	}{
-		Message: fmt.Sprintf("Sucsses to run %s", requestData.SelectedOptions),
+		Message: fmt.Sprintf("Sucsses to run %s", strings.Join(flattenedOptions, "")),
 	}
 	// Serialize the response data to JSON
 	jsonResponse, err := json.Marshal(response)
@@ -552,10 +589,28 @@ func logStreamHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-type RequestData struct {
-	KubeConfigPath  string `json:"kubeConfigPath"`
-	SelectedOptions string `json:"selectedOptions"`
+type RequstedData struct {
+	SelectedOptions interface{} `json:"selectedOptions"`
 }
 type ResponseData struct {
 	Message string `json:"message"`
+}
+
+func flattenData(data interface{}, result []string) []string {
+	switch v := data.(type) {
+	case string:
+		result = append(result, v)
+	case []interface{}:
+		for _, item := range v {
+			result = flattenData(item, result)
+		}
+	case map[string]interface{}:
+		for key, item := range v {
+			if key == "selectedOptions" {
+				result = flattenData(item, result)
+			}
+			result = flattenData(item, result)
+		}
+	}
+	return result
 }

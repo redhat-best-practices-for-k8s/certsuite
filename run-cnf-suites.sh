@@ -8,16 +8,17 @@ set -x
 export OUTPUT_LOC="$PWD/cnf-certification-test"
 
 usage() {
-	echo "$0 [-o OUTPUT_LOC] [-l LABEL...]"
+	echo "$0 [-o OUTPUT_LOC] [-l LABEL...] [-s run from webpage]"
 	echo "Call the script and list the test suites to run"
 	echo "  e.g."
 	echo "    $0 [ARGS] -l \"access-control,lifecycle\""
 	echo "  will run the access-control and lifecycle suites"
 	echo "    $0 [ARGS] -l all will run all the tests"
+	echo "    $0 [ARGS] -s true will run the test from server"
 	echo ""
 	echo "Allowed suites are listed in the README."
 	echo ""
-	echo "The specs can be listed with $0 -L|--list [-l LABEL...]"
+	echo "The specs can be listed with $0 -L|--list [-l LABEL...] [-s run from webpage]"
 }
 
 usage_error() {
@@ -42,10 +43,19 @@ while [[ $1 == -* ]]; do
 		;;
 	-o)
 		if (($# > 1)); then
-			OUTPUT_LOC=$2
+			SERVER_RUN=$2
 			shift
 		else
 			echo >&2 '-o requires an argument'
+			exit 1
+		fi
+		;;
+	-s)
+		if (($# > 1)); then
+			SERVER_RUN=$2
+			shift
+		else
+			echo >&2 '-s requires an argument'
 			exit 1
 		fi
 		;;
@@ -86,6 +96,7 @@ GINKGO_ARGS="\
 --ginkgo.timeout=$TIMEOUT \
 -junit $OUTPUT_LOC \
 -claimloc $OUTPUT_LOC \
+-runserver $SERVER_RUN\
 --ginkgo.junit-report $OUTPUT_LOC/cnf-certification-tests_junit.xml \
 -ginkgo.v \
 -test.v\
