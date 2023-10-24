@@ -33,10 +33,7 @@ env:
 jobs:
   lint:
     name: Run Linters and Vet
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-22.04, macos-latest]
+    runs-on: ubuntu-latest
     env:
       SHELL: /bin/bash
 
@@ -64,16 +61,9 @@ jobs:
       - name: Install golangci-lint
         run: make install-lint
 
-      - name: Install checkmake (Linux)
+      - name: Install checkmake
         run: curl --location --output $CM_BIN --silent $CM_URL_LINUX
-        if: runner.os == 'Linux'
-
-      - name: Install checkmake (MacOS)
-        run: brew install checkmake
-        if: runner.os == 'macOS'
-
       - run: chmod +x $CM_BIN
-        if: runner.os == 'Linux'
 
       - name: Checkmake
         run: checkmake --config=.checkmake Makefile
