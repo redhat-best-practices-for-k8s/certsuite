@@ -32,7 +32,7 @@ env:
 
 jobs:
   lint:
-    name: Run Linter and Vet
+    name: Run Linters and Vet
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -75,68 +75,40 @@ jobs:
       - run: chmod +x $CM_BIN
         if: runner.os == 'Linux'
 
-      - name: Install hadolint (Linux)
-        run: |
-          curl \
-            --location \
-            --output /usr/local/bin/hadolint \
-            https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
-          chmod +x /usr/local/bin/hadolint
-        if: runner.os == 'Linux'
+      - name: Checkmake
+        run: checkmake --config=.checkmake Makefile
 
-      - name: Install hadolint (MacOS)
-        run: |
-          brew install hadolint
-        if: runner.os == 'macOS'
-
-      - name: Install shfmt (Linux)
-        run: make install-shfmt
-        if: runner.os == 'Linux'
-
-      - name: Install shfmt (MacOS)
-        run: brew install shfmt
-        if: runner.os == 'macOS'
-
-      - name: make lint
-        run: make lint
-
-      - name: make vet
-        run: make vet
-  action-linters:
-    name: Checkmake, hadolint, markdownlint, shellcheck, shfmt, typos, yamllint
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
-      - run: |
-          curl --location --output $CM_BIN --silent $CM_URL_LINUX
-          chmod +x $CM_BIN
-          $CM_BIN Makefile
-      - uses: hadolint/hadolint-action@v3.1.0
+      - name: Hadolint
+        uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: Dockerfile
           recursive: true
-      - uses: nosborn/github-action-markdown-cli@v3.3.0
+
+      - name: Shfmt
+        uses: mfinelli/setup-shfmt@v3
+      - run: shfmt -d *.sh script
+
+      - name: markdownlint
+        uses: nosborn/github-action-markdown-cli@v3.3.0
         with:
           files: .
-          ignore_files: cmd/tnf/generate/catalog/{INTRO,TEST_CASE_CATALOG}.md
-      - uses: ludeeus/action-shellcheck@master
-      - uses: mfinelli/setup-shfmt@v3
-      - run: shfmt -d *.sh script
-      - uses: crate-ci/typos@master
-      - uses: ibiqlik/action-yamllint@v3
+
+      - name: ShellCheck
+        uses: ludeeus/action-shellcheck@master
+
+      - name: Typos
+        uses: crate-ci/typos@master
+ 
+      - name: Yamllint
+        uses: ibiqlik/action-yamllint@v3
         with:
-          config_data: |
-            extends: default
-            rules:
-              line-length:
-                max: 180
-                level: warning
-              trailing-spaces:
-                level: warning
-              brackets:
-                level: warning
-              empty-lines:
-                level: warning
+          config_file: .yamllint.yml
+
+      - name: Golangci-lint
+        run: golangci-lint run --timeout 10m0s
+
+      - name: make vet
+        run: make vet
   unit-tests:
     name: Run Unit Tests
     runs-on: ${{ matrix.os }}
