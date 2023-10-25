@@ -29,6 +29,7 @@ usage_error() {
 TIMEOUT=24h0m0s
 LABEL=''
 LIST=false
+SERVER_RUN=false
 BASEDIR=$(dirname "$(realpath "$0")")
 
 # Parse args beginning with "-".
@@ -43,7 +44,7 @@ while [[ $1 == -* ]]; do
 		;;
 	-o)
 		if (($# > 1)); then
-			SERVER_RUN=$2
+			OUTPUT_LOC=$2
 			shift
 		else
 			echo >&2 '-o requires an argument'
@@ -96,7 +97,7 @@ GINKGO_ARGS="\
 --ginkgo.timeout=$TIMEOUT \
 -junit $OUTPUT_LOC \
 -claimloc $OUTPUT_LOC \
--runserver $SERVER_RUN\
+-server-mode $SERVER_RUN \
 --ginkgo.junit-report $OUTPUT_LOC/cnf-certification-tests_junit.xml \
 -ginkgo.v \
 -test.v\
