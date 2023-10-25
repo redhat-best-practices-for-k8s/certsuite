@@ -62,8 +62,9 @@ jobs:
         run: make install-lint
 
       - name: Install checkmake
-        run: curl --location --output $CM_BIN --silent $CM_URL_LINUX
-      - run: chmod +x $CM_BIN
+        run: |
+          curl --location --output $CM_BIN --silent $CM_URL_LINUX
+          chmod +x $CM_BIN
 
       - name: Checkmake
         run: checkmake --config=.checkmake Makefile
@@ -76,7 +77,7 @@ jobs:
 
       - name: Shfmt
         uses: mfinelli/setup-shfmt@v3
-      - run: shfmt -d *.sh script
+        run: shfmt -d *.sh script
 
       - name: markdownlint
         uses: nosborn/github-action-markdown-cli@v3.3.0
