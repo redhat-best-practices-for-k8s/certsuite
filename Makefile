@@ -55,6 +55,7 @@ LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification
 LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/cnf-certification-test.GitPreviousRelease=${GIT_PREVIOUS_RELEASE}
 LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/cnf-certification-test.ClaimFormatVersion=${CLAIM_FORMAT_VERSION}
 PARSER_RELEASE=$(shell jq .parserTag version.json)
+BASH_SCRIPTS=$(shell find -name "*.sh" -not -path "./.git/*")
 
 all: build
 
@@ -77,10 +78,14 @@ clean:
 
 # Runs configured linters
 lint:
-	checkmake Makefile
+	checkmake --config=.checkmake Makefile
 	golangci-lint run --timeout 10m0s
 	hadolint Dockerfile
 	shfmt -d *.sh script
+	typos
+	markdownlint '**/*.md'
+	yamllint --no-warnings .
+	shellcheck --format=gcc ${BASH_SCRIPTS}
 
 # Builds and runs unit tests
 test: coverage-qe
