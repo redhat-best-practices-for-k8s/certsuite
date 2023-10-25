@@ -64,10 +64,10 @@ const (
 	defaultClaimPath              = ".."
 	defaultCliArgValue            = ""
 	junitFlagKey                  = "junit"
-	serverRun                     = "runserver"
+	serverModeFlag                = "server-mode"
 	TNFReportKey                  = "cnf-certification-test"
 	extraInfoKey                  = "testsExtraInfo"
-	defaultServerRun              = false
+	defaultServerMode             = "false"
 )
 
 var (
@@ -87,7 +87,7 @@ var (
 	// ClaimFormat is the current version for the claim file format to be produced by the TNF test suite.
 	// A client decoding this claim file must support decoding its specific version.
 	ClaimFormatVersion string
-	serveRun           *bool
+	serverMode         *string
 )
 
 //go:embed webserver/index.html
@@ -107,8 +107,8 @@ func init() {
 		"the path where the claimfile will be output")
 	junitPath = flag.String(junitFlagKey, defaultCliArgValue,
 		"the path for the junit format report")
-	serveRun = flag.Bool(serverRun, defaultServerRun,
-		"the path for the junit format report")
+	serverMode = flag.String(serverModeFlag, defaultServerMode,
+		"run test with webserver")
 }
 
 // setLogLevel sets the log level for logrus based on the "TNF_LOG_LEVEL" environment variable
@@ -203,9 +203,7 @@ func startServer() {
 		panic(err)
 	}
 }
-
-// TestTest invokes the CNF Certification Test Suite.
-func TestTest(t *testing.T) {
+func preRun(t *testing.T) (claimData *claim.Claim, claimRoot *claim.Root) {
 	// When running unit tests, skip the suite
 	if os.Getenv("UNIT_TEST") != "" {
 		t.Skip("Skipping test suite when running unit tests")
@@ -225,37 +223,42 @@ func TestTest(t *testing.T) {
 	log.Infof("Claim Format Version: %s", ClaimFormatVersion)
 	log.Infof("Ginkgo Version      : %v", ginkgo.GINKGO_VERSION)
 	log.Infof("Labels filter       : %v", ginkgoConfig.LabelFilter)
-	log.Infof("*serveRun       : %v", *serveRun)
-	log.Info("starting the server")
+	log.Infof("run test with webserver      : %v", *serverMode)
+	// Set clientsholder singleton with the filenames from the env vars.
+	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
+
+	// Initialize the claim with the start time, tnf version, etc.
+	claimRoot = claimhelper.CreateClaimRoot()
+	claimData = claimRoot.Claim
+	claimData.Configurations = make(map[string]interface{})
+	claimData.Nodes = make(map[string]interface{})
+	incorporateVersions(claimData)
+
+	configurations, err := claimhelper.MarshalConfigurations()
+	if err != nil {
+		log.Errorf("Configuration node missing because of: %s", err)
+		t.FailNow()
+	}
+
+	claimData.Nodes = claimhelper.GenerateNodes()
+	claimhelper.UnmarshalConfigurations(configurations, claimData.Configurations)
+	return claimData, claimRoot
+}
+
+// TestTest invokes the CNF Certification Test Suite.
+func TestTest(t *testing.T) {
 
 	// Keep the main program running
-
-	// Diagnostic functions will run when no labels are provided.
-	if !*serveRun {
+	ginkgoConfig, _ := ginkgo.GinkgoConfiguration()
+	if *serverMode == "false" {
+		claimData, claimRoot := preRun(t)
 		var diagnosticMode bool
+		// Diagnostic functions will run when no labels are provided.
+
 		if ginkgoConfig.LabelFilter == "" {
 			log.Infof("TNF will run in diagnostic mode so no test case will be launched.")
 			diagnosticMode = true
 		}
-
-		// Set clientsholder singleton with the filenames from the env vars.
-		_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
-
-		// Initialize the claim with the start time, tnf version, etc.
-		claimRoot := claimhelper.CreateClaimRoot()
-		claimData := claimRoot.Claim
-		claimData.Configurations = make(map[string]interface{})
-		claimData.Nodes = make(map[string]interface{})
-		incorporateVersions(claimData)
-
-		configurations, err := claimhelper.MarshalConfigurations()
-		if err != nil {
-			log.Errorf("Configuration node missing because of: %s", err)
-			t.FailNow()
-		}
-
-		claimData.Nodes = claimhelper.GenerateNodes()
-		claimhelper.UnmarshalConfigurations(configurations, claimData.Configurations)
 
 		// initialize abort flag
 		testhelper.AbortTrigger = ""
@@ -364,10 +367,6 @@ var upgrader = websocket.Upgrader{
 
 // Define an HTTP handler that triggers Ginkgo tests
 func runHandler(w http.ResponseWriter, r *http.Request) {
-	// Run Ginkgo tests
-	//var responseData ResponseData
-	// Parse JSON data from the request body
-
 	// Create or open a log file
 	filename := "log.log"
 	if _, err := os.Stat(filename); err == nil {
@@ -391,7 +390,6 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 		os.Stdout = originalStdout
 		logFile.Close()
 	}()
-	logrus.Info(r.FormValue("selectedOptions"))
 
 	jsonData := r.FormValue("jsonData") // "jsonData" is the name of the JSON input field
 	logrus.Info(jsonData)
@@ -399,10 +397,8 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	if err := json.Unmarshal([]byte(jsonData), &data); err != nil {
 		fmt.Println("Error:", err)
 	}
-	logrus.Info("Field1:", data.SelectedOptions)
 	var flattenedOptions []string
 	flattenedOptions = flattenData(data.SelectedOptions, flattenedOptions)
-	logrus.Info("Field1:", flattenedOptions)
 
 	// Get the file from the request
 	file, handler, err := r.FormFile("kubeConfigPath") // "fileInput" is the name of the file input field
@@ -426,8 +422,6 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Unable to copy file", http.StatusInternalServerError)
 		return
 	}
-
-	logrus.Infof("Labels filter       : %v", flattenedOptions)
 
 	// Copy the uploaded file to the server file
 
@@ -470,46 +464,7 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	*/
 	t := testing.T{}
-	logrus.Infof(os.Getenv("KUBECONFIG"))
-	// When running unit tests, skip the suite
-	if os.Getenv("UNIT_TEST") != "" {
-		t.Skip("Skipping test suite when running unit tests")
-	}
-
-	err = configuration.LoadEnvironmentVariables()
-	if err != nil {
-		log.Fatalf("could not load the environment variables, error: %v", err)
-	}
-
-	// Set up logging params for logrus
-	loghelper.SetLogFormat()
-	setLogLevel()
-
-	ginkgoConfig, _ := ginkgo.GinkgoConfiguration()
-	log.Infof("Ginkgo Version      : %v", ginkgo.GINKGO_VERSION)
-	log.Infof("Labels filter       : %v", ginkgoConfig.LabelFilter)
-	// Set clientsholder singleton with the filenames from the env vars.
-	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
-
-	// Initialize the claim with the start time, tnf version, etc.
-	claimRoot := claimhelper.CreateClaimRoot()
-	claimData := claimRoot.Claim
-	claimData.Configurations = make(map[string]interface{})
-	claimData.Nodes = make(map[string]interface{})
-	incorporateVersions(claimData)
-
-	configurations, err := claimhelper.MarshalConfigurations()
-	if err != nil {
-		log.Errorf("Configuration node missing because of: %s", err)
-		t.FailNow()
-	}
-	claimData.Nodes = claimhelper.GenerateNodes()
-	claimhelper.UnmarshalConfigurations(configurations, claimData.Configurations)
-
-	// initialize abort flag
-	testhelper.AbortTrigger = ""
-
-	fmt.Println("This will be written to the log file.")
+	claimData, claimRoot := preRun(&t)
 	var env provider.TestEnvironment
 	env.SetNeedsRefresh()
 	env = provider.GetTestEnvironment()
