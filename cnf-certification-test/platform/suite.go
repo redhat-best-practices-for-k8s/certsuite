@@ -181,6 +181,7 @@ func testHyperThreadingEnabled(env *provider.TestEnvironment) {
 	for _, node := range baremetalNodes {
 		nodeName := node.Data.Name
 		enable, err := node.IsHyperThreadNode(env)
+		//nolint:gocritic
 		if enable {
 			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has hyperthreading enabled", true))
 		} else if err != nil {
@@ -253,6 +254,7 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
+//nolint:funlen
 func testTainted(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
