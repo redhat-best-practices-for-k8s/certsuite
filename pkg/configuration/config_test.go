@@ -8,16 +8,13 @@ import (
 )
 
 const (
-	filePath          = "testdata/tnf_test_config.yml"
-	nsLength          = 2
-	ns1               = "tnf"
-	ns2               = "test2"
-	crds              = 2
-	crdSuffix1        = "group1.test.com"
-	crdSuffix2        = "group2.test.com"
-	containers        = 1
-	containerInfoName = "nginx-116"
-	containerRepo     = "rhel8"
+	filePath   = "testdata/tnf_test_config.yml"
+	nsLength   = 2
+	ns1        = "tnf"
+	ns2        = "test2"
+	crds       = 2
+	crdSuffix1 = "group1.test.com"
+	crdSuffix2 = "group2.test.com"
 )
 
 func TestLoadConfiguration(t *testing.T) {
@@ -35,8 +32,4 @@ func TestLoadConfiguration(t *testing.T) {
 	assert.Contains(t, env.CrdFilters, crd1)
 	crd2 := configuration.CrdFilter{NameSuffix: crdSuffix2}
 	assert.Contains(t, env.CrdFilters, crd2)
-	// check if certifiedcontainerinfo section is parsed properly
-	assert.Equal(t, containers, len(env.CertifiedContainerInfo))
-	containerInfo := configuration.ContainerImageIdentifier{Repository: containerInfoName, Registry: containerRepo, Tag: "", Digest: ""}
-	assert.Contains(t, env.CertifiedContainerInfo, containerInfo)
 }

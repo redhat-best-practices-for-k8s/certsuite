@@ -29,12 +29,11 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
-	"github.com/test-network-function/cnf-certification-test/internal/certdb"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
+	"github.com/test-network-function/oct/pkg/certdb"
 )
 
 const (
@@ -61,11 +60,6 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testHelmVersion()
 	})
-	// Query API for certification status of listed containers
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testContainerCertificationStatus(&env, validator)
-	})
 
 	// Query API for certification status of listed operators
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOperatorIsCertifiedIdentifier)
@@ -84,49 +78,20 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 	})
 })
 
-func getContainersToQuery(env *provider.TestEnvironment) map[configuration.ContainerImageIdentifier]bool {
-	containersToQuery := make(map[configuration.ContainerImageIdentifier]bool)
-	for _, c := range env.Config.CertifiedContainerInfo {
-		containersToQuery[c] = true
-	}
-	if env.Config.CheckDiscoveredContainerCertificationStatus {
-		for _, cut := range env.Containers {
-			containersToQuery[cut.ContainerImageIdentifier] = true
-		}
+func getContainersToQuery(env *provider.TestEnvironment) map[provider.ContainerImageIdentifier]bool {
+	containersToQuery := make(map[provider.ContainerImageIdentifier]bool)
+	for _, cut := range env.Containers {
+		containersToQuery[cut.ContainerImageIdentifier] = true
 	}
 	return containersToQuery
 }
 
-func testContainerCertification(c configuration.ContainerImageIdentifier, validator certdb.CertificationStatusValidator) bool {
+func testContainerCertification(c provider.ContainerImageIdentifier, validator certdb.CertificationStatusValidator) bool {
 	ans := validator.IsContainerCertified(c.Registry, c.Repository, c.Tag, c.Digest)
 	if !ans {
 		tnf.ClaimFilePrintf("%s/%s:%s is not listed in certified containers", c.Registry, c.Repository, c.Tag)
 	}
 	return ans
-}
-
-func testContainerCertificationStatus(env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
-	var compliantObjects []*testhelper.ReportObject
-	var nonCompliantObjects []*testhelper.ReportObject
-
-	// Get the list of containers to query
-	containersToQuery := getContainersToQuery(env)
-	testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(containersToQuery, "containersToQuery"))
-
-	ginkgo.By(fmt.Sprintf("Getting certification status. Number of containers to check: %d", len(containersToQuery)))
-	allContainersToQueryEmpty := true
-	for c := range containersToQuery {
-		allContainersToQueryEmpty = false
-		if !testContainerCertification(c, validator) {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewCertifiedContainerReportObject(c, "Container is not certified", false))
-		} else {
-			compliantObjects = append(compliantObjects, testhelper.NewCertifiedContainerReportObject(c, "Container is certified", true))
-		}
-	}
-	if allContainersToQueryEmpty {
-		ginkgo.Skip("No containers to check because either container name or repository is empty for all containers in tnf_config.yml")
-	}
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
 func testAllOperatorCertified(env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
@@ -189,15 +154,17 @@ func testContainerCertificationStatusByDigest(env *provider.TestEnvironment, val
 	for _, c := range env.Containers {
 		switch {
 		case c.ContainerImageIdentifier.Digest == "":
-			tnf.ClaimFilePrintf("%s is missing digest field, failing validation (repo=%s image=%s)", c, c.ContainerImageIdentifier.Registry, c.ContainerImageIdentifier.Repository)
+			tnf.ClaimFilePrintf("%s is missing digest field, failing validation (repo=%s image=%s digest=%s)", c, c.ContainerImageIdentifier.Registry, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Digest)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Missing digest field", false).
 				AddField(testhelper.Repository, c.ContainerImageIdentifier.Registry).
-				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Repository))
+				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Repository).
+				AddField(testhelper.ImageDigest, c.ContainerImageIdentifier.Digest))
 		case !testContainerCertification(c.ContainerImageIdentifier, validator):
-			tnf.ClaimFilePrintf("%s digest not found in database, failing validation (repo=%s image=%s)", c, c.ContainerImageIdentifier.Registry, c.ContainerImageIdentifier.Repository)
+			tnf.ClaimFilePrintf("%s digest not found in database, failing validation (repo=%s image=%s digest=%s)", c, c.ContainerImageIdentifier.Registry, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Digest)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Digest not found in database", false).
 				AddField(testhelper.Repository, c.ContainerImageIdentifier.Registry).
-				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Repository))
+				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Repository).
+				AddField(testhelper.ImageDigest, c.ContainerImageIdentifier.Digest))
 		default:
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Container is certified", true))
 		}

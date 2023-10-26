@@ -32,11 +32,8 @@ env:
 
 jobs:
   lint:
-    name: Run Linter and Vet
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-22.04, macos-latest]
+    name: Run Linters and Vet
+    runs-on: ubuntu-latest
     env:
       SHELL: /bin/bash
 
@@ -44,7 +41,7 @@ jobs:
       - name: Set up Go 1.21
         uses: actions/setup-go@v4
         with:
-          go-version: 1.21.1
+          go-version: 1.21.2
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -59,88 +56,50 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      # TODO: golangci-lint team recommends using a GitHub Action to perform golangci-lint responsibilities.  However
-      # there does not appear to be a way to honor our existing .golangci.yml.  For now, mimic developer behavior.
-      - name: Install golangci-lint
-        run: make install-lint
-
-      - name: Install checkmake (Linux)
-        run: curl --location --output $CM_BIN --silent $CM_URL_LINUX
-        if: runner.os == 'Linux'
-
-      - name: Install checkmake (MacOS)
-        run: brew install checkmake
-        if: runner.os == 'macOS'
-
-      - run: chmod +x $CM_BIN
-        if: runner.os == 'Linux'
-
-      - name: Install hadolint (Linux)
+      - name: Install checkmake
         run: |
-          curl \
-            --location \
-            --output /usr/local/bin/hadolint \
-            https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
-          chmod +x /usr/local/bin/hadolint
-        if: runner.os == 'Linux'
-
-      - name: Install hadolint (MacOS)
-        run: |
-          brew install hadolint
-        if: runner.os == 'macOS'
-
-      - name: Install shfmt (Linux)
-        run: make install-shfmt
-        if: runner.os == 'Linux'
-
-      - name: Install shfmt (MacOS)
-        run: brew install shfmt
-        if: runner.os == 'macOS'
-
-      - name: make lint
-        run: make lint
-
-      - name: make vet
-        run: make vet
-  action-linters:
-    name: Checkmake, hadolint, markdownlint, shellcheck, shfmt, typos, yamllint
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
-      - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@main
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - run: |
           curl --location --output $CM_BIN --silent $CM_URL_LINUX
           chmod +x $CM_BIN
-          $CM_BIN Makefile
-      - uses: hadolint/hadolint-action@v3.1.0
+
+      - name: Install Shfmt
+        uses: mfinelli/setup-shfmt@v3
+
+      - name: Golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.54
+          args: --timeout 10m0s
+
+      - name: Checkmake
+        run: checkmake --config=.checkmake Makefile
+
+      - name: Hadolint
+        uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: Dockerfile
           recursive: true
-      - uses: nosborn/github-action-markdown-cli@v3.3.0
+
+      - name: Shfmt
+        run: shfmt -d *.sh script
+
+      - name: Markdownlint
+        uses: nosborn/github-action-markdown-cli@v3.3.0
         with:
           files: .
-          ignore_files: cmd/tnf/generate/catalog/{INTRO,TEST_CASE_CATALOG}.md
-      - uses: ludeeus/action-shellcheck@master
-      - uses: mfinelli/setup-shfmt@v3
-      - run: shfmt -d *.sh script
-      - uses: crate-ci/typos@master
-      - uses: ibiqlik/action-yamllint@v3
+
+      - name: ShellCheck
+        uses: ludeeus/action-shellcheck@master
+
+      - name: Typos
+        uses: crate-ci/typos@master
+ 
+      - name: Yamllint
+        uses: ibiqlik/action-yamllint@v3
         with:
-          config_data: |
-            extends: default
-            rules:
-              line-length:
-                max: 180
-                level: warning
-              trailing-spaces:
-                level: warning
-              brackets:
-                level: warning
-              empty-lines:
-                level: warning
+          config_file: .yamllint.yml
+
+      - name: Go vet
+        run: make vet
   unit-tests:
     name: Run Unit Tests
     runs-on: ${{ matrix.os }}
@@ -154,7 +113,7 @@ jobs:
       - name: Set up Go 1.21
         uses: actions/setup-go@v4
         with:
-          go-version: 1.21.1
+          go-version: 1.21.2
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -200,15 +159,16 @@ jobs:
 
     steps:
       - name: Free Disk Space (Ubuntu)
-        uses: edcdavid/free-disk-space@main
+        uses: jlumbroso/free-disk-space@main
         with:
           tool-cache: false
+          large-packages: true
           android: true
           dotnet: true
           haskell: true
-          large-packages: true
           docker-images: true
           swap-storage: true
+        continue-on-error: true
 
       - name: Write temporary docker file
         run: |
@@ -219,7 +179,7 @@ jobs:
       - name: Set up Go 1.21
         uses: actions/setup-go@v4
         with:
-          go-version: 1.21.1
+          go-version: 1.21.2
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -336,15 +296,16 @@ jobs:
 
     steps:
       - name: Free Disk Space (Ubuntu)
-        uses: edcdavid/free-disk-space@main
+        uses: jlumbroso/free-disk-space@main
         with:
           tool-cache: false
+          large-packages: true
           android: true
           dotnet: true
           haskell: true
-          large-packages: true
           docker-images: true
           swap-storage: true
+        continue-on-error: true
 
       - name: Write temporary docker file
         run: |
@@ -368,6 +329,13 @@ jobs:
         uses: ./cnf-certification-test-partner/.github/actions/create-local-test-infra-resources
         with:
           working_directory: cnf-certification-test-partner
+
+      # needed by depends-on-action
+      - name: Set up Go 1.21
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.21.2
+
 
 
       # Perform smoke tests using a TNF container.
@@ -406,7 +374,24 @@ jobs:
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }}
 
       - name: 'Test: Run Smoke Tests in a TNF container'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "${SMOKE_TESTS_GINKGO_LABELS_FILTER}"
+        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} TNF_ENABLE_DATA_COLLECTION=true ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "${SMOKE_TESTS_GINKGO_LABELS_FILTER}"
+
+      # Prepare collector to be used when running smoke tests
+      - name: Check out `Collector`
+        uses: actions/checkout@v4
+        with:
+          repository: test-network-function/collector
+          path: collector
+
+      - name: Deploy collector and mysql
+        uses: ./collector/.github/actions/prepare-collector-for-use
+        with:
+          working_directory: collector
+
+      # - name: Run sanity check on collector
+      #   uses: ./collector/.github/actions/run-sanity-check
+      #   with:
+      #     working_directory: collector
 
       - name: Upload container test results as an artifact
         uses: actions/upload-artifact@v3
@@ -455,6 +440,18 @@ jobs:
 
       - name: Remove tarball(s) to save disk space.
         run: rm -f ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
+
+      - name: (if on main and upstream) Send chat msg to dev team if failed to create container image.
+        if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
+        env:
+          COMMIT_SHA: ${{ github.sha }}
+          JOB_RUN_ID: ${{ github.run_id }}
+          JOB_RUN_ATTEMPT: ${{ github.run_attempt }}
+          GITHUB_REPO: https://github.com/test-network-function/cnf-certification-test
+        run: |
+          curl -X POST --data "{
+              \"text\": \"🚨⚠️  Failed to create \`unstable\` container image from commit \<$GITHUB_REPO/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<$GITHUB_REPO/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"
+          }" -H 'Content-type: application/json; charset=UTF-8' ${{ secrets.GCHAT_WEBHOOK_URL }}
 
       # Push the new unstable TNF image to Quay.io.
       - name: (if on main and upstream) Authenticate against Quay.io

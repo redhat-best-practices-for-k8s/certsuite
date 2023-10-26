@@ -20,29 +20,9 @@ const (
 	defaultDebugDaemonSetNamespace = "cnf-suite"
 )
 
-// CertifiedContainerRequestInfo contains all certified images request info
-type CertifiedContainerRequestInfo struct {
-	// Name is the name of the `operator bundle package name` or `image-version` that you want to check if exists in the RedHat catalog
-	Name string `yaml:"name" json:"name"`
-
-	// Repository is the name of the repository `rhel8` of the container
-	// This is valid for container only and required field
-	Repository string `yaml:"repository" json:"repository"`
-}
-
 type SkipHelmChartList struct {
 	// Name is the name of the `operator bundle package name` or `image-version` that you want to check if exists in the RedHat catalog
 	Name string `yaml:"name" json:"name"`
-}
-
-// CertifiedOperatorRequestInfo contains all certified operator request info
-type CertifiedOperatorRequestInfo struct {
-
-	// Name is the name of the `operator bundle package name` that you want to check if exists in the RedHat catalog
-	Name string `yaml:"name" json:"name"`
-
-	// Organization as understood by the operator publisher, e.g. `redhat-marketplace`
-	Organization string `yaml:"organization" json:"organization"`
 }
 
 // AcceptedKernelTaintsInfo contains all certified operator request info
@@ -68,13 +48,6 @@ type SkipScalingTestStatefulSetsInfo struct {
 	Namespace string `yaml:"namespace" json:"namespace"`
 }
 
-// Label ns/name/value for resource lookup
-type Label struct {
-	Prefix string `yaml:"prefix" json:"prefix"`
-	Name   string `yaml:"name" json:"name"`
-	Value  string `yaml:"value" json:"value"`
-}
-
 // Namespace struct defines namespace properties
 type Namespace struct {
 	Name string `yaml:"name" json:"name"`
@@ -89,54 +62,34 @@ type ManagedDeploymentsStatefulsets struct {
 	Name string `yaml:"name" json:"name"`
 }
 
-// Tag and Digest should not be populated at the same time. Digest takes precedence if both are populated
-type ContainerImageIdentifier struct {
-	// Repository is the name of the image that you want to check if exists in the RedHat catalog
-	Repository string `yaml:"repository" json:"repository"`
-
-	// Registry is the name of the registry `docker.io` of the container
-	// This is valid for container only and required field
-	Registry string `yaml:"registry" json:"registry"`
-
-	// Tag is the optional image tag. "latest" is implied if not specified
-	Tag string `yaml:"tag" json:"tag"`
-
-	// Digest is the image digest following the "@" in a URL, e.g. image@sha256:45b23dee08af5e43a7fea6c4cf9c25ccf269ee113168c19722f87876677c5cb2
-	Digest string `yaml:"digest" json:"digest"`
-}
-
 // TestConfiguration provides test related configuration
 type TestConfiguration struct {
 	// targetNameSpaces to be used in
-	TargetNameSpaces []Namespace `yaml:"targetNameSpaces" json:"targetNameSpaces"`
+	TargetNameSpaces []Namespace `yaml:"targetNameSpaces,omitempty" json:"targetNameSpaces,omitempty"`
 	// labels identifying pods under test
 	PodsUnderTestLabels []string `yaml:"podsUnderTestLabels,omitempty" json:"podsUnderTestLabels,omitempty"`
 	// labels identifying operators unde test
 	OperatorsUnderTestLabels []string `yaml:"operatorsUnderTestLabels,omitempty" json:"operatorsUnderTestLabels,omitempty"`
-	// CertifiedContainerInfo is the list of container images to be checked for certification status.
-	CertifiedContainerInfo []ContainerImageIdentifier `yaml:"certifiedcontainerinfo,omitempty" json:"certifiedcontainerinfo,omitempty"`
 	// CRDs section.
-	CrdFilters          []CrdFilter                      `yaml:"targetCrdFilters" json:"targetCrdFilters"`
-	ManagedDeployments  []ManagedDeploymentsStatefulsets `yaml:"managedDeployments" json:"managedDeployments"`
-	ManagedStatefulsets []ManagedDeploymentsStatefulsets `yaml:"managedStatefulsets" json:"managedStatefulsets"`
+	CrdFilters          []CrdFilter                      `yaml:"targetCrdFilters,omitempty" json:"targetCrdFilters,omitempty"`
+	ManagedDeployments  []ManagedDeploymentsStatefulsets `yaml:"managedDeployments,omitempty" json:"managedDeployments,omitempty"`
+	ManagedStatefulsets []ManagedDeploymentsStatefulsets `yaml:"managedStatefulsets,omitempty" json:"managedStatefulsets,omitempty"`
 
 	// AcceptedKernelTaints
 	AcceptedKernelTaints []AcceptedKernelTaintsInfo `yaml:"acceptedKernelTaints,omitempty" json:"acceptedKernelTaints,omitempty"`
-	SkipHelmChartList    []SkipHelmChartList        `yaml:"skipHelmChartList" json:"skipHelmChartList"`
+	SkipHelmChartList    []SkipHelmChartList        `yaml:"skipHelmChartList,omitempty" json:"skipHelmChartList,omitempty"`
 	// SkipScalingTestDeploymentNames
 	SkipScalingTestDeployments []SkipScalingTestDeploymentsInfo `yaml:"skipScalingTestDeployments,omitempty" json:"skipScalingTestDeployments,omitempty"`
 	// SkipScalingTestStatefulSetNames
 	SkipScalingTestStatefulSets []SkipScalingTestStatefulSetsInfo `yaml:"skipScalingTestStatefulSets,omitempty" json:"skipScalingTestStatefulSets,omitempty"`
-	// CheckDiscoveredContainerCertificationStatus controls whether the container certification test will validate images used by autodiscovered containers, in addition to the configured image list
-	CheckDiscoveredContainerCertificationStatus bool     `yaml:"checkDiscoveredContainerCertificationStatus" json:"checkDiscoveredContainerCertificationStatus"`
-	ValidProtocolNames                          []string `yaml:"validProtocolNames" json:"validProtocolNames"`
-	ServicesIgnoreList                          []string `yaml:"servicesignorelist" json:"servicesignorelist"`
-	DebugDaemonSetNamespace                     string   `yaml:"debugDaemonSetNamespace" json:"debugDaemonSetNamespace"`
+	ValidProtocolNames          []string                          `yaml:"validProtocolNames,omitempty" json:"validProtocolNames,omitempty"`
+	ServicesIgnoreList          []string                          `yaml:"servicesignorelist,omitempty" json:"servicesignorelist,omitempty"`
+	DebugDaemonSetNamespace     string                            `yaml:"debugDaemonSetNamespace,omitempty" json:"debugDaemonSetNamespace,omitempty"`
 	// Collector's parameters
-	CollectorAppEndPoint string `yaml:"collectorAppEndPoint" json:"collectorAppEndPoint"`
-	ExecutedBy           string `yaml:"executedBy" json:"executedBy"`
-	PartnerName          string `yaml:"partnerName" json:"partnerName"`
-	CollectorAppPassword string `yaml:"collectorAppPassword" json:"collectorAppPassword"`
+	CollectorAppEndPoint string `yaml:"collectorAppEndPoint,omitempty" json:"collectorAppEndPoint,omitempty"`
+	ExecutedBy           string `yaml:"executedBy,omitempty" json:"executedBy,omitempty"`
+	PartnerName          string `yaml:"partnerName,omitempty" json:"partnerName,omitempty"`
+	CollectorAppPassword string `yaml:"collectorAppPassword,omitempty" json:"collectorAppPassword,omitempty"`
 }
 
 type TestParameters struct {

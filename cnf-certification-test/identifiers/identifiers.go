@@ -90,7 +90,7 @@ var (
 	TestNetRawIdentifier                              claim.Identifier
 	TestIpcLockIdentifier                             claim.Identifier
 	TestBpfIdentifier                                 claim.Identifier
-	TestStorageRequiredPods                           claim.Identifier
+	TestStorageProvisioner                            claim.Identifier
 	TestExclusiveCPUPoolIdentifier                    claim.Identifier
 	TestSharedCPUPoolSchedulingPolicy                 claim.Identifier
 	TestExclusiveCPUPoolSchedulingPolicy              claim.Identifier
@@ -105,7 +105,6 @@ var (
 	TestPodHostPath                                   claim.Identifier
 	TestPodHostIPC                                    claim.Identifier
 	TestPodHostPID                                    claim.Identifier
-	TestContainerIsCertifiedIdentifier                claim.Identifier
 	TestHugepagesNotManuallyManipulated               claim.Identifier
 	TestICMPv6ConnectivityIdentifier                  claim.Identifier
 	TestICMPv4ConnectivityMultusIdentifier            claim.Identifier
@@ -327,13 +326,13 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		},
 		TagTelco)
 
-	TestStorageRequiredPods = AddCatalogEntry(
-		"storage-required-pods",
+	TestStorageProvisioner = AddCatalogEntry(
+		"storage-provisioner",
 		common.LifecycleTestKey,
-		`Checks that pods do not place persistent volumes on local storage.`,
-		StorageRequiredPods,
+		`Checks that pods do not place persistent volumes on local storage in multinode clusters. Local storage is recommended for single node clusters, but only one type of local storage should be installed (lvms or noprovisioner).`,
+		CheckStorageProvisionerRemediation,
 		NoExceptions,
-		TestStorageRequiredPodsDocLink,
+		TestStorageProvisionerDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,
@@ -695,22 +694,6 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		},
 		TagCommon)
 
-	TestContainerIsCertifiedIdentifier = AddCatalogEntry(
-		"container-is-certified",
-		common.AffiliatedCertTestKey,
-		`Tests whether container images listed in the configuration file have passed the Red Hat Container Certification Program (CCP).`,
-		ContainerIsCertifiedRemediation,
-		AffiliatedCert,
-		TestContainerIsCertifiedIdentifierDocLink,
-		true,
-		map[string]string{
-			FarEdge:  Mandatory,
-			Telco:    Mandatory,
-			NonTelco: Mandatory,
-			Extended: Mandatory,
-		},
-		TagCommon)
-
 	TestHugepagesNotManuallyManipulated = AddCatalogEntry(
 		"hugepages-config",
 		common.PlatformAlterationTestKey,
@@ -930,10 +913,10 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		TestPodNodeSelectorAndAffinityBestPracticesDocLink,
 		true,
 		map[string]string{
-			FarEdge:  Mandatory,
-			Telco:    Mandatory,
-			NonTelco: Optional,
-			Extended: Mandatory,
+			FarEdge:  Optional,
+			Telco:    Optional,
+			NonTelco: Mandatory,
+			Extended: Optional,
 		},
 		TagTelco)
 

@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/ubi:8.8-1067 AS build
+FROM registry.access.redhat.com/ubi8/ubi:8.8-1067.1698056881 AS build
 ENV TNF_DIR=/usr/tnf
 ENV \
 	TNF_SRC_DIR=${TNF_DIR}/tnf-src \
@@ -22,7 +22,7 @@ RUN \
 # Install Go binary and set the PATH
 ENV \
 	GO_DL_URL=https://golang.org/dl \
-	GO_BIN_TAR=go1.21.1.linux-amd64.tar.gz \
+	GO_BIN_TAR=go1.21.2.linux-amd64.tar.gz \
 	GOPATH=/root/go
 ENV GO_BIN_URL_x86_64=${GO_DL_URL}/${GO_BIN_TAR}
 RUN \
@@ -37,7 +37,7 @@ ENV PATH=${PATH}:"/usr/local/go/bin":${GOPATH}/"bin"
 
 # Download operator-sdk binary
 ENV \
-	OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.31.0 \
+	OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.32.0 \
 	OSDK_BIN=/usr/local/osdk/bin
 
 # Either use Wget or Curl but not both.
@@ -99,7 +99,7 @@ FROM quay.io/testnetworkfunction/oct:latest AS db
 
 # Copy the state into a new flattened image to reduce size.
 # TODO run as non-root
-FROM registry.access.redhat.com/ubi8/ubi-minimal:8.8-1072
+FROM registry.access.redhat.com/ubi8/ubi-minimal:8.8-1072.1697626218
 
 ENV \
 	TNF_DIR=/usr/tnf \

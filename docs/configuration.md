@@ -1,125 +1,204 @@
 <!-- markdownlint-disable code-block-style line-length no-bare-urls -->
-# Test configuration
+# CNF Certification configuration
 
-The certification test suite supports autodiscovery using labels and annotations.
+The CNF Certification Test uses a YAML configuration file to certify a specific CNF workload. This file specifies the CNF resources to be certified, as well as any exceptions or other general configuration options.
 
-These can be configured through the following config file.
+By default a file named _tnf_config.yml_ will be used. Here's an [example](https://github.com/test-network-function/cnf-certification-test/blob/main/cnf-certification-test/tnf_config.yml) of the CNF Config File. For a description of each config option see the section [CNF Config File options](#cnf-config-file-options).
 
-- `tnf_config.yml`
+## CNF Config Generator
 
-[Sample](https://github.com/test-network-function/cnf-certification-test/blob/main/cnf-certification-test/tnf_config.yml)
+The CNF config file can be created using the CNF Config Generator, which is part of the TNF tool shipped with the CNF Certification. The purpose of this particular tool is to help users configuring the CNF Certification providing a logical structure of the available options as well as the information required to make use of them. The result is a CNF config file in YAML format that the CNF Certification will parse to adapt the certification process to a specific CNF workload.
 
-As per the requirement the following fields can be changed.
+To compile the TNF tool:
 
-## targetNameSpaces
+```shell
+make build-tnf-tool
+```
 
-Multiple namespaces can be specified to deploy partner pods for testing through `targetNameSpaces` in the config file.
+To launch the CNF Config Generator:
+
+```shell
+./tnf generate config
+```
+
+Here's an example of how to use the tool:
+
+<!-- markdownlint-disable MD033 -->
+<object type="image/svg+xml" data="./assets/images/demo-config.svg">
+<img src="../assets/images/demo-config.svg">
+</object>
+<!-- markdownlint-enable MD033 -->
+
+## CNF Config File options
+
+### CNF resources
+
+These options allow configuring the workload resources of the CNF to be verified. Only the resources that the CNF uses are required to be configured. The rest can be left empty. Usually a basic configuration includes _Namespaces_ and _Pods_ at least.
+
+#### targetNameSpaces
+
+The namespaces in which the CNF under test will be deployed.
 
 ``` { .yaml .annotate }
 targetNameSpaces:
-  - name: firstnamespace
-  - name: secondnamespace
+  - name: tnf
 ```
 
-## targetPodLabels
+#### podsUnderTestLabels
 
-The goal of this section is to specify the labels to be used to identify the CNF resources under test.
+The labels that each Pod of the CNF under test must have to be verified by the CNF Certification Suite.
 
 !!! note "Highly recommended"
 
-    The labels should be defined in pod definition rather than added after pod is created, as labels added later on will be lost in case the pod gets rescheduled. In case of pods defined as part of a deployment, it's best to use the same label as the one defined in the `spec.selector.matchLabels` section of the deployment yaml. The prefix field can be used to avoid naming collision with other labels.
+    The labels should be defined in Pod definition rather than added after the Pod is created, as labels added later on will be lost in case the Pod gets rescheduled. In the case of Pods defined as part of a Deployment, it's best to use the same label as the one defined in the _spec.selector.matchLabels_ section of the Deployment YAML. The prefix field can be used to avoid naming collision with other labels.
 
 ``` { .yaml .annotate }
-targetPodLabels:
-  - prefix: test-network-function.com
-    name: generic
-    value: target
+podsUnderTestLabels:
+  - "test-network-function.com/generic: target"
 ```
 
-The corresponding pod label used to match pods is:
+#### operatorsUnderTestLabels
+
+The labels that each operator's CSV of the CNF under test must have to be verified by the CNF Certification Suite.
+
+If a new label is used for this purpose make sure it is added to the CNF operator's CSVs.
 
 ``` { .yaml .annotate }
-test-network-function.com/generic: target
+operatorsUnderTestLabels:
+  - "test-network-function.com/operator: target" 
 ```
 
-Once the pods are found, all of their containers are also added to the target container list. A target deployment list will also be created with all the deployments which the test pods belong to.
+#### targetCrdFilters
 
-## targetCrds
-
-In order to autodiscover the CRDs to be tested, an array of search filters can be set under the "targetCrdFilters" label. The autodiscovery mechanism will iterate through all the filters to look for all the CRDs that match it. Currently, filters only work by name suffix.
+The CRD name suffix used to filter the CNF's CRDs among all the CRDs present in the cluster. For each CRD it can also be specified if it's scalable or not in order to avoid some lifecycle test cases.
 
 ``` { .yaml .annotate }
 targetCrdFilters:
  - nameSuffix: "group1.tnf.com"
+   scalable: false
  - nameSuffix: "anydomain.com"
+   scalable: true
 ```
 
-The autodiscovery mechanism will create a list of all CRD names in the cluster whose names have the suffix `group1.tnf.com` or `anydomain.com`, e.g. `crd1.group1.tnf.com` or `mycrd.mygroup.anydomain.com`.
+With the config show above, all CRD names in the cluster whose names have the suffix _group1.tnf.com_ or _anydomain.com_ ( e.g. _crd1.group1.tnf.com_ or _mycrd.mygroup.anydomain.com_) will be tested.
 
-## testTarget
+#### managedDeployments / managedStatefulSets
 
-### podsUnderTest / containersUnderTest
+The Deployments/StatefulSets managed by a Custom Resource whose scaling is controlled using the "scale" subresource of the CR.
 
-The autodiscovery mechanism will attempt to identify the default network device and all the IP addresses of the pods it needs for network connectivity tests, though that information can be explicitly set using annotations if needed.
+The CRD defining that CR should be included in the CRD filters with the scalable property set to true. If so, the test case _lifecycle-{deployment/statefulset}-scaling_ will be skipped, otherwise it will fail.
 
-#### Pod IPs
+``` { .yaml .annotate }
+managedDeployments:
+  - name: jack
+managedStatefulsets:
+  - name: jack
+```
 
-- The `k8s.v1.cni.cncf.io/networks-status` annotation is checked and all IPs from it are used. This annotation is automatically managed in OpenShift but may not be present in K8s.
-- If it is not present, then only known IPs associated with the pod are used (the pod `.status.ips` field).
+### Exceptions
 
-#### Network Interfaces
+These options allow adding exceptions to skip several checks for different resources. The exceptions must be justified in order to pass the CNF Certification.
 
-- The `k8s.v1.cni.cncf.io/networks-status` annotation is checked and the `interface` from the first entry found with `“default”=true` is used. This annotation is automatically managed in OpenShift but may not be present in K8s.
+#### acceptedKernelTaints
 
-The label `test-network-function.com/skip_connectivity_tests` excludes pods from all connectivity tests. The label value is trivial, only its presence.
-The label `test-network-function.com/skip_multus_connectivity_tests` excludes pods from [Multus](https://github.com/k8snetworkplumbingwg/multus-cni) connectivity tests. Tests on default interface are still done. The label value is trivial, but its presence.
+The list of kernel modules loaded by the CNF that make the Linux kernel mark itself as _tainted_ but that should skip verification.
 
-## AffinityRequired
+Test cases affected: _platform-alteration-tainted-node-kernel_.
 
-For CNF workloads that require pods to use Pod or Node Affinity rules, the label `AffinityRequired: true` must be included on the Pod YAML. This will prevent any tests for anti-affinity to fail as well as test your workloads for affinity rules that support your CNF's use-case.
+``` { .yaml .annotate }
+acceptedKernelTaints:
+  - module: vboxsf
+  - module: vboxguest
+```
 
-## certifiedcontainerinfo
+#### skipHelmChartList
 
-The `certifiedcontainerinfo` section contains information about CNFs containers that are
-to be checked for certification status on Red Hat catalogs.
+The list of Helm charts that the CNF uses whose certification status will not be verified.
 
-## Operators
+If no exception is configured, the certification status for all Helm charts will be checked in the [OpenShift Helms Charts repository](https://charts.openshift.io/).
 
-The CSV of the installed Operators can be tested by the `operator` and `affiliated-certification` specs are identified with the `test-network-function.com/operator=target`
-label. Any value is permitted here but `target` is used here for consistency with the other specs.
+Test cases affected: _affiliated-certification-helmchart-is-certified_.
 
-## AllowedProtocolNames
+``` { .yaml .annotate }
+skipHelmChartList:
+  - name: coredns
+```
 
-This name of protocols that allowed.
-If we want to add another name, we just need to write the name in the yaml file.
+#### validProtocolNames
 
-for example: if we want to add new protocol - "http4", we add in "tnf_config.yml"  below "validProtocolNames" and then this protocol ("http4") add to map allowedProtocolNames and finally "http4"  will be allow protocol.
+The list of allowed protocol names to be used for container port names.
 
-## ServicesIgnoreList
+The name field of a container port must be of the form _protocol[-suffix]_ where _protocol_ must be allowed by default or added to this list. The optional _suffix_ can be chosen by the application. Protocol names allowed by default: _grpc_, _grpc-web_, _http_, _http2_, _tcp_, _udp_.
 
-This is a list of service names present in the namespace under test and that should not be tested.
+Test cases affected: _manageability-container-port-name-format_.
 
-## skipScalingTestDeployments and skipScalingTestStatefulSetNames
+``` { .yaml .annotate }
+validProtocolNames:
+  - "http3"
+  - "sctp"
+```
 
-This section of the TNF config allows the user to skip the scaling tests that potentially cause known problems with workloads that do not like being scaled up and scaled down.
+#### servicesIgnoreList
 
-Example:
+The list of Services that will skip verification.
+
+Services included in this list will be filtered out at the autodiscovery stage and will not be subject to checks in any test case.
+
+Tests cases affected: _networking-dual-stack-service_, _access-control-service-type_.
+
+``` { .yaml .annotate }
+servicesignorelist:
+  - "hazelcast-platform-controller-manager-service"
+  - "hazelcast-platform-webhook-service"
+  - "new-pro-controller-manager-metrics-service"
+```
+
+#### skipScalingTestDeployments / skipScalingTestStatefulSets
+
+The list of Deployments/StatefulSets that do not support scale in/out operations.
+
+Deployments/StatefulSets included in this list will skip any scaling operation check.
+
+Test cases affected: _lifecycle-deployment-scaling_, _lifecycle-statefulset-scaling_.
 
 ``` { .yaml .annotate }
 skipScalingTestDeployments:
-  - name: "deployment1"
-    namespace: "tnf"
+  - name: deployment1
+    namespace: tnf
 skipScalingTestStatefulSetNames:
-  - name: "statefulset1"
-    namespace: "tnf"
+  - name: statefulset1
+    namespace: tnf
 ```
 
-## debugDaemonSetNamespace
+### CNF Certification settings
 
-This is an optional field with the name of the namespace where a privileged DaemonSet will be deployed. The namespace will be created in case it does not exist. In case this field is not set, the default namespace for this DaemonSet is "cnf-suite".
+#### debugDaemonSetNamespace
 
-```sh
+This is an optional field with the name of the namespace where a privileged DaemonSet will be deployed. The namespace will be created in case it does not exist. In case this field is not set, the default namespace for this DaemonSet is _cnf-suite_.
+
+``` { .yaml .annotate }
 debugDaemonSetNamespace: cnf-cert
 ```
 
-This DaemonSet, called "tnf-debug" is deployed and used internally by the CNF Certification tool to issue some shell commands that are needed in certain test cases. Some of these test cases might fail or be skipped in case it wasn't deployed correctly.
+This DaemonSet, called _tnf-debug_ is deployed and used internally by the CNF Certification tool to issue some shell commands that are needed in certain test cases. Some of these test cases might fail or be skipped in case it wasn't deployed correctly.
+
+### Other settings
+
+The autodiscovery mechanism will attempt to identify the default network device and all the IP addresses of the Pods it needs for network connectivity tests, though that information can be explicitly set using annotations if needed.
+
+#### Pod IPs
+
+- The _k8s.v1.cni.cncf.io/networks-status_ annotation is checked and all IPs from it are used. This annotation is automatically managed in OpenShift but may not be present in K8s.
+- If it is not present, then only known IPs associated with the Pod are used (the Pod _.status.ips_ field).
+
+#### Network Interfaces
+
+- The _k8s.v1.cni.cncf.io/networks-status_ annotation is checked and the _interface_ from the first entry found with _“default”=true_ is used. This annotation is automatically managed in OpenShift but may not be present in K8s.
+
+The label _test-network-function.com/skip_connectivity_tests_ excludes Pods from all connectivity tests.
+
+The label _test-network-function.com/skip_multus_connectivity_tests_ excludes Pods from [Multus](https://github.com/k8snetworkplumbingwg/multus-cni) connectivity tests. Tests on the default interface are still run.
+
+#### Affinity requirements
+
+For CNF workloads that require Pods to use Pod or Node Affinity rules, the label _AffinityRequired: true_ must be included on the Pod YAML. This will ensure that the affinity best practices are tested and prevent any test cases for anti-affinity to fail.

@@ -133,3 +133,15 @@ jobs:
 
       - name: Push the newly built image to Quay.io
         run: docker push --all-tags ${REGISTRY}/${TNF_IMAGE_NAME}
+
+      - name: If failed to create the image, send alert msg to dev team.
+        if: ${{ failure() }}
+        env:
+          COMMIT_SHA: ${{ github.sha }}
+          JOB_RUN_ID: ${{ github.run_id }}
+          JOB_RUN_ATTEMPT: ${{ github.run_attempt }}
+          GITHUB_REPO: 'https://github.com/${{ github.repository }}'
+        run: |
+          curl -X POST --data "{
+            \"text\": \"🚨⚠️  Failed to create container image version \`$TNF_VERSION\` from commit \<$GITHUB_REPO/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<$GITHUB_REPO/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"
+          }" -H 'Content-type: application/json; charset=UTF-8' ${{ secrets.GCHAT_WEBHOOK_URL }}

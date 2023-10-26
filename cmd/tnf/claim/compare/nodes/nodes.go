@@ -9,6 +9,7 @@ import (
 // one per node found in both claim files. In case one node only exists in one
 // claim file, it will be marked as "not found in claim[1|2]".
 type DiffReport struct {
+	Nodes    *diff.Diffs `json:"nodes"`
 	CNI      *diff.Diffs `json:"CNI"`
 	CSI      *diff.Diffs `json:"CSI"`
 	Hardware *diff.Diffs `json:"hardware"`
@@ -20,6 +21,10 @@ type DiffReport struct {
 func (d DiffReport) String() string {
 	str := "CLUSTER NODES DIFFERENCES\n"
 	str += "-------------------------\n\n"
+
+	if d.Nodes != nil {
+		str += d.Nodes.String() + "\n"
+	}
 
 	if d.CNI != nil {
 		str += d.CNI.String() + "\n"
@@ -40,8 +45,9 @@ func (d DiffReport) String() string {
 // of a diff.Diffs object per node's section (CNIs, CSIs & Hardware).
 func GetDiffReport(claim1Nodes, claim2Nodes *claim.Nodes) *DiffReport {
 	return &DiffReport{
-		CNI:      diff.Compare("CNIs", claim1Nodes.CniNetworks, claim2Nodes.CniNetworks),
-		CSI:      diff.Compare("CSIs", claim1Nodes.CsiDriver, claim2Nodes.CsiDriver),
-		Hardware: diff.Compare("Hardware", claim1Nodes.NodesHwInfo, claim2Nodes.NodesHwInfo),
+		Nodes:    diff.Compare("Nodes", claim1Nodes.NodesSummary, claim2Nodes.NodesSummary, []string{"labels", "annotations"}),
+		CNI:      diff.Compare("CNIs", claim1Nodes.CniNetworks, claim2Nodes.CniNetworks, nil),
+		CSI:      diff.Compare("CSIs", claim1Nodes.CsiDriver, claim2Nodes.CsiDriver, nil),
+		Hardware: diff.Compare("Hardware", claim1Nodes.NodesHwInfo, claim2Nodes.NodesHwInfo, nil),
 	}
 }

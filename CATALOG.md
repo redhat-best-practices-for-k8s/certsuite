@@ -7,14 +7,14 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 
 ## Test cases summary
 
-### Total test cases: 89
+### Total test cases: 88
 
 ### Total suites: 9
 
 |Suite|Tests per suite|
 |---|---|
 |access-control|27|
-|affiliated-certification|5|
+|affiliated-certification|4|
 |lifecycle|18|
 |manageability|2|
 |networking|11|
@@ -35,17 +35,17 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |---|---|
 |7|1|
 
-### Non-Telco specific tests only: 42
+### Non-Telco specific tests only: 41
 
 |Mandatory|Optional|
 |---|---|
-|39|3|
+|38|3|
 
 ### Telco specific tests only: 27
 
 |Mandatory|Optional|
 |---|---|
-|27|0|
+|26|1|
 
 ## Test Case list
 
@@ -487,22 +487,6 @@ Tags|telco,access-control
 
 ### affiliated-certification
 
-#### affiliated-certification-container-is-certified
-
-Property|Description
----|---
-Unique ID|affiliated-certification-container-is-certified
-Description|Tests whether container images listed in the configuration file have passed the Red Hat Container Certification Program (CCP).
-Suggested Remediation|Ensure that your container has passed the Red Hat Container Certification Program (CCP).
-Best Practice Reference|https://redhat-connect.gitbook.io/partner-guide-for-red-hat-openshift-and-container/certify-your-application/overview
-Exception Process|There is no documented exception process for this.Partner can run CNF Certification test suite before passing other certifications (Container/Operator/HelmChart) but the affiliated certification test cases in CNF Certification test suite must be re-run once the other certifications have been granted.
-Tags|common,affiliated-certification
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|Far-Edge|Mandatory|
-|Non-Telco|Mandatory|
-|Telco|Mandatory|
-
 #### affiliated-certification-container-is-certified-digest
 
 Property|Description
@@ -772,10 +756,10 @@ Best Practice Reference|https://test-network-function.github.io/cnf-best-practic
 Exception Process|Exception will only be considered if application requires specialized hardware. Must specify which container requires special hardware and why.
 Tags|telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|Far-Edge|Mandatory|
-|Non-Telco|Optional|
-|Telco|Mandatory|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Mandatory|
+|Telco|Optional|
 
 #### lifecycle-pod-toleration-bypass
 
@@ -841,13 +825,13 @@ Tags|common,lifecycle
 |Non-Telco|Mandatory|
 |Telco|Mandatory|
 
-#### lifecycle-storage-required-pods
+#### lifecycle-storage-provisioner
 
 Property|Description
 ---|---
-Unique ID|lifecycle-storage-required-pods
-Description|Checks that pods do not place persistent volumes on local storage.
-Suggested Remediation|If pod is StatefulSet, make sure servicename is not local-storage (persistent volumes should not be on local storage).
+Unique ID|lifecycle-storage-provisioner
+Description|Checks that pods do not place persistent volumes on local storage in multinode clusters. Local storage is recommended for single node clusters, but only one type of local storage should be installed (lvms or noprovisioner).
+Suggested Remediation|Use a non-local storage (e.g. no kubernetes.io/no-provisioner and no topolvm.io provisioners) in multinode clusters. Local storage are recommended for single node clusters only, but a single local provisioner should be installed.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-local-storage
 Exception Process|No exceptions
 Tags|common,lifecycle
