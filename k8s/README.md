@@ -1,11 +1,15 @@
-# How to deploy the CNF Cert Suite App inside a Kubernetes/Openshift cluster.
+<!-- markdownlint-disable line-length no-bare-urls no-emphasis-as-heading -->
+# How to deploy the CNF Cert Suite App inside a Kubernetes/Openshift cluster
+
 This is a developer's guide to deploy a Pod in a kubernetes/Openshift cluster that runs the CNF Cert Suite app inside.
 
 This folder contains two files:
+
 * [./cnf-certsuite.yaml](cnf-certsuite.yaml)
 * [./kustomization.yaml](kustomization.yaml)
 
 ## cnf-certsuite.yaml
+
 This file contains all the kubernetes templates for deploying the CNF Cert Suite inside a Pod named "cnf-certsuite" in a namespace also named "cnf-certsuite". In order to deploy the pod, just write:
 
 ```console
@@ -25,6 +29,7 @@ Then, there's a configMap with the whole config (tnf_config.yaml) that will be u
 The CNF Cert Suite pod is the last resource defined in the cnf-certsuite.yaml file. It has only one container that uses the [quay.io/testnetworkfunction/cnf-certification-test:latest](latest) tag of the CNF Cert Suite. The command slice of this container has a hardcoded labels to run as many test cases as possible, excluding the intrusive ones.
 
 ## kustomization.yaml
+
 This kustomization file allows the deployment of the CNF Cert Suite using this command:
 
 ```console
@@ -36,6 +41,7 @@ The `kustomization` tool used by `oc` will parse the content of the [./kustomiza
 By default, that command will deploy the CNF Cert Suite Pod without any mutation: it will be deployed in the same namespace and with the same configuration than using the `oc apply -f k8s/cnf-certsuite.yaml`.
 
 But there are the three example of modifications included in [./kustomization.yaml](kustomization.yaml) that can be used out of the box that can be handy:
+
 1. The namespace and the prefix/suffix of each resource's name. By default, the [./cnf-certsuite.yaml](cnf-certsuite.yaml) uses the namespace "cnf-certsuite" to deploy all the reources (except the cluster role and the cluster role binding), but this can be changed uncommenting the line that starts with `namespace:`. It's highly recommended to uncomment at least one of suffixName/prefixName so unique cluster role & cluster role-bindings can be created for each CNF Cert Pod. This way, you could run more than one CNF Cert Pod in the same cluster!.
 2. The (ginkgo) labels expression, in case you want to run different test cases. Uncomment the object that starts with "patches:". The commented example changes the command to use the "preflight" label only.
 3. The value of the TNF_NON_INTRUSIVE_ONLY env var. Uncomment the last object that starts with "patches:". The commented example changes the TNF_NON_INTRUSIVE_ONLY to false, so all the intrusive TCs will run in case the lifecycle TCs are selected to run by the appropriate labels.
