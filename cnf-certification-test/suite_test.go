@@ -17,7 +17,6 @@
 package suite
 
 import (
-	"bufio"
 	_ "embed"
 	"encoding/json"
 	"flag"
@@ -30,7 +29,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gorilla/websocket"
 	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
@@ -90,18 +88,6 @@ var (
 	serverMode         *string
 )
 
-//go:embed webserver/index.html
-var indexHTML []byte
-
-//go:embed webserver/submit.js
-var submit []byte
-
-//go:embed webserver/logs.js
-var logs []byte
-
-//go:embed webserver/toast.js
-var toast []byte
-
 func init() {
 	claimPath = flag.String(claimPathFlagKey, defaultClaimPath,
 		"the path where the claimfile will be output")
@@ -151,59 +137,7 @@ func getGitVersion() string {
 	return gitDisplayRelease + " ( " + GitCommit + " )"
 }
 
-func startServer() {
-	log.Info("inside starting the server")
-
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		// Set the content type to "text/html".
-		w.Header().Set("Content-Type", "text/html")
-		// Write the embedded HTML content to the response.
-		_, err := w.Write(indexHTML)
-		if err != nil {
-			http.Error(w, "Failed to write response", http.StatusInternalServerError)
-		}
-	})
-
-	http.HandleFunc("/submit.js", func(w http.ResponseWriter, r *http.Request) {
-		// Set the content type to "application/javascript".
-		w.Header().Set("Content-Type", "application/javascript")
-		// Write the embedded JavaScript content to the response.
-		_, err := w.Write(submit)
-		if err != nil {
-			http.Error(w, "Failed to write response", http.StatusInternalServerError)
-		}
-	})
-
-	http.HandleFunc("/logs.js", func(w http.ResponseWriter, r *http.Request) {
-		// Set the content type to "application/javascript".
-		w.Header().Set("Content-Type", "application/javascript")
-		// Write the embedded JavaScript content to the response.
-		_, err := w.Write(logs)
-		if err != nil {
-			http.Error(w, "Failed to write response", http.StatusInternalServerError)
-		}
-	})
-
-	http.HandleFunc("/toast.js", func(w http.ResponseWriter, r *http.Request) {
-		// Set the content type to "application/javascript".
-		w.Header().Set("Content-Type", "application/javascript")
-		// Write the embedded JavaScript content to the response.
-		_, err := w.Write(toast)
-		if err != nil {
-			http.Error(w, "Failed to write response", http.StatusInternalServerError)
-		}
-	})
-
-	http.HandleFunc("/runFunction", runHandler)
-	// Serve the static HTML file
-	http.HandleFunc("/logstream", logStreamHandler)
-
-	fmt.Println("Server is running on :8080...")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		panic(err)
-	}
-}
-func preRun(t *testing.T) (claimData *claim.Claim, claimRoot *claim.Root) {
+func PreRun(t *testing.T) (claimData *claim.Claim, claimRoot *claim.Root) {
 	// When running unit tests, skip the suite
 	if os.Getenv("UNIT_TEST") != "" {
 		t.Skip("Skipping test suite when running unit tests")
@@ -251,7 +185,7 @@ func TestTest(t *testing.T) {
 	// Keep the main program running
 	ginkgoConfig, _ := ginkgo.GinkgoConfiguration()
 	if *serverMode == "false" {
-		claimData, claimRoot := preRun(t)
+		claimData, claimRoot := PreRun(t)
 		var diagnosticMode bool
 		// Diagnostic functions will run when no labels are provided.
 
@@ -270,14 +204,14 @@ func TestTest(t *testing.T) {
 			env = provider.GetTestEnvironment()
 			ginkgo.RunSpecs(t, CnfCertificationTestSuiteName)
 		}
-		continueRun(t, diagnosticMode, env, claimData, claimRoot)
+		ContinueRun(t, diagnosticMode, env, claimData, claimRoot)
 	} else {
-		go startServer()
+		go StartServer()
 		select {}
 	}
 }
 
-func continueRun(t *testing.T, diagnosticMode bool, env provider.TestEnvironment, claimData *claim.Claim, claimRoot *claim.Root) {
+func ContinueRun(t *testing.T, diagnosticMode bool, env provider.TestEnvironment, claimData *claim.Claim, claimRoot *claim.Root) {
 
 	endTime := time.Now()
 	claimData.Metadata.EndTime = endTime.UTC().Format(claimhelper.DateTimeFormatDirective)
@@ -358,15 +292,20 @@ func incorporateVersions(claimData *claim.Claim) {
 		ClaimFormat:  ClaimFormatVersion,
 	}
 }
+func StartServer() {
 
-var upgrader = websocket.Upgrader{
-	CheckOrigin: func(r *http.Request) bool {
-		return true
-	},
+	HandlereqFunc()
+
+	http.HandleFunc("/runFunction", RunHandler)
+
+	fmt.Println("Server is running on :8080...")
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		panic(err)
+	}
 }
 
 // Define an HTTP handler that triggers Ginkgo tests
-func runHandler(w http.ResponseWriter, r *http.Request) {
+func RunHandler(w http.ResponseWriter, r *http.Request) {
 	// Create or open a log file
 	filename := "log.log"
 	if _, err := os.Stat(filename); err == nil {
@@ -464,7 +403,7 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	*/
 	t := testing.T{}
-	claimData, claimRoot := preRun(&t)
+	claimData, claimRoot := PreRun(&t)
 	var env provider.TestEnvironment
 	env.SetNeedsRefresh()
 	env = provider.GetTestEnvironment()
@@ -478,7 +417,7 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	suiteConfig.LabelFilter = strings.Join(flattenedOptions, "")
 	ginkgo.RunSpecs(&t, CnfCertificationTestSuiteName, suiteConfig, reporterConfig)
 
-	continueRun(&t, false, env, claimData, claimRoot)
+	ContinueRun(&t, false, env, claimData, claimRoot)
 	// Return the result as JSON
 	response := struct {
 		Message string `json:"Message"`
@@ -501,71 +440,4 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-}
-
-func logStreamHandler(w http.ResponseWriter, r *http.Request) {
-	conn, err := upgrader.Upgrade(w, r, nil)
-	if err != nil {
-		log.Printf("WebSocket upgrade error: %v", err)
-		return
-	}
-	defer conn.Close()
-
-	filePath := "log.log"
-
-	// Open the log file
-	file, err := os.Open(filePath)
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	defer file.Close()
-
-	// Create a scanner to read the log file line by line
-	for {
-		scanner := bufio.NewScanner(file)
-		for scanner.Scan() {
-			line := scanner.Text() + "\n"
-			// Send each log line to the client
-			if err := conn.WriteMessage(websocket.TextMessage, []byte(line)); err != nil {
-				fmt.Println(err)
-				//return
-			}
-
-			// Sleep for a short duration to simulate real-time updates
-			time.Sleep(100 * time.Millisecond)
-		}
-		if err := scanner.Err(); err != nil {
-			log.Printf("Error reading log file: %v", err)
-		}
-
-		time.Sleep(1 * time.Second)
-	}
-
-}
-
-type RequstedData struct {
-	SelectedOptions interface{} `json:"selectedOptions"`
-}
-type ResponseData struct {
-	Message string `json:"message"`
-}
-
-func flattenData(data interface{}, result []string) []string {
-	switch v := data.(type) {
-	case string:
-		result = append(result, v)
-	case []interface{}:
-		for _, item := range v {
-			result = flattenData(item, result)
-		}
-	case map[string]interface{}:
-		for key, item := range v {
-			if key == "selectedOptions" {
-				result = flattenData(item, result)
-			}
-			result = flattenData(item, result)
-		}
-	}
-	return result
 }
