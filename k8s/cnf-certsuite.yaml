@@ -10,11 +10,11 @@ kind: ClusterRole
 metadata:
   name: cnf-certsuite-cr
 rules:
-- apiGroups: ["*"]
-  resources: ["*"]
-  verbs: ["*"]
-- nonResourceURLs: ["*"]
-  verbs: ["*"]
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["*"]
+  - nonResourceURLs: ["*"]
+    verbs: ["*"]
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -22,9 +22,9 @@ kind: ClusterRoleBinding
 metadata:
   name: cnf-certsuite-crb
 subjects:
-- kind: ServiceAccount
-  name: default
-  namespace: cnf-certsuite
+  - kind: ServiceAccount
+    name: default
+    namespace: cnf-certsuite
 roleRef:
   kind: ClusterRole
   name: cnf-certsuite-cr
@@ -116,33 +116,31 @@ spec:
       secret:
         secretName: cnf-certsuite-preflight-dockerconfig
   containers:
-  - name: cnf-certsuite
-    imagePullPolicy: Always
-    image: quay.io/testnetworkfunction/cnf-certification-test:latest
-    resources:
-      limits:
-        memory: 500Mi
-        cpu: 50m
-    command: ["sh"]
-    args:
-      - "-c"
-      - |
-        ./run-cnf-suites.sh -l '!affiliated-certification-container-is-certified-digest && !access-control-security-context' ; sleep inf
-    volumeMounts:
-      - name: config-volume
-        mountPath: /usr/tnf/config
-      - name: preflight-dockerconfig
-        mountPath: /usr/tnf/config/preflight
-    env:
-      - name: TNF_NON_INTRUSIVE_ONLY
-        value: "true"
-      - name: TNF_LABELSj
-        value: $(TNF_LABELS)
-      - name: TNF_ALLOW_PREFLIGHT_INSECURE
-        value: "true"
-      - name: TNF_LOG_LEVEL
-        value: trace
-      - name: PFLT_DOCKERCONFIG
-        value: /usr/tnf/config/preflight/preflight_dockerconfig.json
-      - name:  TNF_CONFIGURATION_PATH
-        value: /usr/tnf/config/tnf_config.yaml
+    - name: cnf-certsuite
+      imagePullPolicy: Always
+      image: quay.io/testnetworkfunction/cnf-certification-test:latest
+      resources:
+        limits:
+          memory: 500Mi
+          cpu: 50m
+      command: ["sh"]
+      args:
+        - "-c"
+        - |
+          ./run-cnf-suites.sh -l '!affiliated-certification-container-is-certified-digest && !access-control-security-context' ; sleep inf
+      volumeMounts:
+        - name: config-volume
+          mountPath: /usr/tnf/config
+        - name: preflight-dockerconfig
+          mountPath: /usr/tnf/config/preflight
+      env:
+        - name: TNF_NON_INTRUSIVE_ONLY
+          value: "true"
+        - name: TNF_ALLOW_PREFLIGHT_INSECURE
+          value: "true"
+        - name: TNF_LOG_LEVEL
+          value: trace
+        - name: PFLT_DOCKERCONFIG
+          value: /usr/tnf/config/preflight/preflight_dockerconfig.json
+        - name: TNF_CONFIGURATION_PATH
+          value: /usr/tnf/config/tnf_config.yaml
