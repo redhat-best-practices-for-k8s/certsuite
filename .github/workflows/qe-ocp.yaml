@@ -1,0 +1,62 @@
+name: QE OCP Testing
+
+on:
+  # pull_request:
+  #   branches: [ main ]
+  workflow_dispatch:
+  # Schedule a daily cron at midnight UTC
+  schedule:
+    - cron: '0 0 * * *'
+env:
+  QE_REPO: test-network-function/cnfcert-tests-verification
+
+jobs:
+  qe-ocp-testing:
+    runs-on: qe-ocp
+    strategy:
+      fail-fast: false
+      matrix: 
+        suite: [accesscontrol, affiliatedcertification, manageability, networking, lifecycle, performance, platformalteration, observability, operator]
+    env:
+      SHELL: /bin/bash
+      KUBECONFIG: '/home/labuser/.kube/config'
+      PFLT_DOCKERCONFIG: '/home/labuser/.docker/config'
+      TEST_TNF_IMAGE_NAME: quay.io/testnetworkfunction/cnf-certification-test
+      TEST_TNF_IMAGE_TAG: localtest
+      DOCKER_CONFIG_DIR: '/home/labuser/.docker'
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Run initial setup
+        uses: ./.github/actions/setup
+
+      - name: Build the test image
+        run: make build-image-local # quay.io/testnetworkfunction/cnf-certification-test:localtest
+
+      - name: Show pods
+        run: oc get pods -A
+
+      - name: Clone the QE repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.QE_REPO }}
+          path: cnfcert-tests-verification
+
+      - name: Preemptively potential QE namespaces
+        run: ./scripts/delete-namespaces.sh
+        working-directory: cnfcert-tests-verification
+
+      - name: Preemptively delete report and config folders
+        shell: bash
+        run: |
+          sudo rm -rf /tmp/tnf_config/
+          sudo rm -rf /tmp/tnf_report/
+
+      # Setup is complete.  Time to run the QE tests.
+      - name: Run the tests
+        run: FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
+        working-directory: cnfcert-tests-verification
