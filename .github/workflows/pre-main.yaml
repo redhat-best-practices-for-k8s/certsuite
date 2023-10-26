@@ -343,13 +343,14 @@ jobs:
           ref: use-tnf-secrets-repo
           path: collector
 
-      # - name: Setup tmate session
-      #   uses: mxschmitt/action-tmate@v3
-
       - name: Deploy collector and mysql
         uses: ./collector/.github/actions/prepare-collector-for-use
         with:
           working_directory: collector
+          db_url: ${{ secrets.COLLECTOR_DB_CI_URL }}
+          db_user: ${{ secrets.COLLECTOR_MYSQL_USER }}
+          db_password: ${{ secrets.COLLECTOR_MYSQL_PASSWORD }}
+          mysql_root_password: ${{ secrets.COLLECTOR_DB_ROOT_PASSWORD }}
 
       # Perform smoke tests using a TNF container.
       - name: Check out code into the Go module directory
@@ -396,10 +397,7 @@ jobs:
           repository: shirmoran/collector
           ref: use-tnf-secrets-repo
           path: collector
-
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-
+        
       - name: Run sanity check on collector
         uses: ./collector/.github/actions/run-sanity-check
         with:
