@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/ubi:8.8-1067.1696517599 AS build
+FROM registry.access.redhat.com/ubi8/ubi:8.8-1067.1698056881 AS build
 ENV TNF_DIR=/usr/tnf
 ENV \
 	TNF_SRC_DIR=${TNF_DIR}/tnf-src \
@@ -22,7 +22,7 @@ RUN \
 # Install Go binary and set the PATH
 ENV \
 	GO_DL_URL=https://golang.org/dl \
-	GO_BIN_TAR=go1.21.2.linux-amd64.tar.gz \
+	GO_BIN_TAR=go1.21.3.linux-amd64.tar.gz \
 	GOPATH=/root/go
 ENV GO_BIN_URL_x86_64=${GO_DL_URL}/${GO_BIN_TAR}
 RUN \
@@ -99,7 +99,7 @@ FROM quay.io/testnetworkfunction/oct:latest AS db
 
 # Copy the state into a new flattened image to reduce size.
 # TODO run as non-root
-FROM registry.access.redhat.com/ubi8/ubi-minimal:8.8-1072.1696517598
+FROM registry.access.redhat.com/ubi8/ubi-minimal:8.8-1072.1697626218
 
 ENV \
 	TNF_DIR=/usr/tnf \
