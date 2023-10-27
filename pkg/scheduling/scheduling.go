@@ -132,7 +132,8 @@ func GetProcessCPUScheduling(pid int, testContainer *provider.Container) (schedu
 
 	stdout, stderr, err := ch.ExecCommandContainer(ctx, command)
 	if err != nil || stderr != "" {
-		return schedulePolicy, InvalidPriority, fmt.Errorf("command %q failed to run in debug pod %s (node %s): %v", command, ctx.GetPodName(), testContainer.NodeName, err)
+		return schedulePolicy, InvalidPriority, fmt.Errorf("command %q failed to run in debug pod %s (node %s): %v (stderr: %v)",
+			command, ctx.GetPodName(), testContainer.NodeName, err, stderr)
 	}
 
 	schedulePolicy, schedulePriority, err = parseSchedulingPolicyAndPriority(stdout)
