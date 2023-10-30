@@ -1,6 +1,6 @@
 module github.com/test-network-function/cnf-certification-test
 
-go 1.21.2
+go 1.21.3
 
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
@@ -8,7 +8,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.7.0
 	github.com/stretchr/testify v1.8.4
-	github.com/test-network-function/test-network-function-claim v1.0.28
+	github.com/test-network-function/test-network-function-claim v1.0.29
 	github.com/xeipuuv/gojsonschema v1.2.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
@@ -211,15 +211,15 @@ require (
 require (
 	github.com/deckarep/golang-set/v2 v2.3.1
 	github.com/fatih/color v1.15.0
-	github.com/go-logr/logr v1.2.4
+	github.com/go-logr/logr v1.3.0
 	github.com/go-logr/stdr v1.2.2
 	github.com/gorilla/websocket v1.4.2
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/manifoldco/promptui v0.9.0
 	github.com/openshift/machine-config-operator v0.0.1-0.20230515070935-49f32d46538e
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20231018165107-f04b78186455
-	github.com/test-network-function/oct v0.0.1
-	github.com/test-network-function/privileged-daemonset v1.0.12
+	github.com/test-network-function/oct v0.0.2
+	github.com/test-network-function/privileged-daemonset v1.0.13
 	gopkg.in/yaml.v3 v3.0.1
 	gotest.tools/v3 v3.5.1
 	k8s.io/kubectl v0.28.3
