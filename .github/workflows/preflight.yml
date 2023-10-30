@@ -42,8 +42,8 @@ jobs:
 
           for FAILURE in $FAILURES; do
             FAILURE=$(echo $FAILURE | tr -d '"')
-            if [[ ! " ${ALLOWED_FAILURES[@]} " =~ " ${FAILURE} " ]]; then
-              echo "ERROR: $FAILURE is not an allowed failure"
+            if [[ ! "${ALLOWED_FAILURES[@]}" =~ "${FAILURE}" ]]; then
+              echo >&2 "ERROR: $FAILURE is not an allowed failure"
               exit 1
             fi
           done
