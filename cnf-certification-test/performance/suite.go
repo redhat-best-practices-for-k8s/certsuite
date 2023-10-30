@@ -233,6 +233,30 @@ func testSchedulingPolicyInCPUPool(env *provider.TestEnvironment,
 	testhelper.AddTestResultReason(compliantContainersPids, nonCompliantContainersPids, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
+func getExecProbesCmds(c *provider.Container) map[string]bool {
+	cmds := map[string]bool{}
+
+	if c.LivenessProbe != nil && c.LivenessProbe.Exec != nil {
+		for _, cmd := range c.LivenessProbe.Exec.Command {
+			cmds[cmd] = true
+		}
+	}
+
+	if c.ReadinessProbe != nil && c.ReadinessProbe.Exec != nil {
+		for _, cmd := range c.ReadinessProbe.Exec.Command {
+			cmds[cmd] = true
+		}
+	}
+
+	if c.StartupProbe != nil && c.StartupProbe.Exec.Command != nil {
+		for _, cmd := range c.StartupProbe.Exec.Command {
+			cmds[cmd] = true
+		}
+	}
+
+	return cmds
+}
+
 const noProcessFoundErrMsg = "No such process"
 
 func testRtAppsNoExecProbes(env *provider.TestEnvironment, cuts []*provider.Container) {
@@ -251,18 +275,30 @@ func testRtAppsNoExecProbes(env *provider.TestEnvironment, cuts []*provider.Cont
 			break
 		}
 
+		execProbesCmds := getExecProbesCmds(cut)
 		allProcessesCompliant := true
 		for _, p := range processes {
+			if execProbesCmds[p.Args] {
+				compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container process belongs to an exec probe (skipping verification)", true).
+					AddField(testhelper.ProcessID, strconv.Itoa(p.Pid)).
+					AddField(testhelper.ProcessCommandLine, p.Args))
+				continue
+			}
+
 			schedPolicy, _, err := scheduling.GetProcessCPUScheduling(p.Pid, cut)
 			if err != nil {
 				// If the process does not exist anymore it means that it has finished since the time the process list
 				// was retrieved. In this case, just ignore the error and continue processing the rest of the processes.
 				if strings.Contains(err.Error(), noProcessFoundErrMsg) {
+					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container process disappeared", true).
+						AddField(testhelper.ProcessID, strconv.Itoa(p.Pid)).
+						AddField(testhelper.ProcessCommandLine, p.Args))
 					continue
 				}
 				tnf.ClaimFilePrintf("Could not determine the scheduling policy for container %s (pid=%v), err: %v", cut, p.Pid, err)
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Could not determine the scheduling policy for container", false).
-					AddField(testhelper.ProcessID, strconv.Itoa(p.Pid)))
+					AddField(testhelper.ProcessID, strconv.Itoa(p.Pid)).
+					AddField(testhelper.ProcessCommandLine, p.Args))
 				allProcessesCompliant = false
 				continue
 			}
