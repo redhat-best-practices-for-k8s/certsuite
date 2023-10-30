@@ -237,21 +237,21 @@ func getExecProbesCmds(c *provider.Container) map[string]bool {
 	cmds := map[string]bool{}
 
 	if c.LivenessProbe != nil && c.LivenessProbe.Exec != nil {
-		for _, cmd := range c.LivenessProbe.Exec.Command {
-			cmds[cmd] = true
-		}
+		cmd := strings.Join(c.LivenessProbe.Exec.Command, "")
+		cmd = strings.Join(strings.Fields(cmd), "")
+		cmds[cmd] = true
 	}
 
 	if c.ReadinessProbe != nil && c.ReadinessProbe.Exec != nil {
-		for _, cmd := range c.ReadinessProbe.Exec.Command {
-			cmds[cmd] = true
-		}
+		cmd := strings.Join(c.ReadinessProbe.Exec.Command, "")
+		cmd = strings.Join(strings.Fields(cmd), "")
+		cmds[cmd] = true
 	}
 
 	if c.StartupProbe != nil && c.StartupProbe.Exec.Command != nil {
-		for _, cmd := range c.StartupProbe.Exec.Command {
-			cmds[cmd] = true
-		}
+		cmd := strings.Join(c.StartupProbe.Exec.Command, "")
+		cmd = strings.Join(strings.Fields(cmd), "")
+		cmds[cmd] = true
 	}
 
 	return cmds
@@ -278,7 +278,7 @@ func testRtAppsNoExecProbes(env *provider.TestEnvironment, cuts []*provider.Cont
 		execProbesCmds := getExecProbesCmds(cut)
 		allProcessesCompliant := true
 		for _, p := range processes {
-			if execProbesCmds[p.Args] {
+			if execProbesCmds[strings.Join(strings.Fields(p.Args), "")] {
 				compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container process belongs to an exec probe (skipping verification)", true).
 					AddField(testhelper.ProcessID, strconv.Itoa(p.Pid)).
 					AddField(testhelper.ProcessCommandLine, p.Args))
