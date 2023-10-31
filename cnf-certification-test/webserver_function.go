@@ -2,11 +2,10 @@ package suite
 
 import (
 	"bufio"
+	"bytes"
 	_ "embed"
 	"fmt"
 	"net/http"
-	"os"
-	"time"
 
 	"github.com/gorilla/websocket"
 
@@ -24,6 +23,8 @@ var logs []byte
 
 //go:embed webserver/toast.js
 var toast []byte
+var Buf *bytes.Buffer
+var aString string
 
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
@@ -38,36 +39,23 @@ func logStreamHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer conn.Close()
-
-	filePath := "log.log"
-
-	// Open the log file
-	file, err := os.Open(filePath)
-	if err != nil {
-		logrus.Println(err)
-		return
-	}
-	defer file.Close()
-
 	// Create a scanner to read the log file line by line
 	for {
-		scanner := bufio.NewScanner(file)
+		scanner := bufio.NewScanner(Buf)
 		for scanner.Scan() {
 			line := scanner.Text() + "\n"
 			// Send each log line to the client
 			if err := conn.WriteMessage(websocket.TextMessage, []byte(line)); err != nil {
 				fmt.Println(err)
-				//return
+				return
 			}
 
-			// Sleep for a short duration to simulate real-time updates
-			time.Sleep(100 * time.Millisecond)
 		}
 		if err := scanner.Err(); err != nil {
 			logrus.Printf("Error reading log file: %v", err)
+			return
 		}
 
-		time.Sleep(1 * time.Second)
 	}
 
 }

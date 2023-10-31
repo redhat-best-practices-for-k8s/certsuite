@@ -138,10 +138,6 @@
         await toast({ heading, message, state, timeout: 20_000 });
       });
       document.getElementById('show-logs').addEventListener('click', async function(event) {
-        const code = document
-          .getElementById('logs')
-          .querySelector('rh-code-block');
-        code.textContent = '';
         await import('./logs.js')
       });
     </script>
@@ -166,6 +162,7 @@
           <label for="kubeConfigPath">Path of KubeConfig file:</label>
           <input id="kubeConfigPath"
                          name="kubeConfigPath"
+                         required
                          type="file"></input>
         </fieldset>
 
