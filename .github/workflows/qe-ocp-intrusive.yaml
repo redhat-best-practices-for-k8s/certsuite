@@ -1,4 +1,4 @@
-name: QE OCP Testing
+name: QE OCP Intrusive Testing
 
 on:
   # pull_request:
@@ -11,12 +11,13 @@ env:
   QE_REPO: test-network-function/cnfcert-tests-verification
 
 jobs:
-  qe-ocp-testing:
+  qe-ocp-intrusive-testing:
     runs-on: qe-ocp
     strategy:
       fail-fast: false
       matrix: 
-        suite: [accesscontrol, affiliatedcertification, manageability, networking, lifecycle, performance, platformalteration, observability, operator]
+        # Add more suites if more intrusive tests are added to the QE repo
+        suite: [lifecycle]
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/labuser/.kube/config'
@@ -61,5 +62,5 @@ jobs:
 
       # Setup is complete.  Time to run the QE tests.
       - name: Run the tests
-        run: FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
+        run: FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} DISABLE_INTRUSIVE_TESTS=false ENABLE_PARALLEL=false ENABLE_FLAKY_RETRY=true make test-features
         working-directory: cnfcert-tests-verification
