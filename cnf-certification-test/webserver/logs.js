@@ -1,6 +1,6 @@
 import '@rhds/elements/rh-code-block/rh-code-block.js';
 
-const socket = new WebSocket('ws://localhost:8080/logstream');
+const socket = new WebSocket('ws://localhost:8084/logstream');
 const code = document
   .getElementById('logs')
   .querySelector('rh-code-block');

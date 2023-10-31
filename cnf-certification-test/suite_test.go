@@ -17,6 +17,7 @@
 package suite
 
 import (
+	"bytes"
 	_ "embed"
 	"encoding/json"
 	"flag"
@@ -298,37 +299,18 @@ func StartServer() {
 
 	http.HandleFunc("/runFunction", RunHandler)
 
-	fmt.Println("Server is running on :8080...")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	fmt.Println("Server is running on :8084...")
+	if err := http.ListenAndServe(":8084", nil); err != nil {
 		panic(err)
 	}
 }
 
 // Define an HTTP handler that triggers Ginkgo tests
 func RunHandler(w http.ResponseWriter, r *http.Request) {
-	// Create or open a log file
-	filename := "log.log"
-	if _, err := os.Stat(filename); err == nil {
-		// If it exists, truncate it to remove the contents
-		file, err := os.OpenFile(filename, os.O_TRUNC, 0)
-		if err != nil {
-			// Handle the error if necessary
-			panic(err)
-		}
-		file.Close()
-	}
-	logFile, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
-	if err != nil {
-		panic(err)
-	}
-	logrus.SetOutput(logFile)
-	originalStdout := os.Stdout
-	os.Stdout = logFile
-	// Read the YAML file
-	defer func() {
-		os.Stdout = originalStdout
-		logFile.Close()
-	}()
+
+	Buf = bytes.NewBufferString(aString)
+
+	logrus.SetOutput(Buf)
 
 	jsonData := r.FormValue("jsonData") // "jsonData" is the name of the JSON input field
 	logrus.Info(jsonData)
@@ -407,6 +389,7 @@ func RunHandler(w http.ResponseWriter, r *http.Request) {
 	var env provider.TestEnvironment
 	env.SetNeedsRefresh()
 	env = provider.GetTestEnvironment()
+
 	// fetch the current config
 	suiteConfig, reporterConfig := ginkgo.GinkgoConfiguration()
 	// adjust it
