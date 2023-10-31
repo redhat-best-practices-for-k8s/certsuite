@@ -19,6 +19,7 @@ package performance
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
@@ -232,29 +233,53 @@ func testSchedulingPolicyInCPUPool(env *provider.TestEnvironment,
 	testhelper.AddTestResultReason(compliantContainersPids, nonCompliantContainersPids, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
+const noProcessFoundErrMsg = "No such process"
+
 func testRtAppsNoExecProbes(env *provider.TestEnvironment, cuts []*provider.Container) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range cuts {
+		if !cut.HasExecProbes() {
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container does not define exec probes", true))
+			continue
+		}
+
 		processes, err := crclient.GetContainerProcesses(cut, env)
 		if err != nil {
 			tnf.ClaimFilePrintf("Could not determine the processes pids for container %s, err: %v", cut, err)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Could not determine the processes pids for container", false))
 			break
 		}
+
+		allProcessesCompliant := true
 		for _, p := range processes {
 			schedPolicy, _, err := scheduling.GetProcessCPUScheduling(p.Pid, cut)
 			if err != nil {
+				// If the process does not exist anymore it means that it has finished since the time the process list
+				// was retrieved. In this case, just ignore the error and continue processing the rest of the processes.
+				if strings.Contains(err.Error(), noProcessFoundErrMsg) {
+					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container process disappeared", true).
+						AddField(testhelper.ProcessID, strconv.Itoa(p.Pid)).
+						AddField(testhelper.ProcessCommandLine, p.Args))
+					continue
+				}
 				tnf.ClaimFilePrintf("Could not determine the scheduling policy for container %s (pid=%v), err: %v", cut, p.Pid, err)
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Could not determine the scheduling policy for container", false).
-					AddField(testhelper.ProcessID, strconv.Itoa(p.Pid)))
-				break
+					AddField(testhelper.ProcessID, strconv.Itoa(p.Pid)).
+					AddField(testhelper.ProcessCommandLine, p.Args))
+				allProcessesCompliant = false
+				continue
 			}
-			if scheduling.PolicyIsRT(schedPolicy) && cut.HasExecProbes() {
+			if scheduling.PolicyIsRT(schedPolicy) {
 				tnf.ClaimFilePrintf("Pod %s/Container %s defines exec probes while having a RT scheduling policy for pid %d", cut.Podname, cut, p.Pid)
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container defines exec probes while having a RT scheduling policy", false).
 					AddField(testhelper.ProcessID, strconv.Itoa(p.Pid)))
+				allProcessesCompliant = false
 			}
+		}
+
+		if allProcessesCompliant {
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container defines exec probes but does not have a RT scheduling policy", true))
 		}
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
