@@ -2,4 +2,4 @@
 iif = "iif"
 
 [files]
-extend-exclude = ["go.mod", "results.html", "cmd/tnf/claim/compare/testdata", "docs/assets/images/*.svg"]
+extend-exclude = ["depends-on.json", "go.mod", "results.html", "cmd/tnf/claim/compare/testdata", "docs/assets/images/*.svg"]
