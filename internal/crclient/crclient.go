@@ -34,6 +34,11 @@ type Process struct {
 	Args       string
 }
 
+const (
+	DevNull          = " 2>/dev/null"
+	DockerInspectPID = "chroot /host docker inspect -f '{{.State.Pid}}' "
+)
+
 // Helper function to create the clientsholder.Context of the first container of the debug pod
 // that runs in the give node. This context is usually needed to run shell commands that get
 // information from a node where a pod/container under test is running.
@@ -51,11 +56,11 @@ func GetPidFromContainer(cut *provider.Container, ctx clientsholder.Context) (in
 
 	switch cut.Runtime {
 	case "docker":
-		pidCmd = "chroot /host docker inspect -f '{{.State.Pid}}' " + cut.UID + " 2>/dev/null"
+		pidCmd = DockerInspectPID + cut.UID + DevNull
 	case "docker-pullable":
-		pidCmd = "chroot /host docker inspect -f '{{.State.Pid}}' " + cut.UID + " 2>/dev/null"
+		pidCmd = DockerInspectPID + cut.UID + DevNull
 	case "cri-o", "containerd":
-		pidCmd = "chroot /host crictl inspect --output go-template --template '{{.info.pid}}' " + cut.UID + " 2>/dev/null"
+		pidCmd = "chroot /host crictl inspect --output go-template --template '{{.info.pid}}' " + cut.UID + DevNull
 	default:
 		logrus.Debugf("Container runtime %s not supported yet for this test, skipping", cut.Runtime)
 		return 0, fmt.Errorf("container runtime %s not supported", cut.Runtime)
