@@ -48,6 +48,10 @@ const (
 	TagPreflight = "preflight"
 )
 
+const (
+	NotApplicableSNO = ` Not applicable to SNO applications.`
+)
+
 func init() {
 	InitCatalog()
 }
@@ -925,7 +929,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		common.LifecycleTestKey,
 		`Ensures that CNF Pods specify podAntiAffinity rules and replica value is set to more than 1.`,
 		PodHighAvailabilityBestPracticesRemediation,
-		NoDocumentedProcess+` Not applicable to SNO applications.`,
+		NoDocumentedProcess+NotApplicableSNO,
 		TestPodHighAvailabilityBestPracticesDocLink,
 		true,
 		map[string]string{
@@ -973,7 +977,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		common.LifecycleTestKey,
 		`Tests that CNF deployments support scale in/out operations. First, the test starts getting the current replicaCount (N) of the deployment/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the deployment/s. In case of deployments that are managed by HPA the test is changing the min and max value to deployment Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the deployment/s`, //nolint:lll
 		DeploymentScalingRemediation,
-		NoDocumentedProcess+` Not applicable to SNO applications.`,
+		NoDocumentedProcess+NotApplicableSNO,
 		TestDeploymentScalingIdentifierDocLink,
 		true,
 		map[string]string{
@@ -989,7 +993,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		common.LifecycleTestKey,
 		`Tests that CNF statefulsets support scale in/out operations. First, the test starts getting the current replicaCount (N) of the statefulset/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the statefulset/s. In case of statefulsets that are managed by HPA the test is changing the min and max value to statefulset Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the statefulset/s`, //nolint:lll
 		StatefulSetScalingRemediation,
-		NoDocumentedProcess+` Not applicable to SNO applications.`,
+		NoDocumentedProcess+NotApplicableSNO,
 		TestStateFulSetScalingIdentifierDocLink,
 		true,
 		map[string]string{
@@ -1357,7 +1361,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		common.AccessControlTestKey,
 		`Check that all containers under test have only one process running`,
 		OneProcessPerContainerRemediation,
-		NoExceptionProcessForExtendedTests+` Not applicable to SNO applications.`,
+		NoExceptionProcessForExtendedTests+NotApplicableSNO,
 		TestOneProcessPerContainerIdentifierDocLink,
 		true,
 		map[string]string{
@@ -1549,7 +1553,7 @@ tag. (2) It does not have any of the following prefixes: default, openshift-, is
 		common.LifecycleTestKey,
 		`Tests that CNF crd support scale in/out operations. First, the test starts getting the current replicaCount (N) of the crd/s with the Pod Under Test. Then, it executes the scale-in oc command for (N-1) replicas. Lastly, it executes the scale-out oc command, restoring the original replicaCount of the crd/s. In case of crd that are managed by HPA the test is changing the min and max value to crd Replica - 1 during scale-in and the original replicaCount again for both min/max during the scale-out stage. Lastly its restoring the original min/max replica of the crd/s`, //nolint:lll
 		CrdScalingRemediation,
-		NoDocumentedProcess+` Not applicable to SNO applications.`,
+		NoDocumentedProcess+NotApplicableSNO,
 		TestCrdScalingIdentifierDocLink,
 		true,
 		map[string]string{
