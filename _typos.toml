@@ -1,5 +1,6 @@
 [default.extend-words]
 iif = "iif"
+ono = "ono"
 
 [files]
 extend-exclude = ["depends-on.json", "go.mod", "results.html", "cmd/tnf/claim/compare/testdata", "docs/assets/images/*.svg"]
