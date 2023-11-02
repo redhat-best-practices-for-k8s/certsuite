@@ -314,7 +314,7 @@ func RunHandler(w http.ResponseWriter, r *http.Request) {
 
 	jsonData := r.FormValue("jsonData") // "jsonData" is the name of the JSON input field
 	log.Info(jsonData)
-	var data RequstedData
+	var data RequestedData
 	if err := json.Unmarshal([]byte(jsonData), &data); err != nil {
 		fmt.Println("Error:", err)
 	}
