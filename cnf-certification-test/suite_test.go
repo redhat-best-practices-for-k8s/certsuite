@@ -174,7 +174,6 @@ func PreRun(t *testing.T) (claimData *claim.Claim, claimRoot *claim.Root) {
 		log.Errorf("Configuration node missing because of: %s", err)
 		t.FailNow()
 	}
-
 	claimData.Nodes = claimhelper.GenerateNodes()
 	claimhelper.UnmarshalConfigurations(configurations, claimData.Configurations)
 	return claimData, claimRoot
@@ -182,8 +181,6 @@ func PreRun(t *testing.T) (claimData *claim.Claim, claimRoot *claim.Root) {
 
 // TestTest invokes the CNF Certification Test Suite.
 func TestTest(t *testing.T) {
-
-	// Keep the main program running
 	ginkgoConfig, _ := ginkgo.GinkgoConfiguration()
 	if *serverMode == "false" {
 		claimData, claimRoot := PreRun(t)
@@ -205,15 +202,14 @@ func TestTest(t *testing.T) {
 			env = provider.GetTestEnvironment()
 			ginkgo.RunSpecs(t, CnfCertificationTestSuiteName)
 		}
-		ContinueRun(t, diagnosticMode, env, claimData, claimRoot)
+		ContinueRun(diagnosticMode, &env, claimData, claimRoot)
 	} else {
 		go StartServer()
 		select {}
 	}
 }
 
-func ContinueRun(t *testing.T, diagnosticMode bool, env provider.TestEnvironment, claimData *claim.Claim, claimRoot *claim.Root) {
-
+func ContinueRun(diagnosticMode bool, env *provider.TestEnvironment, claimData *claim.Claim, claimRoot *claim.Root) {
 	endTime := time.Now()
 	claimData.Metadata.EndTime = endTime.UTC().Format(claimhelper.DateTimeFormatDirective)
 
@@ -294,24 +290,28 @@ func incorporateVersions(claimData *claim.Claim) {
 	}
 }
 func StartServer() {
-
+	server := &http.Server{
+		Addr:         ":8084",           // Server address
+		ReadTimeout:  10 * time.Second,  // Maximum duration for reading the entire request
+		WriteTimeout: 10 * time.Second,  // Maximum duration for writing the entire response
+		IdleTimeout:  120 * time.Second, // Maximum idle duration before closing the connection
+	}
 	HandlereqFunc()
 
 	http.HandleFunc("/runFunction", RunHandler)
 
 	fmt.Println("Server is running on :8084...")
-	if err := http.ListenAndServe(":8084", nil); err != nil {
+	if err := server.ListenAndServe(); err != nil {
 		panic(err)
 	}
 }
 
 // Define an HTTP handler that triggers Ginkgo tests
 func RunHandler(w http.ResponseWriter, r *http.Request) {
-
 	Buf = bytes.NewBufferString(aString)
-
 	log.SetOutput(Buf)
 	logl.SetOutput(Buf)
+
 	jsonData := r.FormValue("jsonData") // "jsonData" is the name of the JSON input field
 	log.Info(jsonData)
 	var data RequstedData
@@ -350,40 +350,6 @@ func RunHandler(w http.ResponseWriter, r *http.Request) {
 	log.Infof("KUBECONFIG      : %v", handler.Filename)
 
 	log.Infof("Labels filter       : %v", flattenedOptions)
-
-	// Set the output of the logger to the log file
-
-	/*data, err := os.ReadFile("tnf_config.yml")
-	if err != nil {
-		log.Fatalf("Error reading YAML file: %v", err)
-	}
-
-	// Unmarshal the YAML data into a Config struct
-	var config configuration.TestConfiguration
-
-	err = yaml.Unmarshal(data, &config)
-	if err != nil {
-		log.Fatalf("Error unmarshaling YAML: %v", err)
-	}
-
-	// Modify the configuration
-	var namespace []configuration.Namespace
-	namespace = append(namespace, configuration.Namespace{Name: requestData.Field3})
-
-	config.TargetNameSpaces = namespace // Change the port to a new value
-
-	// Serialize the modified config back to YAML format
-	newData, err := yaml.Marshal(&config)
-	if err != nil {
-		log.Fatalf("Error marshaling YAML: %v", err)
-	}
-
-	// Write the modified YAML data back to the file
-	err = os.WriteFile("tnf_config.yml", newData, os.ModePerm)
-	if err != nil {
-		log.Fatalf("Error writing YAML file: %v", err)
-	}
-	*/
 	t := testing.T{}
 	claimData, claimRoot := PreRun(&t)
 	var env provider.TestEnvironment
@@ -400,7 +366,7 @@ func RunHandler(w http.ResponseWriter, r *http.Request) {
 	suiteConfig.LabelFilter = strings.Join(flattenedOptions, "")
 	ginkgo.RunSpecs(&t, CnfCertificationTestSuiteName, suiteConfig, reporterConfig)
 
-	ContinueRun(&t, false, env, claimData, claimRoot)
+	ContinueRun(false, &env, claimData, claimRoot)
 	// Return the result as JSON
 	response := struct {
 		Message string `json:"Message"`
@@ -415,12 +381,10 @@ func RunHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	// Set the Content-Type header to specify that the response is JSON
 	w.Header().Set("Content-Type", "application/json")
-
 	// Write the JSON response to the client
 	_, err = w.Write(jsonResponse)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
 }
