@@ -59,7 +59,7 @@ func logStreamHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-type RequstedData struct {
+type RequestedData struct {
 	SelectedOptions interface{} `json:"selectedOptions"`
 }
 type ResponseData struct {
