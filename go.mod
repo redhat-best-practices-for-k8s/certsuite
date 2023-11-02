@@ -216,7 +216,7 @@ require (
 	github.com/openshift/machine-config-operator v0.0.1-0.20230515070935-49f32d46538e
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20231018165107-f04b78186455
 	github.com/test-network-function/oct v0.0.2
-	github.com/test-network-function/privileged-daemonset v1.0.13
+	github.com/test-network-function/privileged-daemonset v1.0.14
 	gopkg.in/yaml.v3 v3.0.1
 	gotest.tools/v3 v3.5.1
 	k8s.io/kubectl v0.28.3
