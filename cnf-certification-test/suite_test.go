@@ -23,6 +23,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	logl "log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -311,7 +312,7 @@ func RunHandler(w http.ResponseWriter, r *http.Request) {
 	Buf = bytes.NewBufferString(aString)
 
 	logrus.SetOutput(Buf)
-
+	logl.SetOutput(Buf)
 	jsonData := r.FormValue("jsonData") // "jsonData" is the name of the JSON input field
 	logrus.Info(jsonData)
 	var data RequstedData
