@@ -7,5 +7,5 @@ const code = document
 code.textContent = '';
 // Handle incoming log messages
 socket.addEventListener('message', function (event) {
-  code.textContent += event.data + '\n';
+  code.innerHTML += event.data + '\n';
 });

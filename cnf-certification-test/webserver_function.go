@@ -8,7 +8,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/websocket"
-
+	"github.com/robert-nix/ansihtml"
 	"github.com/sirupsen/logrus"
 )
 
@@ -43,9 +43,11 @@ func logStreamHandler(w http.ResponseWriter, r *http.Request) {
 	for {
 		scanner := bufio.NewScanner(Buf)
 		for scanner.Scan() {
-			line := scanner.Text() + "\n"
+			line := scanner.Bytes()
+			line = append(ansihtml.ConvertToHTML(line), []byte("<br>")...)
+
 			// Send each log line to the client
-			if err := conn.WriteMessage(websocket.TextMessage, []byte(line)); err != nil {
+			if err := conn.WriteMessage(websocket.TextMessage, line); err != nil {
 				fmt.Println(err)
 				return
 			}
