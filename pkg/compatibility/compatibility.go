@@ -56,11 +56,21 @@ var (
 		// update documentation.
 
 		// Full Support
+		"4.14": {
+			GADate:  time.Date(2023, 10, 31, 0, 0, 0, 0, time.UTC), // October 31, 2023
+			FSEDate: time.Date(2024, 1, 31, 0, 0, 0, 0, time.UTC),  // January 31, 2024
+			MSEDate: time.Date(2025, 5, 1, 0, 0, 0, 0, time.UTC),   // May 1, 2025
+			// Note: FSEDate (Release of 4.14 + 3 months) is currently a "guess".  Update when available.
+
+			// OS Compatibility
+			MinRHCOSVersion:      "4.14",
+			RHELVersionsAccepted: []string{"8.4", "8.5"},
+		},
+
 		"4.13": {
-			GADate:  time.Date(2023, 5, 17, 0, 0, 0, 0, time.UTC),  // January 17, 2023
-			FSEDate: time.Date(2024, 8, 17, 0, 0, 0, 0, time.UTC),  // August 17, 2024
+			GADate:  time.Date(2023, 5, 17, 0, 0, 0, 0, time.UTC),  // May 17, 2023
+			FSEDate: time.Date(2024, 1, 31, 0, 0, 0, 0, time.UTC),  // January 31, 2024
 			MSEDate: time.Date(2024, 11, 17, 0, 0, 0, 0, time.UTC), // November 17, 2024
-			// Note: FSEDate (Release of 4.13 + 3 months) is currently a "guess".  Update when available.
 
 			// OS Compatibility
 			MinRHCOSVersion:      "4.13",
