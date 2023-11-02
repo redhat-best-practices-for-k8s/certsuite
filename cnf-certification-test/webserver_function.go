@@ -51,15 +51,12 @@ func logStreamHandler(w http.ResponseWriter, r *http.Request) {
 				fmt.Println(err)
 				return
 			}
-
 		}
 		if err := scanner.Err(); err != nil {
 			logrus.Printf("Error reading log file: %v", err)
 			return
 		}
-
 	}
-
 }
 
 type RequstedData struct {
@@ -88,7 +85,6 @@ func flattenData(data interface{}, result []string) []string {
 	return result
 }
 func HandlereqFunc() {
-
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// Set the content type to "text/html".
 		w.Header().Set("Content-Type", "text/html")
@@ -96,6 +92,7 @@ func HandlereqFunc() {
 		_, err := w.Write(indexHTML)
 		if err != nil {
 			http.Error(w, "Failed to write response", http.StatusInternalServerError)
+			return
 		}
 	})
 
@@ -106,6 +103,7 @@ func HandlereqFunc() {
 		_, err := w.Write(submit)
 		if err != nil {
 			http.Error(w, "Failed to write response", http.StatusInternalServerError)
+			return
 		}
 	})
 
@@ -116,6 +114,7 @@ func HandlereqFunc() {
 		_, err := w.Write(logs)
 		if err != nil {
 			http.Error(w, "Failed to write response", http.StatusInternalServerError)
+			return
 		}
 	})
 
@@ -126,10 +125,9 @@ func HandlereqFunc() {
 		_, err := w.Write(toast)
 		if err != nil {
 			http.Error(w, "Failed to write response", http.StatusInternalServerError)
+			return
 		}
 	})
-
 	// Serve the static HTML file
 	http.HandleFunc("/logstream", logStreamHandler)
-
 }
