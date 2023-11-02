@@ -95,9 +95,9 @@ fi
 # Specify Junit report file name.
 GINKGO_ARGS="\
 --ginkgo.timeout=$TIMEOUT \
+-serverMode $SERVER_RUN \
 -junit $OUTPUT_LOC \
 -claimloc $OUTPUT_LOC \
--server-mode $SERVER_RUN \
 --ginkgo.junit-report $OUTPUT_LOC/cnf-certification-tests_junit.xml \
 -ginkgo.v \
 -test.v\
@@ -112,7 +112,7 @@ echo "Report will be output to '$OUTPUT_LOC'"
 echo "ginkgo arguments '${GINKGO_ARGS}'"
 LABEL_STRING=''
 
-if [ -z "$LABEL" ]; then
+if [ -z "$LABEL" ] && ([ -z "$SERVER_RUN" ] || [ $SERVER_RUN == false ]); then
 	echo "No test label (-l) was set, so only diagnostic functions will run."
 else
 	LABEL_STRING="-ginkgo.label-filter=${LABEL}"
