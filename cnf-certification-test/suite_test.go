@@ -32,7 +32,6 @@ import (
 	"time"
 
 	"github.com/onsi/ginkgo/v2"
-	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/claimhelper"
@@ -64,7 +63,7 @@ const (
 	defaultClaimPath              = ".."
 	defaultCliArgValue            = ""
 	junitFlagKey                  = "junit"
-	serverModeFlag                = "server-mode"
+	serverModeFlag                = "serverMode"
 	TNFReportKey                  = "cnf-certification-test"
 	extraInfoKey                  = "testsExtraInfo"
 	defaultServerMode             = "false"
@@ -311,10 +310,10 @@ func RunHandler(w http.ResponseWriter, r *http.Request) {
 
 	Buf = bytes.NewBufferString(aString)
 
-	logrus.SetOutput(Buf)
+	log.SetOutput(Buf)
 	logl.SetOutput(Buf)
 	jsonData := r.FormValue("jsonData") // "jsonData" is the name of the JSON input field
-	logrus.Info(jsonData)
+	log.Info(jsonData)
 	var data RequstedData
 	if err := json.Unmarshal([]byte(jsonData), &data); err != nil {
 		fmt.Println("Error:", err)
@@ -348,9 +347,9 @@ func RunHandler(w http.ResponseWriter, r *http.Request) {
 	// Copy the uploaded file to the server file
 
 	os.Setenv("KUBECONFIG", handler.Filename)
-	logrus.Infof("KUBECONFIG      : %v", handler.Filename)
+	log.Infof("KUBECONFIG      : %v", handler.Filename)
 
-	logrus.Infof("Labels filter       : %v", flattenedOptions)
+	log.Infof("Labels filter       : %v", flattenedOptions)
 
 	// Set the output of the logger to the log file
 
