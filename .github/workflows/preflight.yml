@@ -1,0 +1,49 @@
+---
+name: Preflight
+'on':
+  schedule:
+    - cron: '0 0 * * *'
+  # pull_request:
+  #   branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  preflight-unstable:
+    runs-on: ubuntu-22.04
+    env:
+      SHELL: /bin/bash
+      IMAGE_NAME: quay.io/testnetworkfunction/cnf-certification-test:unstable
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go 1.21
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.21.3
+
+      - name: Disable default go problem matcher
+        run: echo "::remove-matcher owner=go::"
+
+      - name: Clone the preflight repository
+        uses: actions/checkout@v4
+        with:
+          repository: redhat-openshift-ecosystem/openshift-preflight
+          path: openshift-preflight
+
+      - name: Run preflight
+        working-directory: openshift-preflight
+        run: |
+          make build
+          ./preflight check container ${{ env.IMAGE_NAME }} --artifacts ${GITHUB_WORKSPACE}/openshift-preflight/artifacts
+
+          ALLOWED_FAILURES=("HasLicense" "RunAsNonRoot")
+          FAILURES=$(cat ${GITHUB_WORKSPACE}/openshift-preflight/artifacts/amd64/results.json | jq -r '.results.failed[].name')
+
+          for FAILURE in $FAILURES; do
+            FAILURE=$(echo $FAILURE | tr -d '"')
+            if [[ ! "${ALLOWED_FAILURES[@]}" =~ "${FAILURE}" ]]; then
+              echo >&2 "ERROR: $FAILURE is not an allowed failure"
+              exit 1
+            fi
+          done

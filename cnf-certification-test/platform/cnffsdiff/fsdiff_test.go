@@ -23,7 +23,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	. "github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/cnffsdiff"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/cnffsdiff"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 )
@@ -105,7 +105,7 @@ func TestRunTest(t *testing.T) {
 			err:    tc.clientErr,
 		}
 
-		fsdiff := NewFsDiffTester(chm, clientsholder.Context{})
+		fsdiff := cnffsdiff.NewFsDiffTester(chm, clientsholder.Context{})
 		fsdiff.RunTest("fakeUID")
 		assert.Equal(t, tc.expectedResult, fsdiff.GetResults())
 	}
@@ -181,7 +181,7 @@ func TestRunTestMountFolderErrors(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		fsdiff := NewFsDiffTester(tc.mockedClientshHolder, clientsholder.Context{})
+		fsdiff := cnffsdiff.NewFsDiffTester(tc.mockedClientshHolder, clientsholder.Context{})
 		fsdiff.RunTest("fakeUID")
 		assert.Equal(t, testhelper.ERROR, fsdiff.GetResults())
 		assert.Equal(t, fsdiff.Error.Error(), tc.expectedError)
@@ -263,7 +263,7 @@ func TestRunTestUnmountFolderErrors(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		fsdiff := NewFsDiffTester(tc.mockedClientshHolder, clientsholder.Context{})
+		fsdiff := cnffsdiff.NewFsDiffTester(tc.mockedClientshHolder, clientsholder.Context{})
 		fsdiff.RunTest("fakeUID")
 		assert.Equal(t, testhelper.ERROR, fsdiff.GetResults())
 		assert.Equal(t, fsdiff.Error.Error(), tc.expectedError)
