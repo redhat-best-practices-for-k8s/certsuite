@@ -524,7 +524,8 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 								"The role bindings used by this pod do not live in one of the CNF namespaces", false).
 								AddField(testhelper.RoleBindingName, env.RoleBindings[rbIndex].Name).
 								AddField(testhelper.RoleBindingNamespace, env.RoleBindings[rbIndex].Namespace).
-								AddField(testhelper.ServiceAccountName, put.Spec.ServiceAccountName))
+								AddField(testhelper.ServiceAccountName, put.Spec.ServiceAccountName).
+								SetType(testhelper.PodRoleBinding))
 						found = true
 						podIsCompliant = false
 						break
