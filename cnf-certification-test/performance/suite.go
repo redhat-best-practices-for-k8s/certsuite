@@ -233,6 +233,30 @@ func testSchedulingPolicyInCPUPool(env *provider.TestEnvironment,
 	testhelper.AddTestResultReason(compliantContainersPids, nonCompliantContainersPids, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
+func getExecProbesCmds(c *provider.Container) map[string]bool {
+	cmds := map[string]bool{}
+
+	if c.LivenessProbe != nil && c.LivenessProbe.Exec != nil {
+		cmd := strings.Join(c.LivenessProbe.Exec.Command, "")
+		cmd = strings.Join(strings.Fields(cmd), "")
+		cmds[cmd] = true
+	}
+
+	if c.ReadinessProbe != nil && c.ReadinessProbe.Exec != nil {
+		cmd := strings.Join(c.ReadinessProbe.Exec.Command, "")
+		cmd = strings.Join(strings.Fields(cmd), "")
+		cmds[cmd] = true
+	}
+
+	if c.StartupProbe != nil && c.StartupProbe.Exec.Command != nil {
+		cmd := strings.Join(c.StartupProbe.Exec.Command, "")
+		cmd = strings.Join(strings.Fields(cmd), "")
+		cmds[cmd] = true
+	}
+
+	return cmds
+}
+
 const noProcessFoundErrMsg = "No such process"
 
 func testRtAppsNoExecProbes(env *provider.TestEnvironment, cuts []*provider.Container) {
@@ -251,8 +275,10 @@ func testRtAppsNoExecProbes(env *provider.TestEnvironment, cuts []*provider.Cont
 			break
 		}
 
+		notExecProbeProcesses, compliantObjectsProbes := filterProbeProcesses(processes, cut)
+		compliantObjects = append(compliantObjects, compliantObjectsProbes...)
 		allProcessesCompliant := true
-		for _, p := range processes {
+		for _, p := range notExecProbeProcesses {
 			schedPolicy, _, err := scheduling.GetProcessCPUScheduling(p.Pid, cut)
 			if err != nil {
 				// If the process does not exist anymore it means that it has finished since the time the process list
@@ -283,4 +309,29 @@ func testRtAppsNoExecProbes(env *provider.TestEnvironment, cuts []*provider.Cont
 		}
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+}
+
+func filterProbeProcesses(allProcesses []*crclient.Process, cut *provider.Container) (notExecProbeProcesses []*crclient.Process, compliantObjects []*testhelper.ReportObject) {
+	execProbeProcesses := []int{}
+	execProbesCmds := getExecProbesCmds(cut)
+	// find all exec probes by matching command line
+	for _, p := range allProcesses {
+		if execProbesCmds[strings.Join(strings.Fields(p.Args), "")] {
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container process belongs to an exec probe (skipping verification)", true).
+				AddField(testhelper.ProcessID, strconv.Itoa(p.Pid)).
+				AddField(testhelper.ProcessCommandLine, p.Args))
+			execProbeProcesses = append(execProbeProcesses, p.Pid)
+		}
+	}
+	// remove all exec probes and their children from the process list
+	for _, p := range allProcesses {
+		for _, parentProbePid := range execProbeProcesses {
+			if p.Pid == parentProbePid || p.PPid == parentProbePid {
+				// skip exec probe processes (child or parent)
+				continue
+			}
+			notExecProbeProcesses = append(notExecProbeProcesses, p)
+		}
+	}
+	return notExecProbeProcesses, compliantObjects
 }

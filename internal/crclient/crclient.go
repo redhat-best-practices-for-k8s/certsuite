@@ -27,11 +27,11 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
-const PsRegex = `(?m)^(\d+?)\s+?(\d+?)\s+?(.*?)$`
+const PsRegex = `(?m)^(\d+?)\s+?(\d+?)\s+?(\d+?)\s+?(.*?)$`
 
 type Process struct {
-	PidNs, Pid int
-	Args       string
+	PidNs, Pid, PPid int
+	Args             string
 }
 
 const (
@@ -140,7 +140,7 @@ func ExecCommandContainerNSEnter(command string,
 }
 
 func GetPidsFromPidNamespace(pidNamespace string, container *provider.Container) (p []*Process, err error) {
-	const command = "trap \"\" SIGURG ; ps -e -o pidns,pid,args"
+	const command = "trap \"\" SIGURG ; ps -e -o pidns,pid,ppid,args"
 	env := provider.GetTestEnvironment()
 	ctx, err := GetNodeDebugPodContext(container.NodeName, &env)
 	if err != nil {
@@ -170,7 +170,12 @@ func GetPidsFromPidNamespace(pidNamespace string, container *provider.Container)
 			logrus.Errorf("could not convert string %s to integer, err=%s", v[2], err)
 			continue
 		}
-		p = append(p, &Process{PidNs: aPidNs, Pid: aPid, Args: v[3]})
+		aPPid, err := strconv.Atoi(v[3])
+		if err != nil {
+			logrus.Errorf("could not convert string %s to integer, err=%s", v[3], err)
+			continue
+		}
+		p = append(p, &Process{PidNs: aPidNs, Pid: aPid, Args: v[4], PPid: aPPid})
 	}
 	return p, nil
 }
