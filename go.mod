@@ -8,7 +8,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.7.0
 	github.com/stretchr/testify v1.8.4
-	github.com/test-network-function/test-network-function-claim v1.0.29
+	github.com/test-network-function/test-network-function-claim v1.0.30
 	github.com/xeipuuv/gojsonschema v1.2.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
@@ -21,7 +21,7 @@ require (
 	github.com/onsi/ginkgo/v2 v2.13.0
 	github.com/openshift/api v0.0.1
 	github.com/openshift/client-go v0.0.1
-	github.com/operator-framework/api v0.18.0
+	github.com/operator-framework/api v0.19.0
 	github.com/operator-framework/operator-lifecycle-manager v0.20.0
 	github.com/pkg/errors v0.9.1 // indirect
 	helm.sh/helm/v3 v3.13.1
@@ -217,8 +217,8 @@ require (
 	github.com/openshift/machine-config-operator v0.0.1-0.20230515070935-49f32d46538e
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20231018165107-f04b78186455
 	github.com/robert-nix/ansihtml v1.0.1
-	github.com/test-network-function/oct v0.0.2
-	github.com/test-network-function/privileged-daemonset v1.0.13
+	github.com/test-network-function/oct v0.0.3
+	github.com/test-network-function/privileged-daemonset v1.0.14
 	gopkg.in/yaml.v3 v3.0.1
 	gotest.tools/v3 v3.5.1
 	k8s.io/kubectl v0.28.3
