@@ -52,13 +52,7 @@ while [[ $1 == -* ]]; do
 		fi
 		;;
 	-s)
-		if (($# > 1)); then
-			SERVER_RUN=$2
-			shift
-		else
-			echo >&2 '-s requires an argument'
-			exit 1
-		fi
+		SERVER_RUN=true
 		;;
 	-l | --label)
 		while (("$#" >= 2)) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]]; do

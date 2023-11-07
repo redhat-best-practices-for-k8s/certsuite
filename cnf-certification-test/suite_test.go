@@ -23,7 +23,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	logl "log"
+	rlog "log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -52,6 +52,7 @@ import (
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/performance"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/preflight"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/webserver"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/diagnostics"
@@ -296,7 +297,7 @@ func StartServer() {
 		WriteTimeout: 10 * time.Second,  // Maximum duration for writing the entire response
 		IdleTimeout:  120 * time.Second, // Maximum idle duration before closing the connection
 	}
-	HandlereqFunc()
+	webserver.HandlereqFunc()
 
 	http.HandleFunc("/runFunction", RunHandler)
 
@@ -308,18 +309,18 @@ func StartServer() {
 
 // Define an HTTP handler that triggers Ginkgo tests
 func RunHandler(w http.ResponseWriter, r *http.Request) {
-	Buf = bytes.NewBufferString(aString)
-	log.SetOutput(Buf)
-	logl.SetOutput(Buf)
+	webserver.Buf = bytes.NewBufferString("")
+	log.SetOutput(webserver.Buf)
+	rlog.SetOutput(webserver.Buf)
 
 	jsonData := r.FormValue("jsonData") // "jsonData" is the name of the JSON input field
 	log.Info(jsonData)
-	var data RequestedData
+	var data webserver.RequestedData
 	if err := json.Unmarshal([]byte(jsonData), &data); err != nil {
 		fmt.Println("Error:", err)
 	}
 	var flattenedOptions []string
-	flattenedOptions = flattenData(data.SelectedOptions, flattenedOptions)
+	flattenedOptions = webserver.FlattenData(data.SelectedOptions, flattenedOptions)
 
 	// Get the file from the request
 	file, handler, err := r.FormFile("kubeConfigPath") // "fileInput" is the name of the file input field
