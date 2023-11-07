@@ -1,4 +1,4 @@
-package suite
+package webserver
 
 import (
 	"bufio"
@@ -12,19 +12,18 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-//go:embed webserver/index.html
+//go:embed index.html
 var indexHTML []byte
 
-//go:embed webserver/submit.js
+//go:embed submit.js
 var submit []byte
 
-//go:embed webserver/logs.js
+//go:embed logs.js
 var logs []byte
 
-//go:embed webserver/toast.js
+//go:embed toast.js
 var toast []byte
 var Buf *bytes.Buffer
-var aString string
 
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
@@ -66,20 +65,20 @@ type ResponseData struct {
 	Message string `json:"message"`
 }
 
-func flattenData(data interface{}, result []string) []string {
+func FlattenData(data interface{}, result []string) []string {
 	switch v := data.(type) {
 	case string:
 		result = append(result, v)
 	case []interface{}:
 		for _, item := range v {
-			result = flattenData(item, result)
+			result = FlattenData(item, result)
 		}
 	case map[string]interface{}:
 		for key, item := range v {
 			if key == "selectedOptions" {
-				result = flattenData(item, result)
+				result = FlattenData(item, result)
 			}
-			result = flattenData(item, result)
+			result = FlattenData(item, result)
 		}
 	}
 	return result
