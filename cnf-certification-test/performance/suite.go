@@ -248,7 +248,7 @@ func getExecProbesCmds(c *provider.Container) map[string]bool {
 		cmds[cmd] = true
 	}
 
-	if c.StartupProbe != nil && c.StartupProbe.Exec.Command != nil {
+	if c.StartupProbe != nil && c.StartupProbe.Exec != nil {
 		cmd := strings.Join(c.StartupProbe.Exec.Command, "")
 		cmd = strings.Join(strings.Fields(cmd), "")
 		cmds[cmd] = true
