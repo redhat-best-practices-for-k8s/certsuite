@@ -474,7 +474,9 @@ func testPodServiceAccount(env *provider.TestEnvironment) {
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
-// testPodRoleBindings verifies that the pod utilizes a valid role binding that does not cross namespaces
+// testPodRoleBindings verifies that the pod utilizes a valid role binding that does not cross non-CNF namespaces
+//
+//nolint:funlen
 func testPodRoleBindings(env *provider.TestEnvironment) {
 	ginkgo.By("Should not have RoleBinding in other namespaces")
 	var compliantObjects []*testhelper.ReportObject
@@ -502,18 +504,28 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 				// We must check if the pod's service account is in the role binding's subjects.
 				found := false
 				for _, subject := range env.RoleBindings[rbIndex].Subjects {
-					// If the subject is a service account and the service account is in the same namespace as the pod, then we have a failure
-					//nolint:gocritic
-					if subject.Kind == rbacv1.ServiceAccountKind && subject.Namespace == put.Namespace && subject.Name == put.Spec.ServiceAccountName {
-						tnf.Logf(logrus.WarnLevel, "Pod: %s/%s has the following role bindings that do not live in the same namespace: %s", put.Namespace, put.Name, env.RoleBindings[rbIndex].Name)
+					// If the subject is a service account and the service account is in the same namespace as one of the CNF's namespaces, then continue, this is allowed
+					if subject.Kind == rbacv1.ServiceAccountKind &&
+						subject.Namespace == put.Namespace &&
+						subject.Name == put.Spec.ServiceAccountName &&
+						stringhelper.StringInSlice(env.Namespaces, env.RoleBindings[rbIndex].Namespace, false) {
+						continue
+					}
+
+					// Finally, if the subject is a service account and the service account is in the same namespace as the pod, then we have a failure
+					if subject.Kind == rbacv1.ServiceAccountKind &&
+						subject.Namespace == put.Namespace &&
+						subject.Name == put.Spec.ServiceAccountName {
+						tnf.Logf(logrus.WarnLevel, "Pod: %s has the following role bindings that do not live in one of the CNF namespaces: %s", put, env.RoleBindings[rbIndex].Name)
 
 						// Add the pod to the non-compliant list
 						nonCompliantObjects = append(nonCompliantObjects,
 							testhelper.NewPodReportObject(put.Namespace, put.Name,
-								"The role bindings used by this pod do not live in the same namespace", false).
+								"The role bindings used by this pod do not live in one of the CNF namespaces", false).
 								AddField(testhelper.RoleBindingName, env.RoleBindings[rbIndex].Name).
 								AddField(testhelper.RoleBindingNamespace, env.RoleBindings[rbIndex].Namespace).
-								AddField(testhelper.ServiceAccountName, put.Spec.ServiceAccountName))
+								AddField(testhelper.ServiceAccountName, put.Spec.ServiceAccountName).
+								SetType(testhelper.PodRoleBinding))
 						found = true
 						podIsCompliant = false
 						break
@@ -528,7 +540,7 @@ func testPodRoleBindings(env *provider.TestEnvironment) {
 		// Add pod to the compliant object list
 		if podIsCompliant {
 			compliantObjects = append(compliantObjects,
-				testhelper.NewPodReportObject(put.Namespace, put.Name, "All the role bindings used by this pod (applied by the service accounts) live in the same namespace", true))
+				testhelper.NewPodReportObject(put.Namespace, put.Name, "All the role bindings used by this pod (applied by the service accounts) live in one of the CNF namespaces", true))
 		}
 	}
 	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)

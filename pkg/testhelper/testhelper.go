@@ -200,6 +200,7 @@ const (
 	ImageRepo                    = "Image Repo"
 	ImageTag                     = "Image Tag"
 	ImageRegistry                = "Image Registry"
+	PodRoleBinding               = "Pods with RoleBindings details"
 )
 
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {
