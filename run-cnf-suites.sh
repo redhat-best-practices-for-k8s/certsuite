@@ -89,13 +89,16 @@ fi
 # Specify Junit report file name.
 GINKGO_ARGS="\
 --ginkgo.timeout=$TIMEOUT \
--serverMode $SERVER_RUN \
 -junit $OUTPUT_LOC \
 -claimloc $OUTPUT_LOC \
 --ginkgo.junit-report $OUTPUT_LOC/cnf-certification-tests_junit.xml \
 -ginkgo.v \
 -test.v\
 "
+
+if [ "$SERVER_RUN" = "true" ]; then
+	GINKGO_ARGS="$GINKGO_ARGS -serverMode"
+fi
 
 if [[ $LABEL == "all" ]]; then
 	LABEL='common,extended,faredge,telco'

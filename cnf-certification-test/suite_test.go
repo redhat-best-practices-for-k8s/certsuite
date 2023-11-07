@@ -67,7 +67,7 @@ const (
 	serverModeFlag                = "serverMode"
 	TNFReportKey                  = "cnf-certification-test"
 	extraInfoKey                  = "testsExtraInfo"
-	defaultServerMode             = "false"
+	defaultServerMode             = false
 )
 
 var (
@@ -87,7 +87,7 @@ var (
 	// ClaimFormat is the current version for the claim file format to be produced by the TNF test suite.
 	// A client decoding this claim file must support decoding its specific version.
 	ClaimFormatVersion string
-	serverMode         *string
+	serverMode         *bool
 )
 
 func init() {
@@ -95,8 +95,7 @@ func init() {
 		"the path where the claimfile will be output")
 	junitPath = flag.String(junitFlagKey, defaultCliArgValue,
 		"the path for the junit format report")
-	serverMode = flag.String(serverModeFlag, defaultServerMode,
-		"run test with webserver")
+	serverMode = flag.Bool("serverMode", defaultServerMode, "run test with webserver")
 }
 
 // setLogLevel sets the log level for logrus based on the "TNF_LOG_LEVEL" environment variable
@@ -183,7 +182,7 @@ func PreRun(t *testing.T) (claimData *claim.Claim, claimRoot *claim.Root) {
 // TestTest invokes the CNF Certification Test Suite.
 func TestTest(t *testing.T) {
 	ginkgoConfig, _ := ginkgo.GinkgoConfiguration()
-	if *serverMode == "false" {
+	if !*serverMode {
 		claimData, claimRoot := PreRun(t)
 		var diagnosticMode bool
 		// Diagnostic functions will run when no labels are provided.
