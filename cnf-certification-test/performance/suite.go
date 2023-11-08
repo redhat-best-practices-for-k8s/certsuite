@@ -325,13 +325,18 @@ func filterProbeProcesses(allProcesses []*crclient.Process, cut *provider.Contai
 	}
 	// remove all exec probes and their children from the process list
 	for _, p := range allProcesses {
+		isExecProbeProcess := false
 		for _, parentProbePid := range execProbeProcesses {
 			if p.Pid == parentProbePid || p.PPid == parentProbePid {
-				// skip exec probe processes (child or parent)
-				continue
+				// this process is part of an exec probe (child or parent), break
+				isExecProbeProcess = true
+				break
 			}
-			notExecProbeProcesses = append(notExecProbeProcesses, p)
 		}
+		if isExecProbeProcess {
+			continue
+		}
+		notExecProbeProcesses = append(notExecProbeProcesses, p)
 	}
 	return notExecProbeProcesses, compliantObjects
 }
