@@ -1,3 +1,14 @@
+run:
+  skip-dirs:
+    - cnf-certification-test/accesscontrol
+    - cnf-certification-test/certification
+    - cnf-certification-test/lifecycle
+    - cnf-certification-test/manageability
+    - cnf-certification-test/networking
+    - cnf-certification-test/operator
+    - cnf-certification-test/performance
+    - cnf-certification-test/platform
+    - cnf-certification-test/preflight
 linters-settings:
   dupl:
     threshold: 100
@@ -45,6 +56,8 @@ linters-settings:
     allow-unused: false # report any unused nolint directives
     require-explanation: false # do not require an explanation for nolint directives
     require-specific: true # require nolint directives to be specific about which linter is being skipped
+  exhaustive:
+    default-signifies-exhaustive: true
 linters:
   # please, do not use `enable-all`: it's deprecated and will be removed soon.
   # inverted configuration with `enable-all` and `disable` is not scalable during updates of golangci-lint

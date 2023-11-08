@@ -13,27 +13,12 @@ import (
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
-// Checks DB
-//
-// For each CheckGroup:
-// 1. Calls group.BeforeAll()
-//
-//   For each Check in a CheckGroup
-//   1. Calls group.BeforeEach(). -> get/refresh environment.
-//     2. Calls check.SkipCheckFn() -> if true, go to next check.
-//     3. Calls check.BeforeCheckFn()
-//       4. Calls check.Run() -> Actual CNF Cert requirement check function.
-//     5. Calls check.AfterCheckFn() -> Set env to be refreshed/cleanup.
-//   6. Calls group.AfterEach()
-//
-// 2. Calls group.AfterAll()
-
 var (
 	dbLock    sync.Mutex
 	db        []*Check
 	dbByGroup map[string]*ChecksGroup
 
-	resultsDb = map[string][]claim.Result{}
+	resultsDB = map[string][]claim.Result{}
 )
 
 func AddCheck(check *Check) {
@@ -47,7 +32,8 @@ func RunChecks(labelsExpr string, timeout time.Duration) error {
 	// Timeout channel
 	timeOutChan := time.After(timeout)
 	// SIGINT(ctrl+c)/SIGTERM capture channel.
-	sigIntChan := make(chan os.Signal, 10)
+	const SIGINTBufferLen = 10
+	sigIntChan := make(chan os.Signal, SIGINTBufferLen)
 	signal.Notify(sigIntChan, syscall.SIGINT, syscall.SIGTERM)
 
 	//  Labels expression parser not implemented yet. Assume labelsExpr is just a label.
@@ -56,7 +42,8 @@ func RunChecks(labelsExpr string, timeout time.Duration) error {
 	var errs []error
 	for _, group := range dbByGroup {
 		if abort {
-			group.OnAbort(labelsExpr, abortReason)
+			// ToDo: remove labelexpr checking.
+			_ = group.OnAbort(labelsExpr, abortReason)
 			continue
 		}
 
@@ -79,14 +66,14 @@ func RunChecks(labelsExpr string, timeout time.Duration) error {
 
 			abort = true
 			abortReason = "global time-out"
-			group.OnAbort(labelsExpr, abortReason)
+			_ = group.OnAbort(labelsExpr, abortReason)
 		case <-sigIntChan:
 			logrus.Warnf("SIGINT/SIGTERM received.")
 			stopChan <- true
 
 			abort = true
 			abortReason = "SIGINT/SIGTERM"
-			group.OnAbort(labelsExpr, abortReason)
+			_ = group.OnAbort(labelsExpr, abortReason)
 		}
 
 		group.RecordChecksResults()
@@ -106,8 +93,8 @@ func recordCheckResult(check *Check) {
 		logrus.Fatalf("TestID %s has no corresponding Claim ID", check.ID)
 	}
 
-	logrus.Infof("Recording result %q fo check %s, claimID: %+v", check.Result, check.ID, claimID)
-	resultsDb[check.ID] = append(resultsDb[check.ID], claim.Result{
+	logrus.Infof("Recording result %q of check %s, claimID: %+v", check.Result, check.ID, claimID)
+	resultsDB[check.ID] = append(resultsDB[check.ID], claim.Result{
 		TestID:             &claimID,
 		State:              check.Result.String(),
 		StartTime:          check.StartTime.String(),
@@ -134,7 +121,7 @@ func recordCheckResult(check *Check) {
 // test-network-function-claim's Go Client, results are generalized to map[string]interface{}.
 func GetReconciledResults() map[string]interface{} {
 	resultMap := make(map[string]interface{})
-	for key, vals := range resultsDb {
+	for key, vals := range resultsDB {
 		// initializes the result map, if necessary
 		if _, ok := resultMap[key]; !ok {
 			resultMap[key] = make([]claim.Result, 0)

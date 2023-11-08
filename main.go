@@ -23,7 +23,6 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
@@ -34,7 +33,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 
-	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/observability"
 
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
@@ -50,15 +48,23 @@ const (
 	junitFlagKey                  = "junit"
 	TNFReportKey                  = "cnf-certification-test"
 	extraInfoKey                  = "testsExtraInfo"
-
-	defaultGlobalTimeout = 2 * time.Hour
 )
 
 const (
-	labelsFlagName         = "labels"
+	labelsFlagName         = "label-filter"
 	labelsFlagDefaultValue = "common"
 
-	labelsFlagUsage = "--labels <expression>     e.g. --labels 'access-control && !access-control-sys-admin-capability'"
+	labelsFlagUsage = "--label-filter <expression>  e.g. --label-filter 'access-control && !access-control-sys-admin-capability'"
+
+	timeoutFlagName         = "timeout"
+	timeoutFlagDefaultvalue = 24 * time.Hour
+
+	timeoutFlagUsage = "--timeout <time>  e.g. --timeout 30m  or -timeout 1h30m"
+
+	listFlagName         = "list"
+	listFlagDefaultValue = false
+
+	listFlagUsage = "--list Shows all the available checks/tests. Can be filtered with --label-filter."
 )
 
 var (
@@ -78,13 +84,18 @@ var (
 	// A client decoding this claim file must support decoding its specific version.
 	ClaimFormatVersion string
 	// labelsFlag holds the labels expression to filter the checks to run.
-	labelsFlag *string
+	labelsFlag  *string
+	timeoutFlag *string
+	listFlag    *bool
 )
 
 func init() {
 	claimPath = flag.String(claimPathFlagKey, defaultClaimPath,
 		"the path where the claimfile will be output")
+
 	labelsFlag = flag.String(labelsFlagName, labelsFlagDefaultValue, labelsFlagUsage)
+	timeoutFlag = flag.String(timeoutFlagName, timeoutFlagDefaultvalue.String(), timeoutFlagUsage)
+	listFlag = flag.Bool(listFlagName, listFlagDefaultValue, listFlagUsage)
 
 	flag.Parse()
 	if *labelsFlag == "" {
@@ -132,6 +143,7 @@ func getGitVersion() string {
 	return gitDisplayRelease + " ( " + GitCommit + " )"
 }
 
+//nolint:funlen
 func main() {
 	err := configuration.LoadEnvironmentVariables()
 	if err != nil {
@@ -145,6 +157,12 @@ func main() {
 	log.Infof("TNF Version         : %v", getGitVersion())
 	log.Infof("Claim Format Version: %s", ClaimFormatVersion)
 	log.Infof("Labels filter       : %v", *labelsFlag)
+
+	if *listFlag {
+		// ToDo: List all the available checks, filtered with --labels.
+		log.Errorf("Not implemented yet.")
+		os.Exit(1)
+	}
 
 	// Diagnostic functions will run when no labels are provided.
 	var diagnosticMode bool
@@ -175,7 +193,19 @@ func main() {
 	if !diagnosticMode {
 		env.SetNeedsRefresh()
 		env = provider.GetTestEnvironment()
-		checksdb.RunChecks(*labelsFlag, defaultGlobalTimeout)
+
+		var timeout time.Duration
+		timeout, err = time.ParseDuration(*timeoutFlag)
+		if err != nil {
+			log.Errorf("Failed to parse timeout flag %v: %v, using default timeout value %v", *timeoutFlag, err, timeoutFlagDefaultvalue)
+			timeout = timeoutFlagDefaultvalue
+		}
+
+		log.Infof("Running checks matching labels expr %q with timeout %v", *labelsFlag, timeout)
+		err = checksdb.RunChecks(*labelsFlag, timeout)
+		if err != nil {
+			log.Error(err)
+		}
 	}
 
 	endTime := time.Now()
@@ -188,7 +218,7 @@ func main() {
 	claimOutputFile := filepath.Join(*claimPath, results.ClaimFileName)
 	claimhelper.WriteClaimOutput(claimOutputFile, payload)
 
-	logrus.Infof("Claim file created at %s", claimOutputFile)
+	log.Infof("Claim file created at %s", claimOutputFile)
 
 	// Send claim file to the collector if specified by env var
 	if configuration.GetTestParameters().EnableDataCollection {

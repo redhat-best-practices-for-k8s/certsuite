@@ -39,25 +39,9 @@ import (
 var (
 	env provider.TestEnvironment
 
-	beforeAll = func([]*checksdb.Check) error {
-		logrus.Infof("OBSERVABILITY GROUP BEFORE-ALL")
-		return nil
-	}
-
-	afterAllFn = func(checks []*checksdb.Check) error {
-		logrus.Infof("OBSERVABILITY GROUP AFTER-ALL")
-		return nil // errors.New("crappy afterAll func!")
-	}
-
 	beforeEachFn = func(check *checksdb.Check) error {
-		logrus.Infof("Getting test environment for check %s", check.ID)
+		logrus.Infof("Check %s: getting test environment.", check.ID)
 		env = provider.GetTestEnvironment()
-		// panic("beforeEach panickism")
-		return nil
-	}
-
-	afterEachFn = func(check *checksdb.Check) error {
-		logrus.Infof("Fake afterEachFn for check %s", check.ID)
 		return nil
 	}
 
@@ -92,10 +76,7 @@ func init() {
 	logrus.Debugf("Entering %s suite", common.ObservabilityTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.ObservabilityTestKey).
-		WithBeforeAllFn(beforeAll).
-		WithAfterAllFn(afterAllFn).
-		WithBeforeEachFn(beforeEachFn).
-		WithAfterEachFn(afterEachFn)
+		WithBeforeEachFn(beforeEachFn)
 
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestLoggingIdentifier)
 	check := checksdb.NewCheck(testID, tags).
@@ -200,8 +181,6 @@ func testCrds(check *checksdb.Check, env *provider.TestEnvironment) {
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, crd := range env.Crds {
 		logrus.Info("Testing CRD " + crd.Name)
-		// v := []string{}
-		// fmt.Printf("%s", v[1])
 		for _, ver := range crd.Spec.Versions {
 			if _, ok := ver.Schema.OpenAPIV3Schema.Properties["status"]; !ok {
 				tnf.Logf(logrus.ErrorLevel, "FAILURE: CRD %s, version: %s does not have a status subresource.", crd.Name, ver.Name)

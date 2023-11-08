@@ -13,19 +13,19 @@ var _ Command = &CommandMock{}
 
 // CommandMock is a mock implementation of Command.
 //
-// 	func TestSomethingThatUsesCommand(t *testing.T) {
+//	func TestSomethingThatUsesCommand(t *testing.T) {
 //
-// 		// make and configure a mocked Command
-// 		mockedCommand := &CommandMock{
-// 			ExecCommandContainerFunc: func(context Context, s string) (string, string, error) {
-// 				panic("mock out the ExecCommandContainer method")
-// 			},
-// 		}
+//		// make and configure a mocked Command
+//		mockedCommand := &CommandMock{
+//			ExecCommandContainerFunc: func(context Context, s string) (string, string, error) {
+//				panic("mock out the ExecCommandContainer method")
+//			},
+//		}
 //
-// 		// use mockedCommand in code that requires Command
-// 		// and then make assertions.
+//		// use mockedCommand in code that requires Command
+//		// and then make assertions.
 //
-// 	}
+//	}
 type CommandMock struct {
 	// ExecCommandContainerFunc mocks the ExecCommandContainer method.
 	ExecCommandContainerFunc func(context Context, s string) (string, string, error)
@@ -63,7 +63,8 @@ func (mock *CommandMock) ExecCommandContainer(context Context, s string) (string
 
 // ExecCommandContainerCalls gets all the calls that were made to ExecCommandContainer.
 // Check the length with:
-//     len(mockedCommand.ExecCommandContainerCalls())
+//
+//	len(mockedCommand.ExecCommandContainerCalls())
 func (mock *CommandMock) ExecCommandContainerCalls() []struct {
 	Context Context
 	S       string

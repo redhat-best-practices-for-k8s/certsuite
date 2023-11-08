@@ -6,6 +6,8 @@ import (
 	"go/parser"
 	"go/token"
 	"strings"
+
+	"github.com/sirupsen/logrus"
 )
 
 type LabelsExprEvaluator interface {
@@ -66,6 +68,9 @@ func (exprParser labelsExprParser) Eval(labels []string) bool {
 			default:
 				return false
 			}
+		default:
+			logrus.Errorf("Unexpected/not-implemented expr: %v", v)
+			return false
 		}
 		return false
 	}

@@ -113,7 +113,7 @@ func TestIsWordInExpr(t *testing.T) {
 			want: true,
 		},
 		{
-			name: "word1 and not workd2",
+			name: "word1 and not word3",
 			args: args{
 				words: []string{"word2", "word1"},
 				expr:  "word1 && !word3",

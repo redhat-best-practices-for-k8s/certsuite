@@ -347,39 +347,6 @@ func SkipIfEmptyAny(skip func(string, ...int), object ...[2]interface{}) {
 	}
 }
 
-func IsAnyEmpty(object ...[2]interface{}) (isAnyEmpty bool, emptyTypes string) {
-	countLenZero := 0
-	allTypes := ""
-	for _, o := range object {
-		s := reflect.ValueOf(o[0])
-		if s.Kind() != reflect.Slice && s.Kind() != reflect.Map {
-			panic("SkipIfEmpty was given a non slice/map type")
-		}
-
-		if s.Len() == 0 {
-			countLenZero++
-			if str, ok := o[1].(string); ok {
-				allTypes = allTypes + reflect.TypeOf(o[0]).String() + " (" + str + ")" + ", "
-			} else {
-				panic("Value is not a string")
-			}
-		}
-
-		s = reflect.ValueOf(o[1])
-		if s.Kind() != reflect.String {
-			panic("SkipIfEmpty object name is not a string")
-		}
-	}
-	// all objects have len() of 0
-	if countLenZero == len(object) {
-		emptyTypes = allTypes
-		return false, emptyTypes
-		// skip(fmt.Sprintf("Test skipped because there are no %s to test, please check under test labels", allTypes))
-	}
-
-	return true, ""
-}
-
 func SkipIfEmptyAll(skip func(string, ...int), object ...[2]interface{}) {
 	countLenZero := 0
 	allTypes := ""

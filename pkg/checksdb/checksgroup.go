@@ -12,7 +12,7 @@ type ChecksGroup struct {
 	name   string
 	checks []*Check
 
-	beforAllFn, afterAllFn func(checks []*Check) error
+	beforeAllFn, afterAllFn func(checks []*Check) error
 
 	beforeEachFn, afterEachFn func(check *Check) error
 
@@ -41,42 +41,41 @@ func NewChecksGroup(groupName string) *ChecksGroup {
 	return group
 }
 
-func (g *ChecksGroup) WithBeforeAllFn(beforAllFn func(checks []*Check) error) *ChecksGroup {
-	g.beforAllFn = beforAllFn
+func (group *ChecksGroup) WithBeforeAllFn(beforeAllFn func(checks []*Check) error) *ChecksGroup {
+	group.beforeAllFn = beforeAllFn
 
-	return g
+	return group
 }
 
-func (g *ChecksGroup) WithBeforeEachFn(beforeEachFn func(check *Check) error) *ChecksGroup {
-	g.beforeEachFn = beforeEachFn
+func (group *ChecksGroup) WithBeforeEachFn(beforeEachFn func(check *Check) error) *ChecksGroup {
+	group.beforeEachFn = beforeEachFn
 
-	return g
+	return group
 }
 
-func (g *ChecksGroup) WithAfterEachFn(afterEachFn func(check *Check) error) *ChecksGroup {
-	g.afterEachFn = afterEachFn
+func (group *ChecksGroup) WithAfterEachFn(afterEachFn func(check *Check) error) *ChecksGroup {
+	group.afterEachFn = afterEachFn
 
-	return g
+	return group
 }
 
-func (g *ChecksGroup) WithAfterAllFn(afterAllFn func(checks []*Check) error) *ChecksGroup {
-	g.afterAllFn = afterAllFn
+func (group *ChecksGroup) WithAfterAllFn(afterAllFn func(checks []*Check) error) *ChecksGroup {
+	group.afterAllFn = afterAllFn
 
-	return g
+	return group
 }
 
-func (g *ChecksGroup) Add(check *Check) {
+func (group *ChecksGroup) Add(check *Check) {
 	dbLock.Lock()
 	defer dbLock.Unlock()
 
-	g.checks = append(g.checks, check)
+	group.checks = append(group.checks, check)
 }
 
 func skipCheck(check *Check, reason string) {
 	logrus.Infof("Skipping check %s, reason: %s", check.ID, reason)
 
 	check.SetResultSkipped(reason)
-	// recordCheckResult(check)
 }
 
 func skipAll(checks []*Check, reason string) {
@@ -97,7 +96,7 @@ func onFailure(failureType, failureMsg string, group *ChecksGroup, currentCheck 
 
 func runBeforeAllFn(group *ChecksGroup, checks []*Check) (err error) {
 	logrus.Tracef("GROUP %s - Running beforeAll", group.name)
-	if group.beforAllFn == nil {
+	if group.beforeAllFn == nil {
 		return nil
 	}
 
@@ -111,7 +110,7 @@ func runBeforeAllFn(group *ChecksGroup, checks []*Check) (err error) {
 		}
 	}()
 
-	if err := group.beforAllFn(checks); err != nil {
+	if err := group.beforeAllFn(checks); err != nil {
 		logrus.Errorf("Unexpected error while running beforeAll function: %v", err)
 		// Set first check's result as error and skip the remaining ones.
 		return onFailure("beforeAll function unexpected error", err.Error(), group, firstCheck, checks)
@@ -212,24 +211,33 @@ func runCheck(check *Check, group *ChecksGroup, remainingChecks []*Check) (err e
 			stackTrace := fmt.Sprint(r) + "\n" + string(debug.Stack())
 
 			logrus.Errorf("Panic while running check %s function:\n%v", check.ID, stackTrace)
-			err = onFailure("check "+check.ID+" function panic", stackTrace, group, check, remainingChecks)
+			err = onFailure(fmt.Sprintf("check %s function panic", check.ID), stackTrace, group, check, remainingChecks)
 		}
 	}()
 
 	if err := check.Run(); err != nil {
 		logrus.Errorf("Unexpected error while running check %s function: %v", check.ID, err.Error())
-		return onFailure("check "+check.ID+" function unexpected error", err.Error(), group, check, remainingChecks)
+		return onFailure(fmt.Sprintf("check %s function unexpected error", check.ID), err.Error(), group, check, remainingChecks)
 	}
 
 	return nil
 }
 
-// Runs all the checks in the group whose labels match the label
-// expression. Issues/errors/panics:
+// Runs all the checks in the group whose labels match the label expression filter.
+//  1. Calls group.BeforeAll(). Then, for each Check in the group:
+//  2. Calls group.BeforeEach()  -> normally used to get/refresh the test environment variable.
+//  3. Calls check.SkipCheckFn() -> if true, skip the check.Run() (step 4)
+//  4. Calls check.Run() -> Will call the actual CNF Cert requirement check function.
+//  5. Calls group.AfterEach()
+//  6. Calls group.AfterAll()
+//
+// Issues/errors/panics:
 //   - BeforeAll panic/error: Set first check as error. Run AfterAll()
 //   - BeforeEach panic/error: Set check as error and skip remaining. Skip check.Run(), run AfterEach + AfterAll.
 //   - Check.Run() panic/error:  Set check as panicked. Run AfterEach + AfterAll
 //   - AfterEach panic: Set check as error.
+//
+//nolint:funlen
 func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool) (errs []error) {
 	logrus.Infof("Running group %q checks.", group.name)
 
@@ -317,7 +325,7 @@ func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool) (er
 	return errs
 }
 
-func (group *ChecksGroup) OnAbort(labelsExpr string, abortReason string) error {
+func (group *ChecksGroup) OnAbort(labelsExpr, abortReason string) error {
 	labelsExprEvaluator, err := NewLabelsExprEvaluator(labelsExpr)
 	if err != nil {
 		return fmt.Errorf("invalid labels expression: %v", err)
@@ -330,7 +338,6 @@ func (group *ChecksGroup) OnAbort(labelsExpr string, abortReason string) error {
 
 		if i == group.currentRunningCheckIdx {
 			check.SetResultAborted(abortReason)
-
 		} else if i > group.currentRunningCheckIdx {
 			check.SetResultSkipped(abortReason)
 		}
