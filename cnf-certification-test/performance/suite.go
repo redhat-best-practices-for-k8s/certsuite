@@ -18,6 +18,7 @@ package performance
 
 import (
 	"fmt"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -325,15 +326,8 @@ func filterProbeProcesses(allProcesses []*crclient.Process, cut *provider.Contai
 	}
 	// remove all exec probes and their children from the process list
 	for _, p := range allProcesses {
-		isExecProbeProcess := false
-		for _, parentProbePid := range execProbeProcesses {
-			if p.Pid == parentProbePid || p.PPid == parentProbePid {
-				// this process is part of an exec probe (child or parent), break
-				isExecProbeProcess = true
-				break
-			}
-		}
-		if isExecProbeProcess {
+		if slices.Contains(execProbeProcesses, p.Pid) || slices.Contains(execProbeProcesses, p.PPid) {
+			// this process is part of an exec probe (child or parent), continue
 			continue
 		}
 		notExecProbeProcesses = append(notExecProbeProcesses, p)
