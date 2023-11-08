@@ -1,4 +1,4 @@
-name: QE OCP Intrusive Testing
+name: QE OCP 4.13 Testing
 
 on:
   # pull_request:
@@ -11,13 +11,12 @@ env:
   QE_REPO: test-network-function/cnfcert-tests-verification
 
 jobs:
-  qe-ocp-intrusive-testing:
+  qe-ocp-413-testing:
     runs-on: qe-ocp
     strategy:
       fail-fast: false
       matrix: 
-        # Add more suites if more intrusive tests are added to the QE repo
-        suite: [lifecycle]
+        suite: [accesscontrol, affiliatedcertification, manageability, networking, lifecycle, performance, platformalteration, observability, operator]
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/labuser/.kube/config'
@@ -62,7 +61,7 @@ jobs:
 
       # Setup is complete.  Time to run the QE tests.
       - name: Run the tests
-        run: FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} DISABLE_INTRUSIVE_TESTS=false ENABLE_PARALLEL=false ENABLE_FLAKY_RETRY=true make test-features
+        run: FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
         working-directory: cnfcert-tests-verification
 
       - name: (if on main and upstream) Send chat msg to dev team if failed to run QE tests
@@ -74,5 +73,5 @@ jobs:
           GITHUB_REPO: https://github.com/test-network-function/cnf-certification-test
         run: |
           curl -X POST --data "{
-              \"text\": \"🚨⚠️  Failed to run intrusive OCP QE tests from commit \<$GITHUB_REPO/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<$GITHUB_REPO/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"
+              \"text\": \"🚨⚠️  Failed to run non-intrusive OCP 4.13 QE tests from commit \<$GITHUB_REPO/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<$GITHUB_REPO/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"
           }" -H 'Content-type: application/json; charset=UTF-8' ${{ secrets.QE_NIGHTLY_WEBHOOK }}
