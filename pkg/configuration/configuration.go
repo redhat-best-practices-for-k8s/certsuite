@@ -103,5 +103,5 @@ type TestParameters struct {
 	PfltDockerconfig              string `split_words:"true" envconfig:"PFLT_DOCKERCONFIG"`
 	IncludeWebFilesInOutputFolder bool   `split_words:"true" default:"false"`
 	OmitArtifactsZipFile          bool   `split_words:"true" default:"false"`
-	EnableDataCollection          bool   `split_words:"true" default:"false"`
+	EnableDataCollection          bool   `split_words:"true" envconfig:"ENABLE_DATA_COLLECTION" default:"false"`
 }
