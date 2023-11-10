@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/pkg/claim"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
-	claimschema "github.com/test-network-function/test-network-function-claim/pkg/claim"
+	claimschema "github.com/test-network-function/cnf-certification-test/pkg/claim"
 )
 
 var (
@@ -90,12 +90,6 @@ func dumpCsv(_ *cobra.Command, _ []string) error {
 	claimScheme, err := claim.Parse(claimFilePathFlag)
 	if err != nil {
 		return fmt.Errorf("failed to parse claim file %s: %v", claimFilePathFlag, err)
-	}
-
-	// Check claim format version
-	err = claim.CheckVersion(claimScheme.Claim.Versions.ClaimFormat)
-	if err != nil {
-		return err
 	}
 
 	// loads the mapping between CNF name and type

@@ -290,12 +290,6 @@ func showFailures(_ *cobra.Command, _ []string) error {
 		return fmt.Errorf("failed to parse claim file %s: %v", claimFilePathFlag, err)
 	}
 
-	// Check claim format version
-	err = claim.CheckVersion(claimScheme.Claim.Versions.ClaimFormat)
-	if err != nil {
-		return err
-	}
-
 	// Order test case results by test suite, using a helper map.
 	resultsByTestSuite := map[string][]*claim.TestCaseResult{}
 	for id := range claimScheme.Claim.Results {

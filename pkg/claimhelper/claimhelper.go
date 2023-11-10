@@ -26,10 +26,11 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
+	"github.com/test-network-function/cnf-certification-test/internal/version"
+	"github.com/test-network-function/cnf-certification-test/pkg/claim"
 	"github.com/test-network-function/cnf-certification-test/pkg/diagnostics"
 	"github.com/test-network-function/cnf-certification-test/pkg/junit"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
 const (
@@ -39,6 +40,17 @@ const (
 	// dateTimeFormatDirective is the directive used to format date/time according to ISO 8601.
 	DateTimeFormatDirective = "2006-01-02T15:04:05+00:00"
 )
+
+// IncorporateTNFVersion adds the TNF version to the claim.
+func IncorporateVersions(claimData *claim.Claim) {
+	claimData.Versions = &claim.Versions{
+		Tnf:          version.GetGitVersion(),
+		TnfGitCommit: version.GitCommit,
+		OcClient:     diagnostics.GetVersionOcClient(),
+		Ocp:          diagnostics.GetVersionOcp(),
+		K8s:          diagnostics.GetVersionK8s(),
+	}
+}
 
 // MarshalConfigurations creates a byte stream representation of the test configurations.  In the event of an error,
 // this method fatally fails.
