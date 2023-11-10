@@ -211,7 +211,7 @@ require (
 	github.com/fatih/color v1.16.0
 	github.com/go-logr/logr v1.3.0
 	github.com/go-logr/stdr v1.2.2
-	github.com/gorilla/websocket v1.4.2
+	github.com/gorilla/websocket v1.5.1
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
 	github.com/manifoldco/promptui v0.9.0
 	github.com/openshift/machine-config-operator v0.0.1-0.20230515070935-49f32d46538e
@@ -219,7 +219,6 @@ require (
 	github.com/robert-nix/ansihtml v1.0.1
 	github.com/test-network-function/oct v0.0.3
 	github.com/test-network-function/privileged-daemonset v1.0.14
-	github.com/robert-nix/ansihtml v1.0.1
 	gopkg.in/yaml.v3 v3.0.1
 	gotest.tools/v3 v3.5.1
 	k8s.io/kubectl v0.28.3
