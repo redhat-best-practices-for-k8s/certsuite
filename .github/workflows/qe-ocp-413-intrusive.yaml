@@ -25,6 +25,8 @@ jobs:
       TEST_TNF_IMAGE_NAME: quay.io/testnetworkfunction/cnf-certification-test
       TEST_TNF_IMAGE_TAG: localtest
       DOCKER_CONFIG_DIR: '/home/labuser/.docker'
+      TNF_CONFIG_DIR: '/home/labuser/tnf_config'
+      TNF_REPORT_DIR: '/home/labuser/tnf_report'
 
     steps:
       - name: Check out code
