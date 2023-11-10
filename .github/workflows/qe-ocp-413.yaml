@@ -1,4 +1,4 @@
-name: QE OCP Testing
+name: QE OCP 4.13 Testing
 
 on:
   # pull_request:
@@ -11,7 +11,7 @@ env:
   QE_REPO: test-network-function/cnfcert-tests-verification
 
 jobs:
-  qe-ocp-testing:
+  qe-ocp-413-testing:
     runs-on: qe-ocp
     strategy:
       fail-fast: false
@@ -24,6 +24,8 @@ jobs:
       TEST_TNF_IMAGE_NAME: quay.io/testnetworkfunction/cnf-certification-test
       TEST_TNF_IMAGE_TAG: localtest
       DOCKER_CONFIG_DIR: '/home/labuser/.docker'
+      TNF_CONFIG_DIR: '/home/labuser/tnf_config'
+      TNF_REPORT_DIR: '/home/labuser/tnf_report'
 
     steps:
       - name: Check out code
@@ -73,5 +75,5 @@ jobs:
           GITHUB_REPO: https://github.com/test-network-function/cnf-certification-test
         run: |
           curl -X POST --data "{
-              \"text\": \"🚨⚠️  Failed to run non-intrusive OCP QE tests from commit \<$GITHUB_REPO/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<$GITHUB_REPO/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"
+              \"text\": \"🚨⚠️  Failed to run non-intrusive OCP 4.13 QE tests from commit \<$GITHUB_REPO/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<$GITHUB_REPO/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"
           }" -H 'Content-type: application/json; charset=UTF-8' ${{ secrets.QE_NIGHTLY_WEBHOOK }}

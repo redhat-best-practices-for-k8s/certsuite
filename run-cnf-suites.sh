@@ -8,16 +8,17 @@ set -x
 export OUTPUT_LOC="$PWD/cnf-certification-test"
 
 usage() {
-	echo "$0 [-o OUTPUT_LOC] [-l LABEL...]"
+	echo "$0 [-o OUTPUT_LOC] [-l LABEL...] [-s run from webpage]"
 	echo "Call the script and list the test suites to run"
 	echo "  e.g."
 	echo "    $0 [ARGS] -l \"access-control,lifecycle\""
 	echo "  will run the access-control and lifecycle suites"
 	echo "    $0 [ARGS] -l all will run all the tests"
+	echo "    $0 [ARGS] -s true will run the test from server"
 	echo ""
 	echo "Allowed suites are listed in the README."
 	echo ""
-	echo "The specs can be listed with $0 -L|--list [-l LABEL...]"
+	echo "The specs can be listed with $0 -L|--list [-l LABEL...] [-s run from webpage]"
 }
 
 usage_error() {
@@ -28,6 +29,7 @@ usage_error() {
 TIMEOUT=24h0m0s
 LABEL=''
 LIST=false
+SERVER_RUN=false
 BASEDIR=$(dirname "$(realpath "$0")")
 
 # Parse args beginning with "-".
@@ -48,6 +50,9 @@ while [[ $1 == -* ]]; do
 			echo >&2 '-o requires an argument'
 			exit 1
 		fi
+		;;
+	-s)
+		SERVER_RUN=true
 		;;
 	-l | --label)
 		while (("$#" >= 2)) && ! [[ $2 = --* ]] && ! [[ $2 = -* ]]; do
@@ -91,6 +96,10 @@ GINKGO_ARGS="\
 -test.v\
 "
 
+if [ "$SERVER_RUN" = "true" ]; then
+	GINKGO_ARGS="$GINKGO_ARGS -serverMode"
+fi
+
 if [[ $LABEL == "all" ]]; then
 	LABEL='common,extended,faredge,telco'
 fi
@@ -100,7 +109,7 @@ echo "Report will be output to '$OUTPUT_LOC'"
 echo "ginkgo arguments '${GINKGO_ARGS}'"
 LABEL_STRING=''
 
-if [ -z "$LABEL" ]; then
+if [ -z "$LABEL" ] && { [ -z "$SERVER_RUN" ] || [ "$SERVER_RUN" == "false" ]; }; then
 	echo "No test label (-l) was set, so only diagnostic functions will run."
 else
 	LABEL_STRING="-ginkgo.label-filter=${LABEL}"
