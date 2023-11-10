@@ -35,7 +35,7 @@ const (
 	newLineCharacter          = "\n"
 
 	SharedCPUScheduling    = "SHARED_CPU_SCHEDULING"
-	ExclusiveCPUScheduling = "EXCLUSIVE_CPU_SCHEDULING"
+	ExclusiveCPUScheduling = "EXCLUSIVE_CPU_SCHEDULING" //nolint:gosec
 	IsolatedCPUScheduling  = "ISOLATED_CPU_SCHEDULING"
 
 	SchedulingRoundRobin      = "SCHED_RR"

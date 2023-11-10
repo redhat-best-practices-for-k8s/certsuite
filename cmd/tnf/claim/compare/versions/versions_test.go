@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/compare/diff"
-	officialClaimScheme "github.com/test-network-function/test-network-function-claim/pkg/claim"
+	officialClaimScheme "github.com/test-network-function/cnf-certification-test/pkg/claim"
 )
 
 func TestCompare(t *testing.T) {
@@ -30,7 +30,6 @@ func TestCompare(t *testing.T) {
 			name: "matching versions",
 			args: args{
 				claim1Versions: &officialClaimScheme.Versions{
-					ClaimFormat:  "1",
 					K8s:          "22",
 					OcClient:     "333",
 					Ocp:          "4444",
@@ -38,7 +37,6 @@ func TestCompare(t *testing.T) {
 					TnfGitCommit: "666666",
 				},
 				claim2Versions: &officialClaimScheme.Versions{
-					ClaimFormat:  "1",
 					K8s:          "22",
 					OcClient:     "333",
 					Ocp:          "4444",
@@ -52,7 +50,6 @@ func TestCompare(t *testing.T) {
 			name: "non matching versions 1",
 			args: args{
 				claim1Versions: &officialClaimScheme.Versions{
-					ClaimFormat:  "1",
 					K8s:          "22AAA",
 					OcClient:     "333",
 					Ocp:          "4444",
@@ -60,7 +57,6 @@ func TestCompare(t *testing.T) {
 					TnfGitCommit: "666666",
 				},
 				claim2Versions: &officialClaimScheme.Versions{
-					ClaimFormat:  "1",
 					K8s:          "22",
 					OcClient:     "333",
 					Ocp:          "4444",
@@ -83,7 +79,6 @@ func TestCompare(t *testing.T) {
 			name: "non matching versions 2",
 			args: args{
 				claim1Versions: &officialClaimScheme.Versions{
-					ClaimFormat:  "1",
 					K8s:          "22AAA",
 					OcClient:     "333",
 					Ocp:          "4444",
@@ -91,7 +86,6 @@ func TestCompare(t *testing.T) {
 					TnfGitCommit: "666666",
 				},
 				claim2Versions: &officialClaimScheme.Versions{
-					ClaimFormat:  "1",
 					K8s:          "22",
 					OcClient:     "333",
 					Ocp:          "4444",

@@ -34,12 +34,12 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	log "github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
+	"github.com/test-network-function/cnf-certification-test/pkg/claim"
 	"github.com/test-network-function/cnf-certification-test/pkg/claimhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/collector"
 	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
-	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/certification"
@@ -54,8 +54,8 @@ import (
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/preflight"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/webserver"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/version"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
-	"github.com/test-network-function/cnf-certification-test/pkg/diagnostics"
 )
 
 const (
@@ -71,23 +71,9 @@ const (
 )
 
 var (
-	claimPath *string
-	junitPath *string
-	// GitCommit is the latest commit in the current git branch
-	GitCommit string
-	// GitRelease is the list of tags (if any) applied to the latest commit
-	// in the current branch
-	GitRelease string
-	// GitPreviousRelease is the last release at the date of the latest commit
-	// in the current branch
-	GitPreviousRelease string
-	// gitDisplayRelease is a string used to hold the text to display
-	// the version on screen and in the claim file
-	gitDisplayRelease string
-	// ClaimFormat is the current version for the claim file format to be produced by the TNF test suite.
-	// A client decoding this claim file must support decoding its specific version.
-	ClaimFormatVersion string
-	serverMode         *bool
+	claimPath  *string
+	junitPath  *string
+	serverMode *bool
 )
 
 func init() {
@@ -126,18 +112,6 @@ func getK8sClientsConfigFileNames() []string {
 	return fileNames
 }
 
-// getGitVersion returns the git display version: the latest previously released
-// build in case this build is not released. Otherwise display the build version
-func getGitVersion() string {
-	if GitRelease == "" {
-		gitDisplayRelease = "Unreleased build post " + GitPreviousRelease
-	} else {
-		gitDisplayRelease = GitRelease
-	}
-
-	return gitDisplayRelease + " ( " + GitCommit + " )"
-}
-
 func PreRun(t *testing.T) (claimData *claim.Claim, claimRoot *claim.Root) {
 	// When running unit tests, skip the suite
 	if os.Getenv("UNIT_TEST") != "" {
@@ -154,8 +128,7 @@ func PreRun(t *testing.T) (claimData *claim.Claim, claimRoot *claim.Root) {
 	setLogLevel()
 
 	ginkgoConfig, _ := ginkgo.GinkgoConfiguration()
-	log.Infof("TNF Version         : %v", getGitVersion())
-	log.Infof("Claim Format Version: %s", ClaimFormatVersion)
+	log.Infof("TNF Version         : %v", version.GetGitVersion())
 	log.Infof("Ginkgo Version      : %v", ginkgo.GINKGO_VERSION)
 	log.Infof("Labels filter       : %v", ginkgoConfig.LabelFilter)
 	log.Infof("run test with webserver      : %v", *serverMode)
@@ -167,7 +140,7 @@ func PreRun(t *testing.T) (claimData *claim.Claim, claimRoot *claim.Root) {
 	claimData = claimRoot.Claim
 	claimData.Configurations = make(map[string]interface{})
 	claimData.Nodes = make(map[string]interface{})
-	incorporateVersions(claimData)
+	claimhelper.IncorporateVersions(claimData)
 
 	configurations, err := claimhelper.MarshalConfigurations()
 	if err != nil {
@@ -278,17 +251,6 @@ func ContinueRun(diagnosticMode bool, env *provider.TestEnvironment, claimData *
 	}
 }
 
-// incorporateTNFVersion adds the TNF version to the claim.
-func incorporateVersions(claimData *claim.Claim) {
-	claimData.Versions = &claim.Versions{
-		Tnf:          gitDisplayRelease,
-		TnfGitCommit: GitCommit,
-		OcClient:     diagnostics.GetVersionOcClient(),
-		Ocp:          diagnostics.GetVersionOcp(),
-		K8s:          diagnostics.GetVersionK8s(),
-		ClaimFormat:  ClaimFormatVersion,
-	}
-}
 func StartServer() {
 	server := &http.Server{
 		Addr:         ":8084",           // Server address

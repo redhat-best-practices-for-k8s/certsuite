@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/test-network-function-claim/pkg/claim"
+	"github.com/test-network-function/cnf-certification-test/pkg/claim"
 )
 
 func TestReadClaim(t *testing.T) {
@@ -17,9 +17,8 @@ func TestReadClaim(t *testing.T) {
 			expectedClaimRoot: &claim.Root{
 				Claim: &claim.Claim{
 					Versions: &claim.Versions{
-						K8s:         "1.23.1",
-						Tnf:         "0.3.1",
-						ClaimFormat: "v0.0.1",
+						K8s: "1.23.1",
+						Tnf: "0.3.1",
 					},
 					Metadata: &claim.Metadata{
 						EndTime:   "1:33:00",
