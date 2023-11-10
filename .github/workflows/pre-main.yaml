@@ -28,7 +28,7 @@ env:
   TERM: xterm-color
   CM_BIN: /usr/local/bin/checkmake
   CM_URL_LINUX: https://github.com/mrtazz/checkmake/releases/download/0.2.2/checkmake-0.2.2.linux.amd64 # yamllint disable-line
-  SMOKE_TESTS_GINKGO_LABELS_FILTER: '!affiliated-certification-container-is-certified-digest && !access-control-security-context'
+  SMOKE_TESTS_LABELS_FILTER: '!affiliated-certification-container-is-certified-digest && !access-control-security-context'
 
 jobs:
   lint:
@@ -92,7 +92,7 @@ jobs:
 
       - name: Typos
         uses: crate-ci/typos@master
- 
+
       - name: Yamllint
         uses: ibiqlik/action-yamllint@v3
         with:
@@ -236,7 +236,7 @@ jobs:
 
       # Perform smoke tests.
       - name: 'Test: Run test suites'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "${SMOKE_TESTS_GINKGO_LABELS_FILTER}"
+        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "${SMOKE_TESTS_LABELS_FILTER}"
 
       - name: Upload smoke test results as an artifact
         uses: actions/upload-artifact@v3
@@ -386,7 +386,7 @@ jobs:
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }}
 
       - name: 'Test: Run Smoke Tests in a TNF container'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} TNF_ENABLE_DATA_COLLECTION=false ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "${SMOKE_TESTS_GINKGO_LABELS_FILTER}"
+        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} TNF_ENABLE_DATA_COLLECTION=true ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "${SMOKE_TESTS_LABELS_FILTER}"
 
       # - name: Run sanity check on collector
       #   uses: ./collector/.github/actions/run-sanity-check
