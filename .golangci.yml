@@ -1,14 +1,3 @@
-run:
-  skip-dirs:
-    - cnf-certification-test/accesscontrol
-    - cnf-certification-test/certification
-    - cnf-certification-test/lifecycle
-    - cnf-certification-test/manageability
-    - cnf-certification-test/networking
-    - cnf-certification-test/operator
-    - cnf-certification-test/performance
-    - cnf-certification-test/platform
-    - cnf-certification-test/preflight
 linters-settings:
   dupl:
     threshold: 100

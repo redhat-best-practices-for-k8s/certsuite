@@ -27,7 +27,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/resources"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/scheduling"
@@ -48,7 +47,6 @@ var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
 	ginkgo.BeforeEach(func() {
 		env = provider.GetTestEnvironment()
 	})
-	ginkgo.ReportAfterEach(results.RecordResult)
 
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestExclusiveCPUPoolIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {

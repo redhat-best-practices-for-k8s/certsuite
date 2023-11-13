@@ -50,10 +50,10 @@ GIT_RELEASE=$(shell script/get-git-release.sh)
 GIT_PREVIOUS_RELEASE=$(shell script/get-git-previous-release.sh)
 CLAIM_FORMAT_VERSION=$(shell script/get-claim-version.sh)
 GOLANGCI_VERSION=v1.55.1
-LINKER_TNF_RELEASE_FLAGS=-X main.GitCommit=${GIT_COMMIT}
-LINKER_TNF_RELEASE_FLAGS+= -X main.GitRelease=${GIT_RELEASE}
-LINKER_TNF_RELEASE_FLAGS+= -X main.GitPreviousRelease=${GIT_PREVIOUS_RELEASE}
-LINKER_TNF_RELEASE_FLAGS+= -X main.ClaimFormatVersion=${CLAIM_FORMAT_VERSION}
+LINKER_TNF_RELEASE_FLAGS=-X github.com/test-network-function/cnf-certification-test/pkg/versions.GitCommit=${GIT_COMMIT}
+LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/pkg/versions.GitRelease=${GIT_RELEASE}
+LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/pkg/versions.GitPreviousRelease=${GIT_PREVIOUS_RELEASE}
+LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/pkg/versions.ClaimFormatVersion=${CLAIM_FORMAT_VERSION}
 PARSER_RELEASE=$(shell jq .parserTag version.json)
 BASH_SCRIPTS=$(shell find -name "*.sh" -not -path "./.git/*")
 

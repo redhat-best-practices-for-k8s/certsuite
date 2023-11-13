@@ -29,7 +29,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netutil"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/policies"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/services"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
@@ -55,7 +54,7 @@ var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
 	ginkgo.BeforeEach(func() {
 		env = provider.GetTestEnvironment()
 	})
-	ginkgo.ReportAfterEach(results.RecordResult)
+
 	// Default interface ICMP IPv4 test case
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestICMPv4ConnectivityIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {

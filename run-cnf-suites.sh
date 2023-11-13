@@ -91,7 +91,7 @@ EXTRA_ARGS="\
 "
 
 if [ "$SERVER_RUN" = "true" ]; then
-	EXTRA_ARGS="$GINKGO_ARGS -serverMode"
+	EXTRA_ARGS="$EXTRA_ARGS -serverMode"
 fi
 
 echo "Label: $LABEL"
