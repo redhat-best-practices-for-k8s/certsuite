@@ -218,7 +218,7 @@ require (
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20231018165107-f04b78186455
 	github.com/robert-nix/ansihtml v1.0.1
 	github.com/test-network-function/oct v0.0.3
-	github.com/test-network-function/privileged-daemonset v1.0.14
+	github.com/test-network-function/privileged-daemonset v1.0.15
 	gopkg.in/yaml.v3 v3.0.1
 	gotest.tools/v3 v3.5.1
 	k8s.io/kubectl v0.28.3
