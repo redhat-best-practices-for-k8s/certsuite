@@ -19,37 +19,57 @@ package manageability
 import (
 	"strings"
 
-	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
 
-// All actual test code belongs below here.  Utilities belong above.
-var _ = ginkgo.Describe(common.ManageabilityTestKey, func() {
-	logrus.Debugf("Entering %s suite", common.ManageabilityTestKey)
-	var env provider.TestEnvironment
-	ginkgo.BeforeEach(func() {
+var (
+	env provider.TestEnvironment
+
+	beforeEachFn = func(check *checksdb.Check) error {
+		logrus.Infof("Check %s: getting test environment.", check.ID)
 		env = provider.GetTestEnvironment()
-	})
+		return nil
+	}
+
+	skipIfNoContainersFn = func() (bool, string) {
+		if len(env.Containers) == 0 {
+			logrus.Warnf("No containers to check...")
+			return true, "There are no containers to check. Please check under test labels."
+		}
+		return false, ""
+	}
+)
+
+func init() {
+	logrus.Debugf("Entering %s suite", common.ManageabilityTestKey)
+
+	checksGroup := checksdb.NewChecksGroup(common.ManageabilityTestKey).
+		WithBeforeEachFn(beforeEachFn)
 
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainersImageTag)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
-		testContainersImageTag(&env)
-	})
+	checksGroup.Add(checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(skipIfNoContainersFn).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testContainersImageTag(c, &env)
+			return nil
+		}))
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerPortNameFormat)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
-		testContainerPortNameFormat(&env)
-	})
-})
+	checksGroup.Add(checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(skipIfNoContainersFn).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testContainerPortNameFormat(c, &env)
+			return nil
+		}))
+}
 
-func testContainersImageTag(env *provider.TestEnvironment) {
+func testContainersImageTag(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
@@ -61,7 +81,7 @@ func testContainersImageTag(env *provider.TestEnvironment) {
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is tagged", true))
 		}
 	}
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 // The name field in the ContainerPort section must be of the form <protocol>[-<suffix>] where <protocol> is one of the following,
@@ -73,7 +93,7 @@ func containerPortNameFormatCheck(portName string) bool {
 	return allowedProtocolNames[res[0]]
 }
 
-func testContainerPortNameFormat(env *provider.TestEnvironment) {
+func testContainerPortNameFormat(check *checksdb.Check, env *provider.TestEnvironment) {
 	for _, newProtocol := range env.ValidProtocolNames {
 		allowedProtocolNames[newProtocol] = true
 	}
@@ -91,5 +111,5 @@ func testContainerPortNameFormat(env *provider.TestEnvironment) {
 			}
 		}
 	}
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
