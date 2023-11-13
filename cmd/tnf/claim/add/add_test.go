@@ -13,7 +13,7 @@ func TestReadClaim(t *testing.T) {
 		expectedClaimRoot *claim.Root
 	}{
 		{ // Test Case #1 - Happy path
-			testContents: `{"claim":{"versions":{"k8s":"1.23.1","tnf":"0.3.1", "claimFormat":"v0.0.1"},"configurations":{},"metadata":{"endTime":"1:33:00","startTime":"2:33:00"},"nodes":{},"results":{},"rawResults":{}}}`,
+			testContents: `{"claim":{"versions":{"k8s":"1.23.1","tnf":"0.3.1"},"configurations":{},"metadata":{"endTime":"1:33:00","startTime":"2:33:00"},"nodes":{},"results":{},"rawResults":{}}}`,
 			expectedClaimRoot: &claim.Root{
 				Claim: &claim.Claim{
 					Versions: &claim.Versions{
