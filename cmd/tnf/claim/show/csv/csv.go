@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/pkg/claim"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
-	claimschema "github.com/test-network-function/test-network-function-claim/pkg/claim"
+	claimschema "github.com/test-network-function/cnf-certification-test/pkg/claim"
 )
 
 var (

@@ -34,12 +34,12 @@ import (
 	"github.com/onsi/ginkgo/v2"
 	log "github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
+	"github.com/test-network-function/cnf-certification-test/pkg/claim"
 	"github.com/test-network-function/cnf-certification-test/pkg/claimhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/collector"
 	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
-	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/certification"
