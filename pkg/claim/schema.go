@@ -1077,7 +1077,6 @@ func (strct *Versions) MarshalJSON() ([]byte, error) {
 }
 
 func (strct *Versions) UnmarshalJSON(b []byte) error {
-	claimFormatReceived := false
 	tnfReceived := false
 	var jsonMap map[string]json.RawMessage
 	if err := json.Unmarshal(b, &jsonMap); err != nil {
@@ -1110,10 +1109,6 @@ func (strct *Versions) UnmarshalJSON(b []byte) error {
 		default:
 			return fmt.Errorf("additional property not allowed: \"" + k + "\"")
 		}
-	}
-	// check if claimFormat (a required property) was received
-	if !claimFormatReceived {
-		return errors.New("\"claimFormat\" is required but was not present")
 	}
 	// check if tnf (a required property) was received
 	if !tnfReceived {
