@@ -326,6 +326,26 @@ func ResultToString(result int) (str string) {
 	return ""
 }
 
+func GetNoContainersUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.Containers) == 0 {
+			return true, "There are no containers to check. Please check under test labels."
+		}
+
+		return false, ""
+	}
+}
+
+func GetNoPodsUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.Pods) == 0 {
+			return true, "There are no pods to check. Please check under test labels."
+		}
+
+		return false, ""
+	}
+}
+
 func SkipIfEmptyAny(skip func(string, ...int), object ...[2]interface{}) {
 	for _, o := range object {
 		s := reflect.ValueOf(o[0])

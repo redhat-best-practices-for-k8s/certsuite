@@ -29,6 +29,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/versions"
 
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/observability"
+	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/performance"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/webserver"
 
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"

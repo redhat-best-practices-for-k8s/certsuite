@@ -22,12 +22,12 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/resources"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
+	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/scheduling"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
@@ -40,56 +40,115 @@ const (
 	minExecProbePeriodSeconds = 10
 )
 
-// The pods with no access to host network are considered for these tests
-var _ = ginkgo.Describe(common.PerformanceTestKey, func() {
-	logrus.Debugf("Entering %s suite", common.PerformanceTestKey)
-	var env provider.TestEnvironment
-	ginkgo.BeforeEach(func() {
+var (
+	env provider.TestEnvironment
+
+	beforeEachFn = func(check *checksdb.Check) error {
+		logrus.Infof("Check %s: getting test environment.", check.ID)
 		env = provider.GetTestEnvironment()
-	})
+		return nil
+	}
+
+	skipIfNoGuaranteedPodContainersWithExclusiveCPUs = func() (bool, string) {
+		var guaranteedPodContainersWithExclusiveCPUs = env.GetGuaranteedPodContainersWithExclusiveCPUs()
+		if len(guaranteedPodContainersWithExclusiveCPUs) == 0 {
+			return true, "There are no guaranteed pods with exclusive CPUs to check."
+		}
+		return false, ""
+	}
+
+	skipIfNoNonGuaranteedPodContainersWithoutHostPID = func() (bool, string) {
+		var nonGuaranteedPodContainers = env.GetNonGuaranteedPodContainersWithoutHostPID()
+		if len(nonGuaranteedPodContainers) == 0 {
+			return true, "There are no non-guaranteed pods without HostPID to check."
+		}
+		return false, ""
+	}
+
+	skipIfNoGuaranteedPodContainersWithExclusiveCPUsWithoutHostPID = func() (bool, string) {
+		var guaranteedPodContainersWithExclusiveCPUs = env.GetGuaranteedPodContainersWithExclusiveCPUsWithoutHostPID()
+		if len(guaranteedPodContainersWithExclusiveCPUs) == 0 {
+			return true, "There are no guaranteed pods without exclusive CPUs and without HostPID to check."
+		}
+		return false, ""
+	}
+
+	skipIfNoGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID = func() (bool, string) {
+		var guaranteedPodContainersWithIsolatedCPUs = env.GetGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID()
+		if len(guaranteedPodContainersWithIsolatedCPUs) == 0 {
+			return true, "There are no guaranteed pods with isolated CPUs and without HostPID to check."
+		}
+		return false, ""
+	}
+)
+
+//nolint:funlen
+func init() {
+	logrus.Debugf("Entering %s suite", common.PerformanceTestKey)
+
+	checksGroup := checksdb.NewChecksGroup(common.PerformanceTestKey).
+		WithBeforeEachFn(beforeEachFn)
 
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestExclusiveCPUPoolIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Pods, "env.Pods"))
-		testExclusiveCPUPool(&env)
-	})
+	check := checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testExclusiveCPUPool(c, &env)
+			return nil
+		})
+
+	checksGroup.Add(check)
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestRtAppNoExecProbes)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		var guaranteedPodContainersWithExclusiveCPUs = env.GetGuaranteedPodContainersWithExclusiveCPUs()
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(guaranteedPodContainersWithExclusiveCPUs, "guaranteedPodContainersWithExclusiveCPUs"))
-		testRtAppsNoExecProbes(&env, guaranteedPodContainersWithExclusiveCPUs)
-	})
+	check = checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(skipIfNoGuaranteedPodContainersWithExclusiveCPUs).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testRtAppsNoExecProbes(c, &env)
+			return nil
+		})
 
-	// Scheduling related tests begins here
+	checksGroup.Add(check)
+
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSharedCPUPoolSchedulingPolicy)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		var nonGuaranteedPodContainers = env.GetNonGuaranteedPodContainersWithoutHostPID()
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(nonGuaranteedPodContainers, "nonGuaranteedPodContainers"))
-		testSchedulingPolicyInCPUPool(&env, nonGuaranteedPodContainers, scheduling.SharedCPUScheduling)
-	})
+	check = checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(skipIfNoNonGuaranteedPodContainersWithoutHostPID).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testSchedulingPolicyInCPUPool(c, &env, env.GetNonGuaranteedPodContainersWithoutHostPID(), scheduling.SharedCPUScheduling)
+			return nil
+		})
+
+	checksGroup.Add(check)
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestExclusiveCPUPoolSchedulingPolicy)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		var guaranteedPodContainersWithExclusiveCPUs = env.GetGuaranteedPodContainersWithExclusiveCPUsWithoutHostPID()
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(guaranteedPodContainersWithExclusiveCPUs, "guaranteedPodContainersWithExclusiveCPUs"))
-		testSchedulingPolicyInCPUPool(&env, guaranteedPodContainersWithExclusiveCPUs, scheduling.ExclusiveCPUScheduling)
-	})
+	check = checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(skipIfNoGuaranteedPodContainersWithExclusiveCPUsWithoutHostPID).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testSchedulingPolicyInCPUPool(c, &env, env.GetGuaranteedPodContainersWithExclusiveCPUsWithoutHostPID(), scheduling.ExclusiveCPUScheduling)
+			return nil
+		})
 
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestLimitedUseOfExecProbesIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Pods, "env.Pods"))
-		testLimitedUseOfExecProbes(&env)
-	})
+	checksGroup.Add(check)
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsolatedCPUPoolSchedulingPolicy)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		var guaranteedPodContainersWithIsolatedCPUs = env.GetGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID()
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(guaranteedPodContainersWithIsolatedCPUs, "guaranteedPodContainersWithIsolatedCPUs"))
-		testSchedulingPolicyInCPUPool(&env, guaranteedPodContainersWithIsolatedCPUs, scheduling.IsolatedCPUScheduling)
-	})
-	// Scheduling related tests ends here
-})
+	check = checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(skipIfNoGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testSchedulingPolicyInCPUPool(c, &env, env.GetGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID(), scheduling.ExclusiveCPUScheduling)
+			return nil
+		})
+
+	checksGroup.Add(check)
+
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestLimitedUseOfExecProbesIdentifier)
+	check = checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testLimitedUseOfExecProbes(c, &env)
+			return nil
+		})
+
+	checksGroup.Add(check)
+}
 
 func CheckProbePeriodSeconds(elem *v1.Probe, cut *provider.Container, s string) bool {
 	if elem.PeriodSeconds > minExecProbePeriodSeconds {
@@ -102,7 +161,7 @@ func CheckProbePeriodSeconds(elem *v1.Probe, cut *provider.Container, s string) 
 	return false
 }
 
-func testLimitedUseOfExecProbes(env *provider.TestEnvironment) {
+func testLimitedUseOfExecProbes(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	counter := 0
@@ -160,10 +219,10 @@ func testLimitedUseOfExecProbes(env *provider.TestEnvironment) {
 		tnf.ClaimFilePrintf(fmt.Sprintf("CNF has less than %d exec probes", counter))
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testExclusiveCPUPool(env *provider.TestEnvironment) {
+func testExclusiveCPUPool(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
@@ -192,10 +251,10 @@ func testExclusiveCPUPool(env *provider.TestEnvironment) {
 		}
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testSchedulingPolicyInCPUPool(env *provider.TestEnvironment,
+func testSchedulingPolicyInCPUPool(check *checksdb.Check, env *provider.TestEnvironment,
 	podContainers []*provider.Container, schedulingType string) {
 	var compliantContainersPids []*testhelper.ReportObject
 	var nonCompliantContainersPids []*testhelper.ReportObject
@@ -229,7 +288,7 @@ func testSchedulingPolicyInCPUPool(env *provider.TestEnvironment,
 		logrus.Debugf("Processed %v", testContainer)
 	}
 
-	testhelper.AddTestResultReason(compliantContainersPids, nonCompliantContainersPids, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantContainersPids, nonCompliantContainersPids)
 }
 
 func getExecProbesCmds(c *provider.Container) map[string]bool {
@@ -258,9 +317,10 @@ func getExecProbesCmds(c *provider.Container) map[string]bool {
 
 const noProcessFoundErrMsg = "No such process"
 
-func testRtAppsNoExecProbes(env *provider.TestEnvironment, cuts []*provider.Container) {
+func testRtAppsNoExecProbes(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
+	cuts := env.GetNonGuaranteedPodContainersWithoutHostPID()
 	for _, cut := range cuts {
 		if !cut.HasExecProbes() {
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container does not define exec probes", true))
@@ -307,7 +367,8 @@ func testRtAppsNoExecProbes(env *provider.TestEnvironment, cuts []*provider.Cont
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container defines exec probes but does not have a RT scheduling policy", true))
 		}
 	}
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 func filterProbeProcesses(allProcesses []*crclient.Process, cut *provider.Container) (notExecProbeProcesses []*crclient.Process, compliantObjects []*testhelper.ReportObject) {
