@@ -110,12 +110,22 @@ func (check *Check) SetResult(compliantObjects, nonCompliantObjects []*testhelpe
 		logrus.Errorf("Failed to get result objects string for check %s: %v", check.ID, err)
 	}
 
+	check.CapturedOutput = resultObjectsStr
+
 	// If an error/panic happened before, do not change the result.
-	if check.Result != CheckResultError && len(nonCompliantObjects) > 0 {
-		check.SetResultFailed(resultObjectsStr)
+	if check.Result == CheckResultError {
+		return
 	}
 
-	check.CapturedOutput = resultObjectsStr
+	if len(nonCompliantObjects) > 0 {
+		check.Result = CheckResultFailed
+		check.FailureReason = resultObjectsStr
+	} else if len(compliantObjects) == 0 {
+		// Mark this check as skipped.
+		logrus.Warnf("Check %s marked as skipped as both compliant and non-compliant objects lists are empty.", check.ID)
+		check.FailureReason = "Compliant and non-compliant objects lists are empty."
+		check.Result = CheckResultSkipped
+	}
 }
 
 func (check *Check) SetResultFailed(reason string) {
