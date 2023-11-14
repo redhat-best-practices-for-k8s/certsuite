@@ -141,7 +141,7 @@ func TestResult_MarshalJSON(t *testing.T) {
 	}
 }
 
-func TestResult_UnmarshalJSON(t *testing.T) { //nolint:funlen
+func TestResult_UnmarshalJSON(t *testing.T) {
 	type args struct {
 		b []byte
 	}

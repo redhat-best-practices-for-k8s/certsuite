@@ -16,7 +16,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"fmt"
 )
 
 // CatalogInfo test specific information from the catalog
@@ -54,11 +53,15 @@ type CategoryClassification struct {
 // Claim
 type Claim struct {
 
-	// Tests within test-network-function often require configuration.  For example, the generic test suite requires listing all CNF containers.  This information is used to derive per-container IP address information, which is then used as input to the connectivity test suite.  Test suites within test-network-function may use multiple configurations, but each with a unique name.
+	// Tests within test-network-function often require configuration.  For example, the generic test suite requires listing all CNF containers.
+	// This information is used to derive per-container IP address information, which is then used as input to the connectivity test suite.
+	// Test suites within test-network-function may use multiple configurations, but each with a unique name.
 	Configurations map[string]interface{} `json:"configurations"`
 	Metadata       *Metadata              `json:"metadata"`
 
-	// An OpenShift cluster is composed of an arbitrary number of Nodes used for platform and application services.  Since a claim must be reproducible, a variety of per-Node information must be collected and stored in the claim.  Node names are unique within a given OpenShift cluster.
+	// An OpenShift cluster is composed of an arbitrary number of Nodes used for platform and application services.
+	// Since a claim must be reproducible, a variety of per-Node information must be collected and stored in the claim.
+	// Node names are unique within a given OpenShift cluster.
 	Nodes map[string]interface{} `json:"nodes"`
 
 	// The test-network-function test results.  Results are a JSON representation of the JUnit output.
@@ -73,7 +76,7 @@ type Claim struct {
 type Identifier struct {
 
 	// id stores a unique id for the testcase.
-	Id string `json:"id"`
+	Id string `json:"id"` //nolint:revive, stylecheck
 
 	// suite stores the test suite name for the testcase.
 	Suite string `json:"suite"`
@@ -159,59 +162,45 @@ type Versions struct {
 func (strct *CatalogInfo) MarshalJSON() ([]byte, error) {
 	buf := bytes.NewBuffer(make([]byte, 0))
 	buf.WriteString("{")
-	comma := false
 	// "BestPracticeReference" field is required
 	// only required object types supported for marshal checking (for now)
 	// Marshal the "bestPracticeReference" field
-	if comma {
-		buf.WriteString(",")
-	}
 	buf.WriteString("\"bestPracticeReference\": ")
-	if tmp, err := json.Marshal(strct.BestPracticeReference); err != nil {
+	tmp, err := json.Marshal(strct.BestPracticeReference)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// "Description" field is required
 	// only required object types supported for marshal checking (for now)
 	// Marshal the "description" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"description\": ")
-	if tmp, err := json.Marshal(strct.Description); err != nil {
+	tmp, err = json.Marshal(strct.Description)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// "ExceptionProcess" field is required
 	// only required object types supported for marshal checking (for now)
 	// Marshal the "exceptionProcess" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"exceptionProcess\": ")
-	if tmp, err := json.Marshal(strct.ExceptionProcess); err != nil {
+	tmp, err = json.Marshal(strct.ExceptionProcess)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// "Remediation" field is required
 	// only required object types supported for marshal checking (for now)
 	// Marshal the "remediation" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"remediation\": ")
-	if tmp, err := json.Marshal(strct.Remediation); err != nil {
+	tmp, err = json.Marshal(strct.Remediation)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 
 	buf.WriteString("}")
 	rv := buf.Bytes()
@@ -251,7 +240,7 @@ func (strct *CatalogInfo) UnmarshalJSON(b []byte) error {
 			}
 			remediationReceived = true
 		default:
-			return fmt.Errorf("additional property not allowed: \"" + k + "\"")
+			return errors.New("additional property not allowed: \"" + k + "\"") //nolint:goconst
 		}
 	}
 	// check if bestPracticeReference (a required property) was received
@@ -276,51 +265,37 @@ func (strct *CatalogInfo) UnmarshalJSON(b []byte) error {
 func (strct *CategoryClassification) MarshalJSON() ([]byte, error) {
 	buf := bytes.NewBuffer(make([]byte, 0))
 	buf.WriteString("{")
-	comma := false
 	// Marshal the "Extended" field
-	if comma {
-		buf.WriteString(",")
-	}
 	buf.WriteString("\"Extended\": ")
-	if tmp, err := json.Marshal(strct.Extended); err != nil {
+	tmp, err := json.Marshal(strct.Extended)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// Marshal the "FarEdge" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"FarEdge\": ")
-	if tmp, err := json.Marshal(strct.FarEdge); err != nil {
+	tmp, err = json.Marshal(strct.FarEdge)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// Marshal the "NonTelco" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"NonTelco\": ")
-	if tmp, err := json.Marshal(strct.NonTelco); err != nil {
+	tmp, err = json.Marshal(strct.NonTelco)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// Marshal the "Telco" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"Telco\": ")
-	if tmp, err := json.Marshal(strct.Telco); err != nil {
+	tmp, err = json.Marshal(strct.Telco)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 
 	buf.WriteString("}")
 	rv := buf.Bytes()
@@ -352,102 +327,84 @@ func (strct *CategoryClassification) UnmarshalJSON(b []byte) error {
 				return err
 			}
 		default:
-			return fmt.Errorf("additional property not allowed: \"" + k + "\"")
+			return errors.New("additional property not allowed: \"" + k + "\"")
 		}
 	}
 	return nil
 }
 
+//nolint:funlen
 func (strct *Claim) MarshalJSON() ([]byte, error) {
 	buf := bytes.NewBuffer(make([]byte, 0))
 	buf.WriteString("{")
-	comma := false
 	// "Configurations" field is required
 	// only required object types supported for marshal checking (for now)
 	// Marshal the "configurations" field
-	if comma {
-		buf.WriteString(",")
-	}
 	buf.WriteString("\"configurations\": ")
-	if tmp, err := json.Marshal(strct.Configurations); err != nil {
+	tmp, err := json.Marshal(strct.Configurations)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// "Metadata" field is required
 	if strct.Metadata == nil {
 		return nil, errors.New("metadata is a required field")
 	}
 	// Marshal the "metadata" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"metadata\": ")
-	if tmp, err := json.Marshal(strct.Metadata); err != nil {
+	tmp, err = json.Marshal(strct.Metadata)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// "Nodes" field is required
 	// only required object types supported for marshal checking (for now)
 	// Marshal the "nodes" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"nodes\": ")
-	if tmp, err := json.Marshal(strct.Nodes); err != nil {
+	tmp, err = json.Marshal(strct.Nodes)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// "RawResults" field is required
 	// only required object types supported for marshal checking (for now)
 	// Marshal the "rawResults" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"rawResults\": ")
-	if tmp, err := json.Marshal(strct.RawResults); err != nil {
+	tmp, err = json.Marshal(strct.RawResults)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// Marshal the "results" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"results\": ")
-	if tmp, err := json.Marshal(strct.Results); err != nil {
+	tmp, err = json.Marshal(strct.Results)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// "Versions" field is required
 	if strct.Versions == nil {
 		return nil, errors.New("versions is a required field")
 	}
 	// Marshal the "versions" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"versions\": ")
-	if tmp, err := json.Marshal(strct.Versions); err != nil {
+	tmp, err = json.Marshal(strct.Versions)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 
 	buf.WriteString("}")
 	rv := buf.Bytes()
 	return rv, nil
 }
 
+//nolint:funlen
 func (strct *Claim) UnmarshalJSON(b []byte) error {
 	configurationsReceived := false
 	metadataReceived := false
@@ -491,7 +448,7 @@ func (strct *Claim) UnmarshalJSON(b []byte) error {
 			}
 			versionsReceived = true
 		default:
-			return fmt.Errorf("additional property not allowed: \"" + k + "\"")
+			return errors.New("additional property not allowed: \"" + k + "\"")
 		}
 	}
 	// check if configurations (a required property) was received
@@ -520,44 +477,33 @@ func (strct *Claim) UnmarshalJSON(b []byte) error {
 func (strct *Identifier) MarshalJSON() ([]byte, error) {
 	buf := bytes.NewBuffer(make([]byte, 0))
 	buf.WriteString("{")
-	comma := false
 	// "Id" field is required
 	// only required object types supported for marshal checking (for now)
 	// Marshal the "id" field
-	if comma {
-		buf.WriteString(",")
-	}
 	buf.WriteString("\"id\": ")
-	if tmp, err := json.Marshal(strct.Id); err != nil {
+	tmp, err := json.Marshal(strct.Id)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// "Suite" field is required
 	// only required object types supported for marshal checking (for now)
 	// Marshal the "suite" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"suite\": ")
-	if tmp, err := json.Marshal(strct.Suite); err != nil {
+	tmp, err = json.Marshal(strct.Suite)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// Marshal the "tags" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"tags\": ")
-	if tmp, err := json.Marshal(strct.Tags); err != nil {
+	tmp, err = json.Marshal(strct.Tags)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 
 	buf.WriteString("}")
 	rv := buf.Bytes()
@@ -589,7 +535,7 @@ func (strct *Identifier) UnmarshalJSON(b []byte) error {
 				return err
 			}
 		default:
-			return fmt.Errorf("additional property not allowed: \"" + k + "\"")
+			return errors.New("additional property not allowed: \"" + k + "\"")
 		}
 	}
 	// check if id (a required property) was received
@@ -606,33 +552,25 @@ func (strct *Identifier) UnmarshalJSON(b []byte) error {
 func (strct *Metadata) MarshalJSON() ([]byte, error) {
 	buf := bytes.NewBuffer(make([]byte, 0))
 	buf.WriteString("{")
-	comma := false
 	// "EndTime" field is required
 	// only required object types supported for marshal checking (for now)
 	// Marshal the "endTime" field
-	if comma {
-		buf.WriteString(",")
-	}
 	buf.WriteString("\"endTime\": ")
-	if tmp, err := json.Marshal(strct.EndTime); err != nil {
+	tmp, err := json.Marshal(strct.EndTime)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// "StartTime" field is required
 	// only required object types supported for marshal checking (for now)
 	// Marshal the "startTime" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"startTime\": ")
-	if tmp, err := json.Marshal(strct.StartTime); err != nil {
+	tmp, err = json.Marshal(strct.StartTime)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 
 	buf.WriteString("}")
 	rv := buf.Bytes()
@@ -649,18 +587,18 @@ func (strct *Metadata) UnmarshalJSON(b []byte) error {
 	// parse all the defined properties
 	for k, v := range jsonMap {
 		switch k {
-		case "endTime":
+		case "endTime": //nolint:goconst
 			if err := json.Unmarshal([]byte(v), &strct.EndTime); err != nil {
 				return err
 			}
 			endTimeReceived = true
-		case "startTime":
+		case "startTime": //nolint:goconst
 			if err := json.Unmarshal([]byte(v), &strct.StartTime); err != nil {
 				return err
 			}
 			startTimeReceived = true
 		default:
-			return fmt.Errorf("additional property not allowed: \"" + k + "\"")
+			return errors.New("additional property not allowed: \"" + k + "\"")
 		}
 	}
 	// check if endTime (a required property) was received
@@ -674,163 +612,130 @@ func (strct *Metadata) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
+//nolint:funlen
 func (strct *Result) MarshalJSON() ([]byte, error) {
 	buf := bytes.NewBuffer(make([]byte, 0))
 	buf.WriteString("{")
-	comma := false
 	// "CapturedTestOutput" field is required
 	// only required object types supported for marshal checking (for now)
 	// Marshal the "capturedTestOutput" field
-	if comma {
-		buf.WriteString(",")
-	}
 	buf.WriteString("\"capturedTestOutput\": ")
-	if tmp, err := json.Marshal(strct.CapturedTestOutput); err != nil {
+	tmp, err := json.Marshal(strct.CapturedTestOutput)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// "CatalogInfo" field is required
 	if strct.CatalogInfo == nil {
 		return nil, errors.New("catalogInfo is a required field")
 	}
 	// Marshal the "catalogInfo" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"catalogInfo\": ")
-	if tmp, err := json.Marshal(strct.CatalogInfo); err != nil {
+	tmp, err = json.Marshal(strct.CatalogInfo)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// "CategoryClassification" field is required
 	if strct.CategoryClassification == nil {
 		return nil, errors.New("categoryClassification is a required field")
 	}
 	// Marshal the "categoryClassification" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"categoryClassification\": ")
-	if tmp, err := json.Marshal(strct.CategoryClassification); err != nil {
+	tmp, err = json.Marshal(strct.CategoryClassification)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// "Duration" field is required
 	// only required object types supported for marshal checking (for now)
 	// Marshal the "duration" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"duration\": ")
-	if tmp, err := json.Marshal(strct.Duration); err != nil {
+	tmp, err = json.Marshal(strct.Duration)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// Marshal the "endTime" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"endTime\": ")
-	if tmp, err := json.Marshal(strct.EndTime); err != nil {
+	tmp, err = json.Marshal(strct.EndTime)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// "FailureLineContent" field is required
 	// only required object types supported for marshal checking (for now)
 	// Marshal the "failureLineContent" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"failureLineContent\": ")
-	if tmp, err := json.Marshal(strct.FailureLineContent); err != nil {
+	tmp, err = json.Marshal(strct.FailureLineContent)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// "FailureLocation" field is required
 	// only required object types supported for marshal checking (for now)
 	// Marshal the "failureLocation" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"failureLocation\": ")
-	if tmp, err := json.Marshal(strct.FailureLocation); err != nil {
+	tmp, err = json.Marshal(strct.FailureLocation)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// "FailureReason" field is required
 	// only required object types supported for marshal checking (for now)
 	// Marshal the "failureReason" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"failureReason\": ")
-	if tmp, err := json.Marshal(strct.FailureReason); err != nil {
+	tmp, err = json.Marshal(strct.FailureReason)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// "StartTime" field is required
 	// only required object types supported for marshal checking (for now)
 	// Marshal the "startTime" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"startTime\": ")
-	if tmp, err := json.Marshal(strct.StartTime); err != nil {
+	tmp, err = json.Marshal(strct.StartTime)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// "State" field is required
 	// only required object types supported for marshal checking (for now)
 	// Marshal the "state" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"state\": ")
-	if tmp, err := json.Marshal(strct.State); err != nil {
+	tmp, err = json.Marshal(strct.State)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// "TestID" field is required
 	if strct.TestID == nil {
 		return nil, errors.New("testID is a required field")
 	}
 	// Marshal the "testID" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"testID\": ")
-	if tmp, err := json.Marshal(strct.TestID); err != nil {
+	tmp, err = json.Marshal(strct.TestID)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 
 	buf.WriteString("}")
 	rv := buf.Bytes()
 	return rv, nil
 }
 
+//nolint:funlen,gocyclo
 func (strct *Result) UnmarshalJSON(b []byte) error {
 	capturedTestOutputReceived := false
 	catalogInfoReceived := false
@@ -904,7 +809,7 @@ func (strct *Result) UnmarshalJSON(b []byte) error {
 			}
 			testIDReceived = true
 		default:
-			return fmt.Errorf("additional property not allowed: \"" + k + "\"")
+			return errors.New("additional property not allowed: \"" + k + "\"")
 		}
 	}
 	// check if capturedTestOutput (a required property) was received
@@ -953,22 +858,17 @@ func (strct *Result) UnmarshalJSON(b []byte) error {
 func (strct *Root) MarshalJSON() ([]byte, error) {
 	buf := bytes.NewBuffer(make([]byte, 0))
 	buf.WriteString("{")
-	comma := false
 	// "Claim" field is required
 	if strct.Claim == nil {
 		return nil, errors.New("claim is a required field")
 	}
 	// Marshal the "claim" field
-	if comma {
-		buf.WriteString(",")
-	}
 	buf.WriteString("\"claim\": ")
-	if tmp, err := json.Marshal(strct.Claim); err != nil {
+	tmp, err := json.Marshal(strct.Claim)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 
 	buf.WriteString("}")
 	rv := buf.Bytes()
@@ -990,7 +890,7 @@ func (strct *Root) UnmarshalJSON(b []byte) error {
 			}
 			claimReceived = true
 		default:
-			return fmt.Errorf("additional property not allowed: \"" + k + "\"")
+			return errors.New("additional property not allowed: \"" + k + "\"")
 		}
 	}
 	// check if claim (a required property) was received
@@ -1003,77 +903,57 @@ func (strct *Root) UnmarshalJSON(b []byte) error {
 func (strct *Versions) MarshalJSON() ([]byte, error) {
 	buf := bytes.NewBuffer(make([]byte, 0))
 	buf.WriteString("{")
-	comma := false
 	// "ClaimFormat" field is required
 	// only required object types supported for marshal checking (for now)
 	// Marshal the "claimFormat" field
-	if comma {
-		buf.WriteString(",")
-	}
 	buf.WriteString("\"claimFormat\": ")
-	if tmp, err := json.Marshal(strct.ClaimFormat); err != nil {
+	tmp, err := json.Marshal(strct.ClaimFormat)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// Marshal the "k8s" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"k8s\": ")
-	if tmp, err := json.Marshal(strct.K8s); err != nil {
+	tmp, err = json.Marshal(strct.K8s)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// Marshal the "ocClient" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"ocClient\": ")
-	if tmp, err := json.Marshal(strct.OcClient); err != nil {
+	tmp, err = json.Marshal(strct.OcClient)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// Marshal the "ocp" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"ocp\": ")
-	if tmp, err := json.Marshal(strct.Ocp); err != nil {
+	tmp, err = json.Marshal(strct.Ocp)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// "Tnf" field is required
 	// only required object types supported for marshal checking (for now)
 	// Marshal the "tnf" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"tnf\": ")
-	if tmp, err := json.Marshal(strct.Tnf); err != nil {
+	tmp, err = json.Marshal(strct.Tnf)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 	// Marshal the "tnfGitCommit" field
-	if comma {
-		buf.WriteString(",")
-	}
+	buf.WriteString(",")
 	buf.WriteString("\"tnfGitCommit\": ")
-	if tmp, err := json.Marshal(strct.TnfGitCommit); err != nil {
+	tmp, err = json.Marshal(strct.TnfGitCommit)
+	if err != nil {
 		return nil, err
-	} else {
-		buf.Write(tmp)
 	}
-	comma = true
+	buf.Write(tmp)
 
 	buf.WriteString("}")
 	rv := buf.Bytes()
@@ -1117,7 +997,7 @@ func (strct *Versions) UnmarshalJSON(b []byte) error {
 				return err
 			}
 		default:
-			return fmt.Errorf("additional property not allowed: \"" + k + "\"")
+			return errors.New("additional property not allowed: \"" + k + "\"")
 		}
 	}
 	// check if claimFormat (a required property) was received

@@ -54,7 +54,6 @@ func formTestTags(tags ...string) string {
 	return strings.Join(tags, ",")
 }
 
-//nolint:lll
 func BuildTestCaseDescription(testID, suiteName, description, remediation, exception, reference string, qe bool, categoryclassification map[string]string, tags ...string) (TestCaseDescription, Identifier) {
 	aID := Identifier{
 		Tags:  formTestTags(tags...),
