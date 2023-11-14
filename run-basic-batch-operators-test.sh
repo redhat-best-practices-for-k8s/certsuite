@@ -17,8 +17,11 @@ DOCKER_CONFIG=config.json
 # Location of telco/non-telco classification file
 CNF_TYPE=cmd/tnf/claim/show/csv/cnf-type.json
 
-# operator bundle list from user
-ORIG_BUNDLE_PATH=$1
+# operator catalog from user
+OPERATOR_CATALOG=""
+
+# operator from user
+OPERATORS_UNDER_TEST=""
 
 # OUTPUTS
 
@@ -28,52 +31,113 @@ REPORT_FOLDER_RELATIVE="report_$TIMESTAMP"
 # Report results folder
 REPORT_FOLDER="$BASE_DIR"/"$REPORT_FOLDER_RELATIVE"
 
-# bundle file name
-BUNDLE_FILENAME=bundelist.txt
+# operator  file name
+OPERATOR_LIST_FILENAME=operator-list.txt
 
-# bundle path in the report
-BUNDLE_PATH="$REPORT_FOLDER"/"$BUNDLE_FILENAME"
+# operator list path in the report
+OPERATOR_LIST_PATH="$REPORT_FOLDER"/"$OPERATOR_LIST_FILENAME"
 
 # VARIABLES
 
 # variable to add header only on the first run
 addHeaders=-a
 
-getLatestBundle() {
-	PACKAGE_NAME=$1
-	jsonData=$(grpcurl -plaintext localhost:50051 api.Registry.ListBundles | jq --arg packagename "$PACKAGE_NAME" '. | select(.packageName == $packagename) | del(.csvJson) | del(.object)')
-
-	latest=$(echo "$jsonData" | jq -r '.version' | sort -V | tail -n1)
-
-	# retrieve the bundlePath for the latest version
-	bundlePath=$(echo "$jsonData" | jq -r --arg latest "$latest" '. | select(.version == $latest) | .bundlePath' | tail -n1)
-
-	echo "$PACKAGE_NAME", "$bundlePath"
-}
-
 # create report directory
 mkdir "$REPORT_FOLDER"
 
+cleanup() {
+	# cleanup any leftovers
+	# https://docs.openshift.com/container-platform/4.14/operators/admin/olm-deleting-operators-from-cluster.html
+	oc get csv -n openshift-operators | grep -v packageserver | grep -v NAME | awk '{print "oc delete --wait=true csv " $2 " -n openshift-operators"}' | bash
+	oc get csv -A | grep -v packageserver | grep -v NAME | awk '{print "oc delete --wait=true csv " $2 " -n " $1}' | bash
+	oc get subscriptions -A | grep -v NAME | awk '{print "oc delete --wait=true subscription " $2 " -n " $1}' | bash
+	oc get job,configmap -n openshift-marketplace | grep -v NAME | grep -v "configmap/kube-root-ca.crt" | grep -v "configmap/marketplace-operator-lock" | grep -v "configmap/marketplace-trusted-ca" | grep -v "configmap/openshift-service-ca.crt" | awk '{print "oc delete --wait=true " $1 " -n openshift-marketplace" }' | bash
+}
+
+waitDeleteNamespace() {
+	namespaceDeleting=$1
+	# wait for the CSV to be removed
+	oc wait csv -l test-network-function.com/operator=target -n "$namespaceDeleting" --for=delete --timeout=300s
+
+	# wait for the namespace to be removed
+	if [ "$namespaceDeleting" != "openshift-operators" ]; then
+
+		echo "non openshift-operators namespace = $namespaceDeleting, deleting "
+		oc wait namespace "$namespaceDeleting" --for=delete --timeout=300s
+		forceDeleteNamespaceIfPresent "$namespaceDeleting"
+	fi
+}
+
+waitForCsvToAppearAndLabel() {
+	csvNamespace=$1
+	timeoutSeconds=300
+	startTime=$(date +%s)
+	while true; do
+		csvs=$(oc get csv -n "$csvNamespace")
+		if [ "$csvs" != "" ]; then
+			# if any CSV is present, break
+			break
+		else
+			currentTime=$(date +%s)
+			elapsedTime=$((currentTime - startTime))
+			# if elapsed time is greater than the timeout report failure
+			if [ "$elapsedTime" -ge "$timeoutSeconds" ]; then
+				echo "Timeout reached $timeoutSeconds seconds waiting for CSV."
+				return 1
+			fi
+
+			# otherwise wait a bit
+			echo "Waiting for csv to be created in namespace $csvNamespace ..."
+			sleep 5
+		fi
+	done
+
+	# label CSV
+	oc get csv -n "$csvNamespace" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | grep -v openshift-operator-lifecycle-manager | sed '/^ *$/d' | awk '{print "oc label " $3  " -n " $2 " " $1  " test-network-function.com/operator=target "}' | bash
+
+	# wait for the CSV to be succeeded
+	oc wait csv -l test-network-function.com/operator=target -n "$ns" --for=jsonpath=\{.status.phase\}=Succeeded --timeout=300s
+}
+
+forceDeleteNamespaceIfPresent() {
+	aNamespace=$1
+
+	# do not delete the redhat-operators namespace
+	if [ "$aNamespace" = "openshift-operators" ]; then
+		return 0
+	fi
+	# delete namespace
+	oc delete namespace "$aNamespace" --wait=false
+	oc wait namespace "$aNamespace" --for=delete --timeout=30s
+
+	# if a namespace with this name does not exist, all is good, exit
+	if ! oc get namespace "$aNamespace"; then
+		return 0
+	fi
+
+	# otherwise force delete namespace
+	oc get namespace "$aNamespace" -ojson | sed '/"kubernetes"/d' >temp.yaml
+	oc proxy &
+	pid=$!
+	echo "PID: $pid"
+	sleep 5
+	curl -H "Content-Type: application/yaml" -X PUT --data-binary @temp.yaml http://127.0.0.1:8001/api/v1/namespaces/"$aNamespace"/finalize
+	kill -9 "$pid"
+	oc wait namespace "$aNamespace" --for=delete --timeout=300s
+}
+
 # Check if the number of parameters is correct
 if [ "$#" -eq 0 ]; then
-	echo "missing operator bundle list file, getting redhat operators from catalog"
-	echo "results will be in $BASE_DIR directory"
-	oc -n openshift-marketplace port-forward service/redhat-operators 50051:50051 &
-	background_pid=$!
-	echo "Background PID: $background_pid"
-
+	OPERATOR_CATALOG=redhat-operators
+elif [ "$#" -eq 1 ]; then
+	OPERATOR_CATALOG=$1
 	# get all the packages present in the cluster catalog
-	oc get packagemanifest | grep "Red Hat Operators" | awk '{print $1}' >"$REPORT_FOLDER"/redhat-operators.txt
+	oc get packagemanifest -o jsonpath='{range .items[*]}{.metadata.name}{","}{.status.catalogSource}{"\n"}{end}' | grep "$OPERATOR_CATALOG" | head -n -1 >"$OPERATOR_LIST_PATH"
 
-	# get BundleImage for each of the packages
-	while read -r i; do getLatestBundle "$i"; done <"$REPORT_FOLDER"/redhat-operators.txt >"$BUNDLE_PATH"
-
-	# kill the port forwarding
-	kill -9 "$background_pid"
-	ORIG_BUNDLE_PATH=redhat-operators
-else
-	# if user provided file is present, copy it in the report
-	cp "$ORIG_BUNDLE_PATH" "$BUNDLE_PATH"
+elif [ "$#" -eq 2 ]; then
+	OPERATOR_CATALOG=$1
+	OPERATORS_UNDER_TEST=$2
+	echo "$OPERATORS_UNDER_TEST " | sed 's/ /,'"$OPERATOR_CATALOG"'\n/g' >"$OPERATOR_LIST_PATH"
 fi
 
 # check for docker config file
@@ -108,7 +172,7 @@ OPERATOR_PAGE='<!DOCTYPE html>
 # add per test run links
 {
 	# add per operator details link
-	echo "Time: <b>$TIMESTAMP</b>, file: <b>$ORIG_BUNDLE_PATH</b>"
+	echo "Time: <b>$TIMESTAMP</b>, file: <b>$OPERATOR_CATALOG</b>"
 
 	#add detailed results
 	echo ", detailed results: "'<a href="/'"$REPORT_FOLDER_RELATIVE"'/index.html">'"link"'</a>'
@@ -117,32 +181,47 @@ OPERATOR_PAGE='<!DOCTYPE html>
 	echo ", CSV: "
 	echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/results.csv">'"link"'</a>'
 
-	# add operator bundle list link
-	echo ", bundle list: "
-	echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$BUNDLE_FILENAME"'">'"link"'</a>'
+	# add operator list link
+	echo ", operator list: "
+	echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$OPERATOR_LIST_FILENAME"'">'"link"'</a>'
 
 	# new line
 	echo "<br>"
 } >>"$BASE_DIR"/index.html
 
 echo "$OPERATOR_PAGE" >>"$REPORT_FOLDER"/index.html
-# For each bundle in a provided catalog, this script will install the operator and run the CNF test suite.
-while IFS=, read -r package_name bundle_image; do
+
+cleanup
+
+# For each operator in a provided catalog, this script will install the operator and run the CNF test suite.
+while IFS=, read -r package_name catalog; do
+	if [ "$package_name" = "" ]; then
+		continue
+	fi
 	# Workaround for cleaning operator leftovers, see https://access.redhat.com/solutions/6971276
 	oc delete mutatingwebhookconfigurations controller.devfile.io
 	oc delete validatingwebhookconfigurations controller.devfile.io
 
-	# read package name and bundle image from the text file
-	package_name=$(echo "$package_name" | awk '{$1=$1};1')
-	bundle_image=$(echo "$bundle_image" | awk '{$1=$1};1')
+	echo "package=$package_name catalog=$catalog"
 
-	# create a new namespace for each operator install
-	ns=test-"$package_name"
-	oc new-project "$ns"
+	namesCount=$(tasty install "$package_name" --source "$catalog" --stdout | grep -c "name:")
 
-	# use operator-sdk binary to install the operator in a custom namespace
-	operator-sdk run bundle "$bundle_image"
+	if [ "$namesCount" = "4" ]; then
+		# get namespace from tasty
+		ns=$(tasty install "$package_name" --source "$catalog" --stdout | grep "name:" | head -n1 | awk '{ print $2 }')
+	elif [ "$namesCount" = "2" ]; then
+		ns="openshift-operators"
+	fi
 
+	echo "namespace=$ns"
+
+	# if a namespace is present, it is probably stuck deleting from previous runs. Force delete it.
+	forceDeleteNamespaceIfPresent "$ns"
+
+	# install the operator in a custom namespace
+	tasty install "$package_name" --source "$catalog" -w
+
+	# setting report directory
 	reportDir="$REPORT_FOLDER"/"$package_name"
 
 	# store the results of CNF test in a new directory
@@ -153,12 +232,37 @@ while IFS=, read -r package_name bundle_image; do
 	# change the targetNameSpace in tng_config file
 	sed "s/\$ns/$ns/" "$CONFIG_YAML_TEMPLATE" >"$configYaml"
 
+	# wait for the CSV to appear
+	waitForCsvToAppearAndLabel "$ns"
+
+	if [ "$?" = 1 ]; then
+		# add per operator links
+		{
+			# add error message
+			echo "Results for: <b>$package_name</b>, "'<span style="color: red;">Operator installation failed, skipping test</span>'
+
+			# add tnf_config link
+			echo ", tnf_config: "
+			echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/tnf_config.yml">'"link"'</a>'
+
+			# new line
+			echo "<br>"
+		} >>"$REPORT_FOLDER"/index.html
+		# remove the operator
+		tasty remove "$package_name"
+
+		cleanup
+		waitDeleteNamespace "$ns"
+
+		continue
+	fi
+
+	echo "operator $package_name installed"
+
 	# label everything
 	oc get deployment -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "oc label " $3  " -n " $2 " " $1  " test-network-function.com/generic=target "}' | bash
 	oc get statefulset -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "oc label " $3  " -n " $2 " " $1  " test-network-function.com/generic=target "}' | bash
 	oc get pods -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "oc label " $3  " -n " $2 " " $1  " test-network-function.com/generic=target "}' | bash
-	oc get csv -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "oc label " $3  " -n " $2 " " $1  " test-network-function.com/operator=target "}' | bash
-	oc get operator -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "oc label " $3  " " $1  " test-network-function.com/operator=target "}' | bash
 
 	# run tnf-container
 	./run-tnf-container.sh -k "$KUBECONFIG" -t "$reportDir" -o "$reportDir" -c "$DOCKER_CONFIG" -l all
@@ -166,10 +270,11 @@ while IFS=, read -r package_name bundle_image; do
 	# unlabel and uninstall the operator
 	oc get csv -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "oc label " $3  " -n " $2 " " $1  " test-network-function.com/operator- "}' | bash
 
-	operator-sdk cleanup "$package_name"
+	# remove the operator
+	tasty remove "$package_name"
 
-	# delete the namespace
-	oc delete ns "$ns"
+	cleanup
+	waitDeleteNamespace "$ns"
 
 	# merge claim.json from each operator to a single csv file
 	./tnf claim show csv -c "$reportDir"/claim.json -n "$package_name" -t "$CNF_TYPE" "$addHeaders" >>"$REPORT_FOLDER"/results.csv
@@ -195,7 +300,7 @@ while IFS=, read -r package_name bundle_image; do
 	# Only print headers once
 	addHeaders=""
 
-done <"$BUNDLE_PATH"
+done <"$OPERATOR_LIST_PATH"
 
 # Workaround for cleaning operator leftovers, see https://access.redhat.com/solutions/6971276
 oc delete mutatingwebhookconfigurations controller.devfile.io
