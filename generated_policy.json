@@ -2,6 +2,16 @@
   "grades": {
     "requiredPassingTests": [
       {
+        "id": "manageability-container-port-name-format",
+        "suite": "manageability",
+        "tags": "extended"
+      },
+      {
+        "id": "manageability-containers-image-tag",
+        "suite": "manageability",
+        "tags": "extended"
+      },
+      {
         "id": "observability-container-logging",
         "suite": "observability",
         "tags": "telco"
