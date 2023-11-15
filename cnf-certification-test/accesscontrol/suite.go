@@ -31,7 +31,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netutil"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/services"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
@@ -62,7 +61,7 @@ var _ = ginkgo.Describe(common.AccessControlTestKey, func() {
 	ginkgo.BeforeEach(func() {
 		env = provider.GetTestEnvironment()
 	})
-	ginkgo.ReportAfterEach(results.RecordResult)
+
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSecContextIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))

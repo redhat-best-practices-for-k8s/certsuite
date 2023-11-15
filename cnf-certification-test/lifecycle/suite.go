@@ -30,7 +30,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/scaling"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/tolerations"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/volumes"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/postmortem"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
@@ -56,7 +55,6 @@ var _ = ginkgo.Describe(common.LifecycleTestKey, func() {
 	ginkgo.BeforeEach(func() {
 		env = provider.GetTestEnvironment()
 	})
-	ginkgo.ReportAfterEach(results.RecordResult)
 
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestShutdownIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {

@@ -28,7 +28,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
@@ -55,7 +54,7 @@ var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
 			ginkgo.Fail(errMsg)
 		}
 	})
-	ginkgo.ReportAfterEach(results.RecordResult)
+
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHelmVersionIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testHelmVersion()

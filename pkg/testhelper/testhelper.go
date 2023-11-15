@@ -22,6 +22,7 @@ import (
 	"reflect"
 
 	"github.com/sirupsen/logrus"
+
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
@@ -404,6 +405,20 @@ func AddTestResultReason(compliantObject, nonCompliantObject []*ReportObject, lo
 	if len(aReason.NonCompliantObjectsOut) > 0 {
 		fail(string(bytes))
 	}
+}
+
+func ResultObjectsToString(compliantObject, nonCompliantObject []*ReportObject) (string, error) {
+	reason := FailureReasonOut{
+		CompliantObjectsOut:    compliantObject,
+		NonCompliantObjectsOut: nonCompliantObject,
+	}
+
+	bytes, err := json.Marshal(reason)
+	if err != nil {
+		return "", fmt.Errorf("could not marshall FailureReasonOut object: %v", err)
+	}
+
+	return string(bytes), nil
 }
 
 var AbortTrigger string

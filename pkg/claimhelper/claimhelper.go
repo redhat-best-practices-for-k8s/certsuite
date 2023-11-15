@@ -26,10 +26,12 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
+	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/claim"
 	"github.com/test-network-function/cnf-certification-test/pkg/diagnostics"
 	"github.com/test-network-function/cnf-certification-test/pkg/junit"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/versions"
 )
 
 const (
@@ -39,6 +41,55 @@ const (
 	// dateTimeFormatDirective is the directive used to format date/time according to ISO 8601.
 	DateTimeFormatDirective = "2006-01-02T15:04:05+00:00"
 )
+
+type ClaimBuilder struct {
+	claimRoot *claim.Root
+}
+
+func NewClaimBuilder() (*ClaimBuilder, error) {
+	log.Debug("Creating claim file builder.")
+	configurations, err := MarshalConfigurations()
+	if err != nil {
+		return nil, fmt.Errorf("configuration node missing because of: %v", err)
+	}
+
+	claimConfigurations := map[string]interface{}{}
+	UnmarshalConfigurations(configurations, claimConfigurations)
+
+	root := CreateClaimRoot()
+
+	root.Claim.Configurations = claimConfigurations
+	root.Claim.Nodes = GenerateNodes()
+	root.Claim.Versions = &claim.Versions{
+		Tnf:          versions.GitDisplayRelease,
+		TnfGitCommit: versions.GitCommit,
+		OcClient:     diagnostics.GetVersionOcClient(),
+		Ocp:          diagnostics.GetVersionOcp(),
+		K8s:          diagnostics.GetVersionK8s(),
+		ClaimFormat:  versions.ClaimFormatVersion,
+	}
+
+	return &ClaimBuilder{
+		claimRoot: root,
+	}, nil
+}
+
+func (c *ClaimBuilder) Build(outputFile string) {
+	endTime := time.Now()
+
+	c.claimRoot.Claim.Metadata.EndTime = endTime.UTC().Format(DateTimeFormatDirective)
+	c.claimRoot.Claim.Results = checksdb.GetReconciledResults()
+
+	// Marshal the claim and output to file
+	payload := MarshalClaimOutput(c.claimRoot)
+	WriteClaimOutput(outputFile, payload)
+
+	log.Infof("Claim file created at %s", outputFile)
+}
+
+func (c *ClaimBuilder) Reset() {
+	c.claimRoot.Claim.Metadata.StartTime = time.Now().UTC().Format(DateTimeFormatDirective)
+}
 
 // MarshalConfigurations creates a byte stream representation of the test configurations.  In the event of an error,
 // this method fatally fails.

@@ -24,7 +24,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator/phasecheck"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
@@ -37,7 +36,6 @@ var _ = ginkgo.Describe(common.OperatorTestKey, func() {
 	ginkgo.BeforeEach(func() {
 		env = provider.GetTestEnvironment()
 	})
-	ginkgo.ReportAfterEach(results.RecordResult)
 
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOperatorInstallStatusSucceededIdentifier)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {

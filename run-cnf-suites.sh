@@ -78,41 +78,36 @@ fi
 if [ "$LIST" = true ]; then
 	cd "$BASEDIR"/cnf-certification-test || exit 1
 	./cnf-certification-test.test \
-		--ginkgo.dry-run \
-		--ginkgo.timeout=$TIMEOUT \
-		--ginkgo.v \
-		--ginkgo.label-filter="$LABEL"
+		--list \
+		--label-filter="$LABEL"
 	cd ..
 	exit 0
 fi
 
 # Specify Junit report file name.
-GINKGO_ARGS="\
---ginkgo.timeout=$TIMEOUT \
--junit $OUTPUT_LOC \
+EXTRA_ARGS="\
+--timeout=$TIMEOUT \
 -claimloc $OUTPUT_LOC \
---ginkgo.junit-report $OUTPUT_LOC/cnf-certification-tests_junit.xml \
--ginkgo.v \
--test.v\
 "
 
 if [ "$SERVER_RUN" = "true" ]; then
-	GINKGO_ARGS="$GINKGO_ARGS -serverMode"
+	EXTRA_ARGS="$EXTRA_ARGS -serverMode"
 fi
 
+echo "Label: $LABEL"
 if [[ $LABEL == "all" ]]; then
 	LABEL='common,extended,faredge,telco'
 fi
 
 echo "Running with label filter '$LABEL'"
 echo "Report will be output to '$OUTPUT_LOC'"
-echo "ginkgo arguments '${GINKGO_ARGS}'"
+echo "Extra arguments '${EXTRA_ARGS}'"
 LABEL_STRING=''
 
 if [ -z "$LABEL" ] && { [ -z "$SERVER_RUN" ] || [ "$SERVER_RUN" == "false" ]; }; then
 	echo "No test label (-l) was set, so only diagnostic functions will run."
 else
-	LABEL_STRING="-ginkgo.label-filter=${LABEL}"
+	LABEL_STRING="--label-filter=${LABEL}"
 fi
 
 cd "$BASEDIR"/cnf-certification-test || exit 1
@@ -126,9 +121,9 @@ set -o pipefail
 # Do not double quote.
 # SC2086: Double quote to prevent globbing and word splitting.
 # shellcheck disable=SC2086
-./cnf-certification-test.test \
+./cnf-certification-test \
 	"${LABEL_STRING}" \
-	${GINKGO_ARGS} |& tee $OUTPUT_LOC/tnf-execution.log
+	${EXTRA_ARGS} |& tee $OUTPUT_LOC/tnf-execution.log
 
 # preserving the exit status
 RESULT=$?

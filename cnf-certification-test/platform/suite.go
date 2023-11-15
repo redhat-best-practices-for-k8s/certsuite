@@ -38,8 +38,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/operatingsystem"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/sysctlconfig"
 
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
-
 	"github.com/onsi/ginkgo/v2"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/nodetainted"
 )
@@ -51,7 +49,7 @@ var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
 	ginkgo.BeforeEach(func() {
 		env = provider.GetTestEnvironment()
 	})
-	ginkgo.ReportAfterEach(results.RecordResult)
+
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHyperThreadEnable)
 	ginkgo.It(testID, ginkgo.Label(tags...), func() {
 		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.GetBaremetalNodes(), "env.GetBaremetalNodes()"))
