@@ -40,20 +40,6 @@ jobs:
           swap-storage: true
         continue-on-error: true
 
-      - name: Write temporary docker file
-        run: |
-          mkdir -p /home/runner/.docker
-          touch ${PFLT_DOCKERCONFIG}
-          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
-
-      - name: Set up Go 1.21
-        uses: actions/setup-go@v4
-        with:
-          go-version: 1.21.4
-
-      - name: Disable default go problem matcher
-        run: echo "::remove-matcher owner=go::"
-
       - name: Check out code
         uses: actions/checkout@v4
         with:
