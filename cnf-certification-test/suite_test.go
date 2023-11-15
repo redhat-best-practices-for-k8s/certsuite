@@ -319,7 +319,7 @@ func RunHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Error:", err)
 	}
 	var flattenedOptions []string
-	flattenedOptions = webserver.FlattenData(data.SelectedOptions, flattenedOptions)
+	flattenedOptions = data.SelectedOptions
 
 	// Get the file from the request
 	file, handler, err := r.FormFile("kubeConfigPath") // "fileInput" is the name of the file input field
@@ -342,6 +342,19 @@ func RunHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, "Unable to copy file", http.StatusInternalServerError)
 		return
+	}
+
+	tnf_config, err := os.ReadFile("tnf_config.yml")
+	if err != nil {
+		log.Fatalf("Error reading YAML file: %v", err)
+	}
+
+	newData := webserver.UpdateTnf(tnf_config, data)
+
+	// Write the modified YAML data back to the file
+	err = os.WriteFile("tnf_config.yml", newData, os.ModePerm)
+	if err != nil {
+		log.Fatalf("Error writing YAML file: %v", err)
 	}
 
 	// Copy the uploaded file to the server file

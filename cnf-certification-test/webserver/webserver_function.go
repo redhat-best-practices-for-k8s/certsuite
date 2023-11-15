@@ -5,11 +5,15 @@ import (
 	"bytes"
 	_ "embed"
 	"fmt"
+	"log"
 	"net/http"
+
+	yaml "gopkg.in/yaml.v2"
 
 	"github.com/gorilla/websocket"
 	"github.com/robert-nix/ansihtml"
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 )
 
 //go:embed index.html
@@ -59,7 +63,27 @@ func logStreamHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 type RequestedData struct {
-	SelectedOptions interface{} `json:"selectedOptions"`
+	SelectedOptions                      []string `json:"selectedOptions"`
+	TargetNameSpaces                     []string `json:"targetNameSpaces"`
+	PodsUnderTestLabels                  []string `json:"podsUnderTestLabels"`
+	OperatorsUnderTestLabels             []string `json:"operatorsUnderTestLabels"`
+	ManagedDeployments                   []string `json:"managedDeployments"`
+	ManagedStatefulsets                  []string `json:"managedStatefulsets"`
+	SkipScalingTestDeploymentsnamespace  []string `json:"skipScalingTestDeploymentsnamespace"`
+	SkipScalingTestDeploymentsname       []string `json:"skipScalingTestDeploymentsname"`
+	SkipScalingTestStatefulsetsnamespace []string `json:"skipScalingTestStatefulsetsnamespace"`
+	SkipScalingTestStatefulsetsname      []string `json:"skipScalingTestStatefulsetsname"`
+	TargetCrdFiltersnameSuffix           []string `json:"targetCrdFiltersnameSuffix"`
+	TargetCrdFiltersscalable             []string `json:"targetCrdFiltersscalable"`
+	AcceptedKernelTaints                 []string `json:"acceptedKernelTaints"`
+	SkipHelmChartList                    []string `json:"skipHelmChartList"`
+	Servicesignorelist                   []string `json:"servicesignorelist"`
+	ValidProtocolNames                   []string `json:"ValidProtocolNames"`
+	DebugDaemonSetNamespace              []string `json:"DebugDaemonSetNamespace"`
+	CollectorAppEndPoint                 []string `json:"CollectorAppEndPoint"`
+	ExecutedBy                           []string `json:"executedBy"`
+	CollectorAppPassword                 []string `json:"CollectorAppPassword"`
+	PartnerName                          []string `json:"PartnerName"`
 }
 type ResponseData struct {
 	Message string `json:"message"`
@@ -129,4 +153,99 @@ func HandlereqFunc() {
 	})
 	// Serve the static HTML file
 	http.HandleFunc("/logstream", logStreamHandler)
+}
+
+func UpdateTnf(tnf_config []byte, data RequestedData) []byte {
+	// Unmarshal the YAML data into a Config struct
+	var config configuration.TestConfiguration
+
+	err := yaml.Unmarshal(tnf_config, &config)
+	if err != nil {
+		log.Fatalf("Error unmarshaling YAML: %v", err)
+	}
+
+	// Modify the configuration
+	var namespace []configuration.Namespace
+	for _, tnamespace := range data.TargetNameSpaces {
+		namespace = append(namespace, configuration.Namespace{Name: tnamespace})
+	}
+	config.TargetNameSpaces = namespace
+
+	config.PodsUnderTestLabels = data.PodsUnderTestLabels
+
+	config.OperatorsUnderTestLabels = data.OperatorsUnderTestLabels
+
+	var managedDeployments []configuration.ManagedDeploymentsStatefulsets
+	for _, val := range data.ManagedDeployments {
+		managedDeployments = append(managedDeployments, configuration.ManagedDeploymentsStatefulsets{Name: val})
+	}
+	config.ManagedDeployments = managedDeployments
+
+	var managedStatefulsets []configuration.ManagedDeploymentsStatefulsets
+	for _, val := range data.ManagedDeployments {
+		managedStatefulsets = append(managedStatefulsets, configuration.ManagedDeploymentsStatefulsets{Name: val})
+	}
+	config.ManagedStatefulsets = managedStatefulsets
+
+	var crdFilter []configuration.CrdFilter
+	for i := range data.TargetCrdFiltersnameSuffix {
+		val := true
+		if data.TargetCrdFiltersscalable[i] == "false" {
+			val = false
+		}
+		crdFilter = append(crdFilter, configuration.CrdFilter{NameSuffix: data.TargetCrdFiltersnameSuffix[i],
+			Scalable: val})
+	}
+	config.CrdFilters = crdFilter
+
+	var acceptedKernelTaints []configuration.AcceptedKernelTaintsInfo
+	for _, val := range data.AcceptedKernelTaints {
+		acceptedKernelTaints = append(acceptedKernelTaints, configuration.AcceptedKernelTaintsInfo{Module: val})
+	}
+	config.AcceptedKernelTaints = acceptedKernelTaints
+
+	var skipHelmChartList []configuration.SkipHelmChartList
+	for _, val := range data.AcceptedKernelTaints {
+		skipHelmChartList = append(skipHelmChartList, configuration.SkipHelmChartList{Name: val})
+	}
+	config.SkipHelmChartList = skipHelmChartList
+
+	var skipScalingTestDeployments []configuration.SkipScalingTestDeploymentsInfo
+	for i := range data.SkipScalingTestDeploymentsname {
+		skipScalingTestDeployments = append(skipScalingTestDeployments, configuration.SkipScalingTestDeploymentsInfo{Name: data.SkipScalingTestDeploymentsname[i],
+			Namespace: data.SkipScalingTestDeploymentsnamespace[i]})
+	}
+	config.SkipScalingTestDeployments = skipScalingTestDeployments
+
+	var skipScalingTestStatefulSets []configuration.SkipScalingTestStatefulSetsInfo
+	for i := range data.SkipScalingTestStatefulsetsname {
+		skipScalingTestStatefulSets = append(skipScalingTestStatefulSets, configuration.SkipScalingTestStatefulSetsInfo{Name: data.SkipScalingTestStatefulsetsname[i],
+			Namespace: data.SkipScalingTestStatefulsetsnamespace[i]})
+	}
+	config.SkipScalingTestStatefulSets = skipScalingTestStatefulSets
+
+	config.ServicesIgnoreList = data.Servicesignorelist
+	config.ValidProtocolNames = data.ValidProtocolNames
+	if len(data.CollectorAppEndPoint) > 0 {
+		config.CollectorAppEndPoint = data.CollectorAppEndPoint[0]
+	}
+	if len(data.CollectorAppPassword) > 0 {
+		config.CollectorAppPassword = data.CollectorAppPassword[0]
+	}
+	if len(data.ExecutedBy) > 0 {
+		config.ExecutedBy = data.ExecutedBy[0]
+	}
+	if len(data.PartnerName) > 0 {
+		config.PartnerName = data.PartnerName[0]
+	}
+	if len(data.DebugDaemonSetNamespace) > 0 {
+		config.DebugDaemonSetNamespace = data.DebugDaemonSetNamespace[0]
+	}
+
+	// Serialize the modified config back to YAML format
+	newData, err := yaml.Marshal(&config)
+	if err != nil {
+		log.Fatalf("Error marshaling YAML: %v", err)
+	}
+	return newData
 }

@@ -4,14 +4,26 @@ export async function submit(form) {
     const formdata = new FormData(form);
     for (const el of form.elements) if (el instanceof HTMLFieldSetElement) el.disabled = true
   
-    // Collect data from form fields
-    const fields = Array.from(formdata.entries()).reduce((acc, [key, val]) => ({ ...acc,
-      [key]: key in acc ?  [acc[key], val] : val
-    }), {});
+  // Collect data from form fields
+  const fields = Array.from(formdata.entries()).reduce((acc, [key, val]) => {
+    if (acc[key] === undefined) {
+      // If the key is not in the accumulator, set it to the value or an array with the value
+      acc[key] = [val];
+    } else if (Array.isArray(acc[key])) {
+      // If the key is already an array, push the new value to the array
+      acc[key].push(val);
+    } else {
+      // If the key is a single value, convert it to an array with both values
+      acc[key] = [acc[key], val];
+    }
+    return acc;
+  }, {});
   
     delete fields.submit;
     console.log(fields);
     formdata.append("jsonData", JSON.stringify(fields));
+    console.log(JSON.stringify(fields));
+    console.log(formdata);
 
     // Send an HTTP request to the server to run the function
     let heading;

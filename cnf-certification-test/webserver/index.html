@@ -9,6 +9,9 @@
           sizes="any"
           href="https://ux.redhat.com/assets/logo-red-hat.svg">
     <link rel="stylesheet" href="https://ux.redhat.com/assets/packages/@rhds/elements/elements/rh-footer/rh-footer-lightdom.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
     <script type="importmap">
       {
         "imports": {
@@ -90,7 +93,28 @@
       fieldset {
         display: grid;
         flex: 1 1 100%;
+        margin-bottom: 20px; /* Add space between fieldsets */
+        padding: 10px;
       }
+
+      .form-container {
+            height: 1200px; /* Set the desired height */
+            overflow: auto; /* Add scrollbar when content overflows */
+            border: 1px solid #ccc; /* Optional: add a border for visibility */
+            flex: 1 1 100%;
+        }
+
+      .add{
+        margin-left: auto; 
+        cursor: pointer;
+        font-weight: var(--rh-font-weight-heading-bold, 500);
+        }
+
+        .remove{
+        margin-left: auto; 
+        cursor: pointer;
+        font-weight: var(--rh-font-weight-heading-bold, 500);
+        }
 
       label {
         display: block;
@@ -140,6 +164,130 @@
       document.getElementById('show-logs').addEventListener('click', async function(event) {
         await import('./logs.js')
       });
+      function addCrdElem(counters,name1,name2,clickedId){
+
+        console.log(clickedId)
+
+        if (!counters[clickedId]|| counters[clickedId] <= 1 ) {
+                    counters[clickedId] = 1;
+                    var i= counters[clickedId]
+                    var t1=clickedId+name1+i+''
+                    var t2=clickedId+name2+i+''
+                    var field = 
+                    '<h7 for="'+t1+'">'+name1+':</h7><pf-text-input id='+t1+
+                    ' name="'+clickedId+name1+'" ></pf-text-input>' + 
+                    '<h7 for="'+t2+'">'+name2+':</h7><pf-text-input id='+t2+
+                    ' name="'+clickedId+name2+'" ></pf-text-input>' ;
+                    var taget=clickedId+'add'
+                    $('#'+taget).after(field);
+                }
+                else{
+                    var i= counters[clickedId]
+                    var t1=clickedId+name1+i+''
+                    var t2=clickedId+name2+i+''
+                    var field =
+                    '<h7 for="'+t1+'">'+name1+':</h7><pf-text-input id='+t1+
+                    ' name="'+clickedId+name1+'" ></pf-text-input>' + 
+                    '<h7 for="'+t2+'">'+name2+':</h7><pf-text-input id='+t2+
+                    ' name="'+clickedId+name2+'" ></pf-text-input>' ;
+                    var taget=clickedId+name2+(i-1)+''
+                    $('#'+taget).after(field);
+                }
+                return counters
+              }
+      
+      $(document).ready(function() {
+        document.getElementById('targetNameSpacesremove').style.display = 'none';
+        document.getElementById('podsUnderTestLabelsremove').style.display = 'none';
+        document.getElementById('operatorsUnderTestLabelsremove').style.display = 'none';
+        document.getElementById('targetCrdFiltersremove').style.display = 'none';
+        document.getElementById('managedDeploymentsremove').style.display = 'none';
+        document.getElementById('managedStatefulsetsremove').style.display = 'none';
+        document.getElementById('acceptedKernelTaintsremove').style.display = 'none';
+        document.getElementById('skipHelmChartListremove').style.display = 'none';
+        document.getElementById('servicesignorelistremove').style.display = 'none';
+        document.getElementById('skipScalingTestDeploymentsremove').style.display = 'none';
+        document.getElementById('skipScalingTestStatefulsetsremove').style.display = 'none';
+        document.getElementById('ValidProtocolNamesremove').style.display = 'none';
+
+        
+        var counters = {};
+          $('.add').on('click', function() {
+            var clickedIdOrg = $(this).attr('id');
+            var clickedId = clickedIdOrg.replace('add', '');
+            if (clickedId == 'targetCrdFilters'){
+              counters=addCrdElem(counters,'nameSuffix','scalable',clickedId)
+            }
+            else if (clickedId == 'skipScalingTestDeployments'){
+              counters=addCrdElem(counters,'name','namespace',clickedId)
+            }
+            else if  (clickedId == 'skipScalingTestStatefulsets'){
+              counters=addCrdElem(counters,'name','namespace',clickedId)
+            }
+            else{
+            if (!counters[clickedId]|| counters[clickedId] <= 1 ) {
+                    counters[clickedId] = 1;
+                    var i= counters[clickedId]
+                    console.log(i)
+                    console.log(clickedId)
+                    var field = '<label for="'+clickedId+i+'">'+i+'.</label>'+
+                    '<pf-text-input id='+clickedId+i+' name="'+clickedId+'"></pf-text-input>';
+                    $('#'+clickedIdOrg).after(field);
+                }
+                else{
+                    var i= counters[clickedId]
+                    var field = '<label for="'+clickedId+i+'">'+i+'.</label>'+
+                    '<pf-text-input id='+clickedId+i+' name="'+clickedId+'"></pf-text-input>';
+                    var taget=clickedId+(i-1)+''
+                    $('#'+taget).after(field);
+                }
+              }
+              document.getElementById(clickedId+'remove').style.display = 'block';
+              counters[clickedId] = counters[clickedId] + 1; // Increment the counter for the next call
+          })
+                 // Remove last text input
+          $('.remove').on('click', function() {
+            var clickedIdOrg = $(this).attr('id');
+            var clickedId = clickedIdOrg.replace('remove', '');
+            var i= counters[clickedId]
+            if (i>1){
+              var taget=clickedId+(i-1)+''
+              if (clickedId == 'targetCrdFilters'){
+                 var taget1='targetCrdFiltersnameSuffix'+(i-1)+''
+                 var taget2='targetCrdFiltersscalable'+(i-1)+''
+                 console.log(taget2)
+                  $('#'+taget1).remove();
+                  $('h7[for="' + taget1 + '"]').remove();
+                  $('#'+taget2).remove();
+                  $('h7[for="' + taget2 + '"]').remove();
+            }if (clickedId == 'skipScalingTestDeployments'){
+                 var taget1='skipScalingTestDeploymentsname'+(i-1)+''
+                 var taget2='skipScalingTestDeploymentsnamespace'+(i-1)+''
+                 console.log(taget2)
+                  $('#'+taget1).remove();
+                  $('h7[for="' + taget1 + '"]').remove();
+                  $('#'+taget2).remove();
+                  $('h7[for="' + taget2 + '"]').remove();
+             }if (clickedId == 'skipScalingTestStatefulsets'){
+                 var taget1='skipScalingTestStatefulsetsname'+(i-1)+''
+                 var taget2='skipScalingTestStatefulsetsnamespace'+(i-1)+''
+                 console.log(taget2)
+                  $('#'+taget1).remove();
+                  $('h7[for="' + taget1 + '"]').remove();
+                  $('#'+taget2).remove();
+                  $('h7[for="' + taget2 + '"]').remove();
+             }
+             else{
+                $('#'+taget).remove();
+            }
+                $('label[for="' + taget + '"]').remove();
+                counters[clickedId] = counters[clickedId] - 1;
+                if (i-1 ==1){
+                  document.getElementById(clickedIdOrg).style.display = 'none';
+                }
+          }
+            });
+        })
     </script>
 
   </head>
@@ -165,19 +313,79 @@
                          required
                          type="file"></input>
         </fieldset>
-
-        <fieldset>
+        <div class="form-container">
+        <fieldset id="TNF-Configuration">
           <legend>TNF Configuration</legend>
-
           <label for="targetNameSpaces">Target Namespaces</label>
-          <pf-text-input id="targetNameSpaces"
-                         name="targetNameSpaces"></pf-text-input>
-
+          <span class="fa add" id="targetNameSpacesadd"> Add NameSpace </span>
+          <span class="fa remove" id="targetNameSpacesremove">Remove NameSpace</span>
+          <br>
           <label for="podsUnderTestLabels">podsUnderTestLabels:</label>
-          <pf-text-input id="podsUnderTestLabels"
-                         name="podsUnderTestLabels"
-                         placeholder="test-network-function.com/generic: target"></pf-text-input>
+          <span class="fa add" id="podsUnderTestLabelsadd"> Add podsUnderTestLabels </span><br>
+          <span class="fa remove" id="podsUnderTestLabelsremove"> Remove podsUnderTestLabels </span>
+   
+          <br>
+          <label for="operatorsUnderTestLabels">operatorsUnderTestLabels:</label>
+          <span class="fa add" id="operatorsUnderTestLabelsadd"> Add operatorsUnderTestLabels </span><br>
+          <span class="fa remove" id="operatorsUnderTestLabelsremove"> Remove operatorsUnderTestLabels </span>
+                        
+          <label for="targetCrdFilters">targetCrdFilters:</label>
+          <span class="fa add" id="targetCrdFiltersadd"> Add targetCrdFilters </span><br>
+          <span class="fa remove" id="targetCrdFiltersremove"> Remove targetCrdFilters </span>                                         
+
+          <label for="managedDeployments">managedDeployments:</label>
+          <span class="fa add" id="managedDeploymentsadd"> Add managedDeployments </span><br>
+          <span class="fa remove" id="managedDeploymentsremove"> Remove managedDeployments </span>
+              
+
+          <label for="managedStatefulsets">managedStatefulsets:</label>
+          <span class="fa add" id="managedStatefulsetsadd"> Add managedStatefulsets </span><br>
+          <span class="fa remove" id="managedStatefulsetsremove"> Remove managedStatefulsets </span>
+
+          <label for="acceptedKernelTaints">acceptedKernelTaints:</label>
+          <span class="fa add" id="acceptedKernelTaintsadd"> Add acceptedKernelTaints </span><br>
+          <span class="fa remove" id="acceptedKernelTaintsremove"> Remove acceptedKernelTaints </span>
+
+          <label for="skipHelmChartList">skipHelmChartList:</label>
+          <span class="fa add" id="skipHelmChartListadd"> Add skipHelmChartList </span><br>
+          <span class="fa remove" id="skipHelmChartListremove"> Remove skipHelmChartList </span>
+          
+
+          <label for="skipScalingTestDeployments">skipScalingTestDeployments:</label>
+          <span class="fa add" id="skipScalingTestDeploymentsadd"> Add skipScalingTestDeployments </span><br>
+          <span class="fa remove" id="skipScalingTestDeploymentsremove"> Remove skipScalingTestDeployments </span>  
+
+          <label for="skipScalingTestStatefulsets">skipScalingTestStatefulsets:</label>
+          <span class="fa add" id="skipScalingTestStatefulsetsadd"> Add skipScalingTestStatefulsets </span><br>
+          <span class="fa remove" id="skipScalingTestStatefulsetsremove"> Remove skipScalingTestStatefulsets </span>      
+          
+          <label for="servicesignorelist">servicesignorelist:</label>
+          <span class="fa add" id="servicesignorelistadd"> Add servicesignorelist </span><br>
+          <span class="fa remove" id="servicesignorelistremove"> Remove servicesignorelist </span>
+              
+          <label for="executedBy">executedBy:</label>
+          <pf-text-input id="executedBy"
+          name="executedBy"></pf-text-input>
+          <label for="PartnerName">PartnerName:</label>
+          <pf-text-input id="PartnerName"
+          name="PartnerName"></pf-text-input>
+          <label for="CollectorAppEndPoint">CollectorAppEndPoint:</label>
+          <pf-text-input id="CollectorAppEndPoint"
+          name="CollectorAppEndPoint"></pf-text-input>
+          <label for="CollectorAppPassword">CollectorAppPassword:</label>
+          <pf-text-input id="CollectorAppPassword"
+          name="CollectorAppPassword"></pf-text-input>
+
+          <label for="ValidProtocolNames">ValidProtocolNames:</label>
+          <span class="fa add" id="ValidProtocolNamesadd"> Add ValidProtocolNames </span><br>
+          <span class="fa remove" id="ValidProtocolNamesremove"> Remove ValidProtocolNames </span>
+                       
+          <label for="DebugDaemonSetNamespace">DebugDaemonSetNamespace:</label>
+          <pf-text-input id="DebugDaemonSetNamespace"
+          name="DebugDaemonSetNamespace"></pf-text-input>
+        
         </fieldset>
+      </div>
 
         <fieldset>
           <legend>Select a Test</legend>
@@ -185,17 +393,36 @@
             <input type="checkbox"
                    value="lifecycle"
                    name="selectedOptions"> Lifecycle
+            <input type="checkbox"
+            value="manageability"
+            name="selectedOptions">Manageability
           </label>
           <label>
             <input type="checkbox"
-                   value="certification"
+                   value="affiliated-certification"
                    name="selectedOptions"> Certification
+            <input type="checkbox"
+            value="operator"
+            name="selectedOptions"> Operator                    
           </label>
           <label>
             <input type="checkbox"
                    value="access-control"
                    name="selectedOptions"> Access Control
+            <input type="checkbox"
+            value="platform-alteration"
+            name="selectedOptions"> Platform Alteration         
           </label>
+          <label>
+            <input type="checkbox"
+                   value="networking"
+                   name="selectedOptions"> Networking
+            <input type="checkbox"
+            value="performance"
+            name="selectedOptions"> Performance                   
+                   
+          </label>
+          
         </fieldset>
 
         <rh-button type="submit" name="submit">Run Certification Test</rh-button>
