@@ -2,6 +2,11 @@
   "grades": {
     "requiredPassingTests": [
       {
+        "id": "affiliated-certification-operator-is-certified",
+        "suite": "affiliated-certification",
+        "tags": "common"
+      },
+      {
         "id": "manageability-container-port-name-format",
         "suite": "manageability",
         "tags": "extended"
@@ -36,11 +41,11 @@
         "suite": "performance",
         "tags": "faredge"
       },
-      {
+            {
         "id": "performance-max-resources-exec-probes",
         "suite": "performance",
         "tags": "faredge"
-      }
+            }
     ],
     "gradeName": "good"
   }
