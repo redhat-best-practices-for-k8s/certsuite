@@ -99,7 +99,7 @@ FROM quay.io/testnetworkfunction/oct:latest AS db
 
 # Copy the state into a new flattened image to reduce size.
 # TODO run as non-root
-FROM registry.access.redhat.com/ubi8/ubi-minimal:8.8-1072.1697626218
+FROM registry.access.redhat.com/ubi8/ubi-minimal:8.9-1029
 
 ENV \
 	TNF_DIR=/usr/tnf \
