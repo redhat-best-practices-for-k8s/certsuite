@@ -157,6 +157,15 @@ func GetClientsHolder(filenames ...string) *ClientsHolder {
 	return clientsHolder
 }
 
+func GetNewClientsHolder(kubeconfigFile string) *ClientsHolder {
+	_, err := newClientsHolder(kubeconfigFile)
+	if err != nil {
+		logrus.Panic("Failed to create k8s clients holder: ", err)
+	}
+
+	return &clientsHolder
+}
+
 func createByteArrayKubeConfig(kubeConfig *clientcmdapi.Config) ([]byte, error) {
 	yamlBytes, err := clientcmd.Write(*kubeConfig)
 	if err != nil {

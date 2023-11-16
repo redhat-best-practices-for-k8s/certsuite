@@ -18,6 +18,7 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/robert-nix/ansihtml"
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/certsuite"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
@@ -201,25 +202,33 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
-	// Create a new file on the server to store the uploaded content
-	uploadedFile, err := os.Create(fileHeader.Filename)
+	logrus.Infof("Kubeconfig file name received: %s", fileHeader.Filename)
+	kubeconfigTempFile, err := os.CreateTemp("", "webserver-kubeconfig-*")
 	if err != nil {
-		http.Error(w, "Unable to create file for writing", http.StatusInternalServerError)
+		http.Error(w, "Failed to create temp file to store the kubeconfig content.", http.StatusBadRequest)
 		return
 	}
-	defer uploadedFile.Close()
 
-	// Copy the uploaded file's content to the new file
-	_, err = io.Copy(uploadedFile, file)
+	defer func() {
+		logrus.Infof("Removing temporary kubeconfig file %s", kubeconfigTempFile.Name())
+		err = os.Remove(kubeconfigTempFile.Name())
+		if err != nil {
+			logrus.Errorf("Failed to remove temp kubeconfig file %s", kubeconfigTempFile.Name())
+		}
+	}()
+
+	_, err = io.Copy(kubeconfigTempFile, file)
 	if err != nil {
 		http.Error(w, "Unable to copy file", http.StatusInternalServerError)
 		return
 	}
 
-	// Copy the uploaded file to the server file
-	os.Setenv("KUBECONFIG", fileHeader.Filename)
-	logrus.Infof("Web Server KUBECONFIG    : %v", fileHeader.Filename)
-	logrus.Infof("Web Server Labels filter : %v", flattenedOptions)
+	_ = kubeconfigTempFile.Close()
+
+	logrus.Infof("Web Server kubeconfig file : %v (copied into %v)", fileHeader.Filename, kubeconfigTempFile.Name())
+	logrus.Infof("Web Server Labels filter   : %v", flattenedOptions)
+
+	_ = clientsholder.GetNewClientsHolder(kubeconfigTempFile.Name())
 
 	var env provider.TestEnvironment
 	env.SetNeedsRefresh()
@@ -240,14 +249,18 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	// Serialize the response data to JSON
 	jsonResponse, err := json.Marshal(response)
 	if err != nil {
+		logrus.Errorf("Failed to marshal jsonResponse: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
 	// Set the Content-Type header to specify that the response is JSON
 	w.Header().Set("Content-Type", "application/json")
 	// Write the JSON response to the client
+	logrus.Infof("Sending web response: %v", response)
 	_, err = w.Write(jsonResponse)
 	if err != nil {
+		logrus.Errorf("Failed to write jsonResponse: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

@@ -155,14 +155,13 @@ func main() {
 	}
 
 	// Set clientsholder singleton with the filenames from the env vars.
-	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
-
 	log.Infof("Output folder for the claim file: %s", *claimPath)
 	if *serverModeFlag {
 		log.Info("Running CNF Certification Suite in web server mode.")
 		webserver.StartServer(*claimPath)
 	} else {
 		log.Info("Running CNF Certification Suite in stand-alone mode.")
+		_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
 		certsuite.Run(*labelsFlag, *claimPath, timeout)
 	}
 }
