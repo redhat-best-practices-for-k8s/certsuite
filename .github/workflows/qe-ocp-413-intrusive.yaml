@@ -79,4 +79,4 @@ jobs:
         run: |
           curl -X POST --data "{
               \"text\": \"🚨⚠️  Failed to run intrusive OCP 4.13 QE tests from commit \<$GITHUB_REPO/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<$GITHUB_REPO/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"
-          }" -H 'Content-type: application/json; charset=UTF-8' ${{ secrets.QE_NIGHTLY_WEBHOOK }}
+          }" -H 'Content-type: application/json; charset=UTF-8' '${{ secrets.QE_NIGHTLY_WEBHOOK }}'
