@@ -44,7 +44,6 @@ go run cmd/tools/cmd/main.go claim-add --claimfile=claim.json
 
 For more details on the contents of the claim file
 
-* [schema](https://github.com/test-network-function/test-network-function-claim/blob/main/schemas/claim.schema.json).  
 * [Guide](https://redhat-connect.gitbook.io/openshift-badges/badges/cloud-native-network-functions-cnf).
 
 ## Execution logs
