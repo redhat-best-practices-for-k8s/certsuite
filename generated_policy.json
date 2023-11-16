@@ -30,6 +30,16 @@
         "id": "observability-termination-policy",
         "suite": "observability",
         "tags": "telco"
+      },
+      {
+        "id": "performance-exclusive-cpu-pool",
+        "suite": "performance",
+        "tags": "faredge"
+      },
+      {
+        "id": "performance-max-resources-exec-probes",
+        "suite": "performance",
+        "tags": "faredge"
       }
     ],
     "gradeName": "good"
