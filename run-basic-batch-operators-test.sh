@@ -1,15 +1,19 @@
-#!/bin/sh
+#!/bin/bash
+set -o errexit -o nounset -o pipefail
 
 # Test run timestamp
-TIMESTAMP=$(date | sed 's/[ :]/_/g')
+TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S_%Z")
 
-# base folder
+# Base folder
 BASE_DIR=/var/www/html
+
+# index.html
+INDEX_FILE=index2.html
 
 # INPUTS
 
-# config.yaml template file path
-CONFIG_YAML_TEMPLATE=$(pwd)/tnf_config.yml.template
+# tnf_config.yaml template file path
+CONFIG_YAML_TEMPLATE="$(pwd)"/tnf_config.yml.template
 
 # Docker config used to pull operator images
 DOCKER_CONFIG=config.json
@@ -17,53 +21,57 @@ DOCKER_CONFIG=config.json
 # Location of telco/non-telco classification file
 CNF_TYPE=cmd/tnf/claim/show/csv/cnf-type.json
 
-# operator catalog from user
+# Operator catalog from user
 OPERATOR_CATALOG=""
 
-# operator from user
+# Operator from user
 OPERATORS_UNDER_TEST=""
 
 # OUTPUTS
 
-# report folder
+# Report folder
 REPORT_FOLDER_RELATIVE="report_$TIMESTAMP"
 
 # Report results folder
 REPORT_FOLDER="$BASE_DIR"/"$REPORT_FOLDER_RELATIVE"
 
-# operator  file name
+# Operator  file name
 OPERATOR_LIST_FILENAME=operator-list.txt
 
-# operator list path in the report
+# Operator list path in the report
 OPERATOR_LIST_PATH="$REPORT_FOLDER"/"$OPERATOR_LIST_FILENAME"
 
 # VARIABLES
 
-# variable to add header only on the first run
+# Variable to add header only on the first run
 addHeaders=-a
 
-# create report directory
+# Create report directory
 mkdir "$REPORT_FOLDER"
 
 cleanup() {
+	# Workaround for cleaning operator leftovers, see https://access.redhat.com/solutions/6971276
+	oc delete mutatingwebhookconfigurations controller.devfile.io || true
+	oc delete validatingwebhookconfigurations controller.devfile.io || true
+
 	# cleanup any leftovers
 	# https://docs.openshift.com/container-platform/4.14/operators/admin/olm-deleting-operators-from-cluster.html
-	oc get csv -n openshift-operators | grep -v packageserver | grep -v NAME | awk '{print "oc delete --wait=true csv " $2 " -n openshift-operators"}' | bash
-	oc get csv -A | grep -v packageserver | grep -v NAME | awk '{print "oc delete --wait=true csv " $2 " -n " $1}' | bash
-	oc get subscriptions -A | grep -v NAME | awk '{print "oc delete --wait=true subscription " $2 " -n " $1}' | bash
-	oc get job,configmap -n openshift-marketplace | grep -v NAME | grep -v "configmap/kube-root-ca.crt" | grep -v "configmap/marketplace-operator-lock" | grep -v "configmap/marketplace-trusted-ca" | grep -v "configmap/openshift-service-ca.crt" | awk '{print "oc delete --wait=true " $1 " -n openshift-marketplace" }' | bash
+	oc get csv -n openshift-operators | grep -v packageserver | grep -v NAME | awk '{print "oc delete --wait=true csv " $2 " -n openshift-operators"}' | bash || true
+	oc get csv -A | grep -v packageserver | grep -v NAME | awk '{print "oc delete --wait=true csv " $2 " -n " $1}' | bash || true
+	oc get subscriptions -A | grep -v NAME | awk '{print "oc delete --wait=true subscription " $2 " -n " $1}' | bash || true
+	oc get job,configmap -n openshift-marketplace | grep -v NAME | grep -v "configmap/kube-root-ca.crt" | grep -v "configmap/marketplace-operator-lock" | grep -v "configmap/marketplace-trusted-ca" | grep -v "configmap/openshift-service-ca.crt" | awk '{print "oc delete --wait=true " $1 " -n openshift-marketplace" }' | bash || true
 }
 
 waitDeleteNamespace() {
 	namespaceDeleting=$1
-	# wait for the CSV to be removed
-	oc wait csv -l test-network-function.com/operator=target -n "$namespaceDeleting" --for=delete --timeout=300s
+	# Wait for the CSV to be removed
+	oc wait csv -l test-network-function.com/operator=target -n "$namespaceDeleting" --for=delete --timeout=300s || true
 
-	# wait for the namespace to be removed
+	# Wait for the namespace to be removed
 	if [ "$namespaceDeleting" != "openshift-operators" ]; then
 
 		echo "non openshift-operators namespace = $namespaceDeleting, deleting "
-		oc wait namespace "$namespaceDeleting" --for=delete --timeout=300s
+		oc wait namespace "$namespaceDeleting" --for=delete --timeout=300s || true
 		forceDeleteNamespaceIfPresent "$namespaceDeleting"
 	fi
 }
@@ -75,47 +83,49 @@ waitForCsvToAppearAndLabel() {
 	while true; do
 		csvs=$(oc get csv -n "$csvNamespace")
 		if [ "$csvs" != "" ]; then
-			# if any CSV is present, break
+			# If any CSV is present, break
 			break
 		else
 			currentTime=$(date +%s)
 			elapsedTime=$((currentTime - startTime))
-			# if elapsed time is greater than the timeout report failure
+			# If elapsed time is greater than the timeout report failure
 			if [ "$elapsedTime" -ge "$timeoutSeconds" ]; then
 				echo "Timeout reached $timeoutSeconds seconds waiting for CSV."
 				return 1
 			fi
 
-			# otherwise wait a bit
+			# Otherwise wait a bit
 			echo "Waiting for csv to be created in namespace $csvNamespace ..."
 			sleep 5
 		fi
 	done
 
-	# label CSV
+	# Label CSV with "test-network-function.com/operator=target"
 	oc get csv -n "$csvNamespace" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | grep -v openshift-operator-lifecycle-manager | sed '/^ *$/d' | awk '{print "oc label " $3  " -n " $2 " " $1  " test-network-function.com/operator=target "}' | bash
 
-	# wait for the CSV to be succeeded
-	oc wait csv -l test-network-function.com/operator=target -n "$ns" --for=jsonpath=\{.status.phase\}=Succeeded --timeout=300s
+	# Wait for the CSV to be succeeded
+	status=0
+	oc wait csv -l test-network-function.com/operator=target -n "$ns" --for=jsonpath=\{.status.phase\}=Succeeded --timeout=300s || status="$?"
+	return $status
 }
 
 forceDeleteNamespaceIfPresent() {
 	aNamespace=$1
 
-	# do not delete the redhat-operators namespace
+	# Do not delete the redhat-operators namespace
 	if [ "$aNamespace" = "openshift-operators" ]; then
 		return 0
 	fi
-	# delete namespace
-	oc delete namespace "$aNamespace" --wait=false
-	oc wait namespace "$aNamespace" --for=delete --timeout=30s
+	# Delete namespace
+	oc delete namespace "$aNamespace" --wait=false || true
+	oc wait namespace "$aNamespace" --for=delete --timeout=30s || true
 
-	# if a namespace with this name does not exist, all is good, exit
+	# If a namespace with this name does not exist, all is good, exit
 	if ! oc get namespace "$aNamespace"; then
 		return 0
 	fi
 
-	# otherwise force delete namespace
+	# Otherwise force delete namespace
 	oc get namespace "$aNamespace" -ojson | sed '/"kubernetes"/d' >temp.yaml
 	oc proxy &
 	pid=$!
@@ -123,31 +133,36 @@ forceDeleteNamespaceIfPresent() {
 	sleep 5
 	curl -H "Content-Type: application/yaml" -X PUT --data-binary @temp.yaml http://127.0.0.1:8001/api/v1/namespaces/"$aNamespace"/finalize
 	kill -9 "$pid"
-	oc wait namespace "$aNamespace" --for=delete --timeout=300s
+	oc wait namespace "$aNamespace" --for=delete --timeout=300s || true
 }
 
 # Check if the number of parameters is correct
-if [ "$#" -eq 0 ]; then
-	OPERATOR_CATALOG=redhat-operators
-elif [ "$#" -eq 1 ]; then
+if [ "$#" -eq 1 ]; then
 	OPERATOR_CATALOG=$1
-	# get all the packages present in the cluster catalog
+	# Get all the packages present in the cluster catalog
 	oc get packagemanifest -o jsonpath='{range .items[*]}{.metadata.name}{","}{.status.catalogSource}{"\n"}{end}' | grep "$OPERATOR_CATALOG" | head -n -1 >"$OPERATOR_LIST_PATH"
 
 elif [ "$#" -eq 2 ]; then
 	OPERATOR_CATALOG=$1
 	OPERATORS_UNDER_TEST=$2
 	echo "$OPERATORS_UNDER_TEST " | sed 's/ /,'"$OPERATOR_CATALOG"'\n/g' >"$OPERATOR_LIST_PATH"
+else
+	echo 'Wrong parameter count.
+  Usage: ./run-basic-batch-operators-test.sh <catalog> ["<operator-name 1> <operator-name 2> ... <operator-name N>]
+  Examples:
+  ./run-basic-batch-operators-test.sh redhat-operators
+  ./run-basic-batch-operators-test.sh redhat-operators "file-integrity-operator kiali-ossm"'
+	exit 1
 fi
 
-# check for docker config file
+# Check for docker config file
 if [ ! -e "$DOCKER_CONFIG" ]; then
 	echo "Docker config is missing at $DOCKER_CONFIG"
 	exit 1
 fi
 
-# check KUBECONFIG
-if [ -z "$KUBECONFIG" ]; then
+# Check KUBECONFIG
+if [[ ! -v "KUBECONFIG" ]]; then
 	echo "The environment variable KUBECONFIG is not set."
 	exit 1
 fi
@@ -169,27 +184,27 @@ OPERATOR_PAGE='<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HTTP Link Example</title>'
 
-# add per test run links
+# Add per test run links
 {
-	# add per operator details link
-	echo "Time: <b>$TIMESTAMP</b>, file: <b>$OPERATOR_CATALOG</b>"
+	# Add per operator details link
+	echo "Time: <b>$TIMESTAMP</b>, catalog: <b>$OPERATOR_CATALOG</b>"
 
-	#add detailed results
-	echo ", detailed results: "'<a href="/'"$REPORT_FOLDER_RELATIVE"'/index.html">'"link"'</a>'
+	#Add detailed results
+	echo ", detailed results: "'<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$INDEX_FILE"'">'"link"'</a>'
 
-	# add CSV file link
+	# Add CSV file link
 	echo ", CSV: "
 	echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/results.csv">'"link"'</a>'
 
-	# add operator list link
+	# Add operator list link
 	echo ", operator list: "
 	echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$OPERATOR_LIST_FILENAME"'">'"link"'</a>'
 
-	# new line
+	# New line
 	echo "<br>"
-} >>"$BASE_DIR"/index.html
+} >>"$BASE_DIR"/"$INDEX_FILE"
 
-echo "$OPERATOR_PAGE" >>"$REPORT_FOLDER"/index.html
+echo "$OPERATOR_PAGE" >>"$REPORT_FOLDER"/"$INDEX_FILE"
 
 cleanup
 
@@ -198,16 +213,36 @@ while IFS=, read -r package_name catalog; do
 	if [ "$package_name" = "" ]; then
 		continue
 	fi
-	# Workaround for cleaning operator leftovers, see https://access.redhat.com/solutions/6971276
-	oc delete mutatingwebhookconfigurations controller.devfile.io
-	oc delete validatingwebhookconfigurations controller.devfile.io
 
 	echo "package=$package_name catalog=$catalog"
+
+	status=0
+	tasty install "$package_name" --source "$catalog" --stdout &>/dev/null || status=$?
+
+	# if tasty fails, skip this operator
+	if [ "$status" != 0 ]; then
+		# Add per operator links
+		{
+			# Add error message
+			echo "Results for: <b>$package_name</b>, "'<span style="color: red;">Operator installation failed due to tasty internal error, skipping test</span>'
+
+			# Add tnf_config link
+			echo ", tnf_config: "
+			echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/tnf_config.yml">'"link"'</a>'
+
+			# New line
+			echo "<br>"
+		} >>"$REPORT_FOLDER"/"$INDEX_FILE"
+
+		cleanup
+
+		continue
+	fi
 
 	namesCount=$(tasty install "$package_name" --source "$catalog" --stdout | grep -c "name:")
 
 	if [ "$namesCount" = "4" ]; then
-		# get namespace from tasty
+		# Get namespace from tasty
 		ns=$(tasty install "$package_name" --source "$catalog" --stdout | grep "name:" | head -n1 | awk '{ print $2 }')
 	elif [ "$namesCount" = "2" ]; then
 		ns="openshift-operators"
@@ -215,40 +250,40 @@ while IFS=, read -r package_name catalog; do
 
 	echo "namespace=$ns"
 
-	# if a namespace is present, it is probably stuck deleting from previous runs. Force delete it.
+	# If a namespace is present, it is probably stuck deleting from previous runs. Force delete it.
 	forceDeleteNamespaceIfPresent "$ns"
 
-	# install the operator in a custom namespace
+	# Install the operator in a custom namespace
 	tasty install "$package_name" --source "$catalog" -w
 
-	# setting report directory
+	# Setting report directory
 	reportDir="$REPORT_FOLDER"/"$package_name"
 
-	# store the results of CNF test in a new directory
+	# Store the results of CNF test in a new directory
 	mkdir -p "$reportDir"
 
 	configYaml="$reportDir"/tnf_config.yml
 
-	# change the targetNameSpace in tng_config file
+	# Change the targetNameSpace in tng_config file
 	sed "s/\$ns/$ns/" "$CONFIG_YAML_TEMPLATE" >"$configYaml"
+	status=0
+	# Wait for the CSV to appear
+	waitForCsvToAppearAndLabel "$ns" || status="$?"
 
-	# wait for the CSV to appear
-	waitForCsvToAppearAndLabel "$ns"
-
-	if [ "$?" = 1 ]; then
-		# add per operator links
+	if [ "$status" != 0 ]; then
+		# Add per operator links
 		{
-			# add error message
+			# Add error message
 			echo "Results for: <b>$package_name</b>, "'<span style="color: red;">Operator installation failed, skipping test</span>'
 
-			# add tnf_config link
+			# Add tnf_config link
 			echo ", tnf_config: "
 			echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/tnf_config.yml">'"link"'</a>'
 
-			# new line
+			# New line
 			echo "<br>"
-		} >>"$REPORT_FOLDER"/index.html
-		# remove the operator
+		} >>"$REPORT_FOLDER"/"$INDEX_FILE"
+		# Remove the operator
 		tasty remove "$package_name"
 
 		cleanup
@@ -259,15 +294,15 @@ while IFS=, read -r package_name catalog; do
 
 	echo "operator $package_name installed"
 
-	# label everything
+	# Label deployments, statefulsets and pods with "test-network-function.com/generic=target"
 	oc get deployment -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "oc label " $3  " -n " $2 " " $1  " test-network-function.com/generic=target "}' | bash
 	oc get statefulset -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "oc label " $3  " -n " $2 " " $1  " test-network-function.com/generic=target "}' | bash
 	oc get pods -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "oc label " $3  " -n " $2 " " $1  " test-network-function.com/generic=target "}' | bash
 
 	# run tnf-container
-	./run-tnf-container.sh -k "$KUBECONFIG" -t "$reportDir" -o "$reportDir" -c "$DOCKER_CONFIG" -l all
+	./run-tnf-container.sh -k "$KUBECONFIG" -t "$reportDir" -o "$reportDir" -c "$DOCKER_CONFIG" -l all || true
 
-	# unlabel and uninstall the operator
+	# Unlabel and uninstall the operator
 	oc get csv -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "oc label " $3  " -n " $2 " " $1  " test-network-function.com/operator- "}' | bash
 
 	# remove the operator
@@ -279,35 +314,32 @@ while IFS=, read -r package_name catalog; do
 	# merge claim.json from each operator to a single csv file
 	./tnf claim show csv -c "$reportDir"/claim.json -n "$package_name" -t "$CNF_TYPE" "$addHeaders" >>"$REPORT_FOLDER"/results.csv
 
-	# add per operator links
+	# Add per operator links
 	{
-		# add parser link
+		# Add parser link
 		echo "Results for: <b>$package_name</b>,  parsed details:"
 		echo '<a href="/results.html?claimfile=/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/claim.json">'"link"'</a>'
 
-		# add log link
+		# Add log link
 		echo ", log: "
 		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/tnf-execution.log">'"link"'</a>'
 
-		# add tnf_config link
+		# Add tnf_config link
 		echo ", tnf_config: "
 		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/tnf_config.yml">'"link"'</a>'
 
 		# new line
 		echo "<br>"
-	} >>"$REPORT_FOLDER"/index.html
+	} >>"$REPORT_FOLDER"/"$INDEX_FILE"
 
 	# Only print headers once
 	addHeaders=""
 
 done <"$OPERATOR_LIST_PATH"
 
-# Workaround for cleaning operator leftovers, see https://access.redhat.com/solutions/6971276
-oc delete mutatingwebhookconfigurations controller.devfile.io
-oc delete validatingwebhookconfigurations controller.devfile.io
-
 # Resetting project to default
 oc project default
 
 # closing html file
-echo '</body></html>' >>"$REPORT_FOLDER"/index.html
+echo '</body></html>' >>"$REPORT_FOLDER"/"$INDEX_FILE"
+echo "DONE"
