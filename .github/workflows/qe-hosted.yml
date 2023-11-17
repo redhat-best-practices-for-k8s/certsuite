@@ -1,8 +1,8 @@
 name: QE Testing (Ubuntu-hosted)
 
 on:
-  # pull_request:
-  #   branches: [ main ]
+  pull_request:
+    branches: [ main ]
   workflow_dispatch:
   # Schedule a daily cron at midnight UTC
   schedule:
@@ -26,6 +26,7 @@ jobs:
       TEST_TNF_IMAGE_NAME: quay.io/testnetworkfunction/cnf-certification-test
       TEST_TNF_IMAGE_TAG: localtest
       DOCKER_CONFIG_DIR: '/home/runner/.docker/'
+      SKIP_PRELOAD_IMAGES: true
 
     steps:
       - name: Free Disk Space (Ubuntu)
