@@ -58,21 +58,20 @@ func AreCPUResourcesWholeUnits(p *Pod) bool {
 	// Pods may contain more than one container.  All containers must conform to the CPU isolation requirements.
 	for _, cut := range p.Containers {
 		// Resources must be specified
-		if len(cut.Resources.Requests) == 0 || len(cut.Resources.Limits) == 0 {
+		cpuRequestsMillis := cut.Resources.Requests.Cpu().MilliValue()
+		cpuLimitsMillis := cut.Resources.Limits.Cpu().MilliValue()
+
+		if cpuRequestsMillis == 0 || cpuLimitsMillis == 0 {
 			logrus.Debugf("%s has been found with undefined requests or limits.", cut.String())
 			return false
 		}
 
-		// Gather the values
-		cpuRequests := cut.Resources.Requests.Cpu().MilliValue()
-		cpuLimits := cut.Resources.Limits.Cpu().MilliValue()
-
-		if !isInteger(cpuRequests) {
-			logrus.Debugf("%s has CPU requests %d (milli) that has to be a whole unit.", cut.String(), cpuRequests)
+		if !isInteger(cpuRequestsMillis) {
+			logrus.Debugf("%s has CPU requests %d (milli) that has to be a whole unit.", cut.String(), cpuRequestsMillis)
 			return false
 		}
-		if !isInteger(cpuLimits) {
-			logrus.Debugf("%s has CPU limits %d (milli) that has to be a whole unit.", cut.String(), cpuLimits)
+		if !isInteger(cpuLimitsMillis) {
+			logrus.Debugf("%s has CPU limits %d (milli) that has to be a whole unit.", cut.String(), cpuLimitsMillis)
 			return false
 		}
 	}
