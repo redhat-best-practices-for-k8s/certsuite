@@ -2,6 +2,11 @@
   "grades": {
     "requiredPassingTests": [
       {
+        "id": "affiliated-certification-operator-is-certified",
+        "suite": "affiliated-certification",
+        "tags": "common"
+      },
+      {
         "id": "manageability-container-port-name-format",
         "suite": "manageability",
         "tags": "extended"
