@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"runtime/debug"
+	"strings"
 
 	"github.com/sirupsen/logrus"
 )
@@ -195,13 +196,56 @@ func runAfterEachFn(group *ChecksGroup, check *Check, remainingChecks []*Check) 
 	return nil
 }
 
-func shouldSkipCheck(check *Check) (skip bool, reason string) {
-	if check.SkipCheckFn == nil {
-		return false, ""
+func shouldSkipCheck(check *Check) (skip bool, reasons []string) {
+	if len(check.SkipCheckFns) == 0 {
+		return false, []string{}
 	}
 
-	logrus.Tracef("Running check %s skipCheck function.", check.ID)
-	return check.SkipCheckFn()
+	logrus.Tracef("Running check %s skipCheck functions (%d).", check.ID, len(check.SkipCheckFns))
+
+	// Short-circuit
+	if len(check.SkipCheckFns) == 0 {
+		return false, []string{}
+	}
+
+	// Save the skipFn index in case it panics so it can be used in the log trace.
+	currentSkipFnIndex := 0
+
+	defer func() {
+		if r := recover(); r != nil {
+			stackTrace := fmt.Sprint(r) + "\n" + string(debug.Stack())
+			logrus.Errorf("Skip check function (idx=%d) panic'ed: %s", currentSkipFnIndex, stackTrace)
+			skip = true
+			reasons = []string{fmt.Sprintf("skipCheckFn (idx=%d) panic:\n%s", currentSkipFnIndex, stackTrace)}
+		}
+	}()
+
+	// Call all the skip functions first.
+	for _, skipFn := range check.SkipCheckFns {
+		if skip, reason := skipFn(); skip {
+			reasons = append(reasons, reason)
+		}
+		currentSkipFnIndex++
+	}
+
+	// If none of the skipFn returned true, exit now.
+	if len(reasons) == 0 {
+		return false, []string{}
+	}
+
+	// Now we need to check the skipMode for this check.
+	switch check.SkipMode {
+	case SkipModeAny:
+		return true, reasons
+	case SkipModeAll:
+		// Only skip if all the skipFn returned true.
+		if len(reasons) == len(check.SkipCheckFns) {
+			return true, reasons
+		}
+		return false, []string{}
+	}
+
+	return false, []string{}
 }
 
 func runCheck(check *Check, group *ChecksGroup, remainingChecks []*Check) (err error) {
@@ -298,9 +342,9 @@ func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool) (er
 
 		if !beforeEachFailed {
 			// Should we skip this check?
-			skip, reason := shouldSkipCheck(check)
+			skip, reasons := shouldSkipCheck(check)
 			if skip {
-				skipCheck(check, reason)
+				skipCheck(check, strings.Join(reasons, ", "))
 			} else {
 				err := runCheck(check, group, remainingChecks)
 				if err != nil {

@@ -17,6 +17,13 @@ const (
 	CheckResultAborted = "aborted"
 )
 
+type skipMode int
+
+const (
+	SkipModeAny skipMode = iota
+	SkipModeAll
+)
+
 type CheckResult string
 
 func (cr CheckResult) String() string {
@@ -31,7 +38,8 @@ type Check struct {
 	BeforeCheckFn, AfterCheckFn func(check *Check) error
 	CheckFn                     func(check *Check) error
 
-	SkipCheckFn func() (skip bool, reason string)
+	SkipCheckFns []func() (skip bool, reason string)
+	SkipMode     skipMode
 
 	Result         CheckResult
 	CapturedOutput string
@@ -77,12 +85,34 @@ func (check *Check) WithAfterCheckFn(afterCheckFn func(check *Check) error) *Che
 	return check
 }
 
-func (check *Check) WithSkipCheckFn(skipCheckFn func() (skip bool, reason string)) *Check {
+func (check *Check) WithSkipCheckFn(skipCheckFn ...func() (skip bool, reason string)) *Check {
 	if check.Error != nil {
 		return check
 	}
 
-	check.SkipCheckFn = skipCheckFn
+	check.SkipCheckFns = append(check.SkipCheckFns, skipCheckFn...)
+
+	return check
+}
+
+// This modifier is provided for the sake of completeness, but it's not necessary to use it,
+// as the SkipModeAny is the default skip mode.
+func (check *Check) WithSkipModeAny() *Check {
+	if check.Error != nil {
+		return check
+	}
+
+	check.SkipMode = SkipModeAny
+
+	return check
+}
+
+func (check *Check) WithSkipModeAll() *Check {
+	if check.Error != nil {
+		return check
+	}
+
+	check.SkipMode = SkipModeAll
 
 	return check
 }

@@ -329,7 +329,7 @@ func ResultToString(result int) (str string) {
 func GetNoContainersUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.Containers) == 0 {
-			return true, "There are no containers to check. Please check under test labels."
+			return true, "no containers to check found"
 		}
 
 		return false, ""
@@ -339,7 +339,37 @@ func GetNoContainersUnderTestSkipFn(env *provider.TestEnvironment) func() (bool,
 func GetNoPodsUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.Pods) == 0 {
-			return true, "There are no pods to check. Please check under test labels."
+			return true, "no pods to check found"
+		}
+
+		return false, ""
+	}
+}
+
+func GetNoDeploymentsUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.Deployments) == 0 {
+			return true, "no deployments to check found"
+		}
+
+		return false, ""
+	}
+}
+
+func GetNoStatefulSetsUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.StatefulSets) == 0 {
+			return true, "no statefulSets to check found"
+		}
+
+		return false, ""
+	}
+}
+
+func GetNoCrdsUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.Crds) == 0 {
+			return true, "no CRDs to check found"
 		}
 
 		return false, ""
