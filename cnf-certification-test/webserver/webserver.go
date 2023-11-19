@@ -176,7 +176,8 @@ func installReqHandlers() {
 func StartServer(outputFolder string) {
 	ctx := context.Background()
 	server := &http.Server{
-		Addr: ":8084", // Server address
+		Addr:        ":8084",          // Server address
+		ReadTimeout: 10 * time.Second, // Maximum duration for reading the entire request
 		BaseContext: func(l net.Listener) context.Context {
 			ctx = context.WithValue(ctx, outputFolderCtxKey, outputFolder)
 			return ctx
@@ -207,8 +208,7 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	if err := json.Unmarshal([]byte(jsonData), &data); err != nil {
 		fmt.Println("Error:", err)
 	}
-	var flattenedOptions []string
-	flattenedOptions = data.SelectedOptions
+	flattenedOptions := data.SelectedOptions
 
 	// Get the file from the request
 	file, fileHeader, err := r.FormFile("kubeConfigPath") // "fileInput" is the name of the file input field
@@ -244,12 +244,12 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	logrus.Infof("Web Server kubeconfig file : %v (copied into %v)", fileHeader.Filename, kubeconfigTempFile.Name())
 	logrus.Infof("Web Server Labels filter   : %v", flattenedOptions)
 
-	tnf_config, err := os.ReadFile("tnf_config.yml")
+	tnfConfig, err := os.ReadFile("tnf_config.yml")
 	if err != nil {
 		logrus.Fatalf("Error reading YAML file: %v", err)
 	}
 
-	newData := updateTnf(tnf_config, data)
+	newData := updateTnf(tnfConfig, &data)
 
 	// Write the modified YAML data back to the file
 	err = os.WriteFile("tnf_config.yml", newData, os.ModePerm)
@@ -294,11 +294,12 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func updateTnf(tnf_config []byte, data RequestedData) []byte {
+//nolint:funlen
+func updateTnf(tnfConfig []byte, data *RequestedData) []byte {
 	// Unmarshal the YAML data into a Config struct
 	var config configuration.TestConfiguration
 
-	err := yaml.Unmarshal(tnf_config, &config)
+	err := yaml.Unmarshal(tnfConfig, &config)
 	if err != nil {
 		logrus.Fatalf("Error unmarshaling YAML: %v", err)
 	}
