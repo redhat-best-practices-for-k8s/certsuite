@@ -20,9 +20,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/certsuite"
-	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	yaml "gopkg.in/yaml.v2"
 )
 
 type webServerContextKey string
@@ -46,10 +44,6 @@ var logs []byte
 
 //go:embed toast.js
 var toast []byte
-
-//go:embed index.js
-var index []byte
-
 var Buf *bytes.Buffer
 
 var upgrader = websocket.Upgrader{
@@ -87,30 +81,29 @@ func logStreamHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 type RequestedData struct {
-	SelectedOptions                      []string `json:"selectedOptions"`
-	TargetNameSpaces                     []string `json:"targetNameSpaces"`
-	PodsUnderTestLabels                  []string `json:"podsUnderTestLabels"`
-	OperatorsUnderTestLabels             []string `json:"operatorsUnderTestLabels"`
-	ManagedDeployments                   []string `json:"managedDeployments"`
-	ManagedStatefulsets                  []string `json:"managedStatefulsets"`
-	SkipScalingTestDeploymentsnamespace  []string `json:"skipScalingTestDeploymentsnamespace"`
-	SkipScalingTestDeploymentsname       []string `json:"skipScalingTestDeploymentsname"`
-	SkipScalingTestStatefulsetsnamespace []string `json:"skipScalingTestStatefulsetsnamespace"`
-	SkipScalingTestStatefulsetsname      []string `json:"skipScalingTestStatefulsetsname"`
-	TargetCrdFiltersnameSuffix           []string `json:"targetCrdFiltersnameSuffix"`
-	TargetCrdFiltersscalable             []string `json:"targetCrdFiltersscalable"`
-	AcceptedKernelTaints                 []string `json:"acceptedKernelTaints"`
-	SkipHelmChartList                    []string `json:"skipHelmChartList"`
-	Servicesignorelist                   []string `json:"servicesignorelist"`
-	ValidProtocolNames                   []string `json:"ValidProtocolNames"`
-	DebugDaemonSetNamespace              []string `json:"DebugDaemonSetNamespace"`
-	CollectorAppEndPoint                 []string `json:"CollectorAppEndPoint"`
-	ExecutedBy                           []string `json:"executedBy"`
-	CollectorAppPassword                 []string `json:"CollectorAppPassword"`
-	PartnerName                          []string `json:"PartnerName"`
+	SelectedOptions interface{} `json:"selectedOptions"`
 }
 type ResponseData struct {
 	Message string `json:"message"`
+}
+
+func FlattenData(data interface{}, result []string) []string {
+	switch v := data.(type) {
+	case string:
+		result = append(result, v)
+	case []interface{}:
+		for _, item := range v {
+			result = FlattenData(item, result)
+		}
+	case map[string]interface{}:
+		for key, item := range v {
+			if key == "selectedOptions" {
+				result = FlattenData(item, result)
+			}
+			result = FlattenData(item, result)
+		}
+	}
+	return result
 }
 
 func installReqHandlers() {
@@ -157,18 +150,6 @@ func installReqHandlers() {
 			return
 		}
 	})
-
-	http.HandleFunc("/index.js", func(w http.ResponseWriter, r *http.Request) {
-		// Set the content type to "application/javascript".
-		w.Header().Set("Content-Type", "application/javascript")
-		// Write the embedded JavaScript content to the response.
-		_, err := w.Write(index)
-		if err != nil {
-			http.Error(w, "Failed to write response", http.StatusInternalServerError)
-			return
-		}
-	})
-
 	// Serve the static HTML file
 	http.HandleFunc("/logstream", logStreamHandler)
 }
@@ -176,7 +157,10 @@ func installReqHandlers() {
 func StartServer(outputFolder string) {
 	ctx := context.Background()
 	server := &http.Server{
-		Addr: ":8084", // Server address
+		Addr:         ":8084",           // Server address
+		ReadTimeout:  10 * time.Second,  // Maximum duration for reading the entire request
+		WriteTimeout: 10 * time.Second,  // Maximum duration for writing the entire response
+		IdleTimeout:  120 * time.Second, // Maximum idle duration before closing the connection
 		BaseContext: func(l net.Listener) context.Context {
 			ctx = context.WithValue(ctx, outputFolderCtxKey, outputFolder)
 			return ctx
@@ -208,7 +192,7 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Error:", err)
 	}
 	var flattenedOptions []string
-	flattenedOptions = data.SelectedOptions
+	flattenedOptions = FlattenData(data.SelectedOptions, flattenedOptions)
 
 	// Get the file from the request
 	file, fileHeader, err := r.FormFile("kubeConfigPath") // "fileInput" is the name of the file input field
@@ -244,18 +228,6 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	logrus.Infof("Web Server kubeconfig file : %v (copied into %v)", fileHeader.Filename, kubeconfigTempFile.Name())
 	logrus.Infof("Web Server Labels filter   : %v", flattenedOptions)
 
-	tnf_config, err := os.ReadFile("tnf_config.yml")
-	if err != nil {
-		logrus.Fatalf("Error reading YAML file: %v", err)
-	}
-
-	newData := updateTnf(tnf_config, data)
-
-	// Write the modified YAML data back to the file
-	err = os.WriteFile("tnf_config.yml", newData, os.ModePerm)
-	if err != nil {
-		logrus.Fatalf("Error writing YAML file: %v", err)
-	}
 	_ = clientsholder.GetNewClientsHolder(kubeconfigTempFile.Name())
 
 	var env provider.TestEnvironment
@@ -292,99 +264,4 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-}
-
-func updateTnf(tnf_config []byte, data RequestedData) []byte {
-	// Unmarshal the YAML data into a Config struct
-	var config configuration.TestConfiguration
-
-	err := yaml.Unmarshal(tnf_config, &config)
-	if err != nil {
-		logrus.Fatalf("Error unmarshaling YAML: %v", err)
-	}
-
-	// Modify the configuration
-	var namespace []configuration.Namespace
-	for _, tnamespace := range data.TargetNameSpaces {
-		namespace = append(namespace, configuration.Namespace{Name: tnamespace})
-	}
-	config.TargetNameSpaces = namespace
-
-	config.PodsUnderTestLabels = data.PodsUnderTestLabels
-
-	config.OperatorsUnderTestLabels = data.OperatorsUnderTestLabels
-
-	var managedDeployments []configuration.ManagedDeploymentsStatefulsets
-	for _, val := range data.ManagedDeployments {
-		managedDeployments = append(managedDeployments, configuration.ManagedDeploymentsStatefulsets{Name: val})
-	}
-	config.ManagedDeployments = managedDeployments
-
-	var managedStatefulsets []configuration.ManagedDeploymentsStatefulsets
-	for _, val := range data.ManagedDeployments {
-		managedStatefulsets = append(managedStatefulsets, configuration.ManagedDeploymentsStatefulsets{Name: val})
-	}
-	config.ManagedStatefulsets = managedStatefulsets
-
-	var crdFilter []configuration.CrdFilter
-	for i := range data.TargetCrdFiltersnameSuffix {
-		val := true
-		if data.TargetCrdFiltersscalable[i] == "false" {
-			val = false
-		}
-		crdFilter = append(crdFilter, configuration.CrdFilter{NameSuffix: data.TargetCrdFiltersnameSuffix[i],
-			Scalable: val})
-	}
-	config.CrdFilters = crdFilter
-
-	var acceptedKernelTaints []configuration.AcceptedKernelTaintsInfo
-	for _, val := range data.AcceptedKernelTaints {
-		acceptedKernelTaints = append(acceptedKernelTaints, configuration.AcceptedKernelTaintsInfo{Module: val})
-	}
-	config.AcceptedKernelTaints = acceptedKernelTaints
-
-	var skipHelmChartList []configuration.SkipHelmChartList
-	for _, val := range data.SkipHelmChartList {
-		skipHelmChartList = append(skipHelmChartList, configuration.SkipHelmChartList{Name: val})
-	}
-	config.SkipHelmChartList = skipHelmChartList
-
-	var skipScalingTestDeployments []configuration.SkipScalingTestDeploymentsInfo
-	for i := range data.SkipScalingTestDeploymentsname {
-		skipScalingTestDeployments = append(skipScalingTestDeployments, configuration.SkipScalingTestDeploymentsInfo{Name: data.SkipScalingTestDeploymentsname[i],
-			Namespace: data.SkipScalingTestDeploymentsnamespace[i]})
-	}
-	config.SkipScalingTestDeployments = skipScalingTestDeployments
-
-	var skipScalingTestStatefulSets []configuration.SkipScalingTestStatefulSetsInfo
-	for i := range data.SkipScalingTestStatefulsetsname {
-		skipScalingTestStatefulSets = append(skipScalingTestStatefulSets, configuration.SkipScalingTestStatefulSetsInfo{Name: data.SkipScalingTestStatefulsetsname[i],
-			Namespace: data.SkipScalingTestStatefulsetsnamespace[i]})
-	}
-	config.SkipScalingTestStatefulSets = skipScalingTestStatefulSets
-
-	config.ServicesIgnoreList = data.Servicesignorelist
-	config.ValidProtocolNames = data.ValidProtocolNames
-	if len(data.CollectorAppEndPoint) > 0 {
-		config.CollectorAppEndPoint = data.CollectorAppEndPoint[0]
-	}
-	if len(data.CollectorAppPassword) > 0 {
-		config.CollectorAppPassword = data.CollectorAppPassword[0]
-	}
-	if len(data.ExecutedBy) > 0 {
-		config.ExecutedBy = data.ExecutedBy[0]
-	}
-	if len(data.PartnerName) > 0 {
-		config.PartnerName = data.PartnerName[0]
-	}
-	if len(data.DebugDaemonSetNamespace) > 0 {
-		config.DebugDaemonSetNamespace = data.DebugDaemonSetNamespace[0]
-	}
-
-	// Serialize the modified config back to YAML format
-	newData, err := yaml.Marshal(&config)
-	if err != nil {
-		logrus.Fatalf("Error marshaling YAML: %v", err)
-	}
-	return newData
 }
