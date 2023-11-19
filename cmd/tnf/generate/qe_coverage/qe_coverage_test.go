@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/pkg/claim"
+	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
 type catalogEntry struct {

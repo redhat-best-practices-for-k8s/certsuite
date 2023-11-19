@@ -71,6 +71,16 @@ following command:
 make test
 ```
 
+## Configuration guidelines
+
+Many Tests will require some form of extra configuration. To maintain reproducibility and auditability outcomes this
+configuration must be included in a claim file. For all current configuration approaches (see the `generic` test spec)
+this will be done automatically provided the `config` structure for the Test implements or inherits a working `MarshalJSON` and `UnmarshalJSON`
+interface so it can be included in a
+[test-network-function-claim](https://github.com/test-network-function/test-network-function-claim) JSON file.
+
+All configuration must adhere to these two requirements will automatically be included in the claim.
+
 ## Documentation guidelines
 
 Each exported API, global variable or constant must have proper documentation which adheres to `gofmt`.

@@ -23,12 +23,12 @@ import (
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
+	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
@@ -41,83 +41,41 @@ const (
 	Online            = "online"
 )
 
-var (
-	env       provider.TestEnvironment
-	validator certdb.CertificationStatusValidator
-
-	beforeEachFn = func(check *checksdb.Check) error {
-		logrus.Infof("Check %s: getting test environment and certdb validator.", check.ID)
-		env = provider.GetTestEnvironment()
-
+var _ = ginkgo.Describe(common.AffiliatedCertTestKey, func() {
+	logrus.Debugf("Entering %s suite", common.AffiliatedCertTestKey)
+	var env provider.TestEnvironment
+	var validator certdb.CertificationStatusValidator
+	ginkgo.BeforeEach(func() {
 		var err error
+		env = provider.GetTestEnvironment()
 		validator, err = certdb.GetValidator(env.GetOfflineDBPath())
 		if err != nil {
-			return fmt.Errorf("cannot access the certification DB, err: %v", err)
+			errMsg := fmt.Sprintf("Cannot access the certification DB, err: %v", err)
+			ginkgo.Fail(errMsg)
 		}
-
-		return nil
-	}
-
-	skipIfNoOperatorsFn = func() (bool, string) {
-		if len(env.Operators) == 0 {
-			return true, "There are no operators to check. Please check under test labels."
-		}
-
-		return false, ""
-	}
-
-	skipIfNoHelmChartReleasesFn = func() (bool, string) {
-		if len(env.HelmChartReleases) == 0 {
-			return true, "There are no helm chart releases to check."
-		}
-
-		return false, ""
-	}
-)
-
-func init() {
-	logrus.Debugf("Entering %s suite", common.AffiliatedCertTestKey)
-
-	checksGroup := checksdb.NewChecksGroup(common.AffiliatedCertTestKey).
-		WithBeforeEachFn(beforeEachFn)
+	})
 
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHelmVersionIdentifier)
-	check := checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoHelmChartReleasesFn).
-		WithCheckFn(testHelmVersion)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testHelmVersion()
+	})
 
-	checksGroup.Add(check)
-
+	// Query API for certification status of listed operators
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOperatorIsCertifiedIdentifier)
-	check = checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoOperatorsFn).
-		WithCheckFn(func(c *checksdb.Check) error {
-			testAllOperatorCertified(c, &env, validator)
-			return nil
-		})
-
-	checksGroup.Add(check)
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testAllOperatorCertified(&env, validator)
+	})
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHelmIsCertifiedIdentifier)
-	check = checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoHelmChartReleasesFn).
-		WithCheckFn(func(c *checksdb.Check) error {
-			testHelmCertified(c, &env, validator)
-			return nil
-		})
-
-	checksGroup.Add(check)
-
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testHelmCertified(&env, validator)
+	})
+	// Query API for certification status by digest of listed containers
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedDigestIdentifier)
-	check = checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
-		WithCheckFn(func(c *checksdb.Check) error {
-			testContainerCertificationStatusByDigest(c, &env, validator)
-			return nil
-		})
-
-	checksGroup.Add(check)
-}
+	ginkgo.It(testID, ginkgo.Label(tags...), func() {
+		testContainerCertificationStatusByDigest(&env, validator)
+	})
+})
 
 func getContainersToQuery(env *provider.TestEnvironment) map[provider.ContainerImageIdentifier]bool {
 	containersToQuery := make(map[provider.ContainerImageIdentifier]bool)
@@ -135,13 +93,12 @@ func testContainerCertification(c provider.ContainerImageIdentifier, validator c
 	return ans
 }
 
-func testAllOperatorCertified(check *checksdb.Check, env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
+func testAllOperatorCertified(env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
 	operatorsUnderTest := env.Operators
-	tnf.Logf(logrus.InfoLevel, "Verify operator as certified. Number of operators to check: %d", len(operatorsUnderTest))
-
+	testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(operatorsUnderTest, "operatorsUnderTest"))
+	ginkgo.By(fmt.Sprintf("Verify operator as certified. Number of operators to check: %d", len(operatorsUnderTest)))
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
-
 	ocpMinorVersion := ""
 	if provider.IsOCPCluster() {
 		// Converts	major.minor.patch version format to major.minor
@@ -165,13 +122,12 @@ func testAllOperatorCertified(check *checksdb.Check, env *provider.TestEnvironme
 				AddField(testhelper.OCPChannel, channel))
 		}
 	}
-
-	check.SetResult(compliantObjects, nonCompliantObjects)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
-func testHelmCertified(check *checksdb.Check, env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
+func testHelmCertified(env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
 	helmchartsReleases := env.HelmChartReleases
-
+	testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(helmchartsReleases, "helmchartsReleases"))
 	// Collect all of the failed helm charts
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -188,11 +144,10 @@ func testHelmCertified(check *checksdb.Check, env *provider.TestEnvironment, val
 				AddField(testhelper.Version, helm.Chart.Metadata.Version))
 		}
 	}
-
-	check.SetResult(compliantObjects, nonCompliantObjects)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
-func testContainerCertificationStatusByDigest(check *checksdb.Check, env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
+func testContainerCertificationStatusByDigest(env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, c := range env.Containers {
@@ -213,39 +168,28 @@ func testContainerCertificationStatusByDigest(check *checksdb.Check, env *provid
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Container is certified", true))
 		}
 	}
-
-	check.SetResult(compliantObjects, nonCompliantObjects)
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
 
-func testHelmVersion(check *checksdb.Check) error {
+func testHelmVersion() {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
-
 	clients := clientsholder.GetClientsHolder()
 	// Get the Tiller pod in the specified namespace
 	podList, err := clients.K8sClient.CoreV1().Pods("").List(context.TODO(), metav1.ListOptions{
 		LabelSelector: "app=helm,name=tiller",
 	})
 	if err != nil {
-		return fmt.Errorf("failed getting Tiller pod: %v", err)
+		ginkgo.Fail(fmt.Sprintf("Error getting Tiller pod: %v\n", err))
 	}
-
 	if len(podList.Items) == 0 {
-		tnf.ClaimFilePrintf("Tiller pod not found in any namespaces. Helm version is v3.")
-		for _, helm := range env.HelmChartReleases {
-			compliantObjects = append(compliantObjects, testhelper.NewHelmChartReportObject(helm.Namespace, helm.Name, "helm chart was installed with helm v3", true))
+		tnf.ClaimFilePrintf("Tiller pod is not found in all namespaces helm version is v3\n")
+	} else {
+		tnf.ClaimFilePrintf("Tiller pod found, helm version is v2")
+		for i := range podList.Items {
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(podList.Items[i].Namespace, podList.Items[i].Name,
+				"This pod is a Tiller pod. Helm Chart version is v2 but needs to be v3 due to the security risks associated with Tiller", false))
 		}
-
-		return nil
 	}
-
-	tnf.ClaimFilePrintf("Tiller pod found, helm version is v2.")
-	for i := range podList.Items {
-		nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(podList.Items[i].Namespace, podList.Items[i].Name,
-			"This pod is a Tiller pod. Helm Chart version is v2 but needs to be v3 due to the security risks associated with Tiller", false))
-	}
-
-	check.SetResult(compliantObjects, nonCompliantObjects)
-
-	return nil
+	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
 }
