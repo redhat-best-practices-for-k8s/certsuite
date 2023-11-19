@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,9 +9,6 @@
           sizes="any"
           href="https://ux.redhat.com/assets/logo-red-hat.svg">
     <link rel="stylesheet" href="https://ux.redhat.com/assets/packages/@rhds/elements/elements/rh-footer/rh-footer-lightdom.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-
     <script type="importmap">
       {
         "imports": {
@@ -65,11 +61,7 @@
         align-items: center;
         gap: var(--rh-space-xl, 24px);
       }
-      .labeltest {
-            display: inline-block;
-            vertical-align: middle;
-            margin-right: 10px; /* Add some margin for spacing */
-        }
+
       h1, h2, h3, h4 {
         font-family: var(--rh-font-family-heading, RedHatDisplay, "Red Hat Display", "Noto Sans Arabic", "Noto Sans Hebrew", "Noto Sans JP", "Noto Sans KR", "Noto Sans Malayalam", "Noto Sans SC", "Noto Sans TC", "Noto Sans Thai", Helvetica, Arial, sans-serif);
       }
@@ -98,28 +90,7 @@
       fieldset {
         display: grid;
         flex: 1 1 100%;
-        margin-bottom: 20px; /* Add space between fieldsets */
-        padding: 10px;
       }
-
-      .form-container {
-            height: 1200px; /* Set the desired height */
-            overflow: auto; /* Add scrollbar when content overflows */
-            border: 1px solid #ccc; /* Optional: add a border for visibility */
-            flex: 1 1 100%;
-        }
-
-      .add{
-        margin-left: auto; 
-        cursor: pointer;
-        font-weight: var(--rh-font-weight-heading-bold, 500);
-        }
-
-        .remove{
-        margin-left: auto; 
-        cursor: pointer;
-        font-weight: var(--rh-font-weight-heading-bold, 500);
-        }
 
       label {
         display: block;
@@ -144,7 +115,6 @@
       await Promise.all(['rh-button','pf-text-input'].map(x => customElements.whenDefined(x)));
       document.body.style.removeProperty('--main-opacity');
       </script>
-     <script src="https://cdn.jsdelivr.net/npm/js-yaml/dist/js-yaml.min.js"></script>
 
     <script type="module">
       // import design system element definitions,
@@ -171,9 +141,8 @@
         await import('./logs.js')
       });
     </script>
-   <script inline src="index.js"></script>
+
   </head>
-  
   <body style="--main-opacity:0;">
     <header>
       <img alt="Red Hat"
@@ -184,6 +153,7 @@
 
     <main>
       <h1>CNF Certification Test</h1>
+
       <form id="form">
         <!-- see https://ux.redhat.com/patterns/form/ for design guidelines-->
 
@@ -195,81 +165,19 @@
                          required
                          type="file"></input>
         </fieldset>
-        <h9 class="labeltest" for="tnfFile">Upload TNF Configuration File:</h9>
-        <input type="file" id="tnfFile" >
-        <div class="form-container">
-        <fieldset id="TNF-Configuration">
+
+        <fieldset>
           <legend>TNF Configuration</legend>
+
           <label for="targetNameSpaces">Target Namespaces</label>
-          <span class="fa add" id="targetNameSpacesadd"> Add NameSpace </span>
-          <span class="fa remove" id="targetNameSpacesremove">Remove NameSpace</span>
-          <br>
+          <pf-text-input id="targetNameSpaces"
+                         name="targetNameSpaces"></pf-text-input>
+
           <label for="podsUnderTestLabels">podsUnderTestLabels:</label>
-          <span class="fa add" id="podsUnderTestLabelsadd"> Add podsUnderTestLabels </span><br>
-          <span class="fa remove" id="podsUnderTestLabelsremove"> Remove podsUnderTestLabels </span>
-   
-          <br>
-          <label for="operatorsUnderTestLabels">operatorsUnderTestLabels:</label>
-          <span class="fa add" id="operatorsUnderTestLabelsadd"> Add operatorsUnderTestLabels </span><br>
-          <span class="fa remove" id="operatorsUnderTestLabelsremove"> Remove operatorsUnderTestLabels </span>
-                        
-          <label for="targetCrdFilters">targetCrdFilters:</label>
-          <span class="fa add" id="targetCrdFiltersadd"> Add targetCrdFilters </span><br>
-          <span class="fa remove" id="targetCrdFiltersremove"> Remove targetCrdFilters </span>                                         
-
-          <label for="managedDeployments">managedDeployments:</label>
-          <span class="fa add" id="managedDeploymentsadd"> Add managedDeployments </span><br>
-          <span class="fa remove" id="managedDeploymentsremove"> Remove managedDeployments </span>
-              
-
-          <label for="managedStatefulsets">managedStatefulsets:</label>
-          <span class="fa add" id="managedStatefulsetsadd"> Add managedStatefulsets </span><br>
-          <span class="fa remove" id="managedStatefulsetsremove"> Remove managedStatefulsets </span>
-
-          <label for="acceptedKernelTaints">acceptedKernelTaints:</label>
-          <span class="fa add" id="acceptedKernelTaintsadd"> Add acceptedKernelTaints </span><br>
-          <span class="fa remove" id="acceptedKernelTaintsremove"> Remove acceptedKernelTaints </span>
-
-          <label for="skipHelmChartList">skipHelmChartList:</label>
-          <span class="fa add" id="skipHelmChartListadd"> Add skipHelmChartList </span><br>
-          <span class="fa remove" id="skipHelmChartListremove"> Remove skipHelmChartList </span>
-          
-
-          <label for="skipScalingTestDeployments">skipScalingTestDeployments:</label>
-          <span class="fa add" id="skipScalingTestDeploymentsadd"> Add skipScalingTestDeployments </span><br>
-          <span class="fa remove" id="skipScalingTestDeploymentsremove"> Remove skipScalingTestDeployments </span>  
-
-          <label for="skipScalingTestStatefulsets">skipScalingTestStatefulsets:</label>
-          <span class="fa add" id="skipScalingTestStatefulsetsadd"> Add skipScalingTestStatefulsets </span><br>
-          <span class="fa remove" id="skipScalingTestStatefulsetsremove"> Remove skipScalingTestStatefulsets </span>      
-          
-          <label for="servicesignorelist">servicesignorelist:</label>
-          <span class="fa add" id="servicesignorelistadd"> Add servicesignorelist </span><br>
-          <span class="fa remove" id="servicesignorelistremove"> Remove servicesignorelist </span>
-              
-          <label for="executedBy">executedBy:</label>
-          <pf-text-input id="executedBy"
-          name="executedBy"></pf-text-input>
-          <label for="PartnerName">PartnerName:</label>
-          <pf-text-input id="PartnerName"
-          name="PartnerName"></pf-text-input>
-          <label for="CollectorAppEndPoint">CollectorAppEndPoint:</label>
-          <pf-text-input id="CollectorAppEndPoint"
-          name="CollectorAppEndPoint"></pf-text-input>
-          <label for="CollectorAppPassword">CollectorAppPassword:</label>
-          <pf-text-input id="CollectorAppPassword"
-          name="CollectorAppPassword"></pf-text-input>
-
-          <label for="ValidProtocolNames">ValidProtocolNames:</label>
-          <span class="fa add" id="ValidProtocolNamesadd"> Add ValidProtocolNames </span><br>
-          <span class="fa remove" id="ValidProtocolNamesremove"> Remove ValidProtocolNames </span>
-                       
-          <label for="DebugDaemonSetNamespace">DebugDaemonSetNamespace:</label>
-          <pf-text-input id="DebugDaemonSetNamespace"
-          name="DebugDaemonSetNamespace"></pf-text-input>
-        
+          <pf-text-input id="podsUnderTestLabels"
+                         name="podsUnderTestLabels"
+                         placeholder="test-network-function.com/generic: target"></pf-text-input>
         </fieldset>
-      </div>
 
         <fieldset>
           <legend>Select a Test</legend>
@@ -277,36 +185,17 @@
             <input type="checkbox"
                    value="lifecycle"
                    name="selectedOptions"> Lifecycle
-            <input type="checkbox"
-            value="manageability"
-            name="selectedOptions">Manageability
           </label>
           <label>
             <input type="checkbox"
-                   value="affiliated-certification"
+                   value="certification"
                    name="selectedOptions"> Certification
-            <input type="checkbox"
-            value="operator"
-            name="selectedOptions"> Operator                    
           </label>
           <label>
             <input type="checkbox"
                    value="access-control"
                    name="selectedOptions"> Access Control
-            <input type="checkbox"
-            value="platform-alteration"
-            name="selectedOptions"> Platform Alteration         
           </label>
-          <label>
-            <input type="checkbox"
-                   value="networking"
-                   name="selectedOptions"> Networking
-            <input type="checkbox"
-            value="performance"
-            name="selectedOptions"> Performance                   
-                   
-          </label>
-      
         </fieldset>
 
         <rh-button type="submit" name="submit">Run Certification Test</rh-button>
