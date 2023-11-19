@@ -9,7 +9,7 @@ import (
 // ClaimFilePrintf prints to stdout.
 // ToDo: Remove?
 func ClaimFilePrintf(format string, args ...interface{}) {
-	Logf(logrus.TraceLevel, format, args...)
+	Logf(logrus.TraceLevel, format, args)
 }
 
 // Logf prints to stdout.

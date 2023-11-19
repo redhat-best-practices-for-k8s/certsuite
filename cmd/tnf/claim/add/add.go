@@ -9,8 +9,8 @@ import (
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/cnf-certification-test/pkg/claim"
 	"github.com/test-network-function/cnf-certification-test/pkg/junit"
+	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
 var (

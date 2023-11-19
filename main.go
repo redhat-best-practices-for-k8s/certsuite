@@ -28,7 +28,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/versions"
 
-	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/certification"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/manageability"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/observability"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/performance"

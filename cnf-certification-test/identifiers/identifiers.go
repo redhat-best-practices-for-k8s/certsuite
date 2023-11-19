@@ -20,7 +20,7 @@ import (
 	"strings"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
-	"github.com/test-network-function/cnf-certification-test/pkg/claim"
+	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
 // shared description text
