@@ -15,8 +15,8 @@ function addCrdElem(counters,name1,name2,clickedId){
                 ' name="'+clickedId+name1+'" ></pf-text-input>' + 
                 '<h7 for="'+t2+'">'+name2+':</h7><pf-text-input id='+t2+
                 ' name="'+clickedId+name2+'" ></pf-text-input>' ;
-                var taget=clickedId+'add'
-                $('#'+taget).after(field);
+                var target=clickedId+'add'
+                $('#'+target).after(field);
             }
             else{
                 var i= counters[clickedId]
@@ -27,8 +27,8 @@ function addCrdElem(counters,name1,name2,clickedId){
                 ' name="'+clickedId+name1+'" ></pf-text-input>' + 
                 '<h7 for="'+t2+'">'+name2+':</h7><pf-text-input id='+t2+
                 ' name="'+clickedId+name2+'" ></pf-text-input>' ;
-                var taget=clickedId+name2+(i-1)+''
-                $('#'+taget).after(field);
+                var target=clickedId+name2+(i-1)+''
+                $('#'+target).after(field);
             }
             return counters
           }
@@ -75,8 +75,8 @@ function addCrdElem(counters,name1,name2,clickedId){
                 var i= counters[clickedId]
                 var field = '<label for="'+clickedId+i+'">'+i+'.</label>'+
                 '<pf-text-input id='+clickedId+i+' name="'+clickedId+'"></pf-text-input>';
-                var taget=clickedId+(i-1)+''
-                $('#'+taget).after(field);
+                var target=clickedId+(i-1)+''
+                $('#'+target).after(field);
             }
           }
           document.getElementById(clickedId+'remove').style.display = 'block';
@@ -88,36 +88,36 @@ function addCrdElem(counters,name1,name2,clickedId){
         var clickedId = clickedIdOrg.replace('remove', '');
         var i= counters[clickedId]
         if (i>1){
-          var taget=clickedId+(i-1)+''
+          var target=clickedId+(i-1)+''
           if (clickedId == 'targetCrdFilters'){
-             var taget1='targetCrdFiltersnameSuffix'+(i-1)+''
-             var taget2='targetCrdFiltersscalable'+(i-1)+''
-             console.log(taget2)
-              $('#'+taget1).remove();
-              $('h7[for="' + taget1 + '"]').remove();
-              $('#'+taget2).remove();
-              $('h7[for="' + taget2 + '"]').remove();
+             var target1='targetCrdFiltersnameSuffix'+(i-1)+''
+             var target2='targetCrdFiltersscalable'+(i-1)+''
+             console.log(target2)
+              $('#'+target1).remove();
+              $('h7[for="' + target1 + '"]').remove();
+              $('#'+target2).remove();
+              $('h7[for="' + target2 + '"]').remove();
         }if (clickedId == 'skipScalingTestDeployments'){
-             var taget1='skipScalingTestDeploymentsname'+(i-1)+''
-             var taget2='skipScalingTestDeploymentsnamespace'+(i-1)+''
-             console.log(taget2)
-              $('#'+taget1).remove();
-              $('h7[for="' + taget1 + '"]').remove();
-              $('#'+taget2).remove();
-              $('h7[for="' + taget2 + '"]').remove();
+             var target1='skipScalingTestDeploymentsname'+(i-1)+''
+             var target2='skipScalingTestDeploymentsnamespace'+(i-1)+''
+             console.log(target2)
+              $('#'+target1).remove();
+              $('h7[for="' + target1 + '"]').remove();
+              $('#'+target2).remove();
+              $('h7[for="' + target2 + '"]').remove();
          }if (clickedId == 'skipScalingTestStatefulsets'){
-             var taget1='skipScalingTestStatefulsetsname'+(i-1)+''
-             var taget2='skipScalingTestStatefulsetsnamespace'+(i-1)+''
-             console.log(taget2)
-              $('#'+taget1).remove();
-              $('h7[for="' + taget1 + '"]').remove();
-              $('#'+taget2).remove();
-              $('h7[for="' + taget2 + '"]').remove();
+             var target1='skipScalingTestStatefulsetsname'+(i-1)+''
+             var target2='skipScalingTestStatefulsetsnamespace'+(i-1)+''
+             console.log(target2)
+              $('#'+target1).remove();
+              $('h7[for="' + target1 + '"]').remove();
+              $('#'+target2).remove();
+              $('h7[for="' + target2 + '"]').remove();
          }
          else{
-            $('#'+taget).remove();
+            $('#'+target).remove();
         }
-            $('label[for="' + taget + '"]').remove();
+            $('label[for="' + target + '"]').remove();
             counters[clickedId] = counters[clickedId] - 1;
             if (i-1 ==1){
               document.getElementById(clickedIdOrg).style.display = 'none';
@@ -178,7 +178,7 @@ if (!counters[clickedId]){
 counters[clickedId] =1
 }
 for (const key in input) {
-var taget=clickedId+(counters[clickedId]-1)+''
+var target=clickedId+(counters[clickedId]-1)+''
 if (keyname!=''){
   var value = input[key][keyname]
 }else{
@@ -201,13 +201,13 @@ if(key2name==''){
       ' name="'+clickedId+keyname+'" value="'+ input[key][keyname]+'" ></pf-text-input>' + 
       '<h7 for="'+t2+'">'+key2name+':</h7><pf-text-input id='+t2+
       ' name="'+clickedId+key2name+'" value="'+ input[key][key2name]+'" ></pf-text-input>' ;
-      var taget=clickedId+key2name+(i-1)+''
+      var target=clickedId+key2name+(i-1)+''
 }
 var field='<label for="'+clickedId+counters[clickedId] +'">'+counters[clickedId] +'.</label>'+pf_txt
  if ( counters[clickedId]==1){
   $(element).after(field);
  }else{
-  $('#'+taget).after(field);
+  $('#'+target).after(field);
  }
  counters[clickedId]= counters[clickedId]+1
 }
