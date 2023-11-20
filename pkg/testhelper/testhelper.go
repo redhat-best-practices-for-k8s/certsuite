@@ -441,20 +441,70 @@ func GetNoRolesSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	}
 }
 
-func GetDaemonSetFailedToSpawnSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+func GetSharedProcessNamespacePodsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
-		if env.DaemonsetFailedToSpawn {
-			return true, "DaemonSet failed to spawn."
+		if len(env.GetShareProcessNamespacePods()) == 0 {
+			return true, "Shared process namespace pods found."
 		}
 
 		return false, ""
 	}
 }
 
-func GetSharedProcessNamespacePodsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+func GetNotIntrusiveSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
-		if len(env.GetShareProcessNamespacePods()) == 0 {
-			return true, "Shared process namespace pods found."
+		if !env.IsIntrusive() {
+			return true, "not intrusive test"
+		}
+
+		return false, ""
+	}
+}
+
+func GetNoPersistentVolumesSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.PersistentVolumes) == 0 {
+			return true, "no persistent volumes to check found"
+		}
+
+		return false, ""
+	}
+}
+
+func GetNotEnoughWorkersSkipFn(env *provider.TestEnvironment, minWorkerNodes int) func() (bool, string) {
+	return func() (bool, string) {
+		if env.GetWorkerCount() < minWorkerNodes {
+			return true, "not enough nodes to check found"
+		}
+
+		return false, ""
+	}
+}
+
+func GetPodsWithoutAffinityRequiredLabelSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.GetPodsWithoutAffinityRequiredLabel()) == 0 {
+			return true, "no pods with required affinity label found"
+		}
+
+		return false, ""
+	}
+}
+
+func GetNoGuaranteedPodsWithExclusiveCPUsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.GetGuaranteedPodsWithExclusiveCPUs()) == 0 {
+			return true, "no pods with exclusive CPUs found"
+		}
+
+		return false, ""
+	}
+}
+
+func GetNoAffinityRequiredPodsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.GetAffinityRequiredPods()) == 0 {
+			return true, "no pods with required affinity found"
 		}
 
 		return false, ""

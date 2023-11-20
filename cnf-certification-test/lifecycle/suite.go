@@ -56,93 +56,6 @@ var (
 		env = provider.GetTestEnvironment()
 		return nil
 	}
-
-	skipIfNoContainersFn = func() (bool, string) {
-		if len(env.Containers) == 0 {
-			logrus.Warnf("No containers to check...")
-			return true, "There are no containers to check. Please check under test labels."
-		}
-
-		return false, ""
-	}
-
-	skipIfNoPodsFn = func() (bool, string) {
-		if len(env.Pods) == 0 {
-			logrus.Warn("No pods to check.")
-			return true, "There are no pods to check."
-		}
-
-		return false, ""
-	}
-
-	skipIfNoPersistentVolumesFn = func() (bool, string) {
-		if len(env.PersistentVolumes) == 0 {
-			logrus.Warn("No persistent volumes to check.")
-			return true, "There are no persistent volumes to check."
-		}
-
-		return false, ""
-	}
-
-	skipIfNotEnoughWorkersFn = func() (bool, string) {
-		if env.GetWorkerCount() < minWorkerNodesForLifecycle {
-			logrus.Warnf("Skipping test because invalid number of available workers.")
-			return true, fmt.Sprintf("Skipping test because invalid number of available workers. Need at least %d workers.", minWorkerNodesForLifecycle)
-		}
-
-		return false, ""
-	}
-
-	skipIfPodsWithoutAffinityRequiredLabelFn = func() (bool, string) {
-		if len(env.GetPodsWithoutAffinityRequiredLabel()) == 0 {
-			logrus.Warn("No pods without AffinityRequired label to check.")
-			return true, "There are no pods without AffinityRequired label to check."
-		}
-
-		return false, ""
-	}
-
-	skipIfNoGuaranteedPodsWithExclusiveCPUsFn = func() (bool, string) {
-		if len(env.GetGuaranteedPodsWithExclusiveCPUs()) == 0 {
-			logrus.Warn("No pods with exclusive CPUs to check.")
-			return true, "There are no pods with exclusive CPUs to check."
-		}
-
-		return false, ""
-	}
-
-	skipIfNoAffinityRequiredPodsFn = func() (bool, string) {
-		if len(env.GetAffinityRequiredPods()) == 0 {
-			logrus.Warn("No pods with AffinityRequired label to check.")
-			return true, "There are no pods with AffinityRequired label to check."
-		}
-
-		return false, ""
-	}
-
-	skipIfNoCrdsFn = func() (bool, string) {
-		if len(env.Crds) == 0 {
-			logrus.Warn("No CRDs to check.")
-			return true, "There are no CRDs to check."
-		}
-
-		return false, ""
-	}
-
-	skipIfNotIntrusive = func() (bool, string) {
-		if !env.IsIntrusive() {
-			return true, intrusiveTcSkippedReason
-		}
-		return false, ""
-	}
-
-	skipIfNoDeploymentsNorStatefulSets = func() (bool, string) {
-		if len(env.Deployments) == 0 && len(env.StatefulSets) == 0 {
-			logrus.Warn("No deployments nor statefulsets to check.")
-			return true, "There are no deployments nor statefulsets to check."
-		}
-		return false, ""
-	}
 )
 
 //nolint:funlen
@@ -155,7 +68,7 @@ func init() {
 	// Prestop test
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestShutdownIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoContainersFn).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainersPreStop(c, &env)
 			return nil
@@ -164,8 +77,9 @@ func init() {
 	// Scale CRD test
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCrdScalingIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoCrdsFn).
-		WithSkipCheckFn(skipIfNotIntrusive).
+		WithSkipCheckFn(
+			testhelper.GetNoCrdsUnderTestSkipFn(&env),
+			testhelper.GetNotIntrusiveSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			// Note: We skip this test because 'testHighAvailability' in the lifecycle suite is already
 			// testing the replicas and antiaffinity rules that should already be in place for crd.
@@ -176,7 +90,7 @@ func init() {
 	// Poststart test
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStartupIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoContainersFn).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainersPostStart(c, &env)
 			return nil
@@ -185,7 +99,7 @@ func init() {
 	// Image pull policy test
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestImagePullPolicyIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoContainersFn).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainersImagePolicy(c, &env)
 			return nil
@@ -194,7 +108,7 @@ func init() {
 	// Readiness probe test
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestReadinessProbeIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoContainersFn).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainersReadinessProbe(c, &env)
 			return nil
@@ -203,7 +117,7 @@ func init() {
 	// Liveness probe test
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestLivenessProbeIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoContainersFn).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainersLivenessProbe(c, &env)
 			return nil
@@ -212,7 +126,7 @@ func init() {
 	// Startup probe test
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStartupProbeIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoContainersFn).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainersStartupProbe(c, &env)
 			return nil
@@ -221,7 +135,7 @@ func init() {
 	// Pod owner reference test
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodDeploymentBestPracticesIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoPodsFn).
+		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodsOwnerReference(c, &env)
 			return nil
@@ -230,8 +144,10 @@ func init() {
 	// High availability test
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHighAvailabilityBestPractices)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNotEnoughWorkersFn).
-		WithSkipCheckFn(skipIfNoDeploymentsNorStatefulSets).
+		WithSkipCheckFn(
+			testhelper.GetNotEnoughWorkersSkipFn(&env, minWorkerNodesForLifecycle),
+			testhelper.GetNoDeploymentsUnderTestSkipFn(&env),
+			testhelper.GetNoStatefulSetsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testHighAvailability(c, &env)
 			return nil
@@ -240,8 +156,9 @@ func init() {
 	// Selector and affinity best practices test
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodNodeSelectorAndAffinityBestPractices)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNotEnoughWorkersFn).
-		WithSkipCheckFn(skipIfPodsWithoutAffinityRequiredLabelFn).
+		WithSkipCheckFn(
+			testhelper.GetNotEnoughWorkersSkipFn(&env, minWorkerNodesForLifecycle),
+			testhelper.GetPodsWithoutAffinityRequiredLabelSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodNodeSelectorAndAffinityBestPractices(env.GetPodsWithoutAffinityRequiredLabel(), c)
 			return nil
@@ -250,9 +167,11 @@ func init() {
 	// Pod recreation test
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodRecreationIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNotEnoughWorkersFn).
-		WithSkipCheckFn(skipIfNoDeploymentsNorStatefulSets).
-		WithSkipCheckFn(skipIfNotIntrusive).
+		WithSkipCheckFn(
+			testhelper.GetNotEnoughWorkersSkipFn(&env, minWorkerNodesForLifecycle),
+			testhelper.GetNoDeploymentsUnderTestSkipFn(&env),
+			testhelper.GetNoStatefulSetsUnderTestSkipFn(&env),
+			testhelper.GetNotIntrusiveSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodsRecreation(c, &env)
 			return nil
@@ -261,9 +180,11 @@ func init() {
 	// Deployment scaling test
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestDeploymentScalingIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNotEnoughWorkersFn).
-		WithSkipCheckFn(skipIfNoDeploymentsNorStatefulSets).
-		WithSkipCheckFn(skipIfNotIntrusive).
+		WithSkipCheckFn(
+			testhelper.GetNotIntrusiveSkipFn(&env),
+			testhelper.GetNotEnoughWorkersSkipFn(&env, minWorkerNodesForLifecycle),
+			testhelper.GetNoDeploymentsUnderTestSkipFn(&env),
+			testhelper.GetNoStatefulSetsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testDeploymentScaling(&env, timeout, c)
 			return nil
@@ -272,9 +193,11 @@ func init() {
 	// Statefulset scaling test
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStateFulSetScalingIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNotEnoughWorkersFn).
-		WithSkipCheckFn(skipIfNoDeploymentsNorStatefulSets).
-		WithSkipCheckFn(skipIfNotIntrusive).
+		WithSkipCheckFn(
+			testhelper.GetNotIntrusiveSkipFn(&env),
+			testhelper.GetNotEnoughWorkersSkipFn(&env, minWorkerNodesForLifecycle),
+			testhelper.GetNoDeploymentsUnderTestSkipFn(&env),
+			testhelper.GetNoStatefulSetsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testStatefulSetScaling(&env, timeout, c)
 			return nil
@@ -283,8 +206,9 @@ func init() {
 	// Persistent volume reclaim policy test
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPersistentVolumeReclaimPolicyIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoPersistentVolumesFn).
-		WithSkipCheckFn(skipIfNoPodsFn).
+		WithSkipCheckFn(
+			testhelper.GetNoPersistentVolumesSkipFn(&env),
+			testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodPersistentVolumeReclaimPolicy(c, &env)
 			return nil
@@ -293,7 +217,7 @@ func init() {
 	// CPU Isolation test
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCPUIsolationIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoGuaranteedPodsWithExclusiveCPUsFn).
+		WithSkipCheckFn(testhelper.GetNoGuaranteedPodsWithExclusiveCPUsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testCPUIsolation(c, &env)
 			return nil
@@ -302,7 +226,7 @@ func init() {
 	// Affinity required pods test
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestAffinityRequiredPods)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoAffinityRequiredPodsFn).
+		WithSkipCheckFn(testhelper.GetNoAffinityRequiredPodsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testAffinityRequiredPods(c, &env)
 			return nil
@@ -311,7 +235,7 @@ func init() {
 	// Pod toleration bypass test
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodTolerationBypassIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoPodsFn).
+		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodTolerationBypass(c, &env)
 			return nil
@@ -320,7 +244,7 @@ func init() {
 	// Storage provisioner test
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStorageProvisioner)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoPodsFn).
+		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testStorageProvisioner(c, &env)
 			return nil
