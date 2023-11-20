@@ -326,6 +326,51 @@ func ResultToString(result int) (str string) {
 	return ""
 }
 
+func GetNoServicesUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.Services) == 0 {
+			return true, "no services to check found"
+		}
+
+		return false, ""
+	}
+}
+
+func GetDaemonSetFailedToSpawnSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if env.DaemonsetFailedToSpawn {
+			return true, "no daemonSets to check found"
+		}
+
+		return false, ""
+	}
+}
+
+func GetNoCPUPinningPodsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.GetCPUPinningPodsWithDpdk()) == 0 {
+			return true, "no CPU pinning pods to check found"
+		}
+
+		return false, ""
+	}
+}
+
+func GetNoSRIOVPodsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		pods, err := env.GetPodsUsingSRIOV()
+		if err != nil {
+			return true, fmt.Sprintf("failed to get SRIOV pods: %v", err)
+		}
+
+		if len(pods) == 0 {
+			return true, "no SRIOV pods to check found"
+		}
+
+		return false, ""
+	}
+}
+
 func GetNoContainersUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.Containers) == 0 {
