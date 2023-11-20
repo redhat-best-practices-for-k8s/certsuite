@@ -62,74 +62,6 @@ var (
 		env = provider.GetTestEnvironment()
 		return nil
 	}
-
-	skipIfNoContainersFn = func() (bool, string) {
-		if len(env.Containers) == 0 {
-			logrus.Warnf("No containers to check...")
-			return true, "There are no containers to check. Please check under test labels."
-		}
-
-		return false, ""
-	}
-
-	skipIfNoPodsFn = func() (bool, string) {
-		if len(env.Pods) == 0 {
-			logrus.Warn("No pods to check.")
-			return true, "There are no pods to check."
-		}
-
-		return false, ""
-	}
-
-	skipIfNoNamespacesFn = func() (bool, string) {
-		if len(env.Namespaces) == 0 {
-			warnStr := "No namespaces to check."
-			logrus.Warn(warnStr)
-			return true, warnStr
-		}
-
-		return false, ""
-	}
-
-	skipIfDaemonsetFailedToSpawnFn = func() (bool, string) {
-		warnStr := "Debug Daemonset failed to spawn skipping test."
-		if env.DaemonsetFailedToSpawn {
-			logrus.Warn(warnStr)
-			return true, warnStr
-		}
-
-		return false, ""
-	}
-
-	skipIfSharedProcessNamespacePodsFn = func() (bool, string) {
-		warnStr := "No shared process namespace pods to check."
-		if len(env.GetShareProcessNamespacePods()) == 0 {
-			logrus.Warn(warnStr)
-			return true, warnStr
-		}
-
-		return false, ""
-	}
-
-	skipIfNoCrdsFn = func() (bool, string) {
-		warnStr := "No CRDs to check."
-		if len(env.Crds) == 0 {
-			logrus.Warn(warnStr)
-			return true, warnStr
-		}
-
-		return false, ""
-	}
-
-	skipIfNoRolesFn = func() (bool, string) {
-		warnStr := "No roles to check."
-		if len(env.Roles) == 0 {
-			logrus.Warn(warnStr)
-			return true, warnStr
-		}
-
-		return false, ""
-	}
 )
 
 //nolint:funlen
@@ -141,7 +73,7 @@ func init() {
 
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSecContextIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoContainersFn).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainerSCC(c, &env)
 			return nil
@@ -149,7 +81,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSysAdminIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoContainersFn).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testSysAdminCapability(c, &env)
 			return nil
@@ -157,7 +89,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNetAdminIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoContainersFn).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testNetAdminCapability(c, &env)
 			return nil
@@ -165,7 +97,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNetRawIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoContainersFn).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testNetRawCapability(c, &env)
 			return nil
@@ -173,7 +105,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIpcLockIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoContainersFn).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testIpcLockCapability(c, &env)
 			return nil
@@ -181,7 +113,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestBpfIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoContainersFn).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testBpfCapability(c, &env)
 			return nil
@@ -189,7 +121,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSecConNonRootUserIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoContainersFn).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testSecConRootUser(c, &env)
 			return nil
@@ -197,7 +129,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSecConPrivilegeEscalation)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoContainersFn).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testSecConPrivilegeEscalation(c, &env)
 			return nil
@@ -205,7 +137,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerHostPort)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoContainersFn).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainerHostPort(c, &env)
 			return nil
@@ -213,7 +145,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHostNetwork)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoPodsFn).
+		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodHostNetwork(c, &env)
 			return nil
@@ -221,7 +153,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHostPath)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoPodsFn).
+		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodHostPath(c, &env)
 			return nil
@@ -229,7 +161,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHostIPC)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoPodsFn).
+		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodHostIPC(c, &env)
 			return nil
@@ -237,7 +169,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHostPID)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoPodsFn).
+		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodHostPID(c, &env)
 			return nil
@@ -245,7 +177,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNamespaceBestPracticesIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoNamespacesFn).
+		WithSkipCheckFn(testhelper.GetNoNamespacesSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testNamespace(c, &env)
 			return nil
@@ -253,7 +185,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodServiceAccountBestPracticesIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoPodsFn).
+		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodServiceAccount(c, &env)
 			return nil
@@ -261,7 +193,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodRoleBindingsBestPracticesIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoPodsFn).
+		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodRoleBindings(c, &env)
 			return nil
@@ -269,7 +201,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodClusterRoleBindingsBestPracticesIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoPodsFn).
+		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodClusterRoleBindings(c, &env)
 			return nil
@@ -277,7 +209,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodAutomountServiceAccountIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoPodsFn).
+		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testAutomountServiceToken(c, &env)
 			return nil
@@ -285,8 +217,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOneProcessPerContainerIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoContainersFn).
-		WithSkipCheckFn(skipIfDaemonsetFailedToSpawnFn).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env), testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testOneProcessPerContainer(c, &env)
 			return nil
@@ -294,7 +225,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSYSNiceRealtimeCapabilityIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoContainersFn).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testSYSNiceRealtimeCapability(c, &env)
 			return nil
@@ -302,7 +233,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSysPtraceCapabilityIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfSharedProcessNamespacePodsFn).
+		WithSkipCheckFn(testhelper.GetSharedProcessNamespacePodsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testSysPtraceCapability(c, &env)
 			return nil
@@ -310,7 +241,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNamespaceResourceQuotaIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoPodsFn).
+		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testNamespaceResourceQuota(c, &env)
 			return nil
@@ -318,8 +249,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNoSSHDaemonsAllowedIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfDaemonsetFailedToSpawnFn).
-		WithSkipCheckFn(skipIfNoContainersFn).
+		WithSkipCheckFn(testhelper.GetDaemonSetFailedToSpawnSkipFn(&env), testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testNoSSHDaemonsAllowed(c, &env)
 			return nil
@@ -327,7 +257,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodRequestsAndLimitsIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoPodsFn).
+		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodRequestsAndLimits(c, &env)
 			return nil
@@ -335,7 +265,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.Test1337UIDIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoPodsFn).
+		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			test1337UIDs(c, &env)
 			return nil
@@ -343,8 +273,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServicesDoNotUseNodeportsIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoContainersFn).
-		WithSkipCheckFn(skipIfNoPodsFn).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env), testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testNodePort(c, &env)
 			return nil
@@ -352,9 +281,7 @@ func init() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCrdRoleIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(skipIfNoCrdsFn).
-		WithSkipCheckFn(skipIfNoRolesFn).
-		WithSkipCheckFn(skipIfNoNamespacesFn).
+		WithSkipCheckFn(testhelper.GetNoCrdsUnderTestSkipFn(&env), testhelper.GetNoNamespacesSkipFn(&env), testhelper.GetNoRolesSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testCrdRoles(c, &env)
 			return nil

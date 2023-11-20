@@ -369,7 +369,47 @@ func GetNoStatefulSetsUnderTestSkipFn(env *provider.TestEnvironment) func() (boo
 func GetNoCrdsUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string) {
 	return func() (bool, string) {
 		if len(env.Crds) == 0 {
-			return true, "no CRDs to check found"
+			return true, "no roles to check"
+		}
+
+		return false, ""
+	}
+}
+
+func GetNoNamespacesSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.Namespaces) == 0 {
+			return true, "There are no namespaces to check. Please check config."
+		}
+
+		return false, ""
+	}
+}
+
+func GetNoRolesSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.Roles) == 0 {
+			return true, "There are no roles to check. Please check config."
+		}
+
+		return false, ""
+	}
+}
+
+func GetDaemonSetFailedToSpawnSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if env.DaemonsetFailedToSpawn {
+			return true, "DaemonSet failed to spawn."
+		}
+
+		return false, ""
+	}
+}
+
+func GetSharedProcessNamespacePodsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.GetShareProcessNamespacePods()) == 0 {
+			return true, "Shared process namespace pods found."
 		}
 
 		return false, ""
