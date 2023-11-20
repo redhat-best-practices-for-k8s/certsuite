@@ -22,7 +22,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/certsuite"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	"gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v2"
 )
 
 type webServerContextKey string
@@ -46,6 +46,10 @@ var logs []byte
 
 //go:embed toast.js
 var toast []byte
+
+//go:embed index.js
+var index []byte
+
 var Buf *bytes.Buffer
 
 var upgrader = websocket.Upgrader{
@@ -83,29 +87,30 @@ func logStreamHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 type RequestedData struct {
-	SelectedOptions interface{} `json:"selectedOptions"`
+	SelectedOptions                      []string `json:"selectedOptions"`
+	TargetNameSpaces                     []string `json:"targetNameSpaces"`
+	PodsUnderTestLabels                  []string `json:"podsUnderTestLabels"`
+	OperatorsUnderTestLabels             []string `json:"operatorsUnderTestLabels"`
+	ManagedDeployments                   []string `json:"managedDeployments"`
+	ManagedStatefulsets                  []string `json:"managedStatefulsets"`
+	SkipScalingTestDeploymentsnamespace  []string `json:"skipScalingTestDeploymentsnamespace"`
+	SkipScalingTestDeploymentsname       []string `json:"skipScalingTestDeploymentsname"`
+	SkipScalingTestStatefulsetsnamespace []string `json:"skipScalingTestStatefulsetsnamespace"`
+	SkipScalingTestStatefulsetsname      []string `json:"skipScalingTestStatefulsetsname"`
+	TargetCrdFiltersnameSuffix           []string `json:"targetCrdFiltersnameSuffix"`
+	TargetCrdFiltersscalable             []string `json:"targetCrdFiltersscalable"`
+	AcceptedKernelTaints                 []string `json:"acceptedKernelTaints"`
+	SkipHelmChartList                    []string `json:"skipHelmChartList"`
+	Servicesignorelist                   []string `json:"servicesignorelist"`
+	ValidProtocolNames                   []string `json:"ValidProtocolNames"`
+	DebugDaemonSetNamespace              []string `json:"DebugDaemonSetNamespace"`
+	CollectorAppEndPoint                 []string `json:"CollectorAppEndPoint"`
+	ExecutedBy                           []string `json:"executedBy"`
+	CollectorAppPassword                 []string `json:"CollectorAppPassword"`
+	PartnerName                          []string `json:"PartnerName"`
 }
 type ResponseData struct {
 	Message string `json:"message"`
-}
-
-func FlattenData(data interface{}, result []string) []string {
-	switch v := data.(type) {
-	case string:
-		result = append(result, v)
-	case []interface{}:
-		for _, item := range v {
-			result = FlattenData(item, result)
-		}
-	case map[string]interface{}:
-		for key, item := range v {
-			if key == "selectedOptions" {
-				result = FlattenData(item, result)
-			}
-			result = FlattenData(item, result)
-		}
-	}
-	return result
 }
 
 func installReqHandlers() {
@@ -152,6 +157,18 @@ func installReqHandlers() {
 			return
 		}
 	})
+
+	http.HandleFunc("/index.js", func(w http.ResponseWriter, r *http.Request) {
+		// Set the content type to "application/javascript".
+		w.Header().Set("Content-Type", "application/javascript")
+		// Write the embedded JavaScript content to the response.
+		_, err := w.Write(index)
+		if err != nil {
+			http.Error(w, "Failed to write response", http.StatusInternalServerError)
+			return
+		}
+	})
+
 	// Serve the static HTML file
 	http.HandleFunc("/logstream", logStreamHandler)
 }
