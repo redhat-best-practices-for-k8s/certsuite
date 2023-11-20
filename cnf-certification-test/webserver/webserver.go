@@ -301,7 +301,7 @@ func updateTnf(tnfConfig []byte, data *RequestedData) []byte {
 
 	err := yaml.Unmarshal(tnfConfig, &config)
 	if err != nil {
-		logrus.Fatalf("Error unmarshaling YAML: %v", err)
+		logrus.Fatalf("Error unmarshalling YAML: %v", err)
 	}
 
 	// Modify the configuration
