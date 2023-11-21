@@ -20,7 +20,6 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
@@ -29,6 +28,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netutil"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/policies"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/services"
+	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
@@ -46,117 +46,151 @@ type Port []struct {
 	Protocol      string
 }
 
-// All actual test code belongs below here.  Utilities belong above.
-var _ = ginkgo.Describe(common.NetworkingTestKey, func() {
+var (
+	env provider.TestEnvironment
+
+	beforeEachFn = func(check *checksdb.Check) error {
+		logrus.Infof("Check %s: getting test environment.", check.ID)
+		env = provider.GetTestEnvironment()
+		return nil
+	}
+)
+
+//nolint:funlen
+func init() {
 	logrus.Debugf("Entering %s suite", common.NetworkingTestKey)
 
-	var env provider.TestEnvironment
-	ginkgo.BeforeEach(func() {
-		env = provider.GetTestEnvironment()
-	})
+	checksGroup := checksdb.NewChecksGroup(common.NetworkingTestKey).
+		WithBeforeEachFn(beforeEachFn)
 
 	// Default interface ICMP IPv4 test case
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestICMPv4ConnectivityIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"), testhelper.NewSkipObject(env.Pods, "env.Pods"))
-		if env.DaemonsetFailedToSpawn {
-			ginkgo.Skip("Debug Daemonset failed to spawn skipping testNetworkConnectivity ICMP IPv4")
-		}
-		testNetworkConnectivity(&env, netcommons.IPv4, netcommons.DEFAULT)
-	})
+	checksGroup.Add(checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env), testhelper.GetDaemonSetFailedToSpawnSkipFn(&env), testhelper.GetNoPodsUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testNetworkConnectivity(&env, netcommons.IPv4, netcommons.DEFAULT, c)
+			return nil
+		}))
+
 	// Multus interfaces ICMP IPv4 test case
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestICMPv4ConnectivityMultusIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"), testhelper.NewSkipObject(env.Pods, "env.Pods"))
-		if env.DaemonsetFailedToSpawn {
-			ginkgo.Skip("Debug Daemonset failed to spawn skipping testNetworkConnectivity Multus IPv4")
-		}
-		testNetworkConnectivity(&env, netcommons.IPv4, netcommons.MULTUS)
-	})
+	checksGroup.Add(checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env), testhelper.GetDaemonSetFailedToSpawnSkipFn(&env), testhelper.GetNoPodsUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testNetworkConnectivity(&env, netcommons.IPv4, netcommons.MULTUS, c)
+			return nil
+		}))
+
 	// Default interface ICMP IPv6 test case
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestICMPv6ConnectivityIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"), testhelper.NewSkipObject(env.Pods, "env.Pods"))
-		if env.DaemonsetFailedToSpawn {
-			ginkgo.Skip("Debug Daemonset failed to spawn skipping testNetworkConnectivity ICMP IPv6")
-		}
-		testNetworkConnectivity(&env, netcommons.IPv6, netcommons.DEFAULT)
-	})
+	checksGroup.Add(checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env), testhelper.GetDaemonSetFailedToSpawnSkipFn(&env), testhelper.GetNoPodsUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testNetworkConnectivity(&env, netcommons.IPv6, netcommons.DEFAULT, c)
+			return nil
+		}))
+
 	// Multus interfaces ICMP IPv6 test case
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestICMPv6ConnectivityMultusIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"), testhelper.NewSkipObject(env.Pods, "env.Pods"))
-		if env.DaemonsetFailedToSpawn {
-			ginkgo.Skip("Debug Daemonset failed to spawn skipping testNetworkConnectivity Multus IPv6")
-		}
-		testNetworkConnectivity(&env, netcommons.IPv6, netcommons.MULTUS)
-	})
-	// Default interface ICMP IPv6 test case
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUndeclaredContainerPortsUsage)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"), testhelper.NewSkipObject(env.Pods, "env.Pods"))
-		if env.DaemonsetFailedToSpawn {
-			ginkgo.Skip("Debug Daemonset failed to spawn skipping testUndeclaredContainerPortsUsage")
-		}
-		testUndeclaredContainerPortsUsage(&env)
-	})
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOCPReservedPortsUsage)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"), testhelper.NewSkipObject(env.Pods, "env.Pods"))
-		if env.DaemonsetFailedToSpawn {
-			ginkgo.Skip("Debug Daemonset failed to spawn skipping testOCPReservedPortsUsage")
-		}
-		testOCPReservedPortsUsage(&env)
-	})
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServiceDualStackIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Services, "env.Services"))
-		testDualStackServices(&env)
-	})
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNetworkPolicyDenyAllIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Pods, "env.Pods"))
-		testNetworkPolicyDenyAll(&env)
-	})
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestReservedExtendedPartnerPorts)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Pods, "env.Pods"))
-		if env.DaemonsetFailedToSpawn {
-			ginkgo.Skip("Debug Daemonset failed to spawn skipping testPartnerSpecificTCPPorts")
-		}
-		testPartnerSpecificTCPPorts(&env)
-	})
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestDpdkCPUPinningExecProbe)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		dpdkPods := env.GetCPUPinningPodsWithDpdk()
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(dpdkPods, "dpdkPods"))
-		testExecProbDenyAtCPUPinning(dpdkPods)
-	})
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestRestartOnRebootLabelOnPodsUsingSRIOV)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		sriovPods, err := env.GetPodsUsingSRIOV()
-		if err != nil {
-			ginkgo.Fail(fmt.Sprintf("Failure getting pods using SRIOV: %v", err))
-		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(sriovPods, "sriovPods"))
-		testRestartOnRebootLabelOnPodsUsingSriov(sriovPods)
-	})
-})
+	checksGroup.Add(checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env), testhelper.GetDaemonSetFailedToSpawnSkipFn(&env), testhelper.GetNoPodsUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testNetworkConnectivity(&env, netcommons.IPv6, netcommons.MULTUS, c)
+			return nil
+		}))
 
-func testExecProbDenyAtCPUPinning(dpdkPods []*provider.Pod) {
-	ginkgo.By("Check if exec probe is happening")
+	// Undeclared container ports usage test case
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUndeclaredContainerPortsUsage)
+	checksGroup.Add(checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env), testhelper.GetDaemonSetFailedToSpawnSkipFn(&env), testhelper.GetNoPodsUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testUndeclaredContainerPortsUsage(c, &env)
+			return nil
+		}))
+
+	// OCP reserved ports usage test case
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOCPReservedPortsUsage)
+	checksGroup.Add(checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env), testhelper.GetDaemonSetFailedToSpawnSkipFn(&env), testhelper.GetNoPodsUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOCPReservedPortsUsage(c, &env)
+			return nil
+		}))
+
+	// Dual stack services test case
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServiceDualStackIdentifier)
+	checksGroup.Add(checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(testhelper.GetNoServicesUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testDualStackServices(c, &env)
+			return nil
+		}))
+
+	// Network policy deny all test case
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNetworkPolicyDenyAllIdentifier)
+	checksGroup.Add(checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testNetworkPolicyDenyAll(c, &env)
+			return nil
+		}))
+
+	// Extended partner ports test case
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestReservedExtendedPartnerPorts)
+	checksGroup.Add(checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env), testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testPartnerSpecificTCPPorts(c, &env)
+			return nil
+		}))
+
+	// DPDK CPU pinning exec probe test case
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestDpdkCPUPinningExecProbe)
+	checksGroup.Add(checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(testhelper.GetNoCPUPinningPodsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			dpdkPods := env.GetCPUPinningPodsWithDpdk()
+			testExecProbDenyAtCPUPinning(c, dpdkPods)
+			return nil
+		}))
+
+	// Restart on reboot label test case
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestRestartOnRebootLabelOnPodsUsingSRIOV)
+	checksGroup.Add(checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(testhelper.GetNoSRIOVPodsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			sriovPods, err := env.GetPodsUsingSRIOV()
+			if err != nil {
+				return fmt.Errorf("failure getting pods using SRIOV: %v", err)
+			}
+			testRestartOnRebootLabelOnPodsUsingSriov(c, sriovPods)
+			return nil
+		}))
+}
+
+func testExecProbDenyAtCPUPinning(check *checksdb.Check, dpdkPods []*provider.Pod) {
+	tnf.Logf(logrus.InfoLevel, "Check if exec probe is happening")
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
 
 	for _, cpuPinnedPod := range dpdkPods {
+		execProbeFound := false
 		for _, cut := range cpuPinnedPod.Containers {
 			if cut.HasExecProbes() {
-				ginkgo.Fail("Exec prob is not allowed")
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(cpuPinnedPod.Namespace, cpuPinnedPod.Name, "Exec prob is not allowed", false))
+				execProbeFound = true
 			}
 		}
+
+		if !execProbeFound {
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(cpuPinnedPod.Namespace, cpuPinnedPod.Name, "Exec prob is allowed", true))
+		}
 	}
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 //nolint:funlen
-func testUndeclaredContainerPortsUsage(env *provider.TestEnvironment) {
+func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	var portInfo netutil.PortInfo
@@ -221,11 +255,11 @@ func testUndeclaredContainerPortsUsage(env *provider.TestEnvironment) {
 				testhelper.NewPodReportObject(put.Namespace, put.Name, "All listening were declared in containers specs", true))
 		}
 	}
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 // testDefaultNetworkConnectivity test the connectivity between the default interfaces of containers under test
-func testNetworkConnectivity(env *provider.TestEnvironment, aIPVersion netcommons.IPVersion, aType netcommons.IFType) {
+func testNetworkConnectivity(env *provider.TestEnvironment, aIPVersion netcommons.IPVersion, aType netcommons.IFType, check *checksdb.Check) {
 	netsUnderTest, claimsLog := icmp.BuildNetTestContext(env.Pods, aIPVersion, aType)
 	// Saving  curated logs to claims file
 	tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
@@ -233,21 +267,22 @@ func testNetworkConnectivity(env *provider.TestEnvironment, aIPVersion netcommon
 	// Saving curated logs to claims file
 	tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
 	if skip {
-		ginkgo.Skip(fmt.Sprintf("There are no %s networks to test with at least 2 pods, skipping test", aIPVersion))
+		tnf.Logf(logrus.InfoLevel, "There are no %s networks to test with at least 2 pods, skipping test", aIPVersion)
+		return
 	}
-	testhelper.AddTestResultReason(report.CompliantObjectsOut, report.NonCompliantObjectsOut, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(report.CompliantObjectsOut, report.NonCompliantObjectsOut)
 }
 
-func testOCPReservedPortsUsage(env *provider.TestEnvironment) {
+func testOCPReservedPortsUsage(check *checksdb.Check, env *provider.TestEnvironment) {
 	// List of all ports reserved by OpenShift
 	OCPReservedPorts := map[int32]bool{
 		22623: true,
 		22624: true}
 	compliantObjects, nonCompliantObjects := netcommons.TestReservedPortsUsage(env, OCPReservedPorts, "OCP")
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testPartnerSpecificTCPPorts(env *provider.TestEnvironment) {
+func testPartnerSpecificTCPPorts(check *checksdb.Check, env *provider.TestEnvironment) {
 	// List of all of the ports reserved by partner
 	ReservedPorts := map[int32]bool{
 		15443: true,
@@ -261,13 +296,13 @@ func testPartnerSpecificTCPPorts(env *provider.TestEnvironment) {
 		15000: true,
 	}
 	compliantObjects, nonCompliantObjects := netcommons.TestReservedPortsUsage(env, ReservedPorts, "Partner")
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testDualStackServices(env *provider.TestEnvironment) {
+func testDualStackServices(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
-	ginkgo.By("Testing services (should be either single stack ipv6 or dual-stack)")
+	tnf.Logf(logrus.InfoLevel, "Testing services (should be either single stack ipv6 or dual-stack)")
 	for _, s := range env.Services {
 		serviceIPVersion, err := services.GetServiceIPVersion(s)
 		if err != nil {
@@ -289,11 +324,11 @@ func testDualStackServices(env *provider.TestEnvironment) {
 		}
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testNetworkPolicyDenyAll(env *provider.TestEnvironment) {
-	ginkgo.By("Test for Deny All in network policies")
+func testNetworkPolicyDenyAll(check *checksdb.Check, env *provider.TestEnvironment) {
+	tnf.Logf(logrus.InfoLevel, "Test for Deny All in network policies")
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
@@ -343,10 +378,10 @@ func testNetworkPolicyDenyAll(env *provider.TestEnvironment) {
 		}
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testRestartOnRebootLabelOnPodsUsingSriov(sriovPods []*provider.Pod) {
+func testRestartOnRebootLabelOnPodsUsingSriov(check *checksdb.Check, sriovPods []*provider.Pod) {
 	const (
 		restartOnRebootLabel = "restart-on-reboot"
 	)
@@ -372,5 +407,5 @@ func testRestartOnRebootLabelOnPodsUsingSriov(sriovPods []*provider.Pod) {
 		compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, fmt.Sprintf("Pod uses SRIOV and the label %s is set to true", restartOnRebootLabel), true))
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
