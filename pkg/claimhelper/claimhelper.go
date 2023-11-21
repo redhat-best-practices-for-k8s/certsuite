@@ -27,11 +27,11 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
+	"github.com/test-network-function/cnf-certification-test/pkg/claim"
 	"github.com/test-network-function/cnf-certification-test/pkg/diagnostics"
 	"github.com/test-network-function/cnf-certification-test/pkg/junit"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/versions"
-	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
 const (

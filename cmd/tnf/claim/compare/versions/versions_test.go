@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/compare/diff"
-	officialClaimScheme "github.com/test-network-function/test-network-function-claim/pkg/claim"
+	officialClaimScheme "github.com/test-network-function/cnf-certification-test/pkg/claim"
 )
 
 func TestCompare(t *testing.T) {
