@@ -218,6 +218,39 @@ func TestCPUIsolation(t *testing.T) {
 			runtimeClassNameResult:   true,
 			loadBalancingResult:      false,
 		},
+		{ // Test Case #6 - Mem reqs/limit set, but no Cpu limits/reqs set.
+			testPod: &Pod{
+				Containers: []*Container{
+					{
+						Container: &corev1.Container{
+							Resources: corev1.ResourceRequirements{
+								Requests: corev1.ResourceList{
+									"memory": resource.MustParse(validMemLimit),
+								},
+								Limits: corev1.ResourceList{
+									"memory": resource.MustParse(validMemLimit),
+								},
+							},
+						},
+					},
+				},
+				Pod: &corev1.Pod{
+					Spec: corev1.PodSpec{
+						RuntimeClassName: &testClassName,
+					},
+					ObjectMeta: metav1.ObjectMeta{
+						Annotations: map[string]string{
+							"cpu-load-balancing.crio.io": "disable",
+							"irq-load-balancing.crio.io": "disable",
+						},
+					},
+				},
+			},
+			resourcesIdenticalResult: true,
+			wholeUnitsResult:         false,
+			runtimeClassNameResult:   true,
+			loadBalancingResult:      true,
+		},
 	}
 
 	for _, tc := range testCases {
