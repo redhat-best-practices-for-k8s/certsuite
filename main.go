@@ -35,6 +35,7 @@ import (
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/observability"
 	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/performance"
+	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/webserver"
 
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"

@@ -178,6 +178,8 @@ const (
 	ContainerType                = "Container"
 	ContainerImageType           = "Container Image"
 	NodeType                     = "Node"
+	OCPClusterType               = "OCP Cluster"
+	OCPClusterVersionType        = "OCP Cluster Version"
 	ContainerProcessType         = "ContainerProcess"
 	ContainerCategory            = "ContainerCategory"
 	ServiceType                  = "Service"
@@ -232,6 +234,12 @@ func NewCertifiedContainerReportObject(cii provider.ContainerImageIdentifier, aR
 func NewNodeReportObject(aNodeName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, NodeType, isCompliant)
 	out.AddField(Name, aNodeName)
+	return out
+}
+
+func NewClusterVersionReportObject(version, aReason string, isCompliant bool) (out *ReportObject) {
+	out = NewReportObject(aReason, OCPClusterType, isCompliant)
+	out.AddField(OCPClusterVersionType, version)
 	return out
 }
 
@@ -324,6 +332,15 @@ func ResultToString(result int) (str string) {
 		return "ERROR"
 	}
 	return ""
+}
+
+func GetNonOCPClusterSkipFn() func() (bool, string) {
+	return func() (bool, string) {
+		if !provider.IsOCPCluster() {
+			return true, "non-OCP cluster detected"
+		}
+		return false, ""
+	}
 }
 
 func GetNoServicesUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string) {
@@ -507,6 +524,33 @@ func GetNoAffinityRequiredPodsSkipFn(env *provider.TestEnvironment) func() (bool
 			return true, "no pods with required affinity found"
 		}
 
+		return false, ""
+	}
+}
+
+func GetNoBareMetalNodesSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.GetBaremetalNodes()) == 0 {
+			return true, "no baremetal nodes found"
+		}
+		return false, ""
+	}
+}
+
+func GetNoIstioSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if !env.IstioServiceMeshFound {
+			return true, "no istio service mesh found"
+		}
+		return false, ""
+	}
+}
+
+func GetNoHugepagesPodsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.GetHugepagesPods()) == 0 {
+			return true, "no pods requesting hugepages found"
+		}
 		return false, ""
 	}
 }

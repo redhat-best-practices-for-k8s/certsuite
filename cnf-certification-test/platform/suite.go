@@ -23,6 +23,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 	clientsholder "github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/compatibility"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
@@ -38,141 +39,175 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/operatingsystem"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/sysctlconfig"
 
-	"github.com/onsi/ginkgo/v2"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/nodetainted"
 )
 
-// All actual test code belongs below here.  Utilities belong above.
-var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
-	logrus.Debugf("Entering %s suite", common.PlatformAlterationTestKey)
-	var env provider.TestEnvironment
-	ginkgo.BeforeEach(func() {
+var (
+	env provider.TestEnvironment
+
+	beforeEachFn = func(check *checksdb.Check) error {
+		logrus.Infof("Check %s: getting test environment.", check.ID)
 		env = provider.GetTestEnvironment()
-	})
+		return nil
+	}
+)
+
+//nolint:funlen
+func init() {
+	logrus.Debugf("Entering %s suite", common.PlatformAlterationTestKey)
+
+	checksGroup := checksdb.NewChecksGroup(common.PlatformAlterationTestKey).
+		WithBeforeEachFn(beforeEachFn)
 
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHyperThreadEnable)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.GetBaremetalNodes(), "env.GetBaremetalNodes()"))
-		testHyperThreadingEnabled(&env)
-	})
+	check := checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(testhelper.GetNoBareMetalNodesSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testHyperThreadingEnabled(c, &env)
+			return nil
+		})
+
+	checksGroup.Add(check)
+
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUnalteredBaseImageIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if !provider.IsOCPCluster() {
-			ginkgo.Skip("Non-OCP cluster found, skipping testContainersFsDiff")
-		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
-		if env.DaemonsetFailedToSpawn {
-			ginkgo.Skip("Debug Daemonset failed to spawn skipping testContainersFsDiff")
-		}
-		testContainersFsDiff(&env)
-	})
+	check = checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(
+			testhelper.GetNonOCPClusterSkipFn(),
+			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env),
+			testhelper.GetNoContainersUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testContainersFsDiff(c, &env)
+			return nil
+		})
+
+	checksGroup.Add(check)
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNonTaintedNodeKernelsIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.DebugPods, "env.DebugPods"))
-		if env.DaemonsetFailedToSpawn {
-			ginkgo.Skip("Debug Daemonset failed to spawn skipping testTainted")
-		}
-		testTainted(&env) // Kind tainted kernels are allowed via config
-	})
+	check = checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testTainted(c, &env)
+			return nil
+		})
+
+	checksGroup.Add(check)
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsRedHatReleaseIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
-		testIsRedHatRelease(&env)
-	})
+	check = checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testIsRedHatRelease(c, &env)
+			return nil
+		})
+
+	checksGroup.Add(check)
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsSELinuxEnforcingIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if !provider.IsOCPCluster() {
-			ginkgo.Skip("Non-OCP cluster found, skipping testIsSELinuxEnforcing")
-		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.DebugPods, "env.DebugPods"))
-		if env.DaemonsetFailedToSpawn {
-			ginkgo.Skip("Debug Daemonset failed to spawn skipping testIsSELinuxEnforcing")
-		}
-		testIsSELinuxEnforcing(&env)
-	})
+	check = checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(
+			testhelper.GetNonOCPClusterSkipFn(),
+			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testIsSELinuxEnforcing(c, &env)
+			return nil
+		})
+
+	checksGroup.Add(check)
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHugepagesNotManuallyManipulated)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if !provider.IsOCPCluster() {
-			ginkgo.Skip("Non-OCP cluster found, skipping testHugepages")
-		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.DebugPods, "env.DebugPods"))
-		if env.DaemonsetFailedToSpawn {
-			ginkgo.Skip("Debug Daemonset failed to spawn skipping testHugepages")
-		}
-		testHugepages(&env)
-	})
+	check = checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(
+			testhelper.GetNonOCPClusterSkipFn(),
+			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testHugepages(c, &env)
+			return nil
+		})
+
+	checksGroup.Add(check)
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUnalteredStartupBootParamsIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if !provider.IsOCPCluster() {
-			ginkgo.Skip("Non-OCP cluster found, skipping testUnalteredBootParams")
-		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.DebugPods, "env.DebugPods"))
-		if env.DaemonsetFailedToSpawn {
-			ginkgo.Skip("Debug Daemonset failed to spawn skipping testUnalteredBootParams")
-		}
-		testUnalteredBootParams(&env)
-	})
+	check = checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(
+			testhelper.GetNonOCPClusterSkipFn(),
+			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testUnalteredBootParams(c, &env)
+			return nil
+		})
+
+	checksGroup.Add(check)
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSysctlConfigsIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if !provider.IsOCPCluster() {
-			ginkgo.Skip("Non-OCP cluster found, skipping testSysctlConfigs")
-		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.DebugPods, "env.DebugPods"))
-		if env.DaemonsetFailedToSpawn {
-			ginkgo.Skip("Debug Daemonset failed to spawn skipping testSysctlConfigs")
-		}
-		testSysctlConfigs(&env)
-	})
+	check = checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(
+			testhelper.GetNonOCPClusterSkipFn(),
+			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testSysctlConfigs(c, &env)
+			return nil
+		})
+
+	checksGroup.Add(check)
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServiceMeshIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Pods, "env.Pods"))
-		testServiceMesh(&env)
-	})
+	check = checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(
+			testhelper.GetNoIstioSkipFn(&env),
+			testhelper.GetNoPodsUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testServiceMesh(c, &env)
+			return nil
+		})
+
+	checksGroup.Add(check)
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOCPLifecycleIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if !provider.IsOCPCluster() {
-			ginkgo.Skip("Non-OCP cluster found, skipping testOCPStatus")
-		}
-		testOCPStatus(&env)
-	})
+	check = checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(testhelper.GetNonOCPClusterSkipFn()).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOCPStatus(c, &env)
+			return nil
+		})
+
+	checksGroup.Add(check)
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNodeOperatingSystemIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if !provider.IsOCPCluster() {
-			ginkgo.Skip("Non-OCP cluster found, skipping testNodeOperatingSystemStatus")
-		}
-		testNodeOperatingSystemStatus(&env)
-	})
+	check = checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(testhelper.GetNonOCPClusterSkipFn()).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testNodeOperatingSystemStatus(c, &env)
+			return nil
+		})
+
+	checksGroup.Add(check)
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHugePages2M)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if !provider.IsOCPCluster() {
-			ginkgo.Skip("Non-OCP cluster found, skipping testPodHugePagesSize2M")
-		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.GetHugepagesPods(), "env.GetHugepagesPods()"))
-		testPodHugePagesSize(&env, provider.HugePages2Mi)
-	})
+	check = checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(
+			testhelper.GetNonOCPClusterSkipFn(),
+			testhelper.GetNoHugepagesPodsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testPodHugePagesSize(c, &env, provider.HugePages2Mi)
+			return nil
+		})
+
+	checksGroup.Add(check)
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHugePages1G)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if !provider.IsOCPCluster() {
-			ginkgo.Skip("Non-OCP cluster found, skipping testPodHugePagesSize1G")
-		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.GetHugepagesPods(), "env.GetHugepagesPods()"))
-		testPodHugePagesSize(&env, provider.HugePages1Gi)
-	})
+	check = checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(
+			testhelper.GetNonOCPClusterSkipFn(),
+			testhelper.GetNoHugepagesPodsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testPodHugePagesSize(c, &env, provider.HugePages1Gi)
+			return nil
+		})
 
-})
+	checksGroup.Add(check)
+}
 
-func testHyperThreadingEnabled(env *provider.TestEnvironment) {
+func testHyperThreadingEnabled(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	baremetalNodes := env.GetBaremetalNodes()
@@ -188,17 +223,10 @@ func testHyperThreadingEnabled(env *provider.TestEnvironment) {
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has hyperthreading disabled ", false))
 		}
 	}
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testServiceMesh(env *provider.TestEnvironment) {
-	// check if istio is installed
-	if !env.IstioServiceMeshFound {
-		tnf.ClaimFilePrintf("Istio is not installed")
-		ginkgo.Skip("No service mesh detected.")
-	}
-	tnf.ClaimFilePrintf("Istio is installed")
-
+func testServiceMesh(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
@@ -217,19 +245,18 @@ func testServiceMesh(env *provider.TestEnvironment) {
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod found with service mesh container", true))
 		}
 	}
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 // testContainersFsDiff test that all CUT did not install new packages are starting
-func testContainersFsDiff(env *provider.TestEnvironment) {
+func testContainersFsDiff(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
 		logrus.Debug(fmt.Sprintf("%s should not install new packages after starting", cut.String()))
 		debugPod := env.DebugPods[cut.NodeName]
-		if debugPod == nil {
-			ginkgo.Fail(fmt.Sprintf("Debug pod not found on Node: %s", cut.NodeName))
-		}
+
 		ctxt := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
 		fsDiffTester := cnffsdiff.NewFsDiffTester(clientsholder.GetClientsHolder(), ctxt)
 		fsDiffTester.RunTest(cut.UID)
@@ -249,11 +276,11 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 		}
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 //nolint:funlen
-func testTainted(env *provider.TestEnvironment) {
+func testTainted(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
@@ -281,7 +308,7 @@ func testTainted(env *provider.TestEnvironment) {
 	for _, dp := range env.DebugPods {
 		nodeName := dp.Spec.NodeName
 
-		ginkgo.By(fmt.Sprintf("Checking kernel taints of node %s", nodeName))
+		logrus.Infof("Checking kernel taints of node %s", nodeName)
 
 		ocpContext := clientsholder.NewContext(dp.Namespace, dp.Name, dp.Spec.Containers[0].Name)
 		tf := nodetainted.NewNodeTaintedTester(&ocpContext, nodeName)
@@ -374,15 +401,15 @@ func testTainted(env *provider.TestEnvironment) {
 		logrus.Info("Nodes have been found to be tainted. Check claim log for more details.")
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testIsRedHatRelease(env *provider.TestEnvironment) {
-	ginkgo.By("should report a proper Red Hat version")
+func testIsRedHatRelease(check *checksdb.Check, env *provider.TestEnvironment) {
+	logrus.Info("should report a proper Red Hat version")
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
-		ginkgo.By(fmt.Sprintf("%s is checked for Red Hat version", cut))
+		logrus.Infof("%s is checked for Red Hat version", cut)
 		baseImageTester := isredhat.NewBaseImageTester(clientsholder.GetClientsHolder(), clientsholder.NewContext(cut.Namespace, cut.Podname, cut.Name))
 
 		result, err := baseImageTester.TestContainerIsRedHatRelease()
@@ -397,10 +424,10 @@ func testIsRedHatRelease(env *provider.TestEnvironment) {
 		}
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testIsSELinuxEnforcing(env *provider.TestEnvironment) {
+func testIsSELinuxEnforcing(check *checksdb.Check, env *provider.TestEnvironment) {
 	const (
 		getenforceCommand = `chroot /host getenforce`
 		enforcingString   = "Enforcing\n"
@@ -434,10 +461,10 @@ func testIsSELinuxEnforcing(env *provider.TestEnvironment) {
 		logrus.Infof(fmt.Sprintf("Failed because %d nodes are not running selinux", nodesFailed))
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testHugepages(env *provider.TestEnvironment) {
+func testHugepages(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for i := range env.Nodes {
@@ -468,10 +495,10 @@ func testHugepages(env *provider.TestEnvironment) {
 		}
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testUnalteredBootParams(env *provider.TestEnvironment) {
+func testUnalteredBootParams(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	alreadyCheckedNodes := map[string]bool{}
@@ -494,10 +521,10 @@ func testUnalteredBootParams(env *provider.TestEnvironment) {
 		}
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testSysctlConfigs(env *provider.TestEnvironment) {
+func testSysctlConfigs(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
@@ -537,17 +564,18 @@ func testSysctlConfigs(env *provider.TestEnvironment) {
 		}
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testOCPStatus(env *provider.TestEnvironment) {
-	ginkgo.By("Testing the OCP Version for lifecycle status")
+func testOCPStatus(check *checksdb.Check, env *provider.TestEnvironment) {
+	logrus.Infof("Testing the OCP Version for lifecycle status")
 
+	clusterIsInEOL := false
 	switch env.OCPStatus {
 	case compatibility.OCPStatusEOL:
 		msg := fmt.Sprintf("OCP Version %s has been found to be in end of life", env.OpenshiftVersion)
 		tnf.ClaimFilePrintf(msg)
-		ginkgo.Fail(msg)
+		clusterIsInEOL = true
 	case compatibility.OCPStatusMS:
 		msg := fmt.Sprintf("OCP Version %s has been found to be in maintenance support", env.OpenshiftVersion)
 		tnf.ClaimFilePrintf(msg)
@@ -561,11 +589,22 @@ func testOCPStatus(env *provider.TestEnvironment) {
 		msg := fmt.Sprintf("OCP Version %s was unable to be found in the lifecycle compatibility matrix", env.OpenshiftVersion)
 		tnf.ClaimFilePrintf(msg)
 	}
+
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	if clusterIsInEOL {
+		nonCompliantObjects = []*testhelper.ReportObject{testhelper.NewClusterVersionReportObject(env.OpenshiftVersion, "Openshift Version is in End Of Life (EOL)", false)}
+	} else {
+		compliantObjects = []*testhelper.ReportObject{testhelper.NewClusterVersionReportObject(env.OpenshiftVersion, "Openshift Version is not in End Of Life (EOL)", true)}
+	}
+
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 //nolint:funlen
-func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
-	ginkgo.By("Testing the control-plane and workers in the cluster for Operating System compatibility")
+func testNodeOperatingSystemStatus(check *checksdb.Check, env *provider.TestEnvironment) {
+	logrus.Info("Testing the control-plane and workers in the cluster for Operating System compatibility")
 
 	logrus.Debug(fmt.Sprintf("There are %d nodes to process for Operating System compatibility.", len(env.Nodes)))
 
@@ -674,10 +713,10 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 		tnf.ClaimFilePrintf(errMsg)
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testPodHugePagesSize(env *provider.TestEnvironment, size string) {
+func testPodHugePagesSize(check *checksdb.Check, env *provider.TestEnvironment, size string) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.GetHugepagesPods() {
@@ -688,5 +727,5 @@ func testPodHugePagesSize(env *provider.TestEnvironment, size string) {
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has been found to be running with a correct hugepages size", true))
 		}
 	}
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
