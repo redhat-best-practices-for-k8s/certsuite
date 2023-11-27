@@ -612,8 +612,7 @@ func IsCSVAndClusterWide(aNamespace, name string, env *provider.TestEnvironment)
 // return true if CSV install mode contains multi namespaces or all namespaces
 func IsInstallModeMultiNamespace(installModes []v1alpha1.InstallMode) bool {
 	for i := 0; i < len(installModes); i++ {
-		if installModes[i].Type == v1alpha1.InstallModeTypeAllNamespaces ||
-			installModes[i].Type == v1alpha1.InstallModeTypeMultiNamespace {
+		if installModes[i].Type == v1alpha1.InstallModeTypeAllNamespaces {
 			return true
 		}
 	}
