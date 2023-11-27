@@ -9,6 +9,8 @@
           type="image/svg+xml"
           sizes="any"
           href="https://ux.redhat.com/assets/logo-red-hat.svg">
+          <link rel="stylesheet" href="https://ux.redhat.com/assets/packages/@rhds/elements/elements/rh-table/rh-table-lightdom.css">
+
     <link rel="stylesheet" href="https://ux.redhat.com/assets/packages/@rhds/elements/elements/rh-footer/rh-footer-lightdom.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
@@ -122,7 +124,6 @@
         }
 
       label {
-        display: block;
         font-weight: var(--rh-font-weight-heading-bold, 700);
         margin-block-end: var(--rh-space-sm, 6px);
       }
@@ -145,6 +146,7 @@
       document.body.style.removeProperty('--main-opacity');
       </script>
      <script src="https://cdn.jsdelivr.net/npm/js-yaml/dist/js-yaml.min.js"></script>
+     <script src="./classification.js"></script>
 
     <script type="module">
       // import design system element definitions,
@@ -153,6 +155,9 @@
       import '@rhds/elements/rh-dialog/rh-dialog.js';
       import '@rhds/elements/rh-footer/rh-footer-universal.js';
       import '@patternfly/elements/pf-text-input/pf-text-input.js';
+      import '@rhds/elements/rh-table/rh-table.js';
+      import '@rhds/elements/rh-blockquote/rh-blockquote.js';
+      import '@rhds/elements/rh-accordion/rh-accordion.js';
       // set up interactive elements
       // use dynamic import to improve page load times
       document.getElementById('logs').addEventListener('open', () => import('./logs.js'));
@@ -270,43 +275,70 @@
         
         </fieldset>
       </div>
-
         <fieldset>
           <legend>Select a Test</legend>
-          <label>
+
+          <legend id="selectComboBox"> Selcet a Test Tag <select name="class" id="selectScenarioComboBox" onchange="selectScenario()">
+          
+            <option value="all"> All</option>
+            <option value="faredge"> Far-Edge</option>
+            <option value="telco"> Telco</option>
+            <option value="nontelco"> Non-Telco</option>
+            <option value="extended"> Extended</option>
+
+          </select>
+          <select name="class" id="selectOpt" onchange="selectScenario()" hidden>
+            <option value="Mandatory"> Mandatory</option>
+            <option value="Optional"> Optional</option>
+         
+          </select>
+
+        </legend>
+          <label id="selectedsuites" hidden>
+          <h4>Filter a Suite Test</h4>
+          <div id="checkboxContainer">
             <input type="checkbox"
                    value="lifecycle"
-                   name="selectedOptions"> Lifecycle
+                   name="selectedOptionstest" id ="lifecycle"  checked 
+                   onclick="performToggle('lifecycle')"> <label for="lifecycle">Lifecycle</label>
             <input type="checkbox"
             value="manageability"
-            name="selectedOptions">Manageability
-          </label>
-          <label>
+            name="selectedOptionstest" checked id ="manageability" 
+            onclick="performToggle('manageability')"><label for="manageability">Manageability</label>
             <input type="checkbox"
                    value="affiliated-certification"
-                   name="selectedOptions"> Certification
+                   name="selectedOptionstest" checked id ="affiliated-certification"
+                    onclick="performToggle('affiliated-certification')"><label for="affiliated-certification">Certification</label>
             <input type="checkbox"
             value="operator"
-            name="selectedOptions"> Operator                    
-          </label>
-          <label>
+            name="selectedOptionstest" checked id ="operator"
+             onclick="performToggle('operator')"><label for="operator">Operator</label>               
             <input type="checkbox"
                    value="access-control"
-                   name="selectedOptions"> Access Control
+                   name="selectedOptionstest" checked id ="access-control"
+                    onclick="performToggle('access-control')"><label for="access-control">Access Control</label>
             <input type="checkbox"
             value="platform-alteration"
-            name="selectedOptions"> Platform Alteration         
-          </label>
-          <label>
+            name="selectedOptionstest" checked id ="platform-alteration"
+            onclick="performToggle('platform-alteration')"><label for="platform-alteration">Platform Alteration</label>   
             <input type="checkbox"
                    value="networking"
-                   name="selectedOptions"> Networking
+                   name="selectedOptionstest" checked id ="networking"
+                   onclick="performToggle('networking')" > <label for="networking">Networking</label>
             <input type="checkbox"
             value="performance"
-            name="selectedOptions"> Performance                   
-                   
-          </label>
-      
+            name="selectedOptionstest" checked id ="performance"
+            onclick="performToggle('performance')"> <label for="performance">performance</label> 
+            <input type="checkbox"
+            value="observability"
+            name="selectedOptionstest" checked id ="observability"
+            onclick="performToggle('observability')"><label for="observability">Observability</label>   
+          </div>   
+          </label><br>   
+          <rh-table>
+            <table class="table" id="testTable" >
+            </table>
+          </rh-table>
         </fieldset>
 
         <rh-button type="submit" name="submit">Run Certification Test</rh-button>

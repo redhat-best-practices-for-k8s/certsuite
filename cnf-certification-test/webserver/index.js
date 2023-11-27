@@ -1,6 +1,5 @@
 let yamlGlobal
 var counters = {};
-
 function addCrdElem(counters,name1,name2,clickedId){
 
     console.log(clickedId)
@@ -35,6 +34,7 @@ function addCrdElem(counters,name1,name2,clickedId){
  
 
   $(document).ready(function() {
+    selectScenario() // initilaize with all
     document.getElementById('targetNameSpacesremove').style.display = 'none';
     document.getElementById('podsUnderTestLabelsremove').style.display = 'none';
     document.getElementById('operatorsUnderTestLabelsremove').style.display = 'none';
@@ -47,6 +47,7 @@ function addCrdElem(counters,name1,name2,clickedId){
     document.getElementById('skipScalingTestDeploymentsremove').style.display = 'none';
     document.getElementById('skipScalingTestStatefulsetsremove').style.display = 'none';
     document.getElementById('ValidProtocolNamesremove').style.display = 'none';
+    
     const inputElement = document.getElementById('tnfFile')
     inputElement.addEventListener('change', handleTnfFiles, false)
       $('.add').on('click', function() {
@@ -169,10 +170,9 @@ if(yamlGlobal.executedBy){
 if(yamlGlobal.partnerName){
   document.getElementById('PartnerName').value = yamlGlobal.partnerName;
 }
-
-
 }
 }
+
 function fillData(input,element,clickedId,keyname,key2name){
 if (!counters[clickedId]){
 counters[clickedId] =1
@@ -185,13 +185,9 @@ if (keyname!=''){
   var value = input[key]
 }
 if(key2name==''){
-  console.log('heeeer')
-
   var pf_txt='<pf-text-input id2='+clickedId+ ' id='+clickedId+counters[clickedId] +' value="'
   +value+'"></pf-text-input>'
 }else{
-  console.log(input[key][keyname])
-  console.log(input[key][key2name])
       var i= counters[clickedId]
       var t1=clickedId+keyname+i+''
       var t2=clickedId+key2name+i+''
@@ -210,5 +206,135 @@ var field='<label for="'+clickedId+counters[clickedId] +'">'+counters[clickedId]
   $('#'+target).after(field);
  }
  counters[clickedId]= counters[clickedId]+1
+}
+}
+
+ function addCheckedTest(){
+  document.getElementById('lifecycle').checked = true
+  document.getElementById('manageability').checked = true
+  document.getElementById('affiliated-certification').checked = true
+  document.getElementById('operator').checked = true
+  document.getElementById('access-control').checked = true
+  document.getElementById('platform-alteration').checked = true
+  document.getElementById('networking').checked = true
+  document.getElementById('performance').checked = true
+  document.getElementById('observability').checked = true
+
+ } 
+
+function selectScenario(){
+  
+  $('#testTable').empty()
+  var beginning='<caption> Select a Suite Name </caption> <colgroup> '+
+  '<col style="width: 200px;">'+
+   '<col>'+
+    '</colgroup>'+
+  '<thead><tr> <th style="width: 200px;" scope="col" data-label="Testname">Test Name<rh-sort-button></rh-sort-button></th>'+
+    '<th style="width: 500px;" scope="col" data-label="Description">Test Info</th>'+
+    '</tr></thead>'
+    $(beginning).appendTo('#testTable');
+
+  addCheckedTest()
+  var field = ""
+  const selectScenarioComboBox = document.getElementById('selectScenarioComboBox')
+  const selectedValue = selectScenarioComboBox.options[selectScenarioComboBox.selectedIndex].value
+  if (selectedValue === 'all') {
+    document.getElementById('selectOpt').setAttribute('hidden','hidden')
+
+  for (const key in classification) {
+    field='<tr id="'+key+'"><td data-label="Testname"><label><input type="checkbox" value="'+
+     key +'" name="selectedOptions" checked> ' +
+    '<h7 for="'+key+'">'+key+
+    '</h7></label></td>'+
+    '<td data-label="Description"><rh-accordion>'+
+    '<rh-accordion-header><h4>Description</h4></rh-accordion-header><rh-accordion-panel><p>'+
+    classification[key][0].description+'</p></rh-accordion-panel>'+
+    '<rh-accordion-header><h4>Remediation</h4></rh-accordion-header><rh-accordion-panel><p>'+
+    classification[key][0].remediation+'</p></rh-accordion-panel>'+
+    '<rh-accordion-header><h4>BestPracticeReference</h4></rh-accordion-header><rh-accordion-panel><p>'+
+    classification[key][0].bestPracticeReference+'</p></rh-accordion-panel>'+
+    '</rh-accordion></td>'+
+    '</tr>'
+      $(field).appendTo('#testTable');
+  }
+
+  }else{ 
+  document.getElementById('selectOpt').removeAttribute('hidden')
+  buildTest(selectedValue)
+  }
+  document.getElementById('selectedsuites').removeAttribute('hidden')
+
+}
+function buildTest(scenarioValue){
+  const option = document.getElementById('selectOpt')
+  const selectedValue = option.options[option.selectedIndex].value
+  console.log(selectedValue)
+  var field = ""
+for (const key in classification){
+  eqData = classification[key][0]["categoryClassification"].FarEdge
+
+  if (scenarioValue == "telco") {
+    eqData = classification[key][0]["categoryClassification"].Telco
+  }
+  if (scenarioValue == "nontelco") {
+    eqData = classification[key][0]["categoryClassification"].NonTelco
+  }
+  if (scenarioValue == "extended") {
+    eqData = classification[key][0]["categoryClassification"].Extended
+  }
+  if(eqData == selectedValue){
+    field='<tr id="'+key+'"><td data-label="Testname"><label><input type="checkbox" value="'+
+     key +'" name="selectedOptions" checked> ' +
+    '<h7 for="'+key+'">'+key+
+    '</h7></label></td>'+
+    '<td data-label="Description"><rh-accordion>'+
+    '<rh-accordion-header><h4>Description</h4></rh-accordion-header><rh-accordion-panel><p>'+
+    classification[key][0].description+'</p></rh-accordion-panel>'+
+    '<rh-accordion-header><h4>Remediation</h4></rh-accordion-header><rh-accordion-panel><p>'+
+    classification[key][0].remediation+'</p></rh-accordion-panel>'+
+    '<rh-accordion-header><h4>BestPracticeReference</h4></rh-accordion-header><rh-accordion-panel><p>'+
+    classification[key][0].bestPracticeReference+'</p></rh-accordion-panel>'+
+    '</rh-accordion></td>'+
+    '</tr>'
+     $(field).appendTo('#testTable');
+  }
+}
+}
+
+// Add an event listener to the checkbox
+function performToggle (triggerId) {
+  var checkbox = document.getElementById(triggerId);
+var field = ""
+  for (const key in classification) {
+    var done=false
+    if (key.startsWith(triggerId)){
+    if (checkbox.checked) {
+      field='<tr id="'+key+'"><td data-label="Testname"><label><input type="checkbox" value="'+
+      key +'" name="selectedOptions" checked> ' +
+     '<h7 for="'+key+'">'+key+
+     '</h7></label></td>'+
+     '<td data-label="Description"><rh-accordion>'+
+     '<rh-accordion-header><h4>Description</h4></rh-accordion-header><rh-accordion-panel><p>'+
+     classification[key][0].description+'</p></rh-accordion-panel>'+
+     '<rh-accordion-header><h4>Remediation</h4></rh-accordion-header><rh-accordion-panel><p>'+
+     classification[key][0].remediation+'</p></rh-accordion-panel>'+
+     '<rh-accordion-header><h4>BestPracticeReference</h4></rh-accordion-header><rh-accordion-panel><p>'+
+     classification[key][0].bestPracticeReference+'</p></rh-accordion-panel>'+
+     '</rh-accordion></td>'+
+     '</tr>'
+      $(field).appendTo('#testTable');
+       field = ""
+    } else {
+      var tbody = document.querySelector('#testTable tbody');
+
+      var rowToRemove = document.getElementById(key);
+
+      // Check if the row exists
+      if (rowToRemove) {
+          // Remove the row from the table
+          tbody.removeChild(rowToRemove);
+      }
+    }
+  }
 }
 }
