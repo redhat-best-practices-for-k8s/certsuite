@@ -19,44 +19,26 @@ package preflight
 import (
 	"strings"
 
-	"github.com/onsi/ginkgo/v2"
 	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
+	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
 
-var _ = ginkgo.Describe(common.PreflightTestKey, func() {
-	logrus.Debugf("Entering %s suite", common.PreflightTestKey)
-	env := provider.GetTestEnvironment()
-	ginkgo.BeforeEach(func() {
+var (
+	env provider.TestEnvironment
+
+	beforeEachFn = func(check *checksdb.Check) error {
+		logrus.Infof("Check %s: getting test environment.", check.ID)
 		env = provider.GetTestEnvironment()
-	})
-
-	// Add safeguard against running the tests if the docker config does not exist.
-	if env.GetDockerConfigFile() == "" || env.GetDockerConfigFile() == "NA" {
-		logrus.Debug("Skipping the preflight suite because the Docker Config file is not provided.")
-		return
+		return nil
 	}
-
-	// Safeguard against running the preflight tests if the label filter is set but does not include the preflight label
-	ginkgoConfig, _ := ginkgo.GinkgoConfiguration()
-	if !labelsAllowTestRun(ginkgoConfig.LabelFilter, []string{common.PreflightTestKey, identifiers.TagPreflight}) {
-		logrus.Warn("LabelFilter is set but 'preflight' tests are not targeted. Skipping the preflight tests.")
-		return
-	}
-
-	testPreflightContainers(&env)
-	if provider.IsOCPCluster() {
-		logrus.Debugf("OCP cluster detected, allowing operator tests to run")
-		testPreflightOperators(&env)
-	} else {
-		logrus.Debugf("Skipping the preflight operators test because it requires an OCP cluster to run against")
-	}
-})
+)
 
 func labelsAllowTestRun(labelFilter string, allowedLabels []string) bool {
 	for _, label := range allowedLabels {
@@ -67,7 +49,49 @@ func labelsAllowTestRun(labelFilter string, allowedLabels []string) bool {
 	return false
 }
 
-func testPreflightOperators(env *provider.TestEnvironment) {
+// Returns true if the preflight checks should run.
+// Conditions: (1) the labels expr should contain any of the preflight tags/labels & (2) the
+// preflight dockerconfig file must exist.
+// This is just a hack to avoid running the preflight.LoadChecks() if it's not necessary
+// since that function is actually running all the preflight lib's checks, which can take some
+// time to finish. When they're finished, a checksdb.Check is created for each preflight lib's
+// check that has run. The CheckFn will simply store the result.
+func ShouldRun(labelsExpr string) bool {
+	preflightAllowedLabels := []string{common.PreflightTestKey, identifiers.TagPreflight}
+
+	if !labelsAllowTestRun(labelsExpr, preflightAllowedLabels) {
+		return false
+	}
+
+	// Add safeguard against running the preflight tests if the docker config does not exist.
+	preflightDockerConfigFile := configuration.GetTestParameters().PfltDockerconfig
+	if preflightDockerConfigFile == "" || preflightDockerConfigFile == "NA" {
+		logrus.Warn("Skipping the preflight suite because the Docker Config file is not provided.")
+		return false
+	}
+
+	return true
+}
+
+func LoadChecks() {
+	logrus.Debugf("Entering %s suite", common.PreflightTestKey)
+
+	// As the preflight lib's checks need to run here, we need to get the test environment now.
+	env = provider.GetTestEnvironment()
+
+	checksGroup := checksdb.NewChecksGroup(common.PreflightTestKey).
+		WithBeforeEachFn(beforeEachFn)
+
+	testPreflightContainers(checksGroup, &env)
+	if provider.IsOCPCluster() {
+		logrus.Debugf("OCP cluster detected, allowing operator tests to run")
+		testPreflightOperators(checksGroup, &env)
+	} else {
+		logrus.Debugf("Skipping the preflight operators test because it requires an OCP cluster to run against")
+	}
+}
+
+func testPreflightOperators(checksGroup *checksdb.ChecksGroup, env *provider.TestEnvironment) {
 	// Loop through all of the operators, run preflight, and set their results into their respective object
 	for _, op := range env.Operators {
 		// Note: We are not using a cache here for the operator bundle images because
@@ -84,11 +108,11 @@ func testPreflightOperators(env *provider.TestEnvironment) {
 	// Note: We only care about the `testEntry` variable below because we need its 'Description' and 'Suggestion' variables.
 	for testName, testEntry := range getUniqueTestEntriesFromOperatorResults(env.Operators) {
 		logrus.Infof("Testing operator ginkgo test: %s", testName)
-		generatePreflightOperatorGinkgoTest(testName, testEntry.Metadata().Description, testEntry.Help().Suggestion, env.Operators)
+		generatePreflightOperatorGinkgoTest(checksGroup, testName, testEntry.Metadata().Description, testEntry.Help().Suggestion, env.Operators)
 	}
 }
 
-func testPreflightContainers(env *provider.TestEnvironment) {
+func testPreflightContainers(checksGroup *checksdb.ChecksGroup, env *provider.TestEnvironment) {
 	// Using a cache to prevent unnecessary processing of images if we already have the results available
 	preflightImageCache := make(map[string]plibRuntime.Results)
 
@@ -107,12 +131,12 @@ func testPreflightContainers(env *provider.TestEnvironment) {
 	// Note: We only care about the `testEntry` variable below because we need its 'Description' and 'Suggestion' variables.
 	for testName, testEntry := range getUniqueTestEntriesFromContainerResults(env.Containers) {
 		logrus.Infof("Testing container ginkgo test: %s", testName)
-		generatePreflightContainerGinkgoTest(testName, testEntry.Metadata().Description, testEntry.Help().Suggestion, env.Containers)
+		generatePreflightContainerGinkgoTest(checksGroup, testName, testEntry.Metadata().Description, testEntry.Help().Suggestion, env.Containers)
 	}
 }
 
 // func generatePreflightContainerGinkgoTest(testName, testID string, tags []string, containers []*provider.Container) {
-func generatePreflightContainerGinkgoTest(testName, description, suggestion string, containers []*provider.Container) {
+func generatePreflightContainerGinkgoTest(checksGroup *checksdb.ChecksGroup, testName, description, suggestion string, containers []*provider.Container) {
 	// Based on a single test "name", we will be passing/failing in Ginkgo.
 	// Brute force-ish type of method.
 
@@ -123,38 +147,42 @@ func generatePreflightContainerGinkgoTest(testName, description, suggestion stri
 		identifiers.NonTelco: identifiers.Optional,
 		identifiers.Extended: identifiers.Optional,
 	}, identifiers.TagPreflight)
-	testID, tags := identifiers.GetGinkgoTestIDAndLabels(aID)
 
-	// Start the ginkgo It block
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		// Collect all of the failed and errored containers
-		var failedContainers []string
-		var erroredContainers []string
-		for _, cut := range containers {
-			for _, r := range cut.PreflightResults.Passed {
-				if r.Name() == testName {
-					logrus.Infof("%s has passed preflight test: %s", cut.String(), testName)
+	testID, tags := identifiers.GetGinkgoTestIDAndLabels(aID)
+	check := checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			var compliantObjects []*testhelper.ReportObject
+			var nonCompliantObjects []*testhelper.ReportObject
+			for _, cut := range containers {
+				for _, r := range cut.PreflightResults.Passed {
+					if r.Name() == testName {
+						compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has passed preflight test "+testName, true))
+						logrus.Infof("%s has passed preflight test: %s", cut.String(), testName)
+					}
+				}
+				for _, r := range cut.PreflightResults.Failed {
+					if r.Name() == testName {
+						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has failed preflight test "+testName, false))
+						tnf.Logf(logrus.WarnLevel, "%s has failed preflight test: %s", cut, testName)
+					}
+				}
+				for _, r := range cut.PreflightResults.Errors {
+					if r.Name() == testName {
+						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has errored preflight test "+testName, false))
+						tnf.Logf(logrus.ErrorLevel, "%s has errored preflight test: %s", cut, testName)
+					}
 				}
 			}
-			for _, r := range cut.PreflightResults.Failed {
-				if r.Name() == testName {
-					tnf.Logf(logrus.WarnLevel, "%s has failed preflight test: %s", cut, testName)
-					failedContainers = append(failedContainers, cut.String())
-				}
-			}
-			for _, r := range cut.PreflightResults.Errors {
-				if r.Name() == testName {
-					tnf.Logf(logrus.ErrorLevel, "%s has errored preflight test: %s", cut, testName)
-					erroredContainers = append(erroredContainers, cut.String())
-				}
-			}
-		}
-		testhelper.AddTestResultLog("Non-compliant", failedContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
-		testhelper.AddTestResultLog("Error", erroredContainers, tnf.ClaimFilePrintf, ginkgo.Fail)
-	})
+
+			c.SetResult(compliantObjects, nonCompliantObjects)
+			return nil
+		})
+
+	checksGroup.Add(check)
 }
 
-func generatePreflightOperatorGinkgoTest(testName, description, suggestion string, operators []*provider.Operator) {
+func generatePreflightOperatorGinkgoTest(checksGroup *checksdb.ChecksGroup, testName, description, suggestion string, operators []*provider.Operator) {
 	// Based on a single test "name", we will be passing/failing in Ginkgo.
 	// Brute force-ish type of method.
 
@@ -165,35 +193,40 @@ func generatePreflightOperatorGinkgoTest(testName, description, suggestion strin
 		identifiers.NonTelco: identifiers.Optional,
 		identifiers.Extended: identifiers.Optional,
 	}, identifiers.TagPreflight)
-	testID, tags := identifiers.GetGinkgoTestIDAndLabels(aID)
 
-	// Start the ginkgo It block
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		// Collect all of the failed and errored containers
-		var failedOperators []string
-		var erroredOperators []string
-		for _, op := range operators {
-			for _, r := range op.PreflightResults.Passed {
-				if r.Name() == testName {
-					logrus.Infof("%s has passed preflight test: %s", op.String(), testName)
+	testID, tags := identifiers.GetGinkgoTestIDAndLabels(aID)
+	check := checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			var compliantObjects []*testhelper.ReportObject
+			var nonCompliantObjects []*testhelper.ReportObject
+
+			for _, op := range operators {
+				for _, r := range op.PreflightResults.Passed {
+					if r.Name() == testName {
+						logrus.Infof("%s has passed preflight test: %s", op.String(), testName)
+						compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator passed preflight test "+testName, true))
+					}
+				}
+				for _, r := range op.PreflightResults.Failed {
+					if r.Name() == testName {
+						tnf.Logf(logrus.WarnLevel, "%s has failed preflight test: %s", op, testName)
+						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator failed preflight test "+testName, false))
+					}
+				}
+				for _, r := range op.PreflightResults.Errors {
+					if r.Name() == testName {
+						tnf.Logf(logrus.ErrorLevel, "%s has errored preflight test: %s", op, testName)
+						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator has errored preflight test "+testName, false))
+					}
 				}
 			}
-			for _, r := range op.PreflightResults.Failed {
-				if r.Name() == testName {
-					tnf.Logf(logrus.WarnLevel, "%s has failed preflight test: %s", op, testName)
-					failedOperators = append(failedOperators, op.String())
-				}
-			}
-			for _, r := range op.PreflightResults.Errors {
-				if r.Name() == testName {
-					tnf.Logf(logrus.ErrorLevel, "%s has errored preflight test: %s", op, testName)
-					erroredOperators = append(erroredOperators, op.String())
-				}
-			}
-		}
-		testhelper.AddTestResultLog("Non-compliant", failedOperators, tnf.ClaimFilePrintf, ginkgo.Fail)
-		testhelper.AddTestResultLog("Error", erroredOperators, tnf.ClaimFilePrintf, ginkgo.Fail)
-	})
+
+			c.SetResult(compliantObjects, nonCompliantObjects)
+			return nil
+		})
+
+	checksGroup.Add(check)
 }
 
 func getUniqueTestEntriesFromContainerResults(containers []*provider.Container) map[string]plibRuntime.Result {

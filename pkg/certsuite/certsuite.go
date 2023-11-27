@@ -13,6 +13,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/observability"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/performance"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/preflight"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/claimhelper"
@@ -21,7 +22,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
-func LoadChecksDB() {
+func LoadChecksDB(labelsExpr string) {
 	accesscontrol.LoadChecks()
 	certification.LoadChecks()
 	lifecycle.LoadChecks()
@@ -29,6 +30,11 @@ func LoadChecksDB() {
 	networking.LoadChecks()
 	observability.LoadChecks()
 	performance.LoadChecks()
+
+	if preflight.ShouldRun(labelsExpr) {
+		logrus.Infof("Loading preflight's lib checks.")
+		preflight.LoadChecks()
+	}
 }
 
 func Run(labelsFilter, outputFolder string, timeout time.Duration) {

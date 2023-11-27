@@ -134,7 +134,9 @@ func main() {
 	log.Infof("Claim Format Version: %s", versions.ClaimFormatVersion)
 	log.Infof("Labels filter       : %v", *labelsFlag)
 
-	certsuite.LoadChecksDB()
+	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
+
+	certsuite.LoadChecksDB(*labelsFlag)
 
 	if *listFlag {
 		// ToDo: List all the available checks, filtered with --labels.
@@ -161,7 +163,6 @@ func main() {
 		webserver.StartServer(*claimPath)
 	} else {
 		log.Info("Running CNF Certification Suite in stand-alone mode.")
-		_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
 		certsuite.Run(*labelsFlag, *claimPath, timeout)
 	}
 }
