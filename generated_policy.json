@@ -2,11 +2,6 @@
   "grades": {
     "requiredPassingTests": [
       {
-        "id": "affiliated-certification-operator-is-certified",
-        "suite": "affiliated-certification",
-        "tags": "common"
-      },
-      {
         "id": "access-control-bpf-capability-check",
         "suite": "access-control",
         "tags": "telco"
@@ -102,17 +97,7 @@
         "tags": "telco"
       },
       {
-        "id": "access-control-security-context",
-        "suite": "access-control",
-        "tags": "extended"
-      },
-      {
         "id": "access-control-security-context-non-root-user-check",
-        "suite": "access-control",
-        "tags": "common"
-      },
-      {
-        "id": "access-control-security-context-privilege-escalation",
         "suite": "access-control",
         "tags": "common"
       },
@@ -137,8 +122,68 @@
         "tags": "telco"
       },
       {
-        "id": "access-control-sys-ptrace-capability",
-        "suite": "access-control",
+        "id": "affiliated-certification-operator-is-certified",
+        "suite": "affiliated-certification",
+        "tags": "common"
+      },
+      {
+        "id": "lifecycle-container-shutdown",
+        "suite": "lifecycle",
+        "tags": "telco"
+      },
+      {
+        "id": "lifecycle-container-startup",
+        "suite": "lifecycle",
+        "tags": "telco"
+      },
+      {
+        "id": "lifecycle-deployment-scaling",
+        "suite": "lifecycle",
+        "tags": "common"
+      },
+      {
+        "id": "lifecycle-image-pull-policy",
+        "suite": "lifecycle",
+        "tags": "telco"
+      },
+      {
+        "id": "lifecycle-liveness-probe",
+        "suite": "lifecycle",
+        "tags": "telco"
+      },
+      {
+        "id": "lifecycle-pod-high-availability",
+        "suite": "lifecycle",
+        "tags": "common"
+      },
+      {
+        "id": "lifecycle-pod-owner-type",
+        "suite": "lifecycle",
+        "tags": "telco"
+      },
+      {
+        "id": "lifecycle-pod-recreation",
+        "suite": "lifecycle",
+        "tags": "common"
+      },
+      {
+        "id": "lifecycle-pod-scheduling",
+        "suite": "lifecycle",
+        "tags": "telco"
+      },
+      {
+        "id": "lifecycle-pod-toleration-bypass",
+        "suite": "lifecycle",
+        "tags": "telco"
+      },
+      {
+        "id": "lifecycle-readiness-probe",
+        "suite": "lifecycle",
+        "tags": "telco"
+      },
+      {
+        "id": "lifecycle-startup-probe",
+        "suite": "lifecycle",
         "tags": "telco"
       },
       {
@@ -149,6 +194,51 @@
       {
         "id": "manageability-containers-image-tag",
         "suite": "manageability",
+        "tags": "extended"
+      },
+      {
+        "id": "networking-dual-stack-service",
+        "suite": "networking",
+        "tags": "extended"
+      },
+      {
+        "id": "networking-icmpv4-connectivity",
+        "suite": "networking",
+        "tags": "common"
+      },
+      {
+        "id": "networking-icmpv4-connectivity-multus",
+        "suite": "networking",
+        "tags": "telco"
+      },
+      {
+        "id": "networking-icmpv6-connectivity",
+        "suite": "networking",
+        "tags": "common"
+      },
+      {
+        "id": "networking-icmpv6-connectivity-multus",
+        "suite": "networking",
+        "tags": "telco"
+      },
+      {
+        "id": "networking-network-policy-deny-all",
+        "suite": "networking",
+        "tags": "common"
+      },
+      {
+        "id": "networking-ocp-reserved-ports-usage",
+        "suite": "networking",
+        "tags": "common"
+      },
+      {
+        "id": "networking-reserved-partner-ports",
+        "suite": "networking",
+        "tags": "extended"
+      },
+      {
+        "id": "networking-undeclared-container-ports-usage",
+        "suite": "networking",
         "tags": "extended"
       },
       {

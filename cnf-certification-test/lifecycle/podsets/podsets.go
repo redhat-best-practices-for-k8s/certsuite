@@ -181,7 +181,10 @@ func getNotReadyStatefulSets(statefulSets []*provider.StatefulSet) []*provider.S
 	return notReadyStatefulSets
 }
 
-func WaitForAllPodSetsReady(env *provider.TestEnvironment, timeout time.Duration) (claimsLog loghelper.CuratedLogLines, atLeastOnePodsetNotReady bool) {
+func WaitForAllPodSetsReady(env *provider.TestEnvironment, timeout time.Duration) (
+	claimsLog loghelper.CuratedLogLines,
+	notReadyDeployments []*provider.Deployment,
+	notReadyStatefulSets []*provider.StatefulSet) {
 	const queryInterval = 15 * time.Second
 
 	deploymentsToCheck := env.Deployments
@@ -190,10 +193,10 @@ func WaitForAllPodSetsReady(env *provider.TestEnvironment, timeout time.Duration
 	logrus.Infof("Waiting %s for %d podsets to be ready.", timeout, len(deploymentsToCheck)+len(statefulSetsToCheck))
 	for startTime := time.Now(); time.Since(startTime) < timeout; {
 		logrus.Infof("Checking Deployments readiness of Deployments %v", getDeploymentsInfo(deploymentsToCheck))
-		notReadyDeployments := getNotReadyDeployments(deploymentsToCheck)
+		notReadyDeployments = getNotReadyDeployments(deploymentsToCheck)
 
 		logrus.Infof("Checking StatefulSets readiness of StatefulSets %v", getStatefulSetsInfo(statefulSetsToCheck))
-		notReadyStatefulSets := getNotReadyStatefulSets(statefulSetsToCheck)
+		notReadyStatefulSets = getNotReadyStatefulSets(statefulSetsToCheck)
 
 		logrus.Infof("Not ready Deployments: %v", getDeploymentsInfo(notReadyDeployments))
 		logrus.Infof("Not ready StatefulSets: %v", getStatefulSetsInfo(notReadyStatefulSets))
@@ -213,8 +216,7 @@ func WaitForAllPodSetsReady(env *provider.TestEnvironment, timeout time.Duration
 	claimsLog.AddLogLine("Not ready Deployments: %v", getDeploymentsInfo(deploymentsToCheck))
 	claimsLog.AddLogLine("Not ready StatefulSets: %v", getStatefulSetsInfo(statefulSetsToCheck))
 
-	atLeastOnePodsetNotReady = len(deploymentsToCheck) > 0 || len(statefulSetsToCheck) > 0
-	return claimsLog, atLeastOnePodsetNotReady
+	return claimsLog, deploymentsToCheck, statefulSetsToCheck
 }
 
 func GetAllNodesForAllPodSets(pods []*provider.Pod) (nodes map[string]bool) {

@@ -511,6 +511,24 @@ func GetNoAffinityRequiredPodsSkipFn(env *provider.TestEnvironment) func() (bool
 	}
 }
 
+func GetNoStorageClassesSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.StorageClassList) == 0 {
+			return true, "no storage classes found"
+		}
+		return false, ""
+	}
+}
+
+func GetNoPersistentVolumeClaimsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.PersistentVolumeClaims) == 0 {
+			return true, "no persistent volume claims found"
+		}
+		return false, ""
+	}
+}
+
 func SkipIfEmptyAny(skip func(string, ...int), object ...[2]interface{}) {
 	for _, o := range object {
 		s := reflect.ValueOf(o[0])
