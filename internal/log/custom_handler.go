@@ -36,14 +36,16 @@ func NewCustomHandler(out io.Writer, opts *Options) *CustomHandler {
 	return h
 }
 
-func (h *CustomHandler) Enabled(ctx context.Context, level slog.Level) bool {
+func (h *CustomHandler) Enabled(_ context.Context, level slog.Level) bool {
 	return level >= h.opts.Level.Level()
 }
 
 // The Handle method will write a log line with the following format:
 // LOG_LEVEL [TIME] [SOURCE_FILE] [CUSTOM_ATTRS] MSG
-func (h *CustomHandler) Handle(ctx context.Context, r slog.Record) error {
-	buf := make([]byte, 0, 1024)
+//
+//nolint:gocritic
+func (h *CustomHandler) Handle(_ context.Context, r slog.Record) error {
+	buf := make([]byte, 0, 1024) //nolint:gomnd
 	// Level
 	buf = h.appendAttr(buf, slog.Any(slog.LevelKey, r.Level))
 	// Time
@@ -70,7 +72,7 @@ func (h *CustomHandler) Handle(ctx context.Context, r slog.Record) error {
 }
 
 // Not implemented. WithGroup just returns the same handler.
-func (h *CustomHandler) WithGroup(name string) slog.Handler {
+func (h *CustomHandler) WithGroup(_ string) slog.Handler {
 	return h
 }
 
@@ -102,7 +104,6 @@ func (h *CustomHandler) appendAttr(buf []byte, a slog.Attr) []byte {
 			buf = fmt.Appendf(buf, "%s ", a.Value.String())
 		} else {
 			buf = fmt.Appendf(buf, "[%s] ", a.Value.String())
-
 		}
 	case slog.KindTime:
 		buf = fmt.Appendf(buf, "[%s] ", a.Value.Time().Format(time.StampMilli))

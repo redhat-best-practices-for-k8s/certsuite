@@ -25,6 +25,7 @@ func (h *MultiHandler) Enabled(ctx context.Context, level slog.Level) bool {
 	return false
 }
 
+//nolint:gocritic
 func (h *MultiHandler) Handle(ctx context.Context, r slog.Record) error {
 	for i := range h.handlers {
 		if err := h.handlers[i].Handle(ctx, r.Clone()); err != nil {

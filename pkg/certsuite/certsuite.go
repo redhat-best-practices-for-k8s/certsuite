@@ -6,7 +6,11 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/certification"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/manageability"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/observability"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/performance"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
@@ -18,7 +22,11 @@ import (
 )
 
 func LoadChecksDB() {
+	accesscontrol.LoadChecks()
+	certification.LoadChecks()
+	lifecycle.LoadChecks()
 	manageability.LoadChecks()
+	networking.LoadChecks()
 	observability.LoadChecks()
 	performance.LoadChecks()
 }

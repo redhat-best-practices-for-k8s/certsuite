@@ -52,7 +52,8 @@ func Logf(logger *slog.Logger, level slog.Level, format string, args ...any) {
 		return
 	}
 	var pcs [1]uintptr
-	runtime.Callers(3, pcs[:]) // skip [Callers, Log, LogWrapper]
+	// skip [Callers, Log, LogWrapper]
+	runtime.Callers(3, pcs[:]) //nolint:gomnd
 	r := slog.NewRecord(time.Now(), level, fmt.Sprintf(format, args...), pcs[0])
 	_ = logger.Handler().Handle(context.Background(), r)
 }

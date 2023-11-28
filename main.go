@@ -124,6 +124,7 @@ func getK8sClientsConfigFileNames() []string {
 	return fileNames
 }
 
+//nolint:funlen
 func main() {
 	err := configuration.LoadEnvironmentVariables()
 	if err != nil {
@@ -165,7 +166,7 @@ func main() {
 	if *listFlag {
 		// ToDo: List all the available checks, filtered with --labels.
 		logrus.Errorf("Not implemented yet.")
-		os.Exit(1)
+		os.Exit(1) //nolint:gocritic
 	}
 
 	// Diagnostic functions will run when no labels are provided.
