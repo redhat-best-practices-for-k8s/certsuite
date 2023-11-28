@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	supportedClaimFormatVersion = "v0.1.0"
+	supportedClaimFormatVersion = "v0.2.0"
 )
 
 const (
@@ -54,7 +54,7 @@ type TestCaseResult struct {
 }
 
 // Maps a test suite name to a list of TestCaseResult
-type TestSuiteResults map[string][]TestCaseResult
+type TestSuiteResults map[string]TestCaseResult
 
 type Nodes struct {
 	NodesSummary interface{} `json:"nodeSummary"`
