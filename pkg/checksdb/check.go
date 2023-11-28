@@ -2,10 +2,13 @@ package checksdb
 
 import (
 	"fmt"
+	"log/slog"
+	"strings"
 	"sync"
 	"time"
 
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 )
 
@@ -45,17 +48,45 @@ type Check struct {
 	CapturedOutput string
 	FailureReason  string
 
+	logger     *slog.Logger
+	logArchive *strings.Builder
+
 	StartTime, EndTime time.Time
 	Timeout            time.Duration
 	Error              error
 }
 
 func NewCheck(id string, labels []string) *Check {
-	return &Check{
-		ID:     id,
-		Labels: labels,
-		Result: CheckResultPassed,
+	check := &Check{
+		ID:         id,
+		Labels:     labels,
+		Result:     CheckResultPassed,
+		logArchive: &strings.Builder{},
 	}
+
+	check.logger = log.GetMultiLogger(check.logArchive).With("check", check.ID)
+
+	return check
+}
+
+func (check *Check) LogDebug(msg string, args ...any) {
+	log.Logf(check.logger, slog.LevelDebug, msg, args...)
+}
+
+func (check *Check) LogInfo(msg string, args ...any) {
+	log.Logf(check.logger, slog.LevelInfo, msg, args...)
+}
+
+func (check *Check) LogWarn(msg string, args ...any) {
+	log.Logf(check.logger, slog.LevelWarn, msg, args...)
+}
+
+func (check *Check) LogError(msg string, args ...any) {
+	log.Logf(check.logger, slog.LevelError, msg, args...)
+}
+
+func (check *Check) GetLogs() string {
+	return check.logArchive.String()
 }
 
 func (check *Check) WithCheckFn(checkFn func(check *Check) error) *Check {

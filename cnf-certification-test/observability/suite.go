@@ -28,6 +28,7 @@ import (
 	pdbv1 "github.com/test-network-function/cnf-certification-test/cnf-certification-test/observability/pdb"
 
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
@@ -45,8 +46,9 @@ var (
 	}
 )
 
-func init() {
+func LoadChecks() {
 	logrus.Debugf("Entering %s suite", common.ObservabilityTestKey)
+	log.Debug("Loading %s suite checks", common.ObservabilityTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.ObservabilityTestKey).
 		WithBeforeEachFn(beforeEachFn)
@@ -124,13 +126,16 @@ func containerHasLoggingOutput(cut *provider.Container) (bool, error) {
 func testContainersLogging(check *checksdb.Check, env *provider.TestEnvironment) {
 	// Iterate through all the CUTs to get their log output. The TC checks that at least
 	// one log line is found.
+	check.LogInfo("Entering testContainersLogging")
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
 		logrus.Info(fmt.Sprintf("Checking %s has some logging output", cut))
+		check.LogInfo("Container %s has some logging output", cut)
 		hasLoggingOutput, err := containerHasLoggingOutput(cut)
 		if err != nil {
 			tnf.Logf(logrus.ErrorLevel, "Failed to get %s log output: %s", cut, err)
+			check.LogError("Failed to get container %s log output, err: %v", cut, err)
 			nonCompliantObjects = append(nonCompliantObjects,
 				testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Could not get log output", false))
 			continue
@@ -138,6 +143,7 @@ func testContainersLogging(check *checksdb.Check, env *provider.TestEnvironment)
 
 		if !hasLoggingOutput {
 			tnf.Logf(logrus.ErrorLevel, "%s does not have any line of log to stderr/stdout", cut)
+			check.LogError("Container %s does not have any line of log to stderr/stdout", cut)
 			nonCompliantObjects = append(nonCompliantObjects,
 				testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "No log line to stderr/stdout found", false))
 		} else {
