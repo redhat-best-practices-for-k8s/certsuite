@@ -79,11 +79,18 @@ func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for i := range env.Operators {
-		csv := env.Operators[i].Csv
+		operator := env.Operators[i]
+		csv := operator.Csv
 		clusterPermissions := csv.Spec.InstallStrategy.StrategySpec.ClusterPermissions
 		if len(clusterPermissions) == 0 {
-			logrus.Debugf("No clusterPermissions found in %s", env.Operators[i])
-			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "Operator has no privileges on cluster resources", true))
+			logrus.Debugf("No clusterPermissions found in %s", operator)
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "Operator has no privileges on cluster resources", true))
+			continue
+		}
+
+		if operator.IsClusterWide {
+			logrus.Debugf("Operator %s has clusterPermissions (%d) but it is cluster-wide type.", operator, len(clusterPermissions))
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "Operator has clusterPermissions config in the CSV, but it was installed as cluster-wide", true))
 			continue
 		}
 
@@ -94,22 +101,22 @@ func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
 			for ruleIndex := range permission.Rules {
 				if n := len(permission.Rules[ruleIndex].ResourceNames); n > 0 {
 					tnf.ClaimFilePrintf("%s: cluster permission (service account %s) has %d resource names (rule index %d).",
-						env.Operators[i], permission.ServiceAccountName, n, ruleIndex)
+						operator, permission.ServiceAccountName, n, ruleIndex)
 					// Keep reviewing other permissions' rules so we can log all the failing ones in the claim file.
 					badRuleFound = true
-					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "Operator has privileges on cluster resources ", false).
+					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "Operator has privileges on cluster resources ", false).
 						SetType(testhelper.OperatorPermission).AddField(testhelper.ServiceAccountName, permission.ServiceAccountName).AddField(testhelper.ResourceName+"s", strings.Join(permission.Rules[ruleIndex].ResourceNames, "")))
 				} else {
-					compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "Operator has no privileges on cluster resources", true).
+					compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "Operator has no privileges on cluster resources", true).
 						SetType(testhelper.OperatorPermission).AddField(testhelper.ServiceAccountName, permission.ServiceAccountName).AddField(testhelper.ResourceName+"s", "n/a"))
 				}
 			}
 		}
 
 		if badRuleFound {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "Operator has privileges on cluster resources ", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "Operator has privileges on cluster resources ", false))
 		} else {
-			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "Operator has no privileges on cluster resources", true))
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "Operator has no privileges on cluster resources", true))
 		}
 	}
 
