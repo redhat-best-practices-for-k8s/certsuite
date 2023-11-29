@@ -83,7 +83,7 @@ var (
 )
 
 //nolint:funlen
-func init() {
+func LoadChecks() {
 	logrus.Debugf("Entering %s suite", common.PerformanceTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.PerformanceTestKey).

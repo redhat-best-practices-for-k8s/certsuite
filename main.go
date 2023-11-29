@@ -28,13 +28,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/versions"
 
-	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol"
-	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/certification"
-	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle"
-	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/manageability"
-	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking"
-	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/observability"
-	_ "github.com/test-network-function/cnf-certification-test/cnf-certification-test/performance"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/webserver"
 
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
@@ -140,6 +133,8 @@ func main() {
 	log.Infof("TNF Version         : %v", versions.GitVersion())
 	log.Infof("Claim Format Version: %s", versions.ClaimFormatVersion)
 	log.Infof("Labels filter       : %v", *labelsFlag)
+
+	certsuite.LoadChecksDB()
 
 	if *listFlag {
 		// ToDo: List all the available checks, filtered with --labels.

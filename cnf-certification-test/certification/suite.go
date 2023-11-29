@@ -75,7 +75,7 @@ var (
 	}
 )
 
-func init() {
+func LoadChecks() {
 	logrus.Debugf("Entering %s suite", common.AffiliatedCertTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.AffiliatedCertTestKey).
