@@ -13,6 +13,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/observability"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/performance"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/claimhelper"
@@ -29,6 +30,7 @@ func LoadChecksDB() {
 	networking.LoadChecks()
 	observability.LoadChecks()
 	performance.LoadChecks()
+	platform.LoadChecks()
 }
 
 func Run(labelsFilter, outputFolder string, timeout time.Duration) {
