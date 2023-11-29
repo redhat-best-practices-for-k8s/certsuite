@@ -34,7 +34,17 @@ function addCrdElem(counters,name1,name2,clickedId){
  
 
   $(document).ready(function() {
-    selectScenario() // initilaize with all
+    selectScenario('lifecycle')
+    selectScenario('manageability')
+    selectScenario('affiliated-certification')
+    selectScenario('operator')
+    selectScenario('access-control')
+    selectScenario('platform-alteration')
+    selectScenario('networking')
+    selectScenario('performance')
+    selectScenario('observability')
+    updateTestCounter('lifecycle')
+    updateAllCounter()
     document.getElementById('targetNameSpacesremove').style.display = 'none';
     document.getElementById('podsUnderTestLabelsremove').style.display = 'none';
     document.getElementById('operatorsUnderTestLabelsremove').style.display = 'none';
@@ -222,119 +232,300 @@ var field='<label for="'+clickedId+counters[clickedId] +'">'+counters[clickedId]
 
  } 
 
-function selectScenario(){
-  
-  $('#testTable').empty()
-  var beginning='<caption> Select a Suite Name </caption> <colgroup> '+
-  '<col style="width: 200px;">'+
-   '<col>'+
-    '</colgroup>'+
-  '<thead><tr> <th style="width: 200px;" scope="col" data-label="Testname">Test Name<rh-sort-button></rh-sort-button></th>'+
-    '<th style="width: 500px;" scope="col" data-label="Description">Test Info</th>'+
-    '</tr></thead>'
-    $(beginning).appendTo('#testTable');
-
-  addCheckedTest()
+function selectScenario(table){
+  var idtable = '#'+table+'-table'
+  $(idtable).empty()
+ // addCheckedTest()
   var field = ""
   const selectScenarioComboBox = document.getElementById('selectScenarioComboBox')
-  const selectedValue = selectScenarioComboBox.options[selectScenarioComboBox.selectedIndex].value
-  if (selectedValue === 'all') {
+  const selectedScenario = selectScenarioComboBox.options[selectScenarioComboBox.selectedIndex].value
     document.getElementById('selectOpt').setAttribute('hidden','hidden')
 
   for (const key in classification) {
-    field='<tr id="'+key+'"><td data-label="Testname"><label><input type="checkbox" value="'+
-     key +'" name="selectedOptions" checked> ' +
-    '<h7 for="'+key+'">'+key+
-    '</h7></label></td>'+
-    '<td data-label="Description"><rh-accordion>'+
-    '<rh-accordion-header><h4>Description</h4></rh-accordion-header><rh-accordion-panel><p>'+
-    classification[key][0].description+'</p></rh-accordion-panel>'+
-    '<rh-accordion-header><h4>Remediation</h4></rh-accordion-header><rh-accordion-panel><p>'+
-    classification[key][0].remediation+'</p></rh-accordion-panel>'+
-    '<rh-accordion-header><h4>BestPracticeReference</h4></rh-accordion-header><rh-accordion-panel><p>'+
-    classification[key][0].bestPracticeReference+'</p></rh-accordion-panel>'+
-    '</rh-accordion></td>'+
-    '</tr>'
-      $(field).appendTo('#testTable');
+    if (key.startsWith(table)){
+      field=
+      '<rh-accordion><rh-accordion-header><div>'+    
+      '<input type="checkbox" id ="'+key+ '" value="'+
+      key +'" name="selectedOptions" onclick="updateTestCounterTest(\''+table+'\',\''+key+'\',true)" checked> ' +
+      '<label for="'+key+ '" id="'+key+'l">'+key+'</label>'+
+      '</div></rh-accordion-header>'+
+      '<rh-accordion-panel><h4>Description </h4><p>'+
+      classification[key][0].description+'</p>'+
+      '<h4>Remediation</h4><p>'+
+      classification[key][0].remediation+'</p>'+
+      '<h4>BestPracticeReference</h4><rh-cta><a href="'+classification[key][0].bestPracticeReference+
+      '" target="_blank" rel="noreferrer nofollow">'+
+      classification[key][0].bestPracticeReference+'</a></rh-cta></rh-accordion-panel>'+
+      '</rh-accordion>'
+      $(field).appendTo(idtable);
+      document.getElementById(key).addEventListener('click', function(event) {
+        // Prevent click propagation from the input element
+        event.stopPropagation();
+        });
+      document.getElementById(key+'l').addEventListener('click', function(event) {
+        // Prevent click propagation from the input element
+        event.stopPropagation();
+        });
+    }
   }
 
-  }else{ 
-  document.getElementById('selectOpt').removeAttribute('hidden')
-  buildTest(selectedValue)
+  if (selectedScenario != 'all' && selectedScenario != 'none'  ) {
+    document.getElementById('selectOpt').removeAttribute('hidden')
   }
-  document.getElementById('selectedsuites').removeAttribute('hidden')
+  buildTest(selectedScenario,table)
+  updateTestCounter(table)
+  //updateAllCounter()
 
 }
-function buildTest(scenarioValue){
+
+function updateCheckbox(table){ 
+  document.getElementById('selectOpt').setAttribute('hidden','hidden')
+  const selectScenarioComboBox = document.getElementById('selectScenarioComboBox')
+  const selectedScenario = selectScenarioComboBox.options[selectScenarioComboBox.selectedIndex].value
+  if (selectedScenario != 'all' && selectedScenario != 'none'  ) {
+    document.getElementById('selectOpt').removeAttribute('hidden')
+  }
+  buildTest(selectedScenario,table)
+  updateTestCounter(table)
+  //updateAllCounter()
+}
+
+function buildTest(scenarioValue,table){
   const option = document.getElementById('selectOpt')
-  const selectedValue = option.options[option.selectedIndex].value
-  console.log(selectedValue)
-  var field = ""
+  const selectedOptionalMandatory = option.options[option.selectedIndex].value
+  var eqData = ""
 for (const key in classification){
-  eqData = classification[key][0]["categoryClassification"].FarEdge
+  switch (scenarioValue) {
+    case "telco":
+      eqData = classification[key][0]["categoryClassification"].Telco;
+      break;
+    case "nontelco":
+      eqData = classification[key][0]["categoryClassification"].NonTelco;
+      break;
+    case "extended":
+      eqData = classification[key][0]["categoryClassification"].Extended;
+        break;
+    default:
+      eqData = classification[key][0]["categoryClassification"].FarEdge;
+}
+if (key.startsWith(table)){
+  var selectedTestItem = document.getElementById(key); 
+  if(eqData == selectedOptionalMandatory || scenarioValue == "all"){
+    selectedTestItem.checked = true;
+      } if(scenarioValue != "all" &&(eqData != selectedOptionalMandatory || scenarioValue == "none")){
+        selectedTestItem.checked = false;
+      }
+  }
+}
+}
 
-  if (scenarioValue == "telco") {
-    eqData = classification[key][0]["categoryClassification"].Telco
+function show(id){
+   updateTestCounter(id)
+   if (id !="lifecycle"){
+    document.getElementById('lifecycle-table').setAttribute('hidden','hidden')
+
+   }
+   if (id !="manageability"){
+    document.getElementById('manageability-table').setAttribute('hidden','hidden')
+
+   }   
+   if (id !="affiliated-certification"){
+    document.getElementById('affiliated-certification-table').setAttribute('hidden','hidden')
+
+   }
+   if (id !="operator"){
+    document.getElementById('operator-table').setAttribute('hidden','hidden')
+
+   }
+   if (id !="access-control"){
+    document.getElementById('access-control-table').setAttribute('hidden','hidden')
+
+   }
+   if (id !="platform-alteration"){
+    document.getElementById('platform-alteration-table').setAttribute('hidden','hidden')
+
+   }
+   if (id !="networking"){
+    document.getElementById('networking-table').setAttribute('hidden','hidden')
+
+   }
+   if (id !="performance"){
+    document.getElementById('performance-table').setAttribute('hidden','hidden')
+
+   }
+   if (id !="observability"){
+    document.getElementById('observability-table').setAttribute('hidden','hidden')
+   }
+   document.getElementById(id+'-table').removeAttribute('hidden')
+}
+
+function updateTestCounter(id){
+  var CountElement = document.getElementById(id+'-count');
+  var matchResult = CountElement.textContent.match(/(.*?:\s)(\d+)/);
+  var nonNumericPart = matchResult[1];
+  CountElement.textContent = nonNumericPart + 0;
+
+      for (const key in classification) {      
+        if (key.startsWith(id)){
+          updateTestCounterTest(id,key,false)
+          }
+    }
   }
-  if (scenarioValue == "nontelco") {
-    eqData = classification[key][0]["categoryClassification"].NonTelco
-  }
-  if (scenarioValue == "extended") {
-    eqData = classification[key][0]["categoryClassification"].Extended
-  }
-  if(eqData == selectedValue){
-    field='<tr id="'+key+'"><td data-label="Testname"><label><input type="checkbox" value="'+
-     key +'" name="selectedOptions" checked> ' +
-    '<h7 for="'+key+'">'+key+
-    '</h7></label></td>'+
-    '<td data-label="Description"><rh-accordion>'+
-    '<rh-accordion-header><h4>Description</h4></rh-accordion-header><rh-accordion-panel><p>'+
-    classification[key][0].description+'</p></rh-accordion-panel>'+
-    '<rh-accordion-header><h4>Remediation</h4></rh-accordion-header><rh-accordion-panel><p>'+
-    classification[key][0].remediation+'</p></rh-accordion-panel>'+
-    '<rh-accordion-header><h4>BestPracticeReference</h4></rh-accordion-header><rh-accordion-panel><p>'+
-    classification[key][0].bestPracticeReference+'</p></rh-accordion-panel>'+
-    '</rh-accordion></td>'+
-    '</tr>'
-     $(field).appendTo('#testTable');
+
+
+  function updateAllCounter(){
+   testsList = ['lifecycle','manageability','affiliated-certification','operator'
+  ,'access-control','platform-alteration','networking','performance','observability']
+  var allCountElement = document.getElementById('all-count');
+  var allmatchResult = allCountElement.textContent.match(/(.*?:\s)(\d+)/);
+  var allnonNumericPart = allmatchResult[1];
+  var count = 0
+    for (var i = 0; i < testsList.length; i++) {
+      var test =  testsList[i]
+      var CountElement = document.getElementById(test+'-count');
+      var matchResult = CountElement.textContent.match(/(.*?:\s)(\d+)/);
+      var newCount = parseInt(matchResult[2]); 
+      count +=newCount
+    }
+    allCountElement.textContent = allnonNumericPart + count;
+    }
+  
+  function updateTestCounterTest(id,key,comfromsmallCombox){
+    var CountElement = document.getElementById(id+'-count');
+    var matchResult = CountElement.textContent.match(/(.*?:\s)(\d+)/);
+    var newCount = parseInt(matchResult[2]); 
+    var nonNumericPart = matchResult[1];
+    var checkedkey = document.getElementById(key);
+      if (checkedkey.checked) {
+       newCount = newCount + 1; 
+      }else{ 
+  if (comfromsmallCombox){
+    newCount = newCount - 1; 
+
   }
 }
+  if (newCount<0){
+    newCount=0
+  }
+  CountElement.textContent = nonNumericPart + newCount;
+  updateAllCounter()
+  }
+
+function show(id){
+   updateTestCounter(id)
+   if (id !="lifecycle"){
+    document.getElementById('lifecycle-table').setAttribute('hidden','hidden')
+
+   }
+   if (id !="manageability"){
+    document.getElementById('manageability-table').setAttribute('hidden','hidden')
+
+   }   
+   if (id !="affiliated-certification"){
+    document.getElementById('affiliated-certification-table').setAttribute('hidden','hidden')
+
+   }
+   if (id !="operator"){
+    document.getElementById('operator-table').setAttribute('hidden','hidden')
+
+   }
+   if (id !="access-control"){
+    document.getElementById('access-control-table').setAttribute('hidden','hidden')
+
+   }
+   if (id !="platform-alteration"){
+    document.getElementById('platform-alteration-table').setAttribute('hidden','hidden')
+
+   }
+   if (id !="networking"){
+    document.getElementById('networking-table').setAttribute('hidden','hidden')
+
+   }
+   if (id !="performance"){
+    document.getElementById('performance-table').setAttribute('hidden','hidden')
+
+   }
+   if (id !="observability"){
+    document.getElementById('observability-table').setAttribute('hidden','hidden')
+   }
+   document.getElementById(id+'-table').removeAttribute('hidden')
 }
+
+function updateTestCounter(id){
+  var CountElement = document.getElementById(id+'-count');
+  var matchResult = CountElement.textContent.match(/(.*?:\s)(\d+)/);
+  var nonNumericPart = matchResult[1];
+  CountElement.textContent = nonNumericPart + 0;
+
+      for (const key in classification) {      
+        if (key.startsWith(id)){
+          updateTestCounterTest(id,key)
+          }
+    }
+    //updateAllCounter()
+  }
+
+
+  function updateAllCounter(){
+   testsList = ['lifecycle','manageability','affiliated-certification','operator'
+  ,'access-control','platform-alteration','networking','performance','observability']
+  var allCountElement = document.getElementById('all-count');
+  var allmatchResult = allCountElement.textContent.match(/(.*?:\s)(\d+)/);
+  var allnonNumericPart = allmatchResult[1];
+  var count = 0
+    for (var i = 0; i < testsList.length; i++) {
+      var test =  testsList[i]
+      var CountElement = document.getElementById(test+'-count');
+      var matchResult = CountElement.textContent.match(/(.*?:\s)(\d+)/);
+      var newCount = parseInt(matchResult[2]); 
+      count +=newCount
+    }
+    allCountElement.textContent = allnonNumericPart + count;
+    }
+  
+  function updateTestCounterTest(id,key,comfromsmallCombox){
+    var CountElement = document.getElementById(id+'-count');
+    var matchResult = CountElement.textContent.match(/(.*?:\s)(\d+)/);
+    var newCount = parseInt(matchResult[2]); 
+    var nonNumericPart = matchResult[1];
+    var checkedkey = document.getElementById(key);
+      if (checkedkey.checked) {
+       newCount = newCount + 1; 
+      }else{ 
+  if (comfromsmallCombox){
+    newCount = newCount - 1; 
+
+  }
+}
+  if (newCount<0){
+    newCount=0
+  }
+  CountElement.textContent = nonNumericPart + newCount;
+  updateAllCounter()
+  }
 
 // Add an event listener to the checkbox
 function performToggle (triggerId) {
   var checkbox = document.getElementById(triggerId);
-var field = ""
-  for (const key in classification) {
-    var done=false
+  for (const key in classification) {  
     if (key.startsWith(triggerId)){
     if (checkbox.checked) {
-      field='<tr id="'+key+'"><td data-label="Testname"><label><input type="checkbox" value="'+
-      key +'" name="selectedOptions" checked> ' +
-     '<h7 for="'+key+'">'+key+
-     '</h7></label></td>'+
-     '<td data-label="Description"><rh-accordion>'+
-     '<rh-accordion-header><h4>Description</h4></rh-accordion-header><rh-accordion-panel><p>'+
-     classification[key][0].description+'</p></rh-accordion-panel>'+
-     '<rh-accordion-header><h4>Remediation</h4></rh-accordion-header><rh-accordion-panel><p>'+
-     classification[key][0].remediation+'</p></rh-accordion-panel>'+
-     '<rh-accordion-header><h4>BestPracticeReference</h4></rh-accordion-header><rh-accordion-panel><p>'+
-     classification[key][0].bestPracticeReference+'</p></rh-accordion-panel>'+
-     '</rh-accordion></td>'+
-     '</tr>'
-      $(field).appendTo('#testTable');
-       field = ""
-    } else {
-      var tbody = document.querySelector('#testTable tbody');
-
       var rowToRemove = document.getElementById(key);
+      if (rowToRemove) {
+      rowToRemove.checked = true;
+      }
 
+
+    } else {
+      var rowToRemove = document.getElementById(key); 
       // Check if the row exists
       if (rowToRemove) {
           // Remove the row from the table
-          tbody.removeChild(rowToRemove);
-      }
+          rowToRemove.checked = false;
+        }
     }
   }
 }
+updateTestCounter(triggerId)
+//updateAllCounter()
 }
