@@ -19,6 +19,7 @@ package clientsholder
 import (
 	"errors"
 	"fmt"
+	"os"
 	"time"
 
 	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
@@ -146,10 +147,14 @@ func ClearTestClientsHolder() {
 
 // GetClientsHolder returns the singleton ClientsHolder object.
 func GetClientsHolder(filenames ...string) *ClientsHolder {
+	const exitUsage = 2
 	if clientsHolder.ready {
 		return &clientsHolder
 	}
-
+	if len(filenames) == 0 {
+		logrus.Errorf("Please provide a valid kubeconfig. Either set the KUBECONFIG environment variable or alternatively copy a kube config to $HOME/.kube/config")
+		os.Exit(exitUsage)
+	}
 	clientsHolder, err := newClientsHolder(filenames...)
 	if err != nil {
 		logrus.Panic("Failed to create k8s clients holder: ", err)
