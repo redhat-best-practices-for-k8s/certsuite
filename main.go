@@ -163,6 +163,8 @@ func main() {
 	log.Info("Claim Format Version: %s", versions.ClaimFormatVersion)
 	log.Info("Labels filter       : %v", *labelsFlag)
 
+	certsuite.LoadChecksDB()
+
 	if *listFlag {
 		// ToDo: List all the available checks, filtered with --labels.
 		logrus.Errorf("Not implemented yet.")
