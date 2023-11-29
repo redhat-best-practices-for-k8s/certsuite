@@ -159,10 +159,6 @@ func main() {
 	logrus.Infof("Claim Format Version: %s", versions.ClaimFormatVersion)
 	logrus.Infof("Labels filter       : %v", *labelsFlag)
 
-	log.Info("TNF Version         : %v", versions.GitVersion())
-	log.Info("Claim Format Version: %s", versions.ClaimFormatVersion)
-	log.Info("Labels filter       : %v", *labelsFlag)
-
 	certsuite.LoadChecksDB()
 
 	if *listFlag {
