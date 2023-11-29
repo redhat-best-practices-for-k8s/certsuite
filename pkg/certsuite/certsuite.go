@@ -6,6 +6,13 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/certification"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/manageability"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/observability"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/performance"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/claimhelper"
@@ -13,6 +20,16 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
+
+func LoadChecksDB() {
+	accesscontrol.LoadChecks()
+	certification.LoadChecks()
+	lifecycle.LoadChecks()
+	manageability.LoadChecks()
+	networking.LoadChecks()
+	observability.LoadChecks()
+	performance.LoadChecks()
+}
 
 func Run(labelsFilter, outputFolder string, timeout time.Duration) {
 	var env provider.TestEnvironment

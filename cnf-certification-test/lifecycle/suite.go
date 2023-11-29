@@ -56,10 +56,18 @@ var (
 		env = provider.GetTestEnvironment()
 		return nil
 	}
+
+	// podset = deployment or statefulset
+	skipIfNoPodSetsetsUnderTest = func() (bool, string) {
+		if len(env.Deployments) == 0 && len(env.StatefulSets) == 0 {
+			return true, "no deployments nor statefulsets to check found"
+		}
+		return false, ""
+	}
 )
 
 //nolint:funlen
-func init() {
+func LoadChecks() {
 	logrus.Debugf("Entering %s suite", common.LifecycleTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.LifecycleTestKey).
@@ -144,10 +152,8 @@ func init() {
 	// High availability test
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHighAvailabilityBestPractices)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(
-			testhelper.GetNotEnoughWorkersSkipFn(&env, minWorkerNodesForLifecycle),
-			testhelper.GetNoDeploymentsUnderTestSkipFn(&env),
-			testhelper.GetNoStatefulSetsUnderTestSkipFn(&env)).
+		WithSkipCheckFn(testhelper.GetNotEnoughWorkersSkipFn(&env, minWorkerNodesForLifecycle)).
+		WithSkipCheckFn(skipIfNoPodSetsetsUnderTest).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testHighAvailability(c, &env)
 			return nil
@@ -169,9 +175,8 @@ func init() {
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
 		WithSkipCheckFn(
 			testhelper.GetNotEnoughWorkersSkipFn(&env, minWorkerNodesForLifecycle),
-			testhelper.GetNoDeploymentsUnderTestSkipFn(&env),
-			testhelper.GetNoStatefulSetsUnderTestSkipFn(&env),
 			testhelper.GetNotIntrusiveSkipFn(&env)).
+		WithSkipCheckFn(skipIfNoPodSetsetsUnderTest).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodsRecreation(c, &env)
 			return nil
@@ -182,9 +187,8 @@ func init() {
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
 		WithSkipCheckFn(
 			testhelper.GetNotIntrusiveSkipFn(&env),
-			testhelper.GetNotEnoughWorkersSkipFn(&env, minWorkerNodesForLifecycle),
-			testhelper.GetNoDeploymentsUnderTestSkipFn(&env),
-			testhelper.GetNoStatefulSetsUnderTestSkipFn(&env)).
+			testhelper.GetNotEnoughWorkersSkipFn(&env, minWorkerNodesForLifecycle)).
+		WithSkipCheckFn(skipIfNoPodSetsetsUnderTest).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testDeploymentScaling(&env, timeout, c)
 			return nil
@@ -195,9 +199,8 @@ func init() {
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
 		WithSkipCheckFn(
 			testhelper.GetNotIntrusiveSkipFn(&env),
-			testhelper.GetNotEnoughWorkersSkipFn(&env, minWorkerNodesForLifecycle),
-			testhelper.GetNoDeploymentsUnderTestSkipFn(&env),
-			testhelper.GetNoStatefulSetsUnderTestSkipFn(&env)).
+			testhelper.GetNotEnoughWorkersSkipFn(&env, minWorkerNodesForLifecycle)).
+		WithSkipCheckFn(skipIfNoPodSetsetsUnderTest).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testStatefulSetScaling(&env, timeout, c)
 			return nil
@@ -244,7 +247,10 @@ func init() {
 	// Storage provisioner test
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStorageProvisioner)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
+		WithSkipCheckFn(
+			testhelper.GetNoPodsUnderTestSkipFn(&env),
+			testhelper.GetNoStorageClassesSkipFn(&env),
+			testhelper.GetNoPersistentVolumeClaimsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testStorageProvisioner(c, &env)
 			return nil
@@ -575,7 +581,7 @@ func testHighAvailability(check *checksdb.Check, env *provider.TestEnvironment) 
 }
 
 // testPodsRecreation tests that pods belonging to deployments and statefulsets are re-created and ready in case a node is lost
-func testPodsRecreation(check *checksdb.Check, env *provider.TestEnvironment) { //nolint:funlen
+func testPodsRecreation(check *checksdb.Check, env *provider.TestEnvironment) { //nolint:funlen,gocyclo
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
@@ -594,10 +600,15 @@ func testPodsRecreation(check *checksdb.Check, env *provider.TestEnvironment) { 
 	// Before draining any node, wait until all podsets are ready. The timeout depends on the number of podsets to check.
 	// timeout = k-mins + (1min * (num-deployments + num-statefulsets))
 	allPodsetsReadyTimeout := timeoutPodSetReady + time.Minute*time.Duration(len(env.Deployments)+len(env.StatefulSets))
-	claimsLog, atLeastOnePodsetNotReady := podsets.WaitForAllPodSetsReady(env, allPodsetsReadyTimeout)
-	if atLeastOnePodsetNotReady {
+	claimsLog, notReadyDeployments, notReadyStatefulSets := podsets.WaitForAllPodSetsReady(env, allPodsetsReadyTimeout)
+	if len(notReadyDeployments) > 0 || len(notReadyStatefulSets) > 0 {
 		tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
-		nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject("", "", "Some deployments or stateful sets are not in a good initial state. Cannot perform test.", false))
+		for _, dep := range notReadyDeployments {
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewDeploymentReportObject(dep.Namespace, dep.Name, "Deployment was not ready before draining any node.", false))
+		}
+		for _, sts := range notReadyStatefulSets {
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewStatefulSetReportObject(sts.Namespace, sts.Name, "Statefulset was not ready before draining any node.", false))
+		}
 		return
 	}
 
@@ -615,43 +626,64 @@ func testPodsRecreation(check *checksdb.Check, env *provider.TestEnvironment) { 
 	}
 	if len(podsWithNodeAssignment) > 0 {
 		logrus.Errorf("Pod(s) have been found to contain a node assignment and cannot perform the pod-recreation test: %v", podsWithNodeAssignment)
-		nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject("", "", "Some pods have node assignments and cannot perform the pod-recreation test", false))
+		for _, pod := range podsWithNodeAssignment {
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Pod has node assignment.", false))
+		}
+
 		return
 	}
 
-	for n := range podsets.GetAllNodesForAllPodSets(env.Pods) {
-		defer podrecreation.CordonCleanup(n) //nolint:gocritic // The defer in loop is intentional, calling the cleanup function once per node
-		err := podrecreation.CordonHelper(n, podrecreation.Cordon)
+	for nodeName := range podsets.GetAllNodesForAllPodSets(env.Pods) {
+		defer podrecreation.CordonCleanup(nodeName) //nolint:gocritic // The defer in loop is intentional, calling the cleanup function once per node
+		err := podrecreation.CordonHelper(nodeName, podrecreation.Cordon)
 		if err != nil {
-			logrus.Errorf("error cordoning the node: %s", n)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(n, "Node cordoning failed", false))
+			logrus.Errorf("error cordoning the node: %s", nodeName)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Node cordoning failed", false))
 			return
 		}
-		tnf.Logf(logrus.InfoLevel, fmt.Sprintf("Draining and Cordoning node %s: ", n))
-		logrus.Debugf("node: %s cordoned", n)
-		count, err := podrecreation.CountPodsWithDelete(env.Pods, n, podrecreation.NoDelete)
+		tnf.Logf(logrus.InfoLevel, fmt.Sprintf("Draining and Cordoning node %s: ", nodeName))
+		logrus.Debugf("node: %s cordoned", nodeName)
+		count, err := podrecreation.CountPodsWithDelete(env.Pods, nodeName, podrecreation.NoDelete)
 		if err != nil {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(n, "Getting pods list to drain failed", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Getting pods list to drain failed", false))
 			return
 		}
 		nodeTimeout := timeoutPodSetReady + timeoutPodRecreationPerPod*time.Duration(count)
-		logrus.Debugf("draining node: %s with timeout: %s", n, nodeTimeout)
-		_, err = podrecreation.CountPodsWithDelete(env.Pods, n, podrecreation.DeleteForeground)
+		logrus.Debugf("draining node: %s with timeout: %s", nodeName, nodeTimeout)
+		_, err = podrecreation.CountPodsWithDelete(env.Pods, nodeName, podrecreation.DeleteForeground)
 		if err != nil {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(n, "Draining node failed", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Draining node failed", false))
 			return
 		}
 
-		claimsLog, podsNotReady := podsets.WaitForAllPodSetsReady(env, nodeTimeout)
-		if podsNotReady {
+		claimsLog, notReadyDeployments, notReadyStatefulSets := podsets.WaitForAllPodSetsReady(env, nodeTimeout)
+		if len(notReadyDeployments) > 0 || len(notReadyStatefulSets) > 0 {
 			tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(n, "Some pods are not ready after draining the node", false))
+			for _, dep := range notReadyDeployments {
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewDeploymentReportObject(dep.Namespace, dep.Name, "Deployment not ready after draining node "+nodeName, false))
+			}
+			for _, sts := range notReadyStatefulSets {
+				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewStatefulSetReportObject(sts.Namespace, sts.Name, "Statefulset not ready after draining node "+nodeName, false))
+			}
 			return
 		}
 
-		err = podrecreation.CordonHelper(n, podrecreation.Uncordon)
+		err = podrecreation.CordonHelper(nodeName, podrecreation.Uncordon)
 		if err != nil {
-			logrus.Fatalf("error uncordoning the node: %s", n)
+			logrus.Fatalf("error uncordoning the node: %s", nodeName)
+		}
+	}
+
+	// If everything went well for all nodes, the nonCompliantObjects should be empty. We need to
+	// manually add all the deps/sts into the compliant object lists so the check is marked as skipped.
+	// ToDo: Improve this.
+	if len(nonCompliantObjects) == 0 {
+		for _, dep := range env.Deployments {
+			compliantObjects = append(compliantObjects, testhelper.NewDeploymentReportObject(dep.Namespace, dep.Name, "Deployment's pods successfully re-schedulled after node draining.", true))
+		}
+
+		for _, sts := range env.StatefulSets {
+			compliantObjects = append(compliantObjects, testhelper.NewStatefulSetReportObject(sts.Namespace, sts.Name, "Statefulset's pods successfully re-schedulled after node draining.", true))
 		}
 	}
 
@@ -773,6 +805,7 @@ func testStorageProvisioner(check *checksdb.Check, env *provider.TestEnvironment
 	var Pvc = env.PersistentVolumeClaims
 	snoSingleLocalStorageProvisionner := ""
 	for _, put := range env.Pods {
+		usesPvcAndStorageClass := false
 		for pvIndex := range put.Spec.Volumes {
 			// Skip any nil persistentClaims.
 			volume := put.Spec.Volumes[pvIndex]
@@ -785,6 +818,7 @@ func testStorageProvisioner(check *checksdb.Check, env *provider.TestEnvironment
 				if Pvc[i].Name == put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName && Pvc[i].Namespace == put.Namespace {
 					for j := range StorageClasses {
 						if Pvc[i].Spec.StorageClassName != nil && StorageClasses[j].Name == *Pvc[i].Spec.StorageClassName {
+							usesPvcAndStorageClass = true
 							tnf.ClaimFilePrintf("%s pvc_name: %s, storageclass_name: %s, provisioner_name: %s", put.String(), put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName,
 								StorageClasses[j].Name, StorageClasses[j].Provisioner)
 
@@ -830,6 +864,12 @@ func testStorageProvisioner(check *checksdb.Check, env *provider.TestEnvironment
 						}
 					}
 				}
+			}
+			// Save as compliant pod in case it's not using any of the existing PVC/StorageClasses of the cluster.
+			// Otherwise, in this cases the check will be marked as skipped.
+			// ToDo: improve this function.
+			if !usesPvcAndStorageClass {
+				compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod not configured to use local storage.", true))
 			}
 		}
 	}

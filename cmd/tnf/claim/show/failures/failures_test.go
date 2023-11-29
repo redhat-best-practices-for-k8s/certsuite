@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/pkg/claim"
-	"gotest.tools/v3/assert"
 )
 
 func TestParseTargetTestSuitesFlag(t *testing.T) {
@@ -50,7 +50,7 @@ func TestParseTargetTestSuitesFlag(t *testing.T) {
 	for _, tc := range testCases {
 		testSuitesFlag = tc.flag
 		parsedTestSuites := parseTargetTestSuitesFlag()
-		assert.DeepEqual(t, tc.expectedTestSuites, parsedTestSuites)
+		assert.Equal(t, tc.expectedTestSuites, parsedTestSuites)
 	}
 }
 
@@ -265,7 +265,7 @@ func TestGetNonCompliantObjectsFromFailureReason(t *testing.T) {
 			assert.Equal(t, tc.expectedError, err.Error())
 		}
 
-		assert.DeepEqual(t, tc.expectedNonCompliantObjects, nonCompliantObjects)
+		assert.Equal(t, tc.expectedNonCompliantObjects, nonCompliantObjects)
 	}
 }
 
@@ -376,7 +376,7 @@ func TestGetFailedTestCasesByTestSuite(t *testing.T) {
 
 	for _, tc := range testCases {
 		claimScheme, err := claim.Parse(tc.claimFilePath)
-		assert.NilError(t, err)
+		assert.Nil(t, err)
 
 		// Order test case results by test suite, using a helper map.
 		resultsByTestSuite := map[string][]*claim.TestCaseResult{}
@@ -393,6 +393,6 @@ func TestGetFailedTestCasesByTestSuite(t *testing.T) {
 			map[string]bool{tc.targetTestSuite: true},
 		)
 		fmt.Printf("%#v\n\n", testSuites)
-		assert.DeepEqual(t, tc.expectedFailedTestSuites, testSuites)
+		assert.Equal(t, tc.expectedFailedTestSuites, testSuites)
 	}
 }

@@ -45,7 +45,7 @@ var (
 	}
 )
 
-func init() {
+func LoadChecks() {
 	logrus.Debugf("Entering %s suite", common.ObservabilityTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.ObservabilityTestKey).
