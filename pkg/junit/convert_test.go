@@ -38,7 +38,7 @@ func TestExtractTestSuiteResults(t *testing.T) {
 	results, err := junit.ExtractTestSuiteResults(claim, testKey)
 	assert.Nil(t, err)
 	// positive test
-	assert.Equal(t, true, results["[It] operator Runs test on operators operator-install-status-CSV_INSTALLED"].Passed)
+	assert.True(t, results["[It] operator Runs test on operators operator-install-status-CSV_INSTALLED"].Passed)
 	// negative test
-	assert.Equal(t, false, results["[It] platform-alteration platform-alteration-boot-params"].Passed)
+	assert.False(t, results["[It] platform-alteration platform-alteration-boot-params"].Passed)
 }

@@ -87,7 +87,7 @@ func Test_claimCompareFilesfunc(t *testing.T) {
 			}
 
 			if err != nil {
-				assert.Equal(t, err.Error(), tc.expectedError)
+				assert.Equal(t, tc.expectedError, err.Error())
 			} else {
 				// Read the output from the pipe.
 				out, _ := io.ReadAll(r)

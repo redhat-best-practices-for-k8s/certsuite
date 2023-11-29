@@ -3,7 +3,7 @@ package claim
 import (
 	"testing"
 
-	"gotest.tools/v3/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestIsClaimFormatVersionSupported(t *testing.T) {
