@@ -573,6 +573,15 @@ func GetNoHugepagesPodsSkipFn(env *provider.TestEnvironment) func() (bool, strin
 	}
 }
 
+func GetNoOperatorsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.Operators) == 0 {
+			return true, "no operators found"
+		}
+		return false, ""
+	}
+}
+
 func SkipIfEmptyAny(skip func(string, ...int), object ...[2]interface{}) {
 	for _, o := range object {
 		s := reflect.ValueOf(o[0])
