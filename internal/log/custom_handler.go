@@ -43,9 +43,9 @@ func (h *CustomHandler) Enabled(_ context.Context, level slog.Level) bool {
 // The Handle method will write a log line with the following format:
 // LOG_LEVEL [TIME] [SOURCE_FILE] [CUSTOM_ATTRS] MSG
 //
-//nolint:gocritic
+//nolint:gocritic // r param is heavy but defined in the slog.Handler interface
 func (h *CustomHandler) Handle(_ context.Context, r slog.Record) error {
-	buf := make([]byte, 0, 1024) //nolint:gomnd
+	var buf []byte
 	// Level
 	buf = h.appendAttr(buf, slog.Any(slog.LevelKey, r.Level))
 	// Time
@@ -71,9 +71,9 @@ func (h *CustomHandler) Handle(_ context.Context, r slog.Record) error {
 	return err
 }
 
-// Not implemented. WithGroup just returns the same handler.
+// Not implemented. Returns the nil handler.
 func (h *CustomHandler) WithGroup(_ string) slog.Handler {
-	return h
+	return nil
 }
 
 func (h *CustomHandler) WithAttrs(attrs []slog.Attr) slog.Handler {

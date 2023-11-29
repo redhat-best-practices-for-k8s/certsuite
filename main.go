@@ -45,7 +45,7 @@ const (
 	TNFReportKey                  = "cnf-certification-test"
 	extraInfoKey                  = "testsExtraInfo"
 	noLabelsExpr                  = "none"
-	logFileName                   = "cnf-test-log"
+	logFileName                   = "cnf-certsuite.log"
 	logFilePermissions            = 0o644
 )
 
