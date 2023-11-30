@@ -32,7 +32,6 @@ func LoadChecksDB(labelsExpr string) {
 	performance.LoadChecks()
 
 	if preflight.ShouldRun(labelsExpr) {
-		logrus.Infof("Loading preflight's lib checks.")
 		preflight.LoadChecks()
 	}
 }
