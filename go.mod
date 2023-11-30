@@ -23,6 +23,7 @@ require (
 	github.com/operator-framework/api v0.19.0
 	github.com/operator-framework/operator-lifecycle-manager v0.20.0
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/test-network-function/test-network-function-claim v1.0.31
 	helm.sh/helm/v3 v3.13.2
 	k8s.io/api v0.28.4
 	k8s.io/apimachinery v0.28.4
