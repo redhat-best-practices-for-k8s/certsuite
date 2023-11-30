@@ -219,7 +219,6 @@ require (
 	github.com/test-network-function/oct v0.0.4
 	github.com/test-network-function/privileged-daemonset v1.0.15
 	gopkg.in/yaml.v3 v3.0.1
-	gotest.tools/v3 v3.5.1
 	k8s.io/kubectl v0.28.4
 )
 

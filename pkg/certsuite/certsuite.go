@@ -13,6 +13,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/observability"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/performance"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/preflight"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
@@ -30,6 +31,7 @@ func LoadChecksDB(labelsExpr string) {
 	networking.LoadChecks()
 	observability.LoadChecks()
 	performance.LoadChecks()
+	platform.LoadChecks()
 
 	if preflight.ShouldRun(labelsExpr) {
 		preflight.LoadChecks()
