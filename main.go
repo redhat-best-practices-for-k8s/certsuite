@@ -121,11 +121,11 @@ func getK8sClientsConfigFileNames() []string {
 		kubeConfigFilePath := filepath.Join(params.Home, ".kube", "config")
 		// Check if the kubeconfig path exists
 		if _, err := os.Stat(kubeConfigFilePath); err == nil {
-			log.Infof("kubeconfig path %s is present", kubeConfigFilePath)
+			logrus.Infof("kubeconfig path %s is present", kubeConfigFilePath)
 			// Only add the kubeconfig to the list of paths if it exists, since it is not added by the user
 			fileNames = append(fileNames, kubeConfigFilePath)
 		} else {
-			log.Infof("kubeconfig path %s is not present", kubeConfigFilePath)
+			logrus.Infof("kubeconfig path %s is not present", kubeConfigFilePath)
 		}
 	}
 
