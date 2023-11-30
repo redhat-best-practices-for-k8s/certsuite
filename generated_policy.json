@@ -270,6 +270,16 @@
         "id": "performance-max-resources-exec-probes",
         "suite": "performance",
         "tags": "faredge"
+      },
+      {
+        "id": "platform-alteration-isredhat-release",
+        "suite": "platform-alteration",
+        "tags": "common"
+      },
+      {
+        "id": "platform-alteration-tainted-node-kernel",
+        "suite": "platform-alteration",
+        "tags": "common"
       }
     ],
     "gradeName": "good"
