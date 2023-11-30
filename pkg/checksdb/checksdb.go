@@ -18,7 +18,7 @@ var (
 	db        []*Check
 	dbByGroup map[string]*ChecksGroup
 
-	resultsDB = map[string][]claim.Result{}
+	resultsDB = map[string]claim.Result{}
 )
 
 func AddCheck(check *Check) {
@@ -94,7 +94,7 @@ func recordCheckResult(check *Check) {
 	}
 
 	logrus.Infof("Recording result %q of check %s, claimID: %+v", check.Result, check.ID, claimID)
-	resultsDB[check.ID] = append(resultsDB[check.ID], claim.Result{
+	resultsDB[check.ID] = claim.Result{
 		TestID:             &claimID,
 		State:              check.Result.String(),
 		StartTime:          check.StartTime.String(),
@@ -114,21 +114,21 @@ func recordCheckResult(check *Check) {
 			BestPracticeReference: identifiers.Catalog[claimID].BestPracticeReference,
 			ExceptionProcess:      identifiers.Catalog[claimID].ExceptionProcess,
 		},
-	})
+	}
 }
 
 // GetReconciledResults is a function added to aggregate a Claim's results.  Due to the limitations of
 // test-network-function-claim's Go Client, results are generalized to map[string]interface{}.
 func GetReconciledResults() map[string]interface{} {
 	resultMap := make(map[string]interface{})
-	for key, vals := range resultsDB {
+	//nolint:gocritic
+	for key, val := range resultsDB {
 		// initializes the result map, if necessary
 		if _, ok := resultMap[key]; !ok {
 			resultMap[key] = make([]claim.Result, 0)
 		}
-		for _, val := range vals { //nolint:gocritic // Only done once at the end
-			resultMap[key] = append(resultMap[key].([]claim.Result), val)
-		}
+
+		resultMap[key] = val
 	}
 	return resultMap
 }
