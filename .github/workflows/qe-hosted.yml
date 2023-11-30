@@ -49,6 +49,11 @@ jobs:
       - name: Run initial setup
         uses: ./.github/actions/setup
 
+      - name: Extract dependent Pull Requests
+        uses: depends-on/depends-on-action@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Install dependencies
         run: |
           sudo apt-get update
