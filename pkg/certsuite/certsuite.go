@@ -15,6 +15,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/performance"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/preflight"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/claimhelper"
@@ -23,7 +24,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
-func LoadChecksDB() {
+func LoadChecksDB(labelsExpr string) {
 	accesscontrol.LoadChecks()
 	certification.LoadChecks()
 	lifecycle.LoadChecks()
@@ -33,6 +34,10 @@ func LoadChecksDB() {
 	performance.LoadChecks()
 	platform.LoadChecks()
 	operator.LoadChecks()
+
+	if preflight.ShouldRun(labelsExpr) {
+		preflight.LoadChecks()
+	}
 }
 
 func Run(labelsFilter, outputFolder string, timeout time.Duration) {

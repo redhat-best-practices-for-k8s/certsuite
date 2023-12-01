@@ -161,13 +161,13 @@ func main() {
 	log.SetupLogger(logFile)
 	log.Info("Log file: %s", logFileName)
 
-	certsuite.LoadChecksDB()
-
 	logrus.Infof("TNF Version         : %v", versions.GitVersion())
 	logrus.Infof("Claim Format Version: %s", versions.ClaimFormatVersion)
 	logrus.Infof("Labels filter       : %v", *labelsFlag)
 
-	certsuite.LoadChecksDB()
+	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
+
+	certsuite.LoadChecksDB(*labelsFlag)
 
 	if *listFlag {
 		// ToDo: List all the available checks, filtered with --labels.
@@ -193,8 +193,7 @@ func main() {
 		logrus.Info("Running CNF Certification Suite in web server mode.")
 		webserver.StartServer(*claimPath)
 	} else {
-		logrus.Info("Running CNF Certification Suite in stand-alone mode.")
-		_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
+		log.Info("Running CNF Certification Suite in stand-alone mode.")
 		certsuite.Run(*labelsFlag, *claimPath, timeout)
 	}
 }
