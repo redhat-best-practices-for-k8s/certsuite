@@ -634,7 +634,7 @@ func testPodsRecreation(check *checksdb.Check, env *provider.TestEnvironment) { 
 	}
 
 	for nodeName := range podsets.GetAllNodesForAllPodSets(env.Pods) {
-		defer podrecreation.CordonCleanup(nodeName) //nolint:gocritic // The defer in loop is intentional, calling the cleanup function once per node
+		defer podrecreation.CordonCleanup(nodeName, check) //nolint:gocritic // The defer in loop is intentional, calling the cleanup function once per node
 		err := podrecreation.CordonHelper(nodeName, podrecreation.Cordon)
 		if err != nil {
 			logrus.Errorf("error cordoning the node: %s", nodeName)
