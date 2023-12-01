@@ -159,16 +159,16 @@ func buildCSV(claimScheme *claim.Schema, cnfType string, catalogMap map[string]c
 		record = append(record,
 			CNFNameFlag,
 			testID,
-			claimScheme.Claim.Results[testID][0].TestID.Suite,
-			claimScheme.Claim.Results[testID][0].CatalogInfo.Description,
-			claimScheme.Claim.Results[testID][0].State,
-			claimScheme.Claim.Results[testID][0].StartTime,
-			claimScheme.Claim.Results[testID][0].EndTime,
-			claimScheme.Claim.Results[testID][0].FailureReason,
-			claimScheme.Claim.Results[testID][0].CapturedTestOutput,
+			claimScheme.Claim.Results[testID].TestID.Suite,
+			claimScheme.Claim.Results[testID].CatalogInfo.Description,
+			claimScheme.Claim.Results[testID].State,
+			claimScheme.Claim.Results[testID].StartTime,
+			claimScheme.Claim.Results[testID].EndTime,
+			claimScheme.Claim.Results[testID].FailureReason,
+			claimScheme.Claim.Results[testID].CapturedTestOutput,
 			catalogMap[testID].Remediation,
 			cnfType, // Append the CNF type
-			claimScheme.Claim.Results[testID][0].CategoryClassification[cnfType],
+			claimScheme.Claim.Results[testID].CategoryClassification[cnfType],
 		)
 
 		resultsCSVRecords = append(resultsCSVRecords, record)

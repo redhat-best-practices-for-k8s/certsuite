@@ -115,7 +115,7 @@ build-cnf-tests: results-html
 
 # build the CNF test binary for local development
 dev:
-	PATH=${PATH}:${GOBIN} go build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" ./cnf-certification-test
+	PATH=${PATH}:${GOBIN} go build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" -o ./cnf-certification-test
 
 # Builds the CNF test binary with debug flags
 build-cnf-tests-debug: results-html
