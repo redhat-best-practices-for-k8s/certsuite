@@ -27,13 +27,11 @@ func TestGetTestCasesResultsMap(t *testing.T) {
 		{
 			description: "one test case in the access-control ts",
 			results: claim.TestSuiteResults{
-				"access-control": []claim.TestCaseResult{
-					{
-						TestID: claim.TestCaseID{
-							ID: "access-control-ssh-daemons",
-						},
-						State: "skipped",
+				"access-control": claim.TestCaseResult{
+					TestID: claim.TestCaseID{
+						ID: "access-control-ssh-daemons",
 					},
+					State: "skipped",
 				},
 			},
 			expectedTestCasesResultsMap: map[string]string{
@@ -43,33 +41,29 @@ func TestGetTestCasesResultsMap(t *testing.T) {
 		{
 			description: "two test suites with two test cases each",
 			results: claim.TestSuiteResults{
-				"access-control": []claim.TestCaseResult{
-					{
-						TestID: claim.TestCaseID{
-							ID: "access-control-ssh-daemons",
-						},
-						State: "skipped",
+				"access-control-ssh-daemons": claim.TestCaseResult{
+					TestID: claim.TestCaseID{
+						ID: "access-control-ssh-daemons",
 					},
-					{
-						TestID: claim.TestCaseID{
-							ID: "access-control-sys-admin-capability-check",
-						},
-						State: "passed",
-					},
+					State: "skipped",
 				},
-				"lifecycle": []claim.TestCaseResult{
-					{
-						TestID: claim.TestCaseID{
-							ID: "lifecycle-pod-scheduling",
-						},
-						State: "skipped",
+				"access-control-sys-admin-capability-check": claim.TestCaseResult{
+					TestID: claim.TestCaseID{
+						ID: "access-control-sys-admin-capability-check",
 					},
-					{
-						TestID: claim.TestCaseID{
-							ID: "lifecycle-pod-high-availability",
-						},
-						State: "failed",
+					State: "passed",
+				},
+				"lifecycle-pod-scheduling": claim.TestCaseResult{
+					TestID: claim.TestCaseID{
+						ID: "lifecycle-pod-scheduling",
 					},
+					State: "skipped",
+				},
+				"lifecycle-pod-high-availability": claim.TestCaseResult{
+					TestID: claim.TestCaseID{
+						ID: "lifecycle-pod-high-availability",
+					},
+					State: "failed",
 				},
 			},
 			expectedTestCasesResultsMap: map[string]string{
@@ -210,9 +204,9 @@ func TestGetDiffReport(t *testing.T) {
 	}{
 		{
 			description: "results1 empty, results2 with one tc result",
-			results1:    map[string][]claim.TestCaseResult{},
-			results2: map[string][]claim.TestCaseResult{
-				"access-control": {{TestID: claim.TestCaseID{ID: "access-control-ssh-daemons"}, State: "passed"}},
+			results1:    map[string]claim.TestCaseResult{},
+			results2: map[string]claim.TestCaseResult{
+				"access-control": {TestID: claim.TestCaseID{ID: "access-control-ssh-daemons"}, State: "passed"},
 			},
 			expectedDiffReport: DiffReport{
 				Claim1ResultsSummary: TcResultsSummary{},
@@ -229,11 +223,11 @@ func TestGetDiffReport(t *testing.T) {
 		},
 		{
 			description: "results1 and results2 have the same passing tc",
-			results1: map[string][]claim.TestCaseResult{
-				"access-control": {{TestID: claim.TestCaseID{ID: "access-control-ssh-daemons"}, State: "passed"}},
+			results1: map[string]claim.TestCaseResult{
+				"access-control": {TestID: claim.TestCaseID{ID: "access-control-ssh-daemons"}, State: "passed"},
 			},
-			results2: map[string][]claim.TestCaseResult{
-				"access-control": {{TestID: claim.TestCaseID{ID: "access-control-ssh-daemons"}, State: "passed"}},
+			results2: map[string]claim.TestCaseResult{
+				"access-control": {TestID: claim.TestCaseID{ID: "access-control-ssh-daemons"}, State: "passed"},
 			},
 			expectedDiffReport: DiffReport{
 				Claim1ResultsSummary:      TcResultsSummary{Passed: 1},
@@ -244,11 +238,11 @@ func TestGetDiffReport(t *testing.T) {
 		},
 		{
 			description: "results1 and results2 have same tc with different result",
-			results1: map[string][]claim.TestCaseResult{
-				"access-control": {{TestID: claim.TestCaseID{ID: "access-control-ssh-daemons"}, State: "passed"}},
+			results1: map[string]claim.TestCaseResult{
+				"access-control": {TestID: claim.TestCaseID{ID: "access-control-ssh-daemons"}, State: "passed"},
 			},
-			results2: map[string][]claim.TestCaseResult{
-				"access-control": {{TestID: claim.TestCaseID{ID: "access-control-ssh-daemons"}, State: "failed"}},
+			results2: map[string]claim.TestCaseResult{
+				"access-control": {TestID: claim.TestCaseID{ID: "access-control-ssh-daemons"}, State: "failed"},
 			},
 			expectedDiffReport: DiffReport{
 				Claim1ResultsSummary:      TcResultsSummary{Passed: 1},
@@ -259,13 +253,13 @@ func TestGetDiffReport(t *testing.T) {
 		},
 		{
 			description: "results1 and results2 have the same two tcs from different test suites, both with different results",
-			results1: map[string][]claim.TestCaseResult{
-				"access-control": {{TestID: claim.TestCaseID{ID: "access-control-ssh-daemons"}, State: "passed"}},
-				"lifecycle":      {{TestID: claim.TestCaseID{ID: "lifecycle-pod-scheduling"}, State: "failed"}},
+			results1: map[string]claim.TestCaseResult{
+				"access-control": {TestID: claim.TestCaseID{ID: "access-control-ssh-daemons"}, State: "passed"},
+				"lifecycle":      {TestID: claim.TestCaseID{ID: "lifecycle-pod-scheduling"}, State: "failed"},
 			},
-			results2: map[string][]claim.TestCaseResult{
-				"access-control": {{TestID: claim.TestCaseID{ID: "access-control-ssh-daemons"}, State: "failed"}},
-				"lifecycle":      {{TestID: claim.TestCaseID{ID: "lifecycle-pod-scheduling"}, State: "passed"}},
+			results2: map[string]claim.TestCaseResult{
+				"access-control": {TestID: claim.TestCaseID{ID: "access-control-ssh-daemons"}, State: "failed"},
+				"lifecycle":      {TestID: claim.TestCaseID{ID: "lifecycle-pod-scheduling"}, State: "passed"},
 			},
 			expectedDiffReport: DiffReport{
 				Claim1ResultsSummary: TcResultsSummary{Passed: 1, Failed: 1},
@@ -279,13 +273,13 @@ func TestGetDiffReport(t *testing.T) {
 		},
 		{
 			description: "one same test case result and another different",
-			results1: map[string][]claim.TestCaseResult{
-				"access-control": {{TestID: claim.TestCaseID{ID: "access-control-ssh-daemons"}, State: "passed"}},
-				"lifecycle":      {{TestID: claim.TestCaseID{ID: "lifecycle-pod-scheduling"}, State: "failed"}},
+			results1: map[string]claim.TestCaseResult{
+				"access-control": {TestID: claim.TestCaseID{ID: "access-control-ssh-daemons"}, State: "passed"},
+				"lifecycle":      {TestID: claim.TestCaseID{ID: "lifecycle-pod-scheduling"}, State: "failed"},
 			},
-			results2: map[string][]claim.TestCaseResult{
-				"access-control": {{TestID: claim.TestCaseID{ID: "access-control-ssh-daemons"}, State: "passed"}},
-				"lifecycle":      {{TestID: claim.TestCaseID{ID: "lifecycle-pod-scheduling"}, State: "skipped"}},
+			results2: map[string]claim.TestCaseResult{
+				"access-control": {TestID: claim.TestCaseID{ID: "access-control-ssh-daemons"}, State: "passed"},
+				"lifecycle":      {TestID: claim.TestCaseID{ID: "lifecycle-pod-scheduling"}, State: "skipped"},
 			},
 			expectedDiffReport: DiffReport{
 				Claim1ResultsSummary: TcResultsSummary{Passed: 1, Failed: 1},

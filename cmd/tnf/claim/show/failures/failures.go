@@ -299,7 +299,7 @@ func showFailures(_ *cobra.Command, _ []string) error {
 	// Order test case results by test suite, using a helper map.
 	resultsByTestSuite := map[string][]*claim.TestCaseResult{}
 	for id := range claimScheme.Claim.Results {
-		tcResult := claimScheme.Claim.Results[id][0]
+		tcResult := claimScheme.Claim.Results[id]
 		resultsByTestSuite[tcResult.TestID.Suite] = append(resultsByTestSuite[tcResult.TestID.Suite], &tcResult)
 	}
 

@@ -32,7 +32,7 @@ const (
 )
 
 // results is the results map
-var results = map[string][]claim.Result{}
+var results = map[string]claim.Result{}
 
 // RecordResult is a hook provided to save aspects of the ginkgo.GinkgoTestDescription for a given claim.Identifier.
 // Multiple results for a given identifier are aggregated as an array under the same key.
@@ -44,7 +44,7 @@ func RecordResult(report types.SpecReport) { //nolint:gocritic // From Ginkgo
 		aFailureReason = report.FailureMessage()
 	}
 	if claimID, ok := identifiers.TestIDToClaimID[report.LeafNodeText]; ok {
-		results[report.LeafNodeText] = append(results[report.LeafNodeText], claim.Result{
+		results[report.LeafNodeText] = claim.Result{
 			Duration:           int(report.RunTime.Nanoseconds()),
 			FailureLocation:    report.FailureLocation().String(),
 			FailureLineContent: report.FailureLocation().ContentsOfLine(),
@@ -65,7 +65,7 @@ func RecordResult(report types.SpecReport) { //nolint:gocritic // From Ginkgo
 				BestPracticeReference: identifiers.Catalog[claimID].BestPracticeReference,
 				ExceptionProcess:      identifiers.Catalog[claimID].ExceptionProcess,
 			},
-		})
+		}
 		if report.State == types.SpecStateAborted {
 			testhelper.AbortTrigger = claimID.Id
 		}
@@ -80,14 +80,13 @@ func RecordResult(report types.SpecReport) { //nolint:gocritic // From Ginkgo
 // RecordResult.  The combination of the two forms a Claim's results.
 func GetReconciledResults() map[string]interface{} {
 	resultMap := make(map[string]interface{})
-	for key, vals := range results {
+	//nolint:gocritic
+	for key, val := range results {
 		// initializes the result map, if necessary
 		if _, ok := resultMap[key]; !ok {
 			resultMap[key] = make([]claim.Result, 0)
 		}
-		for _, val := range vals { //nolint:gocritic // Only done once at the end
-			resultMap[key] = append(resultMap[key].([]claim.Result), val)
-		}
+		resultMap[key] = val
 	}
 	return resultMap
 }
