@@ -25,6 +25,7 @@ func AddCheck(check *Check) {
 	db = append(db, check)
 }
 
+//nolint:funlen
 func RunChecks(labelsExpr string, timeout time.Duration) error {
 	dbLock.Lock()
 	defer dbLock.Unlock()
@@ -49,17 +50,25 @@ func RunChecks(labelsExpr string, timeout time.Duration) error {
 
 		// Stop channel, so we can send a stop signal to group.RunChecks()
 		stopChan := make(chan bool, 1)
+		abortChan := make(chan bool, 1)
 
 		// Done channel for the goroutine that runs group.RunChecks().
 		groupDone := make(chan bool)
 		go func() {
-			errs = append(errs, group.RunChecks(labelsExpr, stopChan)...)
+			errs = append(errs, group.RunChecks(labelsExpr, stopChan, abortChan)...)
 			groupDone <- true
 		}()
 
 		select {
 		case <-groupDone:
 			logrus.Tracef("Group %s finished running checks.", group.name)
+		case <-abortChan:
+			logrus.Warnf("Group %s aborted.", group.name)
+			stopChan <- true
+
+			abort = true
+			abortReason = "Test suite aborted due to error"
+			_ = group.OnAbort(labelsExpr, abortReason)
 		case <-timeOutChan:
 			logrus.Warnf("Running all checks timed-out.")
 			stopChan <- true

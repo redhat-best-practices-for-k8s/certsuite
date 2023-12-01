@@ -144,7 +144,7 @@ func CordonCleanup(node string, check *checksdb.Check) {
 	err := CordonHelper(node, Uncordon)
 	if err != nil {
 		logrus.Errorf("cleanup: error uncordoning the node: %s, err=%s", node, err)
-		check.SetResultAborted(fmt.Sprintf("cleanup: error uncordoning the node: %s, err=%s", node, err))
+		check.Abort()
 	}
 }
 
