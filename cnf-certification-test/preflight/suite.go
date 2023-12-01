@@ -17,6 +17,7 @@
 package preflight
 
 import (
+	"fmt"
 	"strings"
 
 	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
@@ -57,6 +58,7 @@ func labelsAllowTestRun(labelFilter string, allowedLabels []string) bool {
 // time to finish. When they're finished, a checksdb.Check is created for each preflight lib's
 // check that has run. The CheckFn will simply store the result.
 func ShouldRun(labelsExpr string) bool {
+	env = provider.GetTestEnvironment()
 	preflightAllowedLabels := []string{common.PreflightTestKey, identifiers.TagPreflight}
 
 	if !labelsAllowTestRun(labelsExpr, preflightAllowedLabels) {
@@ -67,7 +69,7 @@ func ShouldRun(labelsExpr string) bool {
 	preflightDockerConfigFile := configuration.GetTestParameters().PfltDockerconfig
 	if preflightDockerConfigFile == "" || preflightDockerConfigFile == "NA" {
 		logrus.Warn("Skipping the preflight suite because the Docker Config file is not provided.")
-		return false
+		env.SkipPreflight = true
 	}
 
 	return true
@@ -169,7 +171,7 @@ func generatePreflightContainerGinkgoTest(checksGroup *checksdb.ChecksGroup, tes
 				}
 				for _, r := range cut.PreflightResults.Errors {
 					if r.Name() == testName {
-						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has errored preflight test "+testName, false))
+						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, fmt.Sprintf("Container has errored preflight test %s, err=%v", testName, r.Err), false))
 						tnf.Logf(logrus.ErrorLevel, "%s has errored preflight test: %s", cut, testName)
 					}
 				}

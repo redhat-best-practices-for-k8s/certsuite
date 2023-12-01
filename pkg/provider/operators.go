@@ -99,10 +99,18 @@ func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
 	ctx = logr.NewContext(ctx, logger)
 
 	check := plibOperator.NewCheck(bundleImage, indexImage, oc.KubeConfig, opts...)
+
 	results, runtimeErr := check.Run(ctx)
+	logrus.StandardLogger().Out = os.Stderr
 	if runtimeErr != nil {
-		logrus.Error(runtimeErr)
-		return runtimeErr
+		_, checks, err := check.List(ctx)
+		if err != nil {
+			return fmt.Errorf("could not get preflight container test list")
+		}
+		for _, c := range checks {
+			results.PassedOverall = false
+			results.Errors = append(results.Errors, plibRuntime.Result{Check: c, ElapsedTime: 0, Err: runtimeErr})
+		}
 	}
 
 	// Take all of the preflight logs and stick them into logrus.

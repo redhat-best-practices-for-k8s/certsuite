@@ -120,11 +120,20 @@ func (c *Container) SetPreflightResults(preflightImageCache map[string]plibRunti
 	ctx = logr.NewContext(ctx, logger)
 
 	check := plibContainer.NewCheck(c.Image, opts...)
+
 	results, runtimeErr := check.Run(ctx)
 	logrus.StandardLogger().Out = os.Stderr
 	if runtimeErr != nil {
-		logrus.Error(runtimeErr)
-		return runtimeErr
+		_, checks, err := check.List(ctx)
+		if err != nil {
+			return fmt.Errorf("could not get preflight container test list")
+		}
+
+		results.TestedImage = c.Image
+		for _, c := range checks {
+			results.PassedOverall = false
+			results.Errors = append(results.Errors, plibRuntime.Result{Check: c, ElapsedTime: 0, Err: runtimeErr})
+		}
 	}
 
 	// Take all of the preflight logs and stick them into logrus.
