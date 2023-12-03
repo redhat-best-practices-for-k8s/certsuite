@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/cli"
 )
 
 type ChecksGroup struct {
@@ -75,6 +76,8 @@ func (group *ChecksGroup) Add(check *Check) {
 
 func skipCheck(check *Check, reason string) {
 	logrus.Infof("Skipping check %s, reason: %s", check.ID, reason)
+
+	fmt.Printf("[ "+cli.Yellow+"SKIP"+cli.Reset+" ] %s\n", check.ID)
 
 	check.SetResultSkipped(reason)
 }
@@ -284,6 +287,7 @@ func runCheck(check *Check, group *ChecksGroup, remainingChecks []*Check) (err e
 //nolint:funlen
 func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool) (errs []error) {
 	logrus.Infof("Running group %q checks.", group.name)
+	fmt.Printf("Running suite %s\n", strings.ToUpper(group.name))
 
 	labelsExprEvaluator, err := NewLabelsExprEvaluator(labelsExpr)
 	if err != nil {
