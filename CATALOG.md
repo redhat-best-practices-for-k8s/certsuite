@@ -7,9 +7,9 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 
 ## Test cases summary
 
-### Total test cases: 88
+### Total test cases: 104
 
-### Total suites: 9
+### Total suites: 10
 
 |Suite|Tests per suite|
 |---|---|
@@ -22,6 +22,7 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |operator|3|
 |performance|6|
 |platform-alteration|13|
+|preflight|16|
 
 ### Extended specific tests only: 12
 
@@ -35,11 +36,11 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |---|---|
 |7|1|
 
-### Non-Telco specific tests only: 41
+### Non-Telco specific tests only: 57
 
 |Mandatory|Optional|
 |---|---|
-|38|3|
+|38|19|
 
 ### Telco specific tests only: 27
 
@@ -1476,3 +1477,261 @@ Tags|common,platform-alteration
 |Far-Edge|Mandatory|
 |Non-Telco|Mandatory|
 |Telco|Mandatory|
+
+### preflight
+
+#### preflight-AllImageRefsInRelatedImages
+
+Property|Description
+---|---
+Unique ID|preflight-AllImageRefsInRelatedImages
+Description|Check that all images in the CSV are listed in RelatedImages section. Currently, this check is not enforced.
+Suggested Remediation|Either manually or with a tool, populate the RelatedImages section of the CSV
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-BasedOnUbi
+
+Property|Description
+---|---
+Unique ID|preflight-BasedOnUbi
+Description|Checking if the container's base image is based upon the Red Hat Universal Base Image (UBI)
+Suggested Remediation|Change the FROM directive in your Dockerfile or Containerfile to FROM registry.access.redhat.com/ubi8/ubi
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-BundleImageRefsAreCertified
+
+Property|Description
+---|---
+Unique ID|preflight-BundleImageRefsAreCertified
+Description|Checking that all images referenced in the CSV are certified. Currently, this check is not enforced.
+Suggested Remediation|Ensure that any images referenced in the CSV, including the relatedImages section, have been certified.
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-DeployableByOLM
+
+Property|Description
+---|---
+Unique ID|preflight-DeployableByOLM
+Description|Checking if the operator could be deployed by OLM
+Suggested Remediation|Follow the guidelines on the operator-sdk website to learn how to package your operator https://sdk.operatorframework.io/docs/olm-integration/cli-overview/
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-FollowsRestrictedNetworkEnablementGuidelines
+
+Property|Description
+---|---
+Unique ID|preflight-FollowsRestrictedNetworkEnablementGuidelines
+Description|Checks for indicators that this bundle has implemented guidelines to indicate readiness for running in a disconnected cluster, or a cluster with a restricted network.
+Suggested Remediation|If consumers of your operator may need to do so on a restricted network, implement the guidelines outlines in OCP documentation for your cluster version, such as https://docs.openshift.com/container-platform/4.11/operators/operator_sdk/osdk-generating-csvs.html#olm-enabling-operator-for-restricted-network_osdk-generating-csvs for OCP 4.11
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-HasLicense
+
+Property|Description
+---|---
+Unique ID|preflight-HasLicense
+Description|Checking if terms and conditions applicable to the software including open source licensing information are present. The license must be at /licenses
+Suggested Remediation|Create a directory named /licenses and include all relevant licensing and/or terms and conditions as text file(s) in that directory.
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-HasModifiedFiles
+
+Property|Description
+---|---
+Unique ID|preflight-HasModifiedFiles
+Description|Checks that no files installed via RPM in the base Red Hat layer have been modified
+Suggested Remediation|Do not modify any files installed by RPM in the base Red Hat layer
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-HasNoProhibitedPackages
+
+Property|Description
+---|---
+Unique ID|preflight-HasNoProhibitedPackages
+Description|Checks to ensure that the image in use does not include prohibited packages, such as Red Hat Enterprise Linux (RHEL) kernel packages.
+Suggested Remediation|Remove any RHEL packages that are not distributable outside of UBI
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-HasRequiredLabel
+
+Property|Description
+---|---
+Unique ID|preflight-HasRequiredLabel
+Description|Checking if the required labels (name, vendor, version, release, summary, description) are present in the container metadata.
+Suggested Remediation|Add the following labels to your Dockerfile or Containerfile: name, vendor, version, release, summary, description
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-HasUniqueTag
+
+Property|Description
+---|---
+Unique ID|preflight-HasUniqueTag
+Description|Checking if container has a tag other than 'latest', so that the image can be uniquely identified.
+Suggested Remediation|Add a tag to your image. Consider using Semantic Versioning. https://semver.org/
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-LayerCountAcceptable
+
+Property|Description
+---|---
+Unique ID|preflight-LayerCountAcceptable
+Description|Checking if container has less than 40 layers.  Too many layers within the container images can degrade container performance.
+Suggested Remediation|Optimize your Dockerfile to consolidate and minimize the number of layers. Each RUN command will produce a new layer. Try combining RUN commands using && where possible.
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-RunAsNonRoot
+
+Property|Description
+---|---
+Unique ID|preflight-RunAsNonRoot
+Description|Checking if container runs as the root user because a container that does not specify a non-root user will fail the automatic certification, and will be subject to a manual review before the container can be approved for publication
+Suggested Remediation|Indicate a specific USER in the dockerfile or containerfile
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-ScorecardBasicSpecCheck
+
+Property|Description
+---|---
+Unique ID|preflight-ScorecardBasicSpecCheck
+Description|Check to make sure that all CRs have a spec block.
+Suggested Remediation|Make sure that all CRs have a spec block
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-ScorecardOlmSuiteCheck
+
+Property|Description
+---|---
+Unique ID|preflight-ScorecardOlmSuiteCheck
+Description|Operator-sdk scorecard OLM Test Suite Check
+Suggested Remediation|See scorecard output for details, artifacts/operator_bundle_scorecard_OlmSuiteCheck.json
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-SecurityContextConstraintsInCSV
+
+Property|Description
+---|---
+Unique ID|preflight-SecurityContextConstraintsInCSV
+Description|Evaluates the csv and logs a message if a non default security context constraint is needed by the operator
+Suggested Remediation|If no scc is detected the default restricted scc will be used.
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-ValidateOperatorBundle
+
+Property|Description
+---|---
+Unique ID|preflight-ValidateOperatorBundle
+Description|Validating Bundle image that checks if it can validate the content and format of the operator bundle
+Suggested Remediation|Valid bundles are defined by bundle spec, so make sure that this bundle conforms to that spec. More Information: https://github.com/operator-framework/operator-registry/blob/master/docs/design/operator-bundle.md
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|

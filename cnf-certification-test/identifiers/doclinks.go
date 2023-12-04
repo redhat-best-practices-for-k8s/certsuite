@@ -5,6 +5,7 @@ const (
 	NoDocLinkExtended = "No Doc Link - Extended"
 	NoDocLinkFarEdge  = "No Doc Link - Far Edge"
 	NoDocLinkTelco    = "No Doc Link - Telco"
+	NoDocLink         = "No Doc Link"
 
 	// Networking Suite
 	TestICMPv4ConnectivityIdentifierDocLink         = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-ipv4-&-ipv6"
