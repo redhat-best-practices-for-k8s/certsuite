@@ -287,7 +287,6 @@ function updateCheckbox(table){
   }
   buildTest(selectedScenario,table)
   updateTestCounter(table)
-  //updateAllCounter()
 }
 
 function buildTest(scenarioValue,table){
