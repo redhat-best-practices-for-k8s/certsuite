@@ -324,7 +324,7 @@ func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool) (er
 		// Fast stop in case the stop (abort/timeout) signal received.
 		select {
 		case <-stopChan:
-			return errs
+			return nil
 		default:
 		}
 
@@ -334,13 +334,11 @@ func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool) (er
 			remainingChecks = checks[i+1:]
 		}
 
-		beforeEachFailed := false
 		if err := runBeforeEachFn(group, check, remainingChecks); err != nil {
-			beforeEachFailed = true
-			errs = append(errs, err)
+			errs = []error{err}
 		}
 
-		if !beforeEachFailed {
+		if len(errs) == 0 {
 			// Should we skip this check?
 			skip, reasons := shouldSkipCheck(check)
 			if skip {
@@ -353,13 +351,12 @@ func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool) (er
 			}
 		}
 		// afterEach func must run even if the check was skipped or panicked/unexpected error.
-		afterEachFailed := false
 		if err := runAfterEachFn(group, check, remainingChecks); err != nil {
 			errs = append(errs, err)
-			afterEachFailed = true
 		}
 
-		if beforeEachFailed || afterEachFailed {
+		// Don't run more checks if any of beforeEach, the checkFn or afterEach functions errored/panicked.
+		if len(errs) > 0 {
 			break
 		}
 
