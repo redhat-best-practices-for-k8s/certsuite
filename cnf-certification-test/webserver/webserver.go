@@ -277,7 +277,7 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	env.SetNeedsRefresh()
 	env = provider.GetTestEnvironment()
 
-	labelsFilter := strings.Join(flattenedOptions, "")
+	labelsFilter := strings.Join(flattenedOptions, ",")
 	outputFolder := r.Context().Value(outputFolderCtxKey).(string)
 
 	log.Info("Running CNF Cert Suite (web-mode). Labels filter: %s, outputFolder: %s", labelsFilter, outputFolder)
@@ -287,7 +287,7 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	response := struct {
 		Message string `json:"Message"`
 	}{
-		Message: fmt.Sprintf("Succeeded to run %s", strings.Join(flattenedOptions, "")),
+		Message: fmt.Sprintf("Succeeded to run %s", strings.Join(flattenedOptions, " ")),
 	}
 	// Serialize the response data to JSON
 	jsonResponse, err := json.Marshal(response)

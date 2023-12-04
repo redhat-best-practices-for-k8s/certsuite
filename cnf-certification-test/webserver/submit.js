@@ -11,15 +11,10 @@ export async function submit(form) {
             formdata.append((element.id.match(/[a-zA-Z]/g) || []).join(''), element.value);
           }
       });
-      console.log(JSON.stringify(Object.fromEntries(formdata)))
     for (const el of form.elements) if (el instanceof HTMLFieldSetElement) el.disabled = true
-    console.log(Array.from(formdata.entries()));
     
     // Collect data from form fields
     const fields = Array.from(formdata.entries()).reduce((acc, [key, val]) => {
-      console.log(acc[key]);
-      console.log(val);
-
       if (acc[key] === undefined) {
         // If the key is not in the accumulator, set it to the value or an array with the value
         acc[key] = [val];
@@ -35,7 +30,6 @@ export async function submit(form) {
   
     delete fields.submit;
     console.log(fields);
-    console.log(formdata)
     formdata.append("jsonData", JSON.stringify(fields));
 
     // Send an HTTP request to the server to run the function
