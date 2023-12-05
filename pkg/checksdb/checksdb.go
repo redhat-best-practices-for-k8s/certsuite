@@ -25,6 +25,8 @@ var (
 	resultsDB = map[string]claim.Result{}
 )
 
+type AbortPanicMsg string
+
 func AddCheck(check *Check) {
 	db = append(db, check)
 }
@@ -43,7 +45,6 @@ func RunChecks(labelsExpr string, timeout time.Duration) (failedCtr int, err err
 	// turn off ctrl-c capture on exit
 	defer signal.Stop(sigIntChan)
 
-	//  Labels expression parser not implemented yet. Assume labelsExpr is just a label.
 	abort := false
 	var abortReason string
 	var errs []error
@@ -51,12 +52,13 @@ func RunChecks(labelsExpr string, timeout time.Duration) (failedCtr int, err err
 		if abort {
 			// ToDo: remove labelexpr checking.
 			_ = group.OnAbort(labelsExpr, abortReason)
+			group.RecordChecksResults()
 			continue
 		}
 
 		// Stop channel, so we can send a stop signal to group.RunChecks()
 		stopChan := make(chan bool, 1)
-		abortChan := make(chan bool, 1)
+		abortChan := make(chan string, 1)
 
 		// Done channel for the goroutine that runs group.RunChecks().
 		groupDone := make(chan bool)
@@ -70,12 +72,11 @@ func RunChecks(labelsExpr string, timeout time.Duration) (failedCtr int, err err
 		select {
 		case <-groupDone:
 			log.Debug("Group %s finished running checks.", group.name)
-		case <-abortChan:
+		case abortReason = <-abortChan:
 			log.Warn("Group %s aborted.", group.name)
 			stopChan <- true
 
 			abort = true
-			abortReason = "Test suite aborted due to error"
 			_ = group.OnAbort(labelsExpr, abortReason)
 		case <-timeOutChan:
 			log.Warn("Running all checks timed-out.")
