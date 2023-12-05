@@ -165,8 +165,14 @@ func main() {
 	logrus.Infof("Claim Format Version: %s", versions.ClaimFormatVersion)
 	logrus.Infof("Labels filter       : %v", *labelsFlag)
 
-	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
+	webServerMode := *serverModeFlag
 
+	client := clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
+	if !webServerMode && client == nil {
+		logrus.Fatalf("Please provide a valid kubeconfig. Either set the KUBECONFIG environment variable or alternatively copy a kube config to $HOME/.kube/config")
+	}
+
+	certsuite.SetWebServerMode(*serverModeFlag)
 	certsuite.LoadChecksDB(*labelsFlag)
 
 	if *listFlag {

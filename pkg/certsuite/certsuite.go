@@ -24,6 +24,14 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
+var (
+	webServerMode bool
+)
+
+func SetWebServerMode(serverMode bool) {
+	webServerMode = serverMode
+}
+
 func LoadChecksDB(labelsExpr string) {
 	accesscontrol.LoadChecks()
 	certification.LoadChecks()
@@ -35,7 +43,9 @@ func LoadChecksDB(labelsExpr string) {
 	platform.LoadChecks()
 	operator.LoadChecks()
 
-	if preflight.ShouldRun(labelsExpr) {
+	// Avoid loading preflight checks in webserver mode, since the app may start
+	// without any kubeconfig file provided.
+	if !webServerMode && preflight.ShouldRun(labelsExpr) {
 		preflight.LoadChecks()
 	}
 }
