@@ -86,7 +86,7 @@ var (
 	TestHyperThreadEnable                             claim.Identifier
 	TestReservedExtendedPartnerPorts                  claim.Identifier
 	TestAffinityRequiredPods                          claim.Identifier
-	TestStartupIdentifier                             claim.Identifier
+	TestContainerPostStartIdentifier                  claim.Identifier
 	TestShutdownIdentifier                            claim.Identifier
 	TestDpdkCPUPinningExecProbe                       claim.Identifier
 	TestSysAdminIdentifier                            claim.Identifier
@@ -346,13 +346,13 @@ func InitCatalog() map[claim.Identifier]claim.TestCaseDescription {
 		},
 		TagCommon)
 
-	TestStartupIdentifier = AddCatalogEntry(
-		"container-startup",
+	TestContainerPostStartIdentifier = AddCatalogEntry(
+		"container-poststart",
 		common.LifecycleTestKey,
 		`Ensure that the containers lifecycle postStart management feature is configured. A container must receive important events from the platform and conform/react to these events properly. For example, a container should catch SIGTERM or SIGKILL from the platform and shutdown as quickly as possible. Other typically important events from the platform are PostStart to initialize before servicing requests and PreStop to release resources cleanly before shutting down.`,                                                                                                                                                                                                                           //nolint:lll
 		`PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. PostStart is used to configure container, set up dependencies, record new creation. It can also be used to check that a required API is available before the container’s work begins.`, //nolint:lll
-		StartupIdentifierRemediation,
-		TestStartupIdentifierDocLink,
+		ContainerPostStartIdentifierRemediation,
+		TestContainerPostStartIdentifierDocLink,
 		true,
 		map[string]string{
 			FarEdge:  Mandatory,

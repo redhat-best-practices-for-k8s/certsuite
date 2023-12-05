@@ -95,7 +95,7 @@ func LoadChecks() {
 		}))
 
 	// Poststart test
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStartupIdentifier)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerPostStartIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
