@@ -31,6 +31,7 @@ import (
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/webserver"
 
+	"github.com/test-network-function/cnf-certification-test/internal/cli"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
@@ -106,7 +107,6 @@ func setLogLevel() {
 		logLevel = logrus.DebugLevel
 	}
 
-	logrus.Info("Log level set to: ", logLevel)
 	logrus.SetLevel(logLevel)
 }
 
@@ -144,14 +144,23 @@ func main() {
 	loghelper.SetLogFormat()
 	setLogLevel()
 
-	// Set up logger
-	err = os.Remove(logFileName)
-	if err != nil && !os.IsNotExist(err) {
-		fmt.Fprintf(os.Stderr, "could not delete old log file, err: %v", err)
+	logrusLogFile, err := os.OpenFile(logFileName, os.O_RDWR|os.O_CREATE, logFilePermissions)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "could not create log file, err: %v", err)
 		os.Exit(1)
 	}
+	defer logrusLogFile.Close()
 
-	logFile, err := os.OpenFile(logFileName, os.O_RDWR|os.O_CREATE, logFilePermissions)
+	logrus.SetOutput(logrusLogFile)
+
+	// Set up logger
+	err = os.Remove("test_log") // TODO: use proper file when logrus is removed
+	if err != nil && !os.IsNotExist(err) {
+		fmt.Fprintf(os.Stderr, "could not delete old log file, err: %v", err)
+		os.Exit(1) //nolint:gocritic // the error will not happen after logrus is removed
+	}
+
+	logFile, err := os.OpenFile("test_log", os.O_RDWR|os.O_CREATE, logFilePermissions)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "could not create log file, err: %v", err)
 		os.Exit(1)
@@ -165,7 +174,18 @@ func main() {
 	logrus.Infof("Claim Format Version: %s", versions.ClaimFormatVersion)
 	logrus.Infof("Labels filter       : %v", *labelsFlag)
 
+	cli.PrintBanner()
+
+	fmt.Printf("CNFCERT version: %s\n", versions.GitVersion())
+	fmt.Printf("Claim file version: %s\n", versions.ClaimFormatVersion)
+	fmt.Printf("Checks filter: %s\n", *labelsFlag)
+	fmt.Printf("Output folder: %s\n", *claimPath)
+	fmt.Printf("Log file: %s\n", logFileName)
+	fmt.Printf("\n")
+
 	webServerMode := *serverModeFlag
+
+	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
 
 	client := clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
 	if !webServerMode && client == nil {
@@ -178,7 +198,7 @@ func main() {
 	if *listFlag {
 		// ToDo: List all the available checks, filtered with --labels.
 		logrus.Errorf("Not implemented yet.")
-		os.Exit(1) //nolint:gocritic
+		os.Exit(1)
 	}
 
 	// Diagnostic functions will run when no labels are provided.

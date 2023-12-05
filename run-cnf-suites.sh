@@ -2,7 +2,7 @@
 
 # [debug] uncomment line below to print out the statements as they are being
 # executed.
-set -x
+# set -x
 
 # defaults
 export OUTPUT_LOC="$PWD/cnf-certification-test"
@@ -94,14 +94,14 @@ if [ "$SERVER_RUN" = "true" ]; then
 	EXTRA_ARGS="$EXTRA_ARGS -serverMode"
 fi
 
-echo "Label: $LABEL"
+# echo "Label: $LABEL"
 if [[ $LABEL == "all" ]]; then
 	LABEL='common,extended,faredge,telco'
 fi
 
-echo "Running with label filter '$LABEL'"
-echo "Report will be output to '$OUTPUT_LOC'"
-echo "Extra arguments '${EXTRA_ARGS}'"
+# echo "Running with label filter '$LABEL'"
+# echo "Report will be output to '$OUTPUT_LOC'"
+# echo "Extra arguments '${EXTRA_ARGS}'"
 LABEL_STRING=''
 
 if [ -z "$LABEL" ] && { [ -z "$SERVER_RUN" ] || [ "$SERVER_RUN" == "false" ]; }; then
