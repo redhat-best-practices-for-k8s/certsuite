@@ -4,12 +4,15 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"strings"
 	"sync"
 	"syscall"
 	"time"
+	"unicode/utf8"
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/internal/cli"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
@@ -25,6 +28,7 @@ func AddCheck(check *Check) {
 	db = append(db, check)
 }
 
+//nolint:funlen
 func RunChecks(labelsExpr string, timeout time.Duration) error {
 	dbLock.Lock()
 	defer dbLock.Unlock()
@@ -79,6 +83,10 @@ func RunChecks(labelsExpr string, timeout time.Duration) error {
 		group.RecordChecksResults()
 	}
 
+	// Print the results in the CLI
+	cli.PrintResultsTable(getResultsSummary())
+	printFailedChecksLog()
+
 	if len(errs) > 0 {
 		logrus.Errorf("RunChecks errors: %v", errs)
 		return fmt.Errorf("%d errors found in checks/groups", len(errs))
@@ -131,4 +139,52 @@ func GetReconciledResults() map[string]interface{} {
 		resultMap[key] = val
 	}
 	return resultMap
+}
+
+const (
+	PASSED  = 0
+	FAILED  = 1
+	SKIPPED = 2
+)
+
+func getResultsSummary() map[string][]int {
+	results := make(map[string][]int)
+	for groupName, group := range dbByGroup {
+		groupResults := []int{0, 0, 0}
+		for _, check := range group.checks {
+			switch check.Result {
+			case CheckResultPassed:
+				groupResults[PASSED]++
+			case CheckResultFailed:
+				groupResults[FAILED]++
+			case CheckResultSkipped:
+				groupResults[SKIPPED]++
+			}
+		}
+		results[groupName] = groupResults
+	}
+	return results
+}
+
+const nbColorSymbols = 9
+
+func printFailedChecksLog() {
+	for _, group := range dbByGroup {
+		for _, check := range group.checks {
+			if check.Result != CheckResultFailed {
+				continue
+			}
+			logHeader := fmt.Sprintf("| "+cli.Cyan+"LOG (%s)"+cli.Reset+" |", check.ID)
+			nbSymbols := utf8.RuneCountInString(logHeader) - nbColorSymbols
+			fmt.Println(strings.Repeat("-", nbSymbols))
+			fmt.Println(logHeader)
+			fmt.Println(strings.Repeat("-", nbSymbols))
+			log := check.GetLogs()
+			if log == "" {
+				fmt.Println("Empty log output")
+			} else {
+				fmt.Println(log)
+			}
+		}
+	}
 }

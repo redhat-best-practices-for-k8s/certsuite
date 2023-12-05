@@ -26,5 +26,5 @@ func GitVersion() string {
 		GitDisplayRelease = GitRelease
 	}
 
-	return GitDisplayRelease + " ( " + GitCommit + " )"
+	return GitDisplayRelease + " (" + GitCommit + ")"
 }

@@ -63,12 +63,11 @@ func LoadConfiguration(filePath string) (TestConfiguration, error) {
 }
 
 func LoadEnvironmentVariables() error {
-	log.Info("Saving environment variables & parameters.")
 	err := envconfig.Process("tnf", &parameters)
 	if err != nil {
 		return fmt.Errorf("could not process the environment variables values, error: %v", err)
 	}
-	log.Infof("Environment: %+v", parameters)
+
 	return nil
 }
 

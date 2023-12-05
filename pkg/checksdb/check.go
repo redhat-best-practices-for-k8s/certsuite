@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/cli"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 )
@@ -18,6 +19,10 @@ const (
 	CheckResultFailed  = "failed"
 	CheckResultError   = "error"
 	CheckResultAborted = "aborted"
+
+	CheckResultTagPass = "PASS"
+	CheckResultTagSkip = "SKIP"
+	CheckResultTagFail = "FAIL"
 )
 
 type skipMode int
@@ -246,6 +251,8 @@ func (check *Check) Run() error {
 		return fmt.Errorf("unable to run due to a previously existing error: %v", check.Error)
 	}
 
+	fmt.Printf("[ "+cli.Cyan+"RUNNING"+cli.Reset+" ] %s", check.ID)
+
 	check.StartTime = time.Now()
 	defer func() {
 		check.EndTime = time.Now()
@@ -268,5 +275,22 @@ func (check *Check) Run() error {
 		}
 	}
 
+	printCheckResult(check)
+
 	return nil
+}
+
+const nbCharsToAvoidLineAliasing = 20
+
+//nolint:goconst
+func printCheckResult(check *Check) {
+	checkID := check.ID + strings.Repeat(" ", nbCharsToAvoidLineAliasing)
+	switch check.Result {
+	case CheckResultPassed:
+		fmt.Printf("\r[ "+cli.Green+"%s"+cli.Reset+" ] %s\n", CheckResultTagPass, checkID)
+	case CheckResultFailed:
+		fmt.Printf("\r[ "+cli.Red+"%s"+cli.Reset+" ] %s\n", CheckResultTagFail, checkID)
+	case CheckResultSkipped:
+		fmt.Printf("\r[ "+cli.Yellow+"%s"+cli.Reset+" ] %s\n", CheckResultTagSkip, checkID)
+	}
 }
