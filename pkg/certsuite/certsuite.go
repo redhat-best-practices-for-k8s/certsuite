@@ -17,10 +17,12 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/preflight"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/claimhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/collector"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"github.com/test-network-function/cnf-certification-test/pkg/flags"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
@@ -44,8 +46,49 @@ const (
 	junitXMLOutputFile = "cnf-certification-tests_junit.xml"
 )
 
+func getK8sClientsConfigFileNames() []string {
+	params := configuration.GetTestParameters()
+	fileNames := []string{}
+	if params.Kubeconfig != "" {
+		// Add the kubeconfig path
+		fileNames = append(fileNames, params.Kubeconfig)
+	}
+	if params.Home != "" {
+		kubeConfigFilePath := filepath.Join(params.Home, ".kube", "config")
+		// Check if the kubeconfig path exists
+		if _, err := os.Stat(kubeConfigFilePath); err == nil {
+			logrus.Infof("kubeconfig path %s is present", kubeConfigFilePath)
+			// Only add the kubeconfig to the list of paths if it exists, since it is not added by the user
+			fileNames = append(fileNames, kubeConfigFilePath)
+		} else {
+			logrus.Infof("kubeconfig path %s is not present", kubeConfigFilePath)
+		}
+	}
+
+	return fileNames
+}
+
+func processFlags() time.Duration {
+	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
+
+	LoadChecksDB(*flags.LabelsFlag)
+
+	// Diagnostic functions will run when no labels are provided.
+	if *flags.LabelsFlag == flags.NoLabelsExpr {
+		logrus.Warnf("CNF Certification Suite will run in diagnostic mode so no test case will be launched.")
+	}
+
+	timeout, err := time.ParseDuration(*flags.TimeoutFlag)
+	if err != nil {
+		logrus.Errorf("Failed to parse timeout flag %v: %v, using default timeout value %v", *flags.TimeoutFlag, err, flags.TimeoutFlagDefaultvalue)
+		timeout = flags.TimeoutFlagDefaultvalue
+	}
+	return timeout
+}
+
 //nolint:funlen
-func Run(labelsFilter, outputFolder string, timeout time.Duration) {
+func Run(labelsFilter, outputFolder string) {
+	timeout := processFlags()
 	var env provider.TestEnvironment
 	env.SetNeedsRefresh()
 	env = provider.GetTestEnvironment()

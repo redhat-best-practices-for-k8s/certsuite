@@ -21,18 +21,16 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"path/filepath"
-	"time"
 
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/pkg/certsuite"
+	"github.com/test-network-function/cnf-certification-test/pkg/flags"
 	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/versions"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/webserver"
 
 	"github.com/test-network-function/cnf-certification-test/internal/cli"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 )
@@ -45,56 +43,19 @@ const (
 	junitFlagKey                  = "junit"
 	TNFReportKey                  = "cnf-certification-test"
 	extraInfoKey                  = "testsExtraInfo"
-	noLabelsExpr                  = "none"
 	logFileName                   = "cnf-certsuite.log"
 	logFilePermissions            = 0o644
 )
 
-const (
-	labelsFlagName         = "label-filter"
-	labelsFlagDefaultValue = "common"
-
-	labelsFlagUsage = "--label-filter <expression>  e.g. --label-filter 'access-control && !access-control-sys-admin-capability'"
-
-	timeoutFlagName         = "timeout"
-	timeoutFlagDefaultvalue = 24 * time.Hour
-
-	timeoutFlagUsage = "--timeout <time>  e.g. --timeout 30m  or -timeout 1h30m"
-
-	listFlagName         = "list"
-	listFlagDefaultValue = false
-
-	listFlagUsage = "--list Shows all the available checks/tests. Can be filtered with --label-filter."
-
-	serverModeFlagName         = "serverMode"
-	serverModeFlagDefaultValue = false
-
-	serverModeFlagUsage = "--serverMode or -serverMode runs in web server mode."
-)
-
 var (
 	claimPath *string
-
-	// labelsFlag holds the labels expression to filter the checks to run.
-	labelsFlag     *string
-	timeoutFlag    *string
-	listFlag       *bool
-	serverModeFlag *bool
 )
 
 func init() {
 	claimPath = flag.String(claimPathFlagKey, defaultClaimPath,
 		"the path where the claimfile will be output")
 
-	labelsFlag = flag.String(labelsFlagName, labelsFlagDefaultValue, labelsFlagUsage)
-	timeoutFlag = flag.String(timeoutFlagName, timeoutFlagDefaultvalue.String(), timeoutFlagUsage)
-	listFlag = flag.Bool(listFlagName, listFlagDefaultValue, listFlagUsage)
-	serverModeFlag = flag.Bool(serverModeFlagName, serverModeFlagDefaultValue, serverModeFlagUsage)
-
-	flag.Parse()
-	if *labelsFlag == "" {
-		*labelsFlag = noLabelsExpr
-	}
+	flags.InitFlags()
 }
 
 // setLogLevel sets the log level for logrus based on the "TNF_LOG_LEVEL" environment variable
@@ -108,28 +69,6 @@ func setLogLevel() {
 	}
 
 	logrus.SetLevel(logLevel)
-}
-
-func getK8sClientsConfigFileNames() []string {
-	params := configuration.GetTestParameters()
-	fileNames := []string{}
-	if params.Kubeconfig != "" {
-		// Add the kubeconfig path
-		fileNames = append(fileNames, params.Kubeconfig)
-	}
-	if params.Home != "" {
-		kubeConfigFilePath := filepath.Join(params.Home, ".kube", "config")
-		// Check if the kubeconfig path exists
-		if _, err := os.Stat(kubeConfigFilePath); err == nil {
-			logrus.Infof("kubeconfig path %s is present", kubeConfigFilePath)
-			// Only add the kubeconfig to the list of paths if it exists, since it is not added by the user
-			fileNames = append(fileNames, kubeConfigFilePath)
-		} else {
-			logrus.Infof("kubeconfig path %s is not present", kubeConfigFilePath)
-		}
-	}
-
-	return fileNames
 }
 
 //nolint:funlen
@@ -172,46 +111,30 @@ func main() {
 
 	logrus.Infof("TNF Version         : %v", versions.GitVersion())
 	logrus.Infof("Claim Format Version: %s", versions.ClaimFormatVersion)
-	logrus.Infof("Labels filter       : %v", *labelsFlag)
+	logrus.Infof("Labels filter       : %v", *flags.LabelsFlag)
 
 	cli.PrintBanner()
 
 	fmt.Printf("CNFCERT version: %s\n", versions.GitVersion())
 	fmt.Printf("Claim file version: %s\n", versions.ClaimFormatVersion)
-	fmt.Printf("Checks filter: %s\n", *labelsFlag)
+	fmt.Printf("Checks filter: %s\n", *flags.LabelsFlag)
 	fmt.Printf("Output folder: %s\n", *claimPath)
 	fmt.Printf("Log file: %s\n", logFileName)
 	fmt.Printf("\n")
 
-	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
-
-	certsuite.LoadChecksDB(*labelsFlag)
-
-	if *listFlag {
+	if *flags.ListFlag {
 		// ToDo: List all the available checks, filtered with --labels.
 		logrus.Errorf("Not implemented yet.")
 		os.Exit(1)
 	}
 
-	// Diagnostic functions will run when no labels are provided.
-	if *labelsFlag == noLabelsExpr {
-		logrus.Warnf("CNF Certification Suite will run in diagnostic mode so no test case will be launched.")
-	}
-
-	var timeout time.Duration
-	timeout, err = time.ParseDuration(*timeoutFlag)
-	if err != nil {
-		logrus.Errorf("Failed to parse timeout flag %v: %v, using default timeout value %v", *timeoutFlag, err, timeoutFlagDefaultvalue)
-		timeout = timeoutFlagDefaultvalue
-	}
-
 	// Set clientsholder singleton with the filenames from the env vars.
 	logrus.Infof("Output folder for the claim file: %s", *claimPath)
-	if *serverModeFlag {
+	if *flags.ServerModeFlag {
 		logrus.Info("Running CNF Certification Suite in web server mode.")
 		webserver.StartServer(*claimPath)
 	} else {
 		log.Info("Running CNF Certification Suite in stand-alone mode.")
-		certsuite.Run(*labelsFlag, *claimPath, timeout)
+		certsuite.Run(*flags.LabelsFlag, *claimPath)
 	}
 }
