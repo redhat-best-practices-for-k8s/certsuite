@@ -22,9 +22,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/onsi/ginkgo/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -140,11 +140,11 @@ func deletePod(pod *corev1.Pod, mode string, wg *sync.WaitGroup) error {
 	return nil
 }
 
-func CordonCleanup(node string) {
+func CordonCleanup(node string, check *checksdb.Check) {
 	err := CordonHelper(node, Uncordon)
 	if err != nil {
 		logrus.Errorf("cleanup: error uncordoning the node: %s, err=%s", node, err)
-		ginkgo.AbortSuite(fmt.Sprintf("cleanup: error uncordoning the node: %s, err=%s", node, err))
+		check.Abort()
 	}
 }
 

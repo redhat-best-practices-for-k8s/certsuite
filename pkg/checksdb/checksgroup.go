@@ -285,7 +285,7 @@ func runCheck(check *Check, group *ChecksGroup, remainingChecks []*Check) (err e
 //   - AfterEach panic: Set check as error.
 //
 //nolint:funlen
-func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool) (errs []error) {
+func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool, abortChan chan bool) (errs []error) {
 	logrus.Infof("Running group %q checks.", group.name)
 	fmt.Printf("Running suite %s\n", strings.ToUpper(group.name))
 
@@ -348,6 +348,7 @@ func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool) (er
 			if skip {
 				skipCheck(check, strings.Join(reasons, ", "))
 			} else {
+				check.SetAbortChan(abortChan) // Set the abort channel for the check.
 				err := runCheck(check, group, remainingChecks)
 				if err != nil {
 					errs = append(errs, err)

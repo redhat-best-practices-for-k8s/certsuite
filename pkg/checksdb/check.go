@@ -59,6 +59,7 @@ type Check struct {
 	StartTime, EndTime time.Time
 	Timeout            time.Duration
 	Error              error
+	abortChan          chan bool
 }
 
 func NewCheck(id string, labels []string) *Check {
@@ -72,6 +73,17 @@ func NewCheck(id string, labels []string) *Check {
 	check.logger = log.GetMultiLogger(check.logArchive).With("check", check.ID)
 
 	return check
+}
+
+func (check *Check) Abort() {
+	check.mutex.Lock()
+	defer check.mutex.Unlock()
+
+	check.abortChan <- true
+}
+
+func (check *Check) SetAbortChan(abortChan chan bool) {
+	check.abortChan = abortChan
 }
 
 func (check *Check) LogDebug(msg string, args ...any) {
