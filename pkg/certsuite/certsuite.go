@@ -1,6 +1,7 @@
 package certsuite
 
 import (
+	"errors"
 	"os"
 	"path/filepath"
 	"time"
@@ -87,8 +88,9 @@ func processFlags() time.Duration {
 }
 
 //nolint:funlen
-func Run(labelsFilter, outputFolder string) {
+func Run(labelsFilter, outputFolder string) error {
 	timeout := processFlags()
+	var returnErr bool
 	var env provider.TestEnvironment
 	env.SetNeedsRefresh()
 	env = provider.GetTestEnvironment()
@@ -103,12 +105,17 @@ func Run(labelsFilter, outputFolder string) {
 
 	log.Info("Running checks matching labels expr %q with timeout %v", labelsFilter, timeout)
 	startTime := time.Now()
-	err = checksdb.RunChecks(labelsFilter, timeout)
+	failedCtr, err := checksdb.RunChecks(labelsFilter, timeout)
 	if err != nil {
 		log.Error("%v", err)
 	}
 	endTime := time.Now()
 	log.Info("Finished running checks in %v", endTime.Sub(startTime))
+
+	if failedCtr > 0 {
+		log.Error("Some checks failed. See %s for details", claimOutputFile)
+		returnErr = true
+	}
 
 	// Marshal the claim and output to file
 	claimBuilder.Build(claimOutputFile)
@@ -157,4 +164,10 @@ func Run(labelsFilter, outputFolder string) {
 			}
 		}
 	}
+
+	if returnErr {
+		return errors.New("some checks failed")
+	}
+
+	return nil
 }

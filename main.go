@@ -114,6 +114,10 @@ func main() {
 		webserver.StartServer(*flags.ClaimPath)
 	} else {
 		log.Info("Running CNF Certification Suite in stand-alone mode.")
-		certsuite.Run(*flags.LabelsFlag, *flags.ClaimPath)
+		err = certsuite.Run(*flags.LabelsFlag, *flags.ClaimPath)
+		if err != nil {
+			log.Error("Failed to run CNF Certification Suite: %v", err)
+			os.Exit(1)
+		}
 	}
 }

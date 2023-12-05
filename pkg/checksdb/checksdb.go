@@ -30,7 +30,7 @@ func AddCheck(check *Check) {
 }
 
 //nolint:funlen
-func RunChecks(labelsExpr string, timeout time.Duration) error {
+func RunChecks(labelsExpr string, timeout time.Duration) (failedCtr int, err error) {
 	dbLock.Lock()
 	defer dbLock.Unlock()
 
@@ -61,7 +61,9 @@ func RunChecks(labelsExpr string, timeout time.Duration) error {
 		// Done channel for the goroutine that runs group.RunChecks().
 		groupDone := make(chan bool)
 		go func() {
-			errs = append(errs, group.RunChecks(labelsExpr, stopChan, abortChan)...)
+			checks, failedCheckCtr := group.RunChecks(labelsExpr, stopChan, abortChan)
+			failedCtr += failedCheckCtr
+			errs = append(errs, checks...)
 			groupDone <- true
 		}()
 
@@ -100,10 +102,10 @@ func RunChecks(labelsExpr string, timeout time.Duration) error {
 
 	if len(errs) > 0 {
 		log.Error("RunChecks errors: %v", errs)
-		return fmt.Errorf("%d errors found in checks/groups", len(errs))
+		return 0, fmt.Errorf("%d errors found in checks/groups", len(errs))
 	}
 
-	return nil
+	return failedCtr, nil
 }
 
 func recordCheckResult(check *Check) {

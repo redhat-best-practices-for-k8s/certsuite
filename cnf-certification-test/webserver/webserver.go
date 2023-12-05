@@ -263,7 +263,10 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	outputFolder := r.Context().Value(outputFolderCtxKey).(string)
 
 	log.Info("Running CNF Cert Suite (web-mode). Labels filter: %s, outputFolder: %s", labelsFilter, outputFolder)
-	certsuite.Run(labelsFilter, outputFolder)
+	err = certsuite.Run(labelsFilter, outputFolder)
+	if err != nil {
+		log.Error("Failed to run CNF Cert Suite: %v", err)
+	}
 
 	// Return the result as JSON
 	response := struct {
