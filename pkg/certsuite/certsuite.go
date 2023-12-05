@@ -68,7 +68,11 @@ func Run(labelsFilter, outputFolder string, timeout time.Duration) {
 
 	// Marshal the claim and output to file
 	claimBuilder.Build(claimOutputFile)
-	claimBuilder.ToJUnitXML(junitXMLOutputFile, startTime, endTime)
+
+	if configuration.GetTestParameters().EnableXMLCreation {
+		logrus.Infof("XML file creation is enabled. Creating JUnit XML file: %s", junitXMLOutputFile)
+		claimBuilder.ToJUnitXML(junitXMLOutputFile, startTime, endTime)
+	}
 
 	// Send claim file to the collector if specified by env var
 	if configuration.GetTestParameters().EnableDataCollection {

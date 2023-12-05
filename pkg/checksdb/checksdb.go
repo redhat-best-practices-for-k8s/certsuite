@@ -196,6 +196,8 @@ func printFailedChecksLog() {
 			}
 		}
 	}
+}
+
 func GetResults() map[string]claim.Result {
 	return resultsDB
 }

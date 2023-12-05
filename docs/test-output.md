@@ -61,7 +61,7 @@ The "20230620-110654" sample prefix means "June-20th 2023, 11:06:54"
 This is the content of the tar.gz file:
 
 * claim.json
-* cnf-certification-tests_junit.xml
+* cnf-certification-tests_junit.xml (Only if enabled via `ENABLE_XML_CREATION` environment variable)
 * claimjson.js
 * classification.js
 * results.html
@@ -69,7 +69,7 @@ This is the content of the tar.gz file:
 This file serves two different purposes:
 
 1. Make it easier to store and send the test results for review.
-2. View the results in the html web page. In addition, the web page (either results-embed.thml or results.html) has a selector for workload type and allows the parter to introduce feedback for each of the failing test cases for later review from Red Hat. It's important to note that this web page needs the `claimjson.js` and `classification.js` files to be in the same folder as the html files to work properly.
+2. View the results in the html web page. In addition, the web page (either results-embed.html or results.html) has a selector for workload type and allows the partner to introduce feedback for each of the failing test cases for later review from Red Hat. It's important to note that this web page needs the `claimjson.js` and `classification.js` files to be in the same folder as the html files to work properly.
 
 ## Show Results after running the test code
 
@@ -79,13 +79,13 @@ https://github.com/test-network-function/parser
 
 ## Compare claim files from two different CNF Certification Suite runs
 
-Parters can use the `tnf claim compare` tool in order to compare two claim files. The differences are shown in a table per section.
+Partners can use the `tnf claim compare` tool in order to compare two claim files. The differences are shown in a table per section.
 This tool can be helpful when the result of some test cases is different between two (consecutive) runs, as it shows
 configuration differences in both the CNF Cert Suite config and the cluster nodes that could be the root cause for
 some of the test cases results discrepancy.
 
 All the compared sections, except the test cases results are compared blindly, traversing the whole json tree and
-substrees to get a list of all the fields and their values. Three tables are shown:
+sub-trees to get a list of all the fields and their values. Three tables are shown:
 
 * Differences: same fields with different values.
 * Fields in claim 1 only: json fields in claim file 1 that don't exist in claim 2.
