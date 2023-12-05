@@ -569,6 +569,22 @@ Tags|telco,lifecycle
 |Non-Telco|Optional|
 |Telco|Mandatory|
 
+#### lifecycle-container-poststart
+
+Property|Description
+---|---
+Unique ID|lifecycle-container-poststart
+Description|Ensure that the containers lifecycle postStart management feature is configured. A container must receive important events from the platform and conform/react to these events properly. For example, a container should catch SIGTERM or SIGKILL from the platform and shutdown as quickly as possible. Other typically important events from the platform are PostStart to initialize before servicing requests and PreStop to release resources cleanly before shutting down.
+Suggested Remediation|PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. PostStart is used to configure container, set up dependencies, record new creation. It can also be used to check that a required API is available before the container’s work begins.
+Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cloud-native-design-best-practices
+Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.
+Tags|telco,lifecycle
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Mandatory|
+|Far-Edge|Mandatory|
+|Non-Telco|Optional|
+|Telco|Mandatory|
+
 #### lifecycle-container-shutdown
 
 Property|Description
@@ -578,22 +594,6 @@ Description|Ensure that the containers lifecycle preStop management feature is c
 Suggested Remediation|The preStop can be used to gracefully stop the container and clean resources (e.g., DB connection). For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. All pods must respond to SIGTERM signal and shutdown gracefully with a zero exit code.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cloud-native-design-best-practices
 Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.
-Tags|telco,lifecycle
-|**Scenario**|**Optional/Mandatory**|
-|Extended|Mandatory|
-|Far-Edge|Mandatory|
-|Non-Telco|Optional|
-|Telco|Mandatory|
-
-#### lifecycle-container-startup
-
-Property|Description
----|---
-Unique ID|lifecycle-container-startup
-Description|Ensure that the containers lifecycle postStart management feature is configured. A container must receive important events from the platform and conform/react to these events properly. For example, a container should catch SIGTERM or SIGKILL from the platform and shutdown as quickly as possible. Other typically important events from the platform are PostStart to initialize before servicing requests and PreStop to release resources cleanly before shutting down.
-Suggested Remediation|PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. PostStart is used to configure container, set up dependencies, record new creation. It can also be used to check that a required API is available before the container’s work begins.
-Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cloud-native-design-best-practices
-Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.
 Tags|telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
