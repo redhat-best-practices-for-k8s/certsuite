@@ -16,6 +16,9 @@ const (
 	White  = "\033[97m"
 )
 
+// ASCII art generated on http://www.patorjk.com/software/taag/ with
+// the font DOOM by Frans P. de Vries <fpv@xymph.iaf.nl>  18 Jun 1996.
+// All backticks (`) were removed for string literal compatibility.
 const banner = `
 
  _____  _   _ ______  _____  _____ ______  _____    __        _____     _____ __  
