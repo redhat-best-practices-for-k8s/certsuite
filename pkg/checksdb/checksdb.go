@@ -40,6 +40,8 @@ func RunChecks(labelsExpr string, timeout time.Duration) error {
 	const SIGINTBufferLen = 10
 	sigIntChan := make(chan os.Signal, SIGINTBufferLen)
 	signal.Notify(sigIntChan, syscall.SIGINT, syscall.SIGTERM)
+	// turn off ctrl-c capture on exit
+	defer signal.Stop(sigIntChan)
 
 	//  Labels expression parser not implemented yet. Assume labelsExpr is just a label.
 	abort := false
