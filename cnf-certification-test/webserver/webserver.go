@@ -31,6 +31,10 @@ import (
 
 type webServerContextKey string
 
+const (
+	logTimout = 1000
+)
+
 var (
 	outputFolderCtxKey webServerContextKey = "output-folder"
 )
@@ -78,7 +82,7 @@ func logStreamHandler(w http.ResponseWriter, r *http.Request) {
 				fmt.Println(err)
 				return
 			}
-			time.Sleep(1000)
+			time.Sleep(logTimout)
 		}
 		if err := scanner.Err(); err != nil {
 			log.Info("Error reading log file: %v", err)
