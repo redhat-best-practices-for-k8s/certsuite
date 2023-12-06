@@ -32,7 +32,7 @@ import (
 type webServerContextKey string
 
 const (
-	logTimout = 1000
+	logTimeout = 1000
 )
 
 var (
@@ -82,7 +82,7 @@ func logStreamHandler(w http.ResponseWriter, r *http.Request) {
 				fmt.Println(err)
 				return
 			}
-			time.Sleep(logTimout)
+			time.Sleep(logTimeout)
 		}
 		if err := scanner.Err(); err != nil {
 			log.Info("Error reading log file: %v", err)

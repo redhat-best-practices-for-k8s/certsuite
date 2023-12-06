@@ -10,7 +10,7 @@ export async function submit(form) {
   });
   for (const el of form.elements) if (el instanceof HTMLFieldSetElement) el.disabled = true
 
-  // Collect data from form fields -- will take all the fileds
+  // Collect data from form fields -- will take all the fields
   const fields = Array.from(formdata.entries()).reduce((acc, [key, val]) => {
     if (acc[key] === undefined) {
       // If the key is not in the accumulator, set it to the value or an array with the value
