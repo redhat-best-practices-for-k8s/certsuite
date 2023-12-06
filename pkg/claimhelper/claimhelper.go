@@ -18,8 +18,10 @@ package claimhelper
 
 import (
 	j "encoding/json"
+	"encoding/xml"
 	"fmt"
 	"path/filepath"
+	"strconv"
 
 	"os"
 	"time"
@@ -40,7 +42,65 @@ const (
 	CNFFeatureValidationReportKey        = "cnf-feature-validation"
 	// dateTimeFormatDirective is the directive used to format date/time according to ISO 8601.
 	DateTimeFormatDirective = "2006-01-02T15:04:05+00:00"
+
+	// States for test cases
+	TestStateFailed = "failed"
 )
+
+type SkippedMessage struct {
+	Text     string `xml:",chardata"`
+	Messages string `xml:"message,attr"`
+}
+
+type FailureMessage struct {
+	Text    string `xml:",chardata"`
+	Message string `xml:"message,attr"`
+	Type    string `xml:"type,attr"`
+}
+
+type TestCase struct {
+	Text      string         `xml:",chardata"`
+	Name      string         `xml:"name,attr"`
+	Classname string         `xml:"classname,attr"`
+	Status    string         `xml:"status,attr"`
+	Time      string         `xml:"time,attr"`
+	SystemErr string         `xml:"system-err"`
+	Skipped   SkippedMessage `xml:"skipped"`
+	Failure   FailureMessage `xml:"failure"`
+}
+
+type Testsuite struct {
+	Text       string `xml:",chardata"`
+	Name       string `xml:"name,attr"`
+	Package    string `xml:"package,attr"`
+	Tests      string `xml:"tests,attr"`
+	Disabled   string `xml:"disabled,attr"`
+	Skipped    string `xml:"skipped,attr"`
+	Errors     string `xml:"errors,attr"`
+	Failures   string `xml:"failures,attr"`
+	Time       string `xml:"time,attr"`
+	Timestamp  string `xml:"timestamp,attr"`
+	Properties struct {
+		Text     string `xml:",chardata"`
+		Property []struct {
+			Text  string `xml:",chardata"`
+			Name  string `xml:"name,attr"`
+			Value string `xml:"value,attr"`
+		} `xml:"property"`
+	} `xml:"properties"`
+	Testcase []TestCase `xml:"testcase"`
+}
+
+type TestSuitesXML struct {
+	XMLName   xml.Name  `xml:"testsuites"`
+	Text      string    `xml:",chardata"`
+	Tests     string    `xml:"tests,attr"`
+	Disabled  string    `xml:"disabled,attr"`
+	Errors    string    `xml:"errors,attr"`
+	Failures  string    `xml:"failures,attr"`
+	Time      string    `xml:"time,attr"`
+	Testsuite Testsuite `xml:"testsuite"`
+}
 
 type ClaimBuilder struct {
 	claimRoot *claim.Root
@@ -85,6 +145,85 @@ func (c *ClaimBuilder) Build(outputFile string) {
 	WriteClaimOutput(outputFile, payload)
 
 	log.Infof("Claim file created at %s", outputFile)
+}
+
+func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuitesXML {
+	const (
+		TestSuiteName = "CNF Certification Test Suite"
+	)
+	xmlOutput := TestSuitesXML{}
+	// <testsuites>
+	xmlOutput.Tests = strconv.Itoa(len(c.Results))
+
+	// Count all of the failed tests in the suite
+	failedTests := 0
+	for _, result := range c.Results {
+		typedResult := result.(claim.Result)
+		if typedResult.State == TestStateFailed {
+			failedTests++
+		}
+	}
+
+	// Count all of the skipped tests in the suite
+	skippedTests := 0
+	for _, result := range c.Results {
+		typedResult := result.(claim.Result)
+		if typedResult.State == "skipped" {
+			skippedTests++
+		}
+	}
+
+	xmlOutput.Failures = strconv.Itoa(failedTests)
+	xmlOutput.Disabled = strconv.Itoa(skippedTests)
+	xmlOutput.Errors = strconv.Itoa(0)
+	xmlOutput.Time = strconv.FormatFloat(endTime.Sub(startTime).Seconds(), 'f', 3, 64)
+
+	// <testsuite>
+	xmlOutput.Testsuite.Name = TestSuiteName
+	xmlOutput.Testsuite.Tests = strconv.Itoa(len(c.Results))
+	// Counters for failed and skipped tests
+	xmlOutput.Testsuite.Failures = strconv.Itoa(failedTests)
+	xmlOutput.Testsuite.Skipped = strconv.Itoa(skippedTests)
+	xmlOutput.Testsuite.Errors = strconv.Itoa(0)
+
+	xmlOutput.Testsuite.Time = strconv.FormatFloat(endTime.Sub(startTime).Seconds(), 'f', 3, 64)
+	xmlOutput.Testsuite.Timestamp = time.Now().UTC().Format(DateTimeFormatDirective)
+
+	// <properties>
+
+	// <testcase>
+	for testID, result := range c.Results {
+		// Type the result
+		typedResult := result.(claim.Result)
+
+		testCase := TestCase{}
+		testCase.Name = testID
+		testCase.Classname = TestSuiteName
+		testCase.Status = typedResult.State
+		testCase.Time = strconv.FormatFloat(float64(typedResult.Duration), 'f', 3, 64)
+
+		// Append the test case to the test suite
+		xmlOutput.Testsuite.Testcase = append(xmlOutput.Testsuite.Testcase, testCase)
+	}
+
+	return xmlOutput
+}
+
+func (c *ClaimBuilder) ToJUnitXML(outputFile string, startTime, endTime time.Time) {
+	// Create the JUnit XML file from the claim output.
+	xmlOutput := populateXMLFromClaim(*c.claimRoot.Claim, startTime, endTime)
+
+	// Write the JUnit XML file.
+	payload, err := xml.MarshalIndent(xmlOutput, "", "  ")
+	if err != nil {
+		log.Fatalf("Failed to generate the xml: %v", err)
+	}
+
+	log.Infof("Writing JUnit XML file: %s", outputFile)
+	err = os.WriteFile(outputFile, payload, claimFilePermissions)
+	if err != nil {
+		log.Fatal("Failed to write the xml file")
+	}
 }
 
 func (c *ClaimBuilder) Reset() {

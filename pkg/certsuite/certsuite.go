@@ -40,6 +40,11 @@ func LoadChecksDB(labelsExpr string) {
 	}
 }
 
+const (
+	junitXMLOutputFile = "cnf-certification-tests_junit.xml"
+)
+
+//nolint:funlen
 func Run(labelsFilter, outputFolder string, timeout time.Duration) {
 	var env provider.TestEnvironment
 	env.SetNeedsRefresh()
@@ -53,13 +58,21 @@ func Run(labelsFilter, outputFolder string, timeout time.Duration) {
 	claimOutputFile := filepath.Join(outputFolder, results.ClaimFileName)
 
 	logrus.Infof("Running checks matching labels expr %q with timeout %v", labelsFilter, timeout)
+	startTime := time.Now()
 	err = checksdb.RunChecks(labelsFilter, timeout)
 	if err != nil {
 		logrus.Error(err)
 	}
+	endTime := time.Now()
+	logrus.Infof("Finished running checks in %v", endTime.Sub(startTime))
 
 	// Marshal the claim and output to file
 	claimBuilder.Build(claimOutputFile)
+
+	if configuration.GetTestParameters().EnableXMLCreation {
+		logrus.Infof("XML file creation is enabled. Creating JUnit XML file: %s", junitXMLOutputFile)
+		claimBuilder.ToJUnitXML(junitXMLOutputFile, startTime, endTime)
+	}
 
 	// Send claim file to the collector if specified by env var
 	if configuration.GetTestParameters().EnableDataCollection {
