@@ -78,6 +78,7 @@ func logStreamHandler(w http.ResponseWriter, r *http.Request) {
 				fmt.Println(err)
 				return
 			}
+			time.Sleep(1000)
 		}
 		if err := scanner.Err(); err != nil {
 			log.Info("Error reading log file: %v", err)
