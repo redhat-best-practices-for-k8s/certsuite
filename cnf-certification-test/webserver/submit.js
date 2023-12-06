@@ -53,7 +53,7 @@ export async function submit(form) {
   } catch (error) {
     console.error(error);
     heading = 'Error'
-    message = error.message;
+    message = error.message+" Run Certification test failed, please check the logs";
     state = 'danger';
   } finally {
     form.elements.submit.disabled = false;
