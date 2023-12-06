@@ -273,7 +273,7 @@ func LoadChecks() {
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServicesDoNotUseNodeportsIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
-		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env), testhelper.GetNoPodsUnderTestSkipFn(&env)).
+		WithSkipCheckFn(testhelper.GetNoServicesUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testNodePort(c, &env)
 			return nil
