@@ -22,6 +22,8 @@ import (
 )
 
 const (
+	claimPathFlagKey       = "claimloc"
+	defaultClaimPath       = "."
 	NoLabelsExpr           = "none"
 	labelsFlagName         = "label-filter"
 	labelsFlagDefaultValue = "common"
@@ -45,6 +47,7 @@ const (
 )
 
 var (
+	ClaimPath *string
 	// labelsFlag holds the labels expression to filter the checks to run.
 	LabelsFlag     *string
 	TimeoutFlag    *string
@@ -53,6 +56,8 @@ var (
 )
 
 func InitFlags() {
+	ClaimPath = flag.String(claimPathFlagKey, defaultClaimPath,
+		"the path where the claimfile will be output")
 	LabelsFlag = flag.String(labelsFlagName, labelsFlagDefaultValue, labelsFlagUsage)
 	TimeoutFlag = flag.String(timeoutFlagName, TimeoutFlagDefaultvalue.String(), timeoutFlagUsage)
 	ListFlag = flag.Bool(listFlagName, listFlagDefaultValue, listFlagUsage)

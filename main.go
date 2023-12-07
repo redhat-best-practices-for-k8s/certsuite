@@ -18,7 +18,6 @@ package main
 
 import (
 	_ "embed"
-	"flag"
 	"fmt"
 	"os"
 
@@ -36,9 +35,7 @@ import (
 )
 
 const (
-	claimPathFlagKey              = "claimloc"
 	CnfCertificationTestSuiteName = "CNF Certification Test Suite"
-	defaultClaimPath              = "."
 	defaultCliArgValue            = ""
 	junitFlagKey                  = "junit"
 	TNFReportKey                  = "cnf-certification-test"
@@ -47,14 +44,7 @@ const (
 	logFilePermissions            = 0o644
 )
 
-var (
-	claimPath *string
-)
-
 func init() {
-	claimPath = flag.String(claimPathFlagKey, defaultClaimPath,
-		"the path where the claimfile will be output")
-
 	flags.InitFlags()
 }
 
@@ -118,7 +108,7 @@ func main() {
 	fmt.Printf("CNFCERT version: %s\n", versions.GitVersion())
 	fmt.Printf("Claim file version: %s\n", versions.ClaimFormatVersion)
 	fmt.Printf("Checks filter: %s\n", *flags.LabelsFlag)
-	fmt.Printf("Output folder: %s\n", *claimPath)
+	fmt.Printf("Output folder: %s\n", *flags.ClaimPath)
 	fmt.Printf("Log file: %s\n", logFileName)
 	fmt.Printf("\n")
 
@@ -129,12 +119,12 @@ func main() {
 	}
 
 	// Set clientsholder singleton with the filenames from the env vars.
-	logrus.Infof("Output folder for the claim file: %s", *claimPath)
+	logrus.Infof("Output folder for the claim file: %s", *flags.ClaimPath)
 	if *flags.ServerModeFlag {
 		logrus.Info("Running CNF Certification Suite in web server mode.")
-		webserver.StartServer(*claimPath)
+		webserver.StartServer(*flags.ClaimPath)
 	} else {
 		log.Info("Running CNF Certification Suite in stand-alone mode.")
-		certsuite.Run(*flags.LabelsFlag, *claimPath)
+		certsuite.Run(*flags.LabelsFlag, *flags.ClaimPath)
 	}
 }
