@@ -26,10 +26,6 @@ import (
 
 type webServerContextKey string
 
-const (
-	defaultTimeout = 24 * time.Hour
-)
-
 var (
 	outputFolderCtxKey webServerContextKey = "output-folder"
 )
@@ -267,7 +263,7 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	outputFolder := r.Context().Value(outputFolderCtxKey).(string)
 
 	log.Info("Running CNF Cert Suite (web-mode). Labels filter: %s, outputFolder: %s", labelsFilter, outputFolder)
-	certsuite.Run(labelsFilter, outputFolder, defaultTimeout)
+	certsuite.Run(labelsFilter, outputFolder)
 
 	// Return the result as JSON
 	response := struct {
