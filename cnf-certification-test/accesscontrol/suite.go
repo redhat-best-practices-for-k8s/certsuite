@@ -961,9 +961,5 @@ func testCrdRoles(check *checksdb.Check, env *provider.TestEnvironment) {
 				testhelper.RoleType, false, env.Roles[roleIndex].Namespace, env.Roles[roleIndex].Name))
 		}
 	}
-	if len(nonCompliantObjects) == 0 && len(compliantObjects) == 0 {
-		check.LogInfo("No role contains rules that apply to at least one CRD under test")
-		return
-	}
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
