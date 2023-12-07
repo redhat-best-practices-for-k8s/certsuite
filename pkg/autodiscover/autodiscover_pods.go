@@ -19,7 +19,7 @@ package autodiscover
 import (
 	"context"
 
-	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
@@ -31,12 +31,12 @@ func findPodsByLabel(oc corev1client.CoreV1Interface, labels []labelObject, name
 	for _, ns := range namespaces {
 		for _, aLabelObject := range labels {
 			label := aLabelObject.LabelKey + "=" + aLabelObject.LabelValue
-			logrus.Debugf("Searching Pods with label %s", label)
+			log.Debug("Searching Pods with label %s", label)
 			pods, err := oc.Pods(ns).List(context.TODO(), metav1.ListOptions{
 				LabelSelector: label,
 			})
 			if err != nil {
-				logrus.Errorln("error when listing pods in ns=", ns, " label=", label, "err: ", err)
+				log.Error("error when listing pods in ns=%s label=%s, err: %v", ns, label, err)
 				continue
 			}
 

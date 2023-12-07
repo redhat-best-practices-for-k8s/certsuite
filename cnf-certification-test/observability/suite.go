@@ -22,7 +22,6 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	pdbv1 "github.com/test-network-function/cnf-certification-test/cnf-certification-test/observability/pdb"
@@ -32,7 +31,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	corev1 "k8s.io/api/core/v1"
 )
 
@@ -40,14 +38,13 @@ var (
 	env provider.TestEnvironment
 
 	beforeEachFn = func(check *checksdb.Check) error {
-		logrus.Infof("Check %s: getting test environment.", check.ID)
+		log.Info("Check %s: getting test environment.", check.ID)
 		env = provider.GetTestEnvironment()
 		return nil
 	}
 )
 
 func LoadChecks() {
-	logrus.Debugf("Entering %s suite", common.ObservabilityTestKey)
 	log.Debug("Loading %s suite checks", common.ObservabilityTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.ObservabilityTestKey).
@@ -130,20 +127,17 @@ func testContainersLogging(check *checksdb.Check, env *provider.TestEnvironment)
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
-		logrus.Info(fmt.Sprintf("Checking %s has some logging output", cut))
-		check.LogInfo("Container %s has some logging output", cut)
+		check.LogInfo("Checking if container %s has some logging output", cut)
 		hasLoggingOutput, err := containerHasLoggingOutput(cut)
 		if err != nil {
-			tnf.Logf(logrus.ErrorLevel, "Failed to get %s log output: %s", cut, err)
-			check.LogError("Failed to get container %s log output, err: %v", cut, err)
+			check.LogError("Failed to get %s log output, err: %v", cut, err)
 			nonCompliantObjects = append(nonCompliantObjects,
 				testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Could not get log output", false))
 			continue
 		}
 
 		if !hasLoggingOutput {
-			tnf.Logf(logrus.ErrorLevel, "%s does not have any line of log to stderr/stdout", cut)
-			check.LogError("Container %s does not have any line of log to stderr/stdout", cut)
+			check.LogError("%s does not have any line of log to stderr/stdout", cut)
 			nonCompliantObjects = append(nonCompliantObjects,
 				testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "No log line to stderr/stdout found", false))
 		} else {
@@ -160,10 +154,10 @@ func testCrds(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, crd := range env.Crds {
-		logrus.Info("Testing CRD " + crd.Name)
+		check.LogInfo("Testing CRD " + crd.Name)
 		for _, ver := range crd.Spec.Versions {
 			if _, ok := ver.Schema.OpenAPIV3Schema.Properties["status"]; !ok {
-				tnf.Logf(logrus.ErrorLevel, "FAILURE: CRD %s, version: %s does not have a status subresource.", crd.Name, ver.Name)
+				check.LogError("FAILURE: CRD %s, version: %s does not have a status subresource.", crd.Name, ver.Name)
 				nonCompliantObjects = append(nonCompliantObjects,
 					testhelper.NewReportObject("Crd does not have a status sub resource set", testhelper.CustomResourceDefinitionType, false).
 						AddField(testhelper.CustomResourceDefinitionName, crd.Name).
@@ -186,9 +180,9 @@ func testTerminationMessagePolicy(check *checksdb.Check, env *provider.TestEnvir
 	var nonCompliantObjects []*testhelper.ReportObject
 
 	for _, cut := range env.Containers {
-		logrus.Info("Testing for terminationMessagePolicy: " + cut.String())
+		check.LogInfo("Testing for terminationMessagePolicy: " + cut.String())
 		if cut.TerminationMessagePolicy != corev1.TerminationMessageFallbackToLogsOnError {
-			tnf.ClaimFilePrintf("FAILURE: %s does not have a TerminationMessagePolicy: FallbackToLogsOnError", cut)
+			check.LogDebug("FAILURE: %s does not have a TerminationMessagePolicy: FallbackToLogsOnError", cut)
 			nonCompliantObjects = append(nonCompliantObjects,
 				testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "TerminationMessagePolicy is not FallbackToLogsOnError", false))
 		} else {
@@ -217,9 +211,9 @@ func testPodDisruptionBudgets(check *checksdb.Check, env *provider.TestEnvironme
 							AddField(testhelper.DeploymentName, d.Name).
 							AddField(testhelper.Namespace, d.Namespace).
 							AddField(testhelper.PodDisruptionBudgetReference, env.PodDisruptionBudgets[pdbIndex].Name))
-						tnf.ClaimFilePrintf("PDB %s is not valid for Deployment %s, err: %v", env.PodDisruptionBudgets[pdbIndex].Name, d.Name, err)
+						check.LogDebug("PDB %s is not valid for Deployment %s, err: %v", env.PodDisruptionBudgets[pdbIndex].Name, d.Name, err)
 					} else {
-						logrus.Infof("PDB %s is valid for Deployment: %s", env.PodDisruptionBudgets[pdbIndex].Name, d.Name)
+						check.LogInfo("PDB %s is valid for Deployment: %s", env.PodDisruptionBudgets[pdbIndex].Name, d.Name)
 						compliantObjects = append(compliantObjects, testhelper.NewReportObject("Deployment: references PodDisruptionBudget", testhelper.DeploymentType, true).
 							AddField(testhelper.DeploymentName, d.Name).
 							AddField(testhelper.Namespace, d.Namespace).
@@ -246,9 +240,9 @@ func testPodDisruptionBudgets(check *checksdb.Check, env *provider.TestEnvironme
 							AddField(testhelper.StatefulSetName, s.Name).
 							AddField(testhelper.Namespace, s.Namespace).
 							AddField(testhelper.PodDisruptionBudgetReference, env.PodDisruptionBudgets[pdbIndex].Name))
-						tnf.ClaimFilePrintf("PDB %s is not valid for StatefulSet %s, err: %v", env.PodDisruptionBudgets[pdbIndex].Name, s.Name, err)
+						check.LogDebug("PDB %s is not valid for StatefulSet %s, err: %v", env.PodDisruptionBudgets[pdbIndex].Name, s.Name, err)
 					} else {
-						logrus.Infof("PDB %s is valid for StatefulSet: %s", env.PodDisruptionBudgets[pdbIndex].Name, s.Name)
+						check.LogInfo("PDB %s is valid for StatefulSet: %s", env.PodDisruptionBudgets[pdbIndex].Name, s.Name)
 						compliantObjects = append(compliantObjects, testhelper.NewReportObject("StatefulSet: references PodDisruptionBudget", testhelper.StatefulSetType, true).
 							AddField(testhelper.StatefulSetName, s.Name).
 							AddField(testhelper.Namespace, s.Namespace).

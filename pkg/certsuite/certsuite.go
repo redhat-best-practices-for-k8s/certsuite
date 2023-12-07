@@ -5,7 +5,6 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/certification"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle"
@@ -17,6 +16,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/preflight"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/claimhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/collector"
@@ -52,25 +52,26 @@ func Run(labelsFilter, outputFolder string, timeout time.Duration) {
 
 	claimBuilder, err := claimhelper.NewClaimBuilder()
 	if err != nil {
-		logrus.Fatalf("Failed to get claim builder: %v", err)
+		log.Error("Failed to get claim builder: %v", err)
+		os.Exit(1)
 	}
 
 	claimOutputFile := filepath.Join(outputFolder, results.ClaimFileName)
 
-	logrus.Infof("Running checks matching labels expr %q with timeout %v", labelsFilter, timeout)
+	log.Info("Running checks matching labels expr %q with timeout %v", labelsFilter, timeout)
 	startTime := time.Now()
 	err = checksdb.RunChecks(labelsFilter, timeout)
 	if err != nil {
-		logrus.Error(err)
+		log.Error("%v", err)
 	}
 	endTime := time.Now()
-	logrus.Infof("Finished running checks in %v", endTime.Sub(startTime))
+	log.Info("Finished running checks in %v", endTime.Sub(startTime))
 
 	// Marshal the claim and output to file
 	claimBuilder.Build(claimOutputFile)
 
 	if configuration.GetTestParameters().EnableXMLCreation {
-		logrus.Infof("XML file creation is enabled. Creating JUnit XML file: %s", junitXMLOutputFile)
+		log.Info("XML file creation is enabled. Creating JUnit XML file: %s", junitXMLOutputFile)
 		claimBuilder.ToJUnitXML(junitXMLOutputFile, startTime, endTime)
 	}
 
@@ -78,7 +79,7 @@ func Run(labelsFilter, outputFolder string, timeout time.Duration) {
 	if configuration.GetTestParameters().EnableDataCollection {
 		err = collector.SendClaimFileToCollector(env.CollectorAppEndPoint, claimOutputFile, env.ExecutedBy, env.PartnerName, env.CollectorAppPassword)
 		if err != nil {
-			logrus.Errorf("Failed to send post request to the collector: %v", err)
+			log.Error("Failed to send post request to the collector: %v", err)
 		}
 	}
 
@@ -86,7 +87,7 @@ func Run(labelsFilter, outputFolder string, timeout time.Duration) {
 	resultsOutputDir := outputFolder
 	webFilePaths, err := results.CreateResultsWebFiles(resultsOutputDir)
 	if err != nil {
-		logrus.Errorf("Failed to create results web files: %v", err)
+		log.Error("Failed to create results web files: %v", err)
 	}
 
 	allArtifactsFilePaths := []string{filepath.Join(outputFolder, results.ClaimFileName)}
@@ -98,7 +99,8 @@ func Run(labelsFilter, outputFolder string, timeout time.Duration) {
 	if !configuration.GetTestParameters().OmitArtifactsZipFile {
 		err = results.CompressResultsArtifacts(resultsOutputDir, allArtifactsFilePaths)
 		if err != nil {
-			logrus.Fatalf("Failed to compress results artifacts: %v", err)
+			log.Error("Failed to compress results artifacts: %v", err)
+			os.Exit(1)
 		}
 	}
 
@@ -107,7 +109,8 @@ func Run(labelsFilter, outputFolder string, timeout time.Duration) {
 		for _, file := range webFilePaths {
 			err := os.Remove(file)
 			if err != nil {
-				logrus.Fatalf("failed to remove web file %s: %v", file, err)
+				log.Error("failed to remove web file %s: %v", file, err)
+				os.Exit(1)
 			}
 		}
 	}

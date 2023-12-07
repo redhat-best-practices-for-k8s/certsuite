@@ -30,8 +30,8 @@ import (
 
 	mcv1 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	k8sPrivilegedDs "github.com/test-network-function/privileged-daemonset"
@@ -208,12 +208,13 @@ func buildTestEnvironment() { //nolint:funlen
 	env.variables = *configuration.GetTestParameters()
 	config, err := configuration.LoadConfiguration(env.variables.ConfigurationPath)
 	if err != nil {
-		logrus.Fatalf("Cannot load configuration file: %v", err)
+		log.Error("Cannot load configuration file: %v", err)
+		os.Exit(1)
 	}
 
 	// Wait for the debug pods to be ready before the autodiscovery starts.
 	if err := deployDaemonSet(config.DebugDaemonSetNamespace); err != nil {
-		logrus.Errorf("The TNF daemonset could not be deployed, err=%v", err)
+		log.Error("The TNF daemonset could not be deployed, err=%v", err)
 		// Because of this failure, we are only able to run a certain amount of tests that do not rely
 		// on the existence of the daemonset debug pods.
 		env.DaemonsetFailedToSpawn = true
@@ -296,19 +297,19 @@ func buildTestEnvironment() { //nolint:funlen
 
 	operators := createOperators(data.Csvs, data.Subscriptions, data.AllInstallPlans, data.AllCatalogSources, false, true)
 	env.Operators = operators
-	logrus.Infof("Operators found: %d", len(env.Operators))
+	log.Info("Operators found: %d", len(env.Operators))
 	for _, pod := range env.Pods {
 		isCreatedByDeploymentConfig, err := pod.CreatedByDeploymentConfig()
 		if err != nil {
-			logrus.Warnf("Pod %s: failed to get parent resource: %v", pod.String(), err)
+			log.Warn("Pod %s: failed to get parent resource: %v", pod.String(), err)
 			continue
 		}
 
 		if isCreatedByDeploymentConfig {
-			logrus.Warnf("Pod %s has been deployed using a DeploymentConfig, please use Deployment or StatefulSet instead.", pod.String())
+			log.Warn("Pod %s has been deployed using a DeploymentConfig, please use Deployment or StatefulSet instead.", pod.String())
 		}
 	}
-	logrus.Infof("Completed the test environment build process in %.2f seconds", time.Since(start).Seconds())
+	log.Info("Completed the test environment build process in %.2f seconds", time.Since(start).Seconds())
 }
 
 func updateCrUnderTest(scaleCrUnderTest []autodiscover.ScaleObject) []ScaleObject {
@@ -340,7 +341,7 @@ func getPodContainers(aPod *corev1.Pod, useIgnoreList bool) (containerList []*Co
 
 		// Warn if readiness probe did not succeeded yet.
 		if !cutStatus.Ready {
-			logrus.Warnf("%s is not ready yet.", &container)
+			log.Warn("%s is not ready yet.", &container)
 		}
 
 		// Warn if container state is not running.
@@ -356,7 +357,7 @@ func getPodContainers(aPod *corev1.Pod, useIgnoreList bool) (containerList []*Co
 				reason = "waiting state reason unknown"
 			}
 
-			logrus.Warnf("%s is not running (reason: %s, restarts %d): some test cases might fail.",
+			log.Warn("%s is not running (reason: %s, restarts %d): some test cases might fail.",
 				&container, reason, cutStatus.RestartCount)
 		}
 
@@ -375,7 +376,7 @@ func isSkipHelmChart(helmName string, skipHelmChartList []configuration.SkipHelm
 	}
 	for _, helm := range skipHelmChartList {
 		if helmName == helm.Name {
-			logrus.Infof("Helm chart with name %s was skipped", helmName)
+			log.Info("Helm chart with name %s was skipped", helmName)
 			return true
 		}
 	}
@@ -421,7 +422,7 @@ func buildContainerImageSource(urlImage, urlImageID string) (source ContainerIma
 		source.Digest = match[3]
 	}
 
-	logrus.Debugf("parsed image, repo: %s, name:%s, tag: %s, digest: %s",
+	log.Debug("parsed image, repo: %s, name:%s, tag: %s, digest: %s",
 		source.Registry,
 		source.Repository,
 		source.Tag,
@@ -557,20 +558,20 @@ func createNodes(nodes []corev1.Node) map[string]Node {
 		if !IsOCPCluster() {
 			// Avoid getting Mc info for non ocp clusters.
 			wrapperNodes[node.Name] = Node{Data: node}
-			logrus.Warnf("Non-OCP cluster detected. MachineConfig retrieval for node %s skipped.", node.Name)
+			log.Warn("Non-OCP cluster detected. MachineConfig retrieval for node %s skipped.", node.Name)
 			continue
 		}
 
 		// Get Node's machineConfig name
 		mcName, exists := node.Annotations["machineconfiguration.openshift.io/currentConfig"]
 		if !exists {
-			logrus.Errorf("Failed to get machineConfig name for node %s", node.Name)
+			log.Error("Failed to get machineConfig name for node %s", node.Name)
 			continue
 		}
-		logrus.Infof("Node %s - mc name: %s", node.Name, mcName)
+		log.Info("Node %s - mc name: %s", node.Name, mcName)
 		mc, err := getMachineConfig(mcName, machineConfigs)
 		if err != nil {
-			logrus.Errorf("Failed to get machineConfig %s, err: %v", mcName, err)
+			log.Error("Failed to get machineConfig %s, err: %v", mcName, err)
 			continue
 		}
 

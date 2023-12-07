@@ -1,8 +1,10 @@
 package main
 
 import (
-	log "github.com/sirupsen/logrus"
+	"os"
+
 	"github.com/spf13/cobra"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/check"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim"
@@ -22,6 +24,7 @@ func main() {
 	rootCmd.AddCommand(check.NewCommand())
 
 	if err := rootCmd.Execute(); err != nil {
-		log.Fatal(err)
+		log.Error("%v", err)
+		os.Exit(1)
 	}
 }

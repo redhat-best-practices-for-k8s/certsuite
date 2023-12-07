@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 )
 
 const (
@@ -42,7 +42,7 @@ func CompressResultsArtifacts(outputDir string, filePaths []string) error {
 	zipFileName := generateZipFileName()
 	zipFilePath := filepath.Join(outputDir, zipFileName)
 
-	logrus.Infof("Compressing results artifacts into %s", zipFilePath)
+	log.Info("Compressing results artifacts into %s", zipFilePath)
 	zipFile, err := os.Create(zipFilePath)
 	if err != nil {
 		return fmt.Errorf("failed creating tar.gz file %s in dir %s (filepath=%s): %v",
@@ -56,7 +56,7 @@ func CompressResultsArtifacts(outputDir string, filePaths []string) error {
 	defer tarWriter.Close()
 
 	for _, file := range filePaths {
-		logrus.Debugf("Zipping file %s", file)
+		log.Debug("Zipping file %s", file)
 
 		tarHeader, err := getFileTarHeader(file)
 		if err != nil {

@@ -7,8 +7,8 @@ import (
 
 	"encoding/json"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/junit"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
@@ -34,24 +34,27 @@ func claimUpdate(_ *cobra.Command, _ []string) error {
 	fileUpdated := false
 	dat, err := os.ReadFile(*claimFileTextPtr)
 	if err != nil {
-		log.Fatalf("Error reading claim file :%v", err)
+		log.Error("Error reading claim file :%v", err)
+		os.Exit(1)
 	}
 	claimRoot := readClaim(&dat)
 	junitMap := claimRoot.Claim.RawResults
 	items, err := os.ReadDir(*reportFilesTextPtr)
 	if err != nil {
-		log.Fatalf("Error reading directory: %v", err)
+		log.Error("Error reading directory: %v", err)
+		os.Exit(1)
 	}
 	for _, item := range items {
 		fileName := item.Name()
 		extension := filepath.Ext(fileName)
 		reportKeyName := fileName[0 : len(fileName)-len(extension)]
 		if _, ok := junitMap[reportKeyName]; ok {
-			log.Printf("Skipping: %s already exists in supplied `%s` claim file", reportKeyName, *claimFileTextPtr)
+			log.Info("Skipping: %s already exists in supplied `%s` claim file", reportKeyName, *claimFileTextPtr)
 		} else {
 			junitMap[reportKeyName], err = junit.ExportJUnitAsMap(fmt.Sprintf("%s/%s", *reportFilesTextPtr, item.Name()))
 			if err != nil {
-				log.Fatalf("Error reading JUnit XML file into JSON: %v", err)
+				log.Error("Error reading JUnit XML file into JSON: %v", err)
+				os.Exit(1)
 			}
 			fileUpdated = true
 		}
@@ -59,16 +62,18 @@ func claimUpdate(_ *cobra.Command, _ []string) error {
 	claimRoot.Claim.RawResults = junitMap
 	payload, err := json.MarshalIndent(claimRoot, "", "  ")
 	if err != nil {
-		log.Fatalf("Failed to generate the claim: %v", err)
+		log.Error("Failed to generate the claim: %v", err)
+		os.Exit(1)
 	}
 	err = os.WriteFile(*claimFileTextPtr, payload, claimFilePermissions)
 	if err != nil {
-		log.Fatalf("Error writing claim data:\n%s", string(payload))
+		log.Error("Error writing claim data:\n%s", string(payload))
+		os.Exit(1)
 	}
 	if fileUpdated {
-		log.Printf("Claim file `%s` updated\n", *claimFileTextPtr)
+		log.Info("Claim file `%s` updated\n", *claimFileTextPtr)
 	} else {
-		log.Printf("No changes were applied to `%s`\n", *claimFileTextPtr)
+		log.Info("No changes were applied to `%s`\n", *claimFileTextPtr)
 	}
 	return nil
 }
@@ -77,7 +82,8 @@ func readClaim(contents *[]byte) *claim.Root {
 	var claimRoot claim.Root
 	err := json.Unmarshal(*contents, &claimRoot)
 	if err != nil {
-		log.Fatalf("Error reading claim constents file into type: %v", err)
+		log.Error("Error reading claim constents file into type: %v", err)
+		os.Exit(1)
 	}
 	return &claimRoot
 }

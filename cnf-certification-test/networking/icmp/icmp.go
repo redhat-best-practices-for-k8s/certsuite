@@ -21,9 +21,9 @@ import (
 	"regexp"
 	"strconv"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netcommons"
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
@@ -86,7 +86,7 @@ func ProcessContainerIpsPerNet(containerID *provider.Container,
 	ipAddressesFiltered := netcommons.FilterIPListByIPVersion(ipAddresses, aIPVersion)
 	if len(ipAddressesFiltered) == 0 {
 		// if no multus addresses found, skip this container
-		logrus.Debugf("Skipping %s, Network %s because no multus IPs are present", containerID, netKey)
+		log.Debug("Skipping %s, Network %s because no multus IPs are present", containerID, netKey)
 		return
 	}
 	// Create an entry at "key" if it is not present
@@ -98,7 +98,7 @@ func ProcessContainerIpsPerNet(containerID *provider.Container,
 	// Then modify the copy
 	firstIPIndex := 0
 	if entry.TesterSource.ContainerIdentifier == nil {
-		logrus.Debugf("%s selected to initiate ping tests", containerID)
+		log.Debug("%s selected to initiate ping tests", containerID)
 		entry.TesterSource.ContainerIdentifier = containerID
 		// if multiple interfaces are present for this network on this container/pod, pick the first one as the tester source ip
 		entry.TesterSource.IP = ipAddressesFiltered[firstIPIndex]
@@ -123,10 +123,10 @@ func RunNetworkingTests( //nolint:funlen
 	netsUnderTest map[string]netcommons.NetTestContext,
 	count int,
 	aIPVersion netcommons.IPVersion) (report testhelper.FailureReasonOut, claimsLog loghelper.CuratedLogLines, skip bool) {
-	logrus.Debugf("%s", netcommons.PrintNetTestContextMap(netsUnderTest))
+	log.Debug("%s", netcommons.PrintNetTestContextMap(netsUnderTest))
 	skip = false
 	if len(netsUnderTest) == 0 {
-		logrus.Debugf("There are no %s networks to test, skipping test", aIPVersion)
+		log.Debug("There are no %s networks to test, skipping test", aIPVersion)
 		skip = true
 		return report, claimsLog, skip
 	}
@@ -139,25 +139,25 @@ func RunNetworkingTests( //nolint:funlen
 		compliantNets[netName] = 0
 		nonCompliantNets[netName] = 0
 		if len(netUnderTest.DestTargets) == 0 {
-			logrus.Debugf("There are no containers to ping for %s network %s. A minimum of 2 containers is needed to run a ping test (a source and a destination) Skipping test", aIPVersion, netName)
+			log.Debug("There are no containers to ping for %s network %s. A minimum of 2 containers is needed to run a ping test (a source and a destination) Skipping test", aIPVersion, netName)
 			continue
 		}
 		atLeastOneNetworkTested = true
-		logrus.Debugf("%s Ping tests on network %s. Number of target IPs: %d", aIPVersion, netName, len(netUnderTest.DestTargets))
+		log.Debug("%s Ping tests on network %s. Number of target IPs: %d", aIPVersion, netName, len(netUnderTest.DestTargets))
 
 		for _, aDestIP := range netUnderTest.DestTargets {
-			logrus.Debugf("%s ping test on network %s from ( %s  srcip: %s ) to ( %s dstip: %s )",
+			log.Debug("%s ping test on network %s from ( %s  srcip: %s ) to ( %s dstip: %s )",
 				aIPVersion, netName,
 				netUnderTest.TesterSource.ContainerIdentifier, netUnderTest.TesterSource.IP,
 				aDestIP.ContainerIdentifier, aDestIP.IP)
 			result, err := TestPing(netUnderTest.TesterSource.ContainerIdentifier, aDestIP, count)
-			logrus.Debugf("Ping results: %s", result.String())
+			log.Debug("Ping results: %s", result.String())
 			claimsLog.AddLogLine("%s ping test on network %s from ( %s  srcip: %s ) to ( %s dstip: %s ) result: %s",
 				aIPVersion, netName,
 				netUnderTest.TesterSource.ContainerIdentifier, netUnderTest.TesterSource.IP,
 				aDestIP.ContainerIdentifier, aDestIP.IP, result.String())
 			if err != nil {
-				logrus.Debugf("Ping failed with err:%s", err)
+				log.Debug("Ping failed with err:%s", err)
 			}
 			if result.outcome != testhelper.SUCCESS {
 				nonCompliantNets[netName]++
@@ -197,7 +197,7 @@ func RunNetworkingTests( //nolint:funlen
 		}
 	}
 	if !atLeastOneNetworkTested {
-		logrus.Debugf("There are no %s networks to test, skipping test", aIPVersion)
+		log.Debug("There are no %s networks to test, skipping test", aIPVersion)
 		skip = true
 	}
 

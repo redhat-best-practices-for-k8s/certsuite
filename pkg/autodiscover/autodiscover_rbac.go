@@ -19,8 +19,8 @@ package autodiscover
 import (
 	"context"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -31,7 +31,7 @@ func getRoleBindings() ([]rbacv1.RoleBinding, error) {
 	clientsHolder := clientsholder.GetClientsHolder()
 	roleList, roleErr := clientsHolder.K8sClient.RbacV1().RoleBindings("").List(context.TODO(), metav1.ListOptions{})
 	if roleErr != nil {
-		logrus.Errorf("executing rolebinding command failed with error: %v", roleErr)
+		log.Error("executing rolebinding command failed with error: %v", roleErr)
 		return nil, roleErr
 	}
 	return roleList.Items, nil
@@ -44,7 +44,7 @@ func getClusterRoleBindings() ([]rbacv1.ClusterRoleBinding, error) {
 	clientsHolder := clientsholder.GetClientsHolder()
 	crbList, crbErr := clientsHolder.K8sClient.RbacV1().ClusterRoleBindings().List(context.TODO(), metav1.ListOptions{})
 	if crbErr != nil {
-		logrus.Errorf("executing clusterrolebinding command failed with error: %v", crbErr)
+		log.Error("executing clusterrolebinding command failed with error: %v", crbErr)
 		return nil, crbErr
 	}
 	return crbList.Items, nil
@@ -56,7 +56,7 @@ func getRoles() ([]rbacv1.Role, error) {
 	clientsHolder := clientsholder.GetClientsHolder()
 	roleList, roleErr := clientsHolder.K8sClient.RbacV1().Roles("").List(context.TODO(), metav1.ListOptions{})
 	if roleErr != nil {
-		logrus.Errorf("executing roles command failed with error: %v", roleErr)
+		log.Error("executing roles command failed with error: %v", roleErr)
 		return nil, roleErr
 	}
 	return roleList.Items, nil

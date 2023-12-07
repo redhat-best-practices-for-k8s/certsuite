@@ -20,8 +20,8 @@ import (
 	"errors"
 	"regexp"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 )
 
 const (
@@ -60,7 +60,7 @@ func IsRHEL(output string) bool {
 	}
 
 	// /etc/redhat-release exists. check if it matches the regex for an official build.
-	logrus.Infof("redhat-release was found to be: %s", output)
+	log.Info("redhat-release was found to be: %s", output)
 	redHatVersionRegex := regexp.MustCompile(VersionRegex)
 	matchVersion := redHatVersionRegex.FindAllString(output, -1)
 	return len(matchVersion) > 0
@@ -69,11 +69,11 @@ func IsRHEL(output string) bool {
 func (b *BaseImageInfo) runCommand(cmd string) (string, error) {
 	output, outerr, err := b.ClientHolder.ExecCommandContainer(b.OCPContext, cmd)
 	if err != nil {
-		logrus.Errorln("can not execute command on container ", err)
+		log.Error("can not execute command on container, err: %v", err)
 		return "", err
 	}
 	if outerr != "" {
-		logrus.Errorln("error when running baseimage command ", outerr)
+		log.Error("error when running baseimage command, err: %v", outerr)
 		return "", errors.New(outerr)
 	}
 	return output, nil

@@ -19,8 +19,8 @@ package autodiscover
 import (
 	"context"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	corev1 "k8s.io/api/core/v1"
 	storagev1 "k8s.io/api/storage/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -47,7 +47,7 @@ func getAllStorageClasses() ([]storagev1.StorageClass, error) {
 	o := clientsholder.GetClientsHolder()
 	storageclasslist, err := o.K8sClient.StorageV1().StorageClasses().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		logrus.Errorln("Error when listing", "err: ", err)
+		log.Error("Error when listing, err: %v", err)
 		return nil, err
 	}
 	return storageclasslist.Items, nil

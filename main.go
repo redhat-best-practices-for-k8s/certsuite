@@ -24,9 +24,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/pkg/certsuite"
-	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/versions"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/webserver"
@@ -97,19 +95,6 @@ func init() {
 	}
 }
 
-// setLogLevel sets the log level for logrus based on the "TNF_LOG_LEVEL" environment variable
-func setLogLevel() {
-	params := configuration.GetTestParameters()
-
-	var logLevel, err = logrus.ParseLevel(params.LogLevel)
-	if err != nil {
-		logrus.Error("TNF_LOG_LEVEL environment set with an invalid value, defaulting to DEBUG \n Valid values are:  trace, debug, info, warn, error, fatal, panic")
-		logLevel = logrus.DebugLevel
-	}
-
-	logrus.SetLevel(logLevel)
-}
-
 func getK8sClientsConfigFileNames() []string {
 	params := configuration.GetTestParameters()
 	fileNames := []string{}
@@ -121,58 +106,62 @@ func getK8sClientsConfigFileNames() []string {
 		kubeConfigFilePath := filepath.Join(params.Home, ".kube", "config")
 		// Check if the kubeconfig path exists
 		if _, err := os.Stat(kubeConfigFilePath); err == nil {
-			logrus.Infof("kubeconfig path %s is present", kubeConfigFilePath)
+			log.Info("kubeconfig path %s is present", kubeConfigFilePath)
 			// Only add the kubeconfig to the list of paths if it exists, since it is not added by the user
 			fileNames = append(fileNames, kubeConfigFilePath)
 		} else {
-			logrus.Infof("kubeconfig path %s is not present", kubeConfigFilePath)
+			log.Info("kubeconfig path %s is not present", kubeConfigFilePath)
 		}
 	}
 
 	return fileNames
 }
 
+func createLogFile(outputDir string) (*os.File, error) {
+	logFilePath := outputDir + "/" + logFileName
+	err := os.Remove(logFilePath)
+	if err != nil && !os.IsNotExist(err) {
+		return nil, fmt.Errorf("could not delete old log file, err: %v", err)
+	}
+
+	logFile, err := os.OpenFile(logFilePath, os.O_RDWR|os.O_CREATE, logFilePermissions)
+	if err != nil {
+		return nil, fmt.Errorf("could not open a new log file, err: %v", err)
+	}
+
+	return logFile, nil
+}
+
+func setupLogger(logFile *os.File) {
+	logLevel, err := log.ParseLevel(configuration.GetTestParameters().LogLevel)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Could not parse log level, err: %v. Defaulting to DEBUG.", err)
+	}
+
+	log.SetupLogger(logFile, logLevel)
+	log.Info("Log file: %s (level=%s)", logFileName, logLevel.String())
+}
+
 //nolint:funlen
 func main() {
 	err := configuration.LoadEnvironmentVariables()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "could not load the environment variables, err: %v", err)
+		fmt.Fprintf(os.Stderr, "Could not load the environment variables, err: %v", err)
 		os.Exit(1)
 	}
 
-	// Set up logging params for logrus
-	loghelper.SetLogFormat()
-	setLogLevel()
-
-	logrusLogFile, err := os.OpenFile(logFileName, os.O_RDWR|os.O_CREATE, logFilePermissions)
+	logFile, err := createLogFile(*claimPath)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "could not create log file, err: %v", err)
-		os.Exit(1)
-	}
-	defer logrusLogFile.Close()
-
-	logrus.SetOutput(logrusLogFile)
-
-	// Set up logger
-	err = os.Remove("test_log") // TODO: use proper file when logrus is removed
-	if err != nil && !os.IsNotExist(err) {
-		fmt.Fprintf(os.Stderr, "could not delete old log file, err: %v", err)
-		os.Exit(1) //nolint:gocritic // the error will not happen after logrus is removed
-	}
-
-	logFile, err := os.OpenFile("test_log", os.O_RDWR|os.O_CREATE, logFilePermissions)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "could not create log file, err: %v", err)
+		fmt.Fprintf(os.Stderr, "Could not create the log file, err: %v", err)
 		os.Exit(1)
 	}
 	defer logFile.Close()
 
-	log.SetupLogger(logFile)
-	log.Info("Log file: %s", logFileName)
+	setupLogger(logFile)
 
-	logrus.Infof("TNF Version         : %v", versions.GitVersion())
-	logrus.Infof("Claim Format Version: %s", versions.ClaimFormatVersion)
-	logrus.Infof("Labels filter       : %v", *labelsFlag)
+	log.Info("TNF Version         : %v", versions.GitVersion())
+	log.Info("Claim Format Version: %s", versions.ClaimFormatVersion)
+	log.Info("Labels filter       : %v", *labelsFlag)
 
 	cli.PrintBanner()
 
@@ -183,32 +172,36 @@ func main() {
 	fmt.Printf("Log file: %s\n", logFileName)
 	fmt.Printf("\n")
 
+	fmt.Println("Building test environment...")
+	fmt.Printf("\n")
+
 	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
 
 	certsuite.LoadChecksDB(*labelsFlag)
 
 	if *listFlag {
 		// ToDo: List all the available checks, filtered with --labels.
-		logrus.Errorf("Not implemented yet.")
-		os.Exit(1)
+
+		fmt.Fprint(os.Stderr, "Checks listing is not implemented yet")
+		os.Exit(1) //nolint:gocritic
 	}
 
 	// Diagnostic functions will run when no labels are provided.
 	if *labelsFlag == noLabelsExpr {
-		logrus.Warnf("CNF Certification Suite will run in diagnostic mode so no test case will be launched.")
+		log.Warn("CNF Certification Suite will run in diagnostic mode so no test case will be launched.")
 	}
 
 	var timeout time.Duration
 	timeout, err = time.ParseDuration(*timeoutFlag)
 	if err != nil {
-		logrus.Errorf("Failed to parse timeout flag %v: %v, using default timeout value %v", *timeoutFlag, err, timeoutFlagDefaultvalue)
+		log.Error("Failed to parse timeout flag %v: %v, using default timeout value %v", *timeoutFlag, err, timeoutFlagDefaultvalue)
 		timeout = timeoutFlagDefaultvalue
 	}
 
 	// Set clientsholder singleton with the filenames from the env vars.
-	logrus.Infof("Output folder for the claim file: %s", *claimPath)
+	log.Info("Output folder for the claim file: %s", *claimPath)
 	if *serverModeFlag {
-		logrus.Info("Running CNF Certification Suite in web server mode.")
+		log.Info("Running CNF Certification Suite in web server mode.")
 		webserver.StartServer(*claimPath)
 	} else {
 		log.Info("Running CNF Certification Suite in stand-alone mode.")
