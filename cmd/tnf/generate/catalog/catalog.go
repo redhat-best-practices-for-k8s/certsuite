@@ -31,6 +31,7 @@ import (
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/arrayhelper"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 
@@ -307,7 +308,7 @@ func summaryToMD(aSummary catalogSummary) (out string) {
 func outputJS() {
 	out, err := json.MarshalIndent(identifiers.Classification, "", "  ")
 	if err != nil {
-		logrus.Errorf("could not Marshall classification, err=%s", err)
+		log.Error("could not Marshall classification, err=%s", err)
 		return
 	}
 	fmt.Printf("classification=  %s ", out)

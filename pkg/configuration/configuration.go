@@ -104,4 +104,5 @@ type TestParameters struct {
 	IncludeWebFilesInOutputFolder bool   `split_words:"true" default:"false"`
 	OmitArtifactsZipFile          bool   `split_words:"true" default:"false"`
 	EnableDataCollection          bool   `split_words:"true" envconfig:"ENABLE_DATA_COLLECTION" default:"false"`
+	EnableXMLCreation             bool   `split_words:"true" envconfig:"ENABLE_XML_CREATION" default:"false"`
 }

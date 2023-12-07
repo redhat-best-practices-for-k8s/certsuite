@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	rlog "log"
 	"net"
 	"net/http"
 	"os"
@@ -17,8 +16,8 @@ import (
 
 	"github.com/gorilla/websocket"
 	"github.com/robert-nix/ansihtml"
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/certsuite"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
@@ -26,10 +25,6 @@ import (
 )
 
 type webServerContextKey string
-
-const (
-	defaultTimeout = 24 * time.Hour
-)
 
 var (
 	outputFolderCtxKey webServerContextKey = "output-folder"
@@ -50,7 +45,7 @@ var toast []byte
 //go:embed index.js
 var index []byte
 
-var Buf *bytes.Buffer
+var buf *bytes.Buffer
 
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
@@ -61,13 +56,13 @@ var upgrader = websocket.Upgrader{
 func logStreamHandler(w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		logrus.Printf("WebSocket upgrade error: %v", err)
+		log.Info("WebSocket upgrade error: %v", err)
 		return
 	}
 	defer conn.Close()
 	// Create a scanner to read the log file line by line
 	for {
-		scanner := bufio.NewScanner(Buf)
+		scanner := bufio.NewScanner(buf)
 		for scanner.Scan() {
 			line := scanner.Bytes()
 			fmt.Println(string(line))
@@ -80,7 +75,7 @@ func logStreamHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		if err := scanner.Err(); err != nil {
-			logrus.Printf("Error reading log file: %v", err)
+			log.Info("Error reading log file: %v", err)
 			return
 		}
 	}
@@ -188,7 +183,7 @@ func StartServer(outputFolder string) {
 
 	http.HandleFunc("/runFunction", runHandler)
 
-	logrus.Infof("Server is running on :8084...")
+	log.Info("Server is running on :8084...")
 	if err := server.ListenAndServe(); err != nil {
 		panic(err)
 	}
@@ -198,12 +193,12 @@ func StartServer(outputFolder string) {
 //
 //nolint:funlen
 func runHandler(w http.ResponseWriter, r *http.Request) {
-	Buf = bytes.NewBufferString("")
-	logrus.SetOutput(Buf)
-	rlog.SetOutput(Buf)
+	buf = bytes.NewBufferString("")
+	// The log output will be written to the log file and to this buffer buf
+	log.SetLogger(log.GetMultiLogger(buf))
 
 	jsonData := r.FormValue("jsonData") // "jsonData" is the name of the JSON input field
-	logrus.Info(jsonData)
+	log.Info(jsonData)
 	var data RequestedData
 	if err := json.Unmarshal([]byte(jsonData), &data); err != nil {
 		fmt.Println("Error:", err)
@@ -218,7 +213,7 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
-	logrus.Infof("Kubeconfig file name received: %s", fileHeader.Filename)
+	log.Info("Kubeconfig file name received: %s", fileHeader.Filename)
 	kubeconfigTempFile, err := os.CreateTemp("", "webserver-kubeconfig-*")
 	if err != nil {
 		http.Error(w, "Failed to create temp file to store the kubeconfig content.", http.StatusBadRequest)
@@ -226,10 +221,10 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	defer func() {
-		logrus.Infof("Removing temporary kubeconfig file %s", kubeconfigTempFile.Name())
+		log.Info("Removing temporary kubeconfig file %s", kubeconfigTempFile.Name())
 		err = os.Remove(kubeconfigTempFile.Name())
 		if err != nil {
-			logrus.Errorf("Failed to remove temp kubeconfig file %s", kubeconfigTempFile.Name())
+			log.Error("Failed to remove temp kubeconfig file %s", kubeconfigTempFile.Name())
 		}
 	}()
 
@@ -241,12 +236,13 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 
 	_ = kubeconfigTempFile.Close()
 
-	logrus.Infof("Web Server kubeconfig file : %v (copied into %v)", fileHeader.Filename, kubeconfigTempFile.Name())
-	logrus.Infof("Web Server Labels filter   : %v", flattenedOptions)
+	log.Info("Web Server kubeconfig file : %v (copied into %v)", fileHeader.Filename, kubeconfigTempFile.Name())
+	log.Info("Web Server Labels filter   : %v", flattenedOptions)
 
 	tnfConfig, err := os.ReadFile("tnf_config.yml")
 	if err != nil {
-		logrus.Fatalf("Error reading YAML file: %v", err)
+		log.Error("Error reading YAML file: %v", err)
+		os.Exit(1) //nolint:gocritic
 	}
 
 	newData := updateTnf(tnfConfig, &data)
@@ -254,7 +250,8 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	// Write the modified YAML data back to the file
 	err = os.WriteFile("tnf_config.yml", newData, os.ModePerm)
 	if err != nil {
-		logrus.Fatalf("Error writing YAML file: %v", err)
+		log.Error("Error writing YAML file: %v", err)
+		os.Exit(1)
 	}
 	_ = clientsholder.GetNewClientsHolder(kubeconfigTempFile.Name())
 
@@ -265,8 +262,8 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	labelsFilter := strings.Join(flattenedOptions, "")
 	outputFolder := r.Context().Value(outputFolderCtxKey).(string)
 
-	logrus.Infof("Running CNF Cert Suite (web-mode). Labels filter: %s, outputFolder: %s", labelsFilter, outputFolder)
-	certsuite.Run(labelsFilter, outputFolder, defaultTimeout)
+	log.Info("Running CNF Cert Suite (web-mode). Labels filter: %s, outputFolder: %s", labelsFilter, outputFolder)
+	certsuite.Run(labelsFilter, outputFolder)
 
 	// Return the result as JSON
 	response := struct {
@@ -277,7 +274,7 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	// Serialize the response data to JSON
 	jsonResponse, err := json.Marshal(response)
 	if err != nil {
-		logrus.Errorf("Failed to marshal jsonResponse: %v", err)
+		log.Error("Failed to marshal jsonResponse: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -285,10 +282,10 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	// Set the Content-Type header to specify that the response is JSON
 	w.Header().Set("Content-Type", "application/json")
 	// Write the JSON response to the client
-	logrus.Infof("Sending web response: %v", response)
+	log.Info("Sending web response: %v", response)
 	_, err = w.Write(jsonResponse)
 	if err != nil {
-		logrus.Errorf("Failed to write jsonResponse: %v", err)
+		log.Error("Failed to write jsonResponse: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -301,7 +298,8 @@ func updateTnf(tnfConfig []byte, data *RequestedData) []byte {
 
 	err := yaml.Unmarshal(tnfConfig, &config)
 	if err != nil {
-		logrus.Fatalf("Error unmarshalling YAML: %v", err)
+		log.Error("Error unmarshalling YAML: %v", err)
+		os.Exit(1)
 	}
 
 	// Modify the configuration
@@ -385,7 +383,8 @@ func updateTnf(tnfConfig []byte, data *RequestedData) []byte {
 	// Serialize the modified config back to YAML format
 	newData, err := yaml.Marshal(&config)
 	if err != nil {
-		logrus.Fatalf("Error marshaling YAML: %v", err)
+		log.Error("Error marshaling YAML: %v", err)
+		os.Exit(1)
 	}
 	return newData
 }

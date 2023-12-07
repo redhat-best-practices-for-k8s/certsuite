@@ -20,8 +20,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 )
 
 func (env *TestEnvironment) GetGuaranteedPodsWithExclusiveCPUs() []*Pod {
@@ -125,7 +125,7 @@ func filterDPDKRunningPods(pods []*Pod) []*Pod {
 		findCommand := fmt.Sprintf("%s '%s'", findDeviceSubCommand, pod.MultusPCIs[0])
 		outStr, errStr, err := o.ExecCommandContainer(ctx, findCommand)
 		if err != nil || errStr != "" {
-			logrus.Errorf("Failed to execute command %s in debug %s, errStr: %s, err: %v", findCommand, pod.String(), errStr, err)
+			log.Error("Failed to execute command %s in debug %s, errStr: %s, err: %v", findCommand, pod.String(), errStr, err)
 			continue
 		}
 		if strings.Contains(outStr, dpdkDriver) {

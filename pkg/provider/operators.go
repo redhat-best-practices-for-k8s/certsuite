@@ -21,7 +21,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
+	defaultLog "log"
 	"os"
 	"sort"
 	"strings"
@@ -32,8 +32,8 @@ import (
 	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
 	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
 	plibOperator "github.com/redhat-openshift-ecosystem/openshift-preflight/operator"
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -70,7 +70,7 @@ func (op *Operator) String() string {
 
 func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
 	if len(op.InstallPlans) == 0 {
-		logrus.Warnf("%s has no InstallPlans. Skipping setting preflight results", op.String())
+		log.Warn("%s has no InstallPlans. Skipping setting preflight results", op.String())
 		return nil
 	}
 
@@ -87,13 +87,13 @@ func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
 	opts := []plibOperator.Option{}
 	opts = append(opts, plibOperator.WithDockerConfigJSONFromFile(env.GetDockerConfigFile()))
 	if env.IsPreflightInsecureAllowed() {
-		logrus.Info("Insecure connections are being allowed to preflight")
+		log.Info("Insecure connections are being allowed to preflight")
 		opts = append(opts, plibOperator.WithInsecureConnection())
 	}
 
 	// Add logger output to the context
 	logbytes := bytes.NewBuffer([]byte{})
-	checklogger := log.Default()
+	checklogger := defaultLog.Default()
 	checklogger.SetOutput(logbytes)
 	logger := stdr.New(checklogger)
 	ctx = logr.NewContext(ctx, logger)
@@ -101,7 +101,6 @@ func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
 	check := plibOperator.NewCheck(bundleImage, indexImage, oc.KubeConfig, opts...)
 
 	results, runtimeErr := check.Run(ctx)
-	logrus.StandardLogger().Out = os.Stderr
 	if runtimeErr != nil {
 		_, checks, err := check.List(ctx)
 		if err != nil {
@@ -113,15 +112,16 @@ func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
 		}
 	}
 
-	// Take all of the preflight logs and stick them into logrus.
-	logrus.Info(logbytes.String())
+	// Take all of the preflight logs and stick them into our log.
+	log.Info(logbytes.String())
 
 	e := os.RemoveAll("artifacts/")
 	if e != nil {
-		logrus.Fatal(e)
+		log.Error("%v", e)
+		os.Exit(1)
 	}
 
-	logrus.Infof("Storing operator preflight results into object for %s", bundleImage)
+	log.Info("Storing operator preflight results into object for %s", bundleImage)
 	op.PreflightResults = results
 	return nil
 }
@@ -135,9 +135,9 @@ func getUniqueCsvListByName(csvs []*olmv1Alpha.ClusterServiceVersion) []*olmv1Al
 	}
 
 	uniqueCsvsList := []*olmv1Alpha.ClusterServiceVersion{}
-	logrus.Infof("Found %d unique CSVs", len(uniqueCsvsMap))
+	log.Info("Found %d unique CSVs", len(uniqueCsvsMap))
 	for name, csv := range uniqueCsvsMap {
-		logrus.Infof("  CSV: %s", name)
+		log.Info("  CSV: %s", name)
 		uniqueCsvsList = append(uniqueCsvsList, csv)
 	}
 
@@ -173,7 +173,7 @@ func createOperators(csvs []*olmv1Alpha.ClusterServiceVersion,
 		op.Phase = csv.Status.Phase
 		packageAndVersion := strings.SplitN(csv.Name, ".", maxSize)
 		if len(packageAndVersion) == 0 {
-			logrus.Tracef("Empty CSV Name (package.version), cannot extract a package or a version, skipping. Csv: %+v", csv)
+			log.Debug("Empty CSV Name (package.version), cannot extract a package or a version, skipping. Csv: %+v", csv)
 			continue
 		}
 		op.PackageFromCsvName = packageAndVersion[0]
@@ -182,15 +182,15 @@ func createOperators(csvs []*olmv1Alpha.ClusterServiceVersion,
 		if getAtLeastOneSubscription(op, csv, subscriptions) {
 			targetNamespaces, err := getOperatorTargetNamespaces(op.SubscriptionNamespace)
 			if err != nil {
-				logrus.Errorf("Failed to get target namespaces for operator %s: %v", csv.Name, err)
+				log.Error("Failed to get target namespaces for operator %s: %v", csv.Name, err)
 			} else {
 				op.TargetNamespaces = targetNamespaces
 				op.IsClusterWide = len(targetNamespaces) == 0
 			}
 		} else {
-			logrus.Warnf("Subscription not found for CSV: %s (ns %s)", csv.Name, csv.Namespace)
+			log.Warn("Subscription not found for CSV: %s (ns %s)", csv.Name, csv.Namespace)
 		}
-		logrus.Infof("Getting installplans for op %s (subs %s ns %s)", op.Name, op.SubscriptionName, op.SubscriptionNamespace)
+		log.Info("Getting installplans for op %s (subs %s ns %s)", op.Name, op.SubscriptionName, op.SubscriptionNamespace)
 		// Get at least one Install Plan and update the Operator object with it.
 		getAtLeastOneInstallPlan(op, csv, allInstallPlans, allCatalogSources)
 		operators = append(operators, op)
@@ -225,7 +225,7 @@ func getAtLeastOneCsv(csv *olmv1Alpha.ClusterServiceVersion, installPlan *olmv1A
 		}
 
 		if installPlan.Status.BundleLookups == nil {
-			logrus.Warnf("InstallPlan %s for csv %s (ns %s) does not have bundle lookups. It will be skipped.", installPlan.Name, csv.Name, csv.Namespace)
+			log.Warn("InstallPlan %s for csv %s (ns %s) does not have bundle lookups. It will be skipped.", installPlan.Name, csv.Name, csv.Namespace)
 			continue
 		}
 		atLeastOneCsv = true
@@ -248,7 +248,7 @@ func getAtLeastOneInstallPlan(op *Operator, csv *olmv1Alpha.ClusterServiceVersio
 
 		indexImage, catalogErr := getCatalogSourceImageIndexFromInstallPlan(installPlan, allCatalogSources)
 		if catalogErr != nil {
-			logrus.Tracef("failed to get installPlan image index for csv %s (ns %s) installPlan %s, err: %v",
+			log.Debug("failed to get installPlan image index for csv %s (ns %s) installPlan %s, err: %v",
 				csv.Name, csv.Namespace, installPlan.Name, catalogErr)
 			continue
 		}

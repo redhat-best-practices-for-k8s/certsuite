@@ -18,24 +18,24 @@ package preflight
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
 
 var (
 	env provider.TestEnvironment
 
 	beforeEachFn = func(check *checksdb.Check) error {
-		logrus.Infof("Check %s: getting test environment.", check.ID)
+		log.Info("Check %s: getting test environment.", check.ID)
 		env = provider.GetTestEnvironment()
 		return nil
 	}
@@ -68,7 +68,7 @@ func ShouldRun(labelsExpr string) bool {
 	// Add safeguard against running the preflight tests if the docker config does not exist.
 	preflightDockerConfigFile := configuration.GetTestParameters().PfltDockerconfig
 	if preflightDockerConfigFile == "" || preflightDockerConfigFile == "NA" {
-		logrus.Warn("Skipping the preflight suite because the Docker Config file is not provided.")
+		log.Warn("Skipping the preflight suite because the Docker Config file is not provided.")
 		env.SkipPreflight = true
 	}
 
@@ -76,7 +76,7 @@ func ShouldRun(labelsExpr string) bool {
 }
 
 func LoadChecks() {
-	logrus.Debugf("Entering %s suite", common.PreflightTestKey)
+	log.Debug("Entering %s suite", common.PreflightTestKey)
 
 	// As the preflight lib's checks need to run here, we need to get the test environment now.
 	env = provider.GetTestEnvironment()
@@ -86,10 +86,10 @@ func LoadChecks() {
 
 	testPreflightContainers(checksGroup, &env)
 	if provider.IsOCPCluster() {
-		logrus.Debugf("OCP cluster detected, allowing operator tests to run")
+		log.Debug("OCP cluster detected, allowing operator tests to run")
 		testPreflightOperators(checksGroup, &env)
 	} else {
-		logrus.Debugf("Skipping the preflight operators test because it requires an OCP cluster to run against")
+		log.Debug("Skipping the preflight operators test because it requires an OCP cluster to run against")
 	}
 }
 
@@ -100,16 +100,17 @@ func testPreflightOperators(checksGroup *checksdb.ChecksGroup, env *provider.Tes
 		// in-general you are only going to have an operator installed once in a cluster.
 		err := op.SetPreflightResults(env)
 		if err != nil {
-			logrus.Fatalf("failed running preflight on operator: %s error: %v", op.Name, err)
+			log.Error("failed running preflight on operator: %s error: %v", op.Name, err)
+			os.Exit(1)
 		}
 	}
 
-	logrus.Infof("Completed running preflight operator tests for %d operators", len(env.Operators))
+	log.Info("Completed running preflight operator tests for %d operators", len(env.Operators))
 
 	// Handle Operator-based preflight tests
 	// Note: We only care about the `testEntry` variable below because we need its 'Description' and 'Suggestion' variables.
 	for testName, testEntry := range getUniqueTestEntriesFromOperatorResults(env.Operators) {
-		logrus.Infof("Testing operator ginkgo test: %s", testName)
+		log.Info("Testing operator ginkgo test: %s", testName)
 		generatePreflightOperatorGinkgoTest(checksGroup, testName, testEntry.Metadata().Description, testEntry.Help().Suggestion, env.Operators)
 	}
 }
@@ -120,19 +121,20 @@ func testPreflightContainers(checksGroup *checksdb.ChecksGroup, env *provider.Te
 
 	// Loop through all of the containers, run preflight, and set their results into their respective objects
 	for _, cut := range env.Containers {
-		logrus.Debugf("Running preflight container tests for: %s", cut.Name)
+		log.Debug("Running preflight container tests for: %s", cut.Name)
 		err := cut.SetPreflightResults(preflightImageCache, env)
 		if err != nil {
-			logrus.Fatalf("failed running preflight on image: %s error: %v", cut.Image, err)
+			log.Error("failed running preflight on image: %s error: %v", cut.Image, err)
+			os.Exit(1)
 		}
 	}
 
-	logrus.Infof("Completed running preflight container tests for %d containers", len(env.Containers))
+	log.Info("Completed running preflight container tests for %d containers", len(env.Containers))
 
 	// Handle Container-based preflight tests
 	// Note: We only care about the `testEntry` variable below because we need its 'Description' and 'Suggestion' variables.
 	for testName, testEntry := range getUniqueTestEntriesFromContainerResults(env.Containers) {
-		logrus.Infof("Testing container ginkgo test: %s", testName)
+		log.Info("Testing container ginkgo test: %s", testName)
 		generatePreflightContainerGinkgoTest(checksGroup, testName, testEntry.Metadata().Description, testEntry.Help().Suggestion, env.Containers)
 	}
 }
@@ -160,19 +162,19 @@ func generatePreflightContainerGinkgoTest(checksGroup *checksdb.ChecksGroup, tes
 				for _, r := range cut.PreflightResults.Passed {
 					if r.Name() == testName {
 						compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has passed preflight test "+testName, true))
-						logrus.Infof("%s has passed preflight test: %s", cut.String(), testName)
+						log.Info("%s has passed preflight test: %s", cut.String(), testName)
 					}
 				}
 				for _, r := range cut.PreflightResults.Failed {
 					if r.Name() == testName {
 						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has failed preflight test "+testName, false))
-						tnf.Logf(logrus.WarnLevel, "%s has failed preflight test: %s", cut, testName)
+						log.Warn("%s has failed preflight test: %s", cut, testName)
 					}
 				}
 				for _, r := range cut.PreflightResults.Errors {
 					if r.Name() == testName {
 						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, fmt.Sprintf("Container has errored preflight test %s, err=%v", testName, r.Err), false))
-						tnf.Logf(logrus.ErrorLevel, "%s has errored preflight test: %s", cut, testName)
+						log.Error("%s has errored preflight test: %s", cut, testName)
 					}
 				}
 			}
@@ -206,19 +208,19 @@ func generatePreflightOperatorGinkgoTest(checksGroup *checksdb.ChecksGroup, test
 			for _, op := range operators {
 				for _, r := range op.PreflightResults.Passed {
 					if r.Name() == testName {
-						logrus.Infof("%s has passed preflight test: %s", op.String(), testName)
+						log.Info("%s has passed preflight test: %s", op.String(), testName)
 						compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator passed preflight test "+testName, true))
 					}
 				}
 				for _, r := range op.PreflightResults.Failed {
 					if r.Name() == testName {
-						tnf.Logf(logrus.WarnLevel, "%s has failed preflight test: %s", op, testName)
+						log.Warn("%s has failed preflight test: %s", op, testName)
 						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator failed preflight test "+testName, false))
 					}
 				}
 				for _, r := range op.PreflightResults.Errors {
 					if r.Name() == testName {
-						tnf.Logf(logrus.ErrorLevel, "%s has errored preflight test: %s", op, testName)
+						log.Error("%s has errored preflight test: %s", op, testName)
 						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator has errored preflight test "+testName, false))
 					}
 				}

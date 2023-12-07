@@ -20,7 +20,6 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/icmp"
@@ -28,10 +27,10 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netutil"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/policies"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/services"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	networkingv1 "k8s.io/api/networking/v1"
 )
 
@@ -50,7 +49,7 @@ var (
 	env provider.TestEnvironment
 
 	beforeEachFn = func(check *checksdb.Check) error {
-		logrus.Infof("Check %s: getting test environment.", check.ID)
+		check.LogInfo("Check %s: getting test environment.", check.ID)
 		env = provider.GetTestEnvironment()
 		return nil
 	}
@@ -58,7 +57,7 @@ var (
 
 //nolint:funlen
 func LoadChecks() {
-	logrus.Debugf("Entering %s suite", common.NetworkingTestKey)
+	log.Debug("Entering %s suite", common.NetworkingTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.NetworkingTestKey).
 		WithBeforeEachFn(beforeEachFn)
@@ -169,7 +168,7 @@ func LoadChecks() {
 }
 
 func testExecProbDenyAtCPUPinning(check *checksdb.Check, dpdkPods []*provider.Pod) {
-	tnf.Logf(logrus.InfoLevel, "Check if exec probe is happening")
+	check.LogInfo("Check if exec probe is happening")
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
@@ -209,13 +208,13 @@ func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.Test
 		firstPodContainer := put.Containers[0]
 		listeningPorts, err := netutil.GetListeningPorts(firstPodContainer)
 		if err != nil {
-			tnf.ClaimFilePrintf("Failed to get the container's listening ports, err: %v", err)
+			check.LogDebug("Failed to get the container's listening ports, err: %v", err)
 			nonCompliantObjects = append(nonCompliantObjects,
 				testhelper.NewPodReportObject(put.Namespace, put.Name, fmt.Sprintf("Failed to get the container's listening ports, err: %v", err), false))
 			continue
 		}
 		if len(listeningPorts) == 0 {
-			tnf.ClaimFilePrintf("None of the containers of %s have any listening port.", put)
+			check.LogDebug("None of the containers of %s have any listening port.", put)
 			continue
 		}
 
@@ -223,13 +222,13 @@ func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.Test
 		failedPod := false
 		for listeningPort := range listeningPorts {
 			if put.ContainsIstioProxy() && netcommons.ReservedIstioPorts[int32(listeningPort.PortNumber)] {
-				tnf.ClaimFilePrintf("%s is listening on port %d protocol %s, but the pod also contains istio-proxy. Ignoring.",
+				check.LogDebug("%s is listening on port %d protocol %s, but the pod also contains istio-proxy. Ignoring.",
 					put, listeningPort.PortNumber, listeningPort.Protocol)
 				continue
 			}
 
 			if ok := declaredPorts[listeningPort]; !ok {
-				tnf.ClaimFilePrintf("%s is listening on port %d protocol %s, but that port was not declared in any container spec.",
+				check.LogDebug("%s is listening on port %d protocol %s, but that port was not declared in any container spec.",
 					put, listeningPort.PortNumber, listeningPort.Protocol)
 				failedPod = true
 				nonCompliantObjects = append(nonCompliantObjects,
@@ -262,12 +261,12 @@ func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.Test
 func testNetworkConnectivity(env *provider.TestEnvironment, aIPVersion netcommons.IPVersion, aType netcommons.IFType, check *checksdb.Check) {
 	netsUnderTest, claimsLog := icmp.BuildNetTestContext(env.Pods, aIPVersion, aType)
 	// Saving  curated logs to claims file
-	tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
+	check.LogDebug("%s", claimsLog.GetLogLines())
 	report, claimsLog, skip := icmp.RunNetworkingTests(netsUnderTest, defaultNumPings, aIPVersion)
 	// Saving curated logs to claims file
-	tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
+	check.LogDebug("%s", claimsLog.GetLogLines())
 	if skip {
-		tnf.Logf(logrus.InfoLevel, "There are no %s networks to test with at least 2 pods, skipping test", aIPVersion)
+		check.LogInfo("There are no %s networks to test with at least 2 pods, skipping test", aIPVersion)
 		return
 	}
 	check.SetResult(report.CompliantObjectsOut, report.NonCompliantObjectsOut)
@@ -302,11 +301,11 @@ func testPartnerSpecificTCPPorts(check *checksdb.Check, env *provider.TestEnviro
 func testDualStackServices(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
-	tnf.Logf(logrus.InfoLevel, "Testing services (should be either single stack ipv6 or dual-stack)")
+	check.LogInfo("Testing services (should be either single stack ipv6 or dual-stack)")
 	for _, s := range env.Services {
 		serviceIPVersion, err := services.GetServiceIPVersion(s)
 		if err != nil {
-			tnf.ClaimFilePrintf("%s", err)
+			check.LogDebug("%s", err)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("Could not get IP Version from service", testhelper.ServiceType, false).
 				AddField(testhelper.Namespace, s.Namespace).
 				AddField(testhelper.ServiceName, s.Name))
@@ -328,7 +327,7 @@ func testDualStackServices(check *checksdb.Check, env *provider.TestEnvironment)
 }
 
 func testNetworkPolicyDenyAll(check *checksdb.Check, env *provider.TestEnvironment) {
-	tnf.Logf(logrus.InfoLevel, "Test for Deny All in network policies")
+	check.LogInfo("Test for Deny All in network policies")
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
@@ -341,7 +340,7 @@ func testNetworkPolicyDenyAll(check *checksdb.Check, env *provider.TestEnvironme
 
 		// Look through all of the network policies for a matching namespace.
 		for index := range env.NetworkPolicies {
-			logrus.Debugf("Testing network policy %s against pod %s", env.NetworkPolicies[index].Name, put.String())
+			check.LogDebug("Testing network policy %s against pod %s", env.NetworkPolicies[index].Name, put.String())
 
 			// Skip any network policies that don't match the namespace of the pod we are testing.
 			if env.NetworkPolicies[index].Namespace != put.Namespace {
@@ -362,13 +361,13 @@ func testNetworkPolicyDenyAll(check *checksdb.Check, env *provider.TestEnvironme
 		// Network policy has not been found that contains a deny-all rule for both ingress and egress.
 		podIsCompliant := true
 		if !denyAllIngressFound {
-			tnf.ClaimFilePrintf("%s was found to not have a default ingress deny-all network policy.", put.Name)
+			check.LogDebug("%s was found to not have a default ingress deny-all network policy.", put.Name)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod was found to not have a default ingress deny-all network policy", false))
 			podIsCompliant = false
 		}
 
 		if !denyAllEgressFound {
-			tnf.ClaimFilePrintf("%s was found to not have a default egress deny-all network policy.", put.Name)
+			check.LogDebug("%s was found to not have a default egress deny-all network policy.", put.Name)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod was found to not have a default egress deny-all network policy", false))
 			podIsCompliant = false
 		}
@@ -389,17 +388,17 @@ func testRestartOnRebootLabelOnPodsUsingSriov(check *checksdb.Check, sriovPods [
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, pod := range sriovPods {
-		logrus.Debugf("Pod %s uses SRIOV network/s. Checking label %s existence & value.", pod, restartOnRebootLabel)
+		check.LogDebug("Pod %s uses SRIOV network/s. Checking label %s existence & value.", pod, restartOnRebootLabel)
 
 		labelValue, exist := pod.GetLabels()[restartOnRebootLabel]
 		if !exist {
-			tnf.ClaimFilePrintf("Pod %s is using SRIOV but the label %s was not found.", pod, restartOnRebootLabel)
+			check.LogDebug("Pod %s is using SRIOV but the label %s was not found.", pod, restartOnRebootLabel)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, fmt.Sprintf("Pod uses SRIOV but the label %s was not found", restartOnRebootLabel), false))
 			continue
 		}
 
 		if labelValue != "true" {
-			tnf.ClaimFilePrintf("Pod %s is using SRIOV but the %s label value is not true.", pod, restartOnRebootLabel)
+			check.LogDebug("Pod %s is using SRIOV but the %s label value is not true.", pod, restartOnRebootLabel)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, fmt.Sprintf("Pod uses SRIOV but the label %s is not set to true", restartOnRebootLabel), false))
 			continue
 		}

@@ -10,9 +10,10 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/internal/cli"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
+	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
@@ -39,6 +40,8 @@ func RunChecks(labelsExpr string, timeout time.Duration) error {
 	const SIGINTBufferLen = 10
 	sigIntChan := make(chan os.Signal, SIGINTBufferLen)
 	signal.Notify(sigIntChan, syscall.SIGINT, syscall.SIGTERM)
+	// turn off ctrl-c capture on exit
+	defer signal.Stop(sigIntChan)
 
 	//  Labels expression parser not implemented yet. Assume labelsExpr is just a label.
 	abort := false
@@ -64,23 +67,23 @@ func RunChecks(labelsExpr string, timeout time.Duration) error {
 
 		select {
 		case <-groupDone:
-			logrus.Tracef("Group %s finished running checks.", group.name)
+			log.Debug("Group %s finished running checks.", group.name)
 		case <-abortChan:
-			logrus.Warnf("Group %s aborted.", group.name)
+			log.Warn("Group %s aborted.", group.name)
 			stopChan <- true
 
 			abort = true
 			abortReason = "Test suite aborted due to error"
 			_ = group.OnAbort(labelsExpr, abortReason)
 		case <-timeOutChan:
-			logrus.Warnf("Running all checks timed-out.")
+			log.Warn("Running all checks timed-out.")
 			stopChan <- true
 
 			abort = true
 			abortReason = "global time-out"
 			_ = group.OnAbort(labelsExpr, abortReason)
 		case <-sigIntChan:
-			logrus.Warnf("SIGINT/SIGTERM received.")
+			log.Warn("SIGINT/SIGTERM received.")
 			stopChan <- true
 
 			abort = true
@@ -96,7 +99,7 @@ func RunChecks(labelsExpr string, timeout time.Duration) error {
 	printFailedChecksLog()
 
 	if len(errs) > 0 {
-		logrus.Errorf("RunChecks errors: %v", errs)
+		log.Error("RunChecks errors: %v", errs)
 		return fmt.Errorf("%d errors found in checks/groups", len(errs))
 	}
 
@@ -106,10 +109,11 @@ func RunChecks(labelsExpr string, timeout time.Duration) error {
 func recordCheckResult(check *Check) {
 	claimID, ok := identifiers.TestIDToClaimID[check.ID]
 	if !ok {
-		logrus.Fatalf("TestID %s has no corresponding Claim ID", check.ID)
+		check.LogError("TestID %s has no corresponding Claim ID", check.ID)
+		os.Exit(1)
 	}
 
-	logrus.Infof("Recording result %q of check %s, claimID: %+v", check.Result, check.ID, claimID)
+	log.Info("Recording result %q of check %s, claimID: %+v", check.Result, check.ID, claimID)
 	resultsDB[check.ID] = claim.Result{
 		TestID:             &claimID,
 		State:              check.Result.String(),
@@ -187,12 +191,43 @@ func printFailedChecksLog() {
 			fmt.Println(strings.Repeat("-", nbSymbols))
 			fmt.Println(logHeader)
 			fmt.Println(strings.Repeat("-", nbSymbols))
-			log := check.GetLogs()
-			if log == "" {
+			checkLogs := check.GetLogs()
+			if checkLogs == "" {
 				fmt.Println("Empty log output")
 			} else {
-				fmt.Println(log)
+				fmt.Println(checkLogs)
 			}
 		}
 	}
+}
+
+func GetResults() map[string]claim.Result {
+	return resultsDB
+}
+
+func GetTestSuites() []string {
+	// Collect all of the unique test suites from the resultsDB
+	var suites []string
+	for key := range resultsDB {
+		// Only append to the slice if it does not already exist
+		if !stringhelper.StringInSlice(suites, key, false) {
+			suites = append(suites, key)
+		}
+	}
+	return suites
+}
+
+func GetTotalTests() int {
+	return len(resultsDB)
+}
+
+func GetTestsCountByState(state string) int {
+	count := 0
+	//nolint:gocritic
+	for _, results := range resultsDB {
+		if results.State == state {
+			count++
+		}
+	}
+	return count
 }

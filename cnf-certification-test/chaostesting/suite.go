@@ -8,10 +8,10 @@ import (
 
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 
-	"github.com/sirupsen/logrus"
 
 	poddelete "github.com/test-network-function/cnf-certification-test/cnf-certification-test/chaostesting/pod_delete"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 
 	"github.com/onsi/ginkgo/v2"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
@@ -25,7 +25,7 @@ const (
 )
 
 var _ = ginkgo.Describe(common.ChaosTesting, func() {
-	logrus.Debugf("Entering %s suite", common.ChaosTesting)
+	log.Debug("Entering %s suite", common.ChaosTesting)
 	var env provider.TestEnvironment
 
 	ginkgo.BeforeEach(func() {
@@ -53,7 +53,7 @@ func testPodDelete(env *provider.TestEnvironment) {
 		var label string
 		var err error
 		if label, err = poddelete.GetLabelDeploymentValue(env, dep.Spec.Template.Labels); err != nil {
-			logrus.Errorf("did not find a match label for the deployment %s ", dep.ToString())
+			log.Error("did not find a match label for the deployment %s ", dep.ToString())
 			ginkgo.Fail(fmt.Sprintf("There is no label for the deployment %s ", dep.ToString()))
 		}
 		if err := poddelete.ApplyAndCreatePodDeleteResources(label, deployment, dep.Namespace); err != nil {
@@ -61,13 +61,13 @@ func testPodDelete(env *provider.TestEnvironment) {
 		}
 		if completed := poddelete.WaitForTestFinish(testCaseTimeout); !completed {
 			poddelete.DeleteAllResources(dep.Namespace)
-			logrus.Errorf("deployment %s timed-out the litmus test", dep.ToString())
+			log.Error("deployment %s timed-out the litmus test", dep.ToString())
 			ginkgo.Fail(fmt.Sprintf("deployment %s timed-out the litmus test", dep.ToString()))
 		}
 		if result := poddelete.IsChaosResultVerdictPass(); !result {
 			// delete the chaos engin crd
 			poddelete.DeleteAllResources(dep.Namespace)
-			logrus.Errorf("deployment %s failed the litmus test", dep.ToString())
+			log.Error("deployment %s failed the litmus test", dep.ToString())
 			ginkgo.Fail(fmt.Sprintf("deployment %s failed the litmus test", dep.ToString()))
 		}
 		poddelete.DeleteAllResources(dep.Namespace)

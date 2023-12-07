@@ -5,7 +5,6 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/certification"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle"
@@ -17,10 +16,13 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/preflight"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
+	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/claimhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/collector"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
+	"github.com/test-network-function/cnf-certification-test/pkg/flags"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
@@ -40,32 +42,87 @@ func LoadChecksDB(labelsExpr string) {
 	}
 }
 
-func Run(labelsFilter, outputFolder string, timeout time.Duration) {
+const (
+	junitXMLOutputFile = "cnf-certification-tests_junit.xml"
+)
+
+func getK8sClientsConfigFileNames() []string {
+	params := configuration.GetTestParameters()
+	fileNames := []string{}
+	if params.Kubeconfig != "" {
+		// Add the kubeconfig path
+		fileNames = append(fileNames, params.Kubeconfig)
+	}
+	if params.Home != "" {
+		kubeConfigFilePath := filepath.Join(params.Home, ".kube", "config")
+		// Check if the kubeconfig path exists
+		if _, err := os.Stat(kubeConfigFilePath); err == nil {
+			log.Info("kubeconfig path %s is present", kubeConfigFilePath)
+			// Only add the kubeconfig to the list of paths if it exists, since it is not added by the user
+			fileNames = append(fileNames, kubeConfigFilePath)
+		} else {
+			log.Info("kubeconfig path %s is not present", kubeConfigFilePath)
+		}
+	}
+
+	return fileNames
+}
+
+func processFlags() time.Duration {
+	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
+
+	LoadChecksDB(*flags.LabelsFlag)
+
+	// Diagnostic functions will run when no labels are provided.
+	if *flags.LabelsFlag == flags.NoLabelsExpr {
+		log.Warn("CNF Certification Suite will run in diagnostic mode so no test case will be launched.")
+	}
+
+	timeout, err := time.ParseDuration(*flags.TimeoutFlag)
+	if err != nil {
+		log.Error("Failed to parse timeout flag %v: %v, using default timeout value %v", *flags.TimeoutFlag, err, flags.TimeoutFlagDefaultvalue)
+		timeout = flags.TimeoutFlagDefaultvalue
+	}
+	return timeout
+}
+
+//nolint:funlen
+func Run(labelsFilter, outputFolder string) {
+	timeout := processFlags()
 	var env provider.TestEnvironment
 	env.SetNeedsRefresh()
 	env = provider.GetTestEnvironment()
 
 	claimBuilder, err := claimhelper.NewClaimBuilder()
 	if err != nil {
-		logrus.Fatalf("Failed to get claim builder: %v", err)
+		log.Error("Failed to get claim builder: %v", err)
+		os.Exit(1)
 	}
 
 	claimOutputFile := filepath.Join(outputFolder, results.ClaimFileName)
 
-	logrus.Infof("Running checks matching labels expr %q with timeout %v", labelsFilter, timeout)
+	log.Info("Running checks matching labels expr %q with timeout %v", labelsFilter, timeout)
+	startTime := time.Now()
 	err = checksdb.RunChecks(labelsFilter, timeout)
 	if err != nil {
-		logrus.Error(err)
+		log.Error("%v", err)
 	}
+	endTime := time.Now()
+	log.Info("Finished running checks in %v", endTime.Sub(startTime))
 
 	// Marshal the claim and output to file
 	claimBuilder.Build(claimOutputFile)
+
+	if configuration.GetTestParameters().EnableXMLCreation {
+		log.Info("XML file creation is enabled. Creating JUnit XML file: %s", junitXMLOutputFile)
+		claimBuilder.ToJUnitXML(junitXMLOutputFile, startTime, endTime)
+	}
 
 	// Send claim file to the collector if specified by env var
 	if configuration.GetTestParameters().EnableDataCollection {
 		err = collector.SendClaimFileToCollector(env.CollectorAppEndPoint, claimOutputFile, env.ExecutedBy, env.PartnerName, env.CollectorAppPassword)
 		if err != nil {
-			logrus.Errorf("Failed to send post request to the collector: %v", err)
+			log.Error("Failed to send post request to the collector: %v", err)
 		}
 	}
 
@@ -73,7 +130,7 @@ func Run(labelsFilter, outputFolder string, timeout time.Duration) {
 	resultsOutputDir := outputFolder
 	webFilePaths, err := results.CreateResultsWebFiles(resultsOutputDir)
 	if err != nil {
-		logrus.Errorf("Failed to create results web files: %v", err)
+		log.Error("Failed to create results web files: %v", err)
 	}
 
 	allArtifactsFilePaths := []string{filepath.Join(outputFolder, results.ClaimFileName)}
@@ -85,7 +142,8 @@ func Run(labelsFilter, outputFolder string, timeout time.Duration) {
 	if !configuration.GetTestParameters().OmitArtifactsZipFile {
 		err = results.CompressResultsArtifacts(resultsOutputDir, allArtifactsFilePaths)
 		if err != nil {
-			logrus.Fatalf("Failed to compress results artifacts: %v", err)
+			log.Error("Failed to compress results artifacts: %v", err)
+			os.Exit(1)
 		}
 	}
 
@@ -94,7 +152,8 @@ func Run(labelsFilter, outputFolder string, timeout time.Duration) {
 		for _, file := range webFilePaths {
 			err := os.Remove(file)
 			if err != nil {
-				logrus.Fatalf("failed to remove web file %s: %v", file, err)
+				log.Error("failed to remove web file %s: %v", file, err)
+				os.Exit(1)
 			}
 		}
 	}
