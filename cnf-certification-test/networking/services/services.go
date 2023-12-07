@@ -19,8 +19,8 @@ package services
 import (
 	"fmt"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netcommons"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	corev1 "k8s.io/api/core/v1"
 )
 
@@ -36,12 +36,12 @@ func GetServiceIPVersion(aService *corev1.Service) (result netcommons.IPVersion,
 	}
 	if *aService.Spec.IPFamilyPolicy == corev1.IPFamilyPolicySingleStack &&
 		ipver == netcommons.IPv6 {
-		logrus.Debugf("%s is single stack ipv6", ToString(aService))
+		log.Debug("%s is single stack ipv6", ToString(aService))
 		return netcommons.IPv6, nil
 	}
 	if *aService.Spec.IPFamilyPolicy == corev1.IPFamilyPolicySingleStack &&
 		ipver == netcommons.IPv4 {
-		logrus.Debugf("%s is single stack ipv4", ToString(aService))
+		log.Debug("%s is single stack ipv4", ToString(aService))
 		return netcommons.IPv4, nil
 	}
 	if (*aService.Spec.IPFamilyPolicy == corev1.IPFamilyPolicyPreferDualStack ||
@@ -57,7 +57,7 @@ func GetServiceIPVersion(aService *corev1.Service) (result netcommons.IPVersion,
 		return result, err
 	}
 	if res {
-		logrus.Debugf("%s is dual-stack", ToString(aService))
+		log.Debug("%s is dual-stack", ToString(aService))
 		return netcommons.IPv4v6, nil
 	}
 

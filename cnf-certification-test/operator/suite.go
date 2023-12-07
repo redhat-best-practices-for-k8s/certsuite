@@ -19,28 +19,27 @@ package operator
 import (
 	"strings"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator/phasecheck"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
 
 var (
 	env provider.TestEnvironment
 
 	beforeEachFn = func(check *checksdb.Check) error {
-		logrus.Infof("Check %s: getting test environment.", check.ID)
+		check.LogInfo("Check %s: getting test environment.", check.ID)
 		env = provider.GetTestEnvironment()
 		return nil
 	}
 )
 
 func LoadChecks() {
-	logrus.Debugf("Entering %s suite", common.OperatorTestKey)
+	log.Debug("Entering %s suite", common.OperatorTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.OperatorTestKey).
 		WithBeforeEachFn(beforeEachFn)
@@ -100,7 +99,7 @@ func testOperatorInstallationWithoutPrivileges(check *checksdb.Check, env *provi
 		csv := env.Operators[i].Csv
 		clusterPermissions := csv.Spec.InstallStrategy.StrategySpec.ClusterPermissions
 		if len(clusterPermissions) == 0 {
-			logrus.Debugf("No clusterPermissions found in %s", env.Operators[i])
+			check.LogDebug("No clusterPermissions found in %s", env.Operators[i])
 			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "Operator has no privileges on cluster resources", true))
 			continue
 		}
@@ -111,7 +110,7 @@ func testOperatorInstallationWithoutPrivileges(check *checksdb.Check, env *provi
 			permission := &clusterPermissions[permissionIndex]
 			for ruleIndex := range permission.Rules {
 				if n := len(permission.Rules[ruleIndex].ResourceNames); n > 0 {
-					tnf.ClaimFilePrintf("%s: cluster permission (service account %s) has %d resource names (rule index %d).",
+					check.LogDebug("%s: cluster permission (service account %s) has %d resource names (rule index %d).",
 						env.Operators[i], permission.ServiceAccountName, n, ruleIndex)
 					// Keep reviewing other permissions' rules so we can log all the failing ones in the claim file.
 					badRuleFound = true
@@ -141,7 +140,7 @@ func testOperatorOlmSubscription(check *checksdb.Check, env *provider.TestEnviro
 	for i := range env.Operators {
 		operator := env.Operators[i]
 		if operator.SubscriptionName == "" {
-			tnf.ClaimFilePrintf("OLM subscription not found for operator from csv %s", provider.CsvToString(operator.Csv))
+			check.LogDebug("OLM subscription not found for operator from csv %s", provider.CsvToString(operator.Csv))
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "OLM subscription not found for operator, so it is not installed via OLM", false).
 				AddField(testhelper.SubscriptionName, operator.SubscriptionName))
 		} else {

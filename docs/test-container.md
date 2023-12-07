@@ -38,7 +38,7 @@ In order to get the required information, the test suite does not `ssh` into nod
 **Required arguments**
 
 * `-t` to provide the path of the local directory that contains tnf config files
-* `-o` to provide the path of the local directory where test results (claim.json), the execution logs (tnf-execution.log), and the results artifacts file (results.tar.gz) will be available from after the container exits.
+* `-o` to provide the path of the local directory where test results (claim.json), the execution logs (cnf-certsuite.log), and the results artifacts file (results.tar.gz) will be available from after the container exits.
 
 !!! warning
 

@@ -17,10 +17,9 @@
 package lifecycle
 
 import (
-	"fmt"
+	"os"
 	"time"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/ownerreference"
@@ -29,12 +28,12 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/scaling"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/tolerations"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/volumes"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/postmortem"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	corev1 "k8s.io/api/core/v1"
 )
 
@@ -52,7 +51,7 @@ var (
 	env provider.TestEnvironment
 
 	beforeEachFn = func(check *checksdb.Check) error {
-		logrus.Infof("Check %s: getting test environment.", check.ID)
+		check.LogInfo("Check %s: getting test environment.", check.ID)
 		env = provider.GetTestEnvironment()
 		return nil
 	}
@@ -68,7 +67,7 @@ var (
 
 //nolint:funlen
 func LoadChecks() {
-	logrus.Debugf("Entering %s suite", common.LifecycleTestKey)
+	log.Debug("Loading %s checks", common.LifecycleTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.LifecycleTestKey).
 		WithBeforeEachFn(beforeEachFn)
@@ -261,10 +260,10 @@ func testContainersPreStop(check *checksdb.Check, env *provider.TestEnvironment)
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
-		logrus.Debugln("check container ", cut.String(), " pre stop lifecycle ")
+		check.LogDebug("check %s pre stop lifecycle", cut.String())
 
 		if cut.Lifecycle == nil || (cut.Lifecycle != nil && cut.Lifecycle.PreStop == nil) {
-			tnf.ClaimFilePrintf("%s does not have preStop defined", cut)
+			check.LogDebug("%s does not have preStop defined", cut)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container does not have preStop defined", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has preStop defined", true))
@@ -277,10 +276,10 @@ func testContainersPostStart(check *checksdb.Check, env *provider.TestEnvironmen
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
-		logrus.Debugln("check container ", cut.String(), " post start lifecycle ")
+		check.LogDebug("check %s post start lifecycle", cut.String())
 
 		if cut.Lifecycle == nil || (cut.Lifecycle != nil && cut.Lifecycle.PostStart == nil) {
-			tnf.ClaimFilePrintf("%s does not have postStart defined", cut)
+			check.LogDebug("%s does not have postStart defined", cut)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container does not have postStart defined", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has postStart defined", true))
@@ -293,9 +292,9 @@ func testContainersImagePolicy(check *checksdb.Check, env *provider.TestEnvironm
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
-		logrus.Debugln("check container ", cut.String(), " pull policy, should be ", corev1.PullIfNotPresent)
+		check.LogDebug("check %s pull policy, should be %s", cut.String(), corev1.PullIfNotPresent)
 		if cut.ImagePullPolicy != corev1.PullIfNotPresent {
-			tnf.Logf(logrus.WarnLevel, "%s is using %s as ImagePullPolicy", cut, cut.ImagePullPolicy)
+			check.LogWarn("%s is using %s as ImagePullPolicy", cut, cut.ImagePullPolicy)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is not using IfNotPresent as ImagePullPolicy", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is using IfNotPresent as ImagePullPolicy", true))
@@ -308,9 +307,9 @@ func testContainersReadinessProbe(check *checksdb.Check, env *provider.TestEnvir
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
-		logrus.Debugln("check container ", cut.String(), " readiness probe ")
+		check.LogDebug("check %s readiness probe", cut.String())
 		if cut.ReadinessProbe == nil {
-			tnf.Logf(logrus.WarnLevel, "%s does not have ReadinessProbe defined", cut)
+			check.LogWarn("%s does not have ReadinessProbe defined", cut)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container does not have ReadinessProbe defined", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has ReadinessProbe defined", true))
@@ -323,9 +322,9 @@ func testContainersLivenessProbe(check *checksdb.Check, env *provider.TestEnviro
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
-		logrus.Debugln("check container ", cut.String(), " liveness probe ")
+		check.LogDebug("check %s liveness probe", cut.String())
 		if cut.LivenessProbe == nil {
-			tnf.Logf(logrus.WarnLevel, "%s does not have LivenessProbe defined", cut)
+			check.LogWarn("%s does not have LivenessProbe defined", cut)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container does not have LivenessProbe defined", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has LivenessProbe defined", true))
@@ -338,9 +337,9 @@ func testContainersStartupProbe(check *checksdb.Check, env *provider.TestEnviron
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
-		logrus.Debugln("check container ", cut.String(), " startup probe ")
+		check.LogDebug("check %s startup probe", cut.String())
 		if cut.StartupProbe == nil {
-			tnf.Logf(logrus.WarnLevel, "%s does not have StartupProbe defined", cut)
+			check.LogWarn("%s does not have StartupProbe defined", cut)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container does not have StartupProbe defined", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has StartupProbe defined", true))
@@ -350,15 +349,15 @@ func testContainersStartupProbe(check *checksdb.Check, env *provider.TestEnviron
 }
 
 func testPodsOwnerReference(check *checksdb.Check, env *provider.TestEnvironment) {
-	tnf.Logf(logrus.InfoLevel, "Testing owners of CNF pod, should be replicas Set")
+	check.LogInfo("Testing owners of CNF pod, should be replicas Set")
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
-		logrus.Debugln("check pod ", put.Namespace, " ", put.Name, " owner reference")
+		check.LogDebug("check pod %s:%s owner reference", put.Namespace, put.Name)
 		o := ownerreference.NewOwnerReference(put.Pod)
 		o.RunTest()
 		if o.GetResults() != testhelper.SUCCESS {
-			tnf.ClaimFilePrintf("%s found with non-compliant owner reference", put.String())
+			check.LogDebug("%s found with non-compliant owner reference", put.String())
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has non-compliant owner reference", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has compliant owner reference", true))
@@ -373,12 +372,12 @@ func testPodNodeSelectorAndAffinityBestPractices(testPods []*provider.Pod, check
 	for _, put := range testPods {
 		compliantPod := true
 		if put.HasNodeSelector() {
-			tnf.ClaimFilePrintf("ERROR: %s has a node selector. Node selector: %v", put, put.Spec.NodeSelector)
+			check.LogDebug("ERROR: %s has a node selector. Node selector: %v", put, put.Spec.NodeSelector)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has node selector", false))
 			compliantPod = false
 		}
 		if put.Spec.Affinity != nil && put.Spec.Affinity.NodeAffinity != nil {
-			tnf.ClaimFilePrintf("ERROR: %s has a node affinity clause. Node affinity: %v", put, put.Spec.Affinity.NodeAffinity)
+			check.LogDebug("ERROR: %s has a node affinity clause. Node affinity: %v", put, put.Spec.Affinity.NodeAffinity)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has node affinity", false))
 			compliantPod = false
 		}
@@ -410,7 +409,7 @@ func nameInStatefulSetSkipList(name, namespace string, list []configuration.Skip
 
 //nolint:dupl
 func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration, check *checksdb.Check) {
-	tnf.Logf(logrus.InfoLevel, "Testing deployment scaling")
+	check.LogInfo("Testing deployment scaling")
 	defer env.SetNeedsRefresh()
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -418,15 +417,15 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration,
 		if scaling.IsManaged(env.Deployments[i].Name, env.Config.ManagedDeployments) {
 			if !scaling.CheckOwnerReference(env.Deployments[i].GetOwnerReferences(), env.Config.CrdFilters, env.Crds) {
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewDeploymentReportObject(env.Deployments[i].Namespace, env.Deployments[i].Name, "Deployment is not scalable", false))
-				tnf.ClaimFilePrintf("%s is scaling failed due to OwnerReferences that are not scalable", env.Deployments[i].ToString())
+				check.LogDebug("%s is scaling failed due to OwnerReferences that are not scalable", env.Deployments[i].ToString())
 			} else {
-				logrus.Infof("%s is scaling skipped due to scalable OwnerReferences, test will run on the cr scaling", env.Deployments[i].ToString())
+				check.LogInfo("%s is scaling skipped due to scalable OwnerReferences, test will run on the cr scaling", env.Deployments[i].ToString())
 			}
 			continue
 		}
 		// Skip deployment if it is allowed by config
 		if nameInDeploymentSkipList(env.Deployments[i].Name, env.Deployments[i].Namespace, env.Config.SkipScalingTestDeployments) {
-			tnf.ClaimFilePrintf("%s is being skipped due to configuration setting", env.Deployments[i].String())
+			check.LogDebug("%s is being skipped due to configuration setting", env.Deployments[i].String())
 			continue
 		}
 
@@ -438,7 +437,7 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration,
 			// horizontal scaler, then test that scaler
 			// can scale the deployment
 			if !scaling.TestScaleHpaDeployment(env.Deployments[i], hpa, timeout) {
-				tnf.ClaimFilePrintf("Deployment has failed the HPA scale test: %s", env.Deployments[i].ToString())
+				check.LogDebug("Deployment has failed the HPA scale test: %s", env.Deployments[i].ToString())
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewDeploymentReportObject(env.Deployments[i].Namespace, env.Deployments[i].Name, "Deployment has failed the HPA scale test", false))
 			}
 			continue
@@ -446,7 +445,7 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration,
 		// if the deployment is not controller by HPA
 		// scale it directly
 		if !scaling.TestScaleDeployment(env.Deployments[i].Deployment, timeout) {
-			tnf.ClaimFilePrintf("Deployment has failed the non-HPA scale test: %s", env.Deployments[i].ToString())
+			check.LogDebug("Deployment has failed the non-HPA scale test: %s", env.Deployments[i].ToString())
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewDeploymentReportObject(env.Deployments[i].Namespace, env.Deployments[i].Name, "Deployment has failed the non-HPA scale test", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewDeploymentReportObject(env.Deployments[i].Namespace, env.Deployments[i].Name, "Deployment is scalable", true))
@@ -457,7 +456,7 @@ func testDeploymentScaling(env *provider.TestEnvironment, timeout time.Duration,
 }
 
 func testScaleCrd(env *provider.TestEnvironment, timeout time.Duration, check *checksdb.Check) {
-	tnf.Logf(logrus.InfoLevel, "Testing custom resource scaling")
+	check.LogInfo("Testing custom resource scaling")
 	defer env.SetNeedsRefresh()
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -466,13 +465,13 @@ func testScaleCrd(env *provider.TestEnvironment, timeout time.Duration, check *c
 		scaleCr := env.ScaleCrUnderTest[i].Scale
 		if hpa := scaling.GetResourceHPA(env.HorizontalScaler, scaleCr.Name, scaleCr.Namespace, scaleCr.Kind); hpa != nil {
 			if !scaling.TestScaleHPACrd(&scaleCr, hpa, groupResourceSchema, timeout) {
-				tnf.ClaimFilePrintf("cr has failed the scaling test: %s", scaleCr.GetName())
+				check.LogDebug("cr has failed the scaling test: %s", scaleCr.GetName())
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewCrdReportObject(scaleCr.Namespace, scaleCr.Name, "cr has failed the HPA scaling test", false))
 			}
 			continue
 		}
 		if !scaling.TestScaleCrd(&scaleCr, groupResourceSchema, timeout) {
-			tnf.ClaimFilePrintf("CR has failed the non-HPA scale test: %s", scaleCr.GetName())
+			check.LogDebug("CR has failed the non-HPA scale test: %s", scaleCr.GetName())
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewCrdReportObject(scaleCr.Namespace, scaleCr.Name, "CR has failed the non-HPA scale test", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewCrdReportObject(scaleCr.Namespace, scaleCr.Name, "CR is scalable", true))
@@ -483,23 +482,23 @@ func testScaleCrd(env *provider.TestEnvironment, timeout time.Duration, check *c
 
 //nolint:dupl
 func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration, check *checksdb.Check) {
-	tnf.Logf(logrus.InfoLevel, "Testing statefulset scaling")
+	check.LogInfo("Testing statefulset scaling")
 	defer env.SetNeedsRefresh()
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for i := range env.StatefulSets {
 		if scaling.IsManaged(env.StatefulSets[i].Name, env.Config.ManagedStatefulsets) {
 			if !scaling.CheckOwnerReference(env.StatefulSets[i].GetOwnerReferences(), env.Config.CrdFilters, env.Crds) {
-				tnf.ClaimFilePrintf("%s is scaling failed due to OwnerReferences that are not scalable", env.Deployments[i].ToString())
+				check.LogDebug("%s is scaling failed due to OwnerReferences that are not scalable", env.Deployments[i].ToString())
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewStatefulSetReportObject(env.StatefulSets[i].Namespace, env.StatefulSets[i].Name, "StatefulSet has OwnerReferences that are not scalable", false))
 			} else {
-				logrus.Infof("%s is scaling skipped due to scalable OwnerReferences, test will run on te cr scaling", env.StatefulSets[i].ToString())
+				check.LogInfo("%s is scaling skipped due to scalable OwnerReferences, test will run on te cr scaling", env.StatefulSets[i].ToString())
 			}
 			continue
 		}
 		// Skip statefulset if it is allowed by config
 		if nameInStatefulSetSkipList(env.StatefulSets[i].Name, env.StatefulSets[i].Namespace, env.Config.SkipScalingTestStatefulSets) {
-			tnf.ClaimFilePrintf("%s is being skipped due to configuration setting", env.StatefulSets[i].String())
+			check.LogDebug("%s is being skipped due to configuration setting", env.StatefulSets[i].String())
 			continue
 		}
 
@@ -511,7 +510,7 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 			// horizontal scaler, then test that scaler
 			// can scale the statefulset
 			if !scaling.TestScaleHpaStatefulSet(env.StatefulSets[i].StatefulSet, hpa, timeout) {
-				tnf.ClaimFilePrintf("StatefulSet has failed the scaling test: %s", env.StatefulSets[i].ToString())
+				check.LogDebug("StatefulSet has failed the scaling test: %s", env.StatefulSets[i].ToString())
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewStatefulSetReportObject(env.StatefulSets[i].Namespace, env.StatefulSets[i].Name, "StatefulSet has failed the HPA scaling test", false))
 			}
 			continue
@@ -519,7 +518,7 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 		// if the statefulset is not controller by HPA
 		// scale it directly
 		if !scaling.TestScaleStatefulSet(env.StatefulSets[i].StatefulSet, timeout) {
-			tnf.ClaimFilePrintf("StatefulSet has failed the scaling test: %s", env.StatefulSets[i].ToString())
+			check.LogDebug("StatefulSet has failed the scaling test: %s", env.StatefulSets[i].ToString())
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewStatefulSetReportObject(env.StatefulSets[i].Namespace, env.StatefulSets[i].Name, "StatefulSet has failed the non-HPA scale test", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewStatefulSetReportObject(env.StatefulSets[i].Namespace, env.StatefulSets[i].Name, "StatefulSet is scalable", true))
@@ -531,13 +530,13 @@ func testStatefulSetScaling(env *provider.TestEnvironment, timeout time.Duration
 
 // testHighAvailability
 func testHighAvailability(check *checksdb.Check, env *provider.TestEnvironment) {
-	tnf.Logf(logrus.InfoLevel, "Should set pod replica number greater than 1")
+	check.LogInfo("Should set pod replica number greater than 1")
 
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, dp := range env.Deployments {
 		if dp.Spec.Replicas == nil || *(dp.Spec.Replicas) <= 1 {
-			tnf.ClaimFilePrintf("Deployment found without valid high availability: %s", dp.ToString())
+			check.LogDebug("Deployment found without valid high availability: %s", dp.ToString())
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewDeploymentReportObject(dp.Namespace, dp.Name, "Deployment found without valid high availability", false))
 			continue
 		}
@@ -550,7 +549,7 @@ func testHighAvailability(check *checksdb.Check, env *provider.TestEnvironment) 
 
 		if dp.Spec.Template.Spec.Affinity == nil ||
 			dp.Spec.Template.Spec.Affinity.PodAntiAffinity == nil {
-			tnf.ClaimFilePrintf("Deployment found without valid high availability: %s", dp.ToString())
+			check.LogDebug("Deployment found without valid high availability: %s", dp.ToString())
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewDeploymentReportObject(dp.Namespace, dp.Name, "Deployment found without valid high availability", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewDeploymentReportObject(dp.Namespace, dp.Name, "Deployment has valid high availability", true))
@@ -558,7 +557,7 @@ func testHighAvailability(check *checksdb.Check, env *provider.TestEnvironment) 
 	}
 	for _, st := range env.StatefulSets {
 		if st.Spec.Replicas == nil || *(st.Spec.Replicas) <= 1 {
-			tnf.ClaimFilePrintf("StatefulSet found without valid high availability: %s", st.ToString())
+			check.LogDebug("StatefulSet found without valid high availability: %s", st.ToString())
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewStatefulSetReportObject(st.Namespace, st.Name, "StatefulSet found without valid high availability", false))
 			continue
 		}
@@ -570,7 +569,7 @@ func testHighAvailability(check *checksdb.Check, env *provider.TestEnvironment) 
 
 		if st.Spec.Template.Spec.Affinity == nil ||
 			st.Spec.Template.Spec.Affinity.PodAntiAffinity == nil {
-			tnf.ClaimFilePrintf("StatefulSet found without valid high availability: %s", st.ToString())
+			check.LogDebug("StatefulSet found without valid high availability: %s", st.ToString())
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewStatefulSetReportObject(st.Namespace, st.Name, "StatefulSet found without valid high availability", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewStatefulSetReportObject(st.Namespace, st.Name, "StatefulSet has valid high availability", true))
@@ -588,13 +587,13 @@ func testPodsRecreation(check *checksdb.Check, env *provider.TestEnvironment) { 
 	needsPostMortemInfo := true
 	defer func() {
 		if needsPostMortemInfo {
-			tnf.ClaimFilePrintf(postmortem.Log())
+			check.LogDebug(postmortem.Log())
 		}
 		// Since we are possible exiting early, we need to make sure we set the result at the end of the function.
 		check.SetResult(compliantObjects, nonCompliantObjects)
 	}()
-	tnf.Logf(logrus.InfoLevel, "Testing node draining effect of deployment")
-	tnf.Logf(logrus.InfoLevel, "Testing initial state for deployments")
+	check.LogInfo("Testing node draining effect of deployment")
+	check.LogInfo("Testing initial state for deployments")
 	defer env.SetNeedsRefresh()
 
 	// Before draining any node, wait until all podsets are ready. The timeout depends on the number of podsets to check.
@@ -602,7 +601,7 @@ func testPodsRecreation(check *checksdb.Check, env *provider.TestEnvironment) { 
 	allPodsetsReadyTimeout := timeoutPodSetReady + time.Minute*time.Duration(len(env.Deployments)+len(env.StatefulSets))
 	claimsLog, notReadyDeployments, notReadyStatefulSets := podsets.WaitForAllPodSetsReady(env, allPodsetsReadyTimeout)
 	if len(notReadyDeployments) > 0 || len(notReadyStatefulSets) > 0 {
-		tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
+		check.LogDebug("%s", claimsLog.GetLogLines())
 		for _, dep := range notReadyDeployments {
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewDeploymentReportObject(dep.Namespace, dep.Name, "Deployment was not ready before draining any node.", false))
 		}
@@ -621,11 +620,11 @@ func testPodsRecreation(check *checksdb.Check, env *provider.TestEnvironment) { 
 	for _, put := range env.Pods {
 		if !put.IsRuntimeClassNameSpecified() && put.HasNodeSelector() {
 			podsWithNodeAssignment = append(podsWithNodeAssignment, put)
-			logrus.Errorf("%s has been found with node selector(s): %v", put.String(), put.Spec.NodeSelector)
+			check.LogError("%s has been found with node selector(s): %v", put.String(), put.Spec.NodeSelector)
 		}
 	}
 	if len(podsWithNodeAssignment) > 0 {
-		logrus.Errorf("Pod(s) have been found to contain a node assignment and cannot perform the pod-recreation test: %v", podsWithNodeAssignment)
+		check.LogError("Pod(s) have been found to contain a node assignment and cannot perform the pod-recreation test: %v", podsWithNodeAssignment)
 		for _, pod := range podsWithNodeAssignment {
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(pod.Namespace, pod.Name, "Pod has node assignment.", false))
 		}
@@ -637,19 +636,19 @@ func testPodsRecreation(check *checksdb.Check, env *provider.TestEnvironment) { 
 		defer podrecreation.CordonCleanup(nodeName, check) //nolint:gocritic // The defer in loop is intentional, calling the cleanup function once per node
 		err := podrecreation.CordonHelper(nodeName, podrecreation.Cordon)
 		if err != nil {
-			logrus.Errorf("error cordoning the node: %s", nodeName)
+			check.LogError("error cordoning the node: %s", nodeName)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Node cordoning failed", false))
 			return
 		}
-		tnf.Logf(logrus.InfoLevel, fmt.Sprintf("Draining and Cordoning node %s: ", nodeName))
-		logrus.Debugf("node: %s cordoned", nodeName)
+		check.LogInfo("Draining and Cordoning node %s: ", nodeName)
+		check.LogDebug("node: %s cordoned", nodeName)
 		count, err := podrecreation.CountPodsWithDelete(env.Pods, nodeName, podrecreation.NoDelete)
 		if err != nil {
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Getting pods list to drain failed", false))
 			return
 		}
 		nodeTimeout := timeoutPodSetReady + timeoutPodRecreationPerPod*time.Duration(count)
-		logrus.Debugf("draining node: %s with timeout: %s", nodeName, nodeTimeout)
+		check.LogDebug("draining node: %s with timeout: %s", nodeName, nodeTimeout)
 		_, err = podrecreation.CountPodsWithDelete(env.Pods, nodeName, podrecreation.DeleteForeground)
 		if err != nil {
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Draining node failed", false))
@@ -658,7 +657,7 @@ func testPodsRecreation(check *checksdb.Check, env *provider.TestEnvironment) { 
 
 		claimsLog, notReadyDeployments, notReadyStatefulSets := podsets.WaitForAllPodSetsReady(env, nodeTimeout)
 		if len(notReadyDeployments) > 0 || len(notReadyStatefulSets) > 0 {
-			tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
+			check.LogDebug("%s", claimsLog.GetLogLines())
 			for _, dep := range notReadyDeployments {
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewDeploymentReportObject(dep.Namespace, dep.Name, "Deployment not ready after draining node "+nodeName, false))
 			}
@@ -670,7 +669,8 @@ func testPodsRecreation(check *checksdb.Check, env *provider.TestEnvironment) { 
 
 		err = podrecreation.CordonHelper(nodeName, podrecreation.Uncordon)
 		if err != nil {
-			logrus.Fatalf("error uncordoning the node: %s", nodeName)
+			check.LogError("error uncordoning the node: %s", nodeName)
+			os.Exit(1) //nolint: gocritic
 		}
 	}
 
@@ -691,7 +691,7 @@ func testPodsRecreation(check *checksdb.Check, env *provider.TestEnvironment) { 
 }
 
 func testPodPersistentVolumeReclaimPolicy(check *checksdb.Check, env *provider.TestEnvironment) {
-	tnf.Logf(logrus.InfoLevel, "Testing PersistentVolumes for reclaim policy to be set to delete")
+	check.LogInfo("Testing PersistentVolumes for reclaim policy to be set to delete")
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
@@ -707,7 +707,7 @@ func testPodPersistentVolumeReclaimPolicy(check *checksdb.Check, env *provider.T
 
 			// If the Pod Volume is not tied back to a PVC and corresponding PV that has a reclaim policy of DELETE.
 			if !volumes.IsPodVolumeReclaimPolicyDelete(&put.Spec.Volumes[pvIndex], env.PersistentVolumes, env.PersistentVolumeClaims) {
-				tnf.ClaimFilePrintf("%s contains volume: %s has been found without a reclaim policy of DELETE.", put.String(), &put.Spec.Volumes[pvIndex].Name)
+				check.LogDebug("%s contains volume: %s has been found without a reclaim policy of DELETE.", put.String(), put.Spec.Volumes[pvIndex].Name)
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod contains volume without a reclaim policy of DELETE", false).
 					AddField(testhelper.PersistentVolumeName, put.Spec.Volumes[pvIndex].Name).
 					AddField(testhelper.PersistentVolumeClaimName, put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName))
@@ -725,7 +725,7 @@ func testPodPersistentVolumeReclaimPolicy(check *checksdb.Check, env *provider.T
 }
 
 func testCPUIsolation(check *checksdb.Check, env *provider.TestEnvironment) {
-	tnf.Logf(logrus.InfoLevel, "Testing pods for CPU isolation requirements")
+	check.LogInfo("Testing pods for CPU isolation requirements")
 
 	// Individual requirements we are looking for:
 	//  - CPU Requests and Limits must be in the form of whole units
@@ -740,7 +740,7 @@ func testCPUIsolation(check *checksdb.Check, env *provider.TestEnvironment) {
 
 	for _, put := range env.GetGuaranteedPodsWithExclusiveCPUs() {
 		if !put.IsCPUIsolationCompliant() {
-			tnf.ClaimFilePrintf("%s is not CPU isolated", put.String())
+			check.LogDebug("%s is not CPU isolated", put.String())
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not CPU isolated", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is CPU isolated", true))
@@ -751,7 +751,7 @@ func testCPUIsolation(check *checksdb.Check, env *provider.TestEnvironment) {
 }
 
 func testAffinityRequiredPods(check *checksdb.Check, env *provider.TestEnvironment) {
-	tnf.Logf(logrus.InfoLevel, "Testing affinity required pods for ")
+	check.LogInfo("Testing affinity required pods for ")
 
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -759,7 +759,7 @@ func testAffinityRequiredPods(check *checksdb.Check, env *provider.TestEnvironme
 		// Check if the pod is Affinity compliant.
 		result, err := put.IsAffinityCompliant()
 		if !result {
-			tnf.ClaimFilePrintf(err.Error())
+			check.LogDebug(err.Error())
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not Affinity compliant", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is Affinity compliant", true))
@@ -778,7 +778,7 @@ func testPodTolerationBypass(check *checksdb.Check, env *provider.TestEnvironmen
 			// Check if the tolerations fall outside the 'default' and are modified versions
 			// Take also into account the qosClass applied to the pod
 			if tolerations.IsTolerationModified(t, put.Status.QOSClass) {
-				tnf.ClaimFilePrintf("%s has been found with non-default toleration %s/%s which is not allowed.", put.String(), t.Key, t.Effect)
+				check.LogDebug("%s has been found with non-default toleration %s/%s which is not allowed.", put.String(), t.Key, t.Effect)
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has non-default toleration", false).
 					AddField(testhelper.TolerationKey, t.Key).
 					AddField(testhelper.TolerationEffect, string(t.Effect)))
@@ -819,7 +819,7 @@ func testStorageProvisioner(check *checksdb.Check, env *provider.TestEnvironment
 					for j := range StorageClasses {
 						if Pvc[i].Spec.StorageClassName != nil && StorageClasses[j].Name == *Pvc[i].Spec.StorageClassName {
 							usesPvcAndStorageClass = true
-							tnf.ClaimFilePrintf("%s pvc_name: %s, storageclass_name: %s, provisioner_name: %s", put.String(), put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName,
+							check.LogDebug("%s pvc_name: %s, storageclass_name: %s, provisioner_name: %s", put.String(), put.Spec.Volumes[pvIndex].PersistentVolumeClaim.ClaimName,
 								StorageClasses[j].Name, StorageClasses[j].Provisioner)
 
 							if env.IsSNO() {

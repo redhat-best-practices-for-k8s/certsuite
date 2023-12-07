@@ -121,9 +121,7 @@ set -o pipefail
 # Do not double quote.
 # SC2086: Double quote to prevent globbing and word splitting.
 # shellcheck disable=SC2086
-./cnf-certification-test \
-	"${LABEL_STRING}" \
-	${EXTRA_ARGS} |& tee $OUTPUT_LOC/tnf-execution.log
+./cnf-certification-test "${LABEL_STRING}" ${EXTRA_ARGS}
 
 # preserving the exit status
 RESULT=$?

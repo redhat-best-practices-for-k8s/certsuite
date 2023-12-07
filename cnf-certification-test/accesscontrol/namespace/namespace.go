@@ -20,8 +20,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -41,7 +41,7 @@ func TestCrsNamespaces(crds []*apiextv1.CustomResourceDefinition, configNamespac
 		}
 		for namespace, crNames := range crNamespaces {
 			if !stringhelper.StringInSlice(configNamespaces, namespace, false) {
-				logrus.Debugf("CRD: %s (kind:%s/ plural:%s) has CRs %v deployed in namespace (%s) not in configured namespaces %v",
+				log.Debug("CRD: %s (kind:%s/ plural:%s) has CRs %v deployed in namespace (%s) not in configured namespaces %v",
 					crd.Name, crd.Spec.Names.Kind, crd.Spec.Names.Plural, crNames, namespace, configNamespaces)
 				// Initialize this map dimension before use
 				if invalidCrs[crd.Name] == nil {
@@ -64,10 +64,10 @@ func getCrsPerNamespaces(aCrd *apiextv1.CustomResourceDefinition) (crdNamespaces
 			Version:  version.Name,
 			Resource: aCrd.Spec.Names.Plural,
 		}
-		logrus.Debugf("Looking for CRs from CRD: %s api version:%s group:%s plural:%s", aCrd.Name, version.Name, aCrd.Spec.Group, aCrd.Spec.Names.Plural)
+		log.Debug("Looking for CRs from CRD: %s api version:%s group:%s plural:%s", aCrd.Name, version.Name, aCrd.Spec.Group, aCrd.Spec.Names.Plural)
 		crs, err := oc.DynamicClient.Resource(gvr).List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
-			logrus.Errorf("error getting %s: %v\n", aCrd.Name, err)
+			log.Error("error getting %s: %v\n", aCrd.Name, err)
 			return crdNamespaces, err
 		}
 		crdNamespaces = make(map[string][]string)

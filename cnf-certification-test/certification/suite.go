@@ -23,15 +23,14 @@ import (
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	"github.com/test-network-function/oct/pkg/certdb"
 )
 
@@ -46,7 +45,7 @@ var (
 	validator certdb.CertificationStatusValidator
 
 	beforeEachFn = func(check *checksdb.Check) error {
-		logrus.Infof("Check %s: getting test environment and certdb validator.", check.ID)
+		check.LogInfo("Check %s: getting test environment and certdb validator.", check.ID)
 		env = provider.GetTestEnvironment()
 
 		var err error
@@ -76,7 +75,7 @@ var (
 )
 
 func LoadChecks() {
-	logrus.Debugf("Entering %s suite", common.AffiliatedCertTestKey)
+	log.Debug("Loading %s checks", common.AffiliatedCertTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.AffiliatedCertTestKey).
 		WithBeforeEachFn(beforeEachFn)
@@ -128,16 +127,12 @@ func getContainersToQuery(env *provider.TestEnvironment) map[provider.ContainerI
 }
 
 func testContainerCertification(c provider.ContainerImageIdentifier, validator certdb.CertificationStatusValidator) bool {
-	ans := validator.IsContainerCertified(c.Registry, c.Repository, c.Tag, c.Digest)
-	if !ans {
-		tnf.ClaimFilePrintf("%s/%s:%s is not listed in certified containers", c.Registry, c.Repository, c.Tag)
-	}
-	return ans
+	return validator.IsContainerCertified(c.Registry, c.Repository, c.Tag, c.Digest)
 }
 
 func testAllOperatorCertified(check *checksdb.Check, env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
 	operatorsUnderTest := env.Operators
-	tnf.Logf(logrus.InfoLevel, "Verify operator as certified. Number of operators to check: %d", len(operatorsUnderTest))
+	check.LogInfo("Verify operator as certified. Number of operators to check: %d", len(operatorsUnderTest))
 
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -154,12 +149,12 @@ func testAllOperatorCertified(check *checksdb.Check, env *provider.TestEnvironme
 		channel := operatorsUnderTest[i].Channel
 		isCertified := validator.IsOperatorCertified(name, ocpMinorVersion, channel)
 		if !isCertified {
-			tnf.Logf(logrus.InfoLevel, "Operator %s (channel %s) failed to be certified for OpenShift %s", name, channel, ocpMinorVersion)
+			check.LogInfo("Operator %s (channel %s) failed to be certified for OpenShift %s", name, channel, ocpMinorVersion)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operatorsUnderTest[i].Namespace, operatorsUnderTest[i].Name, "Operator failed to be certified for OpenShift", false).
 				AddField(testhelper.OCPVersion, ocpMinorVersion).
 				AddField(testhelper.OCPChannel, channel))
 		} else {
-			logrus.Infof("Operator %s (channel %s) certified OK.", name, channel)
+			log.Info("Operator %s (channel %s) certified OK.", name, channel)
 			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operatorsUnderTest[i].Namespace, operatorsUnderTest[i].Name, "Operator certified OK", true).
 				AddField(testhelper.OCPVersion, ocpMinorVersion).
 				AddField(testhelper.OCPChannel, channel))
@@ -180,9 +175,9 @@ func testHelmCertified(check *checksdb.Check, env *provider.TestEnvironment, val
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewHelmChartReportObject(helm.Namespace, helm.Name, "helm chart is not certified", false).
 				SetType(testhelper.HelmVersionType).
 				AddField(testhelper.Version, helm.Chart.Metadata.Version))
-			tnf.ClaimFilePrintf("Helm Chart %s version %s is not certified.", helm.Name, helm.Chart.Metadata.Version)
+			check.LogDebug("Helm Chart %s version %s is not certified.", helm.Name, helm.Chart.Metadata.Version)
 		} else {
-			logrus.Infof("Helm Chart %s version %s is certified.", helm.Name, helm.Chart.Metadata.Version)
+			log.Info("Helm Chart %s version %s is certified.", helm.Name, helm.Chart.Metadata.Version)
 			compliantObjects = append(compliantObjects, testhelper.NewHelmChartReportObject(helm.Namespace, helm.Name, "helm chart is certified", true).
 				SetType(testhelper.HelmVersionType).
 				AddField(testhelper.Version, helm.Chart.Metadata.Version))
@@ -198,13 +193,15 @@ func testContainerCertificationStatusByDigest(check *checksdb.Check, env *provid
 	for _, c := range env.Containers {
 		switch {
 		case c.ContainerImageIdentifier.Digest == "":
-			tnf.ClaimFilePrintf("%s is missing digest field, failing validation (repo=%s image=%s digest=%s)", c, c.ContainerImageIdentifier.Registry, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Digest)
+			check.LogDebug("%s is missing digest field, failing validation (repo=%s image=%s digest=%s)", c, c.ContainerImageIdentifier.Registry, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Digest)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Missing digest field", false).
 				AddField(testhelper.Repository, c.ContainerImageIdentifier.Registry).
 				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Repository).
 				AddField(testhelper.ImageDigest, c.ContainerImageIdentifier.Digest))
 		case !testContainerCertification(c.ContainerImageIdentifier, validator):
-			tnf.ClaimFilePrintf("%s digest not found in database, failing validation (repo=%s image=%s digest=%s)", c, c.ContainerImageIdentifier.Registry, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Digest)
+			check.LogDebug("%s digest not found in database, failing validation (repo=%s image=%s tag=%s digest=%s)", c,
+				c.ContainerImageIdentifier.Registry, c.ContainerImageIdentifier.Repository,
+				c.ContainerImageIdentifier.Tag, c.ContainerImageIdentifier.Digest)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Digest not found in database", false).
 				AddField(testhelper.Repository, c.ContainerImageIdentifier.Registry).
 				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Repository).
@@ -231,7 +228,7 @@ func testHelmVersion(check *checksdb.Check) error {
 	}
 
 	if len(podList.Items) == 0 {
-		tnf.ClaimFilePrintf("Tiller pod not found in any namespaces. Helm version is v3.")
+		check.LogDebug("Tiller pod not found in any namespaces. Helm version is v3.")
 		for _, helm := range env.HelmChartReleases {
 			compliantObjects = append(compliantObjects, testhelper.NewHelmChartReportObject(helm.Namespace, helm.Name, "helm chart was installed with helm v3", true))
 		}
@@ -239,7 +236,7 @@ func testHelmVersion(check *checksdb.Check) error {
 		return nil
 	}
 
-	tnf.ClaimFilePrintf("Tiller pod found, helm version is v2.")
+	check.LogDebug("Tiller pod found, helm version is v2.")
 	for i := range podList.Items {
 		nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(podList.Items[i].Namespace, podList.Items[i].Name,
 			"This pod is a Tiller pod. Helm Chart version is v2 but needs to be v3 due to the security risks associated with Tiller", false))

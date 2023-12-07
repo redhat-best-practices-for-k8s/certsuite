@@ -22,17 +22,15 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/resources"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/scheduling"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
-	v1 "k8s.io/api/core/v1"
 )
 
 const (
@@ -44,7 +42,7 @@ var (
 	env provider.TestEnvironment
 
 	beforeEachFn = func(check *checksdb.Check) error {
-		logrus.Infof("Check %s: getting test environment.", check.ID)
+		check.LogInfo("Check %s: getting test environment.", check.ID)
 		env = provider.GetTestEnvironment()
 		return nil
 	}
@@ -84,7 +82,7 @@ var (
 
 //nolint:funlen
 func LoadChecks() {
-	logrus.Debugf("Entering %s suite", common.PerformanceTestKey)
+	log.Debug("Loading %s checks", common.PerformanceTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.PerformanceTestKey).
 		WithBeforeEachFn(beforeEachFn)
@@ -150,17 +148,7 @@ func LoadChecks() {
 	checksGroup.Add(check)
 }
 
-func CheckProbePeriodSeconds(elem *v1.Probe, cut *provider.Container, s string) bool {
-	if elem.PeriodSeconds > minExecProbePeriodSeconds {
-		tnf.ClaimFilePrintf("Container %s is using exec probes, PeriodSeconds of %s: %s", cut, s,
-			elem.PeriodSeconds)
-		return true
-	}
-	tnf.ClaimFilePrintf("Container %s is not using of exec probes, PeriodSeconds of %s: %s", cut, s,
-		elem.PeriodSeconds)
-	return false
-}
-
+//nolint:funlen
 func testLimitedUseOfExecProbes(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
@@ -169,11 +157,17 @@ func testLimitedUseOfExecProbes(check *checksdb.Check, env *provider.TestEnviron
 		for _, cut := range put.Containers {
 			if cut.LivenessProbe != nil && cut.LivenessProbe.Exec != nil {
 				counter++
-				if CheckProbePeriodSeconds(cut.LivenessProbe, cut, "LivenessProbe") {
+				if cut.LivenessProbe.PeriodSeconds > minExecProbePeriodSeconds {
+					check.LogInfo("Container %s has a LivenessProbe with PeriodSeconds greater than %d (%d seconds)",
+						cut, minExecProbePeriodSeconds, cut.LivenessProbe.PeriodSeconds)
+
 					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name,
 						cut.Name, fmt.Sprintf("LivenessProbe exec probe has a PeriodSeconds greater than 10 (%d seconds)",
 							cut.LivenessProbe.PeriodSeconds), true))
 				} else {
+					check.LogError("Container %s has a LivenessProbe with PeriodSeconds less than %d (%d seconds)",
+						cut, minExecProbePeriodSeconds, cut.LivenessProbe.PeriodSeconds)
+
 					nonCompliantObjects = append(nonCompliantObjects,
 						testhelper.NewContainerReportObject(put.Namespace, put.Name,
 							cut.Name, fmt.Sprintf("LivenessProbe exec probe has a PeriodSeconds that is not greater than 10 (%d seconds)",
@@ -182,11 +176,17 @@ func testLimitedUseOfExecProbes(check *checksdb.Check, env *provider.TestEnviron
 			}
 			if cut.StartupProbe != nil && cut.StartupProbe.Exec != nil {
 				counter++
-				if CheckProbePeriodSeconds(cut.StartupProbe, cut, "StartupProbe") {
+				if cut.StartupProbe.PeriodSeconds > minExecProbePeriodSeconds {
+					check.LogInfo("Container %s has a StartupProbe with PeriodSeconds greater than %d (%d seconds)",
+						cut, minExecProbePeriodSeconds, cut.LivenessProbe.PeriodSeconds)
+
 					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name,
 						cut.Name, fmt.Sprintf("StartupProbe exec probe has a PeriodSeconds greater than 10 (%d seconds)",
 							cut.StartupProbe.PeriodSeconds), true))
 				} else {
+					check.LogError("Container %s has a StartupProbe with PeriodSeconds less than %d (%d seconds)",
+						cut, minExecProbePeriodSeconds, cut.LivenessProbe.PeriodSeconds)
+
 					nonCompliantObjects = append(nonCompliantObjects,
 						testhelper.NewContainerReportObject(put.Namespace, put.Name,
 							cut.Name, fmt.Sprintf("StartupProbe exec probe has a PeriodSeconds that is not greater than 10 (%d seconds)",
@@ -195,11 +195,17 @@ func testLimitedUseOfExecProbes(check *checksdb.Check, env *provider.TestEnviron
 			}
 			if cut.ReadinessProbe != nil && cut.ReadinessProbe.Exec != nil {
 				counter++
-				if CheckProbePeriodSeconds(cut.ReadinessProbe, cut, "ReadinessProbe") {
+				if cut.ReadinessProbe.PeriodSeconds > minExecProbePeriodSeconds {
+					check.LogInfo("Container %s has a ReadinessProbe with PeriodSeconds greater than %d (%d seconds)",
+						cut, minExecProbePeriodSeconds, cut.LivenessProbe.PeriodSeconds)
+
 					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name,
 						cut.Name, fmt.Sprintf("ReadinessProbe exec probe has a PeriodSeconds greater than 10 (%d seconds)",
 							cut.ReadinessProbe.PeriodSeconds), true))
 				} else {
+					check.LogError("Container %s has a ReadinessProbe with PeriodSeconds less than %d (%d seconds)",
+						cut, minExecProbePeriodSeconds, cut.LivenessProbe.PeriodSeconds)
+
 					nonCompliantObjects = append(nonCompliantObjects,
 						testhelper.NewContainerReportObject(put.Namespace, put.Name,
 							cut.Name, fmt.Sprintf("ReadinessProbe exec probe has a PeriodSeconds that is not greater than 10 (%d seconds)",
@@ -211,12 +217,12 @@ func testLimitedUseOfExecProbes(check *checksdb.Check, env *provider.TestEnviron
 
 	// If there >=10 exec probes, mark the entire cluster as a failure
 	if counter >= maxNumberOfExecProbes {
-		tnf.ClaimFilePrintf(fmt.Sprintf("CNF has %d exec probes", counter))
+		check.LogDebug(fmt.Sprintf("CNF has %d exec probes", counter))
 		nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject(fmt.Sprintf("CNF has 10 or more exec probes (%d exec probes)", counter), testhelper.CnfType, false))
 	} else {
 		// Compliant object
 		compliantObjects = append(compliantObjects, testhelper.NewReportObject(fmt.Sprintf("CNF has less than 10 exec probes (%d exec probes)", counter), testhelper.CnfType, true))
-		tnf.ClaimFilePrintf(fmt.Sprintf("CNF has less than %d exec probes", counter))
+		check.LogDebug(fmt.Sprintf("CNF has less than %d exec probes", counter))
 	}
 
 	check.SetResult(compliantObjects, nonCompliantObjects)
@@ -241,7 +247,7 @@ func testExclusiveCPUPool(check *checksdb.Check, env *provider.TestEnvironment) 
 			exclusiveStr := strconv.Itoa(nBExclusiveCPUPoolContainers)
 			sharedStr := strconv.Itoa(nBSharedCPUPoolContainers)
 
-			tnf.ClaimFilePrintf("Pod: %s has containers whose CPUs belong to different pools. Containers in the shared cpu pool: %d "+
+			check.LogDebug("Pod: %s has containers whose CPUs belong to different pools. Containers in the shared cpu pool: %d "+
 				"Containers in the exclusive cpu pool: %d", put.String(), nBSharedCPUPoolContainers, nBExclusiveCPUPoolContainers)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has containers whose CPUs belong to different pools", false).
 				AddField("SharedCPUPoolContainers", sharedStr).
@@ -259,17 +265,17 @@ func testSchedulingPolicyInCPUPool(check *checksdb.Check, env *provider.TestEnvi
 	var compliantContainersPids []*testhelper.ReportObject
 	var nonCompliantContainersPids []*testhelper.ReportObject
 	for _, testContainer := range podContainers {
-		logrus.Infof("Processing %v", testContainer)
+		check.LogInfo("Processing %v", testContainer)
 
 		// Get the pid namespace
 		pidNamespace, err := crclient.GetContainerPidNamespace(testContainer, env)
 		if err != nil {
-			tnf.Logf(logrus.ErrorLevel, "unable to get pid namespace for container %s, err: %v", testContainer, err)
+			check.LogError("unable to get pid namespace for container %s, err: %v", testContainer, err)
 			nonCompliantContainersPids = append(nonCompliantContainersPids,
 				testhelper.NewContainerReportObject(testContainer.Namespace, testContainer.Podname, testContainer.Name, fmt.Sprintf("Internal error, err=%s", err), false))
 			continue
 		}
-		logrus.Debugf("Obtained pidNamespace for %s is %s", testContainer, pidNamespace)
+		check.LogDebug("Obtained pidNamespace for %s is %s", testContainer, pidNamespace)
 
 		// Get the list of process ids running in the pid namespace
 		processes, err := crclient.GetPidsFromPidNamespace(pidNamespace, testContainer)
@@ -285,7 +291,7 @@ func testSchedulingPolicyInCPUPool(check *checksdb.Check, env *provider.TestEnvi
 		compliantContainersPids = append(compliantContainersPids, compliantPids...)
 		nonCompliantContainersPids = append(nonCompliantContainersPids, nonCompliantPids...)
 
-		logrus.Debugf("Processed %v", testContainer)
+		check.LogDebug("Processed %v", testContainer)
 	}
 
 	check.SetResult(compliantContainersPids, nonCompliantContainersPids)
@@ -329,7 +335,7 @@ func testRtAppsNoExecProbes(check *checksdb.Check, env *provider.TestEnvironment
 
 		processes, err := crclient.GetContainerProcesses(cut, env)
 		if err != nil {
-			tnf.ClaimFilePrintf("Could not determine the processes pids for container %s, err: %v", cut, err)
+			check.LogDebug("Could not determine the processes pids for container %s, err: %v", cut, err)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Could not determine the processes pids for container", false))
 			break
 		}
@@ -348,7 +354,7 @@ func testRtAppsNoExecProbes(check *checksdb.Check, env *provider.TestEnvironment
 						AddField(testhelper.ProcessCommandLine, p.Args))
 					continue
 				}
-				tnf.ClaimFilePrintf("Could not determine the scheduling policy for container %s (pid=%v), err: %v", cut, p.Pid, err)
+				check.LogDebug("Could not determine the scheduling policy for container %s (pid=%v), err: %v", cut, p.Pid, err)
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Could not determine the scheduling policy for container", false).
 					AddField(testhelper.ProcessID, strconv.Itoa(p.Pid)).
 					AddField(testhelper.ProcessCommandLine, p.Args))
@@ -356,7 +362,7 @@ func testRtAppsNoExecProbes(check *checksdb.Check, env *provider.TestEnvironment
 				continue
 			}
 			if scheduling.PolicyIsRT(schedPolicy) {
-				tnf.ClaimFilePrintf("Pod %s/Container %s defines exec probes while having a RT scheduling policy for pid %d", cut.Podname, cut, p.Pid)
+				check.LogDebug("Pod %s/Container %s defines exec probes while having a RT scheduling policy for pid %d", cut.Podname, cut, p.Pid)
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container defines exec probes while having a RT scheduling policy", false).
 					AddField(testhelper.ProcessID, strconv.Itoa(p.Pid)))
 				allProcessesCompliant = false

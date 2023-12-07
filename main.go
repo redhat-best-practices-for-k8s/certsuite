@@ -21,10 +21,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/pkg/certsuite"
 	"github.com/test-network-function/cnf-certification-test/pkg/flags"
-	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/versions"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/webserver"
@@ -48,60 +46,50 @@ func init() {
 	flags.InitFlags()
 }
 
-// setLogLevel sets the log level for logrus based on the "TNF_LOG_LEVEL" environment variable
-func setLogLevel() {
-	params := configuration.GetTestParameters()
-
-	var logLevel, err = logrus.ParseLevel(params.LogLevel)
-	if err != nil {
-		logrus.Error("TNF_LOG_LEVEL environment set with an invalid value, defaulting to DEBUG \n Valid values are:  trace, debug, info, warn, error, fatal, panic")
-		logLevel = logrus.DebugLevel
+func createLogFile(outputDir string) (*os.File, error) {
+	logFilePath := outputDir + "/" + logFileName
+	err := os.Remove(logFilePath)
+	if err != nil && !os.IsNotExist(err) {
+		return nil, fmt.Errorf("could not delete old log file, err: %v", err)
 	}
 
-	logrus.SetLevel(logLevel)
+	logFile, err := os.OpenFile(logFilePath, os.O_RDWR|os.O_CREATE, logFilePermissions)
+	if err != nil {
+		return nil, fmt.Errorf("could not open a new log file, err: %v", err)
+	}
+
+	return logFile, nil
 }
 
-//nolint:funlen
+func setupLogger(logFile *os.File) {
+	logLevel, err := log.ParseLevel(configuration.GetTestParameters().LogLevel)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Could not parse log level, err: %v. Defaulting to DEBUG.", err)
+	}
+
+	log.SetupLogger(logFile, logLevel)
+	log.Info("Log file: %s (level=%s)", logFileName, logLevel.String())
+}
+
 func main() {
 	err := configuration.LoadEnvironmentVariables()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "could not load the environment variables, err: %v", err)
+		fmt.Fprintf(os.Stderr, "Could not load the environment variables, err: %v", err)
 		os.Exit(1)
 	}
 
-	// Set up logging params for logrus
-	loghelper.SetLogFormat()
-	setLogLevel()
-
-	logrusLogFile, err := os.OpenFile(logFileName, os.O_RDWR|os.O_CREATE, logFilePermissions)
+	logFile, err := createLogFile(*flags.ClaimPath)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "could not create log file, err: %v", err)
-		os.Exit(1)
-	}
-	defer logrusLogFile.Close()
-
-	logrus.SetOutput(logrusLogFile)
-
-	// Set up logger
-	err = os.Remove("test_log") // TODO: use proper file when logrus is removed
-	if err != nil && !os.IsNotExist(err) {
-		fmt.Fprintf(os.Stderr, "could not delete old log file, err: %v", err)
-		os.Exit(1) //nolint:gocritic // the error will not happen after logrus is removed
-	}
-
-	logFile, err := os.OpenFile("test_log", os.O_RDWR|os.O_CREATE, logFilePermissions)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "could not create log file, err: %v", err)
+		fmt.Fprintf(os.Stderr, "Could not create the log file, err: %v", err)
 		os.Exit(1)
 	}
 	defer logFile.Close()
 
-	log.SetupLogger(logFile)
-	log.Info("Log file: %s", logFileName)
+	setupLogger(logFile)
 
-	logrus.Infof("TNF Version         : %v", versions.GitVersion())
-	logrus.Infof("Claim Format Version: %s", versions.ClaimFormatVersion)
-	logrus.Infof("Labels filter       : %v", *flags.LabelsFlag)
+	log.Info("TNF Version         : %v", versions.GitVersion())
+	log.Info("Claim Format Version: %s", versions.ClaimFormatVersion)
+	log.Info("Labels filter       : %v", *flags.LabelsFlag)
 
 	cli.PrintBanner()
 
@@ -114,14 +102,15 @@ func main() {
 
 	if *flags.ListFlag {
 		// ToDo: List all the available checks, filtered with --labels.
-		logrus.Errorf("Not implemented yet.")
-		os.Exit(1)
+
+		fmt.Fprint(os.Stderr, "Checks listing is not implemented yet")
+		os.Exit(1) //nolint:gocritic
 	}
 
 	// Set clientsholder singleton with the filenames from the env vars.
-	logrus.Infof("Output folder for the claim file: %s", *flags.ClaimPath)
+	log.Info("Output folder for the claim file: %s", *flags.ClaimPath)
 	if *flags.ServerModeFlag {
-		logrus.Info("Running CNF Certification Suite in web server mode.")
+		log.Info("Running CNF Certification Suite in web server mode.")
 		webserver.StartServer(*flags.ClaimPath)
 	} else {
 		log.Info("Running CNF Certification Suite in stand-alone mode.")

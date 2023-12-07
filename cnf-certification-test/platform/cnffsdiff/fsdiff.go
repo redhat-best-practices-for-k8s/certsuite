@@ -22,8 +22,8 @@ import (
 	"fmt"
 
 	mapset "github.com/deckarep/golang-set/v2"
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 )
 
@@ -91,7 +91,7 @@ func intersectTargetFolders(src []string) []string {
 	var dst []string
 	for _, folder := range src {
 		if targetFolders.Contains(folder) {
-			logrus.Tracef("Container's folder %s is altered.", folder)
+			log.Debug("Container's folder %s is altered.", folder)
 			dst = append(dst, folder)
 		}
 	}
@@ -119,7 +119,7 @@ func (f *FsDiff) RunTest(containerUID string) {
 
 	defer f.unmountCustomPodman()
 
-	logrus.Infof("Running \"podman diff\" for container id %s", containerUID)
+	log.Info("Running \"podman diff\" for container id %s", containerUID)
 	output, err := f.runPodmanDiff(containerUID)
 	if err != nil {
 		f.Error = err
@@ -128,7 +128,7 @@ func (f *FsDiff) RunTest(containerUID string) {
 	}
 
 	// see if there's a match in the output
-	logrus.Traceln("Podman diff output is ", output)
+	log.Debug("Podman diff output is %s", output)
 
 	diff := fsDiffJSON{}
 	err = json.Unmarshal([]byte(output), &diff)
@@ -184,13 +184,13 @@ func (f *FsDiff) unmountDebugPartnerPodmanFolder() error {
 
 func (f *FsDiff) installCustomPodman() error {
 	// We need to create the destination folder first.
-	logrus.Infof("Creating temp folder %s", nodeTmpMountFolder)
+	log.Info("Creating temp folder %s", nodeTmpMountFolder)
 	if err := f.createNodeFolder(); err != nil {
 		return err
 	}
 
 	// Mount podman from partner debug pod into /host/tmp/...
-	logrus.Infof("Mouting %s into %s", partnerPodmanFolder, nodeTmpMountFolder)
+	log.Info("Mouting %s into %s", partnerPodmanFolder, nodeTmpMountFolder)
 	if mountErr := f.mountDebugPartnerPodmanFolder(); mountErr != nil {
 		// We need to delete the temp folder previously created as mount point.
 		if deleteErr := f.deleteNodeFolder(); deleteErr != nil {
@@ -206,7 +206,7 @@ func (f *FsDiff) installCustomPodman() error {
 
 func (f *FsDiff) unmountCustomPodman() {
 	// Unmount podman folder from host.
-	logrus.Infof("Unmounting folder %s", nodeTmpMountFolder)
+	log.Info("Unmounting folder %s", nodeTmpMountFolder)
 	if err := f.unmountDebugPartnerPodmanFolder(); err != nil {
 		// Here, there's no point on trying to remove the temp folder used as mount point, as
 		// that probably won't work either.
@@ -215,7 +215,7 @@ func (f *FsDiff) unmountCustomPodman() {
 		return
 	}
 
-	logrus.Infof("Deleting folder %s", nodeTmpMountFolder)
+	log.Info("Deleting folder %s", nodeTmpMountFolder)
 	if err := f.deleteNodeFolder(); err != nil {
 		f.Error = err
 		f.result = testhelper.ERROR

@@ -17,7 +17,7 @@
 package policies
 
 import (
-	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	networkingv1 "k8s.io/api/networking/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -29,21 +29,21 @@ func IsNetworkPolicyCompliant(np *networkingv1.NetworkPolicy, policyType network
 	// https://kubernetes.io/docs/concepts/services-networking/network-policies/
 
 	if len(np.Spec.PolicyTypes) == 0 {
-		logrus.Debugf("%s: policy types found empty", np.Name)
+		log.Debug("%s: policy types found empty", np.Name)
 		return false
 	}
 
 	// Ingress and Egress rules should be "empty" if it is a default rule.
 	if policyType == networkingv1.PolicyTypeEgress {
 		if np.Spec.Egress != nil || len(np.Spec.Egress) > 0 {
-			logrus.Debugf("%s: egress spec found not empty", np.Name)
+			log.Debug("%s: egress spec found not empty", np.Name)
 			return false
 		}
 	}
 
 	if policyType == networkingv1.PolicyTypeIngress {
 		if np.Spec.Ingress != nil || len(np.Spec.Ingress) > 0 {
-			logrus.Debugf("%s: ingress spec found not empty", np.Name)
+			log.Debug("%s: ingress spec found not empty", np.Name)
 			return false
 		}
 	}

@@ -21,12 +21,11 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
 
 const (
@@ -70,7 +69,7 @@ func parseSchedulingPolicyAndPriority(chrtCommandOutput string) (schedPolicy str
 		case strings.Contains(line, CurrentSchedulingPriority):
 			schedPriority, err = strconv.Atoi(lastToken)
 			if err != nil {
-				logrus.Errorf("Error obtained during strconv %v", err)
+				log.Error("Error obtained during strconv %v", err)
 				return schedPolicy, InvalidPriority, err
 			}
 		default:
@@ -89,7 +88,7 @@ func ProcessPidsCPUScheduling(processes []*crclient.Process, testContainer *prov
 	for _, process := range processes {
 		schedulePolicy, schedulePriority, err := GetProcessCPUSchedulingFn(process.Pid, testContainer)
 		if err != nil {
-			logrus.Errorf("error getting the scheduling policy and priority : %v", err)
+			log.Error("error getting the scheduling policy and priority : %v", err)
 			return compliantContainerPids, nonCompliantContainerPids
 		}
 
@@ -103,13 +102,13 @@ func ProcessPidsCPUScheduling(processes []*crclient.Process, testContainer *prov
 		}
 
 		if !hasCPUSchedulingConditionSuccess {
-			tnf.ClaimFilePrintf("pid=%d in %s with cpu scheduling policy=%s, priority=%s did not satisfy cpu scheduling requirements", process.Pid, testContainer, schedulePolicy, schedulePriority)
+			log.Debug("pid=%d in %s with cpu scheduling policy=%s, priority=%d did not satisfy cpu scheduling requirements", process.Pid, testContainer, schedulePolicy, schedulePriority)
 			aPidOut := testhelper.NewContainerReportObject(testContainer.Namespace, testContainer.Podname, testContainer.Name, "process does not satisfy: "+schedulingRequirements[check], false).
 				SetContainerProcessValues(schedulePolicy, fmt.Sprint(schedulePriority), process.Args)
 			nonCompliantContainerPids = append(nonCompliantContainerPids, aPidOut)
 			continue
 		}
-		tnf.ClaimFilePrintf("pid=%d in %s with cpu scheduling policy=%s, priority=%s satisfies cpu scheduling requirements", process.Pid, testContainer, schedulePolicy, schedulePriority)
+		log.Debug("pid=%d in %s with cpu scheduling policy=%s, priority=%d satisfies cpu scheduling requirements", process.Pid, testContainer, schedulePolicy, schedulePriority)
 		aPidOut := testhelper.NewContainerReportObject(testContainer.Namespace, testContainer.Podname, testContainer.Name, "process satisfies: "+schedulingRequirements[check], true).
 			SetContainerProcessValues(schedulePolicy, fmt.Sprint(schedulePriority), process.Args)
 		compliantContainerPids = append(compliantContainerPids, aPidOut)
@@ -118,7 +117,7 @@ func ProcessPidsCPUScheduling(processes []*crclient.Process, testContainer *prov
 }
 
 func GetProcessCPUScheduling(pid int, testContainer *provider.Container) (schedulePolicy string, schedulePriority int, err error) {
-	logrus.Infof("Checking the scheduling policy/priority in %v for pid=%d", testContainer, pid)
+	log.Info("Checking the scheduling policy/priority in %v for pid=%d", testContainer, pid)
 
 	command := fmt.Sprintf("chrt -p %d", pid)
 	env := provider.GetTestEnvironment()
@@ -139,7 +138,7 @@ func GetProcessCPUScheduling(pid int, testContainer *provider.Container) (schedu
 	if err != nil {
 		return schedulePolicy, InvalidPriority, fmt.Errorf("error getting the scheduling policy and priority for %v : %v", testContainer, err)
 	}
-	logrus.Infof("pid %d in %v has the cpu scheduling policy %s, scheduling priority %d", pid, testContainer, schedulePolicy, schedulePriority)
+	log.Info("pid %d in %v has the cpu scheduling policy %s, scheduling priority %d", pid, testContainer, schedulePolicy, schedulePriority)
 
 	return schedulePolicy, schedulePriority, err
 }

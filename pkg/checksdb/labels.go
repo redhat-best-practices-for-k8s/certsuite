@@ -7,7 +7,7 @@ import (
 	"go/token"
 	"strings"
 
-	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 )
 
 type LabelsExprEvaluator interface {
@@ -69,7 +69,7 @@ func (exprParser labelsExprParser) Eval(labels []string) bool {
 				return false
 			}
 		default:
-			logrus.Errorf("Unexpected/not-implemented expr: %v", v)
+			log.Error("Unexpected/not-implemented expr: %v", v)
 			return false
 		}
 		return false

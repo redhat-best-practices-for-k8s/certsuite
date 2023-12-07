@@ -22,9 +22,9 @@ import (
 	"errors"
 	"time"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/podsets"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 
 	v1app "k8s.io/api/apps/v1"
 	v1autoscaling "k8s.io/api/autoscaling/v1"
@@ -33,7 +33,6 @@ import (
 	v1machinery "k8s.io/apimachinery/pkg/apis/meta/v1"
 	retry "k8s.io/client-go/util/retry"
 
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	hps "k8s.io/client-go/kubernetes/typed/autoscaling/v1"
 )
 
@@ -41,7 +40,7 @@ func TestScaleStatefulSet(statefulset *v1app.StatefulSet, timeout time.Duration)
 	clients := clientsholder.GetClientsHolder()
 	name, namespace := statefulset.Name, statefulset.Namespace
 	ssClients := clients.K8sClient.AppsV1().StatefulSets(namespace)
-	logrus.Trace("scale statefulset not using HPA ", namespace, ":", name)
+	log.Debug("scale statefulset not using HPA %s:%s", namespace, name)
 	replicas := int32(1)
 	if statefulset.Spec.Replicas != nil {
 		replicas = *statefulset.Spec.Replicas
@@ -50,30 +49,30 @@ func TestScaleStatefulSet(statefulset *v1app.StatefulSet, timeout time.Duration)
 	if replicas <= 1 {
 		// scale up
 		replicas++
-		logrus.Trace("scale UP statefulset to ", replicas, " replicas ")
+		log.Debug("scale UP statefulset to %d replicas", replicas)
 		if !scaleStateFulsetHelper(clients, ssClients, statefulset, replicas, timeout) {
-			logrus.Error("can not scale statefulset =", namespace, ":", name)
+			log.Error("can not scale statefulset = %s:%s", namespace, name)
 			return false
 		}
 		// scale down
 		replicas--
-		logrus.Trace("scale DOWN statefulset to ", replicas, " replicas ")
+		log.Debug("scale DOWN statefulset to %d replicas", replicas)
 		if !scaleStateFulsetHelper(clients, ssClients, statefulset, replicas, timeout) {
-			logrus.Error("can not scale statefulset =", namespace, ":", name)
+			log.Error("can not scale statefulset = %s:%s", namespace, name)
 			return false
 		}
 	} else {
 		// scale down
 		replicas--
-		logrus.Trace("scale DOWN statefulset to ", replicas, " replicas ")
+		log.Debug("scale DOWN statefulset to %d replicas", replicas)
 		if !scaleStateFulsetHelper(clients, ssClients, statefulset, replicas, timeout) {
-			logrus.Error("can not scale statefulset =", namespace, ":", name)
+			log.Error("can not scale statefulset = %s:%s", namespace, name)
 			return false
 		} // scale up
 		replicas++
-		logrus.Trace("scale UP statefulset to ", replicas, " replicas ")
+		log.Debug("scale UP statefulset to %d replicas", replicas)
 		if !scaleStateFulsetHelper(clients, ssClients, statefulset, replicas, timeout) {
-			logrus.Error("can not scale statefulset =", namespace, ":", name)
+			log.Error("can not scale statefulset = %s:%s", namespace, name)
 			return false
 		}
 	}
@@ -89,23 +88,23 @@ func scaleStateFulsetHelper(clients *clientsholder.ClientsHolder, ssClient v1.St
 		// RetryOnConflict uses exponential backoff to avoid exhausting the apiserver
 		ss, err := ssClient.Get(context.TODO(), name, v1machinery.GetOptions{})
 		if err != nil {
-			tnf.ClaimFilePrintf("failed to get latest version of statefulset %s:%s with error %s", namespace, name, err)
+			log.Debug("failed to get latest version of statefulset %s:%s with error %s", namespace, name, err)
 			return err
 		}
 		ss.Spec.Replicas = &replicas
 		_, err = clients.K8sClient.AppsV1().StatefulSets(namespace).Update(context.TODO(), ss, v1machinery.UpdateOptions{})
 		if err != nil {
-			logrus.Error("can not update statefulset ", namespace, ":", name)
+			log.Error("can not update statefulset %s:%s", namespace, name)
 			return err
 		}
 		if !podsets.WaitForStatefulSetReady(namespace, name, timeout) {
-			logrus.Error("can not update statefulset ", namespace, ":", name)
+			log.Error("can not update statefulset %s:%s", namespace, name)
 			return errors.New("can not update statefulset")
 		}
 		return nil
 	})
 	if retryErr != nil {
-		logrus.Error("can not scale statefulset ", namespace, ":", name, " error=", retryErr)
+		log.Error("can not scale statefulset %s:%s, err=%v", namespace, name, retryErr)
 		return false
 	}
 	return true
@@ -128,14 +127,14 @@ func TestScaleHpaStatefulSet(statefulset *v1app.StatefulSet, hpa *v1autoscaling.
 	if replicas <= 1 {
 		// scale up
 		replicas++
-		logrus.Trace("scale UP HPA ", namespace, ":", hpaName, "To min=", replicas, " max=", replicas)
+		log.Debug("scale UP HPA %s:%s to min=%d max=%d", namespace, hpaName, replicas, replicas)
 		pass := scaleHpaStatefulSetHelper(hpscaler, hpaName, name, namespace, replicas, replicas, timeout)
 		if !pass {
 			return false
 		}
 		// scale down
 		replicas--
-		logrus.Trace("scale DOWN HPA ", namespace, ":", hpaName, "To min=", replicas, " max=", replicas)
+		log.Debug("scale DOWN HPA %s:%s to min=%d max=%d", namespace, hpaName, replicas, replicas)
 		pass = scaleHpaStatefulSetHelper(hpscaler, hpaName, name, namespace, replicas, replicas, timeout)
 		if !pass {
 			return false
@@ -143,21 +142,21 @@ func TestScaleHpaStatefulSet(statefulset *v1app.StatefulSet, hpa *v1autoscaling.
 	} else {
 		// scale down
 		replicas--
-		logrus.Trace("scale DOWN HPA ", namespace, ":", hpaName, "To min=", replicas, " max=", replicas)
+		log.Debug("scale DOWN HPA %s:%s to min=%d max=%d", namespace, hpaName, replicas, replicas)
 		pass := scaleHpaStatefulSetHelper(hpscaler, hpaName, name, namespace, replicas, replicas, timeout)
 		if !pass {
 			return false
 		}
 		// scale up
 		replicas++
-		logrus.Trace("scale UP HPA ", namespace, ":", hpaName, "To min=", min, " max=", max)
+		log.Debug("scale UP HPA %s:%s to min=%d max=%d", namespace, hpaName, min, max)
 		pass = scaleHpaStatefulSetHelper(hpscaler, hpaName, name, namespace, replicas, replicas, timeout)
 		if !pass {
 			return false
 		}
 	}
 	// back the min and the max value of the hpa
-	logrus.Trace("back HPA ", namespace, ":", hpaName, "To min=", min, " max=", max)
+	log.Debug("back HPA %s:%s to min=%d max=%d", namespace, hpaName, min, max)
 	pass := scaleHpaStatefulSetHelper(hpscaler, hpaName, name, namespace, min, max, timeout)
 	return pass
 }
@@ -166,23 +165,23 @@ func scaleHpaStatefulSetHelper(hpscaler hps.HorizontalPodAutoscalerInterface, hp
 	retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() error {
 		hpa, err := hpscaler.Get(context.TODO(), hpaName, v1machinery.GetOptions{})
 		if err != nil {
-			logrus.Error("can not Update autoscaler to scale ", namespace, ":", statefulsetName, " error=", err)
+			log.Error("can not Update autoscaler to scale %s:%s, err=%v", namespace, statefulsetName, err)
 			return err
 		}
 		hpa.Spec.MinReplicas = &min
 		hpa.Spec.MaxReplicas = max
 		_, err = hpscaler.Update(context.TODO(), hpa, v1machinery.UpdateOptions{})
 		if err != nil {
-			logrus.Error("can not Update autoscaler to scale ", namespace, ":", statefulsetName, " error=", err)
+			log.Error("can not Update autoscaler to scale %s:%s, err=%v", namespace, statefulsetName, err)
 			return err
 		}
 		if !podsets.WaitForStatefulSetReady(namespace, statefulsetName, timeout) {
-			logrus.Error("statefulsetN not ready after scale operation ", namespace, ":", statefulsetName)
+			log.Error("statefulsetN not ready after scale operation %s:%s", namespace, statefulsetName)
 		}
 		return nil
 	})
 	if retryErr != nil {
-		logrus.Error("can not scale hpa ", namespace, ":", hpaName, " error=", retryErr)
+		log.Error("can not scale hpa %s:%s, err=%v", namespace, hpaName, retryErr)
 		return false
 	}
 	return true

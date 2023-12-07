@@ -20,8 +20,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -33,62 +33,62 @@ const (
 )
 
 var WaitForDeploymentSetReady = func(ns, name string, timeout time.Duration) bool {
-	logrus.Trace("check if deployment ", ns, ":", name, " is ready ")
+	log.Debug("check if deployment %s:%s is ready", ns, name)
 	clients := clientsholder.GetClientsHolder()
 	start := time.Now()
 	for time.Since(start) < timeout {
 		dp, err := provider.GetUpdatedDeployment(clients.K8sClient.AppsV1(), ns, name)
 		if err != nil {
-			logrus.Errorf("Error while getting deployment %s (ns: %s), err: %v", name, ns, err)
+			log.Error("Error while getting deployment %s (ns: %s), err: %v", name, ns, err)
 		} else if !dp.IsDeploymentReady() {
-			logrus.Infof("%s is not ready yet", dp.ToString())
+			log.Info("%s is not ready yet", dp.ToString())
 		} else {
-			logrus.Tracef("%s is ready!", dp.ToString())
+			log.Debug("%s is ready!", dp.ToString())
 			return true
 		}
 
 		time.Sleep(time.Second)
 	}
-	logrus.Error("deployment ", ns, ":", name, " is not ready ")
+	log.Error("deployment %s:%s is not ready", ns, name)
 	return false
 }
 
 var WaitForScalingToComplete = func(ns, name string, timeout time.Duration, groupResourceSchema schema.GroupResource) bool {
-	logrus.Trace("check if scale object for crs ", ns, ":", name, " is ready ")
+	log.Debug("check if scale object for crs %s:%s is ready", ns, name)
 	clients := clientsholder.GetClientsHolder()
 	start := time.Now()
 	for time.Since(start) < timeout {
 		crScale, err := provider.GetUpdatedCrObject(clients.ScalingClient, ns, name, groupResourceSchema)
 		if err != nil {
-			logrus.Errorf("error while getting the scaling fields %v", err)
+			log.Error("error while getting the scaling fields %v", err)
 		} else if !crScale.IsScaleObjectReady() {
-			logrus.Errorf("%s is not ready yet", crScale.ToString())
+			log.Error("%s is not ready yet", crScale.ToString())
 		} else {
-			logrus.Tracef("%s is ready!", crScale.ToString())
+			log.Debug("%s is ready!", crScale.ToString())
 			return true
 		}
 
 		time.Sleep(time.Second)
 	}
-	logrus.Error("timeout waiting for cr ", ns, ":", name, " scaling to be complete")
+	log.Error("timeout waiting for cr %s:%s scaling to be complete", ns, name)
 	return false
 }
 
 func WaitForStatefulSetReady(ns, name string, timeout time.Duration) bool {
-	logrus.Trace("check if statefulset ", ns, ":", name, " is ready")
+	log.Debug("check if statefulset %s:%s is ready", ns, name)
 	clients := clientsholder.GetClientsHolder()
 	start := time.Now()
 	for time.Since(start) < timeout {
 		ss, err := provider.GetUpdatedStatefulset(clients.K8sClient.AppsV1(), ns, name)
 		if err != nil {
-			logrus.Errorf("error while getting the %s, err: %v", ss.ToString(), err)
+			log.Error("error while getting the %s, err: %v", ss.ToString(), err)
 		} else if ss.IsStatefulSetReady() {
-			logrus.Tracef("%s is ready", ss.ToString())
+			log.Debug("%s is ready", ss.ToString())
 			return true
 		}
 		time.Sleep(time.Second)
 	}
-	logrus.Error("statefulset ", ns, ":", name, " is not ready")
+	log.Error("statefulset %s:%s is not ready", ns, name)
 	return false
 }
 
@@ -142,14 +142,14 @@ func getNotReadyDeployments(deployments []*provider.Deployment) []*provider.Depl
 	for _, dep := range deployments {
 		ready, err := isDeploymentReady(dep.Name, dep.Namespace)
 		if err != nil {
-			logrus.Errorf("Failed to get %s: %v", dep.ToString(), err)
+			log.Error("Failed to get %s: %v", dep.ToString(), err)
 			// We'll mark it as not ready, anyways.
 			notReadyDeployments = append(notReadyDeployments, dep)
 			continue
 		}
 
 		if ready {
-			logrus.Debugf("%s is ready.", dep.ToString())
+			log.Debug("%s is ready.", dep.ToString())
 		} else {
 			notReadyDeployments = append(notReadyDeployments, dep)
 		}
@@ -165,14 +165,14 @@ func getNotReadyStatefulSets(statefulSets []*provider.StatefulSet) []*provider.S
 	for _, sts := range statefulSets {
 		ready, err := isStatefulSetReady(sts.Name, sts.Namespace)
 		if err != nil {
-			logrus.Errorf("Failed to get %s: %v", sts.ToString(), err)
+			log.Error("Failed to get %s: %v", sts.ToString(), err)
 			// We'll mark it as not ready, anyways.
 			notReadyStatefulSets = append(notReadyStatefulSets, sts)
 			continue
 		}
 
 		if ready {
-			logrus.Debugf("%s is ready.", sts.ToString())
+			log.Debug("%s is ready.", sts.ToString())
 		} else {
 			notReadyStatefulSets = append(notReadyStatefulSets, sts)
 		}
@@ -190,16 +190,16 @@ func WaitForAllPodSetsReady(env *provider.TestEnvironment, timeout time.Duration
 	deploymentsToCheck := env.Deployments
 	statefulSetsToCheck := env.StatefulSets
 
-	logrus.Infof("Waiting %s for %d podsets to be ready.", timeout, len(deploymentsToCheck)+len(statefulSetsToCheck))
+	log.Info("Waiting %s for %d podsets to be ready.", timeout, len(deploymentsToCheck)+len(statefulSetsToCheck))
 	for startTime := time.Now(); time.Since(startTime) < timeout; {
-		logrus.Infof("Checking Deployments readiness of Deployments %v", getDeploymentsInfo(deploymentsToCheck))
+		log.Info("Checking Deployments readiness of Deployments %v", getDeploymentsInfo(deploymentsToCheck))
 		notReadyDeployments = getNotReadyDeployments(deploymentsToCheck)
 
-		logrus.Infof("Checking StatefulSets readiness of StatefulSets %v", getStatefulSetsInfo(statefulSetsToCheck))
+		log.Info("Checking StatefulSets readiness of StatefulSets %v", getStatefulSetsInfo(statefulSetsToCheck))
 		notReadyStatefulSets = getNotReadyStatefulSets(statefulSetsToCheck)
 
-		logrus.Infof("Not ready Deployments: %v", getDeploymentsInfo(notReadyDeployments))
-		logrus.Infof("Not ready StatefulSets: %v", getStatefulSetsInfo(notReadyStatefulSets))
+		log.Info("Not ready Deployments: %v", getDeploymentsInfo(notReadyDeployments))
+		log.Info("Not ready StatefulSets: %v", getStatefulSetsInfo(notReadyStatefulSets))
 
 		deploymentsToCheck = notReadyDeployments
 		statefulSetsToCheck = notReadyStatefulSets

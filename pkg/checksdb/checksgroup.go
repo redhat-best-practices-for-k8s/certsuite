@@ -6,8 +6,8 @@ import (
 	"runtime/debug"
 	"strings"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/cli"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 )
 
 type ChecksGroup struct {
@@ -75,7 +75,7 @@ func (group *ChecksGroup) Add(check *Check) {
 }
 
 func skipCheck(check *Check, reason string) {
-	logrus.Infof("Skipping check %s, reason: %s", check.ID, reason)
+	check.LogInfo("Skipping check %s, reason: %s", check.ID, reason)
 
 	fmt.Printf("[ "+cli.Yellow+"SKIP"+cli.Reset+" ] %s\n", check.ID)
 
@@ -99,7 +99,7 @@ func onFailure(failureType, failureMsg string, group *ChecksGroup, currentCheck 
 }
 
 func runBeforeAllFn(group *ChecksGroup, checks []*Check) (err error) {
-	logrus.Tracef("GROUP %s - Running beforeAll", group.name)
+	log.Debug("GROUP %s - Running beforeAll", group.name)
 	if group.beforeAllFn == nil {
 		return nil
 	}
@@ -108,14 +108,14 @@ func runBeforeAllFn(group *ChecksGroup, checks []*Check) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			stackTrace := fmt.Sprint(r) + "\n" + string(debug.Stack())
-			logrus.Errorf("Panic while running beforeAll function:\n%v", stackTrace)
+			log.Error("Panic while running beforeAll function:\n%v", stackTrace)
 			// Set first check's result as error and skip the remaining ones.
 			err = onFailure("beforeAll function panicked", "\n:"+stackTrace, group, firstCheck, checks)
 		}
 	}()
 
 	if err := group.beforeAllFn(checks); err != nil {
-		logrus.Errorf("Unexpected error while running beforeAll function: %v", err)
+		log.Error("Unexpected error while running beforeAll function: %v", err)
 		// Set first check's result as error and skip the remaining ones.
 		return onFailure("beforeAll function unexpected error", err.Error(), group, firstCheck, checks)
 	}
@@ -124,7 +124,7 @@ func runBeforeAllFn(group *ChecksGroup, checks []*Check) (err error) {
 }
 
 func runAfterAllFn(group *ChecksGroup, checks []*Check) (err error) {
-	logrus.Tracef("GROUP %s - Running afterAll", group.name)
+	log.Debug("GROUP %s - Running afterAll", group.name)
 
 	if group.afterAllFn == nil {
 		return nil
@@ -135,14 +135,14 @@ func runAfterAllFn(group *ChecksGroup, checks []*Check) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			stackTrace := fmt.Sprint(r) + "\n" + string(debug.Stack())
-			logrus.Errorf("Panic while running afterAll function:\n%v", stackTrace)
+			log.Error("Panic while running afterAll function:\n%v", stackTrace)
 			// Set last check's result as error, no need to skip anyone.
 			err = onFailure("afterAll function panicked", "\n: "+stackTrace, group, lastCheck, zeroRemainingChecks)
 		}
 	}()
 
 	if err := group.afterAllFn(group.checks); err != nil {
-		logrus.Errorf("Unexpected error while running afterAll function: %v", err.Error())
+		log.Error("Unexpected error while running afterAll function: %v", err.Error())
 		// Set last check's result as error, no need to skip anyone.
 		return onFailure("afterAll function unexpected error", err.Error(), group, lastCheck, zeroRemainingChecks)
 	}
@@ -151,7 +151,7 @@ func runAfterAllFn(group *ChecksGroup, checks []*Check) (err error) {
 }
 
 func runBeforeEachFn(group *ChecksGroup, check *Check, remainingChecks []*Check) (err error) {
-	logrus.Tracef("GROUP %s - Running beforeEach for check %s", group.name, check.ID)
+	log.Debug("GROUP %s - Running beforeEach for check %s", group.name, check.ID)
 	if group.beforeEachFn == nil {
 		return nil
 	}
@@ -159,14 +159,14 @@ func runBeforeEachFn(group *ChecksGroup, check *Check, remainingChecks []*Check)
 	defer func() {
 		if r := recover(); r != nil {
 			stackTrace := fmt.Sprint(r) + "\n" + string(debug.Stack())
-			logrus.Errorf("Panic while running beforeEach function:\n%v", stackTrace)
+			log.Error("Panic while running beforeEach function:\n%v", stackTrace)
 			// Set last check's result as error, no need to skip anyone.
 			err = onFailure("beforeEach function panicked", "\n: "+stackTrace, group, check, remainingChecks)
 		}
 	}()
 
 	if err := group.beforeEachFn(check); err != nil {
-		logrus.Errorf("Unexpected error while running beforeEach function:\n%v", err.Error())
+		log.Error("Unexpected error while running beforeEach function:\n%v", err.Error())
 		// Set last check's result as error, no need to skip anyone.
 		return onFailure("beforeEach function unexpected error", err.Error(), group, check, remainingChecks)
 	}
@@ -175,7 +175,7 @@ func runBeforeEachFn(group *ChecksGroup, check *Check, remainingChecks []*Check)
 }
 
 func runAfterEachFn(group *ChecksGroup, check *Check, remainingChecks []*Check) (err error) {
-	logrus.Tracef("GROUP %s - Running afterEach for check %s", group.name, check.ID)
+	log.Debug("GROUP %s - Running afterEach for check %s", group.name, check.ID)
 
 	if group.afterEachFn == nil {
 		return nil
@@ -184,14 +184,14 @@ func runAfterEachFn(group *ChecksGroup, check *Check, remainingChecks []*Check) 
 	defer func() {
 		if r := recover(); r != nil {
 			stackTrace := fmt.Sprint(r) + "\n" + string(debug.Stack())
-			logrus.Errorf("Panic while running afterEach function:\n%v", stackTrace)
+			log.Error("Panic while running afterEach function:\n%v", stackTrace)
 			// Set last check's result as error, no need to skip anyone.
 			err = onFailure("afterEach function panicked", "\n: "+stackTrace, group, check, remainingChecks)
 		}
 	}()
 
 	if err := group.afterEachFn(check); err != nil {
-		logrus.Errorf("Unexpected error while running afterEach function:\n%v", err.Error())
+		log.Error("Unexpected error while running afterEach function:\n%v", err.Error())
 		// Set last check's result as error, no need to skip anyone.
 		return onFailure("afterEach function unexpected error", err.Error(), group, check, remainingChecks)
 	}
@@ -204,8 +204,6 @@ func shouldSkipCheck(check *Check) (skip bool, reasons []string) {
 		return false, []string{}
 	}
 
-	logrus.Tracef("Running check %s skipCheck functions (%d).", check.ID, len(check.SkipCheckFns))
-
 	// Short-circuit
 	if len(check.SkipCheckFns) == 0 {
 		return false, []string{}
@@ -217,7 +215,7 @@ func shouldSkipCheck(check *Check) (skip bool, reasons []string) {
 	defer func() {
 		if r := recover(); r != nil {
 			stackTrace := fmt.Sprint(r) + "\n" + string(debug.Stack())
-			logrus.Errorf("Skip check function (idx=%d) panic'ed: %s", currentSkipFnIndex, stackTrace)
+			check.LogError("Skip check function (idx=%d) panic'ed: %s", currentSkipFnIndex, stackTrace)
 			skip = true
 			reasons = []string{fmt.Sprintf("skipCheckFn (idx=%d) panic:\n%s", currentSkipFnIndex, stackTrace)}
 		}
@@ -252,18 +250,18 @@ func shouldSkipCheck(check *Check) (skip bool, reasons []string) {
 }
 
 func runCheck(check *Check, group *ChecksGroup, remainingChecks []*Check) (err error) {
-	logrus.Infof("Running check %s", check.ID)
+	check.LogInfo("Running check")
 	defer func() {
 		if r := recover(); r != nil {
 			stackTrace := fmt.Sprint(r) + "\n" + string(debug.Stack())
 
-			logrus.Errorf("Panic while running check %s function:\n%v", check.ID, stackTrace)
+			check.LogError("Panic while running check %s function:\n%v", check.ID, stackTrace)
 			err = onFailure(fmt.Sprintf("check %s function panic", check.ID), stackTrace, group, check, remainingChecks)
 		}
 	}()
 
 	if err := check.Run(); err != nil {
-		logrus.Errorf("Unexpected error while running check %s function: %v", check.ID, err.Error())
+		check.LogError("Unexpected error while running check %s function: %v", check.ID, err.Error())
 		return onFailure(fmt.Sprintf("check %s function unexpected error", check.ID), err.Error(), group, check, remainingChecks)
 	}
 
@@ -286,7 +284,7 @@ func runCheck(check *Check, group *ChecksGroup, remainingChecks []*Check) (err e
 //
 //nolint:funlen
 func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool, abortChan chan bool) (errs []error) {
-	logrus.Infof("Running group %q checks.", group.name)
+	log.Info("Running group %q checks.", group.name)
 	fmt.Printf("Running suite %s\n", strings.ToUpper(group.name))
 
 	labelsExprEvaluator, err := NewLabelsExprEvaluator(labelsExpr)
@@ -322,7 +320,7 @@ func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool, abo
 		return errs
 	}
 
-	logrus.Infof("Checks to run: %d (group's total=%d)", len(checks), len(group.checks))
+	log.Info("Checks to run: %d (group's total=%d)", len(checks), len(group.checks))
 	group.currentRunningCheckIdx = 0
 	for i, check := range checks {
 		// Fast stop in case the stop (abort/timeout) signal received.
@@ -393,7 +391,7 @@ func (group *ChecksGroup) OnAbort(labelsExpr, abortReason string) error {
 }
 
 func (group *ChecksGroup) RecordChecksResults() {
-	logrus.Infof("Recording checks results of group %s", group.name)
+	log.Info("Recording checks results of group %s", group.name)
 	for _, check := range group.checks {
 		recordCheckResult(check)
 	}

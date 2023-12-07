@@ -48,7 +48,7 @@ For more details on the contents of the claim file
 
 ## Execution logs
 
-The test suite also saves a copy of the execution logs at [test output directory]/tnf-execution.log
+The test suite also saves a copy of the execution logs at [test output directory]/cnf-certsuite.log
 
 ## Results artifacts zip file
 
