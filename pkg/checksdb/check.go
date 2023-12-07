@@ -7,7 +7,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/cli"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
@@ -185,7 +184,7 @@ func (check *Check) SetResult(compliantObjects, nonCompliantObjects []*testhelpe
 
 	resultObjectsStr, err := testhelper.ResultObjectsToString(compliantObjects, nonCompliantObjects)
 	if err != nil {
-		logrus.Errorf("Failed to get result objects string for check %s: %v", check.ID, err)
+		check.LogError("Failed to get result objects string for check %s: %v", check.ID, err)
 	}
 
 	check.CapturedOutput = resultObjectsStr
@@ -200,7 +199,7 @@ func (check *Check) SetResult(compliantObjects, nonCompliantObjects []*testhelpe
 		check.FailureReason = resultObjectsStr
 	} else if len(compliantObjects) == 0 {
 		// Mark this check as skipped.
-		logrus.Warnf("Check %s marked as skipped as both compliant and non-compliant objects lists are empty.", check.ID)
+		check.LogWarn("Check %s marked as skipped as both compliant and non-compliant objects lists are empty.", check.ID)
 		check.FailureReason = "Compliant and non-compliant objects lists are empty."
 		check.Result = CheckResultSkipped
 	}
@@ -239,7 +238,7 @@ func (check *Check) SetResultError(reason string) {
 	}
 
 	if check.Result == CheckResultError {
-		logrus.Warnf("Check %s result was already marked as error.", check.ID)
+		check.LogWarn("Check %s result was already marked as error.", check.ID)
 		return
 	}
 	check.Result = CheckResultError
@@ -270,7 +269,7 @@ func (check *Check) Run() error {
 		check.EndTime = time.Now()
 	}()
 
-	logrus.Infof("RUNNING CHECK: %s (labels: %v)", check.ID, check.Labels)
+	log.Info("RUNNING CHECK: %s (labels: %v)", check.ID, check.Labels)
 	if check.BeforeCheckFn != nil {
 		if err := check.BeforeCheckFn(check); err != nil {
 			return fmt.Errorf("check %s failed in before check function: %v", check.ID, err)

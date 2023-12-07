@@ -6,6 +6,7 @@ import (
 	"io"
 	"log/slog"
 	"runtime"
+	"strings"
 	"time"
 )
 
@@ -15,11 +16,15 @@ type Logger struct {
 
 var logger *slog.Logger
 
-func SetupLogger(logWriter io.Writer) {
+func SetupLogger(logWriter io.Writer, level slog.Level) {
 	opts := Options{
-		Level: slog.LevelDebug,
+		Level: level,
 	}
 	logger = slog.New(NewCustomHandler(logWriter, &opts))
+}
+
+func SetLogger(l *slog.Logger) {
+	logger = l
 }
 
 func Debug(msg string, args ...any) {
@@ -45,9 +50,27 @@ func GetMultiLogger(w io.Writer) *slog.Logger {
 	return slog.New(NewMultiHandler(logger.Handler(), NewCustomHandler(w, &opts)))
 }
 
+func ParseLevel(level string) (slog.Level, error) {
+	switch strings.ToLower(level) {
+	case "debug":
+		return slog.LevelDebug, nil
+	case "info":
+		return slog.LevelInfo, nil
+	case "warn", "warning":
+		return slog.LevelWarn, nil
+	case "error":
+		return slog.LevelError, nil
+	}
+
+	return 0, fmt.Errorf("not a valid slog Level: %q", level)
+}
+
 // The Logf function should be called inside a log wrapper function.
 // Otherwise the code source reference will be invalid.
 func Logf(logger *slog.Logger, level slog.Level, format string, args ...any) {
+	if logger == nil {
+		logger = slog.Default()
+	}
 	if !logger.Enabled(context.Background(), level) {
 		return
 	}

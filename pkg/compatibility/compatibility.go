@@ -21,7 +21,7 @@ import (
 	"time"
 
 	gv "github.com/hashicorp/go-version"
-	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 )
 
@@ -258,12 +258,12 @@ func IsRHCOSCompatible(machineVersion, ocpVersion string) bool {
 		// Collect the machine version and the entry version
 		mv, err := gv.NewVersion(machineVersion)
 		if err != nil {
-			logrus.Errorf("Error parsing machineVersion: %s err: %v", machineVersion, err)
+			log.Error("Error parsing machineVersion: %s err: %v", machineVersion, err)
 			return false
 		}
 		ev, err := gv.NewVersion(entry.MinRHCOSVersion)
 		if err != nil {
-			logrus.Errorf("Error parsing MinRHCOSVersion: %s err: %v", entry.MinRHCOSVersion, err)
+			log.Error("Error parsing MinRHCOSVersion: %s err: %v", entry.MinRHCOSVersion, err)
 			return false
 		}
 

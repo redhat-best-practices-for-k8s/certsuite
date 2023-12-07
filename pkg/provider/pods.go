@@ -23,9 +23,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -54,12 +53,12 @@ func NewPod(aPod *corev1.Pod) (out Pod) {
 	out.MultusIPs = make(map[string][]string)
 	out.MultusIPs, err = GetPodIPsPerNet(aPod.GetAnnotations()[CniNetworksStatusKey])
 	if err != nil {
-		logrus.Errorf("Could not decode networks-status annotation, error: %v", err)
+		log.Error("Could not decode networks-status annotation, error: %v", err)
 	}
 
 	out.MultusPCIs, err = GetPciPerPod(aPod.GetAnnotations()[CniNetworksStatusKey])
 	if err != nil {
-		logrus.Errorf("Could not decode networks-status annotation, error: %v", err)
+		log.Error("Could not decode networks-status annotation, error: %v", err)
 	}
 
 	if _, ok := aPod.GetLabels()[skipConnectivityTestsLabel]; ok {
@@ -92,12 +91,12 @@ func (p *Pod) IsCPUIsolationCompliant() bool {
 	isCPUIsolated := true
 
 	if !LoadBalancingDisabled(p) {
-		tnf.Logf(logrus.DebugLevel, "%s has been found to not have annotations set correctly for CPU isolation.", p)
+		log.Debug("%s has been found to not have annotations set correctly for CPU isolation.", p)
 		isCPUIsolated = false
 	}
 
 	if !p.IsRuntimeClassNameSpecified() {
-		tnf.Logf(logrus.DebugLevel, "%s has been found to not have runtimeClassName specified.", p)
+		log.Debug("%s has been found to not have runtimeClassName specified.", p)
 		isCPUIsolated = false
 	}
 
@@ -115,7 +114,7 @@ func (p *Pod) AffinityRequired() bool {
 	if val, ok := p.Labels[AffinityRequiredKey]; ok {
 		result, err := strconv.ParseBool(val)
 		if err != nil {
-			logrus.Warnf("failure to parse bool %v", val)
+			log.Warn("failure to parse bool %v", val)
 			return false
 		}
 		return result
@@ -316,7 +315,7 @@ func isNetworkAttachmentDefinitionConfigTypeSRIOV(nadConfig string) (bool, error
 
 	// If type is found, it's a single plugin CNI config.
 	if cniConfig.Type != nil {
-		logrus.Tracef("Single plugin config type found: %+v, type=%s", cniConfig, *cniConfig.Type)
+		log.Debug("Single plugin config type found: %+v, type=%s", cniConfig, *cniConfig.Type)
 		return *cniConfig.Type == typeSriov, nil
 	}
 
@@ -324,7 +323,7 @@ func isNetworkAttachmentDefinitionConfigTypeSRIOV(nadConfig string) (bool, error
 		return false, fmt.Errorf("invalid multi-plugins cni config: %s", nadConfig)
 	}
 
-	logrus.Tracef("CNI plugins: %+v", *cniConfig.Plugins)
+	log.Debug("CNI plugins: %+v", *cniConfig.Plugins)
 	for i := range *cniConfig.Plugins {
 		plugin := (*cniConfig.Plugins)[i]
 		if plugin.Type == typeSriov {
@@ -357,7 +356,7 @@ func (p *Pod) IsUsingSRIOV() (bool, error) {
 	oc := clientsholder.GetClientsHolder()
 
 	for _, networkName := range cncfNetworkNames {
-		logrus.Tracef("%s: Reviewing network-attachment definition %q", p, networkName)
+		log.Debug("%s: Reviewing network-attachment definition %q", p, networkName)
 		nad, err := oc.CNCFNetworkingClient.NetworkAttachmentDefinitions(p.Namespace).Get(context.TODO(), networkName, metav1.GetOptions{})
 		if err != nil {
 			return false, fmt.Errorf("failed to get NetworkAttachment %s: %v", networkName, err)
@@ -368,7 +367,7 @@ func (p *Pod) IsUsingSRIOV() (bool, error) {
 			return false, fmt.Errorf("failed to know if network-attachment %s is sriov: %v", networkName, err)
 		}
 
-		logrus.Tracef("%s: NAD config: %s", p, nad.Spec.Config)
+		log.Debug("%s: NAD config: %s", p, nad.Spec.Config)
 		if isSRIOV {
 			return true, nil
 		}
@@ -381,7 +380,7 @@ func (p *Pod) IsUsingSRIOV() (bool, error) {
 func (p *Pod) IsUsingClusterRoleBinding(clusterRoleBindings []rbacv1.ClusterRoleBinding) (bool, string, error) {
 	// This function accepts a list of clusterRoleBindings and checks to see if the pod's service account is
 	// tied to any of them.  If it is, then it returns true, otherwise it returns false.
-	logrus.Infof("Pod: %s/%s is using service account: %s", p.Pod.Namespace, p.Pod.Name, p.Pod.Spec.ServiceAccountName)
+	log.Info("Pod: %s/%s is using service account: %s", p.Pod.Namespace, p.Pod.Name, p.Pod.Spec.ServiceAccountName)
 
 	// Loop through the service accounts in the namespace, looking for a match between the pod serviceAccountName and
 	// the service account name.  If there is a match, check to make sure that the SA is not a 'subject' of the cluster
@@ -389,7 +388,7 @@ func (p *Pod) IsUsingClusterRoleBinding(clusterRoleBindings []rbacv1.ClusterRole
 	for crbIndex := range clusterRoleBindings {
 		for _, subject := range clusterRoleBindings[crbIndex].Subjects {
 			if subject.Kind == rbacv1.ServiceAccountKind && subject.Name == p.Pod.Spec.ServiceAccountName && subject.Namespace == p.Pod.Namespace {
-				tnf.ClaimFilePrintf("Pod %s has service account %s that is tied to cluster role binding %s", p.Pod.Name, p.Pod.Spec.ServiceAccountName, clusterRoleBindings[crbIndex].Name)
+				log.Debug("Pod %s has service account %s that is tied to cluster role binding %s", p.Pod.Name, p.Pod.Spec.ServiceAccountName, clusterRoleBindings[crbIndex].Name)
 				return true, clusterRoleBindings[crbIndex].RoleRef.Name, nil
 			}
 		}

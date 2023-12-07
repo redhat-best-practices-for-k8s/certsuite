@@ -17,13 +17,16 @@
 package loghelper
 
 import (
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 )
 
 func TestLogLines(t *testing.T) {
-	SetLogFormat()
+	logLevel, _ := log.ParseLevel("INFO")
+	log.SetupLogger(os.Stdout, logLevel)
 	ll := CuratedLogLines{}
 	ll.Init("one", "two", "three")
 	assert.Equal(t, []string{"one", "two", "three"}, ll.GetLogLines())

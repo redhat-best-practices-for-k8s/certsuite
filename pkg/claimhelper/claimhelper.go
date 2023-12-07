@@ -26,7 +26,7 @@ import (
 	"os"
 	"time"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/diagnostics"
@@ -144,7 +144,7 @@ func (c *ClaimBuilder) Build(outputFile string) {
 	payload := MarshalClaimOutput(c.claimRoot)
 	WriteClaimOutput(outputFile, payload)
 
-	log.Infof("Claim file created at %s", outputFile)
+	log.Info("Claim file created at %s", outputFile)
 }
 
 func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuitesXML {
@@ -216,13 +216,15 @@ func (c *ClaimBuilder) ToJUnitXML(outputFile string, startTime, endTime time.Tim
 	// Write the JUnit XML file.
 	payload, err := xml.MarshalIndent(xmlOutput, "", "  ")
 	if err != nil {
-		log.Fatalf("Failed to generate the xml: %v", err)
+		log.Error("Failed to generate the xml: %v", err)
+		os.Exit(1)
 	}
 
-	log.Infof("Writing JUnit XML file: %s", outputFile)
+	log.Info("Writing JUnit XML file: %s", outputFile)
 	err = os.WriteFile(outputFile, payload, claimFilePermissions)
 	if err != nil {
-		log.Fatal("Failed to write the xml file")
+		log.Error("Failed to write the xml file")
+		os.Exit(1)
 	}
 }
 
@@ -236,7 +238,7 @@ func MarshalConfigurations() (configurations []byte, err error) {
 	config := provider.GetTestEnvironment()
 	configurations, err = j.Marshal(config)
 	if err != nil {
-		log.Errorf("error converting configurations to JSON: %v", err)
+		log.Error("error converting configurations to JSON: %v", err)
 		return configurations, err
 	}
 	return configurations, nil
@@ -247,7 +249,8 @@ func MarshalConfigurations() (configurations []byte, err error) {
 func UnmarshalConfigurations(configurations []byte, claimConfigurations map[string]interface{}) {
 	err := j.Unmarshal(configurations, &claimConfigurations)
 	if err != nil {
-		log.Fatalf("error unmarshalling configurations: %v", err)
+		log.Error("error unmarshalling configurations: %v", err)
+		os.Exit(1)
 	}
 }
 
@@ -255,7 +258,8 @@ func UnmarshalConfigurations(configurations []byte, claimConfigurations map[stri
 func UnmarshalClaim(claimFile []byte, claimRoot *claim.Root) {
 	err := j.Unmarshal(claimFile, &claimRoot)
 	if err != nil {
-		log.Fatalf("error unmarshalling claim file: %v", err)
+		log.Error("error unmarshalling claim file: %v", err)
+		os.Exit(1)
 	}
 }
 
@@ -263,13 +267,13 @@ func UnmarshalClaim(claimFile []byte, claimRoot *claim.Root) {
 func ReadClaimFile(claimFileName string) (data []byte, err error) {
 	data, err = os.ReadFile(claimFileName)
 	if err != nil {
-		log.Errorf("ReadFile failed with err: %v", err)
+		log.Error("ReadFile failed with err: %v", err)
 	}
 	path, err := os.Getwd()
 	if err != nil {
-		log.Errorf("Getwd failed with err: %v", err)
+		log.Error("Getwd failed with err: %v", err)
 	}
-	log.Infof("Reading claim file at path: %s", path)
+	log.Info("Reading claim file at path: %s", path)
 	return data, nil
 }
 
@@ -277,7 +281,7 @@ func ReadClaimFile(claimFileName string) (data []byte, err error) {
 func GetConfigurationFromClaimFile(claimFileName string) (env *provider.TestEnvironment, err error) {
 	data, err := ReadClaimFile(claimFileName)
 	if err != nil {
-		log.Errorf("ReadClaimFile failed with err: %v", err)
+		log.Error("ReadClaimFile failed with err: %v", err)
 		return env, err
 	}
 	var aRoot claim.Root
@@ -296,7 +300,8 @@ func GetConfigurationFromClaimFile(claimFileName string) (env *provider.TestEnvi
 func MarshalClaimOutput(claimRoot *claim.Root) []byte {
 	payload, err := j.MarshalIndent(claimRoot, "", "  ")
 	if err != nil {
-		log.Fatalf("Failed to generate the claim: %v", err)
+		log.Error("Failed to generate the claim: %v", err)
+		os.Exit(1)
 	}
 	return payload
 }
@@ -305,7 +310,8 @@ func MarshalClaimOutput(claimRoot *claim.Root) []byte {
 func WriteClaimOutput(claimOutputFile string, payload []byte) {
 	err := os.WriteFile(claimOutputFile, payload, claimFilePermissions)
 	if err != nil {
-		log.Fatalf("Error writing claim data:\n%s", string(payload))
+		log.Error("Error writing claim data:\n%s", string(payload))
+		os.Exit(1)
 	}
 }
 
@@ -348,7 +354,8 @@ func LoadJUnitXMLIntoMap(result map[string]interface{}, junitFilename, key strin
 	}
 	result[key], err = junit.ExportJUnitAsMap(junitFilename)
 	if err != nil {
-		log.Fatalf("error reading JUnit XML file into JSON: %v", err)
+		log.Error("error reading JUnit XML file into JSON: %v", err)
+		os.Exit(1)
 	}
 }
 

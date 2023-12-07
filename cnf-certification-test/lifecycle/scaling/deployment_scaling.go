@@ -22,9 +22,9 @@ import (
 	"errors"
 	"time"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/podsets"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 
 	v1autoscaling "k8s.io/api/autoscaling/v1"
@@ -39,7 +39,7 @@ import (
 
 func TestScaleDeployment(deployment *appsv1.Deployment, timeout time.Duration) bool {
 	clients := clientsholder.GetClientsHolder()
-	logrus.Trace("scale deployment not using HPA ", deployment.Namespace, ":", deployment.Name)
+	log.Debug("scale deployment not using HPA %s:%s", deployment.Namespace, deployment.Name)
 	var replicas int32
 	if deployment.Spec.Replicas != nil {
 		replicas = *deployment.Spec.Replicas
@@ -51,25 +51,25 @@ func TestScaleDeployment(deployment *appsv1.Deployment, timeout time.Duration) b
 		// scale up
 		replicas++
 		if !scaleDeploymentHelper(clients.K8sClient.AppsV1(), deployment, replicas, timeout, true) {
-			logrus.Error("can not scale deployment =", deployment.Namespace, ":", deployment.Name)
+			log.Error("can not scale deployment %s:%s", deployment.Namespace, deployment.Name)
 			return false
 		}
 		// scale down
 		replicas--
 		if !scaleDeploymentHelper(clients.K8sClient.AppsV1(), deployment, replicas, timeout, false) {
-			logrus.Error("can not scale deployment =", deployment.Namespace, ":", deployment.Name)
+			log.Error("can not scale deployment %s:%s", deployment.Namespace, deployment.Name)
 			return false
 		}
 	} else {
 		// scale down
 		replicas--
 		if !scaleDeploymentHelper(clients.K8sClient.AppsV1(), deployment, replicas, timeout, false) {
-			logrus.Error("can not scale deployment =", deployment.Namespace, ":", deployment.Name)
+			log.Error("can not scale deployment %s:%s", deployment.Namespace, deployment.Name)
 			return false
 		} // scale up
 		replicas++
 		if !scaleDeploymentHelper(clients.K8sClient.AppsV1(), deployment, replicas, timeout, true) {
-			logrus.Error("can not scale deployment =", deployment.Namespace, ":", deployment.Name)
+			log.Error("can not scale deployment %s:%s", deployment.Namespace, deployment.Name)
 			return false
 		}
 	}
@@ -78,9 +78,9 @@ func TestScaleDeployment(deployment *appsv1.Deployment, timeout time.Duration) b
 
 func scaleDeploymentHelper(client typedappsv1.AppsV1Interface, deployment *appsv1.Deployment, replicas int32, timeout time.Duration, up bool) bool {
 	if up {
-		logrus.Trace("scale UP deployment to ", replicas, " replicas ")
+		log.Debug("scale UP deployment to %d replicas", replicas)
 	} else {
-		logrus.Trace("scale DOWN deployment to ", replicas, " replicas ")
+		log.Debug("scale DOWN deployment to %d replicas", replicas)
 	}
 
 	retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() error {
@@ -88,23 +88,23 @@ func scaleDeploymentHelper(client typedappsv1.AppsV1Interface, deployment *appsv
 		// RetryOnConflict uses exponential backoff to avoid exhausting the apiserver
 		dp, err := client.Deployments(deployment.Namespace).Get(context.TODO(), deployment.Name, v1machinery.GetOptions{})
 		if err != nil {
-			logrus.Error("failed to get latest version of deployment ", deployment.Namespace, ":", deployment.Name)
+			log.Error("failed to get latest version of deployment %s:%s", deployment.Namespace, deployment.Name)
 			return err
 		}
 		dp.Spec.Replicas = &replicas
 		_, err = client.Deployments(deployment.Namespace).Update(context.TODO(), dp, v1machinery.UpdateOptions{})
 		if err != nil {
-			logrus.Error("can not update deployment ", deployment.Namespace, ":", deployment.Name)
+			log.Error("can not update deployment %s:%s", deployment.Namespace, deployment.Name)
 			return err
 		}
 		if !podsets.WaitForDeploymentSetReady(deployment.Namespace, deployment.Name, timeout) {
-			logrus.Error("can not update deployment ", deployment.Namespace, ":", deployment.Name)
+			log.Error("can not update deployment %s:%s", deployment.Namespace, deployment.Name)
 			return errors.New("can not update deployment")
 		}
 		return nil
 	})
 	if retryErr != nil {
-		logrus.Error("can not scale deployment ", deployment.Namespace, ":", deployment.Name, " error=", retryErr)
+		log.Error("can not scale deployment %s:%s, err=%v", deployment.Namespace, deployment.Name, retryErr)
 		return false
 	}
 	return true
@@ -127,14 +127,14 @@ func TestScaleHpaDeployment(deployment *provider.Deployment, hpa *v1autoscaling.
 	if replicas <= 1 {
 		// scale up
 		replicas++
-		logrus.Trace("scale UP HPA ", deployment.Namespace, ":", hpa.Name, "To min=", replicas, " max=", replicas)
+		log.Debug("scale UP HPA %s:%s to min=%d max=%d", deployment.Namespace, hpa.Name, replicas, replicas)
 		pass := scaleHpaDeploymentHelper(hpscaler, hpa.Name, deployment.Name, deployment.Namespace, replicas, replicas, timeout)
 		if !pass {
 			return false
 		}
 		// scale down
 		replicas--
-		logrus.Trace("scale DOWN HPA ", deployment.Namespace, ":", hpa.Name, "To min=", replicas, " max=", replicas)
+		log.Debug("scale DOWN HPA %s:%s to min=%d max=%d", deployment.Namespace, hpa.Name, replicas, replicas)
 		pass = scaleHpaDeploymentHelper(hpscaler, hpa.Name, deployment.Name, deployment.Namespace, min, max, timeout)
 		if !pass {
 			return false
@@ -142,21 +142,21 @@ func TestScaleHpaDeployment(deployment *provider.Deployment, hpa *v1autoscaling.
 	} else {
 		// scale down
 		replicas--
-		logrus.Trace("scale DOWN HPA ", deployment.Namespace, ":", hpa.Name, "To min=", replicas, " max=", replicas)
+		log.Debug("scale DOWN HPA %s:%s to min=%d max=%d", deployment.Namespace, hpa.Name, replicas, replicas)
 		pass := scaleHpaDeploymentHelper(hpscaler, hpa.Name, deployment.Name, deployment.Namespace, replicas, replicas, timeout)
 		if !pass {
 			return false
 		}
 		// scale up
 		replicas++
-		logrus.Trace("scale UP HPA ", deployment.Namespace, ":", hpa.Name, "To min=", replicas, " max=", replicas)
+		log.Debug("scale UP HPA %s:%s to min=%d max=%d", deployment.Namespace, hpa.Name, replicas, replicas)
 		pass = scaleHpaDeploymentHelper(hpscaler, hpa.Name, deployment.Name, deployment.Namespace, replicas, replicas, timeout)
 		if !pass {
 			return false
 		}
 	}
 	// back the min and the max value of the hpa
-	logrus.Trace("back HPA ", deployment.Namespace, ":", hpa.Name, "To min=", min, " max=", max)
+	log.Debug("back HPA %s:%s to min=%d max=%d", deployment.Namespace, hpa.Name, min, max)
 	return scaleHpaDeploymentHelper(hpscaler, hpa.Name, deployment.Name, deployment.Namespace, min, max, timeout)
 }
 
@@ -164,23 +164,23 @@ func scaleHpaDeploymentHelper(hpscaler hps.HorizontalPodAutoscalerInterface, hpa
 	retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() error {
 		hpa, err := hpscaler.Get(context.TODO(), hpaName, v1machinery.GetOptions{})
 		if err != nil {
-			logrus.Error("can not Update autoscaler to scale ", namespace, ":", deploymentName, " error=", err)
+			log.Error("can not Update autoscaler to scale %s:%s , err=%v", namespace, deploymentName, err)
 			return err
 		}
 		hpa.Spec.MinReplicas = &min
 		hpa.Spec.MaxReplicas = max
 		_, err = hpscaler.Update(context.TODO(), hpa, v1machinery.UpdateOptions{})
 		if err != nil {
-			logrus.Error("can not Update autoscaler to scale ", namespace, ":", deploymentName, " error=", err)
+			log.Error("can not Update autoscaler to scale %s:%s, err=%v", namespace, deploymentName, err)
 			return err
 		}
 		if !podsets.WaitForDeploymentSetReady(namespace, deploymentName, timeout) {
-			logrus.Error("deployment not ready after scale operation ", namespace, ":", deploymentName)
+			log.Error("deployment not ready after scale operation %s:%s", namespace, deploymentName)
 		}
 		return nil
 	})
 	if retryErr != nil {
-		logrus.Error("can not scale hpa ", namespace, ":", hpaName, " error=", retryErr)
+		log.Error("can not scale hpa %s:%s , err=%v", namespace, hpaName, retryErr)
 		return false
 	}
 	return true

@@ -21,8 +21,6 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/sirupsen/logrus"
-
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
@@ -636,31 +634,6 @@ func NewSkipObject(object interface{}, name string) (skipObject [2]interface{}) 
 	skipObject[0] = object
 	skipObject[1] = name
 	return skipObject
-}
-
-func AddTestResultLog(prefix string, object interface{}, log func(string, ...interface{}), fail func(string, ...int)) {
-	s := reflect.ValueOf(object)
-	if s.Kind() != reflect.Slice && s.Kind() != reflect.Map {
-		panic("AddTestResultLog object param is a non slice/map type")
-	}
-	if s.Len() > 0 {
-		log(fmt.Sprintf("%s %s: %v", prefix, reflect.TypeOf(object), object))
-		fail(fmt.Sprintf("Number of %s %s = %d", prefix, reflect.TypeOf(object), s.Len()))
-	}
-}
-
-func AddTestResultReason(compliantObject, nonCompliantObject []*ReportObject, log func(string, ...interface{}), fail func(string, ...int)) {
-	var aReason FailureReasonOut
-	aReason.CompliantObjectsOut = compliantObject
-	aReason.NonCompliantObjectsOut = nonCompliantObject
-	bytes, err := json.Marshal(aReason)
-	if err != nil {
-		logrus.Errorf("Could not Marshall FailureReason object, err=%s", err)
-	}
-	log(string(bytes))
-	if len(aReason.NonCompliantObjectsOut) > 0 {
-		fail(string(bytes))
-	}
 }
 
 func ResultObjectsToString(compliantObject, nonCompliantObject []*ReportObject) (string, error) {

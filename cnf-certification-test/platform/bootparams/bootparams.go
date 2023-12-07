@@ -20,8 +20,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/arrayhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
@@ -53,7 +53,7 @@ func TestBootParamsHelper(env *provider.TestEnvironment, cut *provider.Container
 				claimsLog.AddLogLine("%s KernelCmdLineArg %q does not match MachineConfig value: %q!=%q",
 					cut.NodeName, key, currentVal, mcVal)
 			} else {
-				logrus.Tracef("%s KernelCmdLineArg==mcVal %q: %q==%q", cut.NodeName, key, currentVal, mcVal)
+				log.Debug("%s KernelCmdLineArg==mcVal %q: %q==%q", cut.NodeName, key, currentVal, mcVal)
 			}
 		}
 		if grubVal, ok := grubKernelConfigMap[key]; ok {
@@ -61,7 +61,7 @@ func TestBootParamsHelper(env *provider.TestEnvironment, cut *provider.Container
 				claimsLog.AddLogLine("%s NodeGrubKernelArgs %q does not match MachineConfig value: %q!=%q",
 					cut.NodeName, key, mcVal, grubVal)
 			} else {
-				logrus.Tracef("%s NodeGrubKernelArg==mcVal %q: %q==%q", cut.NodeName, key, grubVal, mcVal)
+				log.Debug("%s NodeGrubKernelArg==mcVal %q: %q==%q", cut.NodeName, key, grubVal, mcVal)
 			}
 		}
 	}

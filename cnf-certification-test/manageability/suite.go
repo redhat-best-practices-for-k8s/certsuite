@@ -19,27 +19,26 @@ package manageability
 import (
 	"strings"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
 
 var (
 	env provider.TestEnvironment
 
 	beforeEachFn = func(check *checksdb.Check) error {
-		logrus.Infof("Check %s: getting test environment.", check.ID)
+		check.LogInfo("Check %s: getting test environment.", check.ID)
 		env = provider.GetTestEnvironment()
 		return nil
 	}
 
 	skipIfNoContainersFn = func() (bool, string) {
 		if len(env.Containers) == 0 {
-			logrus.Warnf("No containers to check...")
+			log.Warn("No containers to check...")
 			return true, "There are no containers to check. Please check under test labels."
 		}
 		return false, ""
@@ -47,7 +46,7 @@ var (
 )
 
 func LoadChecks() {
-	logrus.Debugf("Entering %s suite", common.ManageabilityTestKey)
+	log.Debug("Entering %s suite", common.ManageabilityTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.ManageabilityTestKey).
 		WithBeforeEachFn(beforeEachFn)
@@ -73,10 +72,10 @@ func testContainersImageTag(check *checksdb.Check, env *provider.TestEnvironment
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
-		logrus.Debugln("check container ", cut.String(), " image should be tagged ")
+		check.LogDebug("check that %s image is tagged", cut)
 		if cut.IsTagEmpty() {
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is missing image tag(s)", false))
-			tnf.ClaimFilePrintf("Container %s is missing image tag(s)", cut.String())
+			check.LogDebug("Container %s is missing image tag(s)", cut.String())
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is tagged", true))
 		}
@@ -102,7 +101,7 @@ func testContainerPortNameFormat(check *checksdb.Check, env *provider.TestEnviro
 	for _, cut := range env.Containers {
 		for _, port := range cut.Ports {
 			if !containerPortNameFormatCheck(port.Name) {
-				tnf.ClaimFilePrintf("%s: ContainerPort %s does not follow the partner naming conventions", cut, port.Name)
+				check.LogDebug("%s: ContainerPort %s does not follow the partner naming conventions", cut, port.Name)
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "ContainerPort does not follow the partner naming conventions", false).
 					AddField(testhelper.ContainerPort, port.Name))
 			} else {

@@ -30,8 +30,8 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
@@ -76,17 +76,17 @@ func GetLabelDeploymentValue(env *provider.TestEnvironment, labelsMap map[string
 func ApplyAndCreatePodDeleteResources(appLabel, appKind, namespace string) error {
 	// create the chaos experiment resource
 	if err := applyAndCreateFile(appLabel, appKind, namespace, experimentFile); err != nil {
-		logrus.Errorf("cant create the experiment of the test: %s", err)
+		log.Error("cant create the experiment of the test: %s", err)
 		return err
 	}
 	// create the chaos serviceAccount resource
 	if err := applyAndCreateFile(appLabel, appKind, namespace, serviceAccountFile); err != nil {
-		logrus.Errorf("cant create the serviceAccount of the test: %s", err)
+		log.Error("cant create the serviceAccount of the test: %s", err)
 		return err
 	}
 	// create the chaos chaosEngine resource
 	if err := applyAndCreateFile(appLabel, appKind, namespace, chaosEngineFile); err != nil {
-		logrus.Errorf("cant create the chaosEngine of the test: %s", err)
+		log.Error("cant create the chaosEngine of the test: %s", err)
 		return err
 	}
 	return nil
@@ -95,11 +95,11 @@ func ApplyAndCreatePodDeleteResources(appLabel, appKind, namespace string) error
 func applyAndCreateFile(appLabel, appKind, namespace, filename string) error {
 	fileDecoder, err := applyTemplate(appLabel, appKind, namespace, filename)
 	if err != nil {
-		logrus.Errorf("cant create the decoderfile of the test: %s", err)
+		log.Error("cant create the decoderfile of the test: %s", err)
 		return err
 	}
 	if err = createResource(fileDecoder); err != nil {
-		logrus.Errorf("%s error create the resources for the test.", err)
+		log.Error("%s error create the resources for the test.", err)
 		return err
 	}
 	return nil
@@ -114,25 +114,25 @@ func DeleteAllResources(namespace string) {
 	}
 	gvr := schema.GroupVersionResource{Group: "litmuschaos.io", Version: "v1alpha1", Resource: "chaosengines"}
 	if err := oc.DynamicClient.Resource(gvr).Namespace(namespace).Delete(context.TODO(), "engine-test", deleteOptions); err != nil {
-		logrus.Errorf("error while removing the chaos engine resources %s", err)
+		log.Error("error while removing the chaos engine resources %s", err)
 	}
 	err := oc.K8sClient.CoreV1().ServiceAccounts(namespace).Delete(context.TODO(), "test-sa", deleteOptions)
 	if err != nil {
-		logrus.Errorf("error while removing the ServiceAccounts resources %s", err)
+		log.Error("error while removing the ServiceAccounts resources %s", err)
 	}
 	if err = oc.K8sClient.RbacV1().Roles(namespace).Delete(context.TODO(), "test-sa", deleteOptions); err != nil {
-		logrus.Errorf("error while removing the chaos engine resources %s", err)
+		log.Error("error while removing the chaos engine resources %s", err)
 	}
 	if err = oc.K8sClient.RbacV1().RoleBindings(namespace).Delete(context.TODO(), "test-sa", deleteOptions); err != nil {
-		logrus.Errorf("error while removing the chaos engine resources %s", err)
+		log.Error("error while removing the chaos engine resources %s", err)
 	}
 	gvr = schema.GroupVersionResource{Group: "litmuschaos.io", Version: "v1alpha1", Resource: "chaosexperiments"}
 	if err := oc.DynamicClient.Resource(gvr).Namespace(namespace).Delete(context.TODO(), chaosTestName, deleteOptions); err != nil {
-		logrus.Errorf("error while removing the chaos engine resources %s", err)
+		log.Error("error while removing the chaos engine resources %s", err)
 	}
 	gvr = schema.GroupVersionResource{Group: "litmuschaos.io", Version: "v1alpha1", Resource: "chaosresults"}
 	if err := oc.DynamicClient.Resource(gvr).Namespace(namespace).Delete(context.TODO(), chaosresultName, deleteOptions); err != nil {
-		logrus.Errorf("error while removing the chaos results resources %s", err)
+		log.Error("error while removing the chaos results resources %s", err)
 	}
 }
 
@@ -144,7 +144,7 @@ func applyTemplate(appLabel, appKind, namespace, filename string) (*yamlutil.YAM
 	vars["APP_KIND"] = appKind
 	output, err := fillTemplate(filename, vars)
 	if err != nil {
-		logrus.Errorf("error while executing the template to the yaml file %s", err)
+		log.Error("error while executing the template to the yaml file %s", err)
 		return nil, err
 	}
 	const oneh = 100
@@ -156,13 +156,13 @@ func fillTemplate(file string, values map[string]interface{}) ([]byte, error) {
 	// parse the template
 	tmpl, err := template.ParseFiles(file)
 	if err != nil {
-		logrus.Errorf("error while parsing the yaml file: %s error: %v", file, err)
+		log.Error("error while parsing the yaml file: %s error: %v", file, err)
 		return nil, err
 	}
 	var buffer bytes.Buffer
 	writer := bufio.NewWriter(&buffer)
 	if err := tmpl.Execute(writer, values); err != nil {
-		logrus.Errorf("error while executing the template to the yaml file: %s error: %v", file, err)
+		log.Error("error while executing the template to the yaml file: %s error: %v", file, err)
 		return nil, err
 	}
 	writer.Flush() // write to the buffer
@@ -192,11 +192,11 @@ func IsChaosResultVerdictPass() bool {
 	gvr := schema.GroupVersionResource{Group: "litmuschaos.io", Version: "v1alpha1", Resource: "chaosresults"}
 	crs, err := oc.DynamicClient.Resource(gvr).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		logrus.Errorf("error getting : %v\n", err)
+		log.Error("error getting : %v\n", err)
 		return false
 	}
 	if len(crs.Items) > 1 {
-		logrus.Errorf("There are currently %d chaosresults resources. That is incorrect behavior.\n", len(crs.Items))
+		log.Error("There are currently %d chaosresults resources. That is incorrect behavior.\n", len(crs.Items))
 		return false
 	}
 	cr := crs.Items[0]
@@ -207,7 +207,7 @@ func IsChaosResultVerdictPass() bool {
 		if verdictValue == pass {
 			return true
 		}
-		tnf.Logf(logrus.WarnLevel, "test completed but it failed with reason %s", failResult.(string))
+		log.Warn("test completed but it failed with reason %s", failResult.(string))
 		return false
 	}
 	return false
@@ -218,7 +218,7 @@ func waitForResult() bool {
 	gvr := schema.GroupVersionResource{Group: "litmuschaos.io", Version: "v1alpha1", Resource: "chaosengines"}
 	crs, err := oc.DynamicClient.Resource(gvr).List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		logrus.Errorf("error getting : %v\n", err)
+		log.Error("error getting : %v\n", err)
 		return false
 	}
 
@@ -227,7 +227,7 @@ func waitForResult() bool {
 
 func parseLitmusResult(crs *unstructured.UnstructuredList) bool {
 	if len(crs.Items) > 1 {
-		logrus.Errorf("There are currently %d chaosengine resources. That is incorrect behavior.\n", len(crs.Items))
+		log.Error("There are currently %d chaosengine resources. That is incorrect behavior.\n", len(crs.Items))
 		return false
 	}
 	cr := crs.Items[0]
