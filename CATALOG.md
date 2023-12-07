@@ -585,11 +585,11 @@ Tags|telco,lifecycle
 |Non-Telco|Optional|
 |Telco|Mandatory|
 
-#### lifecycle-container-shutdown
+#### lifecycle-container-prestop
 
 Property|Description
 ---|---
-Unique ID|lifecycle-container-shutdown
+Unique ID|lifecycle-container-prestop
 Description|Ensure that the containers lifecycle preStop management feature is configured. The most basic requirement for the lifecycle management of Pods in OpenShift are the ability to start and stop correctly. There are different ways a pod can stop on an OpenShift cluster. One way is that the pod can remain alive but non-functional. Another way is that the pod can crash and become non-functional. When pods are shut down by the platform they are sent a SIGTERM signal which means that the process in the container should start shutting down, closing connections and stopping all activity. If the pod doesn’t shut down within the default 30 seconds then the platform may send a SIGKILL signal which will stop the pod immediately. This method isn’t as clean and the default time between the SIGTERM and SIGKILL messages can be modified based on the requirements of the application. Containers should respond to SIGTERM/SIGKILL with graceful shutdown.
 Suggested Remediation|The preStop can be used to gracefully stop the container and clean resources (e.g., DB connection). For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. All pods must respond to SIGTERM signal and shutdown gracefully with a zero exit code.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cloud-native-design-best-practices
