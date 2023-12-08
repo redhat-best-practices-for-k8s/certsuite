@@ -323,7 +323,7 @@ while IFS=, read -r package_name catalog; do
 	./tnf claim show csv -c "$reportDir"/claim.json -n "$package_name" -t "$CNF_TYPE" "$addHeaders" >>"$REPORT_FOLDER"/results.csv
 
 	# extract parser
-	tar -xvf "$reportDir"/*.tar.gz -C "$reportDir"/ results.html
+	tar -xvf "$reportDir"/*.tar.gz -C "$reportDir" results.html
 
 	# Add per operator links
 	{
