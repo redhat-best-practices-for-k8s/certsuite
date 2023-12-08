@@ -29,8 +29,16 @@ OPERATORS_UNDER_TEST=""
 
 # OUTPUTS
 
-# Report folder
-REPORT_FOLDER_RELATIVE="report_$TIMESTAMP"
+# Check if DEBUG mode
+if [ -n "${DEBUG_RUN+any}" ]; then
+	echo "DEBUG_RUN is set. Running in debug mode"
+	# Debug folder
+	REPORT_FOLDER_RELATIVE="debug_$TIMESTAMP"
+else
+	echo "DEBUG_RUN is not set. Running in non-debug mode"
+	# Report folder
+	REPORT_FOLDER_RELATIVE="report_$TIMESTAMP"
+fi
 
 # Report results folder
 REPORT_FOLDER="$BASE_DIR"/"$REPORT_FOLDER_RELATIVE"
@@ -314,11 +322,14 @@ while IFS=, read -r package_name catalog; do
 	# merge claim.json from each operator to a single csv file
 	./tnf claim show csv -c "$reportDir"/claim.json -n "$package_name" -t "$CNF_TYPE" "$addHeaders" >>"$REPORT_FOLDER"/results.csv
 
+	# extract parser
+	tar -xvf "$reportDir"/*.tar.gz -C "$reportDir"/ results.html
+
 	# Add per operator links
 	{
 		# Add parser link
 		echo "Results for: <b>$package_name</b>,  parsed details:"
-		echo '<a href="/results.html?claimfile=/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/claim.json">'"link"'</a>'
+		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/results.html?claimfile=/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/claim.json">'"link"'</a>'
 
 		# Add log link
 		echo ", log: "
