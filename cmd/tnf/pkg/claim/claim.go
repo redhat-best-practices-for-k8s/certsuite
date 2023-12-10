@@ -63,9 +63,16 @@ type Nodes struct {
 	CsiDriver    interface{} `json:"csiDriver"`
 }
 
+type TestOperator struct {
+	Name string `json:"name"`
+	Namespace string `json:"namespace"`
+	Version string `json:"version"`
+}
+
 type Configurations struct {
 	Config         interface{}   `json:"Config"`
 	AbnormalEvents []interface{} `json:"AbnormalEvents"`
+	TestOperators []TestOperator `json:"testOperators"`
 }
 
 type Schema struct {
