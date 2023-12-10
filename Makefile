@@ -55,7 +55,7 @@ LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification
 LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/cnf-certification-test.GitPreviousRelease=${GIT_PREVIOUS_RELEASE}
 LINKER_TNF_RELEASE_FLAGS+= -X github.com/test-network-function/cnf-certification-test/cnf-certification-test.ClaimFormatVersion=${CLAIM_FORMAT_VERSION}
 PARSER_RELEASE=$(shell jq .parserTag version.json)
-BASH_SCRIPTS=$(shell find -name "*.sh" -not -path "./.git/*")
+BASH_SCRIPTS=$(shell find . -name "*.sh" -not -path "./.git/*")
 
 all: build
 
