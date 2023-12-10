@@ -152,13 +152,22 @@ func buildCSV(claimScheme *claim.Schema, cnfType string, catalogMap map[string]c
 		})
 	}
 
+	opVers := ""
+	for i, op := range claimScheme.Claim.Configurations.TestOperators {
+		if i == 0 {
+			opVers = op.Version
+		} else {
+			opVers = opVers + ", " + op.Version
+		}
+	}
+
 	for testID := range claimScheme.Claim.Results {
 		// initialize record
 		record := []string{}
 		// creates and appends new CSV record
 		record = append(record,
 			CNFNameFlag,
-			"Foobar",
+			opVers,
 			testID,
 			claimScheme.Claim.Results[testID].TestID.Suite,
 			claimScheme.Claim.Results[testID].CatalogInfo.Description,
