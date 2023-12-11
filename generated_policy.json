@@ -127,12 +127,12 @@
         "tags": "common"
       },
       {
-        "id": "lifecycle-container-shutdown",
+        "id": "lifecycle-container-prestop",
         "suite": "lifecycle",
         "tags": "telco"
       },
       {
-        "id": "lifecycle-container-startup",
+        "id": "lifecycle-container-poststart",
         "suite": "lifecycle",
         "tags": "telco"
       },

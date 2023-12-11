@@ -569,15 +569,15 @@ Tags|telco,lifecycle
 |Non-Telco|Optional|
 |Telco|Mandatory|
 
-#### lifecycle-container-shutdown
+#### lifecycle-container-poststart
 
 Property|Description
 ---|---
-Unique ID|lifecycle-container-shutdown
-Description|Ensure that the containers lifecycle preStop management feature is configured. The most basic requirement for the lifecycle management of Pods in OpenShift are the ability to start and stop correctly. There are different ways a pod can stop on an OpenShift cluster. One way is that the pod can remain alive but non-functional. Another way is that the pod can crash and become non-functional. When pods are shut down by the platform they are sent a SIGTERM signal which means that the process in the container should start shutting down, closing connections and stopping all activity. If the pod doesn’t shut down within the default 30 seconds then the platform may send a SIGKILL signal which will stop the pod immediately. This method isn’t as clean and the default time between the SIGTERM and SIGKILL messages can be modified based on the requirements of the application. Containers should respond to SIGTERM/SIGKILL with graceful shutdown.
-Suggested Remediation|The preStop can be used to gracefully stop the container and clean resources (e.g., DB connection). For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. All pods must respond to SIGTERM signal and shutdown gracefully with a zero exit code.
+Unique ID|lifecycle-container-poststart
+Description|Ensure that the containers lifecycle postStart management feature is configured. A container must receive important events from the platform and conform/react to these events properly. For example, a container should catch SIGTERM or SIGKILL from the platform and shutdown as quickly as possible. Other typically important events from the platform are PostStart to initialize before servicing requests and PreStop to release resources cleanly before shutting down.
+Suggested Remediation|PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. PostStart is used to configure container, set up dependencies, record new creation. It can also be used to check that a required API is available before the container’s work begins.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cloud-native-design-best-practices
-Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.
+Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.
 Tags|telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
@@ -585,15 +585,15 @@ Tags|telco,lifecycle
 |Non-Telco|Optional|
 |Telco|Mandatory|
 
-#### lifecycle-container-startup
+#### lifecycle-container-prestop
 
 Property|Description
 ---|---
-Unique ID|lifecycle-container-startup
-Description|Ensure that the containers lifecycle postStart management feature is configured. A container must receive important events from the platform and conform/react to these events properly. For example, a container should catch SIGTERM or SIGKILL from the platform and shutdown as quickly as possible. Other typically important events from the platform are PostStart to initialize before servicing requests and PreStop to release resources cleanly before shutting down.
-Suggested Remediation|PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. PostStart is used to configure container, set up dependencies, record new creation. It can also be used to check that a required API is available before the container’s work begins.
+Unique ID|lifecycle-container-prestop
+Description|Ensure that the containers lifecycle preStop management feature is configured. The most basic requirement for the lifecycle management of Pods in OpenShift are the ability to start and stop correctly. There are different ways a pod can stop on an OpenShift cluster. One way is that the pod can remain alive but non-functional. Another way is that the pod can crash and become non-functional. When pods are shut down by the platform they are sent a SIGTERM signal which means that the process in the container should start shutting down, closing connections and stopping all activity. If the pod doesn’t shut down within the default 30 seconds then the platform may send a SIGKILL signal which will stop the pod immediately. This method isn’t as clean and the default time between the SIGTERM and SIGKILL messages can be modified based on the requirements of the application. Containers should respond to SIGTERM/SIGKILL with graceful shutdown.
+Suggested Remediation|The preStop can be used to gracefully stop the container and clean resources (e.g., DB connection). For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. All pods must respond to SIGTERM signal and shutdown gracefully with a zero exit code.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cloud-native-design-best-practices
-Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.
+Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.
 Tags|telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
