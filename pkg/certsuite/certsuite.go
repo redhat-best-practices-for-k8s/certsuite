@@ -145,6 +145,9 @@ func Run(labelsFilter, outputFolder string) error {
 	// Add all the web artifacts file paths.
 	allArtifactsFilePaths = append(allArtifactsFilePaths, webFilePaths...)
 
+	// Add the log file path
+	allArtifactsFilePaths = append(allArtifactsFilePaths, filepath.Join(outputFolder, log.LogFileName))
+
 	// tar.gz file creation with results and html artifacts, unless omitted by env var.
 	if !configuration.GetTestParameters().OmitArtifactsZipFile {
 		err = results.CompressResultsArtifacts(resultsOutputDir, allArtifactsFilePaths)
