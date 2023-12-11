@@ -319,6 +319,29 @@ while IFS=, read -r package_name catalog; do
 	cleanup
 	waitDeleteNamespace "$ns"
 
+	# Check parsing claim file
+	./tnf claim show csv -c "$reportDir"/claim.json -n "$package_name" -t "$CNF_TYPE" "$addHeaders" || status=$?
+
+	# if parsing claim file fails, skip this operator
+	if [ "$status" != 0 ]; then
+		# Add per operator links
+		{
+			# Add error message
+			echo "Results for: <b>$package_name</b>, "'<span style="color: red;">Operator installation failed due to tasty internal error, skipping test</span>'
+
+			# Add tnf_config link
+			echo ", tnf_config: "
+			echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/tnf_config.yml">'"link"'</a>'
+
+			# New line
+			echo "<br>"
+		} >>"$REPORT_FOLDER"/"$INDEX_FILE"
+
+		cleanup
+
+		continue
+	fi
+
 	# merge claim.json from each operator to a single csv file
 	./tnf claim show csv -c "$reportDir"/claim.json -n "$package_name" -t "$CNF_TYPE" "$addHeaders" >>"$REPORT_FOLDER"/results.csv
 
