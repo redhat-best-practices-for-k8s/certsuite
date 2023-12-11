@@ -14,11 +14,16 @@ type Logger struct {
 	*slog.Logger
 }
 
-var logger *slog.Logger
+var (
+	logger   *slog.Logger
+	logLevel slog.Level
+)
 
 func SetupLogger(logWriter io.Writer, level slog.Level) {
+	logLevel = level
+
 	opts := Options{
-		Level: level,
+		Level: logLevel,
 	}
 	logger = slog.New(NewCustomHandler(logWriter, &opts))
 }
@@ -45,7 +50,7 @@ func Error(msg string, args ...any) {
 
 func GetMultiLogger(w io.Writer) *slog.Logger {
 	opts := Options{
-		Level: slog.LevelDebug,
+		Level: logLevel,
 	}
 	return slog.New(NewMultiHandler(logger.Handler(), NewCustomHandler(w, &opts)))
 }
