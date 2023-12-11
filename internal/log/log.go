@@ -10,9 +10,10 @@ import (
 	"time"
 )
 
-type Logger struct {
-	*slog.Logger
-}
+const (
+	LogFileName        = "cnf-certsuite.log"
+	LogFilePermissions = 0o644
+)
 
 var logger *slog.Logger
 

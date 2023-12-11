@@ -38,8 +38,6 @@ const (
 	junitFlagKey                  = "junit"
 	TNFReportKey                  = "cnf-certification-test"
 	extraInfoKey                  = "testsExtraInfo"
-	logFileName                   = "cnf-certsuite.log"
-	logFilePermissions            = 0o644
 )
 
 func init() {
@@ -47,13 +45,13 @@ func init() {
 }
 
 func createLogFile(outputDir string) (*os.File, error) {
-	logFilePath := outputDir + "/" + logFileName
+	logFilePath := outputDir + "/" + log.LogFileName
 	err := os.Remove(logFilePath)
 	if err != nil && !os.IsNotExist(err) {
 		return nil, fmt.Errorf("could not delete old log file, err: %v", err)
 	}
 
-	logFile, err := os.OpenFile(logFilePath, os.O_RDWR|os.O_CREATE, logFilePermissions)
+	logFile, err := os.OpenFile(logFilePath, os.O_RDWR|os.O_CREATE, log.LogFilePermissions)
 	if err != nil {
 		return nil, fmt.Errorf("could not open a new log file, err: %v", err)
 	}
@@ -68,7 +66,7 @@ func setupLogger(logFile *os.File) {
 	}
 
 	log.SetupLogger(logFile, logLevel)
-	log.Info("Log file: %s (level=%s)", logFileName, logLevel.String())
+	log.Info("Log file: %s (level=%s)", log.LogFileName, logLevel.String())
 }
 
 func main() {
@@ -97,7 +95,7 @@ func main() {
 	fmt.Printf("Claim file version: %s\n", versions.ClaimFormatVersion)
 	fmt.Printf("Checks filter: %s\n", *flags.LabelsFlag)
 	fmt.Printf("Output folder: %s\n", *flags.ClaimPath)
-	fmt.Printf("Log file: %s\n", logFileName)
+	fmt.Printf("Log file: %s\n", log.LogFileName)
 	fmt.Printf("\n")
 
 	if *flags.ListFlag {
