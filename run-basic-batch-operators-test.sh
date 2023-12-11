@@ -320,14 +320,13 @@ while IFS=, read -r package_name catalog; do
 	waitDeleteNamespace "$ns"
 
 	# Check parsing claim file
-	./tnf claim show csv -c "$reportDir"/claim.json -n "$package_name" -t "$CNF_TYPE" "$addHeaders" || status=$?
+	./tnf claim show csv -c "$reportDir"/claim.json -n "$package_name" -t "$CNF_TYPE" "$addHeaders" || {
 
-	# if parsing claim file fails, skip this operator
-	if [ "$status" != 0 ]; then
+		# if parsing claim file fails, skip this operator
 		# Add per operator links
 		{
 			# Add error message
-			echo "Results for: <b>$package_name</b>, "'<span style="color: red;">Operator installation failed due to tasty internal error, skipping test</span>'
+			echo "Results for: <b>$package_name</b>, "'<span style="color: red;">Operator installation failed due to claim parsing error, skipping test</span>'
 
 			# Add tnf_config link
 			echo ", tnf_config: "
@@ -335,12 +334,12 @@ while IFS=, read -r package_name catalog; do
 
 			# New line
 			echo "<br>"
-		} >>"$REPORT_FOLDER"/"$INDEX_FILE"
+		} >>"$REPORT_FOLDER/$INDEX_FILE"
 
 		cleanup
 
 		continue
-	fi
+	}
 
 	# merge claim.json from each operator to a single csv file
 	./tnf claim show csv -c "$reportDir"/claim.json -n "$package_name" -t "$CNF_TYPE" "$addHeaders" >>"$REPORT_FOLDER"/results.csv
