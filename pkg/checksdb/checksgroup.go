@@ -283,13 +283,13 @@ func runCheck(check *Check, group *ChecksGroup, remainingChecks []*Check) (err e
 //   - AfterEach panic: Set check as error.
 //
 //nolint:funlen
-func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool, abortChan chan bool) (errs []error) {
+func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool, abortChan chan bool) (errs []error, failedChecks int) {
 	log.Info("Running group %q checks.", group.name)
 	fmt.Printf("Running suite %s\n", strings.ToUpper(group.name))
 
 	labelsExprEvaluator, err := NewLabelsExprEvaluator(labelsExpr)
 	if err != nil {
-		return []error{fmt.Errorf("invalid labels expression: %v", err)}
+		return []error{fmt.Errorf("invalid labels expression: %v", err)}, 0
 	}
 
 	// Get checks to run based on the label expr.
@@ -305,7 +305,7 @@ func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool, abo
 	if len(checks) == 0 {
 		// No check matched the labels expression.
 		// skipAll(checks, "Not matching labels")
-		return nil
+		return nil, 0
 	}
 
 	// Run afterAllFn always, no matter previous panics/crashes.
@@ -317,7 +317,7 @@ func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool, abo
 
 	if err := runBeforeAllFn(group, checks); err != nil {
 		errs = append(errs, err)
-		return errs
+		return errs, 0
 	}
 
 	log.Info("Checks to run: %d (group's total=%d)", len(checks), len(group.checks))
@@ -326,7 +326,7 @@ func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool, abo
 		// Fast stop in case the stop (abort/timeout) signal received.
 		select {
 		case <-stopChan:
-			return nil
+			return nil, 0
 		default:
 		}
 
@@ -363,10 +363,15 @@ func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool, abo
 			break
 		}
 
+		// Increment the failed checks counter.
+		if check.Result.String() == CheckResultFailed {
+			failedChecks++
+		}
+
 		group.currentRunningCheckIdx++
 	}
 
-	return errs
+	return errs, failedChecks
 }
 
 func (group *ChecksGroup) OnAbort(labelsExpr, abortReason string) error {
