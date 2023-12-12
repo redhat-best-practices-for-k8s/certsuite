@@ -267,7 +267,6 @@ func testNetworkConnectivity(env *provider.TestEnvironment, aIPVersion netcommon
 	check.LogDebug("%s", claimsLog.GetLogLines())
 	if skip {
 		check.LogInfo("There are no %s networks to test with at least 2 pods, skipping test", aIPVersion)
-		return
 	}
 	check.SetResult(report.CompliantObjectsOut, report.NonCompliantObjectsOut)
 }
