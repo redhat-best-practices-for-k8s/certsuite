@@ -64,24 +64,105 @@ cleanup() {
 
 	# cleanup any leftovers
 	# https://docs.openshift.com/container-platform/4.14/operators/admin/olm-deleting-operators-from-cluster.html
-	oc get csv -n openshift-operators | grep -v packageserver | grep -v NAME | awk '{print "oc delete --wait=true csv " $2 " -n openshift-operators"}' | bash || true
-	oc get csv -A | grep -v packageserver | grep -v NAME | awk '{print "oc delete --wait=true csv " $2 " -n " $1}' | bash || true
-	oc get subscriptions -A | grep -v NAME | awk '{print "oc delete --wait=true subscription " $2 " -n " $1}' | bash || true
-	oc get job,configmap -n openshift-marketplace | grep -v NAME | grep -v "configmap/kube-root-ca.crt" | grep -v "configmap/marketplace-operator-lock" | grep -v "configmap/marketplace-trusted-ca" | grep -v "configmap/openshift-service-ca.crt" | awk '{print "oc delete --wait=true " $1 " -n openshift-marketplace" }' | bash || true
+	oc get csv -n openshift-operators | grep -v packageserver | grep -v NAME | awk '{print " oc delete --wait=true csv " $2 " -n openshift-operators"}' | bash || true
+	oc get csv -A | grep -v packageserver | grep -v NAME | awk '{print " oc delete --wait=true csv " $2 " -n " $1}' | bash || true
+	oc get subscriptions -A | grep -v NAME | awk '{print " oc delete --wait=true subscription " $2 " -n " $1}' | bash || true
+	oc get job,configmap -n openshift-marketplace | grep -v NAME | grep -v "configmap/kube-root-ca.crt" | grep -v "configmap/marketplace-operator-lock" | grep -v "configmap/marketplace-trusted-ca" | grep -v "configmap/openshift-service-ca.crt" | awk '{print " oc delete --wait=true " $1 " -n openshift-marketplace" }' | bash || true
 }
 
 waitDeleteNamespace() {
 	namespaceDeleting=$1
-	# Wait for the CSV to be removed
-	oc wait csv -l test-network-function.com/operator=target -n "$namespaceDeleting" --for=delete --timeout=300s || true
-
 	# Wait for the namespace to be removed
 	if [ "$namespaceDeleting" != "openshift-operators" ]; then
 
 		echo "non openshift-operators namespace = $namespaceDeleting, deleting "
-		oc wait namespace "$namespaceDeleting" --for=delete --timeout=300s || true
+		withRetry 4 10 oc wait namespace "$namespaceDeleting" --for=delete --timeout=60s || true
 		forceDeleteNamespaceIfPresent "$namespaceDeleting"
 	fi
+}
+
+# Function to execute oc command with retry
+function withRetry() {
+	local max_retries=$1
+	local timeout=$2
+	shift 2
+
+	local retries=0
+	local status=0
+	until [ "$retries" -ge "$max_retries" ]; do
+		# Execute oc command saving stdout, stderr and exit status
+		# see: https://stackoverflow.com/questions/11027679/capture-stdout-and-stderr-into-different-variables/41069638#41069638
+		unset stdout stderr status
+		eval "$(
+			(
+				#oc command
+				$"$@"
+			) \
+				2> >(
+					# shellcheck disable=SC2030
+					stderr=$(cat)
+					typeset -p stderr
+				) \
+				> >(
+					# shellcheck disable=SC2030
+					stdout=$(cat)
+					typeset -p stdout
+				)
+			# shellcheck disable=SC2030
+			status=$?
+			typeset -p status
+		)"
+		# shellcheck disable=SC2031
+		if [ "$status" == 0 ]; then
+			# If the command succeeded, break out of the loop
+			# shellcheck disable=SC2031
+			echo "$stdout"
+
+			echo "command: $*" >&2
+			echo "stderr: $stderr" >&2
+			echo "stdout: $stdout" >&2
+			echo "status: $status" >&2
+			return 0
+		fi
+		# If the command failed, increment the retry counter
+		retries=$((retries + 1))
+		# shellcheck disable=SC2031
+		echo "command: $*" >&2
+		# shellcheck disable=SC2031
+		echo "stderr: $stderr" >&2
+		# shellcheck disable=SC2031
+		echo "stdout: $stdout" >&2
+		# shellcheck disable=SC2031
+		echo "status: $status" >&2
+		echo "Retry $retries/$max_retries: Waiting for a few seconds before the next attempt..." >&2
+		sleep "$timeout"
+	done
+
+	echo "Maximum retries reached. Exiting with failure." >&2
+	return 1
+}
+
+waitClusterOk() {
+	timeoutSeconds=600
+	startTime=$(date +%s)
+	while true; do
+		status=0
+		oc get nodes &>/dev/null || status="$?"
+		if [ "$status" == 0 ]; then
+			return 0
+		fi
+		currentTime=$(date +%s)
+		elapsedTime=$((currentTime - startTime))
+		# If elapsed time is greater than the timeout report failure
+		if [ "$elapsedTime" -ge "$timeoutSeconds" ]; then
+			echo "Timeout reached $timeoutSeconds seconds waiting for cluster to be reacheable."
+			return 1
+		fi
+
+		# Otherwise wait a bit
+		echo "Waiting for cluster to be reacheable..."
+		sleep 5
+	done
 }
 
 waitForCsvToAppearAndLabel() {
@@ -89,7 +170,7 @@ waitForCsvToAppearAndLabel() {
 	timeoutSeconds=300
 	startTime=$(date +%s)
 	while true; do
-		csvs=$(oc get csv -n "$csvNamespace")
+		csvs=$(oc get csv -n "$csvNamespace") || true
 		if [ "$csvs" != "" ]; then
 			# If any CSV is present, break
 			break
@@ -109,11 +190,12 @@ waitForCsvToAppearAndLabel() {
 	done
 
 	# Label CSV with "test-network-function.com/operator=target"
-	oc get csv -n "$csvNamespace" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | grep -v openshift-operator-lifecycle-manager | sed '/^ *$/d' | awk '{print "oc label " $3  " -n " $2 " " $1  " test-network-function.com/operator=target "}' | bash
+	command=$(withRetry 180 10 oc get csv -n "$csvNamespace" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | grep -v openshift-operator-lifecycle-manager | sed '/^ *$/d' | awk '{print "  withRetry 180 10 oc label " $3  " -n " $2 " " $1  " test-network-function.com/operator=target "}')
+	eval "$command"
 
 	# Wait for the CSV to be succeeded
 	status=0
-	oc wait csv -l test-network-function.com/operator=target -n "$ns" --for=jsonpath=\{.status.phase\}=Succeeded --timeout=300s || status="$?"
+	withRetry 2 10 oc wait csv -l test-network-function.com/operator=target -n "$ns" --for=jsonpath=\{.status.phase\}=Succeeded --timeout=60s || status="$?"
 	return $status
 }
 
@@ -126,7 +208,7 @@ forceDeleteNamespaceIfPresent() {
 	fi
 	# Delete namespace
 	oc delete namespace "$aNamespace" --wait=false || true
-	oc wait namespace "$aNamespace" --for=delete --timeout=30s || true
+	withRetry 2 10 oc wait namespace "$aNamespace" --for=delete --timeout=5s || true
 
 	# If a namespace with this name does not exist, all is good, exit
 	if ! oc get namespace "$aNamespace"; then
@@ -134,21 +216,21 @@ forceDeleteNamespaceIfPresent() {
 	fi
 
 	# Otherwise force delete namespace
-	oc get namespace "$aNamespace" -ojson | sed '/"kubernetes"/d' >temp.yaml
-	oc proxy &
+	withRetry 180 10 oc get namespace "$aNamespace" -ojson | sed '/"kubernetes"/d' >temp.yaml
+	withRetry 180 10 oc proxy &
 	pid=$!
 	echo "PID: $pid"
 	sleep 5
 	curl -H "Content-Type: application/yaml" -X PUT --data-binary @temp.yaml http://127.0.0.1:8001/api/v1/namespaces/"$aNamespace"/finalize
 	kill -9 "$pid"
-	oc wait namespace "$aNamespace" --for=delete --timeout=300s || true
+	withRetry 2 10 oc wait namespace "$aNamespace" --for=delete --timeout=60s
 }
 
 # Check if the number of parameters is correct
 if [ "$#" -eq 1 ]; then
 	OPERATOR_CATALOG=$1
 	# Get all the packages present in the cluster catalog
-	oc get packagemanifest -o jsonpath='{range .items[*]}{.metadata.name}{","}{.status.catalogSource}{"\n"}{end}' | grep "$OPERATOR_CATALOG" | head -n -1 >"$OPERATOR_LIST_PATH"
+	withRetry 180 10 oc get packagemanifest -o jsonpath='{range .items[*]}{.metadata.name}{","}{.status.catalogSource}{"\n"}{end}' | grep "$OPERATOR_CATALOG" | head -n -1 >"$OPERATOR_LIST_PATH"
 
 elif [ "$#" -eq 2 ]; then
 	OPERATOR_CATALOG=$1
@@ -214,6 +296,9 @@ OPERATOR_PAGE='<!DOCTYPE html>
 
 echo "$OPERATOR_PAGE" >>"$REPORT_FOLDER"/"$INDEX_FILE"
 
+# Wait for the cluster to be reacheable
+waitClusterOk
+
 cleanup
 
 # For each operator in a provided catalog, this script will install the operator and run the CNF test suite.
@@ -224,8 +309,11 @@ while IFS=, read -r package_name catalog; do
 
 	echo "package=$package_name catalog=$catalog"
 
+	# Wait for the cluster to be reacheable
+	waitClusterOk
+
 	status=0
-	tasty install "$package_name" --source "$catalog" --stdout &>/dev/null || status=$?
+	withRetry 180 10 tasty install "$package_name" --source "$catalog" --stdout &>/dev/null || status=$?
 
 	# if tasty fails, skip this operator
 	if [ "$status" != 0 ]; then
@@ -246,14 +334,16 @@ while IFS=, read -r package_name catalog; do
 
 		continue
 	fi
+	# Wait for the cluster to be reacheable
+	waitClusterOk
 
-	namesCount=$(tasty install "$package_name" --source "$catalog" --stdout | grep -c "name:")
+	namesCount=$(withRetry 180 10 tasty install "$package_name" --source "$catalog" --stdout | grep -c "name:")
 
 	if [ "$namesCount" = "4" ]; then
 		# Get namespace from tasty
-		ns=$(tasty install "$package_name" --source "$catalog" --stdout | grep "name:" | head -n1 | awk '{ print $2 }')
+		ns=$(withRetry 180 10 tasty install "$package_name" --source "$catalog" --stdout | grep "name:" | head -n1 | awk '{ print $2 }')
 	elif [ "$namesCount" = "2" ]; then
-		ns="openshift-operators"
+		ns="test-operators"
 	fi
 
 	echo "namespace=$ns"
@@ -261,8 +351,20 @@ while IFS=, read -r package_name catalog; do
 	# If a namespace is present, it is probably stuck deleting from previous runs. Force delete it.
 	forceDeleteNamespaceIfPresent "$ns"
 
+	# Wait for the cluster to be reacheable
+	waitClusterOk
+
 	# Install the operator in a custom namespace
-	tasty install "$package_name" --source "$catalog" -w
+	withRetry 180 10 tasty install "$package_name" --source "$catalog" -w -n "$ns" --stdout >operator.yml
+	if [ "$ns" = "test-operators" ]; then
+		sed -i '/targetNamespaces:/ { N; /- test-operators/d }' operator.yml
+	fi
+
+	# apply namespace/operator group and subscription
+	withRetry 180 10 oc apply -f operator.yml
+
+	# Wait for the cluster to be reacheable
+	waitClusterOk
 
 	# Setting report directory
 	reportDir="$REPORT_FOLDER"/"$package_name"
@@ -291,8 +393,9 @@ while IFS=, read -r package_name catalog; do
 			# New line
 			echo "<br>"
 		} >>"$REPORT_FOLDER"/"$INDEX_FILE"
+
 		# Remove the operator
-		tasty remove "$package_name"
+		withRetry 180 10 oc delete -f operator.yml
 
 		cleanup
 		waitDeleteNamespace "$ns"
@@ -303,21 +406,21 @@ while IFS=, read -r package_name catalog; do
 	echo "operator $package_name installed"
 
 	# Label deployments, statefulsets and pods with "test-network-function.com/generic=target"
-	oc get deployment -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "oc label " $3  " -n " $2 " " $1  " test-network-function.com/generic=target "}' | bash
-	oc get statefulset -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "oc label " $3  " -n " $2 " " $1  " test-network-function.com/generic=target "}' | bash
-	oc get pods -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "oc label " $3  " -n " $2 " " $1  " test-network-function.com/generic=target "}' | bash
+	oc get deployment -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " test-network-function.com/generic=target "}' | bash || true
+	oc get statefulset -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " test-network-function.com/generic=target "}' | bash || true
+	oc get pods -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " test-network-function.com/generic=target "}' | bash || true
 
 	# run tnf-container
 	./run-tnf-container.sh -k "$KUBECONFIG" -t "$reportDir" -o "$reportDir" -c "$DOCKER_CONFIG" -l all || true
 
-	# Unlabel and uninstall the operator
-	oc get csv -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "oc label " $3  " -n " $2 " " $1  " test-network-function.com/operator- "}' | bash
+	# Unlabel the operator
+	oc get csv -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " test-network-function.com/operator- "}' | bash || true
 
 	# remove the operator
-	tasty remove "$package_name"
+	withRetry 180 10 oc delete -f operator.yml --wait=false
 
-	cleanup
 	waitDeleteNamespace "$ns"
+	cleanup
 
 	# Check parsing claim file
 	./tnf claim show csv -c "$reportDir"/claim.json -n "$package_name" -t "$CNF_TYPE" "$addHeaders" || {
@@ -371,7 +474,7 @@ while IFS=, read -r package_name catalog; do
 done <"$OPERATOR_LIST_PATH"
 
 # Resetting project to default
-oc project default
+withRetry 180 10 oc project default
 
 # closing html file
 echo '</body></html>' >>"$REPORT_FOLDER"/"$INDEX_FILE"
