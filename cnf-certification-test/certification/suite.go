@@ -80,42 +80,30 @@ func LoadChecks() {
 	checksGroup := checksdb.NewChecksGroup(common.AffiliatedCertTestKey).
 		WithBeforeEachFn(beforeEachFn)
 
-	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHelmVersionIdentifier)
-	check := checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHelmVersionIdentifier)).
 		WithSkipCheckFn(skipIfNoHelmChartReleasesFn).
-		WithCheckFn(testHelmVersion)
+		WithCheckFn(testHelmVersion))
 
-	checksGroup.Add(check)
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOperatorIsCertifiedIdentifier)
-	check = checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOperatorIsCertifiedIdentifier)).
 		WithSkipCheckFn(skipIfNoOperatorsFn).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testAllOperatorCertified(c, &env, validator)
 			return nil
-		})
+		}))
 
-	checksGroup.Add(check)
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHelmIsCertifiedIdentifier)
-	check = checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHelmIsCertifiedIdentifier)).
 		WithSkipCheckFn(skipIfNoHelmChartReleasesFn).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testHelmCertified(c, &env, validator)
 			return nil
-		})
+		}))
 
-	checksGroup.Add(check)
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedDigestIdentifier)
-	check = checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedDigestIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainerCertificationStatusByDigest(c, &env, validator)
 			return nil
-		})
-
-	checksGroup.Add(check)
+		}))
 }
 
 func getContainersToQuery(env *provider.TestEnvironment) map[provider.ContainerImageIdentifier]bool {

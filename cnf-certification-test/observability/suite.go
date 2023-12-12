@@ -50,46 +50,34 @@ func LoadChecks() {
 	checksGroup := checksdb.NewChecksGroup(common.ObservabilityTestKey).
 		WithBeforeEachFn(beforeEachFn)
 
-	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestLoggingIdentifier)
-	check := checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestLoggingIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainersLogging(c, &env)
 			return nil
-		})
+		}))
 
-	checksGroup.Add(check)
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCrdsStatusSubresourceIdentifier)
-	check = checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCrdsStatusSubresourceIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoCrdsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testCrds(c, &env)
 			return nil
-		})
+		}))
 
-	checksGroup.Add(check)
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestTerminationMessagePolicyIdentifier)
-	check = checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestTerminationMessagePolicyIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testTerminationMessagePolicy(c, &env)
 			return nil
-		})
+		}))
 
-	checksGroup.Add(check)
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodDisruptionBudgetIdentifier)
-	check = checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodDisruptionBudgetIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoDeploymentsUnderTestSkipFn(&env), testhelper.GetNoStatefulSetsUnderTestSkipFn(&env)).
 		WithSkipModeAll().
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodDisruptionBudgets(c, &env)
 			return nil
-		})
-
-	checksGroup.Add(check)
+		}))
 }
 
 // containerHasLoggingOutput helper function to get the last line of logging output from

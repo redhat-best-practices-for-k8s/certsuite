@@ -150,8 +150,7 @@ func generatePreflightContainerGinkgoTest(checksGroup *checksdb.ChecksGroup, tes
 		identifiers.Extended: identifiers.Optional,
 	}, identifiers.TagPreflight)
 
-	testID, tags := identifiers.GetGinkgoTestIDAndLabels(aID)
-	check := checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(aID)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			var compliantObjects []*testhelper.ReportObject
@@ -179,9 +178,7 @@ func generatePreflightContainerGinkgoTest(checksGroup *checksdb.ChecksGroup, tes
 
 			c.SetResult(compliantObjects, nonCompliantObjects)
 			return nil
-		})
-
-	checksGroup.Add(check)
+		}))
 }
 
 func generatePreflightOperatorGinkgoTest(checksGroup *checksdb.ChecksGroup, testName, description, suggestion string, operators []*provider.Operator) {
@@ -196,8 +193,7 @@ func generatePreflightOperatorGinkgoTest(checksGroup *checksdb.ChecksGroup, test
 		identifiers.Extended: identifiers.Optional,
 	}, identifiers.TagPreflight)
 
-	testID, tags := identifiers.GetGinkgoTestIDAndLabels(aID)
-	check := checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(aID)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			var compliantObjects []*testhelper.ReportObject
@@ -226,9 +222,7 @@ func generatePreflightOperatorGinkgoTest(checksGroup *checksdb.ChecksGroup, test
 
 			c.SetResult(compliantObjects, nonCompliantObjects)
 			return nil
-		})
-
-	checksGroup.Add(check)
+		}))
 }
 
 func getUniqueTestEntriesFromContainerResults(containers []*provider.Container) map[string]plibRuntime.Result {
