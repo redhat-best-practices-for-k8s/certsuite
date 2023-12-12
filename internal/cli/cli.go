@@ -32,6 +32,15 @@ const banner = `
 
 `
 
+const (
+	CheckResultTagPass    = Green + "PASS" + Reset
+	CheckResultTagFail    = Red + "FAIL" + Reset
+	CheckResultTagSkip    = Yellow + "SKIP" + Reset
+	CheckResultTagRunning = Cyan + "RUNNING" + Reset
+	CheckResultTagAborted = Red + "ABORTED" + Reset
+	CheckResultTagError   = Red + "ERROR" + Reset
+)
+
 func PrintBanner() {
 	fmt.Print(banner)
 }
