@@ -86,13 +86,15 @@ func GetHwInfoAllNodes() (out map[string]NodeHwInfo) {
 		lscpu, err := getHWJsonOutput(debugPod, o, lscpuCommand)
 		if err != nil {
 			log.Error("problem getting lscpu for node %s", debugPod.Spec.NodeName)
+		} else {
+			var ok bool
+			temp, ok := lscpu.(map[string]interface{})
+			if !ok {
+				log.Error("problem casting lscpu field for node %s, lscpu=%v", debugPod.Spec.NodeName, lscpu)
+			} else {
+				hw.Lscpu = temp["lscpu"]
+			}
 		}
-		var ok bool
-		hw.Lscpu, ok = lscpu.(map[string]interface{})["lscpu"]
-		if !ok {
-			log.Error("problem casting lscpu field for node %s, lscpu=%v", debugPod.Spec.NodeName, lscpu)
-		}
-
 		hw.IPconfig, err = getHWJsonOutput(debugPod, o, ipCommand)
 		if err != nil {
 			log.Error("problem getting ip config for node %s", debugPod.Spec.NodeName)

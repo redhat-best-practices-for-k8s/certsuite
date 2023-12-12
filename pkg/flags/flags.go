@@ -26,7 +26,7 @@ const (
 	defaultClaimPath       = "."
 	NoLabelsExpr           = "none"
 	labelsFlagName         = "label-filter"
-	labelsFlagDefaultValue = "common"
+	labelsFlagDefaultValue = "none"
 
 	labelsFlagUsage = "--label-filter <expression>  e.g. --label-filter 'access-control && !access-control-sys-admin-capability'"
 
