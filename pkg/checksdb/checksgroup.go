@@ -95,6 +95,7 @@ func skipAll(checks []*Check, reason string) {
 
 func onFailure(failureType, failureMsg string, group *ChecksGroup, currentCheck *Check, remainingChecks []*Check) error {
 	// Set current Check's result as error.
+	fmt.Printf("\r[ %s ] %-60s\n", cli.CheckResultTagError, currentCheck.ID)
 	currentCheck.SetResultError(failureType + ": " + failureMsg)
 	// Set the remaining checks as skipped, using a simplified reason msg.
 	reason := "group " + group.name + " " + failureType
@@ -414,7 +415,7 @@ func (group *ChecksGroup) OnAbort(labelsExpr, abortReason string) error {
 		// Abort the check that was running when it was aborted and skip the rest.
 		if i == group.currentRunningCheckIdx {
 			check.SetResultAborted(abortReason)
-			fmt.Printf("\r[ %s ] %s\n", cli.CheckResultTagAborted, check.ID)
+			fmt.Printf("\r[ %s ] %-60s\n", cli.CheckResultTagAborted, check.ID)
 		} else if i > group.currentRunningCheckIdx {
 			fmt.Printf("[ %s ] %s\n", cli.CheckResultTagSkip, check.ID)
 			check.SetResultSkipped(abortReason)
