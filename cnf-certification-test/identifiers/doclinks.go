@@ -74,8 +74,8 @@ const (
 	// Lifecycle Suite
 	TestAffinityRequiredPodsDocLink                    = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations"
 	TestStorageProvisionerDocLink                      = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-local-storage"
-	TestContainerPostStartIdentifierDocLink            = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cloud-native-design-best-practices"
-	TestContainerPrestopIdentifierDocLink              = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cloud-native-design-best-practices"
+	TestStartupIdentifierDocLink                       = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cloud-native-design-best-practices"
+	TestShutdownIdentifierDocLink                      = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-cloud-native-design-best-practices"
 	TestPodNodeSelectorAndAffinityBestPracticesDocLink = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations"
 	TestPodHighAvailabilityBestPracticesDocLink        = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-high-level-cnf-expectations"
 	TestPodDeploymentBestPracticesIdentifierDocLink    = "https://test-network-function.github.io/cnf-best-practices/#cnf-best-practices-no-naked-pods"

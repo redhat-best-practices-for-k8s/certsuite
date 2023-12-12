@@ -184,7 +184,7 @@ const (
 
 	HyperThreadEnable = "Check that baremetal workers have hyperthreading enabled"
 
-	ContainerPostStartIdentifierRemediation = `Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.`
+	StartupIdentifierRemediation = `Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.`
 
-	ContainerPrestopIdentifierRemediation = `Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.`
+	ShutdownIdentifierRemediation = `Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.`
 )

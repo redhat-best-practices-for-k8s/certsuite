@@ -73,7 +73,7 @@ func LoadChecks() {
 		WithBeforeEachFn(beforeEachFn)
 
 	// Prestop test
-	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerPrestopIdentifier)
+	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestShutdownIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
@@ -95,7 +95,7 @@ func LoadChecks() {
 		}))
 
 	// Poststart test
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerPostStartIdentifier)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStartupIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
