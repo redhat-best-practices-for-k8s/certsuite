@@ -17,11 +17,6 @@ jobs:
       fail-fast: false
       matrix: 
         suite: [accesscontrol, affiliatedcertification, manageability, networking, lifecycle, performance, platformalteration, observability, operator]
-        include:
-          - test_suite_ref: main
-            qe_ref: main
-          - test_suite_ref: ginkgo_removal
-            qe_ref: ginkgo_removal
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/labuser/.kube/config'
@@ -36,7 +31,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
         with:
-          ref: ${{ matrix.test_suite_ref }}
+          ref: ${{ github.sha }}
 
       - name: Run initial setup
         uses: ./.github/actions/setup
@@ -55,7 +50,6 @@ jobs:
         with:
           repository: ${{ env.QE_REPO }}
           path: cnfcert-tests-verification
-          ref: ${{ matrix.qe_ref }}
 
       - name: Preemptively potential QE namespaces
         run: ./scripts/delete-namespaces.sh
