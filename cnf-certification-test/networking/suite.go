@@ -259,12 +259,8 @@ func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.Test
 
 // testDefaultNetworkConnectivity test the connectivity between the default interfaces of containers under test
 func testNetworkConnectivity(env *provider.TestEnvironment, aIPVersion netcommons.IPVersion, aType netcommons.IFType, check *checksdb.Check) {
-	netsUnderTest, claimsLog := icmp.BuildNetTestContext(env.Pods, aIPVersion, aType)
-	// Saving  curated logs to claims file
-	check.LogDebug("%s", claimsLog.GetLogLines())
-	report, claimsLog, skip := icmp.RunNetworkingTests(netsUnderTest, defaultNumPings, aIPVersion)
-	// Saving curated logs to claims file
-	check.LogDebug("%s", claimsLog.GetLogLines())
+	netsUnderTest := icmp.BuildNetTestContext(env.Pods, aIPVersion, aType, check.GetLoggger())
+	report, skip := icmp.RunNetworkingTests(netsUnderTest, defaultNumPings, aIPVersion, check.GetLoggger())
 	if skip {
 		check.LogInfo("There are no %s networks to test with at least 2 pods, skipping test", aIPVersion)
 		return

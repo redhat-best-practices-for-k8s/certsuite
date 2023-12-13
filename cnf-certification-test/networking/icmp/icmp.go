@@ -24,7 +24,6 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netcommons"
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
-	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 )
@@ -48,17 +47,17 @@ func (results PingResults) String() string {
 	return fmt.Sprintf("outcome: %s transmitted: %d received: %d errors: %d", testhelper.ResultToString(results.outcome), results.transmitted, results.received, results.errors)
 }
 
-func BuildNetTestContext(pods []*provider.Pod, aIPVersion netcommons.IPVersion, aType netcommons.IFType) (netsUnderTest map[string]netcommons.NetTestContext, claimsLog loghelper.CuratedLogLines) {
+func BuildNetTestContext(pods []*provider.Pod, aIPVersion netcommons.IPVersion, aType netcommons.IFType, logger *log.Logger) (netsUnderTest map[string]netcommons.NetTestContext) {
 	netsUnderTest = make(map[string]netcommons.NetTestContext)
 	for _, put := range pods {
 		if put.SkipNetTests {
-			claimsLog.AddLogLine("Skipping %s because it is excluded from all connectivity tests", put)
+			logger.Info("Skipping %s because it is excluded from all connectivity tests", put)
 			continue
 		}
 
 		if aType == netcommons.MULTUS {
 			if put.SkipMultusNetTests {
-				claimsLog.AddLogLine("Skipping pod %s because it is excluded from %s connectivity tests only", put.Name, aType)
+				logger.Info("Skipping pod %s because it is excluded from %s connectivity tests only", put.Name, aType)
 				continue
 			}
 			for netKey, multusIPAddress := range put.MultusIPs {
@@ -73,7 +72,7 @@ func BuildNetTestContext(pods []*provider.Pod, aIPVersion netcommons.IPVersion, 
 		// The first container is used to get the network namespace
 		ProcessContainerIpsPerNet(put.Containers[0], defaultNetKey, netcommons.PodIPsToStringList(defaultIPAddress), netsUnderTest, aIPVersion)
 	}
-	return netsUnderTest, claimsLog
+	return netsUnderTest
 }
 
 // processContainerIpsPerNet takes a container ip addresses for a given network attachment's and uses it as a test target.
@@ -122,13 +121,14 @@ func ProcessContainerIpsPerNet(containerID *provider.Container,
 func RunNetworkingTests( //nolint:funlen
 	netsUnderTest map[string]netcommons.NetTestContext,
 	count int,
-	aIPVersion netcommons.IPVersion) (report testhelper.FailureReasonOut, claimsLog loghelper.CuratedLogLines, skip bool) {
-	log.Debug("%s", netcommons.PrintNetTestContextMap(netsUnderTest))
+	aIPVersion netcommons.IPVersion,
+	logger *log.Logger) (report testhelper.FailureReasonOut, skip bool) {
+	logger.Debug("%s", netcommons.PrintNetTestContextMap(netsUnderTest))
 	skip = false
 	if len(netsUnderTest) == 0 {
-		log.Debug("There are no %s networks to test, skipping test", aIPVersion)
+		logger.Debug("There are no %s networks to test, skipping test", aIPVersion)
 		skip = true
-		return report, claimsLog, skip
+		return report, skip
 	}
 	// if no network can be tested, then we need to skip the test entirely.
 	// If at least one network can be tested (e.g. > 2 IPs/ interfaces present), then we do not skip the test
@@ -139,25 +139,25 @@ func RunNetworkingTests( //nolint:funlen
 		compliantNets[netName] = 0
 		nonCompliantNets[netName] = 0
 		if len(netUnderTest.DestTargets) == 0 {
-			log.Debug("There are no containers to ping for %s network %s. A minimum of 2 containers is needed to run a ping test (a source and a destination) Skipping test", aIPVersion, netName)
+			logger.Debug("There are no containers to ping for %s network %s. A minimum of 2 containers is needed to run a ping test (a source and a destination) Skipping test", aIPVersion, netName)
 			continue
 		}
 		atLeastOneNetworkTested = true
-		log.Debug("%s Ping tests on network %s. Number of target IPs: %d", aIPVersion, netName, len(netUnderTest.DestTargets))
+		logger.Debug("%s Ping tests on network %s. Number of target IPs: %d", aIPVersion, netName, len(netUnderTest.DestTargets))
 
 		for _, aDestIP := range netUnderTest.DestTargets {
-			log.Debug("%s ping test on network %s from ( %s  srcip: %s ) to ( %s dstip: %s )",
+			logger.Debug("%s ping test on network %s from ( %s  srcip: %s ) to ( %s dstip: %s )",
 				aIPVersion, netName,
 				netUnderTest.TesterSource.ContainerIdentifier, netUnderTest.TesterSource.IP,
 				aDestIP.ContainerIdentifier, aDestIP.IP)
 			result, err := TestPing(netUnderTest.TesterSource.ContainerIdentifier, aDestIP, count)
-			log.Debug("Ping results: %s", result.String())
-			claimsLog.AddLogLine("%s ping test on network %s from ( %s  srcip: %s ) to ( %s dstip: %s ) result: %s",
+			logger.Debug("Ping results: %s", result.String())
+			logger.Info("%s ping test on network %s from ( %s  srcip: %s ) to ( %s dstip: %s ) result: %s",
 				aIPVersion, netName,
 				netUnderTest.TesterSource.ContainerIdentifier, netUnderTest.TesterSource.IP,
 				aDestIP.ContainerIdentifier, aDestIP.IP, result.String())
 			if err != nil {
-				log.Debug("Ping failed with err:%s", err)
+				logger.Debug("Ping failed with err:%s", err)
 			}
 			if result.outcome != testhelper.SUCCESS {
 				nonCompliantNets[netName]++
@@ -197,11 +197,11 @@ func RunNetworkingTests( //nolint:funlen
 		}
 	}
 	if !atLeastOneNetworkTested {
-		log.Debug("There are no %s networks to test, skipping test", aIPVersion)
+		logger.Debug("There are no %s networks to test, skipping test", aIPVersion)
 		skip = true
 	}
 
-	return report, claimsLog, skip
+	return report, skip
 }
 
 // TestPing Initiates a ping test between a source container and network (1 ip) and a destination container and network (1 ip)

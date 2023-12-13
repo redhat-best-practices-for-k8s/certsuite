@@ -60,13 +60,9 @@ func createLogFile(outputDir string) (*os.File, error) {
 }
 
 func setupLogger(logFile *os.File) {
-	logLevel, err := log.ParseLevel(configuration.GetTestParameters().LogLevel)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Could not parse log level, err: %v. Defaulting to DEBUG.", err)
-	}
-
+	logLevel := configuration.GetTestParameters().LogLevel
 	log.SetupLogger(logFile, logLevel)
-	log.Info("Log file: %s (level=%s)", log.LogFileName, logLevel.String())
+	log.Info("Log file: %s (level=%s)", log.LogFileName, logLevel)
 }
 
 func main() {

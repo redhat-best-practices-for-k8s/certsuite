@@ -22,7 +22,6 @@ import (
 
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
-	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
@@ -181,8 +180,7 @@ func getNotReadyStatefulSets(statefulSets []*provider.StatefulSet) []*provider.S
 	return notReadyStatefulSets
 }
 
-func WaitForAllPodSetsReady(env *provider.TestEnvironment, timeout time.Duration) (
-	claimsLog loghelper.CuratedLogLines,
+func WaitForAllPodSetsReady(env *provider.TestEnvironment, timeout time.Duration, logger *log.Logger) (
 	notReadyDeployments []*provider.Deployment,
 	notReadyStatefulSets []*provider.StatefulSet) {
 	const queryInterval = 15 * time.Second
@@ -190,16 +188,16 @@ func WaitForAllPodSetsReady(env *provider.TestEnvironment, timeout time.Duration
 	deploymentsToCheck := env.Deployments
 	statefulSetsToCheck := env.StatefulSets
 
-	log.Info("Waiting %s for %d podsets to be ready.", timeout, len(deploymentsToCheck)+len(statefulSetsToCheck))
+	logger.Info("Waiting %s for %d podsets to be ready.", timeout, len(deploymentsToCheck)+len(statefulSetsToCheck))
 	for startTime := time.Now(); time.Since(startTime) < timeout; {
-		log.Info("Checking Deployments readiness of Deployments %v", getDeploymentsInfo(deploymentsToCheck))
+		logger.Info("Checking Deployments readiness of Deployments %v", getDeploymentsInfo(deploymentsToCheck))
 		notReadyDeployments = getNotReadyDeployments(deploymentsToCheck)
 
-		log.Info("Checking StatefulSets readiness of StatefulSets %v", getStatefulSetsInfo(statefulSetsToCheck))
+		logger.Info("Checking StatefulSets readiness of StatefulSets %v", getStatefulSetsInfo(statefulSetsToCheck))
 		notReadyStatefulSets = getNotReadyStatefulSets(statefulSetsToCheck)
 
-		log.Info("Not ready Deployments: %v", getDeploymentsInfo(notReadyDeployments))
-		log.Info("Not ready StatefulSets: %v", getStatefulSetsInfo(notReadyStatefulSets))
+		logger.Info("Not ready Deployments: %v", getDeploymentsInfo(notReadyDeployments))
+		logger.Info("Not ready StatefulSets: %v", getStatefulSetsInfo(notReadyStatefulSets))
 
 		deploymentsToCheck = notReadyDeployments
 		statefulSetsToCheck = notReadyStatefulSets
@@ -213,10 +211,10 @@ func WaitForAllPodSetsReady(env *provider.TestEnvironment, timeout time.Duration
 	}
 
 	// Here, either we reached the timeout or there's no more not-ready deployments or statefulsets.
-	claimsLog.AddLogLine("Not ready Deployments: %v", getDeploymentsInfo(deploymentsToCheck))
-	claimsLog.AddLogLine("Not ready StatefulSets: %v", getStatefulSetsInfo(statefulSetsToCheck))
+	logger.Error("Not ready Deployments: %v", getDeploymentsInfo(deploymentsToCheck))
+	logger.Error("Not ready StatefulSets: %v", getStatefulSetsInfo(statefulSetsToCheck))
 
-	return claimsLog, deploymentsToCheck, statefulSetsToCheck
+	return deploymentsToCheck, statefulSetsToCheck
 }
 
 func GetAllNodesForAllPodSets(pods []*provider.Pod) (nodes map[string]bool) {
