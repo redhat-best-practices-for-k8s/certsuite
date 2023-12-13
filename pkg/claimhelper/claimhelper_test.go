@@ -45,7 +45,8 @@ func TestPopulateXMLFromClaim(t *testing.T) {
 				Suite: testSuiteName,
 			},
 			State:              "failed",
-			FailureReason:      failureMessage,
+			SkipReason:         failureMessage,
+			CheckDetails:       "",
 			CapturedTestOutput: "test output",
 			CategoryClassification: &claim.CategoryClassification{
 				Extended: "false",

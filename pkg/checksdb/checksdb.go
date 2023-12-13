@@ -123,8 +123,9 @@ func recordCheckResult(check *Check) {
 		StartTime:          check.StartTime.String(),
 		EndTime:            check.EndTime.String(),
 		Duration:           int(check.EndTime.Sub(check.StartTime).Seconds()),
-		FailureReason:      check.FailureReason,
-		CapturedTestOutput: check.CapturedOutput,
+		SkipReason:         check.SkipReason,
+		CapturedTestOutput: check.GetLogs(),
+		CheckDetails:       check.Details,
 
 		CategoryClassification: &claim.CategoryClassification{
 			Extended: identifiers.Catalog[claimID].CategoryClassification[identifiers.Extended],
