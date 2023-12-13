@@ -224,6 +224,7 @@ func testContainersPostStart(env *provider.TestEnvironment) {
 			tnf.ClaimFilePrintf("%s does not have postStart defined", cut)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container does not have postStart defined", false))
 		} else {
+			logrus.Warn("Pay attention: A pod with a still running postStart lifecycle hook that is deleted is not terminated even after terminationGracePeriod, thats known upstream bug")
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has postStart defined", true))
 		}
 	}
