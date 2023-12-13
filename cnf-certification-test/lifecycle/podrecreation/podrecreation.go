@@ -143,8 +143,7 @@ func deletePod(pod *corev1.Pod, mode string, wg *sync.WaitGroup) error {
 func CordonCleanup(node string, check *checksdb.Check) {
 	err := CordonHelper(node, Uncordon)
 	if err != nil {
-		log.Error("cleanup: error uncordoning the node: %s, err=%s", node, err)
-		check.Abort()
+		check.Abort(fmt.Sprintf("cleanup: error uncordoning the node: %s, err=%s", node, err))
 	}
 }
 

@@ -57,18 +57,14 @@ func LoadChecks() {
 	checksGroup := checksdb.NewChecksGroup(common.PlatformAlterationTestKey).
 		WithBeforeEachFn(beforeEachFn)
 
-	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHyperThreadEnable)
-	check := checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHyperThreadEnable)).
 		WithSkipCheckFn(testhelper.GetNoBareMetalNodesSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testHyperThreadingEnabled(c, &env)
 			return nil
-		})
+		}))
 
-	checksGroup.Add(check)
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUnalteredBaseImageIdentifier)
-	check = checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUnalteredBaseImageIdentifier)).
 		WithSkipCheckFn(
 			testhelper.GetNonOCPClusterSkipFn(),
 			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env),
@@ -76,133 +72,98 @@ func LoadChecks() {
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainersFsDiff(c, &env)
 			return nil
-		})
+		}))
 
-	checksGroup.Add(check)
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNonTaintedNodeKernelsIdentifier)
-	check = checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNonTaintedNodeKernelsIdentifier)).
 		WithSkipCheckFn(testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testTainted(c, &env)
 			return nil
-		})
+		}))
 
-	checksGroup.Add(check)
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsRedHatReleaseIdentifier)
-	check = checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsRedHatReleaseIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testIsRedHatRelease(c, &env)
 			return nil
-		})
+		}))
 
-	checksGroup.Add(check)
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsSELinuxEnforcingIdentifier)
-	check = checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsSELinuxEnforcingIdentifier)).
 		WithSkipCheckFn(
 			testhelper.GetNonOCPClusterSkipFn(),
 			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testIsSELinuxEnforcing(c, &env)
 			return nil
-		})
+		}))
 
-	checksGroup.Add(check)
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHugepagesNotManuallyManipulated)
-	check = checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHugepagesNotManuallyManipulated)).
 		WithSkipCheckFn(
 			testhelper.GetNonOCPClusterSkipFn(),
 			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testHugepages(c, &env)
 			return nil
-		})
+		}))
 
-	checksGroup.Add(check)
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUnalteredStartupBootParamsIdentifier)
-	check = checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUnalteredStartupBootParamsIdentifier)).
 		WithSkipCheckFn(
 			testhelper.GetNonOCPClusterSkipFn(),
 			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testUnalteredBootParams(c, &env)
 			return nil
-		})
+		}))
 
-	checksGroup.Add(check)
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSysctlConfigsIdentifier)
-	check = checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSysctlConfigsIdentifier)).
 		WithSkipCheckFn(
 			testhelper.GetNonOCPClusterSkipFn(),
 			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testSysctlConfigs(c, &env)
 			return nil
-		})
+		}))
 
-	checksGroup.Add(check)
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServiceMeshIdentifier)
-	check = checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServiceMeshIdentifier)).
 		WithSkipCheckFn(
 			testhelper.GetNoIstioSkipFn(&env),
 			testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testServiceMesh(c, &env)
 			return nil
-		})
+		}))
 
-	checksGroup.Add(check)
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOCPLifecycleIdentifier)
-	check = checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOCPLifecycleIdentifier)).
 		WithSkipCheckFn(testhelper.GetNonOCPClusterSkipFn()).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testOCPStatus(c, &env)
 			return nil
-		})
+		}))
 
-	checksGroup.Add(check)
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNodeOperatingSystemIdentifier)
-	check = checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNodeOperatingSystemIdentifier)).
 		WithSkipCheckFn(testhelper.GetNonOCPClusterSkipFn()).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testNodeOperatingSystemStatus(c, &env)
 			return nil
-		})
+		}))
 
-	checksGroup.Add(check)
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHugePages2M)
-	check = checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHugePages2M)).
 		WithSkipCheckFn(
 			testhelper.GetNonOCPClusterSkipFn(),
 			testhelper.GetNoHugepagesPodsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodHugePagesSize(c, &env, provider.HugePages2Mi)
 			return nil
-		})
+		}))
 
-	checksGroup.Add(check)
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHugePages1G)
-	check = checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHugePages1G)).
 		WithSkipCheckFn(
 			testhelper.GetNonOCPClusterSkipFn(),
 			testhelper.GetNoHugepagesPodsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodHugePagesSize(c, &env, provider.HugePages1Gi)
 			return nil
-		})
-
-	checksGroup.Add(check)
+		}))
 }
 
 func testHyperThreadingEnabled(check *checksdb.Check, env *provider.TestEnvironment) {
@@ -507,12 +468,10 @@ func testUnalteredBootParams(check *checksdb.Check, env *provider.TestEnvironmen
 		}
 		alreadyCheckedNodes[cut.NodeName] = true
 
-		claimsLog, err := bootparams.TestBootParamsHelper(env, cut)
-
-		if err != nil || len(claimsLog.GetLogLines()) != 0 {
+		err := bootparams.TestBootParamsHelper(env, cut, check.GetLoggger())
+		if err != nil {
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Failed the boot params check", false).
 				AddField(testhelper.DebugPodName, env.DebugPods[cut.NodeName].Name))
-			check.LogDebug("%s", claimsLog.GetLogLines())
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Passed the boot params check", true).
 				AddField(testhelper.DebugPodName, env.DebugPods[cut.NodeName].Name))

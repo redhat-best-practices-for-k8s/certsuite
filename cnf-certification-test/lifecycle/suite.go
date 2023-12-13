@@ -73,7 +73,7 @@ func LoadChecks() {
 		WithBeforeEachFn(beforeEachFn)
 
 	// Prestop test
-	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestShutdownIdentifier)
+	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerPrestopIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
@@ -95,7 +95,7 @@ func LoadChecks() {
 		}))
 
 	// Poststart test
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStartupIdentifier)
+	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerPostStartIdentifier)
 	checksGroup.Add(checksdb.NewCheck(testID, tags).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
@@ -599,9 +599,8 @@ func testPodsRecreation(check *checksdb.Check, env *provider.TestEnvironment) { 
 	// Before draining any node, wait until all podsets are ready. The timeout depends on the number of podsets to check.
 	// timeout = k-mins + (1min * (num-deployments + num-statefulsets))
 	allPodsetsReadyTimeout := timeoutPodSetReady + time.Minute*time.Duration(len(env.Deployments)+len(env.StatefulSets))
-	claimsLog, notReadyDeployments, notReadyStatefulSets := podsets.WaitForAllPodSetsReady(env, allPodsetsReadyTimeout)
+	notReadyDeployments, notReadyStatefulSets := podsets.WaitForAllPodSetsReady(env, allPodsetsReadyTimeout, check.GetLoggger())
 	if len(notReadyDeployments) > 0 || len(notReadyStatefulSets) > 0 {
-		check.LogDebug("%s", claimsLog.GetLogLines())
 		for _, dep := range notReadyDeployments {
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewDeploymentReportObject(dep.Namespace, dep.Name, "Deployment was not ready before draining any node.", false))
 		}
@@ -655,9 +654,8 @@ func testPodsRecreation(check *checksdb.Check, env *provider.TestEnvironment) { 
 			return
 		}
 
-		claimsLog, notReadyDeployments, notReadyStatefulSets := podsets.WaitForAllPodSetsReady(env, nodeTimeout)
+		notReadyDeployments, notReadyStatefulSets := podsets.WaitForAllPodSetsReady(env, nodeTimeout, check.GetLoggger())
 		if len(notReadyDeployments) > 0 || len(notReadyStatefulSets) > 0 {
-			check.LogDebug("%s", claimsLog.GetLogLines())
 			for _, dep := range notReadyDeployments {
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewDeploymentReportObject(dep.Namespace, dep.Name, "Deployment not ready after draining node "+nodeName, false))
 			}

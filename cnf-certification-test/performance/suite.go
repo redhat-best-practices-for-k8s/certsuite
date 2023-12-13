@@ -80,72 +80,53 @@ var (
 	}
 )
 
-//nolint:funlen
 func LoadChecks() {
 	log.Debug("Loading %s checks", common.PerformanceTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.PerformanceTestKey).
 		WithBeforeEachFn(beforeEachFn)
 
-	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestExclusiveCPUPoolIdentifier)
-	check := checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestExclusiveCPUPoolIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testExclusiveCPUPool(c, &env)
 			return nil
-		})
+		}))
 
-	checksGroup.Add(check)
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestRtAppNoExecProbes)
-	check = checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestRtAppNoExecProbes)).
 		WithSkipCheckFn(skipIfNoGuaranteedPodContainersWithExclusiveCPUs).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testRtAppsNoExecProbes(c, &env)
 			return nil
-		})
+		}))
 
-	checksGroup.Add(check)
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSharedCPUPoolSchedulingPolicy)
-	check = checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSharedCPUPoolSchedulingPolicy)).
 		WithSkipCheckFn(skipIfNoNonGuaranteedPodContainersWithoutHostPID).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testSchedulingPolicyInCPUPool(c, &env, env.GetNonGuaranteedPodContainersWithoutHostPID(), scheduling.SharedCPUScheduling)
 			return nil
-		})
+		}))
 
-	checksGroup.Add(check)
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestExclusiveCPUPoolSchedulingPolicy)
-	check = checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestExclusiveCPUPoolSchedulingPolicy)).
 		WithSkipCheckFn(skipIfNoGuaranteedPodContainersWithExclusiveCPUsWithoutHostPID).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testSchedulingPolicyInCPUPool(c, &env, env.GetGuaranteedPodContainersWithExclusiveCPUsWithoutHostPID(), scheduling.ExclusiveCPUScheduling)
 			return nil
-		})
+		}))
 
-	checksGroup.Add(check)
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsolatedCPUPoolSchedulingPolicy)
-	check = checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsolatedCPUPoolSchedulingPolicy)).
 		WithSkipCheckFn(skipIfNoGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testSchedulingPolicyInCPUPool(c, &env, env.GetGuaranteedPodContainersWithIsolatedCPUsWithoutHostPID(), scheduling.ExclusiveCPUScheduling)
 			return nil
-		})
+		}))
 
-	checksGroup.Add(check)
-
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestLimitedUseOfExecProbesIdentifier)
-	check = checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestLimitedUseOfExecProbesIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testLimitedUseOfExecProbes(c, &env)
 			return nil
-		})
-
-	checksGroup.Add(check)
+		}))
 }
 
 //nolint:funlen

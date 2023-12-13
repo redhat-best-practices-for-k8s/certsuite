@@ -365,13 +365,17 @@ func testSecConPrivilegeEscalation(check *checksdb.Check, env *provider.TestEnvi
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
+		privEscFound := false
 		if cut.SecurityContext != nil && cut.SecurityContext.AllowPrivilegeEscalation != nil {
 			if *(cut.SecurityContext.AllowPrivilegeEscalation) {
 				check.LogDebug("AllowPrivilegeEscalation is set to true in container %s.", cut.Podname+"."+cut.Name)
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "AllowPrivilegeEscalation is set to true", false))
-			} else {
-				compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "AllowPrivilegeEscalation is set to false", true))
+				privEscFound = true
 			}
+		}
+
+		if !privEscFound {
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "AllowPrivilegeEscalation is not set to true", true))
 		}
 	}
 
@@ -383,15 +387,19 @@ func testContainerHostPort(check *checksdb.Check, env *provider.TestEnvironment)
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
+		hostPortFound := false
 		for _, aPort := range cut.Ports {
 			if aPort.HostPort != 0 {
 				check.LogDebug("Host port %d is configured in container %s.", aPort.HostPort, cut.String())
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Host port is configured", false).
 					SetType(testhelper.HostPortType).
 					AddField(testhelper.PortNumber, strconv.Itoa(int(aPort.HostPort))))
-			} else {
-				compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Host port is not configured", true))
+				hostPortFound = true
 			}
+		}
+
+		if !hostPortFound {
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Host port is not configured", true))
 		}
 	}
 
@@ -501,9 +509,8 @@ func testNamespace(check *checksdb.Check, env *provider.TestEnvironment) {
 		return
 	}
 
-	invalidCrsNum, claimsLog := namespace.GetInvalidCRsNum(invalidCrs)
-	if invalidCrsNum > 0 && len(claimsLog.GetLogLines()) > 0 {
-		check.LogDebug("%s", claimsLog.GetLogLines())
+	invalidCrsNum := namespace.GetInvalidCRsNum(invalidCrs, check.GetLoggger())
+	if invalidCrsNum > 0 {
 		nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("CRs are not in the configured namespaces", testhelper.Namespace, false))
 	} else {
 		compliantObjects = append(compliantObjects, testhelper.NewReportObject("CRs are in the configured namespaces", testhelper.Namespace, true))
@@ -563,7 +570,7 @@ func testPodRoleBindings(check *checksdb.Check, env *provider.TestEnvironment) {
 					if subject.Kind == rbacv1.ServiceAccountKind &&
 						subject.Namespace == put.Namespace &&
 						subject.Name == put.Spec.ServiceAccountName &&
-						stringhelper.StringInSlice(env.Namespaces, env.RoleBindings[rbIndex].Namespace, false) {
+						stringhelper.StringInSlice[string](env.Namespaces, env.RoleBindings[rbIndex].Namespace, false) {
 						continue
 					}
 
@@ -928,7 +935,7 @@ func testCrdRoles(check *checksdb.Check, env *provider.TestEnvironment) {
 	var nonCompliantObjects []*testhelper.ReportObject
 	crdResources := rbac.GetCrdResources(env.Crds)
 	for roleIndex := range env.Roles {
-		if !stringhelper.StringInSlice(env.Namespaces, env.Roles[roleIndex].Namespace, false) {
+		if !stringhelper.StringInSlice[string](env.Namespaces, env.Roles[roleIndex].Namespace, false) {
 			continue
 		}
 

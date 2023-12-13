@@ -2,7 +2,6 @@ package checksdb
 
 import (
 	"fmt"
-	"log/slog"
 	"strings"
 	"sync"
 	"time"
@@ -18,10 +17,6 @@ const (
 	CheckResultFailed  = "failed"
 	CheckResultError   = "error"
 	CheckResultAborted = "aborted"
-
-	CheckResultTagPass = "PASS"
-	CheckResultTagSkip = "SKIP"
-	CheckResultTagFail = "FAIL"
 )
 
 type skipMode int
@@ -52,13 +47,13 @@ type Check struct {
 	CapturedOutput string
 	FailureReason  string
 
-	logger     *slog.Logger
+	logger     *log.Logger
 	logArchive *strings.Builder
 
 	StartTime, EndTime time.Time
 	Timeout            time.Duration
 	Error              error
-	abortChan          chan bool
+	abortChan          chan string
 }
 
 func NewCheck(id string, labels []string) *Check {
@@ -74,35 +69,42 @@ func NewCheck(id string, labels []string) *Check {
 	return check
 }
 
-func (check *Check) Abort() {
+func (check *Check) Abort(reason string) {
 	check.mutex.Lock()
 	defer check.mutex.Unlock()
 
-	check.abortChan <- true
+	abortMsg := check.ID + " issued non-graceful abort: " + reason
+
+	check.abortChan <- abortMsg
+	panic(AbortPanicMsg(abortMsg))
 }
 
-func (check *Check) SetAbortChan(abortChan chan bool) {
+func (check *Check) SetAbortChan(abortChan chan string) {
 	check.abortChan = abortChan
 }
 
 func (check *Check) LogDebug(msg string, args ...any) {
-	log.Logf(check.logger, slog.LevelDebug, msg, args...)
+	log.Logf(check.logger, log.LevelDebug, msg, args...)
 }
 
 func (check *Check) LogInfo(msg string, args ...any) {
-	log.Logf(check.logger, slog.LevelInfo, msg, args...)
+	log.Logf(check.logger, log.LevelInfo, msg, args...)
 }
 
 func (check *Check) LogWarn(msg string, args ...any) {
-	log.Logf(check.logger, slog.LevelWarn, msg, args...)
+	log.Logf(check.logger, log.LevelWarn, msg, args...)
 }
 
 func (check *Check) LogError(msg string, args ...any) {
-	log.Logf(check.logger, slog.LevelError, msg, args...)
+	log.Logf(check.logger, log.LevelError, msg, args...)
 }
 
 func (check *Check) GetLogs() string {
 	return check.logArchive.String()
+}
+
+func (check *Check) GetLoggger() *log.Logger {
+	return check.logger
 }
 
 func (check *Check) WithCheckFn(checkFn func(check *Check) error) *Check {
@@ -262,7 +264,7 @@ func (check *Check) Run() error {
 		return fmt.Errorf("unable to run due to a previously existing error: %v", check.Error)
 	}
 
-	fmt.Printf("[ "+cli.Cyan+"RUNNING"+cli.Reset+" ] %s", check.ID)
+	fmt.Printf("[ %s ] %s", cli.CheckResultTagRunning, check.ID)
 
 	check.StartTime = time.Now()
 	defer func() {
@@ -293,15 +295,14 @@ func (check *Check) Run() error {
 
 const nbCharsToAvoidLineAliasing = 20
 
-//nolint:goconst
 func printCheckResult(check *Check) {
 	checkID := check.ID + strings.Repeat(" ", nbCharsToAvoidLineAliasing)
 	switch check.Result {
 	case CheckResultPassed:
-		fmt.Printf("\r[ "+cli.Green+"%s"+cli.Reset+" ] %s\n", CheckResultTagPass, checkID)
+		fmt.Printf("\r[ %s ] %s\n", cli.CheckResultTagPass, checkID)
 	case CheckResultFailed:
-		fmt.Printf("\r[ "+cli.Red+"%s"+cli.Reset+" ] %s\n", CheckResultTagFail, checkID)
+		fmt.Printf("\r[ %s ] %s\n", cli.CheckResultTagFail, checkID)
 	case CheckResultSkipped:
-		fmt.Printf("\r[ "+cli.Yellow+"%s"+cli.Reset+" ] %s\n", CheckResultTagSkip, checkID)
+		fmt.Printf("\r[ %s ] %s\n", cli.CheckResultTagSkip, checkID)
 	}
 }

@@ -11,20 +11,29 @@ import (
 	"net"
 	"net/http"
 	"os"
+	"sort"
 	"strings"
 	"time"
 
 	"github.com/gorilla/websocket"
 	"github.com/robert-nix/ansihtml"
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
+	"github.com/test-network-function/cnf-certification-test/pkg/arrayhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/certsuite"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/test-network-function-claim/pkg/claim"
+
 	yaml "gopkg.in/yaml.v2"
 )
 
 type webServerContextKey string
+
+const (
+	logTimeout = 1000
+)
 
 var (
 	outputFolderCtxKey webServerContextKey = "output-folder"
@@ -73,6 +82,7 @@ func logStreamHandler(w http.ResponseWriter, r *http.Request) {
 				fmt.Println(err)
 				return
 			}
+			time.Sleep(logTimeout)
 		}
 		if err := scanner.Err(); err != nil {
 			log.Info("Error reading log file: %v", err)
@@ -108,6 +118,7 @@ type ResponseData struct {
 	Message string `json:"message"`
 }
 
+//nolint:funlen
 func installReqHandlers() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// Set the content type to "text/html".
@@ -158,6 +169,18 @@ func installReqHandlers() {
 		w.Header().Set("Content-Type", "application/javascript")
 		// Write the embedded JavaScript content to the response.
 		_, err := w.Write(index)
+		if err != nil {
+			http.Error(w, "Failed to write response", http.StatusInternalServerError)
+			return
+		}
+	})
+	http.HandleFunc("/classification.js", func(w http.ResponseWriter, r *http.Request) {
+		classification := outputTestCases()
+
+		// Set the content type to "application/javascript".
+		w.Header().Set("Content-Type", "application/javascript")
+		// Write the embedded JavaScript content to the response.
+		_, err := w.Write([]byte(classification))
 		if err != nil {
 			http.Error(w, "Failed to write response", http.StatusInternalServerError)
 			return
@@ -259,17 +282,20 @@ func runHandler(w http.ResponseWriter, r *http.Request) {
 	env.SetNeedsRefresh()
 	env = provider.GetTestEnvironment()
 
-	labelsFilter := strings.Join(flattenedOptions, "")
+	labelsFilter := strings.Join(flattenedOptions, ",")
 	outputFolder := r.Context().Value(outputFolderCtxKey).(string)
 
 	log.Info("Running CNF Cert Suite (web-mode). Labels filter: %s, outputFolder: %s", labelsFilter, outputFolder)
-	certsuite.Run(labelsFilter, outputFolder)
+	err = certsuite.Run(labelsFilter, outputFolder)
+	if err != nil {
+		log.Error("Failed to run CNF Cert Suite: %v", err)
+	}
 
 	// Return the result as JSON
 	response := struct {
 		Message string `json:"Message"`
 	}{
-		Message: fmt.Sprintf("Succeeded to run %s", strings.Join(flattenedOptions, "")),
+		Message: fmt.Sprintf("Succeeded to run %s", strings.Join(flattenedOptions, " ")),
 	}
 	// Serialize the response data to JSON
 	jsonResponse, err := json.Marshal(response)
@@ -387,4 +413,78 @@ func updateTnf(tnfConfig []byte, data *RequestedData) []byte {
 		os.Exit(1)
 	}
 	return newData
+}
+
+// outputTestCases outputs the Markdown representation for test cases from the catalog to stdout.
+func outputTestCases() (outString string) {
+	// Building a separate data structure to store the key order for the map
+	keys := make([]claim.Identifier, 0, len(identifiers.Catalog))
+	for k := range identifiers.Catalog {
+		keys = append(keys, k)
+	}
+
+	// Sorting the map by identifier ID
+	sort.Slice(keys, func(i, j int) bool {
+		return keys[i].Id < keys[j].Id
+	})
+
+	catalog := CreatePrintableCatalogFromIdentifiers(keys)
+	if catalog == nil {
+		return
+	}
+	// we need the list of suite's names
+	suites := GetSuitesFromIdentifiers(keys)
+
+	// Sort the list of suite names
+	sort.Strings(suites)
+
+	// Iterating the map by test and suite names
+	outString = "classification= {\n"
+	for _, suite := range suites {
+		for _, k := range catalog[suite] {
+			classificationString := "\"categoryClassification\": "
+			// Every paragraph starts with a new line.
+
+			outString += fmt.Sprintf("%q: [\n{\n", k.identifier.Id)
+			outString += fmt.Sprintf("\"description\": %q,\n", strings.ReplaceAll(strings.ReplaceAll(identifiers.Catalog[k.identifier].Description, "\n", " "), "\"", " "))
+			outString += fmt.Sprintf("\"remediation\": %q,\n", strings.ReplaceAll(strings.ReplaceAll(identifiers.Catalog[k.identifier].Remediation, "\n", " "), "\"", " "))
+			outString += fmt.Sprintf("\"bestPracticeReference\": %q,\n", strings.ReplaceAll(identifiers.Catalog[k.identifier].BestPracticeReference, "\n", " "))
+			outString += classificationString + toJSONString(identifiers.Catalog[k.identifier].CategoryClassification) + ",\n}\n]\n,"
+		}
+	}
+	outString += "}"
+	return outString
+}
+func toJSONString(data map[string]string) string {
+	// Convert the map to a JSON-like string
+	jsonbytes, err := json.MarshalIndent(data, "", "  ")
+	if err != nil {
+		return ""
+	}
+
+	return string(jsonbytes)
+}
+func GetSuitesFromIdentifiers(keys []claim.Identifier) []string {
+	var suites []string
+	for _, i := range keys {
+		suites = append(suites, i.Suite)
+	}
+	return arrayhelper.Unique(suites)
+}
+
+type Entry struct {
+	testName   string
+	identifier claim.Identifier // {url and version}
+}
+
+func CreatePrintableCatalogFromIdentifiers(keys []claim.Identifier) map[string][]Entry {
+	catalog := make(map[string][]Entry)
+	// we need the list of suite's names
+	for _, i := range keys {
+		catalog[i.Suite] = append(catalog[i.Suite], Entry{
+			testName:   i.Id,
+			identifier: i,
+		})
+	}
+	return catalog
 }
