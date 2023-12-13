@@ -468,12 +468,10 @@ func testUnalteredBootParams(check *checksdb.Check, env *provider.TestEnvironmen
 		}
 		alreadyCheckedNodes[cut.NodeName] = true
 
-		claimsLog, err := bootparams.TestBootParamsHelper(env, cut)
-
-		if err != nil || len(claimsLog.GetLogLines()) != 0 {
+		err := bootparams.TestBootParamsHelper(env, cut, check.GetLoggger())
+		if err != nil {
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Failed the boot params check", false).
 				AddField(testhelper.DebugPodName, env.DebugPods[cut.NodeName].Name))
-			check.LogDebug("%s", claimsLog.GetLogLines())
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Passed the boot params check", true).
 				AddField(testhelper.DebugPodName, env.DebugPods[cut.NodeName].Name))

@@ -509,9 +509,8 @@ func testNamespace(check *checksdb.Check, env *provider.TestEnvironment) {
 		return
 	}
 
-	invalidCrsNum, claimsLog := namespace.GetInvalidCRsNum(invalidCrs)
-	if invalidCrsNum > 0 && len(claimsLog.GetLogLines()) > 0 {
-		check.LogDebug("%s", claimsLog.GetLogLines())
+	invalidCrsNum := namespace.GetInvalidCRsNum(invalidCrs, check.GetLoggger())
+	if invalidCrsNum > 0 {
 		nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("CRs are not in the configured namespaces", testhelper.Namespace, false))
 	} else {
 		compliantObjects = append(compliantObjects, testhelper.NewReportObject("CRs are in the configured namespaces", testhelper.Namespace, true))

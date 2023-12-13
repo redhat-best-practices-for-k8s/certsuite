@@ -101,7 +101,7 @@ func (h *CustomHandler) appendAttr(buf []byte, a slog.Attr) []byte {
 	switch a.Value.Kind() {
 	case slog.KindString:
 		if a.Key == slog.MessageKey {
-			buf = fmt.Appendf(buf, "%s ", a.Value.String())
+			buf = fmt.Appendf(buf, "%s", a.Value.String())
 		} else {
 			buf = fmt.Appendf(buf, "[%s] ", a.Value.String())
 		}

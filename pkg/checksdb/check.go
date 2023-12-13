@@ -2,7 +2,6 @@ package checksdb
 
 import (
 	"fmt"
-	"log/slog"
 	"strings"
 	"sync"
 	"time"
@@ -48,7 +47,7 @@ type Check struct {
 	CapturedOutput string
 	FailureReason  string
 
-	logger     *slog.Logger
+	logger     *log.Logger
 	logArchive *strings.Builder
 
 	StartTime, EndTime time.Time
@@ -85,23 +84,27 @@ func (check *Check) SetAbortChan(abortChan chan string) {
 }
 
 func (check *Check) LogDebug(msg string, args ...any) {
-	log.Logf(check.logger, slog.LevelDebug, msg, args...)
+	log.Logf(check.logger, log.LevelDebug, msg, args...)
 }
 
 func (check *Check) LogInfo(msg string, args ...any) {
-	log.Logf(check.logger, slog.LevelInfo, msg, args...)
+	log.Logf(check.logger, log.LevelInfo, msg, args...)
 }
 
 func (check *Check) LogWarn(msg string, args ...any) {
-	log.Logf(check.logger, slog.LevelWarn, msg, args...)
+	log.Logf(check.logger, log.LevelWarn, msg, args...)
 }
 
 func (check *Check) LogError(msg string, args ...any) {
-	log.Logf(check.logger, slog.LevelError, msg, args...)
+	log.Logf(check.logger, log.LevelError, msg, args...)
 }
 
 func (check *Check) GetLogs() string {
 	return check.logArchive.String()
+}
+
+func (check *Check) GetLoggger() *log.Logger {
+	return check.logger
 }
 
 func (check *Check) WithCheckFn(checkFn func(check *Check) error) *Check {
