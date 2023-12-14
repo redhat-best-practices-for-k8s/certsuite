@@ -22,8 +22,8 @@ import (
 )
 
 const (
-	claimPathFlagKey       = "claimloc"
-	defaultClaimPath       = "."
+	outputDirFlagKey       = "output-dir"
+	defaultOutputDir       = "."
 	NoLabelsExpr           = "none"
 	labelsFlagName         = "label-filter"
 	labelsFlagDefaultValue = "none"
@@ -47,7 +47,7 @@ const (
 )
 
 var (
-	ClaimPath *string
+	OutputDir *string
 	// labelsFlag holds the labels expression to filter the checks to run.
 	LabelsFlag     *string
 	TimeoutFlag    *string
@@ -56,8 +56,8 @@ var (
 )
 
 func InitFlags() {
-	ClaimPath = flag.String(claimPathFlagKey, defaultClaimPath,
-		"the path where the claimfile will be output")
+	OutputDir = flag.String(outputDirFlagKey, defaultOutputDir,
+		"the directory where the output artifacts will be placed")
 	LabelsFlag = flag.String(labelsFlagName, labelsFlagDefaultValue, labelsFlagUsage)
 	TimeoutFlag = flag.String(timeoutFlagName, TimeoutFlagDefaultvalue.String(), timeoutFlagUsage)
 	ListFlag = flag.Bool(listFlagName, listFlagDefaultValue, listFlagUsage)
