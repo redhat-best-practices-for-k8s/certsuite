@@ -2,7 +2,7 @@ name: QE Testing (Ubuntu-hosted)
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ main, ginkgo_removal ]
   workflow_dispatch:
   # Schedule a daily cron at midnight UTC
   schedule:
@@ -89,6 +89,7 @@ jobs:
         with:
           repository: ${{ env.QE_REPO }}
           path: cnfcert-tests-verification
+          ref: ${{ github.ref_name }}
 
       - name: Run the tests
         uses: nick-fields/retry@v2
