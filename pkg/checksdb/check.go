@@ -45,8 +45,8 @@ type Check struct {
 
 	Result         CheckResult
 	CapturedOutput string
-	Details        string
-	SkipReason     string
+	details        string
+	skipReason     string
 
 	logger     *log.Logger
 	logArchive *strings.Builder
@@ -190,7 +190,7 @@ func (check *Check) SetResult(compliantObjects, nonCompliantObjects []*testhelpe
 		check.LogError("Failed to get result objects string for check %s: %v", check.ID, err)
 	}
 
-	check.Details = resultObjectsStr
+	check.details = resultObjectsStr
 
 	// If an error/panic happened before, do not change the result.
 	if check.Result == CheckResultError {
@@ -199,25 +199,13 @@ func (check *Check) SetResult(compliantObjects, nonCompliantObjects []*testhelpe
 
 	if len(nonCompliantObjects) > 0 {
 		check.Result = CheckResultFailed
-		check.SkipReason = resultObjectsStr
+		check.skipReason = ""
 	} else if len(compliantObjects) == 0 {
 		// Mark this check as skipped.
 		check.LogWarn("Check %s marked as skipped as both compliant and non-compliant objects lists are empty.", check.ID)
-		check.SkipReason = "Compliant and non-compliant objects lists are empty."
+		check.skipReason = "Compliant and non-compliant objects lists are empty."
 		check.Result = CheckResultSkipped
 	}
-}
-
-func (check *Check) SetResultFailed(reason string) {
-	check.mutex.Lock()
-	defer check.mutex.Unlock()
-
-	if check.Result == CheckResultAborted {
-		return
-	}
-
-	check.Result = CheckResultFailed
-	check.SkipReason = reason
 }
 
 func (check *Check) SetResultSkipped(reason string) {
@@ -229,7 +217,7 @@ func (check *Check) SetResultSkipped(reason string) {
 	}
 
 	check.Result = CheckResultSkipped
-	check.SkipReason = reason
+	check.skipReason = reason
 }
 
 func (check *Check) SetResultError(reason string) {
@@ -245,7 +233,7 @@ func (check *Check) SetResultError(reason string) {
 		return
 	}
 	check.Result = CheckResultError
-	check.SkipReason = reason
+	check.skipReason = reason
 }
 
 func (check *Check) SetResultAborted(reason string) {
@@ -253,7 +241,7 @@ func (check *Check) SetResultAborted(reason string) {
 	defer check.mutex.Unlock()
 
 	check.Result = CheckResultAborted
-	check.SkipReason = reason
+	check.skipReason = reason
 }
 
 func (check *Check) Run() error {

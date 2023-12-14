@@ -123,9 +123,9 @@ func recordCheckResult(check *Check) {
 		StartTime:          check.StartTime.String(),
 		EndTime:            check.EndTime.String(),
 		Duration:           int(check.EndTime.Sub(check.StartTime).Seconds()),
-		SkipReason:         check.SkipReason,
+		SkipReason:         check.skipReason,
 		CapturedTestOutput: check.GetLogs(),
-		CheckDetails:       check.Details,
+		CheckDetails:       check.details,
 
 		CategoryClassification: &claim.CategoryClassification{
 			Extended: identifiers.Catalog[claimID].CategoryClassification[identifiers.Extended],
