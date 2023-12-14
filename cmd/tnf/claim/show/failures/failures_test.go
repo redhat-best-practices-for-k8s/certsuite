@@ -90,17 +90,17 @@ func TestParseOutputFormatFlag(t *testing.T) {
 
 func TestGetNonCompliantObjectsFromFailureReason(t *testing.T) {
 	testCases := []struct {
-		checkDetails                  string
+		checkDetails                string
 		expectedNonCompliantObjects []NonCompliantObject
 		expectedError               string
 	}{
 		{
-			checkDetails:                  "",
+			checkDetails:                "",
 			expectedNonCompliantObjects: nil,
 			expectedError:               `failed to decode checkDetails : unexpected end of JSON input`,
 		},
 		{
-			checkDetails:                  `{"CompliantObjectsOut": null, "NonCompliantObjectsOut": null}`,
+			checkDetails:                `{"CompliantObjectsOut": null, "NonCompliantObjectsOut": null}`,
 			expectedNonCompliantObjects: []NonCompliantObject{},
 		},
 		// One container failed the SYS_ADMIN check.
@@ -295,7 +295,7 @@ func TestGetFailedTestCasesByTestSuite(t *testing.T) {
 						{
 							TestCaseName:        "access-control-sys-admin-capability-check",
 							TestCaseDescription: "Ensures that containers do not use SYS_ADMIN capability",
-							CheckDetails:          "pod xxx ns yyy container zzz uses SYS_ADMIN",
+							CheckDetails:        "pod xxx ns yyy container zzz uses SYS_ADMIN",
 						},
 					},
 				},
