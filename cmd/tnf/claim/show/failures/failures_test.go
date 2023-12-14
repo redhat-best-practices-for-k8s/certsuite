@@ -90,22 +90,22 @@ func TestParseOutputFormatFlag(t *testing.T) {
 
 func TestGetNonCompliantObjectsFromFailureReason(t *testing.T) {
 	testCases := []struct {
-		failureReason               string
+		skipReason                  string
 		expectedNonCompliantObjects []NonCompliantObject
 		expectedError               string
 	}{
 		{
-			failureReason:               "",
+			skipReason:                  "",
 			expectedNonCompliantObjects: nil,
-			expectedError:               `failed to decode failureReason : unexpected end of JSON input`,
+			expectedError:               `failed to decode skipReason : unexpected end of JSON input`,
 		},
 		{
-			failureReason:               `{"CompliantObjectsOut": null, "NonCompliantObjectsOut": null}`,
+			skipReason:                  `{"CompliantObjectsOut": null, "NonCompliantObjectsOut": null}`,
 			expectedNonCompliantObjects: []NonCompliantObject{},
 		},
 		// One container failed the SYS_ADMIN check.
 		{
-			failureReason: `{
+			skipReason: `{
 				"CompliantObjectsOut": null,
 				"NonCompliantObjectsOut": [
 				  {
@@ -159,7 +159,7 @@ func TestGetNonCompliantObjectsFromFailureReason(t *testing.T) {
 		},
 		// Two containers failed the SYS_ADMIN check.
 		{
-			failureReason: `{
+			skipReason: `{
 				"CompliantObjectsOut": null,
 				"NonCompliantObjectsOut": [
 				  {
@@ -260,7 +260,7 @@ func TestGetNonCompliantObjectsFromFailureReason(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		nonCompliantObjects, err := getNonCompliantObjectsFromFailureReason(tc.failureReason)
+		nonCompliantObjects, err := getNonCompliantObjectsFromFailureReason(tc.skipReason)
 		if err != nil {
 			assert.Equal(t, tc.expectedError, err.Error())
 		}
@@ -271,7 +271,7 @@ func TestGetNonCompliantObjectsFromFailureReason(t *testing.T) {
 
 // Uses claim files in testdata folder:
 // claim1.json -> Two test suites, access-control & platform-alteration. One failed test case in the access-control ts.
-// claim2.json -> Same as clam1.json, but the failureReason is a simple string, not using report objects yet.
+// claim2.json -> Same as clam1.json, but the skipReason is a simple string, not using report objects yet.
 func TestGetFailedTestCasesByTestSuite(t *testing.T) {
 	testCases := []struct {
 		claimFilePath            string

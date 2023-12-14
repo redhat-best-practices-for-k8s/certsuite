@@ -157,17 +157,17 @@ func parseOutputFormatFlag() (string, error) {
 	return "", fmt.Errorf("invalid output format flag %q - available formats: %v", outputFormatFlag, availableOutputFormats)
 }
 
-// Parses the claim's test case's failureReason field and creates a list
+// Parses the claim's test case's skipReason field and creates a list
 // of NonCompliantObject's.
-func getNonCompliantObjectsFromFailureReason(failureReason string) ([]NonCompliantObject, error) {
+func getNonCompliantObjectsFromFailureReason(skipReason string) ([]NonCompliantObject, error) {
 	objects := struct {
 		Compliant    []testhelper.ReportObject `json:"CompliantObjectsOut"`
 		NonCompliant []testhelper.ReportObject `json:"NonCompliantObjectsOut"`
 	}{}
 
-	err := json.Unmarshal([]byte(failureReason), &objects)
+	err := json.Unmarshal([]byte(skipReason), &objects)
 	if err != nil {
-		return nil, fmt.Errorf("failed to decode failureReason %s: %v", failureReason, err)
+		return nil, fmt.Errorf("failed to decode skipReason %s: %v", skipReason, err)
 	}
 
 	// Now let's create a list of our NonCompliantObject-type items.

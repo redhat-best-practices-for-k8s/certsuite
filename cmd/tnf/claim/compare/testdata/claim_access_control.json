@@ -9257,7 +9257,7 @@
           "endTime": "2023-09-04 09:18:50.568408558 -0500 CDT m=+20.103332734",
           "failureLineContent": "\t\tfail(string(bytes))",
           "failureLocation": "/home/greyerof/github/tnf/pkg/testhelper/testhelper.go:367",
-          "failureReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"SCC Capability\"],\"ObjectFieldsValues\":[\"Non compliant capability detected in container\",\"tnf\",\"xdp\",\"xdp-c\",\"BPF\"]}]}",
+          "skipReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"SCC Capability\"],\"ObjectFieldsValues\":[\"Non compliant capability detected in container\",\"tnf\",\"xdp\",\"xdp-c\",\"BPF\"]}]}",
           "startTime": "2023-09-04 09:18:50.568235709 -0500 CDT m=+20.103159884",
           "state": "failed",
           "testID": {
@@ -9284,7 +9284,7 @@
           "endTime": "2023-09-04 09:18:50.664570781 -0500 CDT m=+20.199494961",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.664213742 -0500 CDT m=+20.199137917",
           "state": "passed",
           "testID": {
@@ -9311,7 +9311,7 @@
           "endTime": "2023-09-04 09:18:50.568708574 -0500 CDT m=+20.103632750",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.568649176 -0500 CDT m=+20.103573351",
           "state": "passed",
           "testID": {
@@ -9338,7 +9338,7 @@
           "endTime": "2023-09-04 09:19:06.658058151 -0500 CDT m=+36.192982330",
           "failureLineContent": "\t\tginkgo.Skip(\"No role contains rules that apply to at least one CRD under test\")",
           "failureLocation": "/home/greyerof/github/tnf/cnf-certification-test/accesscontrol/suite.go:933",
-          "failureReason": "No role contains rules that apply to at least one CRD under test",
+          "skipReason": "No role contains rules that apply to at least one CRD under test",
           "startTime": "2023-09-04 09:19:06.657809085 -0500 CDT m=+36.192733259",
           "state": "skipped",
           "testID": {
@@ -9365,7 +9365,7 @@
           "endTime": "2023-09-04 09:18:50.568185748 -0500 CDT m=+20.103109922",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.568145348 -0500 CDT m=+20.103069521",
           "state": "passed",
           "testID": {
@@ -9392,7 +9392,7 @@
           "endTime": "2023-09-04 09:18:50.662756079 -0500 CDT m=+20.197680257",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.569049294 -0500 CDT m=+20.103973468",
           "state": "passed",
           "testID": {
@@ -9419,7 +9419,7 @@
           "endTime": "2023-09-04 09:18:58.81676038 -0500 CDT m=+28.351684554",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:58.816684513 -0500 CDT m=+28.351608686",
           "state": "passed",
           "testID": {
@@ -9446,7 +9446,7 @@
           "endTime": "2023-09-04 09:18:50.56793244 -0500 CDT m=+20.102856615",
           "failureLineContent": "\t\tfail(string(bytes))",
           "failureLocation": "/home/greyerof/github/tnf/pkg/testhelper/testhelper.go:367",
-          "failureReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-1\",\"test\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"SCC Capability\"],\"ObjectFieldsValues\":[\"Non compliant capability detected in container\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\",\"NET_ADMIN\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"SCC Capability\"],\"ObjectFieldsValues\":[\"Non compliant capability detected in container\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\",\"NET_ADMIN\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"SCC Capability\"],\"ObjectFieldsValues\":[\"Non compliant capability detected in container\",\"tnf\",\"xdp\",\"xdp-c\",\"NET_ADMIN\"]}]}",
+          "skipReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"No forbidden capabilities detected in container\",\"tnf\",\"test-1\",\"test\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"SCC Capability\"],\"ObjectFieldsValues\":[\"Non compliant capability detected in container\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\",\"NET_ADMIN\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"SCC Capability\"],\"ObjectFieldsValues\":[\"Non compliant capability detected in container\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\",\"NET_ADMIN\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"SCC Capability\"],\"ObjectFieldsValues\":[\"Non compliant capability detected in container\",\"tnf\",\"xdp\",\"xdp-c\",\"NET_ADMIN\"]}]}",
           "startTime": "2023-09-04 09:18:50.567699604 -0500 CDT m=+20.102623779",
           "state": "failed",
           "testID": {
@@ -9473,7 +9473,7 @@
           "endTime": "2023-09-04 09:18:50.568101953 -0500 CDT m=+20.103026127",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.568040854 -0500 CDT m=+20.102965029",
           "state": "passed",
           "testID": {
@@ -9500,7 +9500,7 @@
           "endTime": "2023-09-04 09:19:06.657094654 -0500 CDT m=+36.192018829",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.656923511 -0500 CDT m=+36.191847686",
           "state": "passed",
           "testID": {
@@ -9527,7 +9527,7 @@
           "endTime": "2023-09-04 09:18:58.815593303 -0500 CDT m=+28.350517478",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.965240803 -0500 CDT m=+20.500164978",
           "state": "passed",
           "testID": {
@@ -9554,7 +9554,7 @@
           "endTime": "2023-09-04 09:18:50.964966148 -0500 CDT m=+20.499890322",
           "failureLineContent": "\t\t\tginkgo.Fail(\"Pod has been found with default service account name.\")",
           "failureLocation": "/home/greyerof/github/tnf/cnf-certification-test/accesscontrol/suite.go:612",
-          "failureReason": "Pod has been found with default service account name.",
+          "skipReason": "Pod has been found with default service account name.",
           "startTime": "2023-09-04 09:18:50.664656954 -0500 CDT m=+20.199581133",
           "state": "failed",
           "testID": {
@@ -9581,7 +9581,7 @@
           "endTime": "2023-09-04 09:18:50.568931796 -0500 CDT m=+20.103855970",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.56890122 -0500 CDT m=+20.103825396",
           "state": "passed",
           "testID": {
@@ -9608,7 +9608,7 @@
           "endTime": "2023-09-04 09:18:50.568785325 -0500 CDT m=+20.103709500",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.568748674 -0500 CDT m=+20.103672849",
           "state": "passed",
           "testID": {
@@ -9635,7 +9635,7 @@
           "endTime": "2023-09-04 09:18:50.56886078 -0500 CDT m=+20.103784955",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.568829568 -0500 CDT m=+20.103753743",
           "state": "passed",
           "testID": {
@@ -9662,7 +9662,7 @@
           "endTime": "2023-09-04 09:18:50.569008556 -0500 CDT m=+20.103932731",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.568968765 -0500 CDT m=+20.103892940",
           "state": "passed",
           "testID": {
@@ -9689,7 +9689,7 @@
           "endTime": "2023-09-04 09:18:50.664046132 -0500 CDT m=+20.198970306",
           "failureLineContent": "\t\tfail(string(bytes))",
           "failureLocation": "/home/greyerof/github/tnf/pkg/testhelper/testhelper.go:367",
-          "failureReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"All the role bindings used by this pod (applied by the service accounts) live in the same namespace\",\"tnf\",\"test-0\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"All the role bindings used by this pod (applied by the service accounts) live in the same namespace\",\"tnf\",\"test-1\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"All the role bindings used by this pod (applied by the service accounts) live in the same namespace\",\"tnf\",\"test-765d6b8dcf-gbvsd\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"All the role bindings used by this pod (applied by the service accounts) live in the same namespace\",\"tnf\",\"test-765d6b8dcf-s768n\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"The serviceAccountName is either empty or default\",\"tnf\",\"xdp\"]}]}",
+          "skipReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"All the role bindings used by this pod (applied by the service accounts) live in the same namespace\",\"tnf\",\"test-0\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"All the role bindings used by this pod (applied by the service accounts) live in the same namespace\",\"tnf\",\"test-1\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"All the role bindings used by this pod (applied by the service accounts) live in the same namespace\",\"tnf\",\"test-765d6b8dcf-gbvsd\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"All the role bindings used by this pod (applied by the service accounts) live in the same namespace\",\"tnf\",\"test-765d6b8dcf-s768n\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"The serviceAccountName is either empty or default\",\"tnf\",\"xdp\"]}]}",
           "startTime": "2023-09-04 09:18:50.663593132 -0500 CDT m=+20.198517317",
           "state": "failed",
           "testID": {
@@ -9716,7 +9716,7 @@
           "endTime": "2023-09-04 09:18:50.663337898 -0500 CDT m=+20.198262075",
           "failureLineContent": "\t\tfail(string(bytes))",
           "failureLocation": "/home/greyerof/github/tnf/pkg/testhelper/testhelper.go:367",
-          "failureReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod has a service account name\",\"tnf\",\"test-0\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod has a service account name\",\"tnf\",\"test-1\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod has a service account name\",\"tnf\",\"test-765d6b8dcf-gbvsd\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod has a service account name\",\"tnf\",\"test-765d6b8dcf-s768n\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod does not have a valid service account name\",\"tnf\",\"xdp\"]}]}",
+          "skipReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod has a service account name\",\"tnf\",\"test-0\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod has a service account name\",\"tnf\",\"test-1\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod has a service account name\",\"tnf\",\"test-765d6b8dcf-gbvsd\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod has a service account name\",\"tnf\",\"test-765d6b8dcf-s768n\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"Pod does not have a valid service account name\",\"tnf\",\"xdp\"]}]}",
           "startTime": "2023-09-04 09:18:50.662893374 -0500 CDT m=+20.197817550",
           "state": "failed",
           "testID": {
@@ -9743,7 +9743,7 @@
           "endTime": "2023-09-04 09:19:06.65744981 -0500 CDT m=+36.192374005",
           "failureLineContent": "\t\tfail(string(bytes))",
           "failureLocation": "/home/greyerof/github/tnf/pkg/testhelper/testhelper.go:367",
-          "failureReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"the pod is not using a projected volume for service account access\",\"tnf\",\"test-0\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"the pod is not using a projected volume for service account access\",\"tnf\",\"test-1\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"the pod is not using a projected volume for service account access\",\"tnf\",\"test-765d6b8dcf-gbvsd\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"the pod is not using a projected volume for service account access\",\"tnf\",\"test-765d6b8dcf-s768n\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"ProjectedVolume\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Projected Volume Name\",\"Projected Volume SA Token\",\"Projected Volume SA Token\",\"Projected Volume SA Token\",\"Projected Volume SA Token\"],\"ObjectFieldsValues\":[\"the projected volume Service account token field is not nil\",\"tnf\",\"xdp\",\"kube-api-access-t8lpx\",\"\\u0026ServiceAccountTokenProjection{Audience:,ExpirationSeconds:*3607,Path:token,}\",\"nil\",\"nil\",\"nil\"]}]}",
+          "skipReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"the pod is not using a projected volume for service account access\",\"tnf\",\"test-0\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"the pod is not using a projected volume for service account access\",\"tnf\",\"test-1\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"the pod is not using a projected volume for service account access\",\"tnf\",\"test-765d6b8dcf-gbvsd\"]},{\"ObjectType\":\"Pod\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\"],\"ObjectFieldsValues\":[\"the pod is not using a projected volume for service account access\",\"tnf\",\"test-765d6b8dcf-s768n\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"ProjectedVolume\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Projected Volume Name\",\"Projected Volume SA Token\",\"Projected Volume SA Token\",\"Projected Volume SA Token\",\"Projected Volume SA Token\"],\"ObjectFieldsValues\":[\"the projected volume Service account token field is not nil\",\"tnf\",\"xdp\",\"kube-api-access-t8lpx\",\"\\u0026ServiceAccountTokenProjection{Audience:,ExpirationSeconds:*3607,Path:token,}\",\"nil\",\"nil\",\"nil\"]}]}",
           "startTime": "2023-09-04 09:19:06.657151337 -0500 CDT m=+36.192075511",
           "state": "failed",
           "testID": {
@@ -9770,7 +9770,7 @@
           "endTime": "2023-09-04 09:19:06.656636052 -0500 CDT m=+36.191560227",
           "failureLineContent": "\t\tfail(string(bytes))",
           "failureLocation": "/home/greyerof/github/tnf/pkg/testhelper/testhelper.go:367",
-          "failureReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has resource requests and limits\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has resource requests and limits\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has resource requests and limits\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has resource requests and limits\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is missing resource requests or limits\",\"tnf\",\"xdp\",\"xdp-c\"]}]}",
+          "skipReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has resource requests and limits\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has resource requests and limits\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has resource requests and limits\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container has resource requests and limits\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is missing resource requests or limits\",\"tnf\",\"xdp\",\"xdp-c\"]}]}",
           "startTime": "2023-09-04 09:19:06.656333774 -0500 CDT m=+36.191257949",
           "state": "failed",
           "testID": {
@@ -9797,7 +9797,7 @@
           "endTime": "2023-09-04 09:18:50.567381737 -0500 CDT m=+20.102305911",
           "failureLineContent": "\t\tfail(string(bytes))",
           "failureLocation": "/home/greyerof/github/tnf/pkg/testhelper/testhelper.go:367",
-          "failureReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is category 1 or category NoUID0\",\"tnf\",\"test-0\",\"test\",\"CategoryID1NoUID0(automatically granted, basic rights with mesh networks)\"]},{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is category 1 or category NoUID0\",\"tnf\",\"test-1\",\"test\",\"CategoryID1NoUID0(automatically granted, basic rights with mesh networks)\"]},{\"ObjectType\":\"Cnf\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Category\"],\"ObjectFieldsValues\":[\"Overall CNF category\",\"CategoryID4(anything not matching lower category)\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is NOT category 1 or category NoUID0\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\",\"CategoryID4(anything not matching lower category)\"]},{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is NOT category 1 or category NoUID0\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\",\"CategoryID4(anything not matching lower category)\"]},{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is NOT category 1 or category NoUID0\",\"tnf\",\"xdp\",\"xdp-c\",\"CategoryID4(anything not matching lower category)\"]}]}",
+          "skipReason": "{\"CompliantObjectsOut\":[{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is category 1 or category NoUID0\",\"tnf\",\"test-0\",\"test\",\"CategoryID1NoUID0(automatically granted, basic rights with mesh networks)\"]},{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is category 1 or category NoUID0\",\"tnf\",\"test-1\",\"test\",\"CategoryID1NoUID0(automatically granted, basic rights with mesh networks)\"]},{\"ObjectType\":\"Cnf\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Category\"],\"ObjectFieldsValues\":[\"Overall CNF category\",\"CategoryID4(anything not matching lower category)\"]}],\"NonCompliantObjectsOut\":[{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is NOT category 1 or category NoUID0\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\",\"CategoryID4(anything not matching lower category)\"]},{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is NOT category 1 or category NoUID0\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\",\"CategoryID4(anything not matching lower category)\"]},{\"ObjectType\":\"ContainerCategory\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\",\"Category\"],\"ObjectFieldsValues\":[\"container category is NOT category 1 or category NoUID0\",\"tnf\",\"xdp\",\"xdp-c\",\"CategoryID4(anything not matching lower category)\"]}]}",
           "startTime": "2023-09-04 09:18:50.566310584 -0500 CDT m=+20.101234759",
           "state": "failed",
           "testID": {
@@ -9824,7 +9824,7 @@
           "endTime": "2023-09-04 09:18:50.568537035 -0500 CDT m=+20.103461209",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.568498757 -0500 CDT m=+20.103422932",
           "state": "passed",
           "testID": {
@@ -9851,7 +9851,7 @@
           "endTime": "2023-09-04 09:18:50.56861147 -0500 CDT m=+20.103535645",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.568585037 -0500 CDT m=+20.103509212",
           "state": "passed",
           "testID": {
@@ -9878,7 +9878,7 @@
           "endTime": "2023-09-04 09:19:06.657747422 -0500 CDT m=+36.192671612",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.657683301 -0500 CDT m=+36.192607514",
           "state": "passed",
           "testID": {
@@ -9905,7 +9905,7 @@
           "endTime": "2023-09-04 09:19:06.656166437 -0500 CDT m=+36.191090610",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:58.816813038 -0500 CDT m=+28.351737211",
           "state": "passed",
           "testID": {
@@ -9932,7 +9932,7 @@
           "endTime": "2023-09-04 09:18:50.567648143 -0500 CDT m=+20.102572317",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.567539188 -0500 CDT m=+20.102463363",
           "state": "passed",
           "testID": {
@@ -9959,7 +9959,7 @@
           "endTime": "2023-09-04 09:18:58.816106528 -0500 CDT m=+28.351030702",
           "failureLineContent": "\t\tfail(string(bytes))",
           "failureLocation": "/home/greyerof/github/tnf/pkg/testhelper/testhelper.go:367",
-          "failureReason": "{\"CompliantObjectsOut\":null,\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"xdp\",\"xdp-c\"]}]}",
+          "skipReason": "{\"CompliantObjectsOut\":null,\"NonCompliantObjectsOut\":[{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"test-0\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"test-1\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"test-765d6b8dcf-gbvsd\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"test-765d6b8dcf-s768n\",\"test\"]},{\"ObjectType\":\"Container\",\"ObjectFieldsKeys\":[\"Reason For Non Compliance\",\"Namespace\",\"Pod Name\",\"Container Name\"],\"ObjectFieldsValues\":[\"Container is running on a realtime kernel enabled node without SYS_NICE capability\",\"tnf\",\"xdp\",\"xdp-c\"]}]}",
           "startTime": "2023-09-04 09:18:58.815763413 -0500 CDT m=+28.350687587",
           "state": "failed",
           "testID": {
@@ -9986,7 +9986,7 @@
           "endTime": "2023-09-04 09:18:58.816543639 -0500 CDT m=+28.351467813",
           "failureLineContent": "\t\t\tskip(fmt.Sprintf(\"Test skipped because there are no %s to test, please check under test labels\", reflect.TypeOf(o)))",
           "failureLocation": "/home/greyerof/github/tnf/pkg/testhelper/testhelper.go:321",
-          "failureReason": "Test skipped because there are no []*provider.Pod to test, please check under test labels",
+          "skipReason": "Test skipped because there are no []*provider.Pod to test, please check under test labels",
           "startTime": "2023-09-04 09:18:58.816304856 -0500 CDT m=+28.351229031",
           "state": "skipped",
           "testID": {
@@ -10013,7 +10013,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.658351027 -0500 CDT m=+36.193275232",
           "state": "skipped",
           "testID": {
@@ -10040,7 +10040,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.658473669 -0500 CDT m=+36.193397844",
           "state": "skipped",
           "testID": {
@@ -10067,7 +10067,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.658299035 -0500 CDT m=+36.193223210",
           "state": "skipped",
           "testID": {
@@ -10094,7 +10094,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.658444851 -0500 CDT m=+36.193369056",
           "state": "skipped",
           "testID": {
@@ -10121,7 +10121,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.658400499 -0500 CDT m=+36.193324704",
           "state": "skipped",
           "testID": {
@@ -10148,7 +10148,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.56619026 -0500 CDT m=+20.101114435",
           "state": "skipped",
           "testID": {
@@ -10175,7 +10175,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565894087 -0500 CDT m=+20.100818277",
           "state": "skipped",
           "testID": {
@@ -10202,7 +10202,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565931799 -0500 CDT m=+20.100855973",
           "state": "skipped",
           "testID": {
@@ -10229,7 +10229,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.566169662 -0500 CDT m=+20.101093852",
           "state": "skipped",
           "testID": {
@@ -10256,7 +10256,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565912421 -0500 CDT m=+20.100836595",
           "state": "skipped",
           "testID": {
@@ -10283,7 +10283,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.566110476 -0500 CDT m=+20.101034651",
           "state": "skipped",
           "testID": {
@@ -10310,7 +10310,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565946717 -0500 CDT m=+20.100870891",
           "state": "skipped",
           "testID": {
@@ -10337,7 +10337,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565994768 -0500 CDT m=+20.100918958",
           "state": "skipped",
           "testID": {
@@ -10364,7 +10364,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.566148821 -0500 CDT m=+20.101072996",
           "state": "skipped",
           "testID": {
@@ -10391,7 +10391,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.566045362 -0500 CDT m=+20.100969551",
           "state": "skipped",
           "testID": {
@@ -10418,7 +10418,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.566025512 -0500 CDT m=+20.100949687",
           "state": "skipped",
           "testID": {
@@ -10445,7 +10445,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.566092278 -0500 CDT m=+20.101016453",
           "state": "skipped",
           "testID": {
@@ -10472,7 +10472,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.566073238 -0500 CDT m=+20.100997412",
           "state": "skipped",
           "testID": {
@@ -10499,7 +10499,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.566224664 -0500 CDT m=+20.101148839",
           "state": "skipped",
           "testID": {
@@ -10526,7 +10526,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565977061 -0500 CDT m=+20.100901237",
           "state": "skipped",
           "testID": {
@@ -10553,7 +10553,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.566011546 -0500 CDT m=+20.100935721",
           "state": "skipped",
           "testID": {
@@ -10580,7 +10580,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.566129433 -0500 CDT m=+20.101053606",
           "state": "skipped",
           "testID": {
@@ -10607,7 +10607,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.566243675 -0500 CDT m=+20.101167865",
           "state": "skipped",
           "testID": {
@@ -10634,7 +10634,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.658615636 -0500 CDT m=+36.193539811",
           "state": "skipped",
           "testID": {
@@ -10661,7 +10661,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.658596375 -0500 CDT m=+36.193520551",
           "state": "skipped",
           "testID": {
@@ -10688,7 +10688,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.56585899 -0500 CDT m=+20.100783165",
           "state": "skipped",
           "testID": {
@@ -10715,7 +10715,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565804542 -0500 CDT m=+20.100728718",
           "state": "skipped",
           "testID": {
@@ -10742,7 +10742,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.5656687 -0500 CDT m=+20.100592905",
           "state": "skipped",
           "testID": {
@@ -10769,7 +10769,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565694716 -0500 CDT m=+20.100618891",
           "state": "skipped",
           "testID": {
@@ -10796,7 +10796,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565721905 -0500 CDT m=+20.100646081",
           "state": "skipped",
           "testID": {
@@ -10823,7 +10823,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565742206 -0500 CDT m=+20.100666381",
           "state": "skipped",
           "testID": {
@@ -10850,7 +10850,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565825618 -0500 CDT m=+20.100749791",
           "state": "skipped",
           "testID": {
@@ -10877,7 +10877,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565786079 -0500 CDT m=+20.100710254",
           "state": "skipped",
           "testID": {
@@ -10904,7 +10904,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565843941 -0500 CDT m=+20.100768115",
           "state": "skipped",
           "testID": {
@@ -10931,7 +10931,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565876872 -0500 CDT m=+20.100801048",
           "state": "skipped",
           "testID": {
@@ -10958,7 +10958,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565766442 -0500 CDT m=+20.100690615",
           "state": "skipped",
           "testID": {
@@ -10985,7 +10985,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565224144 -0500 CDT m=+20.100148319",
           "state": "skipped",
           "testID": {
@@ -11012,7 +11012,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565256113 -0500 CDT m=+20.100180288",
           "state": "skipped",
           "testID": {
@@ -11039,7 +11039,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565303849 -0500 CDT m=+20.100228023",
           "state": "skipped",
           "testID": {
@@ -11066,7 +11066,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565277313 -0500 CDT m=+20.100201488",
           "state": "skipped",
           "testID": {
@@ -11093,7 +11093,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.658551609 -0500 CDT m=+36.193475785",
           "state": "skipped",
           "testID": {
@@ -11120,7 +11120,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.658523468 -0500 CDT m=+36.193447644",
           "state": "skipped",
           "testID": {
@@ -11147,7 +11147,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:19:06.65849962 -0500 CDT m=+36.193423795",
           "state": "skipped",
           "testID": {
@@ -11174,7 +11174,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.5649692 -0500 CDT m=+20.099893375",
           "state": "skipped",
           "testID": {
@@ -11201,7 +11201,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565142204 -0500 CDT m=+20.100066402",
           "state": "skipped",
           "testID": {
@@ -11228,7 +11228,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565202191 -0500 CDT m=+20.100126368",
           "state": "skipped",
           "testID": {
@@ -11255,7 +11255,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565170556 -0500 CDT m=+20.100094732",
           "state": "skipped",
           "testID": {
@@ -11282,7 +11282,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565044986 -0500 CDT m=+20.099969160",
           "state": "skipped",
           "testID": {
@@ -11309,7 +11309,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.56508862 -0500 CDT m=+20.100012795",
           "state": "skipped",
           "testID": {
@@ -11336,7 +11336,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565365098 -0500 CDT m=+20.100289274",
           "state": "skipped",
           "testID": {
@@ -11363,7 +11363,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565494647 -0500 CDT m=+20.100418822",
           "state": "skipped",
           "testID": {
@@ -11390,7 +11390,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565634975 -0500 CDT m=+20.100559178",
           "state": "skipped",
           "testID": {
@@ -11417,7 +11417,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565610579 -0500 CDT m=+20.100534753",
           "state": "skipped",
           "testID": {
@@ -11444,7 +11444,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565475723 -0500 CDT m=+20.100399897",
           "state": "skipped",
           "testID": {
@@ -11471,7 +11471,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565325812 -0500 CDT m=+20.100249986",
           "state": "skipped",
           "testID": {
@@ -11498,7 +11498,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565457298 -0500 CDT m=+20.100381472",
           "state": "skipped",
           "testID": {
@@ -11525,7 +11525,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565416803 -0500 CDT m=+20.100340978",
           "state": "skipped",
           "testID": {
@@ -11552,7 +11552,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565570329 -0500 CDT m=+20.100494505",
           "state": "skipped",
           "testID": {
@@ -11579,7 +11579,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565588426 -0500 CDT m=+20.100512601",
           "state": "skipped",
           "testID": {
@@ -11606,7 +11606,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565553571 -0500 CDT m=+20.100477761",
           "state": "skipped",
           "testID": {
@@ -11633,7 +11633,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565534689 -0500 CDT m=+20.100458864",
           "state": "skipped",
           "testID": {
@@ -11660,7 +11660,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "failureReason": "",
+          "skipReason": "",
           "startTime": "2023-09-04 09:18:50.565396496 -0500 CDT m=+20.100320669",
           "state": "skipped",
           "testID": {

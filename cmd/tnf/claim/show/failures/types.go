@@ -3,7 +3,7 @@ package failures
 import "fmt"
 
 // Custom object type needed to provide a different JSON serialization than
-// the one in claim's test cases' failureReason field.
+// the one in claim's test cases' skipReason field.
 type NonCompliantObject struct {
 	Type   string     `json:"type"`
 	Reason string     `json:"reason"`
