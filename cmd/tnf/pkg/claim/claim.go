@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	supportedClaimFormatVersion = "v0.2.0"
+	supportedClaimFormatVersion = "v0.3.0"
 )
 
 const (
@@ -43,7 +43,8 @@ type TestCaseResult struct {
 	EndTime                string            `json:"endTime"`
 	FailureLineContent     string            `json:"failureLineContent"`
 	FailureLocation        string            `json:"failureLocation"`
-	FailureReason          string            `json:"failureReason"`
+	SkipReason             string            `json:"skipReason"`
+	CheckDetails           string            `json:"checkDetails"`
 	StartTime              string            `json:"startTime"`
 	State                  string            `json:"state"`
 	TestID                 struct {

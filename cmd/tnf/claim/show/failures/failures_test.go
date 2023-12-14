@@ -295,7 +295,7 @@ func TestGetFailedTestCasesByTestSuite(t *testing.T) {
 						{
 							TestCaseName:        "access-control-sys-admin-capability-check",
 							TestCaseDescription: "Ensures that containers do not use SYS_ADMIN capability",
-							FailureReason:       "pod xxx ns yyy container zzz uses SYS_ADMIN",
+							SkipReason:          "pod xxx ns yyy container zzz uses SYS_ADMIN",
 						},
 					},
 				},

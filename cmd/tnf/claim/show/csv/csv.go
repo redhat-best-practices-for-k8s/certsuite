@@ -146,7 +146,7 @@ func buildCSV(claimScheme *claim.Schema, cnfType string, catalogMap map[string]c
 			"CNFName", "testID", "Suite",
 			"Description", "State",
 			"StartTime", "EndTime",
-			"FailureReason", "Output",
+			"SkipReason", "CheckDetails", "Output",
 			"Remediation", "CNFType",
 			"Mandatory/Optional",
 		})
@@ -164,7 +164,8 @@ func buildCSV(claimScheme *claim.Schema, cnfType string, catalogMap map[string]c
 			claimScheme.Claim.Results[testID].State,
 			claimScheme.Claim.Results[testID].StartTime,
 			claimScheme.Claim.Results[testID].EndTime,
-			claimScheme.Claim.Results[testID].FailureReason,
+			claimScheme.Claim.Results[testID].SkipReason,
+			claimScheme.Claim.Results[testID].CheckDetails,
 			claimScheme.Claim.Results[testID].CapturedTestOutput,
 			catalogMap[testID].Remediation,
 			cnfType, // Append the CNF type

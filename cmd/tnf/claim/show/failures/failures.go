@@ -194,7 +194,7 @@ func printFailuresText(testSuites []FailedTestSuite) {
 
 			// In case this tc was not using report objects, just print the failure reason string.
 			if len(tc.NonCompliantObjects) == 0 {
-				fmt.Printf("    Failure reason: %s\n", tc.FailureReason)
+				fmt.Printf("    Failure reason: %s\n", tc.SkipReason)
 				continue
 			}
 
@@ -253,12 +253,12 @@ func getFailedTestCasesByTestSuite(claimResultsByTestSuite map[string][]*claim.T
 				TestCaseDescription: tc.CatalogInfo.Description,
 			}
 
-			nonCompliantObjects, err := getNonCompliantObjectsFromFailureReason(tc.FailureReason)
+			nonCompliantObjects, err := getNonCompliantObjectsFromFailureReason(tc.SkipReason)
 			if err != nil {
 				// This means the test case doesn't use the report objects yet. Just use the raw failure reason instead.
 				// Also, send the error into stderr, so it can be filtered out with "2>/errors.txt" or "2>/dev/null".
 				fmt.Fprintf(os.Stderr, "Failed to parse non compliant objects from test case %s (test suite %s): %v", tc.TestID.ID, testSuite, err)
-				failingTc.FailureReason = tc.FailureReason
+				failingTc.SkipReason = tc.SkipReason
 			} else {
 				failingTc.NonCompliantObjects = nonCompliantObjects
 			}
