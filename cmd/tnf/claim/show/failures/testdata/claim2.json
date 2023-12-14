@@ -7,7 +7,7 @@
           "endTime": "2023-07-18 03:37:42.095508375 -0500 CDT m=+23.133713410",
           "failureLineContent": "\t\tfail(string(bytes))",
           "failureLocation": "/home/greyerof/github/tnf/pkg/testhelper/testhelper.go:352",
-          "skipReason": "pod xxx ns yyy container zzz uses SYS_ADMIN",
+          "checkDetails": "pod xxx ns yyy container zzz uses SYS_ADMIN",
           "startTime": "2023-07-18 03:37:42.095225914 -0500 CDT m=+23.133430956",
           "state": "failed",
           "testID": {
@@ -34,7 +34,7 @@
           "endTime": "2023-07-18 03:37:44.324268378 -0500 CDT m=+25.362473413",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "skipReason": "",
+          "checkDetails": "",
           "startTime": "2023-07-18 03:37:44.324023044 -0500 CDT m=+25.362228078",
           "state": "passed",
           "testID": {
@@ -61,7 +61,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "skipReason": "",
+          "checkDetails": "",
           "startTime": "2023-07-18 03:37:46.483797163 -0500 CDT m=+27.522002219",
           "state": "skipped",
           "testID": {
@@ -88,7 +88,7 @@
           "endTime": "0001-01-01 00:00:00 +0000 UTC",
           "failureLineContent": "",
           "failureLocation": ":0",
-          "skipReason": "",
+          "checkDetails": "",
           "startTime": "2023-07-18 03:37:46.483566421 -0500 CDT m=+27.521771494",
           "state": "skipped",
           "testID": {
