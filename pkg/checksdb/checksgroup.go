@@ -82,14 +82,13 @@ func (group *ChecksGroup) Add(check *Check) {
 func skipCheck(check *Check, reason string) {
 	check.LogInfo("Skipping check %s, reason: %s", check.ID, reason)
 
-	fmt.Printf("[ %s ] %s\n", cli.CheckResultTagSkip, check.ID)
-
 	check.SetResultSkipped(reason)
 }
 
 func skipAll(checks []*Check, reason string) {
 	for _, check := range checks {
 		skipCheck(check, reason)
+		printCheckResult(check)
 	}
 }
 
@@ -310,6 +309,7 @@ func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool, abo
 	for _, check := range group.checks {
 		if !labelsExprEvaluator.Eval(check.Labels) {
 			skipCheck(check, "Not matching labels")
+			printCheckResult(check)
 			continue
 		}
 		checks = append(checks, check)
@@ -400,14 +400,12 @@ func (group *ChecksGroup) OnAbort(labelsExpr, abortReason string) error {
 
 	for i, check := range group.checks {
 		if !labelsExprEvaluator.Eval(check.Labels) {
-			fmt.Printf("[ %s ] %s\n", cli.CheckResultTagSkip, check.ID)
-			check.SetResultSkipped("Not matching labels")
+			check.SetResultSkipped("not matching labels")
 			continue
 		}
 
 		// If none of this group's checks was running yet, skip all.
 		if group.currentRunningCheckIdx == checkIdxNone {
-			fmt.Printf("[ %s ] %s\n", cli.CheckResultTagSkip, check.ID)
 			check.SetResultSkipped(abortReason)
 			continue
 		}
@@ -415,11 +413,11 @@ func (group *ChecksGroup) OnAbort(labelsExpr, abortReason string) error {
 		// Abort the check that was running when it was aborted and skip the rest.
 		if i == group.currentRunningCheckIdx {
 			check.SetResultAborted(abortReason)
-			fmt.Printf("\r[ %s ] %-60s\n", cli.CheckResultTagAborted, check.ID)
 		} else if i > group.currentRunningCheckIdx {
-			fmt.Printf("[ %s ] %s\n", cli.CheckResultTagSkip, check.ID)
 			check.SetResultSkipped(abortReason)
 		}
+
+		printCheckResult(check)
 	}
 
 	return nil

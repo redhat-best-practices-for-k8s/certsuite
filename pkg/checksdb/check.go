@@ -65,7 +65,7 @@ func NewCheck(id string, labels []string) *Check {
 		logArchive: &strings.Builder{},
 	}
 
-	check.logger = log.GetMultiLogger(check.logArchive).With("check", check.ID)
+	check.logger = log.GetMultiLogger(check.logArchive, cli.CliCheckLogSniffer).With("check", check.ID)
 
 	return check
 }
@@ -253,7 +253,7 @@ func (check *Check) Run() error {
 		return fmt.Errorf("unable to run due to a previously existing error: %v", check.Error)
 	}
 
-	fmt.Printf("[ %s ] %s", cli.CheckResultTagRunning, check.ID)
+	cli.PrintCheckRunning(check.ID)
 
 	check.StartTime = time.Now()
 	defer func() {
@@ -282,16 +282,17 @@ func (check *Check) Run() error {
 	return nil
 }
 
-const nbCharsToAvoidLineAliasing = 20
-
 func printCheckResult(check *Check) {
-	checkID := check.ID + strings.Repeat(" ", nbCharsToAvoidLineAliasing)
 	switch check.Result {
 	case CheckResultPassed:
-		fmt.Printf("\r[ %s ] %s\n", cli.CheckResultTagPass, checkID)
+		cli.PrintCheckPassed(check.ID)
 	case CheckResultFailed:
-		fmt.Printf("\r[ %s ] %s\n", cli.CheckResultTagFail, checkID)
+		cli.PrintCheckFailed(check.ID)
 	case CheckResultSkipped:
-		fmt.Printf("\r[ %s ] %s\n", cli.CheckResultTagSkip, checkID)
+		cli.PrintCheckSkipped(check.ID, check.skipReason)
+	case CheckResultAborted:
+		cli.PrintCheckAborted(check.ID, check.skipReason)
+	case CheckResultError:
+		cli.PrintCheckErrored(check.ID)
 	}
 }

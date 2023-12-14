@@ -22,7 +22,6 @@ import (
 	"strings"
 
 	"github.com/operator-framework/api/pkg/operators/v1alpha1"
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/namespace"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/rbac"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/resources"
@@ -651,8 +650,6 @@ func testPodClusterRoleBindings(check *checksdb.Check, env *provider.TestEnviron
 				AddField(testhelper.ClusterRoleName, roleRefName))
 			continue
 		}
-
-		logrus.Debugf("topOwners=%v", topOwners)
 
 		csvNamespace, csvName, isOwnedByClusterWideOperator := OwnedByClusterWideOperator(topOwners, env)
 		// Pod is using a cluster role binding but is owned by a cluster wide operator, so it is ok

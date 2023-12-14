@@ -426,7 +426,6 @@ type TopOwner struct {
 // Recursively follow the ownership tree to find the top owners
 func followOwnerReferences(resourceList []*metav1.APIResourceList, dynamicClient dynamic.Interface, topOwners map[string]TopOwner, namespace string, ownerRefs []metav1.OwnerReference) (err error) {
 	for _, ownerRef := range ownerRefs {
-		fmt.Printf("-> Owner: %s/%s\n", ownerRef.Kind, ownerRef.Name)
 		// Get group resource version
 		gvr := getResourceSchema(resourceList, ownerRef.APIVersion, ownerRef.Kind)
 		// Get the owner resources
