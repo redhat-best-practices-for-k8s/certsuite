@@ -76,7 +76,7 @@ waitDeleteNamespace() {
 	if [ "$namespaceDeleting" != "openshift-operators" ]; then
 
 		echo "non openshift-operators namespace = $namespaceDeleting, deleting "
-		withRetry 4 10 oc wait namespace "$namespaceDeleting" --for=delete --timeout=60s || true
+		withRetry 2 10 oc wait namespace "$namespaceDeleting" --for=delete --timeout=60s || true
 		forceDeleteNamespaceIfPresent "$namespaceDeleting"
 	fi
 }
@@ -155,19 +155,19 @@ waitClusterOk() {
 		elapsedTime=$((currentTime - startTime))
 		# If elapsed time is greater than the timeout report failure
 		if [ "$elapsedTime" -ge "$timeoutSeconds" ]; then
-			echo "Timeout reached $timeoutSeconds seconds waiting for cluster to be reacheable."
+			echo "Timeout reached $timeoutSeconds seconds waiting for cluster to be reachable."
 			return 1
 		fi
 
 		# Otherwise wait a bit
-		echo "Waiting for cluster to be reacheable..."
+		echo "Waiting for cluster to be reachable..."
 		sleep 5
 	done
 }
 
 waitForCsvToAppearAndLabel() {
 	csvNamespace=$1
-	timeoutSeconds=300
+	timeoutSeconds=100
 	startTime=$(date +%s)
 	while true; do
 		csvs=$(oc get csv -n "$csvNamespace") || true
@@ -296,7 +296,7 @@ OPERATOR_PAGE='<!DOCTYPE html>
 
 echo "$OPERATOR_PAGE" >>"$REPORT_FOLDER"/"$INDEX_FILE"
 
-# Wait for the cluster to be reacheable
+# Wait for the cluster to be reachable
 waitClusterOk
 
 cleanup
@@ -309,7 +309,7 @@ while IFS=, read -r package_name catalog; do
 
 	echo "package=$package_name catalog=$catalog"
 
-	# Wait for the cluster to be reacheable
+	# Wait for the cluster to be reachable
 	waitClusterOk
 
 	status=0
@@ -334,7 +334,7 @@ while IFS=, read -r package_name catalog; do
 
 		continue
 	fi
-	# Wait for the cluster to be reacheable
+	# Wait for the cluster to be reachable
 	waitClusterOk
 
 	namesCount=$(withRetry 180 10 tasty install "$package_name" --source "$catalog" --stdout | grep -c "name:")
@@ -351,7 +351,7 @@ while IFS=, read -r package_name catalog; do
 	# If a namespace is present, it is probably stuck deleting from previous runs. Force delete it.
 	forceDeleteNamespaceIfPresent "$ns"
 
-	# Wait for the cluster to be reacheable
+	# Wait for the cluster to be reachable
 	waitClusterOk
 
 	# Install the operator in a custom namespace
@@ -363,7 +363,7 @@ while IFS=, read -r package_name catalog; do
 	# apply namespace/operator group and subscription
 	withRetry 180 10 oc apply -f operator.yml
 
-	# Wait for the cluster to be reacheable
+	# Wait for the cluster to be reachable
 	waitClusterOk
 
 	# Setting report directory
@@ -374,7 +374,7 @@ while IFS=, read -r package_name catalog; do
 
 	configYaml="$reportDir"/tnf_config.yml
 
-	# Change the targetNameSpace in tng_config file
+	# Change the targetNameSpace in tnf_config file
 	sed "s/\$ns/$ns/" "$CONFIG_YAML_TEMPLATE" >"$configYaml"
 	status=0
 	# Wait for the CSV to appear
