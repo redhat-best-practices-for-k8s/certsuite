@@ -87,7 +87,7 @@ fi
 # Specify Junit report file name.
 EXTRA_ARGS="\
 --timeout=$TIMEOUT \
--claimloc $OUTPUT_LOC \
+--output-dir $OUTPUT_LOC \
 "
 
 if [ "$SERVER_RUN" = "true" ]; then
