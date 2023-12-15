@@ -39,9 +39,9 @@ jobs:
 
     steps:
       - name: Set up Go 1.21
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
-          go-version: 1.21.4
+          go-version: 1.21.5
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -111,9 +111,9 @@ jobs:
 
     steps:
       - name: Set up Go 1.21
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
-          go-version: 1.21.4
+          go-version: 1.21.5
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -177,9 +177,9 @@ jobs:
           echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
 
       - name: Set up Go 1.21
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
-          go-version: 1.21.4
+          go-version: 1.21.5
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -239,7 +239,7 @@ jobs:
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "${SMOKE_TESTS_LABELS_FILTER}"
 
       - name: Upload smoke test results as an artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: smoke-tests
@@ -276,7 +276,7 @@ jobs:
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "preflight"
 
       - name: Upload preflight smoke test results as an artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: preflight-smoke-tests
@@ -332,9 +332,9 @@ jobs:
 
       # needed by depends-on-action
       - name: Set up Go 1.21
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
-          go-version: 1.21.4
+          go-version: 1.21.5
 
 
 
@@ -394,7 +394,7 @@ jobs:
       #     working_directory: collector
 
       - name: Upload container test results as an artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: smoke-tests-container
@@ -431,7 +431,7 @@ jobs:
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "preflight"
 
       - name: Upload container preflight test results as an artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: preflight-smoke-tests-container

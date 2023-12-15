@@ -134,8 +134,8 @@ func deletePod(pod *corev1.Pod, mode string, wg *sync.WaitGroup) error {
 	podName := pod.Name
 	namespace := pod.Namespace
 	go func() {
+		defer wg.Done()
 		waitPodDeleted(namespace, podName, gracePeriodSeconds, watcher)
-		wg.Done()
 	}()
 	return nil
 }

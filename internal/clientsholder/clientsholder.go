@@ -44,6 +44,7 @@ import (
 	policyv1 "k8s.io/api/policy/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
 	apiextv1fake "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/fake"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	k8sFakeClient "k8s.io/client-go/kubernetes/fake"
 	networkingv1 "k8s.io/client-go/kubernetes/typed/networking/v1"
 	"k8s.io/client-go/rest"
@@ -64,6 +65,7 @@ type ClientsHolder struct {
 	MachineCfg           ocpMachine.Interface
 	KubeConfig           []byte
 	ready                bool
+	GroupResources       []*metav1.APIResourceList
 }
 
 var clientsHolder = ClientsHolder{}
@@ -308,6 +310,12 @@ func newClientsHolder(filenames ...string) (*ClientsHolder, error) { //nolint:fu
 	if err != nil {
 		return nil, fmt.Errorf("cannot instantiate discoveryClient: %s", err)
 	}
+
+	clientsHolder.GroupResources, err = discoveryClient.ServerPreferredResources()
+	if err != nil {
+		return nil, fmt.Errorf("cannot get list of resources in cluster: %s", err)
+	}
+
 	resolver := scale.NewDiscoveryScaleKindResolver(discoveryClient)
 	gr, err := restmapper.GetAPIGroupResources(clientsHolder.K8sClient.Discovery())
 	if err != nil {
