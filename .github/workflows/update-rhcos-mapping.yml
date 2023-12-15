@@ -21,9 +21,9 @@ jobs:
         run: make update-rhcos-versions
 
       - name: Set up Go 1.21
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
-          go-version: 1.21.4
+          go-version: 1.21.5
 
         # This prevents any failures due to the updated rhcos_versions_map file from
         # making it into the PR phase.
