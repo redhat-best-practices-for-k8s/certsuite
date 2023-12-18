@@ -71,7 +71,7 @@ cleanup() {
 }
 
 waitDeleteNamespace() {
-	namespaceDeleting=$1
+	local namespaceDeleting=$1
 	# Wait for the namespace to be removed
 	if [ "$namespaceDeleting" != "openshift-operators" ]; then
 
@@ -81,15 +81,18 @@ waitDeleteNamespace() {
 	fi
 }
 
-# Function to execute oc command with retry
-function withRetry() {
-	local max_retries=$1
-	local timeout=$2
+# Executes command with retry
+withRetry() {
+	local \
+		maxRetries=$1 \
+		timeout=$2 \
+		retries=0 \
+		status=0 \
+		stderr='' \
+		stdout=''
 	shift 2
 
-	local retries=0
-	local status=0
-	until [ "$retries" -ge "$max_retries" ]; do
+	until [ "$retries" -ge "$maxRetries" ]; do
 		# Execute oc command saving stdout, stderr and exit status
 		# see: https://stackoverflow.com/questions/11027679/capture-stdout-and-stderr-into-different-variables/41069638#41069638
 		unset stdout stderr status
@@ -113,7 +116,7 @@ function withRetry() {
 			typeset -p status
 		)"
 		# shellcheck disable=SC2031
-		if [ "$status" == 0 ]; then
+		if [ "$status" -eq 0 ]; then
 			# If the command succeeded, break out of the loop
 			# shellcheck disable=SC2031
 			echo "$stdout"
@@ -134,7 +137,7 @@ function withRetry() {
 		echo "stdout: $stdout" >&2
 		# shellcheck disable=SC2031
 		echo "status: $status" >&2
-		echo "Retry $retries/$max_retries: Waiting for a few seconds before the next attempt..." >&2
+		echo "Retry $retries/$maxRetries: Waiting for a few seconds before the next attempt..." >&2
 		sleep "$timeout"
 	done
 
@@ -143,14 +146,20 @@ function withRetry() {
 }
 
 waitClusterOk() {
-	timeoutSeconds=600
-	startTime=$(date +%s)
+	local \
+		startTime \
+		status \
+		timeoutSeconds=600
+
+	startTime=$(date +%s 2>&1) || {
+		echo >&2 "date failed with error $?: $startTime"
+		return 0
+	}
 	while true; do
 		status=0
-		oc get nodes &>/dev/null || status="$?"
-		if [ "$status" == 0 ]; then
-			return 0
-		fi
+		oc get nodes &>/dev/null &&
+			return 0 ||
+			echo >&2 "get nodes failed with error $?."
 		currentTime=$(date +%s)
 		elapsedTime=$((currentTime - startTime))
 		# If elapsed time is greater than the timeout report failure
@@ -166,8 +175,14 @@ waitClusterOk() {
 }
 
 waitForCsvToAppearAndLabel() {
-	csvNamespace=$1
-	timeoutSeconds=100
+	local csvNamespace=$1
+	local timeoutSeconds=100
+	local startTime=0
+	local currentTime=0
+	local elapsedTime=0
+	local command=""
+	local status=0
+
 	startTime=$(date +%s)
 	while true; do
 		csvs=$(oc get csv -n "$csvNamespace") || true
@@ -194,13 +209,13 @@ waitForCsvToAppearAndLabel() {
 	eval "$command"
 
 	# Wait for the CSV to be succeeded
-	status=0
 	withRetry 2 10 oc wait csv -l test-network-function.com/operator=target -n "$ns" --for=jsonpath=\{.status.phase\}=Succeeded --timeout=60s || status="$?"
 	return $status
 }
 
 forceDeleteNamespaceIfPresent() {
-	aNamespace=$1
+	local aNamespace=$1
+	local pid=0
 
 	# Do not delete the redhat-operators namespace
 	if [ "$aNamespace" = "openshift-operators" ]; then
@@ -225,6 +240,8 @@ forceDeleteNamespaceIfPresent() {
 	kill -9 "$pid"
 	withRetry 2 10 oc wait namespace "$aNamespace" --for=delete --timeout=60s
 }
+
+# Main
 
 # Check if the number of parameters is correct
 if [ "$#" -eq 1 ]; then
@@ -302,29 +319,29 @@ waitClusterOk
 cleanup
 
 # For each operator in a provided catalog, this script will install the operator and run the CNF test suite.
-while IFS=, read -r package_name catalog; do
-	if [ "$package_name" = "" ]; then
+while IFS=, read -r packageName catalog; do
+	if [ "$packageName" = "" ]; then
 		continue
 	fi
 
-	echo "package=$package_name catalog=$catalog"
+	echo "package=$packageName catalog=$catalog"
 
 	# Wait for the cluster to be reachable
 	waitClusterOk
 
 	status=0
-	withRetry 180 10 tasty install "$package_name" --source "$catalog" --stdout &>/dev/null || status=$?
+	withRetry 180 10 tasty install "$packageName" --source "$catalog" --stdout &>/dev/null || status=$?
 
 	# if tasty fails, skip this operator
 	if [ "$status" != 0 ]; then
 		# Add per operator links
 		{
 			# Add error message
-			echo "Results for: <b>$package_name</b>, "'<span style="color: red;">Operator installation failed due to tasty internal error, skipping test</span>'
+			echo "Results for: <b>$packageName</b>, "'<span style="color: red;">Operator installation failed due to tasty internal error, skipping test</span>'
 
 			# Add tnf_config link
 			echo ", tnf_config: "
-			echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/tnf_config.yml">'"link"'</a>'
+			echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$packageName"'/tnf_config.yml">'"link"'</a>'
 
 			# New line
 			echo "<br>"
@@ -337,11 +354,11 @@ while IFS=, read -r package_name catalog; do
 	# Wait for the cluster to be reachable
 	waitClusterOk
 
-	namesCount=$(withRetry 180 10 tasty install "$package_name" --source "$catalog" --stdout | grep -c "name:")
+	namesCount=$(withRetry 180 10 tasty install "$packageName" --source "$catalog" --stdout | grep -c "name:")
 
 	if [ "$namesCount" = "4" ]; then
 		# Get namespace from tasty
-		ns=$(withRetry 180 10 tasty install "$package_name" --source "$catalog" --stdout | grep "name:" | head -n1 | awk '{ print $2 }')
+		ns=$(withRetry 180 10 tasty install "$packageName" --source "$catalog" --stdout | grep "name:" | head -n1 | awk '{ print $2 }')
 	elif [ "$namesCount" = "2" ]; then
 		ns="test-operators"
 	fi
@@ -355,7 +372,7 @@ while IFS=, read -r package_name catalog; do
 	waitClusterOk
 
 	# Install the operator in a custom namespace
-	withRetry 180 10 tasty install "$package_name" --source "$catalog" -w -n "$ns" --stdout >operator.yml
+	withRetry 180 10 tasty install "$packageName" --source "$catalog" -w -n "$ns" --stdout >operator.yml
 	if [ "$ns" = "test-operators" ]; then
 		sed -i '/targetNamespaces:/ { N; /- test-operators/d }' operator.yml
 	fi
@@ -367,7 +384,7 @@ while IFS=, read -r package_name catalog; do
 	waitClusterOk
 
 	# Setting report directory
-	reportDir="$REPORT_FOLDER"/"$package_name"
+	reportDir="$REPORT_FOLDER"/"$packageName"
 
 	# Store the results of CNF test in a new directory
 	mkdir -p "$reportDir"
@@ -384,11 +401,11 @@ while IFS=, read -r package_name catalog; do
 		# Add per operator links
 		{
 			# Add error message
-			echo "Results for: <b>$package_name</b>, "'<span style="color: red;">Operator installation failed, skipping test</span>'
+			echo "Results for: <b>$packageName</b>, "'<span style="color: red;">Operator installation failed, skipping test</span>'
 
 			# Add tnf_config link
 			echo ", tnf_config: "
-			echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/tnf_config.yml">'"link"'</a>'
+			echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$packageName"'/tnf_config.yml">'"link"'</a>'
 
 			# New line
 			echo "<br>"
@@ -403,7 +420,7 @@ while IFS=, read -r package_name catalog; do
 		continue
 	fi
 
-	echo "operator $package_name installed"
+	echo "operator $packageName installed"
 
 	# Label deployments, statefulsets and pods with "test-network-function.com/generic=target"
 	oc get deployment -n "$ns" -o custom-columns=':.metadata.name,:.metadata.namespace,:.kind' | sed '/^ *$/d' | awk '{print "  oc label " $3  " -n " $2 " " $1  " test-network-function.com/generic=target "}' | bash || true
@@ -426,17 +443,17 @@ while IFS=, read -r package_name catalog; do
 	cleanup
 
 	# Check parsing claim file
-	./tnf claim show csv -c "$reportDir"/claim.json -n "$package_name" -t "$CNF_TYPE" "$addHeaders" || {
+	./tnf claim show csv -c "$reportDir"/claim.json -n "$packageName" -t "$CNF_TYPE" "$addHeaders" || {
 
 		# if parsing claim file fails, skip this operator
 		# Add per operator links
 		{
 			# Add error message
-			echo "Results for: <b>$package_name</b>, "'<span style="color: red;">Operator installation failed due to claim parsing error, skipping test</span>'
+			echo "Results for: <b>$packageName</b>, "'<span style="color: red;">Operator installation failed due to claim parsing error, skipping test</span>'
 
 			# Add tnf_config link
 			echo ", tnf_config: "
-			echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/tnf_config.yml">'"link"'</a>'
+			echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$packageName"'/tnf_config.yml">'"link"'</a>'
 
 			# New line
 			echo "<br>"
@@ -448,7 +465,7 @@ while IFS=, read -r package_name catalog; do
 	}
 
 	# merge claim.json from each operator to a single csv file
-	./tnf claim show csv -c "$reportDir"/claim.json -n "$package_name" -t "$CNF_TYPE" "$addHeaders" >>"$REPORT_FOLDER"/results.csv
+	./tnf claim show csv -c "$reportDir"/claim.json -n "$packageName" -t "$CNF_TYPE" "$addHeaders" >>"$REPORT_FOLDER"/results.csv
 
 	# extract parser
 	tar -xvf "$reportDir"/*.tar.gz -C "$reportDir" results.html
@@ -456,16 +473,16 @@ while IFS=, read -r package_name catalog; do
 	# Add per operator links
 	{
 		# Add parser link
-		echo "Results for: <b>$package_name</b>,  parsed details:"
-		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/results.html?claimfile=/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/claim.json">'"link"'</a>'
+		echo "Results for: <b>$packageName</b>,  parsed details:"
+		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$packageName"'/results.html?claimfile=/'"$REPORT_FOLDER_RELATIVE"'/'"$packageName"'/claim.json">'"link"'</a>'
 
 		# Add log link
 		echo ", log: "
-		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/tnf-execution.log">'"link"'</a>'
+		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$packageName"'/tnf-execution.log">'"link"'</a>'
 
 		# Add tnf_config link
 		echo ", tnf_config: "
-		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$package_name"'/tnf_config.yml">'"link"'</a>'
+		echo '<a href="/'"$REPORT_FOLDER_RELATIVE"'/'"$packageName"'/tnf_config.yml">'"link"'</a>'
 
 		# new line
 		echo "<br>"
