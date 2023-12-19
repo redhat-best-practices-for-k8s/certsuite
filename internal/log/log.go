@@ -59,12 +59,17 @@ func GetLogger() *Logger {
 	return globalLogger
 }
 
-func GetMultiLogger(w io.Writer) *Logger {
+func GetMultiLogger(writers ...io.Writer) *Logger {
 	opts := Options{
 		Level: globalLogLevel,
 	}
 
-	return &Logger{l: slog.New(NewMultiHandler(globalLogger.l.Handler(), NewCustomHandler(w, &opts)))}
+	handlers := []slog.Handler{globalLogger.l.Handler()}
+	for _, writer := range writers {
+		handlers = append(handlers, NewCustomHandler(writer, &opts))
+	}
+
+	return &Logger{l: slog.New(NewMultiHandler(handlers...))}
 }
 
 // Top-level log functions
