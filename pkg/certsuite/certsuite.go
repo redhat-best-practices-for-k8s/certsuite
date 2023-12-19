@@ -51,10 +51,6 @@ const (
 func getK8sClientsConfigFileNames() []string {
 	params := configuration.GetTestParameters()
 	fileNames := []string{}
-	if params.Kubeconfig != "" {
-		// Add the kubeconfig path
-		fileNames = append(fileNames, params.Kubeconfig)
-	}
 	if params.Home != "" {
 		kubeConfigFilePath := filepath.Join(params.Home, ".kube", "config")
 		// Check if the kubeconfig path exists
@@ -66,7 +62,10 @@ func getK8sClientsConfigFileNames() []string {
 			log.Info("kubeconfig path %s is not present", kubeConfigFilePath)
 		}
 	}
-
+	if params.Kubeconfig != "" {
+		// Add the kubeconfig path
+		fileNames = append(fileNames, params.Kubeconfig)
+	}
 	return fileNames
 }
 
