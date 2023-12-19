@@ -2,6 +2,7 @@ package certsuite
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
 	"time"
@@ -91,6 +92,8 @@ func processFlags() time.Duration {
 func Run(labelsFilter, outputFolder string) error {
 	timeout := processFlags()
 	var returnErr bool
+
+	fmt.Println("Running discovery of CNF target resources...")
 	var env provider.TestEnvironment
 	env.SetNeedsRefresh()
 	env = provider.GetTestEnvironment()

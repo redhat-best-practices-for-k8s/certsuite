@@ -90,6 +90,11 @@ jobs:
           repository: ${{ env.QE_REPO }}
           path: cnfcert-tests-verification
 
+      - name: Extract dependent Pull Requests
+        uses: depends-on/depends-on-action@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Run the tests
         uses: nick-fields/retry@v2
         with:

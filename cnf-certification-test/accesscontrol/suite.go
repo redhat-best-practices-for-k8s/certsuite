@@ -17,9 +17,11 @@
 package accesscontrol
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
+	"github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/namespace"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/rbac"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/accesscontrol/resources"
@@ -640,8 +642,66 @@ func testPodClusterRoleBindings(check *checksdb.Check, env *provider.TestEnviron
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is using a cluster role binding", false).
 				AddField(testhelper.ClusterRoleName, roleRefName))
 		}
+
+		topOwners, err := put.GetTopOwner()
+
+		if err != nil {
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, fmt.Sprintf("Error getting top owners of this pod, err=%s", err), false).
+				AddField(testhelper.ClusterRoleName, roleRefName))
+			continue
+		}
+
+		csvNamespace, csvName, isOwnedByClusterWideOperator := OwnedByClusterWideOperator(topOwners, env)
+		// Pod is using a cluster role binding but is owned by a cluster wide operator, so it is ok
+		if isOwnedByClusterWideOperator && result {
+			log.Info("%s is using a cluster role binding but is owned by CSV namespace=%s, name=%s", put.String(), csvNamespace, csvName)
+			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is using a cluster role binding but owned by a cluster-wide operator", true))
+			continue
+		}
+		if result {
+			// Pod was found to be using a cluster role binding.  This is not allowed.
+			// Flagging this pod as a failed pod.
+			log.Info("%s is using a cluster role binding", put.String())
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is using a cluster role binding", false).
+				AddField(testhelper.ClusterRoleName, roleRefName))
+			continue
+		}
+		compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not using a cluster role binding", true))
 	}
 	check.SetResult(compliantObjects, nonCompliantObjects)
+}
+
+// Returns true if object identified by namespace and name is a CSV created by a cluster-wide operator
+func IsCSVAndClusterWide(aNamespace, name string, env *provider.TestEnvironment) bool {
+	for _, op := range env.Operators {
+		if op.Csv != nil &&
+			op.Csv.Namespace == aNamespace &&
+			op.Csv.Name == name &&
+			(op.IsClusterWide || IsInstallModeMultiNamespace(op.Csv.Spec.InstallModes)) {
+			return true
+		}
+	}
+	return false
+}
+
+// return true if CSV install mode contains multi namespaces or all namespaces
+func IsInstallModeMultiNamespace(installModes []v1alpha1.InstallMode) bool {
+	for i := 0; i < len(installModes); i++ {
+		if installModes[i].Type == v1alpha1.InstallModeTypeAllNamespaces {
+			return true
+		}
+	}
+	return false
+}
+
+// Return true if one of the passed topOwners is a CSV that is installed by a cluster-wide operator
+func OwnedByClusterWideOperator(topOwners map[string]provider.TopOwner, env *provider.TestEnvironment) (aNamespace, name string, found bool) {
+	for _, owner := range topOwners {
+		if IsCSVAndClusterWide(owner.Namespace, owner.Name, env) {
+			return owner.Namespace, owner.Name, true
+		}
+	}
+	return "", "", false
 }
 
 func testAutomountServiceToken(check *checksdb.Check, env *provider.TestEnvironment) {
