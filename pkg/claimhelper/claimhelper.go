@@ -202,6 +202,16 @@ func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuite
 		testCase.Status = typedResult.State
 		testCase.Time = strconv.FormatFloat(float64(typedResult.Duration), 'f', 3, 64)
 
+		// Populate the skipped message if the test case was skipped
+		if testCase.Status == "skipped" {
+			testCase.Skipped.Text = typedResult.SkipReason
+		}
+
+		// Populate the failure message if the test case failed
+		if testCase.Status == TestStateFailed {
+			testCase.Failure.Text = typedResult.CheckDetails
+		}
+
 		// Append the test case to the test suite
 		xmlOutput.Testsuite.Testcase = append(xmlOutput.Testsuite.Testcase, testCase)
 	}
