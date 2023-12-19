@@ -37,7 +37,7 @@ ENV PATH=${PATH}:"/usr/local/go/bin":${GOPATH}/"bin"
 
 # Download operator-sdk binary
 ENV \
-	OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.32.0 \
+	OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.33.0 \
 	OSDK_BIN=/usr/local/osdk/bin
 
 # Either use Wget or Curl but not both.
