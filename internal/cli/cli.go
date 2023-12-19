@@ -51,21 +51,19 @@ const (
 var CliCheckLogSniffer = &cliCheckLogSniffer{}
 
 var (
-	isTTY bool
-
 	checkLoggerChan chan string
 	stopChan        chan bool
 )
-
-func init() {
-	isTTY = term.IsTerminal(int(os.Stdin.Fd()))
-}
 
 func PrintBanner() {
 	fmt.Print(banner)
 }
 
 type cliCheckLogSniffer struct{}
+
+func isTTY() bool {
+	return term.IsTerminal(int(os.Stdin.Fd()))
+}
 
 func updateRunningCheckLine(checkName string, stopChan <-chan bool) {
 	startTime := time.Now()
@@ -74,7 +72,7 @@ func updateRunningCheckLine(checkName string, stopChan <-chan bool) {
 	lastCheckLogLine := ""
 
 	tickerPeriod := 1 * time.Second
-	if !isTTY {
+	if !isTTY() {
 		// Increase it to avoid flooding the text output.
 		tickerPeriod = 10 * time.Second
 	}
@@ -115,7 +113,7 @@ func printRunningCheckLine(checkName string, startTime time.Time, logLine string
 
 	elapsedTime := time.Since(startTime).Round(time.Second)
 	line := "[ " + CheckResultTagRunning + " ] " + checkName + " (" + elapsedTime.String() + ")"
-	if !isTTY {
+	if !isTTY() {
 		fmt.Print(line + "\n")
 		return
 	}
@@ -132,6 +130,9 @@ func printRunningCheckLine(checkName string, startTime time.Time, logLine string
 
 // Implements the io.Write for the checks' custom handler for slog.
 func (c *cliCheckLogSniffer) Write(p []byte) (n int, err error) {
+	if !isTTY() {
+		return len(p), nil
+	}
 	// Send to channel, or ignore it in case the channel is not ready or is closed.
 	// This way we avoid blocking the whole program.
 	select {
@@ -181,7 +182,7 @@ func PrintCheckRunning(checkName string) {
 	checkLoggerChan = make(chan string)
 
 	line := "[ " + CheckResultTagRunning + " ] " + checkName
-	if !isTTY {
+	if !isTTY() {
 		line += "\n"
 	}
 
