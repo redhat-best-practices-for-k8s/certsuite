@@ -44,18 +44,19 @@ const (
 	DateTimeFormatDirective = "2006-01-02T15:04:05+00:00"
 
 	// States for test cases
-	TestStateFailed = "failed"
+	TestStateFailed  = "failed"
+	TestStateSkipped = "skipped"
 )
 
 type SkippedMessage struct {
 	Text     string `xml:",chardata"`
-	Messages string `xml:"message,attr"`
+	Messages string `xml:"message,attr,omitempty"`
 }
 
 type FailureMessage struct {
 	Text    string `xml:",chardata"`
-	Message string `xml:"message,attr"`
-	Type    string `xml:"type,attr"`
+	Message string `xml:"message,attr,omitempty"`
+	Type    string `xml:"type,attr,omitempty"`
 }
 
 type TestCase struct {
@@ -64,9 +65,9 @@ type TestCase struct {
 	Classname string         `xml:"classname,attr"`
 	Status    string         `xml:"status,attr"`
 	Time      string         `xml:"time,attr"`
-	SystemErr string         `xml:"system-err"`
-	Skipped   SkippedMessage `xml:"skipped"`
-	Failure   FailureMessage `xml:"failure"`
+	SystemErr string         `xml:"system-err,omitempty"`
+	Skipped   SkippedMessage `xml:"skipped,omitempty"`
+	Failure   FailureMessage `xml:"failure,omitempty"`
 }
 
 type Testsuite struct {
@@ -75,9 +76,9 @@ type Testsuite struct {
 	Package    string `xml:"package,attr"`
 	Tests      string `xml:"tests,attr"`
 	Disabled   string `xml:"disabled,attr"`
-	Skipped    string `xml:"skipped,attr"`
-	Errors     string `xml:"errors,attr"`
-	Failures   string `xml:"failures,attr"`
+	Skipped    string `xml:"skipped,attr,omitempty"`
+	Errors     string `xml:"errors,attr,omitempty"`
+	Failures   string `xml:"failures,attr,omitempty"`
 	Time       string `xml:"time,attr"`
 	Timestamp  string `xml:"timestamp,attr"`
 	Properties struct {
@@ -96,8 +97,8 @@ type TestSuitesXML struct {
 	Text      string    `xml:",chardata"`
 	Tests     string    `xml:"tests,attr"`
 	Disabled  string    `xml:"disabled,attr"`
-	Errors    string    `xml:"errors,attr"`
-	Failures  string    `xml:"failures,attr"`
+	Errors    string    `xml:"errors,attr,omitempty"`
+	Failures  string    `xml:"failures,attr,omitempty"`
 	Time      string    `xml:"time,attr"`
 	Testsuite Testsuite `xml:"testsuite"`
 }
@@ -147,6 +148,7 @@ func (c *ClaimBuilder) Build(outputFile string) {
 	log.Info("Claim file created at %s", outputFile)
 }
 
+//nolint:funlen
 func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuitesXML {
 	const (
 		TestSuiteName = "CNF Certification Test Suite"
@@ -168,7 +170,7 @@ func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuite
 	skippedTests := 0
 	for _, result := range c.Results {
 		typedResult := result.(claim.Result)
-		if typedResult.State == "skipped" {
+		if typedResult.State == TestStateSkipped {
 			skippedTests++
 		}
 	}
@@ -201,6 +203,16 @@ func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuite
 		testCase.Classname = TestSuiteName
 		testCase.Status = typedResult.State
 		testCase.Time = strconv.FormatFloat(float64(typedResult.Duration), 'f', 3, 64)
+
+		// Populate the skipped message if the test case was skipped
+		if testCase.Status == TestStateSkipped {
+			testCase.Skipped.Text = typedResult.SkipReason
+		}
+
+		// Populate the failure message if the test case failed
+		if testCase.Status == TestStateFailed {
+			testCase.Failure.Text = typedResult.CheckDetails
+		}
 
 		// Append the test case to the test suite
 		xmlOutput.Testsuite.Testcase = append(xmlOutput.Testsuite.Testcase, testCase)

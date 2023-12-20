@@ -122,9 +122,12 @@ func Run(labelsFilter, outputFolder string) error {
 	// Marshal the claim and output to file
 	claimBuilder.Build(claimOutputFile)
 
+	// Write the file to the flag output-dir
+	outputFile := *flags.OutputDir + "/" + junitXMLOutputFile
+
 	if configuration.GetTestParameters().EnableXMLCreation {
-		log.Info("XML file creation is enabled. Creating JUnit XML file: %s", junitXMLOutputFile)
-		claimBuilder.ToJUnitXML(junitXMLOutputFile, startTime, endTime)
+		log.Info("XML file creation is enabled. Creating JUnit XML file: %s", outputFile)
+		claimBuilder.ToJUnitXML(outputFile, startTime, endTime)
 	}
 
 	// Send claim file to the collector if specified by env var
