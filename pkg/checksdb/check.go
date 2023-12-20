@@ -203,7 +203,7 @@ func (check *Check) SetResult(compliantObjects, nonCompliantObjects []*testhelpe
 	} else if len(compliantObjects) == 0 {
 		// Mark this check as skipped.
 		check.LogWarn("Check %s marked as skipped as both compliant and non-compliant objects lists are empty.", check.ID)
-		check.skipReason = "Compliant and non-compliant objects lists are empty."
+		check.skipReason = "compliant and non-compliant objects lists are empty"
 		check.Result = CheckResultSkipped
 	}
 }
