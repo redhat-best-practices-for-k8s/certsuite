@@ -316,8 +316,6 @@ func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool, abo
 	}
 
 	if len(checks) == 0 {
-		// No check matched the labels expression.
-		// skipAll(checks, "no matching labels")
 		return nil, 0
 	}
 
