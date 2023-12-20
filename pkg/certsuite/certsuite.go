@@ -93,6 +93,7 @@ func Run(labelsFilter, outputFolder string) error {
 	var returnErr bool
 
 	fmt.Println("Running discovery of CNF target resources...")
+	fmt.Print("\n")
 	var env provider.TestEnvironment
 	env.SetNeedsRefresh()
 	env = provider.GetTestEnvironment()

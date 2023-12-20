@@ -308,7 +308,7 @@ func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool, abo
 	checks := []*Check{}
 	for _, check := range group.checks {
 		if !labelsExprEvaluator.Eval(check.Labels) {
-			skipCheck(check, "Not matching labels")
+			skipCheck(check, "no matching labels")
 			printCheckResult(check)
 			continue
 		}
@@ -316,8 +316,6 @@ func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool, abo
 	}
 
 	if len(checks) == 0 {
-		// No check matched the labels expression.
-		// skipAll(checks, "Not matching labels")
 		return nil, 0
 	}
 
