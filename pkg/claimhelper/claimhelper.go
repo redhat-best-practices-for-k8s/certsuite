@@ -21,7 +21,9 @@ import (
 	"encoding/xml"
 	"fmt"
 	"path/filepath"
+	"sort"
 	"strconv"
+	"strings"
 
 	"os"
 	"time"
@@ -41,7 +43,7 @@ const (
 	CNFFeatureValidationJunitXMLFileName = "validation_junit.xml"
 	CNFFeatureValidationReportKey        = "cnf-feature-validation"
 	// dateTimeFormatDirective is the directive used to format date/time according to ISO 8601.
-	DateTimeFormatDirective = "2006-01-02T15:04:05+00:00"
+	DateTimeFormatDirective = "2006-01-02 15:04:05 -0700 MST"
 
 	// States for test cases
 	TestStateFailed  = "failed"
@@ -60,33 +62,33 @@ type FailureMessage struct {
 }
 
 type TestCase struct {
-	Text      string         `xml:",chardata"`
-	Name      string         `xml:"name,attr"`
-	Classname string         `xml:"classname,attr"`
-	Status    string         `xml:"status,attr"`
-	Time      string         `xml:"time,attr"`
-	SystemErr string         `xml:"system-err,omitempty"`
-	Skipped   SkippedMessage `xml:"skipped,omitempty"`
-	Failure   FailureMessage `xml:"failure,omitempty"`
+	Text      string          `xml:",chardata"`
+	Name      string          `xml:"name,attr,omitempty"`
+	Classname string          `xml:"classname,attr,omitempty"`
+	Status    string          `xml:"status,attr,omitempty"`
+	Time      string          `xml:"time,attr,omitempty"`
+	SystemErr string          `xml:"system-err,omitempty"`
+	Skipped   *SkippedMessage `xml:"skipped"`
+	Failure   *FailureMessage `xml:"failure"`
 }
 
 type Testsuite struct {
 	Text       string `xml:",chardata"`
-	Name       string `xml:"name,attr"`
-	Package    string `xml:"package,attr"`
-	Tests      string `xml:"tests,attr"`
-	Disabled   string `xml:"disabled,attr"`
+	Name       string `xml:"name,attr,omitempty"`
+	Package    string `xml:"package,attr,omitempty"`
+	Tests      string `xml:"tests,attr,omitempty"`
+	Disabled   string `xml:"disabled,attr,omitempty"`
 	Skipped    string `xml:"skipped,attr,omitempty"`
 	Errors     string `xml:"errors,attr,omitempty"`
 	Failures   string `xml:"failures,attr,omitempty"`
-	Time       string `xml:"time,attr"`
-	Timestamp  string `xml:"timestamp,attr"`
+	Time       string `xml:"time,attr,omitempty"`
+	Timestamp  string `xml:"timestamp,attr,omitempty"`
 	Properties struct {
 		Text     string `xml:",chardata"`
 		Property []struct {
 			Text  string `xml:",chardata"`
-			Name  string `xml:"name,attr"`
-			Value string `xml:"value,attr"`
+			Name  string `xml:"name,attr,omitempty"`
+			Value string `xml:"value,attr,omitempty"`
 		} `xml:"property"`
 	} `xml:"properties"`
 	Testcase []TestCase `xml:"testcase"`
@@ -95,11 +97,11 @@ type Testsuite struct {
 type TestSuitesXML struct {
 	XMLName   xml.Name  `xml:"testsuites"`
 	Text      string    `xml:",chardata"`
-	Tests     string    `xml:"tests,attr"`
-	Disabled  string    `xml:"disabled,attr"`
+	Tests     string    `xml:"tests,attr,omitempty"`
+	Disabled  string    `xml:"disabled,attr,omitempty"`
 	Errors    string    `xml:"errors,attr,omitempty"`
 	Failures  string    `xml:"failures,attr,omitempty"`
-	Time      string    `xml:"time,attr"`
+	Time      string    `xml:"time,attr,omitempty"`
 	Testsuite Testsuite `xml:"testsuite"`
 }
 
@@ -153,6 +155,17 @@ func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuite
 	const (
 		TestSuiteName = "CNF Certification Test Suite"
 	)
+
+	// Collector all of the Test IDs
+	allTestIDs := []string{}
+	for _, result := range c.Results {
+		typedResult := result.(claim.Result)
+		allTestIDs = append(allTestIDs, typedResult.TestID.Id)
+	}
+
+	// Sort the test IDs
+	sort.Strings(allTestIDs)
+
 	xmlOutput := TestSuitesXML{}
 	// <testsuites>
 	xmlOutput.Tests = strconv.Itoa(len(c.Results))
@@ -178,7 +191,7 @@ func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuite
 	xmlOutput.Failures = strconv.Itoa(failedTests)
 	xmlOutput.Disabled = strconv.Itoa(skippedTests)
 	xmlOutput.Errors = strconv.Itoa(0)
-	xmlOutput.Time = strconv.FormatFloat(endTime.Sub(startTime).Seconds(), 'f', 3, 64)
+	xmlOutput.Time = strconv.FormatFloat(endTime.Sub(startTime).Seconds(), 'f', 5, 64)
 
 	// <testsuite>
 	xmlOutput.Testsuite.Name = TestSuiteName
@@ -188,30 +201,50 @@ func populateXMLFromClaim(c claim.Claim, startTime, endTime time.Time) TestSuite
 	xmlOutput.Testsuite.Skipped = strconv.Itoa(skippedTests)
 	xmlOutput.Testsuite.Errors = strconv.Itoa(0)
 
-	xmlOutput.Testsuite.Time = strconv.FormatFloat(endTime.Sub(startTime).Seconds(), 'f', 3, 64)
+	xmlOutput.Testsuite.Time = strconv.FormatFloat(endTime.Sub(startTime).Seconds(), 'f', 5, 64)
 	xmlOutput.Testsuite.Timestamp = time.Now().UTC().Format(DateTimeFormatDirective)
 
 	// <properties>
 
 	// <testcase>
-	for testID, result := range c.Results {
+	// Loop through all of the sorted test IDs
+	for _, testID := range allTestIDs {
 		// Type the result
-		typedResult := result.(claim.Result)
+		typedResult := c.Results[testID].(claim.Result)
 
 		testCase := TestCase{}
 		testCase.Name = testID
 		testCase.Classname = TestSuiteName
 		testCase.Status = typedResult.State
-		testCase.Time = strconv.FormatFloat(float64(typedResult.Duration), 'f', 3, 64)
+
+		// Clean the time strings to remove the " m=" suffix
+		start, err := time.Parse(DateTimeFormatDirective, strings.Split(typedResult.StartTime, " m=")[0])
+		if err != nil {
+			log.Error("Failed to parse start time: %v", err)
+		}
+		end, err := time.Parse(DateTimeFormatDirective, strings.Split(typedResult.EndTime, " m=")[0])
+		if err != nil {
+			log.Error("Failed to parse end time: %v", err)
+		}
+
+		// Calculate the duration of the test case
+		difference := end.Sub(start)
+		testCase.Time = strconv.FormatFloat(difference.Seconds(), 'f', 10, 64)
 
 		// Populate the skipped message if the test case was skipped
 		if testCase.Status == TestStateSkipped {
+			testCase.Skipped = &SkippedMessage{}
 			testCase.Skipped.Text = typedResult.SkipReason
+		} else {
+			testCase.Skipped = nil
 		}
 
 		// Populate the failure message if the test case failed
 		if testCase.Status == TestStateFailed {
+			testCase.Failure = &FailureMessage{}
 			testCase.Failure.Text = typedResult.CheckDetails
+		} else {
+			testCase.Failure = nil
 		}
 
 		// Append the test case to the test suite
