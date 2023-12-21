@@ -255,7 +255,6 @@ func shouldSkipCheck(check *Check) (skip bool, reasons []string) {
 }
 
 func runCheck(check *Check, group *ChecksGroup, remainingChecks []*Check) (err error) {
-	check.LogInfo("Running check")
 	defer func() {
 		if r := recover(); r != nil {
 			// Don't do anything in case the check was manually aborted by check.Abort().

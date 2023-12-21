@@ -116,7 +116,7 @@ func recordCheckResult(check *Check) {
 		os.Exit(1)
 	}
 
-	log.Info("Recording result %q of check %s, claimID: %+v", check.Result, check.ID, claimID)
+	check.LogInfo("Recording result %q, claimID: %+v", strings.ToUpper(check.Result.String()), claimID)
 	resultsDB[check.ID] = claim.Result{
 		TestID:             &claimID,
 		State:              check.Result.String(),
