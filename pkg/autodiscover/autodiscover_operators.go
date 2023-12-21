@@ -68,11 +68,7 @@ func findOperatorsByLabel(olmClient clientOlm.Interface, labels []labelObject, n
 	for _, ns := range namespaces {
 		log.Debug("Searching CSVs in namespace %s", ns)
 		for _, aLabelObject := range labels {
-			label := aLabelObject.LabelKey
-			// DEPRECATED special processing for deprecated operator label. Value not needed to match.
-			if aLabelObject.LabelKey != deprecatedHardcodedOperatorLabelName {
-				label += "=" + aLabelObject.LabelValue
-			}
+			label := aLabelObject.LabelKey + "=" + aLabelObject.LabelValue
 			log.Debug("Searching CSVs with label %s", label)
 			csvList, err := olmClient.OperatorsV1alpha1().ClusterServiceVersions(ns.Name).List(context.TODO(), metav1.ListOptions{
 				LabelSelector: label,
