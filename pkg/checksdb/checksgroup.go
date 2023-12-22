@@ -81,14 +81,13 @@ func (group *ChecksGroup) Add(check *Check) {
 
 func skipCheck(check *Check, reason string) {
 	check.LogInfo("Skipping check %s, reason: %s", check.ID, reason)
-
 	check.SetResultSkipped(reason)
+	printCheckResult(check)
 }
 
 func skipAll(checks []*Check, reason string) {
 	for _, check := range checks {
 		skipCheck(check, reason)
-		printCheckResult(check)
 	}
 }
 
@@ -308,7 +307,6 @@ func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool, abo
 	for _, check := range group.checks {
 		if !labelsExprEvaluator.Eval(check.Labels) {
 			skipCheck(check, "no matching labels")
-			printCheckResult(check)
 			continue
 		}
 		checks = append(checks, check)
