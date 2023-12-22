@@ -260,7 +260,7 @@ func (check *Check) Run() error {
 		check.EndTime = time.Now()
 	}()
 
-	log.Info("RUNNING CHECK: %s (labels: %v)", check.ID, check.Labels)
+	check.LogInfo("Running check (labels: %v)", check.Labels)
 	if check.BeforeCheckFn != nil {
 		if err := check.BeforeCheckFn(check); err != nil {
 			return fmt.Errorf("check %s failed in before check function: %v", check.ID, err)
