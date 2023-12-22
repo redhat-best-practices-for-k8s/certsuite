@@ -2,7 +2,6 @@ package claim
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/add"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/compare"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/show"
 )
@@ -15,7 +14,6 @@ var (
 )
 
 func NewCommand() *cobra.Command {
-	claimCommand.AddCommand(add.NewCommand())
 	claimCommand.AddCommand(compare.NewCommand())
 	claimCommand.AddCommand(show.NewCommand())
 
