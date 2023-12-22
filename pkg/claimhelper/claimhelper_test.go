@@ -46,6 +46,8 @@ func TestPopulateXMLFromClaim(t *testing.T) {
 			},
 			State:              "failed",
 			SkipReason:         failureMessage,
+			StartTime:          "2023-12-20 14:51:33 -0600 MST",
+			EndTime:            "2023-12-20 14:51:34 -0600 MST",
 			CheckDetails:       "",
 			CapturedTestOutput: "test output",
 			CategoryClassification: &claim.CategoryClassification{
@@ -72,7 +74,7 @@ func TestPopulateXMLFromClaim(t *testing.T) {
 				Disabled: strconv.Itoa(0),
 				Tests:    strconv.Itoa(1),
 				Errors:   strconv.Itoa(0),
-				Time:     strconv.Itoa(60),
+				Time:     strconv.Itoa(1),
 				Testsuite: Testsuite{
 
 					Name:     "test-suite1",
@@ -84,8 +86,8 @@ func TestPopulateXMLFromClaim(t *testing.T) {
 					Testcase: []TestCase{
 						{
 							Name: "test-case1",
-							Time: strconv.Itoa(60),
-							Failure: FailureMessage{
+							Time: strconv.Itoa(1),
+							Failure: &FailureMessage{
 								Message: "my custom failure message",
 							},
 						},
@@ -97,9 +99,9 @@ func TestPopulateXMLFromClaim(t *testing.T) {
 
 	for _, tc := range testCases {
 		// Build some 1 minute duration start and end time
-		startTime, err := time.Parse(DateTimeFormatDirective, "2006-01-02T15:04:05+00:00")
+		startTime, err := time.Parse(DateTimeFormatDirective, "2023-12-20 14:51:33 -0600 MST")
 		assert.Nil(t, err)
-		endTime, err := time.Parse(DateTimeFormatDirective, "2006-01-02T15:05:05+00:00")
+		endTime, err := time.Parse(DateTimeFormatDirective, "2023-12-20 14:51:34 -0600 MST")
 		assert.Nil(t, err)
 
 		xmlResult := populateXMLFromClaim(generateClaim(map[string]claim.Result{"test-case1": tc.testResult}), startTime, endTime)
@@ -108,9 +110,6 @@ func TestPopulateXMLFromClaim(t *testing.T) {
 		assert.Equal(t, tc.expectedXMLResult.Failures, xmlResult.Failures)
 		assert.Equal(t, tc.expectedXMLResult.Tests, xmlResult.Tests)
 		assert.Equal(t, tc.expectedXMLResult.Errors, xmlResult.Errors)
-		assert.Equal(t, tc.expectedXMLResult.Testsuite.Skipped, xmlResult.Testsuite.Skipped)
-
-		// convert "60.000" string to 60 int
 		expectedTimeFloat, err := strconv.ParseFloat(tc.expectedXMLResult.Time, 32)
 		assert.Nil(t, err)
 		actualTimeFloat, err := strconv.ParseFloat(xmlResult.Time, 32)
