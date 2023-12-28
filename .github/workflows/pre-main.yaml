@@ -259,7 +259,7 @@ jobs:
               --OutputPath results.txt \
               --policy /policy.json \
               --results /claim.json \
-              >"${GITHUB_WORKSPACE}"/results.txt
+            2>&1 | tee "${GITHUB_WORKSPACE}"/results.txt
           docker system prune --volumes -f
 
       - name: Check that their are 0 failed tests in the gradetool results
