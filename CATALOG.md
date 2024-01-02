@@ -569,7 +569,7 @@ Tags|telco,lifecycle
 |Non-Telco|Optional|
 |Telco|Mandatory|
 
-#### lifecycle-container-shutdown
+#### lifecycle-container-poststart
 
 Property|Description
 ---|---
@@ -585,7 +585,7 @@ Tags|telco,lifecycle
 |Non-Telco|Optional|
 |Telco|Mandatory|
 
-#### lifecycle-container-startup
+#### lifecycle-container-prestop
 
 Property|Description
 ---|---

@@ -16,8 +16,6 @@
 package autodiscover
 
 const (
-	deprecatedHardcodedOperatorLabelName  = "test-network-function.com/operator"
-	deprecatedHardcodedOperatorLabelValue = ""
-	debugHelperPodsLabelName              = "test-network-function.com/app"
-	debugHelperPodsLabelValue             = "tnf-debug"
+	debugHelperPodsLabelName  = "test-network-function.com/app"
+	debugHelperPodsLabelValue = "tnf-debug"
 )

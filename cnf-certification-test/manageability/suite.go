@@ -19,51 +19,68 @@ package manageability
 import (
 	"strings"
 
-	"github.com/onsi/ginkgo/v2"
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
+	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
 
-// All actual test code belongs below here.  Utilities belong above.
-var _ = ginkgo.Describe(common.ManageabilityTestKey, func() {
-	logrus.Debugf("Entering %s suite", common.ManageabilityTestKey)
-	var env provider.TestEnvironment
-	ginkgo.BeforeEach(func() {
+var (
+	env provider.TestEnvironment
+
+	beforeEachFn = func(check *checksdb.Check) error {
 		env = provider.GetTestEnvironment()
-	})
-	ginkgo.ReportAfterEach(results.RecordResult)
+		return nil
+	}
+
+	skipIfNoContainersFn = func() (bool, string) {
+		if len(env.Containers) == 0 {
+			log.Warn("No containers to check...")
+			return true, "There are no containers to check. Please check under test labels."
+		}
+		return false, ""
+	}
+)
+
+func LoadChecks() {
+	log.Debug("Loading %s suite checks", common.ManageabilityTestKey)
+
+	checksGroup := checksdb.NewChecksGroup(common.ManageabilityTestKey).
+		WithBeforeEachFn(beforeEachFn)
 
 	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainersImageTag)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
-		testContainersImageTag(&env)
-	})
+	checksGroup.Add(checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(skipIfNoContainersFn).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testContainersImageTag(c, &env)
+			return nil
+		}))
 
 	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerPortNameFormat)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAll(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
-		testContainerPortNameFormat(&env)
-	})
-})
+	checksGroup.Add(checksdb.NewCheck(testID, tags).
+		WithSkipCheckFn(skipIfNoContainersFn).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testContainerPortNameFormat(c, &env)
+			return nil
+		}))
+}
 
-func testContainersImageTag(env *provider.TestEnvironment) {
+func testContainersImageTag(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
-		logrus.Debugln("check container ", cut.String(), " image should be tagged ")
+		check.LogDebug("Testing Container %q", cut)
 		if cut.IsTagEmpty() {
+			check.LogError("Container %q is missing image tag(s)", cut)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is missing image tag(s)", false))
-			tnf.ClaimFilePrintf("Container %s is missing image tag(s)", cut.String())
 		} else {
+			check.LogInfo("Container %q is tagged with %q", cut, cut.ContainerImageIdentifier.Tag)
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is tagged", true))
 		}
 	}
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 // The name field in the ContainerPort section must be of the form <protocol>[-<suffix>] where <protocol> is one of the following,
@@ -75,23 +92,25 @@ func containerPortNameFormatCheck(portName string) bool {
 	return allowedProtocolNames[res[0]]
 }
 
-func testContainerPortNameFormat(env *provider.TestEnvironment) {
+func testContainerPortNameFormat(check *checksdb.Check, env *provider.TestEnvironment) {
 	for _, newProtocol := range env.ValidProtocolNames {
 		allowedProtocolNames[newProtocol] = true
 	}
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
+		check.LogDebug("Testing Container %q", cut)
 		for _, port := range cut.Ports {
 			if !containerPortNameFormatCheck(port.Name) {
-				tnf.ClaimFilePrintf("%s: ContainerPort %s does not follow the partner naming conventions", cut, port.Name)
+				check.LogError("Container %q declares port %q that does not follow the partner naming conventions", cut, port.Name)
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "ContainerPort does not follow the partner naming conventions", false).
 					AddField(testhelper.ContainerPort, port.Name))
 			} else {
+				check.LogInfo("Container %q declares port %q that does follow the partner naming conventions", cut, port.Name)
 				compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "ContainerPort follows the partner naming conventions", true).
 					AddField(testhelper.ContainerPort, port.Name))
 			}
 		}
 	}
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }

@@ -19,7 +19,7 @@ package autodiscover
 import (
 	"context"
 
-	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
@@ -34,7 +34,7 @@ func findAbnormalEvents(oc corev1client.CoreV1Interface, namespaces []string) (a
 	for _, ns := range namespaces {
 		someAbnormalEvents, err := oc.Events(ns).List(context.TODO(), metav1.ListOptions{FieldSelector: "type!=Normal"})
 		if err != nil {
-			logrus.Errorf("failed to get event list for namespace %s, err:%s", ns, err)
+			log.Error("failed to get event list for namespace %s, err:%s", ns, err)
 			continue
 		}
 		abnormalEvents = append(abnormalEvents, someAbnormalEvents.Items...)

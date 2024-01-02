@@ -19,14 +19,15 @@ package autodiscover
 import (
 	"context"
 	"errors"
+	"os"
 	"regexp"
 	"time"
 
 	configv1 "github.com/openshift/api/config/v1"
 	clientconfigv1 "github.com/openshift/client-go/config/clientset/versioned/typed/config/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/compatibility"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"helm.sh/helm/v3/pkg/release"
@@ -101,16 +102,6 @@ type labelObject struct {
 
 var data = DiscoveredTestData{}
 
-func warnDeprecation(config *configuration.TestConfiguration) {
-	if len(config.OperatorsUnderTestLabels) == 0 {
-		logrus.Warnf("DEPRECATED: deprecated default operator label in use ( %s:%s ) is about to be obsolete. Please use the new \"operatorsUnderTestLabels\" field to specify operators labels instead.",
-			deprecatedHardcodedOperatorLabelName, deprecatedHardcodedOperatorLabelValue)
-	}
-	if len(config.PodsUnderTestLabels) == 0 {
-		logrus.Warn("No Pod under test labels configured. Tests on pods and containers will not run. Please use the \"podsUnderTestLabels\" field to specify labels for pods under test")
-	}
-}
-
 const labelRegex = `(\S*)\s*:\s*(\S*)`
 const labelRegexMatches = 3
 
@@ -120,7 +111,7 @@ func createLabels(labelStrings []string) (labelObjects []labelObject) {
 
 		values := r.FindStringSubmatch(label)
 		if len(values) != labelRegexMatches {
-			logrus.Errorf("failed to parse label=%s, will not be used!, ", label)
+			log.Error("failed to parse label=%s, will not be used!, ", label)
 			continue
 		}
 		var aLabel labelObject
@@ -140,19 +131,15 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	var err error
 	data.StorageClasses, err = getAllStorageClasses()
 	if err != nil {
-		logrus.Fatalf("Failed to retrieve storageClasses - err: %v", err)
+		log.Error("Failed to retrieve storageClasses - err: %v", err)
+		os.Exit(1)
 	}
 
 	podsUnderTestLabelsObjects := createLabels(config.PodsUnderTestLabels)
 	operatorsUnderTestLabelsObjects := createLabels(config.OperatorsUnderTestLabels)
 
-	// prints warning about deprecated labels
-	warnDeprecation(config)
-	// adds DEPRECATED hardcoded operator label
-	operatorsUnderTestLabelsObjects = append(operatorsUnderTestLabelsObjects, labelObject{LabelKey: deprecatedHardcodedOperatorLabelName, LabelValue: deprecatedHardcodedOperatorLabelValue})
-
-	logrus.Infof("parsed pods under test labels: %+v", podsUnderTestLabelsObjects)
-	logrus.Infof("parsed operators under test labels: %+v", operatorsUnderTestLabelsObjects)
+	log.Info("parsed pods under test labels: %+v", podsUnderTestLabelsObjects)
+	log.Info("parsed operators under test labels: %+v", operatorsUnderTestLabelsObjects)
 
 	data.AllNamespaces, _ = getAllNamespaces(oc.K8sClient.CoreV1())
 	data.AllSubscriptions = findSubscriptions(oc.OlmClient, []string{""})
@@ -167,15 +154,18 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.DebugPods, _ = findPodsByLabel(oc.K8sClient.CoreV1(), debugLabels, debugNS)
 	data.ResourceQuotaItems, err = getResourceQuotas(oc.K8sClient.CoreV1())
 	if err != nil {
-		logrus.Fatalf("Cannot get resource quotas, error: %v", err)
+		log.Error("Cannot get resource quotas, error: %v", err)
+		os.Exit(1)
 	}
 	data.PodDisruptionBudgets, err = getPodDisruptionBudgets(oc.K8sClient.PolicyV1(), data.Namespaces)
 	if err != nil {
-		logrus.Fatalf("Cannot get pod disruption budgets, error: %v", err)
+		log.Error("Cannot get pod disruption budgets, error: %v", err)
+		os.Exit(1)
 	}
 	data.NetworkPolicies, err = getNetworkPolicies(oc.K8sNetworkingClient)
 	if err != nil {
-		logrus.Fatalln("Cannot get network policies")
+		log.Error("Cannot get network policies")
+		os.Exit(1)
 	}
 	data.Crds = FindTestCrdNames(config.CrdFilters)
 	data.ScaleCrUnderTest = GetScaleCrUnderTest(data.Namespaces, data.Crds)
@@ -185,13 +175,15 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 
 	openshiftVersion, err := getOpenshiftVersion(oc.OcpClient)
 	if err != nil {
-		logrus.Fatalf("Failed to get the OpenShift version: %v", err)
+		log.Error("Failed to get the OpenShift version: %v", err)
+		os.Exit(1)
 	}
 
 	data.OpenshiftVersion = openshiftVersion
 	k8sVersion, err := oc.K8sClient.Discovery().ServerVersion()
 	if err != nil {
-		logrus.Fatalf("Cannot get the K8s version, error: %v", err)
+		log.Error("Cannot get the K8s version, error: %v", err)
+		os.Exit(1)
 	}
 	data.IstioServiceMeshFound = isIstioServiceMeshInstalled(data.AllNamespaces)
 	data.ValidProtocolNames = config.ValidProtocolNames
@@ -206,37 +198,44 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	// Find ClusterRoleBindings
 	clusterRoleBindings, err := getClusterRoleBindings()
 	if err != nil {
-		logrus.Fatalf("Cannot get cluster role bindings, error: %v", err)
+		log.Error("Cannot get cluster role bindings, error: %v", err)
+		os.Exit(1)
 	}
 	data.ClusterRoleBindings = clusterRoleBindings
 	// Find RoleBindings
 	roleBindings, err := getRoleBindings()
 	if err != nil {
-		logrus.Fatalf("Cannot get cluster role bindings, error: %v", err)
+		log.Error("Cannot get cluster role bindings, error: %v", err)
+		os.Exit(1)
 	}
 	data.RoleBindings = roleBindings
 	// find roles
 	roles, err := getRoles()
 	if err != nil {
-		logrus.Fatalf("Cannot get roles, error: %v", err)
+		log.Error("Cannot get roles, error: %v", err)
+		os.Exit(1)
 	}
 	data.Roles = roles
 	data.Hpas = findHpaControllers(oc.K8sClient, data.Namespaces)
 	data.Nodes, err = oc.K8sClient.CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		logrus.Fatalf("Cannot get list of nodes, error: %v", err)
+		log.Error("Cannot get list of nodes, error: %v", err)
+		os.Exit(1)
 	}
 	data.PersistentVolumes, err = getPersistentVolumes(oc.K8sClient.CoreV1())
 	if err != nil {
-		logrus.Fatalf("Cannot get list of persistent volumes, error: %v", err)
+		log.Error("Cannot get list of persistent volumes, error: %v", err)
+		os.Exit(1)
 	}
 	data.PersistentVolumeClaims, err = getPersistentVolumeClaims(oc.K8sClient.CoreV1())
 	if err != nil {
-		logrus.Fatalf("Cannot get list of persistent volume claims, error: %v", err)
+		log.Error("Cannot get list of persistent volume claims, error: %v", err)
+		os.Exit(1)
 	}
 	data.Services, err = getServices(oc.K8sClient.CoreV1(), data.Namespaces, data.ServicesIgnoreList)
 	if err != nil {
-		logrus.Fatalf("Cannot get list of services, error: %v", err)
+		log.Error("Cannot get list of services, error: %v", err)
+		os.Exit(1)
 	}
 
 	if config.CollectorAppEndPoint == "" {
@@ -262,7 +261,7 @@ func getOpenshiftVersion(oClient clientconfigv1.ConfigV1Interface) (ver string, 
 	if err != nil {
 		switch {
 		case kerrors.IsNotFound(err):
-			logrus.Warnf("Unable to get ClusterOperator CR from openshift-apiserver. Running in a non-OCP cluster.")
+			log.Warn("Unable to get ClusterOperator CR from openshift-apiserver. Running in a non-OCP cluster.")
 			return NonOpenshiftClusterVersion, nil
 		default:
 			return "", err
@@ -273,7 +272,7 @@ func getOpenshiftVersion(oClient clientconfigv1.ConfigV1Interface) (ver string, 
 		if ver.Name == tnfCsvTargetLabelName {
 			// openshift-apiserver does not report version,
 			// clusteroperator/openshift-apiserver does, and only version number
-			logrus.Infof("OpenShift Version found: %v", ver.Version)
+			log.Info("OpenShift Version found: %v", ver.Version)
 			return ver.Version, nil
 		}
 	}

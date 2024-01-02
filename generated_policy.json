@@ -2,14 +2,54 @@
   "grades": {
     "requiredPassingTests": [
       {
+        "id": "access-control-bpf-capability-check",
+        "suite": "access-control",
+        "tags": "telco"
+      },
+      {
+        "id": "access-control-cluster-role-bindings",
+        "suite": "access-control",
+        "tags": "telco"
+      },
+      {
         "id": "access-control-container-host-port",
         "suite": "access-control",
         "tags": "common"
       },
       {
+        "id": "access-control-crd-roles",
+        "suite": "access-control",
+        "tags": "extended"
+      },
+      {
+        "id": "access-control-ipc-lock-capability-check",
+        "suite": "access-control",
+        "tags": "telco"
+      },
+      {
         "id": "access-control-namespace",
         "suite": "access-control",
         "tags": "common"
+      },
+      {
+        "id": "access-control-namespace-resource-quota",
+        "suite": "access-control",
+        "tags": "extended"
+      },
+      {
+        "id": "access-control-net-admin-capability-check",
+        "suite": "access-control",
+        "tags": "telco"
+      },
+      {
+        "id": "access-control-net-raw-capability-check",
+        "suite": "access-control",
+        "tags": "telco"
+      },
+      {
+        "id": "access-control-no-1337-uid",
+        "suite": "access-control",
+        "tags": "extended"
       },
       {
         "id": "access-control-one-process-per-container",
@@ -19,7 +59,7 @@
       {
         "id": "access-control-pod-automount-service-account-token",
         "suite": "access-control",
-        "tags": "common"
+        "tags": "telco"
       },
       {
         "id": "access-control-pod-host-ipc",
@@ -52,14 +92,24 @@
         "tags": "common"
       },
       {
+        "id": "access-control-requests-and-limits",
+        "suite": "access-control",
+        "tags": "telco"
+      },
+      {
         "id": "access-control-security-context-non-root-user-check",
         "suite": "access-control",
         "tags": "common"
       },
       {
-        "id": "access-control-security-context-privilege-escalation",
+        "id": "access-control-service-type",
         "suite": "access-control",
         "tags": "common"
+      },
+      {
+        "id": "access-control-ssh-daemons",
+        "suite": "access-control",
+        "tags": "telco"
       },
       {
         "id": "access-control-sys-admin-capability-check",
@@ -67,14 +117,9 @@
         "tags": "common"
       },
       {
-        "id": "affiliated-certification-container-is-certified-digest",
-        "suite": "affiliated-certification",
-        "tags": "common"
-      },
-      {
-        "id": "affiliated-certification-helmchart-is-certified",
-        "suite": "affiliated-certification",
-        "tags": "common"
+        "id": "access-control-sys-nice-realtime-capability",
+        "suite": "access-control",
+        "tags": "telco"
       },
       {
         "id": "affiliated-certification-operator-is-certified",
@@ -82,9 +127,29 @@
         "tags": "common"
       },
       {
+        "id": "lifecycle-container-prestop",
+        "suite": "lifecycle",
+        "tags": "telco"
+      },
+      {
+        "id": "lifecycle-container-poststart",
+        "suite": "lifecycle",
+        "tags": "telco"
+      },
+      {
         "id": "lifecycle-deployment-scaling",
         "suite": "lifecycle",
         "tags": "common"
+      },
+      {
+        "id": "lifecycle-image-pull-policy",
+        "suite": "lifecycle",
+        "tags": "telco"
+      },
+      {
+        "id": "lifecycle-liveness-probe",
+        "suite": "lifecycle",
+        "tags": "telco"
       },
       {
         "id": "lifecycle-pod-high-availability",
@@ -92,14 +157,49 @@
         "tags": "common"
       },
       {
+        "id": "lifecycle-pod-owner-type",
+        "suite": "lifecycle",
+        "tags": "telco"
+      },
+      {
         "id": "lifecycle-pod-recreation",
         "suite": "lifecycle",
         "tags": "common"
       },
       {
-        "id": "lifecycle-statefulset-scaling",
+        "id": "lifecycle-pod-scheduling",
         "suite": "lifecycle",
-        "tags": "common"
+        "tags": "telco"
+      },
+      {
+        "id": "lifecycle-pod-toleration-bypass",
+        "suite": "lifecycle",
+        "tags": "telco"
+      },
+      {
+        "id": "lifecycle-readiness-probe",
+        "suite": "lifecycle",
+        "tags": "telco"
+      },
+      {
+        "id": "lifecycle-startup-probe",
+        "suite": "lifecycle",
+        "tags": "telco"
+      },
+      {
+        "id": "manageability-container-port-name-format",
+        "suite": "manageability",
+        "tags": "extended"
+      },
+      {
+        "id": "manageability-containers-image-tag",
+        "suite": "manageability",
+        "tags": "extended"
+      },
+      {
+        "id": "networking-dual-stack-service",
+        "suite": "networking",
+        "tags": "extended"
       },
       {
         "id": "networking-icmpv4-connectivity",
@@ -107,9 +207,19 @@
         "tags": "common"
       },
       {
+        "id": "networking-icmpv4-connectivity-multus",
+        "suite": "networking",
+        "tags": "telco"
+      },
+      {
         "id": "networking-icmpv6-connectivity",
         "suite": "networking",
         "tags": "common"
+      },
+      {
+        "id": "networking-icmpv6-connectivity-multus",
+        "suite": "networking",
+        "tags": "telco"
       },
       {
         "id": "networking-network-policy-deny-all",
@@ -122,9 +232,19 @@
         "tags": "common"
       },
       {
-        "id": "access-control-service-type",
-        "suite": "access-control",
-        "tags": "common"
+        "id": "networking-reserved-partner-ports",
+        "suite": "networking",
+        "tags": "extended"
+      },
+      {
+        "id": "networking-undeclared-container-ports-usage",
+        "suite": "networking",
+        "tags": "extended"
+      },
+      {
+        "id": "observability-container-logging",
+        "suite": "observability",
+        "tags": "telco"
       },
       {
         "id": "observability-crd-status",
@@ -137,57 +257,22 @@
         "tags": "common"
       },
       {
-        "id": "operator-install-source",
-        "suite": "operator",
-        "tags": "common"
+        "id": "observability-termination-policy",
+        "suite": "observability",
+        "tags": "telco"
       },
       {
-        "id": "operator-install-status-no-privileges",
-        "suite": "operator",
-        "tags": "common"
+        "id": "performance-exclusive-cpu-pool",
+        "suite": "performance",
+        "tags": "faredge"
       },
       {
-        "id": "operator-install-status-succeeded",
-        "suite": "operator",
-        "tags": "common"
-      },
-      {
-        "id": "platform-alteration-base-image",
-        "suite": "platform-alteration",
-        "tags": "common"
-      },
-      {
-        "id": "platform-alteration-boot-params",
-        "suite": "platform-alteration",
-        "tags": "common"
-      },
-      {
-        "id": "platform-alteration-hugepages-config",
-        "suite": "platform-alteration",
-        "tags": "common"
-      },
-      {
-        "id": "platform-alteration-is-selinux-enforcing",
-        "suite": "platform-alteration",
-        "tags": "common"
+        "id": "performance-max-resources-exec-probes",
+        "suite": "performance",
+        "tags": "faredge"
       },
       {
         "id": "platform-alteration-isredhat-release",
-        "suite": "platform-alteration",
-        "tags": "common"
-      },
-      {
-        "id": "platform-alteration-ocp-lifecycle",
-        "suite": "platform-alteration",
-        "tags": "common"
-      },
-      {
-        "id": "platform-alteration-ocp-node-os-lifecycle",
-        "suite": "platform-alteration",
-        "tags": "common"
-      },
-      {
-        "id": "platform-alteration-sysctl-config",
         "suite": "platform-alteration",
         "tags": "common"
       },

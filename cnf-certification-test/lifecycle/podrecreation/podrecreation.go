@@ -22,9 +22,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/onsi/ginkgo/v2"
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
+	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -48,7 +48,7 @@ const (
 func CordonHelper(name, operation string) error {
 	clients := clientsholder.GetClientsHolder()
 
-	logrus.Infof("Performing %s operation on node %s", operation, name)
+	log.Info("Performing %s operation on node %s", operation, name)
 	retryErr := retry.RetryOnConflict(retry.DefaultRetry, func() error {
 		// Fetch node object
 		node, err := clients.K8sClient.CoreV1().Nodes().Get(context.TODO(), name, metav1.GetOptions{})
@@ -68,7 +68,7 @@ func CordonHelper(name, operation string) error {
 		return err
 	})
 	if retryErr != nil {
-		logrus.Error("can not ", operation, " node: ", name, " error=", retryErr)
+		log.Error("can not %s node: %s, err=%v", operation, name, retryErr)
 	}
 	return retryErr
 }
@@ -90,7 +90,7 @@ func CountPodsWithDelete(pods []*provider.Pod, nodeName, mode string) (count int
 			}
 			err := deletePod(put.Pod, mode, &wg)
 			if err != nil {
-				logrus.Errorf("error deleting %s", put)
+				log.Error("error deleting %s", put)
 			}
 		}
 	}
@@ -110,7 +110,7 @@ func skipDaemonPod(pod *corev1.Pod) bool {
 
 func deletePod(pod *corev1.Pod, mode string, wg *sync.WaitGroup) error {
 	clients := clientsholder.GetClientsHolder()
-	logrus.Debugf("deleting ns=%s pod=%s with %s mode", pod.Namespace, pod.Name, mode)
+	log.Debug("deleting ns=%s pod=%s with %s mode", pod.Namespace, pod.Name, mode)
 	gracePeriodSeconds := *pod.Spec.TerminationGracePeriodSeconds
 	// Create watcher before deleting pod
 	watcher, err := clients.K8sClient.CoreV1().Pods(pod.Namespace).Watch(context.TODO(), metav1.ListOptions{
@@ -124,7 +124,7 @@ func deletePod(pod *corev1.Pod, mode string, wg *sync.WaitGroup) error {
 		GracePeriodSeconds: &gracePeriodSeconds,
 	})
 	if err != nil {
-		logrus.Errorf("error deleting %s err: %v", pod.String(), err)
+		log.Error("error deleting %s err: %v", pod.String(), err)
 		return err
 	}
 	if mode == DeleteBackground {
@@ -140,27 +140,26 @@ func deletePod(pod *corev1.Pod, mode string, wg *sync.WaitGroup) error {
 	return nil
 }
 
-func CordonCleanup(node string) {
+func CordonCleanup(node string, check *checksdb.Check) {
 	err := CordonHelper(node, Uncordon)
 	if err != nil {
-		logrus.Errorf("cleanup: error uncordoning the node: %s, err=%s", node, err)
-		ginkgo.AbortSuite(fmt.Sprintf("cleanup: error uncordoning the node: %s, err=%s", node, err))
+		check.Abort(fmt.Sprintf("cleanup: error uncordoning the node: %s, err=%s", node, err))
 	}
 }
 
 func waitPodDeleted(ns, podName string, timeout int64, watcher watch.Interface) {
-	logrus.Tracef("Entering waitPodDeleted ns=%s pod=%s", ns, podName)
+	log.Debug("Entering waitPodDeleted ns=%s pod=%s", ns, podName)
 	defer watcher.Stop()
 
 	for {
 		select {
 		case event := <-watcher.ResultChan():
 			if event.Type == watch.Deleted || event.Type == "" {
-				logrus.Debugf("ns=%s pod=%s deleted", ns, podName)
+				log.Debug("ns=%s pod=%s deleted", ns, podName)
 				return
 			}
 		case <-time.After(time.Duration(timeout) * time.Second):
-			logrus.Infof("watch for pod deletion timedout after %d seconds", timeout)
+			log.Info("watch for pod deletion timedout after %d seconds", timeout)
 			return
 		}
 	}

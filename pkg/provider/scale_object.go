@@ -3,7 +3,7 @@ package provider
 import (
 	"fmt"
 
-	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
 
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -18,7 +18,7 @@ type CrScale struct {
 
 func (crScale CrScale) IsScaleObjectReady() bool {
 	replicas := (crScale.Spec.Replicas)
-	logrus.Infof("replicas is %d status replica is %d", replicas, crScale.Status.Replicas)
+	log.Info("replicas is %d status replica is %d", replicas, crScale.Status.Replicas)
 	return crScale.Status.Replicas == replicas
 }
 

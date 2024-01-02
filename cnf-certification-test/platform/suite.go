@@ -21,160 +21,152 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/sirupsen/logrus"
-	clientsholder "github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/compatibility"
-	"github.com/test-network-function/cnf-certification-test/pkg/provider"
-	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
-
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/bootparams"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/cnffsdiff"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/hugepages"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/isredhat"
+	clientsholder "github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
+	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
+	"github.com/test-network-function/cnf-certification-test/pkg/compatibility"
+	"github.com/test-network-function/cnf-certification-test/pkg/provider"
+	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/operatingsystem"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/sysctlconfig"
 
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
-
-	"github.com/onsi/ginkgo/v2"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/nodetainted"
 )
 
-// All actual test code belongs below here.  Utilities belong above.
-var _ = ginkgo.Describe(common.PlatformAlterationTestKey, func() {
-	logrus.Debugf("Entering %s suite", common.PlatformAlterationTestKey)
-	var env provider.TestEnvironment
-	ginkgo.BeforeEach(func() {
+var (
+	env provider.TestEnvironment
+
+	beforeEachFn = func(check *checksdb.Check) error {
+		check.LogInfo("Check %s: getting test environment.", check.ID)
 		env = provider.GetTestEnvironment()
-	})
-	ginkgo.ReportAfterEach(results.RecordResult)
-	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHyperThreadEnable)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.GetBaremetalNodes(), "env.GetBaremetalNodes()"))
-		testHyperThreadingEnabled(&env)
-	})
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUnalteredBaseImageIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if !provider.IsOCPCluster() {
-			ginkgo.Skip("Non-OCP cluster found, skipping testContainersFsDiff")
-		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
-		if env.DaemonsetFailedToSpawn {
-			ginkgo.Skip("Debug Daemonset failed to spawn skipping testContainersFsDiff")
-		}
-		testContainersFsDiff(&env)
-	})
+		return nil
+	}
+)
 
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNonTaintedNodeKernelsIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.DebugPods, "env.DebugPods"))
-		if env.DaemonsetFailedToSpawn {
-			ginkgo.Skip("Debug Daemonset failed to spawn skipping testTainted")
-		}
-		testTainted(&env) // Kind tainted kernels are allowed via config
-	})
+//nolint:funlen
+func LoadChecks() {
+	log.Debug("Entering %s suite", common.PlatformAlterationTestKey)
 
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsRedHatReleaseIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Containers, "env.Containers"))
-		testIsRedHatRelease(&env)
-	})
+	checksGroup := checksdb.NewChecksGroup(common.PlatformAlterationTestKey).
+		WithBeforeEachFn(beforeEachFn)
 
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsSELinuxEnforcingIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if !provider.IsOCPCluster() {
-			ginkgo.Skip("Non-OCP cluster found, skipping testIsSELinuxEnforcing")
-		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.DebugPods, "env.DebugPods"))
-		if env.DaemonsetFailedToSpawn {
-			ginkgo.Skip("Debug Daemonset failed to spawn skipping testIsSELinuxEnforcing")
-		}
-		testIsSELinuxEnforcing(&env)
-	})
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHyperThreadEnable)).
+		WithSkipCheckFn(testhelper.GetNoBareMetalNodesSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testHyperThreadingEnabled(c, &env)
+			return nil
+		}))
 
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHugepagesNotManuallyManipulated)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if !provider.IsOCPCluster() {
-			ginkgo.Skip("Non-OCP cluster found, skipping testHugepages")
-		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.DebugPods, "env.DebugPods"))
-		if env.DaemonsetFailedToSpawn {
-			ginkgo.Skip("Debug Daemonset failed to spawn skipping testHugepages")
-		}
-		testHugepages(&env)
-	})
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUnalteredBaseImageIdentifier)).
+		WithSkipCheckFn(
+			testhelper.GetNonOCPClusterSkipFn(),
+			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env),
+			testhelper.GetNoContainersUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testContainersFsDiff(c, &env)
+			return nil
+		}))
 
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUnalteredStartupBootParamsIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if !provider.IsOCPCluster() {
-			ginkgo.Skip("Non-OCP cluster found, skipping testUnalteredBootParams")
-		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.DebugPods, "env.DebugPods"))
-		if env.DaemonsetFailedToSpawn {
-			ginkgo.Skip("Debug Daemonset failed to spawn skipping testUnalteredBootParams")
-		}
-		testUnalteredBootParams(&env)
-	})
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNonTaintedNodeKernelsIdentifier)).
+		WithSkipCheckFn(testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testTainted(c, &env)
+			return nil
+		}))
 
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSysctlConfigsIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if !provider.IsOCPCluster() {
-			ginkgo.Skip("Non-OCP cluster found, skipping testSysctlConfigs")
-		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.DebugPods, "env.DebugPods"))
-		if env.DaemonsetFailedToSpawn {
-			ginkgo.Skip("Debug Daemonset failed to spawn skipping testSysctlConfigs")
-		}
-		testSysctlConfigs(&env)
-	})
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsRedHatReleaseIdentifier)).
+		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testIsRedHatRelease(c, &env)
+			return nil
+		}))
 
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServiceMeshIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Pods, "env.Pods"))
-		testServiceMesh(&env)
-	})
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIsSELinuxEnforcingIdentifier)).
+		WithSkipCheckFn(
+			testhelper.GetNonOCPClusterSkipFn(),
+			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testIsSELinuxEnforcing(c, &env)
+			return nil
+		}))
 
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOCPLifecycleIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if !provider.IsOCPCluster() {
-			ginkgo.Skip("Non-OCP cluster found, skipping testOCPStatus")
-		}
-		testOCPStatus(&env)
-	})
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHugepagesNotManuallyManipulated)).
+		WithSkipCheckFn(
+			testhelper.GetNonOCPClusterSkipFn(),
+			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testHugepages(c, &env)
+			return nil
+		}))
 
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNodeOperatingSystemIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if !provider.IsOCPCluster() {
-			ginkgo.Skip("Non-OCP cluster found, skipping testNodeOperatingSystemStatus")
-		}
-		testNodeOperatingSystemStatus(&env)
-	})
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUnalteredStartupBootParamsIdentifier)).
+		WithSkipCheckFn(
+			testhelper.GetNonOCPClusterSkipFn(),
+			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testUnalteredBootParams(c, &env)
+			return nil
+		}))
 
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHugePages2M)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if !provider.IsOCPCluster() {
-			ginkgo.Skip("Non-OCP cluster found, skipping testPodHugePagesSize2M")
-		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.GetHugepagesPods(), "env.GetHugepagesPods()"))
-		testPodHugePagesSize(&env, provider.HugePages2Mi)
-	})
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSysctlConfigsIdentifier)).
+		WithSkipCheckFn(
+			testhelper.GetNonOCPClusterSkipFn(),
+			testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testSysctlConfigs(c, &env)
+			return nil
+		}))
 
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHugePages1G)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		if !provider.IsOCPCluster() {
-			ginkgo.Skip("Non-OCP cluster found, skipping testPodHugePagesSize1G")
-		}
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.GetHugepagesPods(), "env.GetHugepagesPods()"))
-		testPodHugePagesSize(&env, provider.HugePages1Gi)
-	})
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServiceMeshIdentifier)).
+		WithSkipCheckFn(
+			testhelper.GetNoIstioSkipFn(&env),
+			testhelper.GetNoPodsUnderTestSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testServiceMesh(c, &env)
+			return nil
+		}))
 
-})
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOCPLifecycleIdentifier)).
+		WithSkipCheckFn(testhelper.GetNonOCPClusterSkipFn()).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOCPStatus(c, &env)
+			return nil
+		}))
 
-func testHyperThreadingEnabled(env *provider.TestEnvironment) {
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNodeOperatingSystemIdentifier)).
+		WithSkipCheckFn(testhelper.GetNonOCPClusterSkipFn()).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testNodeOperatingSystemStatus(c, &env)
+			return nil
+		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHugePages2M)).
+		WithSkipCheckFn(
+			testhelper.GetNonOCPClusterSkipFn(),
+			testhelper.GetNoHugepagesPodsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testPodHugePagesSize(c, &env, provider.HugePages2Mi)
+			return nil
+		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHugePages1G)).
+		WithSkipCheckFn(
+			testhelper.GetNonOCPClusterSkipFn(),
+			testhelper.GetNoHugepagesPodsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testPodHugePagesSize(c, &env, provider.HugePages1Gi)
+			return nil
+		}))
+}
+
+func testHyperThreadingEnabled(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	baremetalNodes := env.GetBaremetalNodes()
@@ -190,48 +182,40 @@ func testHyperThreadingEnabled(env *provider.TestEnvironment) {
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has hyperthreading disabled ", false))
 		}
 	}
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testServiceMesh(env *provider.TestEnvironment) {
-	// check if istio is installed
-	if !env.IstioServiceMeshFound {
-		tnf.ClaimFilePrintf("Istio is not installed")
-		ginkgo.Skip("No service mesh detected.")
-	}
-	tnf.ClaimFilePrintf("Istio is installed")
-
+func testServiceMesh(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
 		istioProxyFound := false
 		for _, cut := range put.Containers {
 			if cut.IsIstioProxy() {
-				tnf.ClaimFilePrintf("Istio proxy container found on %s", put)
+				check.LogDebug("Istio proxy container found on %s", put)
 				istioProxyFound = true
 				break
 			}
 		}
 		if !istioProxyFound {
-			tnf.ClaimFilePrintf("Pod found without service mesh: %s", put.String())
+			check.LogDebug("Pod found without service mesh: %s", put.String())
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod found without service mesh container", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod found with service mesh container", true))
 		}
 	}
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 // testContainersFsDiff test that all CUT did not install new packages are starting
-func testContainersFsDiff(env *provider.TestEnvironment) {
+func testContainersFsDiff(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
-		logrus.Debug(fmt.Sprintf("%s should not install new packages after starting", cut.String()))
+		check.LogDebug(fmt.Sprintf("%s should not install new packages after starting", cut.String()))
 		debugPod := env.DebugPods[cut.NodeName]
-		if debugPod == nil {
-			ginkgo.Fail(fmt.Sprintf("Debug pod not found on Node: %s", cut.NodeName))
-		}
+
 		ctxt := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
 		fsDiffTester := cnffsdiff.NewFsDiffTester(clientsholder.GetClientsHolder(), ctxt)
 		fsDiffTester.RunTest(cut.UID)
@@ -240,22 +224,22 @@ func testContainersFsDiff(env *provider.TestEnvironment) {
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is not modified", true))
 			continue
 		case testhelper.FAILURE:
-			tnf.ClaimFilePrintf("%s - changed folders: %v, deleted folders: %v", cut, fsDiffTester.ChangedFolders, fsDiffTester.DeletedFolders)
+			check.LogDebug("%s - changed folders: %v, deleted folders: %v", cut, fsDiffTester.ChangedFolders, fsDiffTester.DeletedFolders)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is modified", false).
 				AddField("ChangedFolders", strings.Join(fsDiffTester.ChangedFolders, ",")).
 				AddField("DeletedFolders", strings.Join(fsDiffTester.DeletedFolders, ",")))
 
 		case testhelper.ERROR:
-			tnf.ClaimFilePrintf("%s - error while running fs-diff: %v", cut, fsDiffTester.Error)
+			check.LogDebug("%s - error while running fs-diff: %v", cut, fsDiffTester.Error)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Error while running fs-diff", false).AddField(testhelper.Error, fsDiffTester.Error.Error()))
 		}
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 //nolint:funlen
-func testTainted(env *provider.TestEnvironment) {
+func testTainted(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
@@ -272,7 +256,7 @@ func testTainted(env *provider.TestEnvironment) {
 	// otherTaints maps a node to a list of taint bits that haven't been set by any module.
 	otherTaints := map[string][]int{}
 
-	logrus.Infof("Modules allowlist: %+v", env.Config.AcceptedKernelTaints)
+	check.LogInfo("Modules allowlist: %+v", env.Config.AcceptedKernelTaints)
 	// helper map to make the checks easier.
 	allowListedModules := map[string]bool{}
 	for _, module := range env.Config.AcceptedKernelTaints {
@@ -283,7 +267,7 @@ func testTainted(env *provider.TestEnvironment) {
 	for _, dp := range env.DebugPods {
 		nodeName := dp.Spec.NodeName
 
-		ginkgo.By(fmt.Sprintf("Checking kernel taints of node %s", nodeName))
+		check.LogInfo("Checking kernel taints of node %s", nodeName)
 
 		ocpContext := clientsholder.NewContext(dp.Namespace, dp.Name, dp.Spec.Containers[0].Name)
 		tf := nodetainted.NewNodeTaintedTester(&ocpContext, nodeName)
@@ -291,19 +275,19 @@ func testTainted(env *provider.TestEnvironment) {
 		// Get the taints mask from the node kernel
 		taintsMask, err := tf.GetKernelTaintsMask()
 		if err != nil {
-			tnf.ClaimFilePrintf("Failed to retrieve kernel taint information from node %s: %v", nodeName, err)
+			check.LogDebug("Failed to retrieve kernel taint information from node %s: %v", nodeName, err)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Failed to retrieve kernel taint information from node", false).
 				AddField(testhelper.Error, err.Error()))
 			continue
 		}
 
 		if taintsMask == 0 {
-			tnf.ClaimFilePrintf("Node %s has no non-approved kernel taints.", nodeName)
+			check.LogDebug("Node %s has no non-approved kernel taints.", nodeName)
 			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(nodeName, "Node has no non-approved kernel taints", true))
 			continue
 		}
 
-		tnf.ClaimFilePrintf("Node %s kernel is tainted. Taints mask=%d - Decoded taints: %v",
+		check.LogDebug("Node %s kernel is tainted. Taints mask=%d - Decoded taints: %v",
 			nodeName, taintsMask, nodetainted.DecodeKernelTaintsFromBitMask(taintsMask))
 
 		// Check the allow list. If empty, mark this node as failed.
@@ -322,7 +306,7 @@ func testTainted(env *provider.TestEnvironment) {
 		//      one tainter module.
 		tainters, taintBitsByAllModules, err := tf.GetTainterModules(allowListedModules)
 		if err != nil {
-			tnf.ClaimFilePrintf("failed to get tainter modules from node %s: %v", nodeName, err)
+			check.LogDebug("failed to get tainter modules from node %s: %v", nodeName, err)
 			errNodes = append(errNodes, nodeName)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(nodeName, "Failed to get tainter modules", false).
 				AddField(testhelper.Error, err.Error()))
@@ -339,7 +323,7 @@ func testTainted(env *provider.TestEnvironment) {
 
 			// Create non-compliant taint objects for each of the taints
 			for _, taint := range moduleTaints {
-				tnf.ClaimFilePrintf("Node %s - module %s taints kernel: %s", nodeName, moduleName, taint)
+				check.LogDebug("Node %s - module %s taints kernel: %s", nodeName, moduleName, taint)
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewTaintReportObject(nodetainted.RemoveAllExceptNumbers(taint), nodeName, taint, false).AddField(testhelper.ModuleName, moduleName))
 
 				// Set the node as non-compliant for future reporting
@@ -350,7 +334,7 @@ func testTainted(env *provider.TestEnvironment) {
 		// Lastly, check that all kernel taint bits come from modules.
 		otherKernelTaints := nodetainted.GetOtherTaintedBits(taintsMask, taintBitsByAllModules)
 		for _, taintedBit := range otherKernelTaints {
-			tnf.ClaimFilePrintf("Node %s - taint bit %d is set but it is not caused by any module.", nodeName, taintedBit)
+			check.LogDebug("Node %s - taint bit %d is set but it is not caused by any module.", nodeName, taintedBit)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewTaintReportObject(strconv.Itoa(taintedBit), nodeName, nodetainted.GetTaintMsg(taintedBit), false).
 				AddField(testhelper.ModuleName, "N/A"))
 			otherTaints[nodeName] = append(otherTaints[nodeName], taintedBit)
@@ -364,45 +348,45 @@ func testTainted(env *provider.TestEnvironment) {
 		}
 	}
 
-	logrus.Infof("Nodes with errors: %+v", errNodes)
-	logrus.Infof("Bad Modules: %+v", badModules)
-	logrus.Infof("Taints not related to any module: %+v", otherTaints)
+	check.LogInfo("Nodes with errors: %+v", errNodes)
+	check.LogInfo("Bad Modules: %+v", badModules)
+	check.LogInfo("Taints not related to any module: %+v", otherTaints)
 
 	if len(errNodes) > 0 {
-		logrus.Infof("Failed to get kernel taints from some nodes: %+v", errNodes)
+		check.LogInfo("Failed to get kernel taints from some nodes: %+v", errNodes)
 	}
 
 	if len(badModules) > 0 || len(otherTaints) > 0 {
-		logrus.Info("Nodes have been found to be tainted. Check claim log for more details.")
+		check.LogInfo("Nodes have been found to be tainted. Check claim log for more details.")
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testIsRedHatRelease(env *provider.TestEnvironment) {
-	ginkgo.By("should report a proper Red Hat version")
+func testIsRedHatRelease(check *checksdb.Check, env *provider.TestEnvironment) {
+	check.LogInfo("should report a proper Red Hat version")
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
-		ginkgo.By(fmt.Sprintf("%s is checked for Red Hat version", cut))
+		check.LogInfo("%s is checked for Red Hat version", cut)
 		baseImageTester := isredhat.NewBaseImageTester(clientsholder.GetClientsHolder(), clientsholder.NewContext(cut.Namespace, cut.Podname, cut.Name))
 
 		result, err := baseImageTester.TestContainerIsRedHatRelease()
 		if err != nil {
-			logrus.Error("failed to collect release information from container: ", err)
+			check.LogError("failed to collect release information from container, err=%v", err)
 		}
 		if !result {
-			tnf.ClaimFilePrintf("%s has failed the RHEL release check", cut)
+			check.LogDebug("%s has failed the RHEL release check", cut)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Failed the RHEL release check", false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Passed the RHEL release check", true))
 		}
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testIsSELinuxEnforcing(env *provider.TestEnvironment) {
+func testIsSELinuxEnforcing(check *checksdb.Check, env *provider.TestEnvironment) {
 	const (
 		getenforceCommand = `chroot /host getenforce`
 		enforcingString   = "Enforcing\n"
@@ -416,13 +400,13 @@ func testIsSELinuxEnforcing(env *provider.TestEnvironment) {
 		ctx := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
 		outStr, errStr, err := o.ExecCommandContainer(ctx, getenforceCommand)
 		if err != nil || errStr != "" {
-			logrus.Errorf("Failed to execute command %s in debug %s, errStr: %s, err: %v", getenforceCommand, debugPod.String(), errStr, err)
+			check.LogError("Failed to execute command %s in debug %s, errStr: %s, err: %v", getenforceCommand, debugPod.String(), errStr, err)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(debugPod.Namespace, debugPod.Name, "Failed to execute command", false))
 			nodesError++
 			continue
 		}
 		if outStr != enforcingString {
-			tnf.ClaimFilePrintf(fmt.Sprintf("Node %s is not running selinux, %s command returned: %s", debugPod.Spec.NodeName, getenforceCommand, outStr))
+			check.LogDebug(fmt.Sprintf("Node %s is not running selinux, %s command returned: %s", debugPod.Spec.NodeName, getenforceCommand, outStr))
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(debugPod.Spec.NodeName, "SELinux is not enforced", false))
 			nodesFailed++
 		} else {
@@ -430,16 +414,16 @@ func testIsSELinuxEnforcing(env *provider.TestEnvironment) {
 		}
 	}
 	if nodesError > 0 {
-		logrus.Infof("Failed because could not run %s command on %d nodes", getenforceCommand, nodesError)
+		check.LogInfo("Failed because could not run %s command on %d nodes", getenforceCommand, nodesError)
 	}
 	if nodesFailed > 0 {
-		logrus.Infof(fmt.Sprintf("Failed because %d nodes are not running selinux", nodesFailed))
+		check.LogInfo(fmt.Sprintf("Failed because %d nodes are not running selinux", nodesFailed))
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testHugepages(env *provider.TestEnvironment) {
+func testHugepages(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for i := range env.Nodes {
@@ -451,55 +435,53 @@ func testHugepages(env *provider.TestEnvironment) {
 
 		debugPod, exist := env.DebugPods[node.Data.Name]
 		if !exist {
-			tnf.ClaimFilePrintf("Node %s: tnf debug pod not found.", node.Data.Name)
+			check.LogDebug("Node %s: tnf debug pod not found.", node.Data.Name)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(node.Data.Name, "tnf debug pod not found", false))
 			continue
 		}
 
 		hpTester, err := hugepages.NewTester(&node, debugPod, clientsholder.GetClientsHolder())
 		if err != nil {
-			tnf.ClaimFilePrintf("Unable to get node hugepages tester for node %s, err: %v", node.Data.Name, err)
+			check.LogDebug("Unable to get node hugepages tester for node %s, err: %v", node.Data.Name, err)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(node.Data.Name, "Unable to get node hugepages tester", false))
 		}
 
 		if err := hpTester.Run(); err != nil {
-			tnf.ClaimFilePrintf("Node %s: %v", node.Data.Name, err)
+			check.LogDebug("Node %s: %v", node.Data.Name, err)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(node.Data.Name, err.Error(), false))
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(node.Data.Name, "Passed the hugepages check", true))
 		}
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testUnalteredBootParams(env *provider.TestEnvironment) {
+func testUnalteredBootParams(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	alreadyCheckedNodes := map[string]bool{}
 	for _, cut := range env.Containers {
 		if alreadyCheckedNodes[cut.NodeName] {
-			logrus.Debugf("Skipping node %s: already checked.", cut.NodeName)
+			check.LogDebug("Skipping node %s: already checked.", cut.NodeName)
 			continue
 		}
 		alreadyCheckedNodes[cut.NodeName] = true
 
-		claimsLog, err := bootparams.TestBootParamsHelper(env, cut)
-
-		if err != nil || len(claimsLog.GetLogLines()) != 0 {
+		err := bootparams.TestBootParamsHelper(env, cut, check.GetLoggger())
+		if err != nil {
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Failed the boot params check", false).
 				AddField(testhelper.DebugPodName, env.DebugPods[cut.NodeName].Name))
-			tnf.ClaimFilePrintf("%s", claimsLog.GetLogLines())
 		} else {
 			compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Passed the boot params check", true).
 				AddField(testhelper.DebugPodName, env.DebugPods[cut.NodeName].Name))
 		}
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testSysctlConfigs(env *provider.TestEnvironment) {
+func testSysctlConfigs(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
@@ -517,7 +499,7 @@ func testSysctlConfigs(env *provider.TestEnvironment) {
 
 		sysctlSettings, err := sysctlconfig.GetSysctlSettings(env, cut.NodeName)
 		if err != nil {
-			tnf.ClaimFilePrintf("Could not get sysctl settings for node %s, error: %v", cut.NodeName, err)
+			check.LogDebug("Could not get sysctl settings for node %s, error: %v", cut.NodeName, err)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(cut.NodeName, "Could not get sysctl settings", false))
 			continue
 		}
@@ -527,7 +509,7 @@ func testSysctlConfigs(env *provider.TestEnvironment) {
 		for key, sysctlConfigVal := range sysctlSettings {
 			if mcVal, ok := mcKernelArgumentsMap[key]; ok {
 				if mcVal != sysctlConfigVal {
-					tnf.ClaimFilePrintf(fmt.Sprintf("Kernel config mismatch in node %s for %s (sysctl value: %s, machine config value: %s)",
+					check.LogDebug(fmt.Sprintf("Kernel config mismatch in node %s for %s (sysctl value: %s, machine config value: %s)",
 						cut.NodeName, key, sysctlConfigVal, mcVal))
 					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(cut.NodeName, fmt.Sprintf("Kernel config mismatch for %s", key), false))
 					validSettings = false
@@ -539,37 +521,49 @@ func testSysctlConfigs(env *provider.TestEnvironment) {
 		}
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testOCPStatus(env *provider.TestEnvironment) {
-	ginkgo.By("Testing the OCP Version for lifecycle status")
+func testOCPStatus(check *checksdb.Check, env *provider.TestEnvironment) {
+	check.LogInfo("Testing the OCP Version for lifecycle status")
 
+	clusterIsInEOL := false
 	switch env.OCPStatus {
 	case compatibility.OCPStatusEOL:
 		msg := fmt.Sprintf("OCP Version %s has been found to be in end of life", env.OpenshiftVersion)
-		tnf.ClaimFilePrintf(msg)
-		ginkgo.Fail(msg)
+		check.LogDebug(msg)
+		clusterIsInEOL = true
 	case compatibility.OCPStatusMS:
 		msg := fmt.Sprintf("OCP Version %s has been found to be in maintenance support", env.OpenshiftVersion)
-		tnf.ClaimFilePrintf(msg)
+		check.LogDebug(msg)
 	case compatibility.OCPStatusGA:
 		msg := fmt.Sprintf("OCP Version %s has been found to be in general availability", env.OpenshiftVersion)
-		tnf.ClaimFilePrintf(msg)
+		check.LogDebug(msg)
 	case compatibility.OCPStatusPreGA:
 		msg := fmt.Sprintf("OCP Version %s has been found to be in pre-general availability", env.OpenshiftVersion)
-		tnf.ClaimFilePrintf(msg)
+		check.LogDebug(msg)
 	default:
 		msg := fmt.Sprintf("OCP Version %s was unable to be found in the lifecycle compatibility matrix", env.OpenshiftVersion)
-		tnf.ClaimFilePrintf(msg)
+		check.LogDebug(msg)
 	}
+
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	if clusterIsInEOL {
+		nonCompliantObjects = []*testhelper.ReportObject{testhelper.NewClusterVersionReportObject(env.OpenshiftVersion, "Openshift Version is in End Of Life (EOL)", false)}
+	} else {
+		compliantObjects = []*testhelper.ReportObject{testhelper.NewClusterVersionReportObject(env.OpenshiftVersion, "Openshift Version is not in End Of Life (EOL)", true)}
+	}
+
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 //nolint:funlen
-func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
-	ginkgo.By("Testing the control-plane and workers in the cluster for Operating System compatibility")
+func testNodeOperatingSystemStatus(check *checksdb.Check, env *provider.TestEnvironment) {
+	check.LogInfo("Testing the control-plane and workers in the cluster for Operating System compatibility")
 
-	logrus.Debug(fmt.Sprintf("There are %d nodes to process for Operating System compatibility.", len(env.Nodes)))
+	check.LogDebug(fmt.Sprintf("There are %d nodes to process for Operating System compatibility.", len(env.Nodes)))
 
 	failedControlPlaneNodes := []string{}
 	failedWorkerNodes := []string{}
@@ -577,13 +571,13 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, node := range env.Nodes {
 		// Get the OSImage which should tell us what version of operating system the node is running.
-		logrus.Debug(fmt.Sprintf("Node %s is running operating system: %s", node.Data.Name, node.Data.Status.NodeInfo.OSImage))
+		check.LogDebug(fmt.Sprintf("Node %s is running operating system: %s", node.Data.Name, node.Data.Status.NodeInfo.OSImage))
 
 		// Control plane nodes must be RHCOS (also CentOS Stream starting in OCP 4.13)
 		// Per the release notes from OCP documentation:
 		// "You must use RHCOS machines for the control plane, and you can use either RHCOS or RHEL for compute machines."
 		if node.IsMasterNode() && !node.IsRHCOS() && !node.IsCSCOS() {
-			tnf.ClaimFilePrintf("Master node %s has been found to be running an incompatible operating system: %s", node.Data.Name, node.Data.Status.NodeInfo.OSImage)
+			check.LogDebug("Master node %s has been found to be running an incompatible operating system: %s", node.Data.Name, node.Data.Status.NodeInfo.OSImage)
 			failedControlPlaneNodes = append(failedControlPlaneNodes, node.Data.Name)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(node.Data.Name, "Master node has been found to be running an incompatible OS", false).AddField(testhelper.OSImage, node.Data.Status.NodeInfo.OSImage))
 			continue
@@ -596,21 +590,21 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 				// Get the short version from the node
 				shortVersion, err := node.GetRHCOSVersion()
 				if err != nil {
-					tnf.ClaimFilePrintf("Node %s failed to gather RHCOS version. Error: %v", node.Data.Name, err)
+					check.LogDebug("Node %s failed to gather RHCOS version. Error: %v", node.Data.Name, err)
 					failedWorkerNodes = append(failedWorkerNodes, node.Data.Name)
 					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(node.Data.Name, "Failed to gather RHCOS version", false))
 					continue
 				}
 
 				if shortVersion == operatingsystem.NotFoundStr {
-					tnf.ClaimFilePrintf("Node %s has an RHCOS operating system that is not found in our internal database.  Skipping as to not cause failures due to database mismatch.", node.Data.Name)
+					check.LogDebug("Node %s has an RHCOS operating system that is not found in our internal database.  Skipping as to not cause failures due to database mismatch.", node.Data.Name)
 					continue
 				}
 
 				// If the node's RHCOS version and the OpenShift version are not compatible, the node fails.
-				logrus.Debugf("Comparing RHCOS shortVersion: %s to openshiftVersion: %s", shortVersion, env.OpenshiftVersion)
+				check.LogDebug("Comparing RHCOS shortVersion: %s to openshiftVersion: %s", shortVersion, env.OpenshiftVersion)
 				if !compatibility.IsRHCOSCompatible(shortVersion, env.OpenshiftVersion) {
-					tnf.ClaimFilePrintf("Node %s has been found to be running an incompatible version of RHCOS: %s", node.Data.Name, shortVersion)
+					check.LogDebug("Node %s has been found to be running an incompatible version of RHCOS: %s", node.Data.Name, shortVersion)
 					failedWorkerNodes = append(failedWorkerNodes, node.Data.Name)
 					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(node.Data.Name, "Worker node has been found to be running an incompatible OS", false).
 						AddField(testhelper.OSImage, node.Data.Status.NodeInfo.OSImage))
@@ -622,7 +616,7 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 				// Get the short version from the node
 				shortVersion, err := node.GetCSCOSVersion()
 				if err != nil {
-					tnf.ClaimFilePrintf("Node %s failed to gather CentOS Stream CoreOS version. Error: %v", node.Data.Name, err)
+					check.LogDebug("Node %s failed to gather CentOS Stream CoreOS version. Error: %v", node.Data.Name, err)
 					failedWorkerNodes = append(failedWorkerNodes, node.Data.Name)
 					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(node.Data.Name, "Failed to gather CentOS Stream CoreOS version", false))
 					continue
@@ -635,28 +629,28 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 					Node %s is using CentOS Stream CoreOS %s, which is not being used yet in any
 					OCP RC/GA version. Relaxing the conditions to check the OS as a result.
 					`
-				tnf.ClaimFilePrintf(msg, node.Data.Name, shortVersion)
+				check.LogDebug(msg, node.Data.Name, shortVersion)
 			} else if node.IsRHEL() {
 				// Get the short version from the node
 				shortVersion, err := node.GetRHELVersion()
 				if err != nil {
-					tnf.ClaimFilePrintf("Node %s failed to gather RHEL version. Error: %v", node.Data.Name, err)
+					check.LogDebug("Node %s failed to gather RHEL version. Error: %v", node.Data.Name, err)
 					failedWorkerNodes = append(failedWorkerNodes, node.Data.Name)
 					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(node.Data.Name, "Failed to gather RHEL version", false))
 					continue
 				}
 
 				// If the node's RHEL version and the OpenShift version are not compatible, the node fails.
-				logrus.Debugf("Comparing RHEL shortVersion: %s to openshiftVersion: %s", shortVersion, env.OpenshiftVersion)
+				check.LogDebug("Comparing RHEL shortVersion: %s to openshiftVersion: %s", shortVersion, env.OpenshiftVersion)
 				if !compatibility.IsRHELCompatible(shortVersion, env.OpenshiftVersion) {
-					tnf.ClaimFilePrintf("Node %s has been found to be running an incompatible version of RHEL: %s", node.Data.Name, shortVersion)
+					check.LogDebug("Node %s has been found to be running an incompatible version of RHEL: %s", node.Data.Name, shortVersion)
 					failedWorkerNodes = append(failedWorkerNodes, node.Data.Name)
 					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(node.Data.Name, "Worker node has been found to be running an incompatible OS", false).AddField(testhelper.OSImage, node.Data.Status.NodeInfo.OSImage))
 				} else {
 					compliantObjects = append(compliantObjects, testhelper.NewNodeReportObject(node.Data.Name, "Worker node has been found to be running a compatible OS", true).AddField(testhelper.OSImage, node.Data.Status.NodeInfo.OSImage))
 				}
 			} else {
-				tnf.ClaimFilePrintf("Node %s has been found to be running an incompatible operating system", node.Data.Name)
+				check.LogDebug("Node %s has been found to be running an incompatible operating system", node.Data.Name)
 				failedWorkerNodes = append(failedWorkerNodes, node.Data.Name)
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNodeReportObject(node.Data.Name, "Worker node has been found to be running an incompatible OS", false).AddField(testhelper.OSImage, node.Data.Status.NodeInfo.OSImage))
 			}
@@ -667,19 +661,19 @@ func testNodeOperatingSystemStatus(env *provider.TestEnvironment) {
 	if n := len(failedControlPlaneNodes); n > 0 {
 		errMsg := fmt.Sprintf("Number of control plane nodes running non-RHCOS based operating systems: %d", n)
 		b.WriteString(errMsg)
-		tnf.ClaimFilePrintf(errMsg)
+		check.LogDebug(errMsg)
 	}
 
 	if n := len(failedWorkerNodes); n > 0 {
 		errMsg := fmt.Sprintf("Number of worker nodes running non-RHCOS or non-RHEL based operating systems: %d", n)
 		b.WriteString(errMsg)
-		tnf.ClaimFilePrintf(errMsg)
+		check.LogDebug(errMsg)
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testPodHugePagesSize(env *provider.TestEnvironment, size string) {
+func testPodHugePagesSize(check *checksdb.Check, env *provider.TestEnvironment, size string) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.GetHugepagesPods() {
@@ -690,5 +684,5 @@ func testPodHugePagesSize(env *provider.TestEnvironment, size string) {
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has been found to be running with a correct hugepages size", true))
 		}
 	}
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }

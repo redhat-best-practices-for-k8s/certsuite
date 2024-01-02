@@ -20,10 +20,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netcommons"
-	"github.com/test-network-function/cnf-certification-test/pkg/loghelper"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	corev1 "k8s.io/api/core/v1"
@@ -327,7 +328,7 @@ func TestBuildNetTestContext(t *testing.T) {
 		name              string
 		args              args
 		wantNetsUnderTest map[string]netcommons.NetTestContext
-		wantClaimsLogStr  []string
+		wantLogArchive    []string
 	}{
 		{
 			name: "ipv4ok",
@@ -394,8 +395,8 @@ func TestBuildNetTestContext(t *testing.T) {
 				},
 			},
 
-			wantClaimsLogStr: []string{
-				"Skipping pod: pod2 ns: ns1 because it is excluded from all connectivity tests\n",
+			wantLogArchive: []string{
+				"Skipping pod: pod2 ns: ns1 because it is excluded from all connectivity tests",
 			},
 		},
 		{
@@ -511,11 +512,13 @@ func TestBuildNetTestContext(t *testing.T) {
 				},
 			},
 
-			wantClaimsLogStr: []string{
-				"Skipping pod pod2 because it is excluded from Multus connectivity tests only\n",
+			wantLogArchive: []string{
+				"Skipping pod pod2 because it is excluded from Multus connectivity tests only",
 			},
 		},
 	}
+	var logArchive strings.Builder
+	log.SetupLogger(&logArchive, "INFO")
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			for idx := range tt.args.pods {
@@ -529,10 +532,11 @@ func TestBuildNetTestContext(t *testing.T) {
 				}
 			}
 
-			gotNetsUnderTest, gotClaimsLog := BuildNetTestContext(
+			gotNetsUnderTest := BuildNetTestContext(
 				tt.args.pods,
 				tt.args.aIPVersion,
 				tt.args.aType,
+				log.GetLogger(),
 			)
 
 			out, _ := json.MarshalIndent(gotNetsUnderTest, "", "")
@@ -545,20 +549,31 @@ func TestBuildNetTestContext(t *testing.T) {
 				)
 			}
 
-			testClaimsLog := loghelper.CuratedLogLines{}
-			if len(tt.wantClaimsLogStr) > 0 {
-				testClaimsLog.Init(tt.wantClaimsLogStr...)
-			}
-
-			if !reflect.DeepEqual(gotClaimsLog, testClaimsLog) {
+			logArchiveMsgs := getLogArchiveMsgs(logArchive)
+			if !reflect.DeepEqual(logArchiveMsgs, tt.wantLogArchive) {
 				t.Errorf(
 					"BuildNetTestContext() gotClaimsLog = %v, want %v",
-					gotClaimsLog,
-					testClaimsLog,
+					logArchiveMsgs,
+					tt.wantLogArchive,
 				)
 			}
+			logArchive.Reset()
 		})
 	}
+}
+
+func getLogArchiveMsgs(logArchive strings.Builder) []string {
+	var logArchiveMsgs []string
+	logLines := strings.Split(logArchive.String(), "\n")
+
+	for _, logLine := range logLines {
+		logMsgs := strings.Split(logLine, "]")
+		if len(logMsgs) > 2 {
+			logArchiveMsgs = append(logArchiveMsgs, strings.TrimSpace(logMsgs[2]))
+		}
+	}
+
+	return logArchiveMsgs
 }
 
 var (
@@ -723,11 +738,11 @@ func TestRunNetworkingTests(t *testing.T) {
 		aIPVersion    netcommons.IPVersion
 	}
 	tests := []struct {
-		name             string
-		args             args
-		wantReport       testhelper.FailureReasonOut
-		wantClaimsLogStr []string
-		testPingSuccess  bool
+		name            string
+		args            args
+		wantReport      testhelper.FailureReasonOut
+		wantLogArchive  []string
+		testPingSuccess bool
 	}{
 		{name: "ok",
 			args: args{netsUnderTest: map[string]netcommons.NetTestContext{"default": {
@@ -802,8 +817,8 @@ func TestRunNetworkingTests(t *testing.T) {
 				},
 				NonCompliantObjectsOut: []*testhelper.ReportObject{},
 			},
-			wantClaimsLogStr: []string{
-				"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test2 pod: test-1 ns: tnf dstip: 10.244.195.232 ) result: outcome: SUCCESS transmitted: 10 received: 10 errors: 0\n",
+			wantLogArchive: []string{
+				"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test2 pod: test-1 ns: tnf dstip: 10.244.195.232 ) result: outcome: SUCCESS transmitted: 10 received: 10 errors: 0",
 			},
 			testPingSuccess: true,
 		},
@@ -950,13 +965,16 @@ func TestRunNetworkingTests(t *testing.T) {
 					},
 				},
 			},
-			wantClaimsLogStr: []string{
-				"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test2 pod: test-1 ns: tnf dstip: 10.244.195.232 ) result: outcome: FAILURE transmitted: 10 received: 5 errors: 5\n", //nolint:lll
-				"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test3 pod: test-1 ns: tnf dstip: 10.244.195.233 ) result: outcome: FAILURE transmitted: 10 received: 5 errors: 5\n",
+			wantLogArchive: []string{
+				"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test2 pod: test-1 ns: tnf dstip: 10.244.195.232 ) result: outcome: FAILURE transmitted: 10 received: 5 errors: 5", //nolint:lll
+				"IPv4 ping test on network default from ( container: test1 pod: test-0 ns: tnf  srcip: 10.244.195.231 ) to ( container: test3 pod: test-1 ns: tnf dstip: 10.244.195.233 ) result: outcome: FAILURE transmitted: 10 received: 5 errors: 5",
 			},
 			testPingSuccess: false,
 		},
 	}
+
+	var logArchive strings.Builder
+	log.SetupLogger(&logArchive, "INFO")
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if tt.testPingSuccess {
@@ -964,10 +982,11 @@ func TestRunNetworkingTests(t *testing.T) {
 			} else {
 				TestPing = TestPingFailure
 			}
-			gotReport, gotClaimsLog, _ := RunNetworkingTests(
+			gotReport, _ := RunNetworkingTests(
 				tt.args.netsUnderTest,
 				tt.args.count,
 				tt.args.aIPVersion,
+				log.GetLogger(),
 			)
 			if !gotReport.Equal(tt.wantReport) {
 				t.Errorf(
@@ -976,13 +995,15 @@ func TestRunNetworkingTests(t *testing.T) {
 					testhelper.FailureReasonOutTestString(tt.wantReport),
 				)
 			}
-			if !reflect.DeepEqual(gotClaimsLog.GetLogLines(), tt.wantClaimsLogStr) {
+			logArchiveMsgs := getLogArchiveMsgs(logArchive)
+			if !reflect.DeepEqual(logArchiveMsgs, tt.wantLogArchive) {
 				t.Errorf(
 					"RunNetworkingTests() gotReport = %+v, want %+v",
-					gotClaimsLog,
-					tt.wantClaimsLogStr,
+					logArchiveMsgs,
+					tt.wantLogArchive,
 				)
 			}
+			logArchive.Reset()
 		})
 	}
 }

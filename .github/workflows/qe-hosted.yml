@@ -2,7 +2,7 @@ name: QE Testing (Ubuntu-hosted)
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ ginkgo_removal ]
   workflow_dispatch:
   # Schedule a daily cron at midnight UTC
   schedule:
@@ -89,6 +89,7 @@ jobs:
         with:
           repository: ${{ env.QE_REPO }}
           path: cnfcert-tests-verification
+          ref: ginkgo_removal
 
       - name: Extract dependent Pull Requests
         uses: depends-on/depends-on-action@main
@@ -98,7 +99,7 @@ jobs:
       - name: Run the tests
         uses: nick-fields/retry@v2
         with:
-          timeout_minutes: 90
+          timeout_minutes: 60
           max_attempts: 3
           command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
 

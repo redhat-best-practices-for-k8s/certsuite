@@ -3,7 +3,7 @@ package failures
 import "fmt"
 
 // Custom object type needed to provide a different JSON serialization than
-// the one in claim's test cases' failureReason field.
+// the one in claim's test cases' skipReason field.
 type NonCompliantObject struct {
 	Type   string     `json:"type"`
 	Reason string     `json:"reason"`
@@ -42,7 +42,7 @@ func (spec *ObjectSpec) MarshalJSON() ([]byte, error) {
 type FailedTestCase struct {
 	TestCaseName        string               `json:"name"`
 	TestCaseDescription string               `json:"description"`
-	FailureReason       string               `json:"failureReason,omitempty"`
+	CheckDetails        string               `json:"checkDetails,omitempty"`
 	NonCompliantObjects []NonCompliantObject `json:"nonCompliantObjects,omitempty"`
 }
 

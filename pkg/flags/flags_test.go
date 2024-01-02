@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2022 Red Hat, Inc.
+// Copyright (C) 2020-2023 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,19 +14,4 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package loghelper
-
-import (
-	"testing"
-
-	"github.com/stretchr/testify/assert"
-)
-
-func TestLogLines(t *testing.T) {
-	SetLogFormat()
-	ll := CuratedLogLines{}
-	ll.Init("one", "two", "three")
-	assert.Equal(t, []string{"one", "two", "three"}, ll.GetLogLines())
-	ll.AddLogLine("four") // adds a newline
-	assert.Equal(t, []string{"one", "two", "three", "four\n"}, ll.GetLogLines())
-}
+package flags

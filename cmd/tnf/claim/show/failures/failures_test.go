@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/pkg/claim"
-	"gotest.tools/v3/assert"
 )
 
 func TestParseTargetTestSuitesFlag(t *testing.T) {
@@ -50,7 +50,7 @@ func TestParseTargetTestSuitesFlag(t *testing.T) {
 	for _, tc := range testCases {
 		testSuitesFlag = tc.flag
 		parsedTestSuites := parseTargetTestSuitesFlag()
-		assert.DeepEqual(t, tc.expectedTestSuites, parsedTestSuites)
+		assert.Equal(t, tc.expectedTestSuites, parsedTestSuites)
 	}
 }
 
@@ -90,22 +90,22 @@ func TestParseOutputFormatFlag(t *testing.T) {
 
 func TestGetNonCompliantObjectsFromFailureReason(t *testing.T) {
 	testCases := []struct {
-		failureReason               string
+		checkDetails                string
 		expectedNonCompliantObjects []NonCompliantObject
 		expectedError               string
 	}{
 		{
-			failureReason:               "",
+			checkDetails:                "",
 			expectedNonCompliantObjects: nil,
-			expectedError:               `failed to decode failureReason : unexpected end of JSON input`,
+			expectedError:               `failed to decode checkDetails : unexpected end of JSON input`,
 		},
 		{
-			failureReason:               `{"CompliantObjectsOut": null, "NonCompliantObjectsOut": null}`,
+			checkDetails:                `{"CompliantObjectsOut": null, "NonCompliantObjectsOut": null}`,
 			expectedNonCompliantObjects: []NonCompliantObject{},
 		},
 		// One container failed the SYS_ADMIN check.
 		{
-			failureReason: `{
+			checkDetails: `{
 				"CompliantObjectsOut": null,
 				"NonCompliantObjectsOut": [
 				  {
@@ -159,7 +159,7 @@ func TestGetNonCompliantObjectsFromFailureReason(t *testing.T) {
 		},
 		// Two containers failed the SYS_ADMIN check.
 		{
-			failureReason: `{
+			checkDetails: `{
 				"CompliantObjectsOut": null,
 				"NonCompliantObjectsOut": [
 				  {
@@ -260,18 +260,18 @@ func TestGetNonCompliantObjectsFromFailureReason(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		nonCompliantObjects, err := getNonCompliantObjectsFromFailureReason(tc.failureReason)
+		nonCompliantObjects, err := getNonCompliantObjectsFromFailureReason(tc.checkDetails)
 		if err != nil {
 			assert.Equal(t, tc.expectedError, err.Error())
 		}
 
-		assert.DeepEqual(t, tc.expectedNonCompliantObjects, nonCompliantObjects)
+		assert.Equal(t, tc.expectedNonCompliantObjects, nonCompliantObjects)
 	}
 }
 
 // Uses claim files in testdata folder:
 // claim1.json -> Two test suites, access-control & platform-alteration. One failed test case in the access-control ts.
-// claim2.json -> Same as clam1.json, but the failureReason is a simple string, not using report objects yet.
+// claim2.json -> Same as clam1.json, but the checkDetails is a simple string, not using report objects yet.
 func TestGetFailedTestCasesByTestSuite(t *testing.T) {
 	testCases := []struct {
 		claimFilePath            string
@@ -295,7 +295,7 @@ func TestGetFailedTestCasesByTestSuite(t *testing.T) {
 						{
 							TestCaseName:        "access-control-sys-admin-capability-check",
 							TestCaseDescription: "Ensures that containers do not use SYS_ADMIN capability",
-							FailureReason:       "pod xxx ns yyy container zzz uses SYS_ADMIN",
+							CheckDetails:        "pod xxx ns yyy container zzz uses SYS_ADMIN",
 						},
 					},
 				},
@@ -376,7 +376,7 @@ func TestGetFailedTestCasesByTestSuite(t *testing.T) {
 
 	for _, tc := range testCases {
 		claimScheme, err := claim.Parse(tc.claimFilePath)
-		assert.NilError(t, err)
+		assert.Nil(t, err)
 
 		// Order test case results by test suite, using a helper map.
 		resultsByTestSuite := map[string][]*claim.TestCaseResult{}
@@ -393,6 +393,6 @@ func TestGetFailedTestCasesByTestSuite(t *testing.T) {
 			map[string]bool{tc.targetTestSuite: true},
 		)
 		fmt.Printf("%#v\n\n", testSuites)
-		assert.DeepEqual(t, tc.expectedFailedTestSuites, testSuites)
+		assert.Equal(t, tc.expectedFailedTestSuites, testSuites)
 	}
 }

@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"os"
 
-	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/compare/configurations"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/compare/nodes"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/compare/testcases"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/claim/compare/versions"
 	"github.com/test-network-function/cnf-certification-test/cmd/tnf/pkg/claim"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 )
 
 const longHelp = `Compares sections of both claim files and the differences are shown in a table per section.
@@ -97,12 +97,12 @@ func NewCommand() *cobra.Command {
 	)
 	err := claimCompareFiles.MarkFlagRequired("claim1")
 	if err != nil {
-		log.Errorf("Failed to mark flag claim1 as required: %v", err)
+		log.Error("Failed to mark flag claim1 as required: %v", err)
 		return nil
 	}
 	err = claimCompareFiles.MarkFlagRequired("claim2")
 	if err != nil {
-		log.Errorf("Failed to mark flag claim2 as required: %v", err)
+		log.Error("Failed to mark flag claim2 as required: %v", err)
 		return nil
 	}
 
@@ -112,7 +112,8 @@ func NewCommand() *cobra.Command {
 func claimCompare(_ *cobra.Command, _ []string) error {
 	err := claimCompareFilesfunc(Claim1FilePathFlag, Claim2FilePathFlag)
 	if err != nil {
-		log.Fatalf("Error comparing claim files: %v", err)
+		log.Error("Error comparing claim files: %v", err)
+		os.Exit(1)
 	}
 	return nil
 }

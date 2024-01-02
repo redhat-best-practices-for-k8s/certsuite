@@ -95,6 +95,18 @@ managedStatefulsets:
   - name: jack
 ```
 
+#### JUnit XML File Creation
+
+The test suite has the ability to create the JUNit XML File output containing the test ID and the corresponding test result.
+
+To enable this, set:
+
+```shell
+export TNF_ENABLE_XML_CREATION=true
+```
+
+This will create a file named `cnf-certification-test/cnf-certification-tests_junit.xml`.
+
 ### Exceptions
 
 These options allow adding exceptions to skip several checks for different resources. The exceptions must be justified in order to pass the CNF Certification.

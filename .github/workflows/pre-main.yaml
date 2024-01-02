@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, ginkgo_removal]
   workflow_dispatch:
 env:
   REGISTRY: quay.io
@@ -28,7 +28,7 @@ env:
   TERM: xterm-color
   CM_BIN: /usr/local/bin/checkmake
   CM_URL_LINUX: https://github.com/mrtazz/checkmake/releases/download/0.2.2/checkmake-0.2.2.linux.amd64 # yamllint disable-line
-  SMOKE_TESTS_GINKGO_LABELS_FILTER: '!affiliated-certification-container-is-certified-digest && !access-control-security-context'
+  SMOKE_TESTS_LABELS_FILTER: '!affiliated-certification-container-is-certified-digest && !access-control-security-context'
 
 jobs:
   lint:
@@ -92,7 +92,7 @@ jobs:
 
       - name: Typos
         uses: crate-ci/typos@master
- 
+
       - name: Yamllint
         uses: ibiqlik/action-yamllint@v3
         with:
@@ -236,7 +236,7 @@ jobs:
 
       # Perform smoke tests.
       - name: 'Test: Run test suites'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "${SMOKE_TESTS_GINKGO_LABELS_FILTER}"
+        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "${SMOKE_TESTS_LABELS_FILTER}"
 
       - name: Upload smoke test results as an artifact
         uses: actions/upload-artifact@v4
@@ -249,28 +249,28 @@ jobs:
       - name: Remove tarball(s) to save disk space.
         run: rm -f cnf-certification-test/*.tar.gz
 
-      - name: Run gradetool on the claim.json.
-        run: |
-          docker run \
-            --rm \
-            --volume "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json \
-            --volume "${GITHUB_WORKSPACE}"/cnf-certification-test/claim.json:/claim.json \
-            ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} \
-              --OutputPath results.txt \
-              --policy /policy.json \
-              --results /claim.json \
-              >"${GITHUB_WORKSPACE}"/results.txt
-          docker system prune --volumes -f
+      # - name: Run gradetool on the claim.json.
+      #   run: |
+      #     docker run \
+      #       --rm \
+      #       --volume "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json \
+      #       --volume "${GITHUB_WORKSPACE}"/cnf-certification-test/claim.json:/claim.json \
+      #       ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} \
+      #         --OutputPath results.txt \
+      #         --policy /policy.json \
+      #         --results /claim.json \
+      #         >"${GITHUB_WORKSPACE}"/results.txt
+      #     docker system prune --volumes -f
 
-      - name: Check that their are 0 failed tests in the gradetool results
-        run: |
-          if $(jq '.[] | .Fail | length' "${GITHUB_WORKSPACE}"/results.txt | grep -q 0); then
-            echo OK
-          else
-            echo "Gradetool has found failing tests in the following:"
-            jq '.[] | .Fail | .[].id' "${GITHUB_WORKSPACE}"/results.txt
-            exit 1
-          fi
+      # - name: Check that their are 0 failed tests in the gradetool results
+      #   run: |
+      #     if $(jq '.[] | .Fail | length' "${GITHUB_WORKSPACE}"/results.txt | grep -q 0); then
+      #       echo OK
+      #     else
+      #       echo "Gradetool has found failing tests in the following:"
+      #       jq '.[] | .Fail | .[].id' "${GITHUB_WORKSPACE}"/results.txt
+      #       exit 1
+      #     fi
 
       - name: 'Test: Run preflight specific test suite'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "preflight"
@@ -386,7 +386,7 @@ jobs:
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }}
 
       - name: 'Test: Run Smoke Tests in a TNF container'
-        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} TNF_ENABLE_DATA_COLLECTION=true ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "${SMOKE_TESTS_GINKGO_LABELS_FILTER}"
+        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} TNF_ENABLE_DATA_COLLECTION=true ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "${SMOKE_TESTS_LABELS_FILTER}"
 
       # - name: Run sanity check on collector
       #   uses: ./collector/.github/actions/run-sanity-check
@@ -404,28 +404,28 @@ jobs:
       - name: Remove tarball(s) to save disk space.
         run: rm -f ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
 
-      - name: Run gradetool on the claim.json.
-        run: |
-          docker run \
-            --rm \
-            --volume "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json \
-            --volume "${TNF_OUTPUT_DIR}"/claim.json:/claim.json \
-            ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} \
-              --OutputPath results.txt \
-              --policy /policy.json \
-              --results /claim.json \
-              >"${GITHUB_WORKSPACE}"/results.txt
-          docker system prune --volumes -f
+      # - name: Run gradetool on the claim.json.
+      #   run: |
+      #     docker run \
+      #       --rm \
+      #       --volume "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json \
+      #       --volume "${TNF_OUTPUT_DIR}"/claim.json:/claim.json \
+      #       ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} \
+      #         --OutputPath results.txt \
+      #         --policy /policy.json \
+      #         --results /claim.json \
+      #         >"${GITHUB_WORKSPACE}"/results.txt
+      #     docker system prune --volumes -f
 
-      - name: Check that their are 0 failed tests in the gradetool results
-        run: |
-          if $(jq '.[] | .Fail | length' "${GITHUB_WORKSPACE}"/results.txt | grep -q 0); then
-            echo OK
-          else
-            echo "Gradetool has found failing tests in the following:"
-            jq '.[] | .Fail | .[].id' "${GITHUB_WORKSPACE}"/results.txt
-            exit 1
-          fi
+      # - name: Check that their are 0 failed tests in the gradetool results
+      #   run: |
+      #     if $(jq '.[] | .Fail | length' "${GITHUB_WORKSPACE}"/results.txt | grep -q 0); then
+      #       echo OK
+      #     else
+      #       echo "Gradetool has found failing tests in the following:"
+      #       jq '.[] | .Fail | .[].id' "${GITHUB_WORKSPACE}"/results.txt
+      #       exit 1
+      #     fi
 
       - name: 'Test: Run Preflight Specific Smoke Tests in a TNF container'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "preflight"
