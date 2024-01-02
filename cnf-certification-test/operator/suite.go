@@ -32,14 +32,13 @@ var (
 	env provider.TestEnvironment
 
 	beforeEachFn = func(check *checksdb.Check) error {
-		check.LogInfo("Check %s: getting test environment.", check.ID)
 		env = provider.GetTestEnvironment()
 		return nil
 	}
 )
 
 func LoadChecks() {
-	log.Debug("Entering %s suite", common.OperatorTestKey)
+	log.Debug("Loading %s suite checks", common.OperatorTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.OperatorTestKey).
 		WithBeforeEachFn(beforeEachFn)
@@ -69,14 +68,16 @@ func LoadChecks() {
 func testOperatorInstallationPhaseSucceeded(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
-	for i := range env.Operators {
-		csv := env.Operators[i].Csv
-		if phasecheck.WaitOperatorReady(csv) {
-			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name,
-				"Operator on Succeeded state ", true).AddField(testhelper.OperatorPhase, string(csv.Status.Phase)))
+	for _, op := range env.Operators {
+		check.LogInfo("Testing Operator %q", op)
+		if phasecheck.WaitOperatorReady(op.Csv) {
+			check.LogInfo("Operator %q is in Succeeded phase", op)
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name,
+				"Operator on Succeeded state ", true).AddField(testhelper.OperatorPhase, string(op.Csv.Status.Phase)))
 		} else {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name,
-				"Operator not in Succeeded state ", false).AddField(testhelper.OperatorPhase, string(csv.Status.Phase)))
+			check.LogError("Operator %q is not in Succeeded phase (phase=%q)", op, op.Csv.Status.Phase)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name,
+				"Operator not in Succeeded state ", false).AddField(testhelper.OperatorPhase, string(op.Csv.Status.Phase)))
 		}
 	}
 
@@ -86,12 +87,12 @@ func testOperatorInstallationPhaseSucceeded(check *checksdb.Check, env *provider
 func testOperatorInstallationWithoutPrivileges(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
-	for i := range env.Operators {
-		csv := env.Operators[i].Csv
-		clusterPermissions := csv.Spec.InstallStrategy.StrategySpec.ClusterPermissions
+	for _, op := range env.Operators {
+		check.LogInfo("Testing Operator %q", op)
+		clusterPermissions := op.Csv.Spec.InstallStrategy.StrategySpec.ClusterPermissions
 		if len(clusterPermissions) == 0 {
-			check.LogDebug("No clusterPermissions found in %s", env.Operators[i])
-			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "Operator has no privileges on cluster resources", true))
+			check.LogInfo("Operator %q has no privileged on cluster resources. No clusterPermissions found.", op)
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator has no privileges on cluster resources", true))
 			continue
 		}
 
@@ -101,23 +102,24 @@ func testOperatorInstallationWithoutPrivileges(check *checksdb.Check, env *provi
 			permission := &clusterPermissions[permissionIndex]
 			for ruleIndex := range permission.Rules {
 				if n := len(permission.Rules[ruleIndex].ResourceNames); n > 0 {
-					check.LogDebug("%s: cluster permission (service account %s) has %d resource names (rule index %d).",
-						env.Operators[i], permission.ServiceAccountName, n, ruleIndex)
+					resources := strings.Join(permission.Rules[ruleIndex].ResourceNames, " ")
+					check.LogError("Operator %q has privileges on cluster resources (service account=%q, resources=%q)", op, permission.ServiceAccountName, resources)
 					// Keep reviewing other permissions' rules so we can log all the failing ones in the claim file.
 					badRuleFound = true
-					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "Operator has privileges on cluster resources ", false).
-						SetType(testhelper.OperatorPermission).AddField(testhelper.ServiceAccountName, permission.ServiceAccountName).AddField(testhelper.ResourceName+"s", strings.Join(permission.Rules[ruleIndex].ResourceNames, "")))
+					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator has privileges on cluster resources ", false).
+						SetType(testhelper.OperatorPermission).AddField(testhelper.ServiceAccountName, permission.ServiceAccountName).AddField(testhelper.ResourceName+"s", resources))
 				} else {
-					compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "Operator has no privileges on cluster resources", true).
+					check.LogInfo("Operator %q has no privileges on cluster resources", op)
+					compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator has no privileges on cluster resources", true).
 						SetType(testhelper.OperatorPermission).AddField(testhelper.ServiceAccountName, permission.ServiceAccountName).AddField(testhelper.ResourceName+"s", "n/a"))
 				}
 			}
 		}
 
 		if badRuleFound {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "Operator has privileges on cluster resources ", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator has privileges on cluster resources ", false))
 		} else {
-			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "Operator has no privileges on cluster resources", true))
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator has no privileges on cluster resources", true))
 		}
 	}
 
@@ -130,11 +132,13 @@ func testOperatorOlmSubscription(check *checksdb.Check, env *provider.TestEnviro
 
 	for i := range env.Operators {
 		operator := env.Operators[i]
+		check.LogInfo("Testing Operator %q", operator)
 		if operator.SubscriptionName == "" {
-			check.LogDebug("OLM subscription not found for operator from csv %s", provider.CsvToString(operator.Csv))
+			check.LogError("OLM subscription not found for Operator %q", operator)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "OLM subscription not found for operator, so it is not installed via OLM", false).
 				AddField(testhelper.SubscriptionName, operator.SubscriptionName))
 		} else {
+			check.LogInfo("OLM subscription %q found for Operator %q", operator.SubscriptionName, operator)
 			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "install-status-no-privilege (subscription found)", true).
 				AddField(testhelper.SubscriptionName, operator.SubscriptionName))
 		}
