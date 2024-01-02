@@ -208,7 +208,7 @@ require (
 )
 
 require (
-	github.com/deckarep/golang-set/v2 v2.5.0
+	github.com/deckarep/golang-set/v2 v2.6.0
 	github.com/fatih/color v1.16.0
 	github.com/go-logr/logr v1.4.1
 	github.com/go-logr/stdr v1.2.2
