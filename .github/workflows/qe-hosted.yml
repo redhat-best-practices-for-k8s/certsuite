@@ -65,17 +65,26 @@ jobs:
           repository: test-network-function/cnf-certification-test-partner
           path: cnf-certification-test-partner
 
-      - name: Bootstrap the Kind and OC/Kubectl binaries for the `local-test-infra`
-        run: make bootstrap-cluster
-        working-directory: cnf-certification-test-partner
+      - name: Bootstrap cluster, docker, and python
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 90
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make bootstrap-cluster; make make bootstrap-docker-ubuntu-local; make bootstrap-python-ubuntu-local
 
-      - name: Create `local-test-infra` OpenShift resources
-        run: make rebuild-cluster
-        working-directory: cnf-certification-test-partner
+      - name: Run 'make rebuild-cluster'
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 90
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make rebuild-cluster
 
       - name: Install partner resources
-        run: make install-for-qe
-        working-directory: cnf-certification-test-partner
+        uses: nick-fields/retry@v2
+        with: 
+          timeout_minutes: 90
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make install-for-qe
 
       - name: Show pods
         run: oc get pods -A
