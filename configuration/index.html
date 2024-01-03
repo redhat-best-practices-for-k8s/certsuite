@@ -597,6 +597,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#junit-xml-file-creation" class="md-nav__link">
+    <span class="md-ellipsis">
+      JUnit XML File Creation
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1192,6 +1201,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#junit-xml-file-creation" class="md-nav__link">
+    <span class="md-ellipsis">
+      JUnit XML File Creation
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1405,6 +1423,12 @@
 <span class="nt">managedStatefulsets</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jack</span>
 </code></pre></div>
+<h4 id="junit-xml-file-creation">JUnit XML File Creation<a class="headerlink" href="#junit-xml-file-creation" title="Permanent link">&para;</a></h4>
+<p>The test suite has the ability to create the JUNit XML File output containing the test ID and the corresponding test result.</p>
+<p>To enable this, set:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span><span class="w"> </span><span class="nv">TNF_ENABLE_XML_CREATION</span><span class="o">=</span><span class="nb">true</span>
+</code></pre></div>
+<p>This will create a file named <code>cnf-certification-test/cnf-certification-tests_junit.xml</code>.</p>
 <h3 id="exceptions">Exceptions<a class="headerlink" href="#exceptions" title="Permanent link">&para;</a></h3>
 <p>These options allow adding exceptions to skip several checks for different resources. The exceptions must be justified in order to pass the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification.</p>
 <h4 id="acceptedkerneltaints">acceptedKernelTaints<a class="headerlink" href="#acceptedkerneltaints" title="Permanent link">&para;</a></h4>

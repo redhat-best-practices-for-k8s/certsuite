@@ -1161,11 +1161,10 @@
 <p><strong>Reference</strong></p>
 <p>For more details on the contents of the claim file</p>
 <ul>
-<li><a href="https://github.com/test-network-function/test-network-function-claim/blob/main/schemas/claim.schema.json">schema</a>.  </li>
 <li><a href="https://redhat-connect.gitbook.io/openshift-badges/badges/cloud-native-network-functions-cnf">Guide</a>.</li>
 </ul>
 <h2 id="execution-logs">Execution logs<a class="headerlink" href="#execution-logs" title="Permanent link">&para;</a></h2>
-<p>The test suite also saves a copy of the execution logs at [test output directory]/tnf-execution.log</p>
+<p>The test suite also saves a copy of the execution logs at [test output directory]/cnf-certsuite.log</p>
 <h2 id="results-artifacts-zip-file">Results artifacts zip file<a class="headerlink" href="#results-artifacts-zip-file" title="Permanent link">&para;</a></h2>
 <p>After running all the test cases, a compressed file will be created with all the results files and web artifacts to review them. The file has a UTC date-time prefix and looks like this:</p>
 <p>20230620-110654-cnf-test-results.tar.gz</p>
@@ -1173,7 +1172,7 @@
 <p>This is the content of the tar.gz file:</p>
 <ul>
 <li>claim.json</li>
-<li>cnf-certification-tests_junit.xml</li>
+<li>cnf-certification-tests_junit.xml (Only if enabled via <code>TNF_ENABLE_XML_CREATION</code> environment variable)</li>
 <li>claimjson.js</li>
 <li>classification.js</li>
 <li>results.html</li>
@@ -1181,19 +1180,19 @@
 <p>This file serves two different purposes:</p>
 <ol>
 <li>Make it easier to store and send the test results for review.</li>
-<li>View the results in the html web page. In addition, the web page (either results-embed.thml or results.html) has a selector for workload type and allows the parter to introduce feedback for each of the failing test cases for later review from Red Hat. It&rsquo;s important to note that this web page needs the <code>claimjson.js</code> and <code>classification.js</code> files to be in the same folder as the html files to work properly.</li>
+<li>View the results in the html web page. In addition, the web page (either results-embed.html or results.html) has a selector for workload type and allows the partner to introduce feedback for each of the failing test cases for later review from Red Hat. It&rsquo;s important to note that this web page needs the <code>claimjson.js</code> and <code>classification.js</code> files to be in the same folder as the html files to work properly.</li>
 </ol>
 <h2 id="show-results-after-running-the-test-code">Show Results after running the test code<a class="headerlink" href="#show-results-after-running-the-test-code" title="Permanent link">&para;</a></h2>
 <p>A standalone HTML page is available to decode the results.
 For more details, see:
 <a href="https://github.com/test-network-function/parser">https://github.com/test-network-function/parser</a></p>
 <h2 id="compare-claim-files-from-two-different-cnf-certification-suite-runs">Compare claim files from two different <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Certification Suite runs<a class="headerlink" href="#compare-claim-files-from-two-different-cnf-certification-suite-runs" title="Permanent link">&para;</a></h2>
-<p>Parters can use the <code>tnf claim compare</code> tool in order to compare two claim files. The differences are shown in a table per section.
+<p>Partners can use the <code>tnf claim compare</code> tool in order to compare two claim files. The differences are shown in a table per section.
 This tool can be helpful when the result of some test cases is different between two (consecutive) runs, as it shows
 configuration differences in both the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Cert Suite config and the cluster nodes that could be the root cause for
 some of the test cases results discrepancy.</p>
 <p>All the compared sections, except the test cases results are compared blindly, traversing the whole json tree and
-substrees to get a list of all the fields and their values. Three tables are shown:</p>
+sub-trees to get a list of all the fields and their values. Three tables are shown:</p>
 <ul>
 <li>Differences: same fields with different values.</li>
 <li>Fields in claim 1 only: json fields in claim file 1 that don&rsquo;t exist in claim 2.</li>
