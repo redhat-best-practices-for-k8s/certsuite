@@ -80,8 +80,8 @@ func TestAutomountServiceAccountSetOnSA(t *testing.T) {
 		var testRuntimeObjects []runtime.Object
 		testRuntimeObjects = append(testRuntimeObjects, &testSA)
 
-		_ = clientsholder.GetTestClientsHolder(testRuntimeObjects)
-		isSet, err := AutomountServiceAccountSetOnSA("testSA", "podNS")
+		client := clientsholder.GetTestClientsHolder(testRuntimeObjects)
+		isSet, err := AutomountServiceAccountSetOnSA(client.K8sClient.CoreV1(), "testSA", "podNS")
 		assert.Nil(t, err)
 		assert.Equal(t, tc.automountServiceTokenSet, *isSet)
 	}
@@ -138,8 +138,8 @@ func TestEvaluateAutomountTokens(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		_ = clientsholder.GetTestClientsHolder(buildServiceAccountTokenTestObjects())
-		podPassed, msg := EvaluateAutomountTokens(tc.testPod)
+		client := clientsholder.GetTestClientsHolder(buildServiceAccountTokenTestObjects())
+		podPassed, msg := EvaluateAutomountTokens(client.K8sClient.CoreV1(), tc.testPod)
 		assert.Equal(t, tc.expectedMsg, msg)
 		assert.Equal(t, tc.expectedResult, podPassed)
 	}
