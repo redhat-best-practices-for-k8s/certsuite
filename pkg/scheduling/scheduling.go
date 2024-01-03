@@ -83,12 +83,13 @@ var schedulingRequirements = map[string]string{SharedCPUScheduling: "SHARED_CPU_
 	ExclusiveCPUScheduling: "EXCLUSIVE_CPU_SCHEDULING: scheduling priority < 10 and scheduling policy == SCHED_RR or SCHED_FIFO",
 	IsolatedCPUScheduling:  "ISOLATED_CPU_SCHEDULING: scheduling policy == SCHED_RR or SCHED_FIFO"}
 
-func ProcessPidsCPUScheduling(processes []*crclient.Process, testContainer *provider.Container, check string) (compliantContainerPids, nonCompliantContainerPids []*testhelper.ReportObject) {
+func ProcessPidsCPUScheduling(processes []*crclient.Process, testContainer *provider.Container, check string, logger *log.Logger) (compliantContainerPids, nonCompliantContainerPids []*testhelper.ReportObject) {
 	hasCPUSchedulingConditionSuccess := false
 	for _, process := range processes {
+		logger.Debug("Testing process %q", process)
 		schedulePolicy, schedulePriority, err := GetProcessCPUSchedulingFn(process.Pid, testContainer)
 		if err != nil {
-			log.Error("error getting the scheduling policy and priority : %v", err)
+			logger.Error("Unable to get the scheduling policy and priority : %v", err)
 			return compliantContainerPids, nonCompliantContainerPids
 		}
 
@@ -102,13 +103,13 @@ func ProcessPidsCPUScheduling(processes []*crclient.Process, testContainer *prov
 		}
 
 		if !hasCPUSchedulingConditionSuccess {
-			log.Debug("pid=%d in %s with cpu scheduling policy=%s, priority=%d did not satisfy cpu scheduling requirements", process.Pid, testContainer, schedulePolicy, schedulePriority)
+			logger.Error("Process %q in Container %q with cpu scheduling policy=%s, priority=%d did not satisfy cpu scheduling requirements", process, testContainer, schedulePolicy, schedulePriority)
 			aPidOut := testhelper.NewContainerReportObject(testContainer.Namespace, testContainer.Podname, testContainer.Name, "process does not satisfy: "+schedulingRequirements[check], false).
 				SetContainerProcessValues(schedulePolicy, fmt.Sprint(schedulePriority), process.Args)
 			nonCompliantContainerPids = append(nonCompliantContainerPids, aPidOut)
 			continue
 		}
-		log.Debug("pid=%d in %s with cpu scheduling policy=%s, priority=%d satisfies cpu scheduling requirements", process.Pid, testContainer, schedulePolicy, schedulePriority)
+		logger.Info("Process %q in Container %q with cpu scheduling policy=%s, priority=%d satisfies cpu scheduling requirements", process, testContainer, schedulePolicy, schedulePriority)
 		aPidOut := testhelper.NewContainerReportObject(testContainer.Namespace, testContainer.Podname, testContainer.Name, "process satisfies: "+schedulingRequirements[check], true).
 			SetContainerProcessValues(schedulePolicy, fmt.Sprint(schedulePriority), process.Args)
 		compliantContainerPids = append(compliantContainerPids, aPidOut)
