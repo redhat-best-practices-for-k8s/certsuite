@@ -2,7 +2,7 @@ name: QE Testing (Ubuntu-hosted)
 
 on:
   pull_request:
-    branches: [ ginkgo_removal ]
+    branches: [ main ]
   workflow_dispatch:
   # Schedule a daily cron at midnight UTC
   schedule:
@@ -89,7 +89,7 @@ jobs:
         with:
           repository: ${{ env.QE_REPO }}
           path: cnfcert-tests-verification
-          ref: ginkgo_removal
+          ref: main
 
       - name: Extract dependent Pull Requests
         uses: depends-on/depends-on-action@main
