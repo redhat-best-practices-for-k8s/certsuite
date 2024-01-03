@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main, ginkgo_removal]
+    branches: [ main ]
   workflow_dispatch:
 env:
   REGISTRY: quay.io
