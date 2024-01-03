@@ -23,9 +23,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 )
 
 // NodeTainted holds information about tainted nodes.
@@ -38,11 +37,11 @@ var runCommand = func(ctx *clientsholder.Context, cmd string) (string, error) {
 	ch := clientsholder.GetClientsHolder()
 	output, outerr, err := ch.ExecCommandContainer(*ctx, cmd)
 	if err != nil {
-		logrus.Errorln("can not execute command on container ", err)
+		log.Error("can not execute command on container, err=%v", err)
 		return "", err
 	}
 	if outerr != "" {
-		logrus.Errorln("error when running nodetainted command ", outerr)
+		log.Error("error when running nodetainted command err=%v", outerr)
 		return "", errors.New(outerr)
 	}
 	return output, nil
@@ -279,11 +278,11 @@ func (nt *NodeTainted) GetTainterModules(allowList map[string]bool) (tainters ma
 	filteredTainters := map[string]string{}
 	for moduleName, moduleTaintsLetters := range allTainters {
 		moduleTaints := DecodeKernelTaintsFromLetters(moduleTaintsLetters)
-		logrus.Debugf("%s: Module %s has taints (%s): %s", nt.node, moduleName, moduleTaintsLetters, moduleTaints)
+		log.Debug("%s: Module %s has taints (%s): %s", nt.node, moduleName, moduleTaintsLetters, moduleTaints)
 
 		// Apply allowlist.
 		if allowList[moduleName] {
-			tnf.ClaimFilePrintf("%s module %s is tainting the kernel but it has been allowlisted (taints: %v)",
+			log.Debug("%s module %s is tainting the kernel but it has been allowlisted (taints: %v)",
 				nt.node, moduleName, moduleTaints)
 		} else {
 			filteredTainters[moduleName] = moduleTaintsLetters

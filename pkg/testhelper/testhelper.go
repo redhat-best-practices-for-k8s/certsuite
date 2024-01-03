@@ -21,7 +21,6 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
@@ -177,6 +176,8 @@ const (
 	ContainerType                = "Container"
 	ContainerImageType           = "Container Image"
 	NodeType                     = "Node"
+	OCPClusterType               = "OCP Cluster"
+	OCPClusterVersionType        = "OCP Cluster Version"
 	ContainerProcessType         = "ContainerProcess"
 	ContainerCategory            = "ContainerCategory"
 	ServiceType                  = "Service"
@@ -231,6 +232,12 @@ func NewCertifiedContainerReportObject(cii provider.ContainerImageIdentifier, aR
 func NewNodeReportObject(aNodeName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, NodeType, isCompliant)
 	out.AddField(Name, aNodeName)
+	return out
+}
+
+func NewClusterVersionReportObject(version, aReason string, isCompliant bool) (out *ReportObject) {
+	out = NewReportObject(aReason, OCPClusterType, isCompliant)
+	out.AddField(OCPClusterVersionType, version)
 	return out
 }
 
@@ -325,85 +332,266 @@ func ResultToString(result int) (str string) {
 	return ""
 }
 
-func SkipIfEmptyAny(skip func(string, ...int), object ...[2]interface{}) {
-	for _, o := range object {
-		s := reflect.ValueOf(o[0])
-		if s.Kind() != reflect.Slice && s.Kind() != reflect.Map {
-			panic("SkipIfEmpty was given a non slice/map type")
+func GetNonOCPClusterSkipFn() func() (bool, string) {
+	return func() (bool, string) {
+		if !provider.IsOCPCluster() {
+			return true, "non-OCP cluster detected"
 		}
-		if str, ok := o[1].(string); ok {
-			if s.Len() == 0 {
-				skip(fmt.Sprintf("Test skipped because there are no %s (%s) to test, please check under test labels", reflect.TypeOf(o[0]), str))
-			}
-		} else {
-			panic("Value is not a string")
-		}
-
-		s = reflect.ValueOf(o[1])
-		if s.Kind() != reflect.String {
-			panic("SkipIfEmpty object name is not a string")
-		}
+		return false, ""
 	}
 }
 
-func SkipIfEmptyAll(skip func(string, ...int), object ...[2]interface{}) {
-	countLenZero := 0
-	allTypes := ""
-	for _, o := range object {
-		s := reflect.ValueOf(o[0])
-		if s.Kind() != reflect.Slice && s.Kind() != reflect.Map {
-			panic("SkipIfEmpty was given a non slice/map type")
+func GetNoServicesUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.Services) == 0 {
+			return true, "no services to check found"
 		}
 
-		if s.Len() == 0 {
-			countLenZero++
-			if str, ok := o[1].(string); ok {
-				allTypes = allTypes + reflect.TypeOf(o[0]).String() + " (" + str + ")" + ", "
-			} else {
-				panic("Value is not a string")
-			}
-		}
-
-		s = reflect.ValueOf(o[1])
-		if s.Kind() != reflect.String {
-			panic("SkipIfEmpty object name is not a string")
-		}
-	}
-	// all objects have len() of 0
-	if countLenZero == len(object) {
-		skip(fmt.Sprintf("Test skipped because there are no %s to test, please check under test labels", allTypes))
+		return false, ""
 	}
 }
 
-func NewSkipObject(object interface{}, name string) (skipObject [2]interface{}) {
-	skipObject[0] = object
-	skipObject[1] = name
-	return skipObject
-}
+func GetDaemonSetFailedToSpawnSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if env.DaemonsetFailedToSpawn {
+			return true, "no daemonSets to check found"
+		}
 
-func AddTestResultLog(prefix string, object interface{}, log func(string, ...interface{}), fail func(string, ...int)) {
-	s := reflect.ValueOf(object)
-	if s.Kind() != reflect.Slice && s.Kind() != reflect.Map {
-		panic("AddTestResultLog object param is a non slice/map type")
-	}
-	if s.Len() > 0 {
-		log(fmt.Sprintf("%s %s: %v", prefix, reflect.TypeOf(object), object))
-		fail(fmt.Sprintf("Number of %s %s = %d", prefix, reflect.TypeOf(object), s.Len()))
+		return false, ""
 	}
 }
 
-func AddTestResultReason(compliantObject, nonCompliantObject []*ReportObject, log func(string, ...interface{}), fail func(string, ...int)) {
-	var aReason FailureReasonOut
-	aReason.CompliantObjectsOut = compliantObject
-	aReason.NonCompliantObjectsOut = nonCompliantObject
-	bytes, err := json.Marshal(aReason)
+func GetNoCPUPinningPodsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.GetCPUPinningPodsWithDpdk()) == 0 {
+			return true, "no CPU pinning pods to check found"
+		}
+
+		return false, ""
+	}
+}
+
+func GetNoSRIOVPodsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		pods, err := env.GetPodsUsingSRIOV()
+		if err != nil {
+			return true, fmt.Sprintf("failed to get SRIOV pods: %v", err)
+		}
+
+		if len(pods) == 0 {
+			return true, "no SRIOV pods to check found"
+		}
+
+		return false, ""
+	}
+}
+
+func GetNoContainersUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.Containers) == 0 {
+			return true, "no containers to check found"
+		}
+
+		return false, ""
+	}
+}
+
+func GetNoPodsUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.Pods) == 0 {
+			return true, "no pods to check found"
+		}
+
+		return false, ""
+	}
+}
+
+func GetNoDeploymentsUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.Deployments) == 0 {
+			return true, "no deployments to check found"
+		}
+
+		return false, ""
+	}
+}
+
+func GetNoStatefulSetsUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.StatefulSets) == 0 {
+			return true, "no statefulSets to check found"
+		}
+
+		return false, ""
+	}
+}
+
+func GetNoCrdsUnderTestSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.Crds) == 0 {
+			return true, "no roles to check"
+		}
+
+		return false, ""
+	}
+}
+
+func GetNoNamespacesSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.Namespaces) == 0 {
+			return true, "There are no namespaces to check. Please check config."
+		}
+
+		return false, ""
+	}
+}
+
+func GetNoRolesSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.Roles) == 0 {
+			return true, "There are no roles to check. Please check config."
+		}
+
+		return false, ""
+	}
+}
+
+func GetSharedProcessNamespacePodsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.GetShareProcessNamespacePods()) == 0 {
+			return true, "Shared process namespace pods found."
+		}
+
+		return false, ""
+	}
+}
+
+func GetNotIntrusiveSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if !env.IsIntrusive() {
+			return true, "not intrusive test"
+		}
+
+		return false, ""
+	}
+}
+
+func GetNoPersistentVolumesSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.PersistentVolumes) == 0 {
+			return true, "no persistent volumes to check found"
+		}
+
+		return false, ""
+	}
+}
+
+func GetNotEnoughWorkersSkipFn(env *provider.TestEnvironment, minWorkerNodes int) func() (bool, string) {
+	return func() (bool, string) {
+		if env.GetWorkerCount() < minWorkerNodes {
+			return true, "not enough nodes to check found"
+		}
+
+		return false, ""
+	}
+}
+
+func GetPodsWithoutAffinityRequiredLabelSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.GetPodsWithoutAffinityRequiredLabel()) == 0 {
+			return true, "no pods with required affinity label found"
+		}
+
+		return false, ""
+	}
+}
+
+func GetNoGuaranteedPodsWithExclusiveCPUsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.GetGuaranteedPodsWithExclusiveCPUs()) == 0 {
+			return true, "no pods with exclusive CPUs found"
+		}
+
+		return false, ""
+	}
+}
+
+func GetNoAffinityRequiredPodsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.GetAffinityRequiredPods()) == 0 {
+			return true, "no pods with required affinity found"
+		}
+
+		return false, ""
+	}
+}
+
+func GetNoStorageClassesSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.StorageClassList) == 0 {
+			return true, "no storage classes found"
+		}
+		return false, ""
+	}
+}
+
+func GetNoPersistentVolumeClaimsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.PersistentVolumeClaims) == 0 {
+			return true, "no persistent volume claims found"
+		}
+		return false, ""
+	}
+}
+
+func GetNoBareMetalNodesSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.GetBaremetalNodes()) == 0 {
+			return true, "no baremetal nodes found"
+		}
+		return false, ""
+	}
+}
+
+func GetNoIstioSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if !env.IstioServiceMeshFound {
+			return true, "no istio service mesh found"
+		}
+		return false, ""
+	}
+}
+
+func GetNoHugepagesPodsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.GetHugepagesPods()) == 0 {
+			return true, "no pods requesting hugepages found"
+		}
+		return false, ""
+	}
+}
+
+func GetNoOperatorsSkipFn(env *provider.TestEnvironment) func() (bool, string) {
+	return func() (bool, string) {
+		if len(env.Operators) == 0 {
+			return true, "no operators found"
+		}
+		return false, ""
+	}
+}
+
+func ResultObjectsToString(compliantObject, nonCompliantObject []*ReportObject) (string, error) {
+	reason := FailureReasonOut{
+		CompliantObjectsOut:    compliantObject,
+		NonCompliantObjectsOut: nonCompliantObject,
+	}
+
+	bytes, err := json.Marshal(reason)
 	if err != nil {
-		logrus.Errorf("Could not Marshall FailureReason object, err=%s", err)
+		return "", fmt.Errorf("could not marshall FailureReasonOut object: %v", err)
 	}
-	log(string(bytes))
-	if len(aReason.NonCompliantObjectsOut) > 0 {
-		fail(string(bytes))
-	}
+
+	return string(bytes), nil
 }
 
 var AbortTrigger string

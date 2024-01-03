@@ -470,9 +470,9 @@ func TestExistsSchedulingPolicyAndPriority(t *testing.T) {
 
 	for _, tc := range testCases {
 		policy, priority, err := parseSchedulingPolicyAndPriority(tc.outputString)
-		assert.Equal(t, policy, tc.expectedPolicy)
-		assert.Equal(t, priority, tc.expectedPriority)
-		assert.Equal(t, err, tc.expectedError)
+		assert.Equal(t, tc.expectedPolicy, policy)
+		assert.Equal(t, tc.expectedPriority, priority)
+		assert.Equal(t, tc.expectedError, err)
 	}
 }
 

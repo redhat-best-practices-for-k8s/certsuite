@@ -65,7 +65,7 @@ jobs:
       - name: Run the tests
         uses: nick-fields/retry@v2
         with:
-          timeout_minutes: 90
+          timeout_minutes: 60
           max_attempts: 3
           command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} DISABLE_INTRUSIVE_TESTS=false ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
 

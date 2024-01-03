@@ -19,71 +19,80 @@ package operator
 import (
 	"strings"
 
-	"github.com/onsi/ginkgo/v2"
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator/phasecheck"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
+	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 )
 
-// All actual test code belongs below here.  Utilities belong above.
-var _ = ginkgo.Describe(common.OperatorTestKey, func() {
-	logrus.Debugf("Entering %s suite", common.OperatorTestKey)
-	var env provider.TestEnvironment
-	ginkgo.BeforeEach(func() {
+var (
+	env provider.TestEnvironment
+
+	beforeEachFn = func(check *checksdb.Check) error {
 		env = provider.GetTestEnvironment()
-	})
-	ginkgo.ReportAfterEach(results.RecordResult)
+		return nil
+	}
+)
 
-	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOperatorInstallStatusSucceededIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Operators, "env.Operators"))
-		testOperatorInstallationPhaseSucceeded(&env)
-	})
+func LoadChecks() {
+	log.Debug("Loading %s suite checks", common.OperatorTestKey)
 
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOperatorNoPrivileges)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Operators, "env.Operators"))
-		testOperatorInstallationWithoutPrivileges(&env)
-	})
+	checksGroup := checksdb.NewChecksGroup(common.OperatorTestKey).
+		WithBeforeEachFn(beforeEachFn)
 
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOperatorIsInstalledViaOLMIdentifier)
-	ginkgo.It(testID, ginkgo.Label(tags...), func() {
-		testhelper.SkipIfEmptyAny(ginkgo.Skip, testhelper.NewSkipObject(env.Operators, "env.Operators"))
-		testOperatorOlmSubscription(&env)
-	})
-})
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOperatorInstallStatusSucceededIdentifier)).
+		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOperatorInstallationPhaseSucceeded(c, &env)
+			return nil
+		}))
 
-func testOperatorInstallationPhaseSucceeded(env *provider.TestEnvironment) {
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOperatorNoPrivileges)).
+		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOperatorInstallationWithoutPrivileges(c, &env)
+			return nil
+		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOperatorIsInstalledViaOLMIdentifier)).
+		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOperatorOlmSubscription(c, &env)
+			return nil
+		}))
+}
+
+func testOperatorInstallationPhaseSucceeded(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
-	for i := range env.Operators {
-		csv := env.Operators[i].Csv
-		if phasecheck.WaitOperatorReady(csv) {
-			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name,
-				"Operator on Succeeded state ", true).AddField(testhelper.OperatorPhase, string(csv.Status.Phase)))
+	for _, op := range env.Operators {
+		check.LogInfo("Testing Operator %q", op)
+		if phasecheck.WaitOperatorReady(op.Csv) {
+			check.LogInfo("Operator %q is in Succeeded phase", op)
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name,
+				"Operator on Succeeded state ", true).AddField(testhelper.OperatorPhase, string(op.Csv.Status.Phase)))
 		} else {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name,
-				"Operator not in Succeeded state ", false).AddField(testhelper.OperatorPhase, string(csv.Status.Phase)))
+			check.LogError("Operator %q is not in Succeeded phase (phase=%q)", op, op.Csv.Status.Phase)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name,
+				"Operator not in Succeeded state ", false).AddField(testhelper.OperatorPhase, string(op.Csv.Status.Phase)))
 		}
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
+func testOperatorInstallationWithoutPrivileges(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
-	for i := range env.Operators {
-		csv := env.Operators[i].Csv
-		clusterPermissions := csv.Spec.InstallStrategy.StrategySpec.ClusterPermissions
+	for _, op := range env.Operators {
+		check.LogInfo("Testing Operator %q", op)
+		clusterPermissions := op.Csv.Spec.InstallStrategy.StrategySpec.ClusterPermissions
 		if len(clusterPermissions) == 0 {
-			logrus.Debugf("No clusterPermissions found in %s", env.Operators[i])
-			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "Operator has no privileges on cluster resources", true))
+			check.LogInfo("Operator %q has no privileged on cluster resources. No clusterPermissions found.", op)
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator has no privileges on cluster resources", true))
 			continue
 		}
 
@@ -93,44 +102,47 @@ func testOperatorInstallationWithoutPrivileges(env *provider.TestEnvironment) {
 			permission := &clusterPermissions[permissionIndex]
 			for ruleIndex := range permission.Rules {
 				if n := len(permission.Rules[ruleIndex].ResourceNames); n > 0 {
-					tnf.ClaimFilePrintf("%s: cluster permission (service account %s) has %d resource names (rule index %d).",
-						env.Operators[i], permission.ServiceAccountName, n, ruleIndex)
+					resources := strings.Join(permission.Rules[ruleIndex].ResourceNames, " ")
+					check.LogError("Operator %q has privileges on cluster resources (service account=%q, resources=%q)", op, permission.ServiceAccountName, resources)
 					// Keep reviewing other permissions' rules so we can log all the failing ones in the claim file.
 					badRuleFound = true
-					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "Operator has privileges on cluster resources ", false).
-						SetType(testhelper.OperatorPermission).AddField(testhelper.ServiceAccountName, permission.ServiceAccountName).AddField(testhelper.ResourceName+"s", strings.Join(permission.Rules[ruleIndex].ResourceNames, "")))
+					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator has privileges on cluster resources ", false).
+						SetType(testhelper.OperatorPermission).AddField(testhelper.ServiceAccountName, permission.ServiceAccountName).AddField(testhelper.ResourceName+"s", resources))
 				} else {
-					compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "Operator has no privileges on cluster resources", true).
+					check.LogInfo("Operator %q has no privileges on cluster resources", op)
+					compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator has no privileges on cluster resources", true).
 						SetType(testhelper.OperatorPermission).AddField(testhelper.ServiceAccountName, permission.ServiceAccountName).AddField(testhelper.ResourceName+"s", "n/a"))
 				}
 			}
 		}
 
 		if badRuleFound {
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "Operator has privileges on cluster resources ", false))
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator has privileges on cluster resources ", false))
 		} else {
-			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "Operator has no privileges on cluster resources", true))
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator has no privileges on cluster resources", true))
 		}
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testOperatorOlmSubscription(env *provider.TestEnvironment) {
+func testOperatorOlmSubscription(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
 	for i := range env.Operators {
 		operator := env.Operators[i]
+		check.LogInfo("Testing Operator %q", operator)
 		if operator.SubscriptionName == "" {
-			tnf.ClaimFilePrintf("OLM subscription not found for operator from csv %s", provider.CsvToString(operator.Csv))
+			check.LogError("OLM subscription not found for Operator %q", operator)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "OLM subscription not found for operator, so it is not installed via OLM", false).
 				AddField(testhelper.SubscriptionName, operator.SubscriptionName))
 		} else {
+			check.LogInfo("OLM subscription %q found for Operator %q", operator.SubscriptionName, operator)
 			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(env.Operators[i].Namespace, env.Operators[i].Name, "install-status-no-privilege (subscription found)", true).
 				AddField(testhelper.SubscriptionName, operator.SubscriptionName))
 		}
 	}
 
-	testhelper.AddTestResultReason(compliantObjects, nonCompliantObjects, tnf.ClaimFilePrintf, ginkgo.Fail)
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }

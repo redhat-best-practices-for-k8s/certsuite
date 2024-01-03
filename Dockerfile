@@ -37,7 +37,7 @@ ENV PATH=${PATH}:"/usr/local/go/bin":${GOPATH}/"bin"
 
 # Download operator-sdk binary
 ENV \
-	OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.32.0 \
+	OPERATOR_SDK_DL_URL=https://github.com/operator-framework/operator-sdk/releases/download/v1.33.0 \
 	OSDK_BIN=/usr/local/osdk/bin
 
 # Either use Wget or Curl but not both.
@@ -64,7 +64,7 @@ RUN \
 	&& cp run-cnf-suites.sh ${TNF_DIR} \
 	# copy all JSON files to allow tests to run
 	&& cp --parents $(find . -name '*.json*') ${TNF_DIR} \
-	&& cp cnf-certification-test/cnf-certification-test.test ${TNF_BIN_DIR} \
+	&& cp cnf-certification-test/cnf-certification-test ${TNF_BIN_DIR} \
 	# copy the tnf command binary
 	&& cp tnf ${TNF_BIN_DIR} \
 	# copy all of the chaos-test-files

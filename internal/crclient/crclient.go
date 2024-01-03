@@ -22,8 +22,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
@@ -62,7 +62,7 @@ func GetPidFromContainer(cut *provider.Container, ctx clientsholder.Context) (in
 	case "cri-o", "containerd":
 		pidCmd = "chroot /host crictl inspect --output go-template --template '{{.info.pid}}' " + cut.UID + DevNull
 	default:
-		logrus.Debugf("Container runtime %s not supported yet for this test, skipping", cut.Runtime)
+		log.Debug("Container runtime %s not supported yet for this test, skipping", cut.Runtime)
 		return 0, fmt.Errorf("container runtime %s not supported", cut.Runtime)
 	}
 
@@ -90,7 +90,7 @@ func GetContainerPidNamespace(testContainer *provider.Container, env *provider.T
 	if err != nil {
 		return "", fmt.Errorf("unable to get container process id due to: %v", err)
 	}
-	logrus.Debugf("Obtained process id for %s is %d", testContainer, pid)
+	log.Debug("Obtained process id for %s is %d", testContainer, pid)
 
 	command := fmt.Sprintf("lsns -p %d -t pid -n", pid)
 	stdout, stderr, err := clientsholder.GetClientsHolder().ExecCommandContainer(ocpContext, command)
@@ -162,17 +162,17 @@ func GetPidsFromPidNamespace(pidNamespace string, container *provider.Container)
 		}
 		aPidNs, err := strconv.Atoi(v[1])
 		if err != nil {
-			logrus.Errorf("could not convert string %s to integer, err=%s", v[1], err)
+			log.Error("could not convert string %s to integer, err=%s", v[1], err)
 			continue
 		}
 		aPid, err := strconv.Atoi(v[2])
 		if err != nil {
-			logrus.Errorf("could not convert string %s to integer, err=%s", v[2], err)
+			log.Error("could not convert string %s to integer, err=%s", v[2], err)
 			continue
 		}
 		aPPid, err := strconv.Atoi(v[3])
 		if err != nil {
-			logrus.Errorf("could not convert string %s to integer, err=%s", v[3], err)
+			log.Error("could not convert string %s to integer, err=%s", v[3], err)
 			continue
 		}
 		p = append(p, &Process{PidNs: aPidNs, Pid: aPid, Args: v[4], PPid: aPPid})

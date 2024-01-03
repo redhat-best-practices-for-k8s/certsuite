@@ -157,17 +157,17 @@ func parseOutputFormatFlag() (string, error) {
 	return "", fmt.Errorf("invalid output format flag %q - available formats: %v", outputFormatFlag, availableOutputFormats)
 }
 
-// Parses the claim's test case's failureReason field and creates a list
+// Parses the claim's test case's checkDetails field and creates a list
 // of NonCompliantObject's.
-func getNonCompliantObjectsFromFailureReason(failureReason string) ([]NonCompliantObject, error) {
+func getNonCompliantObjectsFromFailureReason(checkDetails string) ([]NonCompliantObject, error) {
 	objects := struct {
 		Compliant    []testhelper.ReportObject `json:"CompliantObjectsOut"`
 		NonCompliant []testhelper.ReportObject `json:"NonCompliantObjectsOut"`
 	}{}
 
-	err := json.Unmarshal([]byte(failureReason), &objects)
+	err := json.Unmarshal([]byte(checkDetails), &objects)
 	if err != nil {
-		return nil, fmt.Errorf("failed to decode failureReason %s: %v", failureReason, err)
+		return nil, fmt.Errorf("failed to decode checkDetails %s: %v", checkDetails, err)
 	}
 
 	// Now let's create a list of our NonCompliantObject-type items.
@@ -194,7 +194,7 @@ func printFailuresText(testSuites []FailedTestSuite) {
 
 			// In case this tc was not using report objects, just print the failure reason string.
 			if len(tc.NonCompliantObjects) == 0 {
-				fmt.Printf("    Failure reason: %s\n", tc.FailureReason)
+				fmt.Printf("    Failure reason: %s\n", tc.CheckDetails)
 				continue
 			}
 
@@ -253,12 +253,12 @@ func getFailedTestCasesByTestSuite(claimResultsByTestSuite map[string][]*claim.T
 				TestCaseDescription: tc.CatalogInfo.Description,
 			}
 
-			nonCompliantObjects, err := getNonCompliantObjectsFromFailureReason(tc.FailureReason)
+			nonCompliantObjects, err := getNonCompliantObjectsFromFailureReason(tc.CheckDetails)
 			if err != nil {
 				// This means the test case doesn't use the report objects yet. Just use the raw failure reason instead.
 				// Also, send the error into stderr, so it can be filtered out with "2>/errors.txt" or "2>/dev/null".
 				fmt.Fprintf(os.Stderr, "Failed to parse non compliant objects from test case %s (test suite %s): %v", tc.TestID.ID, testSuite, err)
-				failingTc.FailureReason = tc.FailureReason
+				failingTc.CheckDetails = tc.CheckDetails
 			} else {
 				failingTc.NonCompliantObjects = nonCompliantObjects
 			}

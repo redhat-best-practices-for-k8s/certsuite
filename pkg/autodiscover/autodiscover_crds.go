@@ -19,7 +19,7 @@ package autodiscover
 import (
 	"strings"
 
-	"github.com/sirupsen/logrus"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 
 	"context"
@@ -35,7 +35,7 @@ func getClusterCrdNames() (crdList []*apiextv1.CustomResourceDefinition, err err
 	oc := clientsholder.GetClientsHolder()
 	crds, err := oc.APIExtClient.ApiextensionsV1().CustomResourceDefinitions().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		logrus.Errorln("error when listing crds")
+		log.Error("error when listing crds")
 		return crdList, err
 	}
 	for idx := range crds.Items {
@@ -48,7 +48,7 @@ func getClusterCrdNames() (crdList []*apiextv1.CustomResourceDefinition, err err
 func FindTestCrdNames(crdFilters []configuration.CrdFilter) (targetCrds []*apiextv1.CustomResourceDefinition) {
 	clusterCrds, err := getClusterCrdNames()
 	if err != nil {
-		logrus.Errorf("Unable to get cluster CRD.")
+		log.Error("Unable to get cluster CRD.")
 		return []*apiextv1.CustomResourceDefinition{}
 	}
 	for _, crd := range clusterCrds {

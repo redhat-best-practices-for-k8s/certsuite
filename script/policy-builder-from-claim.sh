@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Only collect the common tests
-jq '.[] | .results | .[] | select(.[].testID.tags=="common") | .[] | .testID' cnf-certification-test/claim.json >temp.txt
+# Only collect the tests that are performed in Kind by github workflows
+jq '.[] | .results | .[] | select(.[].testID.tags!="affiliated-certification-container-is-certified-digest" and .[].testID.tags!="access-control-security-context") | .[] | .testID' cnf-certification-test/claim.json >temp.txt
 
 # Display the JQ to the user
 #shellcheck disable=SC2005,SC2002

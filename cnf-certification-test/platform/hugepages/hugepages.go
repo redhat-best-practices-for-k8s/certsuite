@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	corev1 "k8s.io/api/core/v1"
 )
@@ -83,14 +83,14 @@ func NewTester(node *provider.Node, debugPod *corev1.Pod, commander clientsholde
 		context:   clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name),
 	}
 
-	logrus.Infof("Getting node %s numa's hugepages values.", node.Data.Name)
+	log.Info("Getting node %s numa's hugepages values.", node.Data.Name)
 	var err error
 	tester.nodeHugepagesByNuma, err = tester.getNodeNumaHugePages()
 	if err != nil {
 		return nil, fmt.Errorf("unable to get node hugepages, err: %v", err)
 	}
 
-	logrus.Info("Parsing machineconfig's kernelArguments and systemd's hugepages units.")
+	log.Info("Parsing machineconfig's kernelArguments and systemd's hugepages units.")
 	tester.mcSystemdHugepagesByNuma, err = getMcSystemdUnitsHugepagesConfig(&tester.node.Mc)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get MC systemd hugepages config, err: %v", err)
@@ -105,12 +105,12 @@ func (tester *Tester) HasMcSystemdHugepagesUnits() bool {
 
 func (tester *Tester) Run() error {
 	if tester.HasMcSystemdHugepagesUnits() {
-		logrus.Info("Comparing MachineConfig Systemd hugepages info against node values.")
+		log.Info("Comparing MachineConfig Systemd hugepages info against node values.")
 		if pass, err := tester.TestNodeHugepagesWithMcSystemd(); !pass {
 			return fmt.Errorf("failed to compare machineConfig systemd's unit hugepages config with node values, err: %v", err)
 		}
 	} else {
-		logrus.Info("Comparing MC KernelArguments hugepages info against node values.")
+		log.Info("Comparing MC KernelArguments hugepages info against node values.")
 		if pass, err := tester.TestNodeHugepagesWithKernelArgs(); !pass {
 			return fmt.Errorf("failed to compare machineConfig KernelArguments with node ones, err: %v", err)
 		}
@@ -126,7 +126,7 @@ func (tester *Tester) TestNodeHugepagesWithMcSystemd() (bool, error) {
 		// First, numa index should exist in MC
 		mcCountBySize, numaExistsInMc := tester.mcSystemdHugepagesByNuma[nodeNumaIdx]
 		if !numaExistsInMc {
-			logrus.Warnf("Numa %d does not exist in machine config. All hugepage count for all sizes must be zero.", nodeNumaIdx)
+			log.Warn("Numa %d does not exist in machine config. All hugepage count for all sizes must be zero.", nodeNumaIdx)
 			for _, count := range nodeCountBySize {
 				if count != 0 {
 					return false, fmt.Errorf("node's numa %d hugepages config does not exist in node's machineconfig", nodeNumaIdx)
@@ -198,7 +198,7 @@ func (tester *Tester) TestNodeHugepagesWithKernelArgs() (bool, error) {
 		}
 
 		if total == kernelCount {
-			logrus.Infof("kernelArguments' hugepages count:%d, size:%d match total node ones for that size.", kernelCount, kernelSize)
+			log.Info("kernelArguments' hugepages count:%d, size:%d match total node ones for that size.", kernelCount, kernelSize)
 		} else {
 			return false, fmt.Errorf("total hugepages of size %d won't match (node count=%d, expected=%d)", kernelSize, total, kernelCount)
 		}
@@ -211,7 +211,7 @@ func (tester *Tester) TestNodeHugepagesWithKernelArgs() (bool, error) {
 func (tester *Tester) getNodeNumaHugePages() (hugepages hugepagesByNuma, err error) {
 	// This command must run inside the node, so we'll need the node's context to run commands inside the debug daemonset pod.
 	stdout, stderr, err := tester.commander.ExecCommandContainer(tester.context, cmd)
-	logrus.Tracef("getNodeNumaHugePages stdout: %s, stderr: %s", stdout, stderr)
+	log.Debug("getNodeNumaHugePages stdout: %s, stderr: %s", stdout, stderr)
 	if err != nil {
 		return hugepagesByNuma{}, err
 	}
@@ -242,7 +242,7 @@ func (tester *Tester) getNodeNumaHugePages() (hugepages hugepagesByNuma, err err
 		}
 	}
 
-	logrus.Infof("Node %s hugepages: %s", tester.node.Data.Name, hugepages)
+	log.Info("Node %s hugepages: %s", tester.node.Data.Name, hugepages)
 	return hugepages, nil
 }
 
@@ -257,7 +257,7 @@ func getMcSystemdUnitsHugepagesConfig(mc *provider.MachineConfig) (hugepages hug
 		if !strings.Contains(unit.Name, "hugepages-allocation") {
 			continue
 		}
-		logrus.Infof("Systemd Unit with hugepages info -> name: %s, contents: %s", unit.Name, unit.Contents)
+		log.Info("Systemd Unit with hugepages info -> name: %s, contents: %s", unit.Name, unit.Contents)
 		unit.Contents = strings.Trim(unit.Contents, "\"")
 		values := r.FindStringSubmatch(unit.Contents)
 		if len(values) < UnitContentsRegexMatchLen {
@@ -276,9 +276,9 @@ func getMcSystemdUnitsHugepagesConfig(mc *provider.MachineConfig) (hugepages hug
 	}
 
 	if len(hugepages) > 0 {
-		logrus.Infof("Machineconfig's systemd.units hugepages: %v", hugepages)
+		log.Info("Machineconfig's systemd.units hugepages: %v", hugepages)
 	} else {
-		logrus.Infof("No hugepages found in machineconfig system.units")
+		log.Info("No hugepages found in machineconfig system.units")
 	}
 
 	return hugepages, nil
@@ -290,7 +290,7 @@ func logMcKernelArgumentsHugepages(hugepagesPerSize map[int]int, defhugepagesz i
 	for size, count := range hugepagesPerSize {
 		sb.WriteString(fmt.Sprintf(", size=%dkB - count=%d", size, count))
 	}
-	logrus.Info(sb.String())
+	log.Info(sb.String())
 }
 
 // getMcHugepagesFromMcKernelArguments gets the hugepages params from machineconfig's kernelArguments
@@ -335,7 +335,7 @@ func getMcHugepagesFromMcKernelArguments(mc *provider.MachineConfig) (hugepagesP
 
 	if len(hugepagesPerSize) == 0 {
 		hugepagesPerSize[RhelDefaultHugepagesz] = RhelDefaultHugepages
-		logrus.Warnf("No hugepages size found in node's machineconfig. Defaulting to size=%dkB (count=%d)", RhelDefaultHugepagesz, RhelDefaultHugepages)
+		log.Warn("No hugepages size found in node's machineconfig. Defaulting to size=%dkB (count=%d)", RhelDefaultHugepagesz, RhelDefaultHugepages)
 	}
 
 	logMcKernelArgumentsHugepages(hugepagesPerSize, defhugepagesz)

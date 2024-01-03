@@ -24,8 +24,8 @@ import (
 
 	"context"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	corev1 "k8s.io/api/core/v1"
 	storagev1 "k8s.io/api/storage/v1"
@@ -62,13 +62,13 @@ func GetCniPlugins() (out map[string][]interface{}) {
 		ctx := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
 		outStr, errStr, err := o.ExecCommandContainer(ctx, cniPluginsCommand)
 		if err != nil || errStr != "" {
-			logrus.Errorf("Failed to execute command %s in debug pod %s", cniPluginsCommand, debugPod.String())
+			log.Error("Failed to execute command %s in debug pod %s", cniPluginsCommand, debugPod.String())
 			continue
 		}
 		decoded := []interface{}{}
 		err = json.Unmarshal([]byte(outStr), &decoded)
 		if err != nil {
-			logrus.Errorf("could not decode json file because of: %s", err)
+			log.Error("could not decode json file because of: %s", err)
 			continue
 		}
 		out[debugPod.Spec.NodeName] = decoded
@@ -85,27 +85,27 @@ func GetHwInfoAllNodes() (out map[string]NodeHwInfo) {
 		hw := NodeHwInfo{}
 		lscpu, err := getHWJsonOutput(debugPod, o, lscpuCommand)
 		if err != nil {
-			logrus.Errorf("problem getting lscpu for node %s", debugPod.Spec.NodeName)
+			log.Error("problem getting lscpu for node %s", debugPod.Spec.NodeName)
 		} else {
 			var ok bool
 			temp, ok := lscpu.(map[string]interface{})
 			if !ok {
-				logrus.Errorf("problem casting lscpu field for node %s, lscpu=%v", debugPod.Spec.NodeName, lscpu)
+				log.Error("problem casting lscpu field for node %s, lscpu=%v", debugPod.Spec.NodeName, lscpu)
 			} else {
 				hw.Lscpu = temp["lscpu"]
 			}
 		}
 		hw.IPconfig, err = getHWJsonOutput(debugPod, o, ipCommand)
 		if err != nil {
-			logrus.Errorf("problem getting ip config for node %s", debugPod.Spec.NodeName)
+			log.Error("problem getting ip config for node %s", debugPod.Spec.NodeName)
 		}
 		hw.Lsblk, err = getHWJsonOutput(debugPod, o, lsblkCommand)
 		if err != nil {
-			logrus.Errorf("problem getting lsblk for node %s", debugPod.Spec.NodeName)
+			log.Error("problem getting lsblk for node %s", debugPod.Spec.NodeName)
 		}
 		hw.Lspci, err = getHWTextOutput(debugPod, o, lspciCommand)
 		if err != nil {
-			logrus.Errorf("problem getting lspci for node %s", debugPod.Spec.NodeName)
+			log.Error("problem getting lspci for node %s", debugPod.Spec.NodeName)
 		}
 		out[debugPod.Spec.NodeName] = hw
 	}
@@ -143,12 +143,12 @@ func GetNodeJSON() (out map[string]interface{}) {
 
 	nodesJSON, err := json.Marshal(env.Nodes)
 	if err != nil {
-		logrus.Errorf("Could not Marshall env.Nodes, err=%v", err)
+		log.Error("Could not Marshall env.Nodes, err=%v", err)
 	}
 
 	err = json.Unmarshal(nodesJSON, &out)
 	if err != nil {
-		logrus.Errorf("Could not unMarshall env.Nodes, err=%v", err)
+		log.Error("Could not unMarshall env.Nodes, err=%v", err)
 	}
 
 	return out
@@ -159,25 +159,25 @@ func GetCsiDriver() (out map[string]interface{}) {
 	o := clientsholder.GetClientsHolder()
 	csiDriver, err := o.K8sClient.StorageV1().CSIDrivers().List(context.TODO(), apimachineryv1.ListOptions{})
 	if err != nil {
-		logrus.Errorf("Fail CSIDrivers.list err:%s", err)
+		log.Error("Fail CSIDrivers.list err:%s", err)
 		return out
 	}
 	scheme := runtime.NewScheme()
 	err = storagev1.AddToScheme(scheme)
 	if err != nil {
-		logrus.Errorf("Fail AddToScheme  err:%s", err)
+		log.Error("Fail AddToScheme  err:%s", err)
 		return out
 	}
 	codec := serializer.NewCodecFactory(scheme).LegacyCodec(storagev1.SchemeGroupVersion)
 	data, err := runtime.Encode(codec, csiDriver)
 	if err != nil {
-		logrus.Errorf("Fail to encode Nodes to json, er: %s", err)
+		log.Error("Fail to encode Nodes to json, er: %s", err)
 		return out
 	}
 
 	err = json.Unmarshal(data, &out)
 	if err != nil {
-		logrus.Errorf("failed to marshall nodes json, err: %v", err)
+		log.Error("failed to marshall nodes json, err: %v", err)
 		return out
 	}
 	return out

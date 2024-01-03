@@ -23,9 +23,9 @@ import (
 	"strings"
 
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/networking/netutil"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
-	"github.com/test-network-function/cnf-certification-test/pkg/tnf"
 	corev1 "k8s.io/api/core/v1"
 )
 
@@ -153,7 +153,7 @@ func FindRogueContainersDeclaringPorts(containers []*provider.Container, portsTo
 	for _, cut := range containers {
 		for _, port := range cut.Ports {
 			if portsToTest[port.ContainerPort] {
-				tnf.ClaimFilePrintf("%s has declared a port (%d) that has been reserved", cut, port.ContainerPort)
+				log.Debug("%s has declared a port (%d) that has been reserved", cut, port.ContainerPort)
 				nonCompliantObjects = append(nonCompliantObjects,
 					testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name,
 						fmt.Sprintf("Container declares %s reserved port in %v", portsOrigin, portsToTest), false).
@@ -196,7 +196,7 @@ func FindRoguePodsListeningToPorts(pods []*provider.Pod, portsToTest map[int32]b
 		cut := put.Containers[0]
 		listeningPorts, err := netutil.GetListeningPorts(cut)
 		if err != nil {
-			tnf.ClaimFilePrintf("Failed to get the listening ports on %s, err: %v", cut, err)
+			log.Debug("Failed to get the listening ports on %s, err: %v", cut, err)
 			nonCompliantObjects = append(nonCompliantObjects,
 				testhelper.NewPodReportObject(cut.Namespace, put.Name,
 					fmt.Sprintf("Failed to get the listening ports on pod, err: %v", err), false))
@@ -207,10 +207,10 @@ func FindRoguePodsListeningToPorts(pods []*provider.Pod, portsToTest map[int32]b
 				// If pod contains an "istio-proxy" container, we need to make sure that the ports returned
 				// overlap with the known istio ports
 				if put.ContainsIstioProxy() && ReservedIstioPorts[int32(port.PortNumber)] {
-					tnf.ClaimFilePrintf("%s was found to be listening to port %d due to istio-proxy being present. Ignoring.", put, port.PortNumber)
+					log.Debug("%s was found to be listening to port %d due to istio-proxy being present. Ignoring.", put, port.PortNumber)
 					continue
 				}
-				tnf.ClaimFilePrintf("%s has one container (%s) listening on port %d that has been reserved", put, cut.Name, port.PortNumber)
+				log.Debug("%s has one container (%s) listening on port %d that has been reserved", put, cut.Name, port.PortNumber)
 				nonCompliantObjects = append(nonCompliantObjects,
 					testhelper.NewPodReportObject(cut.Namespace, put.Name,
 						fmt.Sprintf("Pod Listens to %s reserved port in %v", portsOrigin, portsToTest), false).
