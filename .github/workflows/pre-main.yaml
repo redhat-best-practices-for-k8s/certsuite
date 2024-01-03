@@ -224,15 +224,26 @@ jobs:
           repository: test-network-function/cnf-certification-test-partner
           path: cnf-certification-test-partner
 
-      - name: Start the Kind cluster for `local-test-infra`
-        uses: ./cnf-certification-test-partner/.github/actions/start-k8s-cluster
+      - name: Bootstrap cluster, docker, and python
+        uses: nick-fields/retry@v2
         with:
-          working_directory: cnf-certification-test-partner
+          timeout_minutes: 90
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make bootstrap-cluster; make make bootstrap-docker-ubuntu-local; make bootstrap-python-ubuntu-local
 
-      - name: Create `local-test-infra` OpenShift resources
-        uses: ./cnf-certification-test-partner/.github/actions/create-local-test-infra-resources
+      - name: Run 'make rebuild-cluster'
+        uses: nick-fields/retry@v2
         with:
-          working_directory: cnf-certification-test-partner
+          timeout_minutes: 90
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make rebuild-cluster
+
+      - name: Run 'make install'
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 90
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make install
 
       # Perform smoke tests.
       - name: 'Test: Run test suites'
@@ -320,23 +331,32 @@ jobs:
           repository: test-network-function/cnf-certification-test-partner
           path: cnf-certification-test-partner
 
-      - name: Start the Kind cluster for `local-test-infra`
-        uses: ./cnf-certification-test-partner/.github/actions/start-k8s-cluster
+      - name: Bootstrap cluster, docker, and python
+        uses: nick-fields/retry@v2
         with:
-          working_directory: cnf-certification-test-partner
+          timeout_minutes: 90
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make bootstrap-cluster; make make bootstrap-docker-ubuntu-local; make bootstrap-python-ubuntu-local
 
-      - name: Create `local-test-infra` OpenShift resources
-        uses: ./cnf-certification-test-partner/.github/actions/create-local-test-infra-resources
+      - name: Run 'make rebuild-cluster'
+        uses: nick-fields/retry@v2
         with:
-          working_directory: cnf-certification-test-partner
+          timeout_minutes: 90
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make rebuild-cluster
+
+      - name: Run 'make install'
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 90
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make install
 
       # needed by depends-on-action
       - name: Set up Go 1.21
         uses: actions/setup-go@v5
         with:
           go-version: 1.21.5
-
-
 
       # Perform smoke tests using a TNF container.
       - name: Check out code into the Go module directory
