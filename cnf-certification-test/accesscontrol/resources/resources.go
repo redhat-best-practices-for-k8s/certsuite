@@ -42,20 +42,20 @@ func HasRequestsAndLimitsSet(cut *provider.Container) bool {
 }
 
 // For more info on cpu management policies see https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/.
-func HasExclusiveCPUsAssigned(cut *provider.Container) bool {
+func HasExclusiveCPUsAssigned(cut *provider.Container, logger *log.Logger) bool {
 	cpuLimits := cut.Resources.Limits.Cpu()
 	memLimits := cut.Resources.Limits.Memory()
 
 	// if no cpu or memory limits are specified the container will run in the shared cpu pool
 	if cpuLimits.IsZero() || memLimits.IsZero() {
-		log.Debug("Container has been found missing cpu/memory resource limits: %s", cut.String())
+		logger.Debug("Container %q has been found missing cpu/memory resource limits", cut)
 		return false
 	}
 
 	// if the cpu limits quantity is not an integer the container will run in the shared cpu pool
 	cpuLimitsVal, isInteger := cpuLimits.AsInt64()
 	if !isInteger {
-		log.Debug("Container's cpu resource limit is not an integer: %s", cut.String())
+		logger.Debug("Container %q cpu resource limit is not an integer", cut)
 		return false
 	}
 
@@ -68,6 +68,6 @@ func HasExclusiveCPUsAssigned(cut *provider.Container) bool {
 	}
 
 	// if the cpu limits and request are different, the container will run in the shared cpu pool
-	log.Debug("Container's cpu/memory resources and limits are not equal to each other: %s", cut.String())
+	logger.Debug("Container %q cpu/memory resources and limits are not equal to each other", cut)
 	return false
 }

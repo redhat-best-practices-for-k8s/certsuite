@@ -1,9 +1,11 @@
 package resources
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
@@ -192,7 +194,9 @@ func TestHasExclusiveCPUsAssigned(t *testing.T) {
 		},
 	}
 
+	var logArchive strings.Builder
+	log.SetupLogger(&logArchive, "INFO")
 	for _, tc := range testCases {
-		assert.Equal(t, tc.expectedResult, HasExclusiveCPUsAssigned(tc.testContainer))
+		assert.Equal(t, tc.expectedResult, HasExclusiveCPUsAssigned(tc.testContainer, log.GetLogger()))
 	}
 }
