@@ -129,7 +129,7 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	oc := clientsholder.GetClientsHolder()
 
 	var err error
-	data.StorageClasses, err = getAllStorageClasses()
+	data.StorageClasses, err = getAllStorageClasses(oc.K8sClient.StorageV1())
 	if err != nil {
 		log.Error("Failed to retrieve storageClasses - err: %v", err)
 		os.Exit(1)
@@ -196,21 +196,21 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.Deployments = findDeploymentByLabel(oc.K8sClient.AppsV1(), podsUnderTestLabelsObjects, data.Namespaces)
 	data.StatefulSet = findStatefulSetByLabel(oc.K8sClient.AppsV1(), podsUnderTestLabelsObjects, data.Namespaces)
 	// Find ClusterRoleBindings
-	clusterRoleBindings, err := getClusterRoleBindings()
+	clusterRoleBindings, err := getClusterRoleBindings(oc.K8sClient.RbacV1())
 	if err != nil {
 		log.Error("Cannot get cluster role bindings, error: %v", err)
 		os.Exit(1)
 	}
 	data.ClusterRoleBindings = clusterRoleBindings
 	// Find RoleBindings
-	roleBindings, err := getRoleBindings()
+	roleBindings, err := getRoleBindings(oc.K8sClient.RbacV1())
 	if err != nil {
 		log.Error("Cannot get cluster role bindings, error: %v", err)
 		os.Exit(1)
 	}
 	data.RoleBindings = roleBindings
 	// find roles
-	roles, err := getRoles()
+	roles, err := getRoles(oc.K8sClient.RbacV1())
 	if err != nil {
 		log.Error("Cannot get roles, error: %v", err)
 		os.Exit(1)
