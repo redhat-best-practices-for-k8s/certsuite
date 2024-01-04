@@ -159,7 +159,7 @@ func RunNetworkingTests( //nolint:funlen
 				netUnderTest.TesterSource.ContainerIdentifier, netUnderTest.TesterSource.IP,
 				aDestIP.ContainerIdentifier, aDestIP.IP, result)
 			if err != nil {
-				logger.Debug("Ping failed, err=%s", err)
+				logger.Debug("Ping failed, err=%v", err)
 			}
 			if result.outcome != testhelper.SUCCESS {
 				logger.Error("Ping from %q (srcip: %q) to %q (dstip: %q) failed",
