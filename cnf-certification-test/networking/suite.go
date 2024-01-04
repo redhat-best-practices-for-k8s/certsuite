@@ -62,8 +62,7 @@ func LoadChecks() {
 		WithBeforeEachFn(beforeEachFn)
 
 	// Default interface ICMP IPv4 test case
-	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestICMPv4ConnectivityIdentifier)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestICMPv4ConnectivityIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env), testhelper.GetDaemonSetFailedToSpawnSkipFn(&env), testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testNetworkConnectivity(&env, netcommons.IPv4, netcommons.DEFAULT, c)
@@ -71,8 +70,7 @@ func LoadChecks() {
 		}))
 
 	// Multus interfaces ICMP IPv4 test case
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestICMPv4ConnectivityMultusIdentifier)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestICMPv4ConnectivityMultusIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env), testhelper.GetDaemonSetFailedToSpawnSkipFn(&env), testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testNetworkConnectivity(&env, netcommons.IPv4, netcommons.MULTUS, c)
@@ -80,8 +78,7 @@ func LoadChecks() {
 		}))
 
 	// Default interface ICMP IPv6 test case
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestICMPv6ConnectivityIdentifier)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestICMPv6ConnectivityIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env), testhelper.GetDaemonSetFailedToSpawnSkipFn(&env), testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testNetworkConnectivity(&env, netcommons.IPv6, netcommons.DEFAULT, c)
@@ -89,8 +86,7 @@ func LoadChecks() {
 		}))
 
 	// Multus interfaces ICMP IPv6 test case
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestICMPv6ConnectivityMultusIdentifier)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestICMPv6ConnectivityMultusIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env), testhelper.GetDaemonSetFailedToSpawnSkipFn(&env), testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testNetworkConnectivity(&env, netcommons.IPv6, netcommons.MULTUS, c)
@@ -98,8 +94,7 @@ func LoadChecks() {
 		}))
 
 	// Undeclared container ports usage test case
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUndeclaredContainerPortsUsage)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestUndeclaredContainerPortsUsage)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env), testhelper.GetDaemonSetFailedToSpawnSkipFn(&env), testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testUndeclaredContainerPortsUsage(c, &env)
@@ -107,8 +102,7 @@ func LoadChecks() {
 		}))
 
 	// OCP reserved ports usage test case
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOCPReservedPortsUsage)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOCPReservedPortsUsage)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env), testhelper.GetDaemonSetFailedToSpawnSkipFn(&env), testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testOCPReservedPortsUsage(c, &env)
@@ -116,8 +110,7 @@ func LoadChecks() {
 		}))
 
 	// Dual stack services test case
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServiceDualStackIdentifier)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServiceDualStackIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoServicesUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testDualStackServices(c, &env)
@@ -125,8 +118,7 @@ func LoadChecks() {
 		}))
 
 	// Network policy deny all test case
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNetworkPolicyDenyAllIdentifier)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNetworkPolicyDenyAllIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testNetworkPolicyDenyAll(c, &env)
@@ -134,8 +126,7 @@ func LoadChecks() {
 		}))
 
 	// Extended partner ports test case
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestReservedExtendedPartnerPorts)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestReservedExtendedPartnerPorts)).
 		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env), testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPartnerSpecificTCPPorts(c, &env)
@@ -143,8 +134,7 @@ func LoadChecks() {
 		}))
 
 	// DPDK CPU pinning exec probe test case
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestDpdkCPUPinningExecProbe)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestDpdkCPUPinningExecProbe)).
 		WithSkipCheckFn(testhelper.GetNoCPUPinningPodsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			dpdkPods := env.GetCPUPinningPodsWithDpdk()
@@ -153,8 +143,7 @@ func LoadChecks() {
 		}))
 
 	// Restart on reboot label test case
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestRestartOnRebootLabelOnPodsUsingSRIOV)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestRestartOnRebootLabelOnPodsUsingSRIOV)).
 		WithSkipCheckFn(testhelper.GetNoSRIOVPodsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			sriovPods, err := env.GetPodsUsingSRIOV()
