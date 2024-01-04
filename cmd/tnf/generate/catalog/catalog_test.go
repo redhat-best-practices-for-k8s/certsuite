@@ -23,7 +23,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/pkg/arrayhelper"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
 )
 
@@ -57,33 +56,6 @@ func TestEmitTextFromFile(t *testing.T) {
 
 func TestRunGenerateMarkdownCmd(t *testing.T) {
 	assert.Nil(t, runGenerateMarkdownCmd(nil, nil))
-}
-
-func TestUnique(t *testing.T) {
-	testCases := []struct {
-		testSlice     []string
-		expectedSlice []string
-	}{
-		{
-			testSlice:     []string{"one", "two", "three"},
-			expectedSlice: []string{"one", "two", "three"},
-		},
-		{
-			testSlice:     []string{"one", "two", "three", "three"},
-			expectedSlice: []string{"one", "two", "three"},
-		},
-		{
-			testSlice:     []string{},
-			expectedSlice: []string{},
-		},
-	}
-
-	for _, tc := range testCases {
-		sort.Strings(tc.expectedSlice)
-		results := arrayhelper.Unique(tc.testSlice)
-		sort.Strings(results)
-		assert.True(t, reflect.DeepEqual(tc.expectedSlice, results))
-	}
 }
 
 func TestGetSuitesFromIdentifiers(t *testing.T) {

@@ -20,15 +20,14 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	corev1typed "k8s.io/client-go/kubernetes/typed/core/v1"
 )
 
-func AutomountServiceAccountSetOnSA(serviceAccountName, podNamespace string) (*bool, error) {
-	clientsHolder := clientsholder.GetClientsHolder()
-	sa, err := clientsHolder.K8sClient.CoreV1().ServiceAccounts(podNamespace).Get(context.TODO(), serviceAccountName, metav1.GetOptions{})
+func AutomountServiceAccountSetOnSA(client corev1typed.CoreV1Interface, serviceAccountName, podNamespace string) (*bool, error) {
+	sa, err := client.ServiceAccounts(podNamespace).Get(context.TODO(), serviceAccountName, metav1.GetOptions{})
 	if err != nil {
 		log.Error("executing serviceaccount command failed with error: %v", err)
 		return nil, err
@@ -37,7 +36,7 @@ func AutomountServiceAccountSetOnSA(serviceAccountName, podNamespace string) (*b
 }
 
 //nolint:gocritic
-func EvaluateAutomountTokens(put *corev1.Pod) (bool, string) {
+func EvaluateAutomountTokens(client corev1typed.CoreV1Interface, put *corev1.Pod) (bool, string) {
 	// The token can be specified in the pod directly
 	// or it can be specified in the service account of the pod
 	// if no service account is configured, then the pod will use the configuration
@@ -50,7 +49,7 @@ func EvaluateAutomountTokens(put *corev1.Pod) (bool, string) {
 	}
 
 	// Collect information about the service account attached to the pod.
-	saAutomountServiceAccountToken, err := AutomountServiceAccountSetOnSA(put.Spec.ServiceAccountName, put.Namespace)
+	saAutomountServiceAccountToken, err := AutomountServiceAccountSetOnSA(client, put.Spec.ServiceAccountName, put.Namespace)
 	if err != nil {
 		return false, ""
 	}
