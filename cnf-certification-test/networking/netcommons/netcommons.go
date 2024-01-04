@@ -149,11 +149,12 @@ func FilterIPListByIPVersion(ipList []string, aIPVersion IPVersion) []string {
 	return filteredIPList
 }
 
-func FindRogueContainersDeclaringPorts(containers []*provider.Container, portsToTest map[int32]bool, portsOrigin string) (compliantObjects, nonCompliantObjects []*testhelper.ReportObject) {
+func findRogueContainersDeclaringPorts(containers []*provider.Container, portsToTest map[int32]bool, portsOrigin string, logger *log.Logger) (compliantObjects, nonCompliantObjects []*testhelper.ReportObject) {
 	for _, cut := range containers {
+		logger.Info("Testing Container %q", cut)
 		for _, port := range cut.Ports {
 			if portsToTest[port.ContainerPort] {
-				log.Debug("%s has declared a port (%d) that has been reserved", cut, port.ContainerPort)
+				logger.Error("%q declares %s reserved port %d (%s)", cut, portsOrigin, port.ContainerPort, port.Protocol)
 				nonCompliantObjects = append(nonCompliantObjects,
 					testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name,
 						fmt.Sprintf("Container declares %s reserved port in %v", portsOrigin, portsToTest), false).
@@ -161,6 +162,7 @@ func FindRogueContainersDeclaringPorts(containers []*provider.Container, portsTo
 						AddField(testhelper.PortNumber, strconv.Itoa(int(port.ContainerPort))).
 						AddField(testhelper.PortProtocol, string(port.Protocol)))
 			} else {
+				logger.Info("%q does not declare any %s reserved port", cut, portsOrigin)
 				compliantObjects = append(compliantObjects,
 					testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name,
 						fmt.Sprintf("Container does not declare %s reserved port in %v", portsOrigin, portsToTest), true).
@@ -187,16 +189,17 @@ var ReservedIstioPorts = map[int32]bool{
 	15000: true, // Envoy admin port (commands/diagnostics)
 }
 
-func FindRoguePodsListeningToPorts(pods []*provider.Pod, portsToTest map[int32]bool, portsOrigin string) (compliantObjects, nonCompliantObjects []*testhelper.ReportObject) {
+func findRoguePodsListeningToPorts(pods []*provider.Pod, portsToTest map[int32]bool, portsOrigin string, logger *log.Logger) (compliantObjects, nonCompliantObjects []*testhelper.ReportObject) {
 	for _, put := range pods {
-		compliantObjectsEntries, nonCompliantObjectsEntries := FindRogueContainersDeclaringPorts(put.Containers, portsToTest, portsOrigin)
+		logger.Info("Testing Pod %q", put)
+		compliantObjectsEntries, nonCompliantObjectsEntries := findRogueContainersDeclaringPorts(put.Containers, portsToTest, portsOrigin, logger)
 		nonCompliantPortFound := len(nonCompliantObjectsEntries) > 0
 		compliantObjects = append(compliantObjects, compliantObjectsEntries...)
 		nonCompliantObjects = append(nonCompliantObjects, nonCompliantObjectsEntries...)
 		cut := put.Containers[0]
 		listeningPorts, err := netutil.GetListeningPorts(cut)
 		if err != nil {
-			log.Debug("Failed to get the listening ports on %s, err: %v", cut, err)
+			logger.Error("Failed to get the listening ports on %q, err: %v", cut, err)
 			nonCompliantObjects = append(nonCompliantObjects,
 				testhelper.NewPodReportObject(cut.Namespace, put.Name,
 					fmt.Sprintf("Failed to get the listening ports on pod, err: %v", err), false))
@@ -207,10 +210,10 @@ func FindRoguePodsListeningToPorts(pods []*provider.Pod, portsToTest map[int32]b
 				// If pod contains an "istio-proxy" container, we need to make sure that the ports returned
 				// overlap with the known istio ports
 				if put.ContainsIstioProxy() && ReservedIstioPorts[int32(port.PortNumber)] {
-					log.Debug("%s was found to be listening to port %d due to istio-proxy being present. Ignoring.", put, port.PortNumber)
+					logger.Info("%q was found to be listening to port %d due to istio-proxy being present. Ignoring.", put, port.PortNumber)
 					continue
 				}
-				log.Debug("%s has one container (%s) listening on port %d that has been reserved", put, cut.Name, port.PortNumber)
+				logger.Error("%q has one container (%q) listening on port %d (%s) that has been reserved", put, cut.Name, port.PortNumber, port.Protocol)
 				nonCompliantObjects = append(nonCompliantObjects,
 					testhelper.NewPodReportObject(cut.Namespace, put.Name,
 						fmt.Sprintf("Pod Listens to %s reserved port in %v", portsOrigin, portsToTest), false).
@@ -219,6 +222,7 @@ func FindRoguePodsListeningToPorts(pods []*provider.Pod, portsToTest map[int32]b
 						AddField(testhelper.PortProtocol, port.Protocol))
 				nonCompliantPortFound = true
 			} else {
+				logger.Info("%q listens in %s unreserved port %d (%s)", put, portsOrigin, port.PortNumber, port.Protocol)
 				compliantObjects = append(compliantObjects,
 					testhelper.NewPodReportObject(cut.Namespace, put.Name,
 						fmt.Sprintf("Pod Listens to port not in %s reserved port %v", portsOrigin, portsToTest), true).
@@ -240,8 +244,8 @@ func FindRoguePodsListeningToPorts(pods []*provider.Pod, portsToTest map[int32]b
 	return compliantObjects, nonCompliantObjects
 }
 
-func TestReservedPortsUsage(env *provider.TestEnvironment, reservedPorts map[int32]bool, portsOrigin string) (compliantObjects, nonCompliantObjects []*testhelper.ReportObject) {
-	compliantObjectsEntries, nonCompliantObjectsEntries := FindRoguePodsListeningToPorts(env.Pods, reservedPorts, portsOrigin)
+func TestReservedPortsUsage(env *provider.TestEnvironment, reservedPorts map[int32]bool, portsOrigin string, logger *log.Logger) (compliantObjects, nonCompliantObjects []*testhelper.ReportObject) {
+	compliantObjectsEntries, nonCompliantObjectsEntries := findRoguePodsListeningToPorts(env.Pods, reservedPorts, portsOrigin, logger)
 	compliantObjects = append(compliantObjects, compliantObjectsEntries...)
 	nonCompliantObjects = append(nonCompliantObjects, nonCompliantObjectsEntries...)
 

@@ -190,8 +190,11 @@ func TestIsNetworkPolicyCompliant(t *testing.T) {
 	}
 
 	for index, tc := range testCases {
-		assert.Equal(t, tc.expectedEgressOutput, IsNetworkPolicyCompliant(&testCases[index].testNP, networkingv1.PolicyTypeEgress))
-		assert.Equal(t, tc.expectedIngressOutput, IsNetworkPolicyCompliant(&testCases[index].testNP, networkingv1.PolicyTypeIngress))
+		var isCompliant bool
+		isCompliant, _ = IsNetworkPolicyCompliant(&testCases[index].testNP, networkingv1.PolicyTypeEgress)
+		assert.Equal(t, tc.expectedEgressOutput, isCompliant)
+		isCompliant, _ = IsNetworkPolicyCompliant(&testCases[index].testNP, networkingv1.PolicyTypeIngress)
+		assert.Equal(t, tc.expectedIngressOutput, isCompliant)
 	}
 }
 
