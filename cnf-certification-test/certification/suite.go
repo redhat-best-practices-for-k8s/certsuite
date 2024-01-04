@@ -45,7 +45,6 @@ var (
 	validator certdb.CertificationStatusValidator
 
 	beforeEachFn = func(check *checksdb.Check) error {
-		check.LogInfo("Check %s: getting test environment and certdb validator.", check.ID)
 		env = provider.GetTestEnvironment()
 
 		var err error
@@ -75,7 +74,7 @@ var (
 )
 
 func LoadChecks() {
-	log.Debug("Loading %s checks", common.AffiliatedCertTestKey)
+	log.Debug("Loading %s suite checks", common.AffiliatedCertTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.AffiliatedCertTestKey).
 		WithBeforeEachFn(beforeEachFn)
@@ -120,8 +119,6 @@ func testContainerCertification(c provider.ContainerImageIdentifier, validator c
 
 func testAllOperatorCertified(check *checksdb.Check, env *provider.TestEnvironment, validator certdb.CertificationStatusValidator) {
 	operatorsUnderTest := env.Operators
-	check.LogInfo("Verify operator as certified. Number of operators to check: %d", len(operatorsUnderTest))
-
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
@@ -132,20 +129,19 @@ func testAllOperatorCertified(check *checksdb.Check, env *provider.TestEnvironme
 		splitVersion := strings.SplitN(env.OpenshiftVersion, ".", majorMinorPatchCount)
 		ocpMinorVersion = splitVersion[0] + "." + splitVersion[1]
 	}
-	for i := range operatorsUnderTest {
-		name := operatorsUnderTest[i].Name
-		channel := operatorsUnderTest[i].Channel
-		isCertified := validator.IsOperatorCertified(name, ocpMinorVersion, channel)
+	for _, operator := range operatorsUnderTest {
+		check.LogInfo("Testing Operator %q", operator)
+		isCertified := validator.IsOperatorCertified(operator.Name, ocpMinorVersion, operator.Channel)
 		if !isCertified {
-			check.LogInfo("Operator %s (channel %s) failed to be certified for OpenShift %s", name, channel, ocpMinorVersion)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operatorsUnderTest[i].Namespace, operatorsUnderTest[i].Name, "Operator failed to be certified for OpenShift", false).
+			check.LogError("Operator %q (channel %q) failed to be certified for OpenShift %s", operator.Name, operator.Channel, ocpMinorVersion)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "Operator failed to be certified for OpenShift", false).
 				AddField(testhelper.OCPVersion, ocpMinorVersion).
-				AddField(testhelper.OCPChannel, channel))
+				AddField(testhelper.OCPChannel, operator.Channel))
 		} else {
-			log.Info("Operator %s (channel %s) certified OK.", name, channel)
-			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operatorsUnderTest[i].Namespace, operatorsUnderTest[i].Name, "Operator certified OK", true).
+			check.LogInfo("Operator %q (channel %q) is certified for OpenShift %s", operator.Name, operator.Channel, ocpMinorVersion)
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "Operator certified OK", true).
 				AddField(testhelper.OCPVersion, ocpMinorVersion).
-				AddField(testhelper.OCPChannel, channel))
+				AddField(testhelper.OCPChannel, operator.Channel))
 		}
 	}
 
@@ -159,13 +155,14 @@ func testHelmCertified(check *checksdb.Check, env *provider.TestEnvironment, val
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, helm := range helmchartsReleases {
+		check.LogInfo("Testing Helm Chart Release %q", helm.Name)
 		if !validator.IsHelmChartCertified(helm, env.K8sVersion) {
+			check.LogError("Helm Chart %q version %q is not certified.", helm.Name, helm.Chart.Metadata.Version)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewHelmChartReportObject(helm.Namespace, helm.Name, "helm chart is not certified", false).
 				SetType(testhelper.HelmVersionType).
 				AddField(testhelper.Version, helm.Chart.Metadata.Version))
-			check.LogDebug("Helm Chart %s version %s is not certified.", helm.Name, helm.Chart.Metadata.Version)
 		} else {
-			log.Info("Helm Chart %s version %s is certified.", helm.Name, helm.Chart.Metadata.Version)
+			check.LogInfo("Helm Chart %q version %q is certified.", helm.Name, helm.Chart.Metadata.Version)
 			compliantObjects = append(compliantObjects, testhelper.NewHelmChartReportObject(helm.Namespace, helm.Name, "helm chart is certified", true).
 				SetType(testhelper.HelmVersionType).
 				AddField(testhelper.Version, helm.Chart.Metadata.Version))
@@ -179,15 +176,16 @@ func testContainerCertificationStatusByDigest(check *checksdb.Check, env *provid
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, c := range env.Containers {
+		check.LogInfo("Testing Container %q", c)
 		switch {
 		case c.ContainerImageIdentifier.Digest == "":
-			check.LogDebug("%s is missing digest field, failing validation (repo=%s image=%s digest=%s)", c, c.ContainerImageIdentifier.Registry, c.ContainerImageIdentifier.Repository, c.ContainerImageIdentifier.Digest)
+			check.LogError("Container %q is missing digest field, failing validation (repo=%q image=%q)", c, c.ContainerImageIdentifier.Registry, c.ContainerImageIdentifier.Repository)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Missing digest field", false).
 				AddField(testhelper.Repository, c.ContainerImageIdentifier.Registry).
 				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Repository).
 				AddField(testhelper.ImageDigest, c.ContainerImageIdentifier.Digest))
 		case !testContainerCertification(c.ContainerImageIdentifier, validator):
-			check.LogDebug("%s digest not found in database, failing validation (repo=%s image=%s tag=%s digest=%s)", c,
+			check.LogError("Container %q digest not found in database, failing validation (repo=%q image=%q tag=%q digest=%q)", c,
 				c.ContainerImageIdentifier.Registry, c.ContainerImageIdentifier.Repository,
 				c.ContainerImageIdentifier.Tag, c.ContainerImageIdentifier.Digest)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Digest not found in database", false).
@@ -195,6 +193,9 @@ func testContainerCertificationStatusByDigest(check *checksdb.Check, env *provid
 				AddField(testhelper.ImageName, c.ContainerImageIdentifier.Repository).
 				AddField(testhelper.ImageDigest, c.ContainerImageIdentifier.Digest))
 		default:
+			check.LogInfo("Container %q digest found in database, image certified (repo=%q image=%q tag=%q digest=%q)", c,
+				c.ContainerImageIdentifier.Registry, c.ContainerImageIdentifier.Repository,
+				c.ContainerImageIdentifier.Tag, c.ContainerImageIdentifier.Digest)
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(c.Namespace, c.Podname, c.Name, "Container is certified", true))
 		}
 	}
@@ -212,11 +213,12 @@ func testHelmVersion(check *checksdb.Check) error {
 		LabelSelector: "app=helm,name=tiller",
 	})
 	if err != nil {
+		check.LogError("Could not get Tiller pod, err=%v", err)
 		return fmt.Errorf("failed getting Tiller pod: %v", err)
 	}
 
 	if len(podList.Items) == 0 {
-		check.LogDebug("Tiller pod not found in any namespaces. Helm version is v3.")
+		check.LogInfo("Tiller pod not found in any namespaces. Helm version is v3.")
 		for _, helm := range env.HelmChartReleases {
 			compliantObjects = append(compliantObjects, testhelper.NewHelmChartReportObject(helm.Namespace, helm.Name, "helm chart was installed with helm v3", true))
 		}
@@ -224,7 +226,7 @@ func testHelmVersion(check *checksdb.Check) error {
 		return nil
 	}
 
-	check.LogDebug("Tiller pod found, helm version is v2.")
+	check.LogError("Tiller pod found, Helm version is v2 but v3 required")
 	for i := range podList.Items {
 		nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(podList.Items[i].Namespace, podList.Items[i].Name,
 			"This pod is a Tiller pod. Helm Chart version is v2 but needs to be v3 due to the security risks associated with Tiller", false))
