@@ -58,7 +58,6 @@ var (
 	env provider.TestEnvironment
 
 	beforeEachFn = func(check *checksdb.Check) error {
-		check.LogInfo("Check %s: getting test environment.", check.ID)
 		env = provider.GetTestEnvironment()
 		return nil
 	}
@@ -66,7 +65,7 @@ var (
 
 //nolint:funlen
 func LoadChecks() {
-	log.Debug("Loading %s checks", common.AccessControlTestKey)
+	log.Debug("Loading %s suite checks", common.AccessControlTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.AccessControlTestKey).
 		WithBeforeEachFn(beforeEachFn)
@@ -261,8 +260,9 @@ func LoadChecks() {
 		}))
 }
 
-func checkForbiddenCapability(check *checksdb.Check, containers []*provider.Container, capability string) (compliantObjects, nonCompliantObjects []*testhelper.ReportObject) {
+func checkForbiddenCapability(containers []*provider.Container, capability string, logger *log.Logger) (compliantObjects, nonCompliantObjects []*testhelper.ReportObject) {
 	for _, cut := range containers {
+		logger.Info("Testing Container %q", cut)
 		compliant := true
 
 		switch {
@@ -273,9 +273,10 @@ func checkForbiddenCapability(check *checksdb.Check, containers []*provider.Cont
 		}
 
 		if compliant {
+			logger.Info("Container %q does not use non-compliant capability %q", cut, capability)
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "No forbidden capability "+capability+" detected in container", true))
 		} else {
-			check.LogDebug("Non compliant %s capability detected in container %s. All container caps: %s", capability, cut.String(), cut.SecurityContext.Capabilities.String())
+			logger.Error("Non compliant %q capability detected in container %q. All container caps: %q", capability, cut, cut.SecurityContext.Capabilities)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Non compliant capability "+capability+" in container", false).AddField(testhelper.SCCCapability, capability))
 		}
 	}
@@ -283,27 +284,27 @@ func checkForbiddenCapability(check *checksdb.Check, containers []*provider.Cont
 }
 
 func testSysAdminCapability(check *checksdb.Check, env *provider.TestEnvironment) {
-	compliantObjects, nonCompliantObjects := checkForbiddenCapability(check, env.Containers, "SYS_ADMIN")
+	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "SYS_ADMIN", check.GetLoggger())
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 func testNetAdminCapability(check *checksdb.Check, env *provider.TestEnvironment) {
-	compliantObjects, nonCompliantObjects := checkForbiddenCapability(check, env.Containers, "NET_ADMIN")
+	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "NET_ADMIN", check.GetLoggger())
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 func testNetRawCapability(check *checksdb.Check, env *provider.TestEnvironment) {
-	compliantObjects, nonCompliantObjects := checkForbiddenCapability(check, env.Containers, "NET_RAW")
+	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "NET_RAW", check.GetLoggger())
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 func testIpcLockCapability(check *checksdb.Check, env *provider.TestEnvironment) {
-	compliantObjects, nonCompliantObjects := checkForbiddenCapability(check, env.Containers, "IPC_LOCK")
+	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "IPC_LOCK", check.GetLoggger())
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 func testBpfCapability(check *checksdb.Check, env *provider.TestEnvironment) {
-	compliantObjects, nonCompliantObjects := checkForbiddenCapability(check, env.Containers, "BPF")
+	compliantObjects, nonCompliantObjects := checkForbiddenCapability(env.Containers, "BPF", check.GetLoggger())
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
@@ -312,20 +313,25 @@ func testSecConRootUser(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
+		check.LogInfo("Testing Pod %q", put)
 		if put.IsRunAsUserID(0) {
-			check.LogDebug("Non compliant run as Root User detected (RunAsUser uid=0) in pod %s", put.Namespace+"."+put.Name)
+			check.LogError("Root user detected (RunAsUser uid=0) in Pod %q", put)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Root User detected (RunAsUser uid=0)", false))
 		} else {
+			check.LogInfo("Non-root user detected in Pod %q", put)
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Root User not detected (RunAsUser uid=0)", true))
 		}
 
 		for idx := range put.Spec.Containers {
 			cut := &(put.Spec.Containers[idx])
+			check.LogInfo("Testing Container %q", cut)
 			// Check the container level RunAsUser parameter
 			if cut.SecurityContext != nil && cut.SecurityContext.RunAsUser != nil {
 				if *(cut.SecurityContext.RunAsUser) == 0 {
+					check.LogError("Root user detected (RunAsUser uid=0) in Container %q (%q)", cut.Name, put)
 					nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Name, "Root User detected (RunAsUser uid=0)", false))
 				} else {
+					check.LogInfo("Non-root user detected (RunAsUser uid=0) in Container %q (%q)", cut, put)
 					compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(put.Namespace, put.Name, cut.Name, "Root User not detected (RunAsUser uid=0)", true))
 				}
 			}
@@ -340,16 +346,18 @@ func testSecConPrivilegeEscalation(check *checksdb.Check, env *provider.TestEnvi
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
+		check.LogInfo("Testing Container %q", cut)
 		privEscFound := false
 		if cut.SecurityContext != nil && cut.SecurityContext.AllowPrivilegeEscalation != nil {
 			if *(cut.SecurityContext.AllowPrivilegeEscalation) {
-				check.LogDebug("AllowPrivilegeEscalation is set to true in container %s.", cut.Podname+"."+cut.Name)
+				check.LogError("AllowPrivilegeEscalation is set to true in Container %q.", cut)
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "AllowPrivilegeEscalation is set to true", false))
 				privEscFound = true
 			}
 		}
 
 		if !privEscFound {
+			check.LogInfo("AllowPrivilegeEscalation is set to false in Container %q.", cut)
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "AllowPrivilegeEscalation is not set to true", true))
 		}
 	}
@@ -362,10 +370,11 @@ func testContainerHostPort(check *checksdb.Check, env *provider.TestEnvironment)
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
+		check.LogInfo("Testing Container %q", cut)
 		hostPortFound := false
 		for _, aPort := range cut.Ports {
 			if aPort.HostPort != 0 {
-				check.LogDebug("Host port %d is configured in container %s.", aPort.HostPort, cut.String())
+				check.LogError("Host port %d is configured in Container %q.", aPort.HostPort, cut)
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Host port is configured", false).
 					SetType(testhelper.HostPortType).
 					AddField(testhelper.PortNumber, strconv.Itoa(int(aPort.HostPort))))
@@ -374,6 +383,7 @@ func testContainerHostPort(check *checksdb.Check, env *provider.TestEnvironment)
 		}
 
 		if !hostPortFound {
+			check.LogInfo("Host port not configured in Container %q.", cut)
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Host port is not configured", true))
 		}
 	}
@@ -386,10 +396,12 @@ func testPodHostNetwork(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
+		check.LogInfo("Testing Pod %q", put)
 		if put.Spec.HostNetwork {
-			check.LogDebug("Host network is set to true in pod %s.", put.Namespace+"."+put.Name)
+			check.LogError("Host network is set to true in Pod %q.", put)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Host network is set to true", false))
 		} else {
+			check.LogInfo("Host network is set to false in Pod %q.", put)
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Host network is not set to true", true))
 		}
 	}
@@ -402,11 +414,12 @@ func testPodHostPath(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
+		check.LogInfo("Testing Pod %q", put)
 		podIsCompliant := true
 		for idx := range put.Spec.Volumes {
 			vol := &put.Spec.Volumes[idx]
 			if vol.HostPath != nil && vol.HostPath.Path != "" {
-				check.LogDebug("Hostpath path: %s is set in pod %s.", vol.HostPath.Path, put.Namespace+"."+put.Name)
+				check.LogError("Hostpath path: %q is set in Pod %q.", vol.HostPath.Path, put)
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Hostpath path is set", false).
 					SetType(testhelper.HostPathType).
 					AddField(testhelper.Path, vol.HostPath.Path))
@@ -414,6 +427,7 @@ func testPodHostPath(check *checksdb.Check, env *provider.TestEnvironment) {
 			}
 		}
 		if podIsCompliant {
+			check.LogError("Hostpath path not set in Pod %q.", put)
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Hostpath path is not set", true))
 		}
 	}
@@ -426,10 +440,12 @@ func testPodHostIPC(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
+		check.LogInfo("Testing Pod %q", put)
 		if put.Spec.HostIPC {
-			check.LogDebug("HostIpc is set in pod %s.", put.Namespace+"."+put.Name)
+			check.LogError("HostIpc is set in Pod %q.", put)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "HostIpc is set to true", false))
 		} else {
+			check.LogInfo("HostIpc not set in Pod %q.", put)
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "HostIpc is not set to true", true))
 		}
 	}
@@ -442,10 +458,12 @@ func testPodHostPID(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
+		check.LogInfo("Testing Pod %q", put)
 		if put.Spec.HostPID {
-			check.LogDebug("HostPid is set in pod %s.", put.Namespace+"."+put.Name)
+			check.LogError("HostPid is set in Pod %q.", put)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "HostPid is set to true", false))
 		} else {
+			check.LogInfo("HostPid not set in Pod %q.", put)
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "HostPid is not set to true", true))
 		}
 	}
@@ -455,32 +473,31 @@ func testPodHostPID(check *checksdb.Check, env *provider.TestEnvironment) {
 
 // Tests namespaces for invalid prefixed and CRs are not defined in namespaces not under test with CRDs under test
 func testNamespace(check *checksdb.Check, env *provider.TestEnvironment) {
-	check.LogInfo("CNF resources' Namespaces should not have any of the following prefixes: %v", invalidNamespacePrefixes)
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, namespace := range env.Namespaces {
+		check.LogInfo("Testing namespace %q", namespace)
 		namespaceCompliant := true
-		log.Info("Checking namespace %s", namespace)
 		for _, invalidPrefix := range invalidNamespacePrefixes {
 			if strings.HasPrefix(namespace, invalidPrefix) {
-				check.LogDebug("Namespace %s has invalid prefix %s", namespace, invalidPrefix)
+				check.LogError("Namespace %q has invalid prefix %q", namespace, invalidPrefix)
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNamespacedReportObject("Namespace has invalid prefix", testhelper.Namespace, false, namespace))
 				namespaceCompliant = false
 				break // Break out of the loop if we find an invalid prefix
 			}
 		}
 		if namespaceCompliant {
+			check.LogInfo("Namespace %q has valid prefix", namespace)
 			compliantObjects = append(compliantObjects, testhelper.NewNamespacedReportObject("Namespace has valid prefix", testhelper.Namespace, true, namespace))
 		}
 	}
 	if failedNamespacesNum := len(nonCompliantObjects); failedNamespacesNum > 0 {
 		check.SetResult(compliantObjects, nonCompliantObjects)
 	}
-	check.LogInfo("CNF pods should belong to any of the configured Namespaces: %v", env.Namespaces)
-	check.LogInfo("CRs from autodiscovered CRDs should belong only to the configured Namespaces: %v", env.Namespaces)
-	invalidCrs, err := namespace.TestCrsNamespaces(env.Crds, env.Namespaces)
+
+	invalidCrs, err := namespace.TestCrsNamespaces(env.Crds, env.Namespaces, check.GetLoggger())
 	if err != nil {
-		check.LogError("Error while testing CRs namespaces: %v", err)
+		check.LogError("Error while testing CRs namespaces, err=%v", err)
 		return
 	}
 
@@ -495,15 +512,15 @@ func testNamespace(check *checksdb.Check, env *provider.TestEnvironment) {
 
 // testPodServiceAccount verifies that the pod utilizes a valid service account
 func testPodServiceAccount(check *checksdb.Check, env *provider.TestEnvironment) {
-	check.LogInfo("Tests that each pod utilizes a valid service account")
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
-		check.LogInfo("Testing service account for pod %s (ns: %s)", put.Name, put.Namespace)
+		check.LogInfo("Testing Pod %q", put)
 		if put.Spec.ServiceAccountName == defaultServiceAccount {
-			check.LogDebug("Pod %s (ns: %s) does not have a valid service account name.", put.Name, put.Namespace)
+			check.LogError("Pod %q does not have a valid service account name (uses the default service account instead).", put)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod does not have a valid service account name", false))
 		} else {
+			check.LogInfo("Pod %q has a valid service account name", put)
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has a service account name", true))
 		}
 	}
@@ -515,26 +532,26 @@ func testPodServiceAccount(check *checksdb.Check, env *provider.TestEnvironment)
 //
 //nolint:funlen
 func testPodRoleBindings(check *checksdb.Check, env *provider.TestEnvironment) {
-	check.LogInfo("Should not have RoleBinding in other namespaces")
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
 	for _, put := range env.Pods {
+		check.LogInfo("Testing Pod %q", put)
 		podIsCompliant := true
-		check.LogInfo("Testing role binding for pod: %s namespace: %s", put.Name, put.Namespace)
 		if put.Pod.Spec.ServiceAccountName == defaultServiceAccount {
-			log.Info("%s has an empty or default serviceAccountName, skipping.", put.String())
+			check.LogError("Pod %q has an empty or default serviceAccountName", put)
 			// Add the pod to the non-compliant list
 			nonCompliantObjects = append(nonCompliantObjects,
 				testhelper.NewPodReportObject(put.Namespace, put.Name,
 					"The serviceAccountName is either empty or default", false))
 			podIsCompliant = false
 		} else {
-			log.Info("%s has a serviceAccountName: %s, checking role bindings.", put.String(), put.Spec.ServiceAccountName)
+			check.LogInfo("Pod %q has a serviceAccountName %q, checking role bindings.", put, put.Spec.ServiceAccountName)
 			// Loop through the rolebindings and check if they are from another namespace
 			for rbIndex := range env.RoleBindings {
 				// Short circuit if the role binding and the pod are in the same namespace.
 				if env.RoleBindings[rbIndex].Namespace == put.Namespace {
+					check.LogInfo("Pod %q and the role binding are in the same namespace", put)
 					continue
 				}
 				// If we make it to this point, the role binding and the pod are in different namespaces.
@@ -553,7 +570,7 @@ func testPodRoleBindings(check *checksdb.Check, env *provider.TestEnvironment) {
 					if subject.Kind == rbacv1.ServiceAccountKind &&
 						subject.Namespace == put.Namespace &&
 						subject.Name == put.Spec.ServiceAccountName {
-						check.LogWarn("Pod: %s has the following role bindings that do not live in one of the CNF namespaces: %s", put, env.RoleBindings[rbIndex].Name)
+						check.LogError("Pod %q has the following role bindings that do not live in one of the CNF namespaces: %q", put, env.RoleBindings[rbIndex].Name)
 
 						// Add the pod to the non-compliant list
 						nonCompliantObjects = append(nonCompliantObjects,
@@ -576,6 +593,7 @@ func testPodRoleBindings(check *checksdb.Check, env *provider.TestEnvironment) {
 		}
 		// Add pod to the compliant object list
 		if podIsCompliant {
+			check.LogInfo("All the role bindings used by Pod %q (applied by the service accounts) live in one of the CNF namespaces", put)
 			compliantObjects = append(compliantObjects,
 				testhelper.NewPodReportObject(put.Namespace, put.Name, "All the role bindings used by this pod (applied by the service accounts) live in one of the CNF namespaces", true))
 		}
@@ -587,54 +605,51 @@ func testPodRoleBindings(check *checksdb.Check, env *provider.TestEnvironment) {
 //
 //nolint:dupl
 func testPodClusterRoleBindings(check *checksdb.Check, env *provider.TestEnvironment) {
-	check.LogInfo("Pods should not have ClusterRoleBindings")
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
-	log.Info("There were %d cluster role bindings found in the cluster.", len(env.ClusterRoleBindings))
-
 	for _, put := range env.Pods {
+		check.LogInfo("Testing Pod %q", put)
 		podIsCompliant := true
-		check.LogInfo("Testing cluster role binding for pod: %s namespace: %s", put.Name, put.Namespace)
-		result, roleRefName, err := put.IsUsingClusterRoleBinding(env.ClusterRoleBindings)
+		result, roleRefName, err := put.IsUsingClusterRoleBinding(env.ClusterRoleBindings, check.GetLoggger())
 		if err != nil {
-			log.Error("failed to determine if pod %s/%s is using a cluster role binding: %v", put.Namespace, put.Name, err)
+			check.LogError("Failed to determine if Pod %q is using a cluster role binding, err=%v", put, err)
 			podIsCompliant = false
 		}
 
 		// Pod was found to be using a cluster role binding.  This is not allowed.
 		// Flagging this pod as a failed pod.
 		if result {
-			check.LogWarn("%s is using a cluster role binding", put.String())
 			podIsCompliant = false
 		}
 
 		if podIsCompliant {
+			check.LogInfo("Pod %q is not using a cluster role binding", put)
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not using a cluster role binding", true))
 		} else {
+			check.LogError("Pod %q is using a cluster role binding", put)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is using a cluster role binding", false).
 				AddField(testhelper.ClusterRoleName, roleRefName))
 		}
 
 		topOwners, err := put.GetTopOwner()
-
 		if err != nil {
+			check.LogError("Could not get top owners of Pod %q, err=%v", put, err)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, fmt.Sprintf("Error getting top owners of this pod, err=%s", err), false).
 				AddField(testhelper.ClusterRoleName, roleRefName))
 			continue
 		}
 
-		csvNamespace, csvName, isOwnedByClusterWideOperator := OwnedByClusterWideOperator(topOwners, env)
+		csvNamespace, csvName, isOwnedByClusterWideOperator := ownedByClusterWideOperator(topOwners, env)
 		// Pod is using a cluster role binding but is owned by a cluster wide operator, so it is ok
 		if isOwnedByClusterWideOperator && result {
-			log.Info("%s is using a cluster role binding but is owned by CSV namespace=%s, name=%s", put.String(), csvNamespace, csvName)
+			check.LogInfo("Pod %q is using a cluster role binding but is owned by a cluster-wide operator (Csv %q, namespace %q)", put, csvName, csvNamespace)
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is using a cluster role binding but owned by a cluster-wide operator", true))
 			continue
 		}
 		if result {
 			// Pod was found to be using a cluster role binding.  This is not allowed.
 			// Flagging this pod as a failed pod.
-			log.Info("%s is using a cluster role binding", put.String())
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is using a cluster role binding", false).
 				AddField(testhelper.ClusterRoleName, roleRefName))
 			continue
@@ -645,12 +660,12 @@ func testPodClusterRoleBindings(check *checksdb.Check, env *provider.TestEnviron
 }
 
 // Returns true if object identified by namespace and name is a CSV created by a cluster-wide operator
-func IsCSVAndClusterWide(aNamespace, name string, env *provider.TestEnvironment) bool {
+func isCSVAndClusterWide(aNamespace, name string, env *provider.TestEnvironment) bool {
 	for _, op := range env.Operators {
 		if op.Csv != nil &&
 			op.Csv.Namespace == aNamespace &&
 			op.Csv.Name == name &&
-			(op.IsClusterWide || IsInstallModeMultiNamespace(op.Csv.Spec.InstallModes)) {
+			(op.IsClusterWide || isInstallModeMultiNamespace(op.Csv.Spec.InstallModes)) {
 			return true
 		}
 	}
@@ -658,7 +673,7 @@ func IsCSVAndClusterWide(aNamespace, name string, env *provider.TestEnvironment)
 }
 
 // return true if CSV install mode contains multi namespaces or all namespaces
-func IsInstallModeMultiNamespace(installModes []v1alpha1.InstallMode) bool {
+func isInstallModeMultiNamespace(installModes []v1alpha1.InstallMode) bool {
 	for i := 0; i < len(installModes); i++ {
 		if installModes[i].Type == v1alpha1.InstallModeTypeAllNamespaces {
 			return true
@@ -668,9 +683,9 @@ func IsInstallModeMultiNamespace(installModes []v1alpha1.InstallMode) bool {
 }
 
 // Return true if one of the passed topOwners is a CSV that is installed by a cluster-wide operator
-func OwnedByClusterWideOperator(topOwners map[string]provider.TopOwner, env *provider.TestEnvironment) (aNamespace, name string, found bool) {
+func ownedByClusterWideOperator(topOwners map[string]provider.TopOwner, env *provider.TestEnvironment) (aNamespace, name string, found bool) {
 	for _, owner := range topOwners {
-		if IsCSVAndClusterWide(owner.Namespace, owner.Name, env) {
+		if isCSVAndClusterWide(owner.Namespace, owner.Name, env) {
 			return owner.Namespace, owner.Name, true
 		}
 	}
@@ -678,15 +693,12 @@ func OwnedByClusterWideOperator(topOwners map[string]provider.TopOwner, env *pro
 }
 
 func testAutomountServiceToken(check *checksdb.Check, env *provider.TestEnvironment) {
-	check.LogInfo("Should have automountServiceAccountToken set to false")
-
-	msg := []string{}
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.Pods {
-		check.LogInfo("check the existence of pod service account %s (ns= %s )", put.Namespace, put.Name)
+		check.LogInfo("Testing Pod %q", put)
 		if put.Spec.ServiceAccountName == defaultServiceAccount {
-			check.LogDebug("Pod %s has been found with default service account name.", put.Name)
+			check.LogError("Pod %q uses the default service account name.", put.Name)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has been found with default service account name", false))
 			break
 		}
@@ -694,15 +706,12 @@ func testAutomountServiceToken(check *checksdb.Check, env *provider.TestEnvironm
 		// Evaluate the pod's automount service tokens and any attached service accounts
 		podPassed, newMsg := rbac.EvaluateAutomountTokens(put.Pod)
 		if !podPassed {
+			check.LogError(newMsg)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, newMsg, false))
-			msg = append(msg, newMsg)
 		} else {
+			check.LogInfo("Pod %q does not have automount service tokens set to true", put)
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod does not have automount service tokens set to true", true))
 		}
-	}
-
-	if len(msg) > 0 {
-		check.LogDebug(strings.Join(msg, ""))
 	}
 
 	check.SetResult(compliantObjects, nonCompliantObjects)
@@ -713,33 +722,36 @@ func testOneProcessPerContainer(check *checksdb.Check, env *provider.TestEnviron
 	var nonCompliantObjects []*testhelper.ReportObject
 
 	for _, cut := range env.Containers {
+		check.LogInfo("Testing Container %q", cut)
 		// the Istio sidecar container "istio-proxy" launches two processes: "pilot-agent" and "envoy"
 		if cut.IsIstioProxy() {
+			check.LogInfo("Skipping \"istio-proxy\" container")
 			continue
 		}
 		debugPod := env.DebugPods[cut.NodeName]
 		if debugPod == nil {
-			check.LogError("Debug pod not found for node %s", cut.NodeName)
+			check.LogError("Debug pod not found for node %q", cut.NodeName)
 			return
 		}
 		ocpContext := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
 		pid, err := crclient.GetPidFromContainer(cut, ocpContext)
 		if err != nil {
-			check.LogDebug("Could not get PID for: %s, error: %v", cut, err)
+			check.LogError("Could not get PID for Container %q, error: %v", cut, err)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, err.Error(), false))
 			continue
 		}
 
 		nbProcesses, err := getNbOfProcessesInPidNamespace(ocpContext, pid, clientsholder.GetClientsHolder())
 		if err != nil {
-			check.LogDebug("Could not get number of processes for: %s, error: %v", cut, err)
+			check.LogError("Could not get number of processes for Container %q, error: %v", cut, err)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, err.Error(), false))
 			continue
 		}
 		if nbProcesses > 1 {
-			check.LogDebug("%s has more than one process running", cut.String())
+			check.LogError("Container %q has more than one process running", cut)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has more than one process running", false))
 		} else {
+			check.LogInfo("Container %q has only one process running", cut)
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has only one process running", true))
 		}
 	}
@@ -754,12 +766,19 @@ func testSYSNiceRealtimeCapability(check *checksdb.Check, env *provider.TestEnvi
 	// Loop through all of the labeled containers and compare their security context capabilities and whether
 	// or not the node's kernel is realtime enabled.
 	for _, cut := range env.Containers {
+		check.LogInfo("Testing Container %q", cut)
 		n := env.Nodes[cut.NodeName]
-		if n.IsRTKernel() && !strings.Contains(cut.SecurityContext.Capabilities.String(), "SYS_NICE") {
-			check.LogDebug("%s has been found running on a realtime kernel enabled node without SYS_NICE capability.", cut.String())
+		if !n.IsRTKernel() {
+			check.LogInfo("Container is not running on a realtime kernel enabled node")
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is not running on a realtime kernel enabled node", true))
+			continue
+		}
+		if !strings.Contains(cut.SecurityContext.Capabilities.String(), "SYS_NICE") {
+			check.LogError("Container %q has been found running on a realtime kernel enabled node without SYS_NICE capability.", cut)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is running on a realtime kernel enabled node without SYS_NICE capability", false))
 		} else {
-			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is not running on a realtime kernel enabled node", true))
+			check.LogInfo("Container is running on a realtime kernel enabled node with the SYS_NICE capability")
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is running on a realtime kernel enabled node with the SYS_NICE capability", true))
 		}
 	}
 
@@ -770,6 +789,7 @@ func testSysPtraceCapability(check *checksdb.Check, env *provider.TestEnvironmen
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, put := range env.GetShareProcessNamespacePods() {
+		check.LogInfo("Testing Pod %q", put)
 		sysPtraceEnabled := false
 		for _, cut := range put.Containers {
 			if cut.SecurityContext == nil ||
@@ -778,14 +798,16 @@ func testSysPtraceCapability(check *checksdb.Check, env *provider.TestEnvironmen
 				continue
 			}
 			if stringhelper.StringInSlice(cut.SecurityContext.Capabilities.Add, "SYS_PTRACE", false) {
+				check.LogInfo("Container %q defines the SYS_PTRACE capability", cut)
 				sysPtraceEnabled = true
 				break
 			}
 		}
 		if !sysPtraceEnabled {
-			check.LogDebug("Pod %s has process namespace sharing enabled but no container allowing the SYS_PTRACE capability.", put.String())
+			check.LogError("Pod %q has process namespace sharing enabled but no container allowing the SYS_PTRACE capability.", put)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has process namespace sharing enabled but no container allowing the SYS_PTRACE capability", false))
 		} else {
+			check.LogInfo("Pod %q has process namespace sharing enabled and at least one container allowing the SYS_PTRACE capability", put)
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod has process namespace sharing enabled and at least one container allowing the SYS_PTRACE capability", true))
 		}
 	}
@@ -795,9 +817,9 @@ func testSysPtraceCapability(check *checksdb.Check, env *provider.TestEnvironmen
 func testNamespaceResourceQuota(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
-	check.LogInfo("Testing namespace resource quotas")
 
 	for _, put := range env.Pods {
+		check.LogInfo("Testing Pod %q", put)
 		// Look through all of the pods and compare their namespace to any potential
 		// resource quotas
 		foundPodNamespaceRQ := false
@@ -812,9 +834,10 @@ func testNamespaceResourceQuota(check *checksdb.Check, env *provider.TestEnviron
 		}
 
 		if !foundPodNamespaceRQ {
-			check.LogDebug("Pod %s is running in a namespace that does not have a ResourceQuota applied.", put.String())
+			check.LogError("Pod %q is running in a namespace that does not have a ResourceQuota applied.", put)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is running in a namespace that does not have a ResourceQuota applied", false))
 		} else {
+			check.LogInfo("Pod %q is running in a namespace that has a ResourceQuota applied.", put)
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is running in a namespace that has a ResourceQuota applied", true))
 		}
 	}
@@ -831,24 +854,26 @@ func testNoSSHDaemonsAllowed(check *checksdb.Check, env *provider.TestEnvironmen
 	var nonCompliantObjects []*testhelper.ReportObject
 
 	for _, put := range env.Pods {
+		check.LogInfo("Testing Pod %q", put)
 		cut := put.Containers[0]
 
 		// 1. Find SSH port
 		port, err := netutil.GetSSHDaemonPort(cut)
 		if err != nil {
-			check.LogError("could not get ssh daemon port on %s, err: %v", cut, err)
+			check.LogError("Could not get ssh daemon port on %q, err: %v", cut, err)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Failed to get the ssh port for pod", false))
 			continue
 		}
 
 		if port == "" {
+			check.LogInfo("Pod %q is not running an SSH daemon", put)
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not running an SSH daemon", true))
 			continue
 		}
 
 		sshServicePortNumber, err := strconv.Atoi(port)
 		if err != nil {
-			log.Error("error occurred while converting port %s from string to integer on %s", port, cut)
+			check.LogError("Could not convert port %q from string to integer on Container %q", port, cut)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Failed to get the listening ports for pod", false))
 			continue
 		}
@@ -857,15 +882,16 @@ func testNoSSHDaemonsAllowed(check *checksdb.Check, env *provider.TestEnvironmen
 		sshPortInfo := netutil.PortInfo{PortNumber: sshServicePortNumber, Protocol: sshServicePortProtocol}
 		listeningPorts, err := netutil.GetListeningPorts(cut)
 		if err != nil {
-			check.LogDebug("Failed to get the listening ports on %s, err: %v", cut, err)
+			check.LogError("Failed to get the listening ports for Pod %q, err: %v", put, err)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Failed to get the listening ports for pod", false))
 			continue
 		}
 
 		if _, ok := listeningPorts[sshPortInfo]; ok {
-			check.LogDebug("Pod %s is running an SSH daemon", put)
+			check.LogError("Pod %q is running an SSH daemon", put)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is running an SSH daemon", false))
 		} else {
+			check.LogInfo("Pod %q is not running an SSH daemon", put)
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not running an SSH daemon", true))
 		}
 	}
@@ -876,14 +902,15 @@ func testNoSSHDaemonsAllowed(check *checksdb.Check, env *provider.TestEnvironmen
 func testPodRequestsAndLimits(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
-	check.LogInfo("Testing container resource requests and limits")
-
 	// Loop through the containers, looking for containers that are missing requests or limits.
 	// These need to be defined in order to pass.
 	for _, cut := range env.Containers {
-		if !resources.HasRequestsAndLimitsSet(cut) {
+		check.LogInfo("Testing Container %q", cut)
+		if !resources.HasRequestsAndLimitsSet(cut, check.GetLoggger()) {
+			check.LogError("Container %q is missing resource requests or limits", cut)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is missing resource requests or limits", false))
 		} else {
+			check.LogInfo("Container %q has resource requests and limits", cut)
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has resource requests and limits", true))
 		}
 	}
@@ -896,13 +923,13 @@ func test1337UIDs(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	const leetNum = 1337
-	check.LogInfo("Testing pods to ensure none are using UID 1337")
 	for _, put := range env.Pods {
-		check.LogInfo("checking if pod %s has a securityContext RunAsUser 1337 (ns= %s)", put.Name, put.Namespace)
+		check.LogInfo("Testing Pod %q", put)
 		if put.IsRunAsUserID(leetNum) {
-			check.LogDebug("Pod: %s/%s is found to use securityContext RunAsUser 1337", put.Namespace, put.Name)
+			check.LogError("Pod %q is using securityContext RunAsUser 1337", put)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is using securityContext RunAsUser 1337", false))
 		} else {
+			check.LogInfo("Pod %q is not using securityContext RunAsUser 1337", put)
 			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not using securityContext RunAsUser 1337", true))
 		}
 	}
@@ -918,14 +945,17 @@ func testContainerSCC(check *checksdb.Check, env *provider.TestEnvironment) {
 	var nonCompliantObjects []*testhelper.ReportObject
 	highLevelCat := securitycontextcontainer.CategoryID1
 	for _, pod := range env.Pods {
+		check.LogInfo("Testing Pod %q", pod)
 		listCategory := securitycontextcontainer.CheckPod(pod)
 		for _, cat := range listCategory {
 			if cat.Category > securitycontextcontainer.CategoryID1NoUID0 {
+				check.LogError("Category %q is NOT category 1 or category NoUID0", cat)
 				aContainerOut := testhelper.NewContainerReportObject(cat.NameSpace, cat.Podname, cat.Containername, "container category is NOT category 1 or category NoUID0", false).
 					SetType(testhelper.ContainerCategory).
 					AddField(testhelper.Category, cat.Category.String())
 				nonCompliantObjects = append(nonCompliantObjects, aContainerOut)
 			} else {
+				check.LogInfo("Category %q is category 1 or category NoUID0", cat)
 				aContainerOut := testhelper.NewContainerReportObject(cat.NameSpace, cat.Podname, cat.Containername, "container category is category 1 or category NoUID0", true).
 					SetType(testhelper.ContainerCategory).
 					AddField(testhelper.Category, cat.Category.String())
@@ -945,15 +975,16 @@ func testNodePort(check *checksdb.Check, env *provider.TestEnvironment) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, s := range env.Services {
-		check.LogInfo("Testing %s", services.ToString(s))
+		check.LogInfo("Testing %q", services.ToString(s))
 
 		if s.Spec.Type == nodePort {
-			check.LogDebug("FAILURE: Service %s (ns %s) type is nodePort", s.Name, s.Namespace)
+			check.LogError("Service %q (ns %q) type is nodePort", s.Name, s.Namespace)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewReportObject("Service is type NodePort", testhelper.ServiceType, false).
 				AddField(testhelper.Namespace, s.Namespace).
 				AddField(testhelper.ServiceName, s.Name).
 				AddField(testhelper.ServiceMode, string(s.Spec.Type)))
 		} else {
+			check.LogInfo("Service %q (ns %q) type is not nodePort (type=%q)", s.Name, s.Namespace, s.Spec.Type)
 			compliantObjects = append(compliantObjects, testhelper.NewReportObject("Service is not type NodePort", testhelper.ServiceType, true).
 				AddField(testhelper.Namespace, s.Namespace).
 				AddField(testhelper.ServiceName, s.Name).
@@ -979,6 +1010,8 @@ func testCrdRoles(check *checksdb.Check, env *provider.TestEnvironment) {
 			continue
 		}
 		for _, aRule := range matchingRules {
+			check.LogInfo("Rule (resource-name=%q, resource-group=%q, verb=%q, role-name=%q) applies to CRDs under test",
+				aRule.Resource.Name, aRule.Resource.Group, aRule.Verb, env.Roles[roleIndex].Name)
 			compliantObjects = append(compliantObjects, testhelper.NewNamespacedReportObject("This applies to CRDs under test", testhelper.RoleRuleType, true, env.Roles[roleIndex].Namespace).
 				AddField(testhelper.RoleName, env.Roles[roleIndex].Name).
 				AddField(testhelper.Group, aRule.Resource.Group).
@@ -986,6 +1019,8 @@ func testCrdRoles(check *checksdb.Check, env *provider.TestEnvironment) {
 				AddField(testhelper.Verb, aRule.Verb))
 		}
 		for _, aRule := range nonMatchingRules {
+			check.LogInfo("Rule (resource-name=%q, resource-group=%q, verb=%q, role-name=%q) does not apply to CRDs under test",
+				aRule.Resource.Name, aRule.Resource.Group, aRule.Verb, env.Roles[roleIndex].Name)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNamespacedReportObject("This rule does not apply to CRDs under test", testhelper.RoleRuleType, false, env.Roles[roleIndex].Namespace).
 				AddField(testhelper.RoleName, env.Roles[roleIndex].Name).
 				AddField(testhelper.Group, aRule.Resource.Group).
@@ -994,9 +1029,11 @@ func testCrdRoles(check *checksdb.Check, env *provider.TestEnvironment) {
 		}
 
 		if len(nonMatchingRules) == 0 {
+			check.LogInfo("Role %q rules only apply to CRDs under test", env.Roles[roleIndex].Name)
 			compliantObjects = append(compliantObjects, testhelper.NewNamespacedNamedReportObject("This role's rules only apply to CRDs under test",
 				testhelper.RoleType, true, env.Roles[roleIndex].Namespace, env.Roles[roleIndex].Name))
 		} else {
+			check.LogError("Role %q rules apply to a mix of CRDs under test and others.", env.Roles[roleIndex].Name)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewNamespacedNamedReportObject("This role's rules apply to a mix of CRDs under test and others. See non compliant role rule objects.",
 				testhelper.RoleType, false, env.Roles[roleIndex].Namespace, env.Roles[roleIndex].Name))
 		}
