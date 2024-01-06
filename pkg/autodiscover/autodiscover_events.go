@@ -25,10 +25,6 @@ import (
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 )
 
-type Event struct {
-	*corev1.Event
-}
-
 func findAbnormalEvents(oc corev1client.CoreV1Interface, namespaces []string) (abnormalEvents []corev1.Event) {
 	abnormalEvents = []corev1.Event{}
 	for _, ns := range namespaces {
