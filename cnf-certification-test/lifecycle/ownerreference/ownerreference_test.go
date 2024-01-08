@@ -17,10 +17,12 @@
 package ownerreference_test
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/lifecycle/ownerreference"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -60,7 +62,9 @@ func TestRunTest(t *testing.T) {
 
 		ownerRef := ownerreference.NewOwnerReference(testPod)
 		assert.NotNil(t, ownerRef)
-		ownerRef.RunTest()
+		var logArchive strings.Builder
+		log.SetupLogger(&logArchive, "INFO")
+		ownerRef.RunTest(log.GetLogger())
 		assert.Equal(t, tc.expectedResult, ownerRef.GetResults())
 	}
 }

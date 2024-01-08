@@ -93,12 +93,12 @@ func (p *Pod) IsCPUIsolationCompliant() bool {
 	isCPUIsolated := true
 
 	if !LoadBalancingDisabled(p) {
-		log.Debug("%s has been found to not have annotations set correctly for CPU isolation.", p)
+		log.Debug("Pod %q has been found to not have annotations set correctly for CPU isolation.", p)
 		isCPUIsolated = false
 	}
 
 	if !p.IsRuntimeClassNameSpecified() {
-		log.Debug("%s has been found to not have runtimeClassName specified.", p)
+		log.Debug("Pod %q has been found to not have runtimeClassName specified.", p)
 		isCPUIsolated = false
 	}
 
