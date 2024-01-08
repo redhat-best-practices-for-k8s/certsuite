@@ -7,7 +7,7 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 
 ## Test cases summary
 
-### Total test cases: 104
+### Total test cases: 105
 
 ### Total suites: 10
 
@@ -22,7 +22,7 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |operator|3|
 |performance|6|
 |platform-alteration|13|
-|preflight|16|
+|preflight|17|
 
 ### Extended specific tests only: 12
 
@@ -36,11 +36,11 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |---|---|
 |7|1|
 
-### Non-Telco specific tests only: 57
+### Non-Telco specific tests only: 58
 
 |Mandatory|Optional|
 |---|---|
-|38|19|
+|38|20|
 
 ### Telco specific tests only: 27
 
@@ -574,11 +574,11 @@ Tags|telco,lifecycle
 
 Property|Description
 ---|---
-Unique ID|lifecycle-container-shutdown
-Description|Ensure that the containers lifecycle preStop management feature is configured. The most basic requirement for the lifecycle management of Pods in OpenShift are the ability to start and stop correctly. There are different ways a pod can stop on an OpenShift cluster. One way is that the pod can remain alive but non-functional. Another way is that the pod can crash and become non-functional. When pods are shut down by the platform they are sent a SIGTERM signal which means that the process in the container should start shutting down, closing connections and stopping all activity. If the pod doesn’t shut down within the default 30 seconds then the platform may send a SIGKILL signal which will stop the pod immediately. This method isn’t as clean and the default time between the SIGTERM and SIGKILL messages can be modified based on the requirements of the application. Containers should respond to SIGTERM/SIGKILL with graceful shutdown.
-Suggested Remediation|The preStop can be used to gracefully stop the container and clean resources (e.g., DB connection). For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. All pods must respond to SIGTERM signal and shutdown gracefully with a zero exit code.
+Unique ID|lifecycle-container-poststart
+Description|Ensure that the containers lifecycle postStart management feature is configured. A container must receive important events from the platform and conform/react to these events properly. For example, a container should catch SIGTERM or SIGKILL from the platform and shutdown as quickly as possible. Other typically important events from the platform are PostStart to initialize before servicing requests and PreStop to release resources cleanly before shutting down.
+Suggested Remediation|PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. PostStart is used to configure container, set up dependencies, record new creation. It can also be used to check that a required API is available before the container’s work begins.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cloud-native-design-best-practices
-Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.
+Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.
 Tags|telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
@@ -590,11 +590,11 @@ Tags|telco,lifecycle
 
 Property|Description
 ---|---
-Unique ID|lifecycle-container-startup
-Description|Ensure that the containers lifecycle postStart management feature is configured. A container must receive important events from the platform and conform/react to these events properly. For example, a container should catch SIGTERM or SIGKILL from the platform and shutdown as quickly as possible. Other typically important events from the platform are PostStart to initialize before servicing requests and PreStop to release resources cleanly before shutting down.
-Suggested Remediation|PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. PostStart is used to configure container, set up dependencies, record new creation. It can also be used to check that a required API is available before the container’s work begins.
+Unique ID|lifecycle-container-prestop
+Description|Ensure that the containers lifecycle preStop management feature is configured. The most basic requirement for the lifecycle management of Pods in OpenShift are the ability to start and stop correctly. There are different ways a pod can stop on an OpenShift cluster. One way is that the pod can remain alive but non-functional. Another way is that the pod can crash and become non-functional. When pods are shut down by the platform they are sent a SIGTERM signal which means that the process in the container should start shutting down, closing connections and stopping all activity. If the pod doesn’t shut down within the default 30 seconds then the platform may send a SIGKILL signal which will stop the pod immediately. This method isn’t as clean and the default time between the SIGTERM and SIGKILL messages can be modified based on the requirements of the application. Containers should respond to SIGTERM/SIGKILL with graceful shutdown.
+Suggested Remediation|The preStop can be used to gracefully stop the container and clean resources (e.g., DB connection). For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. All pods must respond to SIGTERM signal and shutdown gracefully with a zero exit code.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cloud-native-design-best-practices
-Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.
+Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.
 Tags|telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
@@ -1647,6 +1647,22 @@ Property|Description
 Unique ID|preflight-LayerCountAcceptable
 Description|Checking if container has less than 40 layers.  Too many layers within the container images can degrade container performance.
 Suggested Remediation|Optimize your Dockerfile to consolidate and minimize the number of layers. Each RUN command will produce a new layer. Try combining RUN commands using && where possible.
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-RequiredAnnotations
+
+Property|Description
+---|---
+Unique ID|preflight-RequiredAnnotations
+Description|Checks that the CSV has all of the required feature annotations.
+Suggested Remediation|Add all of the required annotations, and make sure the value is set to either 'true' or 'false'
 Best Practice Reference|No Doc Link
 Exception Process|There is no documented exception process for this.
 Tags|common,preflight
