@@ -102,16 +102,6 @@ type labelObject struct {
 
 var data = DiscoveredTestData{}
 
-func warnDeprecation(config *configuration.TestConfiguration) {
-	if len(config.OperatorsUnderTestLabels) == 0 {
-		log.Warn("DEPRECATED: deprecated default operator label in use ( %s:%s ) is about to be obsolete. Please use the new \"operatorsUnderTestLabels\" field to specify operators labels instead.",
-			deprecatedHardcodedOperatorLabelName, deprecatedHardcodedOperatorLabelValue)
-	}
-	if len(config.PodsUnderTestLabels) == 0 {
-		log.Warn("No Pod under test labels configured. Tests on pods and containers will not run. Please use the \"podsUnderTestLabels\" field to specify labels for pods under test")
-	}
-}
-
 const labelRegex = `(\S*)\s*:\s*(\S*)`
 const labelRegexMatches = 3
 
@@ -139,7 +129,7 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	oc := clientsholder.GetClientsHolder()
 
 	var err error
-	data.StorageClasses, err = getAllStorageClasses()
+	data.StorageClasses, err = getAllStorageClasses(oc.K8sClient.StorageV1())
 	if err != nil {
 		log.Error("Failed to retrieve storageClasses - err: %v", err)
 		os.Exit(1)
@@ -147,11 +137,6 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 
 	podsUnderTestLabelsObjects := createLabels(config.PodsUnderTestLabels)
 	operatorsUnderTestLabelsObjects := createLabels(config.OperatorsUnderTestLabels)
-
-	// prints warning about deprecated labels
-	warnDeprecation(config)
-	// adds DEPRECATED hardcoded operator label
-	operatorsUnderTestLabelsObjects = append(operatorsUnderTestLabelsObjects, labelObject{LabelKey: deprecatedHardcodedOperatorLabelName, LabelValue: deprecatedHardcodedOperatorLabelValue})
 
 	log.Info("parsed pods under test labels: %+v", podsUnderTestLabelsObjects)
 	log.Info("parsed operators under test labels: %+v", operatorsUnderTestLabelsObjects)
@@ -211,21 +196,21 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.Deployments = findDeploymentByLabel(oc.K8sClient.AppsV1(), podsUnderTestLabelsObjects, data.Namespaces)
 	data.StatefulSet = findStatefulSetByLabel(oc.K8sClient.AppsV1(), podsUnderTestLabelsObjects, data.Namespaces)
 	// Find ClusterRoleBindings
-	clusterRoleBindings, err := getClusterRoleBindings()
+	clusterRoleBindings, err := getClusterRoleBindings(oc.K8sClient.RbacV1())
 	if err != nil {
 		log.Error("Cannot get cluster role bindings, error: %v", err)
 		os.Exit(1)
 	}
 	data.ClusterRoleBindings = clusterRoleBindings
 	// Find RoleBindings
-	roleBindings, err := getRoleBindings()
+	roleBindings, err := getRoleBindings(oc.K8sClient.RbacV1())
 	if err != nil {
 		log.Error("Cannot get cluster role bindings, error: %v", err)
 		os.Exit(1)
 	}
 	data.RoleBindings = roleBindings
 	// find roles
-	roles, err := getRoles()
+	roles, err := getRoles(oc.K8sClient.RbacV1())
 	if err != nil {
 		log.Error("Cannot get roles, error: %v", err)
 		os.Exit(1)

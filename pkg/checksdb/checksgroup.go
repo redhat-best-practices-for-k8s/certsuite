@@ -81,10 +81,8 @@ func (group *ChecksGroup) Add(check *Check) {
 
 func skipCheck(check *Check, reason string) {
 	check.LogInfo("Skipping check %s, reason: %s", check.ID, reason)
-
-	fmt.Printf("[ %s ] %s\n", cli.CheckResultTagSkip, check.ID)
-
 	check.SetResultSkipped(reason)
+	printCheckResult(check)
 }
 
 func skipAll(checks []*Check, reason string) {
@@ -256,7 +254,6 @@ func shouldSkipCheck(check *Check) (skip bool, reasons []string) {
 }
 
 func runCheck(check *Check, group *ChecksGroup, remainingChecks []*Check) (err error) {
-	check.LogInfo("Running check")
 	defer func() {
 		if r := recover(); r != nil {
 			// Don't do anything in case the check was manually aborted by check.Abort().
@@ -309,15 +306,13 @@ func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool, abo
 	checks := []*Check{}
 	for _, check := range group.checks {
 		if !labelsExprEvaluator.Eval(check.Labels) {
-			skipCheck(check, "Not matching labels")
+			skipCheck(check, "no matching labels")
 			continue
 		}
 		checks = append(checks, check)
 	}
 
 	if len(checks) == 0 {
-		// No check matched the labels expression.
-		// skipAll(checks, "Not matching labels")
 		return nil, 0
 	}
 
@@ -400,14 +395,12 @@ func (group *ChecksGroup) OnAbort(labelsExpr, abortReason string) error {
 
 	for i, check := range group.checks {
 		if !labelsExprEvaluator.Eval(check.Labels) {
-			fmt.Printf("[ %s ] %s\n", cli.CheckResultTagSkip, check.ID)
-			check.SetResultSkipped("Not matching labels")
+			check.SetResultSkipped("not matching labels")
 			continue
 		}
 
 		// If none of this group's checks was running yet, skip all.
 		if group.currentRunningCheckIdx == checkIdxNone {
-			fmt.Printf("[ %s ] %s\n", cli.CheckResultTagSkip, check.ID)
 			check.SetResultSkipped(abortReason)
 			continue
 		}
@@ -415,11 +408,11 @@ func (group *ChecksGroup) OnAbort(labelsExpr, abortReason string) error {
 		// Abort the check that was running when it was aborted and skip the rest.
 		if i == group.currentRunningCheckIdx {
 			check.SetResultAborted(abortReason)
-			fmt.Printf("\r[ %s ] %-60s\n", cli.CheckResultTagAborted, check.ID)
 		} else if i > group.currentRunningCheckIdx {
-			fmt.Printf("[ %s ] %s\n", cli.CheckResultTagSkip, check.ID)
 			check.SetResultSkipped(abortReason)
 		}
+
+		printCheckResult(check)
 	}
 
 	return nil

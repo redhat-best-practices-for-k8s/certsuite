@@ -73,8 +73,7 @@ func LoadChecks() {
 		WithBeforeEachFn(beforeEachFn)
 
 	// Prestop test
-	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerPrestopIdentifier)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerPrestopIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainersPreStop(c, &env)
@@ -82,8 +81,7 @@ func LoadChecks() {
 		}))
 
 	// Scale CRD test
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCrdScalingIdentifier)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCrdScalingIdentifier)).
 		WithSkipCheckFn(
 			testhelper.GetNoCrdsUnderTestSkipFn(&env),
 			testhelper.GetNotIntrusiveSkipFn(&env)).
@@ -95,8 +93,7 @@ func LoadChecks() {
 		}))
 
 	// Poststart test
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerPostStartIdentifier)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerPostStartIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainersPostStart(c, &env)
@@ -104,8 +101,7 @@ func LoadChecks() {
 		}))
 
 	// Image pull policy test
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestImagePullPolicyIdentifier)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestImagePullPolicyIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainersImagePolicy(c, &env)
@@ -113,8 +109,7 @@ func LoadChecks() {
 		}))
 
 	// Readiness probe test
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestReadinessProbeIdentifier)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestReadinessProbeIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainersReadinessProbe(c, &env)
@@ -122,8 +117,7 @@ func LoadChecks() {
 		}))
 
 	// Liveness probe test
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestLivenessProbeIdentifier)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestLivenessProbeIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainersLivenessProbe(c, &env)
@@ -131,8 +125,7 @@ func LoadChecks() {
 		}))
 
 	// Startup probe test
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStartupProbeIdentifier)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStartupProbeIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainersStartupProbe(c, &env)
@@ -140,8 +133,7 @@ func LoadChecks() {
 		}))
 
 	// Pod owner reference test
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodDeploymentBestPracticesIdentifier)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodDeploymentBestPracticesIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodsOwnerReference(c, &env)
@@ -149,8 +141,7 @@ func LoadChecks() {
 		}))
 
 	// High availability test
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHighAvailabilityBestPractices)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHighAvailabilityBestPractices)).
 		WithSkipCheckFn(testhelper.GetNotEnoughWorkersSkipFn(&env, minWorkerNodesForLifecycle)).
 		WithSkipCheckFn(skipIfNoPodSetsetsUnderTest).
 		WithCheckFn(func(c *checksdb.Check) error {
@@ -159,8 +150,7 @@ func LoadChecks() {
 		}))
 
 	// Selector and affinity best practices test
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodNodeSelectorAndAffinityBestPractices)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodNodeSelectorAndAffinityBestPractices)).
 		WithSkipCheckFn(
 			testhelper.GetNotEnoughWorkersSkipFn(&env, minWorkerNodesForLifecycle),
 			testhelper.GetPodsWithoutAffinityRequiredLabelSkipFn(&env)).
@@ -170,8 +160,7 @@ func LoadChecks() {
 		}))
 
 	// Pod recreation test
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodRecreationIdentifier)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodRecreationIdentifier)).
 		WithSkipCheckFn(
 			testhelper.GetNotEnoughWorkersSkipFn(&env, minWorkerNodesForLifecycle),
 			testhelper.GetNotIntrusiveSkipFn(&env)).
@@ -182,8 +171,7 @@ func LoadChecks() {
 		}))
 
 	// Deployment scaling test
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestDeploymentScalingIdentifier)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestDeploymentScalingIdentifier)).
 		WithSkipCheckFn(
 			testhelper.GetNotIntrusiveSkipFn(&env),
 			testhelper.GetNotEnoughWorkersSkipFn(&env, minWorkerNodesForLifecycle)).
@@ -194,8 +182,7 @@ func LoadChecks() {
 		}))
 
 	// Statefulset scaling test
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStateFulSetScalingIdentifier)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStateFulSetScalingIdentifier)).
 		WithSkipCheckFn(
 			testhelper.GetNotIntrusiveSkipFn(&env),
 			testhelper.GetNotEnoughWorkersSkipFn(&env, minWorkerNodesForLifecycle)).
@@ -206,8 +193,7 @@ func LoadChecks() {
 		}))
 
 	// Persistent volume reclaim policy test
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPersistentVolumeReclaimPolicyIdentifier)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPersistentVolumeReclaimPolicyIdentifier)).
 		WithSkipCheckFn(
 			testhelper.GetNoPersistentVolumesSkipFn(&env),
 			testhelper.GetNoPodsUnderTestSkipFn(&env)).
@@ -217,8 +203,7 @@ func LoadChecks() {
 		}))
 
 	// CPU Isolation test
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCPUIsolationIdentifier)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCPUIsolationIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoGuaranteedPodsWithExclusiveCPUsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testCPUIsolation(c, &env)
@@ -226,8 +211,7 @@ func LoadChecks() {
 		}))
 
 	// Affinity required pods test
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestAffinityRequiredPods)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestAffinityRequiredPods)).
 		WithSkipCheckFn(testhelper.GetNoAffinityRequiredPodsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testAffinityRequiredPods(c, &env)
@@ -235,8 +219,7 @@ func LoadChecks() {
 		}))
 
 	// Pod toleration bypass test
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodTolerationBypassIdentifier)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodTolerationBypassIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodTolerationBypass(c, &env)
@@ -244,8 +227,7 @@ func LoadChecks() {
 		}))
 
 	// Storage provisioner test
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStorageProvisioner)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestStorageProvisioner)).
 		WithSkipCheckFn(
 			testhelper.GetNoPodsUnderTestSkipFn(&env),
 			testhelper.GetNoStorageClassesSkipFn(&env),
@@ -282,7 +264,9 @@ func testContainersPostStart(check *checksdb.Check, env *provider.TestEnvironmen
 			check.LogDebug("%s does not have postStart defined", cut)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container does not have postStart defined", false))
 		} else {
-			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has postStart defined", true))
+			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has postStart defined."+
+				"Attention: There is a known upstream bug where a pod with a still-running postStart lifecycle hook that is deleted may not be terminated even after "+
+				"the terminationGracePeriod k8s bug link: kubernetes/kubernetes#116032", true))
 		}
 	}
 	check.SetResult(compliantObjects, nonCompliantObjects)

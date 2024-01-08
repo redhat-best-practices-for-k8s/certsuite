@@ -45,7 +45,8 @@ type Check struct {
 
 	Result         CheckResult
 	CapturedOutput string
-	FailureReason  string
+	details        string
+	skipReason     string
 
 	logger     *log.Logger
 	logArchive *strings.Builder
@@ -64,7 +65,7 @@ func NewCheck(id string, labels []string) *Check {
 		logArchive: &strings.Builder{},
 	}
 
-	check.logger = log.GetMultiLogger(check.logArchive).With("check", check.ID)
+	check.logger = log.GetMultiLogger(check.logArchive, cli.CliCheckLogSniffer).With("check", check.ID)
 
 	return check
 }
@@ -189,7 +190,7 @@ func (check *Check) SetResult(compliantObjects, nonCompliantObjects []*testhelpe
 		check.LogError("Failed to get result objects string for check %s: %v", check.ID, err)
 	}
 
-	check.CapturedOutput = resultObjectsStr
+	check.details = resultObjectsStr
 
 	// If an error/panic happened before, do not change the result.
 	if check.Result == CheckResultError {
@@ -198,25 +199,13 @@ func (check *Check) SetResult(compliantObjects, nonCompliantObjects []*testhelpe
 
 	if len(nonCompliantObjects) > 0 {
 		check.Result = CheckResultFailed
-		check.FailureReason = resultObjectsStr
+		check.skipReason = ""
 	} else if len(compliantObjects) == 0 {
 		// Mark this check as skipped.
 		check.LogWarn("Check %s marked as skipped as both compliant and non-compliant objects lists are empty.", check.ID)
-		check.FailureReason = "Compliant and non-compliant objects lists are empty."
+		check.skipReason = "compliant and non-compliant objects lists are empty"
 		check.Result = CheckResultSkipped
 	}
-}
-
-func (check *Check) SetResultFailed(reason string) {
-	check.mutex.Lock()
-	defer check.mutex.Unlock()
-
-	if check.Result == CheckResultAborted {
-		return
-	}
-
-	check.Result = CheckResultFailed
-	check.FailureReason = reason
 }
 
 func (check *Check) SetResultSkipped(reason string) {
@@ -228,7 +217,7 @@ func (check *Check) SetResultSkipped(reason string) {
 	}
 
 	check.Result = CheckResultSkipped
-	check.FailureReason = reason
+	check.skipReason = reason
 }
 
 func (check *Check) SetResultError(reason string) {
@@ -244,7 +233,7 @@ func (check *Check) SetResultError(reason string) {
 		return
 	}
 	check.Result = CheckResultError
-	check.FailureReason = reason
+	check.skipReason = reason
 }
 
 func (check *Check) SetResultAborted(reason string) {
@@ -252,7 +241,7 @@ func (check *Check) SetResultAborted(reason string) {
 	defer check.mutex.Unlock()
 
 	check.Result = CheckResultAborted
-	check.FailureReason = reason
+	check.skipReason = reason
 }
 
 func (check *Check) Run() error {
@@ -264,14 +253,14 @@ func (check *Check) Run() error {
 		return fmt.Errorf("unable to run due to a previously existing error: %v", check.Error)
 	}
 
-	fmt.Printf("[ %s ] %s", cli.CheckResultTagRunning, check.ID)
+	cli.PrintCheckRunning(check.ID)
 
 	check.StartTime = time.Now()
 	defer func() {
 		check.EndTime = time.Now()
 	}()
 
-	log.Info("RUNNING CHECK: %s (labels: %v)", check.ID, check.Labels)
+	check.LogInfo("Running check (labels: %v)", check.Labels)
 	if check.BeforeCheckFn != nil {
 		if err := check.BeforeCheckFn(check); err != nil {
 			return fmt.Errorf("check %s failed in before check function: %v", check.ID, err)
@@ -293,16 +282,17 @@ func (check *Check) Run() error {
 	return nil
 }
 
-const nbCharsToAvoidLineAliasing = 20
-
 func printCheckResult(check *Check) {
-	checkID := check.ID + strings.Repeat(" ", nbCharsToAvoidLineAliasing)
 	switch check.Result {
 	case CheckResultPassed:
-		fmt.Printf("\r[ %s ] %s\n", cli.CheckResultTagPass, checkID)
+		cli.PrintCheckPassed(check.ID)
 	case CheckResultFailed:
-		fmt.Printf("\r[ %s ] %s\n", cli.CheckResultTagFail, checkID)
+		cli.PrintCheckFailed(check.ID)
 	case CheckResultSkipped:
-		fmt.Printf("\r[ %s ] %s\n", cli.CheckResultTagSkip, checkID)
+		cli.PrintCheckSkipped(check.ID, check.skipReason)
+	case CheckResultAborted:
+		cli.PrintCheckAborted(check.ID, check.skipReason)
+	case CheckResultError:
+		cli.PrintCheckErrored(check.ID)
 	}
 }

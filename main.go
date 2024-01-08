@@ -72,7 +72,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	logFile, err := createLogFile(*flags.ClaimPath)
+	logFile, err := createLogFile(*flags.OutputDir)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Could not create the log file, err: %v", err)
 		os.Exit(1)
@@ -90,7 +90,7 @@ func main() {
 	fmt.Printf("CNFCERT version: %s\n", versions.GitVersion())
 	fmt.Printf("Claim file version: %s\n", versions.ClaimFormatVersion)
 	fmt.Printf("Checks filter: %s\n", *flags.LabelsFlag)
-	fmt.Printf("Output folder: %s\n", *flags.ClaimPath)
+	fmt.Printf("Output folder: %s\n", *flags.OutputDir)
 	fmt.Printf("Log file: %s\n", log.LogFileName)
 	fmt.Printf("\n")
 
@@ -102,13 +102,13 @@ func main() {
 	}
 
 	// Set clientsholder singleton with the filenames from the env vars.
-	log.Info("Output folder for the claim file: %s", *flags.ClaimPath)
+	log.Info("Output folder for the claim file: %s", *flags.OutputDir)
 	if *flags.ServerModeFlag {
 		log.Info("Running CNF Certification Suite in web server mode.")
-		webserver.StartServer(*flags.ClaimPath)
+		webserver.StartServer(*flags.OutputDir)
 	} else {
 		log.Info("Running CNF Certification Suite in stand-alone mode.")
-		err = certsuite.Run(*flags.LabelsFlag, *flags.ClaimPath)
+		err = certsuite.Run(*flags.LabelsFlag, *flags.OutputDir)
 		if err != nil {
 			log.Error("Failed to run CNF Certification Suite: %v", err)
 			os.Exit(1)

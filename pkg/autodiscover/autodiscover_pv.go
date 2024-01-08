@@ -19,12 +19,12 @@ package autodiscover
 import (
 	"context"
 
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	corev1 "k8s.io/api/core/v1"
 	storagev1 "k8s.io/api/storage/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
+	storagev1typed "k8s.io/client-go/kubernetes/typed/storage/v1"
 )
 
 func getPersistentVolumes(oc corev1client.CoreV1Interface) ([]corev1.PersistentVolume, error) {
@@ -43,9 +43,8 @@ func getPersistentVolumeClaims(oc corev1client.CoreV1Interface) ([]corev1.Persis
 	return pvcs.Items, nil
 }
 
-func getAllStorageClasses() ([]storagev1.StorageClass, error) {
-	o := clientsholder.GetClientsHolder()
-	storageclasslist, err := o.K8sClient.StorageV1().StorageClasses().List(context.TODO(), metav1.ListOptions{})
+func getAllStorageClasses(client storagev1typed.StorageV1Interface) ([]storagev1.StorageClass, error) {
+	storageclasslist, err := client.StorageClasses().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		log.Error("Error when listing, err: %v", err)
 		return nil, err

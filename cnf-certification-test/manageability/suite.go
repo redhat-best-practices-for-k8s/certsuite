@@ -31,7 +31,6 @@ var (
 	env provider.TestEnvironment
 
 	beforeEachFn = func(check *checksdb.Check) error {
-		check.LogInfo("Check %s: getting test environment.", check.ID)
 		env = provider.GetTestEnvironment()
 		return nil
 	}
@@ -46,21 +45,19 @@ var (
 )
 
 func LoadChecks() {
-	log.Debug("Entering %s suite", common.ManageabilityTestKey)
+	log.Debug("Loading %s suite checks", common.ManageabilityTestKey)
 
 	checksGroup := checksdb.NewChecksGroup(common.ManageabilityTestKey).
 		WithBeforeEachFn(beforeEachFn)
 
-	testID, tags := identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainersImageTag)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainersImageTag)).
 		WithSkipCheckFn(skipIfNoContainersFn).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainersImageTag(c, &env)
 			return nil
 		}))
 
-	testID, tags = identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerPortNameFormat)
-	checksGroup.Add(checksdb.NewCheck(testID, tags).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerPortNameFormat)).
 		WithSkipCheckFn(skipIfNoContainersFn).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainerPortNameFormat(c, &env)
@@ -72,11 +69,12 @@ func testContainersImageTag(check *checksdb.Check, env *provider.TestEnvironment
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
-		check.LogDebug("check that %s image is tagged", cut)
+		check.LogDebug("Testing Container %q", cut)
 		if cut.IsTagEmpty() {
+			check.LogError("Container %q is missing image tag(s)", cut)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is missing image tag(s)", false))
-			check.LogDebug("Container %s is missing image tag(s)", cut.String())
 		} else {
+			check.LogInfo("Container %q is tagged with %q", cut, cut.ContainerImageIdentifier.Tag)
 			compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container is tagged", true))
 		}
 	}
@@ -99,12 +97,14 @@ func testContainerPortNameFormat(check *checksdb.Check, env *provider.TestEnviro
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 	for _, cut := range env.Containers {
+		check.LogDebug("Testing Container %q", cut)
 		for _, port := range cut.Ports {
 			if !containerPortNameFormatCheck(port.Name) {
-				check.LogDebug("%s: ContainerPort %s does not follow the partner naming conventions", cut, port.Name)
+				check.LogError("Container %q declares port %q that does not follow the partner naming conventions", cut, port.Name)
 				nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "ContainerPort does not follow the partner naming conventions", false).
 					AddField(testhelper.ContainerPort, port.Name))
 			} else {
+				check.LogInfo("Container %q declares port %q that does follow the partner naming conventions", cut, port.Name)
 				compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "ContainerPort follows the partner naming conventions", true).
 					AddField(testhelper.ContainerPort, port.Name))
 			}

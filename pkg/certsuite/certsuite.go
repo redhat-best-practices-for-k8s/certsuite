@@ -2,6 +2,7 @@ package certsuite
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
 	"time"
@@ -50,10 +51,6 @@ const (
 func getK8sClientsConfigFileNames() []string {
 	params := configuration.GetTestParameters()
 	fileNames := []string{}
-	if params.Kubeconfig != "" {
-		// Add the kubeconfig path
-		fileNames = append(fileNames, params.Kubeconfig)
-	}
 	if params.Home != "" {
 		kubeConfigFilePath := filepath.Join(params.Home, ".kube", "config")
 		// Check if the kubeconfig path exists
@@ -65,7 +62,10 @@ func getK8sClientsConfigFileNames() []string {
 			log.Info("kubeconfig path %s is not present", kubeConfigFilePath)
 		}
 	}
-
+	if params.Kubeconfig != "" {
+		// Add the kubeconfig path
+		fileNames = append(fileNames, params.Kubeconfig)
+	}
 	return fileNames
 }
 
@@ -91,6 +91,9 @@ func processFlags() time.Duration {
 func Run(labelsFilter, outputFolder string) error {
 	timeout := processFlags()
 	var returnErr bool
+
+	fmt.Println("Running discovery of CNF target resources...")
+	fmt.Print("\n")
 	var env provider.TestEnvironment
 	env.SetNeedsRefresh()
 	env = provider.GetTestEnvironment()
@@ -120,9 +123,12 @@ func Run(labelsFilter, outputFolder string) error {
 	// Marshal the claim and output to file
 	claimBuilder.Build(claimOutputFile)
 
+	// Write the file to the flag output-dir
+	outputFile := *flags.OutputDir + "/" + junitXMLOutputFile
+
 	if configuration.GetTestParameters().EnableXMLCreation {
-		log.Info("XML file creation is enabled. Creating JUnit XML file: %s", junitXMLOutputFile)
-		claimBuilder.ToJUnitXML(junitXMLOutputFile, startTime, endTime)
+		log.Info("XML file creation is enabled. Creating JUnit XML file: %s", outputFile)
+		claimBuilder.ToJUnitXML(outputFile, startTime, endTime)
 	}
 
 	// Send claim file to the collector if specified by env var

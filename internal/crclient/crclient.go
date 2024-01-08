@@ -39,6 +39,10 @@ const (
 	DockerInspectPID = "chroot /host docker inspect -f '{{.State.Pid}}' "
 )
 
+func (p *Process) String() string {
+	return fmt.Sprintf("cmd: %s, pid: %d, ppid: %d, pidNs: %d", p.Args, p.Pid, p.PPid, p.PidNs)
+}
+
 // Helper function to create the clientsholder.Context of the first container of the debug pod
 // that runs in the give node. This context is usually needed to run shell commands that get
 // information from a node where a pod/container under test is running.

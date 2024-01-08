@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	supportedClaimFormatVersion = "v0.2.0"
+	supportedClaimFormatVersion = "v0.3.0"
 )
 
 const (
@@ -43,7 +43,8 @@ type TestCaseResult struct {
 	EndTime                string            `json:"endTime"`
 	FailureLineContent     string            `json:"failureLineContent"`
 	FailureLocation        string            `json:"failureLocation"`
-	FailureReason          string            `json:"failureReason"`
+	SkipReason             string            `json:"skipReason"`
+	CheckDetails           string            `json:"checkDetails"`
 	StartTime              string            `json:"startTime"`
 	State                  string            `json:"state"`
 	TestID                 struct {
@@ -63,9 +64,16 @@ type Nodes struct {
 	CsiDriver    interface{} `json:"csiDriver"`
 }
 
+type TestOperator struct {
+	Name      string `json:"name"`
+	Namespace string `json:"namespace"`
+	Version   string `json:"version"`
+}
+
 type Configurations struct {
-	Config         interface{}   `json:"Config"`
-	AbnormalEvents []interface{} `json:"AbnormalEvents"`
+	Config         interface{}    `json:"Config"`
+	AbnormalEvents []interface{}  `json:"AbnormalEvents"`
+	TestOperators  []TestOperator `json:"testOperators"`
 }
 
 type Schema struct {

@@ -30,7 +30,7 @@ import (
 
 // TestCrsNamespaces finds the list of the input CRDs (crds parameter) instances (CRs) and verify that they are only in namespaces provided as input.
 // The list of CRs not belonging to the namespaces passed as input is returned as invalid
-func TestCrsNamespaces(crds []*apiextv1.CustomResourceDefinition, configNamespaces []string) (invalidCrs map[string]map[string][]string, err error) {
+func TestCrsNamespaces(crds []*apiextv1.CustomResourceDefinition, configNamespaces []string, logger *log.Logger) (invalidCrs map[string]map[string][]string, err error) {
 	// Initialize the top level map
 	invalidCrs = make(map[string]map[string][]string)
 	for _, crd := range crds {
@@ -40,7 +40,7 @@ func TestCrsNamespaces(crds []*apiextv1.CustomResourceDefinition, configNamespac
 		}
 		for namespace, crNames := range crNamespaces {
 			if !stringhelper.StringInSlice(configNamespaces, namespace, false) {
-				log.Debug("CRD: %s (kind:%s/ plural:%s) has CRs %v deployed in namespace (%s) not in configured namespaces %v",
+				logger.Error("CRD: %q (kind:%q/ plural:%q) has CRs %v deployed in namespace %q not in configured namespaces %v",
 					crd.Name, crd.Spec.Names.Kind, crd.Spec.Names.Plural, crNames, namespace, configNamespaces)
 				// Initialize this map dimension before use
 				if invalidCrs[crd.Name] == nil {
@@ -96,7 +96,7 @@ func GetInvalidCRsNum(invalidCrs map[string]map[string][]string, logger *log.Log
 	for crdName, namespaces := range invalidCrs {
 		for namespace, crNames := range namespaces {
 			for _, crName := range crNames {
-				logger.Error("crName=%s namespace=%s is invalid (crd=%s)", crName, namespace, crdName)
+				logger.Error("crName=%q namespace=%q is invalid (crd=%q)", crName, namespace, crdName)
 				invalidCrsNum++
 			}
 		}

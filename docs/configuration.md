@@ -102,7 +102,7 @@ The test suite has the ability to create the JUNit XML File output containing th
 To enable this, set:
 
 ```shell
-export ENABLE_XML_CREATION=true
+export TNF_ENABLE_XML_CREATION=true
 ```
 
 This will create a file named `cnf-certification-test/cnf-certification-tests_junit.xml`.

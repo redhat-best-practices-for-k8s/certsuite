@@ -143,13 +143,22 @@ func buildCSV(claimScheme *claim.Schema, cnfType string, catalogMap map[string]c
 	// add header if flag is present (defaults to no header)
 	if addHeaderFlag {
 		resultsCSVRecords = append(resultsCSVRecords, []string{
-			"CNFName", "testID", "Suite",
+			"CNFName", "OperatorVersion", "testID", "Suite",
 			"Description", "State",
 			"StartTime", "EndTime",
-			"FailureReason", "Output",
+			"SkipReason", "CheckDetails", "Output",
 			"Remediation", "CNFType",
 			"Mandatory/Optional",
 		})
+	}
+
+	opVers := ""
+	for i, op := range claimScheme.Claim.Configurations.TestOperators {
+		if i == 0 {
+			opVers = op.Version
+		} else {
+			opVers = opVers + ", " + op.Version
+		}
 	}
 
 	for testID := range claimScheme.Claim.Results {
@@ -158,13 +167,15 @@ func buildCSV(claimScheme *claim.Schema, cnfType string, catalogMap map[string]c
 		// creates and appends new CSV record
 		record = append(record,
 			CNFNameFlag,
+			opVers,
 			testID,
 			claimScheme.Claim.Results[testID].TestID.Suite,
 			claimScheme.Claim.Results[testID].CatalogInfo.Description,
 			claimScheme.Claim.Results[testID].State,
 			claimScheme.Claim.Results[testID].StartTime,
 			claimScheme.Claim.Results[testID].EndTime,
-			claimScheme.Claim.Results[testID].FailureReason,
+			claimScheme.Claim.Results[testID].SkipReason,
+			claimScheme.Claim.Results[testID].CheckDetails,
 			claimScheme.Claim.Results[testID].CapturedTestOutput,
 			catalogMap[testID].Remediation,
 			cnfType, // Append the CNF type

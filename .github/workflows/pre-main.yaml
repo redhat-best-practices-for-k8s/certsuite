@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main, ginkgo_removal]
+    branches: [ main ]
   workflow_dispatch:
 env:
   REGISTRY: quay.io
@@ -39,9 +39,9 @@ jobs:
 
     steps:
       - name: Set up Go 1.21
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
-          go-version: 1.21.4
+          go-version: 1.21.5
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -111,9 +111,9 @@ jobs:
 
     steps:
       - name: Set up Go 1.21
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
-          go-version: 1.21.4
+          go-version: 1.21.5
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -177,9 +177,9 @@ jobs:
           echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
 
       - name: Set up Go 1.21
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
-          go-version: 1.21.4
+          go-version: 1.21.5
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -224,22 +224,33 @@ jobs:
           repository: test-network-function/cnf-certification-test-partner
           path: cnf-certification-test-partner
 
-      - name: Start the Kind cluster for `local-test-infra`
-        uses: ./cnf-certification-test-partner/.github/actions/start-k8s-cluster
+      - name: Bootstrap cluster, docker, and python
+        uses: nick-fields/retry@v2
         with:
-          working_directory: cnf-certification-test-partner
+          timeout_minutes: 90
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make bootstrap-cluster; make make bootstrap-docker-ubuntu-local; make bootstrap-python-ubuntu-local
 
-      - name: Create `local-test-infra` OpenShift resources
-        uses: ./cnf-certification-test-partner/.github/actions/create-local-test-infra-resources
+      - name: Run 'make rebuild-cluster'
+        uses: nick-fields/retry@v2
         with:
-          working_directory: cnf-certification-test-partner
+          timeout_minutes: 90
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make rebuild-cluster
+
+      - name: Run 'make install'
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 90
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make install
 
       # Perform smoke tests.
       - name: 'Test: Run test suites'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "${SMOKE_TESTS_LABELS_FILTER}"
 
       - name: Upload smoke test results as an artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: smoke-tests
@@ -249,34 +260,34 @@ jobs:
       - name: Remove tarball(s) to save disk space.
         run: rm -f cnf-certification-test/*.tar.gz
 
-      - name: Run gradetool on the claim.json.
-        run: |
-          docker run \
-            --rm \
-            --volume "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json \
-            --volume "${GITHUB_WORKSPACE}"/cnf-certification-test/claim.json:/claim.json \
-            ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} \
-              --OutputPath results.txt \
-              --policy /policy.json \
-              --results /claim.json \
-              >"${GITHUB_WORKSPACE}"/results.txt
-          docker system prune --volumes -f
+      # - name: Run gradetool on the claim.json.
+      #   run: |
+      #     docker run \
+      #       --rm \
+      #       --volume "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json \
+      #       --volume "${GITHUB_WORKSPACE}"/cnf-certification-test/claim.json:/claim.json \
+      #       ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} \
+      #         --OutputPath results.txt \
+      #         --policy /policy.json \
+      #         --results /claim.json \
+      #         >"${GITHUB_WORKSPACE}"/results.txt
+      #     docker system prune --volumes -f
 
-      - name: Check that their are 0 failed tests in the gradetool results
-        run: |
-          if $(jq '.[] | .Fail | length' "${GITHUB_WORKSPACE}"/results.txt | grep -q 0); then
-            echo OK
-          else
-            echo "Gradetool has found failing tests in the following:"
-            jq '.[] | .Fail | .[].id' "${GITHUB_WORKSPACE}"/results.txt
-            exit 1
-          fi
+      # - name: Check that their are 0 failed tests in the gradetool results
+      #   run: |
+      #     if $(jq '.[] | .Fail | length' "${GITHUB_WORKSPACE}"/results.txt | grep -q 0); then
+      #       echo OK
+      #     else
+      #       echo "Gradetool has found failing tests in the following:"
+      #       jq '.[] | .Fail | .[].id' "${GITHUB_WORKSPACE}"/results.txt
+      #       exit 1
+      #     fi
 
       - name: 'Test: Run preflight specific test suite'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "preflight"
 
       - name: Upload preflight smoke test results as an artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: preflight-smoke-tests
@@ -320,23 +331,32 @@ jobs:
           repository: test-network-function/cnf-certification-test-partner
           path: cnf-certification-test-partner
 
-      - name: Start the Kind cluster for `local-test-infra`
-        uses: ./cnf-certification-test-partner/.github/actions/start-k8s-cluster
+      - name: Bootstrap cluster, docker, and python
+        uses: nick-fields/retry@v2
         with:
-          working_directory: cnf-certification-test-partner
+          timeout_minutes: 90
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make bootstrap-cluster; make make bootstrap-docker-ubuntu-local; make bootstrap-python-ubuntu-local
 
-      - name: Create `local-test-infra` OpenShift resources
-        uses: ./cnf-certification-test-partner/.github/actions/create-local-test-infra-resources
+      - name: Run 'make rebuild-cluster'
+        uses: nick-fields/retry@v2
         with:
-          working_directory: cnf-certification-test-partner
+          timeout_minutes: 90
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make rebuild-cluster
+
+      - name: Run 'make install'
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 90
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make install
 
       # needed by depends-on-action
       - name: Set up Go 1.21
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
-          go-version: 1.21.4
-
-
+          go-version: 1.21.5
 
       # Perform smoke tests using a TNF container.
       - name: Check out code into the Go module directory
@@ -394,7 +414,7 @@ jobs:
       #     working_directory: collector
 
       - name: Upload container test results as an artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: smoke-tests-container
@@ -404,34 +424,34 @@ jobs:
       - name: Remove tarball(s) to save disk space.
         run: rm -f ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
 
-      - name: Run gradetool on the claim.json.
-        run: |
-          docker run \
-            --rm \
-            --volume "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json \
-            --volume "${TNF_OUTPUT_DIR}"/claim.json:/claim.json \
-            ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} \
-              --OutputPath results.txt \
-              --policy /policy.json \
-              --results /claim.json \
-              >"${GITHUB_WORKSPACE}"/results.txt
-          docker system prune --volumes -f
+      # - name: Run gradetool on the claim.json.
+      #   run: |
+      #     docker run \
+      #       --rm \
+      #       --volume "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json \
+      #       --volume "${TNF_OUTPUT_DIR}"/claim.json:/claim.json \
+      #       ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} \
+      #         --OutputPath results.txt \
+      #         --policy /policy.json \
+      #         --results /claim.json \
+      #         >"${GITHUB_WORKSPACE}"/results.txt
+      #     docker system prune --volumes -f
 
-      - name: Check that their are 0 failed tests in the gradetool results
-        run: |
-          if $(jq '.[] | .Fail | length' "${GITHUB_WORKSPACE}"/results.txt | grep -q 0); then
-            echo OK
-          else
-            echo "Gradetool has found failing tests in the following:"
-            jq '.[] | .Fail | .[].id' "${GITHUB_WORKSPACE}"/results.txt
-            exit 1
-          fi
+      # - name: Check that their are 0 failed tests in the gradetool results
+      #   run: |
+      #     if $(jq '.[] | .Fail | length' "${GITHUB_WORKSPACE}"/results.txt | grep -q 0); then
+      #       echo OK
+      #     else
+      #       echo "Gradetool has found failing tests in the following:"
+      #       jq '.[] | .Fail | .[].id' "${GITHUB_WORKSPACE}"/results.txt
+      #       exit 1
+      #     fi
 
       - name: 'Test: Run Preflight Specific Smoke Tests in a TNF container'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "preflight"
 
       - name: Upload container preflight test results as an artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: preflight-smoke-tests-container

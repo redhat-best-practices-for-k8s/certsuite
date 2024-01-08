@@ -19,10 +19,12 @@ package scheduling
 import (
 	"fmt"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/internal/crclient"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 	corev1 "k8s.io/api/core/v1"
@@ -400,9 +402,11 @@ func TestProcessPidsCPUScheduling(t *testing.T) {
 
 			compliant: []testhelper.ReportObject{}},
 	}
+	var logArchive strings.Builder
+	log.SetupLogger(&logArchive, "INFO")
 	for _, tc := range testCases {
 		GetProcessCPUSchedulingFn = tc.mockGetProcessCPUScheduling
-		compliant, nonCompliant := ProcessPidsCPUScheduling(testPids, testContainer, tc.check)
+		compliant, nonCompliant := ProcessPidsCPUScheduling(testPids, testContainer, tc.check, log.GetLogger())
 
 		fmt.Printf(
 			"test=%s Actual compliant=%s,\n",

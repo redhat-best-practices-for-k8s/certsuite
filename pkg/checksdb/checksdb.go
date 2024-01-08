@@ -116,15 +116,16 @@ func recordCheckResult(check *Check) {
 		os.Exit(1)
 	}
 
-	log.Info("Recording result %q of check %s, claimID: %+v", check.Result, check.ID, claimID)
+	check.LogInfo("Recording result %q, claimID: %+v", strings.ToUpper(check.Result.String()), claimID)
 	resultsDB[check.ID] = claim.Result{
 		TestID:             &claimID,
 		State:              check.Result.String(),
 		StartTime:          check.StartTime.String(),
 		EndTime:            check.EndTime.String(),
 		Duration:           int(check.EndTime.Sub(check.StartTime).Seconds()),
-		FailureReason:      check.FailureReason,
-		CapturedTestOutput: check.CapturedOutput,
+		SkipReason:         check.skipReason,
+		CapturedTestOutput: check.GetLogs(),
+		CheckDetails:       check.details,
 
 		CategoryClassification: &claim.CategoryClassification{
 			Extended: identifiers.Catalog[claimID].CategoryClassification[identifiers.Extended],
