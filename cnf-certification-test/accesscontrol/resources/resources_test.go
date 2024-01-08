@@ -76,8 +76,10 @@ func TestHasRequestsAndLimitsSet(t *testing.T) {
 		},
 	}
 
+	var logArchive strings.Builder
+	log.SetupLogger(&logArchive, "INFO")
 	for _, tc := range testCases {
-		assert.Equal(t, tc.expectedResult, HasRequestsAndLimitsSet(tc.testContainer))
+		assert.Equal(t, tc.expectedResult, HasRequestsAndLimitsSet(tc.testContainer, log.GetLogger()))
 	}
 }
 

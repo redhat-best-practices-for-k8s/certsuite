@@ -19,11 +19,13 @@ package provider
 import (
 	"errors"
 	"reflect"
+	"strings"
 	"testing"
 
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	"github.com/stretchr/testify/assert"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/internal/log"
 	v1app "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	rbacv1 "k8s.io/api/rbac/v1"
@@ -456,7 +458,9 @@ func TestIsUsingClusterRoleBinding(t *testing.T) {
 
 		c := k8sfake.NewSimpleClientset(testRuntimeObjects...)
 		clientsholder.SetTestK8sClientsHolder(c)
-		result, roleRefName, err := tc.testPod.IsUsingClusterRoleBinding(tc.testClusterRoleBindings)
+		var logArchive strings.Builder
+		log.SetupLogger(&logArchive, "INFO")
+		result, roleRefName, err := tc.testPod.IsUsingClusterRoleBinding(tc.testClusterRoleBindings, log.GetLogger())
 		assert.Equal(t, tc.testResult, result)
 		assert.Equal(t, tc.testroleRefName, roleRefName)
 		assert.Equal(t, tc.testErr, err)

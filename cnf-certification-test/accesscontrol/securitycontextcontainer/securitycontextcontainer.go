@@ -289,7 +289,6 @@ func checkContainerCategory(containers []corev1.Container, containerSCC Containe
 	for j := 0; j < len(containers); j++ {
 		cut := &provider.Container{Podname: podName, Namespace: nameSpace, Container: &containers[j]}
 		percontainerSCC := GetContainerSCC(cut, containerSCC)
-		log.Debug("containerSCC %s is %+v", cut, percontainerSCC)
 		// after building the containerSCC need to check to which category it is
 		categoryinfo = PodListCategory{
 			Containername: cut.Name,
@@ -297,10 +296,8 @@ func checkContainerCategory(containers []corev1.Container, containerSCC Containe
 			NameSpace:     nameSpace,
 		}
 		if compareCategory(&Category1, &percontainerSCC, CategoryID1) {
-			log.Debug("Testing if pod belongs to category1 ")
 			categoryinfo.Category = CategoryID1
 		} else if compareCategory(&Category1NoUID0, &percontainerSCC, CategoryID1NoUID0) {
-			log.Debug("Testing if pod belongs to category1NoUID0 ")
 			categoryinfo.Category = CategoryID1NoUID0
 		} else if compareCategory(&Category2, &percontainerSCC, CategoryID2) {
 			categoryinfo.Category = CategoryID2
