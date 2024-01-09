@@ -610,26 +610,12 @@ func testPodClusterRoleBindings(check *checksdb.Check, env *provider.TestEnviron
 
 	for _, put := range env.Pods {
 		check.LogInfo("Testing Pod %q", put)
-		podIsCompliant := true
 		result, roleRefName, err := put.IsUsingClusterRoleBinding(env.ClusterRoleBindings, check.GetLoggger())
 		if err != nil {
 			check.LogError("Failed to determine if Pod %q is using a cluster role binding, err=%v", put, err)
-			podIsCompliant = false
-		}
-
-		// Pod was found to be using a cluster role binding.  This is not allowed.
-		// Flagging this pod as a failed pod.
-		if result {
-			podIsCompliant = false
-		}
-
-		if podIsCompliant {
-			check.LogInfo("Pod %q is not using a cluster role binding", put)
-			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not using a cluster role binding", true))
-		} else {
-			check.LogError("Pod %q is using a cluster role binding", put)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is using a cluster role binding", false).
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, fmt.Sprintf("failed to determine if pod is using a cluster role binding: %v", err), false).
 				AddField(testhelper.ClusterRoleName, roleRefName))
+			continue
 		}
 
 		topOwners, err := put.GetTopOwner()
@@ -650,10 +636,12 @@ func testPodClusterRoleBindings(check *checksdb.Check, env *provider.TestEnviron
 		if result {
 			// Pod was found to be using a cluster role binding.  This is not allowed.
 			// Flagging this pod as a failed pod.
+			check.LogError("Pod %q is using a cluster role binding (roleRefName=%q)", put, roleRefName)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is using a cluster role binding", false).
 				AddField(testhelper.ClusterRoleName, roleRefName))
 			continue
 		}
+		check.LogInfo("Pod %q is not using a cluster role binding", put)
 		compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not using a cluster role binding", true))
 	}
 	check.SetResult(compliantObjects, nonCompliantObjects)
