@@ -51,11 +51,6 @@ jobs:
         with:
           ref: ${{ github.sha }}
 
-      - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@main
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Install checkmake
         run: |
           curl --location --output $CM_BIN --silent $CM_URL_LINUX
@@ -123,6 +118,11 @@ jobs:
         with:
           ref: ${{ github.sha }}
 
+      - name: Install yaml dependency
+        run: pip3 install pyyaml
+        env:
+          SHELL: /bin/bash
+
       - name: Extract dependent Pull Requests
         uses: depends-on/depends-on-action@main
         with:
@@ -188,6 +188,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
+
+      - name: Install yaml dependency
+        run: pip3 install pyyaml
+        env:
+          SHELL: /bin/bash
 
       - name: Extract dependent Pull Requests
         uses: depends-on/depends-on-action@main
