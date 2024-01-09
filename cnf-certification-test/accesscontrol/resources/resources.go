@@ -5,36 +5,36 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
-func HasRequestsAndLimitsSet(cut *provider.Container) bool {
+func HasRequestsAndLimitsSet(cut *provider.Container, logger *log.Logger) bool {
 	passed := true
 	// Parse the limits.
 	if len(cut.Resources.Limits) == 0 {
-		log.Debug("Container has been found missing resource limits: %s", cut.String())
+		logger.Error("Container %q has been found missing resource limits", cut)
 		passed = false
 	} else {
 		if cut.Resources.Limits.Cpu().IsZero() {
-			log.Debug("Container has been found missing CPU limits: %s", cut.String())
+			logger.Error("Container %q has been found missing CPU limits", cut)
 			passed = false
 		}
 
 		if cut.Resources.Limits.Memory().IsZero() {
-			log.Debug("Container has been found missing memory limits: %s", cut.String())
+			logger.Error("Container %q has been found missing memory limits", cut)
 			passed = false
 		}
 	}
 
 	// Parse the requests.
 	if len(cut.Resources.Requests) == 0 {
-		log.Debug("Container has been found missing resource requests: %s", cut.String())
+		logger.Error("Container %q has been found missing resource requests", cut)
 		passed = false
 	} else {
 		if cut.Resources.Requests.Cpu().IsZero() {
-			log.Debug("Container has been found missing CPU requests: %s", cut.String())
+			logger.Error("Container %q has been found missing CPU requests", cut)
 			passed = false
 		}
 
 		if cut.Resources.Requests.Memory().IsZero() {
-			log.Debug("Container has been found missing memory requests: %s", cut.String())
+			logger.Error("Container %q has been found missing memory requests", cut)
 			passed = false
 		}
 	}
