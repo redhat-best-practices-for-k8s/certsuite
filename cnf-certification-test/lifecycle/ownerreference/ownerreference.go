@@ -44,13 +44,13 @@ func NewOwnerReference(put *corev1.Pod) *OwnerReference {
 
 // func (o *OwnerReference)  run the tests and store results in
 // o.result
-func (o *OwnerReference) RunTest() {
+func (o *OwnerReference) RunTest(logger *log.Logger) {
 	for _, k := range o.put.OwnerReferences {
-		log.Debug("kind is %s", k.Kind)
 		if k.Kind == statefulSet || k.Kind == replicaSet {
+			logger.Info("Pod %q owner reference kind is %q", o.put, k.Kind)
 			o.result = testhelper.SUCCESS
 		} else {
-			log.Error("Pod %s has owner of type %s", o.put.Name, k.Kind)
+			logger.Error("Pod %q has owner of type %q (%q or %q expected)", o.put, k.Kind, replicaSet, statefulSet)
 			o.result = testhelper.FAILURE
 			return
 		}
