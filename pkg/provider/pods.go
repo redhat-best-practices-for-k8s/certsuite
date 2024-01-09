@@ -142,7 +142,6 @@ func (p *Pod) HasHugepages() bool {
 }
 
 func (p *Pod) CheckResourceHugePagesSize(size string) bool {
-	// check if hugepages configuration other than 2Mi is present
 	for _, cut := range p.Containers {
 		// Resources must be specified
 		if len(cut.Resources.Requests) == 0 || len(cut.Resources.Limits) == 0 {
