@@ -31,63 +31,63 @@ const (
 	StatefulsetString = "StatefulSet"
 )
 
-var WaitForDeploymentSetReady = func(ns, name string, timeout time.Duration) bool {
-	log.Debug("check if deployment %s:%s is ready", ns, name)
+var WaitForDeploymentSetReady = func(ns, name string, timeout time.Duration, logger *log.Logger) bool {
+	logger.Info("Check if Deployment %s:%s is ready", ns, name)
 	clients := clientsholder.GetClientsHolder()
 	start := time.Now()
 	for time.Since(start) < timeout {
 		dp, err := provider.GetUpdatedDeployment(clients.K8sClient.AppsV1(), ns, name)
 		if err != nil {
-			log.Error("Error while getting deployment %s (ns: %s), err: %v", name, ns, err)
+			logger.Error("Error while getting Deployment %q, err: %v", name, err)
 		} else if !dp.IsDeploymentReady() {
-			log.Info("%s is not ready yet", dp.ToString())
+			logger.Warn("Deployment %q is not ready yet", dp.ToString())
 		} else {
-			log.Debug("%s is ready!", dp.ToString())
+			logger.Info("Deployment %q is ready!", dp.ToString())
 			return true
 		}
 
 		time.Sleep(time.Second)
 	}
-	log.Error("deployment %s:%s is not ready", ns, name)
+	logger.Error("Deployment %s:%s is not ready", ns, name)
 	return false
 }
 
-var WaitForScalingToComplete = func(ns, name string, timeout time.Duration, groupResourceSchema schema.GroupResource) bool {
-	log.Debug("check if scale object for crs %s:%s is ready", ns, name)
+var WaitForScalingToComplete = func(ns, name string, timeout time.Duration, groupResourceSchema schema.GroupResource, logger *log.Logger) bool {
+	logger.Info("Check if scale object for CRs %s:%s is ready", ns, name)
 	clients := clientsholder.GetClientsHolder()
 	start := time.Now()
 	for time.Since(start) < timeout {
 		crScale, err := provider.GetUpdatedCrObject(clients.ScalingClient, ns, name, groupResourceSchema)
 		if err != nil {
-			log.Error("error while getting the scaling fields %v", err)
+			logger.Error("Error while getting the scaling fields %v", err)
 		} else if !crScale.IsScaleObjectReady() {
-			log.Error("%s is not ready yet", crScale.ToString())
+			logger.Warn("%s is not ready yet", crScale.ToString())
 		} else {
-			log.Debug("%s is ready!", crScale.ToString())
+			logger.Info("%s is ready!", crScale.ToString())
 			return true
 		}
 
 		time.Sleep(time.Second)
 	}
-	log.Error("timeout waiting for cr %s:%s scaling to be complete", ns, name)
+	logger.Error("Timeout waiting for CR %s:%s scaling to be complete", ns, name)
 	return false
 }
 
-func WaitForStatefulSetReady(ns, name string, timeout time.Duration) bool {
-	log.Debug("check if statefulset %s:%s is ready", ns, name)
+func WaitForStatefulSetReady(ns, name string, timeout time.Duration, logger *log.Logger) bool {
+	logger.Debug("Check if statefulset %s:%s is ready", ns, name)
 	clients := clientsholder.GetClientsHolder()
 	start := time.Now()
 	for time.Since(start) < timeout {
 		ss, err := provider.GetUpdatedStatefulset(clients.K8sClient.AppsV1(), ns, name)
 		if err != nil {
-			log.Error("error while getting the %s, err: %v", ss.ToString(), err)
+			logger.Error("Error while getting the %s, err: %v", ss.ToString(), err)
 		} else if ss.IsStatefulSetReady() {
-			log.Debug("%s is ready", ss.ToString())
+			logger.Info("%s is ready", ss.ToString())
 			return true
 		}
 		time.Sleep(time.Second)
 	}
-	log.Error("statefulset %s:%s is not ready", ns, name)
+	logger.Error("Statefulset %s:%s is not ready", ns, name)
 	return false
 }
 

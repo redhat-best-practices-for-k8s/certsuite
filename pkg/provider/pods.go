@@ -93,12 +93,12 @@ func (p *Pod) IsCPUIsolationCompliant() bool {
 	isCPUIsolated := true
 
 	if !LoadBalancingDisabled(p) {
-		log.Debug("%s has been found to not have annotations set correctly for CPU isolation.", p)
+		log.Debug("Pod %q has been found to not have annotations set correctly for CPU isolation.", p)
 		isCPUIsolated = false
 	}
 
 	if !p.IsRuntimeClassNameSpecified() {
-		log.Debug("%s has been found to not have runtimeClassName specified.", p)
+		log.Debug("Pod %q has been found to not have runtimeClassName specified.", p)
 		isCPUIsolated = false
 	}
 
@@ -142,7 +142,6 @@ func (p *Pod) HasHugepages() bool {
 }
 
 func (p *Pod) CheckResourceHugePagesSize(size string) bool {
-	// check if hugepages configuration other than 2Mi is present
 	for _, cut := range p.Containers {
 		// Resources must be specified
 		if len(cut.Resources.Requests) == 0 || len(cut.Resources.Limits) == 0 {
