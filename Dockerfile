@@ -54,7 +54,7 @@ RUN \
 # Copy all of the files into the source directory and then switch contexts
 COPY . ${TNF_SRC_DIR}
 WORKDIR ${TNF_SRC_DIR}
-RUN make install-tools build-cnf-tests build-tnf-tool
+RUN make build-cnf-tests build-tnf-tool
 
 # Extract what's needed to run at a separate location
 # Quote this to prevent word splitting.

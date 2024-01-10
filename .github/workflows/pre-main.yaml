@@ -205,9 +205,6 @@ jobs:
             ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
           docker system prune --volumes -f
 
-      - name: Install ginkgo
-        run: make install-tools
-
       - name: Build CNF test suite binary
         run: make build-cnf-tests
 

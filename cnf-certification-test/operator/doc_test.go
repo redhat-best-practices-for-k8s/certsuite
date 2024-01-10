@@ -15,6 +15,6 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 /*
-Package operator provides Ginkgo tests used to validate operator CNF facets.
+Package operator provides CNFCERT tests used to validate operator CNF facets.
 */
 package operator
