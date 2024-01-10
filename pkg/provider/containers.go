@@ -88,11 +88,11 @@ func (c *Container) GetUID() (string, error) {
 }
 
 func (c *Container) SetPreflightResults(preflightImageCache map[string]plibRuntime.Results, env *TestEnvironment) error {
-	log.Info("Running preflight container test against image: %s with name: %s", c.Image, c.Name)
+	log.Info("Running Preflight container test for container %q with image %q", c, c.Image)
 
 	// Short circuit if the image already exists in the cache
 	if _, exists := preflightImageCache[c.Image]; exists {
-		log.Info("Container image: %s exists in the cache. Skipping this run.", c.Image)
+		log.Info("Container image %q exists in the cache. Skipping this run.", c.Image)
 		c.PreflightResults = preflightImageCache[c.Image]
 		return nil
 	}
@@ -100,7 +100,7 @@ func (c *Container) SetPreflightResults(preflightImageCache map[string]plibRunti
 	opts := []plibContainer.Option{}
 	opts = append(opts, plibContainer.WithDockerConfigJSONFromFile(env.GetDockerConfigFile()))
 	if env.IsPreflightInsecureAllowed() {
-		log.Info("Insecure connections are being allowed to preflight")
+		log.Info("Insecure connections are being allowed to Preflight")
 		opts = append(opts, plibContainer.WithInsecureConnection())
 	}
 
@@ -121,7 +121,7 @@ func (c *Container) SetPreflightResults(preflightImageCache map[string]plibRunti
 	check := plibContainer.NewCheck(c.Image, opts...)
 	results, runtimeErr := check.Run(ctx)
 	if runtimeErr != nil {
-		log.Error("%v", runtimeErr)
+		log.Error("Runtime err: %v", runtimeErr)
 		return runtimeErr
 	}
 
