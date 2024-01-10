@@ -34,7 +34,6 @@ var (
 	env provider.TestEnvironment
 
 	beforeEachFn = func(check *checksdb.Check) error {
-		log.Info("Check %s: getting test environment.", check.ID)
 		env = provider.GetTestEnvironment()
 		return nil
 	}
@@ -66,7 +65,7 @@ func ShouldRun(labelsExpr string) bool {
 	// Add safeguard against running the preflight tests if the docker config does not exist.
 	preflightDockerConfigFile := configuration.GetTestParameters().PfltDockerconfig
 	if preflightDockerConfigFile == "" || preflightDockerConfigFile == "NA" {
-		log.Warn("Skipping the preflight suite because the Docker Config file is not provided.")
+		log.Warn("Skipping the Preflight suite because the Docker Config file is not provided.")
 		return false
 	}
 
@@ -74,7 +73,7 @@ func ShouldRun(labelsExpr string) bool {
 }
 
 func LoadChecks() {
-	log.Debug("Entering %s suite", common.PreflightTestKey)
+	log.Debug("Running %s suite checks", common.PreflightTestKey)
 
 	// As the preflight lib's checks need to run here, we need to get the test environment now.
 	env = provider.GetTestEnvironment()
@@ -84,10 +83,10 @@ func LoadChecks() {
 
 	testPreflightContainers(checksGroup, &env)
 	if provider.IsOCPCluster() {
-		log.Debug("OCP cluster detected, allowing operator tests to run")
+		log.Info("OCP cluster detected, allowing Preflight operator tests to run")
 		testPreflightOperators(checksGroup, &env)
 	} else {
-		log.Debug("Skipping the preflight operators test because it requires an OCP cluster to run against")
+		log.Info("Skipping the Preflight operators test because it requires an OCP cluster to run against")
 	}
 }
 
@@ -98,18 +97,18 @@ func testPreflightOperators(checksGroup *checksdb.ChecksGroup, env *provider.Tes
 		// in-general you are only going to have an operator installed once in a cluster.
 		err := op.SetPreflightResults(env)
 		if err != nil {
-			log.Error("failed running preflight on operator: %s error: %v", op.Name, err)
+			log.Error("Failed running Preflight on operator %q,  err: %v", op.Name, err)
 			os.Exit(1)
 		}
 	}
 
-	log.Info("Completed running preflight operator tests for %d operators", len(env.Operators))
+	log.Info("Completed running Preflight operator tests for %d operators", len(env.Operators))
 
 	// Handle Operator-based preflight tests
 	// Note: We only care about the `testEntry` variable below because we need its 'Description' and 'Suggestion' variables.
 	for testName, testEntry := range getUniqueTestEntriesFromOperatorResults(env.Operators) {
-		log.Info("Testing operator ginkgo test: %s", testName)
-		generatePreflightOperatorGinkgoTest(checksGroup, testName, testEntry.Metadata().Description, testEntry.Help().Suggestion, env.Operators)
+		log.Info("Setting Preflight operator test results for %q", testName)
+		generatePreflightOperatorCnfCertTest(checksGroup, testName, testEntry.Metadata().Description, testEntry.Help().Suggestion, env.Operators)
 	}
 }
 
@@ -119,27 +118,26 @@ func testPreflightContainers(checksGroup *checksdb.ChecksGroup, env *provider.Te
 
 	// Loop through all of the containers, run preflight, and set their results into their respective objects
 	for _, cut := range env.Containers {
-		log.Debug("Running preflight container tests for: %s", cut.Name)
 		err := cut.SetPreflightResults(preflightImageCache, env)
 		if err != nil {
-			log.Error("failed running preflight on image: %s error: %v", cut.Image, err)
+			log.Error("Failed running Preflight on image %q, err: %v", cut.Image, err)
 			os.Exit(1)
 		}
 	}
 
-	log.Info("Completed running preflight container tests for %d containers", len(env.Containers))
+	log.Info("Completed running Preflight container tests for %d containers", len(env.Containers))
 
 	// Handle Container-based preflight tests
 	// Note: We only care about the `testEntry` variable below because we need its 'Description' and 'Suggestion' variables.
 	for testName, testEntry := range getUniqueTestEntriesFromContainerResults(env.Containers) {
-		log.Info("Testing container ginkgo test: %s", testName)
-		generatePreflightContainerGinkgoTest(checksGroup, testName, testEntry.Metadata().Description, testEntry.Help().Suggestion, env.Containers)
+		log.Info("Setting Preflight container test results for %q", testName)
+		generatePreflightContainerCnfCertTest(checksGroup, testName, testEntry.Metadata().Description, testEntry.Help().Suggestion, env.Containers)
 	}
 }
 
-// func generatePreflightContainerGinkgoTest(testName, testID string, tags []string, containers []*provider.Container) {
-func generatePreflightContainerGinkgoTest(checksGroup *checksdb.ChecksGroup, testName, description, suggestion string, containers []*provider.Container) {
-	// Based on a single test "name", we will be passing/failing in Ginkgo.
+// func generatePreflightContainerCnfCertTest(testName, testID string, tags []string, containers []*provider.Container) {
+func generatePreflightContainerCnfCertTest(checksGroup *checksdb.ChecksGroup, testName, description, suggestion string, containers []*provider.Container) {
+	// Based on a single test "name", we will be passing/failing in our test framework.
 	// Brute force-ish type of method.
 
 	// Store the test names into the Catalog map for results to be dynamically printed
@@ -152,37 +150,37 @@ func generatePreflightContainerGinkgoTest(checksGroup *checksdb.ChecksGroup, tes
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(aID)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
-		WithCheckFn(func(c *checksdb.Check) error {
+		WithCheckFn(func(check *checksdb.Check) error {
 			var compliantObjects []*testhelper.ReportObject
 			var nonCompliantObjects []*testhelper.ReportObject
 			for _, cut := range containers {
 				for _, r := range cut.PreflightResults.Passed {
 					if r.Name() == testName {
+						check.LogInfo("Container %q has passed Preflight test %q", cut, testName)
 						compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has passed preflight test "+testName, true))
-						log.Info("%s has passed preflight test: %s", cut.String(), testName)
 					}
 				}
 				for _, r := range cut.PreflightResults.Failed {
 					if r.Name() == testName {
+						check.LogError("Container %q has failed Preflight test %q", cut, testName)
 						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has failed preflight test "+testName, false))
-						log.Warn("%s has failed preflight test: %s", cut, testName)
 					}
 				}
 				for _, r := range cut.PreflightResults.Errors {
 					if r.Name() == testName {
+						check.LogError("Container %q has errored Preflight test %q", cut, testName)
 						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has errored preflight test "+testName, false))
-						log.Error("%s has errored preflight test: %s", cut, testName)
 					}
 				}
 			}
 
-			c.SetResult(compliantObjects, nonCompliantObjects)
+			check.SetResult(compliantObjects, nonCompliantObjects)
 			return nil
 		}))
 }
 
-func generatePreflightOperatorGinkgoTest(checksGroup *checksdb.ChecksGroup, testName, description, suggestion string, operators []*provider.Operator) {
-	// Based on a single test "name", we will be passing/failing in Ginkgo.
+func generatePreflightOperatorCnfCertTest(checksGroup *checksdb.ChecksGroup, testName, description, suggestion string, operators []*provider.Operator) {
+	// Based on a single test "name", we will be passing/failing in our test framework.
 	// Brute force-ish type of method.
 
 	// Store the test names into the Catalog map for results to be dynamically printed
@@ -195,32 +193,32 @@ func generatePreflightOperatorGinkgoTest(checksGroup *checksdb.ChecksGroup, test
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(aID)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
-		WithCheckFn(func(c *checksdb.Check) error {
+		WithCheckFn(func(check *checksdb.Check) error {
 			var compliantObjects []*testhelper.ReportObject
 			var nonCompliantObjects []*testhelper.ReportObject
 
 			for _, op := range operators {
 				for _, r := range op.PreflightResults.Passed {
 					if r.Name() == testName {
-						log.Info("%s has passed preflight test: %s", op.String(), testName)
+						check.LogInfo("Operator %q has passed Preflight test %q", op, testName)
 						compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator passed preflight test "+testName, true))
 					}
 				}
 				for _, r := range op.PreflightResults.Failed {
 					if r.Name() == testName {
-						log.Warn("%s has failed preflight test: %s", op, testName)
+						check.LogError("Operator %q has failed Preflight test %q", op, testName)
 						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator failed preflight test "+testName, false))
 					}
 				}
 				for _, r := range op.PreflightResults.Errors {
 					if r.Name() == testName {
-						log.Error("%s has errored preflight test: %s", op, testName)
+						check.LogError("Operator %q has errored Preflight test %q", op, testName)
 						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator has errored preflight test "+testName, false))
 					}
 				}
 			}
 
-			c.SetResult(compliantObjects, nonCompliantObjects)
+			check.SetResult(compliantObjects, nonCompliantObjects)
 			return nil
 		}))
 }
