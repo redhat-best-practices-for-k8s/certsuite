@@ -79,25 +79,25 @@ func LoadChecks() {
 	checksGroup := checksdb.NewChecksGroup(common.AffiliatedCertTestKey).
 		WithBeforeEachFn(beforeEachFn)
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHelmVersionIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestHelmVersionIdentifier)).
 		WithSkipCheckFn(skipIfNoHelmChartReleasesFn).
 		WithCheckFn(testHelmVersion))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOperatorIsCertifiedIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorIsCertifiedIdentifier)).
 		WithSkipCheckFn(skipIfNoOperatorsFn).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testAllOperatorCertified(c, &env, validator)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHelmIsCertifiedIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestHelmIsCertifiedIdentifier)).
 		WithSkipCheckFn(skipIfNoHelmChartReleasesFn).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testHelmCertified(c, &env, validator)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedDigestIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestContainerIsCertifiedDigestIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainerCertificationStatusByDigest(c, &env, validator)

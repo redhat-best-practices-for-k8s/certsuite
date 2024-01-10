@@ -212,7 +212,7 @@ func StartServer(outputFolder string) {
 	}
 }
 
-// Define an HTTP handler that triggers Ginkgo tests
+// Define an HTTP handler that triggers CNFCERT tests
 //
 //nolint:funlen
 func runHandler(w http.ResponseWriter, r *http.Request) {

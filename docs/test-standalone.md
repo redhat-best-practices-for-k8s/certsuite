@@ -25,12 +25,6 @@ If you are planning on running the test suite as a container, the only pre-requi
 If you are planning on running the test suite as a standalone binary, there are pre-requisites that will
 need to be installed in your environment prior to runtime.
 
-Run the following command to install the following dependencies.
-
-```shell
-make install-tools
-```
-
 Dependency|Minimum Version
 ---|---
 [GoLang](https://golang.org/dl/)|1.21

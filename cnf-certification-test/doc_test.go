@@ -15,6 +15,6 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 /*
-Package suite provides the entrypoint for running ginkgo tests and producing a claim file.
+Package suite provides the entrypoint for running CNFCERT tests and producing a claim file.
 */
 package suite

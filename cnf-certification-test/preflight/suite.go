@@ -148,7 +148,7 @@ func generatePreflightContainerCnfCertTest(checksGroup *checksdb.ChecksGroup, te
 		identifiers.Extended: identifiers.Optional,
 	}, identifiers.TagPreflight)
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(aID)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(aID)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(check *checksdb.Check) error {
 			var compliantObjects []*testhelper.ReportObject
@@ -191,7 +191,7 @@ func generatePreflightOperatorCnfCertTest(checksGroup *checksdb.ChecksGroup, tes
 		identifiers.Extended: identifiers.Optional,
 	}, identifiers.TagPreflight)
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(aID)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(aID)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(check *checksdb.Check) error {
 			var compliantObjects []*testhelper.ReportObject

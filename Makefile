@@ -31,7 +31,6 @@ RELEASE_VERSION?=4.12
 	coverage-html \
 	generate \
 	install-moq \
-	install-tools \
 	lint \
 	update-rhcos-versions \
 	vet
@@ -120,10 +119,6 @@ dev:
 # Builds the CNF test binary with debug flags
 build-cnf-tests-debug: results-html
 	PATH=${PATH}:${GOBIN} go build -gcflags "all=-N -l" -ldflags "${LINKER_TNF_RELEASE_FLAGS} -extldflags '-z relro -z now'" ./cnf-certification-test
-
-# Installs build tools and other required software.
-install-tools:
-	go install "$$(awk '/ginkgo/ {printf "%s/ginkgo@%s", $$1, $$2}' go.mod)"
 
 install-mac-brew-tools:
 	brew install \
