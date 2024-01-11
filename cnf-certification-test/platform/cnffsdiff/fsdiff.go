@@ -21,9 +21,9 @@ import (
 	"errors"
 	"fmt"
 
-	mapset "github.com/deckarep/golang-set/v2"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
+	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 )
 
@@ -37,7 +37,7 @@ var (
 
 	// targetFolders stores all the targetFolders that shouldn't have been
 	// modified in the container. All of them exist on UBI.
-	targetFolders = mapset.NewSet(
+	targetFolders = []string{
 		"/bin",
 		"/lib",
 		"/lib64",
@@ -48,7 +48,7 @@ var (
 		"/usr/sbin",
 		"/var/lib/rpm",
 		"/var/lib/dpkg",
-	)
+	}
 )
 
 // fsDiffJSON is a helper struct to unmarshall the "podman diff --format json" output: a slice of
@@ -90,8 +90,8 @@ func NewFsDiffTester(client clientsholder.Command, ctxt clientsholder.Context) *
 func intersectTargetFolders(src []string) []string {
 	var dst []string
 	for _, folder := range src {
-		if targetFolders.Contains(folder) {
-			log.Debug("Container's folder %s is altered.", folder)
+		if stringhelper.StringInSlice(targetFolders, folder, false) {
+			log.Warn("Container's folder %q is altered.", folder)
 			dst = append(dst, folder)
 		}
 	}
