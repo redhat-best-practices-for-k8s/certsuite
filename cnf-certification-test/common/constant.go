@@ -18,11 +18,10 @@ package common
 
 // Constants shared by multiple test suite packages
 const (
-	defaultTimeoutSeconds = 10
-	AccessControlTestKey  = "access-control"
-	LifecycleTestKey      = "lifecycle"
-	ManageabilityTestKey  = "manageability"
-	// ChaosTesting              = "chaostesting"
+	defaultTimeoutSeconds     = 10
+	AccessControlTestKey      = "access-control"
+	LifecycleTestKey          = "lifecycle"
+	ManageabilityTestKey      = "manageability"
 	AffiliatedCertTestKey     = "affiliated-certification"
 	NetworkingTestKey         = "networking"
 	ObservabilityTestKey      = "observability"
