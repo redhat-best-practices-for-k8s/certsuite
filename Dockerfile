@@ -67,12 +67,7 @@ RUN \
 	&& cp cnf-certification-test/cnf-certification-test ${TNF_BIN_DIR} \
 	# copy the tnf command binary
 	&& cp tnf ${TNF_BIN_DIR} \
-	# copy all of the chaos-test-files
-	&& mkdir -p ${TNF_DIR}/cnf-certification-test/chaostesting \
 	# copy the rhcos_version_map
-	&& cp -a \
-		cnf-certification-test/chaostesting/chaos-test-files \
-		${TNF_DIR}/cnf-certification-test/chaostesting \
 	&& mkdir -p ${TNF_DIR}/cnf-certification-test/platform/operatingsystem/files \
 	&& cp \
 		cnf-certification-test/platform/operatingsystem/files/rhcos_version_map \
