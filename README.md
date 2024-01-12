@@ -1,4 +1,7 @@
-# CNF Certification Test
+# [CNF Certification Test report for consumer transparency](https://goreportcard.com/report/github.com/test-network-function/cnf-certification-test#gofmt)
+
+click above 4 link to report of 
+test
 
 ![build](https://github.com/test-network-function/cnf-certification-test/actions/workflows/merge.yaml/badge.svg)
 [![go report](https://goreportcard.com/badge/github.com/test-network-function/test-network-function)](https://goreportcard.com/report/github.com/test-network-function/cnf-certification-test)
