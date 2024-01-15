@@ -105,4 +105,8 @@ type TestParameters struct {
 	OmitArtifactsZipFile          bool   `split_words:"true" default:"false"`
 	EnableDataCollection          bool   `split_words:"true" envconfig:"ENABLE_DATA_COLLECTION" default:"false"`
 	EnableXMLCreation             bool   `split_words:"true" envconfig:"TNF_ENABLE_XML_CREATION" default:"false"`
+	DaemonsetCPUReq               string `default:"100m" split_words:"true"`
+	DaemonsetCPULim               string `default:"100m" split_words:"true"`
+	DaemonsetMemReq               string `default:"100M" split_words:"true"`
+	DaemonsetMemLim               string `default:"100M" split_words:"true"`
 }
