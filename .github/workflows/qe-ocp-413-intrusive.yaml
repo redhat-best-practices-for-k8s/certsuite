@@ -59,8 +59,8 @@ jobs:
       - name: Preemptively delete report and config folders
         shell: bash
         run: |
-          sudo rm -rf /tmp/tnf_config/
-          sudo rm -rf /tmp/tnf_report/
+          sudo rm -rf ${{env.TNF_CONFIG_DIR}}
+          sudo rm -rf ${{env.TNF_REPORT_DIR}}
 
       - name: Run the tests
         uses: nick-fields/retry@v2
