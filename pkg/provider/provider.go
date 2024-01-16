@@ -60,7 +60,7 @@ const (
 	cscosName                        = "CentOS Stream CoreOS"
 	rhelName                         = "Red Hat Enterprise Linux"
 	tnfPartnerRepoDef                = "quay.io/testnetworkfunction"
-	supportImageDef                  = "debug-partner:4.5.7"
+	supportImageDef                  = "debug-partner:5.0.0"
 )
 
 // Node's roles labels. Node is role R if it has **any** of the labels of each list.
