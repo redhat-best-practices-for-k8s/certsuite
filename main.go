@@ -85,6 +85,8 @@ func main() {
 	log.Info("Claim Format Version: %s", versions.ClaimFormatVersion)
 	log.Info("Labels filter       : %v", *flags.LabelsFlag)
 
+	log.Debug("Test environment variables: %#v", *configuration.GetTestParameters())
+
 	cli.PrintBanner()
 
 	fmt.Printf("CNFCERT version: %s\n", versions.GitVersion())
@@ -97,17 +99,17 @@ func main() {
 	if *flags.ListFlag {
 		// ToDo: List all the available checks, filtered with --labels.
 
-		fmt.Fprint(os.Stderr, "Checks listing is not implemented yet")
+		fmt.Fprint(os.Stderr, "Checks listing is not implemented yet\n")
 		os.Exit(1) //nolint:gocritic
 	}
 
 	// Set clientsholder singleton with the filenames from the env vars.
 	log.Info("Output folder for the claim file: %s", *flags.OutputDir)
 	if *flags.ServerModeFlag {
-		log.Info("Running CNF Certification Suite in web server mode.")
+		log.Info("Running CNF Certification Suite in web server mode")
 		webserver.StartServer(*flags.OutputDir)
 	} else {
-		log.Info("Running CNF Certification Suite in stand-alone mode.")
+		log.Info("Running CNF Certification Suite in stand-alone mode")
 		err = certsuite.Run(*flags.LabelsFlag, *flags.OutputDir)
 		if err != nil {
 			log.Error("Failed to run CNF Certification Suite: %v", err)

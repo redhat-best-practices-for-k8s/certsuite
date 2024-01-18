@@ -76,12 +76,12 @@ func processFlags() time.Duration {
 
 	// Diagnostic functions will run when no labels are provided.
 	if *flags.LabelsFlag == flags.NoLabelsExpr {
-		log.Warn("CNF Certification Suite will run in diagnostic mode so no test case will be launched.")
+		log.Warn("CNF Certification Suite will run in diagnostic mode so no test case will be launched")
 	}
 
 	timeout, err := time.ParseDuration(*flags.TimeoutFlag)
 	if err != nil {
-		log.Error("Failed to parse timeout flag %v: %v, using default timeout value %v", *flags.TimeoutFlag, err, flags.TimeoutFlagDefaultvalue)
+		log.Error("Failed to parse timeout flag %q, err: %v, using default timeout value %v", *flags.TimeoutFlag, err, flags.TimeoutFlagDefaultvalue)
 		timeout = flags.TimeoutFlagDefaultvalue
 	}
 	return timeout

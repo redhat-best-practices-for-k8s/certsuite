@@ -52,7 +52,7 @@ func LoadConfiguration(filePath string) (TestConfiguration, error) {
 
 	// Set default namespace for the debug daemonset pods, in case it was not set.
 	if configuration.DebugDaemonSetNamespace == "" {
-		log.Warn("No namespace configured for the debug DaemonSet. Defaulting to namespace %s", defaultDebugDaemonSetNamespace)
+		log.Warn("No namespace configured for the debug DaemonSet. Defaulting to namespace %q", defaultDebugDaemonSetNamespace)
 		configuration.DebugDaemonSetNamespace = defaultDebugDaemonSetNamespace
 	} else {
 		log.Info("Namespace for debug DaemonSet: %s", configuration.DebugDaemonSetNamespace)

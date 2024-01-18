@@ -48,7 +48,7 @@ func getClusterCrdNames() (crdList []*apiextv1.CustomResourceDefinition, err err
 func FindTestCrdNames(crdFilters []configuration.CrdFilter) (targetCrds []*apiextv1.CustomResourceDefinition) {
 	clusterCrds, err := getClusterCrdNames()
 	if err != nil {
-		log.Error("Unable to get cluster CRD.")
+		log.Error("Unable to get cluster CRDs, err: %v", err)
 		return []*apiextv1.CustomResourceDefinition{}
 	}
 	for _, crd := range clusterCrds {

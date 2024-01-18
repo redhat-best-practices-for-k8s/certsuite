@@ -22,7 +22,6 @@ import (
 	"regexp"
 	"time"
 
-	"errors"
 	"fmt"
 	"strings"
 
@@ -211,10 +210,11 @@ func buildTestEnvironment() { //nolint:funlen
 		log.Error("Cannot load configuration file: %v", err)
 		os.Exit(1)
 	}
+	log.Debug("CNFCERT configuration: %+v", config)
 
 	// Wait for the debug pods to be ready before the autodiscovery starts.
 	if err := deployDaemonSet(config.DebugDaemonSetNamespace); err != nil {
-		log.Error("The TNF daemonset could not be deployed, err=%v", err)
+		log.Error("The TNF daemonset could not be deployed, err: %v", err)
 		// Because of this failure, we are only able to run a certain amount of tests that do not rely
 		// on the existence of the daemonset debug pods.
 		env.DaemonsetFailedToSpawn = true
@@ -301,12 +301,12 @@ func buildTestEnvironment() { //nolint:funlen
 	for _, pod := range env.Pods {
 		isCreatedByDeploymentConfig, err := pod.CreatedByDeploymentConfig()
 		if err != nil {
-			log.Warn("Pod %s: failed to get parent resource: %v", pod.String(), err)
+			log.Warn("Pod %q failed to get parent resource: %v", pod, err)
 			continue
 		}
 
 		if isCreatedByDeploymentConfig {
-			log.Warn("Pod %s has been deployed using a DeploymentConfig, please use Deployment or StatefulSet instead.", pod.String())
+			log.Warn("Pod %q has been deployed using a DeploymentConfig, please use Deployment or StatefulSet instead.", pod.String())
 		}
 	}
 	log.Info("Completed the test environment build process in %.2f seconds", time.Since(start).Seconds())
@@ -341,7 +341,7 @@ func getPodContainers(aPod *corev1.Pod, useIgnoreList bool) (containerList []*Co
 
 		// Warn if readiness probe did not succeeded yet.
 		if !cutStatus.Ready {
-			log.Warn("%s is not ready yet.", &container)
+			log.Warn("Container %q is not ready yet.", &container)
 		}
 
 		// Warn if container state is not running.
@@ -357,7 +357,7 @@ func getPodContainers(aPod *corev1.Pod, useIgnoreList bool) (containerList []*Co
 				reason = "waiting state reason unknown"
 			}
 
-			log.Warn("%s is not running (reason: %s, restarts %d): some test cases might fail.",
+			log.Warn("Container %q is not running (reason: %s, restarts %d): some test cases might fail.",
 				&container, reason, cutStatus.RestartCount)
 		}
 
@@ -422,7 +422,7 @@ func buildContainerImageSource(urlImage, urlImageID string) (source ContainerIma
 		source.Digest = match[3]
 	}
 
-	log.Debug("parsed image, repo: %s, name:%s, tag: %s, digest: %s",
+	log.Debug("Parsed image, repo: %s, name:%s, tag: %s, digest: %s",
 		source.Registry,
 		source.Repository,
 		source.Tag,
@@ -452,7 +452,7 @@ func GetPodIPsPerNet(annotation string) (ips map[string][]string, err error) {
 	var cniInfo []cniNetworkInterface
 	err = json.Unmarshal([]byte(annotation), &cniInfo)
 	if err != nil {
-		return nil, errors.New("could not unmarshal network-status annotation")
+		return nil, fmt.Errorf("could not unmarshal network-status annotation, err: %v", err)
 	}
 	// If this is the default interface, skip it as it is tested separately
 	// Otherwise add all non default interfaces
@@ -468,7 +468,7 @@ func GetPciPerPod(annotation string) (pciAddr []string, err error) {
 	var cniInfo []cniNetworkInterface
 	err = json.Unmarshal([]byte(annotation), &cniInfo)
 	if err != nil {
-		return nil, errors.New("could not unmarshal network-status annotation")
+		return nil, fmt.Errorf("could not unmarshal network-status annotation, err: %v", err)
 	}
 	for _, cniInterface := range cniInfo {
 		if cniInterface.DeviceInfo.PCI.PciAddress != "" {
@@ -558,20 +558,20 @@ func createNodes(nodes []corev1.Node) map[string]Node {
 		if !IsOCPCluster() {
 			// Avoid getting Mc info for non ocp clusters.
 			wrapperNodes[node.Name] = Node{Data: node}
-			log.Warn("Non-OCP cluster detected. MachineConfig retrieval for node %s skipped.", node.Name)
+			log.Warn("Non-OCP cluster detected. MachineConfig retrieval for node %q skipped.", node.Name)
 			continue
 		}
 
 		// Get Node's machineConfig name
 		mcName, exists := node.Annotations["machineconfiguration.openshift.io/currentConfig"]
 		if !exists {
-			log.Error("Failed to get machineConfig name for node %s", node.Name)
+			log.Error("Failed to get machineConfig name for node %q", node.Name)
 			continue
 		}
-		log.Info("Node %s - mc name: %s", node.Name, mcName)
+		log.Info("Node %q - mc name %q", node.Name, mcName)
 		mc, err := getMachineConfig(mcName, machineConfigs)
 		if err != nil {
-			log.Error("Failed to get machineConfig %s, err: %v", mcName, err)
+			log.Error("Failed to get machineConfig %q, err: %v", mcName, err)
 			continue
 		}
 

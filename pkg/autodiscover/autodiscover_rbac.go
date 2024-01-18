@@ -30,7 +30,7 @@ func getRoleBindings(client rbacv1typed.RbacV1Interface) ([]rbacv1.RoleBinding, 
 	// Get all of the rolebindings from all namespaces
 	roleList, roleErr := client.RoleBindings("").List(context.TODO(), metav1.ListOptions{})
 	if roleErr != nil {
-		log.Error("executing rolebinding command failed with error: %v", roleErr)
+		log.Error("Executing rolebinding command failed with error: %v", roleErr)
 		return nil, roleErr
 	}
 	return roleList.Items, nil
@@ -42,7 +42,7 @@ func getClusterRoleBindings(client rbacv1typed.RbacV1Interface) ([]rbacv1.Cluste
 	// These are not namespaced so we want all of them
 	crbList, crbErr := client.ClusterRoleBindings().List(context.TODO(), metav1.ListOptions{})
 	if crbErr != nil {
-		log.Error("executing clusterrolebinding command failed with error: %v", crbErr)
+		log.Error("Executing clusterrolebinding command failed with error: %v", crbErr)
 		return nil, crbErr
 	}
 	return crbList.Items, nil
@@ -53,7 +53,7 @@ func getRoles(client rbacv1typed.RbacV1Interface) ([]rbacv1.Role, error) {
 	// Get all of the roles from all namespaces
 	roleList, roleErr := client.Roles("").List(context.TODO(), metav1.ListOptions{})
 	if roleErr != nil {
-		log.Error("executing roles command failed with error: %v", roleErr)
+		log.Error("Executing roles command failed with error: %v", roleErr)
 		return nil, roleErr
 	}
 	return roleList.Items, nil
