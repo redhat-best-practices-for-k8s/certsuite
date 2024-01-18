@@ -257,28 +257,28 @@ jobs:
       - name: Remove tarball(s) to save disk space.
         run: rm -f cnf-certification-test/*.tar.gz
 
-      # - name: Run gradetool on the claim.json.
-      #   run: |
-      #     docker run \
-      #       --rm \
-      #       --volume "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json \
-      #       --volume "${GITHUB_WORKSPACE}"/cnf-certification-test/claim.json:/claim.json \
-      #       ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} \
-      #         --OutputPath results.txt \
-      #         --policy /policy.json \
-      #         --results /claim.json \
-      #         >"${GITHUB_WORKSPACE}"/results.txt
-      #     docker system prune --volumes -f
+      - name: Run gradetool on the claim.json.
+        run: |
+          docker run \
+            --rm \
+            --volume "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json \
+            --volume "${GITHUB_WORKSPACE}"/cnf-certification-test/claim.json:/claim.json \
+            ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} \
+              --OutputPath results.txt \
+              --policy /policy.json \
+              --results /claim.json \
+              >"${GITHUB_WORKSPACE}"/results.txt
+          docker system prune --volumes -f
 
-      # - name: Check that their are 0 failed tests in the gradetool results
-      #   run: |
-      #     if $(jq '.[] | .Fail | length' "${GITHUB_WORKSPACE}"/results.txt | grep -q 0); then
-      #       echo OK
-      #     else
-      #       echo "Gradetool has found failing tests in the following:"
-      #       jq '.[] | .Fail | .[].id' "${GITHUB_WORKSPACE}"/results.txt
-      #       exit 1
-      #     fi
+      - name: Check that their are 0 failed tests in the gradetool results
+        run: |
+          if $(jq '.[] | .Fail | length' "${GITHUB_WORKSPACE}"/results.txt | grep -q 0); then
+            echo OK
+          else
+            echo "Gradetool has found failing tests in the following:"
+            jq '.[] | .Fail | .[].id' "${GITHUB_WORKSPACE}"/results.txt
+            exit 1
+          fi
 
       - name: 'Test: Run preflight specific test suite'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "preflight"
@@ -424,28 +424,28 @@ jobs:
       - name: Remove tarball(s) to save disk space.
         run: rm -f ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
 
-      # - name: Run gradetool on the claim.json.
-      #   run: |
-      #     docker run \
-      #       --rm \
-      #       --volume "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json \
-      #       --volume "${TNF_OUTPUT_DIR}"/claim.json:/claim.json \
-      #       ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} \
-      #         --OutputPath results.txt \
-      #         --policy /policy.json \
-      #         --results /claim.json \
-      #         >"${GITHUB_WORKSPACE}"/results.txt
-      #     docker system prune --volumes -f
+      - name: Run gradetool on the claim.json.
+        run: |
+          docker run \
+            --rm \
+            --volume "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json \
+            --volume "${TNF_OUTPUT_DIR}"/claim.json:/claim.json \
+            ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} \
+              --OutputPath results.txt \
+              --policy /policy.json \
+              --results /claim.json \
+              >"${GITHUB_WORKSPACE}"/results.txt
+          docker system prune --volumes -f
 
-      # - name: Check that their are 0 failed tests in the gradetool results
-      #   run: |
-      #     if $(jq '.[] | .Fail | length' "${GITHUB_WORKSPACE}"/results.txt | grep -q 0); then
-      #       echo OK
-      #     else
-      #       echo "Gradetool has found failing tests in the following:"
-      #       jq '.[] | .Fail | .[].id' "${GITHUB_WORKSPACE}"/results.txt
-      #       exit 1
-      #     fi
+      - name: Check that their are 0 failed tests in the gradetool results
+        run: |
+          if $(jq '.[] | .Fail | length' "${GITHUB_WORKSPACE}"/results.txt | grep -q 0); then
+            echo OK
+          else
+            echo "Gradetool has found failing tests in the following:"
+            jq '.[] | .Fail | .[].id' "${GITHUB_WORKSPACE}"/results.txt
+            exit 1
+          fi
 
       - name: 'Test: Run Preflight Specific Smoke Tests in a TNF container'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "preflight"
