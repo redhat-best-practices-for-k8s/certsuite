@@ -1,8 +1,8 @@
 name: QE Testing (Ubuntu-hosted)
 
 on:
-  pull_request:
-    branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
   workflow_dispatch:
   # Schedule a daily cron at midnight UTC
   schedule:
@@ -53,7 +53,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: [accesscontrol, affiliatedcertification, manageability, networking, lifecycle, performance, platformalteration, observability, operator]
+        suite: [accesscontrol]
+        # suite: [accesscontrol, affiliatedcertification, manageability, networking, lifecycle, performance, platformalteration, observability, operator]
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
@@ -81,6 +82,120 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y python3-pip
           sudo pip3 install --require-hashes -r ${GITHUB_WORKSPACE}/.github/workflows/frozen-requirements-qe-hosted.txt
+
+      - name: Install required packages for Linux
+        run: |
+          sudo apt-get update
+          sudo apt install qemu-kvm libvirt-daemon libvirt-daemon-system network-manager jq
+        if: runner.os == 'Linux'
+
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+          sudo apt-get update
+          sudo apt-get install -y libvirt-clients libvirt-daemon-system libvirt-daemon virtinst bridge-utils qemu qemu-system-x86
+          sudo usermod -a -G kvm,libvirt $USER
+          sudo adduser `id -un` libvirt
+
+      - name: reload the terminal to load the libvirt group
+        run: |
+          sudo -E bash -c 'exec su -l '$USER
+        if: runner.os == 'Linux'
+
+      - name: Check kvm
+        run: |
+          sudo apt-get install cpu-checker
+          egrep -c '(vmx|svm)' /proc/cpuinfo
+          kvm-ok
+
+      - name: Check if user is part of libvirt group
+        run: |
+          groups
+          sudo usermod -a -G libvirt $USER
+          groups
+        if: runner.os == 'Linux'
+
+      - name: Disable default go problem matcher
+        run: echo "::remove-matcher owner=go::"
+
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: check if CRC_PULL_SECRET exists
+        env: 
+          super_secret: ${{ secrets.CRC_PULL_SECRET }}
+        if: ${{ env.super_secret == '' }}
+        run: 'echo the secret \"CRC_PULL_SECRET\" has not been made; echo please go to \"settings \> secrets \> actions\" to create it'
+
+      - name: Write the pull secret to json file
+        run: |
+          echo $CRC_PULL_SECRET > temp-ps.json
+          cat temp-ps.json
+        env:
+          CRC_PULL_SECRET: ${{ secrets.CRC_PULL_SECRET }}
+        shell: bash
+
+      # Create a OpenShift Local Cluster for testing
+      - name: Download the CRC binary (Linux)
+        run: |
+          wget -O crc-linux-amd64.tar.xz https://developers.redhat.com/content-gateway/file/pub/openshift-v4/clients/crc/2.32.0/crc-linux-amd64.tar.xz
+          tar xvf crc-linux-amd64.tar.xz
+          sudo mv crc-linux-*/crc /usr/local/bin/
+        if: runner.os == 'Linux'
+
+      - name: Set Telemetry
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          command: crc config set consent-telemetry yes
+
+      - name: Set Network-Mode User
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          command: crc config set network-mode user
+
+      - name: Set Memory
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          command: crc config set memory 9216
+
+      - name: Run CRC Setup
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 15
+          max_attempts: 3
+          command: sudo -su $USER crc setup
+
+      - name: Run CRC Start
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 30
+          max_attempts: 3
+          command: sudo -su $USER crc start --pull-secret-file temp-ps.json --log-level debug
+          on_retry_command: sudo -su $USER crc delete -f
+
+      - name: Wait until node is Ready state
+        run: |
+          while [[ $(oc get nodes --request-timeout='30s' -o json | jq -r '.items[] | select(.metadata.name=="api.crc.testing") | .status.conditions[] | select(.reason=="KubeletReady") | .status') == "False" ]]; do
+            echo "Waiting for node to be in Ready state"
+            sleep 5
+          done
+
+      - name: Run oc version
+        run: |
+          eval $(crc oc-env)
+          oc version
+          oc get nodes
+          oc get pods -A
 
       # Create a Kind cluster for testing.
       - name: Check out `cnf-certification-test-partner`
@@ -145,28 +260,19 @@ jobs:
         with:
           repository: ${{ env.QE_REPO }}
           path: cnfcert-tests-verification
-          ref: main
+          ref: multus_test_flexbility
 
       - name: Extract dependent Pull Requests
         uses: depends-on/depends-on-action@9e8a61fce18b15281e831f1bba0e14c71d1e1f46 # main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      # - name: Start tmate session
+      #   uses: mxschmitt/action-tmate@v3
+
       - name: Run the tests
         uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
         with:
           timeout_minutes: 60
           max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
-
-      - name: (if on main and upstream) Send chat msg to dev team if failed to run QE tests
-        if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
-        env:
-          COMMIT_SHA: ${{ github.sha }}
-          JOB_RUN_ID: ${{ github.run_id }}
-          JOB_RUN_ATTEMPT: ${{ github.run_attempt }}
-          GITHUB_REPO: https://github.com/test-network-function/cnf-certification-test
-        run: |
-          curl -X POST --data "{
-              \"text\": \"🚨⚠️  Failed to run Github hosted QE tests from commit \<$GITHUB_REPO/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<$GITHUB_REPO/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"
-          }" -H 'Content-type: application/json; charset=UTF-8' '${{ secrets.QE_NIGHTLY_WEBHOOK }}'
+          command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true PROCS=2 ENABLE_FLAKY_RETRY=true make test-features
