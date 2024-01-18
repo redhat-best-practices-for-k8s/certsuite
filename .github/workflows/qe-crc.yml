@@ -1,54 +1,54 @@
-name: QE Testing (Ubuntu-hosted)
+# https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
+
+name: CRC Tests
 
 on:
+  push:
+    branches: [ main ]
   pull_request:
     branches: [ main ]
   workflow_dispatch:
-  # Schedule a daily cron at midnight UTC
-  schedule:
-    - cron: '0 0 * * *'
 env:
-  QE_REPO: test-network-function/cnfcert-tests-verification
-
-
+  REGISTRY: quay.io
+  REGISTRY_LOCAL: localhost
+  TNF_IMAGE_NAME: testnetworkfunction/cnf-certification-test
+  TNF_IMAGE_TAG: unstable
+  OCT_IMAGE_NAME: testnetworkfunction/oct
+  OCT_IMAGE_TAG: latest
+  TNF_CONTAINER_CLIENT: docker
+  TNF_NON_INTRUSIVE_ONLY: false
+  TNF_ALLOW_PREFLIGHT_INSECURE: false
+  TNF_DISABLE_CONFIG_AUTODISCOVER: false
+  TNF_CONFIG_DIR: /tmp/tnf/config
+  TNF_OUTPUT_DIR: /tmp/tnf/output
+  TNF_SRC_URL: 'https://github.com/${{ github.repository }}'
+  TESTING_CMD_PARAMS: '-n host -i ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} -t ${TNF_CONFIG_DIR} -o ${TNF_OUTPUT_DIR}'
+  TNF_SMOKE_TESTS_LOG_LEVEL: trace
+  ON_DEMAND_DEBUG_PODS: false
+  TERM: xterm-color
 
 jobs:
-  qe-testing:
-    runs-on: ubuntu-22.04
-    strategy:
-      fail-fast: false
-      matrix: 
-        suite: [accesscontrol, affiliatedcertification, manageability, networking, lifecycle, performance, platformalteration, observability, operator]
+  smoke-tests:
+    name: Run Smoke Tests Against OpenShift Local
+    runs-on: ubuntu-latest
     env:
       SHELL: /bin/bash
-      KUBECONFIG: '/home/runner/.kube/config'
+      KUBECONFIG: '/home/runner/.crc/machines/crc/kubeconfig'
       PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
-      TEST_TNF_IMAGE_NAME: quay.io/testnetworkfunction/cnf-certification-test
-      TEST_TNF_IMAGE_TAG: localtest
-      DOCKER_CONFIG_DIR: '/home/runner/.docker/'
-      SKIP_PRELOAD_IMAGES: true
+      OCP_CLUSTER_OVERRIDE: 'true'
 
     steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.sha }}
-
-      - name: Run initial setup
-        uses: ./.github/actions/setup
-
-      - name: Install dependencies
+      - name: Write temporary docker file
         run: |
-          sudo apt-get update
-          sudo apt-get install -y python3-pip
-          sudo pip3 install j2cli
+          mkdir -p /home/runner/.docker
+          touch ${PFLT_DOCKERCONFIG}
+          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
+        if: runner.os == 'Linux'
 
-      - name: Build the test image
-        uses: nick-fields/retry@v2
+      - name: Set up Go 1.21.6
+        uses: actions/setup-go@v4
         with:
-          timeout_minutes: 90
-          max_attempts: 3
-          command: make build-image-local # quay.io/testnetworkfunction/cnf-certification-test:localtest
+          go-version: 1.21.6
 
       - name: Install required packages for Linux
         run: |
@@ -121,6 +121,13 @@ jobs:
           max_attempts: 3
           command: crc config set preset microshift
 
+      # - name: Set Memory
+      #   uses: nick-fields/retry@v2
+      #   with:
+      #     timeout_minutes: 5
+      #     max_attempts: 3
+      #     command: crc config set memory 6000
+
       - name: Set Telemetry
         uses: nick-fields/retry@v2
         with:
@@ -159,14 +166,7 @@ jobs:
 
       - name: Set the adm policy
         run: |
-          oc adm policy add-scc-to-group privileged system:authenticated
-          oc adm policy add-scc-to-group anyuid system:authenticated
-          oc adm policy add-scc-to-group hostaccess system:authenticated
-          oc adm policy add-scc-to-group hostmount-anyuid system:authenticated
-          oc adm policy add-scc-to-group hostnetwork system:authenticated
-          oc adm policy add-scc-to-group nonroot system:authenticated
-          oc adm policy add-scc-to-group runasany system:authenticated
-          oc adm policy add-scc-to-group runtimeprivileged system:authenticated
+          oc adm policy add-scc-to-user privileged user
 
       - name: Run oc version
         run: |
@@ -175,54 +175,58 @@ jobs:
           oc get nodes
           oc get pods -A
 
-      # Create a Kind cluster for testing.
       - name: Check out `cnf-certification-test-partner`
         uses: actions/checkout@v4
         with:
           repository: test-network-function/cnf-certification-test-partner
           path: cnf-certification-test-partner
 
-      - name: Install partner resources
-        uses: nick-fields/retry@v2
-        with: 
-          timeout_minutes: 90
-          max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make install-for-qe
-
-      - name: Show pods
-        run: oc get pods -A
-
-      - name: Wait for all pods to be ready
-        run: ./scripts/wait-for-all-pods-running.sh
+      - name: Run 'make install-for-qe'
+        run: |
+          make install-for-qe
         working-directory: cnf-certification-test-partner
 
-      - name: Clone the QE repository
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ env.QE_REPO }}
-          path: cnfcert-tests-verification
-          ref: multus_test_flexbility
+      # Update the CNF containers, helm charts and operators DB
 
-      - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@main
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Update the CNF DB
+      #   run: |
+      #     docker pull ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
+      #     mkdir -p ${GITHUB_WORKSPACE}/offline-db
+      #     docker run -v ${GITHUB_WORKSPACE}/offline-db:/tmp/dump:Z --env OCT_DUMP_ONLY=true ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
+      #   shell: bash
 
-      - name: Run the tests
-        uses: nick-fields/retry@v2
-        with:
-          timeout_minutes: 60
-          max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=false ENABLE_FLAKY_RETRY=true make test-features
+      - name: Execute `make build`
+        run: make build-cnf-tests
 
-      - name: (if on main and upstream) Send chat msg to dev team if failed to run QE tests
-        if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
-        env:
-          COMMIT_SHA: ${{ github.sha }}
-          JOB_RUN_ID: ${{ github.run_id }}
-          JOB_RUN_ATTEMPT: ${{ github.run_attempt }}
-          GITHUB_REPO: https://github.com/test-network-function/cnf-certification-test
+      - name: Run some oc commands
         run: |
-          curl -X POST --data "{
-              \"text\": \"🚨⚠️  Failed to run Github hosted QE tests from commit \<$GITHUB_REPO/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<$GITHUB_REPO/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"
-          }" -H 'Content-type: application/json; charset=UTF-8' '${{ secrets.QE_NIGHTLY_WEBHOOK }}'
+          oc get nodes
+          oc get pods -A
+
+      # Perform smoke tests.
+      - name: 'Test: Run test suites'
+        run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "all"
+
+      - name: Upload smoke test results as an artifact
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: smoke-tests
+          path: |
+            cnf-certification-test/*.xml
+            cnf-certification-test/claim.json
+            cnf-certification-test/claimjson.js
+            cnf-certification-test/results.html
+            cnf-certification-test/tnf-execution.log
+
+      - name: Upload container test results as an artifact
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: smoke-tests-container
+          path: |
+            ${{ env.TNF_OUTPUT_DIR }}/*.xml
+            ${{ env.TNF_OUTPUT_DIR }}/claim.json
+            ${{ env.TNF_OUTPUT_DIR }}/claimjson.js
+            ${{ env.TNF_OUTPUT_DIR }}/results.html
+            ${{ env.TNF_OUTPUT_DIR }}/tnf-execution.log
