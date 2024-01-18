@@ -77,7 +77,7 @@ fi
 # List the specs (filtering by suite).
 if [ "$LIST" = true ]; then
 	cd "$BASEDIR"/cnf-certification-test || exit 1
-	./cnf-certification-test.test \
+	./cnf-certification-test \
 		--list \
 		--label-filter="$LABEL"
 	cd ..

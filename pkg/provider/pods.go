@@ -55,12 +55,12 @@ func NewPod(aPod *corev1.Pod) (out Pod) {
 	out.MultusIPs = make(map[string][]string)
 	out.MultusIPs, err = GetPodIPsPerNet(aPod.GetAnnotations()[CniNetworksStatusKey])
 	if err != nil {
-		log.Error("Could not decode networks-status annotation, error: %v", err)
+		log.Error("Could not get IPs for Pod %q (namespace %q), err: %v", aPod.Name, aPod.Namespace, err)
 	}
 
 	out.MultusPCIs, err = GetPciPerPod(aPod.GetAnnotations()[CniNetworksStatusKey])
 	if err != nil {
-		log.Error("Could not decode networks-status annotation, error: %v", err)
+		log.Error("Could not get PCIs for Pod %q (namespace %q), err: %v", aPod.Name, aPod.Namespace, err)
 	}
 
 	if _, ok := aPod.GetLabels()[skipConnectivityTestsLabel]; ok {
