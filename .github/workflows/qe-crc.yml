@@ -1,0 +1,156 @@
+# https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
+
+name: CRC Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+env:
+  REGISTRY: quay.io
+  REGISTRY_LOCAL: localhost
+  TNF_IMAGE_NAME: testnetworkfunction/cnf-certification-test
+  TNF_IMAGE_TAG: unstable
+  TNF_CONTAINER_CLIENT: docker
+  TNF_NON_INTRUSIVE_ONLY: false
+  TNF_ALLOW_PREFLIGHT_INSECURE: false
+  TNF_DISABLE_CONFIG_AUTODISCOVER: false
+  TNF_CONFIG_DIR: /tmp/tnf/config
+  TNF_OUTPUT_DIR: /tmp/tnf/output
+  TNF_SRC_URL: 'https://github.com/${{ github.repository }}'
+  TNF_SMOKE_TESTS_LOG_LEVEL: trace
+  ON_DEMAND_DEBUG_PODS: false
+  TERM: xterm-color
+
+jobs:
+  macos-arm-qe-tests:
+    name: Run QE Against CRC
+    runs-on: macos-14
+    env:
+      SHELL: /bin/bash
+      KUBECONFIG: '/Users/runner/.crc/machines/crc/kubeconfig'
+      PFLT_DOCKERCONFIG: '/Users/runner/.docker/config'
+
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [accesscontrol]
+        # suite: [accesscontrol, affiliatedcertification, manageability, networking, lifecycle, performance, platformalteration, observability, operator]
+
+    steps:
+      - name: Write temporary docker file
+        run: |
+          mkdir -p /Users/runner/.docker
+          touch ${PFLT_DOCKERCONFIG}
+          echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
+
+      - name: Set up Go 1.22.3
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.22.3
+
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: check if CRC_PULL_SECRET exists
+        env: 
+          super_secret: ${{ secrets.CRC_PULL_SECRET }}
+        if: ${{ env.super_secret == '' }}
+        run: 'echo the secret \"CRC_PULL_SECRET\" has not been made; echo please go to \"settings \> secrets \> actions\" to create it'
+
+      - name: Write the pull secret to json file
+        run: |
+          echo $CRC_PULL_SECRET > temp-ps.json
+          cat temp-ps.json
+        env:
+          CRC_PULL_SECRET: ${{ secrets.CRC_PULL_SECRET }}
+        shell: bash
+
+      # Create a OpenShift Local Cluster for testing
+      - name: Download the CRC binary (MacOS)
+        run: |
+          wget -O crc-macos-installer.pkg https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-macos-installer.pkg
+
+      - name: Install CRC (MacOS)
+        run: |
+          sudo installer -pkg crc-macos-installer.pkg -target /
+
+      # - name: Set Memory
+      #   uses: nick-fields/retry@v2
+      #   with:
+      #     timeout_minutes: 5
+      #     max_attempts: 3
+      #     command: crc config set memory 10752
+
+      # - name: Set Telemetry
+      #   uses: nick-fields/retry@v2
+      #   with:
+      #     timeout_minutes: 5
+      #     max_attempts: 3
+      #     command: crc config set consent-telemetry yes
+
+      # - name: Set Network-Mode User
+      #   uses: nick-fields/retry@v2
+      #   with:
+      #     timeout_minutes: 5
+      #     max_attempts: 3
+      #     command: crc config set network-mode user
+
+      - name: Run CRC Setup
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 15
+          max_attempts: 3
+          command: crc setup
+
+      - name: Run CRC Start
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 15
+          max_attempts: 3
+          command: crc start --pull-secret-file temp-ps.json --log-level debug
+          on_retry_command: crc delete -f
+
+      - name: Wait until node is Ready state
+        run: |
+          while [[ $(oc get nodes --request-timeout='30s' -o json | jq -r '.items[] | select(.metadata.name=="api.crc.testing") | .status.conditions[] | select(.reason=="KubeletReady") | .status') == "False" ]]; do
+            echo "Waiting for node to be in Ready state"
+            sleep 5
+          done
+
+      - name: Run oc version
+        run: |
+          eval $(crc oc-env)
+          oc version
+          oc get nodes
+          oc get pods -A
+
+      - name: Execute `make build-certsuite-tool`
+        run: make build-certsuite-tool
+
+      - name: Run some oc commands
+        run: |
+          oc get nodes
+          oc get pods -A
+
+      # - name: Run tmate session
+      #   uses: mxschmitt/action-tmate@v3
+
+      - name: Clone the QE repository
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        with:
+          repository: ${{ env.QE_REPO }}
+          path: cnfcert-tests-verification
+          ref: use_binary
+
+      - name: Run the tests
+        uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
+        with:
+          timeout_minutes: 60
+          max_attempts: 3
+          command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true USE_BINARY=true make test-features
+
