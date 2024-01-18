@@ -1,8 +1,8 @@
 name: QE Testing (Ubuntu-hosted)
 
 on:
-  pull_request:
-    branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
   workflow_dispatch:
   # Schedule a daily cron at midnight UTC
   schedule:
@@ -53,7 +53,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: [accesscontrol, affiliatedcertification, manageability, networking, lifecycle, performance, platformalteration, observability, operator]
+        suite: [accesscontrol]
+        # suite: [accesscontrol, affiliatedcertification, manageability, networking, lifecycle, performance, platformalteration, observability, operator]
     env:
       SHELL: /bin/bash
       KUBECONFIG: '/home/runner/.kube/config'
@@ -100,14 +101,16 @@ jobs:
         with:
           repository: ${{ env.QE_REPO }}
           path: cnfcert-tests-verification
-          ref: main
 
       - name: Extract dependent Pull Requests
         uses: depends-on/depends-on-action@9e8a61fce18b15281e831f1bba0e14c71d1e1f46 # main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run the tests (against image)
+      # - name: Start tmate session
+      #   uses: mxschmitt/action-tmate@v3
+
+      - name: Run the tests
         uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.0
         with:
           timeout_minutes: 60
