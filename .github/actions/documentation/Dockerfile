@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/ubi:8.8
+FROM registry.access.redhat.com/ubi9/ubi:9.3-1476
 
 # hadolint ignore=DL3041
 RUN dnf install -y python39 && dnf clean all
