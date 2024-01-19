@@ -211,7 +211,7 @@ require (
 	github.com/go-logr/logr v1.4.1
 	github.com/go-logr/stdr v1.2.2
 	github.com/gorilla/websocket v1.5.1
-	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
+	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.5.0
 	github.com/manifoldco/promptui v0.9.0
 	github.com/openshift/machine-config-operator v0.0.1-0.20230515070935-49f32d46538e
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20231218171045-b6bcc3506c0d
