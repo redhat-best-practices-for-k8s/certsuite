@@ -378,8 +378,8 @@ jobs:
         
       - name: Modify TNF config with CI collector credentials
         run: |
-          sed -i \
-            -e '/collectorAppEndPoint/s/""/"44.195.143.94"/g' \
+          sed -i\
+            -e '/collectorAppEndPoint/s|""|"http://44.195.143.94"|g' \
             -e '/executedBy/s/""/"CI"/g' \
             -e '/partnerName/s/""/"ciuser"/g' \
             -e '/collectorAppPassword/s/""/"cipassword"/g' \
