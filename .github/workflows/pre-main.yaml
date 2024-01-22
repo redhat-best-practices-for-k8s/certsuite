@@ -376,6 +376,9 @@ jobs:
           cp cnf-certification-test/*.yml $TNF_CONFIG_DIR
         shell: bash
 
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        
       - name: Modify TNF config with CI collector credentials
         run: |
           sed -i \
