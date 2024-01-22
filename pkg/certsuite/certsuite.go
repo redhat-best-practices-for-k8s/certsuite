@@ -18,6 +18,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/preflight"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
+	"github.com/test-network-function/cnf-certification-test/internal/cli"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
@@ -91,6 +92,17 @@ func processFlags() time.Duration {
 func Run(labelsFilter, outputFolder string) error {
 	timeout := processFlags()
 	var returnErr bool
+
+	// If the list flag is passed, print the checks filtered with --labels and leave
+	if *flags.ListFlag {
+		checksIDs, err := checksdb.FilterCheckIDs(labelsFilter)
+		if err != nil {
+			return fmt.Errorf("could not list test cases, err: %v", err)
+		}
+		cli.PrintChecksList(checksIDs)
+
+		os.Exit(1)
+	}
 
 	fmt.Println("Running discovery of CNF target resources...")
 	fmt.Print("\n")
