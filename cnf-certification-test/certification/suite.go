@@ -79,25 +79,28 @@ func LoadChecks() {
 	checksGroup := checksdb.NewChecksGroup(common.AffiliatedCertTestKey).
 		WithBeforeEachFn(beforeEachFn)
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHelmVersionIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestHelmVersionIdentifier)).
 		WithSkipCheckFn(skipIfNoHelmChartReleasesFn).
-		WithCheckFn(testHelmVersion))
+		WithCheckFn(func(check *checksdb.Check) error {
+			testHelmVersion(check)
+			return nil
+		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOperatorIsCertifiedIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorIsCertifiedIdentifier)).
 		WithSkipCheckFn(skipIfNoOperatorsFn).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testAllOperatorCertified(c, &env, validator)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestHelmIsCertifiedIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestHelmIsCertifiedIdentifier)).
 		WithSkipCheckFn(skipIfNoHelmChartReleasesFn).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testHelmCertified(c, &env, validator)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerIsCertifiedDigestIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestContainerIsCertifiedDigestIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainerCertificationStatusByDigest(c, &env, validator)
@@ -203,7 +206,7 @@ func testContainerCertificationStatusByDigest(check *checksdb.Check, env *provid
 	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
-func testHelmVersion(check *checksdb.Check) error {
+func testHelmVersion(check *checksdb.Check) {
 	var compliantObjects []*testhelper.ReportObject
 	var nonCompliantObjects []*testhelper.ReportObject
 
@@ -214,7 +217,6 @@ func testHelmVersion(check *checksdb.Check) error {
 	})
 	if err != nil {
 		check.LogError("Could not get Tiller pod, err=%v", err)
-		return fmt.Errorf("failed getting Tiller pod: %v", err)
 	}
 
 	if len(podList.Items) == 0 {
@@ -222,8 +224,6 @@ func testHelmVersion(check *checksdb.Check) error {
 		for _, helm := range env.HelmChartReleases {
 			compliantObjects = append(compliantObjects, testhelper.NewHelmChartReportObject(helm.Namespace, helm.Name, "helm chart was installed with helm v3", true))
 		}
-
-		return nil
 	}
 
 	check.LogError("Tiller pod found, Helm version is v2 but v3 required")
@@ -233,6 +233,4 @@ func testHelmVersion(check *checksdb.Check) error {
 	}
 
 	check.SetResult(compliantObjects, nonCompliantObjects)
-
-	return nil
 }

@@ -49,28 +49,28 @@ func LoadChecks() {
 	checksGroup := checksdb.NewChecksGroup(common.ObservabilityTestKey).
 		WithBeforeEachFn(beforeEachFn)
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestLoggingIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestLoggingIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainersLogging(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCrdsStatusSubresourceIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestCrdsStatusSubresourceIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoCrdsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testCrds(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestTerminationMessagePolicyIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestTerminationMessagePolicyIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testTerminationMessagePolicy(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodDisruptionBudgetIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestPodDisruptionBudgetIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoDeploymentsUnderTestSkipFn(&env), testhelper.GetNoStatefulSetsUnderTestSkipFn(&env)).
 		WithSkipModeAll().
 		WithCheckFn(func(c *checksdb.Check) error {

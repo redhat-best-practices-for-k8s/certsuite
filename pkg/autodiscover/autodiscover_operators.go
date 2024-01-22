@@ -50,7 +50,7 @@ func isIstioServiceMeshInstalled(allNs []string) bool {
 	gvr := schema.GroupVersionResource{Group: "install.istio.io", Version: "v1alpha1", Resource: "istiooperators"}
 	cr, err := oc.DynamicClient.Resource(gvr).Namespace(istioNamespace).Get(context.TODO(), istioCR, metav1.GetOptions{})
 	if err != nil {
-		log.Error("failed when checking the Istio CR, err: %v", err)
+		log.Error("Failed when checking the Istio CR, err: %v", err)
 		return false
 	}
 	if cr == nil {
@@ -66,15 +66,14 @@ func isIstioServiceMeshInstalled(allNs []string) bool {
 func findOperatorsByLabel(olmClient clientOlm.Interface, labels []labelObject, namespaces []configuration.Namespace) []*olmv1Alpha.ClusterServiceVersion {
 	csvs := []*olmv1Alpha.ClusterServiceVersion{}
 	for _, ns := range namespaces {
-		log.Debug("Searching CSVs in namespace %s", ns)
 		for _, aLabelObject := range labels {
 			label := aLabelObject.LabelKey + "=" + aLabelObject.LabelValue
-			log.Debug("Searching CSVs with label %s", label)
+			log.Debug("Searching CSVs in namespace %q with label %q", ns, label)
 			csvList, err := olmClient.OperatorsV1alpha1().ClusterServiceVersions(ns.Name).List(context.TODO(), metav1.ListOptions{
 				LabelSelector: label,
 			})
 			if err != nil {
-				log.Error("error when listing csvs in ns=%s label=%s", ns, label)
+				log.Error("Error when listing csvs in namespace %q with label %q", ns, label)
 				continue
 			}
 
@@ -84,9 +83,8 @@ func findOperatorsByLabel(olmClient clientOlm.Interface, labels []labelObject, n
 		}
 	}
 
-	log.Info("Found %d CSVs:", len(csvs))
 	for i := range csvs {
-		log.Info(" CSV name: %s (ns: %s)", csvs[i].Name, csvs[i].Namespace)
+		log.Info("Found CSV %q (namespace %q)", csvs[i].Name, csvs[i].Namespace)
 	}
 
 	return csvs
@@ -94,31 +92,28 @@ func findOperatorsByLabel(olmClient clientOlm.Interface, labels []labelObject, n
 func getAllNamespaces(oc corev1client.CoreV1Interface) (allNs []string, err error) {
 	nsList, err := oc.Namespaces().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		log.Error("Error when listing, err: %s", err)
-		return allNs, fmt.Errorf("error getting all namespaces, err: %s", err)
+		return allNs, fmt.Errorf("error getting all namespaces, err: %v", err)
 	}
 	for index := range nsList.Items {
 		allNs = append(allNs, nsList.Items[index].ObjectMeta.Name)
 	}
 	return allNs, nil
 }
-func getAllOperators(olmClient clientOlm.Interface) []*olmv1Alpha.ClusterServiceVersion {
+func getAllOperators(olmClient clientOlm.Interface) ([]*olmv1Alpha.ClusterServiceVersion, error) {
 	csvs := []*olmv1Alpha.ClusterServiceVersion{}
 
-	log.Debug("Searching CSVs in namespace All")
 	csvList, err := olmClient.OperatorsV1alpha1().ClusterServiceVersions("").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		log.Error("error when listing csvs in all namespaces")
+		return nil, fmt.Errorf("error when listing CSVs in all namespaces, err: %v", err)
 	}
 	for i := range csvList.Items {
 		csvs = append(csvs, &csvList.Items[i])
 	}
 
-	log.Info("Found %d CSVs:", len(csvs))
 	for i := range csvs {
-		log.Info(" CSV name: %s (ns: %s)", csvs[i].Name, csvs[i].Namespace)
+		log.Info("Found CSV %q (ns %q)", csvs[i].Name, csvs[i].Namespace)
 	}
-	return csvs
+	return csvs, nil
 }
 
 func findSubscriptions(olmClient clientOlm.Interface, namespaces []string) []olmv1Alpha.Subscription {
@@ -128,18 +123,17 @@ func findSubscriptions(olmClient clientOlm.Interface, namespaces []string) []olm
 		if ns == "" {
 			displayNs = "All Namespaces"
 		}
-		log.Debug("Searching subscriptions in namespace %s", displayNs)
+		log.Debug("Searching subscriptions in namespace %q", displayNs)
 		subscription, err := olmClient.OperatorsV1alpha1().Subscriptions(ns).List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
-			log.Error("error when listing subscriptions in ns=%s", ns)
+			log.Error("Error when listing subscriptions in namespace %q", ns)
 			continue
 		}
 		subscriptions = append(subscriptions, subscription.Items...)
 	}
 
-	log.Info("Found %d subscriptions in the target namespaces", len(subscriptions))
 	for i := range subscriptions {
-		log.Info(" Subscriptions name: %s (ns: %s)", subscriptions[i].Name, subscriptions[i].Namespace)
+		log.Info("Found subscription %q (ns %q)", subscriptions[i].Name, subscriptions[i].Namespace)
 	}
 	return subscriptions
 }
@@ -173,7 +167,7 @@ func getHelmList(restConfig *rest.Config, namespaces []string) map[string][]*rel
 func getAllInstallPlans(olmClient clientOlm.Interface) (out []*olmv1Alpha.InstallPlan) {
 	installPlanList, err := olmClient.OperatorsV1alpha1().InstallPlans("").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		log.Error("unable get installplans in cluster, err: %s", err)
+		log.Error("Unable get installplans in cluster, err: %v", err)
 		return out
 	}
 	for index := range installPlanList.Items {
@@ -186,7 +180,7 @@ func getAllInstallPlans(olmClient clientOlm.Interface) (out []*olmv1Alpha.Instal
 func getAllCatalogSources(olmClient clientOlm.Interface) (out []*olmv1Alpha.CatalogSource) {
 	catalogSourcesList, err := olmClient.OperatorsV1alpha1().CatalogSources("").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		log.Error("unable get CatalogSources in cluster, err: %s", err)
+		log.Error("Unable get CatalogSources in cluster, err: %v", err)
 		return out
 	}
 	for index := range catalogSourcesList.Items {

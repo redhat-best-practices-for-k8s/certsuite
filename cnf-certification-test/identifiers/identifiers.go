@@ -1606,9 +1606,9 @@ var (
 	TestIDToClaimID = map[string]claim.Identifier{}
 )
 
-// GetGinkgoTestIDAndLabels transform the claim.Identifier into a test Id that can be used to skip
+// GetTestIDAndLabels transform the claim.Identifier into a test Id that can be used to skip
 // specific tests
-func GetGinkgoTestIDAndLabels(identifier claim.Identifier) (testID string, tags []string) {
+func GetTestIDAndLabels(identifier claim.Identifier) (testID string, tags []string) {
 	tags = strings.Split(identifier.Tags, ",")
 	tags = append(tags, identifier.Id, identifier.Suite)
 	TestIDToClaimID[identifier.Id] = identifier

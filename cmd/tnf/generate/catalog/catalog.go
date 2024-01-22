@@ -219,7 +219,7 @@ func outputTestCases() (outString string, summary catalogSummary) { //nolint:fun
 			summary.testsPerSuite[suite]++
 			summary.totalTests++
 			// Add the suite to the comma separate list of tags shown.  The tags are also modified in the:
-			// GetGinkgoTestIDAndLabels function for usage by Ginkgo.
+			// GetTestIDAndLabels function.
 			tags := strings.ReplaceAll(identifiers.Catalog[k.identifier].Tags, "\n", " ") + "," + k.identifier.Suite
 
 			keys := make([]string, 0, len(identifiers.Catalog[k.identifier].CategoryClassification))

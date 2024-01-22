@@ -19,17 +19,12 @@ import (
 
 var (
 	dbLock    sync.Mutex
-	db        []*Check
 	dbByGroup map[string]*ChecksGroup
 
 	resultsDB = map[string]claim.Result{}
 )
 
 type AbortPanicMsg string
-
-func AddCheck(check *Check) {
-	db = append(db, check)
-}
 
 //nolint:funlen
 func RunChecks(labelsExpr string, timeout time.Duration) (failedCtr int, err error) {
@@ -234,4 +229,22 @@ func GetTestsCountByState(state string) int {
 		}
 	}
 	return count
+}
+
+func FilterCheckIDs(labelsFilter string) ([]string, error) {
+	filteredCheckIDs := []string{}
+	labelsExprEvaluator, err := NewLabelsExprEvaluator(labelsFilter)
+	if err != nil {
+		return nil, fmt.Errorf("invalid labels expression: %v", err)
+	}
+
+	for _, group := range dbByGroup {
+		for _, check := range group.checks {
+			if labelsExprEvaluator.Eval(check.Labels) {
+				filteredCheckIDs = append(filteredCheckIDs, check.ID)
+			}
+		}
+	}
+
+	return filteredCheckIDs, nil
 }

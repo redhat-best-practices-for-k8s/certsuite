@@ -111,7 +111,7 @@ func createLabels(labelStrings []string) (labelObjects []labelObject) {
 
 		values := r.FindStringSubmatch(label)
 		if len(values) != labelRegexMatches {
-			log.Error("failed to parse label=%s, will not be used!, ", label)
+			log.Error("Failed to parse label %q. It will not be used!, ", label)
 			continue
 		}
 		var aLabel labelObject
@@ -138,12 +138,19 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	podsUnderTestLabelsObjects := createLabels(config.PodsUnderTestLabels)
 	operatorsUnderTestLabelsObjects := createLabels(config.OperatorsUnderTestLabels)
 
-	log.Info("parsed pods under test labels: %+v", podsUnderTestLabelsObjects)
-	log.Info("parsed operators under test labels: %+v", operatorsUnderTestLabelsObjects)
+	log.Debug("Pods under test labels: %+v", podsUnderTestLabelsObjects)
+	log.Debug("Operators under test labels: %+v", operatorsUnderTestLabelsObjects)
 
-	data.AllNamespaces, _ = getAllNamespaces(oc.K8sClient.CoreV1())
+	data.AllNamespaces, err = getAllNamespaces(oc.K8sClient.CoreV1())
+	if err != nil {
+		log.Error("Cannot get namespaces, err: %v", err)
+		os.Exit(1)
+	}
 	data.AllSubscriptions = findSubscriptions(oc.OlmClient, []string{""})
-	data.AllCsvs = getAllOperators(oc.OlmClient)
+	data.AllCsvs, err = getAllOperators(oc.OlmClient)
+	if err != nil {
+		log.Error("Cannot get operators, err: %v", err)
+	}
 	data.AllInstallPlans = getAllInstallPlans(oc.OlmClient)
 	data.AllCatalogSources = getAllCatalogSources(oc.OlmClient)
 	data.Namespaces = namespacesListToStringList(config.TargetNameSpaces)
@@ -154,17 +161,17 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.DebugPods, _ = findPodsByLabel(oc.K8sClient.CoreV1(), debugLabels, debugNS)
 	data.ResourceQuotaItems, err = getResourceQuotas(oc.K8sClient.CoreV1())
 	if err != nil {
-		log.Error("Cannot get resource quotas, error: %v", err)
+		log.Error("Cannot get resource quotas, err: %v", err)
 		os.Exit(1)
 	}
 	data.PodDisruptionBudgets, err = getPodDisruptionBudgets(oc.K8sClient.PolicyV1(), data.Namespaces)
 	if err != nil {
-		log.Error("Cannot get pod disruption budgets, error: %v", err)
+		log.Error("Cannot get pod disruption budgets, err: %v", err)
 		os.Exit(1)
 	}
 	data.NetworkPolicies, err = getNetworkPolicies(oc.K8sNetworkingClient)
 	if err != nil {
-		log.Error("Cannot get network policies")
+		log.Error("Cannot get network policies, err: %v", err)
 		os.Exit(1)
 	}
 	data.Crds = FindTestCrdNames(config.CrdFilters)
@@ -175,14 +182,14 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 
 	openshiftVersion, err := getOpenshiftVersion(oc.OcpClient)
 	if err != nil {
-		log.Error("Failed to get the OpenShift version: %v", err)
+		log.Error("Failed to get the OpenShift version, err: %v", err)
 		os.Exit(1)
 	}
 
 	data.OpenshiftVersion = openshiftVersion
 	k8sVersion, err := oc.K8sClient.Discovery().ServerVersion()
 	if err != nil {
-		log.Error("Cannot get the K8s version, error: %v", err)
+		log.Error("Cannot get the K8s version, err: %v", err)
 		os.Exit(1)
 	}
 	data.IstioServiceMeshFound = isIstioServiceMeshInstalled(data.AllNamespaces)
@@ -198,28 +205,28 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	// Find ClusterRoleBindings
 	clusterRoleBindings, err := getClusterRoleBindings(oc.K8sClient.RbacV1())
 	if err != nil {
-		log.Error("Cannot get cluster role bindings, error: %v", err)
+		log.Error("Cannot get cluster role bindings, err: %v", err)
 		os.Exit(1)
 	}
 	data.ClusterRoleBindings = clusterRoleBindings
 	// Find RoleBindings
 	roleBindings, err := getRoleBindings(oc.K8sClient.RbacV1())
 	if err != nil {
-		log.Error("Cannot get cluster role bindings, error: %v", err)
+		log.Error("Cannot get role bindings, error: %v", err)
 		os.Exit(1)
 	}
 	data.RoleBindings = roleBindings
 	// find roles
 	roles, err := getRoles(oc.K8sClient.RbacV1())
 	if err != nil {
-		log.Error("Cannot get roles, error: %v", err)
+		log.Error("Cannot get roles, err: %v", err)
 		os.Exit(1)
 	}
 	data.Roles = roles
 	data.Hpas = findHpaControllers(oc.K8sClient, data.Namespaces)
 	data.Nodes, err = oc.K8sClient.CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		log.Error("Cannot get list of nodes, error: %v", err)
+		log.Error("Cannot get list of nodes, err: %v", err)
 		os.Exit(1)
 	}
 	data.PersistentVolumes, err = getPersistentVolumes(oc.K8sClient.CoreV1())
@@ -229,12 +236,12 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	}
 	data.PersistentVolumeClaims, err = getPersistentVolumeClaims(oc.K8sClient.CoreV1())
 	if err != nil {
-		log.Error("Cannot get list of persistent volume claims, error: %v", err)
+		log.Error("Cannot get list of persistent volume claims, err: %v", err)
 		os.Exit(1)
 	}
 	data.Services, err = getServices(oc.K8sClient.CoreV1(), data.Namespaces, data.ServicesIgnoreList)
 	if err != nil {
-		log.Error("Cannot get list of services, error: %v", err)
+		log.Error("Cannot get list of services, err: %v", err)
 		os.Exit(1)
 	}
 
@@ -245,6 +252,7 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.ExecutedBy = config.ExecutedBy
 	data.PartnerName = config.PartnerName
 	data.CollectorAppPassword = config.CollectorAppPassword
+
 	return data
 }
 

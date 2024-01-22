@@ -50,14 +50,14 @@ func LoadChecks() {
 	checksGroup := checksdb.NewChecksGroup(common.ManageabilityTestKey).
 		WithBeforeEachFn(beforeEachFn)
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainersImageTag)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestContainersImageTag)).
 		WithSkipCheckFn(skipIfNoContainersFn).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainersImageTag(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerPortNameFormat)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestContainerPortNameFormat)).
 		WithSkipCheckFn(skipIfNoContainersFn).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainerPortNameFormat(c, &env)

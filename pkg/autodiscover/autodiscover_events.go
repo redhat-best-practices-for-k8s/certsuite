@@ -30,7 +30,7 @@ func findAbnormalEvents(oc corev1client.CoreV1Interface, namespaces []string) (a
 	for _, ns := range namespaces {
 		someAbnormalEvents, err := oc.Events(ns).List(context.TODO(), metav1.ListOptions{FieldSelector: "type!=Normal"})
 		if err != nil {
-			log.Error("failed to get event list for namespace %s, err:%s", ns, err)
+			log.Error("Failed to get event list for namespace %q, err: %v", ns, err)
 			continue
 		}
 		abnormalEvents = append(abnormalEvents, someAbnormalEvents.Items...)

@@ -70,7 +70,7 @@ func (op *Operator) String() string {
 
 func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
 	if len(op.InstallPlans) == 0 {
-		log.Warn("%s has no InstallPlans. Skipping setting preflight results", op.String())
+		log.Warn("Operator %q has no InstallPlans. Skipping setting Preflight results", op)
 		return nil
 	}
 
@@ -87,7 +87,7 @@ func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
 	opts := []plibOperator.Option{}
 	opts = append(opts, plibOperator.WithDockerConfigJSONFromFile(env.GetDockerConfigFile()))
 	if env.IsPreflightInsecureAllowed() {
-		log.Info("Insecure connections are being allowed to preflight")
+		log.Info("Insecure connections are being allowed to Preflight")
 		opts = append(opts, plibOperator.WithInsecureConnection())
 	}
 
@@ -122,7 +122,7 @@ func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
 		os.Exit(1)
 	}
 
-	log.Info("Storing operator preflight results into object for %s", bundleImage)
+	log.Info("Storing operator Preflight results into object for %q", bundleImage)
 	op.PreflightResults = results
 	return nil
 }

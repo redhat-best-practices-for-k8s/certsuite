@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/ubi:8.9-1028 AS build
+FROM registry.access.redhat.com/ubi9/ubi:9.3-1476 AS build
 ENV TNF_DIR=/usr/tnf
 ENV \
 	TNF_SRC_DIR=${TNF_DIR}/tnf-src \
@@ -22,7 +22,7 @@ RUN \
 # Install Go binary and set the PATH
 ENV \
 	GO_DL_URL=https://golang.org/dl \
-	GO_BIN_TAR=go1.21.5.linux-amd64.tar.gz \
+	GO_BIN_TAR=go1.21.6.linux-amd64.tar.gz \
 	GOPATH=/root/go
 ENV GO_BIN_URL_x86_64=${GO_DL_URL}/${GO_BIN_TAR}
 RUN \
@@ -54,7 +54,7 @@ RUN \
 # Copy all of the files into the source directory and then switch contexts
 COPY . ${TNF_SRC_DIR}
 WORKDIR ${TNF_SRC_DIR}
-RUN make install-tools build-cnf-tests build-tnf-tool
+RUN make build-cnf-tests build-tnf-tool
 
 # Extract what's needed to run at a separate location
 # Quote this to prevent word splitting.
@@ -67,12 +67,7 @@ RUN \
 	&& cp cnf-certification-test/cnf-certification-test ${TNF_BIN_DIR} \
 	# copy the tnf command binary
 	&& cp tnf ${TNF_BIN_DIR} \
-	# copy all of the chaos-test-files
-	&& mkdir -p ${TNF_DIR}/cnf-certification-test/chaostesting \
 	# copy the rhcos_version_map
-	&& cp -a \
-		cnf-certification-test/chaostesting/chaos-test-files \
-		${TNF_DIR}/cnf-certification-test/chaostesting \
 	&& mkdir -p ${TNF_DIR}/cnf-certification-test/platform/operatingsystem/files \
 	&& cp \
 		cnf-certification-test/platform/operatingsystem/files/rhcos_version_map \
@@ -99,7 +94,7 @@ FROM quay.io/testnetworkfunction/oct:latest AS db
 
 # Copy the state into a new flattened image to reduce size.
 # TODO run as non-root
-FROM registry.access.redhat.com/ubi8/ubi-minimal:8.9-1029
+FROM registry.access.redhat.com/ubi9/ubi-minimal:9.3-1475
 
 ENV \
 	TNF_DIR=/usr/tnf \

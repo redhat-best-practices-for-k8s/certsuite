@@ -157,7 +157,7 @@ func GetClientsHolder(filenames ...string) *ClientsHolder {
 		return &clientsHolder
 	}
 	if len(filenames) == 0 {
-		log.Error("Please provide a valid kubeconfig. Either set the KUBECONFIG environment variable or alternatively copy a kube config to $HOME/.kube/config")
+		log.Error("Please provide a valid Kubeconfig. Either set the KUBECONFIG environment variable or alternatively copy a kube config to $HOME/.kube/config")
 		os.Exit(exitUsage)
 	}
 	clientsHolder, err := newClientsHolder(filenames...)

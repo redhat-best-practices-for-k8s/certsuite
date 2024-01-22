@@ -29,18 +29,6 @@ jobs:
       SKIP_PRELOAD_IMAGES: true
 
     steps:
-      - name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@main
-        with:
-          tool-cache: false
-          large-packages: true
-          android: true
-          dotnet: true
-          haskell: true
-          docker-images: true
-          swap-storage: true
-        continue-on-error: true
-
       - name: Check out code
         uses: actions/checkout@v4
         with:
@@ -54,6 +42,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y python3-pip
           sudo pip3 install j2cli
+
+      - name: Build the test image
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 90
+          max_attempts: 3
+          command: make build-image-local # quay.io/testnetworkfunction/cnf-certification-test:localtest
 
       # Create a Kind cluster for testing.
       - name: Check out `cnf-certification-test-partner`

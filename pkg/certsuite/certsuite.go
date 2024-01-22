@@ -18,6 +18,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/preflight"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/results"
+	"github.com/test-network-function/cnf-certification-test/internal/cli"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
@@ -76,12 +77,12 @@ func processFlags() time.Duration {
 
 	// Diagnostic functions will run when no labels are provided.
 	if *flags.LabelsFlag == flags.NoLabelsExpr {
-		log.Warn("CNF Certification Suite will run in diagnostic mode so no test case will be launched.")
+		log.Warn("CNF Certification Suite will run in diagnostic mode so no test case will be launched")
 	}
 
 	timeout, err := time.ParseDuration(*flags.TimeoutFlag)
 	if err != nil {
-		log.Error("Failed to parse timeout flag %v: %v, using default timeout value %v", *flags.TimeoutFlag, err, flags.TimeoutFlagDefaultvalue)
+		log.Error("Failed to parse timeout flag %q, err: %v, using default timeout value %v", *flags.TimeoutFlag, err, flags.TimeoutFlagDefaultvalue)
 		timeout = flags.TimeoutFlagDefaultvalue
 	}
 	return timeout
@@ -91,6 +92,17 @@ func processFlags() time.Duration {
 func Run(labelsFilter, outputFolder string) error {
 	timeout := processFlags()
 	var returnErr bool
+
+	// If the list flag is passed, print the checks filtered with --labels and leave
+	if *flags.ListFlag {
+		checksIDs, err := checksdb.FilterCheckIDs(labelsFilter)
+		if err != nil {
+			return fmt.Errorf("could not list test cases, err: %v", err)
+		}
+		cli.PrintChecksList(checksIDs)
+
+		os.Exit(1)
+	}
 
 	fmt.Println("Running discovery of CNF target resources...")
 	fmt.Print("\n")

@@ -46,7 +46,7 @@ func getPersistentVolumeClaims(oc corev1client.CoreV1Interface) ([]corev1.Persis
 func getAllStorageClasses(client storagev1typed.StorageV1Interface) ([]storagev1.StorageClass, error) {
 	storageclasslist, err := client.StorageClasses().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		log.Error("Error when listing, err: %v", err)
+		log.Error("Error when listing storage classes, err: %v", err)
 		return nil, err
 	}
 	return storageclasslist.Items, nil

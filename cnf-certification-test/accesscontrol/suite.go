@@ -70,189 +70,189 @@ func LoadChecks() {
 	checksGroup := checksdb.NewChecksGroup(common.AccessControlTestKey).
 		WithBeforeEachFn(beforeEachFn)
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSecContextIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestSecContextIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainerSCC(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSysAdminIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestSysAdminIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testSysAdminCapability(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNetAdminIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestNetAdminIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testNetAdminCapability(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNetRawIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestNetRawIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testNetRawCapability(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestIpcLockIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestIpcLockIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testIpcLockCapability(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestBpfIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestBpfIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testBpfCapability(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSecConNonRootUserIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestSecConNonRootUserIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testSecConRootUser(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSecConPrivilegeEscalation)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestSecConPrivilegeEscalation)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testSecConPrivilegeEscalation(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestContainerHostPort)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestContainerHostPort)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testContainerHostPort(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHostNetwork)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestPodHostNetwork)).
 		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodHostNetwork(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHostPath)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestPodHostPath)).
 		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodHostPath(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHostIPC)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestPodHostIPC)).
 		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodHostIPC(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodHostPID)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestPodHostPID)).
 		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodHostPID(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNamespaceBestPracticesIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestNamespaceBestPracticesIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoNamespacesSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testNamespace(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodServiceAccountBestPracticesIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestPodServiceAccountBestPracticesIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodServiceAccount(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodRoleBindingsBestPracticesIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestPodRoleBindingsBestPracticesIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodRoleBindings(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodClusterRoleBindingsBestPracticesIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestPodClusterRoleBindingsBestPracticesIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodClusterRoleBindings(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodAutomountServiceAccountIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestPodAutomountServiceAccountIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testAutomountServiceToken(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestOneProcessPerContainerIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOneProcessPerContainerIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env), testhelper.GetDaemonSetFailedToSpawnSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testOneProcessPerContainer(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSYSNiceRealtimeCapabilityIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestSYSNiceRealtimeCapabilityIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testSYSNiceRealtimeCapability(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestSysPtraceCapabilityIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestSysPtraceCapabilityIdentifier)).
 		WithSkipCheckFn(testhelper.GetSharedProcessNamespacePodsSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testSysPtraceCapability(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNamespaceResourceQuotaIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestNamespaceResourceQuotaIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testNamespaceResourceQuota(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestNoSSHDaemonsAllowedIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestNoSSHDaemonsAllowedIdentifier)).
 		WithSkipCheckFn(testhelper.GetDaemonSetFailedToSpawnSkipFn(&env), testhelper.GetNoContainersUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testNoSSHDaemonsAllowed(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestPodRequestsAndLimitsIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestPodRequestsAndLimitsIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testPodRequestsAndLimits(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.Test1337UIDIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.Test1337UIDIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoPodsUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			test1337UIDs(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestServicesDoNotUseNodeportsIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestServicesDoNotUseNodeportsIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoServicesUnderTestSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testNodePort(c, &env)
 			return nil
 		}))
 
-	checksGroup.Add(checksdb.NewCheck(identifiers.GetGinkgoTestIDAndLabels(identifiers.TestCrdRoleIdentifier)).
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestCrdRoleIdentifier)).
 		WithSkipCheckFn(testhelper.GetNoCrdsUnderTestSkipFn(&env), testhelper.GetNoNamespacesSkipFn(&env), testhelper.GetNoRolesSkipFn(&env)).
 		WithCheckFn(func(c *checksdb.Check) error {
 			testCrdRoles(c, &env)
@@ -610,26 +610,12 @@ func testPodClusterRoleBindings(check *checksdb.Check, env *provider.TestEnviron
 
 	for _, put := range env.Pods {
 		check.LogInfo("Testing Pod %q", put)
-		podIsCompliant := true
 		result, roleRefName, err := put.IsUsingClusterRoleBinding(env.ClusterRoleBindings, check.GetLoggger())
 		if err != nil {
 			check.LogError("Failed to determine if Pod %q is using a cluster role binding, err=%v", put, err)
-			podIsCompliant = false
-		}
-
-		// Pod was found to be using a cluster role binding.  This is not allowed.
-		// Flagging this pod as a failed pod.
-		if result {
-			podIsCompliant = false
-		}
-
-		if podIsCompliant {
-			check.LogInfo("Pod %q is not using a cluster role binding", put)
-			compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not using a cluster role binding", true))
-		} else {
-			check.LogError("Pod %q is using a cluster role binding", put)
-			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is using a cluster role binding", false).
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, fmt.Sprintf("failed to determine if pod is using a cluster role binding: %v", err), false).
 				AddField(testhelper.ClusterRoleName, roleRefName))
+			continue
 		}
 
 		topOwners, err := put.GetTopOwner()
@@ -650,10 +636,12 @@ func testPodClusterRoleBindings(check *checksdb.Check, env *provider.TestEnviron
 		if result {
 			// Pod was found to be using a cluster role binding.  This is not allowed.
 			// Flagging this pod as a failed pod.
+			check.LogError("Pod %q is using a cluster role binding (roleRefName=%q)", put, roleRefName)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is using a cluster role binding", false).
 				AddField(testhelper.ClusterRoleName, roleRefName))
 			continue
 		}
+		check.LogInfo("Pod %q is not using a cluster role binding", put)
 		compliantObjects = append(compliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Pod is not using a cluster role binding", true))
 	}
 	check.SetResult(compliantObjects, nonCompliantObjects)

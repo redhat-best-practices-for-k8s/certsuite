@@ -126,7 +126,7 @@ func findHpaControllers(cs kubernetes.Interface, namespaces []string) []*scaling
 	for _, ns := range namespaces {
 		hpas, err := cs.AutoscalingV1().HorizontalPodAutoscalers(ns).List(context.TODO(), metav1.ListOptions{})
 		if err != nil {
-			log.Error("Cannot list HorizontalPodAutoscalers on namespace %s, err: %v", ns, err)
+			log.Error("Cannot list HorizontalPodAutoscalers on namespace %q, err: %v", ns, err)
 			return m
 		}
 		for i := 0; i < len(hpas.Items); i++ {

@@ -158,6 +158,16 @@ func PrintResultsTable(results map[string][]int) {
 	fmt.Printf("\n")
 }
 
+func PrintChecksList(checkIDs []string) {
+	fmt.Println("------------------------------------------------------------")
+	fmt.Println("|                   TEST CASE SELECTION                    |")
+	fmt.Println("------------------------------------------------------------")
+	for _, checkID := range checkIDs {
+		fmt.Printf("| %-56s |\n", checkID)
+	}
+	fmt.Println("------------------------------------------------------------")
+}
+
 func stopCheckLineGoroutine() {
 	if stopChan == nil {
 		// This may happen for checks that were skipped if no compliant nor non-compliant objects found.

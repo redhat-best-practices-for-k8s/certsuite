@@ -1,6 +1,6 @@
 module github.com/test-network-function/cnf-certification-test
 
-go 1.21.5
+go 1.21.6
 
 require (
 	github.com/Masterminds/semver/v3 v3.2.1
@@ -8,12 +8,12 @@ require (
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/cobra v1.8.0
 	github.com/stretchr/testify v1.8.4
-	github.com/test-network-function/test-network-function-claim v1.0.33
+	github.com/test-network-function/test-network-function-claim v1.0.34
 	github.com/xeipuuv/gojsonschema v1.2.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0
 )
 
-require k8s.io/client-go v0.29.0
+require k8s.io/client-go v0.29.1
 
 require (
 	github.com/kelseyhightower/envconfig v1.4.0
@@ -21,12 +21,12 @@ require (
 	github.com/onsi/ginkgo/v2 v2.13.2 // indirect
 	github.com/openshift/api v0.0.1
 	github.com/openshift/client-go v0.0.1
-	github.com/operator-framework/api v0.20.0
+	github.com/operator-framework/api v0.21.0
 	github.com/operator-framework/operator-lifecycle-manager v0.20.0
 	github.com/pkg/errors v0.9.1 // indirect
-	helm.sh/helm/v3 v3.13.3
-	k8s.io/api v0.29.0
-	k8s.io/apimachinery v0.29.0
+	helm.sh/helm/v3 v3.14.0
+	k8s.io/api v0.29.1
+	k8s.io/apimachinery v0.29.1
 	k8s.io/klog/v2 v2.110.1 // indirect
 )
 
@@ -164,7 +164,6 @@ require (
 	go.opentelemetry.io/otel/trace v1.21.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.0.0 // indirect
 	go.starlark.net v0.0.0-20231121155337-90ade8b19d09 // indirect
-	go.uber.org/atomic v1.11.0 // indirect
 	golang.org/x/crypto v0.17.0 // indirect
 	golang.org/x/exp v0.0.0-20240103183307-be819d1f06fc // indirect
 	golang.org/x/net v0.19.0 // indirect
@@ -174,18 +173,18 @@ require (
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
-	gomodules.xyz/jsonpatch/v2 v2.3.0 // indirect
+	gomodules.xyz/jsonpatch/v2 v2.4.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20231002182017-d307bd883b97 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20231211222908-989df2bf70f3 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240102182953-50ed04b92917 // indirect
 	google.golang.org/grpc v1.60.1 // indirect
 	google.golang.org/protobuf v1.32.0 // indirect
 	gopkg.in/evanphx/json-patch.v5 v5.7.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
-	k8s.io/apiserver v0.29.0 // indirect
-	k8s.io/cli-runtime v0.29.0 // indirect
-	k8s.io/component-base v0.29.0 // indirect
+	k8s.io/apiserver v0.29.1 // indirect
+	k8s.io/cli-runtime v0.29.1 // indirect
+	k8s.io/component-base v0.29.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20240103195357-a9f8850cb432 // indirect
 	k8s.io/utils v0.0.0-20240102154912-e7106e64919e // indirect
 	modernc.org/libc v1.22.5 // indirect
@@ -194,7 +193,7 @@ require (
 	modernc.org/sqlite v1.23.1 // indirect
 	oras.land/oras-go v1.2.4 // indirect
 	sigs.k8s.io/apiserver-network-proxy/konnectivity-client v0.28.0 // indirect
-	sigs.k8s.io/controller-runtime v0.15.0 // indirect
+	sigs.k8s.io/controller-runtime v0.16.3 // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
 	sigs.k8s.io/kustomize/api v0.16.0 // indirect
 	sigs.k8s.io/kustomize/kyaml v0.16.0 // indirect
@@ -204,25 +203,24 @@ require (
 
 require (
 	github.com/hashicorp/go-version v1.6.0
-	k8s.io/apiextensions-apiserver v0.29.0
+	k8s.io/apiextensions-apiserver v0.29.1
 )
 
 require (
-	github.com/deckarep/golang-set/v2 v2.6.0
 	github.com/fatih/color v1.16.0
 	github.com/go-logr/logr v1.4.1
 	github.com/go-logr/stdr v1.2.2
 	github.com/gorilla/websocket v1.5.1
-	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.4.0
+	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.5.0
 	github.com/manifoldco/promptui v0.9.0
 	github.com/openshift/machine-config-operator v0.0.1-0.20230515070935-49f32d46538e
-	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20231018165107-f04b78186455
+	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20231218171045-b6bcc3506c0d
 	github.com/robert-nix/ansihtml v1.0.1
-	github.com/test-network-function/oct v0.0.4
-	github.com/test-network-function/privileged-daemonset v1.0.18
+	github.com/test-network-function/oct v0.0.5
+	github.com/test-network-function/privileged-daemonset v1.0.20
 	golang.org/x/term v0.16.0
 	gopkg.in/yaml.v3 v3.0.1
-	k8s.io/kubectl v0.29.0
+	k8s.io/kubectl v0.29.1
 )
 
-replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20231018165107-f04b78186455
+replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20231218171045-b6bcc3506c0d

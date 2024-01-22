@@ -29,6 +29,7 @@ env:
   CM_BIN: /usr/local/bin/checkmake
   CM_URL_LINUX: https://github.com/mrtazz/checkmake/releases/download/0.2.2/checkmake-0.2.2.linux.amd64 # yamllint disable-line
   SMOKE_TESTS_LABELS_FILTER: '!affiliated-certification-container-is-certified-digest && !access-control-security-context'
+  SKIP_PRELOAD_IMAGES: true
 
 jobs:
   lint:
@@ -41,7 +42,7 @@ jobs:
       - name: Set up Go 1.21
         uses: actions/setup-go@v5
         with:
-          go-version: 1.21.5
+          go-version: 1.21.6
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -118,7 +119,7 @@ jobs:
       - name: Set up Go 1.21
         uses: actions/setup-go@v5
         with:
-          go-version: 1.21.5
+          go-version: 1.21.6
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -168,18 +169,6 @@ jobs:
       PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
 
     steps:
-      - name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@main
-        with:
-          tool-cache: false
-          large-packages: true
-          android: true
-          dotnet: true
-          haskell: true
-          docker-images: true
-          swap-storage: true
-        continue-on-error: true
-
       - name: Write temporary docker file
         run: |
           mkdir -p /home/runner/.docker
@@ -189,7 +178,7 @@ jobs:
       - name: Set up Go 1.21
         uses: actions/setup-go@v5
         with:
-          go-version: 1.21.5
+          go-version: 1.21.6
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -219,9 +208,6 @@ jobs:
             --volume "${GITHUB_WORKSPACE}"/offline-db:/tmp/dump:Z \
             ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
           docker system prune --volumes -f
-
-      - name: Install ginkgo
-        run: make install-tools
 
       - name: Build CNF test suite binary
         run: make build-cnf-tests
@@ -275,28 +261,28 @@ jobs:
       - name: Remove tarball(s) to save disk space.
         run: rm -f cnf-certification-test/*.tar.gz
 
-      # - name: Run gradetool on the claim.json.
-      #   run: |
-      #     docker run \
-      #       --rm \
-      #       --volume "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json \
-      #       --volume "${GITHUB_WORKSPACE}"/cnf-certification-test/claim.json:/claim.json \
-      #       ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} \
-      #         --OutputPath results.txt \
-      #         --policy /policy.json \
-      #         --results /claim.json \
-      #         >"${GITHUB_WORKSPACE}"/results.txt
-      #     docker system prune --volumes -f
+      - name: Run gradetool on the claim.json.
+        run: |
+          docker run \
+            --rm \
+            --volume "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json \
+            --volume "${GITHUB_WORKSPACE}"/cnf-certification-test/claim.json:/claim.json \
+            ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} \
+              --OutputPath results.txt \
+              --policy /policy.json \
+              --results /claim.json \
+              >"${GITHUB_WORKSPACE}"/results.txt
+          docker system prune --volumes -f
 
-      # - name: Check that their are 0 failed tests in the gradetool results
-      #   run: |
-      #     if $(jq '.[] | .Fail | length' "${GITHUB_WORKSPACE}"/results.txt | grep -q 0); then
-      #       echo OK
-      #     else
-      #       echo "Gradetool has found failing tests in the following:"
-      #       jq '.[] | .Fail | .[].id' "${GITHUB_WORKSPACE}"/results.txt
-      #       exit 1
-      #     fi
+      - name: Check that their are 0 failed tests in the gradetool results
+        run: |
+          if $(jq '.[] | .Fail | length' "${GITHUB_WORKSPACE}"/results.txt | grep -q 0); then
+            echo OK
+          else
+            echo "Gradetool has found failing tests in the following:"
+            jq '.[] | .Fail | .[].id' "${GITHUB_WORKSPACE}"/results.txt
+            exit 1
+          fi
 
       - name: 'Test: Run preflight specific test suite'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "preflight"
@@ -321,18 +307,6 @@ jobs:
       PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
 
     steps:
-      - name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@main
-        with:
-          tool-cache: false
-          large-packages: true
-          android: true
-          dotnet: true
-          haskell: true
-          docker-images: true
-          swap-storage: true
-        continue-on-error: true
-
       - name: Write temporary docker file
         run: |
           mkdir -p /home/runner/.docker
@@ -371,7 +345,7 @@ jobs:
       - name: Set up Go 1.21
         uses: actions/setup-go@v5
         with:
-          go-version: 1.21.5
+          go-version: 1.21.6
 
       # Perform smoke tests using a TNF container.
       - name: Check out code into the Go module directory
@@ -385,8 +359,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build the `cnf-certification-test` image
-        run: |
-          make build-image-local
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 90
+          max_attempts: 3
+          command: make build-image-local
         env:
           IMAGE_TAG: ${TNF_IMAGE_TAG}
 
@@ -439,28 +416,28 @@ jobs:
       - name: Remove tarball(s) to save disk space.
         run: rm -f ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
 
-      # - name: Run gradetool on the claim.json.
-      #   run: |
-      #     docker run \
-      #       --rm \
-      #       --volume "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json \
-      #       --volume "${TNF_OUTPUT_DIR}"/claim.json:/claim.json \
-      #       ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} \
-      #         --OutputPath results.txt \
-      #         --policy /policy.json \
-      #         --results /claim.json \
-      #         >"${GITHUB_WORKSPACE}"/results.txt
-      #     docker system prune --volumes -f
+      - name: Run gradetool on the claim.json.
+        run: |
+          docker run \
+            --rm \
+            --volume "${GITHUB_WORKSPACE}"/generated_policy.json:/policy.json \
+            --volume "${TNF_OUTPUT_DIR}"/claim.json:/claim.json \
+            ${REGISTRY}/${GRADETOOL_IMAGE_NAME}:${GRADETOOL_IMAGE_TAG} \
+              --OutputPath results.txt \
+              --policy /policy.json \
+              --results /claim.json \
+              >"${GITHUB_WORKSPACE}"/results.txt
+          docker system prune --volumes -f
 
-      # - name: Check that their are 0 failed tests in the gradetool results
-      #   run: |
-      #     if $(jq '.[] | .Fail | length' "${GITHUB_WORKSPACE}"/results.txt | grep -q 0); then
-      #       echo OK
-      #     else
-      #       echo "Gradetool has found failing tests in the following:"
-      #       jq '.[] | .Fail | .[].id' "${GITHUB_WORKSPACE}"/results.txt
-      #       exit 1
-      #     fi
+      - name: Check that their are 0 failed tests in the gradetool results
+        run: |
+          if $(jq '.[] | .Fail | length' "${GITHUB_WORKSPACE}"/results.txt | grep -q 0); then
+            echo OK
+          else
+            echo "Gradetool has found failing tests in the following:"
+            jq '.[] | .Fail | .[].id' "${GITHUB_WORKSPACE}"/results.txt
+            exit 1
+          fi
 
       - name: 'Test: Run Preflight Specific Smoke Tests in a TNF container'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "preflight"

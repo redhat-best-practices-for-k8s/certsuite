@@ -1,11 +1,8 @@
-FROM registry.access.redhat.com/ubi8/ubi:8.8
-
-# hadolint ignore=DL3041
-RUN dnf install -y python39 && dnf clean all
+FROM registry.access.redhat.com/ubi9/python-39:1-161
 
 # Pin versions in pip.
 # hadolint ignore=DL3013
-RUN pip3 install --no-cache-dir mkdocs mkdocs-material markdown-include
+RUN pip install --no-cache-dir mkdocs mkdocs-material markdown-include
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

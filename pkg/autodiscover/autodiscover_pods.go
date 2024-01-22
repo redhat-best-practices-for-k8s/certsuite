@@ -31,12 +31,12 @@ func findPodsByLabel(oc corev1client.CoreV1Interface, labels []labelObject, name
 	for _, ns := range namespaces {
 		for _, aLabelObject := range labels {
 			label := aLabelObject.LabelKey + "=" + aLabelObject.LabelValue
-			log.Debug("Searching Pods with label %s", label)
+			log.Debug("Searching Pods with label %q", label)
 			pods, err := oc.Pods(ns).List(context.TODO(), metav1.ListOptions{
 				LabelSelector: label,
 			})
 			if err != nil {
-				log.Error("error when listing pods in ns=%s label=%s, err: %v", ns, label, err)
+				log.Error("Error when listing pods in ns=%s label=%s, err: %v", ns, label, err)
 				continue
 			}
 
