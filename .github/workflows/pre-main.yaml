@@ -386,7 +386,7 @@ jobs:
             -e '/executedBy/s/""/"CI"/g' \
             -e '/partnerName/s/""/"ciuser"/g' \
             -e '/collectorAppPassword/s/""/"cipassword"/g' \
-            $TNF_CONFIG_DIR
+            $TNF_CONFIG_DIR/tnf_config.yml
 
       - name: 'Test: Run without any TS, just get diagnostic information'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }}
