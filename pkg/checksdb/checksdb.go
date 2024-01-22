@@ -235,3 +235,21 @@ func GetTestsCountByState(state string) int {
 	}
 	return count
 }
+
+func FilterCheckIDs(labelsFilter string) ([]string, error) {
+	filteredCheckIDs := []string{}
+	labelsExprEvaluator, err := NewLabelsExprEvaluator(labelsFilter)
+	if err != nil {
+		return nil, fmt.Errorf("invalid labels expression: %v", err)
+	}
+
+	for _, group := range dbByGroup {
+		for _, check := range group.checks {
+			if labelsExprEvaluator.Eval(check.Labels) {
+				filteredCheckIDs = append(filteredCheckIDs, check.ID)
+			}
+		}
+	}
+
+	return filteredCheckIDs, nil
+}
