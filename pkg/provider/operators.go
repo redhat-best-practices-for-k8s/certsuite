@@ -108,7 +108,8 @@ func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
 		}
 		for _, c := range checks {
 			results.PassedOverall = false
-			results.Errors = append(results.Errors, plibRuntime.Result{Check: c, ElapsedTime: 0, Err: runtimeErr})
+			result := plibRuntime.Result{Check: c, ElapsedTime: 0}
+			results.Errors = append(results.Errors, *result.WithError(runtimeErr))
 		}
 	}
 

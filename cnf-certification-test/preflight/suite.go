@@ -172,7 +172,7 @@ func generatePreflightContainerGinkgoTest(checksGroup *checksdb.ChecksGroup, tes
 				}
 				for _, r := range cut.PreflightResults.Errors {
 					if r.Name() == testName {
-						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, fmt.Sprintf("Container has errored preflight test %s, err=%v", testName, r.Err), false))
+						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, fmt.Sprintf("Container has errored preflight test %s, err=%v", testName, r.Error()), false))
 						log.Error("%s has errored preflight test: %s", cut, testName)
 					}
 				}
