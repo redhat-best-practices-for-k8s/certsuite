@@ -40,3 +40,53 @@ func TestCrScale_ToString(t *testing.T) {
 		})
 	}
 }
+
+func TestIsScaleObjectReady(t *testing.T) {
+	type fields struct {
+		Scale *scalingv1.Scale
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   bool
+	}{
+		{
+			name: "test1",
+			fields: fields{
+				Scale: &scalingv1.Scale{
+					Spec: scalingv1.ScaleSpec{
+						Replicas: 2,
+					},
+					Status: scalingv1.ScaleStatus{
+						Replicas: 2,
+					},
+				},
+			},
+			want: true,
+		},
+		{
+			name: "test2",
+			fields: fields{
+				Scale: &scalingv1.Scale{
+					Spec: scalingv1.ScaleSpec{
+						Replicas: 2,
+					},
+					Status: scalingv1.ScaleStatus{
+						Replicas: 3,
+					},
+				},
+			},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			crScale := CrScale{
+				Scale: tt.fields.Scale,
+			}
+			if got := crScale.IsScaleObjectReady(); got != tt.want {
+				t.Errorf("CrScale.IsScaleObjectReady() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

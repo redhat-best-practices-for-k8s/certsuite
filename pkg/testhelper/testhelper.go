@@ -59,6 +59,7 @@ func Equal(p, other []*ReportObject) bool {
 	return true
 }
 
+// FailureReasonOutTestString returns a string representation of the FailureReasonOut struct.
 func FailureReasonOutTestString(p FailureReasonOut) (out string) {
 	out = "testhelper.FailureReasonOut{"
 	out += fmt.Sprintf("CompliantObjectsOut: %s,", ReportObjectTestStringPointer(p.CompliantObjectsOut))
@@ -67,6 +68,8 @@ func FailureReasonOutTestString(p FailureReasonOut) (out string) {
 	return out
 }
 
+// ReportObjectTestStringPointer takes a slice of pointers to ReportObject and returns a string representation of the objects.
+// The returned string is in the format "[]*testhelper.ReportObject{&{...}, &{...}, ...}".
 func ReportObjectTestStringPointer(p []*ReportObject) (out string) {
 	out = "[]*testhelper.ReportObject{"
 	for _, p := range p {
@@ -76,6 +79,9 @@ func ReportObjectTestStringPointer(p []*ReportObject) (out string) {
 	return out
 }
 
+// ReportObjectTestString returns a string representation of the given slice of ReportObject.
+// Each ReportObject is formatted using the %#v format specifier and appended to the output string.
+// The resulting string is enclosed in square brackets and prefixed with "[]testhelper.ReportObject{".
 func ReportObjectTestString(p []*ReportObject) (out string) {
 	out = "[]testhelper.ReportObject{"
 	for _, p := range p {
@@ -85,6 +91,9 @@ func ReportObjectTestString(p []*ReportObject) (out string) {
 	return out
 }
 
+// Equal checks if the current FailureReasonOut is equal to the other FailureReasonOut.
+// It compares the CompliantObjectsOut and NonCompliantObjectsOut fields of both structs.
+// Returns true if they are equal, false otherwise.
 func (p FailureReasonOut) Equal(other FailureReasonOut) bool {
 	return Equal(p.CompliantObjectsOut, other.CompliantObjectsOut) &&
 		Equal(p.NonCompliantObjectsOut, other.NonCompliantObjectsOut)
@@ -204,6 +213,10 @@ const (
 	PodRoleBinding               = "Pods with RoleBindings details"
 )
 
+// SetContainerProcessValues sets the values for a container process in the report object.
+// It takes the scheduling policy, scheduling priority, and command line as input parameters.
+// It adds the process command line, scheduling policy, and scheduling priority fields to the report object.
+// Finally, it sets the object type to ContainerProcessType.
 func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandLine string) *ReportObject {
 	obj.AddField(ProcessCommandLine, aCommandLine)
 	obj.AddField(SchedulingPolicy, aPolicy)
@@ -212,6 +225,9 @@ func (obj *ReportObject) SetContainerProcessValues(aPolicy, aPriority, aCommandL
 	return obj
 }
 
+// NewContainerReportObject creates a new ReportObject for a container.
+// It takes the namespace, pod name, container name, reason, and compliance status as parameters.
+// It returns a pointer to the created ReportObject.
 func NewContainerReportObject(aNamespace, aPodName, aContainerName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, ContainerType, isCompliant)
 	out.AddField(Namespace, aNamespace)
@@ -220,6 +236,9 @@ func NewContainerReportObject(aNamespace, aPodName, aContainerName, aReason stri
 	return out
 }
 
+// NewCertifiedContainerReportObject creates a new ReportObject for a certified container.
+// It takes a ContainerImageIdentifier, aReason string, and a boolean indicating whether the container is compliant.
+// It returns a pointer to the created ReportObject.
 func NewCertifiedContainerReportObject(cii provider.ContainerImageIdentifier, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, ContainerImageType, isCompliant)
 	out.AddField(ImageDigest, cii.Digest)
@@ -229,18 +248,24 @@ func NewCertifiedContainerReportObject(cii provider.ContainerImageIdentifier, aR
 	return out
 }
 
+// NewNodeReportObject creates a new ReportObject for a node with the given name, reason, and compliance status.
+// It returns the created ReportObject.
 func NewNodeReportObject(aNodeName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, NodeType, isCompliant)
 	out.AddField(Name, aNodeName)
 	return out
 }
 
+// NewClusterVersionReportObject creates a new ReportObject for a cluster version.
+// It takes the version, aReason, and isCompliant as input parameters and returns the created ReportObject.
 func NewClusterVersionReportObject(version, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, OCPClusterType, isCompliant)
 	out.AddField(OCPClusterVersionType, version)
 	return out
 }
 
+// NewTaintReportObject creates a new ReportObject with taint-related information.
+// It takes in the taintBit, nodeName, aReason, and isCompliant parameters and returns a pointer to the created ReportObject.
 func NewTaintReportObject(taintBit, nodeName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, TaintType, isCompliant)
 	out.AddField(NodeType, nodeName)
@@ -248,6 +273,9 @@ func NewTaintReportObject(taintBit, nodeName, aReason string, isCompliant bool) 
 	return out
 }
 
+// NewPodReportObject creates a new ReportObject for a pod.
+// It takes the namespace, pod name, reason, and compliance status as input parameters.
+// It returns a pointer to the created ReportObject.
 func NewPodReportObject(aNamespace, aPodName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, PodType, isCompliant)
 	out.AddField(Namespace, aNamespace)
@@ -255,6 +283,9 @@ func NewPodReportObject(aNamespace, aPodName, aReason string, isCompliant bool) 
 	return out
 }
 
+// NewHelmChartReportObject creates a new ReportObject for a Helm chart.
+// It takes the namespace, Helm chart name, reason, and compliance status as input parameters.
+// It returns the created ReportObject.
 func NewHelmChartReportObject(aNamespace, aHelmChartName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, HelmType, isCompliant)
 	out.AddField(Namespace, aNamespace)
@@ -262,6 +293,9 @@ func NewHelmChartReportObject(aNamespace, aHelmChartName, aReason string, isComp
 	return out
 }
 
+// NewOperatorReportObject creates a new ReportObject for an operator.
+// It takes the namespace, operator name, reason, and compliance status as input parameters.
+// It returns the created ReportObject.
 func NewOperatorReportObject(aNamespace, aOperatorName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, OperatorType, isCompliant)
 	out.AddField(Namespace, aNamespace)
@@ -269,6 +303,9 @@ func NewOperatorReportObject(aNamespace, aOperatorName, aReason string, isCompli
 	return out
 }
 
+// NewDeploymentReportObject creates a new ReportObject for a deployment.
+// It takes the namespace, deployment name, reason, and compliance status as input parameters.
+// It returns a pointer to the created ReportObject.
 func NewDeploymentReportObject(aNamespace, aDeploymentName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, DeploymentType, isCompliant)
 	out.AddField(Namespace, aNamespace)
@@ -276,6 +313,9 @@ func NewDeploymentReportObject(aNamespace, aDeploymentName, aReason string, isCo
 	return out
 }
 
+// NewStatefulSetReportObject creates a new ReportObject for a StatefulSet.
+// It takes the namespace, statefulSetName, reason, and compliance status as parameters.
+// It returns the created ReportObject.
 func NewStatefulSetReportObject(aNamespace, aStatefulSetName, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, StatefulSetType, isCompliant)
 	out.AddField(Namespace, aNamespace)
@@ -283,6 +323,8 @@ func NewStatefulSetReportObject(aNamespace, aStatefulSetName, aReason string, is
 	return out
 }
 
+// NewCrdReportObject creates a new ReportObject for a custom resource definition (CRD).
+// It takes the name, version, reason, and compliance status as parameters and returns the created ReportObject.
 func NewCrdReportObject(aName, aVersion, aReason string, isCompliant bool) (out *ReportObject) {
 	out = NewReportObject(aReason, CustomResourceDefinitionType, isCompliant)
 	out.AddField(CustomResourceDefinitionName, aName)
@@ -290,6 +332,10 @@ func NewCrdReportObject(aName, aVersion, aReason string, isCompliant bool) (out 
 	return out
 }
 
+// NewReportObject creates a new ReportObject with the specified reason, type, and compliance status.
+// If isCompliant is true, the reason is added as a field with the key ReasonForCompliance.
+// If isCompliant is false, the reason is added as a field with the key ReasonForNonCompliance.
+// Returns a pointer to the created ReportObject.
 func NewReportObject(aReason, aType string, isCompliant bool) (out *ReportObject) {
 	out = &ReportObject{}
 	out.ObjectType = aType
@@ -301,25 +347,40 @@ func NewReportObject(aReason, aType string, isCompliant bool) (out *ReportObject
 	return out
 }
 
+// AddField adds a key-value pair to the ReportObject.
+// It appends the given key to the ObjectFieldsKeys slice and the given value to the ObjectFieldsValues slice.
+// It returns the modified ReportObject.
 func (obj *ReportObject) AddField(aKey, aValue string) (out *ReportObject) {
 	obj.ObjectFieldsKeys = append(obj.ObjectFieldsKeys, aKey)
 	obj.ObjectFieldsValues = append(obj.ObjectFieldsValues, aValue)
 	return obj
 }
 
+// NewNamespacedReportObject creates a new ReportObject with the specified reason, type, compliance status, and namespace.
+// It adds the namespace field to the ReportObject.
 func NewNamespacedReportObject(aReason, aType string, isCompliant bool, aNamespace string) (out *ReportObject) {
 	return NewReportObject(aReason, aType, isCompliant).AddField(Namespace, aNamespace)
 }
 
+// NewNamespacedNamedReportObject creates a new namespaced named report object with the given parameters.
+// It returns a pointer to the created ReportObject.
+// The report object contains the specified reason, type, compliance status, namespace, and name.
 func NewNamespacedNamedReportObject(aReason, aType string, isCompliant bool, aNamespace, aName string) (out *ReportObject) {
 	return NewReportObject(aReason, aType, isCompliant).AddField(Namespace, aNamespace).AddField(Name, aName)
 }
 
+// SetType sets the type of the ReportObject.
+// It takes aType as a parameter and updates the ObjectType field of the ReportObject.
+// It returns a pointer to the updated ReportObject.
 func (obj *ReportObject) SetType(aType string) (out *ReportObject) {
 	obj.ObjectType = aType
 	return obj
 }
 
+// ResultToString converts an integer result code into a corresponding string representation.
+// It takes an integer result as input and returns the corresponding string representation.
+// The possible result codes are SUCCESS, FAILURE, and ERROR.
+// If the input result code is not recognized, an empty string is returned.
 func ResultToString(result int) (str string) {
 	switch result {
 	case SUCCESS:
