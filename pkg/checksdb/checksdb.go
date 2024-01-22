@@ -19,17 +19,12 @@ import (
 
 var (
 	dbLock    sync.Mutex
-	db        []*Check
 	dbByGroup map[string]*ChecksGroup
 
 	resultsDB = map[string]claim.Result{}
 )
 
 type AbortPanicMsg string
-
-func AddCheck(check *Check) {
-	db = append(db, check)
-}
 
 //nolint:funlen
 func RunChecks(labelsExpr string, timeout time.Duration) (failedCtr int, err error) {
