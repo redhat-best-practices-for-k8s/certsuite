@@ -106,6 +106,7 @@ func main() {
 		err = certsuite.Run(*flags.LabelsFlag, *flags.OutputDir)
 		if err != nil {
 			log.Error("Failed to run CNF Certification Suite: %v", err)
+			os.Exit(1) //nolint:gocritic // exitAfterDefer
 		}
 	}
 }
