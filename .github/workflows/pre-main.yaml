@@ -353,16 +353,13 @@ jobs:
           IMAGE_TAG: ${TNF_IMAGE_TAG}
 
       # Prepare collector to be used when running smoke tests
+      # temporarly checking out shir's branch
       - name: Check out `Collector`
         uses: actions/checkout@v4
         with:
-          repository: test-network-function/collector
+          repository: shirmoran/collector
+          ref: sanity-check-modification
           path: collector
-
-      - name: Deploy collector and mysql
-        uses: ./collector/.github/actions/prepare-collector-for-use
-        with:
-          working_directory: collector
 
       # Clean up unused container image layers. We need to filter out a possible error return code
       # from docker with "|| true" as some images might still be used by running kind containers and
@@ -379,16 +376,25 @@ jobs:
           cp cnf-certification-test/*.yml $TNF_CONFIG_DIR
         shell: bash
 
+      - name: Modify TNF config with CI collector credentials
+        run: |
+          sed -i \
+            -e '/collectorAppEndPoint/s/""/"44.195.143.94"/g' \
+            -e '/executedBy/s/""/"CI"/g' \
+            -e '/partnerName/s/""/"ciuser"/g' \
+            -e '/collectorAppPassword/s/""/"cipassword"/g' \
+            $TNF_CONFIG_DIR
+
       - name: 'Test: Run without any TS, just get diagnostic information'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }}
 
       - name: 'Test: Run Smoke Tests in a TNF container'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} TNF_ENABLE_DATA_COLLECTION=true ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "${SMOKE_TESTS_LABELS_FILTER}"
 
-      # - name: Run sanity check on collector
-      #   uses: ./collector/.github/actions/run-sanity-check
-      #   with:
-      #     working_directory: collector
+      - name: Run sanity check on collector
+        uses: ./collector/.github/actions/run-sanity-check
+        with:
+          working_directory: collector
 
       - name: Upload container test results as an artifact
         uses: actions/upload-artifact@v4
