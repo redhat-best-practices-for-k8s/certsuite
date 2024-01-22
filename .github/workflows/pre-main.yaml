@@ -375,9 +375,6 @@ jobs:
           mkdir -p $TNF_CONFIG_DIR $TNF_OUTPUT_DIR
           cp cnf-certification-test/*.yml $TNF_CONFIG_DIR
         shell: bash
-
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
         
       - name: Modify TNF config with CI collector credentials
         run: |
@@ -393,6 +390,9 @@ jobs:
 
       - name: 'Test: Run Smoke Tests in a TNF container'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} TNF_ENABLE_DATA_COLLECTION=true ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "${SMOKE_TESTS_LABELS_FILTER}"
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
 
       - name: Run sanity check on collector
         uses: ./collector/.github/actions/run-sanity-check
