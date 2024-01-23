@@ -93,9 +93,14 @@ func Run(labelsFilter, outputFolder string) error {
 	timeout := processFlags()
 	var returnErr bool
 
+	// Create an evaluator to filter test cases with labels
+	if err := checksdb.InitLabelsExprEvaluator(labelsFilter); err != nil {
+		return fmt.Errorf("failed to initialize a test case label evaluator, err: %v", err)
+	}
+
 	// If the list flag is passed, print the checks filtered with --labels and leave
 	if *flags.ListFlag {
-		checksIDs, err := checksdb.FilterCheckIDs(labelsFilter)
+		checksIDs, err := checksdb.FilterCheckIDs()
 		if err != nil {
 			return fmt.Errorf("could not list test cases, err: %v", err)
 		}
@@ -120,7 +125,7 @@ func Run(labelsFilter, outputFolder string) error {
 
 	log.Info("Running checks matching labels expr %q with timeout %v", labelsFilter, timeout)
 	startTime := time.Now()
-	failedCtr, err := checksdb.RunChecks(labelsFilter, timeout)
+	failedCtr, err := checksdb.RunChecks(timeout)
 	if err != nil {
 		log.Error("%v", err)
 	}

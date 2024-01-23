@@ -22,12 +22,14 @@ var (
 	dbByGroup map[string]*ChecksGroup
 
 	resultsDB = map[string]claim.Result{}
+
+	labelsExprEvaluator LabelsExprEvaluator
 )
 
 type AbortPanicMsg string
 
 //nolint:funlen
-func RunChecks(labelsExpr string, timeout time.Duration) (failedCtr int, err error) {
+func RunChecks(timeout time.Duration) (failedCtr int, err error) {
 	dbLock.Lock()
 	defer dbLock.Unlock()
 
@@ -45,8 +47,7 @@ func RunChecks(labelsExpr string, timeout time.Duration) (failedCtr int, err err
 	var errs []error
 	for _, group := range dbByGroup {
 		if abort {
-			// ToDo: remove labelexpr checking.
-			_ = group.OnAbort(labelsExpr, abortReason)
+			_ = group.OnAbort(abortReason)
 			group.RecordChecksResults()
 			continue
 		}
@@ -58,7 +59,7 @@ func RunChecks(labelsExpr string, timeout time.Duration) (failedCtr int, err err
 		// Done channel for the goroutine that runs group.RunChecks().
 		groupDone := make(chan bool)
 		go func() {
-			checks, failedCheckCtr := group.RunChecks(labelsExpr, stopChan, abortChan)
+			checks, failedCheckCtr := group.RunChecks(stopChan, abortChan)
 			failedCtr += failedCheckCtr
 			errs = append(errs, checks...)
 			groupDone <- true
@@ -72,21 +73,21 @@ func RunChecks(labelsExpr string, timeout time.Duration) (failedCtr int, err err
 			stopChan <- true
 
 			abort = true
-			_ = group.OnAbort(labelsExpr, abortReason)
+			_ = group.OnAbort(abortReason)
 		case <-timeOutChan:
 			log.Warn("Running all checks timed-out.")
 			stopChan <- true
 
 			abort = true
 			abortReason = "global time-out"
-			_ = group.OnAbort(labelsExpr, abortReason)
+			_ = group.OnAbort(abortReason)
 		case <-sigIntChan:
 			log.Warn("SIGINT/SIGTERM received.")
 			stopChan <- true
 
 			abort = true
 			abortReason = "SIGINT/SIGTERM"
-			_ = group.OnAbort(labelsExpr, abortReason)
+			_ = group.OnAbort(abortReason)
 		}
 
 		group.RecordChecksResults()
@@ -231,13 +232,8 @@ func GetTestsCountByState(state string) int {
 	return count
 }
 
-func FilterCheckIDs(labelsFilter string) ([]string, error) {
+func FilterCheckIDs() ([]string, error) {
 	filteredCheckIDs := []string{}
-	labelsExprEvaluator, err := NewLabelsExprEvaluator(labelsFilter)
-	if err != nil {
-		return nil, fmt.Errorf("invalid labels expression: %v", err)
-	}
-
 	for _, group := range dbByGroup {
 		for _, check := range group.checks {
 			if labelsExprEvaluator.Eval(check.Labels) {
@@ -247,4 +243,15 @@ func FilterCheckIDs(labelsFilter string) ([]string, error) {
 	}
 
 	return filteredCheckIDs, nil
+}
+
+func InitLabelsExprEvaluator(labelsFilter string) error {
+	eval, err := newLabelsExprEvaluator(labelsFilter)
+	if err != nil {
+		return fmt.Errorf("could not create a label evaluator, err: %v", err)
+	}
+
+	labelsExprEvaluator = eval
+
+	return nil
 }
