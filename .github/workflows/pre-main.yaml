@@ -353,12 +353,10 @@ jobs:
           IMAGE_TAG: ${TNF_IMAGE_TAG}
 
       # Prepare collector to be used when running smoke tests
-      # temporarly using shir's branch
       - name: Check out `Collector`
         uses: actions/checkout@v4
         with:
-          repository: shirmoran/collector
-          ref: sanity-check-with-env-vars
+          repository: test-network-function/collector
           path: collector
 
       # Clean up unused container image layers. We need to filter out a possible error return code
