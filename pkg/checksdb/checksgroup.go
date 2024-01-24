@@ -293,14 +293,9 @@ func runCheck(check *Check, group *ChecksGroup, remainingChecks []*Check) (err e
 //   - AfterEach panic: Set check as error.
 //
 //nolint:funlen
-func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool, abortChan chan string) (errs []error, failedChecks int) {
+func (group *ChecksGroup) RunChecks(stopChan <-chan bool, abortChan chan string) (errs []error, failedChecks int) {
 	log.Info("Running group %q checks.", group.name)
 	fmt.Printf("Running suite %s\n", strings.ToUpper(group.name))
-
-	labelsExprEvaluator, err := NewLabelsExprEvaluator(labelsExpr)
-	if err != nil {
-		return []error{fmt.Errorf("invalid labels expression: %v", err)}, 0
-	}
 
 	// Get checks to run based on the label expr.
 	checks := []*Check{}
@@ -382,12 +377,7 @@ func (group *ChecksGroup) RunChecks(labelsExpr string, stopChan <-chan bool, abo
 	return errs, failedChecks
 }
 
-func (group *ChecksGroup) OnAbort(labelsExpr, abortReason string) error {
-	labelsExprEvaluator, err := NewLabelsExprEvaluator(labelsExpr)
-	if err != nil {
-		return fmt.Errorf("invalid labels expression: %v", err)
-	}
-
+func (group *ChecksGroup) OnAbort(abortReason string) error {
 	// If this wasn't the group with the aborted check.
 	if group.currentRunningCheckIdx == checkIdxNone {
 		fmt.Printf("Skipping checks from suite %s\n", strings.ToUpper(group.name))
