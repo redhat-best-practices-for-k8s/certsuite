@@ -124,7 +124,7 @@ func TestIsWordInExpr(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Get labels expr evaluator
-			labelsExprEvaluator, err := NewLabelsExprEvaluator(tt.args.expr)
+			labelsExprEvaluator, err := newLabelsExprEvaluator(tt.args.expr)
 			assert.NotNil(t, labelsExprEvaluator)
 			assert.Nil(t, err)
 

@@ -18,7 +18,7 @@ type labelsExprParser struct {
 	astRootNode ast.Expr
 }
 
-func NewLabelsExprEvaluator(labelsExpr string) (LabelsExprEvaluator, error) {
+func newLabelsExprEvaluator(labelsExpr string) (LabelsExprEvaluator, error) {
 	goLikeExpr := strings.ReplaceAll(labelsExpr, "-", "_")
 	goLikeExpr = strings.ReplaceAll(goLikeExpr, ",", "||")
 
