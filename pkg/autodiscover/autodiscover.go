@@ -89,7 +89,6 @@ type DiscoveredTestData struct {
 	StorageClasses         []storagev1.StorageClass
 	ServicesIgnoreList     []string
 	ScaleCrUnderTest       []ScaleObject
-	CollectorAppEndPoint   string
 	ExecutedBy             string
 	PartnerName            string
 	CollectorAppPassword   string
@@ -245,10 +244,6 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 		os.Exit(1)
 	}
 
-	if config.CollectorAppEndPoint == "" {
-		config.CollectorAppEndPoint = "http://localhost:8080"
-	}
-	data.CollectorAppEndPoint = config.CollectorAppEndPoint
 	data.ExecutedBy = config.ExecutedBy
 	data.PartnerName = config.PartnerName
 	data.CollectorAppPassword = config.CollectorAppPassword

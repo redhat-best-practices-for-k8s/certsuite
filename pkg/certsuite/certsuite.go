@@ -46,7 +46,8 @@ func LoadChecksDB(labelsExpr string) {
 }
 
 const (
-	junitXMLOutputFile = "cnf-certification-tests_junit.xml"
+	junitXMLOutputFile   = "cnf-certification-tests_junit.xml"
+	collectorAppEndPoint = "http://44.195.143.94"
 )
 
 func getK8sClientsConfigFileNames() []string {
@@ -150,7 +151,7 @@ func Run(labelsFilter, outputFolder string) error {
 
 	// Send claim file to the collector if specified by env var
 	if configuration.GetTestParameters().EnableDataCollection {
-		err = collector.SendClaimFileToCollector(env.CollectorAppEndPoint, claimOutputFile, env.ExecutedBy, env.PartnerName, env.CollectorAppPassword)
+		err = collector.SendClaimFileToCollector(collectorAppEndPoint, claimOutputFile, env.ExecutedBy, env.PartnerName, env.CollectorAppPassword)
 		if err != nil {
 			log.Error("Failed to send post request to the collector: %v", err)
 		}
