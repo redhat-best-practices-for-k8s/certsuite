@@ -359,11 +359,6 @@ jobs:
           repository: test-network-function/collector
           path: collector
 
-      - name: Deploy collector and mysql
-        uses: ./collector/.github/actions/prepare-collector-for-use
-        with:
-          working_directory: collector
-
       # Clean up unused container image layers. We need to filter out a possible error return code
       # from docker with "|| true" as some images might still be used by running kind containers and
       # won't be removed.
@@ -378,6 +373,30 @@ jobs:
           mkdir -p $TNF_CONFIG_DIR $TNF_OUTPUT_DIR
           cp cnf-certification-test/*.yml $TNF_CONFIG_DIR
         shell: bash
+        
+      - name: Get Collector's CI credentials
+        run: |
+          echo "collector_ciuser=ciuser_${{ github.run_id }}" >> $GITHUB_OUTPUT
+          echo "collector_cipassword=cipassword" >> $GITHUB_OUTPUT
+        id: set_collector_ci_creds
+
+      - name: Update Collector's CI credentials and Print username
+        run: |
+          echo Collector CI username: ${{ steps.set_collector_ci_creds.outputs.collector_ciuser }}
+          echo "COLLECTOR_CIUSER=${{ steps.set_collector_ci_creds.outputs.collector_ciuser }}" >> $GITHUB_ENV
+          echo "COLLECTOR_CIPASSWORD=${{ steps.set_collector_ci_creds.outputs.collector_cipassword }}" >> $GITHUB_ENV
+
+      - name: Ensure COLLECTOR_CIUSER and COLLECTOR_CIPASSWORD are set
+        run: '[[ -n "$COLLECTOR_CIUSER" ]] && [[ -n "$COLLECTOR_CIPASSWORD" ]]'
+
+      - name: Modify TNF config with CI collector credentials
+        run: |
+          sed -i\
+            -e '/collectorAppEndPoint/s|""|"http://44.195.143.94"|g' \
+            -e '/executedBy/s/""/"CI"/g' \
+            -e '/partnerName/s/""/"${{ env.COLLECTOR_CIUSER }}"/g' \
+            -e '/collectorAppPassword/s/""/"${{ env.COLLECTOR_CIPASSWORD }}"/g' \
+            $TNF_CONFIG_DIR/tnf_config.yml
 
       - name: 'Test: Run without any TS, just get diagnostic information'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }}
@@ -385,10 +404,12 @@ jobs:
       - name: 'Test: Run Smoke Tests in a TNF container'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} TNF_ENABLE_DATA_COLLECTION=true ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "${SMOKE_TESTS_LABELS_FILTER}"
 
-      # - name: Run sanity check on collector
-      #   uses: ./collector/.github/actions/run-sanity-check
-      #   with:
-      #     working_directory: collector
+      - name: Run sanity check on collector
+        uses: ./collector/.github/actions/run-sanity-check
+        with:
+          working_directory: collector
+          collector_username: ${COLLECTOR_CIUSER}
+          collector_password: ${COLLECTOR_CIPASSWORD}
 
       - name: Upload container test results as an artifact
         uses: actions/upload-artifact@v4
