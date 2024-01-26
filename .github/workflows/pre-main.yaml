@@ -215,21 +215,21 @@ jobs:
         with:
           timeout_minutes: 90
           max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make bootstrap-cluster && make bootstrap-docker-ubuntu-local && make bootstrap-python-ubuntu-local
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make bootstrap-cluster && make bootstrap-docker-ubuntu-local && make bootstrap-python-ubuntu-local
 
       - name: Run 'make rebuild-cluster'
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 90
           max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make rebuild-cluster
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make rebuild-cluster
 
       - name: Run 'make install'
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 90
           max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make install
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make install
 
       # Perform smoke tests.
       - name: 'Test: Run test suites'
@@ -310,21 +310,21 @@ jobs:
         with:
           timeout_minutes: 90
           max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make bootstrap-cluster; make make bootstrap-docker-ubuntu-local; make bootstrap-python-ubuntu-local
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make bootstrap-cluster && make bootstrap-docker-ubuntu-local && make bootstrap-python-ubuntu-local
 
       - name: Run 'make rebuild-cluster'
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 90
           max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make rebuild-cluster
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make rebuild-cluster
 
       - name: Run 'make install'
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 90
           max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make install
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make install
 
       # needed by depends-on-action
       - name: Set up Go 1.21
