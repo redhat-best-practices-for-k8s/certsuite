@@ -107,6 +107,16 @@ export TNF_ENABLE_XML_CREATION=true
 
 This will create a file named `cnf-certification-test/cnf-certification-tests_junit.xml`.
 
+#### Enable running container against OpenShift Local
+
+While running the test suite as a container, you can enable the container to be able to reach the local CRC instance by setting:
+
+```shell
+export TNF_ENABLE_CRC_TESTING=true
+```
+
+This utilizes the `--add-host` flag in Docker to be able to point `api.crc.testing` to the host gateway.
+
 ### Exceptions
 
 These options allow adding exceptions to skip several checks for different resources. The exceptions must be justified in order to pass the CNF Certification.
