@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/ubi:9.3-1476 AS build
+FROM registry.access.redhat.com/ubi9/ubi:9.3-1552 AS build
 ENV TNF_DIR=/usr/tnf
 ENV \
 	TNF_SRC_DIR=${TNF_DIR}/tnf-src \
@@ -94,7 +94,7 @@ FROM quay.io/testnetworkfunction/oct:latest AS db
 
 # Copy the state into a new flattened image to reduce size.
 # TODO run as non-root
-FROM registry.access.redhat.com/ubi9/ubi-minimal:9.3-1475
+FROM registry.access.redhat.com/ubi9/ubi-minimal:9.3-1552
 
 ENV \
 	TNF_DIR=/usr/tnf \

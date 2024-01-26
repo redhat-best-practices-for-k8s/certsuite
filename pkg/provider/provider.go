@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2023 Red Hat, Inc.
+// Copyright (C) 2020-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -116,7 +116,6 @@ type TestEnvironment struct { // rename this with testTarget
 	DaemonsetFailedToSpawn bool
 	ScaleCrUnderTest       []ScaleObject
 	StorageClassList       []storagev1.StorageClass
-	CollectorAppEndPoint   string
 	ExecutedBy             string
 	PartnerName            string
 	CollectorAppPassword   string
@@ -296,7 +295,6 @@ func buildTestEnvironment() { //nolint:funlen
 	env.HorizontalScaler = data.Hpas
 	env.StorageClassList = data.StorageClasses
 
-	env.CollectorAppEndPoint = data.CollectorAppEndPoint
 	env.ExecutedBy = data.ExecutedBy
 	env.PartnerName = data.PartnerName
 	env.CollectorAppPassword = data.CollectorAppPassword

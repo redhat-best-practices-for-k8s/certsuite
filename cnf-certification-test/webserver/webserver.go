@@ -390,9 +390,6 @@ func updateTnf(tnfConfig []byte, data *RequestedData) []byte {
 
 	config.ServicesIgnoreList = data.Servicesignorelist
 	config.ValidProtocolNames = data.ValidProtocolNames
-	if len(data.CollectorAppEndPoint) > 0 {
-		config.CollectorAppEndPoint = data.CollectorAppEndPoint[0]
-	}
 	if len(data.CollectorAppPassword) > 0 {
 		config.CollectorAppPassword = data.CollectorAppPassword[0]
 	}
