@@ -7,9 +7,9 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 
 ## Test cases summary
 
-### Total test cases: 88
+### Total test cases: 105
 
-### Total suites: 9
+### Total suites: 10
 
 |Suite|Tests per suite|
 |---|---|
@@ -22,6 +22,7 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |operator|3|
 |performance|6|
 |platform-alteration|13|
+|preflight|17|
 
 ### Extended specific tests only: 12
 
@@ -35,11 +36,11 @@ Depending on the CNF type, not all tests are required to pass to satisfy best pr
 |---|---|
 |7|1|
 
-### Non-Telco specific tests only: 41
+### Non-Telco specific tests only: 58
 
 |Mandatory|Optional|
 |---|---|
-|38|3|
+|38|20|
 
 ### Telco specific tests only: 27
 
@@ -573,11 +574,11 @@ Tags|telco,lifecycle
 
 Property|Description
 ---|---
-Unique ID|lifecycle-container-shutdown
-Description|Ensure that the containers lifecycle preStop management feature is configured. The most basic requirement for the lifecycle management of Pods in OpenShift are the ability to start and stop correctly. There are different ways a pod can stop on an OpenShift cluster. One way is that the pod can remain alive but non-functional. Another way is that the pod can crash and become non-functional. When pods are shut down by the platform they are sent a SIGTERM signal which means that the process in the container should start shutting down, closing connections and stopping all activity. If the pod doesn’t shut down within the default 30 seconds then the platform may send a SIGKILL signal which will stop the pod immediately. This method isn’t as clean and the default time between the SIGTERM and SIGKILL messages can be modified based on the requirements of the application. Containers should respond to SIGTERM/SIGKILL with graceful shutdown.
-Suggested Remediation|The preStop can be used to gracefully stop the container and clean resources (e.g., DB connection). For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. All pods must respond to SIGTERM signal and shutdown gracefully with a zero exit code.
+Unique ID|lifecycle-container-poststart
+Description|Ensure that the containers lifecycle postStart management feature is configured. A container must receive important events from the platform and conform/react to these events properly. For example, a container should catch SIGTERM or SIGKILL from the platform and shutdown as quickly as possible. Other typically important events from the platform are PostStart to initialize before servicing requests and PreStop to release resources cleanly before shutting down.
+Suggested Remediation|PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. PostStart is used to configure container, set up dependencies, record new creation. It can also be used to check that a required API is available before the container’s work begins.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cloud-native-design-best-practices
-Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.
+Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.
 Tags|telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
@@ -589,11 +590,11 @@ Tags|telco,lifecycle
 
 Property|Description
 ---|---
-Unique ID|lifecycle-container-startup
-Description|Ensure that the containers lifecycle postStart management feature is configured. A container must receive important events from the platform and conform/react to these events properly. For example, a container should catch SIGTERM or SIGKILL from the platform and shutdown as quickly as possible. Other typically important events from the platform are PostStart to initialize before servicing requests and PreStop to release resources cleanly before shutting down.
-Suggested Remediation|PostStart is normally used to configure the container, set up dependencies, and record the new creation. You could use this event to check that a required API is available before the container’s main work begins. Kubernetes will not change the container’s state to Running until the PostStart script has executed successfully. For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. PostStart is used to configure container, set up dependencies, record new creation. It can also be used to check that a required API is available before the container’s work begins.
+Unique ID|lifecycle-container-prestop
+Description|Ensure that the containers lifecycle preStop management feature is configured. The most basic requirement for the lifecycle management of Pods in OpenShift are the ability to start and stop correctly. There are different ways a pod can stop on an OpenShift cluster. One way is that the pod can remain alive but non-functional. Another way is that the pod can crash and become non-functional. When pods are shut down by the platform they are sent a SIGTERM signal which means that the process in the container should start shutting down, closing connections and stopping all activity. If the pod doesn’t shut down within the default 30 seconds then the platform may send a SIGKILL signal which will stop the pod immediately. This method isn’t as clean and the default time between the SIGTERM and SIGKILL messages can be modified based on the requirements of the application. Containers should respond to SIGTERM/SIGKILL with graceful shutdown.
+Suggested Remediation|The preStop can be used to gracefully stop the container and clean resources (e.g., DB connection). For details, see https://www.containiq.com/post/kubernetes-container-lifecycle-events-and-hooks and https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks. All pods must respond to SIGTERM signal and shutdown gracefully with a zero exit code.
 Best Practice Reference|https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cloud-native-design-best-practices
-Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a postStart startup specification.
+Exception Process|Identify which pod is not conforming to the process and submit information as to why it cannot use a preStop shutdown specification.
 Tags|telco,lifecycle
 |**Scenario**|**Optional/Mandatory**|
 |Extended|Mandatory|
@@ -1476,3 +1477,277 @@ Tags|common,platform-alteration
 |Far-Edge|Mandatory|
 |Non-Telco|Mandatory|
 |Telco|Mandatory|
+
+### preflight
+
+#### preflight-AllImageRefsInRelatedImages
+
+Property|Description
+---|---
+Unique ID|preflight-AllImageRefsInRelatedImages
+Description|Check that all images in the CSV are listed in RelatedImages section. Currently, this check is not enforced.
+Suggested Remediation|Either manually or with a tool, populate the RelatedImages section of the CSV
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-BasedOnUbi
+
+Property|Description
+---|---
+Unique ID|preflight-BasedOnUbi
+Description|Checking if the container's base image is based upon the Red Hat Universal Base Image (UBI)
+Suggested Remediation|Change the FROM directive in your Dockerfile or Containerfile to FROM registry.access.redhat.com/ubi8/ubi
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-BundleImageRefsAreCertified
+
+Property|Description
+---|---
+Unique ID|preflight-BundleImageRefsAreCertified
+Description|Checking that all images referenced in the CSV are certified. Currently, this check is not enforced.
+Suggested Remediation|Ensure that any images referenced in the CSV, including the relatedImages section, have been certified.
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-DeployableByOLM
+
+Property|Description
+---|---
+Unique ID|preflight-DeployableByOLM
+Description|Checking if the operator could be deployed by OLM
+Suggested Remediation|Follow the guidelines on the operator-sdk website to learn how to package your operator https://sdk.operatorframework.io/docs/olm-integration/cli-overview/
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-FollowsRestrictedNetworkEnablementGuidelines
+
+Property|Description
+---|---
+Unique ID|preflight-FollowsRestrictedNetworkEnablementGuidelines
+Description|Checks for indicators that this bundle has implemented guidelines to indicate readiness for running in a disconnected cluster, or a cluster with a restricted network.
+Suggested Remediation|If consumers of your operator may need to do so on a restricted network, implement the guidelines outlines in OCP documentation for your cluster version, such as https://docs.openshift.com/container-platform/4.11/operators/operator_sdk/osdk-generating-csvs.html#olm-enabling-operator-for-restricted-network_osdk-generating-csvs for OCP 4.11
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-HasLicense
+
+Property|Description
+---|---
+Unique ID|preflight-HasLicense
+Description|Checking if terms and conditions applicable to the software including open source licensing information are present. The license must be at /licenses
+Suggested Remediation|Create a directory named /licenses and include all relevant licensing and/or terms and conditions as text file(s) in that directory.
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-HasModifiedFiles
+
+Property|Description
+---|---
+Unique ID|preflight-HasModifiedFiles
+Description|Checks that no files installed via RPM in the base Red Hat layer have been modified
+Suggested Remediation|Do not modify any files installed by RPM in the base Red Hat layer
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-HasNoProhibitedPackages
+
+Property|Description
+---|---
+Unique ID|preflight-HasNoProhibitedPackages
+Description|Checks to ensure that the image in use does not include prohibited packages, such as Red Hat Enterprise Linux (RHEL) kernel packages.
+Suggested Remediation|Remove any RHEL packages that are not distributable outside of UBI
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-HasRequiredLabel
+
+Property|Description
+---|---
+Unique ID|preflight-HasRequiredLabel
+Description|Checking if the required labels (name, vendor, version, release, summary, description) are present in the container metadata.
+Suggested Remediation|Add the following labels to your Dockerfile or Containerfile: name, vendor, version, release, summary, description
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-HasUniqueTag
+
+Property|Description
+---|---
+Unique ID|preflight-HasUniqueTag
+Description|Checking if container has a tag other than 'latest', so that the image can be uniquely identified.
+Suggested Remediation|Add a tag to your image. Consider using Semantic Versioning. https://semver.org/
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-LayerCountAcceptable
+
+Property|Description
+---|---
+Unique ID|preflight-LayerCountAcceptable
+Description|Checking if container has less than 40 layers.  Too many layers within the container images can degrade container performance.
+Suggested Remediation|Optimize your Dockerfile to consolidate and minimize the number of layers. Each RUN command will produce a new layer. Try combining RUN commands using && where possible.
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-RequiredAnnotations
+
+Property|Description
+---|---
+Unique ID|preflight-RequiredAnnotations
+Description|Checks that the CSV has all of the required feature annotations.
+Suggested Remediation|Add all of the required annotations, and make sure the value is set to either 'true' or 'false'
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-RunAsNonRoot
+
+Property|Description
+---|---
+Unique ID|preflight-RunAsNonRoot
+Description|Checking if container runs as the root user because a container that does not specify a non-root user will fail the automatic certification, and will be subject to a manual review before the container can be approved for publication
+Suggested Remediation|Indicate a specific USER in the dockerfile or containerfile
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-ScorecardBasicSpecCheck
+
+Property|Description
+---|---
+Unique ID|preflight-ScorecardBasicSpecCheck
+Description|Check to make sure that all CRs have a spec block.
+Suggested Remediation|Make sure that all CRs have a spec block
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-ScorecardOlmSuiteCheck
+
+Property|Description
+---|---
+Unique ID|preflight-ScorecardOlmSuiteCheck
+Description|Operator-sdk scorecard OLM Test Suite Check
+Suggested Remediation|See scorecard output for details, artifacts/operator_bundle_scorecard_OlmSuiteCheck.json
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-SecurityContextConstraintsInCSV
+
+Property|Description
+---|---
+Unique ID|preflight-SecurityContextConstraintsInCSV
+Description|Evaluates the csv and logs a message if a non default security context constraint is needed by the operator
+Suggested Remediation|If no scc is detected the default restricted scc will be used.
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|
+
+#### preflight-ValidateOperatorBundle
+
+Property|Description
+---|---
+Unique ID|preflight-ValidateOperatorBundle
+Description|Validating Bundle image that checks if it can validate the content and format of the operator bundle
+Suggested Remediation|Valid bundles are defined by bundle spec, so make sure that this bundle conforms to that spec. More Information: https://github.com/operator-framework/operator-registry/blob/master/docs/design/operator-bundle.md
+Best Practice Reference|No Doc Link
+Exception Process|There is no documented exception process for this.
+Tags|common,preflight
+|**Scenario**|**Optional/Mandatory**|
+|Extended|Optional|
+|Far-Edge|Optional|
+|Non-Telco|Optional|
+|Telco|Optional|

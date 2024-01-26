@@ -119,6 +119,7 @@ type TestEnvironment struct { // rename this with testTarget
 	ExecutedBy             string
 	PartnerName            string
 	CollectorAppPassword   string
+	SkipPreflight          bool
 }
 
 type MachineConfig struct {

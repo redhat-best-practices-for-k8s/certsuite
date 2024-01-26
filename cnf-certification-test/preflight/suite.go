@@ -17,6 +17,7 @@
 package preflight
 
 import (
+	"fmt"
 	"os"
 	"strings"
 
@@ -56,6 +57,7 @@ func labelsAllowTestRun(labelFilter string, allowedLabels []string) bool {
 // time to finish. When they're finished, a checksdb.Check is created for each preflight lib's
 // check that has run. The CheckFn will simply store the result.
 func ShouldRun(labelsExpr string) bool {
+	env = provider.GetTestEnvironment()
 	preflightAllowedLabels := []string{common.PreflightTestKey, identifiers.TagPreflight}
 
 	if !labelsAllowTestRun(labelsExpr, preflightAllowedLabels) {
@@ -65,8 +67,8 @@ func ShouldRun(labelsExpr string) bool {
 	// Add safeguard against running the preflight tests if the docker config does not exist.
 	preflightDockerConfigFile := configuration.GetTestParameters().PfltDockerconfig
 	if preflightDockerConfigFile == "" || preflightDockerConfigFile == "NA" {
-		log.Warn("Skipping the Preflight suite because the Docker Config file is not provided.")
-		return false
+		log.Warn("Skipping the preflight suite because the Docker Config file is not provided.")
+		env.SkipPreflight = true
 	}
 
 	return true
@@ -169,7 +171,7 @@ func generatePreflightContainerCnfCertTest(checksGroup *checksdb.ChecksGroup, te
 				for _, r := range cut.PreflightResults.Errors {
 					if r.Name() == testName {
 						check.LogError("Container %q has errored Preflight test %q", cut, testName)
-						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has errored preflight test "+testName, false))
+						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, fmt.Sprintf("Container has errored preflight test %s, err=%v", testName, r.Error()), false))
 					}
 				}
 			}
