@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2023 Red Hat, Inc.
+// Copyright (C) 2020-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,12 +17,19 @@
 package catalog
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"os"
 	"sort"
 	"strings"
 
+	"github.com/redhat-openshift-ecosystem/openshift-preflight/artifacts"
+	plibContainer "github.com/redhat-openshift-ecosystem/openshift-preflight/container"
+	plibOperator "github.com/redhat-openshift-ecosystem/openshift-preflight/operator"
+	"github.com/sirupsen/logrus"
+
+	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/arrayhelper"
@@ -126,8 +133,55 @@ func scenarioIDToText(id string) (text string) {
 	return text
 }
 
+func addPreflightTestsToCatalog() {
+	const dummy = "dummy"
+	// Create artifacts handler
+	artifactsWriter, err := artifacts.NewMapWriter()
+	if err != nil {
+		logrus.Errorf("error creating artifact, failed to add preflight tests to catalog")
+		return
+	}
+	ctx := artifacts.ContextWithWriter(context.TODO(), artifactsWriter)
+	optsOperator := []plibOperator.Option{}
+	optsContainer := []plibContainer.Option{}
+	checkOperator := plibOperator.NewCheck(dummy, dummy, []byte(""), optsOperator...)
+	checkContainer := plibContainer.NewCheck(dummy, optsContainer...)
+	_, checksOperator, err := checkOperator.List(ctx)
+	if err != nil {
+		logrus.Errorf("error getting preflight operator tests.")
+	}
+	_, checksContainer, err := checkContainer.List(ctx)
+	if err != nil {
+		logrus.Errorf("error getting preflight container tests.")
+	}
+
+	allChecks := checksOperator
+	allChecks = append(allChecks, checksContainer...)
+
+	for _, c := range allChecks {
+		_ = identifiers.AddCatalogEntry(
+			c.Name(),
+			common.PreflightTestKey,
+			c.Metadata().Description,
+			c.Help().Suggestion,
+			identifiers.NoDocumentedProcess,
+			identifiers.NoDocLink,
+			true,
+			map[string]string{
+				identifiers.FarEdge:  identifiers.Optional,
+				identifiers.Telco:    identifiers.Optional,
+				identifiers.NonTelco: identifiers.Optional,
+				identifiers.Extended: identifiers.Optional,
+			},
+			identifiers.TagCommon)
+	}
+}
+
 // outputTestCases outputs the Markdown representation for test cases from the catalog to stdout.
 func outputTestCases() (outString string, summary catalogSummary) { //nolint:funlen
+	// Adds Preflight tests to catalog
+	addPreflightTestsToCatalog()
+
 	// Building a separate data structure to store the key order for the map
 	keys := make([]claim.Identifier, 0, len(identifiers.Catalog))
 	for k := range identifiers.Catalog {

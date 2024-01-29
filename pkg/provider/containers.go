@@ -1,4 +1,4 @@
-// Copyright (C) 2022-2023 Red Hat, Inc.
+// Copyright (C) 2022-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -119,10 +119,20 @@ func (c *Container) SetPreflightResults(preflightImageCache map[string]plibRunti
 	ctx = logr.NewContext(ctx, logger)
 
 	check := plibContainer.NewCheck(c.Image, opts...)
+
 	results, runtimeErr := check.Run(ctx)
 	if runtimeErr != nil {
-		log.Error("Runtime err: %v", runtimeErr)
-		return runtimeErr
+		_, checks, err := check.List(ctx)
+		if err != nil {
+			return fmt.Errorf("could not get preflight container test list")
+		}
+
+		results.TestedImage = c.Image
+		for _, c := range checks {
+			results.PassedOverall = false
+			result := plibRuntime.Result{Check: c, ElapsedTime: 0}
+			results.Errors = append(results.Errors, *result.WithError(runtimeErr))
+		}
 	}
 
 	// Take all of the preflight logs and stick them into our log.

@@ -1,4 +1,4 @@
-// Copyright (C) 2020-2023 Red Hat, Inc.
+// Copyright (C) 2020-2024 Red Hat, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -86,7 +86,6 @@ type TestConfiguration struct {
 	ServicesIgnoreList          []string                          `yaml:"servicesignorelist,omitempty" json:"servicesignorelist,omitempty"`
 	DebugDaemonSetNamespace     string                            `yaml:"debugDaemonSetNamespace,omitempty" json:"debugDaemonSetNamespace,omitempty"`
 	// Collector's parameters
-	CollectorAppEndPoint string `yaml:"collectorAppEndPoint,omitempty" json:"collectorAppEndPoint,omitempty"`
 	ExecutedBy           string `yaml:"executedBy,omitempty" json:"executedBy,omitempty"`
 	PartnerName          string `yaml:"partnerName,omitempty" json:"partnerName,omitempty"`
 	CollectorAppPassword string `yaml:"collectorAppPassword,omitempty" json:"collectorAppPassword,omitempty"`

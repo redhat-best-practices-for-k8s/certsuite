@@ -62,7 +62,7 @@ jobs:
         with:
           timeout_minutes: 90
           max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make bootstrap-cluster; make make bootstrap-docker-ubuntu-local; make bootstrap-python-ubuntu-local
+          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make bootstrap-cluster; make make bootstrap-docker-ubuntu-local; make bootstrap-python-ubuntu-local; pip3 install pyyaml
 
       - name: Run 'make rebuild-cluster'
         uses: nick-fields/retry@v2
@@ -96,6 +96,9 @@ jobs:
         uses: depends-on/depends-on-action@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build the test image
+        run: make build-image-local # quay.io/testnetworkfunction/cnf-certification-test:localtest
 
       - name: Run the tests
         uses: nick-fields/retry@v2
