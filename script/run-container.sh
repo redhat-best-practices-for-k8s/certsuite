@@ -160,6 +160,10 @@ if [ -n "${DNS_ARG}" ]; then
 	DNS_ARG="--dns $DNS_ARG"
 fi
 
+if [ -n "${TNF_ENABLE_CRC_TESTING}" ]; then
+	ADD_HOST_ARG="--add-host api.crc.testing:host-gateway"
+fi
+
 set -x
 # shellcheck disable=SC2068,SC2086 # Double quote array expansions.
 ${TNF_CONTAINER_CLIENT} run --rm $DNS_ARG \
@@ -168,6 +172,7 @@ ${TNF_CONTAINER_CLIENT} run --rm $DNS_ARG \
 	${container_tnf_dockercfg_volumes_cmd_args[@]} \
 	$CONFIG_VOLUME_MOUNT_ARG \
 	$TNF_OFFLINE_DB_MOUNT_ARG \
+	$ADD_HOST_ARG \
 	-v $OUTPUT_LOC:$CONTAINER_TNF_DIR/claim:Z \
 	-e KUBECONFIG=$CONTAINER_TNF_KUBECONFIG \
 	-e PFLT_DOCKERCONFIG=$CONTAINER_TNF_DOCKERCFG \
