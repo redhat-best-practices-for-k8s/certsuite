@@ -272,8 +272,22 @@ func testTainted(check *checksdb.Check, env *provider.TestEnvironment) {
 	// Loop through the debug pods that are tied to each node.
 	for _, dp := range env.DebugPods {
 		nodeName := dp.Spec.NodeName
-
 		check.LogInfo("Testing node %q", nodeName)
+
+		// Ensure we are only testing nodes that have CNF workload deployed on them.
+		nodeHasWorkload := false
+		for _, p := range env.Pods {
+			if p.Spec.NodeName == nodeName {
+				check.LogInfo("Node %q has a CNF workload deployed on it", nodeName)
+				nodeHasWorkload = true
+				break
+			}
+		}
+
+		if !nodeHasWorkload {
+			check.LogInfo("Node %q does not have a CNF workload deployed on it. Skipping node.", nodeName)
+			continue
+		}
 
 		ocpContext := clientsholder.NewContext(dp.Namespace, dp.Name, dp.Spec.Containers[0].Name)
 		tf := nodetainted.NewNodeTaintedTester(&ocpContext, nodeName)
