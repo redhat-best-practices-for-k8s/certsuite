@@ -29,6 +29,8 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 )
 
+var timeout time.Duration
+
 func LoadChecksDB(labelsExpr string) {
 	accesscontrol.LoadChecks()
 	certification.LoadChecks()
@@ -46,8 +48,8 @@ func LoadChecksDB(labelsExpr string) {
 }
 
 const (
-	junitXMLOutputFile   = "cnf-certification-tests_junit.xml"
-	collectorAppEndPoint = "http://44.195.143.94"
+	junitXMLOutputFileName = "cnf-certification-tests_junit.xml"
+	collectorAppEndPoint   = "http://44.195.143.94"
 )
 
 func getK8sClientsConfigFileNames() []string {
@@ -71,43 +73,45 @@ func getK8sClientsConfigFileNames() []string {
 	return fileNames
 }
 
-func processFlags() time.Duration {
-	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
-
-	LoadChecksDB(*flags.LabelsFlag)
-
+func processFlags() {
 	// Diagnostic functions will run when no labels are provided.
 	if *flags.LabelsFlag == flags.NoLabelsExpr {
 		log.Warn("CNF Certification Suite will run in diagnostic mode so no test case will be launched")
-	}
-
-	timeout, err := time.ParseDuration(*flags.TimeoutFlag)
-	if err != nil {
-		log.Error("Failed to parse timeout flag %q, err: %v, using default timeout value %v", *flags.TimeoutFlag, err, flags.TimeoutFlagDefaultvalue)
-		timeout = flags.TimeoutFlagDefaultvalue
-	}
-	return timeout
-}
-
-//nolint:funlen
-func Run(labelsFilter, outputFolder string) error {
-	timeout := processFlags()
-	var returnErr bool
-
-	// Create an evaluator to filter test cases with labels
-	if err := checksdb.InitLabelsExprEvaluator(labelsFilter); err != nil {
-		return fmt.Errorf("failed to initialize a test case label evaluator, err: %v", err)
 	}
 
 	// If the list flag is passed, print the checks filtered with --labels and leave
 	if *flags.ListFlag {
 		checksIDs, err := checksdb.FilterCheckIDs()
 		if err != nil {
-			return fmt.Errorf("could not list test cases, err: %v", err)
+			log.Error("Could not list test cases, err: %v", err)
+		} else {
+			cli.PrintChecksList(checksIDs)
 		}
-		cli.PrintChecksList(checksIDs)
 
 		os.Exit(1)
+	}
+
+	t, err := time.ParseDuration(*flags.TimeoutFlag)
+	if err != nil {
+		log.Error("Failed to parse timeout flag %q, err: %v, using default timeout value %v", *flags.TimeoutFlag, err, flags.TimeoutFlagDefaultvalue)
+		timeout = flags.TimeoutFlagDefaultvalue
+	} else {
+		timeout = t
+	}
+}
+
+//nolint:funlen
+func Run(labelsFilter, outputFolder string) error {
+	var returnErr bool
+
+	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
+	LoadChecksDB(*flags.LabelsFlag)
+
+	processFlags()
+
+	// Create an evaluator to filter test cases with labels
+	if err := checksdb.InitLabelsExprEvaluator(labelsFilter); err != nil {
+		return fmt.Errorf("failed to initialize a test case label evaluator, err: %v", err)
 	}
 
 	fmt.Println("Running discovery of CNF target resources...")
@@ -141,12 +145,11 @@ func Run(labelsFilter, outputFolder string) error {
 	// Marshal the claim and output to file
 	claimBuilder.Build(claimOutputFile)
 
-	// Write the file to the flag output-dir
-	outputFile := *flags.OutputDir + "/" + junitXMLOutputFile
-
+	// Create JUnit file if required
 	if configuration.GetTestParameters().EnableXMLCreation {
-		log.Info("XML file creation is enabled. Creating JUnit XML file: %s", outputFile)
-		claimBuilder.ToJUnitXML(outputFile, startTime, endTime)
+		junitOutputFile := filepath.Join(outputFolder, junitXMLOutputFileName)
+		log.Info("JUnit XML file creation is enabled. Creating JUnit XML file: %s", junitOutputFile)
+		claimBuilder.ToJUnitXML(junitOutputFile, startTime, endTime)
 	}
 
 	// Send claim file to the collector if specified by env var
