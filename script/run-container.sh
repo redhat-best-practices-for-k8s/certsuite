@@ -142,27 +142,15 @@ if [[ $LOCAL_DOCKERCFG != NA ]]; then
 	container_tnf_dockercfg_volumes_cmd_args=$(printf -- "-v %s " "${container_tnf_dockercfg_volume_bindings[@]}")
 fi
 
-# Safeguard against an empty variable
-if [ -z "$CONTAINER_TNF_DOCKERCFG" ]; then
-	CONTAINER_TNF_DOCKERCFG=NA
-fi
-
-if [ -n "${LOCAL_TNF_CONFIG}" ]; then
-	CONFIG_VOLUME_MOUNT_ARG="-v $LOCAL_TNF_CONFIG:$CONTAINER_TNF_DIR/config:Z"
-fi
-
-if [ -n "${LOCAL_TNF_OFFLINE_DB}" ]; then
-	CONTAINER_TNF_OFFLINE_DB_DIR=/usr/offline-db-ext
-	TNF_OFFLINE_DB_MOUNT_ARG="-v $LOCAL_TNF_OFFLINE_DB:$CONTAINER_TNF_OFFLINE_DB_DIR:Z"
-fi
-
-if [ -n "${DNS_ARG}" ]; then
-	DNS_ARG="--dns $DNS_ARG"
-fi
-
-if [ -n "${TNF_ENABLE_CRC_TESTING}" ]; then
-	ADD_HOST_ARG="--add-host api.crc.testing:host-gateway"
-fi
+# ${variable:-value} uses new value if undefined or null. ${variable:+value}
+# is opposite of the above. See:
+#  https://www.grymoire.com/Unix/Sh.html#uh-36
+ADD_HOST_ARG=\
+"${TNF_ENABLE_CRC_TESTING:+--add-host api.crc.testing:host-gateway}"
+CONTAINER_TNF_DOCKERCFG="${CONTAINER_TNF_DOCKERCFG:-NA}"
+DNS_ARG="${DNS_ARG:+--dns $DNS_ARG}"
+TNF_OFFLINE_DB_MOUNT_ARG=\
+"${LOCAL_TNF_OFFLINE_DB:+-v $LOCAL_TNF_OFFLINE_DB:/usr/offline-db-ext:Z}"
 
 set -x
 # shellcheck disable=SC2068,SC2086 # Double quote array expansions.
