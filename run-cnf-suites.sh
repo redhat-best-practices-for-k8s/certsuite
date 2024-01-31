@@ -26,7 +26,7 @@ usage_error() {
 	exit 1
 }
 
-TIMEOUT=24h0m0s
+TIMEOUT=${TIMEOUT:-24h0m0s}
 LABEL=''
 LIST=false
 SERVER_RUN=false
