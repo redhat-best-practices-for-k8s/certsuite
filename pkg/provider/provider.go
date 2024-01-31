@@ -134,7 +134,7 @@ type MachineConfig struct {
 	} `json:"config"`
 }
 
-type cniNetworkInterface struct {
+type CniNetworkInterface struct {
 	Name       string                 `json:"name"`
 	Interface  string                 `json:"interface"`
 	IPs        []string               `json:"ips"`
@@ -447,13 +447,13 @@ func GetRuntimeUID(cs *corev1.ContainerStatus) (runtime, uid string) {
 // GetPodIPsPerNet gets the IPs of a pod.
 // CNI annotation "k8s.v1.cni.cncf.io/networks-status".
 // Returns (ips, error).
-func GetPodIPsPerNet(annotation string) (ips map[string][]string, err error) {
+func GetPodIPsPerNet(annotation string) (ips map[string][]CniNetworkInterface, err error) {
 	// This is a map indexed with the network name (network attachment) and
 	// listing all the IPs created in this subnet and belonging to the pod namespace
 	// The list of ips pr net is parsed from the content of the "k8s.v1.cni.cncf.io/networks-status" annotation.
-	ips = make(map[string][]string)
+	ips = make(map[string][]CniNetworkInterface)
 
-	var cniInfo []cniNetworkInterface
+	var cniInfo []CniNetworkInterface
 	err = json.Unmarshal([]byte(annotation), &cniInfo)
 	if err != nil {
 		return nil, fmt.Errorf("could not unmarshal network-status annotation, err: %v", err)
@@ -462,14 +462,14 @@ func GetPodIPsPerNet(annotation string) (ips map[string][]string, err error) {
 	// Otherwise add all non default interfaces
 	for _, cniInterface := range cniInfo {
 		if !cniInterface.Default {
-			ips[cniInterface.Name] = cniInterface.IPs
+			ips[cniInterface.Name] = append(ips[cniInterface.Name], cniInterface)
 		}
 	}
 	return ips, nil
 }
 
 func GetPciPerPod(annotation string) (pciAddr []string, err error) {
-	var cniInfo []cniNetworkInterface
+	var cniInfo []CniNetworkInterface
 	err = json.Unmarshal([]byte(annotation), &cniInfo)
 	if err != nil {
 		return nil, fmt.Errorf("could not unmarshal network-status annotation, err: %v", err)

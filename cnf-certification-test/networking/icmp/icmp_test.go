@@ -306,6 +306,7 @@ func TestProcessContainerIpsPerNet(t *testing.T) {
 				tt.args.containerID,
 				tt.args.netKey,
 				tt.args.ipAddresses,
+				"",
 				tt.args.netsUnderTest,
 				tt.args.aIPVersion,
 				log.GetLogger(),
@@ -516,9 +517,9 @@ func TestBuildNetTestContext(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			for idx := range tt.args.pods {
-				tt.args.pods[idx].MultusIPs = make(map[string][]string)
+				tt.args.pods[idx].MultusNetworkInterfaces = make(map[string][]provider.CniNetworkInterface)
 				var err error
-				tt.args.pods[idx].MultusIPs, err = provider.GetPodIPsPerNet(
+				tt.args.pods[idx].MultusNetworkInterfaces, err = provider.GetPodIPsPerNet(
 					tt.args.pods[idx].GetAnnotations()[provider.CniNetworksStatusKey],
 				)
 				if err != nil {
@@ -567,7 +568,7 @@ var (
 				},
 			},
 		},
-		MultusIPs: map[string][]string{
+		MultusNetworkInterfaces: map[string][]provider.CniNetworkInterface{
 			"": {},
 		},
 		SkipNetTests:       false,
@@ -605,7 +606,7 @@ var (
 				},
 			},
 		},
-		MultusIPs: map[string][]string{
+		MultusNetworkInterfaces: map[string][]provider.CniNetworkInterface{
 			"": {},
 		},
 		SkipNetTests:       false,
@@ -643,7 +644,7 @@ var (
 				},
 			},
 		},
-		MultusIPs: map[string][]string{
+		MultusNetworkInterfaces: map[string][]provider.CniNetworkInterface{
 			"": {},
 		},
 		SkipNetTests:       true,
@@ -681,7 +682,7 @@ var (
 				},
 			},
 		},
-		MultusIPs: map[string][]string{
+		MultusNetworkInterfaces: map[string][]provider.CniNetworkInterface{
 			"": {},
 		},
 		SkipNetTests:       false,
