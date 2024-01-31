@@ -40,7 +40,7 @@ jobs:
         run: docker system prune -f --volumes
 
       - name: Build the test image
-        uses: nick-fields/retry@v2
+        uses: nick-fields/retry@v3
         with:
           timeout_minutes: 90
           max_attempts: 3
@@ -66,7 +66,7 @@ jobs:
           sudo rm -rf ${{env.TNF_REPORT_DIR}}
 
       - name: Run the tests
-        uses: nick-fields/retry@v2
+        uses: nick-fields/retry@v3
         with:
           timeout_minutes: 60
           max_attempts: 3
