@@ -145,12 +145,10 @@ fi
 # ${variable:-value} uses new value if undefined or null. ${variable:+value}
 # is opposite of the above. See:
 #  https://www.grymoire.com/Unix/Sh.html#uh-36
-ADD_HOST_ARG=\
-"${TNF_ENABLE_CRC_TESTING:+--add-host api.crc.testing:host-gateway}"
+ADD_HOST_ARG="${TNF_ENABLE_CRC_TESTING:+--add-host api.crc.testing:host-gateway}"
 CONTAINER_TNF_DOCKERCFG="${CONTAINER_TNF_DOCKERCFG:-NA}"
 DNS_ARG="${DNS_ARG:+--dns $DNS_ARG}"
-TNF_OFFLINE_DB_MOUNT_ARG=\
-"${LOCAL_TNF_OFFLINE_DB:+-v $LOCAL_TNF_OFFLINE_DB:/usr/offline-db-ext:Z}"
+TNF_OFFLINE_DB_MOUNT_ARG="${LOCAL_TNF_OFFLINE_DB:+-v $LOCAL_TNF_OFFLINE_DB:/usr/offline-db-ext:Z}"
 
 set -x
 # shellcheck disable=SC2068,SC2086 # Double quote array expansions.
