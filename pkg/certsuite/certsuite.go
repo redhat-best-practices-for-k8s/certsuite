@@ -147,9 +147,9 @@ func Run(labelsFilter, outputFolder string) error {
 
 	// Create JUnit file if required
 	if configuration.GetTestParameters().EnableXMLCreation {
-		junitOutputFile := filepath.Join(outputFolder, junitXMLOutputFileName)
-		log.Info("JUnit XML file creation is enabled. Creating JUnit XML file: %s", junitOutputFile)
-		claimBuilder.ToJUnitXML(junitOutputFile, startTime, endTime)
+		junitOutputFileName := filepath.Join(outputFolder, junitXMLOutputFileName)
+		log.Info("JUnit XML file creation is enabled. Creating JUnit XML file: %s", junitOutputFileName)
+		claimBuilder.ToJUnitXML(junitOutputFileName, startTime, endTime)
 	}
 
 	// Send claim file to the collector if specified by env var
