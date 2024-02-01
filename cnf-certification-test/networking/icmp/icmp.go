@@ -63,7 +63,10 @@ func BuildNetTestContext(pods []*provider.Pod, aIPVersion netcommons.IPVersion, 
 			}
 			for netKey, multusNetworkInterface := range put.MultusNetworkInterfaces {
 				// The first container is used to get the network namespace
-				processContainerIpsPerNet(put.Containers[0], netKey, multusNetworkInterface[0].IPs, multusNetworkInterface[0].Interface, netsUnderTest, aIPVersion, logger)
+				// Loop through all the network interfaces and their IPs
+				for _, networkInterface := range multusNetworkInterface {
+					processContainerIpsPerNet(put.Containers[0], netKey, networkInterface.IPs, networkInterface.Interface, netsUnderTest, aIPVersion, logger)
+				}
 			}
 			continue
 		}
@@ -104,6 +107,9 @@ func processContainerIpsPerNet(containerID *provider.Container,
 		entry.TesterSource.ContainerIdentifier = containerID
 		// if multiple interfaces are present for this network on this container/pod, pick the first one as the tester source ip
 		entry.TesterSource.IP = ipAddressesFiltered[firstIPIndex]
+		if ifName != "" {
+			entry.TesterSource.InterfaceName = ifName
+		}
 		// do no include tester's IP in the list of destination IPs to ping
 		firstIPIndex++
 	}

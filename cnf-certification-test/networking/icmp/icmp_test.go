@@ -408,7 +408,8 @@ func TestBuildNetTestContext(t *testing.T) {
 			wantNetsUnderTest: map[string]netcommons.NetTestContext{
 				"tnf/mynet-ipv4-0": {
 					TesterSource: netcommons.ContainerIP{
-						IP: "192.168.0.3",
+						IP:            "192.168.0.3",
+						InterfaceName: "net1",
 						ContainerIdentifier: &provider.Container{
 							Container: &corev1.Container{
 								Name: "test1",
@@ -422,7 +423,8 @@ func TestBuildNetTestContext(t *testing.T) {
 					},
 					DestTargets: []netcommons.ContainerIP{
 						{
-							IP: "192.168.0.4",
+							IP:            "192.168.0.4",
+							InterfaceName: "net1",
 							ContainerIdentifier: &provider.Container{
 								Container: &corev1.Container{
 									Name: "test2",
@@ -439,7 +441,8 @@ func TestBuildNetTestContext(t *testing.T) {
 				"tnf/mynet-ipv4-1": {
 					TesterContainerNodeName: "",
 					TesterSource: netcommons.ContainerIP{
-						IP: "192.168.1.3",
+						IP:            "192.168.1.3",
+						InterfaceName: "net2",
 						ContainerIdentifier: &provider.Container{
 							Container: &corev1.Container{
 								Name: "test1",
@@ -453,7 +456,8 @@ func TestBuildNetTestContext(t *testing.T) {
 					},
 					DestTargets: []netcommons.ContainerIP{
 						{
-							IP: "192.168.1.4",
+							IP:            "192.168.1.4",
+							InterfaceName: "net2",
 							ContainerIdentifier: &provider.Container{
 								Container: &corev1.Container{
 									Name: "test2",
@@ -478,7 +482,8 @@ func TestBuildNetTestContext(t *testing.T) {
 			wantNetsUnderTest: map[string]netcommons.NetTestContext{
 				"tnf/mynet-ipv4-0": {
 					TesterSource: netcommons.ContainerIP{
-						IP: "192.168.0.3",
+						IP:            "192.168.0.3",
+						InterfaceName: "net1",
 						ContainerIdentifier: &provider.Container{
 							Container: &corev1.Container{
 								Name: "test1",
@@ -495,7 +500,8 @@ func TestBuildNetTestContext(t *testing.T) {
 				"tnf/mynet-ipv4-1": {
 					TesterContainerNodeName: "",
 					TesterSource: netcommons.ContainerIP{
-						IP: "192.168.1.3",
+						IP:            "192.168.1.3",
+						InterfaceName: "net2",
 						ContainerIdentifier: &provider.Container{
 							Container: &corev1.Container{
 								Name: "test1",
@@ -519,9 +525,7 @@ func TestBuildNetTestContext(t *testing.T) {
 			for idx := range tt.args.pods {
 				tt.args.pods[idx].MultusNetworkInterfaces = make(map[string][]provider.CniNetworkInterface)
 				var err error
-				tt.args.pods[idx].MultusNetworkInterfaces, err = provider.GetPodIPsPerNet(
-					tt.args.pods[idx].GetAnnotations()[provider.CniNetworksStatusKey],
-				)
+				tt.args.pods[idx].MultusNetworkInterfaces, err = provider.GetPodIPsPerNet(tt.args.pods[idx].GetAnnotations()[provider.CniNetworksStatusKey])
 				if err != nil {
 					fmt.Printf("Could not decode networks-status annotation")
 				}
@@ -569,7 +573,20 @@ var (
 			},
 		},
 		MultusNetworkInterfaces: map[string][]provider.CniNetworkInterface{
-			"": {},
+			"tnf/mynet-ipv4-0": {
+				{
+					Interface: "net1",
+					Name:      "mynet-ipv4-0",
+					IPs:       []string{"192.168.0.3"},
+				},
+			},
+			"tnf/mynet-ipv4-1": {
+				{
+					Interface: "net2",
+					Name:      "mynet-ipv4-1",
+					IPs:       []string{"192.168.1.3"},
+				},
+			},
 		},
 		SkipNetTests:       false,
 		SkipMultusNetTests: false,
@@ -607,7 +624,20 @@ var (
 			},
 		},
 		MultusNetworkInterfaces: map[string][]provider.CniNetworkInterface{
-			"": {},
+			"tnf/mynet-ipv4-0": {
+				{
+					Interface: "net1",
+					Name:      "mynet-ipv4-0",
+					IPs:       []string{"192.168.0.4"},
+				},
+			},
+			"tnf/mynet-ipv4-1": {
+				{
+					Interface: "net2",
+					Name:      "mynet-ipv4-1",
+					IPs:       []string{"192.168.1.4"},
+				},
+			},
 		},
 		SkipNetTests:       false,
 		SkipMultusNetTests: false,
