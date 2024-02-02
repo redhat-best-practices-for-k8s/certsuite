@@ -523,7 +523,7 @@ func TestBuildNetTestContext(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			for idx := range tt.args.pods {
-				tt.args.pods[idx].MultusNetworkInterfaces = make(map[string][]provider.CniNetworkInterface)
+				tt.args.pods[idx].MultusNetworkInterfaces = make(map[string]provider.CniNetworkInterface)
 				var err error
 				tt.args.pods[idx].MultusNetworkInterfaces, err = provider.GetPodIPsPerNet(tt.args.pods[idx].GetAnnotations()[provider.CniNetworksStatusKey])
 				if err != nil {
@@ -572,20 +572,16 @@ var (
 				},
 			},
 		},
-		MultusNetworkInterfaces: map[string][]provider.CniNetworkInterface{
+		MultusNetworkInterfaces: map[string]provider.CniNetworkInterface{
 			"tnf/mynet-ipv4-0": {
-				{
-					Interface: "net1",
-					Name:      "mynet-ipv4-0",
-					IPs:       []string{"192.168.0.3"},
-				},
+				Interface: "net1",
+				Name:      "mynet-ipv4-0",
+				IPs:       []string{"192.168.0.3"},
 			},
 			"tnf/mynet-ipv4-1": {
-				{
-					Interface: "net2",
-					Name:      "mynet-ipv4-1",
-					IPs:       []string{"192.168.1.3"},
-				},
+				Interface: "net2",
+				Name:      "mynet-ipv4-1",
+				IPs:       []string{"192.168.1.3"},
 			},
 		},
 		SkipNetTests:       false,
@@ -623,20 +619,16 @@ var (
 				},
 			},
 		},
-		MultusNetworkInterfaces: map[string][]provider.CniNetworkInterface{
+		MultusNetworkInterfaces: map[string]provider.CniNetworkInterface{
 			"tnf/mynet-ipv4-0": {
-				{
-					Interface: "net1",
-					Name:      "mynet-ipv4-0",
-					IPs:       []string{"192.168.0.4"},
-				},
+				Interface: "net1",
+				Name:      "mynet-ipv4-0",
+				IPs:       []string{"192.168.0.4"},
 			},
 			"tnf/mynet-ipv4-1": {
-				{
-					Interface: "net2",
-					Name:      "mynet-ipv4-1",
-					IPs:       []string{"192.168.1.4"},
-				},
+				Interface: "net2",
+				Name:      "mynet-ipv4-1",
+				IPs:       []string{"192.168.1.4"},
 			},
 		},
 		SkipNetTests:       false,
@@ -674,7 +666,7 @@ var (
 				},
 			},
 		},
-		MultusNetworkInterfaces: map[string][]provider.CniNetworkInterface{
+		MultusNetworkInterfaces: map[string]provider.CniNetworkInterface{
 			"": {},
 		},
 		SkipNetTests:       true,
@@ -712,7 +704,7 @@ var (
 				},
 			},
 		},
-		MultusNetworkInterfaces: map[string][]provider.CniNetworkInterface{
+		MultusNetworkInterfaces: map[string]provider.CniNetworkInterface{
 			"": {},
 		},
 		SkipNetTests:       false,

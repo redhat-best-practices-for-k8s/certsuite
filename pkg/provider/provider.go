@@ -447,11 +447,11 @@ func GetRuntimeUID(cs *corev1.ContainerStatus) (runtime, uid string) {
 // GetPodIPsPerNet gets the IPs of a pod.
 // CNI annotation "k8s.v1.cni.cncf.io/networks-status".
 // Returns (ips, error).
-func GetPodIPsPerNet(annotation string) (ips map[string][]CniNetworkInterface, err error) {
+func GetPodIPsPerNet(annotation string) (ips map[string]CniNetworkInterface, err error) {
 	// This is a map indexed with the network name (network attachment) and
 	// listing all the IPs created in this subnet and belonging to the pod namespace
 	// The list of ips pr net is parsed from the content of the "k8s.v1.cni.cncf.io/networks-status" annotation.
-	ips = make(map[string][]CniNetworkInterface)
+	ips = make(map[string]CniNetworkInterface)
 
 	var cniInfo []CniNetworkInterface
 	err = json.Unmarshal([]byte(annotation), &cniInfo)
@@ -462,7 +462,7 @@ func GetPodIPsPerNet(annotation string) (ips map[string][]CniNetworkInterface, e
 	// Otherwise add all non default interfaces
 	for _, cniInterface := range cniInfo {
 		if !cniInterface.Default {
-			ips[cniInterface.Name] = append(ips[cniInterface.Name], cniInterface)
+			ips[cniInterface.Name] = cniInterface
 		}
 	}
 	return ips, nil
