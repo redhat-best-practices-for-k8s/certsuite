@@ -216,7 +216,7 @@ require (
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.5.0
 	github.com/manifoldco/promptui v0.9.0
 	github.com/openshift/machine-config-operator v0.0.1-0.20230515070935-49f32d46538e
-	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20231218171045-b6bcc3506c0d
+	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240130151146-4c9ea7cbd33f
 	github.com/robert-nix/ansihtml v1.0.1
 	github.com/test-network-function/oct v0.0.5
 	github.com/test-network-function/privileged-daemonset v1.0.20
@@ -225,4 +225,4 @@ require (
 	k8s.io/kubectl v0.29.1
 )
 
-replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240124141856-950b000116dc
+replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240130151146-4c9ea7cbd33f
