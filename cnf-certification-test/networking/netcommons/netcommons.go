@@ -80,10 +80,12 @@ type ContainerIP struct {
 	IP string
 	// targetContainerIdentifier container identifier including namespace, pod name, container name, node name, and container UID
 	ContainerIdentifier *provider.Container
+	// interfaceName is the interface we want to target for the ping test
+	InterfaceName string
 }
 
 // String displays the NetTestContext data structure
-func (testContext NetTestContext) String() string {
+func (testContext *NetTestContext) String() string {
 	var sb strings.Builder
 	sb.WriteString(fmt.Sprintf("From initiating container: %s\n", testContext.TesterSource.String()))
 	if len(testContext.DestTargets) == 0 {

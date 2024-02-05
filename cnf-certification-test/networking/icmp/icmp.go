@@ -61,9 +61,9 @@ func BuildNetTestContext(pods []*provider.Pod, aIPVersion netcommons.IPVersion, 
 				logger.Info("Skipping pod %q because it is excluded from %q connectivity tests only", put.Name, aType)
 				continue
 			}
-			for netKey, multusIPAddress := range put.MultusIPs {
+			for netKey, multusNetworkInterface := range put.MultusNetworkInterfaces {
 				// The first container is used to get the network namespace
-				processContainerIpsPerNet(put.Containers[0], netKey, multusIPAddress, netsUnderTest, aIPVersion, logger)
+				processContainerIpsPerNet(put.Containers[0], netKey, multusNetworkInterface.IPs, multusNetworkInterface.Interface, netsUnderTest, aIPVersion, logger)
 			}
 			continue
 		}
@@ -71,7 +71,7 @@ func BuildNetTestContext(pods []*provider.Pod, aIPVersion netcommons.IPVersion, 
 		const defaultNetKey = "default"
 		defaultIPAddress := put.Status.PodIPs
 		// The first container is used to get the network namespace
-		processContainerIpsPerNet(put.Containers[0], defaultNetKey, netcommons.PodIPsToStringList(defaultIPAddress), netsUnderTest, aIPVersion, logger)
+		processContainerIpsPerNet(put.Containers[0], defaultNetKey, netcommons.PodIPsToStringList(defaultIPAddress), "", netsUnderTest, aIPVersion, logger)
 	}
 	return netsUnderTest
 }
@@ -81,6 +81,7 @@ func BuildNetTestContext(pods []*provider.Pod, aIPVersion netcommons.IPVersion, 
 func processContainerIpsPerNet(containerID *provider.Container,
 	netKey string,
 	ipAddresses []string,
+	ifName string,
 	netsUnderTest map[string]netcommons.NetTestContext,
 	aIPVersion netcommons.IPVersion,
 	logger *log.Logger) {
@@ -103,6 +104,9 @@ func processContainerIpsPerNet(containerID *provider.Container,
 		entry.TesterSource.ContainerIdentifier = containerID
 		// if multiple interfaces are present for this network on this container/pod, pick the first one as the tester source ip
 		entry.TesterSource.IP = ipAddressesFiltered[firstIPIndex]
+		if ifName != "" {
+			entry.TesterSource.InterfaceName = ifName
+		}
 		// do no include tester's IP in the list of destination IPs to ping
 		firstIPIndex++
 	}
@@ -111,6 +115,10 @@ func processContainerIpsPerNet(containerID *provider.Container,
 		ipDestEntry := netcommons.ContainerIP{}
 		ipDestEntry.ContainerIdentifier = containerID
 		ipDestEntry.IP = aIP
+		// if the interface name is not empty, then add it to the destination entry
+		if ifName != "" {
+			ipDestEntry.InterfaceName = ifName
+		}
 		entry.DestTargets = append(entry.DestTargets, ipDestEntry)
 	}
 
@@ -220,7 +228,12 @@ func RunNetworkingTests( //nolint:funlen
 
 // TestPing Initiates a ping test between a source container and network (1 ip) and a destination container and network (1 ip)
 var TestPing = func(sourceContainerID *provider.Container, targetContainerIP netcommons.ContainerIP, count int) (results PingResults, err error) {
-	command := fmt.Sprintf("ping -c %d %s", count, targetContainerIP.IP)
+	// Specify the interface to use for the ping test (if any)
+	interfaceFlag := fmt.Sprintf("-I %s", targetContainerIP.InterfaceName)
+	if targetContainerIP.InterfaceName == "" {
+		interfaceFlag = ""
+	}
+	command := fmt.Sprintf("ping %s -c %d %s", interfaceFlag, count, targetContainerIP.IP)
 	stdout, stderr, err := crclient.ExecCommandContainerNSEnter(command, sourceContainerID)
 	if err != nil || stderr != "" {
 		results.outcome = testhelper.ERROR
