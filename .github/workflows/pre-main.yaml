@@ -307,17 +307,6 @@ jobs:
       PFLT_DOCKERCONFIG: '/home/runner/.docker/config'
 
     steps:
-      - name: Make docker to use /mnt (sdb) for storage
-        run: |
-          df -h
-          lsblk
-          sudo mkdir /mnt/docker-storage
-          sudo jq '.  +={"data-root" : "/mnt/docker-storage"}' < /etc/docker/daemon.json > /tmp/docker-daemon.json
-          sudo cp /tmp/docker-daemon.json /etc/docker/daemon.json
-          cat /etc/docker/daemon.json
-          sudo systemctl restart docker
-          sudo ls -la /mnt/docker-storage
-
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
         with:
@@ -342,6 +331,19 @@ jobs:
           timeout_minutes: 90
           max_attempts: 3
           command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make bootstrap-cluster && make bootstrap-docker-ubuntu-local && make bootstrap-python-ubuntu-local && pip3 install pyyaml
+
+      # This step needs to be done right after the partner repo's bootstrap scripts, as they
+      # overwrite the docker's daemon.json.
+      - name: Make docker to use /mnt (sdb) for storage
+        run: |
+          df -h
+          lsblk
+          sudo mkdir /mnt/docker-storage
+          sudo jq '.  +={"data-root" : "/mnt/docker-storage"}' < /etc/docker/daemon.json > /tmp/docker-daemon.json
+          sudo cp /tmp/docker-daemon.json /etc/docker/daemon.json
+          cat /etc/docker/daemon.json
+          sudo systemctl restart docker
+          sudo ls -la /mnt/docker-storage
 
       - name: Run 'make rebuild-cluster'
         uses: nick-fields/retry@v3
