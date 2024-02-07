@@ -184,7 +184,7 @@ func TestRunTestMountFolderErrors(t *testing.T) {
 	}
 
 	check := &checksdb.Check{}
-	ocpVersion := "4.13.0"
+	ocpVersion := "4.12.0"
 
 	for _, tc := range testCases {
 		fsdiff := NewFsDiffTester(check, tc.mockedClientshHolder, clientsholder.Context{}, ocpVersion)
@@ -269,7 +269,7 @@ func TestRunTestUnmountFolderErrors(t *testing.T) {
 	}
 
 	check := &checksdb.Check{}
-	ocpVersion := "4.13.0"
+	ocpVersion := "4.12.0"
 
 	for _, tc := range testCases {
 		fsdiff := NewFsDiffTester(check, tc.mockedClientshHolder, clientsholder.Context{}, ocpVersion)
