@@ -14,7 +14,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package cnffsdiff_test
+package cnffsdiff
 
 import (
 	"errors"
@@ -23,8 +23,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/platform/cnffsdiff"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
+	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 )
 
@@ -98,6 +98,9 @@ func TestRunTest(t *testing.T) {
 		},
 	}
 
+	check := &checksdb.Check{}
+	ocpVersion := "4.13.0"
+
 	for _, tc := range testCases {
 		chm := &ClientHoldersMock{
 			stdout: tc.clientStdOut,
@@ -105,7 +108,7 @@ func TestRunTest(t *testing.T) {
 			err:    tc.clientErr,
 		}
 
-		fsdiff := cnffsdiff.NewFsDiffTester(chm, clientsholder.Context{})
+		fsdiff := NewFsDiffTester(check, chm, clientsholder.Context{}, ocpVersion)
 		fsdiff.RunTest("fakeUID")
 		assert.Equal(t, tc.expectedResult, fsdiff.GetResults())
 	}
@@ -180,8 +183,11 @@ func TestRunTestMountFolderErrors(t *testing.T) {
 		},
 	}
 
+	check := &checksdb.Check{}
+	ocpVersion := "4.13.0"
+
 	for _, tc := range testCases {
-		fsdiff := cnffsdiff.NewFsDiffTester(tc.mockedClientshHolder, clientsholder.Context{})
+		fsdiff := NewFsDiffTester(check, tc.mockedClientshHolder, clientsholder.Context{}, ocpVersion)
 		fsdiff.RunTest("fakeUID")
 		assert.Equal(t, testhelper.ERROR, fsdiff.GetResults())
 		assert.Equal(t, fsdiff.Error.Error(), tc.expectedError)
@@ -262,10 +268,146 @@ func TestRunTestUnmountFolderErrors(t *testing.T) {
 		},
 	}
 
+	check := &checksdb.Check{}
+	ocpVersion := "4.13.0"
+
 	for _, tc := range testCases {
-		fsdiff := cnffsdiff.NewFsDiffTester(tc.mockedClientshHolder, clientsholder.Context{})
+		fsdiff := NewFsDiffTester(check, tc.mockedClientshHolder, clientsholder.Context{}, ocpVersion)
 		fsdiff.RunTest("fakeUID")
 		assert.Equal(t, testhelper.ERROR, fsdiff.GetResults())
 		assert.Equal(t, fsdiff.Error.Error(), tc.expectedError)
+	}
+}
+
+func Test_shouldUseCustomPodman(t *testing.T) {
+	type args struct {
+		check      *checksdb.Check
+		ocpVersion string
+	}
+	tests := []struct {
+		name     string
+		args     args
+		expected bool
+	}{
+		{
+			name: "empty ocp version",
+			args: args{
+				check:      &checksdb.Check{},
+				ocpVersion: "",
+			},
+			expected: false,
+		},
+		{
+			name: "invalid ocp version",
+			args: args{
+				check:      &checksdb.Check{},
+				ocpVersion: "asdf.asdf",
+			},
+			expected: false,
+		},
+		{
+			name: "ocp version 4.11",
+			args: args{
+				check:      &checksdb.Check{},
+				ocpVersion: "4.11",
+			},
+			expected: true,
+		},
+		{
+			name: "ocp version 4.11.0",
+			args: args{
+				check:      &checksdb.Check{},
+				ocpVersion: "4.11.0",
+			},
+			expected: true,
+		},
+		{
+			name: "ocp version 4.11.53",
+			args: args{
+				check:      &checksdb.Check{},
+				ocpVersion: "4.11.53",
+			},
+			expected: true,
+		},
+		{
+			name: "ocp version 4.12",
+			args: args{
+				check:      &checksdb.Check{},
+				ocpVersion: "4.12",
+			},
+			expected: true,
+		},
+		{
+			name: "ocp version 4.12.87",
+			args: args{
+				check:      &checksdb.Check{},
+				ocpVersion: "4.12.87",
+			},
+			expected: true,
+		},
+		{
+			name: "ocp version 4.13",
+			args: args{
+				check:      &checksdb.Check{},
+				ocpVersion: "4.13",
+			},
+			expected: false,
+		},
+		{
+			name: "ocp version 4.13.0",
+			args: args{
+				check:      &checksdb.Check{},
+				ocpVersion: "4.13.0",
+			},
+			expected: false,
+		},
+		{
+			name: "ocp version 4.13.873",
+			args: args{
+				check:      &checksdb.Check{},
+				ocpVersion: "4.13.873",
+			},
+			expected: false,
+		},
+		{
+			name: "ocp version 4.15",
+			args: args{
+				check:      &checksdb.Check{},
+				ocpVersion: "4.15",
+			},
+			expected: false,
+		},
+		{
+			name: "ocp version 5.0",
+			args: args{
+				check:      &checksdb.Check{},
+				ocpVersion: "5.0.0",
+			},
+			expected: false,
+		},
+		// Nightlies are a bit special due to that z-stream num which is always "0-0" in openshift...
+		{
+			name: "ocp 4.12 nightly version 4.12.0-0.nightly-2024-01-22-220616",
+			args: args{
+				check:      &checksdb.Check{},
+				ocpVersion: "4.12.0-0.nightly-2024-01-22-220616",
+			},
+			expected: true,
+		},
+		{
+			name: "ocp 4.13 nightly version 4.13.0-0.nightly-2024-01-22-220616",
+			args: args{
+				check:      &checksdb.Check{},
+				ocpVersion: "4.13.0-0.nightly-2024-01-22-220616",
+			},
+			expected: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := shouldUseCustomPodman(tt.args.check, tt.args.ocpVersion); got != tt.expected {
+				t.Errorf("shouldUseCustomPodman() = %v, expected %v", got, tt.expected)
+			}
+		})
 	}
 }
