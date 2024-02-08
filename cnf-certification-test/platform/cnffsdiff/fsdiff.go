@@ -21,8 +21,9 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/Masterminds/semver/v3"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
-	"github.com/test-network-function/cnf-certification-test/internal/log"
+	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
 )
@@ -65,9 +66,11 @@ type fsDiffJSON struct {
 }
 
 type FsDiff struct {
-	result       int
-	clientHolder clientsholder.Command
-	ctxt         clientsholder.Context
+	check           *checksdb.Check
+	result          int
+	clientHolder    clientsholder.Command
+	ctxt            clientsholder.Context
+	useCustomPodman bool
 
 	DeletedFolders []string
 	ChangedFolders []string
@@ -79,19 +82,54 @@ type FsDiffFuncs interface {
 	GetResults() int
 }
 
-func NewFsDiffTester(client clientsholder.Command, ctxt clientsholder.Context) *FsDiff {
+func NewFsDiffTester(check *checksdb.Check, client clientsholder.Command, ctxt clientsholder.Context, ocpVersion string) *FsDiff {
+	useCustomPodman := shouldUseCustomPodman(check, ocpVersion)
+	check.LogDebug("Using custom podman: %v.", useCustomPodman)
+
 	return &FsDiff{
-		clientHolder: client,
-		ctxt:         ctxt,
-		result:       testhelper.ERROR,
+		check:           check,
+		clientHolder:    client,
+		ctxt:            ctxt,
+		result:          testhelper.ERROR,
+		useCustomPodman: useCustomPodman,
 	}
 }
 
-func intersectTargetFolders(src []string) []string {
+// Helper function that is used to check whether we should use the podman that comes preinstalled
+// on each ocp node or the one that we've (custom) precompiled inside the debug pods that can only work in
+// RHEL 8.x based ocp versions (4.12.z and lower). For ocp >= 4.13.0 this workaround should not be
+// necessary.
+func shouldUseCustomPodman(check *checksdb.Check, ocpVersion string) bool {
+	const (
+		ocpForPreinstalledPodmanMajor = 4
+		ocpForPreinstalledPodmanMinor = 13
+	)
+
+	version, err := semver.NewVersion(ocpVersion)
+	if err != nil {
+		check.LogError("Failed to parse Openshift version %q. Using preinstalled podman.", ocpVersion)
+		// Use podman preinstalled in nodes as failover.
+		return false
+	}
+
+	// Major versions > 4, use podman preinstalled in nodes.
+	if version.Major() > ocpForPreinstalledPodmanMajor {
+		return false
+	}
+
+	if version.Major() == ocpForPreinstalledPodmanMajor {
+		return version.Minor() < ocpForPreinstalledPodmanMinor
+	}
+
+	// For older versions (< 3.), use podman preinstalled in nodes.
+	return false
+}
+
+func (f *FsDiff) intersectTargetFolders(src []string) []string {
 	var dst []string
 	for _, folder := range src {
 		if stringhelper.StringInSlice(targetFolders, folder, false) {
-			log.Warn("Container's folder %q is altered.", folder)
+			f.check.LogWarn("Container's folder %q is altered.", folder)
 			dst = append(dst, folder)
 		}
 	}
@@ -99,7 +137,12 @@ func intersectTargetFolders(src []string) []string {
 }
 
 func (f *FsDiff) runPodmanDiff(containerUID string) (string, error) {
-	output, outerr, err := f.clientHolder.ExecCommandContainer(f.ctxt, fmt.Sprintf("chroot /host %s/podman diff --format json %s", tmpMountDestFolder, containerUID))
+	podmanPath := "podman"
+	if f.useCustomPodman {
+		podmanPath = fmt.Sprintf("%s/podman", tmpMountDestFolder)
+	}
+
+	output, outerr, err := f.clientHolder.ExecCommandContainer(f.ctxt, fmt.Sprintf("chroot /host %s diff --format json %s", podmanPath, containerUID))
 	if err != nil {
 		return "", fmt.Errorf("can not execute command on container: %w", err)
 	}
@@ -110,16 +153,18 @@ func (f *FsDiff) runPodmanDiff(containerUID string) (string, error) {
 }
 
 func (f *FsDiff) RunTest(containerUID string) {
-	err := f.installCustomPodman()
-	if err != nil {
-		f.Error = err
-		f.result = testhelper.ERROR
-		return
+	if f.useCustomPodman {
+		err := f.installCustomPodman()
+		if err != nil {
+			f.Error = err
+			f.result = testhelper.ERROR
+			return
+		}
+
+		defer f.unmountCustomPodman()
 	}
 
-	defer f.unmountCustomPodman()
-
-	log.Info("Running \"podman diff\" for container id %s", containerUID)
+	f.check.LogInfo("Running \"podman diff\" for container id %s", containerUID)
 	output, err := f.runPodmanDiff(containerUID)
 	if err != nil {
 		f.Error = err
@@ -128,7 +173,7 @@ func (f *FsDiff) RunTest(containerUID string) {
 	}
 
 	// see if there's a match in the output
-	log.Debug("Podman diff output is %s", output)
+	f.check.LogDebug("Podman diff output is %s", output)
 
 	diff := fsDiffJSON{}
 	err = json.Unmarshal([]byte(output), &diff)
@@ -137,8 +182,8 @@ func (f *FsDiff) RunTest(containerUID string) {
 		f.result = testhelper.ERROR
 		return
 	}
-	f.DeletedFolders = intersectTargetFolders(diff.Deleted)
-	f.ChangedFolders = intersectTargetFolders(diff.Changed)
+	f.DeletedFolders = f.intersectTargetFolders(diff.Deleted)
+	f.ChangedFolders = f.intersectTargetFolders(diff.Changed)
 	if len(f.ChangedFolders) != 0 || len(f.DeletedFolders) != 0 {
 		f.result = testhelper.FAILURE
 	} else {
@@ -184,13 +229,13 @@ func (f *FsDiff) unmountDebugPartnerPodmanFolder() error {
 
 func (f *FsDiff) installCustomPodman() error {
 	// We need to create the destination folder first.
-	log.Info("Creating temp folder %s", nodeTmpMountFolder)
+	f.check.LogInfo("Creating temp folder %s", nodeTmpMountFolder)
 	if err := f.createNodeFolder(); err != nil {
 		return err
 	}
 
 	// Mount podman from partner debug pod into /host/tmp/...
-	log.Info("Mouting %s into %s", partnerPodmanFolder, nodeTmpMountFolder)
+	f.check.LogInfo("Mouting %s into %s", partnerPodmanFolder, nodeTmpMountFolder)
 	if mountErr := f.mountDebugPartnerPodmanFolder(); mountErr != nil {
 		// We need to delete the temp folder previously created as mount point.
 		if deleteErr := f.deleteNodeFolder(); deleteErr != nil {
@@ -206,7 +251,7 @@ func (f *FsDiff) installCustomPodman() error {
 
 func (f *FsDiff) unmountCustomPodman() {
 	// Unmount podman folder from host.
-	log.Info("Unmounting folder %s", nodeTmpMountFolder)
+	f.check.LogInfo("Unmounting folder %s", nodeTmpMountFolder)
 	if err := f.unmountDebugPartnerPodmanFolder(); err != nil {
 		// Here, there's no point on trying to remove the temp folder used as mount point, as
 		// that probably won't work either.
@@ -215,7 +260,7 @@ func (f *FsDiff) unmountCustomPodman() {
 		return
 	}
 
-	log.Info("Deleting folder %s", nodeTmpMountFolder)
+	f.check.LogInfo("Deleting folder %s", nodeTmpMountFolder)
 	if err := f.deleteNodeFolder(); err != nil {
 		f.Error = err
 		f.result = testhelper.ERROR
