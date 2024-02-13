@@ -3,8 +3,8 @@ targetNameSpaces:
 podsUnderTestLabels:
   - "test-network-function.com/generic: target"
 operatorsUnderTestLabels:
-  - "test-network-function.com/operator:"
-  - "test-network-function.com/operator1:new" 
+  - "test-network-function.com/operator:target"
+  - "test-network-function.com/operator1:new"
 targetCrdFilters:
   - nameSuffix: "group1.test.com"
     scalable: false
