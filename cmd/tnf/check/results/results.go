@@ -4,13 +4,14 @@ package results
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"os"
 	"regexp"
 	"strings"
 
 	"github.com/spf13/cobra"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 )
 
 const (
@@ -164,26 +165,30 @@ func printTestResultsMismatch(mismatchedTestCases []string, actualResults, expec
 }
 
 func generateTemplateFile(resultsDB map[string]string) error {
-	var modelTemplate TestResults
+	var resultsTemplate TestResults
 	for testCase, result := range resultsDB {
 		switch result {
 		case resultPass:
-			modelTemplate.Pass = append(modelTemplate.Pass, testCase)
+			resultsTemplate.Pass = append(resultsTemplate.Pass, testCase)
 		case resultSkip:
-			modelTemplate.Skip = append(modelTemplate.Skip, testCase)
+			resultsTemplate.Skip = append(resultsTemplate.Skip, testCase)
 		case resultFail:
-			modelTemplate.Fail = append(modelTemplate.Fail, testCase)
+			resultsTemplate.Fail = append(resultsTemplate.Fail, testCase)
 		default:
 			return fmt.Errorf("unknown test case result %q", result)
 		}
 	}
 
-	modelOut, err := yaml.Marshal(&modelTemplate)
+	const twoSpaces = 2
+	var yamlTemplate bytes.Buffer
+	yamlEncoder := yaml.NewEncoder(&yamlTemplate)
+	yamlEncoder.SetIndent(twoSpaces)
+	err := yamlEncoder.Encode(&resultsTemplate)
 	if err != nil {
-		return fmt.Errorf("could not marshal template yaml, err: %v", err)
+		return fmt.Errorf("could not encode template yaml, err: %v", err)
 	}
 
-	err = os.WriteFile(TestResultsTemplateFileName, modelOut, TestResultsTemplateFilePermissions)
+	err = os.WriteFile(TestResultsTemplateFileName, yamlTemplate.Bytes(), TestResultsTemplateFilePermissions)
 	if err != nil {
 		return fmt.Errorf("could not write to file %q: %v", TestResultsTemplateFileName, err)
 	}
