@@ -61,32 +61,48 @@ func isIstioServiceMeshInstalled(appClient appv1client.AppsV1Interface, allNs []
 	return true
 }
 
-func findOperatorsByLabel(olmClient clientOlm.Interface, labels []labelObject, namespaces []configuration.Namespace) []*olmv1Alpha.ClusterServiceVersion {
-	csvs := []*olmv1Alpha.ClusterServiceVersion{}
+func findOperatorsMatchingAtLeastOneLabel(olmClient clientOlm.Interface, labels []labelObject, namespace configuration.Namespace) *olmv1Alpha.ClusterServiceVersionList {
+	csvList := &olmv1Alpha.ClusterServiceVersionList{}
+	for _, l := range labels {
+		log.Debug("Searching CSVs in namespace %q with label %q", namespace, l)
+		csv, err := olmClient.OperatorsV1alpha1().ClusterServiceVersions(namespace.Name).List(context.TODO(), metav1.ListOptions{
+			LabelSelector: l.LabelKey + "=" + l.LabelValue,
+		})
+		if err != nil {
+			log.Error("Error when listing csvs in namespace %q with label %q, err: %v", namespace, l.LabelKey+"="+l.LabelValue, err)
+			continue
+		}
+		csvList.Items = append(csvList.Items, csv.Items...)
+	}
+	return csvList
+}
+
+func findOperatorsByLabels(olmClient clientOlm.Interface, labels []labelObject, namespaces []configuration.Namespace) (csvs []*olmv1Alpha.ClusterServiceVersion) {
+	csvs = []*olmv1Alpha.ClusterServiceVersion{}
+	var csvList *olmv1Alpha.ClusterServiceVersionList
 	for _, ns := range namespaces {
-		for _, aLabelObject := range labels {
-			label := aLabelObject.LabelKey + "=" + aLabelObject.LabelValue
-			log.Debug("Searching CSVs in namespace %q with label %q", ns, label)
-			csvList, err := olmClient.OperatorsV1alpha1().ClusterServiceVersions(ns.Name).List(context.TODO(), metav1.ListOptions{
-				LabelSelector: label,
-			})
+		if len(labels) > 0 {
+			csvList = findOperatorsMatchingAtLeastOneLabel(olmClient, labels, ns)
+		} else {
+			// If labels are not provided in the namespace under test, they are tested by the CNF suite
+			log.Debug("Searching CSVs in namespace %s without label", ns)
+			var err error
+			csvList, err = olmClient.OperatorsV1alpha1().ClusterServiceVersions(ns.Name).List(context.TODO(), metav1.ListOptions{})
 			if err != nil {
-				log.Error("Error when listing csvs in namespace %q with label %q", ns, label)
+				log.Error("Error when listing csvs in namespace %q , err: %v", ns, err)
 				continue
 			}
-
-			for i := range csvList.Items {
-				csvs = append(csvs, &csvList.Items[i])
-			}
+		}
+		for i := range csvList.Items {
+			csvs = append(csvs, &csvList.Items[i])
 		}
 	}
-
 	for i := range csvs {
 		log.Info("Found CSV %q (namespace %q)", csvs[i].Name, csvs[i].Namespace)
 	}
-
 	return csvs
 }
+
 func getAllNamespaces(oc corev1client.CoreV1Interface) (allNs []string, err error) {
 	nsList, err := oc.Namespaces().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {

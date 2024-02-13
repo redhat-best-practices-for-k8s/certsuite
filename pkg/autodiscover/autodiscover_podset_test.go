@@ -28,7 +28,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 )
 
-func TestFindDeploymentByLabel(t *testing.T) {
+func TestFindDeploymentsUnderTest(t *testing.T) {
 	generateDeployment := func(name, namespace, label string) *appsv1.Deployment {
 		return &appsv1.Deployment{
 			ObjectMeta: metav1.ObjectMeta{
@@ -99,12 +99,12 @@ func TestFindDeploymentByLabel(t *testing.T) {
 		testRuntimeObjects = append(testRuntimeObjects, generateDeployment(tc.testDeploymentName, tc.testDeploymentNamespace, tc.queryLabel))
 		oc := clientsholder.GetTestClientsHolder(testRuntimeObjects)
 
-		deployments := findDeploymentByLabel(oc.K8sClient.AppsV1(), testLabel, testNamespaces)
+		deployments := findDeploymentsByLabels(oc.K8sClient.AppsV1(), testLabel, testNamespaces)
 		assert.Equal(t, tc.expectedResults, deployments)
 	}
 }
 
-func TestFindStatefulSetByLabel(t *testing.T) {
+func TestFindStatefulSetsUnderTest(t *testing.T) {
 	generateStatefulSet := func(name, namespace, label string) *appsv1.StatefulSet {
 		return &appsv1.StatefulSet{
 			ObjectMeta: metav1.ObjectMeta{
@@ -174,7 +174,7 @@ func TestFindStatefulSetByLabel(t *testing.T) {
 		testRuntimeObjects = append(testRuntimeObjects, generateStatefulSet(tc.testStatefulSetName, tc.testStatefulSetNamespace, tc.queryLabel))
 		oc := clientsholder.GetTestClientsHolder(testRuntimeObjects)
 
-		statefulSets := findStatefulSetByLabel(oc.K8sClient.AppsV1(), testLabel, testNamespaces)
+		statefulSets := findStatefulSetsByLabels(oc.K8sClient.AppsV1(), testLabel, testNamespaces)
 		assert.Equal(t, tc.expectedResults, statefulSets)
 	}
 }

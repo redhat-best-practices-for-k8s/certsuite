@@ -27,7 +27,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 )
 
-func TestFindPodsByLabel(t *testing.T) {
+func TestFindPodsUnderTest(t *testing.T) {
 	generatePod := func(podname, namespace, label string) *corev1.Pod {
 		return &corev1.Pod{
 			ObjectMeta: metav1.ObjectMeta{
@@ -91,7 +91,7 @@ func TestFindPodsByLabel(t *testing.T) {
 		testRuntimeObjects = append(testRuntimeObjects, generatePod(tc.testPodName, tc.testPodNamespace, tc.queryLabel))
 		oc := clientsholder.GetTestClientsHolder(testRuntimeObjects)
 
-		podResult, _ := findPodsByLabel(oc.K8sClient.CoreV1(), testLabel, testNamespaces)
+		podResult, _ := findPodsByLabels(oc.K8sClient.CoreV1(), testLabel, testNamespaces)
 		assert.Equal(t, tc.expectedResults, podResult)
 	}
 }
