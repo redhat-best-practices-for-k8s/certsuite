@@ -42,18 +42,18 @@ const (
 
 type Pod struct {
 	*corev1.Pod
-	Containers         []*Container
-	MultusIPs          map[string][]string
-	MultusPCIs         []string
-	SkipNetTests       bool
-	SkipMultusNetTests bool
+	Containers              []*Container
+	MultusNetworkInterfaces map[string]CniNetworkInterface
+	MultusPCIs              []string
+	SkipNetTests            bool
+	SkipMultusNetTests      bool
 }
 
 func NewPod(aPod *corev1.Pod) (out Pod) {
 	var err error
 	out.Pod = aPod
-	out.MultusIPs = make(map[string][]string)
-	out.MultusIPs, err = GetPodIPsPerNet(aPod.GetAnnotations()[CniNetworksStatusKey])
+	out.MultusNetworkInterfaces = make(map[string]CniNetworkInterface)
+	out.MultusNetworkInterfaces, err = GetPodIPsPerNet(aPod.GetAnnotations()[CniNetworksStatusKey])
 	if err != nil {
 		log.Error("Could not get IPs for Pod %q (namespace %q), err: %v", aPod.Name, aPod.Namespace, err)
 	}

@@ -222,7 +222,7 @@ func testContainersFsDiff(check *checksdb.Check, env *provider.TestEnvironment) 
 		debugPod := env.DebugPods[cut.NodeName]
 
 		ctxt := clientsholder.NewContext(debugPod.Namespace, debugPod.Name, debugPod.Spec.Containers[0].Name)
-		fsDiffTester := cnffsdiff.NewFsDiffTester(clientsholder.GetClientsHolder(), ctxt)
+		fsDiffTester := cnffsdiff.NewFsDiffTester(check, clientsholder.GetClientsHolder(), ctxt, env.OpenshiftVersion)
 		fsDiffTester.RunTest(cut.UID)
 		switch fsDiffTester.GetResults() {
 		case testhelper.SUCCESS:
