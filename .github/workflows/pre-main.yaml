@@ -450,7 +450,7 @@ jobs:
         run: make build-tnf-tool
 
       - name: Check the smoke test results against the expected results template
-        run: make check-results
+        run: ./tnf check results --log-file="${TNF_OUTPUT_DIR}"/cnf-certsuite.log
 
       - name: 'Test: Run Preflight Specific Smoke Tests in a TNF container'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-tnf-container.sh ${{ env.TESTING_CMD_PARAMS }} -l "preflight"
