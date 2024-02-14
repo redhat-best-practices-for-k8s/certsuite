@@ -172,3 +172,6 @@ build-image-tnf:
 
 results-html:
 	script/get-results-html.sh ${PARSER_RELEASE}
+
+check-results:
+	./tnf check results
