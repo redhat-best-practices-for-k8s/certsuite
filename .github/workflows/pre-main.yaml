@@ -273,6 +273,9 @@ jobs:
       - name: Remove tarball(s) to save disk space.
         run: rm -f cnf-certification-test/*.tar.gz
 
+      - name: Build the TNF tool
+        run: make build-tnf-tool
+
       - name: Check the smoke test results against the expected results template
         run: make check-results
 
@@ -442,6 +445,9 @@ jobs:
 
       - name: Remove tarball(s) to save disk space.
         run: rm -f ${{ env.TNF_OUTPUT_DIR }}/*.tar.gz
+
+      - name: Build the TNF tool
+        run: make build-tnf-tool
 
       - name: Check the smoke test results against the expected results template
         run: make check-results
