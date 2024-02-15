@@ -22,7 +22,7 @@ RUN \
 # Install Go binary and set the PATH
 ENV \
 	GO_DL_URL=https://golang.org/dl \
-	GO_BIN_TAR=go1.21.6.linux-amd64.tar.gz \
+	GO_BIN_TAR=go1.21.7.linux-amd64.tar.gz \
 	GOPATH=/root/go
 ENV GO_BIN_URL_x86_64=${GO_DL_URL}/${GO_BIN_TAR}
 RUN \
