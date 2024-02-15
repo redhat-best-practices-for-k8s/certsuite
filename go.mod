@@ -13,7 +13,7 @@ require (
 	gopkg.in/yaml.v2 v2.4.0
 )
 
-require k8s.io/client-go v0.29.1
+require k8s.io/client-go v0.29.2
 
 require (
 	github.com/kelseyhightower/envconfig v1.4.0
@@ -24,8 +24,8 @@ require (
 	github.com/operator-framework/operator-lifecycle-manager v0.20.0
 	github.com/pkg/errors v0.9.1 // indirect
 	helm.sh/helm/v3 v3.14.0
-	k8s.io/api v0.29.1
-	k8s.io/apimachinery v0.29.1
+	k8s.io/api v0.29.2
+	k8s.io/apimachinery v0.29.2
 	k8s.io/klog/v2 v2.110.1 // indirect
 )
 
@@ -185,8 +185,8 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	k8s.io/apiserver v0.29.1 // indirect
-	k8s.io/cli-runtime v0.29.1 // indirect
-	k8s.io/component-base v0.29.1 // indirect
+	k8s.io/cli-runtime v0.29.2 // indirect
+	k8s.io/component-base v0.29.2 // indirect
 	k8s.io/kube-openapi v0.0.0-20240103195357-a9f8850cb432 // indirect
 	k8s.io/utils v0.0.0-20240102154912-e7106e64919e // indirect
 	modernc.org/libc v1.37.6 // indirect
@@ -222,7 +222,7 @@ require (
 	github.com/test-network-function/privileged-daemonset v1.0.20
 	golang.org/x/term v0.17.0
 	gopkg.in/yaml.v3 v3.0.1
-	k8s.io/kubectl v0.29.1
+	k8s.io/kubectl v0.29.2
 )
 
 replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240130151146-4c9ea7cbd33f
