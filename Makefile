@@ -103,11 +103,6 @@ coverage-qe: build-tnf-tool
 build-catalog-md: build-tnf-tool
 	./tnf generate catalog markdown >CATALOG.md
 
-# build the policy file for the gradetool
-# requires a valid claim.json file
-build-gradetool-policy: 
-	./script/policy-builder-from-claim.sh
-
 # build the CNF test binary
 build-cnf-tests: results-html
 	PATH=${PATH}:${GOBIN} go build -ldflags "${LINKER_TNF_RELEASE_FLAGS}" -o ./cnf-certification-test
