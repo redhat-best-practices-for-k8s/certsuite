@@ -45,6 +45,18 @@ jobs:
           echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
         if: runner.os == 'Linux'
 
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
+          large-packages: true
+          android: true
+          dotnet: true
+          haskell: true
+          docker-images: true
+          swap-storage: true
+        continue-on-error: true
+
       - name: Set up Go 1.21.6
         uses: actions/setup-go@v4
         with:
@@ -128,12 +140,12 @@ jobs:
           sudo mv crc-linux-*/crc /usr/local/bin/
         if: runner.os == 'Linux'
 
-      - name: Set Microshift Preset
+      - name: Set Memory
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 5
           max_attempts: 3
-          command: crc config set preset microshift
+          command: crc config set memory 9216
 
       - name: Set Telemetry
         uses: nick-fields/retry@v2
@@ -188,19 +200,10 @@ jobs:
           repository: test-network-function/cnf-certification-test-partner
           path: cnf-certification-test-partner
 
-      - name: Run 'make install-for-qe'
+      - name: Run 'make install'
         run: |
-          make install-for-qe
+          make install
         working-directory: cnf-certification-test-partner
-
-      # Update the CNF containers, helm charts and operators DB
-
-      # - name: Update the CNF DB
-      #   run: |
-      #     docker pull ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
-      #     mkdir -p ${GITHUB_WORKSPACE}/offline-db
-      #     docker run -v ${GITHUB_WORKSPACE}/offline-db:/tmp/dump:Z --env OCT_DUMP_ONLY=true ${REGISTRY}/${OCT_IMAGE_NAME}:${OCT_IMAGE_TAG}
-      #   shell: bash
 
       - name: Execute `make build`
         run: make build-cnf-tests
@@ -213,27 +216,3 @@ jobs:
       # Perform smoke tests.
       - name: 'Test: Run test suites'
         run: TNF_LOG_LEVEL=${TNF_SMOKE_TESTS_LOG_LEVEL} ./run-cnf-suites.sh -l "all"
-
-      - name: Upload smoke test results as an artifact
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: smoke-tests
-          path: |
-            cnf-certification-test/*.xml
-            cnf-certification-test/claim.json
-            cnf-certification-test/claimjson.js
-            cnf-certification-test/results.html
-            cnf-certification-test/tnf-execution.log
-
-      - name: Upload container test results as an artifact
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: smoke-tests-container
-          path: |
-            ${{ env.TNF_OUTPUT_DIR }}/*.xml
-            ${{ env.TNF_OUTPUT_DIR }}/claim.json
-            ${{ env.TNF_OUTPUT_DIR }}/claimjson.js
-            ${{ env.TNF_OUTPUT_DIR }}/results.html
-            ${{ env.TNF_OUTPUT_DIR }}/tnf-execution.log

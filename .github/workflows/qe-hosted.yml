@@ -14,7 +14,7 @@ env:
 
 jobs:
   qe-testing:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -36,6 +36,18 @@ jobs:
 
       - name: Run initial setup
         uses: ./.github/actions/setup
+
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
+          large-packages: true
+          android: true
+          dotnet: true
+          haskell: true
+          docker-images: true
+          swap-storage: true
+        continue-on-error: true
 
       - name: Install dependencies
         run: |
@@ -109,17 +121,10 @@ jobs:
       # Create a OpenShift Local Cluster for testing
       - name: Download the CRC binary (Linux)
         run: |
-          wget -O crc-linux-amd64.tar.xz https://developers.redhat.com/content-gateway/file/pub/openshift-v4/clients/crc/2.31.0/crc-linux-amd64.tar.xz
+          wget -O crc-linux-amd64.tar.xz https://developers.redhat.com/content-gateway/file/pub/openshift-v4/clients/crc/2.32.0/crc-linux-amd64.tar.xz
           tar xvf crc-linux-amd64.tar.xz
           sudo mv crc-linux-*/crc /usr/local/bin/
         if: runner.os == 'Linux'
-
-      - name: Set Microshift Preset
-        uses: nick-fields/retry@v2
-        with:
-          timeout_minutes: 5
-          max_attempts: 3
-          command: crc config set preset microshift
 
       - name: Set Telemetry
         uses: nick-fields/retry@v2
@@ -134,6 +139,13 @@ jobs:
           timeout_minutes: 5
           max_attempts: 3
           command: crc config set network-mode user
+
+      - name: Set Memory
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 5
+          max_attempts: 3
+          command: crc config set memory 9216
 
       - name: Run CRC Setup
         uses: nick-fields/retry@v2
@@ -156,24 +168,6 @@ jobs:
             echo "Waiting for node to be in Ready state"
             sleep 5
           done
-
-      - name: Set the adm policy
-        run: |
-          oc adm policy add-scc-to-group privileged system:authenticated
-          oc adm policy add-scc-to-group anyuid system:authenticated
-          oc adm policy add-scc-to-group hostaccess system:authenticated
-          oc adm policy add-scc-to-group hostmount-anyuid system:authenticated
-          oc adm policy add-scc-to-group hostnetwork system:authenticated
-          oc adm policy add-scc-to-group nonroot system:authenticated
-          oc adm policy add-scc-to-group runasany system:authenticated
-          oc adm policy add-scc-to-group runtimeprivileged system:authenticated
-
-          oc adm policy add-scc-to-user privileged system:serviceaccount:kube-system:multus
-          oc adm policy add-scc-to-user anyuid system:serviceaccount:kube-system:multus
-          oc adm policy add-scc-to-user hostaccess system:serviceaccount:kube-system:multus
-          oc adm policy add-scc-to-user hostmount-anyuid system:serviceaccount:kube-system:multus
-          oc adm policy add-scc-to-user hostnetwork system:serviceaccount:kube-system:multus
-          oc adm policy add-scc-to-user nonroot system:serviceaccount:kube-system:multus
 
       - name: Run oc version
         run: |
@@ -210,31 +204,11 @@ jobs:
           sudo systemctl restart docker
           sudo ls -la /mnt/docker-storage
 
-      - name: Install partner resources
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 90
-          max_attempts: 3
-          command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner; make install-for-qe
-
-      - name: Show pods
-        run: oc get pods -A
-
-      - name: Wait for all pods to be ready
-        run: ./scripts/wait-for-all-pods-running.sh
-        working-directory: cnf-certification-test-partner
-
       - name: Clone the QE repository
         uses: actions/checkout@v4
         with:
           repository: ${{ env.QE_REPO }}
           path: cnfcert-tests-verification
-          ref: multus_test_flexbility
-
-      - name: Extract dependent Pull Requests
-        uses: depends-on/depends-on-action@main
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build the test image
         run: make build-image-local # quay.io/testnetworkfunction/cnf-certification-test:localtest
@@ -244,20 +218,4 @@ jobs:
         with:
           timeout_minutes: 60
           max_attempts: 3
-<<<<<<< HEAD
           command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} JOB_ID=${{github.run_id}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=true ENABLE_FLAKY_RETRY=true make test-features
-=======
-          command: cd ${GITHUB_WORKSPACE}/cnfcert-tests-verification; FEATURES=${{matrix.suite}} TNF_REPO_PATH=${GITHUB_WORKSPACE} TNF_IMAGE=${{env.TEST_TNF_IMAGE_NAME}} TNF_IMAGE_TAG=${{env.TEST_TNF_IMAGE_TAG}} DISABLE_INTRUSIVE_TESTS=true ENABLE_PARALLEL=false ENABLE_FLAKY_RETRY=true make test-features
->>>>>>> 24937e63 (Add CRC testing against Ubuntu)
-
-      - name: (if on main and upstream) Send chat msg to dev team if failed to run QE tests
-        if: ${{ failure() && github.ref == 'refs/heads/main' && github.repository_owner == 'test-network-function' }}
-        env:
-          COMMIT_SHA: ${{ github.sha }}
-          JOB_RUN_ID: ${{ github.run_id }}
-          JOB_RUN_ATTEMPT: ${{ github.run_attempt }}
-          GITHUB_REPO: https://github.com/test-network-function/cnf-certification-test
-        run: |
-          curl -X POST --data "{
-              \"text\": \"🚨⚠️  Failed to run Github hosted QE tests from commit \<$GITHUB_REPO/commit/$COMMIT_SHA|$COMMIT_SHA\>, job ID \<$GITHUB_REPO/actions/runs/$JOB_RUN_ID/attempts/$JOB_RUN_ATTEMPT|$JOB_RUN_ID\> \"
-          }" -H 'Content-type: application/json; charset=UTF-8' '${{ secrets.QE_NIGHTLY_WEBHOOK }}'

@@ -151,10 +151,6 @@ CONTAINER_TNF_DOCKERCFG="${CONTAINER_TNF_DOCKERCFG:-NA}"
 DNS_ARG="${DNS_ARG:+--dns $DNS_ARG}"
 TNF_OFFLINE_DB_MOUNT_ARG="${LOCAL_TNF_OFFLINE_DB:+-v $LOCAL_TNF_OFFLINE_DB:/usr/offline-db-ext:Z}"
 
-if [ -n "${TNF_ENABLE_CRC_TESTING}" ]; then
-	ADD_HOST_ARG="--add-host api.crc.testing:host-gateway"
-fi
-
 set -x
 # shellcheck disable=SC2068,SC2086 # Double quote array expansions.
 ${TNF_CONTAINER_CLIENT} run --rm $DNS_ARG \
