@@ -194,16 +194,16 @@ jobs:
           oc get nodes
           oc get pods -A
 
-      - name: Check out `cnf-certification-test-partner`
-        uses: actions/checkout@v4
-        with:
-          repository: test-network-function/cnf-certification-test-partner
-          path: cnf-certification-test-partner
+      # - name: Check out `cnf-certification-test-partner`
+      #   uses: actions/checkout@v4
+      #   with:
+      #     repository: test-network-function/cnf-certification-test-partner
+      #     path: cnf-certification-test-partner
 
-      - name: Run 'make install'
-        run: |
-          make install
-        working-directory: cnf-certification-test-partner
+      # - name: Run 'make install'
+      #   run: |
+      #     make install
+      #   working-directory: cnf-certification-test-partner
 
       - name: Execute `make build`
         run: make build-cnf-tests
