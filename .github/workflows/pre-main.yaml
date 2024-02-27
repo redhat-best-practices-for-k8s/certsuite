@@ -26,7 +26,7 @@ env:
   TERM: xterm-color
   CM_BIN: /usr/local/bin/checkmake
   CM_URL_LINUX: https://github.com/mrtazz/checkmake/releases/download/0.2.2/checkmake-0.2.2.linux.amd64 # yamllint disable-line
-  SMOKE_TESTS_LABELS_FILTER: '!affiliated-certification-container-is-certified-digest && !access-control-security-context'
+  SMOKE_TESTS_LABELS_FILTER: all
   SKIP_PRELOAD_IMAGES: true
 
 jobs:
