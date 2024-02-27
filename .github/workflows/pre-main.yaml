@@ -21,7 +21,7 @@ env:
   TNF_OUTPUT_DIR: /tmp/tnf/output
   TNF_SRC_URL: 'https://github.com/${{ github.repository }}'
   TESTING_CMD_PARAMS: '-n host -i ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} -t ${TNF_CONFIG_DIR} -o ${TNF_OUTPUT_DIR}'
-  TNF_SMOKE_TESTS_LOG_LEVEL: trace
+  TNF_SMOKE_TESTS_LOG_LEVEL: debug
   ON_DEMAND_DEBUG_PODS: false
   TERM: xterm-color
   CM_BIN: /usr/local/bin/checkmake
