@@ -218,7 +218,7 @@ require (
 	github.com/openshift/machine-config-operator v0.0.1-0.20230515070935-49f32d46538e
 	github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240130151146-4c9ea7cbd33f
 	github.com/robert-nix/ansihtml v1.0.1
-	github.com/test-network-function/oct v0.0.5
+	github.com/test-network-function/oct v0.0.6
 	github.com/test-network-function/privileged-daemonset v1.0.21
 	golang.org/x/term v0.17.0
 	gopkg.in/yaml.v3 v3.0.1
