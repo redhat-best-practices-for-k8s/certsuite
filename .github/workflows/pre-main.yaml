@@ -71,7 +71,7 @@ jobs:
       - name: Golangci-lint
         uses: golangci/golangci-lint-action@v4
         with:
-          version: v1.55
+          version: v1.56
           args: --timeout 10m0s
 
       - name: Checkmake
