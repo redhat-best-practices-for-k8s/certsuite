@@ -23,38 +23,36 @@ import (
 	helmclient "github.com/mittwald/go-helm-client"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
 	clientOlm "github.com/operator-framework/operator-lifecycle-manager/pkg/api/client/clientset/versioned"
-	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/configuration"
 	"github.com/test-network-function/cnf-certification-test/pkg/stringhelper"
 	"helm.sh/helm/v3/pkg/release"
+	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/runtime/schema"
+	appv1client "k8s.io/client-go/kubernetes/typed/apps/v1"
 	corev1client "k8s.io/client-go/kubernetes/typed/core/v1"
 	"k8s.io/client-go/rest"
 )
 
 const (
-	istioNamespace = "istio-system"
-	istioCR        = "installed-state"
+	istioNamespace      = "istio-system"
+	istioDeploymentName = "istiod"
 )
 
-func isIstioServiceMeshInstalled(allNs []string) bool {
-	// the Istio namespace must be present
+func isIstioServiceMeshInstalled(appClient appv1client.AppsV1Interface, allNs []string) bool {
+	// The Istio namespace must be present
 	if !stringhelper.StringInSlice(allNs, istioNamespace, false) {
+		log.Info("Istio Service Mesh not present (the namespace %q does not exists)", istioNamespace)
 		return false
 	}
 
-	// the Istio CR used for installation must be present
-	oc := clientsholder.GetClientsHolder()
-	gvr := schema.GroupVersionResource{Group: "install.istio.io", Version: "v1alpha1", Resource: "istiooperators"}
-	cr, err := oc.DynamicClient.Resource(gvr).Namespace(istioNamespace).Get(context.TODO(), istioCR, metav1.GetOptions{})
-	if err != nil {
-		log.Error("Failed when checking the Istio CR, err: %v", err)
+	// The Deployment "istiod" must be present in an active service mesh
+	_, err := appClient.Deployments(istioNamespace).Get(context.TODO(), istioDeploymentName, metav1.GetOptions{})
+	if errors.IsNotFound(err) {
+		log.Warn("The Istio Deployment %q is missing (but the Istio namespace exists)", istioDeploymentName)
 		return false
-	}
-	if cr == nil {
-		log.Warn("The Istio installation CR is missing (but the Istio namespace exists)")
+	} else if err != nil {
+		log.Error("Failed getting Deployment %q", istioDeploymentName)
 		return false
 	}
 
