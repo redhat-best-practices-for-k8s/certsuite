@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/ubi:9.3-1552 AS build
+FROM registry.access.redhat.com/ubi9/ubi:9.3-1610 AS build
 ENV TNF_DIR=/usr/tnf
 ENV \
 	TNF_SRC_DIR=${TNF_DIR}/tnf-src \
@@ -22,7 +22,7 @@ RUN \
 # Install Go binary and set the PATH
 ENV \
 	GO_DL_URL=https://golang.org/dl \
-	GO_BIN_TAR=go1.21.7.linux-amd64.tar.gz \
+	GO_BIN_TAR=go1.22.1.linux-amd64.tar.gz \
 	GOPATH=/root/go
 ENV GO_BIN_URL_x86_64=${GO_DL_URL}/${GO_BIN_TAR}
 RUN \
