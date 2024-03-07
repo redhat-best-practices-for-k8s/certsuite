@@ -72,7 +72,6 @@ linters:
     - lll
     - misspell
     - nolintlint
-    - revive
     - rowserrcheck
     - staticcheck
     - stylecheck
@@ -96,6 +95,7 @@ linters:
   # - nestif
   # - noctx
   # - prealloc
+  # - revive
   # - exportloopref
   # - structcheck
   # - testpackage
@@ -123,6 +123,6 @@ issues:
 # golangci.com configuration
 # https://github.com/golangci/golangci/wiki/Configuration
 service:
-  golangci-lint-version: 1.55.x # use the fixed version to not introduce new linters unexpectedly
+  golangci-lint-version: 1.56.x # use the fixed version to not introduce new linters unexpectedly
   prepare:
     - echo "here I can run custom commands, but no preparation needed for this repo"

@@ -191,7 +191,6 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 		log.Error("Cannot get the K8s version, err: %v", err)
 		os.Exit(1)
 	}
-	data.IstioServiceMeshFound = isIstioServiceMeshInstalled(data.AllNamespaces)
 	data.ValidProtocolNames = config.ValidProtocolNames
 	data.ServicesIgnoreList = config.ServicesIgnoreList
 
@@ -201,6 +200,10 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.K8sVersion = k8sVersion.GitVersion
 	data.Deployments = findDeploymentByLabel(oc.K8sClient.AppsV1(), podsUnderTestLabelsObjects, data.Namespaces)
 	data.StatefulSet = findStatefulSetByLabel(oc.K8sClient.AppsV1(), podsUnderTestLabelsObjects, data.Namespaces)
+
+	// Check if the Istio Service Mesh is present
+	data.IstioServiceMeshFound = isIstioServiceMeshInstalled(oc.K8sClient.AppsV1(), data.AllNamespaces)
+
 	// Find ClusterRoleBindings
 	clusterRoleBindings, err := getClusterRoleBindings(oc.K8sClient.RbacV1())
 	if err != nil {

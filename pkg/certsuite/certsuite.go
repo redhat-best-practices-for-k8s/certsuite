@@ -1,7 +1,6 @@
 package certsuite
 
 import (
-	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -84,11 +83,11 @@ func processFlags() {
 		checksIDs, err := checksdb.FilterCheckIDs()
 		if err != nil {
 			log.Error("Could not list test cases, err: %v", err)
+			os.Exit(1)
 		} else {
 			cli.PrintChecksList(checksIDs)
+			os.Exit(0)
 		}
-
-		os.Exit(1)
 	}
 
 	t, err := time.ParseDuration(*flags.TimeoutFlag)
@@ -102,8 +101,6 @@ func processFlags() {
 
 //nolint:funlen
 func Run(labelsFilter, outputFolder string) error {
-	var returnErr bool
-
 	_ = clientsholder.GetClientsHolder(getK8sClientsConfigFileNames()...)
 	LoadChecksDB(*flags.LabelsFlag)
 
@@ -138,8 +135,7 @@ func Run(labelsFilter, outputFolder string) error {
 	log.Info("Finished running checks in %v", endTime.Sub(startTime))
 
 	if failedCtr > 0 {
-		log.Error("Some checks failed. See %s for details", claimOutputFile)
-		returnErr = true
+		log.Warn("Some checks failed. See %s for details", claimOutputFile)
 	}
 
 	// Marshal the claim and output to file
@@ -189,14 +185,10 @@ func Run(labelsFilter, outputFolder string) error {
 		for _, file := range webFilePaths {
 			err := os.Remove(file)
 			if err != nil {
-				log.Error("failed to remove web file %s: %v", file, err)
+				log.Error("Failed to remove web file %s: %v", file, err)
 				os.Exit(1)
 			}
 		}
-	}
-
-	if returnErr {
-		return errors.New("some checks failed")
 	}
 
 	return nil
