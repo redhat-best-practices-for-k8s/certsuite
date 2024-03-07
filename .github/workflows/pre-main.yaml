@@ -21,12 +21,12 @@ env:
   TNF_OUTPUT_DIR: /tmp/tnf/output
   TNF_SRC_URL: 'https://github.com/${{ github.repository }}'
   TESTING_CMD_PARAMS: '-n host -i ${REGISTRY_LOCAL}/${TNF_IMAGE_NAME}:${TNF_IMAGE_TAG} -t ${TNF_CONFIG_DIR} -o ${TNF_OUTPUT_DIR}'
-  TNF_SMOKE_TESTS_LOG_LEVEL: trace
+  TNF_SMOKE_TESTS_LOG_LEVEL: debug
   ON_DEMAND_DEBUG_PODS: false
   TERM: xterm-color
   CM_BIN: /usr/local/bin/checkmake
   CM_URL_LINUX: https://github.com/mrtazz/checkmake/releases/download/0.2.2/checkmake-0.2.2.linux.amd64 # yamllint disable-line
-  SMOKE_TESTS_LABELS_FILTER: '!affiliated-certification-container-is-certified-digest && !access-control-security-context'
+  SMOKE_TESTS_LABELS_FILTER: all
   SKIP_PRELOAD_IMAGES: true
 
 jobs:
