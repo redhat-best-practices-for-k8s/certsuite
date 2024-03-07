@@ -37,10 +37,10 @@ jobs:
       SHELL: /bin/bash
 
     steps:
-      - name: Set up Go 1.21
+      - name: Set up Go 1.22
         uses: actions/setup-go@v5
         with:
-          go-version: 1.21.7
+          go-version: 1.22.1
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -114,10 +114,10 @@ jobs:
       SHELL: /bin/bash
 
     steps:
-      - name: Set up Go 1.21
+      - name: Set up Go 1.22
         uses: actions/setup-go@v5
         with:
-          go-version: 1.21.7
+          go-version: 1.22.1
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -173,10 +173,10 @@ jobs:
           touch ${PFLT_DOCKERCONFIG}
           echo '{ "auths": {} }' >> ${PFLT_DOCKERCONFIG}
 
-      - name: Set up Go 1.21
+      - name: Set up Go 1.22
         uses: actions/setup-go@v5
         with:
-          go-version: 1.21.7
+          go-version: 1.22.1
 
       - name: Disable default go problem matcher
         run: echo "::remove-matcher owner=go::"
@@ -351,10 +351,10 @@ jobs:
           command: cd ${GITHUB_WORKSPACE}/cnf-certification-test-partner && make install
 
       # needed by depends-on-action
-      - name: Set up Go 1.21
+      - name: Set up Go 1.22
         uses: actions/setup-go@v5
         with:
-          go-version: 1.21.7
+          go-version: 1.22.1
 
       # Perform smoke tests using a TNF container.
       - name: Check out code into the Go module directory
