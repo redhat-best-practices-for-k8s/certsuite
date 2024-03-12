@@ -48,7 +48,7 @@ func LoadChecksDB(labelsExpr string) {
 
 const (
 	junitXMLOutputFileName = "cnf-certification-tests_junit.xml"
-	collectorAppDNS        = "http://claims-collector.cnf-certifications.sysdeseng.com"
+	collectorAppURL        = "http://claims-collector.cnf-certifications.sysdeseng.com"
 )
 
 func getK8sClientsConfigFileNames() []string {
@@ -151,7 +151,7 @@ func Run(labelsFilter, outputFolder string) error {
 	// Send claim file to the collector if specified by env var
 	if configuration.GetTestParameters().EnableDataCollection {
 		if env.CollectorAppEndpoint == "" {
-			env.CollectorAppEndpoint = collectorAppDNS
+			env.CollectorAppEndpoint = collectorAppURL
 		}
 		err = collector.SendClaimFileToCollector(env.CollectorAppEndpoint, claimOutputFile, env.ExecutedBy, env.PartnerName, env.CollectorAppPassword)
 		if err != nil {
