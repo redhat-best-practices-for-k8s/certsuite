@@ -89,6 +89,7 @@ type TestConfiguration struct {
 	ExecutedBy           string `yaml:"executedBy,omitempty" json:"executedBy,omitempty"`
 	PartnerName          string `yaml:"partnerName,omitempty" json:"partnerName,omitempty"`
 	CollectorAppPassword string `yaml:"collectorAppPassword,omitempty" json:"collectorAppPassword,omitempty"`
+	CollectorAppEndpoint string `yaml:"collectorAppEndpoint,omitempty" json:"collectorAppEndpoint,omitempty"`
 }
 
 type TestParameters struct {

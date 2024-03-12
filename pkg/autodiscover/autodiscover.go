@@ -92,6 +92,7 @@ type DiscoveredTestData struct {
 	ExecutedBy             string
 	PartnerName            string
 	CollectorAppPassword   string
+	CollectorAppEndpoint   string
 }
 
 type labelObject struct {
@@ -250,6 +251,7 @@ func DoAutoDiscover(config *configuration.TestConfiguration) DiscoveredTestData 
 	data.ExecutedBy = config.ExecutedBy
 	data.PartnerName = config.PartnerName
 	data.CollectorAppPassword = config.CollectorAppPassword
+	data.CollectorAppEndpoint = config.CollectorAppEndpoint
 
 	return data
 }
