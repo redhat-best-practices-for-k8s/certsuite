@@ -380,7 +380,8 @@ jobs:
       - name: Check out `Collector`
         uses: actions/checkout@v4
         with:
-          repository: test-network-function/collector
+          repository: shirmoran/collector
+          ref: sanity-check-modification
           path: collector
 
       # Clean up unused container image layers. We need to filter out a possible error return code
