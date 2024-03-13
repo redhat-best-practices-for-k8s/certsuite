@@ -35,6 +35,11 @@ Here's an example of how to use the tool:
 
 These options allow configuring the workload resources of the CNF to be verified. Only the resources that the CNF uses are required to be configured. The rest can be left empty. Usually a basic configuration includes _Namespaces_ and _Pods_ at least.
 
+!!! note
+
+    Using the number of labels to determine how to get the resources under test.<br> 
+    If there are labels defined, we get the list of pods, statefulsets, deployments, csvs, by fetching the resources matching the labels. Otherwise, if the labels are not defined, we only test the resources that are in the namespaces under test (defined in tnf_config.yml).
+
 #### targetNameSpaces
 
 The namespaces in which the CNF under test will be deployed.
