@@ -20,7 +20,6 @@ import (
 	j "encoding/json"
 	"encoding/xml"
 	"fmt"
-	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
@@ -32,7 +31,6 @@ import (
 
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/diagnostics"
-	"github.com/test-network-function/cnf-certification-test/pkg/junit"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/versions"
 	"github.com/test-network-function/test-network-function-claim/pkg/claim"
@@ -386,29 +384,5 @@ func CreateClaimRoot() *claim.Root {
 				StartTime: startTime.UTC().Format(DateTimeFormatDirective),
 			},
 		},
-	}
-}
-
-// LoadJUnitXMLIntoMap converts junitFilename's XML-formatted JUnit test results into a Go map, and adds the result to
-// the result Map.
-func LoadJUnitXMLIntoMap(result map[string]interface{}, junitFilename, key string) {
-	var err error
-	if key == "" {
-		var extension = filepath.Ext(junitFilename)
-		key = junitFilename[0 : len(junitFilename)-len(extension)]
-	}
-	result[key], err = junit.ExportJUnitAsMap(junitFilename)
-	if err != nil {
-		log.Error("error reading JUnit XML file into JSON: %v", err)
-		os.Exit(1)
-	}
-}
-
-// AppendCNFFeatureValidationReportResults is a helper method to add the results of running the cnf-features-deploy
-// test suite to the claim file.
-func AppendCNFFeatureValidationReportResults(junitPath *string, junitMap map[string]interface{}) {
-	cnfFeaturesDeployJUnitFile := filepath.Join(*junitPath, CNFFeatureValidationJunitXMLFileName)
-	if _, err := os.Stat(cnfFeaturesDeployJUnitFile); err == nil {
-		LoadJUnitXMLIntoMap(junitMap, cnfFeaturesDeployJUnitFile, CNFFeatureValidationReportKey)
 	}
 }
