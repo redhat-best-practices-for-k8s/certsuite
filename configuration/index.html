@@ -1407,6 +1407,11 @@
 <h2 id="cnf-config-file-options"><abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> Config File options<a class="headerlink" href="#cnf-config-file-options" title="Permanent link">&para;</a></h2>
 <h3 id="cnf-resources"><abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> resources<a class="headerlink" href="#cnf-resources" title="Permanent link">&para;</a></h3>
 <p>These options allow configuring the workload resources of the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> to be verified. Only the resources that the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> uses are required to be configured. The rest can be left empty. Usually a basic configuration includes <em>Namespaces</em> and <em>Pods</em> at least.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Using the number of labels to determine how to get the resources under test.<br> 
+If there are labels defined, we get the list of pods, statefulsets, deployments, csvs, by fetching the resources matching the labels. Otherwise, if the labels are not defined, we only test the resources that are in the namespaces under test (defined in tnf_config.yml).</p>
+</div>
 <h4 id="targetnamespaces">targetNameSpaces<a class="headerlink" href="#targetnamespaces" title="Permanent link">&para;</a></h4>
 <p>The namespaces in which the <abbr title="Cloud-Native Network Function or Containerised Network Function">CNF</abbr> under test will be deployed.</p>
 <div class="annotate highlight"><pre><span></span><code><span class="nt">targetNameSpaces</span><span class="p">:</span>
