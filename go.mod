@@ -17,7 +17,7 @@ require k8s.io/client-go v0.29.2
 
 require (
 	github.com/kelseyhightower/envconfig v1.4.0
-	github.com/mittwald/go-helm-client v0.12.8
+	github.com/mittwald/go-helm-client v0.12.9
 	github.com/openshift/api v0.0.1
 	github.com/openshift/client-go v0.0.1
 	github.com/operator-framework/api v0.22.0
