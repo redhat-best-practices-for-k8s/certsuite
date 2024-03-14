@@ -1,11 +1,10 @@
 package operator
 
-import "regexp"
-
-const semvar_regex = "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
+import (
+	"github.com/Masterminds/semver/v3"
+)
 
 func isValidSemanticVersion(version string) bool {
-	r, _ := regexp.Compile(semvar_regex)
-
-	return r.MatchString(version)
+	_, err := semver.NewVersion(version)
+	return err == nil
 }
