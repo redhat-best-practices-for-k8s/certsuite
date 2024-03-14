@@ -208,19 +208,20 @@ func findRoguePodsListeningToPorts(pods []*provider.Pod, portsToTest map[int32]b
 			continue
 		}
 		for port := range listeningPorts {
-			if ok := portsToTest[int32(port.PortNumber)]; ok {
+			if ok := portsToTest[port.PortNumber]; ok {
 				// If pod contains an "istio-proxy" container, we need to make sure that the ports returned
 				// overlap with the known istio ports
-				if put.ContainsIstioProxy() && ReservedIstioPorts[int32(port.PortNumber)] {
+				if put.ContainsIstioProxy() && ReservedIstioPorts[port.PortNumber] {
 					logger.Info("%q was found to be listening to port %d due to istio-proxy being present. Ignoring.", put, port.PortNumber)
 					continue
 				}
+
 				logger.Error("%q has one container (%q) listening on port %d (%s) that has been reserved", put, cut.Name, port.PortNumber, port.Protocol)
 				nonCompliantObjects = append(nonCompliantObjects,
 					testhelper.NewPodReportObject(cut.Namespace, put.Name,
 						fmt.Sprintf("Pod Listens to %s reserved port in %v", portsOrigin, portsToTest), false).
 						SetType(testhelper.ListeningPortType).
-						AddField(testhelper.PortNumber, strconv.Itoa(port.PortNumber)).
+						AddField(testhelper.PortNumber, strconv.Itoa(int(port.PortNumber))).
 						AddField(testhelper.PortProtocol, port.Protocol))
 				nonCompliantPortFound = true
 			} else {
@@ -229,7 +230,7 @@ func findRoguePodsListeningToPorts(pods []*provider.Pod, portsToTest map[int32]b
 					testhelper.NewPodReportObject(cut.Namespace, put.Name,
 						fmt.Sprintf("Pod Listens to port not in %s reserved port %v", portsOrigin, portsToTest), true).
 						SetType(testhelper.ListeningPortType).
-						AddField(testhelper.PortNumber, strconv.Itoa(port.PortNumber)).
+						AddField(testhelper.PortNumber, strconv.Itoa(int(port.PortNumber))).
 						AddField(testhelper.PortProtocol, port.Protocol))
 			}
 		}

@@ -189,7 +189,7 @@ func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.Test
 		for _, cut := range put.Containers {
 			check.LogInfo("Testing Container %q", cut)
 			for _, port := range cut.Ports {
-				portInfo.PortNumber = int(port.ContainerPort)
+				portInfo.PortNumber = port.ContainerPort
 				portInfo.Protocol = string(port.Protocol)
 				declaredPorts[portInfo] = true
 			}
@@ -212,7 +212,7 @@ func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.Test
 		// Verify that all the listening ports have been declared in the container spec
 		failedPod := false
 		for listeningPort := range listeningPorts {
-			if put.ContainsIstioProxy() && netcommons.ReservedIstioPorts[int32(listeningPort.PortNumber)] {
+			if put.ContainsIstioProxy() && netcommons.ReservedIstioPorts[listeningPort.PortNumber] {
 				check.LogInfo("%q is listening on port %d protocol %q, but the pod also contains istio-proxy. Ignoring.",
 					put, listeningPort.PortNumber, listeningPort.Protocol)
 				continue
@@ -226,7 +226,7 @@ func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.Test
 					testhelper.NewPodReportObject(put.Namespace, put.Name,
 						"Listening port was declared in no container spec", false).
 						SetType(testhelper.ListeningPortType).
-						AddField(testhelper.PortNumber, strconv.Itoa(listeningPort.PortNumber)).
+						AddField(testhelper.PortNumber, strconv.Itoa(int(listeningPort.PortNumber))).
 						AddField(testhelper.PortProtocol, listeningPort.Protocol))
 			} else {
 				check.LogInfo("%q is listening on declared port %d protocol %q", put, listeningPort.PortNumber, listeningPort.Protocol)
@@ -234,7 +234,7 @@ func testUndeclaredContainerPortsUsage(check *checksdb.Check, env *provider.Test
 					testhelper.NewPodReportObject(put.Namespace, put.Name,
 						"Listening port was declared in container spec", true).
 						SetType(testhelper.ListeningPortType).
-						AddField(testhelper.PortNumber, strconv.Itoa(listeningPort.PortNumber)).
+						AddField(testhelper.PortNumber, strconv.Itoa(int(listeningPort.PortNumber))).
 						AddField(testhelper.PortProtocol, listeningPort.Protocol))
 			}
 		}
