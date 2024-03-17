@@ -416,7 +416,6 @@ jobs:
       - name: Modify TNF config with CI collector credentials
         run: |
           sed -i\
-            -e '/collectorAppEndPoint/s|""|"http://44.195.143.94"|g' \
             -e '/executedBy/s/""/"CI"/g' \
             -e '/partnerName/s/""/"${{ env.COLLECTOR_CIUSER }}"/g' \
             -e '/collectorAppPassword/s/""/"${{ env.COLLECTOR_CIPASSWORD }}"/g' \
