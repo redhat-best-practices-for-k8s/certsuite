@@ -183,7 +183,7 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	k8s.io/apiserver v0.29.3 // indirect
-	k8s.io/cli-runtime v0.29.2 // indirect
+	k8s.io/cli-runtime v0.29.3 // indirect
 	k8s.io/component-base v0.29.3 // indirect
 	k8s.io/kube-openapi v0.0.0-20240103195357-a9f8850cb432 // indirect
 	k8s.io/utils v0.0.0-20240102154912-e7106e64919e // indirect
@@ -220,7 +220,7 @@ require (
 	github.com/test-network-function/privileged-daemonset v1.0.22
 	golang.org/x/term v0.18.0
 	gopkg.in/yaml.v3 v3.0.1
-	k8s.io/kubectl v0.29.2
+	k8s.io/kubectl v0.29.3
 )
 
 replace github.com/redhat-openshift-ecosystem/openshift-preflight => github.com/redhat-openshift-ecosystem/openshift-preflight v0.0.0-20240304171931-f19c2a2f587f
