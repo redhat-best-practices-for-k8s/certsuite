@@ -12,7 +12,7 @@ require (
 	gopkg.in/yaml.v2 v2.4.0
 )
 
-require k8s.io/client-go v0.29.2
+require k8s.io/client-go v0.29.3
 
 require (
 	github.com/kelseyhightower/envconfig v1.4.0
@@ -23,8 +23,8 @@ require (
 	github.com/operator-framework/operator-lifecycle-manager v0.20.0
 	github.com/pkg/errors v0.9.1 // indirect
 	helm.sh/helm/v3 v3.14.3
-	k8s.io/api v0.29.2
-	k8s.io/apimachinery v0.29.2
+	k8s.io/api v0.29.3
+	k8s.io/apimachinery v0.29.3
 	k8s.io/klog/v2 v2.110.1 // indirect
 )
 
@@ -76,7 +76,7 @@ require (
 	github.com/gobwas/glob v0.2.3 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
-	github.com/golang/protobuf v1.5.3 // indirect
+	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/btree v1.1.2 // indirect
 	github.com/google/cel-go v0.17.7 // indirect
 	github.com/google/gnostic-models v0.6.8 // indirect
