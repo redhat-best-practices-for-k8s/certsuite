@@ -860,7 +860,7 @@ func testNoSSHDaemonsAllowed(check *checksdb.Check, env *provider.TestEnvironmen
 			continue
 		}
 
-		sshServicePortNumber, err := strconv.Atoi(port)
+		sshServicePortNumber, err := strconv.ParseInt(port, 10, 32)
 		if err != nil {
 			check.LogError("Could not convert port %q from string to integer on Container %q", port, cut)
 			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewPodReportObject(put.Namespace, put.Name, "Failed to get the listening ports for pod", false))
@@ -868,7 +868,7 @@ func testNoSSHDaemonsAllowed(check *checksdb.Check, env *provider.TestEnvironmen
 		}
 
 		// 2. Check if SSH port is listening
-		sshPortInfo := netutil.PortInfo{PortNumber: sshServicePortNumber, Protocol: sshServicePortProtocol}
+		sshPortInfo := netutil.PortInfo{PortNumber: int32(sshServicePortNumber), Protocol: sshServicePortProtocol}
 		listeningPorts, err := netutil.GetListeningPorts(cut)
 		if err != nil {
 			check.LogError("Failed to get the listening ports for Pod %q, err: %v", put, err)

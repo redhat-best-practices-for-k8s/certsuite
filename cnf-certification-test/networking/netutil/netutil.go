@@ -34,7 +34,7 @@ const (
 )
 
 type PortInfo struct {
-	PortNumber int
+	PortNumber int32
 	Protocol   string
 }
 
@@ -56,12 +56,12 @@ func parseListeningPorts(cmdOut string) (map[PortInfo]bool, error) {
 			continue
 		}
 
-		port, err := strconv.Atoi(s[len(s)-1])
+		port, err := strconv.ParseInt(s[len(s)-1], 10, 32)
 		if err != nil {
 			return nil, fmt.Errorf("string to int conversion error, err: %v", err)
 		}
 		protocol := strings.ToUpper(fields[indexProtocol])
-		portInfo := PortInfo{port, protocol}
+		portInfo := PortInfo{int32(port), protocol}
 
 		portSet[portInfo] = true
 	}
