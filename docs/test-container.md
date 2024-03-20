@@ -112,8 +112,8 @@ Two env vars allow to control the web artifacts and the the new tar.gz file gene
 ### Build locally
 
 ```shell
-podman build -t cnf-certification-test:v5.0.4 \
-  --build-arg TNF_VERSION=v5.0.4 \
+podman build -t cnf-certification-test:v5.0.5 \
+  --build-arg TNF_VERSION=v5.0.5 \
 ```
 
 * `TNF_VERSION` value is set to a branch, a tag, or a hash of a commit that will be installed into the image
@@ -125,8 +125,8 @@ The unofficial source could be a fork of the TNF repository.
 Use the `TNF_SRC_URL` build argument to override the URL to a source repository.
 
 ```shell
-podman build -t cnf-certification-test:v5.0.4 \
-  --build-arg TNF_VERSION=v5.0.4 \
+podman build -t cnf-certification-test:v5.0.5 \
+  --build-arg TNF_VERSION=v5.0.5 \
   --build-arg TNF_SRC_URL=https://github.com/test-network-function/cnf-certification-test .
 ```
 
@@ -135,7 +135,7 @@ podman build -t cnf-certification-test:v5.0.4 \
 Specify the custom TNF image using the `-i` parameter.
 
 ```shell
-./run-tnf-container.sh -i cnf-certification-test:v5.0.4
+./run-tnf-container.sh -i cnf-certification-test:v5.0.5
 -t ~/tnf/config -o ~/tnf/output -l "networking,access-control"
 ```
 
