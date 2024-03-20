@@ -113,9 +113,8 @@ func Run(labelsFilter, outputFolder string) error {
 
 	fmt.Println("Running discovery of CNF target resources...")
 	fmt.Print("\n")
-	var env provider.TestEnvironment
-	env.SetNeedsRefresh()
-	env = provider.GetTestEnvironment()
+
+	env := provider.GetTestEnvironment()
 
 	claimBuilder, err := claimhelper.NewClaimBuilder()
 	if err != nil {

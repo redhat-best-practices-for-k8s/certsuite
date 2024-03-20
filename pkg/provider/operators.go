@@ -52,7 +52,7 @@ type Operator struct {
 	Version               string                                `yaml:"version" json:"version"`
 	Channel               string                                `yaml:"channel" json:"channel"`
 	PackageFromCsvName    string                                `yaml:"packagefromcsvname" json:"packagefromcsvname"`
-	PreflightResults      plibRuntime.Results
+	PreflightResults      PreflightResultsDB
 }
 
 type CsvInstallPlan struct {
@@ -123,7 +123,7 @@ func (op *Operator) SetPreflightResults(env *TestEnvironment) error {
 	}
 
 	log.Info("Storing operator Preflight results into object for %q", bundleImage)
-	op.PreflightResults = results
+	op.PreflightResults = GetPreflightResultsDB(&results)
 	return nil
 }
 
