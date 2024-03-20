@@ -193,7 +193,7 @@ func generatePreflightOperatorCnfCertTest(checksGroup *checksdb.ChecksGroup, tes
 	}, identifiers.TagPreflight)
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(aID)).
-		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
+		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
 		WithCheckFn(func(check *checksdb.Check) error {
 			var compliantObjects []*testhelper.ReportObject
 			var nonCompliantObjects []*testhelper.ReportObject
