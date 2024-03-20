@@ -157,12 +157,16 @@ func GetClientsHolder(filenames ...string) *ClientsHolder {
 		return &clientsHolder
 	}
 	if len(filenames) == 0 {
-		log.Error("Please provide a valid Kubeconfig. Either set the KUBECONFIG environment variable or alternatively copy a kube config to $HOME/.kube/config")
+		errMsg := "Please provide a valid Kubeconfig. Either set the KUBECONFIG environment variable or alternatively copy a kube config to $HOME/.kube/config"
+		log.Error(errMsg)
+		fmt.Fprintf(os.Stderr, "ERROR: %s\n", errMsg)
 		os.Exit(exitUsage)
 	}
 	clientsHolder, err := newClientsHolder(filenames...)
 	if err != nil {
-		log.Error("Failed to create k8s clients holder, err: %v", err)
+		errMsg := fmt.Sprintf("Failed to create k8s clients holder, err: %v", err)
+		log.Error(errMsg)
+		fmt.Fprintf(os.Stderr, "ERROR: %s\n", errMsg)
 		os.Exit(1)
 	}
 	return clientsHolder
@@ -171,7 +175,9 @@ func GetClientsHolder(filenames ...string) *ClientsHolder {
 func GetNewClientsHolder(kubeconfigFile string) *ClientsHolder {
 	_, err := newClientsHolder(kubeconfigFile)
 	if err != nil {
-		log.Error("Failed to create k8s clients holder, err: %v", err)
+		errMsg := fmt.Sprintf("Failed to create k8s clients holder, err: %v", err)
+		log.Error(errMsg)
+		fmt.Fprintf(os.Stderr, "ERROR: %s\n", errMsg)
 		os.Exit(1)
 	}
 
