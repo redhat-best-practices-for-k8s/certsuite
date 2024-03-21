@@ -7,6 +7,9 @@ const (
 	NoDocLinkTelco    = "No Doc Link - Telco"
 	NoDocLink         = "No Doc Link"
 
+	// Operator Suite
+	OperatorRequirementDocLink = "https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements"
+
 	// Networking Suite
 	TestICMPv4ConnectivityIdentifierDocLink         = "https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-ipv4-&-ipv6"
 	TestNetworkPolicyDenyAllIdentifierDocLink       = "https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-vrfs-aka-routing-instances"
