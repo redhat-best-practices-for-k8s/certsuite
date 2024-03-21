@@ -29,6 +29,7 @@ import (
 
 	mcv1 "github.com/openshift/machine-config-operator/pkg/apis/machineconfiguration.openshift.io/v1"
 	olmv1Alpha "github.com/operator-framework/api/pkg/operators/v1alpha1"
+	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
 	"github.com/test-network-function/cnf-certification-test/internal/clientsholder"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
 	"github.com/test-network-function/cnf-certification-test/pkg/autodiscover"
@@ -59,7 +60,7 @@ const (
 	cscosName                        = "CentOS Stream CoreOS"
 	rhelName                         = "Red Hat Enterprise Linux"
 	tnfPartnerRepoDef                = "quay.io/testnetworkfunction"
-	supportImageDef                  = "debug-partner:5.0.4"
+	supportImageDef                  = "debug-partner:5.0.5"
 )
 
 // Node's roles labels. Node is role R if it has **any** of the labels of each list.
@@ -157,6 +158,18 @@ type deviceInfo struct {
 
 type pci struct {
 	PciAddress string `json:"pci-address"`
+}
+type PreflightTest struct {
+	Name        string
+	Description string
+	Remediation string
+	Error       error
+}
+
+type PreflightResultsDB struct {
+	Passed []PreflightTest
+	Failed []PreflightTest
+	Errors []PreflightTest
 }
 
 var (
@@ -597,4 +610,22 @@ func (env *TestEnvironment) GetBaremetalNodes() []Node {
 		}
 	}
 	return baremetalNodes
+}
+
+func GetPreflightResultsDB(results *plibRuntime.Results) PreflightResultsDB {
+	resultsDB := PreflightResultsDB{}
+	for _, res := range results.Passed {
+		test := PreflightTest{Name: res.Name(), Description: res.Metadata().Description, Remediation: res.Help().Suggestion}
+		resultsDB.Passed = append(resultsDB.Passed, test)
+	}
+	for _, res := range results.Failed {
+		test := PreflightTest{Name: res.Name(), Description: res.Metadata().Description, Remediation: res.Help().Suggestion}
+		resultsDB.Failed = append(resultsDB.Failed, test)
+	}
+	for _, res := range results.Errors {
+		test := PreflightTest{Name: res.Name(), Description: res.Metadata().Description, Remediation: res.Help().Suggestion, Error: res.Error()}
+		resultsDB.Errors = append(resultsDB.Errors, test)
+	}
+
+	return resultsDB
 }

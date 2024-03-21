@@ -26,6 +26,7 @@ import (
 	"github.com/test-network-function/cnf-certification-test/pkg/checksdb"
 	"github.com/test-network-function/cnf-certification-test/pkg/provider"
 	"github.com/test-network-function/cnf-certification-test/pkg/testhelper"
+	operatorutils "github.com/test-network-function/cnf-certification-test/provider/operators"
 )
 
 var (
@@ -63,6 +64,36 @@ func LoadChecks() {
 			testOperatorOlmSubscription(c, &env)
 			return nil
 		}))
+
+	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(identifiers.TestOperatorHasSemanticVersioningIdentifier)).
+		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
+		WithCheckFn(func(c *checksdb.Check) error {
+			testOperatorSemanticVersioning(c, &env)
+			return nil
+		}))
+}
+
+// This function checks for semantic versioning of all installed operators
+func testOperatorSemanticVersioning(check *checksdb.Check, env *provider.TestEnvironment) {
+	var compliantObjects []*testhelper.ReportObject
+	var nonCompliantObjects []*testhelper.ReportObject
+
+	allOperators := env.AllOperators
+	for _, operator := range allOperators {
+		check.LogInfo("Testing Operator %q", operator)
+		operatorVersion := operator.Csv.Spec.Version
+		if operatorutils.IsValidSemanticVersion(operatorVersion) {
+			check.LogInfo("Operator %q has semantic version %s", operator, operatorVersion)
+			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name,
+				"Operator has semantic version ", true).AddField("version", operatorVersion.String()))
+		} else {
+			check.LogError("Operator %q has invalid semantic versioning %s", operator, operatorVersion)
+			nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name,
+				"Operator not in Succeeded state ", false).AddField(testhelper.OperatorPhase, operatorVersion.String()))
+		}
+	}
+
+	check.SetResult(compliantObjects, nonCompliantObjects)
 }
 
 func testOperatorInstallationPhaseSucceeded(check *checksdb.Check, env *provider.TestEnvironment) {

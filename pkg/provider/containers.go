@@ -64,7 +64,7 @@ type Container struct {
 	Runtime                  string
 	UID                      string
 	ContainerImageIdentifier ContainerImageIdentifier
-	PreflightResults         plibRuntime.Results
+	PreflightResults         PreflightResultsDB
 }
 
 func NewContainer() *Container {
@@ -87,7 +87,7 @@ func (c *Container) GetUID() (string, error) {
 	return uid, nil
 }
 
-func (c *Container) SetPreflightResults(preflightImageCache map[string]plibRuntime.Results, env *TestEnvironment) error {
+func (c *Container) SetPreflightResults(preflightImageCache map[string]PreflightResultsDB, env *TestEnvironment) error {
 	log.Info("Running Preflight container test for container %q with image %q", c, c.Image)
 
 	// Short circuit if the image already exists in the cache
@@ -135,12 +135,13 @@ func (c *Container) SetPreflightResults(preflightImageCache map[string]plibRunti
 		}
 	}
 
-	// Take all of the preflight logs and stick them into our log.
+	// Take all of the Preflight logs and stick them into our log.
 	log.Info(logbytes.String())
 
-	// Store the result into the cache and store the Results into the container's PreflightResults var.
-	preflightImageCache[c.Image] = results
-	c.PreflightResults = preflightImageCache[c.Image]
+	// Store the Preflight test results into the container's PreflightResults var and into the cache.
+	resultsDB := GetPreflightResultsDB(&results)
+	c.PreflightResults = resultsDB
+	preflightImageCache[c.Image] = resultsDB
 	return nil
 }
 

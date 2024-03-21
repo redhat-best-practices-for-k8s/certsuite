@@ -1,0 +1,34 @@
+name: slack-webhook-sender
+description: 'Sends a slack message plus some more workflow job related fields to a slack webhook endpoint.'
+inputs:
+  message:
+    description: 'Text that will be send in the json .message field.'
+    required: true
+    default: 'Hello, world!'
+  slack_webhook:
+    description: 'Slack webhook where the data will be posted.'
+    required: true
+    default: ''
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Post message data to slack's webhook url.
+      shell: bash
+      env:
+        MESSAGE: ${{ inputs.message }}
+        REPO_URL: 'https://github.com/${{ github.repository }}'
+        COMMIT_URL: 'https://github.com/${{ github.repository }}/commit/${{ github.sha }}'
+        JOB_URL: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}/attempts/${{ github.run_attempt }}'
+        ATTEMPT: ${{ github.run_attempt }}
+      run: |
+          data="{                              \
+            \"message\"   : \"${MESSAGE}\",    \
+            \"repo_url\"  : \"${REPO_URL}\",   \
+            \"job_url\"   : \"${JOB_URL}\",    \
+            \"commit_url\": \"${COMMIT_URL}\", \
+            \"attempt\"   : \"${ATTEMPT}\"     \
+          }"
+
+          echo "Sending alert message data to slack webhook: $(echo $data | jq)"
+          curl -X POST --data "${data}" -H 'Content-type: application/json; charset=UTF-8' '${{ inputs.slack_webhook }}'

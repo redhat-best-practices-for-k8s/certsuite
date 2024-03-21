@@ -21,7 +21,6 @@ import (
 	"os"
 	"strings"
 
-	plibRuntime "github.com/redhat-openshift-ecosystem/openshift-preflight/certification"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/internal/log"
@@ -110,13 +109,13 @@ func testPreflightOperators(checksGroup *checksdb.ChecksGroup, env *provider.Tes
 	// Note: We only care about the `testEntry` variable below because we need its 'Description' and 'Suggestion' variables.
 	for testName, testEntry := range getUniqueTestEntriesFromOperatorResults(env.Operators) {
 		log.Info("Setting Preflight operator test results for %q", testName)
-		generatePreflightOperatorCnfCertTest(checksGroup, testName, testEntry.Metadata().Description, testEntry.Help().Suggestion, env.Operators)
+		generatePreflightOperatorCnfCertTest(checksGroup, testName, testEntry.Description, testEntry.Remediation, env.Operators)
 	}
 }
 
 func testPreflightContainers(checksGroup *checksdb.ChecksGroup, env *provider.TestEnvironment) {
 	// Using a cache to prevent unnecessary processing of images if we already have the results available
-	preflightImageCache := make(map[string]plibRuntime.Results)
+	preflightImageCache := make(map[string]provider.PreflightResultsDB)
 
 	// Loop through all of the containers, run preflight, and set their results into their respective objects
 	for _, cut := range env.Containers {
@@ -133,17 +132,17 @@ func testPreflightContainers(checksGroup *checksdb.ChecksGroup, env *provider.Te
 	// Note: We only care about the `testEntry` variable below because we need its 'Description' and 'Suggestion' variables.
 	for testName, testEntry := range getUniqueTestEntriesFromContainerResults(env.Containers) {
 		log.Info("Setting Preflight container test results for %q", testName)
-		generatePreflightContainerCnfCertTest(checksGroup, testName, testEntry.Metadata().Description, testEntry.Help().Suggestion, env.Containers)
+		generatePreflightContainerCnfCertTest(checksGroup, testName, testEntry.Description, testEntry.Remediation, env.Containers)
 	}
 }
 
 // func generatePreflightContainerCnfCertTest(testName, testID string, tags []string, containers []*provider.Container) {
-func generatePreflightContainerCnfCertTest(checksGroup *checksdb.ChecksGroup, testName, description, suggestion string, containers []*provider.Container) {
+func generatePreflightContainerCnfCertTest(checksGroup *checksdb.ChecksGroup, testName, description, remediation string, containers []*provider.Container) {
 	// Based on a single test "name", we will be passing/failing in our test framework.
 	// Brute force-ish type of method.
 
 	// Store the test names into the Catalog map for results to be dynamically printed
-	aID := identifiers.AddCatalogEntry(testName, common.PreflightTestKey, description, suggestion, "", "", false, map[string]string{
+	aID := identifiers.AddCatalogEntry(testName, common.PreflightTestKey, description, remediation, "", "", false, map[string]string{
 		identifiers.FarEdge:  identifiers.Optional,
 		identifiers.Telco:    identifiers.Optional,
 		identifiers.NonTelco: identifiers.Optional,
@@ -157,21 +156,21 @@ func generatePreflightContainerCnfCertTest(checksGroup *checksdb.ChecksGroup, te
 			var nonCompliantObjects []*testhelper.ReportObject
 			for _, cut := range containers {
 				for _, r := range cut.PreflightResults.Passed {
-					if r.Name() == testName {
+					if r.Name == testName {
 						check.LogInfo("Container %q has passed Preflight test %q", cut, testName)
 						compliantObjects = append(compliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has passed preflight test "+testName, true))
 					}
 				}
 				for _, r := range cut.PreflightResults.Failed {
-					if r.Name() == testName {
+					if r.Name == testName {
 						check.LogError("Container %q has failed Preflight test %q", cut, testName)
 						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, "Container has failed preflight test "+testName, false))
 					}
 				}
 				for _, r := range cut.PreflightResults.Errors {
-					if r.Name() == testName {
-						check.LogError("Container %q has errored Preflight test %q", cut, testName)
-						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, fmt.Sprintf("Container has errored preflight test %s, err=%v", testName, r.Error()), false))
+					if r.Name == testName {
+						check.LogError("Container %q has errored Preflight test %q, err: %v", cut, testName, r.Error)
+						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewContainerReportObject(cut.Namespace, cut.Podname, cut.Name, fmt.Sprintf("Container has errored preflight test %s, err: %v", testName, r.Error), false))
 					}
 				}
 			}
@@ -181,12 +180,12 @@ func generatePreflightContainerCnfCertTest(checksGroup *checksdb.ChecksGroup, te
 		}))
 }
 
-func generatePreflightOperatorCnfCertTest(checksGroup *checksdb.ChecksGroup, testName, description, suggestion string, operators []*provider.Operator) {
+func generatePreflightOperatorCnfCertTest(checksGroup *checksdb.ChecksGroup, testName, description, remediation string, operators []*provider.Operator) {
 	// Based on a single test "name", we will be passing/failing in our test framework.
 	// Brute force-ish type of method.
 
 	// Store the test names into the Catalog map for results to be dynamically printed
-	aID := identifiers.AddCatalogEntry(testName, common.PreflightTestKey, description, suggestion, "", "", false, map[string]string{
+	aID := identifiers.AddCatalogEntry(testName, common.PreflightTestKey, description, remediation, "", "", false, map[string]string{
 		identifiers.FarEdge:  identifiers.Optional,
 		identifiers.Telco:    identifiers.Optional,
 		identifiers.NonTelco: identifiers.Optional,
@@ -194,28 +193,28 @@ func generatePreflightOperatorCnfCertTest(checksGroup *checksdb.ChecksGroup, tes
 	}, identifiers.TagPreflight)
 
 	checksGroup.Add(checksdb.NewCheck(identifiers.GetTestIDAndLabels(aID)).
-		WithSkipCheckFn(testhelper.GetNoContainersUnderTestSkipFn(&env)).
+		WithSkipCheckFn(testhelper.GetNoOperatorsSkipFn(&env)).
 		WithCheckFn(func(check *checksdb.Check) error {
 			var compliantObjects []*testhelper.ReportObject
 			var nonCompliantObjects []*testhelper.ReportObject
 
 			for _, op := range operators {
 				for _, r := range op.PreflightResults.Passed {
-					if r.Name() == testName {
+					if r.Name == testName {
 						check.LogInfo("Operator %q has passed Preflight test %q", op, testName)
 						compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator passed preflight test "+testName, true))
 					}
 				}
 				for _, r := range op.PreflightResults.Failed {
-					if r.Name() == testName {
+					if r.Name == testName {
 						check.LogError("Operator %q has failed Preflight test %q", op, testName)
 						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator failed preflight test "+testName, false))
 					}
 				}
 				for _, r := range op.PreflightResults.Errors {
-					if r.Name() == testName {
-						check.LogError("Operator %q has errored Preflight test %q", op, testName)
-						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, "Operator has errored preflight test "+testName, false))
+					if r.Name == testName {
+						check.LogError("Operator %q has errored Preflight test %q, err: %v", op, testName, r.Error)
+						nonCompliantObjects = append(nonCompliantObjects, testhelper.NewOperatorReportObject(op.Namespace, op.Name, fmt.Sprintf("Operator has errored preflight test %s, err: %v", testName, r.Error), false))
 					}
 				}
 			}
@@ -225,37 +224,37 @@ func generatePreflightOperatorCnfCertTest(checksGroup *checksdb.ChecksGroup, tes
 		}))
 }
 
-func getUniqueTestEntriesFromContainerResults(containers []*provider.Container) map[string]plibRuntime.Result {
-	// If containers are sharing the same image, they should "presumably" have the same results returned from preflight.
-	testEntries := make(map[string]plibRuntime.Result)
+func getUniqueTestEntriesFromContainerResults(containers []*provider.Container) map[string]provider.PreflightTest {
+	// If containers are sharing the same image, they should "presumably" have the same results returned from Preflight.
+	testEntries := make(map[string]provider.PreflightTest)
 	for _, cut := range containers {
 		for _, r := range cut.PreflightResults.Passed {
-			testEntries[r.Name()] = r
+			testEntries[r.Name] = r
 		}
 		// Failed Results have more information than the rest
 		for _, r := range cut.PreflightResults.Failed {
-			testEntries[r.Name()] = r
+			testEntries[r.Name] = r
 		}
 		for _, r := range cut.PreflightResults.Errors {
-			testEntries[r.Name()] = r
+			testEntries[r.Name] = r
 		}
 	}
 
 	return testEntries
 }
 
-func getUniqueTestEntriesFromOperatorResults(operators []*provider.Operator) map[string]plibRuntime.Result {
-	testEntries := make(map[string]plibRuntime.Result)
+func getUniqueTestEntriesFromOperatorResults(operators []*provider.Operator) map[string]provider.PreflightTest {
+	testEntries := make(map[string]provider.PreflightTest)
 	for _, op := range operators {
 		for _, r := range op.PreflightResults.Passed {
-			testEntries[r.Name()] = r
+			testEntries[r.Name] = r
 		}
 		// Failed Results have more information than the rest
 		for _, r := range op.PreflightResults.Failed {
-			testEntries[r.Name()] = r
+			testEntries[r.Name] = r
 		}
 		for _, r := range op.PreflightResults.Errors {
-			testEntries[r.Name()] = r
+			testEntries[r.Name] = r
 		}
 	}
 	return testEntries

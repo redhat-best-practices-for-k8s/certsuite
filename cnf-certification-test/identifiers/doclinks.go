@@ -7,6 +7,9 @@ const (
 	NoDocLinkTelco    = "No Doc Link - Telco"
 	NoDocLink         = "No Doc Link"
 
+	// Operator Suite
+	OperatorRequirementDocLink = "https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements"
+
 	// Networking Suite
 	TestICMPv4ConnectivityIdentifierDocLink         = "https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-ipv4-&-ipv6"
 	TestNetworkPolicyDenyAllIdentifierDocLink       = "https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-vrfs-aka-routing-instances"
@@ -101,10 +104,11 @@ const (
 	TestRtAppNoExecProbesDocLink                = NoDocLinkFarEdge
 
 	// Operator Test Suite
-	TestOperatorInstallStatusSucceededIdentifierDocLink = "https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements"
-	TestOperatorNoPrivilegesDocLink                     = "https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements"
-	TestOperatorIsCertifiedIdentifierDocLink            = "https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements"
-	TestOperatorIsInstalledViaOLMIdentifierDocLink      = "https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements"
+	TestOperatorInstallStatusSucceededIdentifierDocLink = OperatorRequirementDocLink
+	TestOperatorNoPrivilegesDocLink                     = OperatorRequirementDocLink
+	TestOperatorIsCertifiedIdentifierDocLink            = OperatorRequirementDocLink
+	TestOperatorIsInstalledViaOLMIdentifierDocLink      = OperatorRequirementDocLink
+	TestOperatorHasSemanticVersioningIdentifierDocLink  = OperatorRequirementDocLink
 
 	// Observability Test Suite
 	TestLoggingIdentifierDocLink                  = "https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-logging"
