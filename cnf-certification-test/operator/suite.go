@@ -19,7 +19,6 @@ package operator
 import (
 	"strings"
 
-	"github.com/sirupsen/logrus"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/common"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/identifiers"
 	"github.com/test-network-function/cnf-certification-test/cnf-certification-test/operator/phasecheck"
@@ -93,13 +92,13 @@ func testOperatorInstallationWithoutPrivileges(check *checksdb.Check, env *provi
 		csv := operator.Csv
 		clusterPermissions := csv.Spec.InstallStrategy.StrategySpec.ClusterPermissions
 		if len(clusterPermissions) == 0 {
-			logrus.Debugf("No clusterPermissions found in %s", operator)
+			check.LogInfo("No clusterPermissions found in %s", operator)
 			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "Operator has no privileges on cluster resources", true))
 			continue
 		}
 
 		if operator.IsClusterWide {
-			logrus.Debugf("Operator %s has clusterPermissions (%d) but it is cluster-wide type.", operator, len(clusterPermissions))
+			check.LogInfo("Operator %s has clusterPermissions (%d) but it is cluster-wide type.", operator, len(clusterPermissions))
 			compliantObjects = append(compliantObjects, testhelper.NewOperatorReportObject(operator.Namespace, operator.Name, "Operator has clusterPermissions config in the CSV, but it was installed as cluster-wide", true))
 			continue
 		}
@@ -110,7 +109,7 @@ func testOperatorInstallationWithoutPrivileges(check *checksdb.Check, env *provi
 			permission := &clusterPermissions[permissionIndex]
 			for ruleIndex := range permission.Rules {
 				if n := len(permission.Rules[ruleIndex].ResourceNames); n > 0 {
-					tnf.ClaimFilePrintf("%s: cluster permission (service account %s) has %d resource names (rule index %d).",
+					check.LogInfo("%s: cluster permission (service account %s) has %d resource names (rule index %d).",
 						operator, permission.ServiceAccountName, n, ruleIndex)
 					// Keep reviewing other permissions' rules so we can log all the failing ones in the claim file.
 					badRuleFound = true
