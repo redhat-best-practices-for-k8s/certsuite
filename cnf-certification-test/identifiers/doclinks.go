@@ -101,10 +101,11 @@ const (
 	TestRtAppNoExecProbesDocLink                = NoDocLinkFarEdge
 
 	// Operator Test Suite
-	TestOperatorInstallStatusSucceededIdentifierDocLink = "https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements"
-	TestOperatorNoPrivilegesDocLink                     = "https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements"
-	TestOperatorIsCertifiedIdentifierDocLink            = "https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements"
-	TestOperatorIsInstalledViaOLMIdentifierDocLink      = "https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements"
+	DocOperatorRequirement                              = "https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-cnf-operator-requirements"
+	TestOperatorInstallStatusSucceededIdentifierDocLink = DocOperatorRequirement
+	TestOperatorNoPrivilegesDocLink                     = DocOperatorRequirement
+	TestOperatorIsCertifiedIdentifierDocLink            = DocOperatorRequirement
+	TestOperatorIsInstalledViaOLMIdentifierDocLink      = DocOperatorRequirement
 
 	// Observability Test Suite
 	TestLoggingIdentifierDocLink                  = "https://test-network-function.github.io/cnf-best-practices-guide/#cnf-best-practices-logging"
